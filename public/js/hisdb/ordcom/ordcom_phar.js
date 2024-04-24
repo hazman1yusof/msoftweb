@@ -387,6 +387,11 @@ var myEditOptions_phar = {
 				$("#jqGrid_phar input#"+rowid+"_chgcode").focus();
 			}
 		});
+
+		$("input[name='totamount']").keydown(function(e) {//when click tab at batchno, auto save
+			var code = e.keyCode || e.which;
+			if (code == '9')$('#jqGrid_phar_ilsave').click();
+		});
 	},
 	aftersavefunc: function (rowid, response, options) {
 		let retval = JSON.parse(response.responseText);
@@ -406,7 +411,7 @@ var myEditOptions_phar = {
 		mycurrency_phar.formatOff();
 		mycurrency_np_phar.formatOff();
 
-		if(parseInt($('#jqGrid_phar input[name="quantity"]').val()) <= 0)return false;
+		if(parseInt($('#jqGrid_phar input[name="quantity"]').val()) == 0)return false;
 
 		if(myfail_msg_phar.fail_msg_array.length>0){
 			return false;
@@ -612,7 +617,7 @@ var myEditOptions_phar_edit = {
 		mycurrency_phar.formatOff();
 		mycurrency_np_phar.formatOff();
 
-		if(parseInt($('#jqGrid_phar input[name="quantity"]').val()) <= 0)return false;
+		if(parseInt($('#jqGrid_phar input[name="quantity"]').val()) == 0)return false;
 
 		if(myfail_msg_phar.fail_msg_array.length>0){
 			return false;
@@ -667,7 +672,7 @@ function calculate_line_totgst_and_totamt_phar(event) {
    
 	let quantity = parseFloat($("#"+id_optid+"_quantity").val());
 
-	if(quantity<=0 || quantity==''){
+	if(quantity==0 || quantity==''){
 		myfail_msg_phar.add_fail({
 			id:'quantity',
 			textfld:"#jqGrid_phar #"+id_optid+"_quantity",
@@ -854,6 +859,22 @@ var dialog_chgcode_phar = new ordialog(
 				var id_optid = optid.substring(0,optid.search("_"));
 			}
 
+			myfail_msg_phar.del_fail({
+				id:'quantity',
+				textfld:"#jqGrid_phar #"+id_optid+"_quantity",
+				msg:"Quantity must be greater than 0",
+			});
+			myfail_msg_phar.del_fail({
+				id:'qtyonhand',
+				textfld:"#jqGrid_phar #"+id_optid+"_quantity",
+				msg:"Quantity greater than quantity on hand",
+			});
+			myfail_msg_phar.del_fail({
+				id:'convfactor',
+				textfld:"#jqGrid_phar #"+id_optid+"_quantity",
+				msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
+			});
+			myfail_msg_phar.del_fail({id:'noprod_'+id_optid});
 			myfail_msg_phar.del_fail({id:'nostock_'+id_optid});
 
 			let data=selrowData('#'+dialog_chgcode_phar.gridname);

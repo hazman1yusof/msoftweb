@@ -277,6 +277,11 @@ var myEditOptions_disp = {
 				$("#jqGrid_disp input#"+rowid+"_chgcode").focus();
 			}
 		});
+
+		$("input[name='totamount']").keydown(function(e) {//when click tab at batchno, auto save
+			var code = e.keyCode || e.which;
+			if (code == '9')$('#jqGrid_disp_ilsave').click();
+		});
 	},
 	aftersavefunc: function (rowid, response, options) {
 		let retval = JSON.parse(response.responseText);
@@ -569,13 +574,13 @@ function calculate_line_totgst_and_totamt_disp(event) {
 		});
 	}
 
-	if (balconv != 0) {
+	if(!isNaN(convfactor_uom) && !isNaN(convfactor_uom_recv) && balconv != 0) {
 		myfail_msg_disp.add_fail({
 			id:'convfactor',
 			textfld:"#jqGrid_disp #"+id_optid+"_quantity",
 			msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
 		});
-	} else {
+	}else{
 		myfail_msg_disp.del_fail({
 			id:'convfactor',
 			textfld:"#jqGrid_disp #"+id_optid+"_quantity",
@@ -682,7 +687,7 @@ var dialog_chgcode_disp = new ordialog(
 			{label: 'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			{label: 'Inventory',name:'invflag',width:100,formatter:formatterstatus_tick2, unformat:unformatstatus_tick2},
 			{label: 'UOM',name:'uom',width:100,classes:'pointer',},
-			{label: 'Quantity On Hand',name:'qtyonhand',width:100,classes:'pointer',},
+			{label: 'Quantity On<br>Hand',name:'qtyonhand',width:100,classes:'pointer wrap',},
 			{label: 'Price',name:'price',width:100,classes:'pointer'},
 			{label: 'Tax',name:'taxcode',width:100,classes:'pointer'},
 			{label: 'rate',name:'rate',hidden:true},
@@ -717,6 +722,21 @@ var dialog_chgcode_disp = new ordialog(
 				var id_optid = optid.substring(0,optid.search("_"));
 			}
 
+			myfail_msg_disp.del_fail({
+				id:'quantity',
+				textfld:"#jqGrid_disp #"+id_optid+"_quantity",
+				msg:"Quantity must be greater than 0",
+			});
+			myfail_msg_disp.del_fail({
+				id:'qtyonhand',
+				textfld:"#jqGrid_disp #"+id_optid+"_quantity",
+				msg:"Quantity greater than quantity on hand",
+			});
+			myfail_msg_disp.del_fail({
+				id:'convfactor',
+				textfld:"#jqGrid_disp #"+id_optid+"_quantity",
+				msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
+			});
 			myfail_msg_disp.del_fail({id:'noprod_'+id_optid});
 
 			let data=selrowData('#'+dialog_chgcode_disp.gridname);
@@ -769,7 +789,7 @@ var dialog_chgcode_disp = new ordialog(
 							myfail_msg_disp.add_fail({
 								id:'nostock_'+self.id_optid,
 								textfld:"#jqGrid_disp #"+self.id_optid+"_uom_recv",
-								msg:'Selected Item ('+$("#jqGrid_disp input[name='chgcode']").val()+') doesnt have Stock location at department: '+$("#jqGrid_disp input[name='deptcode']").val(),
+								msg:'Selected Item ('+$("#jqGrid_disp input[name='chgcode']").val()+') does not have Stock location at department: '+$("#jqGrid_disp input[name='deptcode']").val(),
 							});
 
 							$("#jqGrid_disp #"+self.id_optid+"_convfactor_uom_recv").val('');
@@ -839,7 +859,7 @@ var dialog_uomcode_disp = new ordialog(
 			{label: 'Charge Code',name:'chgcode',width:100},
 			{label: 'Charge Description',name:'chgdesc',width:300},
 			{label: 'Inventory',name:'invflag',width:100,formatter:formatterstatus_tick2, unformat:unformatstatus_tick2},
-			{label: 'Quantity On Hand',name:'qtyonhand',width:100},
+			{label: 'Quantity On<br>Hand',name:'qtyonhand',width:100, classes: 'wrap'},
 			{label: 'Price',name:'price',width:100},
 			{label: 'Tax',name:'taxcode',hidden:true},
 			{label: 'rate',name:'rate',hidden:true},
@@ -876,6 +896,21 @@ var dialog_uomcode_disp = new ordialog(
 				var id_optid = optid.substring(0,optid.search("_"));
 			}
 
+			myfail_msg_disp.del_fail({
+				id:'quantity',
+				textfld:"#jqGrid_disp #"+id_optid+"_quantity",
+				msg:"Quantity must be greater than 0",
+			});
+			myfail_msg_disp.del_fail({
+				id:'qtyonhand',
+				textfld:"#jqGrid_disp #"+id_optid+"_quantity",
+				msg:"Quantity greater than quantity on hand",
+			});
+			myfail_msg_disp.del_fail({
+				id:'convfactor',
+				textfld:"#jqGrid_disp #"+id_optid+"_quantity",
+				msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
+			});
 			myfail_msg_disp.del_fail({id:'noprod_'+id_optid});
 			myfail_msg_disp.del_fail({id:'nostock_'+id_optid});
 

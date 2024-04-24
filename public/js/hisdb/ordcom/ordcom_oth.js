@@ -275,6 +275,11 @@ var myEditOptions_oth = {
 				$("#jqGrid_oth input#"+rowid+"_chgcode").focus();
 			}
 		});
+
+		$("input[name='totamount']").keydown(function(e) {//when click tab at batchno, auto save
+			var code = e.keyCode || e.which;
+			if (code == '9')$('#jqGrid_oth_ilsave').click();
+		});
 	},
 	aftersavefunc: function (rowid, response, options) {
 		let retval = JSON.parse(response.responseText);
@@ -572,14 +577,14 @@ function calculate_line_totgst_and_totamt_oth(event) {
 			msg:"Quantity greater than quantity on hand",
 		});
 	}
-
-	if (balconv != 0) {
+	
+	if(!isNaN(convfactor_uom) && !isNaN(convfactor_uom_recv) && balconv != 0) {
 		myfail_msg_oth.add_fail({
 			id:'convfactor',
 			textfld:"#jqGrid_oth #"+id_optid+"_quantity",
 			msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
 		});
-	} else {
+	}else{
 		myfail_msg_oth.del_fail({
 			id:'convfactor',
 			textfld:"#jqGrid_oth #"+id_optid+"_quantity",
@@ -723,6 +728,21 @@ var dialog_chgcode_oth = new ordialog(
 				var id_optid = optid.substring(0,optid.search("_"));
 			}
 
+			myfail_msg_disp.del_fail({
+				id:'quantity',
+				textfld:"#jqGrid_disp #"+id_optid+"_quantity",
+				msg:"Quantity must be greater than 0",
+			});
+			myfail_msg_disp.del_fail({
+				id:'qtyonhand',
+				textfld:"#jqGrid_disp #"+id_optid+"_quantity",
+				msg:"Quantity greater than quantity on hand",
+			});
+			myfail_msg_disp.del_fail({
+				id:'convfactor',
+				textfld:"#jqGrid_disp #"+id_optid+"_quantity",
+				msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
+			});
 			myfail_msg_oth.del_fail({id:'noprod_'+id_optid});
 
 			let data=selrowData('#'+dialog_chgcode_oth.gridname);

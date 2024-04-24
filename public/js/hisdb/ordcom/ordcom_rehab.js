@@ -274,6 +274,11 @@ var myEditOptions_rehab = {
 				$("#jqGrid_rehab input#"+rowid+"_chgcode").focus();
 			}
 		});
+
+		$("input[name='totamount']").keydown(function(e) {//when click tab at batchno, auto save
+			var code = e.keyCode || e.which;
+			if (code == '9')$('#jqGrid_rehab_ilsave').click();
+		});
 	},
 	aftersavefunc: function (rowid, response, options) {
 		let retval = JSON.parse(response.responseText);
@@ -711,6 +716,21 @@ var dialog_chgcode_rehab = new ordialog(
 				var id_optid = optid.substring(0,optid.search("_"));
 			}
 
+			myfail_msg_rehab.del_fail({
+				id:'quantity',
+				textfld:"#jqGrid_rehab #"+id_optid+"_quantity",
+				msg:"Quantity must be greater than 0",
+			});
+			myfail_msg_rehab.del_fail({
+				id:'qtyonhand',
+				textfld:"#jqGrid_rehab #"+id_optid+"_quantity",
+				msg:"Quantity greater than quantity on hand",
+			});
+			myfail_msg_rehab.del_fail({
+				id:'convfactor',
+				textfld:"#jqGrid_rehab #"+id_optid+"_quantity",
+				msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
+			});
 			myfail_msg_rehab.del_fail({id:'noprod_'+id_optid});
 
 			let data=selrowData('#'+dialog_chgcode_rehab.gridname);

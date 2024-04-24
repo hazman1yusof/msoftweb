@@ -3256,9 +3256,11 @@ $(document).ready(function () {
 	var dialog_dtlchgcode = new ordialog(
 		'chgcode','hisdb.chgmast',"#jqGrid4 input[name='chgcode']",errorField,
 		{	colModel:[
-				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Charge Code',name:'chgcode',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,or_search:true},
 				{label:'UOM',name:'uom',width:50,classes:'pointer'},
+				{label:'Dept',width:80,name:'deptcode', hidden:false},
+				{label:'Qty On Hand',width:80,name:'qtyonhand', hidden:false},
 				{label:'Real Amt',width:50,name:'amt1', hidden:false},
 				{label:'chgprice_amt2',name:'chgprice_amt2', hidden:true},
 				{label:'chgprice_amt3',name:'chgprice_amt3', hidden:true},
@@ -3284,19 +3286,15 @@ $(document).ready(function () {
 					$(event.currentTarget).parent().next().html('');
 				}
 				
-
 				let data=selrowData('#'+dialog_dtlchgcode.gridname);
 
-				// $("#jqGrid4 [name='quantity']");
-				console.log(data.amt1);
-
 				$("#jqGrid4 input#"+id_optid+"_uom").val(data.uom);
+				$("#jqGrid4 input#"+id_optid+"_issdept").val(data.deptcode);
+				dialog_issdept.check(errorField);
 
 				$("#jqGrid4").jqGrid('setRowData', id_optid ,{actprice1:data.amt1});
 				$("#jqGrid4").jqGrid('setRowData', id_optid ,{actprice2:data.chgprice_amt2});
 				$("#jqGrid4").jqGrid('setRowData', id_optid ,{actprice3:data.chgprice_amt3});
-
-				// $("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['rate']);
 
 			},
 			gridComplete: function(obj){

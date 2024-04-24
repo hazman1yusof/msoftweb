@@ -643,7 +643,7 @@ function currencymode(arraycurrency,nopoint=false){
 	function currencyChg(event){
 		value = event.data.value;
 		var val = $(value).val();
-		if(val.match(/[^0-9\.]/)){
+		if(val.match(/[^0-9\.\-]/)){
 			event.preventDefault();
 			$(this).val(val.slice(0,val.length-1));
 		}
@@ -1756,7 +1756,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 }
 
 function renull_urlparam_search(urlparam=null){
-	console.log(urlparam);
 	urlParam.searchCol2=urlParam.searchVal2=urlParam.searchCol=urlParam.searchVal=null;
 }
 
@@ -2287,7 +2286,6 @@ function computerid_set(computerid){
 }
 
 function calc_jq_height_onchange(jqgrid,resizeGrid=false,maxHeight=300){
-	console.log(jqgrid);
 	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
 	if(scrollHeight<80){
 		scrollHeight = 80;

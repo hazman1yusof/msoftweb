@@ -514,28 +514,143 @@ class ChargeMasterController extends defaultController
     }
     
     public function chgpricelatest(Request $request){
+        // $table = DB::table('hisdb.chgmast as cm')
+        //             ->join('hisdb.chgprice as cp', function($join) {
+        //                 $join = $join->on('cp.chgcode', '=', 'cm.chgcode')
+        //                             ->on('cp.uom', '=', 'cm.uom')
+        //                             ->where('cp.compcode', '=', session('compcode'))
+        //                             ->where('cp.effdate', '<=', Carbon::now());
+        //             });
+
+        // if(!empty($request->searchCol)){
+        //     $searchCol_array = $request->searchCol;
+
+        //     $count = array_count_values($searchCol_array);
+        //     // dump($count);
+
+        //     foreach ($count as $key => $value) {
+        //         $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+        //         $table = $table->orWhere(function ($table) use ($request,$searchCol_array,$occur_ar) {
+        //             foreach ($searchCol_array as $key => $value) {
+        //                 $found = array_search($key,$occur_ar);
+        //                 if($found !== false){
+        //                     $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+        //                 }
+        //             }
+        //         });
+        //     }
+        // }
+
+        // if(!empty($request->searchCol2)){
+
+        //     $table = $table->where(function($query) use ($request){
+        //         $searchCol_array = $request->searchCol2;
+
+        //         foreach ($searchCol_array as $key => $value) {
+        //             $query = $query->orWhere($searchCol_array[$key],'like',$request->searchVal2[$key]);
+        //         }
+        //     });
+        // }
+
+        // $table = $table
+        //         ->where('cm.recstatus','=','ACTIVE')
+        //         ->where('cm.compcode','=',session('compcode'));
+
+        // $paginate = $table->paginate($request->rows);
+
+        // $rows = $paginate->items();
+
+        // foreach ($rows as $key => $value) {
+        //     // $chgprice = DB::table('hisdb.chgprice')
+        //     //             ->where('compcode','=',session('compcode'))
+        //     //             ->where('chgcode','=',$value->chgcode)
+        //     //             ->where('uom','=',$value->uom)
+        //     //             ->whereDate('effdate', '<=', Carbon::now())
+        //     //             ->orderBy('effdate', 'DESC');
+
+        //     // if($chgprice->exists()){
+        //     //     $chgprice_get = $chgprice->first();
+        //     //     $value->chgprice_amt1 = $chgprice_get->amt1;
+        //     //     $value->chgprice_amt2 = $chgprice_get->amt2;
+        //     //     $value->chgprice_amt3 = $chgprice_get->amt3;
+        //     //     // $value->chgprice_iptax = $chgprice_get->iptax;
+        //     //     // $value->chgprice_optax = $chgprice_get->optax;
+        //     // }else{
+        //     //     $value->chgprice_amt1 = "";
+        //     //     $value->chgprice_amt2 = "";
+        //     //     $value->chgprice_amt3 = "";
+        //     //     // $value->chgprice_iptax = "";
+        //     //     // $value->chgprice_optax = "";
+        //     // }
+        //     $chgprice_obj = DB::table('hisdb.chgprice as cp')
+        //         ->where('cp.compcode', '=', session('compcode'))
+        //         ->where('cp.chgcode', '=', $value->chgcode)
+        //         ->where('cp.uom', '=', $value->uom)
+        //         ->whereDate('cp.effdate', '<=', Carbon::now())
+        //         ->orderBy('cp.effdate','desc');
+
+        //     if($chgprice_obj->exists()){
+        //         $chgprice_obj = $chgprice_obj->first();
+
+        //         if($value->chgcode == $chgprice_obj->chgcode && $value->idno != $chgprice_obj->idno){
+        //             unset($rows[$key]);
+        //             continue;
+        //         }
+        //     }
+        // }
+        
+        // $rows = array_values($rows);
+
         $table = DB::table('hisdb.chgmast as cm')
-                    ->join('hisdb.chgprice as cp', function($join) {
-                        $join = $join->on('cp.chgcode', '=', 'cm.chgcode')
-                                    ->on('cp.uom', '=', 'cm.uom')
-                                    ->where('cp.compcode', '=', session('compcode'))
-                                    ->where('cp.effdate', '<=', Carbon::now());
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode','st.deptcode','cp.idno','cp.amt1')
+                        ->where('cm.compcode','=',session('compcode'))
+                        ->where('cm.recstatus','<>','DELETE');
+
+        $table = $table->join('hisdb.chgprice as cp', function($join){
+                            $join = $join->where('cp.compcode', '=', session('compcode'));
+                            $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
+                            $join = $join->on('cp.uom', '=', 'cm.uom');
+                            $join = $join->where('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+                        });
+
+        $table = $table->leftjoin('material.stockloc as st', function($join){
+                            $join = $join->on('st.itemcode', '=', 'cm.chgcode');
+                            $join = $join->on('st.uomcode', '=', 'cm.uom');
+                            $join = $join->where('st.compcode', '=', session('compcode'));
+                            $join = $join->where('st.unit', '=', session('unit'));
+                            $join = $join->where('st.year', '=', Carbon::now("Asia/Kuala_Lumpur")->format('Y'));
+                        });
+
+        $table = $table->leftjoin('material.product as pt', function($join){
+                        $join = $join->where('pt.compcode', '=', session('compcode'));
+                        $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
+                        $join = $join->on('pt.uomcode', '=', 'cm.uom');
+                        $join = $join->where('pt.unit', '=', session('unit'));
                     });
+
+        $table = $table->join('material.uom as uom', function($join){
+                        $join = $join->on('uom.uomcode', '=', 'cm.uom')
+                                    ->where('uom.compcode', '=', session('compcode'))
+                                    ->where('uom.recstatus','=','ACTIVE');
+                });
 
         if(!empty($request->searchCol)){
             $searchCol_array = $request->searchCol;
 
             $count = array_count_values($searchCol_array);
-            // dump($count);
 
             foreach ($count as $key => $value) {
                 $occur_ar = $this->index_of_occurance($key,$searchCol_array);
 
-                $table = $table->orWhere(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
                     foreach ($searchCol_array as $key => $value) {
                         $found = array_search($key,$occur_ar);
-                        if($found !== false){
-                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                        if($found !== false && trim($request->searchVal[$key]) != '%%'){
+                            $search_ = $this->begins_search_if(['itemcode','chgcode'],$searchCol_array[$key],$request->searchVal[$key]);
+                            $table->Where('cm.'.$searchCol_array[$key],'like',$search_);
+                            // $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                            // $table->Where('cm.'.$searchCol_array[$key],'like',$request->searchVal[$key]);
                         }
                     }
                 });
@@ -543,51 +658,60 @@ class ChargeMasterController extends defaultController
         }
 
         if(!empty($request->searchCol2)){
-
-            $table = $table->where(function($query) use ($request){
-                $searchCol_array = $request->searchCol2;
-
+            $searchCol_array = $request->searchCol2;
+            $table = $table->where(function($table) use ($searchCol_array, $request){
                 foreach ($searchCol_array as $key => $value) {
-                    $query = $query->orWhere($searchCol_array[$key],'like',$request->searchVal2[$key]);
+                    if($key>1) break;
+                    // $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    $table->orwhere('cm.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
                 }
             });
+
+            if(count($searchCol_array)>2){
+                $table = $table->where(function($table) use ($searchCol_array, $request){
+                    foreach ($searchCol_array as $key => $value) {
+                        if($key<=1) continue;
+                        // $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                        $table->orwhere('cm.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    }
+                });
+            }
         }
 
-        $table = $table
-                ->where('cm.recstatus','=','ACTIVE')
-                ->where('cm.compcode','=',session('compcode'));
+        // if(!empty($request->filterCol)){
+        //     foreach ($request->filterCol as $key => $value) {
+        //         $table = $table->where('cm.'.$request->filterCol[$key],'=',$request->filterVal[$key]);
+        //     }
+        // }
+
+        if(!empty($request->sidx)){
+
+            if(!empty($request->fixPost)){
+                $request->sidx = substr_replace($request->sidx, ".", strpos($request->sidx, "_"), strlen("."));
+            }
+            
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                    $pieces_inside = explode(" ", $pieces[$i]);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('cm.idno','desc');
+        }
 
         $paginate = $table->paginate($request->rows);
 
         $rows = $paginate->items();
-
         foreach ($rows as $key => $value) {
-            // $chgprice = DB::table('hisdb.chgprice')
-            //             ->where('compcode','=',session('compcode'))
-            //             ->where('chgcode','=',$value->chgcode)
-            //             ->where('uom','=',$value->uom)
-            //             ->whereDate('effdate', '<=', Carbon::now())
-            //             ->orderBy('effdate', 'DESC');
-
-            // if($chgprice->exists()){
-            //     $chgprice_get = $chgprice->first();
-            //     $value->chgprice_amt1 = $chgprice_get->amt1;
-            //     $value->chgprice_amt2 = $chgprice_get->amt2;
-            //     $value->chgprice_amt3 = $chgprice_get->amt3;
-            //     // $value->chgprice_iptax = $chgprice_get->iptax;
-            //     // $value->chgprice_optax = $chgprice_get->optax;
-            // }else{
-            //     $value->chgprice_amt1 = "";
-            //     $value->chgprice_amt2 = "";
-            //     $value->chgprice_amt3 = "";
-            //     // $value->chgprice_iptax = "";
-            //     // $value->chgprice_optax = "";
-            // }
             $chgprice_obj = DB::table('hisdb.chgprice as cp')
                 ->where('cp.compcode', '=', session('compcode'))
                 ->where('cp.chgcode', '=', $value->chgcode)
                 ->where('cp.uom', '=', $value->uom)
-                ->whereDate('cp.effdate', '<=', Carbon::now())
+                ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
                 ->orderBy('cp.effdate','desc');
 
             if($chgprice_obj->exists()){
@@ -599,7 +723,7 @@ class ChargeMasterController extends defaultController
                 }
             }
         }
-        
+
         $rows = array_values($rows);
 
         //////////paginate/////////
@@ -611,6 +735,7 @@ class ChargeMasterController extends defaultController
         $responce->rows = $rows;
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
         return json_encode($responce);
     }
 

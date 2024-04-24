@@ -188,7 +188,6 @@ function fail_msg_func(fail_msg_div=null){
 		var new_msg_array = this.fail_msg_array.filter(function(e,i){
 			if(e.id == fail_msg.id){
 				if(e.textfld !=null){
-					console.log(e);
 					myerrorIt_only(e.textfld,false);
 				}
 				return false;
