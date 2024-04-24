@@ -61,7 +61,7 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [20,35,35,55,22,70,37,45,45,35],    // panjang standard dia 515
+                            widths: [22,35,35,55,22,70,37,45,45,35],    // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'No.', style: 'tableHeader', alignment: 'right' },
