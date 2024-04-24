@@ -885,6 +885,14 @@ $(document).ready(function (){
 	$("#jqGrid2_panel").on("show.bs.collapse", function(){
 		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
 	});
+	
+	$('#excelgen1').click(function(){
+		window.location='./reportFormat/showExcel?rptname='+selrowData('#jqGrid').rptname;
+	});
+	
+	$('#pdfgen1').click(function(){
+		window.open('./reportFormat/showpdf?rptname='+selrowData('#jqGrid').rptname, '_blank');
+	});
 });
 
 function calc_jq_height_onchange(jqgrid){

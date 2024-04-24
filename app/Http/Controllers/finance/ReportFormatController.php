@@ -9,6 +9,8 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 use PDF;
+use App\Exports\ReportFormatExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportFormatController extends defaultController
 {
@@ -151,6 +153,38 @@ class ReportFormatController extends defaultController
             return response($e->getMessage(), 500);
             
         }
+        
+    }
+    
+    public function showExcel(Request $request){
+        return Excel::download(new ReportFormatExport($request->rptname), 'ReportFormat.xlsx');
+    }
+    
+    public function showpdf(Request $request){
+        
+        $rptname = $request->rptname;
+        
+        $glrpthdr = DB::table('finance.glrpthdr')
+                    ->where('compcode', '=', session('compcode'))
+                    ->where('rptname', '=', $rptname)
+                    ->first();
+        
+        $glrptfmt = DB::table('finance.glrptfmt')
+                    ->where('compcode', '=', session('compcode'))
+                    ->where('rptname', '=', $rptname)
+                    ->orderBy('lineno_', 'ASC')
+                    ->get();
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode', '=', session('compcode'))
+                    ->first();
+        
+        $header = new stdClass();
+        $header->printby = session('username');
+        $header->rptname = $request->rptname;
+        $header->compname = $company->name;
+        
+        return view('finance.GL.reportFormat.reportFormat_pdfmake', compact('glrpthdr', 'glrptfmt', 'header'));
         
     }
     

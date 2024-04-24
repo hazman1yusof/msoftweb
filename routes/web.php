@@ -714,6 +714,8 @@ Route::post('/reportFormat/form','finance\ReportFormatController@form');
 Route::get('/reportFormat/form','finance\ReportFormatController@form');
 Route::post('/reportFormatDetail/form','finance\ReportFormatDetailController@form');
 Route::get('/reportFormatDetail/table','finance\ReportFormatDetailController@table');
+Route::get('/reportFormat/showExcel','finance\ReportFormatController@showExcel');
+Route::get('/reportFormat/showpdf','finance\ReportFormatController@showpdf');
 
 //// period setup ///
 Route::get('/period','finance\PeriodController@show');
