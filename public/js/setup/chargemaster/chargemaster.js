@@ -2021,7 +2021,7 @@ $(document).ready(function () {
 							custom_value:galGridCustomValue 	
 						},
 			},
-			{ label: 'Department', name: 'issdept', width: 80, classes: 'wrap', editable:true,
+			{ label: 'Department', name: 'issdept', width: 60, classes: 'wrap', editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 					edittype:'custom',	editoptions:
 						{  custom_element:issdeptCustomEdit,
