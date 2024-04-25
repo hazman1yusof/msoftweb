@@ -107,8 +107,6 @@ class RepackDetailController extends defaultController
 
             $recno = $repackhd->recno;
             $outqty = $repackhd->outqty;
-
-            dd($recno);
           
             ////1. calculate lineno_ by recno
             $sqlln = DB::table('material.repackdt')->select('lineno_')
@@ -129,7 +127,7 @@ class RepackDetailController extends defaultController
                     'uomcode' => strtoupper($request->uomcode),
                     'inpqty' => $request->inpqty,
                     'avgcost' => floatval($request->avgcost),
-                    'amount' => floatval($request->amount),
+                    'amount' => $request->avgcost * $request->inpqty,
                    // 'trandate' => $request->trandate,
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -290,21 +288,63 @@ class RepackDetailController extends defaultController
 
         //dd($table);
 
-        if(!empty($request->searchCol)){
-            $searchCol_array = $request->searchCol;
-            
+        /////////searching/////////
+        if(!empty($request->searchCol) && !empty($request->searchVal)){
+            if(!empty($request->fixPost)){
+                $searchCol_array = $this->fixPost3($request->searchCol);
+            }else{
+                $searchCol_array = $request->searchCol;
+            }
             $count = array_count_values($searchCol_array);
-            // dump($count);
-            
+
             foreach ($count as $key => $value) {
                 $occur_ar = $this->index_of_occurance($key,$searchCol_array);
-                
-                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+
+                $table = $table->orWhere(function ($table) use ($request,$searchCol_array,$occur_ar) {
                     foreach ($searchCol_array as $key => $value) {
                         $found = array_search($key,$occur_ar);
-                        if($found !== false){
-                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                        if($found !== false && trim($request->searchVal[$key]) != '%%'){//trim whitespace
+                            $search_ = $this->begins_search_if(['itemcode','chgcode'],$searchCol_array[$key],$request->searchVal[$key]);
+                            $table->Where($searchCol_array[$key],'like',$search_);
                         }
+                    }
+                });
+            }
+        }
+
+        /////////searching 2///////// ni search utk ordialog
+        if(!empty($request->searchCol2)){
+
+            if(!empty($request->fixPost)){
+                $searchCol_array = $this->fixPost3($request->searchCol2);
+            }else{
+                $searchCol_array = $request->searchCol2;
+            }
+
+            // $searchCol_array_1 = $searchCol_array_2 = $searchVal_array_1 = $searchVal_array_2 = [];
+
+            // foreach ($searchCol_array as $key => $value) {
+            //     if(($key+1)%2){
+            //         array_push($searchCol_array_1, $searchCol_array[$key]);
+            //         array_push($searchVal_array_1, $request->searchVal2[$key]);
+            //     }else{
+            //         array_push($searchCol_array_2, $searchCol_array[$key]);
+            //         array_push($searchVal_array_2, $request->searchVal2[$key]);
+            //     }
+            // }
+            
+            $table = $table->where(function($table) use ($searchCol_array, $request){
+                foreach ($searchCol_array as $key => $value) {
+                    if($key>1) break;
+                    $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                }
+            });
+
+            if(count($searchCol_array)>2){
+                $table = $table->where(function($table) use ($searchCol_array, $request){
+                    foreach ($searchCol_array as $key => $value) {
+                        if($key<=1) continue;
+                        $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
                     }
                 });
             }
@@ -332,6 +372,7 @@ class RepackDetailController extends defaultController
                     ->select('s.itemcode as s_itemcode', 'p.description as p_description', 's.uomcode as s_uomcode', 'p.uomcode as p_uomcode', 'p.avgcost as p_avgcost')
                     ->join('material.product as p', function($join){
                         $join = $join->on('p.itemcode', '=', 's.itemcode')
+                                    ->on('p.uomcode', '=', 's.uomcode')
                                     ->where('p.compcode', '=', session('compcode'));
                     })
                     ->where('s.recstatus','=','ACTIVE')
@@ -346,21 +387,63 @@ class RepackDetailController extends defaultController
 
         //dd($table);
 
-        if(!empty($request->searchCol)){
-            $searchCol_array = $request->searchCol;
-            
+        /////////searching/////////
+        if(!empty($request->searchCol) && !empty($request->searchVal)){
+            if(!empty($request->fixPost)){
+                $searchCol_array = $this->fixPost3($request->searchCol);
+            }else{
+                $searchCol_array = $request->searchCol;
+            }
             $count = array_count_values($searchCol_array);
-            // dump($count);
-            
+
             foreach ($count as $key => $value) {
                 $occur_ar = $this->index_of_occurance($key,$searchCol_array);
-                
-                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+
+                $table = $table->orWhere(function ($table) use ($request,$searchCol_array,$occur_ar) {
                     foreach ($searchCol_array as $key => $value) {
                         $found = array_search($key,$occur_ar);
-                        if($found !== false){
-                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                        if($found !== false && trim($request->searchVal[$key]) != '%%'){//trim whitespace
+                            $search_ = $this->begins_search_if(['itemcode','chgcode'],$searchCol_array[$key],$request->searchVal[$key]);
+                            $table->Where($searchCol_array[$key],'like',$search_);
                         }
+                    }
+                });
+            }
+        }
+        
+        /////////searching 2///////// ni search utk ordialog
+        if(!empty($request->searchCol2)){
+
+            if(!empty($request->fixPost)){
+                $searchCol_array = $this->fixPost3($request->searchCol2);
+            }else{
+                $searchCol_array = $request->searchCol2;
+            }
+
+            // $searchCol_array_1 = $searchCol_array_2 = $searchVal_array_1 = $searchVal_array_2 = [];
+
+            // foreach ($searchCol_array as $key => $value) {
+            //     if(($key+1)%2){
+            //         array_push($searchCol_array_1, $searchCol_array[$key]);
+            //         array_push($searchVal_array_1, $request->searchVal2[$key]);
+            //     }else{
+            //         array_push($searchCol_array_2, $searchCol_array[$key]);
+            //         array_push($searchVal_array_2, $request->searchVal2[$key]);
+            //     }
+            // }
+            
+            $table = $table->where(function($table) use ($searchCol_array, $request){
+                foreach ($searchCol_array as $key => $value) {
+                    if($key>1) break;
+                    $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                }
+            });
+
+            if(count($searchCol_array)>2){
+                $table = $table->where(function($table) use ($searchCol_array, $request){
+                    foreach ($searchCol_array as $key => $value) {
+                        if($key<=1) continue;
+                        $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
                     }
                 });
             }

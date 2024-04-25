@@ -622,6 +622,7 @@ $(document).ready(function () {
 			addmore_jqgrid2.more = true;	// state true maksudnyer ada isi, tak kosong
 			urlParam2.filterVal[0] = selrowData('#jqGrid').recno;
 			refreshGrid('#jqGrid2',urlParam2,'add');
+			refreshGrid("#jqGrid",urlParam);
 			$("#jqGridPager2EditAll,#jqGridPager2Delete,#jqGridPager2Refresh").show();
 			errorField.length=0;
 		},
@@ -937,7 +938,7 @@ $(document).ready(function () {
 		{
 			colModel:[
 				{label:'Department',name:'s_deptcode',width:200,classes:'pointer',canSearch:true,or_search:true,checked:true},
-				{label:'Description', name: 'd_description', width: 400, classes: 'pointer', canSearch: true,checked:true, or_search: true},
+				{label:'Description', name: 'd_description', width: 400, classes: 'pointer', canSearch: true, or_search: true},
 				// {label:'Unit',name:'sector', hidden:true},
 			],
 			urlParam: {
@@ -978,7 +979,7 @@ $(document).ready(function () {
 		{
 			colModel:[
 				{label:'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true,checked:true},
-				{label:'Description', name: 'p_description', width: 400, classes: 'pointer', canSearch: true,checked:true, or_search: true},
+				{label:'Description', name: 'p_description', width: 400, classes: 'pointer', canSearch: true, or_search: true},
 				{label:'uom',name:'s_uomcode', hidden:true},
 			],
 			urlParam: {
