@@ -2115,6 +2115,8 @@ $(document).ready(function () {
 				hide_init_jq4=1;
 				hideatdialogForm_jqGrid4(false);
 			}
+
+			calc_jq_height_onchange("jqGrid4",true);
 		},
 		beforeSubmit: function(postdata, rowid){ 
 			// dialog_deptcodedtl.check(errorField);

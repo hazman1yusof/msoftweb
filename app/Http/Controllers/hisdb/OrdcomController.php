@@ -425,125 +425,150 @@ class OrdcomController extends defaultController
         DB::beginTransaction();
 
         try {
-            $new_quantity = $this->check_pkgmast_exists($request);
+            
+            if($this->check_pkgdet_exists($request)){
 
-            if($new_quantity==0){
                 DB::commit();
 
                 return $this->get_ordcom_totamount($request);
-            }else if($new_quantity==$request->quantity){
-
-                $new_amount = $request->amount;
-                $new_discamt = $request->discamt;
-                $new_taxamount = $request->taxamount;
-
-            }else{
-
-                $new_amount = $new_quantity * $request->unitprce;
-                $new_discamt = $this->calc_discamt($request,$new_quantity);
-                $new_taxamount = $this->calc_taxamount($request,$new_amount,$new_discamt);
             }
 
-            $recno = $this->recno('OE','IN');
+            $chg_oe = DB::table('hisdb.chargetrx')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn', $request->mrn)
+                        ->where('episno', $request->episno)
+                        ->where('chgcode', $request->chgcode)
+                        ->where('uom', $request->uom)
+                        ->where('issdept', $request->deptcode)
+                        ->where('trxtype', 'OE');
 
-            $chgmast = DB::table("hisdb.chgmast")
-                    ->where('compcode','=',session('compcode'))
-                    ->where('chgcode','=',$request->chgcode)
-                    ->where('uom','=',$request->uom)
-                    ->first();
-
-            $updinv = ($chgmast->invflag == '1')? 1 : 0;
-
-            $invgroup = $this->get_invgroup($chgmast,$request->doctorcode);
-
-            $insertGetId = DB::table("hisdb.chargetrx")
-                    ->insertGetId([
-                        'auditno' => $recno,
-                        'compcode'  => session('compcode'),
-                        'mrn'  => $request->mrn,
-                        'episno'  => $request->episno,
-                        'trxdate' => $request->trxdate,
-                        'trxtype' => 'OE',
-                        'chgcode' => $request->chgcode,
-                        'billflag' => 0,
-                        'mmacode' => $request->mmacode,
-                        'doctorcode' => $request->doctorcode,
-                        'chg_class' => $chgmast->chgclass,
-                        'unitprce' => $request->unitprce,
-                        'quantity' => $new_quantity,
-                        'amount' => $new_amount,
-                        'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'chggroup' => $chgmast->chggroup,
-                        'taxamount' => $new_taxamount,
-                        'uom' => $request->uom,
-                        'uom_recv' => $request->uom_recv,
-                        'invgroup' => $invgroup,
-                        'reqdept' => $request->deptcode,
-                        'issdept' => $request->deptcode,
-                        'invcode' => $chgmast->chggroup,
-                        'inventory' => $updinv,
-                        'updinv' =>  $updinv,
-                        'discamt' => $new_discamt,
-                        'qtyorder' => $new_quantity,
-                        'qtyissue' => $new_quantity,
-                        'unit' => session('unit'),
-                        'chgtype' => $chgmast->chgtype,
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'lastuser' => session('username'),
-                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'qtydispense' => $request->quantity,
-                        'taxcode' => $request->taxcode,
-                        'remarks' => $request->remarks,
-                        'recstatus' => 'POSTED',
-                        'doctorcode' => $this->givenullifempty($request->doctorcode),
-                        'drugindicator' => $this->givenullifempty($request->drugindicator),
-                        'frequency' => $this->givenullifempty($request->frequency),
-                        'doscode' => $this->givenullifempty($request->doscode),
-                        'ftxtdosage' => $this->givenullifempty($request->ftxtdosage),
-                        'addinstruction' => $this->givenullifempty($request->addinstruction)
-                    ]);
-            
-            $chargetrx_obj = db::table('hisdb.chargetrx')
-                            ->where('compcode',session('compcode'))
-                            ->where('id', '=', $insertGetId)
-                            ->first();
-            
-            $product = DB::table('material.product')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('uomcode','=',$request->uom_recv)
-                            ->where('itemcode','=',$request->chgcode);
-            
-            if($product->exists()){
-                // $stockloc = DB::table('material.stockloc')
-                //         ->where('compcode','=',session('compcode'))
-                //         ->where('uomcode','=',$request->uom_recv)
-                //         ->where('itemcode','=',$request->chgcode)
-                //         ->where('deptcode','=',$request->deptcode)
-                //         ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
-                
-                // if($stockloc->exists()){
-                //     $stockloc = $stockloc->first();
-                // }else{
-                //     throw new \Exception("Stockloc not exists for item: ".$request->chgcode." dept: ".$request->deptcode." uom: ".$request->uom_recv,500);
-                // }
-                
-                $ivdspdt = DB::table('material.ivdspdt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$chargetrx_obj->auditno);
-                
-                if($ivdspdt->exists()){
-                    if($updinv == 1){
-                        $this->updivdspdt($chargetrx_obj);
-                    }
-                    $this->updgltran($chargetrx_obj,$updinv);
-                }else{
-                    if($updinv == 1){
-                        $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
-                    }
-                    $this->crtgltran($chargetrx_obj,$updinv);
-                }
+            if(!$chg_oe->exists()){
+                //add
+                $quan_oe = $request->quantity;
+                $this->add_chargetrx_oe($request,$quan_oe);
+            }else if($chg_oe->exists()){
+                //upd
+                $quan_oe = $request->quantity + $chg_oe->first()->quantity;
+                $this->upd_chargetrx_oe($request,$quan_oe);
             }
+
+            // if($new_quantity==0){
+            //     DB::commit();
+
+            //     return $this->get_ordcom_totamount($request);
+            // }else if($new_quantity==$request->quantity){
+
+            //     $new_amount = $request->amount;
+            //     $new_discamt = $request->discamt;
+            //     $new_taxamount = $request->taxamount;
+
+            // }else{
+
+            //     $new_amount = $new_quantity * $request->unitprce;
+            //     $new_discamt = $this->calc_discamt($request,$new_quantity);
+            //     $new_taxamount = $this->calc_taxamount($request,$new_amount,$new_discamt);
+            // }
+
+            // $recno = $this->recno('OE','IN');
+
+            // $chgmast = DB::table("hisdb.chgmast")
+            //         ->where('compcode','=',session('compcode'))
+            //         ->where('chgcode','=',$request->chgcode)
+            //         ->where('uom','=',$request->uom)
+            //         ->first();
+
+            // $updinv = ($chgmast->invflag == '1')? 1 : 0;
+
+            // $invgroup = $this->get_invgroup($chgmast,$request->doctorcode);
+
+            // $insertGetId = DB::table("hisdb.chargetrx")
+            //         ->insertGetId([
+            //             'auditno' => $recno,
+            //             'compcode'  => session('compcode'),
+            //             'mrn'  => $request->mrn,
+            //             'episno'  => $request->episno,
+            //             'trxdate' => $request->trxdate,
+            //             'trxtype' => 'OE',
+            //             'chgcode' => $request->chgcode,
+            //             'billflag' => 0,
+            //             'mmacode' => $request->mmacode,
+            //             'doctorcode' => $request->doctorcode,
+            //             'chg_class' => $chgmast->chgclass,
+            //             'unitprce' => $request->unitprce,
+            //             'quantity' => $new_quantity,
+            //             'amount' => $new_amount,
+            //             'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
+            //             'chggroup' => $chgmast->chggroup,
+            //             'taxamount' => $new_taxamount,
+            //             'uom' => $request->uom,
+            //             'uom_recv' => $request->uom_recv,
+            //             'invgroup' => $invgroup,
+            //             'reqdept' => $request->deptcode,
+            //             'issdept' => $request->deptcode,
+            //             'invcode' => $chgmast->chggroup,
+            //             'inventory' => $updinv,
+            //             'updinv' =>  $updinv,
+            //             'discamt' => $new_discamt,
+            //             'qtyorder' => $new_quantity,
+            //             'qtyissue' => $new_quantity,
+            //             'unit' => session('unit'),
+            //             'chgtype' => $chgmast->chgtype,
+            //             'adduser' => session('username'),
+            //             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            //             'lastuser' => session('username'),
+            //             'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+            //             'qtydispense' => $request->quantity,
+            //             'taxcode' => $request->taxcode,
+            //             'remarks' => $request->remarks,
+            //             'recstatus' => 'POSTED',
+            //             'doctorcode' => $this->givenullifempty($request->doctorcode),
+            //             'drugindicator' => $this->givenullifempty($request->drugindicator),
+            //             'frequency' => $this->givenullifempty($request->frequency),
+            //             'doscode' => $this->givenullifempty($request->doscode),
+            //             'ftxtdosage' => $this->givenullifempty($request->ftxtdosage),
+            //             'addinstruction' => $this->givenullifempty($request->addinstruction)
+            //         ]);
+            
+            // $chargetrx_obj = db::table('hisdb.chargetrx')
+            //                 ->where('compcode',session('compcode'))
+            //                 ->where('id', '=', $insertGetId)
+            //                 ->first();
+            
+            // $product = DB::table('material.product')
+            //                 ->where('compcode','=',session('compcode'))
+            //                 ->where('uomcode','=',$request->uom_recv)
+            //                 ->where('itemcode','=',$request->chgcode);
+            
+            // if($product->exists()){
+            //     // $stockloc = DB::table('material.stockloc')
+            //     //         ->where('compcode','=',session('compcode'))
+            //     //         ->where('uomcode','=',$request->uom_recv)
+            //     //         ->where('itemcode','=',$request->chgcode)
+            //     //         ->where('deptcode','=',$request->deptcode)
+            //     //         ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+                
+            //     // if($stockloc->exists()){
+            //     //     $stockloc = $stockloc->first();
+            //     // }else{
+            //     //     throw new \Exception("Stockloc not exists for item: ".$request->chgcode." dept: ".$request->deptcode." uom: ".$request->uom_recv,500);
+            //     // }
+                
+            //     $ivdspdt = DB::table('material.ivdspdt')
+            //         ->where('compcode','=',session('compcode'))
+            //         ->where('recno','=',$chargetrx_obj->auditno);
+                
+            //     if($ivdspdt->exists()){
+            //         if($updinv == 1){
+            //             $this->updivdspdt($chargetrx_obj);
+            //         }
+            //         $this->updgltran($chargetrx_obj,$updinv);
+            //     }else{
+            //         if($updinv == 1){
+            //             $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+            //         }
+            //         $this->crtgltran($chargetrx_obj,$updinv);
+            //     }
+            // }
             
             DB::commit();
 
@@ -568,26 +593,26 @@ class OrdcomController extends defaultController
                             ->where('id','=',$request->id)
                             ->first();
 
-            if(!empty($request->uom_recv)){
-                $chgmast = DB::table("hisdb.chgmast")
-                        ->where('compcode','=',session('compcode'))
-                        ->where('chgcode','=',$request->chgcode)
-                        ->where('uom','=',$request->uom_recv)
-                        ->first();
+            // if(!empty($request->uom_recv)){
+            //     $chgmast = DB::table("hisdb.chgmast")
+            //             ->where('compcode','=',session('compcode'))
+            //             ->where('chgcode','=',$request->chgcode)
+            //             ->where('uom','=',$request->uom_recv)
+            //             ->first();
                 
-                $updinv = ($chgmast->invflag == '1')? 1 : 0;
-            }else{
-                $chgmast = DB::table("hisdb.chgmast")
-                        ->where('compcode','=',session('compcode'))
-                        ->where('chgcode','=',$request->chgcode)
-                        ->first();
+            //     $updinv = ($chgmast->invflag == '1')? 1 : 0;
+            // }else{
+            //     $chgmast = DB::table("hisdb.chgmast")
+            //             ->where('compcode','=',session('compcode'))
+            //             ->where('chgcode','=',$request->chgcode)
+            //             ->first();
 
-                $updinv = 0;
-            }
+            //     $updinv = 0;
+            // }
 
             if($chargetrx_lama->chgcode != $request->chgcode || $chargetrx_lama->uom_recv != $request->uom_recv){
 
-                $edit_lain_chggroup = true;
+                // $edit_lain_chggroup = true;
                 $product_lama = DB::table('material.product')
                         ->where('compcode','=',session('compcode'))
                         ->where('uomcode','=',$chargetrx_lama->uom_recv)
@@ -597,138 +622,176 @@ class OrdcomController extends defaultController
                     $this->delivdspdt($chargetrx_lama);
                 }
 
-                $this->sysdb_log('update',$chargetrx_lama,'sysdb.chargetrxlog');
-
-                DB::table('hisdb.chargetrx')
+                $chg_oe = DB::table('hisdb.chargetrx')
                         ->where('compcode',session('compcode'))
-                        ->where('id', '=', $request->id)
-                        ->update([
-                            'trxdate' => $request->trxdate,
-                            'chgcode' => $request->chgcode,
-                            'chg_class' => $chgmast->chgclass,
-                            'unitprce' => $request->unitprce,
-                            'quantity' => $request->quantity,
-                            'amount' => $request->amount,
-                            'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'trxtype' => 'OE',
-                            'chggroup' => $chgmast->chggroup,
-                            'taxamount' => $request->taxamount,
-                            'uom' => $request->uom,
-                            'uom_recv' => $request->uom_recv,
-                            'invgroup' => $chgmast->invgroup,
-                            'reqdept' => $request->deptcode,
-                            'issdept' => $request->deptcode,
-                            'invcode' => $chgmast->chggroup,
-                            'inventory' => $updinv,
-                            'updinv' =>  $updinv,
-                            'discamt' => $request->discamt,
-                            'qtyorder' => $request->quantity,
-                            'qtyissue' => $request->quantity,
-                            'unit' => session('unit'),
-                            'chgtype' => $chgmast->chgtype,
-                            'lastuser' => session('username'),
-                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'qtydispense' => $request->quantity,
-                            'taxcode' => $request->taxcode,
-                            'remarks' => $request->remarks,
-                            'drugindicator' => $this->givenullifempty($request->drugindicator),
-                            'frequency' => $this->givenullifempty($request->frequency),
-                            'doscode' => $this->givenullifempty($request->doscode),
-                            'ftxtdosage' => $this->givenullifempty($request->ftxtdosage),
-                            'addinstruction' => $this->givenullifempty($request->addinstruction),
-                        ]);
+                        ->where('mrn', $request->mrn)
+                        ->where('episno', $request->episno)
+                        ->where('chgcode', $request->chgcode)
+                        ->where('uom', $request->uom)
+                        ->where('issdept', $request->deptcode)
+                        ->where('trxtype', 'OE');
+
+                if(!$chg_oe->exists()){
+                    //add
+                    $quan_oe = $request->quantity;
+                    $this->add_chargetrx_oe($request,$quan_oe);
+                }else if($chg_oe->exists()){
+                    //upd
+                    $quan_oe = $request->quantity + $chg_oe->first()->quantity;
+                    $this->upd_chargetrx_oe($request,$quan_oe);
+                }
+
+                // $this->sysdb_log('update',$chargetrx_lama,'sysdb.chargetrxlog');
+
+                // DB::table('hisdb.chargetrx')
+                //         ->where('compcode',session('compcode'))
+                //         ->where('id', '=', $request->id)
+                //         ->update([
+                //             'trxdate' => $request->trxdate,
+                //             'chgcode' => $request->chgcode,
+                //             'chg_class' => $chgmast->chgclass,
+                //             'unitprce' => $request->unitprce,
+                //             'quantity' => $request->quantity,
+                //             'amount' => $request->amount,
+                //             'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                //             'trxtype' => 'OE',
+                //             'chggroup' => $chgmast->chggroup,
+                //             'taxamount' => $request->taxamount,
+                //             'uom' => $request->uom,
+                //             'uom_recv' => $request->uom_recv,
+                //             'invgroup' => $chgmast->invgroup,
+                //             'reqdept' => $request->deptcode,
+                //             'issdept' => $request->deptcode,
+                //             'invcode' => $chgmast->chggroup,
+                //             'inventory' => $updinv,
+                //             'updinv' =>  $updinv,
+                //             'discamt' => $request->discamt,
+                //             'qtyorder' => $request->quantity,
+                //             'qtyissue' => $request->quantity,
+                //             'unit' => session('unit'),
+                //             'chgtype' => $chgmast->chgtype,
+                //             'lastuser' => session('username'),
+                //             'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                //             'qtydispense' => $request->quantity,
+                //             'taxcode' => $request->taxcode,
+                //             'remarks' => $request->remarks,
+                //             'drugindicator' => $this->givenullifempty($request->drugindicator),
+                //             'frequency' => $this->givenullifempty($request->frequency),
+                //             'doscode' => $this->givenullifempty($request->doscode),
+                //             'ftxtdosage' => $this->givenullifempty($request->ftxtdosage),
+                //             'addinstruction' => $this->givenullifempty($request->addinstruction),
+                //         ]);
             }else{
 
-                $edit_lain_chggroup = false;
+                // $edit_lain_chggroup = false;
 
-                $this->sysdb_log('update',$chargetrx_lama,'sysdb.chargetrxlog');
-
-                DB::table('hisdb.chargetrx')
+                $chg_oe = DB::table('hisdb.chargetrx')
                         ->where('compcode',session('compcode'))
-                        ->where('id', '=', $request->id)
-                        ->update([
-                            'trxdate' => $request->trxdate,
-                            'chgcode' => $request->chgcode,
-                            'chg_class' => $chgmast->chgclass,
-                            'unitprce' => $request->unitprce,
-                            'quantity' => $request->quantity,
-                            'amount' => $request->amount,
-                            'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'chggroup' => $chgmast->chggroup,
-                            'taxamount' => $request->taxamount,
-                            'uom' => $request->uom,
-                            'uom_recv' => $request->uom_recv,
-                            'invgroup' => $chgmast->invgroup,
-                            'reqdept' => $request->deptcode,
-                            'issdept' => $request->deptcode,
-                            'invcode' => $chgmast->chggroup,
-                            'inventory' => $updinv,
-                            'updinv' =>  $updinv,
-                            'discamt' => $request->discamt,
-                            'qtyorder' => $request->quantity,
-                            'qtyissue' => $request->quantity,
-                            'unit' => session('unit'),
-                            'chgtype' => $chgmast->chgtype,
-                            'lastuser' => session('username'),
-                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'qtydispense' => $request->quantity,
-                            'taxcode' => $request->taxcode,
-                            'remarks' => $request->remarks,
-                            'drugindicator' => $this->givenullifempty($request->drugindicator),
-                            'frequency' => $this->givenullifempty($request->frequency),
-                            'doscode' => $this->givenullifempty($request->doscode),
-                            'ftxtdosage' => $this->givenullifempty($request->ftxtdosage),
-                            'addinstruction' => $this->givenullifempty($request->addinstruction),
-                        ]);
-            }
-            
-            $chargetrx_obj = db::table('hisdb.chargetrx')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('id','=',$request->id)
-                            ->first();
-            
-            $product = DB::table('material.product')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('uomcode','=',$request->uom_recv)
-                            ->where('itemcode','=',$request->chgcode);
-            
-            if($product->exists()){
-                $stockloc = DB::table('material.stockloc')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('uomcode','=',$request->uom_recv)
-                        ->where('itemcode','=',$request->chgcode)
-                        ->where('deptcode','=',$request->deptcode)
-                        ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
-                
-                if($stockloc->exists()){
-                    $stockloc = $stockloc->first();
-                }else{
-                    throw new \Exception("Stockloc not exists for item: ".$request->chgcode." dept: ".$request->deptcode." uom: ".$request->uom,500);
-                }
-                
-                $ivdspdt = DB::table('material.ivdspdt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$chargetrx_obj->auditno);
+                        ->where('mrn', $request->mrn)
+                        ->where('episno', $request->episno)
+                        ->where('chgcode', $request->chgcode)
+                        ->where('uom', $request->uom)
+                        ->where('issdept', $request->deptcode)
+                        ->where('trxtype', 'OE');
 
-                if($edit_lain_chggroup){
-                    if($updinv == 1){
-                        $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
-                    }
-                    $this->crtgltran($chargetrx_obj,$updinv);
-                }else{
-                    if($ivdspdt->exists()){
-                        if($updinv == 1){
-                            $this->updivdspdt($chargetrx_obj);
-                        }
-                        $this->updgltran($chargetrx_obj,$updinv);
-                    }else{
-                        if($updinv == 1){
-                            $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
-                        }
-                        $this->crtgltran($chargetrx_obj,$updinv);
-                    }
+                if(!$chg_oe->exists()){
+                    //add
+                    $quan_oe = $request->quantity;
+                    $this->add_chargetrx_oe($request,$quan_oe);
+                }else if($chg_oe->exists()){
+                    //upd
+                    $quan_oe = $request->quantity + $chg_oe->first()->quantity;
+                    $this->upd_chargetrx_oe($request,$quan_oe);
                 }
+
+                // $this->sysdb_log('update',$chargetrx_lama,'sysdb.chargetrxlog');
+
+                // DB::table('hisdb.chargetrx')
+                //         ->where('compcode',session('compcode'))
+                //         ->where('id', '=', $request->id)
+                //         ->update([
+                //             'trxdate' => $request->trxdate,
+                //             'chgcode' => $request->chgcode,
+                //             'chg_class' => $chgmast->chgclass,
+                //             'unitprce' => $request->unitprce,
+                //             'quantity' => $request->quantity,
+                //             'amount' => $request->amount,
+                //             'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                //             'chggroup' => $chgmast->chggroup,
+                //             'taxamount' => $request->taxamount,
+                //             'uom' => $request->uom,
+                //             'uom_recv' => $request->uom_recv,
+                //             'invgroup' => $chgmast->invgroup,
+                //             'reqdept' => $request->deptcode,
+                //             'issdept' => $request->deptcode,
+                //             'invcode' => $chgmast->chggroup,
+                //             'inventory' => $updinv,
+                //             'updinv' =>  $updinv,
+                //             'discamt' => $request->discamt,
+                //             'qtyorder' => $request->quantity,
+                //             'qtyissue' => $request->quantity,
+                //             'unit' => session('unit'),
+                //             'chgtype' => $chgmast->chgtype,
+                //             'lastuser' => session('username'),
+                //             'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                //             'qtydispense' => $request->quantity,
+                //             'taxcode' => $request->taxcode,
+                //             'remarks' => $request->remarks,
+                //             'drugindicator' => $this->givenullifempty($request->drugindicator),
+                //             'frequency' => $this->givenullifempty($request->frequency),
+                //             'doscode' => $this->givenullifempty($request->doscode),
+                //             'ftxtdosage' => $this->givenullifempty($request->ftxtdosage),
+                //             'addinstruction' => $this->givenullifempty($request->addinstruction),
+                //         ]);
             }
+            
+            // $chargetrx_obj = db::table('hisdb.chargetrx')
+            //                 ->where('compcode','=',session('compcode'))
+            //                 ->where('id','=',$request->id)
+            //                 ->first();
+            
+            // $product = DB::table('material.product')
+            //                 ->where('compcode','=',session('compcode'))
+            //                 ->where('uomcode','=',$request->uom_recv)
+            //                 ->where('itemcode','=',$request->chgcode);
+            
+            // if($product->exists()){
+            //     $stockloc = DB::table('material.stockloc')
+            //             ->where('compcode','=',session('compcode'))
+            //             ->where('uomcode','=',$request->uom_recv)
+            //             ->where('itemcode','=',$request->chgcode)
+            //             ->where('deptcode','=',$request->deptcode)
+            //             ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+                
+            //     if($stockloc->exists()){
+            //         $stockloc = $stockloc->first();
+            //     }else{
+            //         throw new \Exception("Stockloc not exists for item: ".$request->chgcode." dept: ".$request->deptcode." uom: ".$request->uom,500);
+            //     }
+                
+            //     $ivdspdt = DB::table('material.ivdspdt')
+            //         ->where('compcode','=',session('compcode'))
+            //         ->where('recno','=',$chargetrx_obj->auditno);
+
+            //     if($edit_lain_chggroup){
+            //         if($updinv == 1){
+            //             $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+            //         }
+            //         $this->crtgltran($chargetrx_obj,$updinv);
+            //     }else{
+            //         if($ivdspdt->exists()){
+            //             if($updinv == 1){
+            //                 $this->updivdspdt($chargetrx_obj);
+            //             }
+            //             $this->updgltran($chargetrx_obj,$updinv);
+            //         }else{
+            //             if($updinv == 1){
+            //                 $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+            //             }
+            //             $this->crtgltran($chargetrx_obj,$updinv);
+            //         }
+            //     }
+            // }
             
             DB::commit();
 
@@ -1094,8 +1157,10 @@ class OrdcomController extends defaultController
                 }
 
             $qtybal_ = 0;
+            $qtyused_ = $pkgdet->quantity * $request->quantity;
         }else{
             $qtybal_ = $pkgdet->quantity * $request->quantity;
+            $qtyused_ = 0;
         }
 
         DB::table("hisdb.pkgpat")
@@ -1112,7 +1177,7 @@ class OrdcomController extends defaultController
                 'doctorcode' => $request->doctorcode,
                 // 'ipacccode' => $request-> ,
                 // 'opacccode' => $request-> ,
-                // 'qtyused' => $request-> ,
+                'qtyused' => $qtyused_ ,
                 'qtybal' => $qtybal_,
                 // 'amtbal' => $request-> ,
                 // 'updategl' => $request-> ,
@@ -1170,7 +1235,326 @@ class OrdcomController extends defaultController
         }
     }
 
-    public function check_pkgmast_exists(Request $request){
+    public function check_pkgdet_exists(Request $request){
+        $chg_pd = DB::table('hisdb.chargetrx')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn', $request->mrn)
+                        ->where('episno', $request->episno)
+                        ->where('chgcode', $request->chgcode)
+                        ->where('uom', $request->uom)
+                        ->where('issdept', $request->deptcode)
+                        ->where('trxtype', 'PD');
+
+        if($pkgdet->exists()){
+            $pkgpat = DB::table('hisdb.pkgpat')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn', $request->mrn)
+                        ->where('episno', $request->episno)
+                        ->where('chgcode', $request->chgcode)
+                        ->where('uom', $request->uom);
+
+            $chg_oe = DB::table('hisdb.chargetrx')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn', $request->mrn)
+                        ->where('episno', $request->episno)
+                        ->where('chgcode', $request->chgcode)
+                        ->where('uom', $request->uom)
+                        ->where('issdept', $request->deptcode)
+                        ->where('trxtype', 'OE');
+
+            if($chg_oe->exists()){
+                $quan_oe = $chg_oe->first()->quantity;
+                $quan_pd = $pkgpat->first()->qtyused;
+                $pkgpat_qty = $pkgpat->first()->pkgqty;
+            }else{
+                $quan_oe = 0;
+                $quan_pd = $pkgpat->first()->qtyused;
+                $pkgpat_qty = $pkgpat->first()->pkgqty;
+            }
+
+            $quantity_sum = $quan_oe + $quan_pd;
+            $quantity_cur = $quantity_sum + $request->quantity;
+
+            if($quantity_cur<0){
+                $quan_oe = $quantity_cur;//-ve value
+                $quan_pd = 0;
+
+                $qtyused = 0;
+                $qtybal = $pkgpat_qty;
+            }else if($quantity_cur==0){
+                $quan_oe = 0;//delete oe 
+                $quan_pd = 0;
+
+                $qtyused = 0;
+                $qtybal = $pkgpat_qty;
+            }else{
+                $quan_oe = $quantity_cur - $pkgpat_qty;
+
+                if($quan_oe < 0){
+                    $quan_oe = 0; //delete oe
+                    $quan_pd = $quantity_cur;
+
+                    $qtyused = $quantity_cur;
+                    $qtybal = $pkgpat_qty - $quantity_cur;
+
+                }else if($quan_oe == 0){
+                    $quan_oe = 0; //delete oe
+                    $quan_pd = $quantity_cur;
+
+                    $qtyused = $quantity_cur;
+                    $qtybal = 0;
+
+                }else{
+                    $quan_oe = $quan_oe;
+                    $quan_pd = $pkgpat_qty;
+
+                    $qtyused = $pkgpat_qty;
+                    $qtybal = 0;
+                }
+            }
+
+            // $chg_oe = DB::table('hisdb.chargetrx')
+            //             ->where('compcode',session('compcode'))
+            //             ->where('mrn', $request->mrn)
+            //             ->where('episno', $request->episno)
+            //             ->where('chgcode', $request->chgcode)
+            //             ->where('uom', $request->uom)
+            //             ->where('issdept', $request->deptcode)
+            //             ->where('trxtype', 'OE');
+
+            if(!$chg_oe->exists() && $quan_oe != 0){
+                //add
+                $this->add_chargetrx_oe($request,$quan_oe);
+            }else if($chg_oe->exists() && $quan_oe != 0){
+                //upd
+                $this->upd_chargetrx_oe($request,$quan_oe);
+            }else if($chg_oe->exists() && $quan_oe == 0){
+                //del
+                $this->del_chargetrx_oe($request,$quan_oe);
+            }
+
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function add_chargetrx_oe(Request $request,$quan_oe){
+        $new_quantity = $quan_oe;
+        $new_amount = $new_quantity * $request->unitprce;
+        $new_discamt = $this->calc_discamt($request,$new_quantity);
+        $new_taxamount = $this->calc_taxamount($request,$new_amount,$new_discamt);
+
+        $recno = $this->recno('OE','IN');
+
+        $chgmast = DB::table("hisdb.chgmast")
+                ->where('compcode','=',session('compcode'))
+                ->where('chgcode','=',$request->chgcode)
+                ->where('uom','=',$request->uom)
+                ->first();
+
+        $updinv = ($chgmast->invflag == '1')? 1 : 0;
+
+        $invgroup = $this->get_invgroup($chgmast,$request->doctorcode);
+
+        $insertGetId = DB::table("hisdb.chargetrx")
+                ->insertGetId([
+                    'auditno' => $recno,
+                    'compcode'  => session('compcode'),
+                    'mrn'  => $request->mrn,
+                    'episno'  => $request->episno,
+                    'trxdate' => $request->trxdate,
+                    'trxtype' => 'OE',
+                    'chgcode' => $request->chgcode,
+                    'billflag' => 0,
+                    'mmacode' => $request->mmacode,
+                    'doctorcode' => $request->doctorcode,
+                    'chg_class' => $chgmast->chgclass,
+                    'unitprce' => $request->unitprce,
+                    'quantity' => $new_quantity,
+                    'amount' => $new_amount,
+                    'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'chggroup' => $chgmast->chggroup,
+                    'taxamount' => $new_taxamount,
+                    'uom' => $request->uom,
+                    'uom_recv' => $request->uom_recv,
+                    'invgroup' => $invgroup,
+                    'reqdept' => $request->deptcode,
+                    'issdept' => $request->deptcode,
+                    'invcode' => $chgmast->chggroup,
+                    'inventory' => $updinv,
+                    'updinv' =>  $updinv,
+                    'discamt' => $new_discamt,
+                    'qtyorder' => $new_quantity,
+                    'qtyissue' => $new_quantity,
+                    'unit' => session('unit'),
+                    'chgtype' => $chgmast->chgtype,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'qtydispense' => $request->quantity,
+                    'taxcode' => $request->taxcode,
+                    'remarks' => $request->remarks,
+                    'recstatus' => 'POSTED',
+                    'doctorcode' => $this->givenullifempty($request->doctorcode),
+                    'drugindicator' => $this->givenullifempty($request->drugindicator),
+                    'frequency' => $this->givenullifempty($request->frequency),
+                    'doscode' => $this->givenullifempty($request->doscode),
+                    'ftxtdosage' => $this->givenullifempty($request->ftxtdosage),
+                    'addinstruction' => $this->givenullifempty($request->addinstruction)
+                ]);
+        
+        $chargetrx_obj = db::table('hisdb.chargetrx')
+                        ->where('compcode',session('compcode'))
+                        ->where('id', '=', $insertGetId)
+                        ->first();
+        
+        $product = DB::table('material.product')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('uomcode','=',$request->uom_recv)
+                        ->where('itemcode','=',$request->chgcode);
+        
+        if($product->exists()){
+            if($updinv == 1){
+                $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+            }
+            $this->crtgltran($chargetrx_obj,$updinv);
+        }
+    }
+
+    public function upd_chargetrx_oe(Request $request,$quan_oe){
+        $new_quantity = $quan_oe;
+        $new_amount = $new_quantity * $request->unitprce;
+        $new_discamt = $this->calc_discamt($request,$new_quantity);
+        $new_taxamount = $this->calc_taxamount($request,$new_amount,$new_discamt);
+
+        $chargetrx_lama = DB::table('hisdb.chargetrx')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn', $request->mrn)
+                        ->where('episno', $request->episno)
+                        ->where('chgcode', $request->chgcode)
+                        ->where('uom', $request->uom)
+                        ->where('issdept', $request->deptcode)
+                        ->where('trxtype', 'OE')
+                        ->first();
+        $id_lama = $chargetrx_lama->id;
+
+        $this->sysdb_log('update',$chargetrx_lama,'sysdb.chargetrxlog');
+
+        $chgmast = DB::table("hisdb.chgmast")
+                ->where('compcode','=',session('compcode'))
+                ->where('chgcode','=',$request->chgcode)
+                ->where('uom','=',$request->uom)
+                ->first();
+
+        $updinv = ($chgmast->invflag == '1')? 1 : 0;
+
+        DB::table('hisdb.chargetrx')
+                ->where('compcode',session('compcode'))
+                ->where('id', '=', $id_lama)
+                ->update([
+                    'trxdate' => $request->trxdate,
+                    'chgcode' => $request->chgcode,
+                    'chg_class' => $chgmast->chgclass,
+                    'unitprce' => $request->unitprce,
+                    'quantity' => $new_quantity,
+                    'amount' => $new_amount,
+                    'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'chggroup' => $chgmast->chggroup,
+                    'taxamount' => $new_taxamount,
+                    'uom' => $request->uom,
+                    'uom_recv' => $request->uom_recv,
+                    'invgroup' => $chgmast->invgroup,
+                    'reqdept' => $request->deptcode,
+                    'issdept' => $request->deptcode,
+                    'invcode' => $chgmast->chggroup,
+                    'inventory' => $updinv,
+                    'updinv' =>  $updinv,
+                    'discamt' => $new_discamt,
+                    'qtyorder' => $new_quantity,
+                    'qtyissue' => $new_quantity,
+                    'unit' => session('unit'),
+                    'chgtype' => $chgmast->chgtype,
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'qtydispense' => $new_quantity,
+                    'taxcode' => $request->taxcode,
+                    'remarks' => $request->remarks,
+                    'drugindicator' => $this->givenullifempty($request->drugindicator),
+                    'frequency' => $this->givenullifempty($request->frequency),
+                    'doscode' => $this->givenullifempty($request->doscode),
+                    'ftxtdosage' => $this->givenullifempty($request->ftxtdosage),
+                    'addinstruction' => $this->givenullifempty($request->addinstruction),
+                ]);
+
+        $chargetrx_obj = db::table('hisdb.chargetrx')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('id','=',$id_lama)
+                            ->first();
+            
+        $product = DB::table('material.product')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('uomcode','=',$request->uom_recv)
+                        ->where('itemcode','=',$request->chgcode);
+        
+        if($product->exists()){
+            
+            $ivdspdt = DB::table('material.ivdspdt')
+                ->where('compcode','=',session('compcode'))
+                ->where('recno','=',$chargetrx_obj->auditno);
+
+            if($ivdspdt->exists()){
+                if($updinv == 1){
+                    $this->updivdspdt($chargetrx_obj);
+                }
+                $this->updgltran($chargetrx_obj,$updinv);
+            }else{
+                if($updinv == 1){
+                    $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+                }
+                $this->crtgltran($chargetrx_obj,$updinv);
+            }
+        }
+    }
+
+    public function del_chargetrx_oe(Request $request,$quan_oe){
+
+        $chargetrx_lama = DB::table('hisdb.chargetrx')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn', $request->mrn)
+                        ->where('episno', $request->episno)
+                        ->where('chgcode', $request->chgcode)
+                        ->where('uom', $request->uom)
+                        ->where('issdept', $request->deptcode)
+                        ->where('trxtype', 'OE')
+                        ->first();
+        $id_lama = $chargetrx_lama->id;
+
+        $chgmast = DB::table('hisdb.chgmast')
+                ->where('compcode','=',session('compcode'))
+                ->where('uom','=',$chargetrx_lama->uom_recv)
+                ->where('chgcode','=',$chargetrx_lama->chgcode)
+                ->first();
+
+        if($chgmast_lama->invflag != '0'){
+            $this->delivdspdt($chargetrx_obj);
+        }else{
+            $this->delgltran($chargetrx_obj);
+        }
+
+        //pindah yang lama ke billsumlog sebelum update
+        //recstatus->delete
+
+        $this->sysdb_log('delete',$chargetrx_lama,'sysdb.chargetrxlog');
+
+        DB::table("hisdb.chargetrx")
+                ->where('compcode','=',session('compcode'))
+                ->where('id','=',$id_lama)
+                ->delete();
+    }
+
+    public function check_pkgmast_exists_lama(Request $request){
         $pkgmast = DB::table('hisdb.chargetrx')
                         ->where('compcode',session('compcode'))
                         ->where('mrn', $request->mrn)

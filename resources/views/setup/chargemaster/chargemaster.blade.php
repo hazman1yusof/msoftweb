@@ -66,6 +66,10 @@ span.error_pkgmast {
 	margin-bottom: 5px;
 }
 
+.ui-jqgrid-bdiv{
+	overflow-x: hidden !important;
+}
+
 @endsection
 
 @section('body')
