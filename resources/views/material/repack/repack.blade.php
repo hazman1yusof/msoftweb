@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Report Format')
+@section('title', 'Repack')
 
 @section('style')
     .panel-heading.collapsed .fa-angle-double-up,
@@ -54,14 +54,9 @@
         </form>
         
         <div class="panel panel-default">
-            <div class="panel-heading"> Report Format Header
-				<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #518351;" id='excelgen1' href="" target="_blank">
-					<span class='fa fa-file-excel-o fa-lg'></span> Download Excel
-				</a>
-				<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #a35252;" id='pdfgen1' href="" target="_blank">
-					<span class='fa fa-file-pdf-o fa-lg'></span> Print PDF
-				</a>
-			</div>
+            <div class="panel-heading"> Repack Input
+                <!-- <a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a> -->
+            </div>
             <div class="panel-body">
                 <div class='col-md-12' style="padding:0 0 15px 0">
                     <table id="jqGrid" class="table table-striped"></table>
@@ -73,11 +68,14 @@
 		<div class="panel-group">
 			<div class="panel panel-default" id="jqGrid2_c">
 				<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid2_panel">
-					<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i>Report Format Detail
+					<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i>Repack Output
 				</div>
 				<div id="jqGrid2_panel" class="panel-collapse collapse">
 					<div class="panel-body">
 						<form id='formdata2' class='form-vertical' style='width:99%'>
+							<label class="col-md-3 control-label" for="grandtot" style="float:right;">
+								Grand Total: <input type="input" name="grandtot" id="grandtot" disabled="disabled">
+							</label> 
 							<div class='col-md-12' style="padding:0 0 15px 0">
 								<table id="jqGrid2" class="table table-striped"></table>
 								<div id="jqGridPager2"></div>
@@ -124,7 +122,7 @@
 			}
 		});
 	</script>
-	<script src="js/finance/GL/reportFormat/reportFormat.js"></script>
+	<script src="js/material/repack/repack.js"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 @endsection
