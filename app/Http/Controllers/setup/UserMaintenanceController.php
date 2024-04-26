@@ -9,73 +9,77 @@ use stdClass;
 use DB;
 use Auth;
 use Carbon\Carbon;
+use PDF;
+use App\Exports\UsersSetupExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserMaintenanceController extends defaultController
 {
+    
     var $table;
     var $duplicateCode;
-
+    
     public function __construct()
     {
         $this->middleware('auth');
         $this->table = DB::table('sysdb.users');
         $this->duplicateCode = "username";
     }
-
+    
     public function duplicate($check,$mode,$idno){
         if($mode == 'add'){
             $users = DB::table('users')
-                        ->where('compcode',session('compcode'))
-                        ->where('username',$check)
-                        ->exists();
-
+                    ->where('compcode',session('compcode'))
+                    ->where('username',$check)
+                    ->exists();
+            
             return $users;
         }else if($mode == 'edit'){
             $users = DB::table('users')
-                        ->where('compcode',session('compcode'))
-                        ->where('username',$check)
-                        ->where('id','!=',$idno)
-                        ->exists();
-
+                    ->where('compcode',session('compcode'))
+                    ->where('username',$check)
+                    ->where('id','!=',$idno)
+                    ->exists();
+            
             return $users;
         }
         // return $this->table->where('compcode',session('compcode'))->where($this->duplicateCode,'=',$check)->count();
     }
-
+    
     public function duplicate_doctorcode($doctorcode,$mode,$idno){
         if(empty($doctorcode)){
             return false;
         }
-
+        
         if($mode == 'add'){
             $users = DB::table('users')
-                        ->where('compcode',session('compcode'))
-                        ->where('doctorcode',$doctorcode)
-                        ->exists();
-
+                    ->where('compcode',session('compcode'))
+                    ->where('doctorcode',$doctorcode)
+                    ->exists();
+            
             return $users;
         }else if($mode == 'edit'){
             $users = DB::table('users')
-                        ->where('compcode',session('compcode'))
-                        ->where('doctorcode',$doctorcode)
-                        ->where('id','!=',$idno)
-                        ->exists();
-
+                    ->where('compcode',session('compcode'))
+                    ->where('doctorcode',$doctorcode)
+                    ->where('id','!=',$idno)
+                    ->exists();
+            
             return $users;
         }
     }
-
+    
     public function show(Request $request)
-    {   
+    {
         return view('setup.user_maintenance.user_maintenance');
     }
-
+    
     public function table(Request $request)
-    {   
+    {
         $table = $this->table;
-
+        
         $table = $table->where('compcode',session('compcode'));
-
+        
         /////////where/////////
         
         /////////searching/////////
@@ -83,9 +87,9 @@ class UserMaintenanceController extends defaultController
             foreach ($request->searchCol as $key => $value) {
                 $table = $table->orWhere($request->searchCol[$key],'like',$request->searchVal[$key]);
             }
-         }
-
-        //////////ordering/////////
+        }
+        
+        //////////ordering//////////
         if(!empty($request->sidx)){
             $pieces = explode(", ", $request->sidx .' '. $request->sord);
             if(count($pieces)==1){
@@ -97,10 +101,10 @@ class UserMaintenanceController extends defaultController
                 }
             }
         }
-
-        //////////paginate/////////
+        
+        //////////paginate//////////
         $paginate = $table->paginate($request->rows);
-
+        
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
@@ -108,12 +112,12 @@ class UserMaintenanceController extends defaultController
         $responce->rows = $paginate->items();
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
-
+        
         return json_encode($responce);
     }
-
+    
     public function form(Request $request)
-    {   
+    {
         switch($request->oper){
             case 'add':
                 return $this->add($request);
@@ -125,19 +129,19 @@ class UserMaintenanceController extends defaultController
                 return 'error happen..';
         }
     }
-
+    
     public function add(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         if($this->duplicate($request->username,'add',null)){
             return response('duplicate username', 500);
         }
-
+        
         if($this->duplicate_doctorcode($request->doctorcode,'add',null)){
             return response('duplicate doctor code', 500);
         }
-
+        
         try {
             
             DB::table('sysdb.users')->insert([
@@ -163,29 +167,32 @@ class UserMaintenanceController extends defaultController
                 'adddate' => Carbon::now(),
                 'recstatus' => 'ACTIVE'
             ]);
-
+            
             DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
             return response('Error'.$e, 500);
+            
         }
-
+        
     }
-
+    
     public function edit(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
-
+            
             if($this->duplicate($request->username,'edit',$request->id)){
                 return response('duplicate username', 500);
             }
-
+            
             if($this->duplicate_doctorcode($request->doctorcode,'edit',$request->id)){
                 return response('duplicate doctor code', 500);
             }
-
+            
             $table = DB::table('sysdb.users')->where('id','=',$request->id)->where('compcode',session('compcode'));
             $table->update([
                 'username' => $request->username,
@@ -210,41 +217,75 @@ class UserMaintenanceController extends defaultController
                 'upddate' => Carbon::now(),
                 'recstatus' => 'ACTIVE'
             ]);
-
+            
             DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
             return response('Error'.$e, 500);
+            
         }
-
+        
     }
-
+    
     public function del(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
-
+            
             $table = DB::table('sysdb.users')->where('id','=',$request->id)->where('compcode',session('compcode'));
             $table->update([
                 'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
                 'deldate' => Carbon::now(),
             ]);
-
+            
             DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
             return response('Error'.$e, 500);
+            
         }
-
+        
     }
-
+    
     public function save_color(Request $request){
+        
         DB::table('sysdb.sysparam')
             ->where('compcode','=',session('compcode'))
             ->where('source','=','HIS')
             ->where('trantype','=','ALCOLOR')
             ->update(['pvalue1' => $request->bg_leave]);
+        
     }
+    
+    public function showExcel(Request $request){
+        return Excel::download(new UsersSetupExport($request->compcode), 'UsersSetup.xlsx');
+    }
+    
+    public function showpdf(Request $request){
+        
+        $compcode = $request->compcode;
+        
+        $users = DB::table('sysdb.users')
+                ->where('compcode', '=', session('compcode'))
+                ->orderBy('groupid', 'ASC')
+                ->get();
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode', '=', session('compcode'))
+                    ->first();
+        
+        $header = new stdClass();
+        $header->printby = session('username');
+        $header->compname = $company->name;
+        
+        return view('setup.user_maintenance.user_maintenance_pdfmake', compact('users', 'header'));
+        
+    }
+    
 }

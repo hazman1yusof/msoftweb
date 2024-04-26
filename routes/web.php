@@ -58,6 +58,8 @@ Route::post('/group_maintenance/form','setup\GroupMaintenanceController@form');
 Route::get('/user_maintenance','setup\UserMaintenanceController@show');
 Route::get('/user_maintenance/table','setup\UserMaintenanceController@table');
 Route::post('/user_maintenance/form','setup\UserMaintenanceController@form');
+Route::get('/user_maintenance/showExcel','setup\UserMaintenanceController@showExcel');
+Route::get('/user_maintenance/showpdf','setup\UserMaintenanceController@showpdf');
 
 //// sysparam ////
 Route::get('/sysparam_bed_status','SysparamController@sysparam_bed_status');
