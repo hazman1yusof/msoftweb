@@ -302,6 +302,10 @@ $(document).ready(function () {
 			
 			urlParam2.filterVal[0] = selrowData("#jqGrid").recno;
 			refreshGrid("#jqGrid2",urlParam2);
+
+			$("#pdfgen1").attr('href','./repack/showpdf?recno='+selrowData("#jqGrid").recno);
+
+			$("#pdfgen_excel").attr('href','./repack/showExcel?recno='+selrowData("#jqGrid").recno);
 		},
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){

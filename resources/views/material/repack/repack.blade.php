@@ -131,8 +131,12 @@
         
         <div class="panel panel-default">
             <div class="panel-heading"> Repack Output
-                <!-- <a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a> -->
-            </div>
+			<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #518351;" id='pdfgen_excel' href="" target="_blank" >
+				<span class='fa fa-file-excel-o fa-lg'></span> Download Excel 
+			</a>
+			<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #a35252;" id='pdfgen1' href="" target="_blank">
+				<span class='fa fa-file-pdf-o fa-lg'></span> Print PDF
+			</a>            </div>
             <div class="panel-body">
                 <div class='col-md-12' style="padding:0 0 15px 0">
                     <table id="jqGrid" class="table table-striped"></table>
