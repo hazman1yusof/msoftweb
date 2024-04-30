@@ -174,20 +174,17 @@ class RepackDetailController extends defaultController
         try {
             
             // 1. update detail
-            DB::table('finance.glrptfmt')
+            DB::table('material.repackdt')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->update([
                     'lineno_' => $request->lineno_,
-                    'printflag' => strtoupper($request->printflag),
-                    'rowdef' => $request->rowdef,
-                    'code' => strtoupper($request->code),
-                    'note' => $request->note,
-                    'description' => $request->description,
-                    'formula' => $request->formula,
-                    'costcodefr' => $request->costcodefr,
-                    'costcodeto' => $request->costcodeto,
-                    'revsign' => $request->revsign,
+                    'deptcode' => strtoupper($request->deptcode),
+                    'olditemcode' => $request->olditemcode,
+                    'uomcode' => strtoupper($request->uomcode),
+                    'inpqty' => $request->inpqty,
+                    'avgcost' => floatval($request->avgcost),
+                    'amount' => $request->avgcost * $request->inpqty,
                     'upduser'=> session('username'),
                     'upddate'=> Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
@@ -211,27 +208,41 @@ class RepackDetailController extends defaultController
         try {
             
             foreach ($request->dataobj as $key => $value) {
-                
+
                 // 1. update detail
-                DB::table('finance.glrptfmt')
+                DB::table('material.repackdt')
                     ->where('compcode','=',session('compcode'))
-                    ->where('idno','=',$value['idno'])
+                    ->where('recno','=',$request->recno)
+                    ->where('lineno_','=',$value['lineno_'])
                     ->update([
-                        'lineno_' => $value['lineno_'],
-                        'printflag' => strtoupper($value['printflag']),
-                        'rowdef' => $value['rowdef'],
-                        'code' => strtoupper($value['code']),
-                        'note' => $value['note'],
-                        'description' => $value['description'],
-                        'formula' => $value['formula'],
-                        'costcodefr' => $value['costcodefr'],
-                        'costcodeto' => $value['costcodeto'],
-                        'revsign' => $value['revsign'],
+                        'deptcode' => strtoupper($value['deptcode']),
+                        'olditemcode' => $value['olditemcode'],
+                        'uomcode' => strtoupper($value['uomcode']),
+                        'inpqty' => $value['inpqty'],
+                        'avgcost' => $value['avgcost'],
+                        'amount' => $value['amount'],
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
-            
+
+                     ///2. calculate total amount from detail
+            $totalAmount = DB::table('material.repackdt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$request->recno)
+            ->where('recstatus','!=','DELETE')
+            ->sum('amount');
+ 
+        ///3. then update to header
+        DB::table('material.repackhd')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$request->recno)
+            ->update([
+                'amount' => $totalAmount, 
+                'avgcost'=> $totalAmount / $outqty,
+            ]);
             }
+
+           
             
             DB::commit();
             
@@ -251,7 +262,7 @@ class RepackDetailController extends defaultController
         
         try {
             
-            DB::table('finance.glrptfmt')
+            DB::table('material.repackdt')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->delete();
