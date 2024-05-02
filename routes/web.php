@@ -730,6 +730,8 @@ Route::post('/period/form','finance\PeriodController@form');
 Route::get('/debtorMaster','finance\DebtorMasterController@show');
 Route::get('/debtorMaster/table','finance\DebtorMasterController@table');
 Route::post('/debtorMaster/form','finance\DebtorMasterController@form');
+Route::get('/debtorMaster/showExcel','finance\DebtorMasterController@showExcel');
+Route::get('/debtorMaster/showpdf','finance\DebtorMasterController@showpdf');
 
 //// Debtor Master - report sales ///
 Route::get('/DebtorMaster_Report','finance\DebtorMaster_ReportController@show');
