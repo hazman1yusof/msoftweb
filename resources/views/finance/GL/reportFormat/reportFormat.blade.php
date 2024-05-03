@@ -93,9 +93,9 @@
 
 @section('scripts')
 	<script type="text/javascript">
-		$(document).ready(function () {
+		$(document).ready(function (){
 			if(!$("table#jqGrid").is("[tabindex]")){
-				$("#jqGrid").bind("jqGridGridComplete", function () {
+				$("#jqGrid").bind("jqGridGridComplete", function (){
 					$("table#jqGrid").attr('tabindex', 2);
 					$("td#input_jqGridPager input.ui-pg-input.form-control").attr('tabindex', 3);
 					$("td#input_jqGridPager input.ui-pg-input.form-control").on('focus',onfocus_pageof);
@@ -107,7 +107,7 @@
 			}
 			
 			function onfocus_pageof(){
-				$(this).keydown(function(e){
+				$(this).keydown(function (e){
 					var code = e.keyCode || e.which;
 					if (code == '9'){
 						e.preventDefault();
@@ -115,7 +115,7 @@
 					}
 				});
 				
-				$(this).keyup(function(e) {
+				$(this).keyup(function (e){
 					var code = e.keyCode || e.which;
 					if (code == '13'){
 						$("table#jqGrid").data('enter',true);

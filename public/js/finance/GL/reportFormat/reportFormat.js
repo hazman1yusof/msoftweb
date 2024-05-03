@@ -42,8 +42,8 @@ $(document).ready(function (){
 	
 	////////////////////////////////////////searchClick2////////////////////////////////////////
 	// function searchClick2(grid,form,urlParam){
-	// 	$(form+' [name=Stext]').on( "keyup", function() {
-	// 		delay(function(){
+	// 	$(form+' [name=Stext]').on( "keyup", function (){
+	// 		delay(function (){
 	// 			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
 	// 			// $('#reqnodepan').text("");  // tukar kat depan tu
 	// 			// $('#reqdeptdepan').text("");
@@ -51,7 +51,7 @@ $(document).ready(function (){
 	// 		}, 500 );
 	// 	});
 		
-	// 	$(form+' [name=Scol]').on( "change", function() {
+	// 	$(form+' [name=Scol]').on( "change", function (){
 	// 		search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
 	// 		// $('#reqnodepan').text("");  // tukar kat depan tu
 	// 		// $('#reqdeptdepan').text("");
@@ -61,8 +61,8 @@ $(document).ready(function (){
 	
 	////////////////////////////////////utk dropdown search By////////////////////////////////////
 	// searchBy();
-	// function searchBy() {
-	// 	$.each($("#jqGrid").jqGrid('getGridParam', 'colModel'), function (index, value) {
+	// function searchBy(){
+	// 	$.each($("#jqGrid").jqGrid('getGridParam', 'colModel'), function (index, value){
 	// 		if (value['canSearch']) {
 	// 			if (value['selected']) {
 	// 				$("#searchForm [id=Scol]").append(" <option selected value='" + value['name'] + "'>" + value['label'] + "</option>");
@@ -338,12 +338,12 @@ $(document).ready(function (){
 		this.error = false;
 		this.errormsg = 'asdsds';
 		this.old_data;
-		this.reroll=function(){
+		this.reroll=function (){
 			$('#p_error').text(this.errormsg);
 			var self = this;
 			$(this.jqgridname+"_iladd").click();
 			
-			this.data_array.forEach(function(item,i){
+			this.data_array.forEach(function (item,i){
 				$(self.jqgridname+' input[name="'+item+'"]').val(self.old_data[item]);
 			});
 			this.error = false;
@@ -817,7 +817,7 @@ $(document).ready(function (){
 				filterCol: ['compcode'],
 				filterVal: ['session.compcode']
 			},
-			ondblClickRow: function(event){
+			ondblClickRow: function (event){
 				if(event.type == 'keydown'){
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
@@ -827,13 +827,13 @@ $(document).ready(function (){
 				}
 				$("#jqGrid2 #"+id_optid+"_note").focus().select();
 			},
-			loadComplete: function(data,obj){
+			loadComplete: function (data,obj){
 				var searchfor = $("#jqGrid2 input#"+obj.id_optid+"_code").val();
 				var rows = data.rows;
 				var gridname = '#'+obj.gridname;
 				
 				if(searchfor != undefined && rows.length > 1 && obj.ontabbing){
-					rows.forEach(function(e,i){
+					rows.forEach(function (e,i){
 						if(e.code.toUpperCase() == searchfor.toUpperCase().trim()){
 							let id = parseInt(i)+1;
 							$(gridname+' tr#'+id).click();
@@ -842,7 +842,7 @@ $(document).ready(function (){
 					});
 				}
 			},
-			gridComplete: function(obj){
+			gridComplete: function (obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
@@ -853,7 +853,7 @@ $(document).ready(function (){
 			}
 		}, {
 			title: "Select Code",
-			open: function(){
+			open: function (){
 				dialog_code.urlParam.filterCol= ['compcode'];
 				dialog_code.urlParam.filterVal= ['session.compcode'];
 			}
@@ -873,7 +873,7 @@ $(document).ready(function (){
 	
 	function check_cust_rules(grid,data){
 		var cust_val =  true;
-		Object.keys(data).every(function(v,i){
+		Object.keys(data).every(function (v,i){
 			cust_val = cust_rules('', $(grid).jqGrid('getGridParam','colNames')[i]);
 			if(cust_val[0] == false){
 				return false;
@@ -882,15 +882,15 @@ $(document).ready(function (){
 		return cust_val;
 	}
 	
-	$("#jqGrid2_panel").on("show.bs.collapse", function(){
+	$("#jqGrid2_panel").on("show.bs.collapse", function (){
 		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
 	});
 	
-	$('#excelgen1').click(function(){
+	$('#excelgen1').click(function (){
 		window.location='./reportFormat/showExcel?rptname='+selrowData('#jqGrid').rptname;
 	});
 	
-	$('#pdfgen1').click(function(){
+	$('#pdfgen1').click(function (){
 		window.open('./reportFormat/showpdf?rptname='+selrowData('#jqGrid').rptname, '_blank');
 	});
 });

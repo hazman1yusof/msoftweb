@@ -400,12 +400,12 @@ $(document).ready(function (){
 		});
 	}
 	
-	$('#excelgen1').click(function(){
+	$('#excelgen1').click(function (){
 		// window.location='./user_maintenance/showExcel?username='+selrowData('#jqGrid').username+'&compcode='+selrowData('#jqGrid').compcode;
 		window.location='./user_maintenance/showExcel?compcode='+selrowData('#jqGrid').compcode;
 	});
 	
-	$('#pdfgen1').click(function(){
+	$('#pdfgen1').click(function (){
 		// window.open('./user_maintenance/showpdf?username='+selrowData('#jqGrid').username+'&compcode='+selrowData('#jqGrid').compcode, '_blank');
 		window.open('./user_maintenance/showpdf?compcode='+selrowData('#jqGrid').compcode, '_blank');
 	});

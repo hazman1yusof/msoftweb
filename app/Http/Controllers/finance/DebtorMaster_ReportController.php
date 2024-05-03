@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 use DB;
 use Carbon\Carbon;
-use App\Exports\DebtorMasterExport;
+use App\Exports\DebtorMasterExport_old;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DebtorMaster_ReportController extends defaultController
@@ -46,6 +46,6 @@ class DebtorMaster_ReportController extends defaultController
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new DebtorMasterExport(), 'DebtorMasterReport.xlsx');
+        return Excel::download(new DebtorMasterExport_old(), 'DebtorMasterReport.xlsx');
     }
 }
