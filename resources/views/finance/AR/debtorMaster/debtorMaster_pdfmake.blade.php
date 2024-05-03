@@ -36,7 +36,7 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [60,45,95,45,45,45,40,60],    // panjang standard dia 515
+                            widths: [45,39,80,43,60,60,60,50],    // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'Code', style: 'tableHeader' },
