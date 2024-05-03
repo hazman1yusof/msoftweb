@@ -14,7 +14,6 @@
     </object>
     
     <script>
-        
         var array_report=[
             @foreach($array_report as $key => $array_report1)
             [
@@ -37,9 +36,9 @@
             @endforeach
         };
         
-        $(document).ready(function () {
+        $(document).ready(function (){
             var docDefinition = {
-                footer: function(currentPage, pageCount) {
+                footer: function (currentPage, pageCount){
                     return [
                         { text: currentPage.toString() + ' of ' + pageCount, alignment: 'center' }
                     ]
@@ -48,7 +47,7 @@
                 pageOrientation: 'landscape',
                 content: [
                     {
-                        image: 'letterhead',width:400, height:80, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
                         text: '\n{{$title}}\n',
@@ -59,11 +58,11 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*', '*'], //panjang standard dia 515
+                            widths: ['*', '*'], // panjang standard dia 515
                             body: [
                                 [
-                                    {text: 'DATE : {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d/m/Y')}}' },
-                                    {text: 'TIME : {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('h:i A')}}'},
+                                    { text: 'DATE : {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d/m/Y')}}' },
+                                    { text: 'TIME : {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('h:i A')}}' },
                                 ],
                             ]
                         },
@@ -78,7 +77,7 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [50,70,90,55,30,50,50,50,50,55,55],  //panjang standard dia 515
+                            widths: [50,70,90,55,30,50,50,50,50,55,55], // panjang standard dia 515
                             body: [
                                 [   
                                     { text: 'Date', style: 'tableHeader' },
@@ -92,7 +91,6 @@
                                     { text: 'TT', style: 'tableHeader', alignment: 'right' },
                                     { text: 'Credit Note', style: 'tableHeader', alignment: 'right' },
                                     { text: 'Receipt No', style: 'tableHeader' },
-                                    
                                 ],
                                 @foreach ($array_report as $obj)
                                 [
@@ -160,13 +158,13 @@
                 }
             };
             
-            // pdfMake.createPdf(docDefinition).getBase64(function(data) {
+            // pdfMake.createPdf(docDefinition).getBase64(function (data){
             //     var base64data = "data:base64"+data;
             //     console.log($('object#pdfPreview').attr('data',base64data));
             //     // document.getElementById('pdfPreview').data = base64data;
             // });
             
-            pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
+            pdfMake.createPdf(docDefinition).getDataUrl(function (dataURL){
                 $('#pdfiframe').attr('src',dataURL);
             });
         });
@@ -175,13 +173,13 @@
             
         }
         
-        // pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
+        // pdfMake.createPdf(docDefinition).getDataUrl(function (dataURL){
         //     console.log(dataURL);
         //     document.getElementById('pdfPreview').data = dataURL;
         // });
         
         // jsreport.serverUrl = 'http://localhost:5488'
-        // async function preview() {
+        // async function preview(){
         //     const report = await jsreport.render({
         //         template: {
         //             name: 'mc'
@@ -192,7 +190,6 @@
         // }
         
         // preview().catch(console.error)
-        
     </script>
     
     <body style="margin: 0px;">

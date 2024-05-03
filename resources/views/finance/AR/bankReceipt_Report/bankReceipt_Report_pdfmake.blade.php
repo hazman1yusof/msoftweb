@@ -14,7 +14,6 @@
     </object>
     
     <script>
-        
         var dbacthdr=[
             @foreach($dbacthdr as $key => $dbacthdr1)
             [
@@ -52,9 +51,9 @@
         
         var totamt_eng = '{{$totamt_eng}}';
         
-        $(document).ready(function () {
+        $(document).ready(function (){
             var docDefinition = {
-                footer: function(currentPage, pageCount) {
+                footer: function (currentPage, pageCount){
                     return [
                         { text: currentPage.toString() + ' of ' + pageCount, alignment: 'center' }
                     ]
@@ -62,7 +61,7 @@
                 pageSize: 'A4',
                 content: [
                     {
-                        image: 'letterhead',width:400, height:80, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
                         text: '\n{{$title}}\n',
@@ -73,11 +72,11 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*', '*'], //panjang standard dia 515
+                            widths: ['*', '*'], // panjang standard dia 515
                             body: [
                                 [
-                                    {text: 'DATE : {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d/m/Y')}}' },
-                                    {text: 'TIME : {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('h:i A')}}'},
+                                    { text: 'DATE : {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d/m/Y')}}' },
+                                    { text: 'TIME : {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('h:i A')}}' },
                                 ],
                             ]
                         },
@@ -92,7 +91,7 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [50,50,60,50,50,50,50,50],  //panjang standard dia 515
+                            widths: [50,50,60,50,50,50,50,50],  // panjang standard dia 515
                             body: [
                                 [   
                                     { text: 'Receipt Date', style: 'tableHeader' },
@@ -126,7 +125,7 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*', '*'], //panjang standard dia 515
+                            widths: ['*', '*'], // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'Ringgit Malaysia', style: 'tableHeader' },
@@ -149,7 +148,7 @@
                     //     style: 'tableExample',
                     //     table: {
                     //         headerRows: 1,
-                    //         widths: ['*', '*', '*'],  //panjang standard dia 515
+                    //         widths: ['*', '*', '*'], // panjang standard dia 515
                     //         body: [
                     //             [
                     //                 { text: ' ', style: 'tableHeader' },
@@ -185,7 +184,7 @@
                     //     style: 'tableExample',
                     //     table: {
                     //         headerRows: 1,
-                    //         widths: ['*', '*', '*'],  //panjang standard dia 515
+                    //         widths: ['*', '*', '*'], // panjang standard dia 515
                     //         body: [
                     //             [
                     //                 { text: 'Total', style: 'tableHeader' },
@@ -242,13 +241,13 @@
                 }
             };
             
-            // pdfMake.createPdf(docDefinition).getBase64(function(data) {
+            // pdfMake.createPdf(docDefinition).getBase64(function (data){
             //     var base64data = "data:base64"+data;
             //     console.log($('object#pdfPreview').attr('data',base64data));
             //     // document.getElementById('pdfPreview').data = base64data;
             // });
             
-            pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
+            pdfMake.createPdf(docDefinition).getDataUrl(function (dataURL){
                 $('#pdfiframe').attr('src',dataURL);
             });
         });
@@ -257,13 +256,13 @@
             
         }
         
-        // pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
+        // pdfMake.createPdf(docDefinition).getDataUrl(function (dataURL){
         //     console.log(dataURL);
         //     document.getElementById('pdfPreview').data = dataURL;
         // });
         
         // jsreport.serverUrl = 'http://localhost:5488'
-        // async function preview() {
+        // async function preview(){
         //     const report = await jsreport.render({
         //         template: {
         //             name: 'mc'
@@ -274,7 +273,6 @@
         // }
         
         // preview().catch(console.error)
-        
     </script>
     
     <body style="margin: 0px;">

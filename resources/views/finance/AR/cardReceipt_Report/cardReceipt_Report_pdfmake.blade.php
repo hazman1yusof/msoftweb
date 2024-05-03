@@ -14,10 +14,9 @@
     </object>
     
     <script>
-        
-        $(document).ready(function () {
+        $(document).ready(function (){
             var docDefinition = {
-                footer: function(currentPage, pageCount) {
+                footer: function (currentPage, pageCount){
                     return [
                         { text: currentPage.toString() + ' of ' + pageCount, alignment: 'center' }
                     ]
@@ -25,7 +24,7 @@
                 pageSize: 'A4',
                 content: [
                     {
-                        image: 'letterhead',width:400, height:80, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
                         text: '\nCARD RECEIPT LISTING\n',
@@ -36,26 +35,23 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*', '*'], //panjang standard dia 515
+                            widths: ['*', '*'], // panjang standard dia 515
                             body: [
                                 [
-                                    {text: 'DATE : {{\Carbon\Carbon::now()->format('d/m/Y')}}' },
-                                    {text: 'TIME : {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('h:i A')}}'},
+                                    { text: 'DATE : {{\Carbon\Carbon::now()->format('d/m/Y')}}' },
+                                    { text: 'TIME : {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('h:i A')}}' },
                                 ],
                             ]
                         },
                         layout: 'noBorders',
                     },
-
-
                     @foreach ($paymode as $pmode)
-                    
-                    { text: 'Card Code : {{$pmode->paymode}}',alignment: 'left' ,fontSize: 9,bold: true},
+                    { text: 'Card Code : {{$pmode->paymode}}', alignment: 'left', fontSize: 9, bold: true },
                     {
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [50,50,40,50,50,70,'*'],  //panjang standard dia 515
+                            widths: [50,50,40,50,50,70,'*'],    // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'Receipt No', style: 'tableHeader' },
@@ -95,13 +91,12 @@
                         layout: 'lightHorizontalLines',
                     },
                     @endforeach
-
                     { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
                     {
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*', '*'], //panjang standard dia 515
+                            widths: ['*', '*'], // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'Ringgit Malaysia', style: 'tableHeader' },
@@ -144,13 +139,13 @@
                 }
             };
             
-            // pdfMake.createPdf(docDefinition).getBase64(function(data) {
+            // pdfMake.createPdf(docDefinition).getBase64(function (data){
             //     var base64data = "data:base64"+data;
             //     console.log($('object#pdfPreview').attr('data',base64data));
             //     // document.getElementById('pdfPreview').data = base64data;
             // });
             
-            pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
+            pdfMake.createPdf(docDefinition).getDataUrl(function (dataURL){
                 $('#pdfiframe').attr('src',dataURL);
             });
         });
@@ -159,13 +154,13 @@
             
         }
         
-        // pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
+        // pdfMake.createPdf(docDefinition).getDataUrl(function (dataURL){
         //     console.log(dataURL);
         //     document.getElementById('pdfPreview').data = dataURL;
         // });
         
         // jsreport.serverUrl = 'http://localhost:5488'
-        // async function preview() {
+        // async function preview(){
         //     const report = await jsreport.render({
         //         template: {
         //             name: 'mc'
@@ -176,7 +171,6 @@
         // }
         
         // preview().catch(console.error)
-        
     </script>
     
     <body style="margin: 0px;">

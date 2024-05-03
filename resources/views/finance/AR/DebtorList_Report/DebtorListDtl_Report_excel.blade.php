@@ -1,6 +1,5 @@
 <table>
-    <tr>
-    </tr>
+    <tr></tr>
     <tr>
         <td style="font-weight:bold">CODE</td>
         <td style="font-weight:bold">TYPE</td>

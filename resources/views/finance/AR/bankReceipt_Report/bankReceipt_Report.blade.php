@@ -61,7 +61,7 @@
     <div class="container mycontainer">
         <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 500px;">
             <form method="get" id="genreport" action="./bankReceipt_Report/showExcel">
-                <h2>AUTO DEBIT LISTING</h2>
+                <h3>AUTO DEBIT LISTING</h3>
                 <h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
 				
 				<div style="width: 800px;margin: 0 auto;">

@@ -14,10 +14,9 @@
     </object>
     
     <script>
-        
-        $(document).ready(function () {
+        $(document).ready(function (){
             var docDefinition = {
-                footer: function(currentPage, pageCount) {
+                footer: function (currentPage, pageCount){
                     return [
                         { text: currentPage.toString() + ' of ' + pageCount, alignment: 'center' }
                     ]
@@ -25,7 +24,7 @@
                 pageSize: 'A4',
                 content: [
                     {
-                        image: 'letterhead', width: 400, height: 80, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
                         text: '\nDEBTOR LISTING SUMMARY\n',
@@ -99,11 +98,10 @@
                 }
             };
             
-            pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
+            pdfMake.createPdf(docDefinition).getDataUrl(function (dataURL){
                 $('#pdfiframe').attr('src',dataURL);
             });
         });
-        
     </script>
     
     <body style="margin: 0px;">
