@@ -9,6 +9,8 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 use PDF;
+use App\Exports\RepackExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RepackController extends defaultController
 {
@@ -19,7 +21,6 @@ class RepackController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "rptname";
     }
     
     public function show(Request $request)
@@ -58,7 +59,6 @@ class RepackController extends defaultController
                         'r.avgcost AS r_avgcost',
                         'r.trandate AS r_trandate',
                         'r.trantime AS r_trantime',
-                        'r.trandate AS r_trandate',
                         'r.amount AS r_amount',
                         'r.uomcode AS r_uomcode',
                         'r.adduser AS r_adduser',
@@ -513,4 +513,43 @@ class RepackController extends defaultController
         
     }
     
+    public function showpdf(Request $request){
+        $recno = $request->recno;
+        if(!$recno){
+            abort(404);
+        }
+        
+        $repackhd = DB::table('material.repackhd as hd')
+            ->select('hd.idno','hd.compcode','hd.recno','hd.deptcode','hd.newitemcode','hd.docno','hd.trandate','hd.trantime','hd.outqty','hd.uomcode','hd.adduser','hd.adddate','hd.upduser','hd.upddate','hd.avgcost','hd.amount','hd.recstatus','p.description as hd_desc')
+            ->leftJoin('material.product as p', function($join) use ($request){
+                $join = $join->on('p.itemcode', '=', 'hd.newitemcode')
+                             ->on('p.uomcode', '=', 'hd.uomcode')
+                             ->where('p.compcode','=',session('compcode'));
+            })
+            ->where('hd.compcode','=',session('compcode'))
+            ->where('hd.recno','=',$recno)
+            ->first();
+
+        $repackdt = DB::table('material.repackdt AS dt')
+            ->select('dt.idno','dt.compcode','dt.recno','dt.deptcode','dt.olditemcode','dt.lineno_','dt.uomcode','dt.inpqty','dt.adduser','dt.adddate','dt.upduser','dt.upddate','dt.avgcost','dt.amount','p.description as dt_desc')
+            ->leftJoin('material.product as p', function($join) use ($request){
+                        $join = $join->on('p.itemcode', '=', 'dt.olditemcode')
+                                     ->on('p.uomcode', '=', 'dt.uomcode')
+                                     ->where('p.compcode','=',session('compcode'));
+                    })
+            ->where('dt.compcode','=',session('compcode'))
+            ->where('dt.recno','=',$recno)
+            ->get();
+
+        $company = DB::table('sysdb.company')
+            ->where('compcode','=',session('compcode'))
+            ->first();
+
+        return view('material.repack.repack_pdfmake',compact('repackhd','repackdt','company'));
+        
+    }
+
+    public function showExcel(Request $request){
+        return Excel::download(new RepackExport($request->recno), 'RepackExport.xlsx');
+    }
 }
