@@ -22,15 +22,16 @@ use Illuminate\Contracts\View\View;
 use DateTime;
 use Carbon\Carbon;
 
-class SupplierExport implements FromView, WithEvents, WithColumnWidths
+class RepackExport implements FromView, WithEvents, WithColumnWidths
 {
     
     /**
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct()
+    public function __construct($recno)
     {
+        $this->recno = $recno;
         
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
@@ -40,24 +41,44 @@ class SupplierExport implements FromView, WithEvents, WithColumnWidths
     public function columnWidths(): array
     {
         return [
-            'A' => 10,
-            'B' => 50,
+            'A' => 15,
+            'B' => 15,
             'C' => 20,
-            'D' => 20,
-            'E' => 20,
-            'F' => 20,
+            'D' => 10,
+            'E' => 10,
+            'F' => 15,
+            'G' => 15,
+
         ];
     }
     
     public function view(): View
     {
-        $supp_code = DB::table('material.supplier')
-            ->where('compcode','=',session('compcode'))
-            ->where('recstatus', '=', 'ACTIVE')
-            ->orderBy('suppcode', 'ASC')
+        $recno = $this->recno;
+
+        $repackhd = DB::table('material.repackhd as hd')
+            ->select('hd.idno','hd.compcode','hd.recno','hd.deptcode','hd.newitemcode','hd.docno','hd.trandate','hd.trantime','hd.outqty','hd.uomcode','hd.adduser','hd.adddate','hd.upduser','hd.upddate','hd.avgcost','hd.amount','hd.recstatus','p.description as hd_desc')
+            ->leftJoin('material.product as p', function($join){
+                $join = $join->on('p.itemcode', '=', 'hd.newitemcode')
+                             ->on('p.uomcode', '=', 'hd.uomcode')
+                             ->where('p.compcode','=',session('compcode'));
+            })
+            ->where('hd.compcode','=',session('compcode'))
+            ->where('hd.recno','=',$recno)
+            ->first();
+
+        $repackdt = DB::table('material.repackdt AS dt')
+            ->select('dt.idno','dt.compcode','dt.recno','dt.deptcode','dt.olditemcode','dt.lineno_','dt.uomcode','dt.inpqty','dt.adduser','dt.adddate','dt.upduser','dt.upddate','dt.avgcost','dt.amount','p.description as dt_desc')
+            ->leftJoin('material.product as p', function($join){
+                        $join = $join->on('p.itemcode', '=', 'dt.olditemcode')
+                                    ->on('p.uomcode', '=', 'dt.uomcode')
+                                    ->where('p.compcode','=',session('compcode'));
+                    })
+            ->where('dt.compcode','=',session('compcode'))
+            ->where('dt.recno','=',$recno)
             ->get();
         
-        return view('material.supplier.supplier_excel',compact('supp_code'));
+        return view('material.repack.repack_excel',compact('repackhd','repackdt'));
     }
     
     public function registerEvents(): array
@@ -66,7 +87,7 @@ class SupplierExport implements FromView, WithEvents, WithColumnWidths
             AfterSheet::class => function(AfterSheet $event) {
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSUPPLIER LISTING"."\n"
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nREPACK"."\n"
                 .'&L'
                 .'PRINTED BY : '.session('username')
                 ."\nPAGE : &P/&N"

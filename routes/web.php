@@ -595,6 +595,8 @@ Route::post('/productMaster/form','material\ProductMasterController@form');
 Route::get('/supplier','material\SupplierController@show');
 Route::get('/supplier/table','material\SupplierController@table');
 Route::post('/supplier/form','material\SupplierController@form');
+Route::get('/supplier/showpdf','material\SupplierController@showpdf');
+Route::get('/supplier/showExcel','material\SupplierController@showExcel');
 
 /// Supplier - report  ///
 Route::get('/supplier_Report','material\Supplier_ReportController@show');

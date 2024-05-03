@@ -228,7 +228,7 @@ $(document).ready(function () {
 
 	var oper = 'add';
 	$("#dialogForm")
-	  .dialog({ 
+	.dialog({ 
 		width: 9/10 * $(window).width(),
 		modal: true,
 		autoOpen: false,
@@ -289,7 +289,7 @@ $(document).ready(function () {
 			}
 		},
 		buttons :butt1,
-	  });
+	});
 	
 	////////////////////////////////////////end dialog///////////////////////////////////////////
 
@@ -392,6 +392,9 @@ $(document).ready(function () {
 				$("#pg_jqGridPager2 table").show();
 			}
 			
+			$("#pdfgen1").attr('href','./supplier/showpdf?');
+
+			$("#pdfgen_excel").attr('href','./supplier/showExcel?');
 		},
 		
 	});
