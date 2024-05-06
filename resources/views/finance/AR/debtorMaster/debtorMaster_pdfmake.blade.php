@@ -22,7 +22,7 @@
                     ]
                 },
                 pageSize: 'A4',
-                // pageOrientation: 'landscape',
+                pageOrientation: 'landscape',
                 content: [
                     {
                         image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center'
@@ -36,7 +36,7 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [45,39,80,43,60,60,60,50],    // panjang standard dia 515
+                            widths: [60,50,150,43,80,80,80,130],    // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'Code', style: 'tableHeader' },
