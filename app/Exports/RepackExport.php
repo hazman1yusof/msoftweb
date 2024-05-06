@@ -43,7 +43,7 @@ class RepackExport implements FromView, WithEvents, WithColumnWidths
         return [
             'A' => 15,
             'B' => 15,
-            'C' => 20,
+            'C' => 25,
             'D' => 10,
             'E' => 10,
             'F' => 15,

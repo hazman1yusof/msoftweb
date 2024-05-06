@@ -50,11 +50,6 @@
                 {
                     image: 'letterhead',width:200, height:40, style: 'tableHeader', colSpan: 5, alignment: 'center'
                 },
-				{
-                    text: 'REPACK OUTPUT',
-                    style: 'header',
-                    alignment: 'center'
-				},
                 {
                     style: 'tableExample',
                     table: {
@@ -69,6 +64,8 @@
                     },
 			        layout: 'noBorders',
 		        },
+
+				{text: 'REPACK OUTPUT', style: 'header', alignment: 'center'},
 
                 {
                     style: 'tableDetail',
@@ -144,7 +141,7 @@
 				header: {
 					fontSize: 12,
 					bold: true,
-					margin: [0, 10, 0, 0]
+					margin: [0, 10, 0, 10]
 				},
 				subheader: {
 					fontSize: 16,
