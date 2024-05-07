@@ -59,10 +59,10 @@
 
 @section('body')
     <div class="container mycontainer">
-        <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 700px;">
+        <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 630px;">
             <form method="get" id="genreport" action="./DebtorList_Report/showExcel">
-                <h2>DEBTOR LIST</h2>
-                <h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
+                <h4>DEBTOR LIST</h4>
+                <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7>
                 
                 <div style="width: 900px;margin: 0 auto;">
                     <div class="col-md-7">

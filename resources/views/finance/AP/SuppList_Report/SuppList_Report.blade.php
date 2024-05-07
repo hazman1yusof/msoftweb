@@ -45,11 +45,11 @@
 
 @section('body')
 <div class="container mycontainer">
-    <div class="jumbotron" style="margin-top: 30px;text-align: center; height:600px">
+    <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 430px">
         <form method="get" class='form-horizontal' style='width:99%' id="genreport" action="./SuppList_Report/showExcel">
-            <h3>SUPPLIER LIST</h3>
-            <h4 style="padding:3% 8% 3% 8%; letter-spacing: 1px;line-height: 1.0"> </h4>
-
+            <h4>SUPPLIER LIST</h4>
+            <h7 style="padding:3% 8% 3% 8%; letter-spacing: 1px;line-height: 1.0"> </h7>
+            
             <div style="width: 1000px;margin: 0 auto;">
                 <div class="col-md-7">
                     <div class="col-md-12">

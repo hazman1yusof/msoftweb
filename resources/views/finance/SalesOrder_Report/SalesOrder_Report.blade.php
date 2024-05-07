@@ -44,11 +44,11 @@
 @endsection
 
 @section('body')
-<div class="container mycontainer">
-        <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 500px;">
+	<div class="container mycontainer">
+        <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 350px;">
             <form method="get" id="genreport" action="./SalesOrder_Report/showExcel">
-                <h3>SALES</h3>
-                <h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
+                <h4>SALES</h4>
+                <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7>
 				
 				<div style="width: 800px;margin: 0 auto;">
 					<div class="col-md-4" style="margin-left: 120px;">
@@ -84,12 +84,8 @@
             </form>
         </div>
     </div>
-		
 @endsection
 
-
 @section('scripts')
-
 	<script src="js/finance/SalesOrder_Report/SalesOrder_Report.js"></script>
-
 @endsection

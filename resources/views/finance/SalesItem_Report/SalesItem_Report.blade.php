@@ -44,11 +44,11 @@
 @endsection
 
 @section('body')
-<div class="container mycontainer">
-        <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 500px;">
+	<div class="container mycontainer">
+        <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 350px;">
             <form method="get" id="genreport" action="./SalesItem_Report/showExcel">
-                <h3>SALES BY ITEM</h3>
-                <h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
+                <h4>SALES BY ITEM</h4>
+                <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7>
 				
 				<div style="width: 800px;margin: 0 auto;">
 					<div class="col-md-4" style="margin-left: 120px;">
