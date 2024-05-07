@@ -476,8 +476,10 @@ Route::get('/ItemMovReport/excel','material\ItemMovReportController@excel');
 
 //// avgcost_vs_currcost report ///
 Route::get('/avgcost_vs_currcost','material\avgcost_vs_currcostController@show');
-Route::get('/avgcost_vs_currcost/pdf','material\avgcost_vs_currcostController@pdf');
-Route::get('/avgcost_vs_currcost/excel','material\avgcost_vs_currcostController@excel');
+Route::get('/avgcost_vs_currcost/table','material\avgcost_vs_currcostController@table');
+Route::post('/avgcost_vs_currcost/form','material\avgcost_vs_currcostController@form');
+Route::get('/avgcost_vs_currcost/showExcel','material\avgcost_vs_currcostController@showExcel');
+Route::get('/avgcost_vs_currcost/showpdf','material\avgcost_vs_currcostController@showpdf');
 
 //// delivery Order setup page ///
 Route::get('/deliveryOrder','material\DeliveryOrderController@show');
