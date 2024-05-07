@@ -59,11 +59,11 @@
 
 @section('body')
 	<div class="container mycontainer">
-		<div class="jumbotron" style="margin-top: 30px;text-align: center; height:500px">
+		<div class="jumbotron" style="margin-top: 30px;text-align: center;height: 350px">
 			<form method="get" class='form-horizontal' style='width:99%' id="genreport" action="./APAgeing_Report/showExcel">
-				<h3>AP AGEING SUMMARY</h3>
-				<h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
-			
+				<h4>AP AGEING SUMMARY</h4>
+				<h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7>
+				
 				<div class="col-md-9">
 					<div class="form-group" style="width:800px; margin:0 auto;">
 						<div class="col-md-5">
