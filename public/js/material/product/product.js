@@ -854,15 +854,15 @@ $(document).ready(function () {
 			{ label: 'Item Code', name: 'itemcode', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true},
 			{ label: 'Item Description', name: 'description', width: 80, sorttype: 'text', classes: 'wrap', checked:true,canSearch: true  },
 			{ label: 'Uom Code', name: 'uomcode', width: 30, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Qty On Hand', name: 'qtyonhand', width: 40, classes: 'wrap',hidden:false},
-			{ label: 'Average Cost', name: 'avgcost', width: 40, formatter: 'currency' },
+			{ label: 'Qty On Hand', name: 'qtyonhand', width: 40, classes: 'wrap',hidden:false,align: 'right'},
+			{ label: 'Average Cost', name: 'avgcost', width: 40, formatter: 'currency',align: 'right'},
+			{ label: 'Current Price', name: 'currprice', width: 40, formatter: 'currency',align: 'right'},
 			{ label: 'Group Code', name: 'groupcode', width: 30, sorttype: 'text', classes: 'wrap'  },
 			{ label: 'Class', name: 'Class', width: 40, sorttype: 'text', classes: 'wrap', hidden:true   },
 			{ label: 'Product Category', name: 'productcat', width: 40, sorttype: 'text', classes: 'wrap' ,canSearch: true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Charge', name: 'chgflag', width: 25, formatter:formatter, unformat:unformat, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'  },
 			{ label: 'Supplier Code', name: 'suppcode', width: 40, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'actavgcost', name: 'actavgcost', width: 50, hidden:true },
-			{ label: 'currprice', name: 'currprice', width: 40, hidden:true },
 			{ label: 'bonqty', name: 'bonqty', width: 50, hidden:true },
 			{ label: 'rpkitem', name: 'rpkitem', width: 50, hidden:true },
 			{ label: 'minqty', name: 'minqty', width: 50, hidden:true },
@@ -872,7 +872,6 @@ $(document).ready(function () {
 			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
-			
 			{ label: 'subcatcode', name: 'subcatcode', width: 50, hidden:true },
 			{ label: 'expdtflg', name: 'expdtflg', width: 50, hidden:true },
 			{ label: 'mstore', name: 'mstore', width: 50, hidden:true },
@@ -954,6 +953,9 @@ $(document).ready(function () {
 		},
 		
 	});
+
+	////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
+	jqgrid_label_align_right("#jqGrid");
 
 	////////////////////unformatter status////////////////////////////////////////
 	function formatterstatus_tick2(cellvalue, option, rowObject) {
