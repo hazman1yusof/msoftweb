@@ -481,6 +481,13 @@ Route::post('/avgcost_vs_currcost/form','material\avgcost_vs_currcostController@
 Route::get('/avgcost_vs_currcost/showExcel','material\avgcost_vs_currcostController@showExcel');
 Route::get('/avgcost_vs_currcost/showpdf','material\avgcost_vs_currcostController@showpdf');
 
+//// deptItemList report ///
+Route::get('/deptItemList','material\deptItemListController@show');
+Route::get('/deptItemList/table','material\deptItemListController@table');
+Route::post('/deptItemList/form','material\deptItemListController@form');
+Route::get('/deptItemList/showExcel','material\deptItemListController@showExcel');
+Route::get('/deptItemList/showpdf','material\deptItemListController@showpdf');
+
 //// delivery Order setup page ///
 Route::get('/deliveryOrder','material\DeliveryOrderController@show');
 Route::get('/deliveryOrder/table','material\DeliveryOrderController@table');
