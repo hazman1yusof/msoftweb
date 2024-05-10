@@ -109,6 +109,19 @@
 				</div>
 				
 				<div class="col-md-2">
+					<label class="control-label" for="Trantype">Trantype</label>
+					<select id="Trantype" name="Trantype" class="form-control input-sm">
+						<option value="All" selected>ALL</option>
+						<option value="IN">IN</option>
+						<option value="DN">DN</option>
+						<option value="CN">CN</option>
+						<option value="RC">RC</option>
+						<option value="RD">RD</option>
+						<option value="RF">RF</option>
+					</select>
+				</div>
+				
+				<div class="col-md-2">
 					<label class="control-label" for="Status">Status</label>
 					<select id="Status" name="Status" class="form-control input-sm">
 						<option value="All" selected>ALL</option>
@@ -221,6 +234,26 @@
 					<div class='col-md-12' style="padding:0 0 15px 0">
 						<table id="jqGridAlloc" class="table table-striped"></table>
 						<div id="jqGridPagerAlloc"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- For Sales Order -->
+		<div class="panel panel-default" style="position: relative; display:none;" id="jqGrid_Tracking_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid_Tracking_panel">
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>Tracking</h5>
+				</div>
+			</div>
+			
+			<div id="jqGrid_Tracking_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div id="" class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGrid_Tracking" class="table table-striped"></table>
+						<div id="jqGridPager_Tracking"></div>
 					</div>
 				</div>
 			</div>
@@ -1413,9 +1446,9 @@
 
 @section('scripts')
 	<script type="text/javascript">
-		$(document).ready(function () {
+		$(document).ready(function (){
 			if(!$("table#jqGrid").is("[tabindex]")){
-				$("#jqGrid").bind("jqGridGridComplete", function () {
+				$("#jqGrid").bind("jqGridGridComplete", function (){
 					$("table#jqGrid").attr('tabindex',3);
 					$("td#input_jqGridPager input.ui-pg-input.form-control").attr('tabindex',4);
 					$("td#input_jqGridPager input.ui-pg-input.form-control").on('focus',onfocus_pageof);
@@ -1427,7 +1460,7 @@
 			}
 			
 			function onfocus_pageof(){
-				$(this).keydown(function(e){
+				$(this).keydown(function (e){
 					var code = e.keyCode || e.which;
 					if (code == '9'){
 						e.preventDefault();
@@ -1435,7 +1468,7 @@
 					}
 				});
 				
-				$(this).keyup(function(e) {
+				$(this).keyup(function (e){
 					var code = e.keyCode || e.which;
 					if (code == '13'){
 						$("table#jqGrid").data('enter',true);
