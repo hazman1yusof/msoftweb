@@ -19,8 +19,23 @@
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+							<input name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+
+							<div  id="show_dept" style="display:none">
+								<div class='input-group'>
+									<input id="dept_search" name="dept_search" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span id="dept_search_hb" class="help-block"></span>
+							</div>
 						</div>
+
+						<!-- <div class="col-md-1" style="padding-left: 0px;">
+							<div id="div_deptsearch" style="padding-left: 0px;padding-right: 40px;display:none">
+								<label class="control-label"></label>
+								<a class='form-control btn btn-primary' id="btn_deptsearch"><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+						</div> -->
 
 						<div class="col-md-2">
 							<label class="control-label" for="Scol">Year : </label>  

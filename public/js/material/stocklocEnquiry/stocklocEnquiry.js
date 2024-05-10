@@ -46,7 +46,7 @@ $(document).ready(function () {
 
 	var oper = 'add';
 	$("#dialogForm")
-	  .dialog({ 
+	.dialog({ 
 		width: 9/10 * $(window).width(),
 		modal: true,
 		autoOpen: false,
@@ -89,7 +89,7 @@ $(document).ready(function () {
 			}
 		},
 		buttons :butt1,
-	  });
+	});
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	
@@ -109,7 +109,6 @@ $(document).ready(function () {
 		join_filterVal: [['p.compcode','p.uomcode']]
 	}
 	/////////////////////parameter for saving url////////////////////////////////////////////////
-	
 	
 	$("#jqGrid").jqGrid({
 		datatype: "local",
@@ -156,7 +155,17 @@ $(document).ready(function () {
 			}
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+
 			$("#searchForm input[name=Stext]").focus();
+
+			if($('#jqGrid').data('inputfocus') == 'dept_search'){
+				$("#dept_search").focus();
+				$('#jqGrid').data('inputfocus','');
+				$('#dept_search_hb').text('');
+				removeValidationClass(['#dept_search']);
+			}else{
+				$("#searchForm input[name=Stext]").focus();
+			}
 			fdl.set_array().reset();
 		},
 	});
@@ -196,17 +205,32 @@ $(document).ready(function () {
 	//////////handle searching, ///////////////////////////////////////////////////
 	searchClick2('#jqGrid','#searchForm',urlParam);
 
+	function searchClick2(grid,form,urlParam){
+		$(form+' [name=Stext]').on( "keyup", function() {
+			delay(function(){
+				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+				refreshGrid("#jqGrid",null,"kosongkan");
+			}, 500 );
+		});
+
+		$(form+' [name=Scol]').on( "change", function() {
+			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+			refreshGrid("#jqGrid",null,"kosongkan");
+		});
+	}
+
 	///////////////////utk dropdown search By/////////////////////////////////////////////////
 	searchBy();
-	function searchBy(){
-		$.each($("#jqGrid").jqGrid('getGridParam','colModel'), function( index, value ) {
-			if(value['canSearch']){
-				if(value['selected']){
-					$( "#searchForm [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
-				}else{
-					$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
+	function searchBy() {
+		$.each($("#jqGrid").jqGrid('getGridParam', 'colModel'), function (index, value) {
+			if (value['canSearch']) {
+				if (value['selected']) {
+					$("#searchForm [id=Scol]").append(" <option selected value='" + value['name'] + "'>" + value['label'] + "</option>");
+				} else {
+					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
 				}
 			}
+			searchClick2('#jqGrid', '#searchForm', urlParam);
 		});
 	}
 
@@ -216,9 +240,65 @@ $(document).ready(function () {
 		}, 500 );
 	});
 
-	$('#Scol').change(function(){
-		searchMain($('#searchText').val(),$('#Scol').val());
-	});
+	$('#Scol').on('change', scolChange);
+
+	function scolChange() {
+		if($('#Scol').val()=='s_deptcode'){
+			$("#show_dept").show();
+			$("input[name='Stext']").hide("fast");
+			$("input[name='Stext']").velocity({ width: "100%" });
+		} else {
+			$("#show_dept").hide();
+			$("input[name='Stext']").show("fast");
+			$("input[name='Stext']").velocity({ width: "100%" });
+			$("input[name='Stext']").val('');
+			$('#dept_search').val('');
+			$('#dept_search_hb').text('');
+		}
+	}
+
+	////////////////////////////////////////dept searching////////////////////////////////////////////////////////////////////////
+	var dept_search = new ordialog(
+		'dept_search', 'sysdb.department', '#dept_search', 'errorField',
+		{
+			colModel: [
+				{ label: 'Department', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
+				{ label: 'Unit',name:'sector', hidden:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus', 'sector'],
+				filterVal:['session.compcode','ACTIVE', 'session.unit']
+			},
+			ondblClickRow: function () {
+				let data = selrowData('#' + dept_search.gridname).deptcode;
+				$("#searchForm input[name='Stext']").val($('#dept_search').val());
+
+				urlParam.searchCol=["s_deptcode"];
+				urlParam.searchVal=[data];
+				refreshGrid('#jqGrid', urlParam);
+			}
+		},{
+			title: "Select Department",
+			open: function () {
+				dept_search.urlParam.filterCol=['compcode', 'recstatus', 'sector'];
+				dept_search.urlParam.filterVal=['session.compcode', 'ACTIVE', 'session.unit'];
+			}
+		},'urlParam','radio','tab'
+	);
+	dept_search.makedialog();
+	dept_search.on();
+
+	$('#dept_search').on('keyup',ifnullsearch);
+
+	function ifnullsearch(){
+		if($('#dept_search').val() == ''){
+			urlParam.searchCol=[];
+			urlParam.searchVal=[];
+			$('#jqGrid').data('inputfocus','dept_search');
+			refreshGrid('#jqGrid', urlParam);
+		}
+	}
 
 	function populateSummary(form,itemcode,uomcode,deptcode){
 
