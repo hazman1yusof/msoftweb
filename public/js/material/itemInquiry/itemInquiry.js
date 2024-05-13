@@ -469,7 +469,11 @@ $(document).ready(function () {
 							obj.balquan = numeral(accumqty).format('0,0');
 							obj.netprice = numeral(obj.netprice).format('0,0.00');
 							obj.balance = numeral(accumamt).format('0,0.00');
-							obj.amount = '- '+numeral(obj.amount).format('0,0.00');
+							if(numeral(obj.amount)>0){
+								obj.amount = '- '+numeral(obj.amount).format('0,0.00');
+							}else{
+								obj.amount = numeral(Math.abs(obj.amount)).format('0,0.00');
+							}
 
 							obj.description =  obj.description.toUpperCase();
 							if(obj.description == 'TRANSFER'){
@@ -488,7 +492,13 @@ $(document).ready(function () {
 							obj.balquan = numeral(accumqty).format('0,0');
 							obj.netprice = numeral(obj.netprice).format('0,0.00');
 							obj.balance = numeral(accumamt).format('0,0.00');
-							obj.amount = '- '+numeral(obj.amount).format('0,0.00');
+							// obj.amount = '- '+numeral(obj.amount).format('0,0.00');
+							
+							if(numeral(obj.amount)>0){
+								obj.amount = '- '+numeral(obj.amount).format('0,0.00');
+							}else{
+								obj.amount = numeral(Math.abs(obj.amount)).format('0,0.00');
+							}
 
 							obj.description =  obj.description.toUpperCase();
 							obj.dept = obj.deptcode;

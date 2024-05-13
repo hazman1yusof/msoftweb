@@ -1514,7 +1514,7 @@ $(document).ready(function (){
 			
 			let editurl = "./arenquiry/form?"+
 				$.param({
-					action: 'arenquiry_save',
+					action: 'add_Tracking',
 				});
 			$("#jqGrid_Tracking").jqGrid('setGridParam', { editurl: editurl });
 		},

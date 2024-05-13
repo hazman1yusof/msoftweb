@@ -55,6 +55,7 @@ class ARAgeingDtl_ReportController extends defaultController
     public function showpdf(Request $request){
         
         $date = Carbon::parse($request->date)->format('Y-m-d');
+        $date_title = Carbon::parse($request->date)->format('d-m-Y');
         $debtortype = $request->debtortype;
         $debtorcode_from = $request->debtorcode_from;
         if(empty($request->debtorcode_from)){
@@ -247,7 +248,7 @@ class ARAgeingDtl_ReportController extends defaultController
         $debtortype = collect($array_report)->unique('debtortycode');
         $debtorcode = collect($array_report)->unique('debtorcode');
         
-        $title = "AR AGEING DETAILS";
+        $title = "AR AGEING DETAILS as at ".$date_title;
         
         $company = DB::table('sysdb.company')
                     ->where('compcode', '=', session('compcode'))

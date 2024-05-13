@@ -1165,13 +1165,22 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		var idtopush = $(event.currentTarget).siblings("input[type='text']").end().attr('id');
 		var jqgrid = $(event.currentTarget).siblings("input[type='text']").end().attr('jqgrid');
 		var optid = (obj.urlParam.hasOwnProperty('optid'))? obj.urlParam.optid:null;
+		console.log('aspsad');
 
 		if(obj.checkstat!='none'){
 			// renull_search(event.data.data);
 			if(obj.dialog_.hasOwnProperty('after_check')){
-				obj.check(obj.errorField,idtopush,jqgrid,optid,undefined,function(){
-					obj.dialog_.after_check(obj);
-				});
+				if(obj.dialog_.hasOwnProperty('before_check')){
+					obj.check(obj.errorField,idtopush,jqgrid,optid,function(){
+						obj.dialog_.before_check(obj);
+					},function(){
+						obj.dialog_.after_check(obj);
+					});
+				}else{
+					obj.check(obj.errorField,idtopush,jqgrid,optid,undefined,function(){
+						obj.dialog_.after_check(obj);
+					});
+				}
 			}else{
 				obj.check(obj.errorField,idtopush,jqgrid,optid);
 			}

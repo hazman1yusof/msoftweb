@@ -240,7 +240,7 @@ class PurchaseRequestController extends defaultController
                 }
                 //
 
-                if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
+                if(!$this->skip_authorization_2($request,$purreqhd_get)){
 
                     // 1. check authorization
                     // $authorise = DB::table('material.authdtl')
@@ -421,7 +421,7 @@ class PurchaseRequestController extends defaultController
 
                 $purreqhd_get = $purreqhd->first();
 
-                if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
+                if(!$this->skip_authorization_2($request,$purreqhd_get)){
 
                     $authorise = DB::table('material.authdtl')
                         ->where('authorid','=',session('username'))
@@ -513,7 +513,7 @@ class PurchaseRequestController extends defaultController
 
                 $purreqhd_get = $purreqhd->first();
 
-                if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
+                if(!$this->skip_authorization_2($request,$purreqhd_get)){
 
                     $authorise = DB::table('material.authdtl')
                         ->where('authorid','=',session('username'))
@@ -878,6 +878,115 @@ class PurchaseRequestController extends defaultController
                         'deptcode' => $purreqhd_get->reqdept,
                         'recstatus' => 'APPROVED',
                         'trantype' => 'DONE',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }
+
+            return true;
+        }
+        
+        return false;   
+        
+    }
+
+    function skip_authorization_2(Request $request, $prhd){
+
+        $idno = $prhd->idno;
+        $recno = $prhd->recno;
+        $deptcode = $prhd->reqdept;
+        $maxlimit = $prhd->totamount;
+        $authdtl = DB::table('material.authdtl')
+                    ->where('authorid','=',session('username'))
+                    ->where('trantype','=','PR')
+                    ->where('maxlimit','>=',$maxlimit)
+                    ->where(function($q) use ($deptcode) {
+                          $q->where('deptcode', $deptcode)
+                            ->orWhere('deptcode', 'ALL');
+                      });
+
+        if($authdtl->count() > 0){
+            $array_update = [];
+            foreach ($authdtl->get() as $key => $value) {
+
+                switch ($value->recstatus) {
+                    case 'SUPPORT':
+                        $array_update['supportby'] = session('username');
+                        $array_update['supportdate'] = Carbon::now("Asia/Kuala_Lumpur");
+                        break;
+                    case 'VERIFIED':
+                        $array_update['verifiedby'] = session('username');
+                        $array_update['verifieddate'] = Carbon::now("Asia/Kuala_Lumpur");
+                        break;
+                    case 'APPROVED':
+                        $array_update['approvedby'] = session('username');
+                        $array_update['approveddate'] = Carbon::now("Asia/Kuala_Lumpur");
+                        break;
+                }
+                
+            }
+
+            if(!empty($array_update['approvedby'])){
+                $recstatus = 'APPROVED';
+                $recstatus_after = 'DONE';
+                $array_update['recstatus'] = 'APPROVED';
+                $array_update['supportby'] = session('username');
+                $array_update['supportdate'] = Carbon::now("Asia/Kuala_Lumpur");
+                $array_update['verifiedby'] = session('username');
+                $array_update['verifieddate'] = Carbon::now("Asia/Kuala_Lumpur");
+                $array_update['approvedby'] = session('username');
+                $array_update['approveddate'] = Carbon::now("Asia/Kuala_Lumpur");
+            }else if(!empty($array_update['verifiedby'])){
+                $recstatus = 'VERIFIED';
+                $recstatus_after = 'APPROVED';
+                $array_update['recstatus'] = 'VERIFIED';
+                $array_update['supportby'] = session('username');
+                $array_update['supportdate'] = Carbon::now("Asia/Kuala_Lumpur");
+                $array_update['verifiedby'] = session('username');
+                $array_update['verifieddate'] = Carbon::now("Asia/Kuala_Lumpur");
+            }else if(!empty($array_update['supportby'])){
+                $recstatus = 'SUPPORT';
+                $recstatus_after = 'VERIFIED';
+                $array_update['recstatus'] = 'SUPPORT';
+                $array_update['supportby'] = session('username');
+                $array_update['supportdate'] = Carbon::now("Asia/Kuala_Lumpur");
+            }else{
+                return false;
+            }
+
+            DB::table("material.purordhd")
+                ->where('idno',$idno)
+                ->update($array_update);
+
+            DB::table("material.purorddt")
+                ->where('recno','=',$recno)
+                ->update([
+                    'recstatus' => $recstatus,
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            $queuepo = DB::table("material.queuepo")
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$recno);
+
+            if($queuepo->exists()){
+                $queuepo
+                    ->update([
+                        'recstatus' => $recstatus,
+                        'trantype' => $recstatus_after,
+                    ]);
+                    
+            }else{
+
+                DB::table("material.queuepo")
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'recno' => $recno,
+                        'AuthorisedID' => session('username'),
+                        'deptcode' => $deptcode,
+                        'recstatus' => $recstatus,
+                        'trantype' => $recstatus_after,
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);

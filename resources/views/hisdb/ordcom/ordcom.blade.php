@@ -52,7 +52,7 @@
 			<ul class="nav nav-tabs">
 				<div id="ordcom_div_cyclebill">
 					<span><b>Cycle Bill : </b></span>
-					<a class="cyclebill" id="cyclebill_dtl" href="" target="_blank">Detail</a>
+					<a class="cyclebill" id="cyclebill_dtl" href="" target="_blank">Detail</a> | 
 					<a class="cyclebill" id="cyclebill_summ" href="" target="_blank">Summary</a>
 					<br>
 				</div>

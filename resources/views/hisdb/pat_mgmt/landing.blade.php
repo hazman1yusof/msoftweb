@@ -64,6 +64,7 @@
 
 		<div class="panel" style="padding: 5px;">
 			&nbsp;&nbsp;
+			@if (request()->get('curpat') == 'false')
 			<button id="patientBox" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New</button>
 			&nbsp;&nbsp;
 			<button id="btn_mykad" type="button" class="btn btn-default btn-md" >
@@ -72,6 +73,7 @@
 			<button id="btn_biometric" type="button" class="btn btn-default btn-md" >
 			<img src="img/biometric.png" width="22" /> Biometric </button>
 			&nbsp;&nbsp;
+			@endif
 			@if (request()->get('curpat') == 'true')
 			<button id="btn_patlabel" type="button" class="btn btn-default btn-md" >
 			<img src="img/labelprinter.png" width="22" /> Pat Label </button>

@@ -18,7 +18,7 @@ $(document).ready(function(){
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'TT', name: 'trxtype', width: 30, classes: 'wrap'},
-			{ label: 'Date', name: 'trxdate', width: 100, classes: 'wrap',editable:true,
+			{ label: 'Date', name: 'trxdate', width: 80, classes: 'wrap',editable:true,
 				// formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				edittype: 'custom', editoptions:
 				{
@@ -43,6 +43,16 @@ $(document).ready(function(){
 				edittype: 'custom', editoptions:
 				{
 					custom_element: itemcodeCustomEdit_pkg,
+					custom_value: galGridCustomValue_pkg
+				},
+			},
+			{
+				label: 'Doctor Code', name: 'doctorcode', width: 100, classes: 'wrap', editable: true,
+				editrules: { required: false, custom: true, custom_func: cust_rules_pkg },
+				formatter: showdetail_pkg,
+				edittype: 'custom', editoptions:
+				{
+					custom_element: doctorcodeCustomEdit_pkg,
 					custom_value: galGridCustomValue_pkg
 				},
 			},
@@ -157,7 +167,6 @@ $(document).ready(function(){
 		subGrid: true,
 		subGridRowExpanded: function(subgrid_id, row_id) {
 	    	var selrowdata = $('#jqGrid_pkg').jqGrid ('getRowData', row_id);
-	    	console
 			var subgrid_table_id = subgrid_id+"_t";
 
 			$("#"+subgrid_id).html("<table id='"+subgrid_table_id+"' class='scroll'></table>");
@@ -165,26 +174,18 @@ $(document).ready(function(){
 				url:"./ordcom/table?action=ordcom_table_pkgdet&id="+selrowdata.id,
 				datatype: "json",
 				colModel: [
-					{ label: 'TT', name: 'trxtype', width: 30, classes: 'wrap'},
-					{ label: 'Date', name: 'trxdate', width: 100, classes: 'wrap'},
-					{ label: 'Dept. Code', name: 'deptcode', width: 100, classes: 'wrap',formatter: showdetail_pkg},
-					{ label: 'Item Code', name: 'chgcode', width: 150, classes: 'wrap',formatter: showdetail_pkg},
-					{ label: 'UOM Code', name: 'uom', width: 100, classes: 'wrap',formatter: showdetail_pkg},
-					{ label: 'Tax', name: 'taxcode', width: 80, classes: 'wrap',},
-					{ label: 'Unit<br>Price', name: 'unitprce', width: 80, align: 'right', classes: 'wrap txnum',
-						formatter:'currency',formatoptions:{thousandsSeparator: ",",} 
-					},
-					{ label: 'Quantity', name: 'quantity', width: 60, align: 'right', classes: 'wrap txnum',
+					{ label: 'Package Code', name: 'pkgcode', width: 140, classes: 'wrap',formatter: showdetail_pkg},
+					{ label: 'Item Code', name: 'chgcode', width: 140, classes: 'wrap',formatter: showdetail_pkg},
+					{ label: 'UOM Code', name: 'uom', width: 60, classes: 'wrap',formatter: showdetail_pkg},
+					{ label: 'Dept. Code', name: 'issdept', width: 60, classes: 'wrap',formatter: showdetail_pkg},
+					{ label: 'Quantity', name: 'pkgqty', width: 60, align: 'right', classes: 'wrap txnum',
 						formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 					},
-					{ label: 'Total<br>Amount', name: 'amount', width: 80, align: 'right', classes: 'wrap txnum',
-						formatter:'currency',formatoptions:{thousandsSeparator: ",",}
+					{ label: 'Quantity Used', name: 'qtyused', width: 60, align: 'right', classes: 'wrap txnum',
+						formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 					},
-					{ label: 'Discount<br>Amount', name: 'discamt', width: 80, align: 'right', classes: 'wrap txnum',
-						formatter:abscurrency },
-					{ label: 'Net<br>Amount', name: 'totamount', width: 80, align: 'right', classes: 'wrap txnum',
-						formatter:totamountFormatter_pkg,
-						editrules:{required: true},editoptions:{readonly: "readonly"},
+					{ label: 'Quantity Balance', name: 'qtybal', width: 60, align: 'right', classes: 'wrap txnum',
+						formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 					},
 					{ label: 'id', name: 'id', width: 10, hidden: true, key:true },
 				],
@@ -205,7 +206,7 @@ $(document).ready(function(){
 	
 	$("#jqGrid_pkg").inlineNav('#jqGrid_pkg_pager', {
 		add: true,
-		edit: true,
+		edit: false,
 		cancel: true,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
@@ -289,6 +290,7 @@ var myEditOptions_pkg = {
 		dialog_uomcode_pkg.on();
 		// dialog_uom_recv_pkg.on();
 		dialog_tax_pkg.on();
+		dialog_doctorcode_pkg.on();
 		// dialog_dosage_pkg.on();
 		// dialog_frequency_pkg.on();
 		// dialog_instruction_pkg.on();
@@ -468,6 +470,10 @@ var myEditOptions_pkg_edit = {
 	        	}
 	        }
 	    );
+
+	    dialog_doctorcode_pkg.on();
+		dialog_doctorcode_pkg.id_optid = rowid;
+		// dialog_doctorcode_pkg.check(errorField);
 
 		// dialog_dosage_pkg.on();
 		// dialog_frequency_pkg.on();
@@ -993,6 +999,62 @@ var dialog_uomcode_pkg = new ordialog(
 );
 dialog_uomcode_pkg.makedialog(false);
 
+var dialog_doctorcode_pkg = new ordialog(
+	'doctorcode_pkg',['hisdb.doctor'],"#jqGrid_pkg input[name='doctorcode']",errorField,
+	{	colModel:
+		[
+			{label:'Doctor Code', name:'doctorcode', width:200, classes:'pointer', canSearch:true, or_search:true},
+			{label:'Doctor Name', name:'doctorname', width:400, classes:'pointer', canSearch:true, checked:true, or_search:true},
+		],
+		urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','ACTIVE']
+				},
+		ondblClickRow:function(event){
+			if(event.type == 'keydown'){
+
+				var optid = $(event.currentTarget).get(0).getAttribute("optid");
+				var id_optid = optid.substring(0,optid.search("_"));
+			}else{
+
+				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+				var id_optid = optid.substring(0,optid.search("_"));
+			}
+			// dialog_uom_recv_pkg.urlParam.deptcode = data.deptcode;
+		},
+		gridComplete: function(obj){
+			var gridname = '#'+obj.gridname;
+			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
+				$(gridname+' tr#1').click();
+				$(gridname+' tr#1').dblclick();
+				$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+			}
+		}
+		
+	},{
+		title:"Select Tax Code For Item",
+		open:function(obj_){
+
+			dialog_doctorcode_pkg.urlParam.filterCol=['compcode','recstatus'];
+			dialog_doctorcode_pkg.urlParam.filterVal=['session.compcode','ACTIVE'];
+		},
+		close: function(){
+			// $(dialog_deptcode_pkg.textfield)			//lepas close dialog focus on next textfield 
+			// 	.closest('td')						//utk dialog dalam jqgrid jer
+			// 	.next()
+			// 	.find("input[type=text]").focus();
+		},
+		justb4refresh: function(obj_){
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
+		},
+		justaftrefresh: function(obj_){
+			$("#Dtext_"+obj_.unique).val('');
+		}
+	},'urlParam', 'radio', 'tab' 	
+);
+dialog_doctorcode_pkg.makedialog(false);
+
 // var dialog_uom_recv_pkg = new ordialog(
 // 	'uom_recv_pkg',['material.uom AS u'],"#jqGrid_pkg input[name='uom_recv']",errorField,
 // 	{	colModel:
@@ -1199,6 +1261,10 @@ function deptcodeCustomEdit_pkg(val,opt){
 	val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 	return $(`<div class="input-group"><input autocomplete="off" jqgrid="jqGrid_pkg" optid="`+opt.id+`" id="`+opt.id+`" name="deptcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>`);
 }
+function doctorcodeCustomEdit_pkg(val,opt){  	
+	val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+	return $(`<div class="input-group"><input autocomplete="off" jqgrid="jqGrid_pkg" optid="`+opt.id+`" id="`+opt.id+`" name="doctorcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>`);
+}
 function remarkCustomEdit_pkg(val,opt){
 	var myreturn = `<label class='oe_pkg_label'>Dose</label><div class="oe_pkg_div input-group"><input autocomplete="off" jqgrid="jqGrid_pkg" optid="`+opt.id+`" id="`+opt.id+`" name="dosage" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>`;
 	myreturn += `<label class='oe_pkg_label'>Frequency</label><div class="oe_pkg_div input-group"><input autocomplete="off" jqgrid="jqGrid_pkg" optid="`+opt.id+`" id="`+opt.id+`" name="frequency" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>`;
@@ -1221,10 +1287,13 @@ function showdetail_pkg(cellvalue, options, rowObject){
 	var field,table, case_;
 	switch(options.colModel.name){
 		case 'chgcode':field=['chgcode','description'];table="hisdb.chgmast";case_='chgcode';break;
+		case 'pkgcode':field=['chgcode','description'];table="hisdb.chgmast";case_='chgcode';break;
 		case 'uom':field=['uomcode','description'];table="material.uom";case_='uom';break;
 		case 'uom_recv':field=['uomcode','description'];table="material.uom";case_='uom';break;
 		case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 		case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
+		case 'doctorcode':field=['doctorcode','doctorname'];table="hisdb.doctor";case_='deptcode';break;
+		case 'issdept':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
 	}
 	var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
@@ -1243,6 +1312,7 @@ function cust_rules_pkg(value, name) {
 		case 'Dept. Code': temp = $("#jqGrid_pkg input[name='deptcode']"); break;
 		case 'Item Code': temp = $("#jqGrid_pkg input[name='chgcode']"); break;
 		case 'UOM Code': temp = $("#jqGrid_pkg input[name='uom']"); break;
+		case 'Doctor Code': temp = $("#jqGrid_pkg input[name='doctorcode']"); break;
 		case 'UOM Code<br/>Store Dept.': temp = $("#jqGrid_pkg input[name='uom_recv']"); break;
 		case 'Price Code': temp = $("#jqGrid_pkg input[name='pricecode']"); break;
 		case 'Tax': temp = $("#jqGrid_pkg input[name='taxcode']"); break;

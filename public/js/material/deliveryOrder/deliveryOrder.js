@@ -1135,6 +1135,17 @@ $(document).ready(function () {
 			errorField.length=0;
 			$("#jqGrid2 input[name='pricecode']").focus().select();
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
+        	$("#jqGrid2 input#"+rowid+"_pricecode").val('IV');
+        	dialog_pricecode.id_optid = rowid;
+	        dialog_pricecode.check(errorField,rowid+"_pricecode","jqGrid2",null,
+	        	function(self){
+	        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+		        },function(self){
+					fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			    }
+		    );
+
+        	$("#jqGrid2 input#"+rowid+"_itemcode").focus();
 
         	// if($('#delordhd_srcdocno').val()!='' && $("#jqGrid2_iladd").css('display') == 'none' ){
         	// 	$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='taxcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='pricecode']").attr('readonly','readonly');
@@ -1165,6 +1176,14 @@ $(document).ready(function () {
 			$("input[name='batchno']").keydown(function(e) {//when click tab at batchno, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
+			});
+
+			$("#jqGrid2 input#"+rowid+"_pricecode").on('focus',function(){
+				let focus = $(this).data('focus');
+				if(focus == undefined){
+					$(this).data('focus',1);
+					$("#jqGrid2 input#"+rowid+"_itemcode").focus();
+				}
 			});
 
         	// cari_gstpercent($("#jqGrid2 input[name='taxcode']").val());
@@ -1303,6 +1322,15 @@ $(document).ready(function () {
 			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount"]);
 					Array.prototype.push.apply(mycurrency_np.array, ["#"+ids[i]+"_qtydelivered"]);
 				}
+
+				dialog_pricecode.id_optid = ids[i];
+		        dialog_pricecode.check(errorField,ids[i]+"_pricecode","jqGrid2",null,
+		        	function(self){
+		        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			        },function(self){
+						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+				    }
+			    );
 
 		        dialog_itemcode.id_optid = ids[i];
 		        dialog_itemcode.check(errorField,ids[i]+"_itemcode","jqGrid2",null,
@@ -2358,9 +2386,6 @@ $(document).ready(function () {
 					mycurrency2.formatOnBlur();//make field to currency on leave cursor
 					mycurrency_np.formatOnBlur();
 				}
-
-				
-
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;

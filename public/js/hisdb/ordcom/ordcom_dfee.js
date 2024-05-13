@@ -46,7 +46,7 @@ $(document).ready(function(){
 					custom_value: galGridCustomValue_dfee
 				},
 			},{
-				label: 'Doctor', name: 'brandname', width: 100, classes: 'wrap', editable: true,
+				label: 'Doctor', name: 'doctorname', width: 100, classes: 'wrap', editable: true,
 				editrules: { required: false },editoptions:{readonly: "readonly"}
 			},{
 				label: 'UOM Code', name: 'uom', hidden:true
