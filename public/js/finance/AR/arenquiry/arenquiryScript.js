@@ -366,9 +366,10 @@ $(document).ready(function (){
 			let newval = $("#comment_2").val();
 			let rowid = $('#comment_2').data('rowid');
 			$("#jqGrid_Tracking").jqGrid('setRowData', rowid, {comment_:newval});
-			if($("#jqGridPagerTracking_SaveAll").css('display') == 'none'){
-				$("#jqGrid_Tracking_ilsave").click();
-			}
+			// $("#jqGrid_Tracking").jqGrid('setRowData', rowid, {comment_show:newval});
+			// if($("#jqGridPagerTracking_SaveAll").css('display') == 'none'){
+			// 	$("#jqGrid_Tracking_ilsave").click();
+			// }
 			$(this).dialog('close');
 		}
 	},{
@@ -391,14 +392,14 @@ $(document).ready(function (){
 			let rowid = $('#comment_2').data('rowid');
 			let grid = $('#comment_2').data('grid');
 			$('#comment_2').val($(grid).jqGrid('getRowData', rowid).comment_);
-			let exist = $("#jqGrid2 #"+rowid+"_pouom_convfactor_uom").length;
-			if(grid == '#jqGrid3' || exist == 0){ // lepas ni letak or not edit mode
-				$("#comment_2").prop('disabled',true);
-				$( "#dialog_comment" ).dialog("option", "buttons", butt2_rem);
-			}else{
+			// let exist = $("#jqGrid2 #"+rowid+"_pouom_convfactor_uom").length;
+			// if(grid == '#jqGrid3' || exist == 0){ // lepas ni letak or not edit mode
+			// 	$("#comment_2").prop('disabled',true);
+			// 	$( "#dialog_comment" ).dialog("option", "buttons", butt2_rem);
+			// }else{
 				$("#comment_2").prop('disabled',false);
 				$( "#dialog_comment" ).dialog("option", "buttons", butt1_rem);
-			}
+			// }
 		},
 		close: function (){
 			// fixPositionsOfFrozenDivs.call($('#jqGrid_Tracking')[0]);
@@ -1469,8 +1470,8 @@ $(document).ready(function (){
 	
 	/////////////////////////////////////jqGrid_Tracking/////////////////////////////////////
 	var urlParam_Tracking = {
-		action: 'get_table_default',
-		url: './util/get_table_default',
+		action: 'tracking',
+		url: './arenquiry/table',
 		field: '',
 		table_name: 'debtor.billtrack',
 		table_id: 'idno',
@@ -1493,9 +1494,17 @@ $(document).ready(function (){
 			{ label: 'trantype', name: 'trantype', hidden: true },
 			{ label: 'auditno', name: 'auditno', hidden: true },
 			// { label: 'Seq No', name: 'seqno', width: 20, editable: true },
-			{ label: 'Trx Code', name: 'trxcode', width: 50, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
+			// { label: 'Trx Code', name: 'trxcode', width: 50, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
+			// 	editoptions: {
+			// 		value: "Send to Debtor:Send to Debtor;Send to Consultant:Send to Consultant;Receive from Consultant:Receive from Consultant;Follow-up with Consultant:Follow-up with Consultant;Receive by Debtor:Receive by Debtor;Others:Others"
+			// 	},
+			// },
+			{ label: 'Trx Code', name: 'trxcode', width: 50, classes: 'wrap', editable: true,
+				editrules: { required: true, custom: true, custom_func: cust_rules },
+				formatter: showdetail, edittype: 'custom',
 				editoptions: {
-					value: "Send to Debtor:Send to Debtor;Send to Consultant:Send to Consultant;Receive from Consultant:Receive from Consultant;Follow-up with Consultant:Follow-up with Consultant;Receive by Debtor:Receive by Debtor;Others:Others"
+					custom_element: trxcodeCustomEdit,
+					custom_value: galGridCustomValue2
 				},
 			},
 			{ label: 'Trx Date', name: 'trxdate', width: 40, classes: 'wrap', editable: true, formatter: "date",
@@ -1520,8 +1529,7 @@ $(document).ready(function (){
 			{ label: 'Entered date/time', name: 'adddate', width: 50 },
 			{ label: 'Location', name: 'computerid', width: 20, hidden: true },
 			{ label: 'Comment', name: 'comment_button', width: 100, formatter: formatterComment, unformat: unformatComment },
-			{ label: 'Comment', name: 'comment_', hidden: true },
-			{ label: 'Comment', name: 'comment_show', width: 150, classes: 'wrap', hidden: false },
+			{ label: 'Comment', name: 'comment_', width: 150, classes: 'wrap' },
 			{ label: 'Status', name: 'recstatus', width: 40 },
 			{ label: 'adddate', name: 'adddate', width: 10, hidden: true },
 			{ label: 'upduser', name: 'upduser', width: 10, hidden: true },
@@ -1631,6 +1639,7 @@ $(document).ready(function (){
 					trantype: selrowData("#jqGrid").db_trantype,
 					auditno: selrowData("#jqGrid").db_auditno,
 					lineno_: selrowData("#jqGrid").db_lineno_,
+					comment_: selrowData("#jqGrid_Tracking").comment_,
 				});
 			$("#jqGrid_Tracking").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -1762,7 +1771,7 @@ $(document).ready(function (){
 					// 'auditno' : $("#jqGrid_Tracking input#"+ids[i]+"_auditno").val(),
 					'trxcode' : $("#jqGrid_Tracking select#"+ids[i]+"_trxcode").val(),
 					'trxdate' : $("#jqGrid_Tracking input#"+ids[i]+"_trxdate").val(),
-					// 'comment_' : $("#jqGrid_Tracking input#"+ids[i]+"_comment_").val(),
+					'comment_' : data.comment_,
 				}
 				
 				jqGrid_Tracking_data.push(obj);
@@ -2317,6 +2326,9 @@ $(document).ready(function (){
 			// RC RF
 			case 'dbacthdr_payercode': field = ['debtorcode','name'];table = "debtor.debtormast";case_ = 'dbacthdr_payercode';break;
 			case 'dbacthdr_trantype': field = ['trantype','description'];table = "sysdb.sysparam";case_ = 'dbacthdr_trantype';break;
+
+			//tracking
+			case 'trxcode': return cellvalue;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 		
@@ -2408,6 +2420,34 @@ $(document).ready(function (){
 			<span><input id="`+opt.id+`_discamt" name="discamt" type="hidden"></span>
 			<span><input id="`+opt.id+`_rate" name="rate" type="hidden"></span>`);
 	}
+
+	function trxcodeCustomEdit(val,opt){
+		val = getEditVal(val);
+
+		var array_track=[
+			"Send to Debtor","Send to Consultant","Receive from Consultant","Follow-up with Consultant","Receive by Debtor","Others"
+		];
+		var result=[
+			"Send to Debtor","Send to Consultant","Receive from Consultant","Follow-up with Consultant","Receive by Debtor","Others"
+		];
+
+		var getRowData = $('#jqGrid_Tracking').jqGrid('getRowData');
+		getRowData.forEach(function (e,i){
+			if(i !== 0 ){
+				if(array_track.find((element) => e.trxcode)){
+					result = result.filter((element) => element != e.trxcode);
+				}
+			}
+		});
+
+		var result_str = '';
+		result.forEach(function(e,i){
+			result_str=result_str+'<option role="option" value="'+e+'">'+e+'</option>';
+		});
+
+
+		return $(`<select role="select" optid="`+opt.id+`" id="`+opt.id+`" name="trxcode" size="1" class="editable inline-edit-cell form-control">`+result_str+`</select>`);
+	}
 	
 	function taxcodeCustomEdit(val,opt){
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
@@ -2429,6 +2469,15 @@ $(document).ready(function (){
 		}
 		else if(operation == 'set'){
 			$('input',elem).val(value);
+		}
+	}
+
+	function galGridCustomValue2(elem, operation, value){
+		if(operation == 'get'){
+			return $(elem).val();
+		}
+		else if(operation == 'set'){
+			$(elem).val(value);
 		}
 	}
 	

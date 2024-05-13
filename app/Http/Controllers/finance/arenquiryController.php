@@ -30,6 +30,8 @@ class arenquiryController extends defaultController
         switch($request->action){
             case 'maintable':
                 return $this->maintable($request);
+            case 'tracking':
+                return $this->tracking($request);
             case 'populate_rc':
                 return $this->populate_rc($request);
             case 'populate_rf':
@@ -226,6 +228,30 @@ class arenquiryController extends defaultController
         $responce->rows = $paginate->items();
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);
+        
+    }
+
+    public function tracking(Request $request){
+            // dd($request->filterVal[1]);
+        $table = DB::table('debtor.billtrack')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=',$request->filterVal[1])
+                        ->where('trantype','=',$request->filterVal[2])
+                        ->where('auditno','=',$request->filterVal[3])
+                        ->where('lineno_','=',$request->filterVal[4]);
+        
+        $paginate = $table->paginate($request->rows);
+        
+        /////////////////paginate/////////////////
+        
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
         $responce->sql_query = $this->getQueries($table);
         
         return json_encode($responce);
@@ -563,7 +589,7 @@ class arenquiryController extends defaultController
                     ->where('idno','=',$value['idno'])
                     ->update([
                         'trxdate' => $this->turn_date($value['trxdate']),
-                        // 'comment_' => $value['comment_'],
+                        'comment_' => $value['comment_'],
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'lastcomputerid' => session('computerid'),
