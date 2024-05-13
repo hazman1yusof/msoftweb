@@ -488,6 +488,13 @@ Route::post('/deptItemList/form','material\deptItemListController@form');
 Route::get('/deptItemList/showExcel','material\deptItemListController@showExcel');
 Route::get('/deptItemList/showpdf','material\deptItemListController@showpdf');
 
+//// stockExpiry report ///
+Route::get('/stockExpiry','material\stockExpiryController@show');
+Route::get('/stockExpiry/table','material\stockExpiryController@table');
+Route::post('/stockExpiry/form','material\stockExpiryController@form');
+Route::get('/stockExpiry/showExcel','material\stockExpiryController@showExcel');
+Route::get('/stockExpiry/showpdf','material\stockExpiryController@showpdf');
+
 //// delivery Order setup page ///
 Route::get('/deliveryOrder','material\DeliveryOrderController@show');
 Route::get('/deliveryOrder/table','material\DeliveryOrderController@table');
