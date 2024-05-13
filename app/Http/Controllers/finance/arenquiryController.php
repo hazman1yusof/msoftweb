@@ -52,6 +52,8 @@ class arenquiryController extends defaultController
                 return $this->add_Tracking($request);
             case 'edit_Tracking':
                 return $this->edit_Tracking($request);
+            case 'edit_all_Tracking':
+                return $this->edit_all_Tracking($request);
             case 'del_Tracking':
                 return $this->del_Tracking($request);
             default:
@@ -513,7 +515,7 @@ class arenquiryController extends defaultController
             DB::table('debtor.billtrack')
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'trxcode' => $request->trxcode,
+                    // 'trxcode' => $request->trxcode,
                     'trxdate' => $this->turn_date($request->trxdate),
                     'comment_' => $request->comment_,
                     'upduser' => session('username'),
@@ -547,7 +549,60 @@ class arenquiryController extends defaultController
         
     }
     
+    public function edit_all_Tracking(Request $request){
+        
+        DB::beginTransaction();
+        
+        try{
+            
+            foreach($request->dataobj as $key => $value){
+                
+                // 1. update detail
+                DB::table('debtor.billtrack')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('idno','=',$value['idno'])
+                    ->update([
+                        'trxdate' => $this->turn_date($value['trxdate']),
+                        // 'comment_' => $value['comment_'],
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastcomputerid' => session('computerid'),
+                    ]);
+                
+                if($value['trxcode'] == 'Send to Debtor'){
+                    
+                    DB::table('debtor.dbacthdr')
+                        ->where('source','=',$request->source)
+                        ->where('trantype','=',$request->trantype)
+                        ->where('auditno','=',$request->auditno)
+                        ->where('lineno_','=',$request->lineno_)
+                        ->where('compcode','=',session('compcode'))
+                        ->update([
+                            'datesend' => $this->turn_date($value['trxdate']),
+                        ]);
+                    
+                }
+                
+            }
+            
+            DB::commit();
+            
+        }catch(\Exception $e){
+            
+            DB::rollback();
+            
+            return response('Error'.$e, 500);
+            
+        }
+        
+    }
+    
     public function del_Tracking(Request $request){
+        
+        // DB::table('debtor.billtrack')
+        //     ->where('compcode','=',session('compcode'))
+        //     ->where('idno','=',$request->idno)
+        //     ->delete();
         
         DB::table('debtor.billtrack')
             ->where('idno','=',$request->idno)
@@ -558,10 +613,19 @@ class arenquiryController extends defaultController
                 'lastcomputerid' => session('computerid')
             ]);
         
-        // DB::table('debtor.billtrack')
-        //     ->where('compcode','=',session('compcode'))
-        //     ->where('idno','=',$request->idno)
-        //     ->delete();
+        if($request->trxcode == 'Send to Debtor'){
+            
+            DB::table('debtor.dbacthdr')
+                ->where('source','=',$request->source)
+                ->where('trantype','=',$request->trantype)
+                ->where('auditno','=',$request->auditno)
+                ->where('lineno_','=',$request->lineno_)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'datesend' => null,
+                ]);
+            
+        }
         
     }
     

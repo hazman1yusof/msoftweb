@@ -361,6 +361,51 @@ $(document).ready(function (){
 			},
 		});
 	
+	var butt1_rem = [{
+		text: "Save", click: function (){
+			let newval = $("#comment_2").val();
+			let rowid = $('#comment_2').data('rowid');
+			$("#jqGrid_Tracking").jqGrid('setRowData', rowid, {comment_:newval});
+			if($("#jqGridPagerTracking_SaveAll").css('display') == 'none'){
+				$("#jqGrid_Tracking_ilsave").click();
+			}
+			$(this).dialog('close');
+		}
+	},{
+		text: "Cancel", click: function (){
+			$(this).dialog('close');
+		}
+	}];
+	
+	var butt2_rem = [{
+		text: "Close", click: function (){
+			$(this).dialog('close');
+		}
+	}];
+	
+	$("#dialog_comment").dialog({
+		autoOpen: false,
+		width: 4/10 * $(window).width(),
+		modal: true,
+		open: function (event, ui){
+			let rowid = $('#comment_2').data('rowid');
+			let grid = $('#comment_2').data('grid');
+			$('#comment_2').val($(grid).jqGrid('getRowData', rowid).comment_);
+			let exist = $("#jqGrid2 #"+rowid+"_pouom_convfactor_uom").length;
+			if(grid == '#jqGrid3' || exist == 0){ // lepas ni letak or not edit mode
+				$("#comment_2").prop('disabled',true);
+				$( "#dialog_comment" ).dialog("option", "buttons", butt2_rem);
+			}else{
+				$("#comment_2").prop('disabled',false);
+				$( "#dialog_comment" ).dialog("option", "buttons", butt1_rem);
+			}
+		},
+		close: function (){
+			// fixPositionsOfFrozenDivs.call($('#jqGrid_Tracking')[0]);
+		},
+		buttons: butt2_rem
+	});
+	
 	$('.nav-tabs a').on('shown.bs.tab', function (e){
 		tabform = $(this).attr('form');
 		rdonly(tabform);
@@ -1400,6 +1445,28 @@ $(document).ready(function (){
 	});
 	
 	///////////////////////////////////Bill Tracking for IN///////////////////////////////////
+	////////////////////////////////////hide at dialogForm////////////////////////////////////
+	function hideatdialogForm(hide,saveallrow){
+		if(saveallrow == 'saveallrow'){
+			$("#jqGrid_Tracking_iledit,#jqGrid_Tracking_iladd,#jqGrid_Tracking_ilcancel,#jqGrid_Tracking_ilsave,#jqGridPagerTracking_Delete,#jqGridPagerTracking_EditAll,#jqGridPagerTracking_Refresh").hide();
+			$("#jqGridPagerTracking_SaveAll,#jqGridPagerTracking_CancelAll").show();
+		}else if(hide){
+			$("#jqGrid_Tracking_iledit,#jqGrid_Tracking_iladd,#jqGrid_Tracking_ilcancel,#jqGrid_Tracking_ilsave,#jqGridPagerTracking_Delete,#jqGridPagerTracking_EditAll,#jqGridPagerTracking_SaveAll,#jqGridPagerTracking_CancelAll,#jqGridPagerTracking_Refresh").hide();
+		}else{
+			$("#jqGrid_Tracking_iladd,#jqGrid_Tracking_ilcancel,#jqGrid_Tracking_ilsave,#jqGridPagerTracking_Delete,#jqGridPagerTracking_EditAll,#jqGridPagerTracking_Refresh").show();
+			$("#jqGridPagerTracking_SaveAll,#jqGrid_Tracking_iledit,#jqGridPagerTracking_CancelAll").hide();
+		}
+	}
+	
+	////////////////////////////////////////edit all////////////////////////////////////////
+	function onall_editfunc(){
+		errorField.length = 0;
+		// dialog_code.on();
+		
+		// mycurrency2.formatOnBlur(); // make field to currency on leave cursor
+		// mycurrency_np.formatOnBlur(); // make field to currency on leave cursor
+	}
+	
 	/////////////////////////////////////jqGrid_Tracking/////////////////////////////////////
 	var urlParam_Tracking = {
 		action: 'get_table_default',
@@ -1413,14 +1480,18 @@ $(document).ready(function (){
 	}
 	
 	/////////////////////////////////parameter for saving url/////////////////////////////////
-	var addmore_jqgrid = {more:false,state:false,edit:false}
+	var addmore_jqgrid2 = {more:false,state:false,edit:false}
 	
 	$("#jqGrid_Tracking").jqGrid({
 		datatype: "local",
 		editurl: "./arenquiry/form",
 		colModel: [
 			{ label: 'idno', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'lineno_', name: 'lineno_', hidden: true },
 			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'source', name: 'source', hidden: true },
+			{ label: 'trantype', name: 'trantype', hidden: true },
+			{ label: 'auditno', name: 'auditno', hidden: true },
 			// { label: 'Seq No', name: 'seqno', width: 20, editable: true },
 			{ label: 'Trx Code', name: 'trxcode', width: 50, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
 				editoptions: {
@@ -1446,9 +1517,11 @@ $(document).ready(function (){
 				}
 			},
 			{ label: 'Entered by', name: 'adduser', width: 30 },
-			{ label: 'Entered date/time', name: 'adddate', width: 30 },
+			{ label: 'Entered date/time', name: 'adddate', width: 50 },
 			{ label: 'Location', name: 'computerid', width: 20, hidden: true },
-			{ label: 'Comment', name: 'comment_', width: 80 },
+			{ label: 'Comment', name: 'comment_button', width: 100, formatter: formatterComment, unformat: unformatComment },
+			{ label: 'Comment', name: 'comment_', hidden: true },
+			{ label: 'Comment', name: 'comment_show', width: 150, classes: 'wrap', hidden: false },
 			{ label: 'Status', name: 'recstatus', width: 40 },
 			{ label: 'adddate', name: 'adddate', width: 10, hidden: true },
 			{ label: 'upduser', name: 'upduser', width: 10, hidden: true },
@@ -1466,27 +1539,39 @@ $(document).ready(function (){
 		sortorder: "asc",
 		pager: "#jqGridPager_Tracking",
 		loadComplete: function (data){
-			if(addmore_jqgrid.more == true){$('#jqGrid_Tracking_iladd').click();}
+			if(addmore_jqgrid2.more == true){$('#jqGrid_Tracking_iladd').click();}
 			else{
 				$('#jqGrid_Tracking').jqGrid('setSelection', "1");
 			}
 			
 			setjqgridHeight(data,'jqGrid_Tracking');
-			addmore_jqgrid.edit = addmore_jqgrid.more = false; // reset
+			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; // reset
 			// calc_jq_height_onchange("jqGrid_Tracking");
 		},
 		gridComplete: function (){
+			$("#jqGrid_Tracking").find(".comment_button").on("click", function (e){
+				$("#comment_2").data('rowid',$(this).data('rowid'));
+				$("#comment_2").data('grid',$(this).data('grid'));
+				$("#dialog_comment").dialog( "open" );
+			});
 			fdl.set_array().reset();
-		},
-		afterShowForm: function (rowid){
+			if(!hide_init){
+				hide_init = 1;
+				hideatdialogForm(false);
+			}
 		},
 		beforeSubmit: function (postdata, rowid){
+			// dialog_paymode.check(errorField);
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e){
-			$("#jqGrid_Tracking_iledit").click();
-			$('#p_error').text(''); // hilangkan duplicate error msj after save
+			// $("#jqGrid_Tracking_iledit").click();
+			// $('#p_error').text(''); // hilangkan duplicate error msj after save
 		},
 	});
+	var hide_init = 0;
+	
+	/////////////////////////////set label jqGrid_Tracking right/////////////////////////////
+	jqgrid_label_align_right("#jqGrid_Tracking");
 	
 	//////////////////////////////////myEditOptions_Tracking//////////////////////////////////
 	var myEditOptions_Tracking = {
@@ -1495,23 +1580,25 @@ $(document).ready(function (){
 			"_token": $("#csrf_token").val()
 		},
 		oneditfunc: function (rowid){
-			$('#jqGrid_Tracking').data('lastselrow','none');
-			$("#jqGridPagerTracking_Delete,#jqGridPagerTracking_Refresh").hide();
-			$("input[name='comment_']").keydown(function (e){ // when click tab at last column in header, auto save
+			$("#jqGrid_Tracking").setSelection($("#jqGrid_Tracking").getDataIDs()[0]);
+			errorField.length = 0;
+			// $("#jqGrid2 input[name='deptcode']").focus().select();
+			$("#jqGridPagerTracking_EditAll,#jqGridPagerTracking_Delete,#jqGridPagerTracking_Refresh").hide();
+			
+			// dialog_code.on();
+			
+			unsaved = false;
+			
+			$("input[name='comment_']").keydown(function (e){ // when click tab at comment_, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_Tracking_ilsave').click();
-				// addmore_jqgrid.state = true;
-				// $('#jqGrid_Tracking_ilsave').click();
-			});
-			
-			$("#jqGrid_Tracking input[type='text']").on('focus',function (){
-				$("#jqGrid_Tracking input[type='text']").parent().removeClass( "has-error" );
-				$("#jqGrid_Tracking input[type='text']").removeClass( "error" );
 			});
 		},
 		aftersavefunc: function (rowid, response, options){
-			// if(addmore_jqgrid.state == true)addmore_jqgrid.more = true; // only addmore after save inline
-			addmore_jqgrid.more = true; // state true maksudnyer ada isi, tak kosong
+			// $('#db_amount').val(response.responseText);
+			// if(addmore_jqgrid2.state == true)addmore_jqgrid2.more = true; // only addmore after save inline
+			addmore_jqgrid2.more = true; // state true maksudnyer ada isi, tak kosong
+			
 			urlParam_Tracking.filterVal[1] = selrowData("#jqGrid").db_source;
 			urlParam_Tracking.filterVal[2] = selrowData("#jqGrid").db_trantype;
 			urlParam_Tracking.filterVal[3] = selrowData("#jqGrid").db_auditno;
@@ -1519,30 +1606,23 @@ $(document).ready(function (){
 			refreshGrid('#jqGrid_Tracking',urlParam_Tracking,'add');
 			// refreshGrid("#jqGrid", urlParam);
 			
+			$("#jqGridPagerTracking_EditAll,#jqGridPagerTracking_Delete,#jqGridPagerTracking_Refresh").show();
 			errorField.length = 0;
-			$("#jqGridPagerTracking_Delete,#jqGridPagerTracking_Refresh").show();
 		},
 		errorfunc: function (rowid,response){
-			var data = JSON.parse(response.responseText)
-			// $('#p_error').text(response.responseText);
-			err_reroll.old_data = data.request;
-			err_reroll.error = true;
-			err_reroll.errormsg = data.errormsg;
+			alert(response.responseText);
 			urlParam_Tracking.filterVal[1] = selrowData("#jqGrid").db_source;
 			urlParam_Tracking.filterVal[2] = selrowData("#jqGrid").db_trantype;
 			urlParam_Tracking.filterVal[3] = selrowData("#jqGrid").db_auditno;
 			urlParam_Tracking.filterVal[4] = selrowData("#jqGrid").db_lineno_;
 			refreshGrid('#jqGrid_Tracking',urlParam_Tracking,'add');
-			// refreshGrid("#jqGrid", urlParam);
+			$("#jqGridPagerTracking_Delete,#jqGridPagerTracking_Refresh").show();
 		},
 		beforeSaveRow: function (options, rowid){
-			$('#p_error').text('');
 			if(errorField.length > 0)return false;
 			
 			let data = $('#jqGrid_Tracking').jqGrid ('getRowData', rowid);
 			// console.log(data);
-			
-			// check_cust_rules();
 			
 			let editurl = "./arenquiry/form?"+
 				$.param({
@@ -1555,89 +1635,8 @@ $(document).ready(function (){
 			$("#jqGrid_Tracking").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc: function (response){
-			urlParam_Tracking.filterVal[1] = selrowData("#jqGrid").db_source;
-			urlParam_Tracking.filterVal[2] = selrowData("#jqGrid").db_trantype;
-			urlParam_Tracking.filterVal[3] = selrowData("#jqGrid").db_auditno;
-			urlParam_Tracking.filterVal[4] = selrowData("#jqGrid").db_lineno_;
-			refreshGrid('#jqGrid_Tracking',urlParam_Tracking,'add');
-			// refreshGrid("#jqGrid", urlParam);
-			$("#jqGridPagerTracking_Delete,#jqGridPagerTracking_Refresh").show();
-		},
-		errorTextFormat: function (data){
-			alert(data);
-		}
-	};
-	
-	///////////////////////////////myEditOptions_Tracking_edit///////////////////////////////
-	var myEditOptions_Tracking_edit = {
-		keys: true,
-		extraparam: {
-			"_token": $("#csrf_token").val()
-		},
-		oneditfunc: function (rowid){
-			$("#jqGridPagerTracking_Delete,#jqGridPagerTracking_Refresh").hide();
-			// $("input[name='rptname']").attr('disabled','disabled');
-			$("input[name='comment_']").keydown(function (e){ // when click tab at last column in header, auto save
-				var code = e.keyCode || e.which;
-				if (code == '9')$('#jqGrid_Tracking_ilsave').click();
-				// addmore_jqgrid.state = true;
-				// $('#jqGrid_Tracking_ilsave').click();
-			});
-			
-			$("#jqGrid_Tracking input[type='text']").on('focus',function (){
-				$("#jqGrid_Tracking input[type='text']").parent().removeClass( "has-error" );
-				$("#jqGrid_Tracking input[type='text']").removeClass( "error" );
-			});
-		},
-		aftersavefunc: function (rowid, response, options){
-			if(addmore_jqgrid.state == true)addmore_jqgrid.more = true; // only addmore after save inline
-			// state true maksudnyer ada isi, tak kosong
-			urlParam_Tracking.filterVal[1] = selrowData("#jqGrid").db_source;
-			urlParam_Tracking.filterVal[2] = selrowData("#jqGrid").db_trantype;
-			urlParam_Tracking.filterVal[3] = selrowData("#jqGrid").db_auditno;
-			urlParam_Tracking.filterVal[4] = selrowData("#jqGrid").db_lineno_;
-			refreshGrid('#jqGrid_Tracking',urlParam_Tracking,'edit');
-			// refreshGrid("#jqGrid", urlParam);
 			errorField.length = 0;
-			$("#jqGridPagerTracking_Delete,#jqGridPagerTracking_Refresh").show();
-		},
-		errorfunc: function (rowid,response){
-			$('#p_error').text(response.responseText);
-			urlParam_Tracking.filterVal[1] = selrowData("#jqGrid").db_source;
-			urlParam_Tracking.filterVal[2] = selrowData("#jqGrid").db_trantype;
-			urlParam_Tracking.filterVal[3] = selrowData("#jqGrid").db_auditno;
-			urlParam_Tracking.filterVal[4] = selrowData("#jqGrid").db_lineno_;
-			refreshGrid('#jqGrid_Tracking',urlParam_Tracking,'edit');
-			// refreshGrid("#jqGrid", urlParam);
-		},
-		beforeSaveRow: function (options, rowid){
-			$('#p_error').text('');
-			if(errorField.length > 0)return false;
-			
-			let data = $('#jqGrid_Tracking').jqGrid ('getRowData', rowid);
-			// console.log(data);
-			
-			// check_cust_rules();
-			
-			let editurl = "./arenquiry/form?"+
-				$.param({
-					action: 'edit_Tracking',
-					idno: selrowData('#jqGrid_Tracking').idno,
-					source: selrowData("#jqGrid").db_source,
-					trantype: selrowData("#jqGrid").db_trantype,
-					auditno: selrowData("#jqGrid").db_auditno,
-					lineno_: selrowData("#jqGrid").db_lineno_,
-				});
-			$("#jqGrid_Tracking").jqGrid('setGridParam', { editurl: editurl });
-		},
-		afterrestorefunc: function (response){
-			urlParam_Tracking.filterVal[1] = selrowData("#jqGrid").db_source;
-			urlParam_Tracking.filterVal[2] = selrowData("#jqGrid").db_trantype;
-			urlParam_Tracking.filterVal[3] = selrowData("#jqGrid").db_auditno;
-			urlParam_Tracking.filterVal[4] = selrowData("#jqGrid").db_lineno_;
-			refreshGrid('#jqGrid_Tracking',urlParam_Tracking,'edit');
-			// refreshGrid("#jqGrid", urlParam);
-			$("#jqGridPagerTracking_Delete,#jqGridPagerTracking_Refresh").show();
+			hideatdialogForm(false);
 		},
 		errorTextFormat: function (data){
 			alert(data);
@@ -1654,7 +1653,7 @@ $(document).ready(function (){
 		addParams: {
 			addRowParams: myEditOptions_Tracking
 		},
-		editParams: myEditOptions_Tracking_edit
+		editParams: myEditOptions_Tracking
 	}).jqGrid('navButtonAdd', "#jqGridPager_Tracking", {
 		id: "jqGridPagerTracking_Delete",
 		caption: "", cursor: "pointer", position: "last",
@@ -1676,8 +1675,13 @@ $(document).ready(function (){
 								_token: $("#csrf_token").val(),
 								action: 'del_Tracking',
 								idno: selrowData('#jqGrid_Tracking').idno,
+								trxcode: selrowData('#jqGrid_Tracking').trxcode,
+								source: selrowData("#jqGrid").db_source,
+								trantype: selrowData("#jqGrid").db_trantype,
+								auditno: selrowData("#jqGrid").db_auditno,
+								lineno_: selrowData("#jqGrid").db_lineno_,
 							}
-							$.post("./arenquiry/form?"+$.param(param),{oper: 'del'}, function (data){
+							$.post("./arenquiry/form?"+$.param(param), {oper: 'del', "_token": $("#_token").val()}, function (data){
 							}).fail(function (data){
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data){
@@ -1689,11 +1693,116 @@ $(document).ready(function (){
 								// refreshGrid("#jqGrid", urlParam);
 							});
 						}else{
-							$("#jqGridPagerTracking_Delete,#jqGridPagerTracking_Refresh").show();
+							$("#jqGridPagerTracking_EditAll").show();
 						}
 					}
 				});
 			}
+		},
+	}).jqGrid('navButtonAdd', "#jqGridPager_Tracking", {
+		id: "jqGridPagerTracking_EditAll",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-th-list",
+		title: "Edit All Row",
+		onClickButton: function (){
+			errorField.length = 0;
+			var ids = $("#jqGrid_Tracking").jqGrid('getDataIDs');
+			for(var i = 0; i < ids.length; i++){
+				$("#jqGrid_Tracking").jqGrid('editRow',ids[i]);
+				
+				$("#jqGrid_Tracking select#"+ids[i]+"_trxcode").attr('disabled','disabled');
+				
+				// if($(".input-group#"+ids[i]+"_code").is(":visible")){
+				// 	dialog_code.id_optid = ids[i];
+				// 	dialog_code.check(errorField,ids[i]+"_code","jqGrid2",null,
+				// 		function (self){
+				// 			if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+				// 		}
+				// 	);
+				// }
+			}
+			onall_editfunc();
+			hideatdialogForm(true,'saveallrow');
+		},
+	}).jqGrid('navButtonAdd', "#jqGridPager_Tracking", {
+		id: "jqGridPagerTracking_SaveAll",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-download-alt",
+		title: "Save All Row",
+		onClickButton: function (){
+			var ids = $("#jqGrid_Tracking").jqGrid('getDataIDs');
+			
+			var jqGrid_Tracking_data = [];
+			
+			// if(errorField.length > 0){
+			// 	console.log(errorField)
+			// 	return false;
+			// }
+			
+			for(var i = 0; i < ids.length; i++){
+				// if(parseInt($('#'+ids[i]+"_quantity").val()) <= 0)return false;
+				var data = $('#jqGrid_Tracking').jqGrid('getRowData',ids[i]);
+				let retval = check_cust_rules("#jqGrid_Tracking",data);
+				// console.log(retval);
+				if(retval[0] != true){
+					alert(retval[1]);
+					// mycurrency2.formatOn();
+					return false;
+				}
+				
+				// cust_rules()
+				
+				var obj =
+				{
+					// 'lineno_' : ids[i],
+					'idno' : data.idno,
+					'lineno_' : $("#jqGrid_Tracking input#"+ids[i]+"_lineno_").val(),
+					// 'source' : $("#jqGrid_Tracking input#"+ids[i]+"_source").val(),
+					// 'trantype' : $("#jqGrid_Tracking input#"+ids[i]+"_trantype").val(),
+					// 'auditno' : $("#jqGrid_Tracking input#"+ids[i]+"_auditno").val(),
+					'trxcode' : $("#jqGrid_Tracking select#"+ids[i]+"_trxcode").val(),
+					'trxdate' : $("#jqGrid_Tracking input#"+ids[i]+"_trxdate").val(),
+					// 'comment_' : $("#jqGrid_Tracking input#"+ids[i]+"_comment_").val(),
+				}
+				
+				jqGrid_Tracking_data.push(obj);
+			}
+			
+			var param = {
+				action: 'edit_all_Tracking',
+				_token: $("#csrf_token").val(),
+				idno: selrowData('#jqGrid_Tracking').idno,
+				source: selrowData("#jqGrid").db_source,
+				trantype: selrowData("#jqGrid").db_trantype,
+				auditno: selrowData("#jqGrid").db_auditno,
+				lineno_: selrowData("#jqGrid").db_lineno_,
+			}
+			
+			$.post("/arenquiry/form?"+$.param(param), {oper: 'edit_all', dataobj: jqGrid_Tracking_data}, function (data){
+			}).fail(function (data){
+				// alert(dialog,data.responseText);
+			}).done(function (data){
+				// mycurrency.formatOn();
+				hideatdialogForm(false);
+				urlParam_Tracking.filterVal[1] = selrowData("#jqGrid").db_source;
+				urlParam_Tracking.filterVal[2] = selrowData("#jqGrid").db_trantype;
+				urlParam_Tracking.filterVal[3] = selrowData("#jqGrid").db_auditno;
+				urlParam_Tracking.filterVal[4] = selrowData("#jqGrid").db_lineno_;
+				refreshGrid("#jqGrid_Tracking", urlParam_Tracking);
+			});
+		},
+	}).jqGrid('navButtonAdd', "#jqGridPager_Tracking", {
+		id: "jqGridPagerTracking_CancelAll",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-remove-circle",
+		title: "Cancel",
+		onClickButton: function (){
+			hideatdialogForm(false);
+			urlParam_Tracking.filterVal[1] = selrowData("#jqGrid").db_source;
+			urlParam_Tracking.filterVal[2] = selrowData("#jqGrid").db_trantype;
+			urlParam_Tracking.filterVal[3] = selrowData("#jqGrid").db_auditno;
+			urlParam_Tracking.filterVal[4] = selrowData("#jqGrid").db_lineno_;
+			refreshGrid("#jqGrid_Tracking", urlParam_Tracking);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager_Tracking", {
 		id: "jqGridPagerTracking_Refresh",
@@ -2305,6 +2414,15 @@ $(document).ready(function (){
 		return $(`<div class="input-group"><input jqgrid="jqGrid2_IN" optid="`+opt.id+`" id="`+opt.id+`" name="taxcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>`);
 	}
 	
+	// jqGrid_Tracking for IN
+	function formatterComment(cellvalue, options, rowObject){
+		return "<button class='comment_button btn btn-success btn-xs' type='button' data-rowid='"+options.rowId+"' data-idno='"+rowObject.idno+"' data-grid='#"+options.gid+"' data-comment_='"+rowObject.comment_+"'><i class='fa fa-file-text-o'></i> Comment</button>";
+	}
+	
+	function unformatComment(cellvalue, options, rowObject){
+		return null;
+	}
+	
 	function galGridCustomValue(elem, operation, value){
 		if(operation == 'get'){
 			return $(elem).find("input").val();
@@ -2851,6 +2969,71 @@ $(document).ready(function (){
 		}
 	}
 	
+	resizeColumnHeader = function (){
+		var rowHight, resizeSpanHeight,
+		// get the header row which contains
+		headerRow = $(this).closest("div.ui-jqgrid-view")
+			.find("table.ui-jqgrid-htable>thead>tr.ui-jqgrid-labels");
+		
+		// reset column height
+		headerRow.find("span.ui-jqgrid-resize").each(function (){
+			this.style.height = "";
+		});
+		
+		// increase the height of the resizing span
+		resizeSpanHeight = "height: " + headerRow.height() + "px !important; cursor: col-resize;";
+		headerRow.find("span.ui-jqgrid-resize").each(function (){
+			this.style.cssText = resizeSpanHeight;
+		});
+		
+		// set position of the dive with the column header text to the middle
+		rowHight = headerRow.height();
+		headerRow.find("div.ui-jqgrid-sortable").each(function (){
+			var ts = $(this);
+			ts.css("top", (rowHight - ts.outerHeight()) / 2 + "px");
+		});
+	},
+	fixPositionsOfFrozenDivs = function (){
+		var $rows;
+		if(typeof this.grid.fbDiv !== "undefined"){
+			$rows = $('>div>table.ui-jqgrid-btable>tbody>tr', this.grid.bDiv);
+			$('>table.ui-jqgrid-btable>tbody>tr', this.grid.fbDiv).each(function (i){
+				var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
+				if($(this).hasClass("jqgrow")){
+					$(this).height(rowHight);
+					rowHightFrozen = $(this).height();
+					if(rowHight !== rowHightFrozen){
+						$(this).height(rowHight + (rowHight - rowHightFrozen));
+					}
+				}
+			});
+			$(this.grid.fbDiv).height(this.grid.bDiv.clientHeight);
+			$(this.grid.fbDiv).css($(this.grid.bDiv).position());
+		}
+		if(typeof this.grid.fhDiv !== "undefined"){
+			$rows = $('>div>table.ui-jqgrid-htable>thead>tr', this.grid.hDiv);
+			$('>table.ui-jqgrid-htable>thead>tr', this.grid.fhDiv).each(function (i){
+				var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
+				$(this).height(rowHight);
+				rowHightFrozen = $(this).height();
+				if(rowHight !== rowHightFrozen){
+					$(this).height(rowHight + (rowHight - rowHightFrozen));
+				}
+			});
+			$(this.grid.fhDiv).height(this.grid.hDiv.clientHeight);
+			$(this.grid.fhDiv).css($(this.grid.hDiv).position());
+		}
+	},
+	fixGboxHeight = function (){
+		var gviewHeight = $("#gview_" + $.jgrid.jqID(this.id)).outerHeight(),
+			pagerHeight = $(this.p.pager).outerHeight();
+		
+		$("#gbox_" + $.jgrid.jqID(this.id)).height(gviewHeight + pagerHeight);
+		gviewHeight = $("#gview_" + $.jgrid.jqID(this.id)).outerHeight();
+		pagerHeight = $(this.p.pager).outerHeight();
+		$("#gbox_" + $.jgrid.jqID(this.id)).height(gviewHeight + pagerHeight);
+	}
+	
 	/////////////////////////////////start allocation RC & RD/////////////////////////////////
 	var dialog_allodebtor = new ordialog(
 		'AlloDebtor', 'debtor.debtormast', '#AlloDebtor', errorField,
@@ -3386,6 +3569,17 @@ $(document).ready(function (){
 		}else{
 			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(200);
 		}
+	}
+	
+	function check_cust_rules(grid,data){
+		var cust_val = true;
+		Object.keys(data).every(function (v,i){
+			cust_val = cust_rules('', $(grid).jqGrid('getGridParam','colNames')[i]);
+			if(cust_val[0] == false){
+				return false;
+			}return true
+		});
+		return cust_val;
 	}
 });
 
