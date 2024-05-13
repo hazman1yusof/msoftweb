@@ -1589,36 +1589,7 @@ $(document).ready(function (){
 			
 			unsaved = false;
 			
-			let editurl = "./arenquiry/form?"+
-				$.param({
-					action: 'add_Tracking',
-				});
-			$("#jqGrid_Tracking").jqGrid('setGridParam', { editurl: editurl });
-		},
-		afterrestorefunc: function (response){
-			urlParam_Tracking.filterVal[1] = selrowData("#jqGrid").db_source;
-			urlParam_Tracking.filterVal[2] = selrowData("#jqGrid").db_trantype;
-			urlParam_Tracking.filterVal[3] = selrowData("#jqGrid").db_auditno;
-			urlParam_Tracking.filterVal[4] = selrowData("#jqGrid").db_lineno_;
-			refreshGrid('#jqGrid_Tracking',urlParam_Tracking,'add_Tracking');
-			refreshGrid("#jqGrid", urlParam);
-			$("#jqGridPagerTracking_Delete,#jqGridPagerTracking_Refresh").show();
-		},
-		errorTextFormat: function (data){
-			alert(data);
-		}
-	};
-	
-	//////////////////////////////////////myEditOptions_Tracking_edit//////////////////////////////////////
-	var myEditOptions_Tracking_edit = {
-		keys: true,
-		extraparam: {
-			"_token": $("#csrf_token").val()
-		},
-		oneditfunc: function (rowid){
-			$("#jqGridPagerTracking_Delete,#jqGridPagerTracking_Refresh").hide();
-			// $("input[name='rptname']").attr('disabled','disabled');
-			$("input[name='comment_']").keydown(function (e){	// when click tab at last column in header, auto save
+			$("input[name='comment_']").keydown(function (e){ // when click tab at comment_, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_Tracking_ilsave').click();
 			});
