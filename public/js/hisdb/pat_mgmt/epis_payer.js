@@ -112,7 +112,7 @@ $(document).ready(function () {
 	});
 
 	var dialog_grpcode = new ordialog(
-		'grpcode',['hisdb.chggroup'],"#jqGrid_gletdept input[name='grpcode']",'errorField',
+		'grpcode',['hisdb.chggroup'],"#jqGrid_gletdept input[name='grpcode']",errorField,
 		{	colModel:
 			[
 				{label:'Group code',name:'grpcode',width:200,classes:'pointer',canSearch:true,or_search:true},
@@ -157,13 +157,14 @@ $(document).ready(function () {
 				dialog_grpcode.urlParam.filterVal=['session.compcode','ACTIVE'];
 			},
 			close: function(obj_){
+				$("#jqGrid_gletdept input[name='grplimit']").focus();
 			}
-		},'urlParam','radio','notab'
+		},'urlParam','radio','tab'
 	);
 	dialog_grpcode.makedialog(false);
 
 	var dialog_chgcode = new ordialog(
-		'chgcode',['hisdb.chgmast'],"#jqGrid_gletitem input[name='chgcode']",'errorField',
+		'chgcode',['hisdb.chgmast'],"#jqGrid_gletitem input[name='chgcode']",errorField,
 		{	colModel:
 			[
 				{label:'Charge code',name:'chgcode',width:200,classes:'pointer',canSearch:true,or_search:true},
@@ -209,7 +210,7 @@ $(document).ready(function () {
 			},
 			close: function(obj_){
 			}
-		},'urlParam','radio','notab'
+		},'urlParam','radio','tab'
 	);
 	dialog_chgcode.makedialog(false);
 

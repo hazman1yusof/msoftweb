@@ -124,6 +124,9 @@ class OrdcomController extends defaultController
             case 'get_table_ordcom':
                 return $this->get_table_ordcom($request);
 
+            case 'final_bill'
+                return $this->final_bill($request);
+
             default:
                 return 'error happen..';
         }
@@ -3861,6 +3864,70 @@ class OrdcomController extends defaultController
         return $billtype_amt_percent;
     }
 
+    public function final_bill(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $mrn = $request->mrn;
+            $episno = $request->episno;
+            $personal_payercode = str_pad($mrn, 7, '0', STR_PAD_LEFT);
+
+            $episode = DB::table('hisdb.episode')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn',$mrn)
+                                ->where('episno',$episno)
+                                ->first();
+
+            $epispayer = DB::table('hisdb.epispayer')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn',$mrn)
+                                ->where('episno',$episno)
+                                ->where('payercode',$personal_payercode);
+
+            if(!$epispayer->exists()){
+                $epispayer_count = DB::table('hisdb.epispayer')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn',$mrn)
+                                ->where('episno',$episno)
+                                ->count();
+
+                DB::table('hisdb.epispayer')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'mrn' => $mrn,
+                            'episno' => $episno,
+                            'payercode' => $personal_payercode,
+                            'lineno' => $epispayer_count+1,
+                            'epistycode' => $episode->epistycode,
+                            'pay_type' => 'PT',
+                            'pyrmode' => null,
+                            'pyrcharge' => null,
+                            'pyrcrdtlmt' => null,
+                            'pyrlmtamt' => 9999999.99,
+                            'totbal' => 9999999.99,
+                            'allgroup' => 1,
+                            'alldept' => 1,
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'adduser' => session('username'),
+                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'lastuser' => session('username'),
+                            'billtype' => $episode->billtype,
+                            'refno' => null,
+                            'chgrate' => null,
+                            'computerid' => session('computerid'),
+                        ]);
+            }
+
+            
+            
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error DB rollback!'.$e, 500);
+        }
+    }
+
     public function showpdf_detail(Request $request){
         $mrn = $request->mrn;
         $episno = $request->episno;
@@ -3951,7 +4018,6 @@ class OrdcomController extends defaultController
         } 
 
         return view('hisdb.ordcom.cb_summary_detail',compact('patmast_episode','chargetrx','chgclass','invgroup','username','footer'));
-
     }
 
     public function showpdf_summ(Request $request){
@@ -4048,7 +4114,6 @@ class OrdcomController extends defaultController
         } 
 
         return view('hisdb.ordcom.cb_summary_summ',compact('patmast_episode','chargetrx','chgclass','invgroup','username','footer'));
-
     }
 
 }
