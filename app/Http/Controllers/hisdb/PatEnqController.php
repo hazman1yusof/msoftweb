@@ -518,12 +518,13 @@ class PatEnqController extends defaultController
                         ]);
 
             }else if($request->oper == 'edit'){
+                // dd(floatval(preg_replace("/[^-0-9\.]/","",$request->pyrlmtamt)));
                 DB::table('hisdb.epispayer')
                         ->where('idno',$request->idno)
                         ->update([  
                             'payercode' => $request->payercode,
                             'pay_type' => $request->pay_type,
-                            'pyrlmtamt' => $request->pyrlmtamt,
+                            'pyrlmtamt' => floatval(preg_replace("/[^-0-9\.]/","",$request->pyrlmtamt)),
                             'allgroup' => $request->allgroup,
                             'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'lastuser' => session('username'),
@@ -536,16 +537,19 @@ class PatEnqController extends defaultController
             DB::commit();
             $responce = new stdClass();
             $responce->res = 'SUCCESS';
-            $responce->idno = $idno;
+            $responce->idno = $request->idno;
             return json_encode($responce);
 
         } catch (\Exception $e) {
+            // DB::rollback();
+
+            // $responce = new stdClass();
+            // $responce->res = 'ERROR';
+
+            // return response(json_encode($responce), 500);
             DB::rollback();
-
-            $responce = new stdClass();
-            $responce->res = 'ERROR';
-
-            return response(json_encode($responce), 500);
+            
+            return response($e->getMessage(), 500);
         }
     }
 

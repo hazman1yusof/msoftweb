@@ -834,24 +834,14 @@ $(document).ready(function (){
 			
 			$("#pdfgen1").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno);
 			$("#pdfgen2").attr('href','./receipt/showpdf?auditno='+selrowData("#jqGrid").db_auditno);
+
+			$("#jqGrid").data('lastselrow',rowid);
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e){
 			$("#jqGridPager td[title='View Selected Row']").click();
 		},
 		gridComplete: function (){
 			enabledPill();
-			$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]); // highlight 1st record
-			
-			// if($("#jqGrid").data('lastselrow') == undefined){
-				
-			// if(oper == 'add' || oper == null || $("#jqGrid").data('lastselrow') == undefined){
-			// 	$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-			// }else{
-			// 	$("#jqGrid").setSelection($("#jqGrid").data('lastselrow'));
-			// 	delay(function (){
-			// 		$('#jqGrid tr#'+$("#jqGrid").data('lastselrow')).focus();
-			// 	}, 300);
-			// }
 			
 			if($('#jqGrid').data('inputfocus') == 'customer_search'){
 				$("#customer_search").focus();
@@ -874,6 +864,14 @@ $(document).ready(function (){
 			// } else if((selrowData("#jqGrid").db_trantype == 'RD')){
 			// 	$('#allocate').hide();
 			// }
+			if($("#jqGrid").data('lastselrow') == undefined){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}else{
+				$("#jqGrid").setSelection($("#jqGrid").data('lastselrow'));
+				delay(function (){
+					$('#jqGrid tr#'+$("#jqGrid").data('lastselrow')).focus();
+				}, 300);
+			}
 			
 			calc_jq_height_onchange("jqGrid");
 			calc_jq_height_onchange("jqGridAlloc");
@@ -2436,6 +2434,10 @@ $(document).ready(function (){
 	// jqGrid_Tracking for IN
 	function trxcodeCustomEdit(val,opt){
 		val = getEditVal(val);
+		if(val != ''){
+			var result_str = '<option role="option" value="'+val+'">'+val+'</option>';
+			return $(`<select role="select" optid="`+opt.id+`" id="`+opt.id+`" name="trxcode" size="1" class="editable inline-edit-cell form-control">`+result_str+`</select>`);
+		}
 		
 		var array_track = [
 			"Send to Debtor","Send to Consultant","Receive from Consultant","Follow-up with Consultant","Receive by Debtor","Others"
@@ -2446,9 +2448,9 @@ $(document).ready(function (){
 		
 		var getRowData = $('#jqGrid_Tracking').jqGrid('getRowData');
 		getRowData.forEach(function (e,i){
-			if(i !== 0){
+			if(i !== 0 && e.recstatus != 'DEACTIVE'){
 				if(array_track.find((element) => e.trxcode)){
-					result = result.filter((element) => element != e.trxcode || e.recstatus == 'DEACTIVE');
+					result = result.filter((element) => element != e.trxcode);
 				}
 			}
 		});
@@ -2479,6 +2481,7 @@ $(document).ready(function (){
 	}
 	
 	function galGridCustomValue2(elem, operation, value){
+		console.log(elem);
 		if(operation == 'get'){
 			return $(elem).val();
 		}
