@@ -241,7 +241,8 @@ class arenquiryController extends defaultController
                 ->where('source','=',$request->filterVal[1])
                 ->where('trantype','=',$request->filterVal[2])
                 ->where('auditno','=',$request->filterVal[3])
-                ->where('lineno_','=',$request->filterVal[4]);
+                ->where('lineno_','=',$request->filterVal[4])
+                ->orderBy('recstatus','asc');
         
         $paginate = $table->paginate($request->rows);
         

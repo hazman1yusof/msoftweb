@@ -1614,7 +1614,7 @@ $(document).ready(function (){
 			urlParam_Tracking.filterVal[3] = selrowData("#jqGrid").db_auditno;
 			urlParam_Tracking.filterVal[4] = selrowData("#jqGrid").db_lineno_;
 			refreshGrid('#jqGrid_Tracking',urlParam_Tracking,'add');
-			refreshGrid("#jqGrid", urlParam);
+			// refreshGrid("#jqGrid", urlParam);
 			
 			$("#jqGridPagerTracking_EditAll,#jqGridPagerTracking_Delete,#jqGridPagerTracking_Refresh").show();
 			errorField.length = 0;
@@ -1828,6 +1828,10 @@ $(document).ready(function (){
 			urlParam_Tracking.filterVal[4] = selrowData("#jqGrid").db_lineno_;
 			refreshGrid("#jqGrid_Tracking", urlParam_Tracking);
 		},
+	});
+	
+	$('#jqGrid_Tracking_ilcancel').click(function (){
+		refreshGrid("#jqGrid", urlParam);
 	});
 	
 	$("#jqGrid_Tracking_panel").on("show.bs.collapse", function (){
