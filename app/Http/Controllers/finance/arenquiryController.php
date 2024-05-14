@@ -233,15 +233,15 @@ class arenquiryController extends defaultController
         return json_encode($responce);
         
     }
-
+    
     public function tracking(Request $request){
-            // dd($request->filterVal[1]);
+        
         $table = DB::table('debtor.billtrack')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('source','=',$request->filterVal[1])
-                        ->where('trantype','=',$request->filterVal[2])
-                        ->where('auditno','=',$request->filterVal[3])
-                        ->where('lineno_','=',$request->filterVal[4]);
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=',$request->filterVal[1])
+                ->where('trantype','=',$request->filterVal[2])
+                ->where('auditno','=',$request->filterVal[3])
+                ->where('lineno_','=',$request->filterVal[4]);
         
         $paginate = $table->paginate($request->rows);
         

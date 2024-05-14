@@ -843,6 +843,8 @@ $(document).ready(function (){
 			$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]); // highlight 1st record
 			
 			// if($("#jqGrid").data('lastselrow') == undefined){
+				
+			// if(oper == 'add' || oper == null || $("#jqGrid").data('lastselrow') == undefined){
 			// 	$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			// }else{
 			// 	$("#jqGrid").setSelection($("#jqGrid").data('lastselrow'));
@@ -1612,7 +1614,7 @@ $(document).ready(function (){
 			urlParam_Tracking.filterVal[3] = selrowData("#jqGrid").db_auditno;
 			urlParam_Tracking.filterVal[4] = selrowData("#jqGrid").db_lineno_;
 			refreshGrid('#jqGrid_Tracking',urlParam_Tracking,'add');
-			// refreshGrid("#jqGrid", urlParam);
+			refreshGrid("#jqGrid", urlParam);
 			
 			$("#jqGridPagerTracking_EditAll,#jqGridPagerTracking_Delete,#jqGridPagerTracking_Refresh").show();
 			errorField.length = 0;
@@ -1699,7 +1701,7 @@ $(document).ready(function (){
 								urlParam_Tracking.filterVal[3] = selrowData("#jqGrid").db_auditno;
 								urlParam_Tracking.filterVal[4] = selrowData("#jqGrid").db_lineno_;
 								refreshGrid("#jqGrid_Tracking", urlParam_Tracking);
-								// refreshGrid("#jqGrid", urlParam);
+								refreshGrid("#jqGrid", urlParam);
 							});
 						}else{
 							$("#jqGridPagerTracking_EditAll").show();
@@ -1798,6 +1800,7 @@ $(document).ready(function (){
 				urlParam_Tracking.filterVal[3] = selrowData("#jqGrid").db_auditno;
 				urlParam_Tracking.filterVal[4] = selrowData("#jqGrid").db_lineno_;
 				refreshGrid("#jqGrid_Tracking", urlParam_Tracking);
+				refreshGrid("#jqGrid", urlParam);
 			});
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager_Tracking", {
@@ -2326,8 +2329,8 @@ $(document).ready(function (){
 			// RC RF
 			case 'dbacthdr_payercode': field = ['debtorcode','name'];table = "debtor.debtormast";case_ = 'dbacthdr_payercode';break;
 			case 'dbacthdr_trantype': field = ['trantype','description'];table = "sysdb.sysparam";case_ = 'dbacthdr_trantype';break;
-
-			//tracking
+			
+			// tracking
 			case 'trxcode': return cellvalue;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
@@ -2420,17 +2423,23 @@ $(document).ready(function (){
 			<span><input id="`+opt.id+`_discamt" name="discamt" type="hidden"></span>
 			<span><input id="`+opt.id+`_rate" name="rate" type="hidden"></span>`);
 	}
-
+	
+	function taxcodeCustomEdit(val,opt){
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $(`<div class="input-group"><input jqgrid="jqGrid2_IN" optid="`+opt.id+`" id="`+opt.id+`" name="taxcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>`);
+	}
+	
+	// jqGrid_Tracking for IN
 	function trxcodeCustomEdit(val,opt){
 		val = getEditVal(val);
-
-		var array_track=[
+		
+		var array_track = [
 			"Send to Debtor","Send to Consultant","Receive from Consultant","Follow-up with Consultant","Receive by Debtor","Others"
 		];
-		var result=[
+		var result = [
 			"Send to Debtor","Send to Consultant","Receive from Consultant","Follow-up with Consultant","Receive by Debtor","Others"
 		];
-
+		
 		var getRowData = $('#jqGrid_Tracking').jqGrid('getRowData');
 		getRowData.forEach(function (e,i){
 			if(i !== 0 ){
@@ -2439,22 +2448,15 @@ $(document).ready(function (){
 				}
 			}
 		});
-
+		
 		var result_str = '';
-		result.forEach(function(e,i){
-			result_str=result_str+'<option role="option" value="'+e+'">'+e+'</option>';
+		result.forEach(function (e,i){
+			result_str = result_str+'<option role="option" value="'+e+'">'+e+'</option>';
 		});
-
-
+		
 		return $(`<select role="select" optid="`+opt.id+`" id="`+opt.id+`" name="trxcode" size="1" class="editable inline-edit-cell form-control">`+result_str+`</select>`);
 	}
 	
-	function taxcodeCustomEdit(val,opt){
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $(`<div class="input-group"><input jqgrid="jqGrid2_IN" optid="`+opt.id+`" id="`+opt.id+`" name="taxcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>`);
-	}
-	
-	// jqGrid_Tracking for IN
 	function formatterComment(cellvalue, options, rowObject){
 		return "<button class='comment_button btn btn-success btn-xs' type='button' data-rowid='"+options.rowId+"' data-idno='"+rowObject.idno+"' data-grid='#"+options.gid+"' data-comment_='"+rowObject.comment_+"'><i class='fa fa-file-text-o'></i> Comment</button>";
 	}
@@ -2471,7 +2473,7 @@ $(document).ready(function (){
 			$('input',elem).val(value);
 		}
 	}
-
+	
 	function galGridCustomValue2(elem, operation, value){
 		if(operation == 'get'){
 			return $(elem).val();
