@@ -1830,9 +1830,9 @@ $(document).ready(function (){
 		},
 	});
 	
-	$('#jqGrid_Tracking_ilcancel').click(function (){
-		refreshGrid("#jqGrid", urlParam);
-	});
+	// $('#jqGrid_Tracking_ilcancel').click(function (){
+	// 	refreshGrid("#jqGrid", urlParam);
+	// });
 	
 	$("#jqGrid_Tracking_panel").on("show.bs.collapse", function (){
 		$("#jqGrid_Tracking").jqGrid ('setGridWidth', Math.floor($("#jqGrid_Tracking_c")[0].offsetWidth-$("#jqGrid_Tracking_c")[0].offsetLeft-18));
@@ -2446,9 +2446,9 @@ $(document).ready(function (){
 		
 		var getRowData = $('#jqGrid_Tracking').jqGrid('getRowData');
 		getRowData.forEach(function (e,i){
-			if(i !== 0 ){
+			if(i !== 0){
 				if(array_track.find((element) => e.trxcode)){
-					result = result.filter((element) => element != e.trxcode);
+					result = result.filter((element) => element != e.trxcode || e.recstatus == 'DEACTIVE');
 				}
 			}
 		});
