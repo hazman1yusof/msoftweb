@@ -1722,6 +1722,10 @@ $(document).ready(function (){
 				
 				$("#jqGrid_Tracking select#"+ids[i]+"_trxcode").attr('disabled','disabled');
 				
+				if($("#jqGrid_Tracking input#"+ids[i]+"_recstatus").val() == 'DEACTIVE'){
+					$("#jqGrid_Tracking input#"+ids[i]+"_trxdate").attr('disabled','disabled');
+				}
+				
 				// if($(".input-group#"+ids[i]+"_code").is(":visible")){
 				// 	dialog_code.id_optid = ids[i];
 				// 	dialog_code.check(errorField,ids[i]+"_code","jqGrid2",null,
