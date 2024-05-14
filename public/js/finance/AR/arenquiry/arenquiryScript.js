@@ -834,7 +834,7 @@ $(document).ready(function (){
 			
 			$("#pdfgen1").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno);
 			$("#pdfgen2").attr('href','./receipt/showpdf?auditno='+selrowData("#jqGrid").db_auditno);
-
+			
 			$("#jqGrid").data('lastselrow',rowid);
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e){
@@ -864,6 +864,7 @@ $(document).ready(function (){
 			// } else if((selrowData("#jqGrid").db_trantype == 'RD')){
 			// 	$('#allocate').hide();
 			// }
+			
 			if($("#jqGrid").data('lastselrow') == undefined){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}else{
@@ -1828,9 +1829,9 @@ $(document).ready(function (){
 		},
 	});
 	
-	// $('#jqGrid_Tracking_ilcancel').click(function (){
-	// 	refreshGrid("#jqGrid", urlParam);
-	// });
+	$('#jqGrid_Tracking_ilcancel').click(function (){
+		refreshGrid("#jqGrid", urlParam);
+	});
 	
 	$("#jqGrid_Tracking_panel").on("show.bs.collapse", function (){
 		$("#jqGrid_Tracking").jqGrid ('setGridWidth', Math.floor($("#jqGrid_Tracking_c")[0].offsetWidth-$("#jqGrid_Tracking_c")[0].offsetLeft-18));
@@ -2481,7 +2482,6 @@ $(document).ready(function (){
 	}
 	
 	function galGridCustomValue2(elem, operation, value){
-		console.log(elem);
 		if(operation == 'get'){
 			return $(elem).val();
 		}
