@@ -495,6 +495,13 @@ Route::post('/stockExpiry/form','material\stockExpiryController@form');
 Route::get('/stockExpiry/showExcel','material\stockExpiryController@showExcel');
 Route::get('/stockExpiry/showpdf','material\stockExpiryController@showpdf');
 
+//// inventoryRequest report ///
+Route::get('/ivRequest_Report','material\ivRequest_ReportController@show');
+Route::get('/ivRequest_Report/table','material\ivRequest_ReportController@table');
+Route::post('/ivRequest_Report/form','material\ivRequest_ReportController@form');
+Route::get('/ivRequest_Report/showExcel','material\ivRequest_ReportController@showExcel');
+Route::get('/ivRequest_Report/showpdf','material\ivRequest_ReportController@showpdf');
+
 //// delivery Order setup page ///
 Route::get('/deliveryOrder','material\DeliveryOrderController@show');
 Route::get('/deliveryOrder/table','material\DeliveryOrderController@table');
