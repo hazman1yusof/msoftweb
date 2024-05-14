@@ -392,14 +392,14 @@ $(document).ready(function (){
 			let rowid = $('#comment_2').data('rowid');
 			let grid = $('#comment_2').data('grid');
 			$('#comment_2').val($(grid).jqGrid('getRowData', rowid).comment_);
-			// let exist = $("#jqGrid2 #"+rowid+"_pouom_convfactor_uom").length;
-			// if(grid == '#jqGrid3' || exist == 0){ // lepas ni letak or not edit mode
-			// 	$("#comment_2").prop('disabled',true);
-			// 	$( "#dialog_comment" ).dialog("option", "buttons", butt2_rem);
-			// }else{
+			let exist = $("#jqGrid_Tracking #"+rowid+"_trxdate").length;
+			if(exist == 0){ // lepas ni letak or not edit mode
+				$("#comment_2").prop('disabled',true);
+				$( "#dialog_comment" ).dialog("option", "buttons", butt2_rem);
+			}else{
 				$("#comment_2").prop('disabled',false);
 				$( "#dialog_comment" ).dialog("option", "buttons", butt1_rem);
-			// }
+			}
 		},
 		close: function (){
 			// fixPositionsOfFrozenDivs.call($('#jqGrid_Tracking')[0]);
