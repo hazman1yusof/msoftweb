@@ -69,27 +69,24 @@
                                     {text: 'QTY\nSUPPLIED', style: 'tableHeader', alignment: 'right'},
                                     {text: 'NET\nPRICE', style: 'tableHeader', alignment: 'right'},
                                 ],
-                                    @foreach ($ivrequest as $obj)
-                                        @if($obj->h_recno == $obj->d_recno)
-                                            [
-                                                {text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->reqdt)->format('d-m-Y')}}'},
-                                                {text: '{{$obj->ivreqno}}'},
-                                                {text: '{{$obj->reqdept}}'},
-                                                {text: '{{$obj->reqtodept}}'},
-                                                {text: `{!!str_replace('`', '', $obj->itemcode)!!}\n{!!str_replace('`', '', $obj->description)!!}`},
-                                                {text: `{!!$obj->uomcode!!}`},
-                                                {text: `{!!$obj->pouom!!}`},
-                                                {text: '{{$obj->maxqty}}', alignment: 'right'},
-                                                {text: '{{$obj->qtyonhand}}', alignment: 'right'},
-                                                {text: '{{$obj->qohconfirm}}', alignment: 'right'},
-                                                {text: '{{$obj->qtyrequest}}', alignment: 'right'},
-                                                {text: '{{$obj->qtybalance}}', alignment: 'right'},
-                                                {text: '{{$obj->qtytxn}}', alignment: 'right'},
-                                                {text: '{{number_format($obj->netprice,2)}}', alignment: 'right' },
-                                            ],
-                                        @endif
-                                    @endforeach
-            
+                                @foreach ($ivrequest as $obj)
+                                    [
+                                        {text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->reqdt)->format('d-m-Y')}}'},
+                                        {text: '{{$obj->ivreqno}}'},
+                                        {text: '{{$obj->reqdept}}'},
+                                        {text: '{{$obj->reqtodept}}'},
+                                        {text: `{!!str_replace('`', '', $obj->itemcode)!!}\n{!!str_replace('`', '', $obj->description)!!}`},
+                                        {text: `{!!$obj->uomcode!!}`},
+                                        {text: `{!!$obj->pouom!!}`},
+                                        {text: '{{$obj->maxqty}}', alignment: 'right'},
+                                        {text: '{{$obj->qtyonhand}}', alignment: 'right'},
+                                        {text: '{{$obj->qohconfirm}}', alignment: 'right'},
+                                        {text: '{{$obj->qtyrequest}}', alignment: 'right'},
+                                        {text: '{{$obj->qtybalance}}', alignment: 'right'},
+                                        {text: '{{$obj->qtytxn}}', alignment: 'right'},
+                                        {text: '{{number_format($obj->netprice,2)}}', alignment: 'right' },
+                                    ],
+                                @endforeach
                             ]
                         },
                         layout: 'lightHorizontalLines',

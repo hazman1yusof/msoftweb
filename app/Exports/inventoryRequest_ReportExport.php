@@ -30,10 +30,8 @@ class inventoryRequest_ReportExport implements FromView, WithEvents, WithColumnW
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($item_from,$item_to,$datefr,$dateto)
+    public function __construct($datefr,$dateto)
     {
-        $this->item_from = $item_from;
-        $this->item_to = $item_to;
         $this->datefr = $datefr;
         $this->dateto = $dateto;
 
@@ -48,42 +46,55 @@ class inventoryRequest_ReportExport implements FromView, WithEvents, WithColumnW
             'A' => 15,
             'B' => 15,
             'C' => 15,
-            'D' => 50,
-            'E' => 15,
+            'D' => 15,
+            'E' => 40,
             'F' => 15,
             'G' => 15,
             'H' => 15,
+            'I' => 15,
+            'J' => 15,
+            'K' => 15,
+            'L' => 15,
+            'M' => 15,
+            'N' => 15,
         ];
     }
     
     public function view(): View
     {
-        $item_from = $this->item_from;
-        if(empty($item_from)){
-            $item_from = '%';
-        }
-        $item_to = $this->item_to;
         $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
       
-        $stockexp = DB::table('material.stockexp as e')
-                ->select('e.idno', 'e.compcode', 'e.deptcode', 'e.itemcode', 'e.uomcode', 'e.expdate', 'e.unit', 'p.uomcode as p_uom', 'p.description as p_desc', 'p.avgcost', 'p.currprice', 'e.balqty', 'e.batchno')
+        $ivrequest = DB::table('material.ivreqhd as h')
+                ->select('h.idno', 'h.compcode', 'h.recno as h_recno', 'h.reqdt', 'h.ivreqno', 'h.reqdept', 'h.reqtodept', 'h.recstatus', 'd.recno as d_recno','d.itemcode', 'd.uomcode', 'd.pouom', 'd.qohconfirm', 'd.qtyrequest', 'd.qtybalance', 'd.qtytxn', 'd.netprice', 'd.ivreqno', 'd.reqdept', 'p.description','s.maxqty', 's.qtyonhand')
+                ->join('material.ivreqdt as d', function($join){
+                    $join = $join->on('d.recno', '=', 'h.recno')
+                                ->where('d.compcode', '=', session('compcode'))
+                                ->where('d.unit', '=', session('unit'))
+                                ->where('d.recstatus', '!=', 'DELETE');
+                })
                 ->join('material.product as p', function($join){
-                    $join = $join->on('p.itemcode', '=', 'e.itemcode')
-                                ->on('p.uomcode', '=', 'e.uomcode')
+                    $join = $join->on('p.itemcode', '=', 'd.itemcode')
+                                ->on('p.uomcode', '=', 'd.uomcode')
                                 ->where('p.compcode', '=', session('compcode'))
                                 ->where('p.unit', '=', session('unit'))
                                 ->where('p.recstatus', '=', 'ACTIVE');
                 })
-                ->where('e.compcode',session('compcode'))
-                ->where('e.unit',session('unit'))
-                ->where('e.year', '=', Carbon::now("Asia/Kuala_Lumpur")->format('Y'))
-                ->whereBetween('e.itemcode',[$item_from,$item_to.'%'])
-                ->whereBetween('e.expdate', [$datefr, $dateto])
-                ->orderBy('e.itemcode', 'ASC')
+                ->join('material.stockloc as s', function($join){
+                    $join = $join->on('s.itemcode', '=', 'p.itemcode')
+                                ->on('s.uomcode', '=', 'p.uomcode')
+                                ->on('s.deptcode', '=', 'd.reqdept')
+                                ->where('s.compcode', '=', session('compcode'))
+                                ->where('s.year', '=', Carbon::now("Asia/Kuala_Lumpur")->format('Y'))
+                                ->where('s.unit', '=', session('unit'));
+                })
+                ->where('h.compcode',session('compcode'))
+                ->where('h.unit',session('unit'))
+                ->whereBetween('h.reqdt', [$datefr, $dateto])
+                ->orderBy('h.reqdt', 'ASC')
                 ->get();
-        
-        return view('material.inventoryRequest_Report.inventoryRequest_Report_excel',compact('stockexp'));
+        // dd($ivrequest);
+        return view('material.inventoryRequest_Report.inventoryRequest_Report_excel',compact('ivrequest'));
     }
     
     public function registerEvents(): array
@@ -92,9 +103,8 @@ class inventoryRequest_ReportExport implements FromView, WithEvents, WithColumnW
             AfterSheet::class => function(AfterSheet $event) {
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSTOCK EXPIRY"."\n"
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nINVENTORY REQUEST REPORT"."\n"
                 .sprintf('FROM DATE %s TO DATE %s',Carbon::parse($this->datefr)->format('d-m-Y'), Carbon::parse($this->dateto)->format('d-m-Y'))."\n"
-                .sprintf('FROM %s TO %s',$this->item_from, $this->item_to)
                 .'&L'
                 .'PRINTED BY : '.session('username')
                 ."\nPAGE : &P/&N"
@@ -104,7 +114,7 @@ class inventoryRequest_ReportExport implements FromView, WithEvents, WithColumnW
                 $event->sheet->getPageMargins()->setTop(1);
                 
                 $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
-                $event->sheet->getStyle('A:E')->getAlignment()->setWrapText(true);
+                $event->sheet->getStyle('A:N')->getAlignment()->setWrapText(true);
                 $event->sheet->getPageSetup()->setFitToWidth(1);
                 $event->sheet->getPageSetup()->setFitToHeight(0);
             },

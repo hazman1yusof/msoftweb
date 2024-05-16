@@ -28,7 +28,7 @@ class inventoryRequest_ReportController extends defaultController
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new inventoryRequest_ReportExport($request->item_from,$request->item_to,$request->datefr,$request->dateto), 'inventoryRequest_ReportExport.xlsx');
+        return Excel::download(new inventoryRequest_ReportExport($request->datefr,$request->dateto), 'inventoryRequest_ReportExport.xlsx');
     }
 
     public function showpdf(Request $request){
@@ -37,7 +37,7 @@ class inventoryRequest_ReportController extends defaultController
         $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
 
         $ivrequest = DB::table('material.ivreqhd as h')
-                ->select('h.idno', 'h.compcode', 'h.recno as h_recno', 'h.reqdt', 'h.ivreqno', 'h.reqdept', 'h.reqtodept', 'h.recstatus', 'd.recno as d_recno','d.itemcode', 'd.uomcode', 'd.pouom', 'd.qohconfirm', 'd.qtyrequest', 'd.qtybalance', 'd.qtytxn', 'd.netprice', 'd.ivreqno', 's.maxqty', 's.qtyonhand','p.description')
+                ->select('h.idno', 'h.compcode', 'h.recno as h_recno', 'h.reqdt', 'h.ivreqno', 'h.reqdept', 'h.reqtodept', 'h.recstatus', 'd.recno as d_recno','d.itemcode', 'd.uomcode', 'd.pouom', 'd.qohconfirm', 'd.qtyrequest', 'd.qtybalance', 'd.qtytxn', 'd.netprice', 'd.ivreqno', 'd.reqdept', 'p.description','s.maxqty', 's.qtyonhand')
                 ->join('material.ivreqdt as d', function($join){
                     $join = $join->on('d.recno', '=', 'h.recno')
                                 ->where('d.compcode', '=', session('compcode'))
@@ -48,11 +48,13 @@ class inventoryRequest_ReportController extends defaultController
                     $join = $join->on('p.itemcode', '=', 'd.itemcode')
                                 ->on('p.uomcode', '=', 'd.uomcode')
                                 ->where('p.compcode', '=', session('compcode'))
-                                ->where('p.unit', '=', session('unit'));
+                                ->where('p.unit', '=', session('unit'))
+                                ->where('p.recstatus', '=', 'ACTIVE');
                 })
                 ->join('material.stockloc as s', function($join){
-                    $join = $join->on('s.itemcode', '=', 'd.itemcode')
-                                ->on('s.uomcode', '=', 'd.uomcode')
+                    $join = $join->on('s.itemcode', '=', 'p.itemcode')
+                                ->on('s.uomcode', '=', 'p.uomcode')
+                                ->on('s.deptcode', '=', 'd.reqdept')
                                 ->where('s.compcode', '=', session('compcode'))
                                 ->where('s.year', '=', Carbon::now("Asia/Kuala_Lumpur")->format('Y'))
                                 ->where('s.unit', '=', session('unit'));
@@ -62,16 +64,8 @@ class inventoryRequest_ReportController extends defaultController
                 ->whereBetween('h.reqdt', [$datefr, $dateto])
                 ->orderBy('h.reqdt', 'ASC')
                 ->get();
-            //dd($ivrequest);
+            // dd($ivrequest);
 
-        // $array_report = [];
-        // foreach ($ivrequest as $obj) {
-        //     if(!in_array($obj->h_recno, $array_report)){
-        //         array_push($array_report, $obj->h_recno);
-        //     }
-        // }
-
-        // dd($array_report);
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
