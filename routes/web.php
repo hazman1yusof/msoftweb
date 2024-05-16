@@ -459,6 +459,50 @@ Route::get('/stockCount/showExcel','material\StockCountController@showExcel');
 Route::post('/stockCountDetail/form','material\StockCountDetailController@form');
 Route::get('/stockCountDetail/table','material\StockCountDetailController@table');
 
+//// delivery Order setup page ///
+Route::get('/deliveryOrder','material\DeliveryOrderController@show');
+Route::get('/deliveryOrder/table','material\DeliveryOrderController@table');
+Route::post('/deliveryOrder/form','material\DeliveryOrderController@form');
+Route::get('/deliveryOrder/form','material\DeliveryOrderController@form');
+Route::get('/deliveryOrder/showpdf','material\DeliveryOrderController@showpdf');
+Route::post('/deliveryOrderDetail/form','material\DeliveryOrderDetailController@form');
+Route::get('/deliveryOrderDetail/table','material\DeliveryOrderDetailController@table');
+
+//// good Return setup page ///
+Route::get('/goodReturn','material\GoodReturnController@show');
+Route::get('/goodReturn/table','material\GoodReturnController@table');
+Route::post('/goodReturn/form','material\GoodReturnController@form');
+Route::get('/goodReturn/form','material\GoodReturnController@form');
+Route::post('/goodReturnDetail/form','material\GoodReturnDetailController@form');
+Route::get('/goodReturn/showpdf','material\GoodReturnController@showpdf');
+
+//// sequence material setup ///
+Route::get('/sequence','material\SequenceController@show');
+Route::get('/sequence/table','material\SequenceController@table');
+Route::post('/sequence/form','material\SequenceController@form');
+
+//// categoryINV material setup ///
+Route::get('/categoryinv','material\CategoryInvController@show');
+Route::get('/categoryinv/table','material\CategoryInvController@table');
+Route::post('/categoryinv/form','material\CategoryInvController@form');
+
+/////////////////////////////////////PROCUREMENT REPORT/////////////////////////////
+//// PO Listing report ///
+Route::get('/POListing','material\POListingController@show');
+Route::get('/POListing/table','material\POListingController@table');
+Route::post('/POListing/form','material\POListingController@form');
+Route::get('/POListing/showExcel','material\POListingController@showExcel');
+Route::get('/POListing/showpdf','material\POListingController@showpdf');
+
+//// DO Listing report ///
+Route::get('/DOListing','material\DOListingController@show');
+Route::get('/DOListing/table','material\DOListingController@table');
+Route::post('/DOListing/form','material\DOListingController@form');
+Route::get('/DOListing/showExcel','material\DOListingController@showExcel');
+Route::get('/DOListing/showpdf','material\DOListingController@showpdf');
+
+////////////////////////////////INVENTORY REPORT/////////////////////////////////
+
 //// stock balance report ///
 Route::get('/stockBalance','material\stockBalanceController@show');
 Route::get('/stockBalance/report','material\stockBalanceController@report');
@@ -502,33 +546,7 @@ Route::post('/inventoryRequest_Report/form','material\inventoryRequest_ReportCon
 Route::get('/inventoryRequest_Report/showExcel','material\inventoryRequest_ReportController@showExcel');
 Route::get('/inventoryRequest_Report/showpdf','material\inventoryRequest_ReportController@showpdf');
 
-//// delivery Order setup page ///
-Route::get('/deliveryOrder','material\DeliveryOrderController@show');
-Route::get('/deliveryOrder/table','material\DeliveryOrderController@table');
-Route::post('/deliveryOrder/form','material\DeliveryOrderController@form');
-Route::get('/deliveryOrder/form','material\DeliveryOrderController@form');
-Route::get('/deliveryOrder/showpdf','material\DeliveryOrderController@showpdf');
-Route::post('/deliveryOrderDetail/form','material\DeliveryOrderDetailController@form');
-Route::get('/deliveryOrderDetail/table','material\DeliveryOrderDetailController@table');
-
-//// good Return setup page ///
-Route::get('/goodReturn','material\GoodReturnController@show');
-Route::get('/goodReturn/table','material\GoodReturnController@table');
-Route::post('/goodReturn/form','material\GoodReturnController@form');
-Route::get('/goodReturn/form','material\GoodReturnController@form');
-Route::post('/goodReturnDetail/form','material\GoodReturnDetailController@form');
-Route::get('/goodReturn/showpdf','material\GoodReturnController@showpdf');
-
-//// sequence material setup ///
-Route::get('/sequence','material\SequenceController@show');
-Route::get('/sequence/table','material\SequenceController@table');
-Route::post('/sequence/form','material\SequenceController@form');
-
-//// categoryINV material setup ///
-Route::get('/categoryinv','material\CategoryInvController@show');
-Route::get('/categoryinv/table','material\CategoryInvController@table');
-Route::post('/categoryinv/form','material\CategoryInvController@form');
-
+///////////////////////////FINANCE SETUP///////////////////////////////////////////////////////////
 //// invoice AP setup page ///
 Route::get('/invoiceAP','finance\InvoiceAPController@show');
 Route::get('/invoiceAP/table','finance\InvoiceAPController@table');
