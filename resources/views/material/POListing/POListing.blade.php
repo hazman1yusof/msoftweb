@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Inventory Request Report')
+@section('title', 'PO Listing')
 
 @section('css')
 	<style>
@@ -46,8 +46,8 @@
 @section('body')
     <div class="container mycontainer">
         <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 350px;">
-            <form method="get" id="genreport" action="./inventoryRequest_Report/showExcel">
-                <h4>INVENTORY REQUEST REPORT</h4>
+            <form method="get" id="genreport" action="./POListing/showExcel">
+                <h4>PO LISTING</h4>
                 <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7>
 				
                 <div style="width: 800px;margin: 0 auto;">
@@ -86,5 +86,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/material/inventoryRequest_Report/inventoryRequest_Report.js"></script>
+	<script src="js/material/POListing/POListing.js"></script>
 @endsection

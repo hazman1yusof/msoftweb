@@ -263,7 +263,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'Record No', name: 'purordhd_recno', width: 5, canSearch: true, selected: true },
+			{ label: 'Record\nNo', name: 'purordhd_recno', width: 7, canSearch: true, selected: true },
 			{ label: 'Purchase Department', name: 'purordhd_prdept', width: 15, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Delivery Department', name: 'purordhd_deldept', width: 15, hidden: false, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Purchase Order No', name: 'purordhd_purordno', width: 10, classes: 'wrap', align: 'right', canSearch: true, formatter: padzero, unformat: unpadzero },
