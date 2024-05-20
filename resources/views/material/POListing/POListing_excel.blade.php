@@ -5,8 +5,10 @@
         <td style="font-weight:bold;text-align: left">PO NO</td>
         <td style="font-weight:bold;text-align: left">PO DATE</td>
         <td style="font-weight:bold;text-align: left">SUPPLIER CODE</td>
+        <td style="font-weight:bold;text-align: left">SUPPLIER NAME</td>
         <td style="font-weight:bold;text-align: left">PRICE<br style="mso-data-placement:same-cell;" />CODE</td>
         <td style="font-weight:bold;text-align: left">ITEM CODE</td>
+        <td style="font-weight:bold;text-align: left">ITEM DESCRIPTION</td>
         <td style="font-weight:bold;text-align: left">UOM CODE</td>
         <td style="font-weight:bold;text-align: left">PO UOM</td>
         <td style="font-weight:bold;text-align: left">TAX CODE</td>
@@ -25,9 +27,11 @@
         <td>{{$obj->deldept}}</td>
         <td>{{str_pad($obj->purordno, 7, "0", STR_PAD_LEFT)}}</td>
         <td>{{\Carbon\Carbon::parse($obj->purdate)->format('d/m/Y')}}</td>
-        <td>{{$obj->suppcode}} <br style="mso-data-placement:same-cell;" /> {{$obj->supp_name}}</td>
+        <td>{{$obj->suppcode}}</td>
+        <td>{{$obj->supp_name}}</td>
         <td>{{$obj->pricecode}}</td>
-        <td>{{$obj->itemcode}} <br style="mso-data-placement:same-cell;" /> {{$obj->description}}</td>
+        <td style="text-align: left">{{$obj->itemcode}}</td>
+        <td>{{$obj->description}}</td>
         <td>{!!$obj->uomcode!!}</td>
         <td>{!!$obj->pouom!!}</td>
         <td>{{$obj->taxcode}}</td>
