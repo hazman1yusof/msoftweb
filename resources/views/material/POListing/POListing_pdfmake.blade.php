@@ -48,38 +48,32 @@
                         layout: 'noBorders',
                     },
                     @foreach ($POListing as $polisting) 
-                    { text: 'REC NO : {{$polisting->recno}}', alignment: 'left', fontSize: 9, bold: true },
+                   
                         {
                             style: 'tableExampleHeader',
                             table: {
                                 headerRows: 1,
-                                widths: ['*','*','*','*',200,'*'],  //panjang standard dia 515
+                                widths: ['*','*','*','*', '*','*'],  //panjang standard dia 515
                                 body: [
-                                    [
-                                        {text: 'PURCHASE DEPT', style: 'tableHeader'},
-                                        {text: 'DELIVERY DEPT', style: 'tableHeader'},
-                                        {text: 'PO NO', style: 'tableHeader'},
-                                        {text: 'PO DATE', style: 'tableHeader'},
-                                        {text: 'SUPPLIER CODE', style: 'tableHeader'},
-                                        {text: 'TOTAL AMOUNT', style: 'tableHeader', alignment: 'right'},
-                                    ],
                                     @foreach ($purordhd as $obj)
                                         @if($obj->recno == $polisting->recno)
                                             [
-                                                {text: '{{$obj->prdept}}'},
-                                                {text: '{{$obj->deldept}}'},
-                                                {text: '{{str_pad($obj->purordno, 7, "0", STR_PAD_LEFT)}}'},
-                                                {text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->purdate)->format('d-m-Y')}}'},
-                                                {text: `{!!str_replace('`', '', $obj->suppcode)!!}\n{!!str_replace('`', '', $obj->supp_name)!!}`},
-                                                {text: '{{number_format($obj->totamount,2)}}', alignment: 'right' },
+                                                {text: `PURCHASE DEPT : \n{!!str_replace('`', '', $obj->prdept)!!}\n {!!str_replace('`', '', $obj->dept_desc)!!}`, style: 'tableHeader'},
+                                                {text: `DELIVERY DEPT : \n{!!str_replace('`', '', $obj->deldept)!!}\n {!!str_replace('`', '', $obj->deldept_desc)!!}`, style: 'tableHeader'},
+                                                {text: 'PO NO : {{str_pad($obj->purordno, 7, "0", STR_PAD_LEFT)}}', style: 'tableHeader'},
+                                                {text: 'PO DATE : {{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->purdate)->format('d-m-Y')}}', style: 'tableHeader'},
+                                                {text: `SUPPLIER CODE : \n{!!str_replace('`', '', $obj->suppcode)!!}\n {!!str_replace('`', '', $obj->supp_name)!!}`, style: 'tableHeader'},
+                                                {text: 'STATUS : {{$obj->recstatus}}', style: 'tableHeader'},
+
                                             ],
                                         @endif
                                     @endforeach
                                 ]
                             },
                             
-                            layout: 'lightHorizontalLines',
-                        },
+                            layout: 'noBorders',
+
+                        },                  
                         {
                             style: 'tableExample',
                             table: {
@@ -123,7 +117,10 @@
                                 ]
                             },
                             layout: 'lightHorizontalLines',
+
                         },
+                        
+                       
                     @endforeach
                 ],
                 styles: {

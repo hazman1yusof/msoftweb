@@ -30,12 +30,14 @@ $(document).ready(function () {
     $("#genreport input[name='dateto']").change(function(){
         $("#genreportpdf input[name='dateto']").val($(this).val());
     });
-   
+    $("#genreport input[name='Status']").change(function(){
+        $("#genreportpdf input[name='Status']").val($(this).val());
+    });
 	$('#pdfgen').click(function(){
-		window.open('./POListing/showpdf?&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(),  '_blank'); 
+		window.open('./POListing/showpdf?&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&Status='+$("#Status").val(),  '_blank'); 
 	});
 
 	$('#excelgen').click(function(){
-		window.location='./POListing/showExcel?&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
+		window.location='./POListing/showExcel?&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&Status='+$("#Status").val();
 	});
 });

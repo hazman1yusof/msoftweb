@@ -45,7 +45,7 @@
 
 @section('body')
     <div class="container mycontainer">
-        <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 350px;">
+        <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 400px;">
             <form method="get" id="genreport" action="./POListing/showExcel">
                 <h4>PO LISTING</h4>
                 <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7>
@@ -61,9 +61,24 @@
 							<label class="control-label" for="Scol">Date To</label>
 							<input id="dateto" name="dateto" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 						</div>
+						
+						<div class="col-md-12" style="padding-top: 30px;">
+							<label class="control-label" for="Status">Status</label>  
+								<select id="Status" name="Status" class="form-control input-sm">
+									<option value="ALL" selected>ALL</option>
+									<option value="OPEN">OPEN</option>
+									<option value="REQUEST">REQUEST</option>
+									<option value="SUPPORT">SUPPORT</option>
+									<option value="VERIFIED">VERIFIED</option>
+									<option value="APPROVED">APPROVED</option>
+									<option value="COMPLETED">COMPLETED</option>
+									<option value="PARTIAL">PARTIAL</option>
+									<option value="CANCELLED">CANCELLED</option>
+								</select>
+						</div>
 					</div>
 					
-					<div class="col-md-4" style="margin-left: 100px;">
+					<div class="col-md-4" style="margin-left: 100px;padding-top: 50px;">
 						<div class="panel panel-default" style="height: 137px;">
 							<div class="panel-body">
 								<div class='col-md-12 btnform' style="padding: 20px 0px">
