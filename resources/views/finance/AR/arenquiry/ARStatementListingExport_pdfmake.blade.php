@@ -14,8 +14,7 @@
     </object>
     
     <script>
-        
-        var array_report=[
+        var array_report = [
             @foreach($array_report as $key => $array_report1)
             [
                 @foreach($array_report1 as $key2 => $val)
@@ -37,9 +36,9 @@
             @endforeach
         };
         
-        $(document).ready(function () {
+        $(document).ready(function (){
             var docDefinition = {
-                footer: function(currentPage, pageCount) {
+                footer: function (currentPage, pageCount){
                     return [
                         { text: currentPage.toString() + ' of ' + pageCount, alignment: 'center' }
                     ]
@@ -64,7 +63,7 @@
                         style: 'tableExample',
                         table: {
                             // headerRows: 1,
-                            widths: [40,5,400],  //panjang standard dia 515
+                            widths: [40,5,400], // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'CODE', fontSize: 9, bold: true },
@@ -89,10 +88,11 @@
                         style: 'tableExample',
                         table: {
                             // headerRows: 1,
-                            widths: [60,60,120,60,60,60],  //panjang standard dia 515
+                            widths: [50,50,60,100,60,60,60], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'Date', style: 'tableHeader' },
+                                    { text: 'Doc Date', style: 'tableHeader' },
+                                    { text: 'Date Send', style: 'tableHeader' },
                                     { text: 'Document', style: 'tableHeader' },
                                     { text: 'Reference', style: 'tableHeader' },
                                     { text: 'Amount DR', style: 'tableHeader', alignment: 'right' },
@@ -100,6 +100,7 @@
                                     { text: 'Balance', style: 'tableHeader', alignment: 'right' },
                                 ],
                                 [
+                                    { text: ' ' },
                                     { text: ' ' },
                                     { text: ' ' },
                                     { text: 'OPENING BALANCE' },
@@ -113,6 +114,11 @@
                                     @if($obj->debtorcode == $debtor->debtorcode)
                                     [
                                         { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}' },
+                                        @if(!empty($obj->datesend))
+                                            { text: '{{\Carbon\Carbon::parse($obj->datesend)->format('d/m/Y')}}' },
+                                        @else
+                                            { text: ' ' },
+                                        @endif
                                         { text: '{{$obj->trantype}}/{{str_pad($obj->auditno, 5, "0", STR_PAD_LEFT)}}' },
                                         { text: '{{$obj->reference}}' },
                                         @if(!empty($obj->amount_dr))
@@ -132,6 +138,7 @@
                                     @endif
                                 @endforeach
                                 [
+                                    { text: ' ' },
                                     { text: ' ' },
                                     { text: ' ' },
                                     { text: 'TOTAL', bold: true },
@@ -192,13 +199,13 @@
                 }
             };
             
-            // pdfMake.createPdf(docDefinition).getBase64(function(data) {
+            // pdfMake.createPdf(docDefinition).getBase64(function (data){
             //     var base64data = "data:base64"+data;
             //     console.log($('object#pdfPreview').attr('data',base64data));
             //     // document.getElementById('pdfPreview').data = base64data;
             // });
             
-            pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
+            pdfMake.createPdf(docDefinition).getDataUrl(function (dataURL){
                 $('#pdfiframe').attr('src',dataURL);
             });
         });
@@ -207,13 +214,13 @@
             
         }
         
-        // pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
+        // pdfMake.createPdf(docDefinition).getDataUrl(function (dataURL){
         //     console.log(dataURL);
         //     document.getElementById('pdfPreview').data = dataURL;
         // });
         
         // jsreport.serverUrl = 'http://localhost:5488'
-        // async function preview() {
+        // async function preview(){
         //     const report = await jsreport.render({
         //         template: {
         //             name: 'mc'
@@ -224,7 +231,6 @@
         // }
         
         // preview().catch(console.error)
-        
     </script>
     
     <body style="margin: 0px;">
