@@ -20,6 +20,7 @@
         <td style="font-weight:bold;text-align: right">DISC<br style="mso-data-placement:same-cell;" />PER UNIT</td>
         <td style="font-weight:bold;text-align: right">TOTAL GST</td>
         <td style="font-weight:bold;text-align: right">TOTAL AMOUNT</td>
+        <td style="font-weight:bold;text-align: right">STATUS</td>
     </tr>
     @foreach($POListing as $obj)
     <tr>
@@ -43,6 +44,7 @@
         <td data-format="0.00" style="text-align: right">{{ number_format($obj->amtdisc, 2, '.', ',') }}</td>
         <td data-format="0.00" style="text-align: right">{{ number_format($obj->tot_gst, 2, '.', ',') }}</td>
         <td data-format="0.00" style="text-align: right">{{ number_format($obj->totamount, 2, '.', ',') }}</td>
+        <td>{{$obj->recstatus}}</td>
     </tr>
     @endforeach
 </table>

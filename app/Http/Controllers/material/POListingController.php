@@ -78,13 +78,23 @@ class POListingController extends defaultController
             //dd($purordhd);
 
             $purorddt = DB::table('material.purorddt as d')
-                        ->select('d.compcode', 'd.recno', 'd.lineno_', 'd.suppcode', 'd.purdate','d.pricecode', 'd.itemcode', 'p.description','d.uomcode','d.pouom','d.qtyorder','d.qtyoutstand','d.qtyrequest','d.qtydelivered', 'd.perslstax', 'd.unitprice', 'd.taxcode', 'd.perdisc', 'd.amtdisc','d.amtslstax as tot_gst','d.netunitprice','d.totamount','d.amount', 'd.unit', 'd.recstatus')
+                        ->select('d.compcode', 'd.recno', 'd.lineno_', 'd.suppcode', 'd.purdate','d.pricecode', 'd.itemcode', 'p.description','d.uomcode','d.pouom','d.qtyorder','d.qtyoutstand','d.qtyrequest','d.qtydelivered', 'd.perslstax', 'd.unitprice', 'd.taxcode', 'd.perdisc', 'd.amtdisc','d.amtslstax as tot_gst','d.netunitprice','d.totamount','d.amount', 'd.unit', 'd.recstatus', 'pc.description as pc_desc', 't.description as tax_desc')
                         ->join('material.product as p', function($join){
                             $join = $join->on('p.itemcode', '=', 'd.itemcode')
                                         ->on('p.uomcode', '=', 'd.uomcode')
                                         ->where('p.compcode', '=', session('compcode'))
                                         ->where('p.unit', '=', session('unit'))
                                         ->where('p.recstatus', '=', 'ACTIVE');
+                        })
+                        ->join('material.pricesource as pc', function($join){
+                            $join = $join->on('pc.pricecode', '=', 'd.pricecode')
+                                        ->where('p.compcode', '=', session('compcode'))
+                                        ->where('p.recstatus', '=', 'ACTIVE');
+                        })
+                        ->join('hisdb.taxmast as t', function($join){
+                            $join = $join->on('t.taxcode', '=', 'd.taxcode')
+                                        ->where('t.compcode', '=', session('compcode'))
+                                        ->where('t.recstatus', '=', 'ACTIVE');
                         })
                         ->where('d.compcode',session('compcode'))
                         ->where('d.unit',session('unit'))
@@ -132,13 +142,23 @@ class POListingController extends defaultController
             // dd($purordhd);
 
             $purorddt = DB::table('material.purorddt as d')
-                        ->select('d.compcode', 'd.recno', 'd.lineno_', 'd.suppcode', 'd.purdate','d.pricecode', 'd.itemcode', 'p.description','d.uomcode','d.pouom','d.qtyorder','d.qtyoutstand','d.qtyrequest','d.qtydelivered', 'd.perslstax', 'd.unitprice', 'd.taxcode', 'd.perdisc', 'd.amtdisc','d.amtslstax as tot_gst','d.netunitprice','d.totamount','d.amount', 'd.unit', 'd.recstatus')
+                        ->select('d.compcode', 'd.recno', 'd.lineno_', 'd.suppcode', 'd.purdate','d.pricecode', 'd.itemcode', 'p.description','d.uomcode','d.pouom','d.qtyorder','d.qtyoutstand','d.qtyrequest','d.qtydelivered', 'd.perslstax', 'd.unitprice', 'd.taxcode', 'd.perdisc', 'd.amtdisc','d.amtslstax as tot_gst','d.netunitprice','d.totamount','d.amount', 'd.unit', 'd.recstatus', 'pc.description as pc_desc', 't.description as tax_desc')
                         ->join('material.product as p', function($join){
                             $join = $join->on('p.itemcode', '=', 'd.itemcode')
                                         ->on('p.uomcode', '=', 'd.uomcode')
                                         ->where('p.compcode', '=', session('compcode'))
                                         ->where('p.unit', '=', session('unit'))
                                         ->where('p.recstatus', '=', 'ACTIVE');
+                        })
+                        ->join('material.pricesource as pc', function($join){
+                            $join = $join->on('pc.pricecode', '=', 'd.pricecode')
+                                        ->where('p.compcode', '=', session('compcode'))
+                                        ->where('p.recstatus', '=', 'ACTIVE');
+                        })
+                        ->join('hisdb.taxmast as t', function($join){
+                            $join = $join->on('t.taxcode', '=', 'd.taxcode')
+                                        ->where('t.compcode', '=', session('compcode'))
+                                        ->where('t.recstatus', '=', 'ACTIVE');
                         })
                         ->where('d.compcode',session('compcode'))
                         ->where('d.unit',session('unit'))
