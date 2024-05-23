@@ -62,7 +62,7 @@
                                     { text: 'Payer', style: 'tableHeader' },
                                     { text: 'Auth No', style: 'tableHeader' },
                                     { text: 'Reference No', style: 'tableHeader' },
-                                    { text: 'Exp Date', style: 'tableHeader' },
+                                    { text: 'Expiry Date', style: 'tableHeader' },
                                     { text: 'FC', style: 'tableHeader' },
                                 ],
                                 @php($tot = 0)
