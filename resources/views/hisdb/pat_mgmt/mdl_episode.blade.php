@@ -580,7 +580,7 @@
                             <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
                             <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
                             <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
-                                <h5><strong>PAYER</strong></h5>
+                                <h5><strong>COVERAGE</strong></h5>
                             </div> 
                             </div>
 

@@ -504,7 +504,7 @@ class PatEnqController extends defaultController
                             // 'pyrcharge' => $request->,
                             // 'pyrcrdtlmt' => $request->,
                             'pyrlmtamt' => $request->pyrlmtamt,
-                            // 'totbal' => $request->,
+                            'totbal' => $request->pyrlmtamt,
                             'allgroup' => $request->allgroup,
                             // 'alldept' => $request->,
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -525,6 +525,7 @@ class PatEnqController extends defaultController
                             'payercode' => $request->payercode,
                             'pay_type' => $request->pay_type,
                             'pyrlmtamt' => floatval(preg_replace("/[^-0-9\.]/","",$request->pyrlmtamt)),
+                            'totbal' => floatval(preg_replace("/[^-0-9\.]/","",$request->pyrlmtamt)),
                             'allgroup' => $request->allgroup,
                             'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'lastuser' => session('username'),
@@ -664,7 +665,8 @@ class PatEnqController extends defaultController
                             })
                     ->where('ep.compcode',session('compcode'))
                     ->where('ep.mrn',$request->mrn)
-                    ->where('ep.episno',$request->episno);
+                    ->where('ep.episno',$request->episno)
+                    ->orderBy('ep.lineno','asc');
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
@@ -712,8 +714,9 @@ class PatEnqController extends defaultController
     public function gletitem(Request $request){
         $table = DB::table('hisdb.gletitem as gli')
                     ->select('gli.idno','gli.compcode','gli.payercode','gli.mrn','gli.episno','gli.chgcode','gli.deptcode','gli.grpcode','gli.totitemlimit','gli.totitembal','gli.lastupdate','gli.lastuser','gli.computerid','chgm.description as chgcode_desc')
-                    ->leftJoin('hisdb.chgmast as chgm', function($join) use ($request){
+                    ->join('hisdb.chgmast as chgm', function($join) use ($request){
                                 $join = $join->on('chgm.chgcode', '=', 'gli.chgcode')
+                                                ->where('chgm.chggroup', '=', $request->grpcode)
                                                 ->where('chgm.compcode','=',session('compcode'));
                             })
                     ->where('gli.compcode',session('compcode'))
