@@ -1,18 +1,18 @@
 <table>
     @foreach ($paymode as $pmode)
         <tr>
-            <td style="font-weight:bold">PAYMODE:</td>
-            <td style="font-weight:bold">{{$pmode->paymode}}</td>
+            <td style="font-weight: bold">PAYMODE:</td>
+            <td style="font-weight: bold">{{$pmode->paymode}}</td>
         </tr>
         <tr>
-            <td style="font-weight:bold">RECEIPT DATE</td>
-            <td style="font-weight:bold">PAYER CODE</td>
-            <td style="font-weight:bold">AMOUNT</td>
-            <td style="font-weight:bold">PAYER</td>
-            <td style="font-weight:bold">AUTH NO</td>
-            <td style="font-weight:bold">EXP DATE</td>
-            <td style="font-weight:bold">FC</td>
-            <td style="font-weight:bold">REFERENCE</td>
+            <td style="font-weight: bold">RECEIPT DATE</td>
+            <td style="font-weight: bold">PAYER CODE</td>
+            <td style="font-weight: bold">AMOUNT</td>
+            <td style="font-weight: bold">PAYER</td>
+            <td style="font-weight: bold">AUTH NO</td>
+            <td style="font-weight: bold">EXP DATE</td>
+            <td style="font-weight: bold">FC</td>
+            <td style="font-weight: bold">REFERENCE</td>
         </tr>
         @php($tot = 0)
         @foreach($dbacthdr as $obj)
@@ -31,7 +31,7 @@
             @endif
         @endforeach
         <tr>
-            <td style="font-weight:bold">TOTAL AMOUNT:</td>
+            <td style="font-weight: bold">TOTAL AMOUNT:</td>
             <td></td>
             <td style="text-align: right">{{ number_format($tot, 2, '.', ',') }}</td>
             <td></td>

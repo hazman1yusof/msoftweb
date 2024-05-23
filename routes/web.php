@@ -1062,6 +1062,13 @@ Route::get('/DebtorList_Report/summarypdf','finance\DebtorList_ReportController@
 Route::get('/DebtorList_Report/dtlExcel','finance\DebtorList_ReportController@dtlExcel');
 Route::get('/DebtorList_Report/dtlpdf','finance\DebtorList_ReportController@dtlpdf');
 
+//// Deposits Received -- Report
+Route::get('/depositRcv_Report','finance\depositRcv_ReportController@show');
+Route::get('/depositRcv_Report/table','finance\depositRcv_ReportController@table');
+Route::post('/depositRcv_Report/form','finance\depositRcv_ReportController@form');
+Route::get('/depositRcv_Report/showExcel','finance\depositRcv_ReportController@showExcel');
+Route::get('/depositRcv_Report/showpdf','finance\depositRcv_ReportController@showpdf');
+
 //// AP Summary -- Report
 Route::get('/APSummary_Report','finance\APSummary_ReportController@show');
 Route::get('/APSummary_Report/table','finance\APSummary_ReportController@table');
