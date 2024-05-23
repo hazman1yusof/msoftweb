@@ -35,7 +35,7 @@ class CardReceiptExport implements FromView, WithEvents, WithColumnWidths
         $this->dateto = $dateto;
         $this->tillcode = $tillcode;
         $this->tillno = $tillno;
-        $this->dbacthdr_len=0;
+        $this->dbacthdr_len = 0;
         
         $this->comp = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
@@ -69,11 +69,11 @@ class CardReceiptExport implements FromView, WithEvents, WithColumnWidths
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
                     ->select('dh.idno', 'dh.compcode', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate','dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.posteddate', 'dm.debtortype as dm_debtortype', 'dt.description as dt_description')
-                    ->leftJoin('debtor.debtormast as dm', function($join){
+                    ->leftJoin('debtor.debtormast as dm', function ($join){
                         $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
                                     ->where('dm.compcode', '=', session('compcode'));
                     })
-                    ->leftJoin('debtor.debtortype as dt', function($join){
+                    ->leftJoin('debtor.debtortype as dt', function ($join){
                         $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
                                     ->where('dt.compcode', '=', session('compcode'));
                     })
@@ -85,7 +85,7 @@ class CardReceiptExport implements FromView, WithEvents, WithColumnWidths
                     ->get();
         
         $paymode = DB::table('debtor.dbacthdr as dh')
-                    ->select('dh.paymode') 
+                    ->select('dh.paymode')
                     ->where('dh.compcode','=',session('compcode'))
                     ->where('dh.paytype', '=', '#F_TAB-CARD')
                     ->whereIn('dh.trantype',['RD','RC'])
@@ -112,8 +112,8 @@ class CardReceiptExport implements FromView, WithEvents, WithColumnWidths
     public function registerEvents(): array
     {
         return [
-            AfterSheet::class => function(AfterSheet $event) {
-                $event->sheet->getPageSetup()->setPaperSize(9);//A4
+            AfterSheet::class => function (AfterSheet $event){
+                $event->sheet->getPageSetup()->setPaperSize(9); // A4
                 
                 $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nCARD RECEIPT LISTING"."\n".sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 
@@ -130,7 +130,7 @@ class CardReceiptExport implements FromView, WithEvents, WithColumnWidths
     public function convertNumberToWordENG($num = false)
     {
         $num = str_replace(array(',', ' '), '' , trim($num));
-        if(! $num) {
+        if(! $num){
             return false;
         }
         $num = (int) $num;
@@ -148,24 +148,24 @@ class CardReceiptExport implements FromView, WithEvents, WithColumnWidths
         $max_length = $levels * 3;
         $num = substr('00' . $num, -$max_length);
         $num_levels = str_split($num, 3);
-        for ($i = 0; $i < count($num_levels); $i++) {
+        for($i = 0; $i < count($num_levels); $i++){
             $levels--;
             $hundreds = (int) ($num_levels[$i] / 100);
             $hundreds = ($hundreds ? '' .$list1[$hundreds].' HUNDRED' .' ' : '');
             $tens = (int) ($num_levels[$i] % 100);
             $singles = '';
-            if ( $tens < 20 ) {
+            if($tens < 20){
                 $tens = ($tens ? '' . $list1[$tens] .' ' : '' );
-            } else {
+            }else{
                 $tens = (int)($tens / 10);
                 $tens = '' . $list2[$tens] . ' ';
                 $singles = (int) ($num_levels[$i] % 10);
                 $singles = '' . $list1[$singles] . ' ';
             }
             $words[] = $hundreds . $tens . $singles . ( ( $levels && ( int ) ( $num_levels[$i] ) ) ? '' . $list3[$levels] .' ' : '' );
-        } //end for loop
+        } // end for loop
         $commas = count($words);
-        if ($commas > 1) {
+        if($commas > 1){
             $commas = $commas - 1;
         }
         return implode(' ', $words);

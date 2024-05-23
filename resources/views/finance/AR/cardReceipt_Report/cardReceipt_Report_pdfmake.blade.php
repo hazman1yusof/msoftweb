@@ -51,7 +51,7 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [50,50,40,50,50,70,'*'],    // panjang standard dia 515
+                            widths: [50,50,40,50,50,70,'*'], // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'Receipt No', style: 'tableHeader' },
@@ -110,7 +110,6 @@
                         },
                         layout: 'noBorders',
                     },
-                  
                 ],
                 styles: {
                     header: {
