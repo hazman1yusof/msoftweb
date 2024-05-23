@@ -73,7 +73,7 @@
 			        }
 
 				if(currentPage == 1){
-					var logohdr = {image: 'letterhead', width: 200, height: 40, style: 'tableHeader', alignment: 'center'};
+					var logohdr = {image: 'letterhead', width: 200, height: 40, style: 'tableHeader', alignment: 'center',margin: [30, 25, 0, 0]};
 					var title =  {text: '\nPO LISTING\n',style: 'header',alignment: 'center'};
 					retval.push(logohdr);
 					retval.push(title);
@@ -94,7 +94,7 @@
             pageOrientation: 'landscape',
 		  	content: [
                 {
-                    style: 'tableExample',
+                    style: 'tableExampleHeader',
                     table: {
                         headerRows: 1,
                         widths: [40,110,35,35,50,40,40,40,40,60,35,40,40],  //panjang standard dia 515
@@ -200,12 +200,9 @@
                     layout: 'noBorders',
                 },
             @endforeach
-		  		
-		       
-
 			],
+
 			styles: {
-				
                 header: {
                     fontSize: 14,
                     bold: true,
@@ -227,7 +224,7 @@
                 },
                 tableExampleHeader: {
                     fontSize: 8,
-                    margin: [0, 5, 0, 15]
+                    margin: [0, 35, 10, 15]
                 },
                 tableHeader: {
                     bold: true,
@@ -244,7 +241,7 @@
                 },
                 headerPage: {
                     fontSize: 8,
-                    margin: [40, 10, 10, 15]//l,t,r,b
+                    margin: [40, 15, 10, 15]//l,t,r,b
                 },
 			},
 			images: {

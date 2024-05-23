@@ -55,6 +55,9 @@ class OrdcomController extends defaultController
             case 'showpdf_summ':
                 return $this->showpdf_summ($request);
                 break;
+            case 'final_bill_invoice':
+                return $this->final_bill_invoice($request);
+                break;
             default:
                 $data = 'error happen..';
                 break;
@@ -124,8 +127,8 @@ class OrdcomController extends defaultController
             case 'get_table_ordcom':
                 return $this->get_table_ordcom($request);
 
-            case 'final_bill'
-                return $this->final_bill($request);
+            case 'final_bill':
+                return $this->final_bill_init($request);
 
             default:
                 return 'error happen..';
@@ -3864,6 +3867,27 @@ class OrdcomController extends defaultController
         return $billtype_amt_percent;
     }
 
+    public function final_bill_init(Request $request){
+
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+
+        $chargetrx_obj = DB::table('hisdb.chargetrx')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn' ,'=', $mrn)
+                            ->where('episno' ,'=', $episno)
+                            ->where('trxtype','!=','PD')
+                            ->where('recstatus','<>','DELETE')
+                            ->whereNotNull('billno');
+
+        if($chargetrx_obj->exists()){
+            $this->final_bill_reverse($request);
+        }else{
+            $this->final_bill($request);
+        }
+
+    }
+
     public function final_bill(Request $request){
         DB::beginTransaction();
 
@@ -3919,13 +3943,368 @@ class OrdcomController extends defaultController
                         ]);
             }
 
+            $chargetrx_obj = DB::table('hisdb.chargetrx')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn' ,'=', $mrn)
+                                ->where('episno' ,'=', $episno)
+                                ->where('trxtype','!=','PD')
+                                ->where('recstatus','<>','DELETE')
+                                ->orderBy('amount','asc');
+
+            if(!$chargetrx_obj->exists()){
+                throw new \Exception("This Patient Doesnt Have any Charges!");
+            }
             
+            $chargetrx_obj = $chargetrx_obj->get();
+            $billno = $this->recno('PB','INV');
+
+            // dd($chargetrx_obj);
+
+            foreach ($chargetrx_obj as $key => $chargetrx) {
+                $net_amout = $chargetrx->amount + $chargetrx->taxamount + $chargetrx->discamt;
+                $this->handle_epispayer($net_amout,$chargetrx,$mrn,$episno,$episode->billtype,$billno);
+            }
+
             
+            DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error DB rollback!'.$e, 500);
+            return response($e, 500);
         }
+    }
+
+    public function handle_epispayer($net_amout,$chargetrx,$mrn,$episno,$billtype,$billno){
+        $chgcode = $chargetrx->chgcode;
+        $chggroup = $chargetrx->chggroup;
+        $epispayer_obj = DB::table('hisdb.epispayer as epayr')
+                                ->select('epayr.idno as epayr_idno','gldp.idno as gldp_idno','glit.idno as glit_idno','epayr.lineno','epayr.pyrlmtamt','epayr.totbal','epayr.allgroup','gldp.grpcode','gldp.grplimit','gldp.grpbal','gldp.inditemlimit','glit.chgcode','glit.totitemlimit','glit.totitembal')
+                                ->leftjoin('hisdb.gletdept as gldp', function($join) use ($mrn,$episno,$chggroup){
+                                    $join = $join->where('gldp.compcode', '=', session('compcode'));
+                                    $join = $join->where('gldp.mrn', '=', $mrn);
+                                    $join = $join->where('gldp.episno', '=', $episno);
+                                    $join = $join->where('gldp.grpcode', '=', $chggroup);
+                                    $join = $join->on('gldp.payercode', '=', 'epayr.payercode');
+                                })
+                                ->leftjoin('hisdb.gletitem as glit', function($join) use ($mrn,$episno,$chggroup,$chgcode){
+                                    $join = $join->where('glit.compcode', '=', session('compcode'));
+                                    $join = $join->where('glit.mrn', '=', $mrn);
+                                    $join = $join->where('glit.episno', '=', $episno);
+                                    $join = $join->where('glit.grpcode', '=', $chggroup);
+                                    $join = $join->where('glit.chgcode', '=', $chgcode);
+                                    $join = $join->on('glit.payercode', '=', 'epayr.payercode');
+                                })
+                                ->where('epayr.compcode',session('compcode'))
+                                ->where('epayr.mrn' ,'=', $mrn)
+                                ->where('epayr.episno' ,'=', $episno)
+                                ->orderBy('epayr.lineno','asc')
+                                ->get();
+
+        // dd($epispayer_obj);
+
+        $net_amout = $net_amout;
+        foreach ($epispayer_obj as $key => $epispayer) {
+            $lineno = $epispayer->lineno;
+            $epayr_idno = $epispayer->epayr_idno;
+            $gldp_idno = $epispayer->gldp_idno;
+            $glit_idno = $epispayer->glit_idno;
+            $totbal = $epispayer->totbal;
+            $allgroup = $epispayer->allgroup;
+            $grpcode = $epispayer->grpcode;
+            $grpbal = $epispayer->grpbal;
+            $inditemlimit = $epispayer->inditemlimit;
+            $totitembal = $epispayer->totitembal;
+
+            $totbal_after = $totbal - $net_amout;
+            if($totbal_after<0){
+                $boleh_ditolak = $totbal;
+                $baki_turun = $net_amout - $boleh_ditolak;
+            }else{
+                $boleh_ditolak = $net_amout;
+                $baki_turun = 0;
+            }
+
+            if(!empty($gldp_idno)){
+
+                if(!empty($inditemlimit) && ($boleh_ditolak > $inditemlimit)){
+                    $inditemlimit_after = $inditemlimit - $boleh_ditolak;
+                    if($inditemlimit_after<0){
+                        $boleh_ditolak = $inditemlimit;
+                        $baki_turun = $net_amout - $boleh_ditolak;
+                    }else{
+                        $boleh_ditolak = $boleh_ditolak;
+                        $baki_turun = $baki_turun;
+                    }
+                }
+
+                $grpbal_after = $grpbal - $boleh_ditolak;
+                if($grpbal_after<0){
+                    $boleh_ditolak = $grpbal;
+                    $baki_turun = $net_amout - $boleh_ditolak;
+                }else{
+                    $boleh_ditolak = $boleh_ditolak;
+                    $baki_turun = $baki_turun;
+                }
+
+                if(!empty($glit_idno)){
+                    $totitembal_after = $totitembal - $boleh_ditolak;
+                    if($totitembal_after<0){
+                        $boleh_ditolak = $totitembal;
+                        $baki_turun = $net_amout - $boleh_ditolak;
+                    }else{
+                        $boleh_ditolak = $boleh_ditolak;
+                        $baki_turun = $baki_turun;
+                    }
+
+                    if($boleh_ditolak > 0){
+                        DB::table('hisdb.gletitem')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno' ,'=', $glit_idno)
+                            ->update(['totitembal' => $totitembal - $boleh_ditolak]);
+
+                        $totitembal = $totitembal - $boleh_ditolak;
+                    }
+                }
+
+                if($boleh_ditolak > 0){
+                    DB::table('hisdb.gletdept')
+                        ->where('compcode',session('compcode'))
+                        ->where('idno' ,'=', $gldp_idno)
+                        ->update(['grpbal' => $grpbal - $boleh_ditolak]);
+
+                    $grpbal = $grpbal - $boleh_ditolak;
+                }
+                
+            }
+
+            if($boleh_ditolak > 0){
+                DB::table('hisdb.epispayer')
+                        ->where('compcode',session('compcode'))
+                        ->where('idno' ,'=', $epayr_idno)
+                        ->update(['totbal' => $totbal - $boleh_ditolak]);
+
+                $totbal = $totbal - $boleh_ditolak;
+
+                DB::table("hisdb.billdet")
+                        ->insert([
+                            'auditno' => $chargetrx->auditno,
+                            'lineno_' => $lineno,
+                            // 'idno' => $chargetrx->idno,
+                            'compcode' => session('compcode'),
+                            'mrn'  => $chargetrx->mrn,
+                            'episno'  => $chargetrx->episno,
+                            'trxdate' => $chargetrx->trxdate,
+                            'chgcode' => $chargetrx->chgcode,
+                            'billflag' => 1,
+                            'billdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'billtype'  => $billtype,
+                            'chg_class' => $chargetrx->chg_class,
+                            'unitprce' => $chargetrx->unitprce,
+                            'quantity' => $chargetrx->quantity,
+                            'amount' => $boleh_ditolak,
+                            'trxtime' => $chargetrx->trxtime,
+                            'chggroup' => $chargetrx->chggroup,
+                            'taxamount' => $chargetrx->taxamount,
+                            'billno' => $billno,
+                            'invno' => $billno,
+                            'uom' => $chargetrx->uom,
+                            'billtime' => $chargetrx->billtime,
+                            'invgroup' => $chargetrx->invgroup,
+                            'reqdept' => $chargetrx->reqdept,
+                            'issdept' => $chargetrx->issdept,
+                            'invcode' => $chargetrx->invcode,
+                            'discamt' => $chargetrx->discamt,
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'lastuser' => session('username'),
+                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'taxcode' => $chargetrx->taxcode,
+                            'recstatus' => 'POSTED',
+                        ]);
+
+                DB::table("hisdb.chargetrx")
+                        ->where('compcode',session('compcode'))
+                        ->where('id' ,'=', $chargetrx->id)
+                        ->update([
+                            'billflag' => 1,
+                            'billdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'billtype'  => $billtype,
+                            'billno' => $billno,
+                            'invno' => $billno,
+                            'billtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                        ]);
+
+            }
+
+            if($baki_turun == 0){
+                break;
+            }else{
+                $net_amout = $baki_turun;
+            }
+        }
+    }
+
+    public function final_bill_reverse(Request $request){
+        DB::beginTransaction();
+        try {
+
+            $mrn = $request->mrn;
+            $episno = $request->episno;
+
+            DB::table('hisdb.chargetrx')
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn' ,'=', $mrn)
+                    ->where('episno' ,'=', $episno)
+                    ->where('trxtype','!=','PD')
+                    ->where('recstatus','<>','DELETE')
+                    ->update([
+                            'billflag' => 0,
+                            'billdate' => null,
+                            'billno' => null,
+                            'invno' => null,
+                            'billtime' => null
+                    ]);
+
+            DB::table('hisdb.billdet')
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn',$mrn)
+                    ->where('episno',$episno)
+                    ->delete();
+
+            $epispayer = DB::table('hisdb.epispayer')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn' ,'=', $mrn)
+                            ->where('episno' ,'=', $episno);
+
+            if($epispayer->exists()){
+                foreach($epispayer->get() as $key => $obj) {
+                    DB::table('hisdb.epispayer')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno',$obj->idno)
+                            ->update(['totbal' => $obj->pyrlmtamt]);
+                }
+            }
+
+            $gletdept = DB::table('hisdb.gletdept')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn' ,'=', $mrn)
+                            ->where('episno' ,'=', $episno);
+
+            if($gletdept->exists()){
+                foreach($gletdept->get() as $key => $obj) {
+                    DB::table('hisdb.gletdept')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno',$obj->idno)
+                            ->update(['grpbal' => $obj->grplimit]);
+                }
+            }
+
+            $gletitem = DB::table('hisdb.gletitem')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn' ,'=', $mrn)
+                            ->where('episno' ,'=', $episno);
+
+            if($gletitem->exists()){
+                foreach($gletitem->get() as $key => $obj) {
+                    DB::table('hisdb.gletitem')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno',$obj->idno)
+                            ->update(['totitembal' => $obj->totitemlimit]);
+                }
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e, 500);
+        }
+    }
+
+    public function final_bill_invoice(Request $request){
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+
+        $billdet = DB::table('hisdb.billdet as bd')
+                        ->select('bd.idno','bd.mrn','bd.episno','bd.billno','bd.billdate','bd.trxdate','bd.billtype','btm.description as billtype_desc','bd.chgcode','chgm.description','bd.uom','bd.quantity','bd.unitprce','bd.amount','bd.taxamount','bd.discamt','bd.lineno_','ep.payercode','dm.name as debtorname','dm.address1','dm.address2','dm.address3','dm.address4','dm.contact','ep.refno','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc','chgm.invgroup','chgm.chgclass','epis.pay_type','epis.reg_date','epis.reg_time','pm.name as pat_name','pm.newic','doc.doctorname as doc_name')
+                        ->join('hisdb.chgmast as chgm', function($join) use ($mrn,$episno){
+                            $join = $join->where('chgm.compcode',session('compcode'));
+                            $join = $join->on('chgm.chgcode', '=', 'bd.chgcode');
+                            $join = $join->on('chgm.uom', '=', 'bd.uom');
+                        })
+                        ->join('hisdb.pat_mast as pm', function($join) use ($mrn,$episno){
+                            $join = $join->where('pm.compcode', '=', session('compcode'));
+                            $join = $join->where('pm.mrn',$mrn);
+                        })
+                        ->join('hisdb.episode as epis', function($join) use ($mrn,$episno){
+                            $join = $join->where('epis.compcode', '=', session('compcode'));
+                            $join = $join->where('epis.mrn',$mrn);
+                            $join = $join->where('epis.episno',$episno);
+                        })
+                        ->join('hisdb.doctor as doc', function($join) use ($request){
+                            $join = $join->where('doc.compcode', '=', session('compcode'));
+                            $join = $join->on('doc.doctorcode', '=', 'epis.admdoctor');
+                        })
+                        ->join('hisdb.epispayer as ep', function($join) use ($mrn,$episno){
+                            $join = $join->where('ep.compcode',session('compcode'));
+                            $join = $join->on('ep.lineno', '=', 'bd.lineno_');
+                            $join = $join->where('ep.mrn',$mrn);
+                            $join = $join->where('ep.episno',$episno);
+                        })
+                        ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
+                            $join = $join->where('dm.compcode',session('compcode'));
+                            $join = $join->on('dm.debtorcode', '=', 'ep.payercode');
+                        })
+                        ->leftJoin('hisdb.billtymst as btm', function($join) use ($request){
+                            $join = $join->where('btm.compcode',session('compcode'));
+                            $join = $join->on('btm.billtype', '=', 'bd.billtype');
+                        })
+                        ->leftjoin('hisdb.chggroup as chgg', function($join) use ($request){
+                            $join = $join->where('chgg.compcode', '=', session('compcode'));
+                            $join = $join->on('chgg.grpcode', '=', 'chgm.chggroup');
+                        })
+                        ->leftjoin('hisdb.chgtype as chgt', function($join) use ($request){
+                            $join = $join->where('chgt.compcode', '=', session('compcode'));
+                            $join = $join->on('chgt.chgtype', '=', 'chgm.chgtype');
+                        })
+                        ->leftjoin('hisdb.chgclass as chgc', function($join) use ($request){
+                            $join = $join->where('chgc.compcode', '=', session('compcode'));
+                            $join = $join->on('chgc.classcode', '=', 'chgm.chgclass');
+                        })
+                        ->where('bd.compcode',session('compcode'))
+                        ->where('bd.mrn',$mrn)
+                        ->where('bd.episno',$episno)
+                        ->orderBy('chgm.invgroup','desc')
+                        ->get();
+
+        foreach ($billdet as $key => $value) {
+            if(strtoupper($value->invgroup) == 'CC'){
+                $value->pdescription = $value->description;
+            }else if(strtoupper($value->invgroup) == 'CT'){
+                $value->pdescription = $value->chgt_desc;
+            }else{
+                $value->pdescription = $value->chgg_desc;
+            }
+            $value->net_amount =  $value->amount + $value->taxamount + $value->discamt;
+        }
+
+        $chgclass = $billdet->unique('chgclass')->sortBy('classlevel');
+        $epispayer = $billdet->unique('lineno_')->sortBy('lineno_');
+        $invgroup = $billdet->unique('pdescription');
+        $username = session('username');
+        $footer = '';
+        $footer_ = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','PB')
+                        ->where('trantype','note');
+
+        if($footer_->exists()){
+            $footer_ = $footer_->first();
+            $footer = $footer_->description;
+        }
+        // dd($epispayer);
+
+        return view('hisdb.ordcom.final_bill_invoice',compact('billdet','epispayer','invgroup','chgclass','username','footer'));
     }
 
     public function showpdf_detail(Request $request){

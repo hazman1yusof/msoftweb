@@ -130,7 +130,6 @@ class POListingExport implements FromView, WithEvents, WithColumnWidths
                 ->get();
         //dd($POListing);
         }
-
         
         return view('material.POListing.POListing_excel',compact('POListing'));
     }

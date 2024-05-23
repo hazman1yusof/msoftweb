@@ -23,7 +23,7 @@ $(document).ready(function(){
 		SmoothScrollTo("#jqGrid_ordcom_panel", 500,70);
 		$('a#ordcom_navtab_phar').tab('show')
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
-		$("#jqGrid_phar").jqGrid('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+		$("#jqGrid_phar").jqGrid('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
 		$("#cyclebill_dtl").attr('href',"./ordcom/table?action=showpdf_detail&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
 		$("#cyclebill_summ").attr('href',"./ordcom/table?action=showpdf_summ&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
 
@@ -40,43 +40,43 @@ $(document).ready(function(){
 		let ordcomtype = $(this).data('ord_chgtype');
 		switch(ordcomtype){
 			case 'PHAR':
-				$("#jqGrid_phar").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+				$("#jqGrid_phar").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
 				refreshGrid('#jqGrid_phar',urlParam_phar,'add');
 				break;
 			case 'DISP':
-				$("#jqGrid_disp").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+				$("#jqGrid_disp").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
 				refreshGrid('#jqGrid_disp',urlParam_disp,'add');
 				break;
 			case 'LAB':
-				$("#jqGrid_lab").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+				$("#jqGrid_lab").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
 				refreshGrid('#jqGrid_lab',urlParam_lab,'add');
 				break;
 			case 'RAD':
-				$("#jqGrid_rad").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+				$("#jqGrid_rad").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
 				refreshGrid('#jqGrid_rad',urlParam_rad,'add');
 				break;
 			case 'DFEE':
-				$("#jqGrid_dfee").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+				$("#jqGrid_dfee").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
 				refreshGrid('#jqGrid_dfee',urlParam_dfee,'add');
 				break;
 			case 'PHYS':
-				$("#jqGrid_phys").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+				$("#jqGrid_phys").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
 				refreshGrid('#jqGrid_phys',urlParam_phys,'add');
 				break;
 			case 'REHAB':
-				$("#jqGrid_rehab").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+				$("#jqGrid_rehab").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
 				refreshGrid('#jqGrid_rehab',urlParam_rehab,'add');
 				break;
 			case 'DIET':
-				$("#jqGrid_diet").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+				$("#jqGrid_diet").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
 				refreshGrid('#jqGrid_diet',urlParam_diet,'add');
 				break;
 			case 'OTH':
-				$("#jqGrid_oth").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+				$("#jqGrid_oth").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
 				refreshGrid('#jqGrid_oth',urlParam_oth,'add');
 				break;
 			case 'PKG':
-				$("#jqGrid_pkg").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+				$("#jqGrid_pkg").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
 				refreshGrid('#jqGrid_pkg',urlParam_pkg,'add');
 				break;
 		}
@@ -302,4 +302,28 @@ function set_userdeptcode(tab){
 		let rowdata = getrow_bootgrid();
 		$('#'+tab+'dept_dflt').val(rowdata.regdept);
 	}
+}
+
+function final_bill(grid,param){
+	var lastrowdata = getrow_bootgrid();
+	var url = "./ordcom/table?action=final_bill_invoice&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno;
+	let urlparam = {	
+		action: 'final_bill',
+	};
+	let urlobj={
+		oper:'final_bill',
+		_token: $("#csrf_token").val(),
+		mrn: lastrowdata.MRN,
+		episno: lastrowdata.Episno
+	};
+
+	$.post( "./ordcom/form?"+$.param(urlparam),urlobj, function( data ){	
+	}).fail(function (data) {
+		$('#tabcoverage').collapse('hide');
+		refreshGrid(grid, param);
+	}).done(function (data) {
+		$('#tabcoverage').collapse('hide');
+		refreshGrid(grid, param);
+		window.open(url, '_blank').focus();
+	});	
 }
