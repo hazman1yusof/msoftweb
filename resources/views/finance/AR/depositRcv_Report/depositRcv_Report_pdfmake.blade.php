@@ -70,7 +70,11 @@
                                         { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}' },
                                         { text: '{{number_format($obj->amount,2)}}', alignment: 'right' },
                                         { text: '{{$obj->reference}}' },
-                                        { text: '{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}' },
+                                        @if($obj->paytype == '#F_TAB-CARD')
+                                            { text: '{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}' },
+                                        @else
+                                            { text: ' ' },
+                                        @endif
                                         { text: '{{$obj->authno}}' },
                                         { text: '{{$obj->payername}}' },
                                     ],

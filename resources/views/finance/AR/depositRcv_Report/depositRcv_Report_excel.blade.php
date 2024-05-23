@@ -1,7 +1,7 @@
 <table>
     @foreach($paymode as $pmode)
         <tr>
-            <td style="font-weight: bold">Card Code:</td>
+            <td style="font-weight: bold">Payment Mode:</td>
             <td style="font-weight: bold">{{$pmode->paymode}}</td>
         </tr>
         <tr>
@@ -21,7 +21,11 @@
                     <td>{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}</td>
                     <td data-format="0.00" style="text-align: right">{{number_format($obj->amount, 2, '.', ',')}}</td>
                     <td>{{$obj->reference}}</td>
-                    <td>{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}</td>
+                    @if($obj->paytype == '#F_TAB-CARD')
+                        <td>{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}</td>
+                    @else
+                        <td></td>
+                    @endif
                     <td>{{$obj->authno}}</td>
                     <td>{{$obj->payername}}</td>
                 </tr>
