@@ -11,11 +11,11 @@ $(document).ready(function (){
 	});
 	
 	$("#pdfgen1").click(function (){
-		window.open('./cardReceipt_Report/showpdf?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
+		window.open('./depositRcv_Report/showpdf?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
 	});
 	
 	$("#excelgen1").click(function (){
-		window.location='./cardReceipt_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
+		window.location='./depositRcv_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
 	});
 	
 });

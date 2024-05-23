@@ -7,10 +7,10 @@ use App\Http\Controllers\defaultController;
 use DB;
 use DateTime;
 use Carbon\Carbon;
-use App\Exports\CardReceiptExport;
+use App\Exports\DepositRcvExport;
 use Maatwebsite\Excel\Facades\Excel;
 
-class cardReceipt_ReportController extends defaultController
+class depositRcv_ReportController extends defaultController
 {
     
     var $table;
@@ -25,7 +25,7 @@ class cardReceipt_ReportController extends defaultController
     public function show(Request $request)
     {
         $comp = DB::table('sysdb.company')->where('compcode','=',session('compcode'))->first();
-        return view('finance.AR.cardReceipt_Report.cardReceipt_Report',[
+        return view('finance.AR.depositRcv_Report.depositRcv_Report',[
                 'company_name' => $comp->name
         ]);
     }
@@ -47,19 +47,13 @@ class cardReceipt_ReportController extends defaultController
     }
     
     public function showExcel(Request $request){
-        return Excel::download(new CardReceiptExport($request->datefr,$request->dateto,$request->tillcode,$request->tillno), 'CardReceiptExport.xlsx');
+        return Excel::download(new DepositRcvExport($request->datefr,$request->dateto), 'DepositRcvExport.xlsx');
     }
     
     public function showpdf(Request $request){
         
         $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
-        
-        $tilldetl = DB::table('debtor.tilldetl')
-                    ->where('compcode',session('compcode'))
-                    ->where('tillcode',$request->tillcode)
-                    ->where('tillno',$request->tillno)
-                    ->first();
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
                     ->select('dh.idno', 'dh.compcode', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate','dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.posteddate', 'dm.debtortype as dm_debtortype', 'dt.description as dt_description')
@@ -72,19 +66,23 @@ class cardReceipt_ReportController extends defaultController
                                     ->where('dt.compcode', '=', session('compcode'));
                     })
                     ->where('dh.compcode','=',session('compcode'))
-                    ->where('dh.paytype', '=', '#F_TAB-CARD')
-                    ->whereIn('dh.trantype',['RD','RC'])
-                    ->whereBetween('dh.entrydate', [$datefr, $dateto])
-                    ->orderBy('dh.entrydate','ASC')
+                    ->where('dh.source','=','PB')
+                    ->where('dh.trantype','=','RD')
+                    ->where('dh.recstatus','=','ACTIVE')
+                    ->whereBetween('dh.posteddate',[$datefr, $dateto])
+                    ->orderBy('dh.posteddate','ASC')
                     ->get();
+        
         // dd($dbacthdr);
         
         $paymode = DB::table('debtor.dbacthdr as dh')
                     ->select('dh.paymode')
                     ->where('dh.compcode','=',session('compcode'))
-                    ->where('dh.paytype', '=', '#F_TAB-CARD')
-                    ->whereIn('dh.trantype',['RD','RC'])
-                    ->whereBetween('dh.entrydate', [$datefr, $dateto])
+                    ->where('dh.source','=','PB')
+                    ->where('dh.trantype','=','RD')
+                    ->where('dh.recstatus','=','ACTIVE')
+                    ->whereBetween('dh.posteddate',[$datefr, $dateto])
+                    // ->where('dh.paytype','=','#F_TAB-CARD')
                     ->distinct('dh.paymode');
         $paymode = $paymode->get(['dh.paymode']);
         
@@ -100,7 +98,7 @@ class cardReceipt_ReportController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
-        return view('finance.AR.cardReceipt_Report.cardReceipt_Report_pdfmake',compact('dbacthdr','paymode','totamt_eng','totalAmount'));
+        return view('finance.AR.depositRcv_Report.depositRcv_Report_pdfmake',compact('dbacthdr','paymode','totalAmount','totamt_eng'));
         
     }
     

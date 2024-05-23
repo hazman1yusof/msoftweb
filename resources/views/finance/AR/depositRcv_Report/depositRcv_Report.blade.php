@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Refund Listing')
+@section('title', 'Deposits Received Report')
 
 @section('css')
 	<style>
@@ -60,8 +60,8 @@
 @section('body')
     <div class="container mycontainer">
         <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 350px;">
-            <form method="get" id="genreport" action="./refundListing_Report/showExcel">
-                <h4>REFUND LISTING</h4>
+            <form method="get" id="genreport" action="./depositRcv_Report/showExcel">
+                <h4>DEPOSITS RECEIVED REPORT</h4>
                 <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7>
 				
 				<div style="width: 800px;margin: 0 auto;">
@@ -83,10 +83,10 @@
 								<div class='col-md-12 btnform' style="padding: 20px 0px">
 									<fieldset>
 										<!-- <legend>Stock Sheet :</legend> -->
-										<button name="refundListing_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgen1">
+										<button name="depositRcv_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgen1">
 											<span class="fa fa-file-pdf-o fa-lg"></span> Generate Report PDF
 										</button>
-										<button name="refundListing_xls" type="button" class="mybtn btn btn-sm mybtnxls" id="excelgen1">
+										<button name="depositRcv_xls" type="button" class="mybtn btn btn-sm mybtnxls" id="excelgen1">
 											<span class="fa fa-file-excel-o fa-lg"></span> Generate Report Excel
 										</button>
 									</fieldset>
@@ -101,8 +101,8 @@
 	
 	<!-- <div class="container">
 		<div class="jumbotron" style="margin-top: 30px;text-align: center;">
-			<form method="get" id="genreport" action="./refundListing_Report/showExcel">
-				<h2>REFUND LISTING</h2>
+			<form method="get" id="genreport" action="./depositRcv_Report/showExcel">
+				<h2>DEPOSITS RECEIVED REPORT</h2>
 				<h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
 				
 				<table class="reporttable" style="width: 30%;margin: auto;">
@@ -126,7 +126,7 @@
 			
 			<br><br>
 			
-			<form method="get" id= "genreportpdf" href="" target="_blank" action="./refundListing_Report/showpdf?">
+			<form method="get" id= "genreportpdf" href="" target="_blank" action="./depositRcv_Report/showpdf?">
 				<input type="hidden" name='datefr' value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				<input type="hidden" name='dateto' value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				<button type="submit" id="save" data-oper='genreportpdf' class="btn btn-primary btn-lg">Generate Report PDF</button>
@@ -136,5 +136,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/finance/AR/refundListing_Report/refundListing_Report.js"></script>
+	<script src="js/finance/AR/depositRcv_Report/depositRcv_Report.js"></script>
 @endsection

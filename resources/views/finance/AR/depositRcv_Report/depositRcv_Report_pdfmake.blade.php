@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Card Receipt</title>
+        <title>Deposits Received Report</title>
     </head>
     
     <!-- <script src="https://unpkg.com/@jsreport/browser-client/dist/jsreport.umd.js"></script>
@@ -27,7 +27,7 @@
                         image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: '\nCARD RECEIPT LISTING\n',
+                        text: '\nDEPOSITS RECEIVED REPORT\n',
                         style: 'header',
                         alignment: 'center'
                     },
@@ -46,7 +46,7 @@
                         layout: 'noBorders',
                     },
                     @foreach ($paymode as $pmode)
-                    { text: 'Card Code : {{$pmode->paymode}}', alignment: 'left', fontSize: 9, bold: true },
+                    { text: 'Payment Mode : {{$pmode->paymode}}', alignment: 'left', fontSize: 9, bold: true },
                     {
                         style: 'tableExample',
                         table: {

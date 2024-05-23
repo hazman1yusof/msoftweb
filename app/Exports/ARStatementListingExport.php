@@ -35,8 +35,8 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         $this->debtorcode_to = $debtorcode_to;
         $this->datefr = $datefr;
         $this->dateto = $dateto;
-        $this->dbacthdr_len=0;
-        $this->break_loop=[];
+        $this->dbacthdr_len = 0;
+        $this->break_loop = [];
         
         $this->comp = DB::table('sysdb.company')
                     ->where('compcode', '=' ,session('compcode'))
@@ -47,11 +47,12 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
     {
         return [
             'A' => 15,
-            'B' => 12,
-            'C' => 25,
-            'D' => 15,
+            'B' => 15,
+            'C' => 12,
+            'D' => 25,
             'E' => 15,
             'F' => 15,
+            'G' => 15,
         ];
     }
     
@@ -83,10 +84,10 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         $array_report = [];
         $break_loop = [];
         $loop = 0;
-        foreach ($debtormast as $key => $value){
+        foreach($debtormast as $key => $value){
             $dbacthdr = DB::table('debtor.dbacthdr as dh')
-                        ->select('dh.idno', 'dh.source', 'dh.trantype', 'pm.Name', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate')
-                        ->leftJoin('hisdb.pat_mast as pm', function($join){
+                        ->select('dh.idno', 'dh.source', 'dh.trantype', 'pm.Name', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'dh.datesend')
+                        ->leftJoin('hisdb.pat_mast as pm', function ($join){
                             $join = $join->on('pm.MRN', '=', 'dh.mrn')
                                         ->where('pm.compcode', '=', session('compcode'));
                         })
@@ -106,14 +107,16 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
             $openbal = $this->calc_openbal($calc_openbal);
             $value->openbal = $openbal;
             
+            // $value->datesend = '';
             $value->reference = '';
             $value->amount_dr = 0;
             $value->amount_cr = 0;
             $balance = $openbal;
-            foreach ($dbacthdr as $key => $value){
+            foreach($dbacthdr as $key => $value){
                 $loop = $loop + 1;
-                switch ($value->trantype) {
+                switch($value->trantype){
                     case 'IN':
+                        // $value->datesend = $value->datesend;
                         if($value->mrn == '0' || $value->mrn == ''){
                             $value->reference = $value->remark;
                         }else{
@@ -210,12 +213,12 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
     public function registerEvents(): array
     {
         return [
-            AfterSheet::class => function(AfterSheet $event) {
-                foreach ($this->break_loop as $value) {
+            AfterSheet::class => function (AfterSheet $event){
+                foreach($this->break_loop as $value){
                     $event->sheet->setBreak('A'.$value, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
                 }
                 
-                $event->sheet->getPageSetup()->setPaperSize(9);//A4
+                $event->sheet->getPageSetup()->setPaperSize(9); // A4
                 
                 $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSTATEMENT LISTING"."\n".sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 
@@ -232,7 +235,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
     public function convertNumberToWordENG($num = false)
     {
         $num = str_replace(array(',', ' '), '' , trim($num));
-        if(! $num) {
+        if(! $num){
             return false;
         }
         $num = (int) $num;
@@ -250,15 +253,15 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         $max_length = $levels * 3;
         $num = substr('00' . $num, -$max_length);
         $num_levels = str_split($num, 3);
-        for ($i = 0; $i < count($num_levels); $i++) {
+        for($i = 0; $i < count($num_levels); $i++){
             $levels--;
             $hundreds = (int) ($num_levels[$i] / 100);
             $hundreds = ($hundreds ? '' .$list1[$hundreds].' HUNDRED' .' ' : '');
             $tens = (int) ($num_levels[$i] % 100);
             $singles = '';
-            if ( $tens < 20 ) {
+            if($tens < 20){
                 $tens = ($tens ? '' . $list1[$tens] .' ' : '' );
-            } else {
+            }else{
                 $tens = (int)($tens / 10);
                 $tens = '' . $list2[$tens] . ' ';
                 $singles = (int) ($num_levels[$i] % 10);
@@ -267,7 +270,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
             $words[] = $hundreds . $tens . $singles . ( ( $levels && ( int ) ( $num_levels[$i] ) ) ? '' . $list3[$levels] .' ' : '' );
         } //end for loop
         $commas = count($words);
-        if ($commas > 1) {
+        if($commas > 1){
             $commas = $commas - 1;
         }
         return implode(' ', $words);
@@ -281,8 +284,8 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
     public function calc_openbal($obj){
         $balance = 0;
         
-        foreach ($obj->get() as $key => $value){
-            switch ($value->trantype) {
+        foreach($obj->get() as $key => $value){
+            switch($value->trantype){
                 case 'IN':
                     $balance = $balance + floatval($value->amount);
                     break;

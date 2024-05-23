@@ -5,12 +5,12 @@
 @section('css')
 	<style>
 		table.reporttable th{
-			border:none;
+			border: none;
 			text-align: right;
 			padding-right: 20px;
 		}
 		table.reporttable td{
-			padding:5px;
+			padding: 5px;
 		}
 		
 		/* body{
@@ -19,10 +19,10 @@
 		.container.mycontainer{
 			padding-top: 5%;
 		}
-		.mycontainer .panel-default {
+		.mycontainer .panel-default{
 			border-color: #9bb7b7 !important;
 		}
-		.mycontainer .panel-default > .panel-heading {
+		.mycontainer .panel-default > .panel-heading{
 			background-image: linear-gradient(to bottom, #b4cfcf 0%, #c1dddd 100%) !important;
 			font-weight: bold;
 		} */
@@ -38,7 +38,7 @@
 			border-color: darkgreen;
 			margin-bottom: 20px;
 		}
-		.mycontainer .btnvl {
+		.mycontainer .btnvl{
 			border-left: 1px solid #386e6e;
 			width: 0px;
 			padding: 0px;
@@ -49,7 +49,7 @@
 		legend{
 			margin-bottom: 5px !important;
 			font-size: 12px !important;
-			font-weight:bold;
+			font-weight: bold;
 		}
 		.btnform .btn{
 			width: -webkit-fill-available !important;

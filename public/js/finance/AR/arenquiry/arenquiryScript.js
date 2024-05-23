@@ -1718,17 +1718,13 @@ $(document).ready(function (){
 			errorField.length = 0;
 			var ids = $("#jqGrid_Tracking").jqGrid('getDataIDs');
 			for(var i = 0; i < ids.length; i++){
-				var seldata = $('#jqGrid_Tracking').jqGrid ('getRowData', ids[i]);
+				var seldata = $('#jqGrid_Tracking').jqGrid('getRowData',ids[i]);
 				
 				if(seldata.recstatus != 'DEACTIVE'){
 					$("#jqGrid_Tracking").jqGrid('editRow',ids[i]);
 				}
 				
 				$("#jqGrid_Tracking select#"+ids[i]+"_trxcode").attr('disabled','disabled');
-				
-				// if($("#jqGrid_Tracking input#"+ids[i]+"_recstatus").val() == 'DEACTIVE'){
-				// 	$("#jqGrid_Tracking input#"+ids[i]+"_trxdate").attr('disabled','disabled');
-				// }
 				
 				// if($(".input-group#"+ids[i]+"_code").is(":visible")){
 				// 	dialog_code.id_optid = ids[i];
@@ -1770,20 +1766,22 @@ $(document).ready(function (){
 				
 				// cust_rules()
 				
-				var obj =
-				{
-					// 'lineno_' : ids[i],
-					'idno' : data.idno,
-					'lineno_' : $("#jqGrid_Tracking input#"+ids[i]+"_lineno_").val(),
-					// 'source' : $("#jqGrid_Tracking input#"+ids[i]+"_source").val(),
-					// 'trantype' : $("#jqGrid_Tracking input#"+ids[i]+"_trantype").val(),
-					// 'auditno' : $("#jqGrid_Tracking input#"+ids[i]+"_auditno").val(),
-					'trxcode' : $("#jqGrid_Tracking select#"+ids[i]+"_trxcode").val(),
-					'trxdate' : $("#jqGrid_Tracking input#"+ids[i]+"_trxdate").val(),
-					'comment_' : data.comment_,
+				if(data.recstatus != 'DEACTIVE'){
+					var obj =
+					{
+						// 'lineno_' : ids[i],
+						'idno' : data.idno,
+						'lineno_' : $("#jqGrid_Tracking input#"+ids[i]+"_lineno_").val(),
+						// 'source' : $("#jqGrid_Tracking input#"+ids[i]+"_source").val(),
+						// 'trantype' : $("#jqGrid_Tracking input#"+ids[i]+"_trantype").val(),
+						// 'auditno' : $("#jqGrid_Tracking input#"+ids[i]+"_auditno").val(),
+						'trxcode' : $("#jqGrid_Tracking select#"+ids[i]+"_trxcode").val(),
+						'trxdate' : $("#jqGrid_Tracking input#"+ids[i]+"_trxdate").val(),
+						'comment_' : data.comment_,
+					}
+					
+					jqGrid_Tracking_data.push(obj);
 				}
-				
-				jqGrid_Tracking_data.push(obj);
 			}
 			
 			var param = {
