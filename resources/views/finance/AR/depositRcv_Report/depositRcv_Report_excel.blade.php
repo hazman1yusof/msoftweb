@@ -1,41 +1,47 @@
 <table>
     @foreach($paymode as $pmode)
         <tr>
-            <td style="font-weight: bold">Payment Mode:</td>
-            <td style="font-weight: bold">{{$pmode->paymode}}</td>
+            <!-- <td style="font-weight: bold">PAYMODE:</td> -->
+            <td style="font-weight: bold" colspan="3">PAYMENT MODE: {{$pmode->paymode}}</td>
         </tr>
         <tr>
             <td style="font-weight: bold">RECEIPT NO</td>
             <td style="font-weight: bold">RECEIPT DATE</td>
+            <td style="font-weight: bold">PAYER CODE</td>
             <td style="font-weight: bold">AMOUNT</td>
-            <td style="font-weight: bold">CARD NO</td>
-            <td style="font-weight: bold">EXP DATE</td>
-            <td style="font-weight: bold">AUTH NO</td>
             <td style="font-weight: bold">PAYER</td>
+            <td style="font-weight: bold">AUTH NO</td>
+            <td style="font-weight: bold">REFERENCE NO</td>
+            <td style="font-weight: bold">EXP DATE</td>
+            <td style="font-weight: bold">FC</td>
         </tr>
         @php($tot = 0)
-        @foreach ($dbacthdr as $obj)
+        @foreach($dbacthdr as $obj)
             @if($obj->paymode == $pmode->paymode)
                 <tr>
-                    <td>{{$obj->recptno}}</td>
+                    <td>{{($obj->recptno)}}</td>
                     <td>{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}</td>
-                    <td data-format="0.00" style="text-align: right">{{number_format($obj->amount, 2, '.', ',')}}</td>
-                    <td>{{$obj->reference}}</td>
+                    <td style="text-align: left">{{$obj->payercode}}</td>
+                    <td style="text-align: right">{{number_format($obj->amount, 2, '.', ',')}}</td>
+                    <td>{{$obj->name}}</td>
+                    <td>{{($obj->authno)}}</td>
+                    <td>{{($obj->reference)}}</td>
                     @if($obj->paytype == '#F_TAB-CARD')
                         <td>{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}</td>
                     @else
                         <td></td>
                     @endif
-                    <td>{{$obj->authno}}</td>
-                    <td>{{$obj->payername}}</td>
+                    <td>{{($obj->dt_description)}}</td>
                 </tr>
             @php($tot += $obj->amount)
             @endif
         @endforeach
         <tr>
-            <td style="font-weight: bold">Total Amount</td>
+            <td style="font-weight: bold" colspan="2">TOTAL AMOUNT:</td>
+            <!-- <td></td> -->
             <td></td>
-            <td data-format="0.00" style="text-align: right">{{number_format($tot, 2, '.', ',')}}</td>
+            <td style="text-align: right">{{number_format($tot, 2, '.', ',')}}</td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -47,7 +53,8 @@
 </table>
 <table>
     <tr>
-        <td style="font-weight: bold">Grand Total:</td>
+        <td style="font-weight: bold">GRAND TOTAL:</td>
+        <td></td>
         <td></td>
         <td data-format="0.00" style="font-weight: bold; text-align: right;">{{number_format($totalAmount, 2, '.', ',')}}</td>
     </tr>

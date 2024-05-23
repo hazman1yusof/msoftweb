@@ -22,6 +22,7 @@
                     ]
                 },
                 pageSize: 'A4',
+                // pageOrientation: 'landscape',
                 content: [
                     {
                         image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center'
@@ -51,16 +52,18 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [50,50,40,50,50,70,'*'], // panjang standard dia 515
+                            widths: [45,48,38,40,'*',50,50,48,58], // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'Receipt No', style: 'tableHeader' },
                                     { text: 'Receipt Date', style: 'tableHeader' },
+                                    { text: 'Payer Code', style: 'tableHeader' },
                                     { text: 'Amount', style: 'tableHeader', alignment: 'right' },
-                                    { text: 'Card No', style: 'tableHeader' },
-                                    { text: 'Expiry Date', style: 'tableHeader' },
-                                    { text: 'Authorisation No', style: 'tableHeader' },
                                     { text: 'Payer', style: 'tableHeader' },
+                                    { text: 'Auth No', style: 'tableHeader' },
+                                    { text: 'Reference No', style: 'tableHeader' },
+                                    { text: 'Exp Date', style: 'tableHeader' },
+                                    { text: 'FC', style: 'tableHeader' },
                                 ],
                                 @php($tot = 0)
                                 @foreach ($dbacthdr as $obj)
@@ -68,15 +71,17 @@
                                     [
                                         { text: '{{$obj->recptno}}' },
                                         { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}' },
+                                        { text: '{{$obj->payercode}}' },
                                         { text: '{{number_format($obj->amount,2)}}', alignment: 'right' },
+                                        { text: '{{$obj->name}}' },
+                                        { text: '{{$obj->authno}}' },
                                         { text: '{{$obj->reference}}' },
                                         @if($obj->paytype == '#F_TAB-CARD')
                                             { text: '{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}' },
                                         @else
                                             { text: ' ' },
                                         @endif
-                                        { text: '{{$obj->authno}}' },
-                                        { text: '{{$obj->payername}}' },
+                                        { text: '{{$obj->dt_description}}' },
                                     ],
                                     @php($tot += $obj->amount)
                                     @endif
@@ -84,7 +89,9 @@
                                 [
                                     { text: 'Total Amount', colSpan: 2,style: 'tableHeader' },
                                     { text: '', style: 'tableHeader' },
+                                    { text: '', style: 'tableHeader' },
                                     { text: '{{number_format($tot,2)}}', alignment: 'right' },
+                                    { text: '', style: 'tableHeader' },
                                     { text: '', style: 'tableHeader' },
                                     { text: '', style: 'tableHeader' },
                                     { text: '', style: 'tableHeader' },

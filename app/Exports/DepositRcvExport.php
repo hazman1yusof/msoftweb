@@ -44,13 +44,14 @@ class DepositRcvExport implements FromView, WithEvents, WithColumnWidths
     {
         return [
             'A' => 15,
-            'B' => 13,
-            'C' => 10,
+            'B' => 15,
+            'C' => 13,
             'D' => 10,
-            'E' => 12,
-            'F' => 10,
-            'G' => 20,
-            'H' => 10,
+            'E' => 20,
+            'F' => 15,
+            'G' => 15,
+            'H' => 15,
+            'I' => 15,
         ];
     }
     
@@ -60,7 +61,7 @@ class DepositRcvExport implements FromView, WithEvents, WithColumnWidths
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
-                    ->select('dh.idno', 'dh.compcode', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate','dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.posteddate', 'dm.debtortype as dm_debtortype', 'dt.description as dt_description')
+                    ->select('dh.idno', 'dh.compcode', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate','dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.posteddate', 'dm.debtortype as dm_debtortype', 'dm.name as name', 'dt.description as dt_description')
                     ->leftJoin('debtor.debtormast as dm', function ($join){
                         $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
                                     ->where('dm.compcode', '=', session('compcode'));
@@ -121,7 +122,7 @@ class DepositRcvExport implements FromView, WithEvents, WithColumnWidths
                 $event->sheet->getPageMargins()->setTop(1);
                 
                 $event->sheet->getPageSetup()->setRowsToRepeatAtTop([2,2]);
-                $event->sheet->getStyle('A:G')->getAlignment()->setWrapText(true);
+                $event->sheet->getStyle('A:I')->getAlignment()->setWrapText(true);
                 $event->sheet->getPageSetup()->setFitToWidth(1);
                 $event->sheet->getPageSetup()->setFitToHeight(0);
             },
