@@ -17,107 +17,191 @@
         
         $(document).ready(function () {
             var docDefinition = {
+                header: function(currentPage, pageCount, pageSize) {
+                    var retval=[];
+                    var header_tbl = {
+                            style: 'repeatHeader',
+                            table: {
+                                headerRows: 1,
+                                widths: [40,110,35,35,50,40,50,40,40,60,35,40,40],  //panjang standard dia 515
+                                body: [
+                                    [
+                                        { border: [false, false, false, true],
+                                            text: 'PRICE CODE', style: 'tableHeader',
+                                        },
+                                        { border: [false, false, false, true],
+                                            text: 'ITEM CODE', style: 'tableHeader',
+                                        },
+                                        { border: [false, false, false, true],
+                                            text: 'UOM CODE', style: 'tableHeader',
+                                        },
+                                        { border: [false, false, false, true],
+                                            text: 'PO\nUOM', style: 'tableHeader',
+                                        },
+                                        { border: [false, false, false, true],
+                                            text: 'TAX CODE', style: 'tableHeader',
+                                        },
+                                        { border: [false, false, false, true],
+                                            text: 'QTY ORDER', style: 'tableHeader', alignment: 'right'
+                                        },
+                                        { border: [false, false, false, true],
+                                            text: 'QTY\nDELIVERED', style: 'tableHeader', alignment: 'right'
+                                        },
+                                        { border: [false, false, false, true],
+                                            text: 'QTY BAL', style: 'tableHeader', alignment: 'right'
+                                        },
+                                        { border: [false, false, false, true],
+                                            text: 'UNIT PRICE', style: 'tableHeader', alignment: 'right'
+                                        },
+                                        { border: [false, false, false, true],
+                                            text: 'PERCENTAGE\nDISC (%)', style: 'tableHeader', alignment: 'right'
+                                        },
+                                        { border: [false, false, false, true],
+                                            text: 'DISC PER UNIT', style: 'tableHeader', alignment: 'right'
+                                        },
+                                        { border: [false, false, false, true],
+                                            text: 'TOTAL GST', style: 'tableHeader', alignment: 'right'
+                                        },
+                                        { border: [false, false, false, true],
+                                            text: 'TOTAL AMOUNT', style: 'tableHeader', alignment: 'right'
+                                        },
+                                    ],
+                                ]
+                            },
+                            defaultBorder: false,
+                        }
+
+                    if(currentPage == 1){
+                        var logohdr = {image: 'letterhead', width: 200, height: 40, style: 'tableHeader', alignment: 'center',margin: [30, 20, 0, 15]};
+                        retval.push(logohdr);
+                    }else{
+                        retval.push(header_tbl);
+                    }
+                    return retval
+
+			    },
                 footer: function(currentPage, pageCount) {
                     return [
-                        { text: currentPage.toString() + ' of ' + pageCount, alignment: 'center' }
+                        { text: currentPage.toString() + ' of ' + pageCount, alignment: 'center', fontSize: 9}
                     ]
                 },
                 pageSize: 'A4',
                 pageOrientation: 'landscape',
                 content: [
+                    {text: '\n\nDO LISTING\n', style: 'header', alignment: 'center'},
                     {
-                        image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center'
-                    },
-                    {
-                        text: '\nDO LISTING\n',
-                        style: 'header',
-                        alignment: 'center',
-                    },
-                    {
-                        style: 'tableExample',
+                        style: 'staticHeader',
                         table: {
                             headerRows: 1,
-                            widths: ['*', '*'], //panjang standard dia 515
+                            widths: [40,110,35,35,50,40,50,40,40,60,35,40,40],  //panjang standard dia 515
                             body: [
                                 [
-                                    {text: 'DATE : {{\Carbon\Carbon::now()->format('d/m/Y')}}' },
-                                    {text: 'TIME : {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('h:i A')}}'},
+                                    { border: [false, false, false, true],
+                                        text: 'PRICE CODE', style: 'tableHeader',
+                                    },
+                                    { border: [false, false, false, true],
+                                        text: 'ITEM CODE', style: 'tableHeader',
+                                    },
+                                    { border: [false, false, false, true],
+                                        text: 'UOM CODE', style: 'tableHeader',
+                                    },
+                                    { border: [false, false, false, true],
+                                        text: 'PO\nUOM', style: 'tableHeader',
+                                    },
+                                    { border: [false, false, false, true],
+                                        text: 'TAX CODE', style: 'tableHeader',
+                                    },
+                                    { border: [false, false, false, true],
+                                        text: 'QTY ORDER', style: 'tableHeader', alignment: 'right'
+                                    },
+                                    { border: [false, false, false, true],
+                                        text: 'QTY\nDELIVERED', style: 'tableHeader', alignment: 'right'
+                                    },
+                                    { border: [false, false, false, true],
+                                        text: 'QTY BAL', style: 'tableHeader', alignment: 'right'
+                                    },
+                                    { border: [false, false, false, true],
+                                        text: 'UNIT PRICE', style: 'tableHeader', alignment: 'right'
+                                    },
+                                    { border: [false, false, false, true],
+                                        text: 'PERCENTAGE\nDISC (%)', style: 'tableHeader', alignment: 'right'
+                                    },
+                                    { border: [false, false, false, true],
+                                        text: 'DISC PER UNIT', style: 'tableHeader', alignment: 'right'
+                                    },
+                                    { border: [false, false, false, true],
+                                        text: 'TOTAL GST', style: 'tableHeader', alignment: 'right'
+                                    },
+                                    { border: [false, false, false, true],
+                                        text: 'TOTAL AMOUNT', style: 'tableHeader', alignment: 'right'
+                                    },
                                 ],
                             ]
                         },
-                        layout: 'noBorders',
+                        defaultBorder: false,
                     },
+                    
                     @foreach ($DOListing as $dolisting) 
-                    { text: 'REC NO : {{$dolisting->recno}}', alignment: 'left', fontSize: 9, bold: true },
-
                         {
                             style: 'tableExampleHeader',
                             table: {
-                                headerRows: 1,
-                                widths: ['*','*','*','*','*','*',150,'*','*','*'],  //panjang standard dia 515
+                                dontBreakRows: true,
+                                widths: ['*','*','*','*','*'],  //panjang standard dia 515
                                 body: [
-                                    [
-                                        {text: 'PURCHASE DEPT', style: 'tableHeader'},
-                                        {text: 'DELIVERY DEPT', style: 'tableHeader'},
-                                        {text: 'REQ DEPT', style: 'tableHeader'},
-                                        {text: 'DO NO', style: 'tableHeader'},
-                                        {text: 'GRN NO', style: 'tableHeader', alignment: 'right'},
-                                        {text: 'REC DATE', style: 'tableHeader'},
-                                        {text: 'SUPPLIER CODE', style: 'tableHeader'},
-                                        {text: 'PO NO', style: 'tableHeader'},
-                                        {text: 'INVOICE NO', style: 'tableHeader'},
-                                        {text: 'TOTAL AMOUNT', style: 'tableHeader', alignment: 'right'},
-                                    ],
                                     @foreach ($delordhd as $obj)
                                         @if($obj->recno == $dolisting->recno)
                                             [
-                                                {text: '{{$obj->prdept}}'},
-                                                {text: '{{$obj->deldept}}'},
-                                                {text: '{{$obj->reqdept}}'},
-                                                {text: '{{$obj->delordno}}'},
-                                                {text: '{{str_pad($obj->docno, 7, "0", STR_PAD_LEFT)}}'},
-                                                {text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->trandate)->format('d-m-Y')}}'},
-                                                {text: `{!!str_replace('`', '', $obj->suppcode)!!}\n{!!str_replace('`', '', $obj->supp_name)!!}`},
-                                                {text: '{{$obj->srcdocno}}'},
-                                                {text: '{{$obj->invoiceno}}'},
-                                                {text: '{{number_format($obj->totamount,2)}}', alignment: 'right' },
+                                                {text: `PURCHASE DEPT : {!!str_replace('`', '', $obj->prdept)!!}\n {!!str_replace('`', '', $obj->dept_desc)!!}`, style: 'tableHeader'},
+                                                {text: `DELIVERY DEPT : {!!str_replace('`', '', $obj->deldept)!!}\n {!!str_replace('`', '', $obj->dd_desc)!!}`, style: 'tableHeader'},
+
+                                                @if(!empty($obj->reqdept))
+                                                    {text: `REQ DEPT : {!!str_replace('`', '', $obj->reqdept)!!}\n {!!str_replace('`', '', $obj->rq_desc)!!}`, style: 'tableHeader'},
+                                                @else
+                                                    {text: 'REQ DEPT : - ', style: 'tableHeader'},
+                                                @endif
+
+                                                {text: 'DO NO : {{$obj->delordno}}', style: 'tableHeader'},
+                                                {text: 'GRN NO : {{str_pad($obj->docno, 7, "0", STR_PAD_LEFT)}}', style: 'tableHeader'},
+                                            ],
+                                            [
+                                                {text: 'REC DATE : {{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->trandate)->format('d-m-Y')}}', style: 'tableHeader'},
+                                                {text: `SUPPLIER CODE : {!!str_replace('`', '', $obj->suppcode)!!}\n {!!str_replace('`', '', $obj->supp_name)!!}`, style: 'tableHeader'},
+
+                                                @if(!empty($obj->srcdocno))
+                                                    {text: 'PO NO : {{str_pad($obj->srcdocno, 7, "0", STR_PAD_LEFT)}}', style: 'tableHeader'},
+                                                @else
+                                                    {text: 'PO NO : - ', style: 'tableHeader'},
+                                                @endif
+
+                                                @if(!empty($obj->invoiceno))
+                                                    {text: 'INVOICE NO : {{$obj->invoiceno}}', style: 'tableHeader'},
+                                                @else
+                                                    {text: 'INVOICE NO : - ', style: 'tableHeader'},
+                                                @endif
+
+                                                {text: 'STATUS : {{$obj->recstatus}}', style: 'tableHeader'},
                                             ],
                                         @endif
                                     @endforeach
                                 ]
                             },
-                            
-                            layout: 'lightHorizontalLines',
+                            layout: 'noBorders',
                         },
                         {
-                            style: 'tableExample',
+                            style: 'tableDetail',
                             table: {
-                                headerRows: 1,
-                                widths: [30,110,35,35,35,35,35,35,35,60,35,35,40],  //panjang standard dia 515
+                                dontBreakRows: true,
+                                widths: [40,110,35,35,50,40,50,40,40,60,35,40,40],  //panjang standard dia 515
                                 body: [
-                                    [
-                                        {text: 'PRICE CODE', style: 'tableHeader'},
-                                        {text: 'ITEM CODE', style: 'tableHeader'},
-                                        {text: 'UOM CODE', style: 'tableHeader'},
-                                        {text: 'PO\nUOM', style: 'tableHeader'},
-                                        {text: 'TAX CODE', style: 'tableHeader'},
-                                        {text: 'QTY ORDER', style: 'tableHeader', alignment: 'right'},
-                                        {text: 'QTY\nDELIVERED', style: 'tableHeader', alignment: 'right'},
-                                        {text: 'QTY BAL', style: 'tableHeader', alignment: 'right'},
-                                        {text: 'UNIT PRICE', style: 'tableHeader', alignment: 'right'},
-                                        {text: 'PERCENTAGE\nDISC (%)', style: 'tableHeader', alignment: 'right'},
-                                        {text: 'DISC PER UNIT', style: 'tableHeader', alignment: 'right'},
-                                        {text: 'TOTAL GST', style: 'tableHeader', alignment: 'right'},
-                                        {text: 'TOTAL AMOUNT', style: 'tableHeader', alignment: 'right'},
-                                    ],
+                                    @php($tot = 0)   
                                     @foreach ($delorddt as $obj_dt)
                                         @if($obj_dt->recno == $dolisting->recno)
                                             [
-                                                {text: '{{$obj_dt->pricecode}}'},
+                                                {text: '{{$obj_dt->pricecode}}\n{{$obj_dt->pc_desc}}'},
                                                 {text: `{!!str_replace('`', '', $obj_dt->itemcode)!!}\n{!!str_replace('`', '', $obj_dt->description)!!}`},
                                                 {text: `{!!$obj_dt->uomcode!!}`},
                                                 {text: `{!!$obj_dt->pouom!!}`},
-                                                {text: '{{$obj_dt->taxcode}}'},
+                                                {text: '{{$obj_dt->taxcode}}\n{{$obj_dt->tax_desc}}'},
                                                 {text: '{{number_format($obj_dt->qtyorder,2)}}', alignment: 'right' },
                                                 {text: '{{number_format($obj_dt->qtydelivered,2)}}', alignment: 'right' },
                                                 {text: '{{number_format($obj_dt->qtyoutstand,2)}}', alignment: 'right' },
@@ -127,11 +211,27 @@
                                                 {text: '{{number_format($obj_dt->tot_gst,2)}}', alignment: 'right' },
                                                 {text: '{{number_format($obj_dt->totamount,2)}}', alignment: 'right' },
                                             ],
+                                        @php($tot += $obj_dt->totamount)
                                         @endif
                                     @endforeach
+                                    [
+                                        {},
+                                        {},
+                                        {},
+                                        {},
+                                        {},
+                                        {},
+                                        {},
+                                        {},
+                                        {},
+                                        {},
+                                        {text: 'TOTAL :', style: 'tableHeader'},
+                                        {},
+                                        {text: '{{number_format($tot,2)}}', alignment: 'right', style: 'tableHeader'},
+                                    ],
                                 ]
                             },
-                            layout: 'lightHorizontalLines',
+                            layout: 'noBorders',
                         },
                     @endforeach
                 ],
@@ -139,29 +239,19 @@
                     header: {
                         fontSize: 14,
                         bold: true,
-                        margin: [0, 0, 0, 10]
-                    },
-                    header1: {
-                        fontSize: 14,
-                        bold: true,
-                        margin: [60, 0, 0, 10]
-                    },
-                    subheader: {
-                        fontSize: 16,
-                        bold: true,
-                        margin: [0, 10, 0, 5]
+                        margin: [0, 0, 0, 20]
                     },
                     tableExample: {
                         fontSize: 8,
                         margin: [0, 5, 0, 15]
                     },
                     tableExampleHeader: {
-                        fontSize: 9,
+                        fontSize: 8,
                         margin: [0, 5, 0, 15]
                     },
                     tableHeader: {
                         bold: true,
-                        fontSize: 9,
+                        fontSize: 8,
                         color: 'black'
                     },
                     totalbold: {
@@ -171,7 +261,19 @@
                     comp_header: {
                         bold: true,
                         fontSize: 8,
-                    }
+                    },
+                    repeatHeader: {
+                        fontSize: 8,
+                        margin: [40, 15, 10, 15]//l,t,r,b
+                    },
+                    staticHeader: {
+                        fontSize: 8,
+                        margin: [0, 5, 10, 10]
+                    },
+                    tableDetail: {
+                        fontSize: 8,
+                        margin: [5, 5, 0, 15]
+                    },
                 },
                 images: {
                     letterhead: {

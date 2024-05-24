@@ -1100,7 +1100,7 @@ class DeliveryOrderController extends defaultController
                     'unit' => session('unit'), 
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'ACTIVE', 
+                    'recstatus' => 'OPEN', 
                     'remarks' => $value->remarks
                 ]);
             }

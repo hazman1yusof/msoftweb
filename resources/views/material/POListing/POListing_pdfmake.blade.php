@@ -6,11 +6,11 @@
 </head>
 
 <!-- <script src="https://unpkg.com/@jsreport/browser-client/dist/jsreport.umd.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="mydata.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" integrity="sha512-a9NgEEK7tsCvABL7KqtUTQjl69z7091EVPpw5KxPlZ93T141ffe1woLtbXTX+r2/8TtTvRX/v4zTL2UlMUPgwg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.min.js" integrity="sha512-P0bOMePRS378NwmPDVPU455C/TuxDS+8QwJozdc7PGgN8kLqR4ems0U/3DeJkmiE31749vYWHvBOtR+37qDCZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="mydata.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" integrity="sha512-a9NgEEK7tsCvABL7KqtUTQjl69z7091EVPpw5KxPlZ93T141ffe1woLtbXTX+r2/8TtTvRX/v4zTL2UlMUPgwg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.min.js" integrity="sha512-P0bOMePRS378NwmPDVPU455C/TuxDS+8QwJozdc7PGgN8kLqR4ems0U/3DeJkmiE31749vYWHvBOtR+37qDCZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
 </object>
 
@@ -21,7 +21,7 @@
 			header: function(currentPage, pageCount, pageSize) {
 				var retval=[];
 				var header_tbl = {
-	                    style: 'headerPage',
+	                    style: 'repeatHeader',
 	                    table: {
 	                        headerRows: 1,
                             widths: [40,110,35,35,50,40,40,40,40,60,35,40,40],  //panjang standard dia 515
@@ -43,28 +43,28 @@
                                         text: 'TAX CODE', style: 'tableHeader',
                                     },
                                     { border: [false, false, false, true],
-                                        text: 'QTY REQ', style: 'tableHeader',
+                                        text: 'QTY REQ', style: 'tableHeader', alignment: 'right'
                                     },
                                     { border: [false, false, false, true],
-                                        text: 'QTY ORDER', style: 'tableHeader',
+                                        text: 'QTY ORDER', style: 'tableHeader', alignment: 'right'
                                     },
                                     { border: [false, false, false, true],
-                                        text: 'QTY BAL', style: 'tableHeader',
+                                        text: 'QTY BAL', style: 'tableHeader', alignment: 'right'
                                     },
                                     { border: [false, false, false, true],
-                                        text: 'UNIT PRICE', style: 'tableHeader',
+                                        text: 'UNIT PRICE', style: 'tableHeader', alignment: 'right'
                                     },
                                     { border: [false, false, false, true],
-                                        text: 'PERCENTAGE\nDISC (%)', style: 'tableHeader',
+                                        text: 'PERCENTAGE\nDISC (%)', style: 'tableHeader', alignment: 'right'
                                     },
                                     { border: [false, false, false, true],
-                                        text: 'DISC PER UNIT', style: 'tableHeader',
+                                        text: 'DISC PER UNIT', style: 'tableHeader', alignment: 'right'
                                     },
                                     { border: [false, false, false, true],
-                                        text: 'TOTAL GST', style: 'tableHeader',
+                                        text: 'TOTAL GST', style: 'tableHeader', alignment: 'right'
                                     },
                                     { border: [false, false, false, true],
-                                        text: 'TOTAL AMOUNT', style: 'tableHeader',
+                                        text: 'TOTAL AMOUNT', style: 'tableHeader', alignment: 'right'
                                     },
                                 ],
 	                        ]
@@ -73,10 +73,8 @@
 			        }
 
 				if(currentPage == 1){
-					var logohdr = {image: 'letterhead', width: 200, height: 40, style: 'tableHeader', alignment: 'center',margin: [30, 25, 0, 0]};
-					var title =  {text: '\nPO LISTING\n',style: 'header',alignment: 'center'};
+					var logohdr = {image: 'letterhead', width: 200, height: 40, style: 'tableHeader', alignment: 'center',margin: [30, 20, 0, 15]};
 					retval.push(logohdr);
-					retval.push(title);
 				}else{
                     retval.push(header_tbl);
 				}
@@ -84,17 +82,16 @@
 
 			},
 			footer: function(currentPage, pageCount) {
-				if(currentPage == pageCount){
-					return [
-                        { text: currentPage.toString() + ' of ' + pageCount, alignment: 'center' }
-				    ]
-				}
+                return [
+                    { text: currentPage.toString() + ' of ' + pageCount, alignment: 'center', fontSize: 9}
+                ]
 			},
 			pageSize: 'A4',
             pageOrientation: 'landscape',
 		  	content: [
+                {text: '\n\nPO LISTING\n', style: 'header', alignment: 'center'},
                 {
-                    style: 'tableExampleHeader',
+                    style: 'staticHeader',
                     table: {
                         headerRows: 1,
                         widths: [40,110,35,35,50,40,40,40,40,60,35,40,40],  //panjang standard dia 515
@@ -116,32 +113,30 @@
                                     text: 'TAX CODE', style: 'tableHeader',
                                 },
                                 { border: [false, false, false, true],
-                                    text: 'QTY REQ', style: 'tableHeader',
+                                    text: 'QTY REQ', style: 'tableHeader', alignment: 'right'
                                 },
                                 { border: [false, false, false, true],
-                                    text: 'QTY ORDER', style: 'tableHeader',
+                                    text: 'QTY ORDER', style: 'tableHeader', alignment: 'right'
                                 },
                                 { border: [false, false, false, true],
-                                    text: 'QTY BAL', style: 'tableHeader',
+                                    text: 'QTY BAL', style: 'tableHeader', alignment: 'right'
                                 },
                                 { border: [false, false, false, true],
-                                    text: 'UNIT PRICE', style: 'tableHeader',
+                                    text: 'UNIT PRICE', style: 'tableHeader', alignment: 'right'
                                 },
                                 { border: [false, false, false, true],
-                                    text: 'PERCENTAGE\nDISC (%)', style: 'tableHeader',
+                                    text: 'PERCENTAGE\nDISC (%)', style: 'tableHeader', alignment: 'right'
                                 },
                                 { border: [false, false, false, true],
-                                    text: 'DISC PER UNIT', style: 'tableHeader',
+                                    text: 'DISC PER UNIT', style: 'tableHeader', alignment: 'right'
                                 },
                                 { border: [false, false, false, true],
-                                    text: 'TOTAL GST', style: 'tableHeader',
+                                    text: 'TOTAL GST', style: 'tableHeader', alignment: 'right'
                                 },
                                 { border: [false, false, false, true],
-                                    text: 'TOTAL AMOUNT', style: 'tableHeader',
+                                    text: 'TOTAL AMOUNT', style: 'tableHeader', alignment: 'right'
                                 },
-
                             ],
-                            
                         ]
                     },
                     defaultBorder: false,
@@ -150,7 +145,6 @@
                 {
                     style: 'tableExample',
                     table: {
-                        headerRows: 1,
                     	dontBreakRows: true,
                         widths: ['*','*','*','*', '*','*'],  //panjang standard dia 515
                         body: [
@@ -169,13 +163,13 @@
                         ]
                     },
                     layout: 'noBorders',
-
 		        },
                 {
-                    style: 'tableExample',
+                    style: 'tableDetail',
                     table: {
                         widths: [40,110,35,35,50,40,40,40,40,60,35,40,40],  //panjang standard dia 515
-                        body: [      
+                        body: [   
+                            @php($tot = 0)   
                             @foreach ($purorddt as $obj_dt)
                                 @if($obj_dt->recno == $polisting->recno)
                                     [
@@ -193,8 +187,24 @@
                                         {text: '{{number_format($obj_dt->tot_gst,2)}}', alignment: 'right' },
                                         {text: '{{number_format($obj_dt->totamount,2)}}', alignment: 'right' },
                                     ],
+                                @php($tot += $obj_dt->totamount)
                                 @endif
                             @endforeach
+                            [
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {},
+                                {text: 'TOTAL :', style: 'tableHeader'},
+                                {},
+                                {text: '{{number_format($tot,2)}}', alignment: 'right', style: 'tableHeader'},
+                            ],
                         ]
                     },
                     layout: 'noBorders',
@@ -206,25 +216,19 @@
                 header: {
                     fontSize: 14,
                     bold: true,
-                    margin: [0, 0, 0, 10]
-                },
-                header1: {
-                    fontSize: 14,
-                    bold: true,
-                    margin: [60, 0, 0, 10]
-                },
-                subheader: {
-                    fontSize: 16,
-                    bold: true,
-                    margin: [0, 10, 0, 5]
+                    margin: [0, 0, 0, 20]
                 },
                 tableExample: {
                     fontSize: 8,
                     margin: [0, 5, 0, 15]
                 },
-                tableExampleHeader: {
+                tableDetail: {
                     fontSize: 8,
-                    margin: [0, 35, 10, 15]
+                    margin: [5, 5, 0, 15]
+                },
+                staticHeader: {
+                    fontSize: 8,
+                    margin: [0, 5, 10, 10]
                 },
                 tableHeader: {
                     bold: true,
@@ -239,7 +243,7 @@
                     bold: true,
                     fontSize: 8,
                 },
-                headerPage: {
+                repeatHeader: {
                     fontSize: 8,
                     margin: [40, 15, 10, 15]//l,t,r,b
                 },

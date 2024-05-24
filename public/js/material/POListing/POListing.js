@@ -33,6 +33,7 @@ $(document).ready(function () {
     $("#genreport input[name='Status']").change(function(){
         $("#genreportpdf input[name='Status']").val($(this).val());
     });
+	
 	$('#pdfgen').click(function(){
 		window.open('./POListing/showpdf?&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&Status='+$("#Status").val(),  '_blank'); 
 	});

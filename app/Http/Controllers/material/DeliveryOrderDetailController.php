@@ -545,7 +545,8 @@ class DeliveryOrderDetailController extends defaultController
                     'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate'=> $this->chgDate($request->expdate),  
                     'batchno'=> $request->batchno, 
-                    'remarks'=> strtoupper($request->remarks)
+                    'remarks'=> strtoupper($request->remarks),
+                    'recstatus' => 'OPEN', 
                    // 'unit'=> $request->unit
                 ]);
 
