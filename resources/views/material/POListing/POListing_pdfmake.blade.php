@@ -167,6 +167,7 @@
                 {
                     style: 'tableDetail',
                     table: {
+                        dontBreakRows: true,
                         widths: [40,110,35,35,50,40,40,40,40,60,35,40,40],  //panjang standard dia 515
                         body: [   
                             @php($tot = 0)   

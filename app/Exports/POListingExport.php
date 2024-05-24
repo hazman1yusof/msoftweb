@@ -80,7 +80,7 @@ class POListingExport implements FromView, WithEvents, WithColumnWidths
                     $join = $join->on('d.recno', '=', 'h.recno')
                                 ->where('d.compcode', '=', session('compcode'))
                                 ->where('d.unit', '=', session('unit'))
-                                ->where('d.recstatus', '!=', 'CANCELLED');
+                                ->where('d.recstatus', '!=', 'DELETE');
                 })
                 ->join('material.product as p', function($join){
                     $join = $join->on('p.itemcode', '=', 'd.itemcode')
@@ -108,7 +108,7 @@ class POListingExport implements FromView, WithEvents, WithColumnWidths
                     $join = $join->on('d.recno', '=', 'h.recno')
                                 ->where('d.compcode', '=', session('compcode'))
                                 ->where('d.unit', '=', session('unit'))
-                                ->where('d.recstatus', '!=', 'CANCELLED');
+                                ->where('d.recstatus', '!=', 'DELETE');
                 })
                 ->join('material.product as p', function($join){
                     $join = $join->on('p.itemcode', '=', 'd.itemcode')

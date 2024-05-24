@@ -155,9 +155,9 @@
                                                 {text: `DELIVERY DEPT : {!!str_replace('`', '', $obj->deldept)!!}\n {!!str_replace('`', '', $obj->dd_desc)!!}`, style: 'tableHeader'},
 
                                                 @if(!empty($obj->reqdept))
-                                                    {text: `REQ DEPT : {!!str_replace('`', '', $obj->reqdept)!!}\n {!!str_replace('`', '', $obj->rq_desc)!!}`, style: 'tableHeader'},
+                                                    {text: `REQUEST DEPT : {!!str_replace('`', '', $obj->reqdept)!!}\n {!!str_replace('`', '', $obj->rq_desc)!!}`, style: 'tableHeader'},
                                                 @else
-                                                    {text: 'REQ DEPT : - ', style: 'tableHeader'},
+                                                    {text: 'REQUEST DEPT : - ', style: 'tableHeader'},
                                                 @endif
 
                                                 {text: 'DO NO : {{$obj->delordno}}', style: 'tableHeader'},
