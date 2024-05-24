@@ -43,14 +43,14 @@ class DepositRcvExport implements FromView, WithEvents, WithColumnWidths
     public function columnWidths(): array
     {
         return [
-            'A' => 15,
-            'B' => 15,
-            'C' => 13,
-            'D' => 10,
-            'E' => 20,
+            'A' => 20,
+            'B' => 18,
+            'C' => 15,
+            'D' => 25,
+            'E' => 15,
             'F' => 15,
-            'G' => 15,
-            'H' => 15,
+            'G' => 17,
+            'H' => 18,
             'I' => 15,
         ];
     }

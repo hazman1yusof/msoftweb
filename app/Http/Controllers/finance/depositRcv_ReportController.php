@@ -84,6 +84,7 @@ class depositRcv_ReportController extends defaultController
                     ->whereBetween('dh.posteddate',[$datefr, $dateto])
                     // ->where('dh.paytype','=','#F_TAB-CARD')
                     ->distinct('dh.paymode');
+        
         $paymode = $paymode->get(['dh.paymode']);
         
         $totalAmount = $dbacthdr->sum('amount');
