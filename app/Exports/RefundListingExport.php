@@ -45,14 +45,15 @@ class RefundListingExport implements FromView, WithEvents, WithColumnWidths
     public function columnWidths(): array
     {
         return [
-            'A' => 13,
-            'B' => 12,
-            'C' => 10,
+            'A' => 20,
+            'B' => 18,
+            'C' => 15,
             'D' => 25,
-            'E' => 13,
-            'F' => 12,
-            'G' => 13,
-            'H' => 15,
+            'E' => 15,
+            'F' => 15,
+            'G' => 17,
+            'H' => 18,
+            'I' => 15,
         ];
     }
     
@@ -78,16 +79,18 @@ class RefundListingExport implements FromView, WithEvents, WithColumnWidths
                                     ->where('dt.compcode', '=', session('compcode'));
                     })
                     ->where('dh.compcode','=',session('compcode'))
-                    ->where('dh.trantype', '=', 'RF')
-                    ->whereBetween('dh.entrydate', [$datefr, $dateto])
-                    ->orderBy('dh.entrydate','ASC')
+                    ->where('dh.source','=','PB')
+                    ->where('dh.trantype','=','RF')
+                    ->whereBetween('dh.posteddate',[$datefr, $dateto])
+                    ->orderBy('dh.posteddate','ASC')
                     ->get();
         
         $paymode = DB::table('debtor.dbacthdr as dh')
                     ->select('dh.paymode')
                     ->where('dh.compcode','=',session('compcode'))
-                    ->where('dh.trantype','=', 'RF')
-                    ->whereBetween('dh.entrydate', [$datefr, $dateto])
+                    ->where('dh.source','=','PB')
+                    ->where('dh.trantype','=','RF')
+                    ->whereBetween('dh.posteddate',[$datefr, $dateto])
                     ->distinct('dh.paymode');
         
         $paymode = $paymode->get(['dh.paymode']);

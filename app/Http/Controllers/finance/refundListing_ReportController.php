@@ -72,9 +72,10 @@ class refundListing_ReportController extends defaultController
                                     ->where('dt.compcode', '=', session('compcode'));
                     })
                     ->where('dh.compcode','=',session('compcode'))
-                    ->where('dh.trantype', '=', 'RF')
-                    ->whereBetween('dh.entrydate', [$datefr, $dateto])
-                    ->orderBy('dh.entrydate','ASC')
+                    ->where('dh.source','=','PB')
+                    ->where('dh.trantype','=','RF')
+                    ->whereBetween('dh.posteddate',[$datefr, $dateto])
+                    ->orderBy('dh.posteddate','ASC')
                     ->get();
         
         // dd($dbacthdr);
@@ -82,8 +83,9 @@ class refundListing_ReportController extends defaultController
         $paymode = DB::table('debtor.dbacthdr as dh')
                     ->select('dh.paymode')
                     ->where('dh.compcode','=',session('compcode'))
-                    ->where('dh.trantype','=', 'RF')
-                    ->whereBetween('dh.entrydate', [$datefr, $dateto])
+                    ->where('dh.source','=','PB')
+                    ->where('dh.trantype','=','RF')
+                    ->whereBetween('dh.posteddate',[$datefr, $dateto])
                     ->distinct('dh.paymode');
         
         $paymode = $paymode->get(['dh.paymode']);

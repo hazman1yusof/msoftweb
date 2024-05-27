@@ -45,46 +45,46 @@
                         },
                         layout: 'noBorders',
                     },
-                    @foreach ($paymode as $pmode)
-                    { text: 'Payment Mode : {{$pmode->paymode}}', alignment: 'left', fontSize: 9, bold: true },
                     {
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [50,40,40,'*',50,50,50,50], // panjang standard dia 515
+                            widths: [71,48,40,64,40,50,62,48], // panjang standard dia 515
                             body: [
                                 [
+                                    { text: 'Receipt No', style: 'tableHeader' },
                                     { text: 'Receipt Date', style: 'tableHeader' },
                                     { text: 'Payer Code', style: 'tableHeader' },
-                                    { text: 'Amount', style: 'tableHeader', alignment: 'right' },
                                     { text: 'Payer', style: 'tableHeader' },
-                                    { text: 'Auth No', style: 'tableHeader' },
-                                    { text: 'Exp Date', style: 'tableHeader' },
-                                    { text: 'FC', style: 'tableHeader' },
-                                    { text: 'Reference', style: 'tableHeader' },
+                                    { text: 'Amount', style: 'tableHeader', alignment: 'right' },
+                                    { text: 'Paymode', style: 'tableHeader' },
+                                    { text: 'Reference No', style: 'tableHeader' },
+                                    { text: 'Expiry Date', style: 'tableHeader' },
                                 ],
                                 @php($tot = 0)
                                 @foreach ($dbacthdr as $obj)
-                                    @if($obj->paymode == $pmode->paymode)
-                                    [
-                                        { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}' },
-                                        { text: '{{$obj->payercode}}' },
-                                        { text: '{{number_format($obj->amount,2)}}', alignment: 'right' },
-                                        { text: '{{$obj->name}}' },
-                                        { text: '{{$obj->authno}}' },
+                                [
+                                    { text: '{{$obj->recptno}}' },
+                                    { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}' },
+                                    { text: '{{$obj->payercode}}' },
+                                    { text: '{{$obj->name}}' },
+                                    { text: '{{number_format($obj->amount,2)}}', alignment: 'right' },
+                                    { text: '{{$obj->paymode}}' },
+                                    { text: '{{$obj->reference}}' },
+                                    @if($obj->paytype == '#F_TAB-CARD')
                                         { text: '{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}' },
-                                        { text: '{{$obj->dt_description}}' },
-                                        { text: '{{$obj->recptno}}' },
-                                    ],
-                                    @php($tot += $obj->amount)
+                                    @else
+                                        { text: ' ' },
                                     @endif
+                                ],
+                                @php($tot += $obj->amount)
                                 @endforeach
                                 [
                                     { text: 'Total Amount', colSpan: 2,style: 'tableHeader' },
                                     { text: '', style: 'tableHeader' },
+                                    { text: '', style: 'tableHeader' },
+                                    { text: '', style: 'tableHeader' },
                                     { text: '{{number_format($tot,2)}}', alignment: 'right' },
-                                    { text: '', style: 'tableHeader' },
-                                    { text: '', style: 'tableHeader' },
                                     { text: '', style: 'tableHeader' },
                                     { text: '', style: 'tableHeader' },
                                     { text: '', style: 'tableHeader' },
@@ -93,26 +93,25 @@
                         },
                         layout: 'lightHorizontalLines',
                     },
-                    @endforeach
-                    { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
-                    {
-                        style: 'tableExample',
-                        table: {
-                            headerRows: 1,
-                            widths: ['*', '*'], // panjang standard dia 515
-                            body: [
-                                [
-                                    { text: 'Ringgit Malaysia', style: 'tableHeader' },
-                                    { text: 'Total Amount', style: 'tableHeader', alignment: 'right' },
-                                ],
-                                [
-                                    { text: '{{$totamt_eng}}' },
-                                    { text: '{{number_format($totalAmount,2)}}', alignment: 'right' },
-                                ],
-                            ]
-                        },
-                        layout: 'noBorders',
-                    },
+                    // { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
+                    // {
+                    //     style: 'tableExample',
+                    //     table: {
+                    //         headerRows: 1,
+                    //         widths: ['*', '*'], // panjang standard dia 515
+                    //         body: [
+                    //             [
+                    //                 { text: 'Ringgit Malaysia', style: 'tableHeader' },
+                    //                 { text: 'Total Amount', style: 'tableHeader', alignment: 'right' },
+                    //             ],
+                    //             [
+                    //                 { text: '{{$totamt_eng}}' },
+                    //                 { text: '{{number_format($totalAmount,2)}}', alignment: 'right' },
+                    //             ],
+                    //         ]
+                    //     },
+                    //     layout: 'noBorders',
+                    // },
                 ],
                 styles: {
                     header: {
