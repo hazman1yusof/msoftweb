@@ -255,6 +255,14 @@ $(document).ready(function(){
 		onClickButton: function () {
 			refreshGrid("#jqGrid_pkg", urlParam_pkg);	
 		},	
+	}).jqGrid('navButtonAdd', "#jqGrid_pkg_pager", {	
+		id: "jqGrid_pkg_pagerFinalBill",	
+		caption: "Final Bill", cursor: "pointer", position: "last",
+		buttonicon: "",	
+		title: "Final Bill",	
+		onClickButton: function () {
+			final_bill("#jqGrid_pkg", urlParam_pkg);
+		},	
 	});
 
 });

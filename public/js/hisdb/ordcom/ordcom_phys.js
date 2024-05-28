@@ -215,6 +215,14 @@ $(document).ready(function(){
 		onClickButton: function () {
 			refreshGrid("#jqGrid_phys", urlParam_phys);	
 		},	
+	}).jqGrid('navButtonAdd', "#jqGrid_phys_pager", {	
+		id: "jqGrid_phys_pagerFinalBill",	
+		caption: "Final Bill", cursor: "pointer", position: "last",
+		buttonicon: "",	
+		title: "Final Bill",	
+		onClickButton: function () {
+			final_bill("#jqGrid_phys", urlParam_phys);
+		},	
 	});
 
 });

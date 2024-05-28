@@ -3882,6 +3882,8 @@ class OrdcomController extends defaultController
 
         if($chargetrx_obj->exists()){
             $this->final_bill_reverse($request);
+            
+            $this->final_bill($request);
         }else{
             $this->final_bill($request);
         }
@@ -3943,22 +3945,37 @@ class OrdcomController extends defaultController
                         ]);
             }
 
-            $chargetrx_obj = DB::table('hisdb.chargetrx')
-                                ->where('compcode',session('compcode'))
-                                ->where('mrn' ,'=', $mrn)
-                                ->where('episno' ,'=', $episno)
-                                ->where('trxtype','!=','PD')
-                                ->where('recstatus','<>','DELETE')
-                                ->orderBy('amount','asc');
+            $chargetrx_obj = DB::table('hisdb.chargetrx as ctx')
+                                ->select('ctx.id','ctx.auditno','ctx.compcode','ctx.idno','ctx.mrn','ctx.episno','ctx.epistype','ctx.trxtype','ctx.docref','ctx.trxdate','ctx.chgcode','ctx.billcode','ctx.costcd','ctx.revcd','ctx.mmacode','ctx.billflag','ctx.billdate','ctx.billtype','ctx.doctorcode','ctx.chg_class','ctx.unitprce','ctx.quantity','ctx.amount','ctx.trxtime','ctx.chggroup','ctx.qstat','ctx.dracccode','ctx.cracccode','ctx.arprocess','ctx.taxamount','ctx.billno','ctx.invno','ctx.uom','ctx.uom_recv','ctx.billtime','ctx.invgroup','ctx.reqdept','ctx.issdept','ctx.invcode','ctx.resulttype','ctx.resultstatus','ctx.inventory','ctx.updinv','ctx.invbatch','ctx.doscode','ctx.duration','ctx.instruction','ctx.discamt','ctx.disccode','ctx.pkgcode','ctx.remarks','ctx.frequency','ctx.ftxtdosage','ctx.addinstruction','ctx.qtyorder','ctx.ipqueueno','ctx.itemseqno','ctx.doseqty','ctx.freqqty','ctx.isudept','ctx.qtyissue','ctx.durationcode','ctx.reqdoctor','ctx.unit','ctx.agreementid','ctx.chgtype','ctx.adduser','ctx.adddate','ctx.lastuser','ctx.lastupdate','ctx.daytaken','ctx.qtydispense','ctx.takehomeentry','ctx.latechargesentry','ctx.taxcode','ctx.recstatus','ctx.drugindicator','ctx.patmedication','ctx.mmaprice','gldp.idno as gldp_idno','glit.idno as glit_idno','gldp.grpcode','gldp.grplimit','gldp.grpbal','gldp.inditemlimit','glit.totitemlimit','glit.totitembal')
+                                ->leftjoin('hisdb.gletdept as gldp', function($join) use ($mrn,$episno){
+                                    $join = $join->where('gldp.compcode', '=', session('compcode'));
+                                    $join = $join->where('gldp.mrn', '=', $mrn);
+                                    $join = $join->where('gldp.episno', '=', $episno);
+                                    $join = $join->on('gldp.grpcode', '=', 'ctx.chggroup');
+                                })
+                                ->leftjoin('hisdb.gletitem as glit', function($join) use ($mrn,$episno){
+                                    $join = $join->where('glit.compcode', '=', session('compcode'));
+                                    $join = $join->where('glit.mrn', '=', $mrn);
+                                    $join = $join->where('glit.episno', '=', $episno);
+                                    $join = $join->on('glit.grpcode', '=', 'ctx.chggroup');
+                                    $join = $join->on('glit.chgcode', '=', 'ctx.chgcode');
+                                })
+                                ->where('ctx.compcode',session('compcode'))
+                                ->where('ctx.mrn' ,'=', $mrn)
+                                ->where('ctx.episno' ,'=', $episno)
+                                ->where('ctx.trxtype','!=','PD')
+                                ->where('ctx.recstatus','<>','DELETE')
+                                ->orderBy('glit.totitemlimit','desc')
+                                ->orderBy('gldp.grplimit','desc')
+                                ->orderBy('ctx.amount','asc');
 
             if(!$chargetrx_obj->exists()){
                 throw new \Exception("This Patient Doesnt Have any Charges!");
             }
             
             $chargetrx_obj = $chargetrx_obj->get();
-            $billno = $this->recno('PB','INV');
 
-            // dd($chargetrx_obj);
+            $billno = $this->recno('PB','INV');
 
             foreach ($chargetrx_obj as $key => $chargetrx) {
                 $net_amout = $chargetrx->amount + $chargetrx->taxamount + $chargetrx->discamt;
@@ -4274,6 +4291,7 @@ class OrdcomController extends defaultController
                         ->where('bd.compcode',session('compcode'))
                         ->where('bd.mrn',$mrn)
                         ->where('bd.episno',$episno)
+                        ->orderBy('bd.chgcode','asc')
                         ->orderBy('chgm.invgroup','desc')
                         ->get();
 
@@ -4290,7 +4308,7 @@ class OrdcomController extends defaultController
 
         $chgclass = $billdet->unique('chgclass')->sortBy('classlevel');
         $epispayer = $billdet->unique('lineno_')->sortBy('lineno_');
-        $invgroup = $billdet->unique('pdescription');
+        $invgroup = $billdet->unique('pdescription')->sortBy('pdescription');
         $username = session('username');
         $footer = '';
         $footer_ = DB::table('sysdb.sysparam')
@@ -4349,8 +4367,9 @@ class OrdcomController extends defaultController
                         ->where('trx.mrn' ,'=', $request->mrn)
                         ->where('trx.episno' ,'=', $request->episno)
                         ->where('trx.recstatus','<>','DELETE')
+                        ->orderBy('trx.chgcode','asc')
                         ->orderBy('chgm.invgroup','desc')
-                        ->orderBy('trx.adddate','asc')
+                        // ->orderBy('trx.adddate','asc')
                         ->join('hisdb.chgmast as chgm', function($join) use ($request){
                             $join = $join->where('chgm.compcode', '=', session('compcode'));
                             $join = $join->on('chgm.chgcode', '=', 'trx.chgcode');
@@ -4383,7 +4402,7 @@ class OrdcomController extends defaultController
         }
 
         $chgclass = $chargetrx->unique('chgclass')->sortBy('classlevel');
-        $invgroup = $chargetrx->unique('pdescription');
+        $invgroup = $chargetrx->unique('pdescription')->sortBy('pdescription');
         $username = session('username');
         $footer = '';
         $footer_ = DB::table('sysdb.sysparam')
@@ -4441,8 +4460,9 @@ class OrdcomController extends defaultController
                         ->where('trx.mrn' ,'=', $request->mrn)
                         ->where('trx.episno' ,'=', $request->episno)
                         ->where('trx.recstatus','<>','DELETE')
+                        ->orderBy('trx.chgcode','asc')
                         ->orderBy('chgm.invgroup','desc')
-                        ->orderBy('trx.adddate','asc')
+                        // ->orderBy('trx.adddate','asc')
                         ->join('hisdb.chgmast as chgm', function($join) use ($request){
                             $join = $join->where('chgm.compcode', '=', session('compcode'));
                             $join = $join->on('chgm.chgcode', '=', 'trx.chgcode');
@@ -4479,7 +4499,7 @@ class OrdcomController extends defaultController
         }
 
         $chgclass = $chargetrx->unique('chgclass')->sortBy('classlevel');
-        $invgroup = $chargetrx->unique('pdescription');
+        $invgroup = $chargetrx->unique('pdescription')->sortBy('pdescription');
         $username = session('username');
         $footer = '';
         $footer_ = DB::table('sysdb.sysparam')

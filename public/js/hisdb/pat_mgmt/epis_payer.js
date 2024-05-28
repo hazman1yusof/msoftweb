@@ -256,7 +256,7 @@ $(document).ready(function () {
 			{label:'Description', name:'grpcode_desc', width: 200},
 			{label: 'All Item', name: 'allitem', width: 50, classes: 'wrap', editable: true,editrules: { required: true }, edittype:"select",formatter:'select', editoptions:{value:"1:YES;0:NO"}},
 			{label:'Group limit', name:'grplimit',editable: true, editrules: { required: true }, width: 50, formatter: 'currency'},
-			{label:'Group Balance', name:'grpbal',editable: true, editrules: { required: true }, width: 50, formatter: 'currency'},
+			{label:'Group Balance', name:'grpbal',editable: true, editrules: { required: false },editoptions:{readonly: "readonly"}, width: 50, formatter: 'currency'},
 			{label:'Individual Item Limit', name:'inditemlimit',editable: true, editrules: { required: true }, width: 50, formatter: 'currency'},
 			{label:'compcode', name:'compcode', hidden:true},
 			{label:'payercode', name:'payercode', hidden:true},
@@ -331,6 +331,11 @@ $(document).ready(function () {
 			$("#jqGrid input[type='text']").on('focus',function(){
 				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
 				$("#jqGrid input[type='text']").removeClass( "error" );
+			});
+
+			$("input[name='inditemlimit']").keydown(function(e) {//when click tab at batchno, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGrid_gletdept_ilsave').click();
 			});
 		},
 		aftersavefunc: function (rowid, response, options) {
@@ -430,7 +435,7 @@ $(document).ready(function () {
 			},
 			{label:'Description', name:'chgcode_desc', width: 200},
 			{label:'Total Item Limit', name:'totitemlimit', width: 80,editable: true, editrules: { required: true }, formatter: 'currency'},
-			{label:'Total Item Balance', name:'totitembal', width: 80,editable: true, editrules: { required: true }, formatter: 'currency'},
+			{label:'Total Item Balance', name:'totitembal', width: 80,editable: true, editrules: { required: false },editoptions:{readonly: "readonly"}, formatter: 'currency'},
 			{label:'compcode', name:'compcode',hidden:true},
 			{label:'payercode', name:'payercode',hidden:true},
 			{label:'mrn', name:'mrn',hidden:true},
@@ -488,6 +493,12 @@ $(document).ready(function () {
 			$("#jqGrid input[type='text']").on('focus',function(){
 				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
 				$("#jqGrid input[type='text']").removeClass( "error" );
+			});
+
+
+			$("input[name='totitemlimit']").keydown(function(e) {//when click tab at batchno, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGrid_gletitem_ilsave').click();
 			});
 		},
 		aftersavefunc: function (rowid, response, options) {

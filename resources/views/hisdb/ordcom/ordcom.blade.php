@@ -72,7 +72,7 @@
                     </div>
                     <form class="col-xs-12" id="form_epno_coverage" autocomplete="off" style="padding-top: 15px;">
                         <div class="form-group">
-                            <div class="col-md-5" style="position: absolute;right: 0px;top: -10px;">
+                            <div class="col-md-5" style="position: absolute;right: 18px;top: -10px;">
                                 <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                 id="btn_grp_edit_epno_coverage">
                                     <button type="button" class="btn btn-default" id="add_epno_coverage">

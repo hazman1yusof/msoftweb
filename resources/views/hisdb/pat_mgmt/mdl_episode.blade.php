@@ -957,7 +957,7 @@
 </div>
 
 <div id="mdl_glet" class="modal fade" role="dialog" data-backdrop="static" style="z-index: 112 !important;">
-    <div class="modal-dialog mediummodal">
+    <div class="modal-dialog mediummodal" style="margin-top: 1% !important;">
         <form class="form-horizontal">
             <div class="modal-content">
                 <div class="modal-header label-info">

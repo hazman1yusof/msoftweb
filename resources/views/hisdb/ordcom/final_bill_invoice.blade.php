@@ -294,7 +294,9 @@
                             {text:'', style: 'body_row_2',border: [false, false, false, false]},
                             {text:myparseFloat(total_inv),alignment: 'right', style: 'body_row_2', border: [false, false, false, false]},
                         ];
-                    retval.push(arrtot);
+                    if(parseFloat_(total_inv) > 0){
+                        retval.push(arrtot);
+                    }
                     total_sub = parseFloat_(total_sub) + parseFloat_(total_inv);
                 }
                 
@@ -306,7 +308,7 @@
                     {text:'Sub-Total', margin:[0,8,0,0],alignment: 'right', border: [false, false, false, false]},
                     {text:myparseFloat(total_sub),alignment: 'right', margin:[0,8,0,0], border: [false, false, false, false]},
                 ];
-            retval.push(arrsub);
+                retval.push(arrsub);
             total_sum = parseFloat_(total_sum) + parseFloat_(total_sub);
         });
         total_all = parseFloat_(total_sum)-parseFloat_(total_depo);
