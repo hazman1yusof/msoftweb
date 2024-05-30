@@ -1069,6 +1069,13 @@ Route::post('/depositRcv_Report/form','finance\depositRcv_ReportController@form'
 Route::get('/depositRcv_Report/showExcel','finance\depositRcv_ReportController@showExcel');
 Route::get('/depositRcv_Report/showpdf','finance\depositRcv_ReportController@showpdf');
 
+//// Sales Listing -- Report
+Route::get('/SalesListing_Report','finance\SalesListing_ReportController@show');
+Route::get('/SalesListing_Report/table','finance\SalesListing_ReportController@table');
+Route::post('/SalesListing_Report/form','finance\SalesListing_ReportController@form');
+Route::get('/SalesListing_Report/showExcel','finance\SalesListing_ReportController@showExcel');
+Route::get('/SalesListing_Report/showpdf','finance\SalesListing_ReportController@showpdf');
+
 //// AP Summary -- Report
 Route::get('/APSummary_Report','finance\APSummary_ReportController@show');
 Route::get('/APSummary_Report/table','finance\APSummary_ReportController@table');
