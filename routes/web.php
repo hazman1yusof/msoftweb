@@ -501,6 +501,13 @@ Route::post('/DOListing/form','material\DOListingController@form');
 Route::get('/DOListing/showExcel','material\DOListingController@showExcel');
 Route::get('/DOListing/showpdf','material\DOListingController@showpdf');
 
+//// GRN Listing report ///
+Route::get('/GRNListing','material\GRNListingController@show');
+Route::get('/GRNListing/table','material\GRNListingController@table');
+Route::post('/GRNListing/form','material\GRNListingController@form');
+Route::get('/GRNListing/showExcel','material\GRNListingController@showExcel');
+Route::get('/GRNListing/showpdf','material\GRNListingController@showpdf');
+
 ////////////////////////////////INVENTORY REPORT/////////////////////////////////
 
 //// stock balance report ///
@@ -545,6 +552,13 @@ Route::get('/inventoryRequest_Report/table','material\inventoryRequest_ReportCon
 Route::post('/inventoryRequest_Report/form','material\inventoryRequest_ReportController@form');
 Route::get('/inventoryRequest_Report/showExcel','material\inventoryRequest_ReportController@showExcel');
 Route::get('/inventoryRequest_Report/showpdf','material\inventoryRequest_ReportController@showpdf');
+
+//// stock in transit (ivtxn) report ///
+Route::get('/inventoryTransaction_Report','material\inventoryTransaction_ReportController@show');
+Route::get('/inventoryTransaction_Report/table','material\inventoryTransaction_ReportController@table');
+Route::post('/inventoryTransaction_Report/form','material\inventoryTransaction_ReportController@form');
+Route::get('/inventoryTransaction_Report/showExcel','material\inventoryTransaction_ReportController@showExcel');
+Route::get('/inventoryTransaction_Report/showpdf','material\inventoryTransaction_ReportController@showpdf');
 
 ///////////////////////////FINANCE SETUP///////////////////////////////////////////////////////////
 //// invoice AP setup page ///
