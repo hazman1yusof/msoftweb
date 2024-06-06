@@ -501,12 +501,12 @@ Route::post('/DOListing/form','material\DOListingController@form');
 Route::get('/DOListing/showExcel','material\DOListingController@showExcel');
 Route::get('/DOListing/showpdf','material\DOListingController@showpdf');
 
-//// GRN Listing report ///
-Route::get('/GRNListing','material\GRNListingController@show');
-Route::get('/GRNListing/table','material\GRNListingController@table');
-Route::post('/GRNListing/form','material\GRNListingController@form');
-Route::get('/GRNListing/showExcel','material\GRNListingController@showExcel');
-Route::get('/GRNListing/showpdf','material\GRNListingController@showpdf');
+//// GRT Listing report ///
+Route::get('/GRTListing','material\GRTListingController@show');
+Route::get('/GRTListing/table','material\GRTListingController@table');
+Route::post('/GRTListing/form','material\GRTListingController@form');
+Route::get('/GRTListing/showExcel','material\GRTListingController@showExcel');
+Route::get('/GRTListing/showpdf','material\GRTListingController@showpdf');
 
 ////////////////////////////////INVENTORY REPORT/////////////////////////////////
 
