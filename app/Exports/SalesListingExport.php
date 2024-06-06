@@ -92,12 +92,28 @@ class SalesListingExport implements FromView, WithEvents, WithColumnWidths
         
         $array_report = [];
         foreach($dbacthdr_1 as $key => $value){
+            $value->type = '';
+            $value->name = '';
+            // array_push($array_report, $value);
             
             $debtormast = DB::table('debtor.debtormast')
                         ->where('compcode','=',session('compcode'))
-                        ->where('debtorcode','=',$value->debtorcode);
+                        ->where('debtorcode','=',$value->debtorcode)
+                        ->first();
             
+            // dd($debtormast);
+            
+            if($debtormast->debtortype == 'PT' || $debtormast->debtortype == 'PR'){
+                $value->type = 'SELF PAID';
+                $value->name = $debtormast->name;
+                array_push($array_report, $value);
+            }else{
+                $value->type = 'PANEL';
+                $value->name = $debtormast->name;
+                array_push($array_report, $value);
+            }
         }
+        // dd($array_report);
         
         $totalAmount = $dbacthdr->sum('amount');
         
@@ -111,7 +127,7 @@ class SalesListingExport implements FromView, WithEvents, WithColumnWidths
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
-        return view('finance.AR.SalesListing_Report.SalesListing_Report_excel',compact('dbacthdr','totalAmount','totamt_eng'));
+        return view('finance.AR.SalesListing_Report.SalesListing_Report_excel',compact('dbacthdr','array_report','totalAmount','totamt_eng'));
     }
     
     public function registerEvents(): array
