@@ -1090,6 +1090,13 @@ Route::post('/SalesListing_Report/form','finance\SalesListing_ReportController@f
 Route::get('/SalesListing_Report/showExcel','finance\SalesListing_ReportController@showExcel');
 Route::get('/SalesListing_Report/showpdf','finance\SalesListing_ReportController@showpdf');
 
+//// Claim Batch Listing -- Report
+Route::get('/ClaimBatchList_Report','finance\ClaimBatchList_ReportController@show');
+Route::get('/ClaimBatchList_Report/table','finance\ClaimBatchList_ReportController@table');
+Route::post('/ClaimBatchList_Report/form','finance\ClaimBatchList_ReportController@form');
+Route::get('/ClaimBatchList_Report/showExcel','finance\ClaimBatchList_ReportController@showExcel');
+Route::get('/ClaimBatchList_Report/showpdf','finance\ClaimBatchList_ReportController@showpdf');
+
 //// AP Summary -- Report
 Route::get('/APSummary_Report','finance\APSummary_ReportController@show');
 Route::get('/APSummary_Report/table','finance\APSummary_ReportController@table');
