@@ -1096,6 +1096,7 @@ Route::get('/ClaimBatchList_Report/table','finance\ClaimBatchList_ReportControll
 Route::post('/ClaimBatchList_Report/form','finance\ClaimBatchList_ReportController@form');
 Route::get('/ClaimBatchList_Report/showExcel','finance\ClaimBatchList_ReportController@showExcel');
 Route::get('/ClaimBatchList_Report/showpdf','finance\ClaimBatchList_ReportController@showpdf');
+Route::get('/ClaimBatchList_Report/report','finance\ClaimBatchList_ReportController@report');
 
 //// AP Summary -- Report
 Route::get('/APSummary_Report','finance\APSummary_ReportController@show');
