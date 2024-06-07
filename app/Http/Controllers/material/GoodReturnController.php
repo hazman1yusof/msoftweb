@@ -146,11 +146,23 @@ class GoodReturnController extends defaultController
 
         try {
 
-            $request_no = $this->request_no('GRT', $request->delordhd_deldept);
-            $recno = $this->recno('PUR','DO');
-            // $request_no = 0;
-            // $recno = 0;
-            $compcode = 'DD';
+            // $request_no = $this->request_no('GRT', $request->delordhd_deldept);
+            // $recno = $this->recno('PUR','DO');
+            // $compcode = session('compcode');
+
+            // // $request_no = 0;
+            // // $recno = 0;
+            // $compcode = 'DD';
+
+            if(!empty($request->referral)){
+                $request_no = $this->request_no('GRT', $request->delordhd_deldept);
+                $recno = $this->recno('PUR','DO');
+                $compcode = session('compcode');
+            }else{
+                $request_no = 0;
+                $recno = 0;
+                $compcode = 'DD';
+            }
 
             $table = DB::table("material.delordhd");
 
@@ -893,9 +905,10 @@ class GoodReturnController extends defaultController
                 'expdate'=>$value->expdate,
                 'batchno'=>$value->batchno,
                 'rem_but'=>$value->rem_but,
+                'unit' => session('unit'), 
                 'adduser' => session('username'), 
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                'recstatus' => 'ACTIVE', 
+                'recstatus' => 'OPEN', 
                 'remarks' => $value->remarks
             ]);
         }

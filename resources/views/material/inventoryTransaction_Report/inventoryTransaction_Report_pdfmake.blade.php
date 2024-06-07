@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Inventory Request Report</title>
+        <title>Stock In Transit Report</title>
     </head>
     
     <!-- <script src="https://unpkg.com/@jsreport/browser-client/dist/jsreport.umd.js"></script>
@@ -29,7 +29,7 @@
                         image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: '\nINVENTORY REQUEST REPORT\n',
+                        text: '\nSTOCK IN TRANSIT REPORT\n',
                         style: 'header',
                         alignment: 'center',
                     },
@@ -51,40 +51,42 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [45,20,40,40,110,40,40,25,35,35,35,35,43,45],  //panjang standard dia 515
+                            widths: [42,35,35,37,110,30,30,30,30,30,30,30,34,42,30],  //panjang standard dia 515
                             body: [
                                 [
-                                    {text: 'REQUEST DATE', style: 'tableHeader'},
-                                    {text: 'REQ NO', style: 'tableHeader'},
-                                    {text: 'REQUEST\nDEPT', style: 'tableHeader'},
-                                    {text: 'REQUEST\nTO DEPT', style: 'tableHeader'},
+                                    {text: 'TRAN\nDATE', style: 'tableHeader'},
+                                    {text: 'DOC NO', style: 'tableHeader'},
+                                    {text: 'TRAN\nDEPT', style: 'tableHeader'},
+                                    {text: 'SENDER/\nRECEIVER', style: 'tableHeader'},
                                     {text: 'ITEMCODE', style: 'tableHeader'},
-                                    {text: 'UOM CODE TO REQ DEPT', style: 'tableHeader'},
-                                    {text: 'UOM CODE REQ MADE TO', style: 'tableHeader'},
-                                    {text: 'MAX QTY', style: 'tableHeader', alignment: 'right'},
-                                    {text: 'QOH REQ DEPT', style: 'tableHeader', alignment: 'right'},
-                                    {text: 'QOH AT\nREQ TO DEPT', style: 'tableHeader', alignment: 'right'},
+                                    {text: 'UOM CODE\nTRAN DEPT', style: 'tableHeader'},
+                                    {text: 'QOH\nTRAN DEPT', style: 'tableHeader', alignment: 'right'},
+                                    {text: 'UOM CODE\nRECV DEPT', style: 'tableHeader'},
+                                    {text: 'QOH\nRECV DEPT', style: 'tableHeader', alignment: 'right'},
+                                    {text: 'TRAN QTY', style: 'tableHeader', alignment: 'right'},
                                     {text: 'QTY REQ', style: 'tableHeader', alignment: 'right'},
-                                    {text: 'QTY BAL', style: 'tableHeader', alignment: 'right'},
-                                    {text: 'QTY\nSUPPLIED', style: 'tableHeader', alignment: 'right'},
                                     {text: 'NET\nPRICE', style: 'tableHeader', alignment: 'right'},
+                                    {text: 'AMOUNT', style: 'tableHeader', alignment: 'right'},
+                                    {text: 'EXP DATE', style: 'tableHeader', alignment: 'left'},
+                                    {text: 'BATCH NO', style: 'tableHeader', alignment: 'left'},
                                 ],
-                                @foreach ($ivrequest as $obj)
+                                @foreach ($ivtxn as $obj)
                                     [
-                                        {text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->reqdt)->format('d-m-Y')}}'},
-                                        {text: '{{str_pad($obj->ivreqno, 7, "0", STR_PAD_LEFT)}}'},
-                                        {text: '{{$obj->reqdept}}'},
-                                        {text: '{{$obj->reqtodept}}'},
+                                        {text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->trandate)->format('d-m-Y')}}'},
+                                        {text: '{{str_pad($obj->docno, 7, "0", STR_PAD_LEFT)}}'},
+                                        {text: '{{$obj->txndept}}'},
+                                        {text: '{{$obj->sndrcv}}'},
                                         {text: `{!!str_replace('`', '', $obj->itemcode)!!}\n{!!str_replace('`', '', $obj->description)!!}`},
                                         {text: `{!!$obj->uomcode!!}`},
-                                        {text: `{!!$obj->pouom!!}`},
-                                        {text: '{{number_format($obj->maxqty,2)}}', alignment: 'right'},
-                                        {text: '{{number_format($obj->qtyonhand,2)}}', alignment: 'right'},
-                                        {text: '{{number_format($obj->qohconfirm,2)}}', alignment: 'right'},
+                                        {text: '{{$obj->qtyonhand}}', alignment: 'right'},
+                                        {text: `{!!$obj->uomcoderecv!!}`},
+                                        {text: '{{$obj->qtyonhandrecv}}', alignment: 'right'},
+                                        {text: '{{number_format($obj->txnqty,2)}}', alignment: 'right'},
                                         {text: '{{number_format($obj->qtyrequest,2)}}', alignment: 'right'},
-                                        {text: '{{number_format($obj->qtybalance,2)}}', alignment: 'right'},
-                                        {text: '{{number_format($obj->qtytxn,2)}}', alignment: 'right'},
                                         {text: '{{number_format($obj->netprice,2)}}', alignment: 'right' },
+                                        {text: '{{number_format($obj->amount,2)}}', alignment: 'right'},
+                                        {text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->expdate)->format('d-m-Y')}}'},
+                                        {text: '{{$obj->batchno}}'},
                                     ],
                                 @endforeach
                             ]
@@ -115,7 +117,7 @@
                     },
                     tableHeader: {
                         bold: true,
-                        fontSize: 9,
+                        fontSize: 8,
                         color: 'black'
                     },
                     totalbold: {

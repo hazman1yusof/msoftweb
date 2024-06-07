@@ -9,11 +9,11 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 use PDF;
-use App\Exports\DOListingExport;
+use App\Exports\GRTListingExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 
-class DOListingController extends defaultController
+class GRTListingController extends defaultController
 {   
 
     public function __construct()
@@ -24,11 +24,11 @@ class DOListingController extends defaultController
     public function show(Request $request)
     {   
         $comp = DB::table('sysdb.company')->where('compcode','=',session('compcode'))->first();
-        return view('material.DOListing.DOListing',['company_name' => $comp->name]);
+        return view('material.GRTListing.GRTListing',['company_name' => $comp->name]);
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new DOListingExport($request->datefr,$request->dateto,$request->Status), 'DOListingExport.xlsx');
+        return Excel::download(new GRTListingExport($request->datefr,$request->dateto,$request->Status), 'GRTListingExport.xlsx');
     }
 
     public function showpdf(Request $request){
@@ -39,22 +39,22 @@ class DOListingController extends defaultController
 
         if ($Status == 'ALL'){
         
-            $DOListing = DB::table('material.delordhd as h')
+            $GRTListing = DB::table('material.delordhd as h')
                         ->select('h.recno')
                         ->where('h.compcode',session('compcode'))
                         ->where('h.unit',session('unit'))
                         ->where('h.recstatus', '!=', 'DELETE')
-                        ->where('h.trantype', '=', 'GRN')
+                        ->where('h.trantype', '=', 'GRT')
                         ->whereBetween('h.trandate', [$datefr, $dateto])
                         ->orderBy('h.recno', 'ASC')
                         ->distinct('h.recno');
 
-            $DOListing = $DOListing->get('h.recno');
+            $GRTListing = $GRTListing->get('h.recno');
             
-            // dd($DOListing);
+            // dd($GRTListing);
 
             $delordhd = DB::table('material.delordhd as h')
-                        ->select('h.idno', 'h.compcode', 'h.recno', 'h.prdept', 'h.deldept', 'h.delordno', 'h.reqdept', 'h.trandate', 'h.suppcode', 's.name as supp_name', 'h.srcdocno', 'h.invoiceno', 'h.totamount', 'h.docno', 'h.recstatus', 'dp.description as dept_desc', 'prd.description as dd_desc','rdp.description as rq_desc')
+                        ->select('h.idno', 'h.compcode', 'h.recno', 'h.prdept', 'h.deldept', 'h.delordno', 'h.trandate', 'h.suppcode', 's.name as supp_name', 'h.srcdocno', 'h.invoiceno', 'h.totamount', 'h.docno', 'h.recstatus', 'dp.description as dept_desc', 'prd.description as dd_desc')
                         ->leftjoin('material.supplier as s', function($join){
                             $join = $join->on('s.SuppCode', '=', 'h.suppcode')
                                         ->where('s.compcode', '=', session('compcode'))
@@ -70,22 +70,17 @@ class DOListingController extends defaultController
                                         ->where('prd.compcode', '=', session('compcode'))
                                         ->where('prd.recstatus', '=', 'ACTIVE');
                         })
-                        ->leftjoin('sysdb.department as rdp', function($join){
-                            $join = $join->on('rdp.deptcode', '=', 'h.reqdept')
-                                        ->where('rdp.compcode', '=', session('compcode'))
-                                        ->where('rdp.recstatus', '=', 'ACTIVE');
-                        })
                         ->where('h.compcode',session('compcode'))
                         ->where('h.unit',session('unit'))
                         ->where('h.recstatus', '!=', 'DELETE')
-                        ->where('h.trantype', '=', 'GRN')
-                        ->whereBetween('h.trandate', [$datefr, $dateto])
-                        ->orderBy('h.trandate', 'ASC')
+                        ->where('h.trantype', '=', 'GRT')
+                        // ->whereBetween('h.trandate', [$datefr, $dateto])
+                        // ->orderBy('h.trandate', 'ASC')
                         ->get();
                     // dd($delordhd);
 
             $delorddt = DB::table('material.delorddt as d')
-                    ->select('d.compcode','d.recno','d.lineno_','d.pricecode','d.itemcode','p.description','d.uomcode','d.pouom', 'd.suppcode','d.trandate','d.deldept','d.deliverydate','d.qtyorder','d.qtydelivered', 'd.qtyoutstand','d.unitprice','d.taxcode', 'd.perdisc','d.amtdisc','d.amtslstax as tot_gst','d.netunitprice','d.totamount', 'd.amount', 'd.expdate','d.batchno', 'd.unit','d.idno', 'd.recstatus', 'pc.description as pc_desc', 't.description as tax_desc')
+                    ->select('d.compcode','d.recno','d.lineno_','d.pricecode','d.itemcode','p.description','d.uomcode','d.pouom', 'd.suppcode','d.trandate','d.deldept','d.deliverydate','d.qtyorder','d.qtydelivered', 'd.qtyreturned','d.unitprice','d.taxcode', 'd.perdisc','d.amtdisc','d.amtslstax as tot_gst','d.netunitprice','d.totamount', 'd.amount', 'd.expdate','d.batchno', 'd.unit','d.idno', 'd.recstatus', 'pc.description as pc_desc', 't.description as tax_desc')
                     ->join('material.product as p', function($join){
                         $join = $join->on('p.itemcode', '=', 'd.itemcode')
                                     ->on('p.uomcode', '=', 'd.uomcode')
@@ -106,28 +101,27 @@ class DOListingController extends defaultController
                     ->where('d.compcode',session('compcode'))
                     ->where('d.unit',session('unit'))
                     ->where('d.recstatus', '!=', 'DELETE')
-                    ->whereBetween('d.trandate', [$datefr, $dateto])
-                    ->orderBy('d.trandate', 'ASC')
+                    ->orderBy('d.lineno_', 'ASC')
                     ->get();
                     // dd($delorddt);
         } else {
                 
-        $DOListing = DB::table('material.delordhd as h')
+        $GRTListing = DB::table('material.delordhd as h')
                     ->select('h.recno')
                     ->where('h.compcode',session('compcode'))
                     ->where('h.unit',session('unit'))
                     ->where('h.recstatus', '=', $Status)
-                    ->where('h.trantype', '=', 'GRN')
+                    ->where('h.trantype', '=', 'GRT')
                     ->whereBetween('h.trandate', [$datefr, $dateto])
                     ->orderBy('h.recno', 'ASC')
                     ->distinct('h.recno');
 
-        $DOListing = $DOListing->get('h.recno');
+        $GRTListing = $GRTListing->get('h.recno');
     
-        // dd($DOListing);
+        // dd($GRTListing);
 
         $delordhd = DB::table('material.delordhd as h')
-                    ->select('h.idno', 'h.compcode', 'h.recno', 'h.prdept', 'h.deldept', 'h.delordno', 'h.reqdept', 'h.trandate', 'h.suppcode', 's.name as supp_name', 'h.srcdocno', 'h.invoiceno', 'h.totamount', 'h.docno', 'h.recstatus', 'dp.description as dept_desc', 'prd.description as dd_desc', 'rdp.description as rq_desc')
+                    ->select('h.idno', 'h.compcode', 'h.recno', 'h.prdept', 'h.deldept', 'h.delordno', 'h.trandate', 'h.suppcode', 's.name as supp_name', 'h.srcdocno', 'h.invoiceno', 'h.totamount', 'h.docno', 'h.recstatus', 'dp.description as dept_desc', 'prd.description as dd_desc')
                     ->leftjoin('material.supplier as s', function($join){
                         $join = $join->on('s.SuppCode', '=', 'h.suppcode')
                                     ->where('s.compcode', '=', session('compcode'))
@@ -143,22 +137,17 @@ class DOListingController extends defaultController
                                     ->where('prd.compcode', '=', session('compcode'))
                                     ->where('prd.recstatus', '=', 'ACTIVE');
                     })
-                    ->leftjoin('sysdb.department as rdp', function($join){
-                        $join = $join->on('rdp.deptcode', '=', 'h.reqdept')
-                                    ->where('rdp.compcode', '=', session('compcode'))
-                                    ->where('rdp.recstatus', '=', 'ACTIVE');
-                    })
                     ->where('h.compcode',session('compcode'))
                     ->where('h.unit',session('unit'))
                     ->where('h.recstatus','=', $Status)
-                    ->where('h.trantype', '=', 'GRN')
-                    ->whereBetween('h.trandate', [$datefr, $dateto])
-                    ->orderBy('h.trandate', 'ASC')
+                    ->where('h.trantype', '=', 'GRT')
+                    // ->whereBetween('h.trandate', [$datefr, $dateto])
+                    // ->orderBy('h.trandate', 'ASC')
                     ->get();
                 // dd($delordhd);
 
         $delorddt = DB::table('material.delorddt as d')
-                ->select('d.compcode','d.recno','d.lineno_','d.pricecode','d.itemcode','p.description','d.uomcode','d.pouom', 'd.suppcode','d.trandate','d.deldept','d.deliverydate','d.qtyorder','d.qtydelivered', 'd.qtyoutstand','d.unitprice','d.taxcode', 'd.perdisc','d.amtdisc','d.amtslstax as tot_gst','d.netunitprice','d.totamount', 'd.amount', 'd.expdate','d.batchno', 'd.unit','d.idno', 'd.recstatus', 'pc.description as pc_desc', 't.description as tax_desc')
+                ->select('d.compcode','d.recno','d.lineno_','d.pricecode','d.itemcode','p.description','d.uomcode','d.pouom', 'd.suppcode','d.trandate','d.deldept','d.deliverydate','d.qtyorder','d.qtydelivered', 'd.qtyreturned','d.unitprice','d.taxcode', 'd.perdisc','d.amtdisc','d.amtslstax as tot_gst','d.netunitprice','d.totamount', 'd.amount', 'd.expdate','d.batchno', 'd.unit','d.idno', 'd.recstatus', 'pc.description as pc_desc', 't.description as tax_desc')
                 ->join('material.product as p', function($join){
                     $join = $join->on('p.itemcode', '=', 'd.itemcode')
                                 ->on('p.uomcode', '=', 'd.uomcode')
@@ -179,8 +168,8 @@ class DOListingController extends defaultController
                 ->where('d.compcode',session('compcode'))
                 ->where('d.unit',session('unit'))
                 ->where('d.recstatus', '!=', 'DELETE')
-                ->whereBetween('d.trandate', [$datefr, $dateto])
-                ->orderBy('d.trandate', 'ASC')
+                // ->whereBetween('d.trandate', [$datefr, $dateto])
+                ->orderBy('d.lineno_', 'ASC')
                 ->get();
                 // dd($delorddt);
         }
@@ -189,7 +178,7 @@ class DOListingController extends defaultController
             ->where('compcode','=',session('compcode'))
             ->first();
         
-        return view('material.DOListing.DOListing_pdfmake',compact('DOListing', 'delordhd', 'delorddt'));
+        return view('material.GRTListing.GRTListing_pdfmake',compact('GRTListing', 'delordhd', 'delorddt'));
         
     }
    

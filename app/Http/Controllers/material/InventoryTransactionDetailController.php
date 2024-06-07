@@ -157,6 +157,7 @@ class InventoryTransactionDetailController extends defaultController
                     'uomcoderecv'=> $request->uomcoderecv,
                     'qtyonhandrecv'=> $request->qtyonhandrecv,
                     'amount' => $request->amount,
+                    'unit' => session('unit'), 
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate'=> $request->expdate,  
