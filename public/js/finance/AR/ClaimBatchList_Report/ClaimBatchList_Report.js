@@ -22,6 +22,13 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function (){
+    $('#content').summernote({
+        height: 300,
+        toolbar: [
+          ['font', ['bold', 'underline', 'clear']],
+        ]
+      });
+
     disableForm('#formdata');
     
     $("#ExcelDialog").dialog({
@@ -246,6 +253,8 @@ function populate_formdata(){
         button_state('edit');
         autoinsert_rowdata("#formdata",data.sysparam1);
         autoinsert_rowdata("#formdata",data.sysparam2);
+
+        $('#content').summernote('pasteHTML', data.sysparam1.content);
     });
 }
 

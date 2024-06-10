@@ -87,8 +87,10 @@ class ClaimBatchListExport implements FromView, WithEvents, WithColumnWidths
                     ->where('compcode','=',session('compcode'))
                     ->where('debtorcode','=',$debtorcode_to)
                     ->first();
+
+        $content_array = preg_split("/\r\n|\n|\r/", $content);
         
-        return view('finance.AR.ClaimBatchList_Report.ClaimBatchList_Report_excel',compact('date1','epis_type','title','content','officer','designation','debtormast'));
+        return view('finance.AR.ClaimBatchList_Report.ClaimBatchList_Report_excel',compact('date1','epis_type','title','content','content_array','officer','designation','debtormast'));
     }
     
     public function registerEvents(): array

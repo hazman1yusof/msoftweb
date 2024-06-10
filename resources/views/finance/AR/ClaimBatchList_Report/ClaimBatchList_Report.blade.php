@@ -351,5 +351,8 @@
 @endsection
 
 @section('scripts')
+<!-- include summernote css/js -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     <script src="js/finance/AR/ClaimBatchList_Report/ClaimBatchList_Report.js"></script>
 @endsection
