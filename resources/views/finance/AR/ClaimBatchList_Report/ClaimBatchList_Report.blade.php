@@ -94,9 +94,9 @@
                                     <label class="col-md-2 control-label" for="epis_type">Episode Type</label>
                                     <div class="col-md-4">
                                         <select id="epis_type" class="form-control">
-                                            <option value="ALL" selected>ALL</option>
-                                            <option value="OP">OP</option>
-                                            <option value="IP">IP</option>
+                                            <option value="All" selected>All</option>
+                                            <option value="Out Patient">Out Patient</option>
+                                            <option value="In-Patient">In-Patient</option>
                                         </select>
                                     </div>
                                 </div>
@@ -131,7 +131,7 @@
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <div class="col-md-12">
-                                        <input id="title" name="title" type="text" class="form-control input-sm">
+                                        <input id="title" name="title" type="text" class="form-control input-sm" style="font-weight: bold;">
                                     </div>
                                     
                                     <div class="col-md-12" style="padding-top: 10px;">
@@ -139,6 +139,8 @@
                                     </div>
                                     
                                     <div class="col-md-12" style="padding-top: 10px;">
+                                        <p style="font-weight: bold;padding-left: 10px;">Yours faithfully,</p>
+                                        
                                         <label class="col-md-2 control-label" for="officer">Officer</label>
                                         <div class="col-md-5">
                                             <input id="officer" name="officer" type="text" class="form-control input-sm">

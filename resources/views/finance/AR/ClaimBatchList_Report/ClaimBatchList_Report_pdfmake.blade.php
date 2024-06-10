@@ -27,7 +27,7 @@
                     {
                         image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
-                    { text: '{{\Carbon\Carbon::parse($date1)->format('d/m/Y')}}\n\n', fontSize: 9 },
+                    { text: '\n\n{{\Carbon\Carbon::parse($date1)->format('dS F Y')}}\n\n', fontSize: 9 },
                     { text: '{{$debtormast->address1}}', fontSize: 9 },
                     @if(!empty($debtormast->address2))
                         { text: '{{$debtormast->address2}}', fontSize: 9 },
@@ -39,8 +39,9 @@
                         { text: '{{$debtormast->address4}}', fontSize: 9 },
                     @endif
                     { text: '\nAttention: {{$debtormast->name}}\n\n', fontSize: 9 },
-                    { text: '{{$title}}\n\n', fontSize: 9 },
+                    { text: '{{$title}}\n\n', fontSize: 9, bold: true },
                     { text: `{!!str_replace('`', '', $content)!!}\n\n`, fontSize: 9 },
+                    { text: 'Yours faithfully,\n\n', fontSize: 9, bold: true },
                     { text: '{{$officer}}\n\n', fontSize: 9 },
                     { text: '{{$designation}}\n\n', fontSize: 9 },
                 ],

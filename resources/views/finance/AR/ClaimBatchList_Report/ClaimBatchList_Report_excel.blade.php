@@ -1,6 +1,6 @@
 <table>
     <tr>
-        <td colspan="2">{{\Carbon\Carbon::parse($date1)->format('d/m/Y')}}</td>
+        <td colspan="2">{{\Carbon\Carbon::parse($date1)->format('dS F Y')}}</td>
     </tr>
     <tr></tr>
     <tr>
@@ -27,16 +27,18 @@
     </tr>
     <tr></tr>
     <tr>
-        <td colspan="4">{{$title}}</td>
+        <td colspan="4" style="font-weight: bold">{{$title}}</td>
     </tr>
     <tr></tr>
-
     @foreach($content_array as $content)
-    <tr>
-        <td colspan="8">{{$content}}</td>
-    </tr>
+        <tr>
+            <td colspan="8">{{$content}}</td>
+        </tr>
     @endforeach
-    
+    <tr></tr>
+    <tr>
+        <td style="font-weight: bold">Yours faithfully,</td>
+    </tr>
     <tr></tr>
     <tr>
         <td colspan="2">{{$officer}}</td>
