@@ -143,14 +143,14 @@
                                         
                                         <label class="col-md-2 control-label" for="officer">Officer</label>
                                         <div class="col-md-5">
-                                            <input id="officer" name="officer" type="text" class="form-control input-sm">
+                                            <input id="officer" name="officer" type="text" class="form-control input-sm" style="font-weight: bold;">
                                         </div>
                                     </div>
                                     
                                     <div class="col-md-12" style="padding-top: 10px;">
                                         <label class="col-md-2 control-label" for="designation">Designation</label>
                                         <div class="col-md-5">
-                                            <input id="designation" name="designation" type="text" class="form-control input-sm">
+                                            <input id="designation" name="designation" type="text" class="form-control input-sm" style="font-weight: bold;">
                                         </div>
                                         <div class="pull-right">
                                             <!-- <button name="ClaimBatchList_Report" type="button" class="btn btn-default btn-sm" id="pdfgen1">

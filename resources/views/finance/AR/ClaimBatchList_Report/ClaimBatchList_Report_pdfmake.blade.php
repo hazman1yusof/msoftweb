@@ -42,8 +42,8 @@
                     { text: '{{$title}}\n\n', fontSize: 9, bold: true },
                     { text: `{!!str_replace('`', '', $content)!!}\n\n`, fontSize: 9 },
                     { text: 'Yours faithfully,\n\n', fontSize: 9, bold: true },
-                    { text: '{{$officer}}\n\n', fontSize: 9 },
-                    { text: '{{$designation}}\n\n', fontSize: 9 },
+                    { text: '{{$officer}}\n\n', fontSize: 9, bold: true },
+                    { text: '{{$designation}}\n\n', fontSize: 9, bold: true },
                 ],
                 styles: {
                     header: {

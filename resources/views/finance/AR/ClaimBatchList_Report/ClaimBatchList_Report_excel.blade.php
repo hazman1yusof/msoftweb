@@ -41,11 +41,11 @@
     </tr>
     <tr></tr>
     <tr>
-        <td colspan="2">{{$officer}}</td>
+        <td colspan="2" style="font-weight: bold">{{$officer}}</td>
     </tr>
     <tr></tr>
     <tr>
-        <td colspan="2">{{$designation}}</td>
+        <td colspan="2" style="font-weight: bold">{{$designation}}</td>
     </tr>
     <tr></tr>
 </table>
