@@ -46,6 +46,7 @@ class DebtorListDtlExport implements FromView, WithEvents, WithColumnWidths
             'C' => 50,
             'D' => 20,
             'E' => 20,
+            'F' => 20,
         ];
     }
     

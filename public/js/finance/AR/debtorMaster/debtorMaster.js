@@ -284,7 +284,7 @@ $(document).ready(function (){
 			{ label: 'Coverage OP', name: 'coverageop', hidden: true },
 			{ label: 'idno', name: 'idno', hidden: true },
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
-			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
+			// { label: 'adddate', name: 'adddate', width: 90, hidden: true },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
 			{ label: 'upddate', name: 'upddate', width: 90, hidden: true },
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true },
@@ -294,6 +294,7 @@ $(document).ready(function (){
 					return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''
 				},
 			},
+			{ label: 'Date Created', name: 'adddate', width: 50, formatter: dateFormatter, unformat: dateUNFormatter },
 		],
 		autowidth: true,
 		multiSort: true,

@@ -35,7 +35,7 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [50,30,200,80,80],  //panjang standard dia 515
+                            widths: [45,30,150,80,80,70],  //panjang standard dia 515
                             body: [
                                 [
                                     { text: 'Code', style: 'tableHeader' },
@@ -43,6 +43,7 @@
                                     { text: 'Name', style: 'tableHeader' },
                                     { text: 'Tel', style: 'tableHeader' },
                                     { text: 'Fax', style: 'tableHeader' },
+                                    { text: 'Date Created', style: 'tableHeader' },
                                 ],
                                 @foreach ($debtormast as $obj)
                                 [
@@ -51,6 +52,7 @@
                                     { text: `{!!str_replace('`', '', $obj->name)!!}\n{!!str_replace('`', '', $obj->address1)!!}\n{!!str_replace('`', '', $obj->address2)!!}\n{!!str_replace('`', '', $obj->address3)!!}\n{!!str_replace('`', '', $obj->address4)!!}` },
                                     { text: '{{$obj->teloffice}}' },
                                     { text: '{{$obj->fax}}' },
+                                    { text: '{{\Carbon\Carbon::parse($obj->adddate)->format('d/m/Y')}}' },
                                 ],
                                 @endforeach
                             ]
