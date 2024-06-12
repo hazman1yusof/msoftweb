@@ -26,6 +26,7 @@
         <td colspan="3">Attention: {{$debtormast->name}}</td>
     </tr>
     <tr></tr>
+    <tr></tr>
     <tr>
         <td colspan="4" style="font-weight: bold">{{$title}}</td>
     </tr>
@@ -36,8 +37,9 @@
         </tr>
     @endforeach
     <tr></tr>
+    <tr></tr>
     <tr>
-        <td style="font-weight: bold">Yours faithfully,</td>
+        <td colspan="2" style="font-weight: bold">{{$sign_off}}</td>
     </tr>
     <tr></tr>
     <tr>

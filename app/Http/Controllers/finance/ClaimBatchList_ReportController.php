@@ -70,24 +70,27 @@ class ClaimBatchList_ReportController extends defaultController
             $sysparam1 = DB::table('sysdb.sysparam')
                         ->where('compcode','=',session('compcode'))
                         ->where('source','=','AR')
-                        ->where('trantype','=','coverletter');
+                        ->where('trantype','=','CL');
             
             if(!$sysparam1->exists()){
                 DB::table('sysdb.sysparam')
                     ->insert([
                         'compcode' => session('compcode'),
                         'source' => 'AR',
-                        'trantype' => 'coverletter',
-                        'description' => $request->title,
-                        'pvalue1' => $request->content,
+                        'trantype' => 'CL',
+                        'description' => 'coverletter',
+                        'comment_' => $request->content,
+                        'pvalue1' => $request->title,
+                        'pvalue2' => $request->sign_off,
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }else{
                 $sysparam1
                     ->update([
-                        'description' => $request->title,
-                        'pvalue1' => $request->content,
+                        'comment_' => $request->content,
+                        'pvalue1' => $request->title,
+                        'pvalue2' => $request->sign_off,
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
@@ -134,10 +137,10 @@ class ClaimBatchList_ReportController extends defaultController
     public function get_table(Request $request){
         
         $sysparam1_obj = DB::table('sysdb.sysparam')
-                        ->select('description as title','pvalue1 as content')
+                        ->select('comment_ as content','pvalue1 as title','pvalue2 as sign_off')
                         ->where('compcode','=',session('compcode'))
                         ->where('source','=','AR')
-                        ->where('trantype','=','coverletter');
+                        ->where('trantype','=','CL');
         
         $sysparam2_obj = DB::table('sysdb.sysparam')
                         ->select('pvalue1 as officer','pvalue2 as designation')
@@ -176,14 +179,15 @@ class ClaimBatchList_ReportController extends defaultController
         $debtorcode_to = $request->debtorcode_to;
         $title = $request->title;
         $content = $request->content;
+        $sign_off = $request->sign_off;
         $officer = $request->officer;
         $designation = $request->designation;
         
         // $sysparam1_obj = DB::table('sysdb.sysparam')
-        //                 ->select('description as title','pvalue1 as content')
+        //                 ->select('comment_ as content','pvalue1 as title','pvalue2 as sign_off')
         //                 ->where('compcode','=',session('compcode'))
         //                 ->where('source','=','AR')
-        //                 ->where('trantype','=','coverletter')
+        //                 ->where('trantype','=','CL')
         //                 ->first();
         
         // $sysparam2_obj = DB::table('sysdb.sysparam')
@@ -207,12 +211,8 @@ class ClaimBatchList_ReportController extends defaultController
         $header->date1 = $date1;
         $header->epis_type = $epis_type;
         $header->debtorcode_to = $debtorcode_to;
-        $header->title = $title;
-        $header->content = $content;
-        $header->officer = $officer;
-        $header->designation = $designation;
         
-        return view('finance.AR.ClaimBatchList_Report.ClaimBatchList_Report_pdfmake',compact('date1','epis_type','title','content','officer','designation','debtormast','company','header'));
+        return view('finance.AR.ClaimBatchList_Report.ClaimBatchList_Report_pdfmake',compact('date1','epis_type','title','content','sign_off','officer','designation','debtormast','company','header'));
     }
     
     public function ClaimBatchList_xls(Request $request){
@@ -230,10 +230,11 @@ class ClaimBatchList_ReportController extends defaultController
         $debtorcode_to = $request->debtorcode_to;
         $title = $request->title;
         $content = $request->content;
+        $sign_off = $request->sign_off;
         $officer = $request->officer;
         $designation = $request->designation;
         
-        return Excel::download(new ClaimBatchListExport($date1,$epis_type,$debtorcode_to,$title,$content,$officer,$designation), 'Claim Batch Listing.xlsx');
+        return Excel::download(new ClaimBatchListExport($date1,$epis_type,$debtorcode_to,$title,$content,$sign_off,$officer,$designation), 'Claim Batch Listing.xlsx');
     }
     
 }

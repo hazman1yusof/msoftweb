@@ -24,26 +24,6 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 $(document).ready(function (){
     disableForm('#formdata');
     
-    $("#ExcelDialog").dialog({
-        autoOpen: false,
-        width: 5/10 * $(window).width(),
-        modal: true,
-        open: function (){
-            dialog_debtorFrom.on();
-            dialog_debtorTo.on();
-            parent_close_disabled(true);
-        },
-        close: function (event, ui){
-            dialog_debtorFrom.off();
-            dialog_debtorTo.off();
-            parent_close_disabled(false);
-        },
-        buttons:
-        [
-            
-        ],
-    });
-    
     $("#edit").click(function (){
         button_state('wait');
         enableForm('#formdata');
@@ -92,6 +72,52 @@ $(document).ready(function (){
             
             window.open('./ClaimBatchList_Report/report?'+$.param(serializedForm), '_blank');
         }
+    });
+    
+    $("#ExcelDialog").dialog({
+        autoOpen: false,
+        width: 5/10 * $(window).width(),
+        modal: true,
+        open: function (){
+            $("#refresh_fields").click();
+            // dialog_debtorFrom.on();
+            // dialog_debtorTo.on();
+            parent_close_disabled(true);
+        },
+        close: function (event, ui){
+            // dialog_debtorFrom.off();
+            // dialog_debtorTo.off();
+            parent_close_disabled(false);
+        },
+        buttons: [],
+    });
+    
+    $("#exit_dialog").click(function (){
+        $("#ExcelDialog").dialog("close");
+    });
+    
+    // $("#seqno").click(function (){
+    //     if($('#seqno').is(':checked')){
+    //         $('#selectedFields').val("Seq No.");
+    //     }else{
+    //         $('#selectedFields').val(" ");
+    //     }
+    // });
+    
+    $("#refresh_fields").on('click', function (e){
+        e.preventDefault();
+        let array = [];
+        $("input:checkbox[id=fields]:checked").each(function (){
+            // array.push($(this).val());
+            array.push($(this).parent().text().trim());
+        });
+        if(array.length){
+            array1 = array.join('\r\n');
+            $('#selectedFields').text(`${array1}`);
+        }
+        // else{
+        //     $('#selectedFields').text("Checkbox is not selected, Please select one!");
+        // }
     });
 });
 

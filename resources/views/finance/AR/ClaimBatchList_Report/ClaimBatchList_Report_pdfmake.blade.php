@@ -38,10 +38,10 @@
                     @if(!empty($debtormast->address4))
                         { text: '{{$debtormast->address4}}', fontSize: 9 },
                     @endif
-                    { text: '\nAttention: {{$debtormast->name}}\n\n', fontSize: 9 },
+                    { text: '\nAttention: {{$debtormast->name}}\n\n\n', fontSize: 9 },
                     { text: '{{$title}}\n\n', fontSize: 9, bold: true },
-                    { text: `{!!str_replace('`', '', $content)!!}\n\n`, fontSize: 9 },
-                    { text: 'Yours faithfully,\n\n', fontSize: 9, bold: true },
+                    { text: `{!!str_replace('`', '', $content)!!}\n\n\n`, fontSize: 9 },
+                    { text: '{{$sign_off}}\n\n', fontSize: 9, bold: true },
                     { text: '{{$officer}}\n\n', fontSize: 9, bold: true },
                     { text: '{{$designation}}\n\n', fontSize: 9, bold: true },
                 ],

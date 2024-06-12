@@ -29,13 +29,14 @@ class ClaimBatchListExport implements FromView, WithEvents, WithColumnWidths
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($date1,$epis_type,$debtorcode_to,$title,$content,$officer,$designation)
+    public function __construct($date1,$epis_type,$debtorcode_to,$title,$content,$sign_off,$officer,$designation)
     {
         $this->date1 = $date1;
         $this->epis_type = $epis_type;
         $this->debtorcode_to = $debtorcode_to;
         $this->title = $title;
         $this->content = $content;
+        $this->sign_off = $sign_off;
         $this->officer = $officer;
         $this->designation = $designation;
         $this->dbacthdr_len = 0;
@@ -66,14 +67,15 @@ class ClaimBatchListExport implements FromView, WithEvents, WithColumnWidths
         $debtorcode_to = $this->debtorcode_to;
         $title = $this->title;
         $content = $this->content;
+        $sign_off = $this->sign_off;
         $officer = $this->officer;
         $designation = $this->designation;
         
         // $sysparam1_obj = DB::table('sysdb.sysparam')
-        //                 ->select('description as title','pvalue1 as content')
+        //                 ->select('comment_ as content','pvalue1 as title','pvalue2 as sign_off')
         //                 ->where('compcode','=',session('compcode'))
         //                 ->where('source','=','AR')
-        //                 ->where('trantype','=','coverletter')
+        //                 ->where('trantype','=','CL')
         //                 ->first();
         
         // $sysparam2_obj = DB::table('sysdb.sysparam')
@@ -90,7 +92,7 @@ class ClaimBatchListExport implements FromView, WithEvents, WithColumnWidths
         
         $content_array = preg_split("/\r\n|\n|\r/", $content);
         
-        return view('finance.AR.ClaimBatchList_Report.ClaimBatchList_Report_excel',compact('date1','epis_type','title','content','content_array','officer','designation','debtormast'));
+        return view('finance.AR.ClaimBatchList_Report.ClaimBatchList_Report_excel',compact('date1','epis_type','title','content','content_array','sign_off','officer','designation','debtormast'));
     }
     
     public function registerEvents(): array
@@ -99,7 +101,7 @@ class ClaimBatchListExport implements FromView, WithEvents, WithColumnWidths
             AfterSheet::class => function (AfterSheet $event){
                 $event->sheet->getPageSetup()->setPaperSize(9); // A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nCLAIM BATCH LISTING"."\n"
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nCOVER LETTER"."\n"
                 // .sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto)
                 .'&L'
                 .'PRINTED BY : '.session('username')
