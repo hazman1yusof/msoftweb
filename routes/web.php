@@ -487,6 +487,13 @@ Route::get('/categoryinv/table','material\CategoryInvController@table');
 Route::post('/categoryinv/form','material\CategoryInvController@form');
 
 /////////////////////////////////////PROCUREMENT REPORT/////////////////////////////
+//// PR Listing report ///
+Route::get('/PRListing','material\PRListingController@show');
+Route::get('/PRListing/table','material\PRListingController@table');
+Route::post('/PRListing/form','material\PRListingController@form');
+Route::get('/PRListing/showExcel','material\PRListingController@showExcel');
+Route::get('/PRListing/showpdf','material\PRListingController@showpdf');
+
 //// PO Listing report ///
 Route::get('/POListing','material\POListingController@show');
 Route::get('/POListing/table','material\POListingController@table');
