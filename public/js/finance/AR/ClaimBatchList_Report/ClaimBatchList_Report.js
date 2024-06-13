@@ -107,17 +107,17 @@ $(document).ready(function (){
     $("#refresh_fields").on('click', function (e){
         e.preventDefault();
         let array = [];
-        $("input:checkbox[id=fields]:checked").each(function (){
+        // $("input:checkbox[id=fields]:checked").each(function (){
+        $('#selectFields input[type=checkbox]:checked').each(function (){
             // array.push($(this).val());
             array.push($(this).parent().text().trim());
         });
         if(array.length){
             array1 = array.join('\r\n');
             $('#selectedFields').text(`${array1}`);
+        }else{
+            $('#selectedFields').text("");
         }
-        // else{
-        //     $('#selectedFields').text("Checkbox is not selected, Please select one!");
-        // }
     });
 });
 

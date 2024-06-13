@@ -183,7 +183,7 @@
                             <span class="icon glyphicon glyphicon-refresh"></span>
                         </button>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" id="selectFields">
                         <table class="table table-sm table-hover">
                             <thead>
                                 <tr>
@@ -194,140 +194,140 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="seqno" value="1">
+                                        <input class="form-check-input" type="checkbox" id="seqno" name="seqno" value="1">
                                         <label class="form-check-label" for="seqno">Seq No.</label>
                                     </td>
                                     <td><input id="seqno_size" name="seqno_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="billno" value="1">
+                                        <input class="form-check-input" type="checkbox" id="billno" name="billno" value="1">
                                         <label class="form-check-label" for="billno">Bill No.</label>
                                     </td>
                                     <td><input id="billno_size" name="billno_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="billdate" value="1">
+                                        <input class="form-check-input" type="checkbox" id="billdate" name="billdate" value="1">
                                         <label class="form-check-label" for="billdate">Bill Date</label>
                                     </td>
                                     <td><input id="billdate_size" name="billdate_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="staffID" value="1">
+                                        <input class="form-check-input" type="checkbox" id="staffID" name="staffID" value="1">
                                         <label class="form-check-label" for="staffID">Staff ID</label>
                                     </td>
                                     <td><input id="staffID_size" name="staffID_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="staffname" value="1">
+                                        <input class="form-check-input" type="checkbox" id="staffname" name="staffname" value="1">
                                         <label class="form-check-label" for="staffname">Staff Name</label>
                                     </td>
                                     <td><input id="staffname_size" name="staffname_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="dept" value="1">
+                                        <input class="form-check-input" type="checkbox" id="dept" name="dept" value="1">
                                         <label class="form-check-label" for="dept">Department</label>
                                     </td>
                                     <td><input id="dept_size" name="dept_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="glrefno" value="1">
+                                        <input class="form-check-input" type="checkbox" id="glrefno" name="glrefno" value="1">
                                         <label class="form-check-label" for="glrefno">GL Ref No.</label>
                                     </td>
                                     <td><input id="glrefno_size" name="glrefno_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="patname" value="1">
+                                        <input class="form-check-input" type="checkbox" id="patname" name="patname" value="1">
                                         <label class="form-check-label" for="patname">Patient Name</label>
                                     </td>
                                     <td><input id="patname_size" name="patname_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="relationship" value="1">
+                                        <input class="form-check-input" type="checkbox" id="relationship" name="relationship" value="1">
                                         <label class="form-check-label" for="relationship">Relationship</label>
                                     </td>
                                     <td><input id="relationship_size" name="relationship_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="membership" value="1">
+                                        <input class="form-check-input" type="checkbox" id="membership" name="membership" value="1">
                                         <label class="form-check-label" for="membership">Membership</label>
                                     </td>
                                     <td><input id="membership_size" name="membership_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="epistype" value="1">
+                                        <input class="form-check-input" type="checkbox" id="epistype" name="epistype" value="1">
                                         <label class="form-check-label" for="epistype">Episode Type</label>
                                     </td>
                                     <td><input id="epistype_size" name="epistype_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="regdate" value="1">
+                                        <input class="form-check-input" type="checkbox" id="regdate" name="regdate" value="1">
                                         <label class="form-check-label" for="regdate">Register Date</label>
                                     </td>
                                     <td><input id="regdate_size" name="regdate_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="regtime" value="1">
+                                        <input class="form-check-input" type="checkbox" id="regtime" name="regtime" value="1">
                                         <label class="form-check-label" for="regtime">Register Time</label>
                                     </td>
                                     <td><input id="regtime_size" name="regtime_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="dischgdate" value="1">
+                                        <input class="form-check-input" type="checkbox" id="dischgdate" name="dischgdate" value="1">
                                         <label class="form-check-label" for="dischgdate">Discharge Date</label>
                                     </td>
                                     <td><input id="dischgdate_size" name="dischgdate_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="dischgtime" value="1">
+                                        <input class="form-check-input" type="checkbox" id="dischgtime" name="dischgtime" value="1">
                                         <label class="form-check-label" for="dischgtime">Discharge Time</label>
                                     </td>
                                     <td><input id="dischgtime_size" name="dischgtime_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="doctorname" value="1">
+                                        <input class="form-check-input" type="checkbox" id="doctorname" name="doctorname" value="1">
                                         <label class="form-check-label" for="doctorname">Doctor Name</label>
                                     </td>
                                     <td><input id="doctorname_size" name="doctorname_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="diagnosis" value="1">
+                                        <input class="form-check-input" type="checkbox" id="diagnosis" name="diagnosis" value="1">
                                         <label class="form-check-label" for="diagnosis">Diagnosis</label>
                                     </td>
                                     <td><input id="diagnosis_size" name="diagnosis_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="mcserialno" value="1">
+                                        <input class="form-check-input" type="checkbox" id="mcserialno" name="mcserialno" value="1">
                                         <label class="form-check-label" for="mcserialno">MC Serial No.</label>
                                     </td>
                                     <td><input id="mcserialno_size" name="mcserialno_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="mcdatefrom" value="1">
+                                        <input class="form-check-input" type="checkbox" id="mcdatefrom" name="mcdatefrom" value="1">
                                         <label class="form-check-label" for="mcdatefrom">MC Date From</label>
                                     </td>
                                     <td><input id="mcdatefrom_size" name="mcdatefrom_size" type="text" class="form-control input-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="form-check-input" type="checkbox" id="fields" name="mcdateto" value="1">
+                                        <input class="form-check-input" type="checkbox" id="mcdateto" name="mcdateto" value="1">
                                         <label class="form-check-label" for="mcdateto">MC Date To</label>
                                     </td>
                                     <td><input id="mcdateto_size" name="mcdateto_size" type="text" class="form-control input-sm"></td>
