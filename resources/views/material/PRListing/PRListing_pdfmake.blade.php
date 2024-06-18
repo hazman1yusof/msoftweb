@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PO Listing</title>
+<title>PR Listing</title>
 
 </head>
 
@@ -24,7 +24,7 @@
 	                    style: 'repeatHeader',
 	                    table: {
 	                        headerRows: 1,
-                            widths: [40,110,35,35,50,40,40,40,40,60,35,40,40],  //panjang standard dia 515
+                            widths: [45,150,40,40,50,40,40,40,60,40,40,40],  //panjang standard dia 515
 	                        body: [
 	                            [
                                     { border: [false, false, false, true],
@@ -44,9 +44,6 @@
                                     },
                                     { border: [false, false, false, true],
                                         text: 'QTY REQ', style: 'tableHeader', alignment: 'right'
-                                    },
-                                    { border: [false, false, false, true],
-                                        text: 'QTY ORDER', style: 'tableHeader', alignment: 'right'
                                     },
                                     { border: [false, false, false, true],
                                         text: 'QTY BAL', style: 'tableHeader', alignment: 'right'
@@ -89,12 +86,12 @@
 			pageSize: 'A4',
             pageOrientation: 'landscape',
 		  	content: [
-                {text: '\n\nPO LISTING\n', style: 'header', alignment: 'center'},
+                {text: '\n\nPR LISTING\n', style: 'header', alignment: 'center'},
                 {
                     style: 'staticHeader',
                     table: {
                         headerRows: 1,
-                        widths: [40,110,35,35,50,40,40,40,40,60,35,40,40],  //panjang standard dia 515
+                        widths: [45,150,40,40,50,40,40,40,60,40,40,40],  //panjang standard dia 515
                         body: [
                             [
                                 { border: [false, false, false, true],
@@ -114,9 +111,6 @@
                                 },
                                 { border: [false, false, false, true],
                                     text: 'QTY REQ', style: 'tableHeader', alignment: 'right'
-                                },
-                                { border: [false, false, false, true],
-                                    text: 'QTY ORDER', style: 'tableHeader', alignment: 'right'
                                 },
                                 { border: [false, false, false, true],
                                     text: 'QTY BAL', style: 'tableHeader', alignment: 'right'
@@ -141,20 +135,20 @@
                     },
                     defaultBorder: false,
                 },
-            @foreach ($POListing as $polisting) 
+            @foreach ($PRListing as $prlisting) 
                 {
                     style: 'tableExample',
                     table: {
                     	dontBreakRows: true,
-                        widths: ['*','*','*','*', '*','*','*','*'],  //panjang standard dia 515
+                        widths: ['*','*','*','*','*','*','*','*'],  //panjang standard dia 515
                         body: [
-                            @foreach ($purordhd as $obj)
-                                @if($obj->recno == $polisting->recno)
+                            @foreach ($purreqhd as $obj)
+                                @if($obj->recno == $prlisting->recno)
                                 [
-                                    {text: `PURCHASE DEPT : {!!str_replace('`', '', $obj->prdept)!!}\n {!!str_replace('`', '', $obj->dept_desc)!!}`, style: 'tableHeader'},
-                                    {text: `DELIVERY DEPT : {!!str_replace('`', '', $obj->deldept)!!}\n {!!str_replace('`', '', $obj->deldept_desc)!!}`, style: 'tableHeader'},
-                                    {text: 'PO NO : {{str_pad($obj->purordno, 7, "0", STR_PAD_LEFT)}}', style: 'tableHeader'},
-                                    {text: 'PO DATE : {{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->purdate)->format('d-m-Y')}}', style: 'tableHeader'},
+                                    {text: `REQUEST DEPT : {!!str_replace('`', '', $obj->reqdept)!!}\n {!!str_replace('`', '', $obj->req_desc)!!}`, style: 'tableHeader'},
+                                    {text: `PURCHASE DEPT : {!!str_replace('`', '', $obj->prdept)!!}\n {!!str_replace('`', '', $obj->pr_desc)!!}`, style: 'tableHeader'},
+                                    {text: 'REQ NO : {{str_pad($obj->purreqno, 7, "0", STR_PAD_LEFT)}}', style: 'tableHeader'},
+                                    {text: 'REQ DATE : {{\Carbon\Carbon::parse($obj->purreqdt)->format('d-m-Y')}}', style: 'tableHeader'},
                                     {text: `SUPPLIER CODE : {!!str_replace('`', '', $obj->suppcode)!!}\n {!!str_replace('`', '', $obj->supp_name)!!}`, style: 'tableHeader'},
                                     {text: 'STATUS : {{$obj->recstatus}}', style: 'tableHeader'},{},{},
                                 ],
@@ -288,8 +282,6 @@
                                         {},{},{},{},{},{},{},{},
                                     @elseif($obj->recstatus == 'PARTIAL')
                                         {},{},{},{},{},{},{},{},
-                                    @elseif($obj->recstatus == 'INCOMPLETED')
-                                        {},{},{},{},{},{},{},{},
                                     @endif
                                 ],
                                 @endif
@@ -302,11 +294,11 @@
                     style: 'tableDetail',
                     table: {
                         dontBreakRows: true,
-                        widths: [40,110,35,35,50,40,40,40,40,60,35,40,40],  //panjang standard dia 515
+                        widths: [45,150,40,40,50,40,40,40,60,40,40,40],  //panjang standard dia 515
                         body: [   
                             @php($tot = 0)   
-                            @foreach ($purorddt as $obj_dt)
-                                @if($obj_dt->recno == $polisting->recno)
+                            @foreach ($purreqdt as $obj_dt)
+                                @if($obj_dt->recno == $prlisting->recno)
                                     [
                                         {text: '{{$obj_dt->pricecode}}\n{{$obj_dt->pc_desc}}'},
                                         {text: `{!!str_replace('`', '', $obj_dt->itemcode)!!}\n{!!str_replace('`', '', $obj_dt->description)!!}`},
@@ -314,8 +306,7 @@
                                         {text: `{!!$obj_dt->pouom!!}`},
                                         {text: '{{$obj_dt->taxcode}}\n{{$obj_dt->tax_desc}}'},
                                         {text: '{{number_format($obj_dt->qtyrequest,2)}}', alignment: 'right' },
-                                        {text: '{{number_format($obj_dt->qtyorder,2)}}', alignment: 'right' },
-                                        {text: '{{number_format($obj_dt->qtyoutstand,2)}}', alignment: 'right' },
+                                        {text: '{{number_format($obj_dt->qtybalance,2)}}', alignment: 'right' },
                                         {text: '{{number_format($obj_dt->unitprice,2)}}', alignment: 'right' },
                                         {text: '{{number_format($obj_dt->perdisc,2)}}', alignment: 'right' },
                                         {text: '{{number_format($obj_dt->amtdisc,2)}}', alignment: 'right' },
@@ -326,7 +317,6 @@
                                 @endif
                             @endforeach
                             [
-                                {},
                                 {},
                                 {},
                                 {},

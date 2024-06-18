@@ -1,3 +1,4 @@
+
 $.validate({
 	modules: 'sanitize',
 	language: {
@@ -29,15 +30,15 @@ $(document).ready(function () {
     $("#genreport input[name='dateto']").change(function(){
         $("#genreportpdf input[name='dateto']").val($(this).val());
     });
-	$("#genreport input[name='Status']").change(function(){
+    $("#genreport input[name='Status']").change(function(){
         $("#genreportpdf input[name='Status']").val($(this).val());
     });
-
+	
 	$('#pdfgen').click(function(){
-		window.open('./inventoryTransaction_Report/showpdf?&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&Status='+$("#Status").val(),  '_blank'); 
+		window.open('./PRListing/showpdf?&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&Status='+$("#Status").val(),  '_blank'); 
 	});
 
 	$('#excelgen').click(function(){
-		window.location='./inventoryTransaction_Report/showExcel?&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&Status='+$("#Status").val();
+		window.location='./PRListing/showExcel?&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&Status='+$("#Status").val();
 	});
 });

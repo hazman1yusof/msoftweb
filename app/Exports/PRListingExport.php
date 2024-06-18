@@ -23,7 +23,7 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class inventoryTransaction_ReportExport implements FromView, WithEvents, WithColumnWidths
+class PRListingExport implements FromView, WithEvents, WithColumnWidths
 {
     
     /**
@@ -44,22 +44,26 @@ class inventoryTransaction_ReportExport implements FromView, WithEvents, WithCol
     public function columnWidths(): array
     {
         return [
-            'A' => 15,
+            'A' => 10,
             'B' => 10,
             'C' => 10,
             'D' => 15,
             'E' => 15,
             'F' => 35,
-            'G' => 15,
+            'G' => 10,
             'H' => 15,
-            'I' => 15,
-            'J' => 15,
+            'I' => 35,
+            'J' => 10,
             'K' => 10,
             'L' => 10,
-            'M' => 10,
+            'M' => 15,
             'N' => 15,
             'O' => 15,
             'P' => 15,
+            'Q' => 15,
+            'R' => 15,
+            'S' => 15,
+            'T' => 15,
         ];
     }
     
@@ -68,14 +72,15 @@ class inventoryTransaction_ReportExport implements FromView, WithEvents, WithCol
         $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
         $Status = $this->Status;
-
+      
         if ($Status == 'ALL'){
-            $ivtxn = DB::table('material.ivtmphd as h')
-                ->select('h.idno', 'h.compcode', 'h.recno', 'h.trandate', 'h.docno', 'h.txndept', 'h.sndrcv', 'h.sndrcvtype', 'h.recstatus', 'd.recno', 'd.itemcode', 'd.uomcode', 'd.qtyonhand', 'd.uomcoderecv', 'd.qtyonhandrecv', 'd.txnqty', 'd.qtyrequest', 'd.netprice', 'd.expdate', 'd.batchno', 'd.amount', 'p.description')
-                ->join('material.ivtmpdt as d', function($join){
+            $PRListing = DB::table('material.purreqhd as h')
+                ->select('h.idno', 'h.compcode', 'h.recno', 'h.prdept', 'h.reqdept', 'h.purreqno', 'h.purreqdt', 'h.suppcode', 's.name as supp_name', 'h.recstatus', 'h.requestby', 'h.requestdate', 'h.supportby', 'h.supportdate', 'h.verifiedby', 'h.verifieddate', 'h.approvedby', 'h.approveddate', 'h.cancelby', 'h.canceldate', 'd.compcode', 'd.recno', 'd.lineno_', 'd.pricecode', 'd.itemcode', 'p.description', 'd.uomcode', 'd.pouom', 'd.qtyrequest', 'd.qtybalance', 'd.unitprice', 'd.taxcode', 'd.perdisc', 'd.amtdisc', 'd.amtslstax as tot_gst','d.netunitprice', 'd.totamount','d.amount', 'd.recstatus', 'd.unit')                
+                ->join('material.purreqdt as d', function($join){
                     $join = $join->on('d.recno', '=', 'h.recno')
                                 ->where('d.compcode', '=', session('compcode'))
-                                ->where('d.unit', '=', session('unit'));
+                                ->where('d.unit', '=', session('unit'))
+                                ->where('d.recstatus', '!=', 'DELETE');
                 })
                 ->join('material.product as p', function($join){
                     $join = $join->on('p.itemcode', '=', 'd.itemcode')
@@ -83,23 +88,27 @@ class inventoryTransaction_ReportExport implements FromView, WithEvents, WithCol
                                 ->where('p.compcode', '=', session('compcode'))
                                 ->where('p.unit', '=', session('unit'))
                                 ->where('p.recstatus', '=', 'ACTIVE');
+                })
+                ->join('material.supplier as s', function($join){
+                    $join = $join->on('s.SuppCode', '=', 'h.suppcode')
+                                ->where('s.compcode', '=', session('compcode'))
+                                ->where('s.recstatus', '=', 'ACTIVE');
                 })
                 ->where('h.compcode',session('compcode'))
                 ->where('h.unit',session('unit'))
                 ->where('h.recstatus', '!=', 'DELETE')
-                ->whereBetween('h.trandate', [$datefr, $dateto])
-                ->orderBy('h.trandate', 'ASC')
+                ->whereBetween('h.purreqdt', [$datefr, $dateto])
+                ->orderBy('h.purreqdt', 'ASC')
                 ->get();
-                // dd($ivtxn);
-
-        }
-        else {
-            $ivtxn = DB::table('material.ivtmphd as h')
-                ->select('h.idno', 'h.compcode', 'h.recno', 'h.trandate', 'h.docno', 'h.txndept', 'h.sndrcv', 'h.sndrcvtype', 'h.recstatus', 'd.recno', 'd.itemcode', 'd.uomcode', 'd.qtyonhand', 'd.uomcoderecv', 'd.qtyonhandrecv', 'd.txnqty', 'd.qtyrequest', 'd.netprice', 'd.expdate', 'd.batchno', 'd.amount', 'p.description')
-                ->join('material.ivtmpdt as d', function($join){
+        //dd($PRListing);
+        } else {
+            $PRListing = DB::table('material.purreqhd as h')
+                ->select('h.idno', 'h.compcode', 'h.recno', 'h.prdept', 'h.reqdept', 'h.purreqno', 'h.purreqdt', 'h.suppcode', 's.name as supp_name', 'h.recstatus', 'h.requestby', 'h.requestdate', 'h.supportby', 'h.supportdate', 'h.verifiedby', 'h.verifieddate', 'h.approvedby', 'h.approveddate', 'h.cancelby', 'h.canceldate', 'd.compcode', 'd.recno', 'd.lineno_', 'd.pricecode', 'd.itemcode', 'p.description', 'd.uomcode', 'd.pouom', 'd.qtyrequest', 'd.qtybalance', 'd.unitprice', 'd.taxcode', 'd.perdisc', 'd.amtdisc', 'd.amtslstax as tot_gst','d.netunitprice', 'd.totamount','d.amount', 'd.recstatus', 'd.unit')               
+                ->join('material.purreqdt as d', function($join){
                     $join = $join->on('d.recno', '=', 'h.recno')
                                 ->where('d.compcode', '=', session('compcode'))
-                                ->where('d.unit', '=', session('unit'));
+                                ->where('d.unit', '=', session('unit'))
+                                ->where('d.recstatus', '!=', 'DELETE');
                 })
                 ->join('material.product as p', function($join){
                     $join = $join->on('p.itemcode', '=', 'd.itemcode')
@@ -108,17 +117,21 @@ class inventoryTransaction_ReportExport implements FromView, WithEvents, WithCol
                                 ->where('p.unit', '=', session('unit'))
                                 ->where('p.recstatus', '=', 'ACTIVE');
                 })
+                ->join('material.supplier as s', function($join){
+                    $join = $join->on('s.SuppCode', '=', 'h.suppcode')
+                                ->where('s.compcode', '=', session('compcode'))
+                                ->where('s.recstatus', '=', 'ACTIVE');
+                })
                 ->where('h.compcode',session('compcode'))
                 ->where('h.unit',session('unit'))
                 ->where('h.recstatus', '=', $Status)
-                ->whereBetween('h.trandate', [$datefr, $dateto])
-                ->orderBy('h.trandate', 'ASC')
+                ->whereBetween('h.purreqdt', [$datefr, $dateto])
+                ->orderBy('h.purreqdt', 'ASC')
                 ->get();
-                // dd($ivtxn);
-
+        //dd($PRListing);
         }
         
-        return view('material.inventoryTransaction_Report.inventoryTransaction_Report_excel',compact('ivtxn'));
+        return view('material.PRListing.PRListing_excel',compact('PRListing'));
     }
     
     public function registerEvents(): array
@@ -127,7 +140,7 @@ class inventoryTransaction_ReportExport implements FromView, WithEvents, WithCol
             AfterSheet::class => function(AfterSheet $event) {
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSTOCK IN TRANSIT REPORT"."\n"
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nPR LISTING"."\n"
                 .sprintf('FROM DATE %s TO DATE %s',Carbon::parse($this->datefr)->format('d-m-Y'), Carbon::parse($this->dateto)->format('d-m-Y'))."\n"
                 .'&L'
                 .'PRINTED BY : '.session('username')
@@ -138,7 +151,7 @@ class inventoryTransaction_ReportExport implements FromView, WithEvents, WithCol
                 $event->sheet->getPageMargins()->setTop(1);
                 
                 $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
-                $event->sheet->getStyle('A:P')->getAlignment()->setWrapText(true);
+                $event->sheet->getStyle('A:R')->getAlignment()->setWrapText(true);
                 $event->sheet->getPageSetup()->setFitToWidth(1);
                 $event->sheet->getPageSetup()->setFitToHeight(0);
             },

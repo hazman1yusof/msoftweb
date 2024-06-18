@@ -28,21 +28,22 @@ class inventoryTransaction_ReportController extends defaultController
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new inventoryTransaction_ReportExport($request->datefr,$request->dateto), 'inventoryTransaction_ReportExport.xlsx');
+        return Excel::download(new inventoryTransaction_ReportExport($request->datefr,$request->dateto,$request->Status), 'inventoryTransaction_ReportExport.xlsx');
     }
 
     public function showpdf(Request $request){
         
         $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
+        $Status = $request->Status;
 
-        $ivtxn = DB::table('material.ivtmphd as h')
+        if ($Status == 'ALL'){
+            $ivtxn = DB::table('material.ivtmphd as h')
                     ->select('h.idno', 'h.compcode', 'h.recno', 'h.trandate', 'h.docno', 'h.txndept', 'h.sndrcv', 'h.sndrcvtype', 'h.recstatus', 'd.recno', 'd.itemcode', 'd.uomcode', 'd.qtyonhand', 'd.uomcoderecv', 'd.qtyonhandrecv', 'd.txnqty', 'd.qtyrequest', 'd.netprice', 'd.expdate', 'd.batchno', 'd.amount', 'p.description')
                     ->join('material.ivtmpdt as d', function($join){
                         $join = $join->on('d.recno', '=', 'h.recno')
                                     ->where('d.compcode', '=', session('compcode'))
-                                    ->where('d.unit', '=', session('unit'))
-                                    ->where('d.recstatus', '=', 'OPEN');
+                                    ->where('d.unit', '=', session('unit'));
                     })
                     ->join('material.product as p', function($join){
                         $join = $join->on('p.itemcode', '=', 'd.itemcode')
@@ -53,11 +54,35 @@ class inventoryTransaction_ReportController extends defaultController
                     })
                     ->where('h.compcode',session('compcode'))
                     ->where('h.unit',session('unit'))
-                    ->where('h.recstatus', '=', 'OPEN')
+                    ->where('h.recstatus', '!=', 'DELETE')
                     ->whereBetween('h.trandate', [$datefr, $dateto])
                     ->orderBy('h.trandate', 'ASC')
                     ->get();
                     // dd($ivtxn);
+        }
+        else {
+            $ivtxn = DB::table('material.ivtmphd as h')
+                    ->select('h.idno', 'h.compcode', 'h.recno', 'h.trandate', 'h.docno', 'h.txndept', 'h.sndrcv', 'h.sndrcvtype', 'h.recstatus', 'd.recno', 'd.itemcode', 'd.uomcode', 'd.qtyonhand', 'd.uomcoderecv', 'd.qtyonhandrecv', 'd.txnqty', 'd.qtyrequest', 'd.netprice', 'd.expdate', 'd.batchno', 'd.amount', 'p.description')
+                    ->join('material.ivtmpdt as d', function($join){
+                        $join = $join->on('d.recno', '=', 'h.recno')
+                                    ->where('d.compcode', '=', session('compcode'))
+                                    ->where('d.unit', '=', session('unit'));
+                    })
+                    ->join('material.product as p', function($join){
+                        $join = $join->on('p.itemcode', '=', 'd.itemcode')
+                                    ->on('p.uomcode', '=', 'd.uomcode')
+                                    ->where('p.compcode', '=', session('compcode'))
+                                    ->where('p.unit', '=', session('unit'))
+                                    ->where('p.recstatus', '=', 'ACTIVE');
+                    })
+                    ->where('h.compcode',session('compcode'))
+                    ->where('h.unit',session('unit'))
+                    ->where('h.recstatus', '=', $Status)
+                    ->whereBetween('h.trandate', [$datefr, $dateto])
+                    ->orderBy('h.trandate', 'ASC')
+                    ->get();
+                    // dd($ivtxn);
+        }
                     
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))

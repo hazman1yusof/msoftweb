@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'PO Listing')
+@section('title', 'PR Listing')
 
 @section('css')
 	<style>
@@ -46,8 +46,8 @@
 @section('body')
     <div class="container mycontainer">
         <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 400px;">
-            <form method="get" id="genreport" action="./POListing/showExcel">
-                <h4>PO LISTING</h4>
+            <form method="get" id="genreport" action="./PRListing/showExcel">
+                <h4>PR LISTING</h4>
                 <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7>
 				
                 <div style="width: 800px;margin: 0 auto;">
@@ -73,7 +73,6 @@
 									<option value="APPROVED">APPROVED</option>
 									<option value="COMPLETED">COMPLETED</option>
 									<option value="PARTIAL">PARTIAL</option>
-									<option value="INCOMPLETED">INCOMPLETED</option>
 									<option value="CANCELLED">CANCELLED</option>
 								</select>
 						</div>
@@ -102,5 +101,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/material/POListing/POListing.js"></script>
+	<script src="js/material/PRListing/PRListing.js"></script>
 @endsection

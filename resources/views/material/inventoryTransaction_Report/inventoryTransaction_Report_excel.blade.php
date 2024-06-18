@@ -16,7 +16,7 @@
         <td style="font-weight:bold;text-align: right">AMOUNT</td>
         <td style="font-weight:bold;text-align: right">EXP DATE</td>
         <td style="font-weight:bold;text-align: right">BATCH NO</td>
-
+        <td style="font-weight:bold;text-align: left">STATUS</td>
 
     </tr>
     @foreach($ivtxn as $obj)
@@ -37,5 +37,6 @@
         <td data-format="0.00" style="text-align: right">{{ number_format($obj->amount, 2, '.', ',') }}</td>
         <td>{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}</td>
         <td>{{$obj->batchno}}</td>
+        <td>{{$obj->recstatus}}</td>
     @endforeach
 </table>

@@ -29,7 +29,7 @@
                         image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: '\nSTOCK IN TRANSIT REPORT\n',
+                        text: '\nSTOCK TRANSACTION REPORT\n',
                         style: 'header',
                         alignment: 'center',
                     },
@@ -51,7 +51,7 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [42,35,35,37,110,30,30,30,30,30,30,30,34,42,30],  //panjang standard dia 515
+                            widths: [42,35,29,35,80,29,29,29,29,29,29,29,34,42,29,27],  //panjang standard dia 515
                             body: [
                                 [
                                     {text: 'TRAN\nDATE', style: 'tableHeader'},
@@ -69,10 +69,11 @@
                                     {text: 'AMOUNT', style: 'tableHeader', alignment: 'right'},
                                     {text: 'EXP DATE', style: 'tableHeader', alignment: 'left'},
                                     {text: 'BATCH NO', style: 'tableHeader', alignment: 'left'},
+                                    {text: 'STATUS', style: 'tableHeader', alignment: 'left'},
                                 ],
                                 @foreach ($ivtxn as $obj)
                                     [
-                                        {text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->trandate)->format('d-m-Y')}}'},
+                                        {text: '{{\Carbon\Carbon::parse($obj->trandate)->format('d-m-Y')}}'},
                                         {text: '{{str_pad($obj->docno, 7, "0", STR_PAD_LEFT)}}'},
                                         {text: '{{$obj->txndept}}'},
                                         {text: '{{$obj->sndrcv}}'},
@@ -85,8 +86,9 @@
                                         {text: '{{number_format($obj->qtyrequest,2)}}', alignment: 'right'},
                                         {text: '{{number_format($obj->netprice,2)}}', alignment: 'right' },
                                         {text: '{{number_format($obj->amount,2)}}', alignment: 'right'},
-                                        {text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->expdate)->format('d-m-Y')}}'},
+                                        {text: '{{\Carbon\Carbon::parse($obj->expdate)->format('d-m-Y')}}'},
                                         {text: '{{$obj->batchno}}'},
+                                        {text: '{{$obj->recstatus}}'},
                                     ],
                                 @endforeach
                             ]
@@ -112,12 +114,12 @@
                         margin: [0, 10, 0, 5]
                     },
                     tableExample: {
-                        fontSize: 8,
-                        margin: [0, 5, 0, 15]
+                        fontSize: 7,
+                        margin: [0, 5, 0, 5] //l,t,r,b
                     },
                     tableHeader: {
                         bold: true,
-                        fontSize: 8,
+                        fontSize: 7,
                         color: 'black'
                     },
                     totalbold: {
