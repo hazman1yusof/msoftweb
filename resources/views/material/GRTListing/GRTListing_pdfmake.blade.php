@@ -161,15 +161,15 @@
                                                 {text: `DELIVERY DEPT : {!!str_replace('`', '', $obj->deldept)!!}\n {!!str_replace('`', '', $obj->dd_desc)!!}`, style: 'tableHeader'},
                                                 {text: 'GRT NO : {{str_pad($obj->docno, 7, "0", STR_PAD_LEFT)}}', style: 'tableHeader'},
                                                 {text: 'GRN NO : {{str_pad($obj->srcdocno, 7, "0", STR_PAD_LEFT)}}', style: 'tableHeader'},
-                                                
-                                                @if(!empty($obj->srcdocno))
-                                                    {text: 'PO NO : {{str_pad($obj->srcdocno, 7, "0", STR_PAD_LEFT)}}', style: 'tableHeader'},
+
+                                                @if(!empty($obj->do_srcdocno))
+                                                    {text: 'PO NO : {{str_pad($obj->do_srcdocno, 7, "0", STR_PAD_LEFT)}}', style: 'tableHeader'},
                                                 @else
                                                     {text: 'PO NO : - ', style: 'tableHeader'},
                                                 @endif
                                             ],
                                             [
-                                                {text: 'RETURNED DATE : {{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->trandate)->format('d-m-Y')}}', style: 'tableHeader'},
+                                                {text: 'RETURNED DATE : {{\Carbon\Carbon::parse($obj->trandate)->format('d-m-Y')}}', style: 'tableHeader'},
                                                 {text: `SUPPLIER CODE : {!!str_replace('`', '', $obj->suppcode)!!}\n {!!str_replace('`', '', $obj->supp_name)!!}`, style: 'tableHeader'},
 
                                                 @if(!empty($obj->delordno))
@@ -179,7 +179,7 @@
                                                 @endif
 
                                                 {text: 'STATUS : {{$obj->recstatus}}', style: 'tableHeader'},
-                                                {text: 'RECNO : {{$obj->recno}}', style: 'tableHeader'}
+                                                {}
                                             ],
                                         @endif
                                     @endforeach
@@ -211,7 +211,7 @@
                                                 {text: '{{number_format($obj_dt->totamount,2)}}', alignment: 'right' },
 
                                                 @if((!empty($obj_dt->expdate)) && ($obj_dt->expdate != '0000-00-00'))
-                                                    {text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj_dt->expdate)->format('d-m-Y')}}'},
+                                                    {text: '{{\Carbon\Carbon::parse($obj_dt->expdate)->format('d-m-Y')}}'},
                                                 @else
                                                     {},
                                                 @endif

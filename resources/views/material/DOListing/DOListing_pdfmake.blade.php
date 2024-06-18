@@ -164,7 +164,7 @@
                                                 {text: 'GRN NO : {{str_pad($obj->docno, 7, "0", STR_PAD_LEFT)}}', style: 'tableHeader'},
                                             ],
                                             [
-                                                {text: 'REC DATE : {{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->trandate)->format('d-m-Y')}}', style: 'tableHeader'},
+                                                {text: 'REC DATE : {{\Carbon\Carbon::parse($obj->trandate)->format('d-m-Y')}}', style: 'tableHeader'},
                                                 {text: `SUPPLIER CODE : {!!str_replace('`', '', $obj->suppcode)!!}\n {!!str_replace('`', '', $obj->supp_name)!!}`, style: 'tableHeader'},
 
                                                 @if(!empty($obj->srcdocno))
