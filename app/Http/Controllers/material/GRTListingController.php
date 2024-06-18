@@ -54,7 +54,7 @@ class GRTListingController extends defaultController
             // dd($GRTListing);
 
             $delordhd = DB::table('material.delordhd as h')
-                        ->select('h.idno', 'h.compcode', 'h.recno', 'h.prdept', 'h.deldept', 'h.delordno', 'h.trandate', 'h.suppcode', 's.name as supp_name', 'h.srcdocno', 'h.invoiceno', 'h.totamount', 'h.docno', 'h.recstatus', 'dp.description as dept_desc', 'prd.description as dd_desc', 'do.docno as do_srcdocno', 'do.trantype', 'do.prdept')
+                        ->select('h.idno', 'h.compcode', 'h.recno', 'h.prdept', 'h.deldept', 'h.delordno', 'h.trandate', 'h.suppcode', 's.name as supp_name', 'h.srcdocno', 'h.invoiceno', 'h.totamount', 'h.docno', 'h.recstatus', 'dp.description as dept_desc', 'prd.description as dd_desc', 'do.srcdocno as do_srcdocno', 'do.trantype', 'do.prdept')
                         ->leftjoin('material.delordhd as do', function($join){
                             $join = $join->on('do.prdept', '=', 'h.prdept')
                                         ->on('do.docno', '=','h.srcdocno')
