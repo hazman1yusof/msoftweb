@@ -33,8 +33,8 @@
         <td>{{str_pad($obj->docno, 7, "0", STR_PAD_LEFT)}}</td>
         <td>{{str_pad($obj->srcdocno, 7, "0", STR_PAD_LEFT)}}</td>
 
-        @if(!empty($obj->srcdocno))
-            <td>{{str_pad($obj->srcdocno, 7, "0", STR_PAD_LEFT)}}</td>
+        @if(!empty($obj->do_srcdocno))
+            <td>{{str_pad($obj->do_srcdocno, 7, "0", STR_PAD_LEFT)}}</td>
         @else
             <td></td>
         @endif

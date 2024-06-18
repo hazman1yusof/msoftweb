@@ -83,7 +83,13 @@ class GRTListingExport implements FromView, WithEvents, WithColumnWidths
         if ($Status == 'ALL'){
 
             $GRTListing = DB::table('material.delordhd as h')
-                        ->select('h.idno', 'h.compcode', 'h.recno', 'h.prdept', 'h.deldept', 'h.delordno', 'h.reqdept', 'h.trandate', 'h.suppcode', 's.name as supp_name', 'h.srcdocno', 'h.invoiceno', 'h.totamount', 'h.docno', 'h.recstatus','d.compcode','d.recno','d.lineno_','d.pricecode','d.itemcode','p.description','d.uomcode','d.pouom', 'd.suppcode','d.trandate','d.deldept','d.deliverydate','d.qtyorder','d.qtydelivered', 'd.qtyreturned','d.unitprice','d.taxcode', 'd.perdisc','d.amtdisc','d.amtslstax as tot_gst','d.netunitprice','d.totamount', 'd.amount', 'd.expdate','d.batchno', 'd.unit','d.idno', 'd.recstatus')
+                        ->select('h.idno', 'h.compcode', 'h.recno', 'h.prdept', 'h.deldept', 'h.delordno', 'h.reqdept', 'h.trandate', 'h.suppcode', 's.name as supp_name', 'h.srcdocno', 'h.invoiceno', 'h.totamount', 'h.docno', 'h.recstatus','d.compcode','d.recno','d.lineno_','d.pricecode','d.itemcode','p.description','d.uomcode','d.pouom', 'd.suppcode','d.trandate','d.deldept','d.deliverydate','d.qtyorder','d.qtydelivered', 'd.qtyreturned','d.unitprice','d.taxcode', 'd.perdisc','d.amtdisc','d.amtslstax as tot_gst','d.netunitprice','d.totamount', 'd.amount', 'd.expdate','d.batchno', 'd.unit','d.idno', 'd.recstatus', 'do.srcdocno as do_srcdocno', 'do.trantype', 'do.prdept')
+                        ->leftjoin('material.delordhd as do', function($join){
+                            $join = $join->on('do.prdept', '=', 'h.prdept')
+                                        ->on('do.docno', '=','h.srcdocno')
+                                        ->where('do.trantype', '=', 'GRN')
+                                        ->where('do.compcode',session('compcode'));
+                        })
                         ->leftjoin('material.delorddt as d', function($join){
                             $join = $join->on('d.recno', '=', 'h.recno')
                                         ->where('d.compcode', '=', session('compcode'))
@@ -113,7 +119,13 @@ class GRTListingExport implements FromView, WithEvents, WithColumnWidths
         } else {
 
             $GRTListing = DB::table('material.delordhd as h')
-                        ->select('h.idno', 'h.compcode', 'h.recno', 'h.prdept', 'h.deldept', 'h.delordno', 'h.reqdept', 'h.trandate', 'h.suppcode', 's.name as supp_name', 'h.srcdocno', 'h.invoiceno', 'h.totamount', 'h.docno', 'h.recstatus','d.compcode','d.recno','d.lineno_','d.pricecode','d.itemcode','p.description','d.uomcode','d.pouom', 'd.suppcode','d.trandate','d.deldept','d.deliverydate','d.qtyorder','d.qtydelivered', 'd.qtyreturned','d.unitprice','d.taxcode', 'd.perdisc','d.amtdisc','d.amtslstax as tot_gst','d.netunitprice','d.totamount', 'd.amount', 'd.expdate','d.batchno', 'd.unit','d.idno', 'd.recstatus')
+                        ->select('h.idno', 'h.compcode', 'h.recno', 'h.prdept', 'h.deldept', 'h.delordno', 'h.reqdept', 'h.trandate', 'h.suppcode', 's.name as supp_name', 'h.srcdocno', 'h.invoiceno', 'h.totamount', 'h.docno', 'h.recstatus','d.compcode','d.recno','d.lineno_','d.pricecode','d.itemcode','p.description','d.uomcode','d.pouom', 'd.suppcode','d.trandate','d.deldept','d.deliverydate','d.qtyorder','d.qtydelivered', 'd.qtyreturned','d.unitprice','d.taxcode', 'd.perdisc','d.amtdisc','d.amtslstax as tot_gst','d.netunitprice','d.totamount', 'd.amount', 'd.expdate','d.batchno', 'd.unit','d.idno', 'd.recstatus', 'do.srcdocno as do_srcdocno', 'do.trantype', 'do.prdept')
+                        ->leftjoin('material.delordhd as do', function($join){
+                            $join = $join->on('do.prdept', '=', 'h.prdept')
+                                        ->on('do.docno', '=','h.srcdocno')
+                                        ->where('do.trantype', '=', 'GRN')
+                                        ->where('do.compcode',session('compcode'));
+                        })
                         ->leftjoin('material.delorddt as d', function($join){
                             $join = $join->on('d.recno', '=', 'h.recno')
                                         ->where('d.compcode', '=', session('compcode'))
