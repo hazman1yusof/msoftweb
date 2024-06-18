@@ -567,6 +567,13 @@ Route::post('/inventoryTransaction_Report/form','material\inventoryTransaction_R
 Route::get('/inventoryTransaction_Report/showExcel','material\inventoryTransaction_ReportController@showExcel');
 Route::get('/inventoryTransaction_Report/showpdf','material\inventoryTransaction_ReportController@showpdf');
 
+//// Item's Latest Price Listing report ///
+Route::get('/itemLatestPriceListing','material\itemLatestPriceListingController@show');
+Route::get('/itemLatestPriceListing/table','material\itemLatestPriceListingController@table');
+Route::post('/itemLatestPriceListing/form','material\itemLatestPriceListingController@form');
+Route::get('/itemLatestPriceListing/showExcel','material\itemLatestPriceListingController@showExcel');
+Route::get('/itemLatestPriceListing/showpdf','material\itemLatestPriceListingController@showpdf');
+
 ///////////////////////////FINANCE SETUP///////////////////////////////////////////////////////////
 //// invoice AP setup page ///
 Route::get('/invoiceAP','finance\InvoiceAPController@show');
