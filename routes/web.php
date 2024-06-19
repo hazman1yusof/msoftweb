@@ -574,6 +574,13 @@ Route::post('/itemLatestPriceListing/form','material\itemLatestPriceListingContr
 Route::get('/itemLatestPriceListing/showExcel','material\itemLatestPriceListingController@showExcel');
 Route::get('/itemLatestPriceListing/showpdf','material\itemLatestPriceListingController@showpdf');
 
+//// Non-Stock Listing report ///
+Route::get('/nonStockListing','material\nonStockListingController@show');
+Route::get('/nonStockListing/table','material\nonStockListingController@table');
+Route::post('/nonStockListing/form','material\nonStockListingController@form');
+Route::get('/nonStockListing/showExcel','material\nonStockListingController@showExcel');
+Route::get('/nonStockListing/showpdf','material\nonStockListingController@showpdf');
+
 ///////////////////////////FINANCE SETUP///////////////////////////////////////////////////////////
 //// invoice AP setup page ///
 Route::get('/invoiceAP','finance\InvoiceAPController@show');
