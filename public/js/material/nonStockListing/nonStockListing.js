@@ -32,11 +32,11 @@ $(document).ready(function () {
 	});
    
 	$('#pdfgen').click(function(){
-		window.open('./itemLatestPriceListing/showpdf?item_from='+$('#item_from').val()+'&item_to='+$("#item_to").val(),  '_blank'); 
+		window.open('./nonStockListing/showpdf?item_from='+$('#item_from').val()+'&item_to='+$("#item_to").val(),  '_blank'); 
 	});
 
 	$('#excelgen').click(function(){
-		window.location='./itemLatestPriceListing/showExcel?item_from='+$('#item_from').val()+'&item_to='+$("#item_to").val();
+		window.location='./nonStockListing/showExcel?item_from='+$('#item_from').val()+'&item_to='+$("#item_to").val();
 	});
 
     /////////////////////////////////////dialog handler///////////////////////////////
@@ -52,7 +52,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode','unit','groupcode'],
-				filterVal:['ACTIVE','session.compcode','session.unit','STOCK'],
+				filterVal:['ACTIVE','session.compcode','session.unit','<>.STOCK'],
 			},
 			
 			ondblClickRow: function () {
@@ -71,7 +71,7 @@ $(document).ready(function () {
 			title:"Select Item Code From",
 			open: function(){
 				dialog_itemcodefrom.urlParam.filterCol=['recstatus','compcode','unit','groupcode'];
-				dialog_itemcodefrom.urlParam.filterVal=['ACTIVE','session.compcode','session.unit','STOCK'];
+				dialog_itemcodefrom.urlParam.filterVal=['ACTIVE','session.compcode','session.unit','<>.STOCK'];
 			},
 			close: function(obj_){
 			},
@@ -97,7 +97,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['recstatus','compcode','unit','groupcode'],
-				filterVal:['ACTIVE','session.compcode','session.unit','STOCK'],
+				filterVal:['ACTIVE','session.compcode','session.unit','<>.STOCK'],
 			},
 			
 			ondblClickRow: function () {
@@ -118,7 +118,7 @@ $(document).ready(function () {
 			title:"Select Item Code To",
 			open: function(){
 				dialog_itemcodeto.urlParam.filterCol=['recstatus','compcode','unit','groupcode'];
-				dialog_itemcodeto.urlParam.filterVal=['ACTIVE','session.compcode','session.unit','STOCK'];
+				dialog_itemcodeto.urlParam.filterVal=['ACTIVE','session.compcode','session.unit','<>.STOCK'];
 			},
 			close: function(obj_){
 			},

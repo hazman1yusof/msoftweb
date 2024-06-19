@@ -23,7 +23,7 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class itemLatestPriceListingExport implements FromView, WithEvents, WithColumnWidths
+class nonStockListingExport implements FromView, WithEvents, WithColumnWidths
 {
     
     /**
@@ -69,12 +69,12 @@ class itemLatestPriceListingExport implements FromView, WithEvents, WithColumnWi
                 ->where('p.compcode','=',session('compcode'))
                 ->where('p.unit','=',session('unit'))
                 ->where('p.recstatus', '=', 'ACTIVE')
-                ->where('p.groupcode', '=', 'STOCK')
+                ->where('p.groupcode', '!=', 'Stock')
                 ->whereBetween('p.itemcode', [$item_from, $item_to])
                 ->orderBy('p.itemcode', 'ASC')
                 ->get();
         
-        return view('material.itemLatestPriceListing.itemLatestPriceListing_excel',compact('product'));
+        return view('material.nonStockListing.nonStockListing_excel',compact('product'));
     }
     
     public function registerEvents(): array
@@ -83,7 +83,7 @@ class itemLatestPriceListingExport implements FromView, WithEvents, WithColumnWi
             AfterSheet::class => function(AfterSheet $event) {
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nITEM'S LATEST PRICE LISTING"."\n".sprintf('FROM ITEM CODE %s TO ITEM CODE %s',$this->item_from, $this->item_to).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nNON-STOCK LISTING"."\n".sprintf('FROM ITEM CODE %s TO ITEM CODE %s',$this->item_from, $this->item_to).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 
                 $event->sheet->getPageMargins()->setTop(1);
                 
