@@ -1119,6 +1119,13 @@ Route::get('/ClaimBatchList_Report/showExcel','finance\ClaimBatchList_ReportCont
 Route::get('/ClaimBatchList_Report/showpdf','finance\ClaimBatchList_ReportController@showpdf');
 Route::get('/ClaimBatchList_Report/report','finance\ClaimBatchList_ReportController@report');
 
+//// New Debtor Created -- Report
+Route::get('/NewDebtor_Report','finance\NewDebtor_ReportController@show');
+Route::get('/NewDebtor_Report/table','finance\NewDebtor_ReportController@table');
+Route::post('/NewDebtor_Report/form','finance\NewDebtor_ReportController@form');
+Route::get('/NewDebtor_Report/showExcel','finance\NewDebtor_ReportController@showExcel');
+Route::get('/NewDebtor_Report/showpdf','finance\NewDebtor_ReportController@showpdf');
+
 //// AP Summary -- Report
 Route::get('/APSummary_Report','finance\APSummary_ReportController@show');
 Route::get('/APSummary_Report/table','finance\APSummary_ReportController@table');
