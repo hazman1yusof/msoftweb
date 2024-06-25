@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Bill Cycle Detail</title>
+<title>Bill Cycle Summary</title>
 
 </head>
 
@@ -253,7 +253,7 @@
                             total_tax = parseFloat_(total_tax) + parseFloat_(e_trx.taxamount);
                         }
                     });
-                    total_amt = parseFloat_(total_inv) + parseFloat_(total_disc);
+                    total_amt = parseFloat_(total_inv) + parseFloat_(total_disc) + parseFloat_(total_tax);
 
                     let arrtot =  [
                         {text:e_inv.pdescription, style: 'body_row', border: [false, false, false, false]},

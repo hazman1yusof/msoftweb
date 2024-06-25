@@ -108,7 +108,7 @@ class ReceiptController extends defaultController
                 'authno' => $request->dbacthdr_authno,
                 'expdate' => \Carbon\Carbon::parse($request->dbacthdr_expdate)->endOfMonth()->toDateString(),
                 'entryuser' => session('username'),
-                'recstatus' => 'ACTIVE',
+                'recstatus' => 'POSTED',
                 'source' => 'PB',
                 'trantype' => $request->dbacthdr_trantype,
                 'auditno' => $auditno,

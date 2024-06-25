@@ -38,6 +38,17 @@ $(document).ready(function () {
 	var oper=null;
 	var unsaved = false;
 
+	function scrollto_topbtm(){
+		$('form#formdata').on('mouseenter',function(){
+	        SmoothScrollTo('div#dialogForm', 300);
+	    });
+
+	    $('div#jqGrid2_c').on('mouseenter',function(){
+	        SmoothScrollTo('div#jqGrid2_c', 300);
+	    });
+	}
+	scrollto_topbtm();
+
 	// init_focus_header_footer();
 	$("#dialogForm")
 	  .dialog({ 
@@ -955,7 +966,7 @@ $(document).ready(function () {
 			}
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
-			calc_jq_height_onchange("jqGrid2",false,1200);
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 		},
 		gridComplete: function(){
 			$("#jqGrid2").find(".remarks_button").on("click", function(e){
@@ -1130,7 +1141,7 @@ $(document).ready(function () {
         },
         oneditfunc: function (rowid) {
 			myfail_msg.clear_fail();
-        	calc_jq_height_onchange("jqGrid2",false,1200);
+        	calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 			$("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
 			errorField.length=0;
 			$("#jqGrid2 input[name='pricecode']").focus().select();
@@ -1202,6 +1213,7 @@ $(document).ready(function () {
 	    	refreshGrid('#jqGrid2',urlParam2,'add');
 	    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
 			errorField.length=0;
+        	calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
         }, 
         errorfunc: function(rowid,response){
 			errorField.length=0;
@@ -1248,6 +1260,7 @@ $(document).ready(function () {
 			}, 500 );
 			hideatdialogForm(false);
 			$('#jqGrid2').jqGrid ('setSelection', "1");
+        	calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 	    }
     };
 
@@ -1495,8 +1508,8 @@ $(document).ready(function () {
 		// faster_detail_array.push(faster_detail_load('deliveryOrder',options,param,case_,cellvalue));
 		// 
 
-		if(options.gid != 'jqGrid'){
-			calc_jq_height_onchange(options.gid,true,1200);
+		if(options.gid != 'jqGrid2'){
+        	calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 		}
 		if(cellvalue == null){
 			cellvalue = " "
@@ -1737,7 +1750,7 @@ $(document).ready(function () {
 		$("#jqGrid2 input[name='qtydelivered']").on('blur',calculate_conversion_factor);
 		$("#jqGrid2 input[name='pouom']").on('blur',remove_noti);
 		// $("#jqGrid2 input[name='qtydelivered'],#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='expdate'],#jqGrid2 input[name='batchno']").on('focus',updwnkey_func);
-		calc_jq_height_onchange("jqGrid2",false,1200);
+		calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 	}
 
 	/////////////bind shift + f to btm detail///////////

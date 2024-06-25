@@ -838,6 +838,7 @@ class OrdcomController extends defaultController
         $rate = floatval($taxmast->rate);
 
         $taxamount = ($new_amount + $new_discamt) * $rate / 100;
+        return $taxamount;
     }
 
     public function calc_discamt(Request $request,$new_quantity){
@@ -855,13 +856,18 @@ class OrdcomController extends defaultController
 
         $billtype = DB::table('hisdb.billtymst as bm')
                         ->select(
+                            'bm.idno as bm_idno',
+                            'bs.idno as bs_idno',
+                            'bi.idno as bi_idno',
                             'bm.billtype as bm_billtype',
                             'bm.service as bm_service',
                             'bm.percent_ as bm_percent',
                             'bm.amount as bm_amount',
+                            'bm.discchgcode as bm_discchgcode',
                             'bs.chggroup as bs_chggroup',
                             'bs.allitem as bs_allitem',
                             'bs.percent_ as bs_percent',
+                            'bs.discchgcode as bs_discchgcode',
                             'bs.amount as bs_amount',
                             'bi.chgcode as bi_chgcode',
                             'bi.percent_ as bi_percent',
@@ -891,14 +897,32 @@ class OrdcomController extends defaultController
 
             $percent = 100;
             $amount = 0;
+            $code = null;
+            $latest_lvl = 'bm';
 
             foreach ($billtype as $key => $value) {
+
+                if($latest_lvl != 'bs' && $latest_lvl != 'bi'){
+                    $latest_lvl = 'bm';
+                    $percent = $value->bm_percent;
+                    $amount = $value->bm_amount;
+                    $code = $value->bm_discchgcode;
+                }
+
                 if($chgmast->chggroup == $value->bs_chggroup){
-                    $percent = $value->bs_percent;
-                    $amount = $value->bs_amount;
-                    if($chgmast->chgcode == $value->chgcode){
+
+                    if($latest_lvl != 'bi'){
+                        $latest_lvl = 'bs';
+                        $percent = $value->bs_percent;
+                        $amount = $value->bs_amount;
+                        $code = $value->bs_discchgcode;
+                    }
+
+                    if($chgmast->chgcode == $value->bi_chgcode){
+                        $latest_lvl = 'bi';
                         $percent = $value->bi_percent;
                         $amount = $value->bi_amount;
+                        $code = $value->bs_discchgcode;
                     }
                 }
             }
@@ -920,7 +944,13 @@ class OrdcomController extends defaultController
 
             // var discamount = ((((100-percent)/100)*unitprce*-1)*quantity) - amount;
 
-            return $discamount;
+
+            $disc_ = new stdClass();
+            $disc_->latest_lvl = $latest_lvl;
+            $disc_->code = $code;
+            $disc_->amount = $discamount;
+
+            return $disc_;
     }
 
     public function calc_discamt_2(Request $request,$pkgdet,$unitprce_lama,$new_quantity){
@@ -945,6 +975,7 @@ class OrdcomController extends defaultController
                             'bs.chggroup as bs_chggroup',
                             'bs.allitem as bs_allitem',
                             'bs.percent_ as bs_percent',
+                            'bs.discchgcode as discchgcode',
                             'bs.amount as bs_amount',
                             'bi.chgcode as bi_chgcode',
                             'bi.percent_ as bi_percent',
@@ -974,12 +1005,14 @@ class OrdcomController extends defaultController
 
             $percent = 100;
             $amount = 0;
+            $code=null;
 
             foreach ($billtype as $key => $value) {
                 if($chgmast->chggroup == $value->bs_chggroup){
                     $percent = $value->bs_percent;
                     $amount = $value->bs_amount;
-                    if($chgmast->chgcode == $value->chgcode){
+                    $code = $value->discchgcode;
+                    if($chgmast->chgcode == $value->bi_chgcode){
                         $percent = $value->bi_percent;
                         $amount = $value->bi_amount;
                     }
@@ -1003,7 +1036,12 @@ class OrdcomController extends defaultController
 
             // var discamount = ((((100-percent)/100)*unitprce*-1)*quantity) - amount;
 
-            return $discamount;
+
+            $disc_ = new stdClass();
+            $disc_->code = $code;
+            $disc_->amount = $discamount;
+
+            return $disc_;
     }
 
     public function order_entry_pkg_add(Request $request){
@@ -1527,7 +1565,7 @@ class OrdcomController extends defaultController
         $new_quantity = $quan_oe;
         $new_amount = $new_quantity * $request->unitprce;
         $new_discamt = $this->calc_discamt($request,$new_quantity);
-        $new_taxamount = $this->calc_taxamount($request,$new_amount,$new_discamt);
+        $new_taxamount = $this->calc_taxamount($request,$new_amount,$new_discamt->amount);
 
         $recno = $this->recno('OE','IN');
 
@@ -1568,7 +1606,8 @@ class OrdcomController extends defaultController
                     'invcode' => $chgmast->chggroup,
                     'inventory' => $updinv,
                     'updinv' =>  $updinv,
-                    'discamt' => $new_discamt,
+                    'discamt' => $new_discamt->amount,
+                    'disccode' => $new_discamt->code,
                     'qtyorder' => $new_quantity,
                     'qtyissue' => $new_quantity,
                     'unit' => session('unit'),
@@ -1611,7 +1650,7 @@ class OrdcomController extends defaultController
         $new_quantity = $quan_oe;
         $new_amount = $new_quantity * $request->unitprce;
         $new_discamt = $this->calc_discamt($request,$new_quantity);
-        $new_taxamount = $this->calc_taxamount($request,$new_amount,$new_discamt);
+        $new_taxamount = $this->calc_taxamount($request,$new_amount,$new_discamt->amount);
 
         $chargetrx_lama = DB::table('hisdb.chargetrx')
                         ->where('compcode',session('compcode'))
@@ -1655,7 +1694,8 @@ class OrdcomController extends defaultController
                     'invcode' => $chgmast->chggroup,
                     'inventory' => $updinv,
                     'updinv' =>  $updinv,
-                    'discamt' => $new_discamt,
+                    'discamt' => $new_discamt->amount,
+                    'disccode' => $new_discamt->code,
                     'qtyorder' => $new_quantity,
                     'qtyissue' => $new_quantity,
                     'unit' => session('unit'),
@@ -1720,7 +1760,7 @@ class OrdcomController extends defaultController
         $new_quantity = $quan_oe;
         $new_amount = $new_quantity * $request->unitprce;
         $new_discamt = $this->calc_discamt_2($request,$pkgdet,$unitprce_lama,$new_quantity);
-        $new_taxamount = $this->calc_taxamount($request,$new_amount,$new_discamt);
+        $new_taxamount = $this->calc_taxamount($request,$new_amount,$new_discamt->amount);
 
         $this->sysdb_log('update',$chargetrx_lama,'sysdb.chargetrxlog');
 
@@ -1739,7 +1779,8 @@ class OrdcomController extends defaultController
                     'quantity' => $new_quantity,
                     'amount' => $new_amount,
                     'taxamount' => $new_taxamount,
-                    'discamt' => $new_discamt,
+                    'discamt' => $new_discamt->amount,
+                    'disccode' => $new_discamt->code,
                     'qtyorder' => $new_quantity,
                     'qtyissue' => $new_quantity,
                     'lastuser' => session('username'),
@@ -3772,6 +3813,8 @@ class OrdcomController extends defaultController
                         ->where('trx.mrn' ,'=', $request->mrn)
                         ->where('trx.episno' ,'=', $request->episno)
                         ->where('trx.recstatus','<>','DELETE')
+                        ->where('trx.taxflag',0)
+                        ->where('trx.discflag',0)
                         ->get();
 
         $amount = $chargetrx->sum('amount');
@@ -3975,13 +4018,26 @@ class OrdcomController extends defaultController
             
             $chargetrx_obj = $chargetrx_obj->get();
 
-            $billno = $this->recno('PB','INV');
+            $billno = $this->recno('PB','IN');
+            $invno = $this->recno('PB','INV');
+            $gst = [];
+            $disc = [];
 
             foreach ($chargetrx_obj as $key => $chargetrx) {
                 $net_amout = $chargetrx->amount + $chargetrx->taxamount + $chargetrx->discamt;
-                $this->handle_epispayer($net_amout,$chargetrx,$mrn,$episno,$episode->billtype,$billno);
+                if($chargetrx->taxamount != 0){
+                    $gst = $this->handle_gst($gst,$chargetrx->taxamount);
+                }
+
+                if($chargetrx->discamt != 0){
+                    $disc = $this->handle_disc($disc,$chargetrx->discamt,$chargetrx->disccode);
+                }
+
+                $this->handle_epispayer($net_amout,$chargetrx,$mrn,$episno,$episode->billtype,$billno,$invno);
             }
 
+            $this->make_gst_discount($gst,$disc,$mrn,$episno,$episode->billtype,$billno,$invno);
+            $this->make_billsum_and_round($mrn,$episno);
             
             DB::commit();
         } catch (\Exception $e) {
@@ -3991,7 +4047,7 @@ class OrdcomController extends defaultController
         }
     }
 
-    public function handle_epispayer($net_amout,$chargetrx,$mrn,$episno,$billtype,$billno){
+    public function handle_epispayer($net_amout,$chargetrx,$mrn,$episno,$billtype,$billno,$invno){
         $chgcode = $chargetrx->chgcode;
         $chggroup = $chargetrx->chggroup;
         $epispayer_obj = DB::table('hisdb.epispayer as epayr')
@@ -4044,9 +4100,11 @@ class OrdcomController extends defaultController
             if(!empty($gldp_idno)){
 
                 if(!empty($inditemlimit) && ($boleh_ditolak > $inditemlimit)){
-                    $inditemlimit_after = $inditemlimit - $boleh_ditolak;
+                    $inditemlimit_net = $inditemlimit * $chargetrx->quantity;
+
+                    $inditemlimit_after = $inditemlimit_net - $boleh_ditolak;
                     if($inditemlimit_after<0){
-                        $boleh_ditolak = $inditemlimit;
+                        $boleh_ditolak = $inditemlimit_net;
                         $baki_turun = $net_amout - $boleh_ditolak;
                     }else{
                         $boleh_ditolak = $boleh_ditolak;
@@ -4112,6 +4170,8 @@ class OrdcomController extends defaultController
                             'episno'  => $chargetrx->episno,
                             'trxdate' => $chargetrx->trxdate,
                             'chgcode' => $chargetrx->chgcode,
+                            'doctorcode' => $chargetrx->doctorcode,
+                            'docref' => $chargetrx->docref,
                             'billflag' => 1,
                             'billdate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'billtype'  => $billtype,
@@ -4123,7 +4183,7 @@ class OrdcomController extends defaultController
                             'chggroup' => $chargetrx->chggroup,
                             'taxamount' => $chargetrx->taxamount,
                             'billno' => $billno,
-                            'invno' => $billno,
+                            'invno' => $invno,
                             'uom' => $chargetrx->uom,
                             'billtime' => $chargetrx->billtime,
                             'invgroup' => $chargetrx->invgroup,
@@ -4147,7 +4207,7 @@ class OrdcomController extends defaultController
                             'billdate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'billtype'  => $billtype,
                             'billno' => $billno,
-                            'invno' => $billno,
+                            'invno' => $invno,
                             'billtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         ]);
 
@@ -4182,7 +4242,22 @@ class OrdcomController extends defaultController
                             'billtime' => null
                     ]);
 
+            DB::table('hisdb.chargetrx')
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn',$mrn)
+                    ->where('episno',$episno)
+                    ->where('taxflag',1)
+                    ->orWhere('discflag',1)
+                    ->orWhere('chgcode','round')
+                    ->delete();
+
             DB::table('hisdb.billdet')
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn',$mrn)
+                    ->where('episno',$episno)
+                    ->delete();
+
+            DB::table('debtor.billsum')
                     ->where('compcode',session('compcode'))
                     ->where('mrn',$mrn)
                     ->where('episno',$episno)
@@ -4235,6 +4310,431 @@ class OrdcomController extends defaultController
             DB::rollback();
 
             return response($e, 500);
+        }
+    }
+
+    public function handle_gst($gst,$taxamount){
+        $gstcode = 'GST';
+        $gotgst = false;
+
+        foreach ($gst as $key => $value) {
+            if($value->code == 'GST'){
+                $value->amount = $value->amount + $taxamount;
+                $gotgst = true;
+            }
+        }
+
+        if(!$gotgst){
+            $gst_ = new stdClass();
+            $gst_->code = 'GST';
+            $gst_->amount = floatval($taxamount);
+
+            array_push($gst,$gst_);
+        }
+
+        return $gst;
+    }
+
+    public function handle_disc($disc,$discamt,$disccode){
+        $gotdisc = false;
+
+        foreach ($disc as $key => $value) {
+            if($value->code == $disccode){
+                $value->amount = $value->amount + $discamt;
+                $gotdisc = true;
+            }
+        }
+
+        if(!$gotdisc){
+            $disc_ = new stdClass();
+            $disc_->code = $disccode;
+            $disc_->amount = floatval($discamt);
+
+            array_push($disc,$disc_);
+        }
+
+        return $disc;
+    }
+
+    public function handle_round($round,$lineno,$net_amount,$billdet){
+        $gotlineno = false;
+
+        foreach ($round as $key => $value) {
+            if($value->lineno == $lineno){
+                $value->amount = $value->amount + $net_amount;
+                $gotlineno = true;
+            }
+        }
+
+        if(!$gotlineno){
+            $round_ = new stdClass();
+            $round_->lineno = $lineno;
+            $round_->amount = floatval($net_amount);
+            $round_->billdet = $billdet;
+
+            array_push($round,$round_);
+        }
+
+        return $round;
+    }
+
+    public function make_gst_discount($gst,$disc,$mrn,$episno,$billtype,$billno,$invno){
+        foreach ($gst as $key => $value) {
+            $recno = $this->recno('OE','IN');
+
+            $chgmast = DB::table("hisdb.chgmast")
+                    ->where('compcode','=',session('compcode'))
+                    ->where('chgcode','=',$value->code)
+                    ->first();
+
+            $invgroup = $this->get_invgroup($chgmast,null);
+
+            DB::table("hisdb.chargetrx")
+                ->insertGetId([
+                    'auditno' => $recno,
+                    'compcode'  => session('compcode'),
+                    'mrn'  => $mrn,
+                    'episno'  => $episno,
+                    'trxdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'trxtype' => 'OE',
+                    'chgcode' => $value->code,
+                    'billflag' => 1,
+                    'quantity' => 1,
+                    'billtype' => $billtype,
+                    'billdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'billtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'billflag' => 1,
+                    'billno' => $billno,
+                    'invno' => $invno,
+                    'chg_class' => $chgmast->chgclass,
+                    'amount' => $value->amount,
+                    'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'chggroup' => $chgmast->chggroup,
+                    'uom' => $chgmast->uom,
+                    'uom_recv' => $chgmast->uom,
+                    'invgroup' => $invgroup,
+                    'unit' => session('unit'),
+                    'chgtype' => $chgmast->chgtype,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'POSTED',
+                    'taxflag' => 1,
+                ]);
+
+            DB::table("hisdb.billdet")
+                ->insert([
+                    'auditno' => $recno,
+                    'lineno_' => 1,
+                    // 'idno' => $chargetrx->idno,
+                    'compcode' => session('compcode'),
+                    'mrn'  => $mrn,
+                    'episno'  => $episno,
+                    'trxdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'chgcode' => $value->code,
+                    'billflag' => 1,
+                    'billdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'billtype'  => $billtype,
+                    'chg_class' => $chgmast->chgclass,
+                    'quantity' => 1,
+                    'amount' => $value->amount,
+                    'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'chggroup' => $chgmast->chggroup,
+                    'billno' => $billno,
+                    'invno' => $invno,
+                    'uom' => $chgmast->uom,
+                    'billtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'invgroup' => $invgroup,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'POSTED',
+                    'taxflag' => 1,
+                ]);
+        }
+
+        foreach ($disc as $key => $value) {
+            $recno = $this->recno('OE','IN');
+
+            DB::table("hisdb.chargetrx")
+                ->insertGetId([
+                    'auditno' => $recno,
+                    'compcode'  => session('compcode'),
+                    'mrn'  => $mrn,
+                    'episno'  => $episno,
+                    'trxdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'trxtype' => 'OE',
+                    'chgcode' => $value->code,
+                    'billflag' => 1,
+                    'quantity' => 1,
+                    'billtype' => $billtype,
+                    'billdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'billtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'billflag' => 1,
+                    'billno' => $billno,
+                    'invno' => $invno,
+                    // 'chg_class' => $chgmast->chgclass,
+                    'amount' => $value->amount,
+                    'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    // 'chggroup' => $chgmast->chggroup,
+                    // 'uom' => $chgmast->uom,
+                    // 'uom_recv' => $request->uom_recv,
+                    'invgroup' => $invgroup,
+                    'unit' => session('unit'),
+                    // 'chgtype' => $chgmast->chgtype,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'POSTED',
+                    'discflag' => 1,
+                ]);
+
+            DB::table("hisdb.billdet")
+                ->insert([
+                    'auditno' => $recno,
+                    'lineno_' => 1,
+                    // 'idno' => $chargetrx->idno,
+                    'compcode' => session('compcode'),
+                    'mrn'  => $mrn,
+                    'episno'  => $episno,
+                    'trxdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'chgcode' => $value->code,
+                    'billflag' => 1,
+                    'billdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'billtype'  => $billtype,
+                    'chg_class' => $chgmast->chgclass,
+                    'quantity' => 1,
+                    'amount' => $value->amount,
+                    'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'chggroup' => $chgmast->chggroup,
+                    'billno' => $billno,
+                    'invno' => $invno,
+                    'uom' => $chgmast->uom,
+                    'billtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'invgroup' => $invgroup,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'POSTED',
+                    'discflag' => 1,
+                ]);
+        }
+    }
+
+    public function make_billsum_and_round($mrn,$episno){
+        $billdet_obj = DB::table('hisdb.billdet as bd')
+                        ->select('bd.chgcode','bd.uom','bd.mrn','bd.episno','chgm.description','bd.lineno_','bd.trxdate','bd.unitprce','bd.taxcode','bd.invno','bd.docref','bd.invcode','bd.billno','bd.billtype','bd.quantity','bd.amount','bd.discamt','bd.taxamount','chgm.invgroup','chgm.chgclass','chgm.chggroup','dbmst.debtorcode','dbmst.debtortype','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc','doc.doctorname','doc.doctorcode')
+                        ->where('bd.compcode',session('compcode'))
+                        ->where('bd.mrn',$mrn)
+                        ->where('bd.episno',$episno)
+                        ->where('bd.taxflag',0)
+                        ->where('bd.discflag',0)
+                        ->orderBy('bd.lineno_','desc')
+                        ->join('hisdb.chgmast as chgm', function($join){
+                            $join = $join->where('chgm.compcode', '=', session('compcode'));
+                            $join = $join->on('chgm.chgcode', '=', 'bd.chgcode');
+                            $join = $join->on('chgm.uom', '=', 'bd.uom');
+                        })
+                        ->join('hisdb.epispayer as epayr', function($join){
+                            $join = $join->where('epayr.compcode', '=', session('compcode'));
+                            $join = $join->on('epayr.mrn', '=', 'bd.mrn');
+                            $join = $join->on('epayr.episno', '=', 'bd.episno');
+                            $join = $join->on('epayr.lineno', '=', 'bd.lineno_');
+                        })
+                        ->join('debtor.debtormast as dbmst', function($join){
+                            $join = $join->where('dbmst.compcode', '=', session('compcode'));
+                            $join = $join->on('dbmst.debtorcode', '=', 'epayr.payercode');
+                        })
+                        ->leftjoin('hisdb.chggroup as chgg', function($join){
+                            $join = $join->where('chgg.compcode', '=', session('compcode'));
+                            $join = $join->on('chgg.grpcode', '=', 'chgm.chggroup');
+                        })
+                        ->leftjoin('hisdb.chgtype as chgt', function($join){
+                            $join = $join->where('chgt.compcode', '=', session('compcode'));
+                            $join = $join->on('chgt.chgtype', '=', 'chgm.chgtype');
+                        })
+                        ->leftjoin('hisdb.doctor as doc', function($join){
+                            $join = $join->where('doc.compcode', '=', session('compcode'));
+                            $join = $join->on('doc.doctorcode', '=', 'bd.doctorcode');
+                        })
+                        ->leftjoin('hisdb.chgclass as chgc', function($join){
+                            $join = $join->where('chgc.compcode', '=', session('compcode'));
+                            $join = $join->on('chgc.classcode', '=', 'chgm.chgclass');
+                        })
+                        ->get();
+
+        $sum_amt=[];
+        $sum_disc=[];
+        $sum_tax=[];
+        $lineno_array=[];
+        $round=[];
+
+        foreach ($billdet_obj as $key => $billdet) {
+
+            $round = $this->handle_round($round,$billdet->lineno_,$billdet->amount,$billdet);
+
+            if(!in_array($billdet->lineno_, $lineno_array)){
+                array_push($lineno_array,$billdet->lineno_);
+            }
+
+            if(strtoupper($billdet->invgroup) == 'CC'){
+                $billdet->pdescription = $billdet->description;
+            }else if(strtoupper($billdet->invgroup) == 'CT'){
+                $billdet->pdescription = $billdet->chgt_desc;
+            }else{
+                $billdet->pdescription = $billdet->chgg_desc;
+            }
+
+            if(empty($sum_amt[intval($billdet->lineno_)])){
+                $sum_amt[$billdet->pdescription.'_'.$billdet->lineno_] = $billdet->amount;
+            }else{
+                $sum_amt[$billdet->pdescription.'_'.$billdet->lineno_] = $sum_amt[$billdet->pdescription.'_'.$billdet->lineno_] + $billdet->amount;
+            }
+
+            if(empty($sum_disc[intval($billdet->lineno_)])){
+                $sum_disc[$billdet->pdescription.'_'.$billdet->lineno_] = $billdet->discamt;
+            }else{
+                $sum_disc[$billdet->pdescription.'_'.$billdet->lineno_] = $sum_disc[$billdet->pdescription.'_'.$billdet->lineno_] + $billdet->discamt;
+            }
+
+            if(empty($sum_tax[intval($billdet->lineno_)])){
+                $sum_tax[$billdet->pdescription.'_'.$billdet->lineno_] = $billdet->taxamount;
+            }else{
+                $sum_tax[$billdet->pdescription.'_'.$billdet->lineno_] = $sum_tax[$billdet->pdescription.'_'.$billdet->lineno_] + $billdet->taxamount;
+            }
+        }
+
+        $rowno=1;
+        foreach ($lineno_array as $lineno_) {
+            $invgroup = $billdet_obj->unique('pdescription')->where('lineno_', $lineno_);;
+
+            foreach ($invgroup as $billdet_) {
+                $insertGetId = DB::table('debtor.billsum')
+                    ->insertGetId([
+                        'compcode' => session('compcode') ,
+                        'source' => 'PB' ,
+                        'trantype' => 'IN' ,
+                        // 'auditno' => $billdet_-> ,
+                        'description' => $billdet_->pdescription ,
+                        'quantity' => $billdet_->quantity ,
+                        'amount' => $sum_amt[$billdet_->pdescription.'_'.$billdet_->lineno_] ,
+                        'outamt' => $sum_amt[$billdet_->pdescription.'_'.$billdet_->lineno_] ,
+                        'taxamt' => $sum_tax[$billdet_->pdescription.'_'.$billdet_->lineno_] ,
+                        // 'totamt' => $billdet_-> ,
+                        'mrn' => $mrn ,
+                        'episno' => $episno ,
+                        // 'paymode' => $billdet_-> ,
+                        // 'cardno' => $billdet_-> ,
+                        'debtortype' => $billdet_->debtortype ,
+                        'debtorcode' => $billdet_->debtorcode ,
+                        'invno' => $billdet_->invno ,
+                        'billno' => $billdet_->billno ,
+                        'lineno_' => $billdet_->lineno_ ,
+                        'rowno' => $rowno ,
+                        'billtype' => $billdet_->billtype ,
+                        'chgclass' => $billdet_->chgclass ,
+                        'classlevel' => $billdet_->classlevel ,
+                        'chggroup' => $billdet_->chggroup ,
+                        'lastuser' => session('username') ,
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur") ,
+                        'invcode' => $billdet_->invcode ,
+                        // 'seqno' => $billdet_-> ,
+                        'discamt' => $sum_disc[$billdet_->pdescription.'_'.$billdet_->lineno_] ,
+                        'docref' => $billdet_->docref ,
+                        'uom' => $billdet_->uom ,
+                        'uom_recv' => $billdet_->uom ,
+                        'recstatus' => 'ACTIVE' ,
+                        'unitprice' => $billdet_->unitprce ,
+                        'taxcode' => $billdet_->taxcode ,
+                        // 'billtypeperct' => $billdet_-> ,
+                        // 'billtypeamt' => $billdet_-> ,
+                        // 'totamount' => $billdet_-> ,
+                        // 'qtyonhand' => $billdet_-> ,
+                    ]);
+
+            Db::table('debtor.billsum')
+                    ->where('compcode',session('compcode'))
+                    ->where('idno', '=', $insertGetId)
+                    ->update(['auditno' => $insertGetId]);
+            
+                $rowno = $rowno + 1;
+            }
+        }
+
+        foreach ($round as $round_obj) {
+            $billdet_ = $round_obj->billdet;
+            $amount = $round_obj->amount;
+            $rounded = $amount - round($amount,1);
+
+            $recno = $this->recno('OE','IN');
+
+            DB::table("hisdb.chargetrx")
+                ->insertGetId([
+                    'auditno' => $recno,
+                    'compcode'  => session('compcode'),
+                    'mrn'  => $billdet_->mrn,
+                    'episno'  => $billdet_->episno,
+                    'trxdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'trxtype' => 'OE',
+                    'chgcode' => 'ROUND',
+                    'billflag' => 1,
+                    'quantity' => 1,
+                    'billtype' => $billdet_->billtype,
+                    'billdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'billtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'billno' => $billdet_->billno,
+                    'invno' => $billdet_->invno,
+                    // 'chg_class' => $chgmast->chgclass,
+                    'amount' => $rounded,
+                    'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    // 'chggroup' => $chgmast->chggroup,
+                    // 'uom' => $chgmast->uom,
+                    // 'uom_recv' => $chgmast->uom,
+                    // 'invgroup' => $invgroup,
+                    'unit' => session('unit'),
+                    // 'chgtype' => $chgmast->chgtype,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'POSTED',
+                    'taxflag' => 1,
+                ]);
+
+            DB::table("hisdb.billdet")
+                ->insert([
+                    'auditno' => $recno,
+                    'lineno_' => 1,
+                    // 'idno' => $chargetrx->idno,
+                    'compcode' => session('compcode'),
+                    'mrn'  => $billdet_->mrn,
+                    'episno'  => $billdet_->episno,
+                    'trxdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'chgcode' => 'ROUND',
+                    'billflag' => 1,
+                    'billdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'billtype'  => $billdet_->billtype,
+                    // 'chg_class' => $chgmast->chgclass,
+                    'quantity' => 1,
+                    'amount' => $rounded,
+                    'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    // 'chggroup' => $chgmast->chggroup,
+                    'billno' => $billdet_->billno,
+                    'invno' => $billdet_->invno,
+                    // 'uom' => $chgmast->uom,
+                    'billtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    // 'invgroup' => $invgroup,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'POSTED',
+                    'taxflag' => 1,
+                ]);
         }
     }
 
@@ -4291,6 +4791,8 @@ class OrdcomController extends defaultController
                         ->where('bd.compcode',session('compcode'))
                         ->where('bd.mrn',$mrn)
                         ->where('bd.episno',$episno)
+                        ->where('bd.taxflag',0)
+                        ->where('bd.discflag',0)
                         ->orderBy('bd.chgcode','asc')
                         ->orderBy('chgm.invgroup','desc')
                         ->get();
@@ -4303,7 +4805,7 @@ class OrdcomController extends defaultController
             }else{
                 $value->pdescription = $value->chgg_desc;
             }
-            $value->net_amount =  $value->amount + $value->taxamount + $value->discamt;
+            $value->net_amount =  $value->amount;
         }
 
         $chgclass = $billdet->unique('chgclass')->sortBy('classlevel');
@@ -4369,6 +4871,8 @@ class OrdcomController extends defaultController
                         ->where('trx.recstatus','<>','DELETE')
                         ->orderBy('trx.chgcode','asc')
                         ->orderBy('chgm.invgroup','desc')
+                        ->where('trx.taxflag',0)
+                        ->where('trx.discflag',0)
                         // ->orderBy('trx.adddate','asc')
                         ->join('hisdb.chgmast as chgm', function($join) use ($request){
                             $join = $join->where('chgm.compcode', '=', session('compcode'));
@@ -4462,6 +4966,8 @@ class OrdcomController extends defaultController
                         ->where('trx.recstatus','<>','DELETE')
                         ->orderBy('trx.chgcode','asc')
                         ->orderBy('chgm.invgroup','desc')
+                        ->where('trx.taxflag',0)
+                        ->where('trx.discflag',0)
                         // ->orderBy('trx.adddate','asc')
                         ->join('hisdb.chgmast as chgm', function($join) use ($request){
                             $join = $join->where('chgm.compcode', '=', session('compcode'));

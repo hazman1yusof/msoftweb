@@ -1272,21 +1272,22 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		// 	event.data.data.id_optid = id_optid;
 		// }
 
-		let text = textfield.val().trim();
-		if(text != ''){
-			let split = text.split(" "),searchCol2=[],searchVal2=[];
-			$.each(split, function( index, value ) {
-				getfield(event.data.data.field,true).forEach(function(element){
-					searchCol2.push(element);
-					searchVal2.push('%'+value+'%');
-				});
-			});
-			event.data.data.urlParam.searchCol2=searchCol2;
-			event.data.data.urlParam.searchVal2=searchVal2;
-		}
+		// let text = textfield.val().trim();
+		// if(text != ''){
+		// 	let split = text.split(" "),searchCol2=[],searchVal2=[];
+		// 	$.each(split, function( index, value ) {
+		// 		getfield(event.data.data.field,true).forEach(function(element){
+		// 			searchCol2.push(element);
+		// 			searchVal2.push('%'+value+'%');
+		// 		});
+		// 	});
+		// 	event.data.data.urlParam.searchCol2=searchCol2;
+		// 	event.data.data.urlParam.searchVal2=searchVal2;
+		// }
+
 		if(obj.dialog_.hasOwnProperty('justb4refresh'))obj.dialog_.justb4refresh(obj);
 		refreshGrid("#"+event.data.data.gridname,event.data.data.urlParam);
-		$("#Dtext_"+unique).val(text);
+		// $("#Dtext_"+unique).val(text);
 		if(obj.dialog_.hasOwnProperty('justaftrefresh'))obj.dialog_.justaftrefresh(obj);
 
 		// refreshGrid("#"+obj.gridname,obj.urlParam);

@@ -350,10 +350,12 @@ class SalesOrderController extends defaultController
                             ->first();
                     
                     $updinv = ($chgmast->invflag == '1')? 1 : 0;
+        
+                    $recno = $this->recno('OE','IN');
                     
                     $insertGetId = DB::table("hisdb.chargetrx")
                         ->insertGetId([
-                            'auditno' => $billsum_obj->auditno,
+                            'auditno' => $recno,
                             'idno' => $billsum_obj->idno,
                             'compcode'  => session('compcode'),
                             'mrn'  => $billsum_obj->mrn,
@@ -370,7 +372,8 @@ class SalesOrderController extends defaultController
                             'trxtime' => $dbacthdr->entrytime,
                             'chggroup' => $chgmast->chggroup,
                             'taxamount' => $billsum_obj->taxamt,
-                            'billno' => $invno,
+                            'billno' => $billsum_obj->billno,
+                            'invno' => $invno,
                             'uom' => $billsum_obj->uom,
                             'billtime' => $dbacthdr->entrytime,
                             'invgroup' => $chgmast->invgroup,
@@ -395,7 +398,7 @@ class SalesOrderController extends defaultController
                     
                     DB::table("hisdb.billdet")
                         ->insert([
-                            'auditno' => $billsum_obj->auditno,
+                            'auditno' => $recno,
                             // 'idno' => $billsum_obj->idno,
                             'compcode'  => session('compcode'),
                             'mrn'  => $billsum_obj->mrn,
@@ -412,7 +415,7 @@ class SalesOrderController extends defaultController
                             'trxtime' => $dbacthdr->entrytime,
                             'chggroup' => $chgmast->chggroup,
                             'taxamount' => $billsum_obj->taxamt,
-                            'billno' => $invno,
+                            'billno' => $billsum_obj->billno,
                             'invno' => $invno,
                             'uom' => $billsum_obj->uom,
                             'billtime' => $dbacthdr->entrytime,

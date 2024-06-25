@@ -276,7 +276,7 @@ class RefundController extends defaultController
                 'bankcharges' => $request->dbacthdr_bankcharges,
                 'expdate' => \Carbon\Carbon::parse($request->dbacthdr_expdate)->endOfMonth()->toDateString(),
                 'entryuser' => session('username'),
-                'recstatus' => 'ACTIVE',
+                'recstatus' => 'POSTED',
                 'source' => 'PB',
                 'trantype' => 'RF',
                 'auditno' => $auditno,

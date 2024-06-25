@@ -1386,8 +1386,6 @@ class SalesOrderDetailController extends defaultController
         $trantype = $request->trantype;
         $auditno = ltrim($request->auditno,"0");
         
-        $recno = $this->recno('OE','IN');
-        
         DB::beginTransaction();
         
         try {
@@ -1413,8 +1411,9 @@ class SalesOrderDetailController extends defaultController
             ///2. insert detail
             $insertGetId = DB::table('debtor.billsum')
                 ->insertGetId([
-                    'auditno' => $recno, //->OE IN
+                    // 'auditno' => $recno, //->OE IN
                     'billno' => $auditno, // dari dbacthdr.auditno
+                    'invno' => $auditno, // dari dbacthdr.auditno
                     // 'idno' => $recno, //autogen
                     'compcode' => session('compcode'),
                     'source' => $source,
@@ -1448,6 +1447,11 @@ class SalesOrderDetailController extends defaultController
                             ->where('compcode',session('compcode'))
                             ->where('idno', '=', $insertGetId)
                             ->first();
+
+            Db::table('debtor.billsum')
+                    ->where('compcode',session('compcode'))
+                    ->where('idno', '=', $insertGetId)
+                    ->update(['auditno' => $insertGetId]);
             
             $product = DB::table('material.product')
                             ->where('compcode','=',session('compcode'))
@@ -1491,8 +1495,6 @@ class SalesOrderDetailController extends defaultController
                     ->sum('totamount');
             
             ///4. then update to header
-            
-            
             DB::table('debtor.dbacthdr')
                     ->where('compcode','=',session('compcode'))
                     ->where('source','=',$source)

@@ -414,23 +414,21 @@ div#fail_msg{
 			
 		<div class='panel panel-info' id="panel_detail">
 			<div class="panel-heading">Delivery Order Detail</div>
-				<div class="panel-body">
+				<div class="panel-body" style="padding:4px !important">
 					<div id="fail_msg"></div>
 					<form id='formdata2' class='form-vertical' style='width:99%'>
 						<!-- <input id="gstpercent" name="gstpercent" type="hidden">
 						<input id="convfactor_uom" name="convfactor_uom" type="hidden" value='1'>
 						<input id="convfactor_pouom" name="convfactor_pouom" type="hidden" value='1'> -->
 						<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
-						<div id="jqGrid2_c" class='col-md-12'>
+						<div id="jqGrid2_c" class='col-md-12' style="overflow-y: hidden;overflow-x: hidden;height: calc(100vh - 80px);">
 							<table id="jqGrid2" class="table table-striped"></table>
 				            <div id="jqGridPager2"></div>
 						</div>
 					</form>
 				</div>
 
-				<div class="panel-body">
-					<div class="noti"><ol></ol>
-					</div>
+				<div class="noti"><ol></ol>
 				</div>
 		</div>
 				
