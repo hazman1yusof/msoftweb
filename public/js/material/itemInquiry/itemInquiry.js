@@ -317,19 +317,19 @@ $(document).ready(function () {
 	});
 
 	function getStockvalue(rowid,element) {
-		var openbalval = (isNaN(parseFloat(element.s_openbalval)))?0:parseFloat(element.s_openbalval);
-		var netmvval1 = (isNaN(parseFloat(element.s_netmvval1)))?0:parseFloat(element.s_netmvval1);
-		var netmvval2 = (isNaN(parseFloat(element.s_netmvval2)))?0:parseFloat(element.s_netmvval2);
-		var netmvval3 = (isNaN(parseFloat(element.s_netmvval3)))?0:parseFloat(element.s_netmvval3);
-		var netmvval4 = (isNaN(parseFloat(element.s_netmvval4)))?0:parseFloat(element.s_netmvval4);
-		var netmvval5 = (isNaN(parseFloat(element.s_netmvval5)))?0:parseFloat(element.s_netmvval5);
-		var netmvval6 = (isNaN(parseFloat(element.s_netmvval6)))?0:parseFloat(element.s_netmvval6);
-		var netmvval7 = (isNaN(parseFloat(element.s_netmvval7)))?0:parseFloat(element.s_netmvval7);
-		var netmvval8 = (isNaN(parseFloat(element.s_netmvval8)))?0:parseFloat(element.s_netmvval8);
-		var netmvval9 = (isNaN(parseFloat(element.s_netmvval9)))?0:parseFloat(element.s_netmvval9);
-		var netmvval10 = (isNaN(parseFloat(element.s_netmvval10)))?0:parseFloat(element.s_netmvval10);
-		var netmvval11 = (isNaN(parseFloat(element.s_netmvval11)))?0:parseFloat(element.s_netmvval11);
-		var netmvval12 = (isNaN(parseFloat(element.s_netmvval12)))?0:parseFloat(element.s_netmvval12);
+		var openbalval = ret_parsefloat(element.s_openbalval);
+		var netmvval1 = ret_parsefloat(element.s_netmvval1);
+		var netmvval2 = ret_parsefloat(element.s_netmvval2);
+		var netmvval3 = ret_parsefloat(element.s_netmvval3);
+		var netmvval4 = ret_parsefloat(element.s_netmvval4);
+		var netmvval5 = ret_parsefloat(element.s_netmvval5);
+		var netmvval6 = ret_parsefloat(element.s_netmvval6);
+		var netmvval7 = ret_parsefloat(element.s_netmvval7);
+		var netmvval8 = ret_parsefloat(element.s_netmvval8);
+		var netmvval9 = ret_parsefloat(element.s_netmvval9);
+		var netmvval10 = ret_parsefloat(element.s_netmvval10);
+		var netmvval11 = ret_parsefloat(element.s_netmvval11);
+		var netmvval12 = ret_parsefloat(element.s_netmvval12);
 
 		var total = openbalval + netmvval1 + netmvval2 + netmvval3 + netmvval4 + netmvval5 + netmvval6 + netmvval7 + netmvval8+ netmvval9 + netmvval10 + netmvval11 + netmvval12;
 
@@ -434,7 +434,7 @@ $(document).ready(function () {
 				
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
-				let accumamt = parseFloat(openbalval);
+				let accumamt = ret_parsefloat(openbalval);
 				let accumqty = parseInt(openbalqty);
 				
 				data.rows.forEach(function(obj){
@@ -452,7 +452,7 @@ $(document).ready(function () {
 					if(obj.det_mov=="deptcode"){
 
 						if (obj.crdbfl.toUpperCase() == 'IN'){
-							accumamt = accumamt + parseFloat(obj.amount);
+							accumamt = accumamt + ret_parsefloat(obj.amount);
 							accumqty = accumqty + parseInt(obj.txnqty);
 							obj.balquan = numeral(accumqty).format('0,0');
 							obj.netprice = numeral(obj.netprice).format('0,0.00');
@@ -464,7 +464,7 @@ $(document).ready(function () {
 							obj.qtyin = numeral(obj.txnqty).format('0,0');
 							obj.qtyout = '';
 						}else if (obj.crdbfl.toUpperCase() == 'OUT'){
-							accumamt = accumamt - parseFloat(obj.amount);
+							accumamt = accumamt - ret_parsefloat(obj.amount);
 							accumqty = accumqty - parseInt(obj.txnqty);
 							obj.balquan = numeral(accumqty).format('0,0');
 							obj.netprice = numeral(obj.netprice).format('0,0.00');
@@ -487,7 +487,7 @@ $(document).ready(function () {
 					}else{
 
 						if (obj.crdbfl.toUpperCase() == 'IN'){
-							accumamt = accumamt - parseFloat(obj.amount);
+							accumamt = accumamt - ret_parsefloat(obj.amount);
 							accumqty = accumqty - parseInt(obj.txnqty);
 							obj.balquan = numeral(accumqty).format('0,0');
 							obj.netprice = numeral(obj.netprice).format('0,0.00');
@@ -505,7 +505,7 @@ $(document).ready(function () {
 							obj.qtyin = '';
 							obj.qtyout = numeral(obj.txnqty).format('0,0');
 						}else if (obj.crdbfl.toUpperCase() == 'OUT'){
-							accumamt = accumamt + parseFloat(obj.amount);
+							accumamt = accumamt + ret_parsefloat(obj.amount);
 							accumqty = accumqty + parseInt(obj.txnqty);
 							obj.balquan = numeral(accumqty).format('0,0');
 							obj.netprice = numeral(obj.netprice).format('0,0.00');
@@ -555,11 +555,11 @@ $(document).ready(function () {
 					
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
-	            var accumqty=parseFloat(data.rows[0].openbalqty);
+	            var accumqty=ret_parsefloat(data.rows[0].openbalqty);
 	            if(isNaN(accumqty)){
 	            	accumqty = 0;
 	            }
-	            var accumval=parseFloat(data.rows[0].openbalval);
+	            var accumval=ret_parsefloat(data.rows[0].openbalval);
 	            if(isNaN(accumval)){
 	            	accumval = 0;
 	            }
@@ -571,11 +571,11 @@ $(document).ready(function () {
 
 						if(lastChar<monthfrom){
 							if(index.startsWith("netmvval")){
-								accumval = accumval + parseFloat(value);
+								accumval = accumval + ret_parsefloat(value);
 							}
 
 							if(index.startsWith("netmvqty")){
-								accumqty = accumqty + parseFloat(value);
+								accumqty = accumqty + ret_parsefloat(value);
 							}
 						}
 					});
