@@ -312,17 +312,19 @@ class TestController extends defaultController
                     })
                     ->where('stockloc.compcode','9B')
                     ->get();
+        dd($stockloc);
 
-        foreach ($stockloc as $key => $value) {
-            if(empty($value->sector)){
-                DB::table('material.stockloc')
-                    ->where('compcode','9B')
-                    ->where('idno',$value->idno)
-                    ->update([
-                        'unit' => $value->sector
-                    ]);
-            }
-        }
+        // foreach ($stockloc as $key => $value) {
+        //     dump()
+        //     if(empty($value->sector)){
+        //         DB::table('material.stockloc')
+        //             ->where('compcode','9B')
+        //             ->where('idno',$value->idno)
+        //             ->update([
+        //                 'unit' => $value->sector
+        //             ]);
+        //     }
+        // }
     }
     
 }
