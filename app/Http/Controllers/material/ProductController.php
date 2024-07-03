@@ -233,6 +233,7 @@ class ProductController extends defaultController
 
         $product = DB::table('material.product')
                         ->where('compcode',session('compcode'))
+                        ->where('unit',session('unit'))
                         ->where('recstatus','ACTIVE')
                         ->where('groupcode',$request->groupcode)
                         ->where('Class',$request->Class)
@@ -247,6 +248,7 @@ class ProductController extends defaultController
 
             $productmaster = DB::table('material.productmaster')
                         ->where('compcode',session('compcode'))
+                        // ->where('unit',session('unit'))
                         ->where('recstatus','ACTIVE')
                         ->where('groupcode',$request->groupcode)
                         ->where('Class',$request->Class)
@@ -284,7 +286,7 @@ class ProductController extends defaultController
                 // 'uomcode' => 'PC',
                 'productcat' => $request->productcat,
                 'Class' => $request->Class,
-                'unit' => session('unit'),
+                // 'unit' => session('unit'),
                 'compcode' => session('compcode'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),

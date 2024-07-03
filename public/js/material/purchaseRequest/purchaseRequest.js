@@ -1732,8 +1732,8 @@ $(document).ready(function () {
 		}, {
 			title: "Select Request Department",
 			open: function(){
-				dialog_reqdept.urlParam.filterCol=['recstatus', 'compcode', 'sector'];
-				dialog_reqdept.urlParam.filterVal=['ACTIVE', 'session.compcode', 'session.unit'];
+				dialog_reqdept.urlParam.filterCol=['recstatus', 'compcode'];
+				dialog_reqdept.urlParam.filterVal=['ACTIVE', 'session.compcode',];
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1747,8 +1747,8 @@ $(document).ready(function () {
 				{label:'Unit',name:'sector'},
 			],
 			urlParam: {
-				filterCol:['purdept', 'recstatus', 'compcode', 'sector'],
-				filterVal:['1', 'ACTIVE','session.compcode','session.unit']
+				filterCol:['purdept', 'recstatus', 'compcode'],
+				filterVal:['1', 'ACTIVE','session.compcode']
 			},
 			ondblClickRow: function () {
 				$('#purreqhd_suppcode').focus();
@@ -1766,8 +1766,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Transaction Department",
 			open: function(){
-				dialog_prdept.urlParam.filterCol=['purdept', 'recstatus', 'compcode', 'sector'];
-				dialog_prdept.urlParam.filterVal=['1', 'ACTIVE','session.compcode','session.unit'];
+				dialog_prdept.urlParam.filterCol=['purdept', 'recstatus', 'compcode'];
+				dialog_prdept.urlParam.filterVal=['1', 'ACTIVE','session.compcode'];
 			}
 		},'urlParam','radio','tab'
 	);
