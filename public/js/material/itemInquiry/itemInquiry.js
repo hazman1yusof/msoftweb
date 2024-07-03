@@ -556,7 +556,13 @@ $(document).ready(function () {
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
 	            var accumqty=parseFloat(data.rows[0].openbalqty);
+	            if(isNaN(accumqty)){
+	            	accumqty = 0;
+	            }
 	            var accumval=parseFloat(data.rows[0].openbalval);
+	            if(isNaN(accumval)){
+	            	accumval = 0;
+	            }
 	            var monthfrom = parseInt($('#monthfrom').val());
 
 	            if(monthfrom>0){
@@ -573,6 +579,12 @@ $(document).ready(function () {
 							}
 						}
 					});
+	            }
+	            
+	            if(isNaN(accumqty)){
+	            	accumqty = 0;
+	            }if(isNaN(accumval)){
+	            	accumval = 0;
 	            }
 
 				$("#openbalqty").val(numeral(accumqty).format('0,0.00'));
