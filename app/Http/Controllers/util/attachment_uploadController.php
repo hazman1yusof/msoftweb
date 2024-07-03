@@ -139,6 +139,7 @@ class attachment_uploadController extends defaultController
         }else{
 
         }
+        dd($img);
 
         return $img->response();
     }
