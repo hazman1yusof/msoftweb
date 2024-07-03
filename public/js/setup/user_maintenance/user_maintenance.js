@@ -297,6 +297,7 @@ $(document).ready(function (){
 			colModel: [
 				{ label: 'Department ID', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Sector', name: 'sector', width: 200, classes: 'pointer' },
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
