@@ -113,14 +113,13 @@ class attachment_uploadController extends defaultController
 
     
     public function thumbnail($folder,$image_path){
-        dd('asd');
         $attachment_path = 'C:\laragon\www\medicare';
 
         if($folder == 'attachment'){ //image
-            $img = Image::make($attachment_path.'\\uploads\\'.$folder.'\\'.$image_path)->resize(64, 64);
+            $img = Image::make($attachment_path.'/uploads/'.$folder.'/'.$image_path)->resize(64, 64);
         }else if($folder == 'application'){
             switch($image_path){
-                case 'pdf': $img = Image::make($attachment_path.'\\uploads\\pat_enq\\pdf_icon.png')->resize(64, 64); break;
+                case 'pdf': $img = Image::make($attachment_path.'/uploads/pat_enq/pdf_icon.png')->resize(64, 64); break;
                 case 'msword': $img = Image::make($attachment_path.'/uploads/pat_enq/word_icon.png')->resize(64, 64); break;
                 case 'powerpoint': $img = Image::make($attachment_path.'/uploads/pat_enq/powerpoint_icon.png')->resize(64, 64); break;
                 case 'excel': $img = Image::make($attachment_path.'/uploads/pat_enq/excel_icon.png')->resize(64, 64); break;
@@ -140,7 +139,6 @@ class attachment_uploadController extends defaultController
         }else{
 
         }
-        dd($img);
 
         return $img->response();
     }
