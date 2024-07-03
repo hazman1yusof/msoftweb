@@ -63,7 +63,7 @@ class ItemEnquiryController extends defaultController
                 ->leftJoin('material.ivtxnhd as h', function($join){
                         $join = $join->on('h.recno', '=', 'd.recno')
                                      ->on('h.trantype', '=', 'd.trantype')
-                                     ->on('h.deptcode', '=', 'd.deptcode')
+                                     ->on('h.txndept', '=', 'd.deptcode')
                                      ->where('h.compcode','=',session('compcode'));
                     })
                 ->leftJoin('material.ivtxntype as t', function($join){
@@ -126,7 +126,7 @@ class ItemEnquiryController extends defaultController
                 ->leftJoin('material.ivtxnhd as h', function($join){
                         $join = $join->on('h.recno', '=', 'd.recno')
                                      ->on('h.trantype', '=', 'd.trantype')
-                                     ->on('h.deptcode', '=', 'd.deptcode')
+                                     ->on('h.txndept', '=', 'd.deptcode')
                                      ->where('h.compcode','=',session('compcode'));
                     })
                 ->leftJoin('material.ivtxntype as t', function($join){
