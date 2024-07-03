@@ -528,6 +528,8 @@ class PurchaseOrderController extends defaultController
                     $purordhd->update([
                             'supportby' => $authorise_use->authorid,
                             'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                             'recstatus' => 'SUPPORT'
                         ]);
 
@@ -699,6 +701,8 @@ class PurchaseOrderController extends defaultController
                     $purordhd->update([
                             'verifiedby' => $authorise_use->authorid,
                             'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                             'recstatus' => 'VERIFIED'
                         ]);
 
@@ -866,6 +870,8 @@ class PurchaseOrderController extends defaultController
                 $purordhd->update([
                         'approvedby' => $authorise_use->authorid,
                         'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                         'recstatus' => 'VERIFIED'
                     ]);
 
