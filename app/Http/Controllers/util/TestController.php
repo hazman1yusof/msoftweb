@@ -32,6 +32,8 @@ class TestController extends defaultController
                 return $this->debtortype_xde($request);
             case 'set_class':
                 return $this->set_class($request);
+            case 'set_stockloc_unit':
+                return $this->set_stockloc_unit($request);
             default:
                 return 'error happen..';
         }
@@ -301,4 +303,26 @@ class TestController extends defaultController
         }
     }
 
+    public function set_stockloc_unit(Request $request){
+        $stockloc = DB::table('material.stockloc')
+                    ->select('department.sector','stockloc.idno')
+                    ->leftJoin('sysdb.department', function($join){
+                        $join = $join->where('department.compcode','9B');
+                        $join = $join->on('department.deptcode','stockloc.deptcode');
+                    })
+                    ->where('stockloc.compcode','9B')
+                    ->get();
+
+        foreach ($stockloc as $key => $value) {
+            if(empty($value->sector)){
+                DB::table('material.stockloc')
+                    ->where('compcode','9B')
+                    ->where('idno',$value->idno)
+                    ->update([
+                        'unit' => $value->sector
+                    ]);
+            }
+        }
+    }
+    
 }
