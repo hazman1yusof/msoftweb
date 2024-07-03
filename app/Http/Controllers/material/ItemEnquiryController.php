@@ -62,7 +62,7 @@ class ItemEnquiryController extends defaultController
                 ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcoderecv', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description','d.sndrcv')
                 ->leftJoin('material.ivtxnhd as h', function($join){
                         $join = $join->on('h.recno', '=', 'd.recno')
-                                     ->where('cm.compcode','=',session('compcode'));
+                                     ->where('h.compcode','=',session('compcode'));
                     })
                 ->leftJoin('material.ivtxntype as t', function($join){
                         $join = $join->on('t.trantype', '=', 'd.trantype')
@@ -123,7 +123,7 @@ class ItemEnquiryController extends defaultController
                 ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcoderecv', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description','d.sndrcv')
                 ->leftJoin('material.ivtxnhd as h', function($join){
                         $join = $join->on('h.recno', '=', 'd.recno')
-                                     ->where('cm.compcode','=',session('compcode'));
+                                     ->where('h.compcode','=',session('compcode'));
                     })
                 ->leftJoin('material.ivtxntype as t', function($join){
                         $join = $join->on('t.trantype', '=', 'd.trantype')
