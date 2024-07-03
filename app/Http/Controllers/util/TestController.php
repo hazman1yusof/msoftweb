@@ -305,8 +305,8 @@ class TestController extends defaultController
 
     public function set_stockloc_unit(Request $request){
         $stockloc = DB::table('material.stockloc')
-                    ->select('department.sector','stockloc.idno')
-                    ->leftJoin('sysdb.department', function($join){
+                    ->select('stockloc.unit','department.sector','stockloc.idno')
+                    ->join('sysdb.department', function($join){
                         $join = $join->where('department.compcode','9B');
                         $join = $join->on('department.deptcode','stockloc.deptcode');
                     })
@@ -314,8 +314,7 @@ class TestController extends defaultController
                     ->get();
 
         foreach ($stockloc as $key => $value) {
-            if(!empty($value->sector)){
-                dump('update '.$value->idno.' unit: '.$value->sector);
+            if(empty($value->unit)){
                 DB::table('material.stockloc')
                     ->where('compcode','9B')
                     ->where('idno',$value->idno)
