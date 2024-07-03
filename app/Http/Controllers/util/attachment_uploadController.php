@@ -88,7 +88,7 @@ class attachment_uploadController extends defaultController
         }else{
             $filename = $request->file('file')->getClientOriginalName();
         }
-        $file_path = $request->file('file')->store('attachment', 'public_uploads');
+        $file_path = $request->file('file')->store('attachment', 'attachment_uploads');
         DB::table('finance.attachment')
             ->insert([
                 'compcode' => session('compcode'),
