@@ -113,7 +113,7 @@ class attachment_uploadController extends defaultController
 
     
     public function thumbnail($folder,$image_path){
-        $attachment_path = 'D:\laragon\www\medicare\public';
+        $attachment_path = 'C:\laragon\www\medicare\public';
 
         if($folder == 'attachment'){ //image
             $img = Image::make($attachment_path.'/uploads/'.$folder.'/'.$image_path)->resize(64, 64);
@@ -144,7 +144,7 @@ class attachment_uploadController extends defaultController
     }
 
     public function download(Request $request,$folder,$image_path){
-        $attachment_path = 'D:\laragon\www\medicare\public';
+        $attachment_path = 'C:\laragon\www\medicare\public';
 
         $file = $attachment_path."\\uploads\\".$folder."\\".$image_path;
         // dump($file);
