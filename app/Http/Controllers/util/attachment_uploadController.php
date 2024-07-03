@@ -113,6 +113,7 @@ class attachment_uploadController extends defaultController
 
     
     public function thumbnail($folder,$image_path){
+        dd('asd');
         $attachment_path = 'C:\laragon\www\medicare';
 
         if($folder == 'attachment'){ //image
