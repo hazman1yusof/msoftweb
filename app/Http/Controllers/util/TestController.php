@@ -291,7 +291,7 @@ class TestController extends defaultController
 
         foreach ($product as $key => $value) {
             if(empty($value->p_class)){
-                DB::table('product')
+                DB::table('material.product')
                     ->where('compcode','9B')
                     ->where('idno',$value->idno)
                     ->update([
