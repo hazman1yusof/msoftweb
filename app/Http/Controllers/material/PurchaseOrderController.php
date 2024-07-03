@@ -333,6 +333,7 @@ class PurchaseOrderController extends defaultController
                         ]);
 
                     DB::table("material.purorddt")
+                        ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$purordhd_get->recno)
                         ->update([
                             'recstatus' => 'REQUEST',
@@ -538,6 +539,7 @@ class PurchaseOrderController extends defaultController
                         ]);
 
                     DB::table("material.purorddt")
+                        ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$purordhd_get->recno)
                         ->update([
                             'recstatus' => 'SUPPORT',
@@ -546,6 +548,7 @@ class PurchaseOrderController extends defaultController
                         ]);
 
                     DB::table("material.queuepo")
+                        ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$purordhd_get->recno)
                         ->update([
                             'AuthorisedID' => $authorise_use->authorid,
@@ -711,6 +714,7 @@ class PurchaseOrderController extends defaultController
                         ]);
 
                     DB::table("material.purorddt")
+                        ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$purordhd_get->recno)
                         ->update([
                             'recstatus' => 'VERIFIED',
@@ -719,6 +723,7 @@ class PurchaseOrderController extends defaultController
                         ]);
 
                     DB::table("material.queuepo")
+                        ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$purordhd_get->recno)
                         ->update([
                             'AuthorisedID' => $authorise_use->authorid,
@@ -881,6 +886,7 @@ class PurchaseOrderController extends defaultController
 
                 DB::table("material.purorddt")
                     ->where('recno','=',$purordhd_get->recno)
+                    ->where('compcode','=',session('compcode'))
                     ->update([
                         'recstatus' => 'APPROVED',
                         'upduser' => session('username'),
@@ -889,6 +895,7 @@ class PurchaseOrderController extends defaultController
 
                 DB::table("material.queuepo")
                     ->where('recno','=',$purordhd_get->recno)
+                    ->where('compcode','=',session('compcode'))
                     ->update([
                         'recstatus' => 'APPROVED',
                         'trantype' => 'DONE',

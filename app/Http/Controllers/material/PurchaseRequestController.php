@@ -240,7 +240,7 @@ class PurchaseRequestController extends defaultController
                 }
                 //
 
-                if(!$this->skip_authorization_2($request,$purreqhd_get)){
+                // if(!$this->skip_authorization_2($request,$purreqhd_get)){
 
                     // 1. check authorization
                     // $authorise = DB::table('material.authdtl')
@@ -263,7 +263,7 @@ class PurchaseRequestController extends defaultController
                     //         ->where('maxlimit','>=',$purreqhd_get->totamount);
 
                     //         if(!$authorise->exists()){
-                    //             throw new \Exception("Authorization for this purchase request doesnt exists");
+                    //             throw new \Exception("The user doesnt have authority");
                     //         }
 
                     // }
@@ -285,10 +285,13 @@ class PurchaseRequestController extends defaultController
                     $purreqhd->update([
                             'requestby' => session('username'),
                             'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'recstatus' => 'REQUEST'
                         ]);
 
                     DB::table("material.purreqdt")
+                        ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$purreqhd_get->recno)
                         ->update([
                             'recstatus' => 'REQUEST',
@@ -305,7 +308,7 @@ class PurchaseRequestController extends defaultController
                     $data->whatsapp = '01123090948';
 
                     //$this->sendemail($data);
-                }
+                // }
             }
 
             DB::commit();
@@ -421,39 +424,41 @@ class PurchaseRequestController extends defaultController
 
                 $purreqhd_get = $purreqhd->first();
 
-                if(!$this->skip_authorization_2($request,$purreqhd_get)){
+                // if(!$this->skip_authorization_2($request,$purreqhd_get)){
+                    $authorise = DB::table('material.authdtl')
+                        ->where('authorid','=',session('username'))
+                        ->where('compcode','=',session('compcode'))
+                        ->where('trantype','=','PR')
+                        ->where('cando','=', 'ACTIVE')
+                        ->where('recstatus','=','SUPPORT')
+                        ->where('deptcode','=',$purreqhd_get->reqdept)
+                        ->where('maxlimit','>=',$purreqhd_get->totamount);
 
-                    // $authorise = DB::table('material.authdtl')
-                    //     ->where('authorid','=',session('username'))
-                    //     ->where('compcode','=',session('compcode'))
-                    //     ->where('trantype','=','PR')
-                    //     ->where('cando','=', 'ACTIVE')
-                    //     ->where('recstatus','=','SUPPORT')
-                    //     ->where('deptcode','=',$purreqhd_get->reqdept)
-                    //     ->where('maxlimit','>=',$purreqhd_get->totamount);
+                    if(!$authorise->exists()){
 
-                    // if(!$authorise->exists()){
+                        $authorise = DB::table('material.authdtl')
+                            ->where('authorid','=',session('username'))
+                            ->where('compcode','=',session('compcode'))
+                            ->where('trantype','=','PR')
+                            ->where('cando','=', 'ACTIVE')
+                            ->where('recstatus','=','SUPPORT')
+                            ->where('deptcode','=','ALL')
+                            ->where('deptcode','=','all')
+                            ->where('maxlimit','>=',$purreqhd_get->totamount);
 
-                    //     $authorise = DB::table('material.authdtl')
-                    //         ->where('authorid','=',session('username'))
-                    //         ->where('compcode','=',session('compcode'))
-                    //         ->where('trantype','=','PR')
-                    //         ->where('cando','=', 'ACTIVE')
-                    //         ->where('recstatus','=','SUPPORT')
-                    //         ->where('deptcode','=','ALL')
-                    //         ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                    //         if(!$authorise->exists()){
-                    //             throw new \Exception("Authorization for this purchase request doesnt exists",500);
-                    //         }
+                            if(!$authorise->exists()){
+                                throw new \Exception("The user doesnt have authority",500);
+                            }
                             
-                    // }
+                    }
 
-                    // $authorise_use = $authorise->first();
+                    $authorise_use = $authorise->first();
 
                     $purreqhd->update([
-                            'supportby' => session('username'),
+                            'supportby' => $authorise_use->authorid,
                             'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'recstatus' => 'SUPPORT'
                         ]);
 
@@ -476,7 +481,7 @@ class PurchaseRequestController extends defaultController
                             'adduser' => session('username'),
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
-                }
+                // }
 
 
                 // 4. email and whatsapp
@@ -513,39 +518,41 @@ class PurchaseRequestController extends defaultController
 
                 $purreqhd_get = $purreqhd->first();
 
-                if(!$this->skip_authorization_2($request,$purreqhd_get)){
+                // if(!$this->skip_authorization_2($request,$purreqhd_get)){
+                    $authorise = DB::table('material.authdtl')
+                        ->where('authorid','=',session('username'))
+                        ->where('compcode','=',session('compcode'))
+                        ->where('trantype','=','PR')
+                        ->where('cando','=', 'ACTIVE')
+                        ->where('recstatus','=','VERIFIED')
+                        ->where('deptcode','=',$purreqhd_get->reqdept)
+                        ->where('maxlimit','>=',$purreqhd_get->totamount);
 
-                    // $authorise = DB::table('material.authdtl')
-                    //     ->where('authorid','=',session('username'))
-                    //     ->where('compcode','=',session('compcode'))
-                    //     ->where('trantype','=','PR')
-                    //     ->where('cando','=', 'ACTIVE')
-                    //     ->where('recstatus','=','VERIFIED')
-                    //     ->where('deptcode','=',$purreqhd_get->reqdept)
-                    //     ->where('maxlimit','>=',$purreqhd_get->totamount);
+                    if(!$authorise->exists()){
 
-                    // if(!$authorise->exists()){
+                        $authorise = DB::table('material.authdtl')
+                            ->where('authorid','=',session('username'))
+                            ->where('compcode','=',session('compcode'))
+                            ->where('trantype','=','PR')
+                            ->where('cando','=', 'ACTIVE')
+                            ->where('recstatus','=','VERIFIED')
+                            ->where('deptcode','=','ALL')
+                            ->where('deptcode','=','all')
+                            ->where('maxlimit','>=',$purreqhd_get->totamount);
 
-                    //     $authorise = DB::table('material.authdtl')
-                    //         ->where('authorid','=',session('username'))
-                    //         ->where('compcode','=',session('compcode'))
-                    //         ->where('trantype','=','PR')
-                    //         ->where('cando','=', 'ACTIVE')
-                    //         ->where('recstatus','=','VERIFIED')
-                    //         ->where('deptcode','=','ALL')
-                    //         ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                    //         if(!$authorise->exists()){
-                    //             throw new \Exception("Authorization for this purchase request doesnt exists",500);
-                    //         }
+                            if(!$authorise->exists()){
+                                throw new \Exception("The user doesnt have authority",500);
+                            }
                             
-                    // }
+                    }
 
-                    // $authorise_use = $authorise->first();
+                    $authorise_use = $authorise->first();
 
                     $purreqhd->update([
                             'verifiedby' => session('username'),
                             'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'recstatus' => 'VERIFIED'
                         ]);
 
@@ -569,7 +576,7 @@ class PurchaseRequestController extends defaultController
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
 
-                }
+                // }
 
 
                 // 4. email and whatsapp
@@ -626,10 +633,11 @@ class PurchaseRequestController extends defaultController
                             ->where('cando','=', 'ACTIVE')
                             ->where('recstatus','=','APPROVED')
                             ->where('deptcode','=','ALL')
+                            ->where('deptcode','=','all')
                             ->where('maxlimit','>=',$purreqhd_get->totamount);
 
                             if(!$authorise->exists()){
-                                throw new \Exception("Authorization for this purchase request doesnt exists",500);
+                                throw new \Exception("The user doesnt have authority",500);
                             }
                             
                     }
