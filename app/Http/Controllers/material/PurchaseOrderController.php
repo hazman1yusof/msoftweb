@@ -325,6 +325,8 @@ class PurchaseOrderController extends defaultController
                             'requestby' => session('username'),
                             'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
                             // 'supportby' => $authorise_use->authorid,
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'recstatus' => 'REQUEST'
                         ]);
 
@@ -529,7 +531,7 @@ class PurchaseOrderController extends defaultController
                             'supportby' => $authorise_use->authorid,
                             'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'recstatus' => 'SUPPORT'
                         ]);
 
@@ -702,7 +704,7 @@ class PurchaseOrderController extends defaultController
                             'verifiedby' => $authorise_use->authorid,
                             'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'recstatus' => 'VERIFIED'
                         ]);
 
@@ -871,7 +873,7 @@ class PurchaseOrderController extends defaultController
                         'approvedby' => $authorise_use->authorid,
                         'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'recstatus' => 'VERIFIED'
                     ]);
 
