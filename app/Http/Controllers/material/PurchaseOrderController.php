@@ -195,7 +195,7 @@ class PurchaseOrderController extends defaultController
             } catch (\Exception $e) {
                 DB::rollback();
 
-                return response($e->getMessage().$e, 500);
+                return response($e->getMessage(), 500);
             }
         }else{
             DB::beginTransaction();
@@ -255,7 +255,7 @@ class PurchaseOrderController extends defaultController
             } catch (\Exception $e) {
                 DB::rollback();
 
-                return response($e->getMessage().$e, 500);
+                return response($e->getMessage(), 500);
             }
         }
 
@@ -303,7 +303,7 @@ class PurchaseOrderController extends defaultController
                     //         ->where('maxlimit','>=',$purordhd_get->totamount);
 
                     //         if(!$authorise->exists()){
-                    //             throw new \Exception("Authorization for this Purchase Order doesnt exists");
+                    //             throw new \Exception("The user doesnt have authority");
                     //         }
 
                     // }
@@ -360,7 +360,7 @@ class PurchaseOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage().$e, 500);
+            return response($e->getMessage(), 500);
         }
     }       
     
@@ -395,7 +395,7 @@ class PurchaseOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage().$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -432,7 +432,7 @@ class PurchaseOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage().$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -483,7 +483,7 @@ class PurchaseOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage().$e, 500);
+            return response($e->getMessage(), 500);
         }
     }                      
 
@@ -522,7 +522,7 @@ class PurchaseOrderController extends defaultController
                             ->where('maxlimit','>=',$purordhd_get->totamount);
 
                             if(!$authorise->exists()){
-                                throw new \Exception("Authorization for this purchase order doesnt exists",500);
+                                throw new \Exception("The user doesnt have authority",500);
                             }
                             
                     }
@@ -575,7 +575,7 @@ class PurchaseOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage().$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -609,7 +609,7 @@ class PurchaseOrderController extends defaultController
                     ->where('maxlimit','>=',$purordhd_get->totamount);
 
                     if(!$authorise->exists()){
-                        throw new \Exception("Authorization for this purchase order doesnt exists",500);
+                        throw new \Exception("The user doesnt have authority",500);
                     }
                     
             }
@@ -656,7 +656,7 @@ class PurchaseOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage().$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -695,7 +695,7 @@ class PurchaseOrderController extends defaultController
                             ->where('maxlimit','>=',$purordhd_get->totamount);
 
                             if(!$authorise->exists()){
-                                throw new \Exception("Authorization for this purchase order doesnt exists",500);
+                                throw new \Exception("The user doesnt have authority",500);
                             }
                             
                     }
@@ -746,7 +746,7 @@ class PurchaseOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage().$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -780,7 +780,7 @@ class PurchaseOrderController extends defaultController
                     ->where('maxlimit','>=',$purordhd_get->totamount);
 
                     if(!$authorise->exists()){
-                        throw new \Exception("Authorization for this purchase order doesnt exists",500);
+                        throw new \Exception("The user doesnt have authority",500);
                     }
                     
             }
@@ -827,7 +827,7 @@ class PurchaseOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage().$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -865,7 +865,7 @@ class PurchaseOrderController extends defaultController
                         ->where('maxlimit','>=',$purordhd_get->totamount);
 
                         if(!$authorise->exists()){
-                            throw new \Exception("Authorization for this purchase order doesnt exists",500);
+                            throw new \Exception("The user doesnt have authority",500);
                         }
                         
                 }
@@ -904,7 +904,7 @@ class PurchaseOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage().$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -945,7 +945,7 @@ class PurchaseOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage().$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
