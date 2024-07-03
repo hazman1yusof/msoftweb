@@ -491,10 +491,10 @@ div#fail_msg{
 									<input id="purordhd_adduser" name="purordhd_adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
 								</div>
 								
-								<div class="col-md-2 minuspad-15">
+								<!-- <div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_upduser">Last User</label>
 									<input id="purordhd_upduser" name="purordhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
-								</div>
+								</div> -->
 
 								<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_requestdate">Request Date</label>  
@@ -521,10 +521,10 @@ div#fail_msg{
 									<input id="purordhd_adddate" name="purordhd_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 								</div>
 
-								<div class="col-md-2 minuspad-15">
+								<!-- <div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_upddate">Update Date</label>
 									<input id="purordhd_upddate" name="purordhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-								</div>
+								</div> -->
 							</div>
 					</form>
 				</div>
