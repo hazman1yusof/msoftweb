@@ -267,6 +267,7 @@ class InventoryTransactionController extends defaultController
                             'amount' => $value->amount, 
                             'trandate' => $ivtmphd->trandate,
                             'sndrcv' => $ivtmphd->sndrcv,
+                            'unit'    => session('unit'),
                         ]);
 
 
