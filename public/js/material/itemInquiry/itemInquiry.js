@@ -317,19 +317,19 @@ $(document).ready(function () {
 	});
 
 	function getStockvalue(rowid,element) {
-		var openbalval = parseFloat(element.s_openbalval);
-		var netmvval1 = parseFloat(element.s_netmvval1);
-		var netmvval2 = parseFloat(element.s_netmvval2);
-		var netmvval3 = parseFloat(element.s_netmvval3);
-		var netmvval4 = parseFloat(element.s_netmvval4);
-		var netmvval5 = parseFloat(element.s_netmvval5);
-		var netmvval6 = parseFloat(element.s_netmvval6);
-		var netmvval7 = parseFloat(element.s_netmvval7);
-		var netmvval8 = parseFloat(element.s_netmvval8);
-		var netmvval9 = parseFloat(element.s_netmvval9);
-		var netmvval10 = parseFloat(element.s_netmvval10);
-		var netmvval11 = parseFloat(element.s_netmvval11);
-		var netmvval12 = parseFloat(element.s_netmvval12);
+		var openbalval = (isNaN(parseFloat(element.s_openbalval)))?0:parseFloat(element.s_openbalval);
+		var netmvval1 = (isNaN(parseFloat(element.s_netmvval1)))?0:parseFloat(element.s_netmvval1);
+		var netmvval2 = (isNaN(parseFloat(element.s_netmvval2)))?0:parseFloat(element.s_netmvval2);
+		var netmvval3 = (isNaN(parseFloat(element.s_netmvval3)))?0:parseFloat(element.s_netmvval3);
+		var netmvval4 = (isNaN(parseFloat(element.s_netmvval4)))?0:parseFloat(element.s_netmvval4);
+		var netmvval5 = (isNaN(parseFloat(element.s_netmvval5)))?0:parseFloat(element.s_netmvval5);
+		var netmvval6 = (isNaN(parseFloat(element.s_netmvval6)))?0:parseFloat(element.s_netmvval6);
+		var netmvval7 = (isNaN(parseFloat(element.s_netmvval7)))?0:parseFloat(element.s_netmvval7);
+		var netmvval8 = (isNaN(parseFloat(element.s_netmvval8)))?0:parseFloat(element.s_netmvval8);
+		var netmvval9 = (isNaN(parseFloat(element.s_netmvval9)))?0:parseFloat(element.s_netmvval9);
+		var netmvval10 = (isNaN(parseFloat(element.s_netmvval10)))?0:parseFloat(element.s_netmvval10);
+		var netmvval11 = (isNaN(parseFloat(element.s_netmvval11)))?0:parseFloat(element.s_netmvval11);
+		var netmvval12 = (isNaN(parseFloat(element.s_netmvval12)))?0:parseFloat(element.s_netmvval12);
 
 		var total = openbalval + netmvval1 + netmvval2 + netmvval3 + netmvval4 + netmvval5 + netmvval6 + netmvval7 + netmvval8+ netmvval9 + netmvval10 + netmvval11 + netmvval12;
 
@@ -580,7 +580,7 @@ $(document).ready(function () {
 						}
 					});
 	            }
-	            
+
 	            if(isNaN(accumqty)){
 	            	accumqty = 0;
 	            }if(isNaN(accumval)){
