@@ -876,7 +876,7 @@ class PurchaseOrderController extends defaultController
                         'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'recstatus' => 'VERIFIED'
+                        'recstatus' => 'APPROVED'
                     ]);
 
                 DB::table("material.purorddt")
