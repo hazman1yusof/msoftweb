@@ -467,7 +467,7 @@ div#fail_msg{
 
 							<div class="form-group data_info">
 								<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purordhd_requestby">Request By</label>  
+									<label class="control-label" for="purordhd_requestby">Posted By</label>  
 									<input id="purordhd_requestby" name="purordhd_requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 								</div>
 
@@ -497,7 +497,7 @@ div#fail_msg{
 								</div>
 
 								<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purordhd_requestdate">Request Date</label>  
+									<label class="control-label" for="purordhd_requestdate">Posted Date</label>  
 									<input id="purordhd_requestdate" name="purordhd_requestdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 								</div>
 
