@@ -281,6 +281,7 @@ class TestController extends defaultController
 
     public function set_class(Request $request){
         $product = DB::table('material.product')
+                    ->select('product.idno','product.itemcode','product.description','product.productcat','product.Class as p_class','category.Class as c_class')
                     ->leftJoin('material.category', function($join){
                         $join = $join->where('category.compcode','9B');
                         $join = $join->on('category.catcode','product.productcat');
@@ -288,7 +289,16 @@ class TestController extends defaultController
                     ->where('product.compcode','9B')
                     ->get();
 
-        dd($product);
+        foreach ($product as $key => $value) {
+            if(empty($value->p_class)){
+                DB::table('product')
+                    ->where('compcode','9B')
+                    ->where('idno',$value->idno)
+                    ->update([
+                        'Class' => $value->c_class
+                    ]);
+            }
+        }
     }
 
 }
