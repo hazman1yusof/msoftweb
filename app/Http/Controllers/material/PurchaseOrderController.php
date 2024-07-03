@@ -100,6 +100,8 @@ class PurchaseOrderController extends defaultController
                 'unit' => session('unit'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now(),
+                'upduser' => session('username'),
+                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'recstatus' => 'OPEN'
             ];
 
