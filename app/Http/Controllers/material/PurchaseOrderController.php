@@ -279,61 +279,61 @@ class PurchaseOrderController extends defaultController
 
                 if(!$this->skip_authorization_2($request,$purordhd_get)){
 
-                    // 1. check authorization
-                    $authorise = DB::table('material.authdtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('trantype','=','PO')
-                        ->where('cando','=', 'ACTIVE')
-                        ->where('recstatus','=','SUPPORT')
-                        ->where('deptcode','=',$purordhd_get->prdept)
-                        ->where('maxlimit','>=',$purordhd_get->totamount);
+                    // // 1. check authorization
+                    // $authorise = DB::table('material.authdtl')
+                    //     ->where('compcode','=',session('compcode'))
+                    //     ->where('trantype','=','PO')
+                    //     ->where('cando','=', 'ACTIVE')
+                    //     ->where('recstatus','=','SUPPORT')
+                    //     ->where('deptcode','=',$purordhd_get->prdept)
+                    //     ->where('maxlimit','>=',$purordhd_get->totamount);
 
-                    if(!$authorise->exists()){
+                    // if(!$authorise->exists()){
 
-                        $authorise = DB::table('material.authdtl')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('trantype','=','PO')
-                            ->where('cando','=', 'ACTIVE')
-                            ->where('recstatus','=','SUPPORT')
-                            ->where('deptcode','=','ALL')
-                            ->where('deptcode','=','all')
-                            ->where('maxlimit','>=',$purordhd_get->totamount);
+                    //     $authorise = DB::table('material.authdtl')
+                    //         ->where('compcode','=',session('compcode'))
+                    //         ->where('trantype','=','PO')
+                    //         ->where('cando','=', 'ACTIVE')
+                    //         ->where('recstatus','=','SUPPORT')
+                    //         ->where('deptcode','=','ALL')
+                    //         ->where('deptcode','=','all')
+                    //         ->where('maxlimit','>=',$purordhd_get->totamount);
 
-                            if(!$authorise->exists()){
-                                throw new \Exception("Authorization for this Purchase Order doesnt exists");
-                            }
+                    //         if(!$authorise->exists()){
+                    //             throw new \Exception("Authorization for this Purchase Order doesnt exists");
+                    //         }
 
-                    }
+                    // }
 
-                    $authorise_use = $authorise->first();
-                    DB::table("material.queuepo")
-                        ->insert([
-                            'compcode' => session('compcode'),
-                            'recno' => $purordhd_get->recno,
-                            'AuthorisedID' => $authorise_use->authorid,
-                            'deptcode' => $purordhd_get->prdept,
-                            'recstatus' => 'REQUEST',
-                            'trantype' => 'SUPPORT',
-                            'adduser' => session('username'),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
+                    // $authorise_use = $authorise->first();
+                    // DB::table("material.queuepo")
+                    //     ->insert([
+                    //         'compcode' => session('compcode'),
+                    //         'recno' => $purordhd_get->recno,
+                    //         'AuthorisedID' => session('username'),
+                    //         'deptcode' => $purordhd_get->prdept,
+                    //         'recstatus' => 'REQUEST',
+                    //         'trantype' => 'SUPPORT',
+                    //         'adduser' => session('username'),
+                    //         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    //     ]);
 
-                    // 3. change recstatus to posted
-                    $purordhd
-                        ->update([
-                            'requestby' => session('username'),
-                            'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'supportby' => $authorise_use->authorid,
-                            'recstatus' => 'REQUEST'
-                        ]);
+                    // // 3. change recstatus to posted
+                    // $purordhd
+                    //     ->update([
+                    //         'requestby' => session('username'),
+                    //         'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    //         // 'supportby' => $authorise_use->authorid,
+                    //         'recstatus' => 'REQUEST'
+                    //     ]);
 
-                    DB::table("material.purorddt")
-                        ->where('recno','=',$purordhd_get->recno)
-                        ->update([
-                            'recstatus' => 'REQUEST',
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
+                    // DB::table("material.purorddt")
+                    //     ->where('recno','=',$purordhd_get->recno)
+                    //     ->update([
+                    //         'recstatus' => 'REQUEST',
+                    //         'upduser' => session('username'),
+                    //         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    //     ]);
 
 
                     // 4. email and whatsapp
@@ -495,56 +495,57 @@ class PurchaseOrderController extends defaultController
                 $purordhd_get = $purordhd->first();
 
                 if(!$this->skip_authorization_2($request,$purordhd_get)){
-                    $authorise = DB::table('material.authdtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('trantype','=','PO')
-                        ->where('cando','=', 'ACTIVE')
-                        ->where('recstatus','=','VERIFIED')
-                        ->where('deptcode','=',$purordhd_get->prdept)
-                        ->where('maxlimit','>=',$purordhd_get->totamount);
+                    // $authorise = DB::table('material.authdtl')
+                    //     ->where('compcode','=',session('compcode'))
+                    //     ->where('authorid','=',session('username'))
+                    //     ->where('trantype','=','PO')
+                    //     ->where('cando','=', 'ACTIVE')
+                    //     ->where('recstatus','=','SUPPORT')
+                    //     ->where('deptcode','=',$purordhd_get->prdept)
+                    //     ->where('maxlimit','>=',$purordhd_get->totamount);
 
-                    if(!$authorise->exists()){
+                    // if(!$authorise->exists()){
 
-                        $authorise = DB::table('material.authdtl')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('trantype','=','PO')
-                            ->where('cando','=', 'ACTIVE')
-                            ->where('recstatus','=','VERIFIED')
-                            ->where('deptcode','=','ALL')
-                            ->where('deptcode','=','all')
-                            ->where('maxlimit','>=',$purordhd_get->totamount);
+                    //     $authorise = DB::table('material.authdtl')
+                    //         ->where('compcode','=',session('compcode'))
+                    //         ->where('trantype','=','PO')
+                    //         ->where('cando','=', 'ACTIVE')
+                    //         ->where('recstatus','=','VERIFIED')
+                    //         ->where('deptcode','=','ALL')
+                    //         ->where('deptcode','=','all')
+                    //         ->where('maxlimit','>=',$purordhd_get->totamount);
 
-                            if(!$authorise->exists()){
-                                throw new \Exception("Authorization for this purchase order doesnt exists",500);
-                            }
+                    //         if(!$authorise->exists()){
+                    //             throw new \Exception("Authorization for this purchase order doesnt exists",500);
+                    //         }
                             
-                    }
+                    // }
 
-                    $authorise_use = $authorise->first();
+                    // $authorise_use = $authorise->first();
 
-                    $purordhd->update([
-                            'verifiedby' => $authorise_use->authorid,
-                            'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'recstatus' => 'SUPPORT'
-                        ]);
+                    // $purordhd->update([
+                    //         'verifiedby' => $authorise_use->authorid,
+                    //         'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    //         'recstatus' => 'SUPPORT'
+                    //     ]);
 
-                    DB::table("material.purorddt")
-                        ->where('recno','=',$purordhd_get->recno)
-                        ->update([
-                            'recstatus' => 'SUPPORT',
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
+                    // DB::table("material.purorddt")
+                    //     ->where('recno','=',$purordhd_get->recno)
+                    //     ->update([
+                    //         'recstatus' => 'SUPPORT',
+                    //         'upduser' => session('username'),
+                    //         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    //     ]);
 
-                    DB::table("material.queuepo")
-                        ->where('recno','=',$purordhd_get->recno)
-                        ->update([
-                            'AuthorisedID' => $authorise_use->authorid,
-                            'recstatus' => 'SUPPORT',
-                            'trantype' => 'VERIFIED',
-                            'adduser' => session('username'),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
+                    // DB::table("material.queuepo")
+                    //     ->where('recno','=',$purordhd_get->recno)
+                    //     ->update([
+                    //         'AuthorisedID' => $authorise_use->authorid,
+                    //         'recstatus' => 'SUPPORT',
+                    //         'trantype' => 'VERIFIED',
+                    //         'adduser' => session('username'),
+                    //         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    //     ]);
                 }
             }
 
@@ -664,56 +665,56 @@ class PurchaseOrderController extends defaultController
                 $purordhd_get = $purordhd->first();
 
                 if(!$this->skip_authorization_2($request,$purordhd_get)){
-                    $authorise = DB::table('material.authdtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('trantype','=','PO')
-                        ->where('cando','=', 'ACTIVE')
-                        ->where('recstatus','=','APPROVED')
-                        ->where('deptcode','=',$purordhd_get->reqdept)
-                        ->where('maxlimit','>=',$purordhd_get->totamount);
+                    // $authorise = DB::table('material.authdtl')
+                    //     ->where('compcode','=',session('compcode'))
+                    //     ->where('trantype','=','PO')
+                    //     ->where('cando','=', 'ACTIVE')
+                    //     ->where('recstatus','=','APPROVED')
+                    //     ->where('deptcode','=',$purordhd_get->reqdept)
+                    //     ->where('maxlimit','>=',$purordhd_get->totamount);
 
-                    if(!$authorise->exists()){
+                    // if(!$authorise->exists()){
 
-                        $authorise = DB::table('material.authdtl')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('trantype','=','PO')
-                            ->where('cando','=', 'ACTIVE')
-                            ->where('recstatus','=','APPROVED')
-                            ->where('deptcode','=','ALL')
-                            ->where('deptcode','=','all')
-                            ->where('maxlimit','>=',$purordhd_get->totamount);
+                    //     $authorise = DB::table('material.authdtl')
+                    //         ->where('compcode','=',session('compcode'))
+                    //         ->where('trantype','=','PO')
+                    //         ->where('cando','=', 'ACTIVE')
+                    //         ->where('recstatus','=','APPROVED')
+                    //         ->where('deptcode','=','ALL')
+                    //         ->where('deptcode','=','all')
+                    //         ->where('maxlimit','>=',$purordhd_get->totamount);
 
-                            if(!$authorise->exists()){
-                                throw new \Exception("Authorization for this purchase order doesnt exists",500);
-                            }
+                    //         if(!$authorise->exists()){
+                    //             throw new \Exception("Authorization for this purchase order doesnt exists",500);
+                    //         }
                             
-                    }
+                    // }
 
-                    $authorise_use = $authorise->first();
+                    // $authorise_use = $authorise->first();
 
-                    $purordhd->update([
-                            'approvedby' => $authorise_use->authorid,
-                            'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'recstatus' => 'VERIFIED'
-                        ]);
+                    // $purordhd->update([
+                    //         'approvedby' => $authorise_use->authorid,
+                    //         'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    //         'recstatus' => 'VERIFIED'
+                    //     ]);
 
-                    DB::table("material.purorddt")
-                        ->where('recno','=',$purordhd_get->recno)
-                        ->update([
-                            'recstatus' => 'VERIFIED',
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
+                    // DB::table("material.purorddt")
+                    //     ->where('recno','=',$purordhd_get->recno)
+                    //     ->update([
+                    //         'recstatus' => 'VERIFIED',
+                    //         'upduser' => session('username'),
+                    //         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    //     ]);
 
-                    DB::table("material.queuepo")
-                        ->where('recno','=',$purordhd_get->recno)
-                        ->update([
-                            'AuthorisedID' => $authorise_use->authorid,
-                            'recstatus' => 'VERIFIED',
-                            'trantype' => 'APPROVED',
-                            'adduser' => session('username'),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
+                    // DB::table("material.queuepo")
+                    //     ->where('recno','=',$purordhd_get->recno)
+                    //     ->update([
+                    //         'AuthorisedID' => $authorise_use->authorid,
+                    //         'recstatus' => 'VERIFIED',
+                    //         'trantype' => 'APPROVED',
+                    //         'adduser' => session('username'),
+                    //         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    //     ]);
                 }
             }
 
@@ -1260,33 +1261,33 @@ class PurchaseOrderController extends defaultController
                 
             }
 
-            if(!empty($array_update['approvedby'])){
-                $recstatus = 'APPROVED';
-                $recstatus_after = 'DONE';
-                $array_update['recstatus'] = 'APPROVED';
-                $array_update['supportby'] = session('username');
-                $array_update['supportdate'] = Carbon::now("Asia/Kuala_Lumpur");
-                $array_update['verifiedby'] = session('username');
-                $array_update['verifieddate'] = Carbon::now("Asia/Kuala_Lumpur");
-                $array_update['approvedby'] = session('username');
-                $array_update['approveddate'] = Carbon::now("Asia/Kuala_Lumpur");
-            }else if(!empty($array_update['verifiedby'])){
-                $recstatus = 'VERIFIED';
-                $recstatus_after = 'APPROVED';
-                $array_update['recstatus'] = 'VERIFIED';
-                $array_update['supportby'] = session('username');
-                $array_update['supportdate'] = Carbon::now("Asia/Kuala_Lumpur");
-                $array_update['verifiedby'] = session('username');
-                $array_update['verifieddate'] = Carbon::now("Asia/Kuala_Lumpur");
-            }else if(!empty($array_update['supportby'])){
-                $recstatus = 'SUPPORT';
-                $recstatus_after = 'VERIFIED';
-                $array_update['recstatus'] = 'SUPPORT';
-                $array_update['supportby'] = session('username');
-                $array_update['supportdate'] = Carbon::now("Asia/Kuala_Lumpur");
-            }else{
-                return false;
-            }
+            // if(!empty($array_update['approvedby'])){
+            //     $recstatus = 'APPROVED';
+            //     $recstatus_after = 'DONE';
+            //     $array_update['recstatus'] = 'APPROVED';
+            //     $array_update['supportby'] = session('username');
+            //     $array_update['supportdate'] = Carbon::now("Asia/Kuala_Lumpur");
+            //     $array_update['verifiedby'] = session('username');
+            //     $array_update['verifieddate'] = Carbon::now("Asia/Kuala_Lumpur");
+            //     $array_update['approvedby'] = session('username');
+            //     $array_update['approveddate'] = Carbon::now("Asia/Kuala_Lumpur");
+            // }else if(!empty($array_update['verifiedby'])){
+            //     $recstatus = 'VERIFIED';
+            //     $recstatus_after = 'APPROVED';
+            //     $array_update['recstatus'] = 'VERIFIED';
+            //     $array_update['supportby'] = session('username');
+            //     $array_update['supportdate'] = Carbon::now("Asia/Kuala_Lumpur");
+            //     $array_update['verifiedby'] = session('username');
+            //     $array_update['verifieddate'] = Carbon::now("Asia/Kuala_Lumpur");
+            // }else if(!empty($array_update['supportby'])){
+            //     $recstatus = 'SUPPORT';
+            //     $recstatus_after = 'VERIFIED';
+            //     $array_update['recstatus'] = 'SUPPORT';
+            //     $array_update['supportby'] = session('username');
+            //     $array_update['supportdate'] = Carbon::now("Asia/Kuala_Lumpur");
+            // }else{
+            //     return false;
+            // }
 
             DB::table("material.purordhd")
                 ->where('idno',$idno)
