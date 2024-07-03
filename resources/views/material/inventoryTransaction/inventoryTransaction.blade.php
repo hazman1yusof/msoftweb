@@ -236,9 +236,9 @@ i.fa {
 						  			<div class="col-md-2 selectContainer" id="sndrcvtype_parent">
 						  				<select id="sndrcvtype" name="sndrcvtype" class="form-control" data-validation="required" data-validation-error-msg="Please Enter Value">
 							  				<option value="">PLEASE SELECT</option>
-											<option value="Department">DEPARTMENT</option>
-											<option value="Supplier">SUPPLIER</option>
-											<option value="Other">OTHER</option>
+											<option value="DEPARTMENT">DEPARTMENT</option>
+											<option value="SUPPLIER">SUPPLIER</option>
+											<option value="OTHER">OTHER</option>
 									    </select>
 						  			</div>
 

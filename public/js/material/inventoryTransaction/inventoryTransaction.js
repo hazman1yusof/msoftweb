@@ -245,7 +245,7 @@ $(document).ready(function () {
 			// }
 
 			urlParam2.filterVal[0]=selrowData("#jqGrid").recno; 
-			urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode no = ','s.year no ='],[]];
+			urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode = ','s.year ='],[]];
 			urlParam2.join_filterVal = [['s.uomcode',selrowData("#jqGrid").txndept,moment(selrowData("#jqGrid").trandate).year()],[]];
 			
 			populate_form(selrowData("#jqGrid"));
@@ -416,7 +416,7 @@ $(document).ready(function () {
 			$("#srcdocno_parent").show();
 			$("#srcdocno").attr('required',true);
 
-			$("#sndrcvtype option[value='Department']").show();
+			$("#sndrcvtype option[value='DEPARTMENT']").show();
 			$("#sndrcvtype option[value='Supplier'], #sndrcvtype option[value='Other']").hide();
 
 			$("#sndrcv").attr('data-validation', 'required');
@@ -592,7 +592,7 @@ $(document).ready(function () {
 				$('#adddate').val(data.adddate);
 				
 				urlParam2.filterVal[0] = data.recno; 
-				urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode no = ','s.year no ='],[]];
+				urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode = ','s.year ='],[]];
 				urlParam2.join_filterVal = [['s.uomcode',$('#txndept').val(),moment($('#trandate').val()).year()],[]];
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
@@ -1155,6 +1155,13 @@ $(document).ready(function () {
 		        dialog_itemcode.check(errorField,ids[i]+"_itemcode","jqGrid2",null,
 		        	function(self){
 		        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			        },function(data,self){
+			        	if(data.rows.length > 0){
+							$("#jqGrid2 #"+self.id_optid+"_maxqty").val(data.rows[0].s_maxqty);
+							$("#jqGrid2 #"+self.id_optid+"_netprice").val(data.rows[0].p_avgcost);
+							$("#jqGrid2 #"+self.id_optid+"_convfactoruomcodetrdept").val(data.rows[0].u_convfactor);
+							$("#jqGrid2 #"+self.id_optid+"_qtyonhand").val(data.rows[0].s_qtyonhand);
+			        	}
 			        }
 			    );
 
@@ -1569,8 +1576,8 @@ $(document).ready(function () {
 		let crdbfl=$('#crdbfl').val();
 		let isstype=$('#isstype').val();
 		if(event.target.name=='txnqty'){
-			switch(crdbfl){
-				case "Out":
+			switch(crdbfl.toUpperCase()){
+				case "OUT":
 					if(event.target.value >= qtyonhand && isstype=='Others'){
 						fail_msg = "Transaction Quantity Cannot be greater than Quantity On Hand";
 						event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
@@ -1582,7 +1589,7 @@ $(document).ready(function () {
 						event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
 					}
 					break;
-				case "In":
+				case "IN":
 					if(event.target.name == 0 && isstype=='Others'){
 						fail_msg = "Transaction Quantity Cannot Be Zero";
 						event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
@@ -1592,7 +1599,7 @@ $(document).ready(function () {
 					break;
 			}
 		}else{
-			if(crdbfl=='Out'&&event.target.value==0){
+			if(crdbfl=='OUT'&&event.target.value==0){
 				fail_msg = "Net Price Cannot Be Zero";
 				event.target.value='0.00';fail=true;
 			}
@@ -2135,26 +2142,32 @@ $(document).ready(function () {
 	var dialog_requestRecNo = new ordialog(
 		'srcdocno','material.ivreqhd','#srcdocno','errorField',
 		{	colModel:[
-				{label:'Request RecNo',name:'recno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Remarks',name:'remarks',width:100,classes:'pointer', hidden:true},
-				{label:'Record Status',name:'recstatus',width:400,classes:'pointer', hidden:true},
-				{label:'reqdept',name:'reqdept', hidden:true},
+				{label:'Request RecNo',name:'recno',width:50,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Record Status',name:'recstatus',classes:'pointer', hidden:true},
+				{label:'Request Department',width:200,name:'reqdept',canSearch:true},
+				{label:'Request Date',width:50,name:'reqdt'},
+				{label:'Remarks',name:'remarks',width:200,classes:'pointer'},
 			],
 			sortname: 'recno',
 			sortorder: "desc",
 			urlParam: {
-				filterCol:['compcode', 'reqdept'],
-				filterVal:['session.compcode',  $("#sndrcv").val()],
+				filterCol:['compcode', 'reqtodept'],
+				filterVal:['session.compcode',$("#txndept").val()],
 				WhereInCol:['recstatus'],
 				WhereInVal:[['PARTIAL','POSTED']]
 			},	
 			ondblClickRow:function(){
 				let data = selrowData('#' + dialog_requestRecNo.gridname);
 				
-				$("#recstatus").val(data['recstatus']);
+				$("#recstatus").val('ACTIVE');
 				$("#remarks").val(data['remarks']);
 				$('#referral').val(data['recno']);
 				$('#sndrcv').val(data['reqdept']);
+				$('#trantype').val('TR');
+				inputTrantypeValue('TRANSFER','IN');
+				$('#crdbfl').val('TRANSFER');
+				$('#isstype').val('IN');
+				$('#sndrcvtype').val('DEPARTMENT');
 				$('#sndrcvtype').focus();
 
 				var urlParam2 = {
@@ -2168,8 +2181,8 @@ $(document).ready(function () {
 					join_type: ['LEFT JOIN', 'LEFT JOIN'],
 					join_onCol: ['ivdt.itemcode', 'ivdt.itemcode'],
 					join_onVal: ['s.itemcode', 'p.itemcode'],
-					join_filterCol : [['ivdt.reqdept on =','ivdt.uomcode on =']],
-					join_filterVal : [['s.deptcode','s.uomcode']],
+					join_filterCol : [['ivdt.reqdept on =','ivdt.uomcode on =','s.year =','s.unit =']],
+					join_filterVal : [['s.deptcode','s.uomcode',moment().year(),'session.unit']],
 					filterCol: ['ivdt.recno', 'ivdt.compcode', 'ivdt.recstatus'],
 					filterVal: [data['recno'], 'session.compcode', '<>.DELETE'],
 					sortby:['lineno_ desc']
@@ -2201,7 +2214,6 @@ $(document).ready(function () {
 								);
 							
 						});
-						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
 					} else {
 
@@ -2222,8 +2234,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Request RecNo",
 			open: function(){
-				dialog_requestRecNo.urlParam.filterCol=['compcode', 'reqdept'];
-				dialog_requestRecNo.urlParam.filterVal=['session.compcode', $("#sndrcv").val()];
+				dialog_requestRecNo.urlParam.filterCol=['compcode', 'reqtodept'];
+				dialog_requestRecNo.urlParam.filterVal=['session.compcode', $("#txndept").val()];
 				dialog_requestRecNo.urlParam.WhereInCol = ['recstatus'];
 				dialog_requestRecNo.urlParam.WhereInVal = [['PARTIAL','POSTED']];
 			}

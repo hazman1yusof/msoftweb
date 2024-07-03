@@ -2196,7 +2196,7 @@ $(document).ready(function () {
 							}
 						});
 						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-        				calc_jq_height_onchange("jqGrid2",false,1200);
+						calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 
 					} else {
 

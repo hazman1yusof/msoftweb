@@ -45,6 +45,7 @@ class InventoryTransactionController extends defaultController
     }
 
     public function add(Request $request){
+        //invTran_save
 
         DB::beginTransaction();
         if(!empty($request->fixPost)){
@@ -99,7 +100,7 @@ class InventoryTransactionController extends defaultController
             if(!empty($request->referral)){
                 ////ni kalu dia amik dari ivreq
                 ////amik detail dari ivreq sana, save dkt ivreqdt, amik total amount
-                $totalAmount = $this->save_dt_from_othr_ivreq($request->referral,$recno);
+                $totalAmount = $this->save_dt_from_othr_ivreq($request->referral,$recno,$request_no);
 
                 $ivreqno = $request->ivreqno;
 
@@ -416,7 +417,7 @@ class InventoryTransactionController extends defaultController
         
     }
 
-    public function save_dt_from_othr_ivreq($refer_recno,$recno){
+    public function save_dt_from_othr_ivreq($refer_recno,$recno,$request_no){
         $ivreq_dt = DB::table('material.ivreqdt')
                 ->select('compcode', 'recno', 'lineno_', 'itemcode', 'uomcode', 'pouom',
                 'maxqty', 'qtyonhand', 'qtyrequest', 'qtybalance', 'qtytxn', 'qohconfirm', 'reqdept', 'ivreqno',
@@ -433,6 +434,7 @@ class InventoryTransactionController extends defaultController
                         'compcode' => session('compcode'), 
                         'recno' => $recno, 
                         'lineno_' => $value->lineno_, 
+                        'ivreqno' => $refer_recno,
                         'reqdept' => $value->reqdept, 
                         'ivreqno' => $value->ivreqno,
                         'reqlineno' => $value->lineno_,
@@ -440,16 +442,16 @@ class InventoryTransactionController extends defaultController
                         'uomcode' => $value->uomcode, 
                         'uomcoderecv' => $value->pouom, 
                         'txnqty' => $value->qtytxn, 
-                        'qtyrequest' => $value->qtyrequest, 
-                        'qtybalance' => $value->qtybalance, 
+                        'qtyrequest' => $value->qtyrequest,
                         'netprice' => $value->netprice, 
+                        // 'amount' => $value->,
+                        'recstatus' => 'ACTIVE',
+                        'unit' => session('unit'),
                        // 'maxqty' => $value->maxqty, 
                         'adduser' => session('username'), 
-                        'adddate' => Carbon::now(), 
-                        'recstatus' => 'ACTIVE', 
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     ]);
-        
-                    
+
                 }
     }
 
@@ -492,7 +494,7 @@ class InventoryTransactionController extends defaultController
             if($ivreqhd->exists()){
                 $ivreqhd = $ivreqhd->first();
                 $ivreqdt = DB::table('material.ivreqdt')
-                            ->where('ivreqno','=',$ivreqhd->ivreqno)
+                            ->where('recno','=',$ivtmphd->srcdocno)
                             ->where('compcode', '=', session('compcode'))
                             ->where('recstatus', '<>', 'DELETE');
 
@@ -504,23 +506,26 @@ class InventoryTransactionController extends defaultController
                         $ivtmpdt = DB::table('material.ivtmpdt')
                             ->where('compcode', '=', session('compcode'))
                             ->where('recno','=',$ivtmphd->recno)
-                            ->where('reqlineno','=',$value->lineno_)
-                            ->first();
+                            ->where('reqlineno','=',$value->lineno_);
 
-                        $qtytxn = $ivtmpdt->txnqty;
-                        $qtybalance = $value->qtybalance;
+                        if($ivtmpdt->exists()){
+                            $ivtmpdt = $ivtmpdt->first();
 
-                        $newbalance = intval($qtybalance) - intval($qtytxn);
-                        if($newbalance > 0){
-                            $status = 'PARTIAL';
+                            $qtytxn = $ivtmpdt->txnqty;
+                            $qtybalance = $value->qtybalance;
+
+                            $newbalance = intval($qtybalance) - intval($qtytxn);
+                            if($newbalance > 0){
+                                $status = 'PARTIAL';
+                            }
+
+                            DB::table('material.ivreqdt')
+                                ->where('idno','=',$value->idno)
+                                ->update([
+                                    'recstatus' => $status,
+                                    'qtybalance' => $newbalance
+                                ]);
                         }
-
-                        DB::table('material.ivreqdt')
-                            ->where('idno','=',$value->idno)
-                            ->update([
-                                'recstatus' => $status,
-                                'qtybalance' => $newbalance
-                            ]);
                     }
                     
                     DB::table('material.ivreqhd')

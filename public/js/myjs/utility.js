@@ -158,7 +158,7 @@ function populateFormdata(grid,dialog,form,selRowId,state,except){
 		return emptyFormdata([],form);
 	}
 	if(except == undefined)except = [];
-	rowData = $(grid).jqGrid ('getRowData', selRowId);
+	var rowData = $(grid).jqGrid ('getRowData', selRowId);
 	$.each(rowData, function( index, value ) {
 		var input=$(form+" [name='"+index+"']");
 		if(input.is("[type=radio]")){

@@ -30,6 +30,8 @@ class TestController extends defaultController
                 return $this->insert_phst($request);
             case 'debtortype_xde':
                 return $this->debtortype_xde($request);
+            case 'set_class':
+                return $this->set_class($request);
             default:
                 return 'error happen..';
         }
@@ -275,6 +277,18 @@ class TestController extends defaultController
             DB::rollback();
             dd($e);
         }
+    }
+
+    public function set_class(Request $request){
+        $product = DB::table('material.product')
+                    ->leftJoin('material.category', function($join){
+                        $join = $join->where('category.compcode','9B');
+                        $join = $join->on('category.catcode','product.productcat');
+                    })
+                    ->where('product.compcode','9B')
+                    ->get();
+
+        dd($product);
     }
 
 }

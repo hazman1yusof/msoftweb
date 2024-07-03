@@ -262,8 +262,53 @@ class InventoryTransactionDetailController extends defaultController
             $request->expdate = $this->null_date($request->expdate);
 
 
+            $ivtmphd = DB::table('material.ivtmphd')
+                            ->where('unit',session('unit'))
+                            ->where('compcode','=',session('compcode'))
+                            ->where('recno','=',$request->recno)
+                            ->first();
 
             foreach ($request->dataobj as $key => $value) {
+
+                // $stockloc_ = DB::table('material.stockloc as st')
+                //                 ->select('st.itemcode','p.description','st.qtyonhand','st.uomcode','st.maxqty','p.avgcost','u.convfactor')
+                //                 ->leftJoin('material.product as p', function($join) use ($request){
+                //                     $join = $join->on('p.itemcode', '=', 'st.itemcode')
+                //                             ->on('p.uomcode', '=', 'st.uomcode')
+                //                             ->where('p.compcode','=',session('compcode'))
+                //                             ->where('p.unit','=',session('unit'));
+                //                 })
+                //                 ->leftJoin('material.uom as u', function($join) use ($request){
+                //                     $join = $join->on('p.uomcode', '=', 'st.uomcode')
+                //                             ->where('u.compcode','=',session('compcode'));
+                //                 })
+                //                 ->where('st.itemcode',$value['itemcode'])
+                //                 ->where('st.uomcode',$value['uomcode'])
+                //                 ->where('st.unit',session('unit'))
+                //                 ->where('st.year',Carbon::now("Asia/Kuala_Lumpur")->format('Y'))
+                //                 ->where('st.deptcode',$ivtmphd->txndept);
+
+                // if(!empty($ivtmphd->sndrcv)){
+                //     $stockloc_rcv = DB::table('material.stockloc as st')
+                //                     ->select('st.itemcode','p.description','st.qtyonhand','st.uomcode','st.maxqty','p.avgcost','u.convfactor')
+                //                     ->leftJoin('material.product as p', function($join) use ($request){
+                //                         $join = $join->on('p.itemcode', '=', 'st.itemcode')
+                //                                 ->on('p.uomcode', '=', 'st.uomcode')
+                //                                 ->where('p.compcode','=',session('compcode'))
+                //                                 ->where('p.unit','=',session('unit'));
+                //                     })
+                //                     ->leftJoin('material.uom as u', function($join) use ($request){
+                //                         $join = $join->on('p.uomcode', '=', 'st.uomcode')
+                //                                 ->where('u.compcode','=',session('compcode'));
+                //                     })
+                //                     ->where('st.itemcode',$value['itemcode'])
+                //                     ->where('st.uomcode',$value['uomcoderecv'])
+                //                     ->where('st.compcode',session('compcode'))
+                //                     ->where('st.unit',session('unit'))
+                //                     ->where('st.year',Carbon::now("Asia/Kuala_Lumpur")->format('Y'))
+                //                     ->where('st.deptcode',$ivtmphd->sndrcv);
+                // }
+
                 ///1. update detail
                 DB::table('material.ivtmpdt')
                     ->where('compcode','=',session('compcode'))
