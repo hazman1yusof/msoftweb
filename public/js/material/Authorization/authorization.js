@@ -94,8 +94,8 @@ $(document).ready(function () {
 			dialog_authorid.off();
 			$(".noti").empty();
 			$("#refresh_jqGrid").click();
-			refreshGrid("#jqGrid2",null,"kosongkan");
-			refreshGrid("#gridAuthdtl",null,"kosongkan");
+			// refreshGrid("#jqGrid2",null,"kosongkan");
+			// refreshGrid("#gridAuthdtl",null,"kosongkan");
 			
 		},
 	  });
@@ -691,6 +691,8 @@ var dialog_authorid = new ordialog(
 				$("#password").val(data['password']).attr('type','password');
 				$("#deptcode").val(data['dept']);
 				$('#deptcode').focus();
+
+			urlParam2.filterVal[1]=data['username'];
 		},
 		gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
@@ -933,7 +935,7 @@ $("#gridAuthdtl").jqGrid({
 				 editable: true,
                      edittype: "select",
                      editoptions: {
-                         value: "REQUEST:REQUEST;SUPPORT:SUPPORT;VERIFIED:VERIFIED;APPROVED:APPROVED"
+                         value: "SUPPORT:SUPPORT;VERIFIED:VERIFIED;APPROVED:APPROVED"
                      }
 			},
 			{ label: 'Recstatus', name: 'dtl_cando', width: 150, classes: 'wrap', canSearch: true, editable: true,
