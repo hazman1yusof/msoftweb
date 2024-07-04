@@ -2339,10 +2339,14 @@ function attachment_page(page,grid,idno){
     }
 }
 
-function scrollto_topbtm(){
-    $('div#jqGrid2_c').on('mouseenter',function(){
-        SmoothScrollTo('div#jqGrid2_c', 300);
-    });
+function scrollto_topbtm(pad=150){
+	$('div#gbox_jqGrid2').on('mouseenter',function(){
+    calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-pad);
+  });
+
+  $('div#jqGrid2_c').on('mouseenter',function(){
+    SmoothScrollTo('div#jqGrid2_c', 300);
+  });
 }
 
 
