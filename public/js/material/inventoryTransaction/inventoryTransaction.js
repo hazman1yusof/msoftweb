@@ -1049,7 +1049,17 @@ $(document).ready(function () {
 	    	$("#jqGridPager2Delete").show();
         },
 		beforeSaveRow: function (options, rowid) {
-        	if(errorField.length>0)return false;
+			if($("label[for=srcdocno]").is(":hidden")){
+				if($.inArray(rowid+"_uomcoderecv",errorField)!==-1){
+					errorField.splice($.inArray(rowid+"_uomcoderecv",errorField), 1);
+				}
+				if($.inArray(rowid+"_qtyonhand",errorField)!==-1){
+					errorField.splice($.inArray(rowid+"_qtyonhand",errorField), 1);
+				}
+				if(errorField.length>0)return false;
+			}else{
+        		if(errorField.length>0)return false;
+			}
 			mycurrency2.formatOff();
 			mycurrency_np.formatOff();
 
@@ -1564,6 +1574,11 @@ $(document).ready(function () {
 
 	////////////////////////////////////////calculate amount////////////////////////////
 	function calculate_amount_and_other(event){
+
+		if(event.target.value == 0){
+			errorIt(event.target.name,errorField,true,"Transaction Quantity Cannot Be Zero");
+			return false;
+		}
 
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));

@@ -824,6 +824,14 @@ abstract class defaultController extends Controller{
     }
 
     public static function turn_date($from_date,$from_format='d/m/Y'){
+
+        if(!str_contains($from_date, '/')){
+            return $from_date;
+        }
+
+        if(empty($from_date)){
+            return null;
+        }
         $carbon = Carbon::createFromFormat($from_format,$from_date);
         return $carbon;
     }

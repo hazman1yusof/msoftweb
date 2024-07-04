@@ -34,16 +34,6 @@ $(document).ready(function () {
 	////////////////////////////////////start dialog//////////////////////////////////////
 	var oper = null;
 	var unsaved = false;
-
-	function scrollto_topbtm(){
-		$('form#formdata').on('mouseenter',function(){
-	        SmoothScrollTo('div#dialogForm', 300);
-	    });
-
-	    $('div#jqGrid2_c').on('mouseenter',function(){
-	        SmoothScrollTo('div#jqGrid2_c', 300);
-	    });
-	}
 	scrollto_topbtm();
 
 	$("#dialogForm")

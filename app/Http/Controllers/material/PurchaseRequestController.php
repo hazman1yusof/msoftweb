@@ -645,8 +645,8 @@ class PurchaseRequestController extends defaultController
                     $authorise_use = $authorise->first();
 
                     $purreqhd->update([
-                            'verifiedby' => $authorise_use->authorid,
-                            'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'approvedby' => $authorise_use->authorid,
+                            'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'recstatus' => 'APPROVED'
                         ]);
 

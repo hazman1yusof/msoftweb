@@ -2339,6 +2339,12 @@ function attachment_page(page,grid,idno){
     }
 }
 
+function scrollto_topbtm(){
+    $('div#jqGrid2_c').on('mouseenter',function(){
+        SmoothScrollTo('div#jqGrid2_c', 300);
+    });
+}
+
 
 $(document).ready(function () {
 

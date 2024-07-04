@@ -95,6 +95,7 @@ class InventoryTransactionDetailController extends defaultController
         try {
             $recno = $request->recno;
             $docno = $request->docno;
+            $request->expdate = $this->null_date($request->expdate);
 
             $ivtmphd = DB::table("material.ivtmphd")
                             ->where('idno','=',$request->idno)
@@ -160,7 +161,7 @@ class InventoryTransactionDetailController extends defaultController
                     'unit' => session('unit'), 
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate'=> $request->expdate,  
+                    'expdate'=> $this->turn_date($request->expdate,'d/m/Y'),  
                     'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
                     'remarks' => $request->remarks
@@ -194,7 +195,7 @@ class InventoryTransactionDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+            return response($e, 500);
         }
     }
 
@@ -222,7 +223,7 @@ class InventoryTransactionDetailController extends defaultController
                     'amount' => $request->amount,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate'=> $request->expdate,  
+                    'expdate'=> $this->turn_date($request->expdate,'d/m/Y'),  
                     'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
                     'remarks' => $request->remarks
@@ -329,7 +330,7 @@ class InventoryTransactionDetailController extends defaultController
                         'amount' => $value['amount'],
                         'adduser' => session('username'), 
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                        'expdate'=> $request->expdate,  
+                        'expdate'=> $this->turn_date($value['expdate']),  
                         'batchno' => strtoupper($value['batchno']), 
                         'recstatus' => 'OPEN'
                     ]);
