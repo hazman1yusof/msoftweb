@@ -308,16 +308,13 @@ i.fa {
 							<input id="convfactoruomcodetrdept" name="convfactoruomcodetrdept" type="hidden" value='1'>
 							<input id="convfactoruomcoderecv" name="convfactoruomcoderecv" type="hidden" value='1'>
 
-							<div id="jqGrid2_c" class='col-md-12'>
+							<div id="jqGrid2_c" class='col-md-12' style="overflow-y: hidden;overflow-x: hidden;height: calc(100vh - 80px);">
 								<table id="jqGrid2" class="table table-striped"></table>
 					            <div id="jqGridPager2"></div>
 							</div>
 						</form>
-					</div>
 
-					<div class="panel-body">
-						<div class="noti" style="font-size: bold; color: red"><ol></ol>
-						</div>
+						<div class="noti" style="font-size: bold; color: red"></div>
 					</div>
 			</div>		
 			

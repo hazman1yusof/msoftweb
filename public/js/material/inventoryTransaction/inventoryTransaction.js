@@ -37,6 +37,7 @@ $(document).ready(function () {
 	////////////////////////////////////start dialog/////////////////////////////////////
 	var oper;
 	var unsaved = false;
+	scrollto_topbtm();
 
 	$("#dialogForm")
 	  .dialog({ 
@@ -994,7 +995,6 @@ $(document).ready(function () {
         },
 		oneditfunc: function (rowid) {
 			myfail_msg.clear_fail();
-			calc_jq_height_onchange("jqGrid2");
 			errorField.length=0;
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
@@ -1020,6 +1020,7 @@ $(document).ready(function () {
 				// addmore_jqgrid2.state = true;
 				// $('#jqGrid2_ilsave').click();
 			});
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 
 		},
 		aftersavefunc: function (rowid, response, options) {
@@ -1036,6 +1037,8 @@ $(document).ready(function () {
 			refreshGrid('#jqGrid2',urlParam2,'add');
 	    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
 			errorField.length=0;
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
+			$(".noti").empty();
 		},
 		errorfunc: function(rowid,response){
 			errorField.length=0;
@@ -1088,6 +1091,8 @@ $(document).ready(function () {
 				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			}, 500 );
 			hideatdialogForm(false);
+
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 	    },
 	    errorTextFormat: function (data) {
 	    	alert(data);
@@ -2342,16 +2347,6 @@ function empty_form(){
 	$('#trantype_show').text('');
 	$('#docno_show').text('');
 
-}
-
-function calc_jq_height_onchange(jqgrid){
-	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
-	if(scrollHeight<50){
-		scrollHeight = 50;
-	}else if(scrollHeight>300){
-		scrollHeight = 300;
-	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+25);
 }
 
 function fail_msg_func(fail_msg_div=null){
