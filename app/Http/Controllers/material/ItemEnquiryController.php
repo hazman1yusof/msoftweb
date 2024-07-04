@@ -179,7 +179,7 @@ class ItemEnquiryController extends defaultController
         //                 return $col;
         //             })->values()->all();
 
-        $merged = $merged->sortBy('trandate')->values()->all();
+        $merged = $merged->sortBy('adddate')->values()->all();
 
         $responce = new stdClass();
         $responce->rows = $merged;
