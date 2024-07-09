@@ -329,8 +329,43 @@ use Carbon\Carbon;
                         ->where('idno','=',$request->idno)
                         ->first();
 
-            if($apacthdr->unallocated == '1') {
-                $this->check_alloc_exists($request);
+            // if($apacthdr->unallocated == '1') {
+            //     $this->check_alloc_exists($request);
+            //     $this->checkduplicate_docno('add', $request);
+
+            //     $auditno = $this->defaultSysparam($request->apacthdr_source,'CN');
+            //     $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
+
+            //     $table = DB::table("finance.apacthdr");
+
+            //     $array_insert = [
+            //         'source' => 'AP',
+            //         'auditno' => $auditno,
+            //         'trantype' => 'CN',
+            //         'unallocated' => $request->apacthdr_unallocated,
+            //         'actdate' => $request->apacthdr_actdate,
+            //         'recdate' => $request->apacthdr_postdate,
+            //         'postdate' => $request->apacthdr_postdate,
+            //         'pvno' => $request->apacthdr_pvno,
+            //         'doctype' => $request->apacthdr_doctype,
+            //         'document' => strtoupper($request->apacthdr_document),
+            //         'remarks' => strtoupper($request->apacthdr_remarks),
+            //         'suppcode' => $request->apacthdr_suppcode,
+            //         'payto' => $request->apacthdr_payto,
+            //         'amount' => $request->apacthdr_amount,
+            //         'outamount' => $request->apacthdr_amount,
+            //         'suppgroup' => $suppgroup,
+            //         'compcode' => session('compcode'),
+            //         'unit' => session('unit'),
+            //         'adduser' => session('username'),
+            //         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            //         'entryuser' => session('username'),
+            //         'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
+            //         'recstatus' => 'OPEN'
+            //     ];
+
+            // } else if($apacthdr->unallocated == '0'){
+
                 $this->checkduplicate_docno('add', $request);
 
                 $auditno = $this->defaultSysparam($request->apacthdr_source,'CN');
@@ -363,42 +398,7 @@ use Carbon\Carbon;
                     'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'OPEN'
                 ];
-
-            } else if($apacthdr->unallocated == '0'){
-
-                $this->checkduplicate_docno('add', $request);
-
-                $auditno = $this->defaultSysparam($request->apacthdr_source,'CN');
-                $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
-
-                $table = DB::table("finance.apacthdr");
-
-                $array_insert = [
-                    'source' => 'AP',
-                    'auditno' => $auditno,
-                    'trantype' => 'CN',
-                    'unallocated' => $request->apacthdr_unallocated,
-                    'actdate' => $request->apacthdr_actdate,
-                    'recdate' => $request->apacthdr_postdate,
-                    'postdate' => $request->apacthdr_postdate,
-                    'pvno' => $request->apacthdr_pvno,
-                    'doctype' => $request->apacthdr_doctype,
-                    'document' => strtoupper($request->apacthdr_document),
-                    'remarks' => strtoupper($request->apacthdr_remarks),
-                    'suppcode' => $request->apacthdr_suppcode,
-                    'payto' => $request->apacthdr_payto,
-                    'amount' => $request->apacthdr_amount,
-                    'outamount' => $request->apacthdr_amount,
-                    'suppgroup' => $suppgroup,
-                    'compcode' => session('compcode'),
-                    'unit' => session('unit'),
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'entryuser' => session('username'),
-                    'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'OPEN'
-                ];
-            }
+            // }
                 $idno_apacthdr = $table->insertGetId($array_insert);
 
                 $responce = new stdClass();
