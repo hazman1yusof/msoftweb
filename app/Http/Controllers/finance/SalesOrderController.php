@@ -1473,7 +1473,7 @@ class SalesOrderController extends defaultController
                             ->where('recstatus','ACTIVE')
                             ->whereNotNull('effdateto')
                             ->where('opprice',1)
-                            ->whereDate('effdateto','<=',$posteddate);
+                            ->whereDate('effdateto','<',$posteddate);
         if($billtymst2->exists()){
             $responce->error = true;
             $responce->msg = 'Billtype date exceed , please check..';
@@ -1487,7 +1487,7 @@ class SalesOrderController extends defaultController
                             ->where('recstatus','ACTIVE')
                             ->whereNotNull('effdatefrom')
                             ->where('opprice',1)
-                            ->whereDate('effdatefrom','>=',$posteddate);
+                            ->whereDate('effdatefrom','>',$posteddate);
         if($billtymst4->exists()){
             $responce->error = true;
             $responce->msg = 'Billtype date exceed, please check..';
