@@ -39,6 +39,35 @@ class SalesOrderController extends defaultController
         }
     }
 
+    public function form(Request $request)
+    {   
+        DB::enableQueryLog();
+        switch($request->oper){ //SalesOrder_header_save 
+            case 'add':
+                return $this->add($request);
+            case 'edit':
+                return $this->edit($request);
+            case 'del':
+                return $this->del($request);
+            case 'posted':
+                return $this->posted($request);
+            case 'reopen':
+                return $this->reopen($request);
+            case 'cancel':
+                return $this->cancel($request);
+            case 'support':
+                return $this->support($request);
+            case 'verify':
+                return $this->verify($request);
+            case 'approved':
+                return $this->approved($request);
+            case 'refresh_do':
+                return $this->refresh_do($request);
+            default:
+                return 'Errors happen';
+        }
+    }
+
     public function maintable(Request $request){
         
         $table = DB::table('debtor.dbacthdr AS db')
@@ -165,35 +194,6 @@ class SalesOrderController extends defaultController
         
         return json_encode($responce);
         
-    }
-
-    public function form(Request $request)
-    {   
-        DB::enableQueryLog();
-        switch($request->oper){ //SalesOrder_header_save 
-            case 'add':
-                return $this->add($request);
-            case 'edit':
-                return $this->edit($request);
-            case 'del':
-                return $this->del($request);
-            case 'posted':
-                return $this->posted($request);
-            case 'reopen':
-                return $this->reopen($request);
-            case 'cancel':
-                return $this->cancel($request);
-            case 'support':
-                return $this->support($request);
-            case 'verify':
-                return $this->verify($request);
-            case 'approved':
-                return $this->approved($request);
-            case 'refresh_do':
-                return $this->refresh_do($request);
-            default:
-                return 'Errors happen';
-        }
     }
     
     public function add(Request $request){
@@ -327,12 +327,16 @@ class SalesOrderController extends defaultController
             
             foreach ($request->idno_array as $value){
                 
-                $invno = $this->recno('PB','INV');
-                
                 $dbacthdr = DB::table("debtor.dbacthdr")
                             ->where('compcode',session('compcode'))
                             ->where('idno','=',$value)
                             ->first();
+
+                if($dbacthdr->recstatus != 'OPEN'){
+                    continue;
+                }
+                
+                $invno = $this->recno('PB','INV');
                 
                 $billsum = DB::table("debtor.billsum")
                             ->where('compcode',session('compcode'))

@@ -503,6 +503,10 @@ class DebitNoteController extends defaultController
                 $dbacthdr = DB::table('debtor.dbacthdr')
                     ->where('idno','=',$value)
                     ->first();
+
+                if($dbacthdr->recstatus != 'OPEN'){
+                    continue;
+                }
                 
                 if($dbacthdr->amount == 0){
                     throw new \Exception('Debit Note auditno: '.$dbacthdr->auditno.' amount cant be zero', 500);

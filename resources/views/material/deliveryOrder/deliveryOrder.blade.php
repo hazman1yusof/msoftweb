@@ -423,7 +423,7 @@ div#fail_msg{
 						<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
 						<div id="jqGrid2_c" class='col-md-12' style="overflow-y: hidden;overflow-x: hidden;height: calc(100vh - 80px);">
 							<table id="jqGrid2" class="table table-striped"></table>
-				            <div id="jqGridPager2"></div>
+				      <div id="jqGridPager2"></div>
 						</div>
 					</form>
 				</div>

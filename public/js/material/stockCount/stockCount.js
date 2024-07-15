@@ -33,6 +33,7 @@ $(document).ready(function () {
 	////////////////////////////////////start dialog/////////////////////////////////////
 	var oper;
 	var unsaved = false;
+	scrollto_topbtm();
 
 	$("#dialogForm")
 	  .dialog({ 
@@ -539,7 +540,7 @@ $(document).ready(function () {
 		loadonce:false,
 		width: 1150,
 		height: 200,
-		rowNum: 50,
+		rowNum: 250,
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
@@ -553,7 +554,7 @@ $(document).ready(function () {
 								if(text.search("jqg") != -1)return false;return true;
 							});
 			if(result.length == 0 && oper=='edit')unsaved = true;
-        	calc_jq_height_onchange("jqGrid2",false,1200);
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 		},
 		afterShowForm: function (rowid) {
 		},
@@ -574,7 +575,7 @@ $(document).ready(function () {
         },
         oneditfunc: function (rowid) {
 			myfail_msg.clear_fail();
-        	calc_jq_height_onchange("jqGrid2",false,1200);
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 			$("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
 			errorField.length=0;
 			$("#jqGrid2 input[name='pricecode']").focus().select();
@@ -607,6 +608,7 @@ $(document).ready(function () {
 	    	refreshGrid('#jqGrid2',urlParam2);
 	    	$("#jqGridPager2EditAll").hide();
 			errorField.length=0;
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
         }, 
         errorfunc: function(rowid,response){
 			errorField.length=0;
@@ -640,6 +642,7 @@ $(document).ready(function () {
         },
         afterrestorefunc : function( response ) {
 			$('#jqGrid2').jqGrid ('setSelection', "1");
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 	    }
     };
 

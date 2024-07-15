@@ -279,6 +279,10 @@ class DeliveryOrderController extends defaultController
                     ->where('idno', '=', $idno);
 
                 $delordhd_obj = $delordhd->first();
+                
+                if($delordhd_obj->recstatus != 'OPEN'){
+                    continue;
+                }
 
                 $delorddt_obj = DB::table('material.delorddt')
                     ->where('delorddt.compcode','=',session('compcode'))

@@ -183,6 +183,10 @@ class InventoryRequestController extends defaultController
                                 ->where('idno','=',$idno)
                                 ->first();
 
+                if($ivreqhd->recstatus == 'POSTED'){
+                    continue;
+                }
+
                 DB::table('material.ivreqhd')
                     ->where('idno','=',$idno)
                     ->update([
@@ -216,18 +220,22 @@ class InventoryRequestController extends defaultController
         try {
             foreach ($request->idno_array as $idno){
 
-            $ivreqhd = DB::table('material.ivreqhd')
-            ->where('idno','=',$idno)
-            ->first();
+                $ivreqhd = DB::table('material.ivreqhd')
+                    ->where('idno','=',$idno)
+                    ->first();
 
-            DB::table('material.ivreqhd')
-                ->where('idno','=',$idno)
-                ->where('compcode','=',session('compcode'))
-                ->update([
-                    'cancelby' => session('username'),
-                    'canceldate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'CANCELLED' 
-                ]);
+                if($ivreqhd->recstatus == 'CANCELLED'){
+                    continue;
+                }
+
+                DB::table('material.ivreqhd')
+                    ->where('idno','=',$idno)
+                    ->where('compcode','=',session('compcode'))
+                    ->update([
+                        'cancelby' => session('username'),
+                        'canceldate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'recstatus' => 'CANCELLED' 
+                    ]);
 
             }    
             DB::commit();
@@ -243,24 +251,24 @@ class InventoryRequestController extends defaultController
 
         try{
 
-                DB::table('material.ivreqhd')
-                    ->where('recno','=',$request->recno)
-                    ->where('unit','=',session('unit'))
-                    ->where('compcode','=',session('compcode'))
-                    ->update([
-                        'postedby' => session('username'),
-                        'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                        'recstatus' => 'OPEN' 
-                    ]);
+            DB::table('material.ivreqhd')
+                ->where('recno','=',$request->recno)
+                ->where('unit','=',session('unit'))
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'postedby' => session('username'),
+                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'OPEN' 
+                ]);
 
-                DB::table('material.ivreqdt')
-                    ->where('recno','=',$request->recno)
-                    ->where('unit','=',session('unit'))
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recstatus','!=','DELETE')
-                    ->update([
-                        'recstatus' => 'OPEN' 
-                    ]);
+            DB::table('material.ivreqdt')
+                ->where('recno','=',$request->recno)
+                ->where('unit','=',session('unit'))
+                ->where('compcode','=',session('compcode'))
+                ->where('recstatus','!=','DELETE')
+                ->update([
+                    'recstatus' => 'OPEN' 
+                ]);
               
             DB::commit();
         

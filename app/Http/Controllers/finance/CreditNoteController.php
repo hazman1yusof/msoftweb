@@ -749,6 +749,10 @@ use Carbon\Carbon;
                 $apacthdr = DB::table('finance.apacthdr')
                     ->where('idno','=',$idno)
                     ->first();
+
+                if($apacthdr->recstatus != 'OPEN'){
+                    continue;
+                }
                 
                 if($apacthdr->amount == 0){
                     throw new \Exception('Credit Note auditno: '.$apacthdr->auditno.' amount cant be zero', 500);

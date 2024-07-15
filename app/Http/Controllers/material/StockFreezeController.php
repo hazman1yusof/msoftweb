@@ -134,14 +134,22 @@ class StockFreezeController extends defaultController
                 $itemfrom = $request->itemfrom;
             }
 
+            if(empty($request->itemto)){
+                $itemto = 'Z';
+            }else{
+                $itemto = $request->itemto;
+            }
+
             $stockloc =  $stockloc
                             ->where('s.compcode',session('compcode'))
                             ->where('s.unit',session('unit'))
                             ->where('s.deptcode',$request->srcdept)
-                            ->whereBetween('s.itemcode',[$itemfrom,$request->itemto])
+                            ->whereBetween('s.itemcode',[$itemfrom,$itemto])
                             ->where('s.year', '=', Carbon::now("Asia/Kuala_Lumpur")->format('Y'))
                             ->orderBy('s.itemcode', 'DESC')
                             ->get();
+
+            // dd($this->getQueries($stockloc));
 
             foreach ($stockloc as $key => $value){
                 DB::table('material.phycntdt')
