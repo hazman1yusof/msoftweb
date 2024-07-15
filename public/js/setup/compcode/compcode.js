@@ -44,7 +44,7 @@ $(document).ready(function () {
 		editurl: './compcode/form',
 		colModel: [
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
-			{ label: 'Company <br> Code', name: 'compcode', width: 20, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Company <br> Code', name: 'compcode', width: 23, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Company Name', name: 'name', classes: 'wrap', width: 30, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Address', name: 'address1', classes: 'wrap', width: 50, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Address 2', name: 'address2', width: 30, hidden: true},
@@ -53,12 +53,14 @@ $(document).ready(function () {
 			{ label: 'Bmppath', name: 'bmppath1', width: 25, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Bmppath', name: 'bmppath2', width: 30, hidden: true},
 			{ label: 'Address', name: 'address1', width: 30, hidden: true},
-			{ label: 'Logo', name: 'logo1', width: 70, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Add User', name: 'adduser', width: 35, hidden:false},
+			{ label: 'Logo', name: 'logo1', width: 50, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Bank A/C No', name: 'bankaccno', classes: 'wrap', width: 40, editable: true, editrules: { required: true }},
+			{ label: 'Bank Name', name: 'bankname', classes: 'wrap', width: 40, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Add User', name: 'adduser', width: 30, hidden:false},
 			{ label: 'Add Date', name: 'adddate', width: 35, hidden:false},
-			{ label: 'Upd User', name: 'upduser', width: 35, hidden:false},
+			{ label: 'Upd User', name: 'upduser', width: 30, hidden:false},
 			{ label: 'Upd Date', name: 'upddate', width: 35, hidden:false},
-			{ label: 'Computer ID', name: 'computerid', width: 35, hidden:false},
+			{ label: 'Computer ID', name: 'computerid', width: 30, hidden:false},
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 						editoptions:{
@@ -127,7 +129,7 @@ $(document).ready(function () {
 		oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow','none');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-			$("input[name='logo1']").keydown(function(e) {//when click tab at last column in header, auto save
+			$("input[name='bankname']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;
@@ -187,7 +189,7 @@ $(document).ready(function () {
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 			$("input[name='compcode']").attr('disabled','disabled');
-			$("input[name='logo1']").keydown(function(e) {//when click tab at last column in header, auto save
+			$("input[name='bankname']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;

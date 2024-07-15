@@ -69,8 +69,8 @@ class PaymentVoucherController extends defaultController
                         'ap.pvno AS apacthdr_pvno',
                         'ap.paymode AS apacthdr_paymode',
                         'ap.bankcode AS apacthdr_bankcode',
-                        'ap.postdate AS apacthdr_postdate'
-                        
+                        'ap.postdate AS apacthdr_postdate',
+                        'ap.cheqdate AS apacthdr_cheqdate'
                     )
                     ->where('ap.compcode',session('compcode'))
                     ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
@@ -486,6 +486,7 @@ class PaymentVoucherController extends defaultController
                 'doctype' => $request->apacthdr_doctype,
                 'recdate' => $request->apacthdr_postdate,
                 'postdate' => $request->apacthdr_postdate,
+                'cheqdate' => $request->apacthdr_cheqdate,
                 'suppcode' => strtoupper($request->apacthdr_suppcode),
                 'document' => strtoupper($request->apacthdr_document),
                 'paymode' => strtoupper($request->apacthdr_paymode),
@@ -613,6 +614,7 @@ class PaymentVoucherController extends defaultController
                 'actdate' => $request->apacthdr_actdate,
                 'recdate' => $request->apacthdr_postdate,
                 'postdate' => $request->apacthdr_postdate,
+                'cheqdate' => $request->apacthdr_cheqdate,
                 'amount' => $request->apacthdr_amount,
                 'suppcode' => strtoupper($request->apacthdr_suppcode),
                 'payto' => strtoupper($request->apacthdr_payto),
@@ -1159,7 +1161,7 @@ class PaymentVoucherController extends defaultController
         }
 
         $apacthdr = DB::table('finance.apacthdr as h')
-            ->select('h.compcode', 'h.auditno', 'h.trantype', 'h.source','h.doctype', 'h.pvno', 'h.suppcode', 'm.Name as suppname', 'm.Addr1 as addr1', 'm.Addr2 as addr2', 'm.Addr3 as addr3', 'm.TelNo as telno', 'h.actdate', 'h.document', 'h.deptcode', 'h.amount', 'h.outamount', 'h.recstatus', 'h.payto', 'h.category', 'h.remarks', 'h.paymode', 'h.bankcode', 'h.cheqno','b.bankname', 'b.bankaccount as bankaccno')
+            ->select('h.compcode', 'h.auditno', 'h.trantype', 'h.source','h.doctype', 'h.pvno', 'h.suppcode', 'm.Name as suppname', 'm.Addr1 as addr1', 'm.Addr2 as addr2', 'm.Addr3 as addr3', 'm.TelNo as telno', 'm.TINNo', 'm.CompRegNo', 'm.AccNo', 'h.actdate', 'h.document', 'h.deptcode', 'h.amount', 'h.outamount', 'h.recstatus', 'h.payto', 'h.category', 'h.remarks', 'h.paymode', 'h.bankcode', 'h.cheqno','b.bankname', 'b.bankaccount as bankaccno')
             // ->leftJoin('material.supplier as m', 'h.suppcode', '=', 'm.suppcode')
             // ->leftJoin('finance.bank as b', 'h.bankcode', '=', 'b.bankcode')
             ->leftJoin('material.supplier as m', function($join) use ($request){

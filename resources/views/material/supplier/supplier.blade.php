@@ -4,7 +4,7 @@
 
 @section('style')
 
- .panel-heading.collapsed .fa-angle-double-up,
+.panel-heading.collapsed .fa-angle-double-up,
 .panel-heading .fa-angle-double-down {
   display: none;
 }
@@ -26,6 +26,10 @@ i.fa {
 
 .clearfix {
 	overflow: auto;
+}
+
+.input-group-addon {
+	background-color: #2c699e;
 }
 
 @endsection
@@ -101,197 +105,217 @@ i.fa {
 	<!-------------------------------- End Search + table ------------------>
 
 	<div id="dialogForm" title="Add Form" >
-			<form class='form-horizontal' style='width:99%' id='formdata'>
+		<form class='form-horizontal' style='width:99%' id='formdata'>
+		
+			{{ csrf_field() }}
+			<input type="hidden" name="idno">
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="SuppCode">Supplier Code</label>  
+					<div class="col-md-2">
+						<input id="SuppCode" name="SuppCode" type="text" maxlength="10" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit>
+					</div>
+			</div>
+				
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="Name">Name</label>  
+					<div class="col-md-8">
+						<input id="Name" name="Name" type="text" maxlength="333" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
+					</div>
+			</div>
 			
-				{{ csrf_field() }}
-				<input type="hidden" name="idno">
-				<div class="form-group">
-				  		<label class="col-md-2 control-label" for="SuppCode">Supplier Code</label>  
-                            <div class="col-md-2">
-                                <input id="SuppCode" name="SuppCode" type="text" maxlength="10" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit>
-                            </div>
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="Addr1">Address</label>  
+					<div class="col-md-8">
+						<input id="Addr1" name="Addr1" type="text" maxlength="333" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
 					</div>
-                    
-                    <div class="form-group">
-				  		<label class="col-md-2 control-label" for="Name">Name</label>  
-				  			<div class="col-md-8">
-				  				<input id="Name" name="Name" type="text" maxlength="333" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
-				 			</div>
+			</div>
+		
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-8">
+					<input id="Addr2" name="Addr2" type="text" maxlength="333" class="form-control input-sm text-uppercase">
+				</div>
+			</div>
+		
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-8">
+					<input id="Addr3" name="Addr3" type="text" maxlength="333" class="form-control input-sm text-uppercase">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-8">
+					<input id="Addr4" name="Addr4" type="text" maxlength="333" class="form-control input-sm text-uppercase">
+				</div>
+			</div>
+				
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="TelNo">Tel No</label>  
+					<div class="col-md-3">
+						<input id="TelNo" name="TelNo" type="text" maxlength="50" class="form-control input-sm">
 					</div>
-                    
-                    <div class="form-group">
-				  		<label class="col-md-2 control-label" for="Addr1">Address</label>  
-				  			<div class="col-md-8">
-				  				<input id="Addr1" name="Addr1" type="text" maxlength="333" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
-				  			</div>
+					
+				<label class="col-md-2 control-label" for="Faxno">Fax No</label>  
+					<div class="col-md-3">
+						<input id="Faxno" name="Faxno" type="text" maxlength="30" class="form-control input-sm">
+					</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="ContPers">Contact Person</label>  
+					<div class="col-md-3">
+						<input id="ContPers" name="ContPers" type="text" maxlength="40" class="form-control input-sm text-uppercase">
+					</div>
+			
+				<label class="col-md-2 control-label" for="SuppGroup">Supplier Group</label>  
+					<div class="col-md-3">
+						<div class='input-group'>
+							<input id="SuppGroup" name="SuppGroup" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
+							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+						</div>
+						<span class="help-block"></span>
+					</div>
+			</div>
+				
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="CostCode">Cost Code</label>  
+					<div class="col-md-3">
+						<div class='input-group'>
+							<input id="CostCode" name="CostCode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit>
+							<!-- <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a> -->
+						</div>
+						<span class="help-block"></span>
+					</div>
+			
+				<label class="col-md-2 control-label" for="GlAccNo">GL Account No</label>  
+					<div class="col-md-3">
+						<div class='input-group'>
+							<input id="GlAccNo" name="GlAccNo" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit>
+							<!-- <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a> -->
+						</div>
+						<span class="help-block"></span>
+					</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="Advccode">Advance Cost Code</label>  
+					<div class="col-md-3">
+						<div class='input-group'>
+							<input id="Advccode" name="Advccode" type="text" class="form-control input-sm text-uppercase">
+							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+						</div>
+						<span class="help-block"></span>
+					</div>
+			
+				<label class="col-md-2 control-label" for="AdvGlaccno">Advance GL Account No</label>  
+					<div class="col-md-3">
+						<div class='input-group'>
+							<input id="AdvGlaccno" name="AdvGlaccno" type="text" class="form-control input-sm text-uppercase">
+							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+						</div>
+						<span class="help-block"></span>
+					</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="adduser">Created By</label>  
+					<div class="col-md-2">
+						<input id="adduser" name="adduser" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+					</div>
+
+				<label class="col-md-3 control-label" for="upduser">Last Entered</label>  
+					<div class="col-md-2">
+						<input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+					</div>
+				</div>
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="adddate">Created Date</label>  
+					<div class="col-md-2">
+						<input id="adddate" name="adddate" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+					</div>
+
+				<label class="col-md-3 control-label" for="upddate">Last Entered Date</label>  
+					<div class="col-md-2">
+						<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+					</div>
+			</div>  
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
+					<div class="col-md-2">
+						<input id="computerid" name="computerid" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+					</div>
+
+				<label class="col-md-3 control-label" for="lastcomputerid">Last Computer Id</label>  
+					<div class="col-md-2">
+						<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+					</div>
+			</div> 
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="AccNo">Company Bank A/C No</label>  
+					<div class="col-md-3">
+						<input id="AccNo" name="AccNo" type="text" maxlength="15" class="form-control input-sm text-uppercase">
+					</div>
+
+				<label class="col-md-2 control-label" for="CompRegNo">Company Register No</label>  
+					<div class="col-md-3">
+						<input id="CompRegNo" name="CompRegNo" type="text" maxlength="15" class="form-control input-sm text-uppercase">
+					</div>
+						
+				<!-- <label class="col-md-2 control-label" for="SuppFlg">Supply Goods</label>  
+				<div class="col-md-2">
+					<label class="radio-inline"><input type="radio" name="SuppFlg" value='Yes' data-validation="">Yes</label>
+					<label class="radio-inline"><input type="radio" name="SuppFlg" value='No' data-validation="">No</label>
+				</div> -->
+			</div>
+			
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
+					<div class="col-md-3">
+						<label class="radio-inline"><input type="radio" name="recstatus" value='ACTIVE' checked>Active</label>
+						<label class="radio-inline"><input type="radio" name="recstatus" value='DEACTIVE' >Deactive</label>
+					</div>
+
+				<label class="col-md-2 control-label" for="TermDays">Payment Terms</label>  
+					<div class="col-md-3">
+						<div class="input-group">
+							<input id="TermDays" name="TermDays" type="text" value="30" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" value="0">
+							<span class="input-group-addon">days</span>
+						</div>
+					</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="TINNo">Tax ID No (TIN)</label>  
+					<div class="col-md-3">
+						<input id="TINNo" name="TINNo" type="text" maxlength="15" class="form-control input-sm text-uppercase">
+					</div>
+			</div>
+			
+			<!-- <fieldset style="border:3px; border-top:1px solid black;">
+				<legend style="text-align:center; width:17% !important; border-bottom:0px !important;     font-size:16px !important; font-weight: bold;">Payment Terms</legend>
+			</fieldset>
+			
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="TermDisp">Disposable</label>  
+					<div class="col-md-2">
+						<input id="TermDisp" name="TermDisp" type="text" value="0" maxlength="9" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" value="0">
 					</div>
 				
-					<div class="form-group">
-				  		<div class="col-md-offset-2 col-md-8">
-				  			<input id="Addr2" name="Addr2" type="text" maxlength="333" class="form-control input-sm text-uppercase">
-				  		</div>
-					</div>
-				
-					<div class="form-group">
-				  		<div class="col-md-offset-2 col-md-8">
-				  			<input id="Addr3" name="Addr3" type="text" maxlength="333" class="form-control input-sm text-uppercase">
-				  		</div>
-					</div>
-                
-                	<div class="form-group">
-				  		<div class="col-md-offset-2 col-md-8">
-				  			<input id="Addr4" name="Addr4" type="text" maxlength="333" class="form-control input-sm text-uppercase">
-				  		</div>
-					</div>
-                    
-                   	<div class="form-group">
-				   		<label class="col-md-2 control-label" for="TelNo">Tel No</label>  
-				 			<div class="col-md-3">
-				  				<input id="TelNo" name="TelNo" type="text" maxlength="50" class="form-control input-sm">
-				  			</div>
-                            
-                  		<label class="col-md-2 control-label" for="Faxno">Fax No</label>  
-				  			<div class="col-md-3">
-				  				<input id="Faxno" name="Faxno" type="text" maxlength="30" class="form-control input-sm">
-				  			</div>
-					</div>
-                    
-                    <div class="form-group">
-				  		<label class="col-md-2 control-label" for="ContPers">Contact Person</label>  
-				  			<div class="col-md-3">
-				  				<input id="ContPers" name="ContPers" type="text" maxlength="40" class="form-control input-sm text-uppercase">
-				  			</div>
-				  
-				   		<label class="col-md-2 control-label" for="SuppGroup">Supplier Group</label>  
-				 			<div class="col-md-3">
-					  			<div class='input-group'>
-									<input id="SuppGroup" name="SuppGroup" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-					  			</div>
-					  			<span class="help-block"></span>
-				  			</div>
-					</div>
-                    
-                  	<div class="form-group">
-				  		<label class="col-md-2 control-label" for="CostCode">Cost Code</label>  
-				  			<div class="col-md-3">
-					  			<div class='input-group'>
-									<input id="CostCode" name="CostCode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit>
-									<!-- <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a> -->
-					  			</div>
-					  			<span class="help-block"></span>
-				  			</div>
-				  
-				 		<label class="col-md-2 control-label" for="GlAccNo">GL Account No</label>  
-				  			<div class="col-md-3">
-					  			<div class='input-group'>
-									<input id="GlAccNo" name="GlAccNo" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit>
-									<!-- <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a> -->
-					  			</div>
-					  			<span class="help-block"></span>
-				  			</div>
+				<label class="col-md-2 control-label" for="TermNonDisp">Non-Disposable</label>  
+					<div class="col-md-2">
+						<input id="TermNonDisp" name="TermNonDisp" type="text" value="0" maxlength="9" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" value="0">
 					</div>
 
-					<div class="form-group">
-				  		<label class="col-md-2 control-label" for="Advccode">Advance Cost Code</label>  
-				  			<div class="col-md-3">
-					  			<div class='input-group'>
-									<input id="Advccode" name="Advccode" type="text" class="form-control input-sm text-uppercase">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-					  			</div>
-					  			<span class="help-block"></span>
-				  			</div>
-				  
-				 		<label class="col-md-2 control-label" for="AdvGlaccno">Advance GL Account No</label>  
-				  			<div class="col-md-3">
-					  			<div class='input-group'>
-									<input id="AdvGlaccno" name="AdvGlaccno" type="text" class="form-control input-sm text-uppercase">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-					  			</div>
-					  			<span class="help-block"></span>
-				  			</div>
+				<label class="col-md-1 control-label" for="TermOthers">Other</label>    
+					<div class="col-md-2">
+						<input id="TermOthers" name="TermOthers" type="text" value="0" maxlength="9" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" value="0">
 					</div>
+			</div>              	 -->
 
-					<div class="form-group">
-					<label class="col-md-2 control-label" for="adduser">Created By</label>  
-						<div class="col-md-2">
-						  	<input id="adduser" name="adduser" type="text" class="form-control input-sm" frozeOnEdit hideOne>
-						</div>
-
-					<label class="col-md-3 control-label" for="upduser">Last Entered</label>  
-						<div class="col-md-2">
-							<input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
-						</div>
-					</div>
-
-					<div class="form-group">
-					<label class="col-md-2 control-label" for="adddate">Created Date</label>  
-						<div class="col-md-2">
-						  	<input id="adddate" name="adddate" type="text" class="form-control input-sm" frozeOnEdit hideOne>
-						</div>
-
-						<label class="col-md-3 control-label" for="upddate">Last Entered Date</label>  
-						  	<div class="col-md-2">
-								<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
-						  	</div>
-				</div>  
-
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
-						<div class="col-md-2">
-						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" frozeOnEdit hideOne>
-						</div>
-
-					<label class="col-md-3 control-label" for="lastcomputerid">Last Computer Id</label>  
-						<div class="col-md-2">
-							<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
-						  	</div>
-				</div> 
-
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="AccNo">Company Account No</label>  
-						<div class="col-md-3">
-							<input id="AccNo" name="AccNo" type="text" maxlength="15" class="form-control input-sm text-uppercase">
-						</div>
-                            
-				   	<!-- <label class="col-md-2 control-label" for="SuppFlg">Supply Goods</label>  
-				  	<div class="col-md-2">
-                        <label class="radio-inline"><input type="radio" name="SuppFlg" value='Yes' data-validation="">Yes</label>
-                        <label class="radio-inline"><input type="radio" name="SuppFlg" value='No' data-validation="">No</label>
-					</div> -->
-				</div>
-                
-                <div class="form-group">
-					<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
-				  		<div class="col-md-2">
-							<label class="radio-inline"><input type="radio" name="recstatus" value='ACTIVE' checked>Active</label>
-							<label class="radio-inline"><input type="radio" name="recstatus" value='DEACTIVE' >Deactive</label>
-				  		</div>
-				</div>
-                
-                <fieldset style="border:3px; border-top:1px solid black;">
-                   <legend style="text-align:center; width:17% !important; border-bottom:0px !important;     font-size:16px !important; font-weight: bold;">Payment Terms</legend>
-                </fieldset>
-                
-                <div class="form-group">
-					<label class="col-md-2 control-label" for="TermDisp">Disposable</label>  
-				 		<div class="col-md-2">
-				 			<input id="TermDisp" name="TermDisp" type="text" value="0" maxlength="9" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" value="0">
-				  		</div>
-				  
-				  	<label class="col-md-2 control-label" for="TermNonDisp">Non-Disposable</label>  
-				  		<div class="col-md-2">
-				  			<input id="TermNonDisp" name="TermNonDisp" type="text" value="0" maxlength="9" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" value="0">
-				  		</div>
-
-				  	<label class="col-md-1 control-label" for="TermOthers">Other</label>    
-				  		<div class="col-md-2">
-				  			<input id="TermOthers" name="TermOthers" type="text" value="0" maxlength="9" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" value="0">
-				  		</div>
-              	</div>              	
-
-			</form>
-		</div>
+		</form>
+	</div>
 
 	  	<!--------------------------------End supplier Form------------------>
         

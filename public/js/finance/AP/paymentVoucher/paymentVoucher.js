@@ -248,6 +248,7 @@ $(document).ready(function () {
 			{ label: 'Post Date', name: 'apacthdr_postdate', width: 25, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Remarks', name: 'apacthdr_remarks', width: 90, hidden:false, classes: 'wrap text-uppercase'},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },
+			{ label: 'apacthdr_cheqdate', name: 'apacthdr_cheqdate', width: 40, hidden:true},
 			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap text-uppercase', hidden:true, canSearch: true},	
 			{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},
@@ -260,7 +261,6 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
 			{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'bankcode', name: 'apacthdr_bankcode', width: 50, classes: 'wrap text-uppercase', hidden:true},
-
 		],
 		autowidth:true,
 		multiSort: true,
@@ -1365,6 +1365,11 @@ $(document).ready(function () {
 					case 'DRAFT':
 								$('#cheqno_parent').text('BD No');
 								dialog_cheqno.off();
+								$('#cheqno_parent').show();
+								$('#apacthdr_cheqno').show();
+								$('#cheqno_dh').show();
+								$('#cheqdate_parent').show();
+								$('#apacthdr_cheqdate').show();
 								break;
 
 					case 'CHEQUE':
@@ -1392,6 +1397,11 @@ $(document).ready(function () {
 					case 'TT':
 								$('#cheqno_parent').text('TT No');
 								dialog_cheqno.off();
+								$('#cheqno_parent').show();
+								$('#apacthdr_cheqno').show();
+								$('#cheqno_dh').show();
+								$('#cheqdate_parent').show();
+								$('#apacthdr_cheqdate').show();
 								break;
 
 				}
@@ -1416,7 +1426,7 @@ $(document).ready(function () {
 				dialog_paymode.urlParam.filterCol=['recstatus', 'compcode', 'source'],
 				dialog_paymode.urlParam.filterVal=['ACTIVE', 'session.compcode', $('#apacthdr_source').val()],
 				dialog_paymode.urlParam.WhereInCol=['paytype'];
-        		dialog_paymode.urlParam.WhereInVal=[['Bank Draft', 'Cheque', 'Cash', 'Bank', 'Tele Transfer']];
+        		dialog_paymode.urlParam.WhereInVal=[['Bank Draft', 'Cheque', 'Cash', 'Tele Transfer']];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -1796,19 +1806,38 @@ function init_paymode(oper,dialog_cheqno){
 			case 'DRAFT':
 						$('#cheqno_parent').text('BD No');
 						dialog_cheqno.off();
+						$('#cheqno_parent').show();
+						$('#apacthdr_cheqno').show();
+						$('#cheqno_dh').show();
+						$('#cheqdate_parent').show();
+						$('#apacthdr_cheqdate').show();
 						break;
 			case 'CHEQUE':
 						$('#cheqno_parent').text('Cheque No');
 						dialog_cheqno.on();
 						dialog_cheqno.check(errorField);
+						$('#cheqno_parent').show();
+						$('#apacthdr_cheqno').show();
+						$('#cheqno_dh').show();
+						$('#cheqdate_parent').show();
+						$('#apacthdr_cheqdate').show();
 						break;
 			case 'CASH':
-						$('#apacthdr_cheqno').prop('readonly',true);
 						dialog_cheqno.off();
+						$('#cheqno_parent').hide();
+						$('#apacthdr_cheqno').hide();
+						$('#cheqno_dh').hide();
+						$('#cheqdate_parent').hide();
+						$('#apacthdr_cheqdate').hide();
 						break;
 			case 'TT':
 						$('#cheqno_parent').text('TT No');
 						dialog_cheqno.off();
+						$('#cheqno_parent').show();
+						$('#apacthdr_cheqno').show();
+						$('#cheqno_dh').show();
+						$('#cheqdate_parent').show();
+						$('#apacthdr_cheqdate').show();
 						break;
 		}
 	}else if(oper=='view'){
@@ -1816,15 +1845,36 @@ function init_paymode(oper,dialog_cheqno){
 			case 'BD':
 			case 'DRAFT':
 						$('#cheqno_parent').text('BD No');
+						$('#cheqno_parent').show();
+						$('#apacthdr_cheqno').show();
+						$('#cheqno_dh').show();
+						$('#cheqdate_parent').show();
+						$('#apacthdr_cheqdate').show();
 						break;
 			case 'CHEQUE':
 						$('#cheqno_parent').text('Cheque No');
 						dialog_cheqno.check(errorField);
+						$('#cheqno_parent').show();
+						$('#apacthdr_cheqno').show();
+						$('#cheqno_dh').show();
+						$('#cheqdate_parent').show();
+						$('#apacthdr_cheqdate').show();
 						break;
 			case 'CASH':
+						dialog_cheqno.off();
+						$('#cheqno_parent').hide();
+						$('#apacthdr_cheqno').hide();
+						$('#cheqno_dh').hide();
+						$('#cheqdate_parent').hide();
+						$('#apacthdr_cheqdate').hide();
 						break;
 			case 'TT':
 						$('#cheqno_parent').text('TT No');
+						$('#cheqno_parent').show();
+						$('#apacthdr_cheqno').show();
+						$('#cheqno_dh').show();
+						$('#cheqdate_parent').show();
+						$('#apacthdr_cheqdate').show();
 						break;
 		}
 	}

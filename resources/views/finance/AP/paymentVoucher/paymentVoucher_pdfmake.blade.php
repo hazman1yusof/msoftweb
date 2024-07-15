@@ -16,7 +16,8 @@
 
 <script>
 	
-var ini_header={pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_LEFT)}}`,
+	var ini_header={
+				pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_LEFT)}}`,
 				pvdate:`{{\Carbon\Carbon::parse($apacthdr->actdate)->format('d/m/Y')}}`,
 				cred_code:`{{$apacthdr->suppcode}}`,
 				pname:`{{strtoupper($apacthdr->suppname)}}`,
@@ -25,7 +26,7 @@ var ini_header={pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_LEFT)}}`,
 				padd3:`{{strtoupper($apacthdr->addr3)}}`,
 				ptelno:`{{$apacthdr->telno}}`,
 				desc:``,
- 				remarks:`{{strtoupper($apacthdr->remarks)}}`,
+				remarks:`{{strtoupper($apacthdr->remarks)}}`,
 				prepby:``,
 				checkby:``,
 				approveby:``,
@@ -34,10 +35,14 @@ var ini_header={pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_LEFT)}}`,
 				crcode:`{{$apacthdr->bankcode}}`, 
 				suppname:`{!!strtoupper($apacthdr->suppname)!!}`,
 				bankname:`{{strtoupper($apacthdr->bankname)}}`, 
+				AccNo:`{{$apacthdr->AccNo}}`,
+				CompRegNo:`{{$apacthdr->CompRegNo}}`,
+				TINNo:`{{$apacthdr->TINNo}}`,
 				totamt:`{{$apacthdr->amount}}`,
 				totamt_str:`{{$totamt_eng}}`,
 				};	
-var ini_body=[
+
+	var ini_body=[
 				@foreach ($apalloc as $obj)
 				{
 					date:`{{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}`,
@@ -46,7 +51,12 @@ var ini_body=[
 					amt:`{{$obj->allocamount}}`,
 				},
 				@endforeach
-			];
+				];
+
+	var ini_compbankdet={
+				bankaccno:`{{$company->bankaccno}}`,
+				bankname:`{{strtoupper($company->bankname)}}`,
+	};
 
     var subtotal=0;
     var disc=0;
@@ -71,14 +81,17 @@ var ini_body=[
 				if(currentPage == 1){
 					var logohdr = {image: 'logohdr',style:'header_img',width:350, height:75, alignment: 'center'};
 					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true};
+					var compbankdet = {text: 'COMP A/C NO: '+ini_compbankdet.bankaccno+ ' ' +ini_compbankdet.bankname,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};
 					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
 					retval.push(logohdr);
 					retval.push(title);
+					retval.push(compbankdet);
 					retval.push(pageno);
 				}else{
 					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true, margin: [0, 71, 0, 0]};
-					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
+					var compbankdet = {text: 'COMP A/C NO: '+ini_compbankdet.bankaccno+ ' ' +ini_compbankdet.bankname,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
 					retval.push(title);
+					retval.push(compbankdet);
 					retval.push(pageno);
 				}
 
@@ -162,27 +175,33 @@ function make_pdf(){
   		{
             style: 'header_tbl',
             table: {
-                widths: [120,290],//panjang standard dia 515
+                widths: [80,200,80,190],//panjang standard dia 515
                 body: [
                     [
 						{text: 'CREDITOR CODE',bold: true}, 
 						{text: ': '+ini_header.cred_code},
+						{text: ''}, {text: ''},
 					],[
 						{text: 'PAYEE NAME'}, 
 						{text: ': '+ini_header.pname},
+						{text: ''}, {text: ''},
 					],[
 						{text: 'PAYEE ADDRESS'}, 
 						{text: ': '+ini_header.padd1},
+						{text: ''}, {text: ''},
 					],[
 						{text: ''}, 
 						{text: ': '+ini_header.padd2},
+						{text: ''}, {text: ''},
 					],[
 						{text: ''}, 
 						{text: ': '+ini_header.padd3},
+						{text: ''}, {text: ''},
 					],
-					[{},{}],
-					[{text:'PAYEE TEL NO',bold: true},{text: ': '+ini_header.ptelno}],
-                ]
+					[{},{},{},{}],
+					[{text:'PAYEE TEL NO',bold: true},{text: ': '+ini_header.ptelno},{text:'A/C NO',bold: true},{text: ': '+ini_header.AccNo}],
+					[{text:'REG NO',bold: true},{text: ': '+ini_header.CompRegNo},{text:'TIN NO',bold: true},{text: ': '+ini_header.TINNo}]
+				],
             },
 	        layout: 'noBorders',
         },
