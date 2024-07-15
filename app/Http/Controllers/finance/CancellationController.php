@@ -102,7 +102,7 @@ class CancellationController extends defaultController
                 ->where('db.compcode','=',session('compcode'))
                 ->where('db.source','=','PB')
                 ->where('db.trantype','=','RC')
-                ->where('db.recstatus','=','ACTIVE');
+                ->where('db.recstatus','=','POSTED');
         
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
@@ -259,7 +259,7 @@ class CancellationController extends defaultController
                 ->where('db.compcode','=',session('compcode'))
                 ->where('db.source','=','PB')
                 ->where('db.trantype','=','RD')
-                ->where('db.recstatus','=','ACTIVE');
+                ->where('db.recstatus','=','POSTED');
         
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
@@ -418,7 +418,7 @@ class CancellationController extends defaultController
                 ->where('db.compcode','=',session('compcode'))
                 ->where('db.source','=','PB')
                 ->where('db.trantype','=','RF')
-                ->where('db.recstatus','=','ACTIVE');
+                ->where('db.recstatus','=','POSTED');
         
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);

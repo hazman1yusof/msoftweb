@@ -81,7 +81,7 @@
 						
 						<div class="col-md-5" style="margin-top: 4px;">
 							<label class="control-label"></label>
-							<input style="display:none" name="Stext" type="search" placeholder="Search Here ..." class="form-control text-uppercase" tabindex="2">
+							<input style="display: none" name="Stext" type="search" placeholder="Search Here ..." class="form-control text-uppercase" tabindex="2">
 							
 							<div id="customer_text">
 								<div class='input-group'>
@@ -91,7 +91,7 @@
 								<span id="customer_search_hb" class="help-block"></span>
 							</div>
 							
-							<div id="department_text" style="display:none">
+							<div id="department_text" style="display: none">
 								<div class='input-group'>
 									<input id="department_search" name="department_search" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -99,11 +99,16 @@
 								<span id="department_search_hb" class="help-block"></span>
 							</div>
 							
-							<div id="docuDate_text" class="form-inline" style="display:none">
+							<div id="docuDate_text" class="form-inline" style="display: none">
 								FROM DATE <input id="docuDate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
 								TO DATE <input id="docuDate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase">
 								<button type="button" class="btn btn-primary btn-sm" id="docuDate_search">SEARCH</button>
 							</div>
+						</div>
+						
+						<div class="col-md-2" style="float: right; display: none">
+							<label class="control-label" for="debtor_outamount">OutAmount</label>
+							<input id="debtor_outamount" name="debtor_outamount" maxlength="10" class="form-control input-sm" readonly>
 						</div>
 					</div>
 				</div>
@@ -157,15 +162,17 @@
 		</div>
 		
 		<!-- Credit Note -->
-		<div class="panel panel-default" style="position: relative; display:none;" id="jqGrid3_CN_c">
+		<div class="panel panel-default" style="position: relative; display: none;" id="jqGrid3_CN_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_CN_panel">
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 110px; top: 10px;">
 					<h5>Credit Note Detail</h5>
 				</div>
 			</div>
-			
+			<a class='pull-right pointer text-primary' id='pdf_CN' href="" target="_blank" style="position: absolute; right: 50px; top: 17px;">
+				<span class='fa fa-print'></span> Print
+			</a>
 			<div id="jqGrid3_CN_panel" class="panel-collapse collapse">
 				<div class="panel-body">
 					<div id="" class='col-md-12' style="padding:0 0 15px 0">
@@ -177,15 +184,17 @@
 		</div>
 		
 		<!-- Debit Note -->
-		<div class="panel panel-default" style="position: relative; display:none;" id="jqGrid3_DN_c">
+		<div class="panel panel-default" style="position: relative; display: none;" id="jqGrid3_DN_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_DN_panel">
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 110px; top: 10px;">
 					<h5>Debit Note Detail</h5>
 				</div>
 			</div>
-			
+			<a class='pull-right pointer text-primary' id='pdf_DN' href="" target="_blank" style="position: absolute; right: 50px; top: 17px;">
+				<span class='fa fa-print'></span> Print
+			</a>
 			<div id="jqGrid3_DN_panel" class="panel-collapse collapse">
 				<div class="panel-body">
 					<div id="" class='col-md-12' style="padding:0 0 15px 0">
@@ -197,15 +206,17 @@
 		</div>
 		
 		<!-- Sales Order -->
-		<div class="panel panel-default" style="position: relative; display:none;" id="jqGrid3_IN_c">
+		<div class="panel panel-default" style="position: relative; display: none;" id="jqGrid3_IN_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_IN_panel">
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 110px; top: 10px;">
 					<h5>Sales Order Detail</h5>
 				</div>
 			</div>
-			
+			<a class='pull-right pointer text-primary' id='pdf_IN' href="" target="_blank" style="position: absolute; right: 50px; top: 17px;">
+				<span class='fa fa-print'></span> Print
+			</a>
 			<div id="jqGrid3_IN_panel" class="panel-collapse collapse">
 				<div class="panel-body">
 					<div id="" class='col-md-12' style="padding:0 0 15px 0">
@@ -225,10 +236,16 @@
 				
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 35px;">
+				<div class="pull-right" id='alloctitle1' style="position: absolute; padding: 0 0 0 0; right: 50px; top: 35px; display: none;">
+					<h5>Allocation</h5>
+				</div>
+				<div class="pull-right" id='alloctitle2' style="position: absolute; padding: 0 0 0 0; right: 110px; top: 35px; display: none;">
 					<h5>Allocation</h5>
 				</div>
 			</div>
+			<a class='pull-right pointer text-primary' id='pdf_RCRD' href="" target="_blank" style="position: absolute; right: 50px; top: 43px; display: none;">
+				<span class='fa fa-print'></span> Print
+			</a>
 			<div id="jqGridAlloc_panel" class="panel-collapse collapse">
 				<div class="panel-body">
 					<div class='col-md-12' style="padding:0 0 15px 0">
@@ -240,7 +257,7 @@
 		</div>
 		
 		<!-- For Sales Order -->
-		<div class="panel panel-default" style="position: relative; display:none;" id="jqGrid_Tracking_c">
+		<div class="panel panel-default" style="position: relative; display: none;" id="jqGrid_Tracking_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid_Tracking_panel">
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -505,7 +522,7 @@
 	<div id="dialogForm_IN" title="Sales Order">
 		<div class='panel panel-info'>
 			<div class="panel-heading">Sales Order Header
-				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span>Print Sales Invoice</a>
+				<!-- <a class='pull-right pointer text-primary' id='pdf_form_IN' href="" target="_blank"><span class='fa fa-print'></span>Print Sales Invoice</a> -->
 			</div>
 			<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 				<form class='form-horizontal' style='width:99%' id='formdata_IN'>
@@ -681,7 +698,7 @@
 	<div id="dialogForm_RC" title="Receipt">
 		<div class='panel panel-info'>
 			<div class="panel-heading">Receipt
-				<a class='pull-right pointer text-primary' id='pdfgen2' href="" target="_blank"><span class='fa fa-print'></span>Print Receipt</a>
+				<!-- <a class='pull-right pointer text-primary' id='pdf_form_RC' href="" target="_blank"><span class='fa fa-print'></span>Print Receipt</a> -->
 			</div>
 			<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 				<form style='width:99%' id='formdata_RC' autocomplete="off">
