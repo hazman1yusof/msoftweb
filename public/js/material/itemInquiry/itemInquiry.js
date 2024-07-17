@@ -411,14 +411,23 @@ $(document).ready(function () {
 	  	}
 	});
 
+	$('#TableDetailMovement').on('click','tbody td', function() {
+
+	  	var recno = $(this).children('i').data('recno');
+		var trantype = $(this).children('i').data('trantype');
+
+        $('iframe#open_detail_iframe').attr('src','./itemEnquiry/table?action=open_detail&recno='+recno+'&trantype='+trantype);
+		$("#open_detail_dialog").dialog("open");
+	})
+
 
 	function getdtlmov(fetchall,start,limit){
 		let mon_from = $('#monthfrom').val();
 		let yr_from = $('#yearfrom').val();
 		let mon_to = $('#monthto').val();
 		let yr_to = $('#yearto').val();
-		let openbalqty = $('#openbalqty').val();
-		let openbalval = $('#openbalval').val();
+		let openbalqty = numeral().unformat($('#openbalqty').val());
+		let openbalval = numeral().unformat($('#openbalval').val());
 
 		var param={
 					oper:'detailMovement',
@@ -439,7 +448,7 @@ $(document).ready(function () {
 				
 				data.rows.forEach(function(obj){
 
-					obj.open="<i class='fa fa-folder-open-o fa-2x' </i>";
+					obj.open="<i class='fa fa-folder-open-o fa-2x' data-trantype="+obj.trantype+" data-recno="+obj.recno+"></i>";
 					obj.trandate = moment(obj.trandate).format("DD-MM-YYYY");
 					obj.dept = '';
 					
@@ -677,6 +686,15 @@ function calc_jq_height_onchange(jqgrid){
 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+30);
 }
 
+$("#open_detail_dialog").dialog({
+	width: 9/10 * $(window).width(),
+	modal: true,
+	autoOpen: false,
+	open: function( event, ui ) {
+	},
+	close: function( event, ui ) {
+	},
+});
 
 function dialogForm_SalesOrder(obj_id){
 	param={

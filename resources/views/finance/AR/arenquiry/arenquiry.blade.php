@@ -1168,14 +1168,14 @@
 							<div class="panel-heading">Choose type of exchange</div>
 							<div class="panel-body">
 								<ul class="nav nav-tabs">
-									<li><a data-toggle="tab" href="#tab-cash" form='#f_tab-cash'>Cash</a></li>
-									<li><a data-toggle="tab" href="#tab-card" form='#f_tab-card'>Card</a></li>
-									<li><a data-toggle="tab" href="#tab-cheque" form='#f_tab-cheque'>Cheque</a></li>
-									<li><a data-toggle="tab" href="#tab-debit" form='#f_tab-debit'>Auto Debit</a></li>
+									<li><a data-toggle="tab" href="#tab-cash_rf" form='#f_tab-cash'>Cash</a></li>
+									<li><a data-toggle="tab" href="#tab-card_rf" form='#f_tab-card'>Card</a></li>
+									<li><a data-toggle="tab" href="#tab-cheque_rf" form='#f_tab-cheque'>Cheque</a></li>
+									<li><a data-toggle="tab" href="#tab-debit_rf" form='#f_tab-debit'>Auto Debit</a></li>
 								</ul>
 								
 								<div class="tab-content">
-									<div id="tab-cash" class="tab-pane fade form-horizontal">
+									<div id="tab-cash_rf" class="tab-pane fade form-horizontal">
 										<form id='f_tab-cash' autocomplete="off">
 											<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="hidden">
 											<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="hidden" value="CASH">
@@ -1193,7 +1193,7 @@
 											</div>
 										</form>
 									</div>
-									<div id="tab-card" class="tab-pane fade">
+									<div id="tab-card_rf" class="tab-pane fade">
 										<form id='f_tab-card' autocomplete="off">
 											<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="hidden">
 											</br>
@@ -1244,7 +1244,7 @@
 											</div>
 										</form>
 									</div>
-									<div id="tab-cheque" class="tab-pane fade form-horizontal">
+									<div id="tab-cheque_rf" class="tab-pane fade form-horizontal">
 										<form id='f_tab-cheque' autocomplete="off">
 											<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="hidden" value="CHEQUE">
 											</br>
@@ -1272,7 +1272,7 @@
 											</div>
 										</form>
 									</div>
-									<div id="tab-debit" class="tab-pane fade">
+									<div id="tab-debit_rf" class="tab-pane fade">
 										<form id='f_tab-debit' autocomplete="off">
 											</br>
 											<div id="g_paymodebank_c" class='col-md-4 minuspad-15'>

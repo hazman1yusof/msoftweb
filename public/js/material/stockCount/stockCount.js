@@ -41,7 +41,7 @@ $(document).ready(function () {
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
-
+			urlParam2.searchCol2=urlParam2.searchVal2=urlParam2.searchCol=urlParam2.searchVal=null;
             $("#jqGridPager2EditAll").show();
             $("#jqGrid2_ilsave,#jqGridPager2CancelAll,#jqGridPager2SaveAll").hide();
 			unsaved = false;
@@ -540,7 +540,7 @@ $(document).ready(function () {
 		loadonce:false,
 		width: 1150,
 		height: 200,
-		rowNum: 250,
+		rowNum: 100,
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
@@ -566,6 +566,21 @@ $(document).ready(function () {
 	jqgrid_label_align_right("#jqGrid2");
 
 	addParamField('#jqGrid2',false,urlParam2,['vrqty']);
+
+	count_Search("#jqGrid2",urlParam2);
+	function count_Search(grid,urlParam){
+		$("#count_Text").on( "keyup", function() {
+			delay(function(){
+				search(grid,$("#count_Text").val(),$("#count_Col").val(),urlParam);
+			}, 500 );
+			urlParam.searchCol2=urlParam.searchVal2=urlParam.searchCol=urlParam.searchVal=null;
+		});
+
+		$("#count_Col").on( "change", function() {
+			search(grid,$("#count_Text").val(),$("#count_Col").val(),urlParam);
+			urlParam.searchCol2=urlParam.searchVal2=urlParam.searchCol=urlParam.searchVal=null;
+		});
+	}
 
     //////////////////////////////////////////myEditOptions/////////////////////////////////////////////
 	var myEditOptions = {

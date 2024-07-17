@@ -51,6 +51,8 @@ class ItemEnquiryController extends defaultController
         switch($request->action){
             case 'dialogForm_SalesOrder':
                 return $this->dialogForm_SalesOrder($request);
+            case 'open_detail':
+                return $this->open_detail($request);
             default:
                 return 'error happen..';
         }
@@ -59,7 +61,7 @@ class ItemEnquiryController extends defaultController
     public function detailMovement(Request $request){
         //yg ni yg keluar kot
         $det_mov_deptcode = DB::table('material.ivtxndt as d')
-                ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcoderecv', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description','d.sndrcv')
+                ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty','d.recno', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcoderecv', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description','d.sndrcv')
                 ->leftJoin('material.ivtxnhd as h', function($join){
                         $join = $join->on('h.recno', '=', 'd.recno')
                                      ->on('h.trantype', '=', 'd.trantype')
@@ -92,7 +94,7 @@ class ItemEnquiryController extends defaultController
 
         //yg ni ivdspdt
         $det_mov_deptcode_ivdspdt = DB::table('material.ivdspdt as d')
-            ->select('d.adddate','d.trandate','d.trantype','d.reqdept as deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'd.recno as docno', 'd.uomcode', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'd.updtime as trantime','t.crdbfl', 't.description', 'd.mrn', 'd.episno')
+            ->select('d.adddate','d.trandate','d.trantype','d.reqdept as deptcode','d.txnqty', 'd.upduser','d.recno', 'd.updtime', 'd.recno as docno', 'd.uomcode', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'd.updtime as trantime','t.crdbfl', 't.description', 'd.mrn', 'd.episno')
             ->leftJoin('material.ivtxntype as t', function($join){
                     $join = $join->on('t.trantype', '=', 'd.trantype')
                                  ->where('t.compcode','=',session('compcode'));
@@ -122,7 +124,7 @@ class ItemEnquiryController extends defaultController
 
         //yg ni masuk kot
         $det_mov_sndrcv = DB::table('material.ivtxndt as d')
-                ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcoderecv', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description','d.sndrcv')
+                ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty','d.recno', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcoderecv', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description','d.sndrcv')
                 ->leftJoin('material.ivtxnhd as h', function($join){
                         $join = $join->on('h.recno', '=', 'd.recno')
                                      ->on('h.trantype', '=', 'd.trantype')
@@ -188,7 +190,6 @@ class ItemEnquiryController extends defaultController
         return json_encode($responce);
     }
 
-
     public function dialogForm_SalesOrder(Request $request){
         $billsum = DB::table('debtor.billsum as bs')
                         ->where('bs.compcode',session('compcode'))
@@ -221,5 +222,28 @@ class ItemEnquiryController extends defaultController
         $responce->billsum_array = $billsum_array->get();
 
         return json_encode($responce);
+    }
+
+    public function open_detail(Request $request){
+        $trantype = $request->trantype;
+        $recno = $request->recno;
+
+        switch ($trantype) {
+            case 'PHY':
+                $header = DB::table('material.phycnthd')
+                                ->where('compcode',session('compcode'))
+                                ->where('recno',$recno)
+                                ->first();
+
+                return view('material.stockCount.stockCount_dtl',compact('header'));
+            case 'GRT':
+                return view('material.goodReturn.goodReturn_dtl',compact('trantype','recno'));
+            case 'GRN':
+                return view('material.deliveryOrder.deliveryOrder_dtl',compact('trantype','recno'));
+            case 'DS':
+                return view('finance.SalesOrder.SalesOrder_dtl',compact('trantype','recno'));
+            default:
+                return view('finance.inventoryTransaction.inventoryTransaction_dtl',compact('trantype','recno'));
+        }
     }
 }
