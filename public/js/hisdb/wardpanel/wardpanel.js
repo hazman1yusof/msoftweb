@@ -622,6 +622,7 @@ function populate_nursAssessment_currpt_getdata(){
 		}else{
 			button_state_ward('add');
 			autoinsert_rowdata("#formWard",data.ward_regdate);
+			refreshGrid('#jqGridExam',urlParam_Exam,'kosongkan');
 			// examination_ward.empty();
 			textare_init_nursAssessment();
 		}

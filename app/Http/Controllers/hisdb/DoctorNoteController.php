@@ -683,10 +683,11 @@ class DoctorNoteController extends defaultController
         
         $episode_obj = DB::table('hisdb.episode as e')
             ->select('e.mrn','e.episno','p.recordtime','p.recorddate','p.adduser','e.admdoctor','d.doctorname')
-            ->leftJoin('hisdb.pathealth as p', function($join) use ($request){
+            ->join('hisdb.pathealth as p', function($join) use ($request){
                 $join = $join->on('p.mrn', '=', 'e.mrn');
                 $join = $join->on('p.episno', '=', 'e.episno');
                 $join = $join->on('p.compcode', '=', 'e.compcode');
+                $join = $join->where('p.recorddate', '!=', Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
             })->leftJoin('hisdb.doctor as d', function($join) use ($request){
                 $join = $join->on('d.doctorcode', '=', 'e.admdoctor');
                 $join = $join->on('d.compcode', '=', 'e.compcode');
@@ -694,7 +695,7 @@ class DoctorNoteController extends defaultController
             ->where('e.compcode','=',session('compcode'))
             ->where('e.mrn','=',$request->mrn)
             ->orderBy('p.recorddate','desc');
-        
+
         // $patexam_obj = DB::table('hisdb.pathealth')
         //     ->select('mrn','episno','recordtime','adddate','adduser')
         //     ->where('compcode','=',session('compcode'))
@@ -708,7 +709,7 @@ class DoctorNoteController extends defaultController
             
             foreach ($episode_obj as $key => $value) {
                 if(!empty($value->recorddate)){
-                    $date['date'] =  Carbon::createFromFormat('Y-m-d H:i:s', $value->recorddate)->format('d-m-Y').' '.$value->recordtime;
+                    $date['date'] =  Carbon::createFromFormat('Y-m-d', $value->recorddate)->format('d-m-Y').' '.$value->recordtime;
                 }else{
                     $date['date'] =  '-';
                 }

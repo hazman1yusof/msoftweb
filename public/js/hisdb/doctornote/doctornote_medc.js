@@ -5,10 +5,9 @@ $(document).ready(function () {
         $('#form_medc').hide();
         $('#mclist_medc').show();
 
-        let rowid = $("#grid-command-buttons tr.justbc").data("rowId");
-        let getCurrentRow = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
+        var rowdata = getrow_bootgrid();
 
-        mclist_table.ajax.url( "./pat_enq/table?action=mc_list&mrn="+getCurrentRow.MRN).load();
+        mclist_table.ajax.url( "./pat_enq/table?action=mc_list&mrn="+rowdata.MRN).load();
         $('#mclist_table').css('width','100%');
     });
 
@@ -28,16 +27,18 @@ $(document).ready(function () {
         epno_medc_btnstate('default');
     });
 
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        let href = $(e.target).eq(0).attr('href');
-    });
+    // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    //     let href = $(e.target).eq(0).attr('href');
+    // });
 
     $('#form_medc [name=datefrom]').on('blur',function(){
         let mccnt=$('#form_medc [name=mccnt]').val();
         let datefrom=$('#form_medc [name=datefrom]').val();
 
         let dateto = moment(datefrom).add(mccnt-1, "days");
+        let dateresume = moment(datefrom).add(mccnt, "days");
         $('#form_medc [name=dateto]').val(moment(dateto).format('YYYY-MM-DD'));
+        $('#form_medc [name=dateresume]').val(moment(dateresume).format('YYYY-MM-DD'));
     });
 
     $('#form_medc [name=mccnt]').on('change',function(){
@@ -60,7 +61,8 @@ $(document).ready(function () {
                 {'data': 'episno'},
                 {'data': 'adduser'},
                 {'data': 'adddate'},
-            ]
+            ],
+        "order": [[ 0, "desc" ]],
     });
 
     $('#mclist_table tbody').on('click', 'tr', function () { 

@@ -660,6 +660,7 @@ $(document).ready(function () {
 				button_state_ti('disableAll');
 				refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 				refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
+				$('#formTriageInfo span#adduser').text('');
 				examination_nursing.empty();
 				autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 				textare_init_triage();
@@ -783,6 +784,7 @@ function populate_formNursing(obj,rowdata){
 		textare_init_triage();
 	}
 	
+	$('#formTriageInfo span#adduser').text('');
 	if(rowdata.nurse_gen != undefined){
 		autoinsert_rowdata("#formTriageInfo",rowdata.nurse_gen);
 		$('#formTriageInfo span#adduser').text(data.nurse_gen.adduser);
@@ -868,6 +870,7 @@ function populate_triage(obj,rowdata){
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
 			examination_nursing.empty();
+			$('#formTriageInfo span#adduser').text('');
 			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 			textare_init_triage();
 		}
@@ -942,6 +945,7 @@ function  populate_triage_currpt_getdata(){
 			button_state_ti('add');
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
+			$('#formTriageInfo span#adduser').text('');
 			examination_nursing.empty();
 			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 			textare_init_triage();
@@ -1011,6 +1015,7 @@ function populate_triage_casenote(obj){
 			button_state_ti('disableAll');
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
+			$('#formTriageInfo span#adduser').text('');
 			examination_nursing.empty();
 			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 			textare_init_triage();

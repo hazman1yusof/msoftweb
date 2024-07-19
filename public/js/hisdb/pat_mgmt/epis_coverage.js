@@ -89,17 +89,17 @@ $(document).ready(function () {
 		},
 	});
 
-	$("#jqGrid_epno_coverage").inlineNav('#jqGridPager_epno_coverage', {edit:false,add:false,del:false,search:false,
-		restoreAfterSelect: false
-	}).jqGrid('navButtonAdd', "#jqGridPager_epno_coverage", {
-		id: "jqGridPagerRefresh",
-		caption: "", cursor: "pointer", position: "last",
-		buttonicon: "glyphicon glyphicon-refresh",
-		title: "Refresh Table",
-		onClickButton: function () {
-			refreshGrid("#jqGrid_epno_coverage", urlParam_epno_coverage);
-		},
-	});
+	// $("#jqGrid_epno_coverage").inlineNav('#jqGridPager_epno_coverage', {edit:false,add:false,del:false,search:false,
+	// 	restoreAfterSelect: false
+	// }).jqGrid('navButtonAdd', "#jqGridPager_epno_coverage", {
+	// 	id: "jqGridPagerRefresh",
+	// 	caption: "", cursor: "pointer", position: "last",
+	// 	buttonicon: "glyphicon glyphicon-refresh",
+	// 	title: "Refresh Table",
+	// 	onClickButton: function () {
+	// 		refreshGrid("#jqGrid_epno_coverage", urlParam_epno_coverage);
+	// 	},
+	// });
 
 	$("#tabcoverage").on("shown.bs.collapse", function(){
 		var lastrowdata = getrow_bootgrid();

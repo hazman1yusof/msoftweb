@@ -112,7 +112,7 @@ $(document).ready(function () {
 	});
 
 	var dialog_grpcode = new ordialog(
-		'grpcode',['hisdb.chggroup'],"#jqGrid_gletdept input[name='grpcode']",errorField,
+		'grpcode',['hisdb.chggroup'],"#jqGrid_gletdept input[name='grpcode']",errorField_epno_payer,
 		{	colModel:
 			[
 				{label:'Group code',name:'grpcode',width:200,classes:'pointer',canSearch:true,or_search:true},
@@ -164,7 +164,7 @@ $(document).ready(function () {
 	dialog_grpcode.makedialog(false);
 
 	var dialog_chgcode = new ordialog(
-		'chgcode',['hisdb.chgmast'],"#jqGrid_gletitem input[name='chgcode']",errorField,
+		'chgcode',['hisdb.chgmast'],"#jqGrid_gletitem input[name='chgcode']",errorField_epno_payer,
 		{	colModel:
 			[
 				{label:'Charge code',name:'chgcode',width:200,classes:'pointer',canSearch:true,or_search:true},
@@ -343,7 +343,7 @@ $(document).ready(function () {
 			$('#jqGrid_gletdept').data('lastselrow',resjson.idno);
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid("#jqGrid_gletdept", urlParam_gletdept);
-			errorField.length=0;
+			errorField_epno_payer.length=0;
 			$("#jqGridPagerRefresh_gletdept,#jqGridPager_gletdeptDelete").show();
 		},
 		errorfunc: function(rowid,response){
@@ -354,7 +354,7 @@ $(document).ready(function () {
 		},
 		beforeSaveRow: function (options, rowid) {
 			mycurrency_gletdept.formatOff();
-			if(errorField.length>0)return false;
+			if(errorField_epno_payer.length>0)return false;
 
 			let data = $('#jqGrid_gletdept').jqGrid ('getRowData', rowid);
 
@@ -505,7 +505,7 @@ $(document).ready(function () {
 			let resjson = JSON.parse(response.responseText);
 			$('#jqGrid_gletitem').data('lastselrow',resjson.idno);
 			//state true maksudnyer ada isi, tak kosong
-			errorField.length=0;
+			errorField_epno_payer.length=0;
 			refreshGrid("#jqGrid_gletitem", urlParam_gletitem);
 		},
 		errorfunc: function(rowid,response){
@@ -516,7 +516,7 @@ $(document).ready(function () {
 		},
 		beforeSaveRow: function (options, rowid) {
 			mycurrency_gletdept.formatOff();
-			if(errorField.length>0)return false;
+			if(errorField_epno_payer.length>0)return false;
 
 			let selrowdata = selrowData('#jqGrid_gletdept');
 			let data = $('#jqGrid_gletitem').jqGrid ('getRowData', rowid);
@@ -621,7 +621,7 @@ $(document).ready(function () {
 	});
 
 	var epno_payer_payercode = new ordialog(
-		'epno_payer_payercode', 'debtor.debtormast', '#payercode_epno_payer', 'errorField',
+		'epno_payer_payercode', 'debtor.debtormast', '#payercode_epno_payer', 'errorField_epno_payer',
 		{
 			colModel: [
 				{ label: 'Code', name: 'debtorcode', width: 2, classes: 'pointer', canSearch: true, or_search: true },

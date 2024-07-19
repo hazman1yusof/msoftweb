@@ -54,7 +54,7 @@ $(document).ready(function () {
 		width: 900,
 		height: 80,
 		rowNum: 30,
-		pager:'#jqGrid_trans_doctornotePager',
+		// pager:'#jqGrid_trans_doctornotePager',
 		viewrecords: true,
 		loadonce:false,
 		scroll: true,
@@ -64,16 +64,16 @@ $(document).ready(function () {
 			calc_jq_height_onchange("jqGrid_trans_doctornote");
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
-			if($('td#jqGrid_trans_doctornote_iledit').is(':visible')){
-				$('td#jqGrid_trans_doctornote_iledit').click();
-			}
+			// if($('td#jqGrid_trans_doctornote_iledit').is(':visible')){
+			// 	$('td#jqGrid_trans_doctornote_iledit').click();
+			// }
 		},
 		loadComplete: function () {
 			$("#jqGrid_trans_doctornote").setSelection($("#jqGrid_trans_doctornote").getDataIDs()[0]);
         	$('#jqGrid_trans_doctornote_ildelete').removeClass('ui-disabled');
-			if(addmore_onadd == true){
-				$('#jqGrid_trans_doctornote_iladd').click();
-			}
+			// if(addmore_onadd == true){
+			// 	$('#jqGrid_trans_doctornote_iladd').click();
+			// }
 		},
 		beforeProcessing: function(data, status, xhr){
 			if(curpage_tran == data.page){
@@ -86,7 +86,7 @@ $(document).ready(function () {
 	addParamField('#jqGrid_trans_doctornote',false,urlParam_trans,[]);
 	jqgrid_label_align_right('#jqGrid_trans_doctornote');
 
-	var myEditOptions_add = {
+	var myEditOptions_trandoctornote_add = {
         keys: false,
         extraparam:{
 		    "_token": $("#csrf_token").val(),
@@ -194,7 +194,7 @@ $(document).ready(function () {
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: { 
-			addRowParams: myEditOptions_add
+			addRowParams: myEditOptions_trandoctornote_add
 		},
 		editParams: myEditOptions_edit
 	}).jqGrid('navButtonAdd', "#jqGrid_trans_doctornotePager", {	

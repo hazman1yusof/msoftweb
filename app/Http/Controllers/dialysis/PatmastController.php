@@ -1191,48 +1191,47 @@ class PatmastController extends defaultController
                     //adddate
                     //computerid
 
-            if($epis_fin == "PT"){
-                $debtortype_data = DB::table('debtor.debtortype')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('DebtorTyCode','=',$epis_fin)
-                    ->first();
+            // if($epis_fin == "PT"){
 
-                $debtormast_obj = DB::table('debtor.debtormast')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('debtorcode','=',$epis_payer);
+            $personal_payercode = str_pad($epis_mrn, 7, '0', STR_PAD_LEFT);
+
+            $debtortype_data = DB::table('debtor.debtortype')
+                ->where('compcode','=',session('compcode'))
+                ->where('DebtorTyCode','=','PT')
+                ->first();
+
+            $debtormast_obj = DB::table('debtor.debtormast')
+                ->where('compcode','=',session('compcode'))
+                ->where('debtorcode','=',$personal_payercode);
 
 
-                if(!$debtormast_obj->exists()){
-                    //kalu xjumpa debtormast, buat baru
-                    DB::table('debtor.debtormast')
-                        ->insert([
-                            'CompCode' => session('compcode'),
-                            'DebtorCode' => $epis_payer,
-                            'Name' => $patmast_data->Name,
-                            'Address1' => $patmast_data->Address1,
-                            'Address2' => $patmast_data->Address2,
-                            'Address3' => $patmast_data->Address3,
-                            'DebtorType' => "PT",
-                            'DepCCode'  => $debtortype_data->depccode,
-                            'DepGlAcc' => $debtortype_data->depglacc,
-                            'BillType' => "IP",
-                            'BillTypeOP' => "OP",
-                            'ActDebCCode' => $debtortype_data->actdebccode,
-                            'ActDebGlAcc' => $debtortype_data->actdebglacc,
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'coverageip' => 999999999.99,
-                            'coverageop' => 999999999.99,
-                            'RecStatus' => "ACTIVE"
-                        ]);
-                }else{
-
-                    // $debtormast_data = $debtormast_obj->first();
-
-                }
-            }else{
-
+            if(!$debtormast_obj->exists()){
+                //kalu xjumpa debtormast, buat baru
+                DB::table('debtor.debtormast')
+                    ->insert([
+                        'CompCode' => session('compcode'),
+                        'DebtorCode' => $personal_payercode,
+                        'Name' => $patmast_data->Name,
+                        'Address1' => $patmast_data->Address1,
+                        'Address2' => $patmast_data->Address2,
+                        'Address3' => $patmast_data->Address3,
+                        'DebtorType' => "PT",
+                        'DepCCode'  => $debtortype_data->depccode,
+                        'DepGlAcc' => $debtortype_data->depglacc,
+                        'BillType' => "IP",
+                        'BillTypeOP' => "OP",
+                        'ActDebCCode' => $debtortype_data->actdebccode,
+                        'ActDebGlAcc' => $debtortype_data->actdebglacc,
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'coverageip' => 999999999.99,
+                        'coverageop' => 999999999.99,
+                        'RecStatus' => "ACTIVE"
+                    ]);
             }
+            // }else{
+
+            // }
 
             //CREATE EPISPAYER
                 // mrn
@@ -1682,45 +1681,42 @@ class PatmastController extends defaultController
                     //adddate
                     //computerid
 
-            if($epis_fin == "PT"){
-                $debtortype_data = DB::table('debtor.debtortype')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('DebtorTyCode','=',$epis_fin)
-                    ->first();
 
-                $debtormast_obj = DB::table('debtor.debtormast')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('debtorcode','=',$epis_payer);
+            $personal_payercode = str_pad($epis_mrn, 7, '0', STR_PAD_LEFT);
+
+            $debtortype_data = DB::table('debtor.debtortype')
+                ->where('compcode','=',session('compcode'))
+                ->where('DebtorTyCode','=','PT')
+                ->first();
+
+            $debtormast_obj = DB::table('debtor.debtormast')
+                ->where('compcode','=',session('compcode'))
+                ->where('debtorcode','=',$personal_payercode);
 
 
-                if(!$debtormast_obj->exists()){
-
-                    DB::table('debtor.debtormast')
-                        ->insert([
-                            'CompCode' => session('compcode'),
-                            'DebtorCode' => $epis_payer,
-                            'Name' => $patmast_data->Name,
-                            'Address1' => $patmast_data->Address1,
-                            'Address2' => $patmast_data->Address2,
-                            'Address3' => $patmast_data->Address3,
-                            'DebtorType' => "PT",
-                            'DepCCode'  => $debtortype_data->depccode,
-                            'DepGlAcc' => $debtortype_data->depglacc,
-                            'BillType' => "IP",
-                            'BillTypeOP' => "OP",
-                            'ActDebCCode' => $debtortype_data->actdebccode,
-                            'ActDebGlAcc' => $debtortype_data->actdebglacc,
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'coverageip' => 999999999.99,
-                            'coverageop' => 999999999.99,
-                            'RecStatus' => "ACTIVE"
-                        ]);
-                }else{
-
-                    // $debtormast_data = $debtormast_obj->first();
-
-                }
+            if(!$debtormast_obj->exists()){
+                //kalu xjumpa debtormast, buat baru
+                DB::table('debtor.debtormast')
+                    ->insert([
+                        'CompCode' => session('compcode'),
+                        'DebtorCode' => $personal_payercode,
+                        'Name' => $patmast_data->Name,
+                        'Address1' => $patmast_data->Address1,
+                        'Address2' => $patmast_data->Address2,
+                        'Address3' => $patmast_data->Address3,
+                        'DebtorType' => "PT",
+                        'DepCCode'  => $debtortype_data->depccode,
+                        'DepGlAcc' => $debtortype_data->depglacc,
+                        'BillType' => "IP",
+                        'BillTypeOP' => "OP",
+                        'ActDebCCode' => $debtortype_data->actdebccode,
+                        'ActDebGlAcc' => $debtortype_data->actdebglacc,
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'coverageip' => 999999999.99,
+                        'coverageop' => 999999999.99,
+                        'RecStatus' => "ACTIVE"
+                    ]);
             }
 
             //CREATE EPISPAYER

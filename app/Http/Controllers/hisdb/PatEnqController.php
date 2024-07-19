@@ -572,19 +572,19 @@ class PatEnqController extends defaultController
 
         $ini_array = [
             'compcode' => $patmc->compcode,
-            'datefrom' => $patmc->datefrom,
-            'dateto' => $patmc->dateto,
-            'dateresume' => $patmc->dateresume,
-            'datereexam' => $patmc->datereexam,
+            'datefrom' => (!empty($patmc->datefrom))?Carbon::createFromFormat('Y-m-d', $patmc->datefrom)->format('d-m-Y'):'',
+            'dateto' => (!empty($patmc->dateto))?Carbon::createFromFormat('Y-m-d', $patmc->dateto)->format('d-m-Y'):'',
+            'dateresume' => (!empty($patmc->dateresume))?Carbon::createFromFormat('Y-m-d', $patmc->dateresume)->format('d-m-Y'):'',
+            'datereexam' => (!empty($patmc->datereexam))?Carbon::createFromFormat('Y-m-d', $patmc->datereexam)->format('d-m-Y'):'',
             'mrn' => $patmc->mrn,
             'episno' => $patmc->episno,
             'newic' => $patmc->newic,
             'patfrom' => $patmc->patfrom,
             'mccnt' => ltrim($patmc->mccnt, '0'),
             'adduser' => $patmc->adduser,
-            'adddate' => $patmc->adddate,
+            'adddate' => (!empty($patmc->adddate))?Carbon::createFromFormat('Y-m-d H:i:s', $patmc->adddate)->format('d-m-Y'):'',
             'serialno' => str_pad($patmc->idno, 6, "0", STR_PAD_LEFT),
-            'printeddate' => $patmc->printeddate,
+            'printeddate' => (!empty($patmc->printeddate))?Carbon::createFromFormat('Y-m-d', $patmc->printeddate)->format('d-m-Y'):'',
             'printedby' => $patmc->printedby,
             'sex' => $sex
         ];
