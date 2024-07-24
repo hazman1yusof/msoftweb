@@ -34,6 +34,7 @@ $(document).ready(function () {
 	////////////////////////////////////start dialog/////////////////////////////////////
 	var oper;
 	var unsaved = false;
+	scrollto_topbtm();
 
 	$("#dialogForm")
 	  .dialog({ 
@@ -52,6 +53,7 @@ $(document).ready(function () {
 				case state = 'add':
 					$("#jqGrid2").jqGrid("clearGridData", true);
 					$("#pg_jqGridPager2 table").show();
+					$("#saveDetailLabel").show();
 					$("#jqGrid2_ilsave").hide();
 					enableForm('#formdata');
 					rdonly('#formdata');
@@ -305,6 +307,7 @@ $(document).ready(function () {
 			obj={};
 		}
 		saveParam.oper=selfoper;
+		$('#saveDetailLabel').addClass('ui-state-disabled');
 
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			
@@ -319,13 +322,14 @@ $(document).ready(function () {
 			dialog_rackno.on();
 			dialog_itemcodefrom.on();
 			dialog_itemcodeto.on();
-
+			$('#saveDetailLabel').removeClass('ui-state-disabled');
 		}).done(function (data) {
 			
 			addmore_jqgrid2.state = false;
 			
 			if(selfoper=='add'){
 
+				$("#saveDetailLabel, #jqGrid2_ilsave").hide();
 				oper='edit';//sekali dia add terus jadi edit lepas tu
 				$('#recno').val(data.recno);
 				$('#docno').val(data.docno);
@@ -343,7 +347,7 @@ $(document).ready(function () {
 			}
 			refreshGrid('#jqGrid2', urlParam2);
 			disableForm('#formdata');
-			
+			$('#saveDetailLabel').removeClass('ui-state-disabled');
 		});
 	}
 	
@@ -555,7 +559,7 @@ $(document).ready(function () {
 							});
 			if(result.length == 0 && oper=='edit')unsaved = true;
 
-        	calc_jq_height_onchange("jqGrid2",false,900);
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 		},
 		afterShowForm: function (rowid) {
 		},
@@ -671,7 +675,6 @@ $(document).ready(function () {
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
-		console.log($('#formdata').isValid({requiredFields:''},conf,true));
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
 			dialog_srcdept.off();
 			dialog_rackno.off();

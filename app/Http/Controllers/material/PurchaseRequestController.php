@@ -210,9 +210,9 @@ class PurchaseRequestController extends defaultController
 
                 $purreqhd_get = $purreqhd->first();
 
-                // if($purreqhd_get->recstatus != 'OPEN'){
-                //     continue;
-                // }
+                if($purreqhd_get->recstatus != 'OPEN'){
+                    continue;
+                }
 
                 //nak buat qtyrequest1S and qtybalance1S
                 $purreqdt = DB::table("material.purreqdt")
@@ -424,6 +424,10 @@ class PurchaseRequestController extends defaultController
 
                 $purreqhd_get = $purreqhd->first();
 
+                if($purreqhd_get->recstatus != 'REQUEST'){
+                    continue;
+                }
+
                 // if(!$this->skip_authorization_2($request,$purreqhd_get)){
                     $authorise = DB::table('material.authdtl')
                         ->where('authorid','=',session('username'))
@@ -517,6 +521,10 @@ class PurchaseRequestController extends defaultController
                     ->where('idno','=',$value);
 
                 $purreqhd_get = $purreqhd->first();
+
+                if($purreqhd_get->recstatus != 'SUPPORT'){
+                    continue;
+                }
 
                 // if(!$this->skip_authorization_2($request,$purreqhd_get)){
                     $authorise = DB::table('material.authdtl')
@@ -612,6 +620,10 @@ class PurchaseRequestController extends defaultController
                     ->where('idno','=',$value);
 
                 $purreqhd_get = $purreqhd->first();
+
+                if($purreqhd_get->recstatus != 'VERIFIED'){
+                    continue;
+                }
 
                 // if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
 

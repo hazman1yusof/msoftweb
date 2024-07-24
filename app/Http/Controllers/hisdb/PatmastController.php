@@ -1033,6 +1033,7 @@ class PatmastController extends defaultController
             }
 
             $array_insert = [
+                'Episno' => 0,
                 'loginid' => $loginid,
                 'compcode' => session('compcode'),
                 'adduser' => session('username'),

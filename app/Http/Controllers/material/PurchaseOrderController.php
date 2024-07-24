@@ -42,16 +42,10 @@ class PurchaseOrderController extends defaultController
                 return $this->soft_cancel($request);
             case 'support':
                 return $this->support($request);
-            case 'support_single':
-                return $this->support_single($request);
             case 'verify':
                 return $this->verify($request);
-            case 'verify_single':
-                return $this->verify_single($request);
             case 'approved':
                 return $this->approved($request);
-            case 'approved_single':
-                return $this->approved_single($request);
             case 'cancel_single':
                 return $this->cancel($request);
             case 'refresh_do':
@@ -62,7 +56,8 @@ class PurchaseOrderController extends defaultController
                 return 'error happen..';
         }
     }
-     public function add(Request $request){
+
+    public function add(Request $request){
 
         if(!empty($request->fixPost)){
             $field = $this->fixPost2($request->field);
@@ -146,7 +141,6 @@ class PurchaseOrderController extends defaultController
 
             return response($e->getMessage(), 500);
         }
-
     }
 
     public function edit(Request $request){
@@ -258,11 +252,9 @@ class PurchaseOrderController extends defaultController
                 return response($e->getMessage(), 500);
             }
         }
-
     }
 
     public function del(Request $request){
-
     }
     
     public function posted(Request $request){
@@ -276,6 +268,10 @@ class PurchaseOrderController extends defaultController
                             ->where('idno','=',$value);
 
                 $purordhd_get = $purordhd->first();
+
+                if($purordhd_get->recstatus != 'OPEN'){
+                    continue;
+                }
 
                 $this->need_upd_purreq($value);
 
@@ -400,43 +396,6 @@ class PurchaseOrderController extends defaultController
         }
     }
 
-     public function soft_cancel(Request $request){
-
-         DB::beginTransaction();
-
-        try{
-
-            foreach ($request->idno_array as $value){
-
-                $purordhd = DB::table("material.purordhd")
-                    ->where('idno','=',$value);
-
-                $purordhd_get = $purordhd->first();
-
-                $purordhd->update([
-                        'recstatus' => 'CANCELLED'
-                    ]);
-
-                DB::table("material.purorddt")
-                    ->where('recno','=',$purordhd_get->recno)
-                    ->update([
-                        'recstatus' => 'CANCELLED',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-            }
-
-
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-    }
-
     public function cancel(Request $request){
         DB::beginTransaction();
 
@@ -499,6 +458,10 @@ class PurchaseOrderController extends defaultController
                     ->where('idno','=',$value);
 
                 $purordhd_get = $purordhd->first();
+
+                if($purordhd_get->recstatus != 'REQUEST'){
+                    continue;
+                }
 
                 // if(!$this->skip_authorization_2($request,$purordhd_get)){
                     $authorise = DB::table('material.authdtl')
@@ -582,87 +545,6 @@ class PurchaseOrderController extends defaultController
         }
     }
 
-    public function support_single(Request $request){
-         DB::beginTransaction();
-
-        try{
-            
-            $purordhd = DB::table("material.purordhd")
-                ->where('idno','=',$request->idno);
-
-            $purordhd_get = $purordhd->first();
-
-            $authorise = DB::table('material.authdtl')
-                ->where('compcode','=',session('compcode'))
-                ->where('trantype','=','PO')
-                ->where('cando','=', 'ACTIVE')
-                ->where('recstatus','=','VERIFIED')
-                ->where('deptcode','=',$purordhd_get->prdept)
-                ->where('maxlimit','>=',$purordhd_get->totamount);
-
-            if(!$authorise->exists()){
-
-                $authorise = DB::table('material.authdtl')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('trantype','=','PO')
-                    ->where('cando','=', 'ACTIVE')
-                    ->where('recstatus','=','VERIFIED')
-                    ->where('deptcode','=','ALL')
-                    ->where('deptcode','=','all')
-                    ->where('maxlimit','>=',$purordhd_get->totamount);
-
-                    if(!$authorise->exists()){
-                        throw new \Exception("The user doesnt have authority",500);
-                    }
-                    
-            }
-
-            $authorise_use = $authorise->first();
-
-            $purordhd->update([
-                    'verifiedby' => $authorise_use->authorid,
-                    'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'SUPPORT'
-                ]);
-
-            DB::table("material.purorddt")
-                ->where('recno','=',$purordhd_get->recno)
-                ->update([
-                    'recstatus' => 'SUPPORT',
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-
-            DB::table("material.queuepo")
-                ->where('recno','=',$purordhd_get->recno)
-                ->update([
-                    'AuthorisedID' => $authorise_use->authorid,
-                    'recstatus' => 'SUPPORT',
-                    'trantype' => 'VERIFIED',
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-           
-            DB::commit();
-
-            // 4. email and whatsapp
-            $data = new stdClass();
-            $data->status = 'VERIFIED';
-            $data->deptcode = $purordhd_get->reqdept;
-            $data->purreqno = $purordhd_get->purreqno;
-            $data->email_to = 'hazman.yusof@gmail.com';
-            $data->whatsapp = '01123090948';
-
-          //  $this->sendemail($data);
-
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-    }
-
     public function verify(Request $request){
          DB::beginTransaction();
 
@@ -674,6 +556,10 @@ class PurchaseOrderController extends defaultController
                     ->where('idno','=',$value);
 
                 $purordhd_get = $purordhd->first();
+
+                if($purordhd_get->recstatus != 'SUPPORT'){
+                    continue;
+                }
 
                 // if(!$this->skip_authorization_2($request,$purordhd_get)){
                     $authorise = DB::table('material.authdtl')
@@ -755,87 +641,6 @@ class PurchaseOrderController extends defaultController
         }
     }
 
-    public function verify_single(Request $request){
-         DB::beginTransaction();
-
-        try{
-            
-            $purordhd = DB::table("material.purordhd")
-                ->where('idno','=',$request->idno);
-
-            $purordhd_get = $purordhd->first();
-
-            $authorise = DB::table('material.authdtl')
-                ->where('compcode','=',session('compcode'))
-                ->where('trantype','=','PO')
-                ->where('cando','=', 'ACTIVE')
-                ->where('recstatus','=','APPROVED')
-                ->where('deptcode','=',$purordhd_get->reqdept)
-                ->where('maxlimit','>=',$purordhd_get->totamount);
-
-            if(!$authorise->exists()){
-
-                $authorise = DB::table('material.authdtl')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('trantype','=','PO')
-                    ->where('cando','=', 'ACTIVE')
-                    ->where('recstatus','=','APPROVED')
-                    ->where('deptcode','=','ALL')
-                    ->where('deptcode','=','all')
-                    ->where('maxlimit','>=',$purordhd_get->totamount);
-
-                    if(!$authorise->exists()){
-                        throw new \Exception("The user doesnt have authority",500);
-                    }
-                    
-            }
-
-            $authorise_use = $authorise->first();
-
-            $purordhd->update([
-                    'approvedby' => $authorise_use->authorid,
-                    'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'VERIFIED'
-                ]);
-
-            DB::table("material.purorddt")
-                ->where('recno','=',$purordhd_get->recno)
-                ->update([
-                    'recstatus' => 'VERIFIED',
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-
-            DB::table("material.queuepo")
-                ->where('recno','=',$purordhd_get->recno)
-                ->update([
-                    'AuthorisedID' => $authorise_use->authorid,
-                    'recstatus' => 'VERIFIED',
-                    'trantype' => 'APPROVED',
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-           
-            DB::commit();
-
-            // 4. email and whatsapp
-            $data = new stdClass();
-            $data->status = 'APPROVED';
-            $data->deptcode = $purordhd_get->reqdept;
-            $data->purreqno = $purordhd_get->purreqno;
-            $data->email_to = 'hazman.yusof@gmail.com';
-            $data->whatsapp = '01123090948';
-
-          //  $this->sendemail($data);
-
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-    }
-
     public function approved(Request $request){
          DB::beginTransaction();
 
@@ -847,6 +652,10 @@ class PurchaseOrderController extends defaultController
                     ->where('idno','=',$value);
 
                 $purordhd_get = $purordhd->first();
+
+                if($purordhd_get->recstatus != 'VERIFIED'){
+                    continue;
+                }
 
                 $authorise = DB::table('material.authdtl')
                     ->where('compcode','=',session('compcode'))
@@ -905,47 +714,6 @@ class PurchaseOrderController extends defaultController
 
             }
 
-           
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-    }
-
-    public function approved_single(Request $request){
-         DB::beginTransaction();
-
-        try{
-
-            $purordhd = DB::table("material.purordhd")
-                    ->where('idno','=',$request->idno);
-
-            $purordhd_get = $purordhd->first();
-
-            $purordhd->update([
-                    'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'APPROVED'
-                ]);
-
-            DB::table("material.purorddt")
-                ->where('recno','=',$purordhd_get->recno)
-                ->update([
-                    'recstatus' => 'APPROVED',
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-
-            DB::table("material.queuepo")
-                ->where('recno','=',$purordhd_get->recno)
-                ->update([
-                    'recstatus' => 'APPROVED',
-                    'trantype' => 'DONE',
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
            
             DB::commit();
         

@@ -190,6 +190,10 @@ class InventoryTransactionController extends defaultController
                             ->where('idno','=',$idno)
                             ->first();
 
+                if($ivtmphd->recstatus != 'OPEN'){
+                    continue;
+                }
+
                 $this->check_sequence_backdated($ivtmphd);
 
                 DB::table("material.IvTxnHd")

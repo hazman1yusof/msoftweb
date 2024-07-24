@@ -760,7 +760,7 @@
 </div>
 
 
-<div id="dialog_medc" title="Referral Letter">
+<div id="dialog_medc" title="Medical Certificate">
     <div class="row">
         <div class="col-md-12" style="padding: 10px 0px;">
             <div class="btn-group" role="group" aria-label="..." style="float:right;">
@@ -779,10 +779,15 @@
                     <p style="padding-left: 50px;">Serial No: <input type="text" name="serialno" readonly class="form-control" style="width: 70px !important;"></p>
                     <p>I hereby certify that i have examined</p>
                     <p>Mr/Miss/Mrs : <input type="text" name="name" readonly class="form-control" style="width: 500px !important;"></p>
-                    <p style="padding-left: 50px;">From : <input type="text" name="patfrom" style="width: 488px !important;" class="form-control"></p>
-                    <p>And find that he/she will be unfit for duty for <input type="text" name="mccnt" class="form-control" style="width: 50px !important;"> days</p>
-                    <p style="padding-left: 50px;">day from <input type="date" name="datefrom" class="form-control"> to <input type="date" name="dateto" class="form-control"></p>
-                    <p>Boleh bertugas semula pada / Can resume his/her duty on <input type="date" name="dateresume" class="form-control"></p>
+                    <p style="padding-left: 38px;">From : <input type="text" name="patfrom" style="width: 500px !important;" class="form-control"></p>
+                    <p>And find that he/she will be unfit for duty for <input type="text" name="mccnt" class="form-control" style="width: 50px !important;" required> days</p>
+                    <p style="padding-left: 50px;">day from 
+                        <input type="date" name="datefrom" class="form-control" required> to 
+                        <input type="date" name="dateto" class="form-control" required>
+                    </p>
+                    <p>Boleh bertugas semula pada / Can resume his/her duty on 
+                        <input type="date" name="dateresume" class="form-control" required>
+                    </p>
                     <p>Dikehendaki datang semula pada /</p>
                     <p>Is required to come for re-examination on <input type="date" name="datereexam" class="form-control"></p>
             </form>

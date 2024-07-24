@@ -10,8 +10,8 @@ var urlParam_AddNotes = {
 	field: '',
 	table_name: 'hisdb.pathealthadd',
 	table_id: 'idno',
-	filterCol:['mrn','episno'],
-	filterVal:['',''],
+	filterCol:['mrn','episno','compcode'],
+	filterVal:['','','session.compcode'],
 }
 
 $(document).ready(function () {
@@ -267,10 +267,10 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPagerAddNotes",
 		loadComplete: function(){
-			if(addmore_jqgrid.more == true){$('#jqGridAddNotes_iladd').click();}
-			else{
+			// if(addmore_jqgrid.more == true){$('#jqGridAddNotes_iladd').click();}
+			// else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
-			}
+			// }
 			$('.ui-pg-button').prop('disabled',true);
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 			
@@ -282,7 +282,7 @@ $(document).ready(function () {
 	});
 	
 	////////////////////////////////////////////////////myEditOptions////////////////////////////////////////////////////
-	var myEditOptions_add = {
+	var myEditOptionsAddNotes_add = {
 		keys: true,
 		extraparam:{
 			"_token": $("#csrf_token").val()
@@ -340,7 +340,7 @@ $(document).ready(function () {
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: {
-			addRowParams: myEditOptions_add
+			addRowParams: myEditOptionsAddNotes_add
 		},
 		// editParams: myEditOptions_edit
 	})
@@ -689,7 +689,7 @@ function populate_doctorNote_currpt(obj){
 		recorddate:''
 	};
 	
-	button_state_doctorNote('add');
+	button_state_doctorNote('empty');
 	
     // docnote_date_tbl.ajax.url( "./doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
 	// 	emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote','#recorddate_doctorNote']);
@@ -1024,6 +1024,11 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
 	
 });
 
+$("#jqGridDoctorNote_panel").on("hide.bs.collapse", function(){
+	button_state_doctorNote('empty');
+	disableForm('#formDoctorNote');
+});
+
 //to reload date table on radio btn click
 $("input[name=toggle_type]").on('click', function () {
 	event.stopPropagation();
@@ -1044,7 +1049,8 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 	// }else
 	
 	if(data == undefined){
-		return;
+		button_state_doctorNote('add');
+		return false;
 	}
 	
 	//to highlight selected row
@@ -1100,6 +1106,8 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 			
 			// datable_medication.clear().draw();
 			// datable_medication.rows.add(data.transaction.rows).draw();
+		}else{
+			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'kosongkan');
 		}
 	});
 	
