@@ -537,7 +537,7 @@ $(document).ready(function () {
                     rows: 5
                 }
             },
-            { label: 'Quantity', name: 'qty', width: 35, editable: true },
+            { label: 'Quantity', name: 'qty', width: 35, editable: true, editrules: { required: true } },
             { label: 'Entered<br>By', name: 'enteredby', width: 35, editable: false },
             { label: 'idno', name: 'idno', width: 10, hidden: true, key: true },
             { label: 'compcode', name: 'compcode', hidden: true },

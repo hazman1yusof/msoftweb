@@ -1078,7 +1078,6 @@ class NursingController extends defaultController
         try {
             
             // $location = $this->get_location($request->mrn_ti,$request->episno_ti);
-
             $location = 'TRIAGE';
             
             $nursassessment_triageinfo = DB::table('nursing.nursassessment')
