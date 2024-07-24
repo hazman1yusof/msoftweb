@@ -43,6 +43,7 @@ $(document).ready(function () {
 	disableForm('#formDoctorNote');
 	
 	$("#new_doctorNote").click(function(){
+		get_default_patdata();
 		$('#docnote_date_tbl tbody tr').removeClass('active');
 		$('#cancel_doctorNote').data('oper','add');
 		button_state_doctorNote('wait');
@@ -65,11 +66,14 @@ $(document).ready(function () {
 		disableForm('#formDoctorNote');
 		if( $('#formDoctorNote').isValid({requiredFields: ''}, conf, true) ) {
 			saveForm_doctorNote(function(data){
-				$("#cancel_doctorNote").click();
+				// $("#cancel_doctorNote").click();
 				docnote_date_tbl.ajax.url( "./doctornote/table?"+$.param(dateParam_docnote) ).load(function(){
 					docnote_date_tbl.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
 						var currow = this.data();
-						if(currow.idno == data.idno){
+						let curr_mrn = currow.mrn;
+						let curr_episno = currow.episno;
+						let curr_date = currow.date;
+						if(curr_mrn == data.mrn && curr_episno == data.episno && curr_date == data.recorddate){
 							$(this.node()).addClass('active');
 						}
 					});
@@ -844,6 +848,10 @@ function autoinsert_rowdata(form,rowData){
 }
 
 function saveForm_doctorNote(callback){
+	if($("#cancel_doctorNote").data('oper') == 'edit'){
+		$('#docnote_date_tbl').data('editing','true');
+	}
+
 	var saveParam={
 		action:'save_table_doctornote',
 		oper:$("#cancel_doctorNote").data('oper')
@@ -987,7 +995,12 @@ var docnote_date_tbl = $('#docnote_date_tbl').DataTable({
 	],
 	// "order": [[ 2, "desc" ]],
 	"drawCallback": function( settings ) {
-		$(this).find('tbody tr')[0].click();
+		console.log($(this).data('editing'));
+		if($(this).data('editing') == 'true'){
+			$(this).data('editing','false') //tak perlu click kalau edit
+		}else{
+			$(this).find('tbody tr')[0].click();
+		}
 	}
 });
 
@@ -1042,6 +1055,7 @@ $("input[name=toggle_type]").on('click', function () {
 
 $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 	var data = docnote_date_tbl.row( this ).data();
+	disableForm('#formDoctorNote');
 	// console.log($(this).hasClass('selected'));
 	
 	// if(disable_edit_date()){
@@ -1112,6 +1126,32 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 	});
 	
 });
+
+function get_default_patdata(){
+	doctornote_docnote.recorddate = '';
+	
+	$.get( "./doctornote/table?"+$.param(doctornote_docnote), function( data ) {
+		
+	},'json').done(function(data) {
+		if(!$.isEmptyObject(data)){
+			if(!emptyobj_(data.episode))autoinsert_rowdata("#formDoctorNote",data.episode);
+			if(!emptyobj_(data.pathealth))autoinsert_rowdata("#formDoctorNote",data.pathealth);
+			if(!emptyobj_(data.pathealth))$('#formDoctorNote span#doctorcode').text(data.pathealth.doctorcode);
+			if(!emptyobj_(data.pathistory))autoinsert_rowdata("#formDoctorNote",data.pathistory);
+			if(!emptyobj_(data.patexam))autoinsert_rowdata("#formDoctorNote",data.patexam);
+			if(!emptyobj_(data.episdiag))autoinsert_rowdata("#formDoctorNote",data.episdiag);
+			if(!emptyobj_(data.pathealthadd))autoinsert_rowdata("#formDoctorNote",data.pathealthadd);
+			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
+			getBMI();
+			textare_init_doctornote();
+			
+			// datable_medication.clear().draw();
+			// datable_medication.rows.add(data.transaction.rows).draw();
+		}else{
+			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'kosongkan');
+		}
+	});
+}
 
 function disable_edit_date(){
 	let disabled = false;

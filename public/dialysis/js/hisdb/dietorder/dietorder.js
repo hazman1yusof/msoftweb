@@ -53,6 +53,27 @@ $(document).ready(function () {
 	  	//event.preventDefault();
 	});
 
+	$('#jqGridDieteticCareNotes_panel').on('shown.bs.collapse', function () {
+		SmoothScrollTo("#jqGridDoctorNote_panel", 500);
+		$.post( "dietorder/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+        
+	    },'json').fail(function(data) {
+	        alert('there is an error');
+	    }).success(function(data){
+	    	if(!$.isEmptyObject(data)){
+				autoinsert_rowdata("#formDietOrder",data.dietorder);
+				autoinsert_rowdata("#formDietOrder",data.episode);
+				button_state_dietOrder('edit');
+				yesnoCheck();
+				feedingCheck();
+	        }else{
+				button_state_dietOrder('add');
+	        }
+
+	    });
+		
+	});
+
 });
 
 // hide show No of Lodger
@@ -152,22 +173,22 @@ function populate_dietOrder(obj,rowdata){
 
     };
 
-    $.post( "dietorder/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+    // $.post( "dietorder/form?"+$.param(saveParam), $.param(postobj), function( data ) {
         
-    },'json').fail(function(data) {
-        alert('there is an error');
-    }).success(function(data){
-    	if(!$.isEmptyObject(data)){
-			autoinsert_rowdata("#formDietOrder",data.dietorder);
-			autoinsert_rowdata("#formDietOrder",data.episode);
-			button_state_dietOrder('edit');
-			yesnoCheck();
-			feedingCheck();
-        }else{
-			button_state_dietOrder('add');
-        }
+    // },'json').fail(function(data) {
+    //     alert('there is an error');
+    // }).success(function(data){
+    // 	if(!$.isEmptyObject(data)){
+	// 		autoinsert_rowdata("#formDietOrder",data.dietorder);
+	// 		autoinsert_rowdata("#formDietOrder",data.episode);
+	// 		button_state_dietOrder('edit');
+	// 		yesnoCheck();
+	// 		feedingCheck();
+    //     }else{
+	// 		button_state_dietOrder('add');
+    //     }
 
-    });
+    // });
 	
 }
 

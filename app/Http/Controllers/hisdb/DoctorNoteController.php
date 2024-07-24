@@ -285,13 +285,15 @@ class DoctorNoteController extends defaultController
             $patexam = DB::table('hisdb.patexam')
                 ->where('mrn','=',$request->mrn_doctorNote)
                 ->where('episno','=',$request->episno_doctorNote)
-                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote))
+                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote)->format('Y-m-d'))
+                ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote)->format('H:i:s'))
                 ->where('compcode','=',session('compcode'));
             
             $pathealth = DB::table('hisdb.pathealth')
                 ->where('mrn','=',$request->mrn_doctorNote)
                 ->where('episno','=',$request->episno_doctorNote)
-                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote))
+                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote)->format('Y-m-d'))
+                ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote)->format('H:i:s'))
                 ->where('compcode','=',session('compcode'));
             
             $pathistory = DB::table('hisdb.pathistory')
@@ -335,7 +337,7 @@ class DoctorNoteController extends defaultController
             if($doctorcode_obj->exists()){
                 $doctorcode = $doctorcode_obj->first()->doctorcode;
             }
-            
+
             if($pathealth->exists()){
                 $pathealth
                     ->update([
@@ -750,20 +752,21 @@ class DoctorNoteController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
                 ->where('episno','=',$request->episno)
-                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
+                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('Y-m-d'))
+                ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('H:i:s'));
                 // ->orderBy('recordtime','desc');
-            
-            $pathistory_obj = DB::table('hisdb.pathistory')
-                ->where('compcode','=',session('compcode'))
-                ->where('mrn','=',$request->mrn);
-                // ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
             
             $patexam_obj = DB::table('hisdb.patexam')
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
                 ->where('episno','=',$request->episno)
-                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
+                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('Y-m-d'))
+                ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('H:i:s'));
         }
+            
+        $pathistory_obj = DB::table('hisdb.pathistory')
+            ->where('compcode','=',session('compcode'))
+            ->where('mrn','=',$request->mrn);
         
         $episdiag_obj = DB::table('hisdb.episdiag')
             ->where('compcode','=',session('compcode'))
@@ -786,15 +789,15 @@ class DoctorNoteController extends defaultController
                 $responce->pathealth = $pathealth_obj;
             }
             
-            if($pathistory_obj->exists()){
-                $pathistory_obj = $pathistory_obj->first();
-                $responce->pathistory = $pathistory_obj;
-            }
-            
             if($patexam_obj->exists()){
                 $patexam_obj = $patexam_obj->first();
                 $responce->patexam = $patexam_obj;
             }
+        }
+            
+        if($pathistory_obj->exists()){
+            $pathistory_obj = $pathistory_obj->first();
+            $responce->pathistory = $pathistory_obj;
         }
         
         if($episdiag_obj->exists()){
@@ -952,7 +955,8 @@ class DoctorNoteController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
                 ->where('episno','=',$request->episno)
-                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
+                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('Y-m-d'))
+                ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('H:i:s'));
                 // ->orderBy('recordtime','desc');
             
             $pathistory_obj = DB::table('hisdb.pathistory')
@@ -972,7 +976,8 @@ class DoctorNoteController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
                 ->where('episno','=',$request->episno)
-                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
+                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('Y-m-d'))
+                ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('H:i:s'));
         }
         
         $episdiag_obj = DB::table('hisdb.episdiag')

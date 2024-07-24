@@ -249,7 +249,7 @@ $(document).ready(function () {
     $("#jqGridNursNote_panel").on("shown.bs.collapse", function(){
         SmoothScrollTo("#jqGridNursNote_panel", 500);
         let curtype = $(this).data('curtype');
-        $('.nav-tabs a#'+curtype).tab('show');
+        $('#jqGridNursNote_panel_tabs.nav-tabs a#'+curtype).tab('show');
     });
     
     $("#jqGridNursNote_panel").on("hidden.bs.collapse", function(){
@@ -270,7 +270,7 @@ $(document).ready(function () {
         $("#jqGridNursNote_panel #jqGridNursNote_panel_tabs li").removeClass('active');
     });
     
-    $('.nav-tabs a').on('shown.bs.tab', function(e){
+    $('#jqGridNursNote_panel_tabs.nav-tabs a').on('shown.bs.tab', function(e){
         let type = $(this).data('type');
         let id = $(this).attr('id');
         $("#jqGridNursNote_panel").data('curtype',id);
@@ -609,7 +609,7 @@ $(document).ready(function () {
             var trx_qty = $("#trx_quantity").val();
             var grid_qty = $("#tot_qty").val();
             
-            if(grid_qty > trx_qty){
+            if(parseFloat(grid_qty) > parseFloat(trx_qty)){
                 alert('Please check the quantity.');
                 return false;
             }

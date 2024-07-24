@@ -80,29 +80,85 @@ class DieteticCareNotesController extends defaultController
 
         try {
 
-            DB::table('hisdb.patdietncase')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_dieteticCareNotes,
-                        'medical_his' => $request->ncase_medical_his,
-                        'surgical_his' => $request->ncase_surgical_his,
-                        'fam_medical_his' => $request->ncase_fam_medical_his,
-                        'history' => $request->ncase_history,
-                        'diagnosis' => $request->ncase_diagnosis,
-                        'intervention' => $request->ncase_intervention,  
-                        'temperature' => $request->ncase_temperature,
-                        'pulse' => $request->ncase_pulse,
-                        'respiration' => $request->ncase_respiration,
-                        'bp_sys1' => $request->ncase_bp_sys1,
-                        'bp_dias2' => $request->ncase_bp_dias2,
-                        'height' => $request->ncase_height,
-                        'weight' => $request->ncase_weight,
-                        'gxt' => $request->ncase_gxt,
-                        'pain_score' => $request->ncase_pain_score,
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'adduser'  => session('username'),
-                    ]);
+            $patdietncase = DB::table('hisdb.patdietncase')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn',$request->mrn_dieteticCareNotes);
+
+            if(!$patdietncase->exists()){
+                DB::table('hisdb.patdietncase')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'mrn' => $request->mrn_dieteticCareNotes,
+                            'medical_his' => $request->ncase_medical_his,
+                            'surgical_his' => $request->ncase_surgical_his,
+                            'fam_medical_his' => $request->ncase_fam_medical_his,
+                            'history' => $request->ncase_history,
+                            'diagnosis' => $request->ncase_diagnosis,
+                            'intervention' => $request->ncase_intervention,  
+                            'temperature' => $request->ncase_temperature,
+                            'pulse' => $request->ncase_pulse,
+                            'respiration' => $request->ncase_respiration,
+                            'bp_sys1' => $request->ncase_bp_sys1,
+                            'bp_dias2' => $request->ncase_bp_dias2,
+                            'height' => $request->ncase_height,
+                            'weight' => $request->ncase_weight,
+                            'gxt' => $request->ncase_gxt,
+                            'pain_score' => $request->ncase_pain_score,
+                            'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                            'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'adduser'  => session('username'),
+                        ]);
+            }
+
+            DB::commit();
+            
+            $responce = new stdClass();
+            $responce->mrn = $request->mrn_dieteticCareNotes;
+            return json_encode($responce);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error DB rollback!'.$e, 500);
+        }
+    }
+
+    public function edit(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+
+            $patdietncase = DB::table('hisdb.patdietncase')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn',$request->mrn_dieteticCareNotes);
+
+            if($patdietncase->exists()){
+                DB::table('hisdb.patdietncase')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn',$request->mrn_dieteticCareNotes)
+                        ->update([
+                            'medical_his' => $request->ncase_medical_his,
+                            'surgical_his' => $request->ncase_surgical_his,
+                            'fam_medical_his' => $request->ncase_fam_medical_his,
+                            'history' => $request->ncase_history,
+                            'diagnosis' => $request->ncase_diagnosis,
+                            'intervention' => $request->ncase_intervention,  
+                            'temperature' => $request->ncase_temperature,
+                            'pulse' => $request->ncase_pulse,
+                            'respiration' => $request->ncase_respiration,
+                            'bp_sys1' => $request->ncase_bp_sys1,
+                            'bp_dias2' => $request->ncase_bp_dias2,
+                            'height' => $request->ncase_height,
+                            'weight' => $request->ncase_weight,
+                            'gxt' => $request->ncase_gxt,
+                            'pain_score' => $request->ncase_pain_score,
+                            'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                            'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'adduser'  => session('username'),
+                        ]);
+            }
 
             DB::commit();
             
