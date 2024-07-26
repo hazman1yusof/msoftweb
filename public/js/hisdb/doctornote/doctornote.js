@@ -1032,9 +1032,6 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
 	textare_init_doctornote();
 	urlParam_trans.mrn=$('#mrn_doctorNote').val();
 	urlParam_trans.episno=$('#episno_doctorNote').val();
-	curpage_tran = null;
-	refreshGrid("#jqGrid_trans_doctornote", urlParam_trans);
-	
 });
 
 $("#jqGridDoctorNote_panel").on("hide.bs.collapse", function(){
@@ -1117,6 +1114,7 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
 			getBMI();
 			textare_init_doctornote();
+			refreshGrid("#jqGrid_trans_doctornote", urlParam_trans);
 			
 			// datable_medication.clear().draw();
 			// datable_medication.rows.add(data.transaction.rows).draw();
@@ -1144,6 +1142,7 @@ function get_default_patdata(){
 			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
 			getBMI();
 			textare_init_doctornote();
+			refreshGrid("#jqGrid_trans_doctornote", urlParam_trans);
 			
 			// datable_medication.clear().draw();
 			// datable_medication.rows.add(data.transaction.rows).draw();

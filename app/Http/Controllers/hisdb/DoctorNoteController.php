@@ -464,55 +464,59 @@ class DoctorNoteController extends defaultController
             $request->rows = 100;
         }
         
-        $table_chgtrx = DB::table('hisdb.chargetrx as trx') //ambil dari patmast balik
-                            ->select('trx.auditno',
-                                'trx.chgcode as chg_code',
-                                'trx.quantity',
-                                'trx.remarks',
-                                'trx.instruction as ins_code',
-                                'trx.doscode as dos_code',
-                                'trx.frequency as fre_code',
-                                'trx.drugindicator as dru_code',
-                                
-                                'chgmast.description as chg_desc',
-                                'instruction.description as ins_desc',
-                                'dose.dosedesc as dos_desc',
-                                'freq.freqdesc as fre_desc',
-                                'drugindicator.drugindcode as dru_desc')
-                            
-                            ->where('trx.mrn' ,'=', $request->mrn)
-                            ->where('trx.episno' ,'=', $request->episno)
-                            ->where('trx.compcode','=',session('compcode'))
-                            
-                            ->leftJoin('hisdb.chgmast', function($join) use ($request){
-                                $join = $join->on('chgmast.chgcode', '=', 'trx.chgcode')
-                                                ->where('chgmast.compcode','=',session('compcode'));
-                            })
-                            ->leftJoin('hisdb.instruction', function($join) use ($request){
-                                $join = $join->on('instruction.inscode', '=', 'trx.instruction')
-                                                ->where('instruction.compcode','=',session('compcode'));
-                            })
-                            ->leftJoin('hisdb.freq', function($join) use ($request){
-                                $join = $join->on('freq.freqcode', '=', 'trx.frequency')
-                                                ->where('freq.compcode','=',session('compcode'));
-                            })
-                            ->leftJoin('hisdb.dose', function($join) use ($request){
-                                $join = $join->on('dose.dosecode', '=', 'trx.doscode')
-                                                ->where('dose.compcode','=',session('compcode'));
-                            })
-                            ->leftJoin('hisdb.drugindicator', function($join) use ($request){
-                                $join = $join->on('drugindicator.drugindcode', '=', 'trx.drugindicator')
-                                                ->where('drugindicator.compcode','=',session('compcode'));
-                            });
-                            // ->leftJoin('hisdb.chgmast','chgmast.chgcode','=','trx.chgcode')
-                            // ->leftJoin('hisdb.instruction','instruction.inscode','=','trx.instruction')
-                            // ->leftJoin('hisdb.freq','freq.freqcode','=','trx.frequency')
-                            // ->leftJoin('hisdb.dose','dose.dosecode','=','trx.doscode')
-                            // ->leftJoin('hisdb.drugindicator','drugindicator.drugindcode','=','trx.drugindicator');
-        
+        $table_chgtrx = DB::table('hisdb.chargetrx as trx')
+                    ->select('trx.auditno','trx.compcode','trx.idno','trx.mrn','trx.episno','trx.epistype','trx.trxtype','trx.docref','trx.trxdate','trx.chgcode','trx.billcode','trx.costcd','trx.revcd','trx.mmacode','trx.billflag','trx.billdate','trx.billtype','trx.doctorcode','doc.doctorname','trx.chg_class','trx.unitprce','trx.quantity','trx.amount','trx.trxtime','trx.chggroup','trx.qstat','trx.dracccode','trx.cracccode','trx.arprocess','trx.taxamount','trx.billno','trx.invno','trx.uom','trx.uom_recv','trx.billtime','trx.invgroup','trx.reqdept as deptcode','trx.issdept','trx.invcode','trx.resulttype','trx.resultstatus','trx.inventory','trx.updinv','trx.invbatch','trx.doscode','trx.duration','trx.instruction','trx.discamt','trx.disccode','trx.pkgcode','trx.remarks','trx.frequency','trx.ftxtdosage','trx.addinstruction','trx.qtyorder','trx.ipqueueno','trx.itemseqno','trx.doseqty','trx.freqqty','trx.isudept','trx.qtyissue','trx.durationcode','trx.reqdoctor','trx.unit','trx.agreementid','trx.chgtype','trx.adduser','trx.adddate','trx.lastuser','trx.lastupdate','trx.daytaken','trx.qtydispense','trx.takehomeentry','trx.latechargesentry','trx.taxcode','trx.recstatus','trx.drugindicator','trx.id','trx.patmedication','trx.mmaprice','pt.avgcost as cost_price','pt.avgcost as cost_price','dos.dosedesc as doscode_desc','fre.freqdesc as frequency_desc','ins.description as addinstruction_desc','dru.description as drugindicator_desc','cm.brandname','cm.description')
+                    ->where('trx.mrn' ,'=', $request->mrn)
+                    ->where('trx.episno' ,'=', $request->episno)
+                    ->where('trx.compcode','=',session('compcode'))
+                    ->where('trx.taxflag',0)
+                    ->where('trx.discflag',0)
+                    ->where('trx.recstatus','<>','DELETE')
+                    ->orderBy('trx.adddate', 'desc');
+
+        $table_chgtrx = $table_chgtrx->leftjoin('material.product as pt', function($join) use ($request){
+                            $join = $join->where('pt.compcode', '=', session('compcode'));
+                            $join = $join->on('pt.itemcode', '=', 'trx.chgcode');
+                            $join = $join->on('pt.uomcode', '=', 'trx.uom_recv');
+                            $join = $join->where('pt.unit', '=', session('unit'));
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.chgmast as cm', function($join) use ($request){
+                            $join = $join->where('cm.compcode', '=', session('compcode'));
+                            $join = $join->on('cm.chgcode', '=', 'trx.chgcode');
+                            $join = $join->on('cm.uom', '=', 'trx.uom');
+                            $join = $join->where('cm.unit', '=', session('unit'));
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.dose as dos', function($join) use ($request){
+                            $join = $join->where('dos.compcode', '=', session('compcode'));
+                            $join = $join->on('dos.dosecode', '=', 'trx.doscode');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.freq as fre', function($join) use ($request){
+                            $join = $join->where('fre.compcode', '=', session('compcode'));
+                            $join = $join->on('fre.freqcode', '=', 'trx.frequency');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.instruction as ins', function($join) use ($request){
+                            $join = $join->where('ins.compcode', '=', session('compcode'));
+                            $join = $join->on('ins.inscode', '=', 'trx.addinstruction');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.drugindicator as dru', function($join) use ($request){
+                            $join = $join->where('dru.compcode', '=', session('compcode'));
+                            $join = $join->on('dru.drugindcode', '=', 'trx.drugindicator');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.doctor as doc', function($join) use ($request){
+                            $join = $join->where('doc.compcode', '=', session('compcode'));
+                            $join = $join->on('doc.doctorcode', '=', 'trx.doctorcode');
+                        });
+
         //////////paginate/////////
+
         $paginate = $table_chgtrx->paginate($request->rows);
-        
+
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
@@ -520,6 +524,7 @@ class DoctorNoteController extends defaultController
         $responce->rows = $paginate->items();
         $responce->sql = $table_chgtrx->toSql();
         $responce->sql_bind = $table_chgtrx->getBindings();
+        $responce->sql_query = $this->getQueries($table_chgtrx);
         return json_encode($responce);
         
     }
@@ -810,7 +815,7 @@ class DoctorNoteController extends defaultController
             $responce->pathealthadd = $pathealthadd_obj;
         }
         
-        $responce->transaction = json_decode($this->get_transaction_table($request));
+        // $responce->transaction = json_decode($this->get_transaction_table($request));
         
         return json_encode($responce);
     

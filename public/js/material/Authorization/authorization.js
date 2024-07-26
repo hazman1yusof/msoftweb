@@ -1024,7 +1024,7 @@ $("#but_show_deactive").click(function(){
 		$(this).val('Hide Deactive')
 	}else{
 		urlParam_authdtl.filterCol[2] = 'cando'
-		urlParam_authdtl.filterVal[2] = 'A'
+		urlParam_authdtl.filterVal[2] = 'ACTIVE'
 		refreshGrid("#gridAuthdtl",urlParam_authdtl);
 		$(this).val('Show Deactive')
 	}

@@ -1957,7 +1957,7 @@ function faster_detail_load(){
             // }
 		}
 	}
-	this.set_array = function(except){
+	this.set_array = function(callback,except){
 		this.array.forEach(function(elem,i){
 			let options = elem.options;
 			let desc = elem.json.description;
@@ -1973,6 +1973,11 @@ function faster_detail_load(){
 			}else{
 			}
 		});
+
+		if (callback !== undefined) {
+	    callback();
+	  }
+		
 		return this;
 	}
 	this.reset = function(){

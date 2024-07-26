@@ -34,6 +34,8 @@ class TestController extends defaultController
                 return $this->set_class($request);
             case 'set_stockloc_unit':
                 return $this->set_stockloc_unit($request);
+            case 'test_alert_auth':
+                return $this->test_alert_auth($request);
             default:
                 return 'error happen..';
         }
@@ -323,6 +325,63 @@ class TestController extends defaultController
                     ]);
             }
         }
+    }
+
+    public function test_alert_auth(Request $request){
+        $queuepr = DB::table('material.queuepr as qpr')
+                    ->select('adtl.authorid','qpr.recno','qpr.deptcode','qpr.deptcode as dept_qpr','adtl.deptcode as dept_adtl')
+                    ->join('material.authdtl as adtl', function($join) use ($request){
+                        $join = $join
+                            ->where('adtl.compcode',session('compcode'))
+                            // ->where('adtl.authorid',session('username'))
+                            ->where('adtl.trantype','PR')
+                            ->where('adtl.cando','ACTIVE')
+                            ->on('adtl.recstatus','qpr.trantype')
+                            ->where(function ($query) {
+                                $query->on('adtl.deptcode','qpr.deptcode')
+                                      ->orWhere('adtl.deptcode', 'ALL');
+                            });
+                    })
+                    ->where('qpr.compcode',session('compcode'))
+                    ->where('qpr.trantype','<>','DONE')
+                    ->get();
+
+        dd($queuepr);
+        // dd($this->getQueries($queuepr));
+
+        // $authdtl = DB::table('material.authdtl as adtl')
+        //             ->select('qpr.recno','qpr.deptcode',)
+        //             ->leftJoin('material.queuepr as qpr', function($join) use ($request){
+        //                 $join = $join
+        //                             ->where('qpr.trantype','<>','DONE')
+        //                             ->on('qpr.trantype','adtl.recstatus')
+        //                             ->where('qpr.compcode','=',session('compcode'));
+        //             })
+        //             ->where('adtl.compcode',session('compcode'))
+        //             ->where('adtl.authorid',session('username'))
+        //             ->where('adtl.trantype','PR')
+        //             ->where('adtl.cando','ACTIVE')
+        //             ->get();
+        // dump($authdtl);
+
+
+
+        $authdtl = DB::table('material.authdtl')
+                ->where('compcode',session('compcode'))
+                ->where('authorid',session('username'))
+                ->where('trantype','PR')
+                ->where('cando','ACTIVE')
+                ->get();
+
+        dump($authdtl);
+
+
+        $queuepr = DB::table('material.queuepr')
+                ->where('compcode',session('compcode'))
+                ->where('trantype','<>','DONE')
+                ->get();
+
+        dd($queuepr);
     }
     
 }
