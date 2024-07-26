@@ -995,9 +995,9 @@ var docnote_date_tbl = $('#docnote_date_tbl').DataTable({
 	],
 	// "order": [[ 2, "desc" ]],
 	"drawCallback": function( settings ) {
-		console.log($(this).data('editing'));
 		if($(this).data('editing') == 'true'){
 			$(this).data('editing','false') //tak perlu click kalau edit
+			button_state_doctorNote('edit');
 		}else{
 			$(this).find('tbody tr')[0].click();
 		}
@@ -1060,7 +1060,11 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 	// }else
 	
 	if(data == undefined){
-		button_state_doctorNote('add');
+		if(document.getElementById("past").checked){
+			button_state_doctorNote('disableAll');
+		}else{
+			button_state_doctorNote('add');
+		}
 		return false;
 	}
 	

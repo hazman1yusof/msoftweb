@@ -772,6 +772,11 @@ Route::get('/glmaster','finance\GlmasterController@show');
 Route::get('/glmaster/table','finance\GlmasterController@table');
 Route::post('/glmaster/form','finance\GlmasterController@form');
 
+//// GlMaster setup ///
+Route::get('/financialReport','finance\financialReportController@show');
+Route::get('/financialReport/table','finance\financialReportController@table');
+Route::post('/financialReport/form','finance\financialReportController@form');
+
 //// Glmaster - report  ///
 Route::get('/glmaster_Report','finance\Glmaster_ReportController@show');
 Route::get('/glmaster_Report/table','finance\Glmaster_ReportController@table');

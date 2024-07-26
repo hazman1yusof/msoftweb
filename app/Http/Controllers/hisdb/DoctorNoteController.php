@@ -654,7 +654,7 @@ class DoctorNoteController extends defaultController
             ->where('e.compcode','=',session('compcode'))
             ->where('e.mrn','=',$request->mrn)
             ->where('e.episno','=',$request->episno)
-            ->orderBy('p.adddate','desc');
+            ->orderBy('p.idno','desc');
         
         if($episode_obj->exists()){
             $episode_obj = $episode_obj->get();

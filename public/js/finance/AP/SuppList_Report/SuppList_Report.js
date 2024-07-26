@@ -53,7 +53,7 @@ $(document).ready(function () {
 		sortorder:'desc',
 		width: 550,
 		height: 150,
-		rowNum: 10,
+		rowNum: 50,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 			$("#jqGrid input[name='suppgroup']").change(function(){
