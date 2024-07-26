@@ -139,118 +139,114 @@ var Menu = function () {
 		});
 	}
 
-	function loadCard(){
+	// function loadCard(){
+	// 	var tillcard={
+	// 		id:'#cardTill',
+	// 		urlParam:{
+	// 			action:'get_value_default',
+	// 			field:['t.tillstatus','dtl.tillcode','dtl.opendate','dtl.tillno'],
+	// 			table_name:['debtor.tilldetl dtl','debtor.till t'],
+	// 			table_id:'dtl.tillcode',
+	// 			join_type:['LEFT JOIN'],
+	// 			join_onCol:['t.tillcode'],
+	// 			join_onVal:['dtl.tillcode'],
+	// 			filterCol:['dtl.compcode','dtl.adduser','closedate'],
+	// 			filterVal:['session.company','session.username','IS NULL'],
+	// 		},
+	// 		saveParam:{
+	// 			action:'save_table_default_arr',
+	// 			array:[{
+	// 				oper:'edit',
+	// 				field:['closedate'],
+	// 				table_name:'debtor.tilldetl',
+	// 				table_id:'tillcode',
+	// 				filterCol:['tillno'],
+	// 				filterVal:[''],
+	// 			},{
+	// 				oper:'edit',
+	// 				field:['tillstatus'],
+	// 				table_name:'debtor.till',
+	// 				table_id:'tillcode',
+	// 			}],
+	// 		},
+	// 		post:{
+	// 			closedate:'NOW()',tillstatus:'C',tillcode:''
+	// 		},
+	// 	}
 
-		var tillcard={
-			id:'#cardTill',
-			urlParam:{
-				action:'get_value_default',
-				field:['t.tillstatus','dtl.tillcode','dtl.opendate','dtl.tillno'],
-				table_name:['debtor.tilldetl dtl','debtor.till t'],
-				table_id:'dtl.tillcode',
-				join_type:['LEFT JOIN'],
-				join_onCol:['t.tillcode'],
-				join_onVal:['dtl.tillcode'],
-				filterCol:['dtl.compcode','dtl.adduser','closedate'],
-				filterVal:['session.company','session.username','IS NULL'],
-			},
-			saveParam:{
-				action:'save_table_default_arr',
-				array:[{
-					oper:'edit',
-					field:['closedate'],
-					table_name:'debtor.tilldetl',
-					table_id:'tillcode',
-					filterCol:['tillno'],
-					filterVal:[''],
-				},{
-					oper:'edit',
-					field:['tillstatus'],
-					table_name:'debtor.till',
-					table_id:'tillcode',
-				}],
-			},
-			post:{
-				closedate:'NOW()',tillstatus:'C',tillcode:''
-			},
-		}
+	// 	function callback(obj,data){
+	// 		switch(obj.id){
+	// 			case '#cardTill':
+	// 				if($.isEmptyObject(data.rows)){
+	// 					$("#cardTill a[name='closetill']").hide();
+	// 					$("#cardTill a[name='opentill']").show();
 
-		function callback(obj,data){
-			switch(obj.id){
-				case '#cardTill':
-					if($.isEmptyObject(data.rows)){
-						$("#cardTill a[name='closetill']").hide();
-						$("#cardTill a[name='opentill']").show();
+	// 					$("#cardTill a[name='opentill']").on( "click", function() {
+	// 						$("#myNavmenu a[programid='ARreceipt']").click();
+	// 					});
 
-						$("#cardTill a[name='opentill']").on( "click", function() {
-							$("#myNavmenu a[programid='ARreceipt']").click();
-						});
+	// 					$("#cardTill span[name]").html('-');
+	// 				}else{
+	// 					$("#cardTill a[name='closetill']").show();
+	// 					$("#cardTill a[name='opentill']").hide();
+	// 					obj.saveParam.array[0].filterVal[0]=data.rows[0].tillno;
+	// 					obj.post.tillcode=data.rows[0].tillcode;
+	// 					obj.populate(data.rows[0]);
 
-						$("#cardTill span[name]").html('-');
-					}else{
-						$("#cardTill a[name='closetill']").show();
-						$("#cardTill a[name='opentill']").hide();
-						obj.saveParam.array[0].filterVal[0]=data.rows[0].tillno;
-						obj.post.tillcode=data.rows[0].tillcode;
-						obj.populate(data.rows[0]);
+	// 					$("#cardTill a[name='closetill']").on( "click", function() {
+	// 						obj.cardPost();
+	// 					});
+	// 				}
+	// 				break;
+	// 		}
+	// 	}
 
-						$("#cardTill a[name='closetill']").on( "click", function() {
-							obj.cardPost();
-						});
-					}
-					break;
-			}
-		}
+	// 	function Card(obj){
+	// 		this.id=obj.id;
+	// 		this.urlParam=obj.urlParam;
+	// 		this.saveParam=obj.saveParam;
+	// 		this.post=obj.post;
+	// 	}
 
-		function Card(obj){
-			this.id=obj.id;
-			this.urlParam=obj.urlParam;
-			this.saveParam=obj.saveParam;
-			this.post=obj.post;
-		}
+	// 	(function() {
+	// 		this.get = function() {
+	// 			var self=this
+	// 			$.getJSON("assets/php/entry.php?"+$.param(this.urlParam), function(data){
 
-		(function() {
-			this.get = function() {
-				var self=this
-				$.getJSON("assets/php/entry.php?"+$.param(this.urlParam), function(data){
-
-				}).done(function(data) {
-					callback(self,data);
-				});	
-			}
-			this.cardPost = function(){
-				var self=this;
-				$.post( "assets/php/entry.php?"+$.param(this.saveParam),this.post,
-				function( data ) {
+	// 			}).done(function(data) {
+	// 				callback(self,data);
+	// 			});	
+	// 		}
+	// 		this.cardPost = function(){
+	// 			var self=this;
+	// 			$.post( "assets/php/entry.php?"+$.param(this.saveParam),this.post,
+	// 			function( data ) {
 				
-				}).fail(function(data) {
+	// 			}).fail(function(data) {
 
-				}).success(function(data){
-					self.get();
-				});	
-			}
-			this.populate=function(obj){
-				var self=this;
-				$.each(obj, function( index, value ) {
-					$(self.id+" [name='"+index+"']").html(value);
-				});
-			}
-			this.setRefresh=function(){
-				var self=this
-				$(this.id+" button[name='refresh']").on( "click", function() {
-					self.get();
-				});
-			}
+	// 			}).success(function(data){
+	// 				self.get();
+	// 			});	
+	// 		}
+	// 		this.populate=function(obj){
+	// 			var self=this;
+	// 			$.each(obj, function( index, value ) {
+	// 				$(self.id+" [name='"+index+"']").html(value);
+	// 			});
+	// 		}
+	// 		this.setRefresh=function(){
+	// 			var self=this
+	// 			$(this.id+" button[name='refresh']").on( "click", function() {
+	// 				self.get();
+	// 			});
+	// 		}
 
-		}).call(Card.prototype);
+	// 	}).call(Card.prototype);
 
-		var Card_tillcard = new Card(tillcard);
-		Card_tillcard.get();
-		Card_tillcard.setRefresh();
-
-
-
-	}
+	// 	var Card_tillcard = new Card(tillcard);
+	// 	Card_tillcard.get();
+	// 	Card_tillcard.setRefresh();
+	// }
 
     return {
 
@@ -260,9 +256,9 @@ var Menu = function () {
 		init_announce: function () {
             announce();
         },
-        init_card: function(){
-        	loadCard();
-        }
+        // init_card: function(){
+        // 	loadCard();
+        // }
     };
 
 }();

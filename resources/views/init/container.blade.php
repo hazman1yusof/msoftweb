@@ -114,7 +114,7 @@
 
 		</div>
 
-		<div id='cardTill' class='col-lg-3 col-md-6'>
+		<div class='col-lg-3 col-md-6'>
 			<div class='panel panel-primary'>
 				<div class='panel-heading'>
 					<div class='row'>
@@ -280,32 +280,19 @@
 <!-- JS Page Level -->
 
 <script>
-	jQuery(document).ready(function() 
-    {	
-        Menu.init_menu();
-        Menu.init_announce();
-        // Menu.init_card();
-        $("#session_unit").change(function(){
-        	$.post( '/sessionUnit', {_token:$('#_token').val(), unit:$(this).val()}, function( data ) {
+	$(document).ready(function(){
+    Menu.init_menu();
+    Menu.init_announce();
+    // Menu.init_card();
+    $("#session_unit").change(function(){
+    	$.post( '/sessionUnit', {_token:$('#_token').val(), unit:$(this).val()}, function( data ) {
 				
 			}).fail(function(data) {
 				
 			}).success(function(data){
 				
 			});
-        });
-
-  //       var timeoutId;
-		// $("#myNavmenu").hover(function() {
-  //       	$( "#myNavmenu" ).animate({ width:"20%" }, 'fast' ,"linear", function() {
-  //       		$( ".lilabel" ).show();
-  //       	});
-		// },function () {
-  //       	$( ".lilabel" ).hide();
-  //       	$( "#myNavmenu" ).animate({ width:"8%" }, 'fast' ,"linear", function() {
-  //       		$( ".lilabel" ).hide();
-  //       	});
-		// });
+	  });
 
 		var timeoutId;
 		$("#myNavmenu").hover(function() {
@@ -349,155 +336,149 @@
 		});
 
 		function chat(username){
-		this.date = null;
-		this.interval;
+			this.date = null;
+			this.interval;
 
-		$('#chat-panel .chat-hide').click(function(){
-			$("#chat-panel .panel-body, #chat-panel .panel-footer, #chat-panel .panel-heading span").hide();
-			$('#chat-panel').css( "width",'105px' );
-			$('#chat-panel .whenhide').show();
-			stopinterval();
-		});
-		$('#chat-panel .chat-show').click(function(){
-			$("#chat-panel .panel-body, #chat-panel .panel-footer, #chat-panel .panel-heading span").show();
-			$('#chat-panel').css( "width",'' );
-			$('#chat-panel .panel-heading').css( "padding",'' );
-			$('#chat-panel .whenhide').hide();
-			setinterval();
-			focusbtm();
-		});
+			$('#chat-panel .chat-hide').click(function(){
+				$("#chat-panel .panel-body, #chat-panel .panel-footer, #chat-panel .panel-heading span").hide();
+				$('#chat-panel').css( "width",'105px' );
+				$('#chat-panel .whenhide').show();
+				stopinterval();
+			});
+			$('#chat-panel .chat-show').click(function(){
+				$("#chat-panel .panel-body, #chat-panel .panel-footer, #chat-panel .panel-heading span").show();
+				$('#chat-panel').css( "width",'' );
+				$('#chat-panel .panel-heading').css( "padding",'' );
+				$('#chat-panel .whenhide').hide();
+				setinterval();
+				focusbtm();
+			});
 
-		function setinterval(){
-			mychat.getmessage();
-			this.interval = setInterval(function(){
+			function setinterval(){
 				mychat.getmessage();
-			}, 3000);
-		}
-
-		function stopinterval(){
-			clearInterval(this.interval);
-		}
-
-		getalluser();
-		function getalluser(){
-			var param={
-				action:'get_value_default',
-				field: ['username'],
-				table_name:'sysdb.users',
-				table_id:'idno'
-			}
-			$.get( "assets/php/entry.php?"+$.param(param), function( data ) {
-					
-			},'json').done(function(data) {
-				if(!$.isEmptyObject(data.rows)){
-					data.rows.forEach(function(element){
-						if($('#username').text()!=element.username)
-						$('#chat-panel .drop-up ').append("<li><a>"+element.username+"</a></li>")
-					});
-					$('#chat-panel .drop-up li').click(function(){
-						$('#chat-panel .whenshow .chat-title').text(' Chat with '+$(this).text());
-						$('#chatmsto').val($(this).text());
-					});
-				}
-			});
-		}
-
-		this.getmessage = function(){
-			self=this;
-			param={
-				action:'chat',
-				oper:'get',
-				date:self.date
-			}
-
-			$.get( "assets/php/entry.php?"+$.param(param), function(data) {
-					
-			},'json').done(function(data) {
-				if(!$.isEmptyObject(data.rows)){
-					self.date = data.rows[0].datesend;
-					data.rows.reverse();
-					data.rows.forEach(function(element){
-						if(element.msto == self.username){
-							element.name = "<small>Whisper from</small> "+element.name;
-						}
-						if(element.msfrom == self.username){
-							$('#chat-panel .chat ').append(
-								"<li><div class='chat-body'><div class='header'>"
-								+"<small class='text-muted pull-right'><i class='fa fa-clock-o fa-fw'></i>"+
-									datediff(element.datesend)
-								+"</small><strong class='text-primary'>"+
-									element.name
-								+"</strong> to "+element.msto+"</div><p>"+
-									element.remark
-								+"</p></div></li>");	
-						}else{
-							$('#chat-panel .chat ').append(
-								"<li><div class='chat-body'><div class='header'>"
-								+"<small class='text-muted'><i class='fa fa-clock-o fa-fw'></i>"+
-									datediff(element.datesend)
-								+"</small><strong class='pull-right'>"+
-									element.name
-								+"</strong></div><p>"+
-									element.remark
-								+"</p></div></li>");
-						}
-					});
-					focusbtm();
-				}
-			});
-		}
-
-		function focusbtm(){
-			// var btm = $('#chat-panel .panel-body')[0].scrollHeight - $('#chat-panel .panel-body')[0].clientHeight
-			// $('#chat-panel .panel-body').animate({
-			// 	scrollTop: btm
-			// }, 'slow');
-			// $( ".navmenu" ).velocity({ width:"7%" }, 130, "linear", function() { 
-			// 	$( ".lilabel" ).velocity("fadeOut", { duration: 0 })
-			// });
-			$('#chat-panel .panel-body').velocity("scroll", { 
-				container: $("#chat-panel .panel-body"),
-				duration: 1500, 
-				easing: "linear",
-				offset: $('#chat-panel .panel-body')[0].scrollHeight
-			});
-			// $('#chat-panel .panel-body').velocity({scrollTop:897}, 897, "linear");
-		}
-
-		function datediff(date){
-			var now = moment(new Date()); //todays date
-			var end = moment(date); // another date
-			var duration = moment.duration(end.diff(now));
-			return duration.humanize(true);
-		}
-
-		this.sendmessage = function(){
-			var param={
-				action:'chat',
-				oper:'add'
-			}
-
-			if($('#chattext').val().trim()!=""){
-				$.post( "assets/php/entry.php?"+$.param(param),
-					{msto:$('#chatmsto').val(),remark:$('#chattext').val()}, 
-					function( data ) {
-						
-					}
-				).fail(function(data) {
-					alert('Error');
-				}).success(function(data){
+				this.interval = setInterval(function(){
 					mychat.getmessage();
-					$('#chattext').val("");
+				}, 3000);
+			}
+
+			function stopinterval(){
+				clearInterval(this.interval);
+			}
+
+			getalluser();
+			function getalluser(){
+				var param={
+					action:'get_value_default',
+					field: ['username'],
+					table_name:'sysdb.users',
+					table_id:'idno'
+				}
+				$.get( "assets/php/entry.php?"+$.param(param), function( data ) {
+						
+				},'json').done(function(data) {
+					if(!$.isEmptyObject(data.rows)){
+						data.rows.forEach(function(element){
+							if($('#username').text()!=element.username)
+							$('#chat-panel .drop-up ').append("<li><a>"+element.username+"</a></li>")
+						});
+						$('#chat-panel .drop-up li').click(function(){
+							$('#chat-panel .whenshow .chat-title').text(' Chat with '+$(this).text());
+							$('#chatmsto').val($(this).text());
+						});
+					}
 				});
 			}
+
+			this.getmessage = function(){
+				self=this;
+				param={
+					action:'chat',
+					oper:'get',
+					date:self.date
+				}
+
+				$.get( "assets/php/entry.php?"+$.param(param), function(data) {
+						
+				},'json').done(function(data) {
+					if(!$.isEmptyObject(data.rows)){
+						self.date = data.rows[0].datesend;
+						data.rows.reverse();
+						data.rows.forEach(function(element){
+							if(element.msto == self.username){
+								element.name = "<small>Whisper from</small> "+element.name;
+							}
+							if(element.msfrom == self.username){
+								$('#chat-panel .chat ').append(
+									"<li><div class='chat-body'><div class='header'>"
+									+"<small class='text-muted pull-right'><i class='fa fa-clock-o fa-fw'></i>"+
+										datediff(element.datesend)
+									+"</small><strong class='text-primary'>"+
+										element.name
+									+"</strong> to "+element.msto+"</div><p>"+
+										element.remark
+									+"</p></div></li>");	
+							}else{
+								$('#chat-panel .chat ').append(
+									"<li><div class='chat-body'><div class='header'>"
+									+"<small class='text-muted'><i class='fa fa-clock-o fa-fw'></i>"+
+										datediff(element.datesend)
+									+"</small><strong class='pull-right'>"+
+										element.name
+									+"</strong></div><p>"+
+										element.remark
+									+"</p></div></li>");
+							}
+						});
+						focusbtm();
+					}
+				});
+			}
+
+			function focusbtm(){
+				// var btm = $('#chat-panel .panel-body')[0].scrollHeight - $('#chat-panel .panel-body')[0].clientHeight
+				// $('#chat-panel .panel-body').animate({
+				// 	scrollTop: btm
+				// }, 'slow');
+				// $( ".navmenu" ).velocity({ width:"7%" }, 130, "linear", function() { 
+				// 	$( ".lilabel" ).velocity("fadeOut", { duration: 0 })
+				// });
+				$('#chat-panel .panel-body').velocity("scroll", { 
+					container: $("#chat-panel .panel-body"),
+					duration: 1500, 
+					easing: "linear",
+					offset: $('#chat-panel .panel-body')[0].scrollHeight
+				});
+				// $('#chat-panel .panel-body').velocity({scrollTop:897}, 897, "linear");
+			}
+
+			function datediff(date){
+				var now = moment(new Date()); //todays date
+				var end = moment(date); // another date
+				var duration = moment.duration(end.diff(now));
+				return duration.humanize(true);
+			}
+
+			this.sendmessage = function(){
+				var param={
+					action:'chat',
+					oper:'add'
+				}
+
+				if($('#chattext').val().trim()!=""){
+					$.post( "assets/php/entry.php?"+$.param(param),
+						{msto:$('#chatmsto').val(),remark:$('#chattext').val()}, 
+						function( data ) {
+							
+						}
+					).fail(function(data) {
+						alert('Error');
+					}).success(function(data){
+						mychat.getmessage();
+						$('#chattext').val("");
+					});
+				}
+			}
 		}
-	}
-
 	});
-		
-		
 </script>
-
-
-  
 </html>

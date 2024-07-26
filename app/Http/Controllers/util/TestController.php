@@ -329,11 +329,11 @@ class TestController extends defaultController
 
     public function test_alert_auth(Request $request){
         $queuepr = DB::table('material.queuepr as qpr')
-                    ->select('adtl.authorid','qpr.recno','qpr.deptcode','qpr.deptcode as dept_qpr','adtl.deptcode as dept_adtl')
+                    ->select('adtl.authorid','qpr.recno','qpr.deptcode','qpr.deptcode as dept_qpr','adtl.deptcode as dept_adtl','prhd.totamount')
                     ->join('material.authdtl as adtl', function($join) use ($request){
                         $join = $join
                             ->where('adtl.compcode',session('compcode'))
-                            // ->where('adtl.authorid',session('username'))
+                            ->where('adtl.authorid',session('username'))
                             ->where('adtl.trantype','PR')
                             ->where('adtl.cando','ACTIVE')
                             ->on('adtl.recstatus','qpr.trantype')
@@ -342,11 +342,22 @@ class TestController extends defaultController
                                       ->orWhere('adtl.deptcode', 'ALL');
                             });
                     })
+                    ->join('material.purreqhd as prhd', function($join) use ($request){
+                        $join = $join
+                            ->where('prhd.compcode',session('compcode'))
+                            ->on('prhd.recno','qpr.recno')
+                            ->on('prhd.recstatus','qpr.recstatus')
+                            ->where(function ($query) {
+                                $query
+                                    ->on('prhd.totamount','>=','adtl.minlimit')
+                                    ->on('prhd.totamount','<', 'adtl.maxlimit');
+                            });;
+                    })
                     ->where('qpr.compcode',session('compcode'))
                     ->where('qpr.trantype','<>','DONE')
                     ->get();
 
-        dd($queuepr);
+        dump($queuepr);
         // dd($this->getQueries($queuepr));
 
         // $authdtl = DB::table('material.authdtl as adtl')

@@ -1136,15 +1136,20 @@ class DoctorNoteController extends defaultController
         
         try {
             
-            $doctorcode_obj = DB::table('hisdb.doctor')
-                    ->select('doctorcode')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('loginid','=',session('username'));
+            // $doctorcode_obj = DB::table('hisdb.doctor')
+            //         ->select('doctorcode')
+            //         ->where('compcode','=',session('compcode'))
+            //         ->where('loginid','=',session('username'));
             
-            $doctorcode=null;
-            if($doctorcode_obj->exists()){
-                $doctorcode = $doctorcode_obj->first()->doctorcode;
-            }
+            // $doctorcode=null;
+            // if($doctorcode_obj->exists()){
+            //     $doctorcode = $doctorcode_obj->first()->doctorcode;
+            // }
+
+            $users = DB::table('sysdb.users')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('username','=',session('username'))
+                        ->first();
             
             DB::table('hisdb.pathealthadd')
                 ->insert([
@@ -1152,7 +1157,7 @@ class DoctorNoteController extends defaultController
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'additionalnote' => $request->additionalnote,
-                    'doctorcode'  => $doctorcode,
+                    'doctorcode'  => $users->doctorcode,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
