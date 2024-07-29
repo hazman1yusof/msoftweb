@@ -11,7 +11,7 @@
 		padding-top: 10px;
 	}
 	#main_segment{
-		height: 83vh;
+		height: 75vh;
 	}
 	#mygrid span{
 /*		padding-left: 4px;*/
