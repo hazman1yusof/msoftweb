@@ -399,17 +399,22 @@ class TestController extends defaultController
 
     public function test_glmasdtl(Request $request){
         $glmasdtl = DB::table('finance.glmasdtl as gld')
-                        ->select('gld.glaccount as gld','glr.glaccno as glr')
-                        ->leftjoin('finance.glmasref as glr', function($join) use ($request){
+                        ->select('gld.costcode','gld.glaccount','gld.year')
+                        // ->leftjoin('finance.glmasref as glr', function($join) use ($request){
+                        //     $join = $join
+                        //         ->where('glr.compcode','9A')
+                        //         ->on('glr.glaccno','gld.glaccount');
+                        // })
+                        ->leftjoin('finance.costcenter as cc', function($join) use ($request){
                             $join = $join
-                                ->where('glr.compcode','9A')
-                                ->on('glr.glaccno','gld.glaccount');
+                                ->where('cc.compcode','9A')
+                                ->on('cc.costcode','gld.costcode');
                         })
                         ->where('gld.compcode','9A')
-                        ->limit('10')
-                        ->get();
+                        // ->whereNull('glr.glaccno');
+                        ->whereNull('cc.costcode');
 
-        dd($glmasdtl);
+        dd($this->getQueries($glmasdtl));
     }
     
 }

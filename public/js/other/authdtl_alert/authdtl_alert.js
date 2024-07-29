@@ -93,7 +93,7 @@ function authdtl_alert_click(type,trantype,recno){
 	}
 }
 
-function authdtl_alert_click(type,trantype,recno){
+function authdtl_alert_click_mobile(type,trantype,recno){
 	switch(type){
 		case 'pr':
 			open_mobile_page('purchaseRequest?scope='+trantype+'&recno='+recno);
