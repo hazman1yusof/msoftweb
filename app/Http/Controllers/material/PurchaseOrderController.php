@@ -22,7 +22,13 @@ class PurchaseOrderController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('material.purchaseOrder.purchaseOrder');
+        $purdept = DB::table('sysdb.department')
+                        ->select('deptcode')
+                        ->where('compcode',session('compcode'))
+                        ->where('purdept',1)
+                        ->get();
+
+        return view('material.purchaseOrder.purchaseOrder',compact('purdept'));
     }
 
     public function form(Request $request)

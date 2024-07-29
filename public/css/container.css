@@ -147,7 +147,8 @@ iframe{
 	cursor:pointer;
 }
 .huge{
-	font-size: 30px;
+	font-weight: bold;
+  font-size: 18px;
 }
 .panel-green{
 	border-color:#5cb85c;
@@ -257,4 +258,7 @@ iframe{
   font-stretch: condensed;
   color: #545454;
   font-weight: bold;
+}
+#authdtl_alert_div div.panel-footer a{
+	cursor: pointer;
 }

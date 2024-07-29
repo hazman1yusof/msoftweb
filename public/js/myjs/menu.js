@@ -1,133 +1,140 @@
 /* Write here your custom javascript codes */
+var dialogArray=[];
 var Menu = function () {
 
-    function create_menu()
-    {
-		$('#menu').metisMenu();var dialogArray=[];
+    function create_menu(){
+		$('#menu').metisMenu();
+    }
 		
-		function deleteDialog(programid){
-			$("a[programid='"+programid+"']").removeClass('clickactive');
-			if(typeof last !== 'undefined'){
+	function deleteDialog(programid){
+		$("a[programid='"+programid+"']").removeClass('clickactive');
+		if(typeof last !== 'undefined'){
+			last.find('i').remove()
+		}
+		$.each(dialogArray, function( index, obj ) {
+			if(obj.id==programid){
+				dialogArray.splice(index, 1);
+				return false;
+			}
+		});
+		if(dialogArray.length>0){
+			$(".clickable[programid='"+dialogArray[dialogArray.length-1].id+"']").append( "<i class='fa fa-caret-right fa-lg'></i>" );
+			last=$(".clickable[programid='"+dialogArray[dialogArray.length-1].id+"']");
+		}
+	}
+	
+	function searchDialog(programid){
+		var object={got:false};
+		$.each(dialogArray, function( index, obj ) {
+			if(obj.id==programid){
+				object=obj;
+				return false;//bila return false, skip .each terus pegi return
+			}
+		});
+		return object;
+	}
+
+	var colCounter = 0; 
+	function coloringHeader_title(programid,title){
+		var curr = $("iframe[programid="+programid+"]");
+		curr.prev().addClass("headerColor"+colCounter%6);
+		curr.prev().attr("title",title);
+		colCounter++;
+	}
+
+	function dialog_title(obj_array){
+		var title = '';
+		obj_array.each(function( index ) {
+			title = ' > ' + $(this).children('a').find('span.lilabel').text() + title;
+		});
+
+		return title.substring(3);
+	}
+	
+	var last;
+	$("#myNavmenu a.clickable").click(function(){
+		if($(this).is("[newtab]")){
+			window.open($(this).attr('targetURL'),"_self");
+		}else if(cntrlIsPressed){
+			cntrlIsPressed=false;
+			window.open($(this).attr('targetURL'));
+		}else{
+			$( ".lilabel" ).hide();
+			$( "#myNavmenu" ).animate({ width:"8%" }, "fast");
+			window.scrollTo(0,0);
+			$(this).append( "<i class='fa fa-caret-right fa-lg'></i>" );
+			if(typeof last !== 'undefined' && $(this).attr('programid') != last.attr('programid')){
 				last.find('i').remove()
 			}
-			$.each(dialogArray, function( index, obj ) {
-				if(obj.id==programid){
-					dialogArray.splice(index, 1);
-					return false;
-				}
-			});
+			last=$(this);
+			$(this).addClass( "clickactive" );
+			var programid=$(this).attr('programid');
 			if(dialogArray.length>0){
-				$(".clickable[programid='"+dialogArray[dialogArray.length-1].id+"']").append( "<i class='fa fa-caret-right fa-lg'></i>" );
-				last=$(".clickable[programid='"+dialogArray[dialogArray.length-1].id+"']");
-			}
-		}
-		
-		function searchDialog(programid){
-			var object={got:false};
-			$.each(dialogArray, function( index, obj ) {
-				if(obj.id==programid){
-					object=obj;
-					return false;//bila return false, skip .each terus pegi return
-				}
-			});
-			return object;
-		}
-
-		var colCounter = 0; 
-		function coloringHeader_title(programid,title){
-			var curr = $("iframe[programid="+programid+"]");
-			curr.prev().addClass("headerColor"+colCounter%6);
-			curr.prev().attr("title",title);
-			colCounter++;
-		}
-		
-		function makeNewDialog(obj){
-			var dialogObj = {id:obj.attr('programid'),dialog:{}};
-
-			let title = dialog_title(obj.parents('li'));
-			
-			dialogObj.dialog=$("<iframe src='"+obj.attr('targetURL')+"' programid='"+obj.attr('programid')+"' ></iframe>")
-			  .dialog({ 
-				title : title,
-				position: { my: "left bottom", at: "left+500px bottom"},
-				width: 9.2/10 * $(window).width(),
-				height: $(window).height() - 50,
-				close: function( event, ui ) {
-					deleteDialog(obj.attr('programid'));
-				},
-			  })
-			  .dialogExtend({
-					"closable" : true,
-					"maximizable" : false,
-					"minimizable" : true,
-					"collapsable" : false,
-					"dblclick" : "minimize",
-					"restore" : function(evt) { 
-						$(this).dialog( "moveToTop" );
-					}
-			  });
-			  dialogArray.push(dialogObj);
-			  coloringHeader_title(obj.attr('programid'),title);
-			$( dialogObj.dialog ).mouseenter(function() {
-				window.scrollTo(0,0);
-				$('body').addClass('stop-scrolling')
-			}).mouseleave(function() {
-				$('body').removeClass('stop-scrolling')
-			});
-		}
-
-		function dialog_title(obj_array){
-			var title = '';
-			obj_array.each(function( index ) {
-				title = ' > ' + $(this).children('a').find('span.lilabel').text() + title;
-			});
-
-			return title.substring(3);
-		}
-		
-		var last;
-		$("#myNavmenu a.clickable").click(function(){
-			if($(this).is("[newtab]")){
-				window.open($(this).attr('targetURL'),"_self");
-			}else if(cntrlIsPressed){
-				cntrlIsPressed=false;
-				window.open($(this).attr('targetURL'));
-			}else{
-				$( ".lilabel" ).hide();
-				$( "#myNavmenu" ).animate({ width:"8%" }, "fast");
-				window.scrollTo(0,0);
-				$(this).append( "<i class='fa fa-caret-right fa-lg'></i>" );
-				if(typeof last !== 'undefined' && $(this).attr('programid') != last.attr('programid')){
-					last.find('i').remove()
-				}
-				last=$(this);
-				$(this).addClass( "clickactive" );
-				var programid=$(this).attr('programid');
-				if(dialogArray.length>0){
-					var obj = searchDialog(programid);
-					if(obj.got===false){
-						makeNewDialog($(this));
-					}else{
-						obj.dialog.dialog( "moveToTop" );
-						obj.dialog.dialogExtend("restore");
-					}
+				var obj = searchDialog(programid);
+				if(obj.got===false){
+					makeNewDialog(
+						$(this).attr('programid'),
+						$(this).attr('targetURL'),
+						dialog_title($(this).parents('li')),
+					);
 				}else{
-					makeNewDialog($(this));
+					obj.dialog.dialog( "moveToTop" );
+					obj.dialog.dialogExtend("restore");
 				}
+			}else{
+				makeNewDialog(
+					$(this).attr('programid'),
+					$(this).attr('targetURL'),
+					dialog_title($(this).parents('li')),
+				);
 			}
-			
-		});
+		}
+		
+	});
 
-		var cntrlIsPressed;
-		$(document).keydown(function(event){
-		    if(event.which=="17")
-		        cntrlIsPressed = true;
-		});
+	var cntrlIsPressed;
+	$(document).keydown(function(event){
+	    if(event.which=="17")
+	        cntrlIsPressed = true;
+	});
 
-		$(document).keyup(function(){
-		    cntrlIsPressed = false;
+	$(document).keyup(function(){
+	    cntrlIsPressed = false;
+	});
+		
+	function makeNewDialog(programid,targetURL,title){
+		window.scrollTo(0,0);
+		var dialogObj = {id:programid,dialog:{}};
+		
+		dialogObj.dialog=$("<iframe src='"+targetURL+"' programid='"+programid+"' ></iframe>")
+		  .dialog({ 
+			title : title,
+			position: { my: "left bottom", at: "left+500px bottom"},
+			width: 9.2/10 * $(window).width(),
+			height: $(window).height() - 50,
+			close: function( event, ui ) {
+				deleteDialog(programid);
+			},
+		  })
+		  .dialogExtend({
+				"closable" : true,
+				"maximizable" : false,
+				"minimizable" : true,
+				"collapsable" : false,
+				"dblclick" : "minimize",
+				"restore" : function(evt) { 
+					$(this).dialog( "moveToTop" );
+				}
+		  });
+		  dialogArray.push(dialogObj);
+		  coloringHeader_title(programid,title);
+		$( dialogObj.dialog ).mouseenter(function() {
+			window.scrollTo(0,0);
+			$('body').addClass('stop-scrolling')
+		}).mouseleave(function() {
+			$('body').removeClass('stop-scrolling')
 		});
-    }
+	}
 	
 	function announce(){
 		$.getJSON( "announcement/generate", function(data){
@@ -249,7 +256,9 @@ var Menu = function () {
 	// }
 
     return {
-
+		new_dialog: function (programid,targetURL,title) {
+            makeNewDialog(programid,targetURL,title)
+        },
         init_menu: function () {
             create_menu();
         },

@@ -460,7 +460,7 @@ function search(grid,Stext,Scol,urlParam){
 	urlParam.searchCol=null;
 	urlParam.searchVal=null;
 	if(Stext.trim() != ''){
-		var split = Stext.split(" "),searchCol=[],searchVal=[];
+		var split = Stext.trim().split(" "),searchCol=[],searchVal=[];
 		$.each(split, function( index, value ) {
 			searchCol.push(Scol);
 			searchVal.push('%'+value+'%');
@@ -475,7 +475,7 @@ function search2(grid,Stext,Scol,urlParam,extra){
 	urlParam.searchCol=null;
 	urlParam.searchVal=null;
 	if(Stext.trim() != ''){
-		var split = Stext.split(" "),searchCol=[],searchVal=[];
+		var split = Stext.trim().split(" "),searchCol=[],searchVal=[];
 		$.each(split, function( index, value ) {
 			searchCol.push(Scol);
 			searchVal.push('%'+value+'%');

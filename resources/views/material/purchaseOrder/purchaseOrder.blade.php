@@ -78,7 +78,7 @@ div#fail_msg{
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('recno'))){{Request::get('recno')}}@endif">
 
 							<div  id="tunjukname" style="display:none">
 								<div class='input-group'>
@@ -117,11 +117,18 @@ div#fail_msg{
 					    </select>
 	      		</div>
 
-			  	<div class="col-md-2">
-			  		<label class="control-label" for="trandept">Purchase Department :</label> 
-						<select id='trandept' class="form-control input-sm">
-				      		<option value="All" selected>ALL</option>
-						</select>
+			  <div class="col-md-2">
+		  		<label class="control-label" for="trandept">Purchase Dept</label> 
+					<select id='trandept' class="form-control input-sm">
+	      		<option value="All">ALL</option>
+	      		@foreach($purdept as $dept_)
+	      			@if(Request::get('scope') == 'ALL' && $dept_->deptcode == Session::get('deptcode'))
+	      			<option value="{{$dept_->deptcode}}" selected>{{$dept_->deptcode}}</option>
+	      			@else
+	      			<option value="{{$dept_->deptcode}}">{{$dept_->deptcode}}</option>
+	      			@endif
+	      		@endforeach
+					</select>
 				</div>
 
 				<?php 
@@ -143,7 +150,7 @@ div#fail_msg{
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<span id="error_infront" style="color: red"></span>
-					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
+					<!-- <button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button> -->
 					<button 
 						type="button" 
 						class="btn btn-primary btn-sm" 
@@ -156,8 +163,8 @@ div#fail_msg{
 							{{Request::get('scope').' ALL'}}
 						@endif
 					</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
+					<!-- <button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
+					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button> -->
 				</div>
 
 			</fieldset> 

@@ -61,12 +61,12 @@ i.fa {
 					<div class="form-group"> 
 					  <div class="col-md-2">
 					  	<label class="control-label" for="Scol">Search By : </label>  
-					  		<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
-		              </div>
+					  	<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
+		        </div>
 
-					  	<div class="col-md-5">
-					  		<label class="control-label"></label>  
-								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+				  	<div class="col-md-5">
+				  		<label class="control-label"></label>  
+							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('recno'))){{Request::get('recno')}}@endif">
 
 							<div  id="tunjukname" style="display:none">
 								<div class='input-group'>
@@ -75,15 +75,13 @@ i.fa {
 								</div>
 								<span class="help-block"></span>
 							</div>
-							
 						</div>
 
+				  	<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
+				  		<p id="p_error"></p>
+				  	</div>
 
-					  	<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
-					  		<p id="p_error"></p>
-					  	</div>
-
-		             </div>
+		      </div>
 				</div>
 
 				<div class="col-md-2">
@@ -109,11 +107,18 @@ i.fa {
 					    </select>
 	            </div>
 
-	            <div class="col-md-2">
-			  		<label class="control-label" for="trandept">Purchase Dept</label> 
-						<select id='trandept' class="form-control input-sm">
-				      		<option value="All" selected>ALL</option>
-						</select>
+	      <div class="col-md-2">
+		  		<label class="control-label" for="trandept">Purchase Dept</label> 
+					<select id='trandept' class="form-control input-sm">
+	      		<option value="All">ALL</option>
+	      		@foreach($purdept as $dept_)
+	      			@if(Request::get('scope') == 'ALL' && $dept_->deptcode == Session::get('deptcode'))
+	      			<option value="{{$dept_->deptcode}}" selected>{{$dept_->deptcode}}</option>
+	      			@else
+	      			<option value="{{$dept_->deptcode}}">{{$dept_->deptcode}}</option>
+	      			@endif
+	      		@endforeach
+					</select>
 				</div>
 
 				<?php 
@@ -155,8 +160,8 @@ i.fa {
 							{{Request::get('scope')}}
 						@endif
 					</button> -->
-					<button type="button" class="btn btn-default btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
+					<!-- <button type="button" class="btn btn-default btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
+					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button> -->
 				</div>
 
 			 </fieldset> 

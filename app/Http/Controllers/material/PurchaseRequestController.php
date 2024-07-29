@@ -26,7 +26,66 @@ class PurchaseRequestController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('material.purchaseRequest.purchaseRequest');
+        $purdept = DB::table('sysdb.department')
+                        ->select('deptcode')
+                        ->where('compcode',session('compcode'))
+                        ->where('purdept',1)
+                        ->get();
+
+        return view('material.purchaseRequest.purchaseRequest',compact('purdept'));
+    }
+
+    public function show_mobile(Request $request)
+    {   
+        $recno = $request->recno;
+        $purreqhd = DB::table('material.purreqhd as prhd')
+                        ->select('prhd.recno','prhd.reqdept','dept_req.description as reqdept_desc','prhd.prdept','dept_pur.description as prdept_desc','prhd.purreqno','prhd.purreqdt','prhd.totamount','prhd.suppcode','supp.Name as suppcode_desc','prhd.recstatus','prhd.remarks')
+                        ->leftjoin('sysdb.department as dept_req', function($join) use ($request){
+                            $join = $join
+                                ->where('dept_req.compcode',session('compcode'))
+                                ->on('dept_req.deptcode','prhd.reqdept');
+                        })
+                        ->leftjoin('sysdb.department as dept_pur', function($join) use ($request){
+                            $join = $join
+                                ->where('dept_pur.compcode',session('compcode'))
+                                ->on('dept_pur.deptcode','prhd.prdept');
+                        })
+                        ->leftjoin('material.supplier as supp', function($join) use ($request){
+                            $join = $join
+                                ->where('supp.compcode',session('compcode'))
+                                ->on('supp.SuppCode','prhd.suppcode');
+                        })
+                        ->where('prhd.compcode',session('compcode'))
+                        ->where('prhd.recno',$recno)
+                        ->first();
+
+        $purreqdt = DB::table('material.purreqdt as prdt')
+                        ->select('prdt.lineno_','prdt.pricecode','psrc.description as pricecode_desc','prdt.itemcode','pmast.description as itemcode_desc','prdt.uomcode','uom.description as uom_desc','prdt.pouom','pouom.description as pouom_desc','prdt.qtyrequest','prdt.unitprice','prdt.totamount','prdt.remarks')
+                        ->leftjoin('material.pricesource as psrc', function($join) use ($request){
+                            $join = $join
+                                ->where('psrc.compcode',session('compcode'))
+                                ->on('psrc.pricecode','prdt.pricecode');
+                        })
+                        ->leftjoin('material.productmaster as pmast', function($join) use ($request){
+                            $join = $join
+                                ->where('pmast.compcode',session('compcode'))
+                                ->on('pmast.itemcode','prdt.itemcode');
+                        })
+                        ->leftjoin('material.uom as uom', function($join) use ($request){
+                            $join = $join
+                                ->where('uom.compcode',session('compcode'))
+                                ->on('uom.uomcode','prdt.uomcode');
+                        })
+                        ->leftjoin('material.uom as pouom', function($join) use ($request){
+                            $join = $join
+                                ->where('pouom.compcode',session('compcode'))
+                                ->on('pouom.uomcode','prdt.pouom');
+                        })
+                        ->where('prdt.compcode',session('compcode'))
+                        ->where('prdt.recno',$recno)
+                        ->get();
+
+        return view('material.purchaseRequest.purchaseRequest_mobile',compact('purreqhd','purreqdt'));
     }
 
     public function form(Request $request)

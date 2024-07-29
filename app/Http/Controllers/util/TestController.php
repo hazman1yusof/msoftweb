@@ -34,8 +34,10 @@ class TestController extends defaultController
                 return $this->set_class($request);
             case 'set_stockloc_unit':
                 return $this->set_stockloc_unit($request);
-            case 'test_alert_auth':
+            case 'test_alert_auth': //dah xperlu
                 return $this->test_alert_auth($request);
+            case 'test_glmasdtl':
+                return $this->test_glmasdtl($request);
             default:
                 return 'error happen..';
         }
@@ -329,7 +331,7 @@ class TestController extends defaultController
 
     public function test_alert_auth(Request $request){
         $queuepr = DB::table('material.queuepr as qpr')
-                    ->select('adtl.authorid','qpr.recno','qpr.deptcode','qpr.deptcode as dept_qpr','adtl.deptcode as dept_adtl','prhd.totamount')
+                    ->select('adtl.authorid','prhd.recno','prhd.reqdept','prhd.purreqno','prhd.purreqdt','prhd.recstatus','prhd.totamount','prhd.adduser')
                     ->join('material.authdtl as adtl', function($join) use ($request){
                         $join = $join
                             ->where('adtl.compcode',session('compcode'))
@@ -393,6 +395,21 @@ class TestController extends defaultController
                 ->get();
 
         dd($queuepr);
+    }
+
+    public function test_glmasdtl(Request $request){
+        $glmasdtl = DB::table('finance.glmasdtl as gld')
+                        ->select('gld.glaccount as gld','glr.glaccno as glr')
+                        ->leftjoin('finance.glmasref as glr', function($join) use ($request){
+                            $join = $join
+                                ->where('glr.compcode','9A')
+                                ->on('glr.glaccno','gld.glaccount');
+                        })
+                        ->where('gld.compcode','9A')
+                        ->limit('10')
+                        ->get();
+
+        dd($glmasdtl);
     }
     
 }

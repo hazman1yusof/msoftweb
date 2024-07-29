@@ -114,7 +114,10 @@
 
 		</div>
 
-		<div class='col-lg-3 col-md-6'>
+		<div id="authdtl_alert_div" class="panel-body">
+		</div>
+
+		<!-- <div class='col-lg-3 col-md-6'>
 			<div class='panel panel-primary'>
 				<div class='panel-heading'>
 					<div class='row'>
@@ -214,9 +217,9 @@
 						</a>
 					</div>
 			</div>
-		</div>
+		</div> -->
 
-		<div class="panel panel-info col-xs-3" id='chat-panel' style="position:fixed;bottom:0;right:0;padding: 0;width:105px;">
+		<!-- <div class="panel panel-info col-xs-3" id='chat-panel' style="position:fixed;bottom:0;right:0;padding: 0;width:105px;">
 			<div class="panel-heading panel-primary">
 				<span class='whenshow' style='display: none;'>
 					<i class="fa fa-comments-o" aria-hidden="true"></i>
@@ -253,7 +256,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 	</div>
 
@@ -274,7 +277,6 @@
 
 <!-- JS Implementing Plugins -->
 <script src="js/myjs/menu.js"></script>
-
 <!-- JS Customization -->
 
 <!-- JS Page Level -->
@@ -481,4 +483,7 @@
 		}
 	});
 </script>
+
+<script type="text/ecmascript" src="js/other/authdtl_alert/authdtl_alert.js"></script>
+
 </html>

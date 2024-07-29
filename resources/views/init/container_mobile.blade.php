@@ -112,113 +112,13 @@
 
 	<div class='page-wrapper' style="width: 100%;padding-top: 55px;">
 		<div id="default_page" style="width: 100%;height: 100%;">
-			<div id='cardTill' class='col-lg-3 col-md-6'>
-				<div class='panel panel-primary'>
-					<div class='panel-heading'>
-						<div class='row'>
-							<div class='col-xs-2'>
-								<i class='fa fa-inbox fa-5x'></i>
-							</div>
-							<div class='col-xs-10 text-right'>
-								<div class='huge'>
-									<button name='refresh' class='btn btn-default btn-xs'><i class='fa fa-refresh fa-spin'></i></button>
-									 Till 
-								</div>
-								<div><b>Status: </b><span name='tillstatus'>C</span></div>
-								<div><b>Till Code: </b><span name='tillcode'>-</span></div>
-								<div><b>Open On: </b><span name='opendate'>-</span></div>
-							</div>
-						</div>
-					</div>
-						<div class='panel-footer'>
-							<a href="#" name='closetill' onclick="return false">
-								<span class='pull-left'>Close Till</span>
-								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
-								<div class='clearfix'></div>
-							</a>
-							<a href="#" name='opentill' onclick="return false">
-								<span class='pull-left'>Open Till</span>
-								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
-								<div class='clearfix'></div>
-							</a>
-						</div>
-				</div>
-			</div>
-
-			<div class='col-lg-3 col-md-6'>
-				<div class='panel panel-green'>
-					<div class='panel-heading'>
-						<div class='row'>
-							<div class='col-xs-2'><i class='fa fa-truck fa-5x'></i></div>
-							<div class='col-xs-10 text-right'>
-								<div class='huge'><button class='btn btn-default btn-xs'><i class='fa fa-refresh fa-spin'></i></button> DO</div>
-								<div><b>Status: </b><span>Open</span></div>
-								<div><b>Till Code: </b><span>Till 1</span></div>
-								<div><b>Open On: </b><span>2016-01-28 15:53:15</span></div>
-							</div>
-						</div>
-					</div>
-						<div class='panel-footer'>
-							<a href="#">
-								<span class='pull-left'>View Detail</span>
-								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
-								<div class='clearfix'></div>
-							</a>
-						</div>
-				</div>
-			</div>
-
-			<div class='col-lg-3 col-md-6'>
-				<div class='panel panel-yellow'>
-					<div class='panel-heading'>
-						<div class='row'>
-							<div class='col-xs-2'><i class='fa fa-shopping-cart fa-5x'></i></div>
-							<div class='col-xs-10 text-right'>
-								<div class='huge'><button class='btn btn-default btn-xs'><i class='fa fa-refresh fa-spin'></i></button> PO</div>
-								<div><b>Status: </b><span>Open</span></div>
-								<div><b>Till Code: </b><span>Till 1</span></div>
-								<div><b>Open On: </b><span>2016-01-28 15:53:15</span></div>
-							</div>
-						</div>
-					</div>
-						<div class='panel-footer'>
-							<a href="#">
-								<span class='pull-left'>View Detail</span>
-								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
-								<div class='clearfix'></div>
-							</a>
-						</div>
-				</div>
-			</div>
-
-			<div class='col-lg-3 col-md-6'>
-				<div class='panel panel-red'>
-					<div class='panel-heading'>
-						<div class='row'>
-							<div class='col-xs-2'><i class='fa fa-exclamation-triangle fa-5x'></i></div>
-							<div class='col-xs-10 text-right'>
-								<div class='huge'><button class='btn btn-default btn-xs'><i class='fa fa-refresh fa-spin'></i></button> Alert</div>
-								<div><b>Status: </b><span>Open</span></div>
-								<div><b>Till Code: </b><span>Till 1</span></div>
-								<div><b>Open On: </b><span>2016-01-28 15:53:15</span></div>
-							</div>
-						</div>
-					</div>
-						<div class='panel-footer'>
-							<a href="#">
-								<span class='pull-left'>View Detail</span>
-								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
-								<div class='clearfix'></div>
-							</a>
-						</div>
-				</div>
+			<div id="authdtl_alert_div" class="panel-body">
 			</div>
 		</div>
 
 		<div id="url_page" style="width: 100wh;height: 100vh;display: none;">
 			<iframe id='iframe_page' src='' style="width: 100wh;height: 100vh;border: none;"></iframe>
 		</div>
-
 	</div>
 
 
@@ -235,6 +135,7 @@
 <script type="text/ecmascript" src="plugins/numeral.min.js"></script>
 <script type="text/ecmascript" src="plugins/moment.js"></script>
 <script type="text/ecmascript" src="plugins/velocity.min.js"></script>
+<script type="text/ecmascript" src="js/other/authdtl_alert/authdtl_alert.js"></script>
 
 <!-- JS Implementing Plugins -->
 
@@ -256,22 +157,23 @@
 
 		$("#myNavmenu a.clickable").click(function(){
 			let src = $(this).attr('targetURL');
-			if(src == ''){
-				$('#url_page').hide();
-				$('#default_page').show();
-				$('#iframe_page').attr('src',src);
-			}else{
-				$('#url_page').show();
-				$('#default_page').hide();
-				$('#iframe_page').attr('src',src);
-			}
+			open_mobile_page(src);
 
 			$("#myNavmenu").data('open','false');
 			$("#myNavmenu").animate({ width:"0%" }, "fast");
 		});
 	});
+
+	function open_mobile_page(src){
+		if(src == ''){
+			$('#url_page').hide();
+			$('#default_page').show();
+			$('#iframe_page').attr('src',src);
+		}else{
+			$('#url_page').show();
+			$('#default_page').hide();
+			$('#iframe_page').attr('src',src);
+		}
+	}
 </script>
-
-
-  
 </html>

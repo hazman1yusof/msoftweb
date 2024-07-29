@@ -424,6 +424,7 @@ Route::get('/repack/showExcel','material\RepackController@showExcel');
 
 //// purchase Request setup page ///
 Route::get('/purchaseRequest','material\PurchaseRequestController@show');
+Route::get('/purchaseRequest_mobile','material\PurchaseRequestController@show_mobile');
 Route::get('/purchaseRequest/table','material\PurchaseRequestController@table');
 Route::post('/purchaseRequest/form','material\PurchaseRequestController@form');
 Route::get('/purchaseRequest/form','material\PurchaseRequestController@form');

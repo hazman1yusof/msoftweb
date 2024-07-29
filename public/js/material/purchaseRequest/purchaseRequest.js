@@ -305,6 +305,9 @@ $(document).ready(function () {
 		},
 		loadComplete: function(){
 			//calc_jq_height_onchange("jqGrid");
+			if($('#scope').val() != 'ALL'){
+				$("#jqGridPager td[title='Edit Selected Row'],#jqGridPager td[title='Add New Row']").hide();
+			}
 		},
 	});
 
@@ -358,7 +361,7 @@ $(document).ready(function () {
 	populateSelect('#jqGrid', '#searchForm');
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
-	addParamField('#jqGrid', true, urlParam);
+	addParamField('#jqGrid', false, urlParam);
 	addParamField('#jqGrid', false, saveParam, ['purreqhd_recno','purreqhd_purordno','purreqhd_adduser', 'purreqhd_adddate', 'purreqhd_idno', 'supplier_name','purreqhd_purreqno','purreqhd_upduser','purreqhd_upddate','purreqhd_deluser', 'purreqhd_recstatus','purreqhd_unit','Checkbox','queuepr_AuthorisedID']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
@@ -487,31 +490,31 @@ $(document).ready(function () {
 		});
 	}
 	///////////////////////////////////utk dropdown tran dept/////////////////////////////////////////
-	trandept();
-	function trandept(){
-		var param={
-			action:'get_value_default',
-			url: 'util/get_value_default',
-			field:['deptcode'],
-			table_name:'sysdb.department',
-			filterCol:['purdept'],
-			filterVal:['1']
-		}
-		$.get( param.url+"?"+$.param(param), function( data ) {
+	// trandept();
+	// function trandept(){
+	// 	var param={
+	// 		action:'get_value_default',
+	// 		url: 'util/get_value_default',
+	// 		field:['deptcode'],
+	// 		table_name:'sysdb.department',
+	// 		filterCol:['purdept'],
+	// 		filterVal:['1']
+	// 	}
+	// 	$.get( param.url+"?"+$.param(param), function( data ) {
 			
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data)){
-				$.each(data.rows, function(index, value ) {
-					if(value.deptcode.toUpperCase()== $("#deptcode").val().toUpperCase()){
-						$( "#searchForm [id=trandept]" ).append("<option selected value='"+value.deptcode+"'>"+value.deptcode+"</option>");
-					}else{
-						$( "#searchForm [id=trandept]" ).append(" <option value='"+value.deptcode+"'>"+value.deptcode+"</option>");
-					}
-				});
-				searchChange();
-			}
-		});
-	}
+	// 	},'json').done(function(data) {
+	// 		if(!$.isEmptyObject(data)){
+	// 			$.each(data.rows, function(index, value ) {
+	// 				if(value.deptcode.toUpperCase()== $("#deptcode").val().toUpperCase()){
+	// 					$( "#searchForm [id=trandept]" ).append("<option selected value='"+value.deptcode+"'>"+value.deptcode+"</option>");
+	// 				}else{
+	// 					$( "#searchForm [id=trandept]" ).append(" <option value='"+value.deptcode+"'>"+value.deptcode+"</option>");
+	// 				}
+	// 			});
+	// 			searchChange();
+	// 		}
+	// 	});
+	// }
 ////////////////////////////changing status and trandept trigger search/////////////////////////
 	$('#Scol').on('change', whenchangetodate);
 	$('#Status').on('change', searchChange);
@@ -577,8 +580,8 @@ $(document).ready(function () {
 		search('#jqGrid', $('#searchForm [name=Stext]').val(), $('#searchForm [name=Scol] option:selected').val(), urlParam);
 	}
 
-	function searchChange() {
-
+	searchChange(true);
+	function searchChange(once=false) {
 		cbselect.empty_sel_tbl();
 		var arrtemp = ['session.compcode', $('#Status option:selected').val(), $('#trandept option:selected').val()];
 
@@ -596,6 +599,19 @@ $(document).ready(function () {
 		urlParam.filterVal = filter.fv;
 		urlParam.WhereInCol = null;
 		urlParam.WhereInVal = null;
+
+		if(once){
+			urlParam.searchCol=null;
+			urlParam.searchVal=null;
+			if($('#searchForm [name=Stext]').val().trim() != ''){
+				let searchCol = ['purreqhd_recno'];
+				let searchVal = ['%'+$('#searchForm [name=Stext]').val().trim()+'%'];
+				urlParam.searchCol=searchCol;
+				urlParam.searchVal=searchVal;
+			}
+			once=false;
+		}
+
 		refreshGrid('#jqGrid', urlParam);
 	}
 
@@ -825,7 +841,7 @@ $(document).ready(function () {
 		loadonce: false,
 		width: 1150,
 		height: 200,
-		rowNum: 200,
+		rowNum: 10000,
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
@@ -855,14 +871,15 @@ $(document).ready(function () {
 			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 			$(".noti").empty();
 		},
-		
 		gridComplete: function(){
 			$("#jqGrid2").find(".remarks_button").on("click", function(e){
 				$("#remarks2").data('rowid',$(this).data('rowid'));
 				$("#remarks2").data('grid',$(this).data('grid'));
 				$("#dialog_remarks").dialog( "open" );
 			});
-			fdl.set_array().reset();
+			fdl.set_array(function(){
+				calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
+			}).reset();
 			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			//calculate_quantity_outstanding('#jqGrid2');
 			
@@ -2428,17 +2445,17 @@ $(document).ready(function () {
 
 });
 
-	function populate_form(obj){
-		//panel header
-		$('#purreqno_show').text(padzero(obj.purreqhd_purreqno));
-		$('#suppcode_show').text(obj.supplier_name);
-	}
+function populate_form(obj){
+	//panel header
+	$('#purreqno_show').text(padzero(obj.purreqhd_purreqno));
+	$('#suppcode_show').text(obj.supplier_name);
+}
 
-	function empty_form(){
-		$('#purreqno_show').text('');
-		$('#suppcode_show').text('');
-	}
+function empty_form(){
+	$('#purreqno_show').text('');
+	$('#suppcode_show').text('');
+}
 
-	function reset_all_error(){
+function reset_all_error(){
 
-	}
+}

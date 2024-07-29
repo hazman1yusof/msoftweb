@@ -22,8 +22,6 @@ $(document).ready(function () {
 		},
 	};
 
-	var fdl = new faster_detail_load();
-
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
 		action:'get_table_default',
@@ -38,19 +36,23 @@ $(document).ready(function () {
 
 	$('input[type=radio][name=Class]').change(function(){
 		var thisval = $(this).val();
-		console.log(thisval);
 		switch(thisval){
 			case 'All':
-				$('div.divto').show();
+				$('div.divto,#row_sector').show();
+				$('#row_dept').hide();
 				break;
 			case 'Department':
-				$('div.divto').hide();
+				$('#row_dept').show();
+				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
+				$('div.divto,#row_sector').hide();
 				break;
 			case 'Units':
 				$('div.divto').show();
+				$('#row_dept,#row_sector').hide();
 				break;
 			case 'Variance':
 				$('div.divto').hide();
+				$('#row_dept,#row_sector').hide();
 				break;
 		}
 	});
@@ -74,33 +76,11 @@ $(document).ready(function () {
 		rowNum: 50,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-			// $("#jqGrid input[name='suppgroup']").change(function(){
-			// 	$("#jqGrid input[name='suppgroup']").val($(this).val());
-			// });
-		   
-			// ///summary
-			// $('#summary_pdf').click(function(){
-			// 	window.open('./SuppList_Report/summarypdf?suppgroup='+selrowData("#jqGrid").suppgroup, '_blank'); 
-			// });
-		
-			// $('#summary_excel').click(function(){
-			// 	window.location='./SuppList_Report/summaryExcel?suppgroup='+selrowData("#jqGrid").suppgroup;
-			// });
-		
-			// ///detail
-			// $('#dtl_pdf').click(function(){
-			// 	window.open('./SuppList_Report/dtlpdf?suppgroup='+selrowData("#jqGrid").suppgroup, '_blank'); 
-			// });
-		
-			// $('#dtl_excel').click(function(){
-			// 	window.location='./SuppList_Report/dtlExcel?suppgroup='+selrowData("#jqGrid").suppgroup;
-			// });
 		},
 		gridComplete: function(){
-			fdl.set_array().reset();
 		},
-		
 	});
+	addParamField('#jqGrid',true,urlParam);
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
@@ -111,8 +91,47 @@ $(document).ready(function () {
 	});
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
-	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid',true,urlParam);
+	var urlParam2={
+		action:'get_table_default',
+		url:'util/get_table_default',
+		field:'',
+		filterCol:['compcode', 'recstatus'],
+		filterVal:['session.compcode', 'ACTIVE'],
+		table_name:'sysdb.department',
+		table_id:'idno',
+		sort_idno:true,
+	}
+	$("#jqGrid2").jqGrid({
+		datatype: "local",
+		colModel: [
+			{ label:'idno', name: 'idno', sorttype: 'number', hidden:true },
+			{ label:'compcode', name: 'compcode', hidden:true},
+			{ label:'Department Code',name:'deptcode',width:200,classes:'pointer', canSearch: true, or_search: true },
+			{ label:'Description',name:'description',width:500,classes:'pointer', canSearch: true, checked: true, or_search: true },
+		],
+		autowidth:true,
+        multiSort: true,
+		viewrecords: true,
+		loadonce:false,
+		sortname:'idno',
+		sortorder:'desc',
+		width: 550,
+		height: 150,
+		rowNum: 50,
+		pager: "#jqGrid2Pager",
+		onSelectRow:function(rowid, selected){
+		},
+		gridComplete: function(){
+		},
+	});
+	addParamField('#jqGrid2',true,urlParam2);
+
+	$("#jqGrid2").jqGrid('navGrid','#jqGrid2Pager',{	
+		view:false,edit:false,add:false,del:false,search:false,
+		beforeRefresh: function(){
+			refreshGrid("#jqGrid2",urlParam2);
+		},
+	});
 	
     /////////////////////////////////////dialog handler///////////////////////////////
 	var reporttype = new ordialog(
@@ -149,40 +168,6 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	reporttype.makedialog(true);
-
-	var department = new ordialog(
-		'department','sysdb.department','#department','errorField',
-		{	
-			colModel:[
-				{label:'Department Code',name:'deptcode',width:200,classes:'pointer', canSearch: true, or_search: true, checked: true },
-				{label:'Department Description',name:'description',width:400,classes:'pointer', canSearch: true},
-			],
-			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','ACTIVE']
-			},
-			ondblClickRow: function () {
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-						$('#'+obj.dialogname).dialog('close');
-					}
-			}
-		},{
-			title:"Select Supplier Group",
-			open: function(){
-				reporttype.urlParam.filterCol=['compcode','recstatus'];
-				reporttype.urlParam.filterVal=['session.compcode','ACTIVE'];
-			},
-			close: function(obj_){
-			},
-		},'urlParam','radio','tab'
-	);
-	department.makedialog(true);
 
 });
 

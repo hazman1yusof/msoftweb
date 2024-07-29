@@ -400,6 +400,9 @@ $(document).ready(function () {
 		},
 		loadComplete: function(){
 			//calc_jq_height_onchange("jqGrid");
+			if($('#scope').val() != 'ALL'){
+				$("#jqGridPager td[title='Edit Selected Row'],#jqGridPager td[title='Add New Row']").hide();
+			}
 		},
 		
 	});
@@ -964,7 +967,9 @@ $(document).ready(function () {
 				$("#remarks2").data('grid',$(this).data('grid'));
 				$("#dialog_remarks").dialog( "open" );
 			});
-			fdl.set_array().reset();
+			fdl.set_array(function(){
+				calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
+			}).reset();
 			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
 			unsaved = false;
