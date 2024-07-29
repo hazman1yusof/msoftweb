@@ -262,3 +262,6 @@ iframe{
 #authdtl_alert_div div.panel-footer a{
 	cursor: pointer;
 }
+div.nopadleft{
+	padding-left: 0px !important;
+}

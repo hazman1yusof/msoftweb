@@ -118,14 +118,80 @@
 			</table>
 	  </div>
 		<div class="ui two bottom attached buttons">
-		    <div class="ui negative button">Reject</div>
-		    <div class="ui positive button">Support</div>
+		    <div class="ui negative button" id="reject">Reject</div>
+		    <div class="ui positive button" id="post">{{$scope}}</div>
 		</div>
 	</div>
+</div>
+
+<div id='remark_modal' class="ui modal">
+  <div class="content">
+		<form class="ui form" id="formdata">
+			<input type="hidden" id="oper" name="oper" value="{{$oper}}">
+			<input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}">
+  		<input type="hidden" id="idno" name="idno" value="{{$purreqhd->idno}}">
+		  <div class="field">
+		    <label>Remark</label>
+		    <textarea rows="5" name="remarks"></textarea>
+		  </div>
+	  </form>
+  </div>
+  <div class="actions">
+    <button class="ui negative button">Cancel</button>
+    <button class="ui positive button" id="submit_remark">Submit</button>
+  </div>
 </div>
 @endsection
 
 @section('js')
 <script>
+	$(document).ready(function(){
+		$('div#post').click(function(){
+			$('#remark_modal.modal')
+			  .modal({
+			    closable: false,
+			    onApprove:function(){
+			    	$('button#submit_remark').attr('disabled');
+			    	save_authdtl();
+			    }
+			  }).modal('show');
+		});
+
+		$('div#reject').click(function(){
+			if (confirm("Are you sure to reject this purchase request?") == true) {
+			  $('#remark_modal.modal')
+				  .modal({
+				    closable: false,
+				    onApprove:function(){
+				    	$('button#submit_remark').attr('disabled');
+				    	save_authdtl();
+				    }
+				  }).modal('show');
+			} else {
+			  text = "You canceled!";
+			}
+		});
+	});
+
+	function save_authdtl(){
+		var obj={};
+		obj.idno_array = [$('#idno').val()];
+		obj.oper = $('#oper').val();
+		obj._token = $('#_token').val();
+		
+		$.post( './purchaseRequest/form', obj , function( data ) {
+
+		}).fail(function(data) {
+
+		}).success(function(data){
+			close_and_refresh();
+		});
+	}
+
+	function close_and_refresh(){
+		if (window.frameElement) {
+			parent.close_and_refresh();
+		}
+	}
 </script>
 @endsection

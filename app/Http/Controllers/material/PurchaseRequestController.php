@@ -19,13 +19,11 @@ class PurchaseRequestController extends defaultController
 {   
     var $gltranAmount;
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware('auth');
     }
 
-    public function show(Request $request)
-    {   
+    public function show(Request $request){   
         $purdept = DB::table('sysdb.department')
                         ->select('deptcode')
                         ->where('compcode',session('compcode'))
@@ -35,11 +33,12 @@ class PurchaseRequestController extends defaultController
         return view('material.purchaseRequest.purchaseRequest',compact('purdept'));
     }
 
-    public function show_mobile(Request $request)
-    {   
+    public function show_mobile(Request $request){   
+        $oper = strtolower($request->scope);
+        $scope = ucfirst(strtolower($request->scope));
         $recno = $request->recno;
         $purreqhd = DB::table('material.purreqhd as prhd')
-                        ->select('prhd.recno','prhd.reqdept','dept_req.description as reqdept_desc','prhd.prdept','dept_pur.description as prdept_desc','prhd.purreqno','prhd.purreqdt','prhd.totamount','prhd.suppcode','supp.Name as suppcode_desc','prhd.recstatus','prhd.remarks')
+                        ->select('prhd.idno','prhd.recno','prhd.reqdept','dept_req.description as reqdept_desc','prhd.prdept','dept_pur.description as prdept_desc','prhd.purreqno','prhd.purreqdt','prhd.totamount','prhd.suppcode','supp.Name as suppcode_desc','prhd.recstatus','prhd.remarks')
                         ->leftjoin('sysdb.department as dept_req', function($join) use ($request){
                             $join = $join
                                 ->where('dept_req.compcode',session('compcode'))
@@ -85,7 +84,7 @@ class PurchaseRequestController extends defaultController
                         ->where('prdt.recno',$recno)
                         ->get();
 
-        return view('material.purchaseRequest.purchaseRequest_mobile',compact('purreqhd','purreqdt'));
+        return view('material.purchaseRequest.purchaseRequest_mobile',compact('purreqhd','purreqdt','scope','oper'));
     }
 
     public function form(Request $request)
@@ -108,6 +107,8 @@ class PurchaseRequestController extends defaultController
             case 'support':
                 return $this->support($request);
             case 'verify':
+                return $this->verify($request);
+            case 'verified':
                 return $this->verify($request);
             case 'approved':
                 return $this->approved($request);
@@ -659,7 +660,7 @@ class PurchaseRequestController extends defaultController
             }
 
            
-            DB::commit();
+            // DB::commit();
         
         } catch (\Exception $e) {
             DB::rollback();

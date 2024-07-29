@@ -25,7 +25,7 @@ function populate_authdtl_alert_pr(data){
 			<div class='panel panel-green'>
 				<div class='panel-heading'>
 					<div class='row'>
-						<div class='col-xs-2'><i class='fa fa-archive fa-4x'></i></div>
+						<div class='col-xs-2 nopadleft'><i class='fa fa-archive fa-4x'></i></div>
 						<div class='col-xs-10 text-right'>
 							<div class='huge'>Purchase Request</div>
 							<div><b>Recno: </b><span>`+e.recno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
@@ -55,7 +55,7 @@ function populate_authdtl_alert_po(data){
 			<div class='panel panel-yellow'>
 				<div class='panel-heading'>
 					<div class='row'>
-						<div class='col-xs-2'><i class='fa fa-suitcase fa-4x'></i></div>
+						<div class='col-xs-2 nopadleft'><i class='fa fa-suitcase fa-4x'></i></div>
 						<div class='col-xs-10 text-right'>
 							<div class='huge'>Purchase Order</div>
 							<div><b>Recno: </b><span>`+e.recno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
@@ -79,6 +79,7 @@ function populate_authdtl_alert_po(data){
 }
 
 function authdtl_alert_click(type,trantype,recno){
+    let mql = window.matchMedia("(max-width: 768px)");
 	if(mql.matches){
 		return authdtl_alert_click_mobile(type,trantype,recno);
     }
@@ -96,10 +97,15 @@ function authdtl_alert_click(type,trantype,recno){
 function authdtl_alert_click_mobile(type,trantype,recno){
 	switch(type){
 		case 'pr':
-			open_mobile_page('purchaseRequest?scope='+trantype+'&recno='+recno);
+			open_mobile_page('purchaseRequest_mobile?scope='+trantype+'&recno='+recno);
 			break;
 		case 'po':
-			open_mobile_page('purchaseOrder?scope='+trantype+'&recno='+recno);
+			open_mobile_page('purchaseOrder_mobile?scope='+trantype+'&recno='+recno);
 			break;
 	}
+}
+
+function close_and_refresh(){
+	alert('save good !');
+	open_mobile_page('');
 }
