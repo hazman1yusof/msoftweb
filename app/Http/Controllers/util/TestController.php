@@ -398,23 +398,28 @@ class TestController extends defaultController
     }
 
     public function test_glmasdtl(Request $request){
-        $glmasdtl = DB::table('finance.glmasdtl as gld')
-                        ->select('gld.costcode','gld.glaccount','gld.year')
-                        // ->leftjoin('finance.glmasref as glr', function($join) use ($request){
-                        //     $join = $join
-                        //         ->where('glr.compcode','9A')
-                        //         ->on('glr.glaccno','gld.glaccount');
-                        // })
-                        ->leftjoin('finance.costcenter as cc', function($join) use ($request){
-                            $join = $join
-                                ->where('cc.compcode','9A')
-                                ->on('cc.costcode','gld.costcode');
-                        })
-                        ->where('gld.compcode','9A')
-                        // ->whereNull('glr.glaccno');
-                        ->whereNull('cc.costcode');
+        $glmasdtl = DB::table('test.newcostcode')
+                            ->get();
 
-        dd($this->getQueries($glmasdtl));
+        foreach ($glmasdtl as $obj) {
+            $exist = DB::table('finance.costcenter')
+                        ->where('compcode','9A')
+                        ->where('costcode',$obj->code)
+                        ->exists();
+
+            if($exist){
+                dump('Skipping - '.$obj->code.' already exists');
+            }else{
+                dump('Insert - '.$obj->code);
+                DB::table('finance.costcenter')
+                    ->insert([
+                        'compcode' => '9A',
+                        'costcode' => $obj->code,
+                        'description' => $obj->desc,
+                        'recstatus' => 'ACTIVE',
+                    ]);
+            }
+        }
     }
     
 }

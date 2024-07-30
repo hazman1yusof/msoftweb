@@ -495,6 +495,7 @@ $(document).ready(function () {
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
 	addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid']);
+	console.log(saveParam);
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////

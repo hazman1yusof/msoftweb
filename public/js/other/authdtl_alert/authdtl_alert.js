@@ -4,6 +4,8 @@ $(document).ready(function(){
 
 
 function get_authdtl_alert(){
+	$('#authdtl_alert_div').html('');
+
 	var param_authdtl_alert={
 		action:'get_authdtl_alert',
 		url: './authorizationDtl/table',
@@ -106,6 +108,6 @@ function authdtl_alert_click_mobile(type,trantype,recno){
 }
 
 function close_and_refresh(){
-	alert('save good !');
 	open_mobile_page('');
+	get_authdtl_alert()
 }

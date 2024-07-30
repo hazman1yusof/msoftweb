@@ -247,6 +247,11 @@ $(document).ready(function () {
 			$('#error_infront').text('');
 			let stat = selrowData("#jqGrid").purreqhd_recstatus;
 			let scope = $("#recstatus_use").val();
+			if(scope == 'ALL' && stat == "CANCELLED"){
+				$('#but_reopen_jq').show();
+			}else{
+				$('#but_reopen_jq').hide();
+			}
 
 			// $('#but_post_single_jq,#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 			// if (stat == scope || stat == "CANCELLED") {
@@ -382,37 +387,80 @@ $(document).ready(function () {
 	var actdateObj = new setactdate(["#trandate"]);
 	actdateObj.getdata().set();
 
-	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	// $("#but_cancel_jq,#but_reopen_jq,#but_soft_cancel_jq").click(function(){
-		
-	// 	saveParam.oper = $(this).data("oper");
-	// 	let obj={
-	// 		recno:selrowData('#jqGrid').purreqhd_recno,
-	// 		_token:$('#_token').val(),
-	// 		idno:selrowData('#jqGrid').purreqhd_idno
+	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////]
+	$("#dialog_remarks_oper").dialog({
+		autoOpen: false,
+		width: 4/10 * $(window).width(),
+		modal: true,
+		open: function( event, ui ) {
+			$('#remarks_oper').val('');
+		},
+		close: function( event, ui ) {
+			$("#but_cancel_jq").attr('disabled',false);
+		},
+		buttons : [{
+			text: "Submit",click: function() {
+				$("#but_cancel_jq").attr('disabled',true);
+				if($('#remarks_oper').val() == ''){
+					alert('Remarks for rejection is required!');
+				}else{
+					$(this).attr('disabled',true);
+					var idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
+					var obj={};
+					
+					obj.idno_array = idno_array;
+					obj.oper = $("#but_cancel_jq").data('oper');
+					obj.remarks = $("#remarks_oper").val();
+					obj._token = $('#_token').val();
+					oper=null;
+					
+					$.post( './purchaseRequest/form', obj , function( data ) {
+						refreshGrid('#jqGrid', urlParam);
+						$(this).attr('disabled',true);
+						cbselect.empty_sel_tbl();
+					}).fail(function(data) {
+						$('#error_infront').text(data.responseText);
+						$(this).attr('disabled',true);
+					}).success(function(data){
+						$(this).attr('disabled',true);
+					});
+					$(this).dialog('close');
+				}
+			}
+			},{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}]
+	});
 
-	// 	};
-	// 	$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
-	// 		refreshGrid("#jqGrid", urlParam);
-	// 	}).fail(function (data) {
-	// 		// alert(data.responseText);
-	// 		$('#error_infront').text(data.responseText);
-	// 	}).done(function (data) {
-	// 		//2nd successs?
-	// 	});
-	// });
+	$("#but_cancel_jq").click(function(){
+		$("#but_cancel_jq").attr('disabled',true);
+		if($(this).data('oper') == 'cancel'){
+			if (confirm("Are you sure to reject this purchase request?") == true) {
+				$("#dialog_remarks_oper").dialog( "open" );
+			}
+		}
+	});
 
-	$("#but_post_jq,#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
+	$("#but_post_jq,#but_reopen_jq,#but_post_single_jq").click(function(){
 		$(this).attr('disabled',true);
 		var self_ = this;
-		var idno_array = [];
-	
-		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
+		var idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
 		var obj={};
+		
 		obj.idno_array = idno_array;
-		obj.oper = $(this).data('oper');
+		obj.oper = $(self_).data('oper');
 		obj._token = $('#_token').val();
 		oper=null;
+
+		if($(this).data('oper') == 'reopen'){
+			if(confirm("Are you sure you want to reopen this Purchase Request?") == true) {
+				obj.idno_array = [selrowData('#jqGrid').purreqhd_idno];
+			}else{
+				return false
+			}
+		}
 		
 		$.post( './purchaseRequest/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);

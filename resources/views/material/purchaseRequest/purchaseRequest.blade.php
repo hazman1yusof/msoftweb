@@ -141,6 +141,16 @@ i.fa {
 					
 					<span id="error_infront" style="color: red"></span>
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
+					
+					@if (Request::get('scope') == 'ALL')
+					<button type="button" class="btn btn-info btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
+					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
+					@endif
+
+					@if (Request::get('scope') != 'ALL')
+					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">REJECT</button>
+					@endif
+
 					<button 
 						type="button" 
 						class="btn btn-primary btn-sm" 
@@ -160,8 +170,7 @@ i.fa {
 							{{Request::get('scope')}}
 						@endif
 					</button> -->
-					<!-- <button type="button" class="btn btn-default btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button> -->
+
 				</div>
 
 			 </fieldset> 
@@ -431,6 +440,14 @@ i.fa {
 			  <div class="panel panel-default">
 			    <div class="panel-body">
 			    	<textarea id='remarks2' name='remarks2' rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
+			    </div>
+			  </div>
+			</div>
+
+			<div id="dialog_remarks_oper" title="Remarks">
+			  <div class="panel panel-default">
+			    <div class="panel-body">
+			    	<textarea id='remarks_oper' name='remarks_oper' rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
 			    </div>
 			  </div>
 			</div>

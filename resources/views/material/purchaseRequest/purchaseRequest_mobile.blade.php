@@ -132,7 +132,7 @@
   		<input type="hidden" id="idno" name="idno" value="{{$purreqhd->idno}}">
 		  <div class="field">
 		    <label>Remark</label>
-		    <textarea rows="5" name="remarks"></textarea>
+		    <textarea rows="5" name="remarks" id="remarks"></textarea>
 		  </div>
 	  </form>
   </div>
@@ -146,38 +146,55 @@
 @section('js')
 <script>
 	$(document).ready(function(){
+		$("form#formdata").form({
+			inline: true,
+    	fields: {
+	      remarks : ['maxLength[222]', 'empty']
+	    }
+		});
+
 		$('div#post').click(function(){
+			$("form#formdata").form('remove field','remarks');
+
 			$('#remark_modal.modal')
 			  .modal({
 			    closable: false,
 			    onApprove:function(){
 			    	$('button#submit_remark').attr('disabled');
-			    	save_authdtl();
+			    	return save_authdtl($('#oper').val());
 			    }
 			  }).modal('show');
 		});
 
 		$('div#reject').click(function(){
 			if (confirm("Are you sure to reject this purchase request?") == true) {
+				$("form#formdata").form('add rule', 'remarks', ['maxLength[222]', 'empty'])
+				
 			  $('#remark_modal.modal')
 				  .modal({
 				    closable: false,
 				    onApprove:function(){
 				    	$('button#submit_remark').attr('disabled');
-				    	save_authdtl();
+				    	return save_authdtl('cancel');
 				    }
 				  }).modal('show');
-			} else {
-			  text = "You canceled!";
 			}
 		});
 	});
 
-	function save_authdtl(){
+	function save_authdtl(status){
+
+		$('form#formdata').form('validate form');
+
+		if(!$('form#formdata').form('is valid')){
+			return false;
+		}
+
 		var obj={};
 		obj.idno_array = [$('#idno').val()];
-		obj.oper = $('#oper').val();
+		obj.oper = status;
 		obj._token = $('#_token').val();
+		obj.remarks = $('#remarks').val();
 		
 		$.post( './purchaseRequest/form', obj , function( data ) {
 

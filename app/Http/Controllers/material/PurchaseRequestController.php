@@ -401,10 +401,13 @@ class PurchaseRequestController extends defaultController
                     'requestdate' => null,
                     'supportby' => null,
                     'supportdate' => null,
+                    'support_remark' => null,
                     'verifiedby' => null,
                     'verifieddate' => null,
+                    'verified_remark' => null,
                     'approvedby' => null,
                     'approveddate' => null,
+                    'approved_remark' => null,
                 ]);
 
                 DB::table("material.purreqdt")
@@ -441,20 +444,26 @@ class PurchaseRequestController extends defaultController
                     ->where('idno','=',$value);
 
                 $purreqhd_get = $purreqhd->first();
-                if(!in_array($purreqhd_get->recstatus, ['OPEN'])){
+                if(in_array(strtoupper($purreqhd_get->recstatus), ['CANCELLED','COMPLETED','PARTIAL','APPROVED'])){
                     continue;
                 }
 
-                $purreqhd->update([
-                    'recstatus' => 'CANCELLED'
-                ]);
+                $purreqhd_update = [
+                    'recstatus' => 'CANCELLED',
+                    'cancelby' => session('username'),
+                    'canceldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                ];
+
+                if(!empty($request->remarks)){
+                    $purreqhd_update['cancelled_remark'] = $request->remarks;
+                }
+
+                $purreqhd->update($purreqhd_update);
 
                 DB::table("material.purreqdt")
                     ->where('recno','=',$purreqhd_get->recno)
                     ->update([
-                        'recstatus' => 'CANCELLED',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        'recstatus' => 'CANCELLED'
                     ]);
 
                 DB::table("material.queuepr")
@@ -516,15 +525,17 @@ class PurchaseRequestController extends defaultController
                             
                     }
 
-                    $authorise_use = $authorise->first();
+                    $purreqhd_update = [
+                        'supportby' => session('username'),
+                        'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'SUPPORT'
+                    ];
 
-                    $purreqhd->update([
-                            'supportby' => $authorise_use->authorid,
-                            'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'recstatus' => 'SUPPORT'
-                        ]);
+                    if(!empty($request->remarks)){
+                        $purreqhd_update['support_remark'] = $request->remarks;
+                    }
+
+                    $purreqhd->update($purreqhd_update);
 
                     DB::table("material.purreqdt")
                         ->where('compcode','=',session('compcode'))
@@ -542,8 +553,8 @@ class PurchaseRequestController extends defaultController
                             'AuthorisedID' => session('username'),
                             'recstatus' => 'SUPPORT',
                             'trantype' => 'VERIFIED',
-                            'adduser' => session('username'),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
                 // }
 
@@ -614,23 +625,23 @@ class PurchaseRequestController extends defaultController
                             
                     }
 
-                    $authorise_use = $authorise->first();
+                    $purreqhd_update = [
+                        'verifiedby' => session('username'),
+                        'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'VERIFIED'
+                    ];
 
-                    $purreqhd->update([
-                            'verifiedby' => session('username'),
-                            'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'recstatus' => 'VERIFIED'
-                        ]);
+                    if(!empty($request->remarks)){
+                        $purreqhd_update['verified_remark'] = $request->remarks;
+                    }
+
+                    $purreqhd->update($purreqhd_update);
 
                     DB::table("material.purreqdt")
                         ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$purreqhd_get->recno)
                         ->update([
-                            'recstatus' => 'VERIFIED',
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            'recstatus' => 'VERIFIED'
                         ]);
 
                     DB::table("material.queuepr")
@@ -640,8 +651,8 @@ class PurchaseRequestController extends defaultController
                             'AuthorisedID' => session('username'),
                             'recstatus' => 'VERIFIED',
                             'trantype' => 'APPROVED',
-                            'adduser' => session('username'),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
 
                 // }
@@ -660,7 +671,7 @@ class PurchaseRequestController extends defaultController
             }
 
            
-            // DB::commit();
+            DB::commit();
         
         } catch (\Exception $e) {
             DB::rollback();
@@ -714,13 +725,17 @@ class PurchaseRequestController extends defaultController
                             
                     }
 
-                    $authorise_use = $authorise->first();
+                    $purreqhd_update = [
+                        'approvedby' => session('username'),
+                        'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'APPROVED'
+                    ];
 
-                    $purreqhd->update([
-                            'approvedby' => $authorise_use->authorid,
-                            'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'recstatus' => 'APPROVED'
-                        ]);
+                    if(!empty($request->remarks)){
+                        $purreqhd_update['approved_remark'] = $request->remarks;
+                    }
+
+                    $purreqhd->update($purreqhd_update);
 
                     DB::table("material.purreqdt")
                         ->where('compcode','=',session('compcode'))
@@ -735,11 +750,11 @@ class PurchaseRequestController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$purreqhd_get->recno)
                         ->update([
-                            'AuthorisedID' => $authorise_use->authorid,
+                            'AuthorisedID' => session('username'),
                             'recstatus' => 'APPROVED',
                             'trantype' => 'DONE',
-                            'adduser' => session('username'),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
 
                 // }
