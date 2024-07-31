@@ -8,7 +8,7 @@ use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
-use App\Exports\ARAgeingDtlExport;
+use App\Exports\trialBalanceExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 
@@ -41,6 +41,10 @@ class TrialBalanceController extends defaultController
     }
 
     public function excelTBnett(Request $request){
+        if(intval($request->monthfrom) > intval($request->monthto)){
+            dd('month from need to be less than month to');
+        }
+
         return Excel::download(new trialBalanceExport($request->monthfrom,$request->monthto,$request->yearfrom,$request->yearto,$request->acctfrom,$request->acctto), 'trialBalance.xlsx');
     }
 

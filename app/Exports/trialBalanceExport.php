@@ -23,7 +23,7 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class trialBalanceExport implements FromView, WithEvents, WithColumnWidths
+class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,ShouldAutoSize
 {
     
     /**
@@ -33,9 +33,10 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths
     public function __construct($monthfrom,$monthto,$yearfrom,$yearto,$acctfrom,$acctto)
     {
         
-        $this->date = Carbon::parse($date)->format('Y-m-d');
         $this->monthfrom = $monthfrom;
         $this->monthto = $monthto;
+        $this->monthfrom_name = Carbon::create()->month($monthfrom)->format('F');
+        $this->monthto_name = Carbon::create()->month($monthto)->format('F');
         $this->yearfrom = $yearfrom;
         $this->yearto = $yearto;
         $this->acctfrom = $acctfrom;
@@ -47,201 +48,89 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
+
+        $array_open = [];
+        $array_month = [];
+        $array_month_name = [];
+
+        for ($i=0; $i < $monthfrom; $i++) { 
+            array_push($array_open,$i);
+        }
+
+        for ($i=$monthfrom; $i <= $monthto; $i++) { 
+            array_push($array_month,$i);
+            array_push($array_month_name,Carbon::create()->month($i)->format('F'));
+        }
+
+        $this->array_open = $array_open;
+        $this->array_month = $array_month;
+        $this->array_month_name = $array_month_name;
     }
     
     public function columnWidths(): array
     {
-        return [
-            'A' => 15,
+        $alphabet = range('A', 'Z');
+        $array_month = $this->array_month;
+        $width_ = [
+            'A' => 12,
             'B' => 5,
             'C' => 40,
-            'D' => 15,
-            'E' => 15,
-            'F' => 15,
-            'G' => 15,
-            'H' => 15,
-            'I' => 15,
-            'J' => 15,
-            'K' => 15,
-            'L' => 15,
-            'M' => 15,
-            'N' => 15,
+            'D' => 12,
         ];
+
+        $index=4; 
+        foreach ($array_month as $key => $value) {
+            $width_[$alphabet[$index]] = 12;
+            $index++;
+            $width_[$alphabet[$index]] = 12;
+            $index++;
+        }
+        $width_[$alphabet[$index]] = 12;
+
+        return $width_;
+
     }
     
-    public function view(): View
-    {
-
-        $date = $this->date;
-        $monthfrom = $this->monthfrom;
-        $monthto = $this->monthto;
+    public function view(): View{
+        $monthfrom = intval($this->monthfrom);
+        $monthto = intval($this->monthto);
         $yearfrom = $this->yearfrom;
         $yearto = $this->yearto;
         $acctfrom = $this->acctfrom;
-        $acctto = $acctto;
+        $acctto = $this->acctto;
 
-        $debtormast = DB::table('finance.glmasref as glrf')
-                        ->select('glrf.glaccno', 'glrf.description', 'glrf.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'pm.Name as pm_name','dm.debtortype','dt.debtortycode','dt.description','dm.name')
-                        ->join('debtor.debtortype as dt', function($join) use ($debtortype){
-                            $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
-                                         ->where('dt.compcode', '=', session('compcode'));
-                            if(strtoupper($debtortype)!='ALL'){
-                                $join = $join->where('dt.debtortycode',$debtortype);
-                            }
+        $array_open = $this->array_open;
+        $array_month = $this->array_month;
+        $array_month_name = $this->array_month_name;
+
+        $glmasdtl = DB::table('finance.glmasref as glrf')
+                        ->select('glrf.glaccno','glrf.description','glrf.accgroup','gldt.glaccount','gldt.openbalance','gldt.actamount1','gldt.actamount2','gldt.actamount3','gldt.actamount4','gldt.actamount5','gldt.actamount6','gldt.actamount7','gldt.actamount8','gldt.actamount9','gldt.actamount10','gldt.actamount11','gldt.actamount12')
+                        ->leftJoin('finance.glmasdtl as gldt', function($join) use ($yearfrom,$yearto){
+                            $join = $join->where('gldt.compcode', session('compcode'))
+                                         ->on('gldt.glaccount','=','glrf.glaccno')
+                                         ->whereBetween('gldt.year', [$yearfrom,$yearto]);
                         })
-                        ->join('debtor.dbacthdr as dh', function($join) use ($date){
-                            $join = $join->on('dh.debtorcode', '=', 'dm.debtorcode')
-                                         ->whereDate('dh.posteddate', '<=', $date)
-                                         ->where('dh.compcode', '=', session('compcode'));
-                        })->leftJoin('hisdb.pat_mast as pm', function($join){
-                            $join = $join->on('pm.MRN', '=', 'dh.mrn')
-                                         ->where('pm.compcode', '=', session('compcode'));
-                        })
-                        ->where('dm.compcode', '=', session('compcode'))
-                        ->whereBetween('dm.debtorcode', [$debtorcode_from,$debtorcode_to.'%'])
-                        ->orderBy('dm.debtorcode', 'ASC')
+                        ->where('glrf.compcode',session('compcode'))
                         ->get();
 
-        $array_report = [];
-
-        foreach ($debtormast as $key => $value){
-            $value->remark = '';
-            $value->doc_no = '';
-            $value->newamt = 0;
-
-            $hdr_amount = $value->amount;
-            
-            // to calculate interval (days)
-            $datetime1 = new DateTime($date);
-            $datetime2 = new DateTime($value->posteddate);
-            
-            $interval = $datetime1->diff($datetime2);
-            $days = $interval->format('%a');
-            $value->group = $this->assign_grouping($grouping,$days);
-            $value->days = $days;
-            
-            if($value->trantype == 'IN' || $value->trantype =='DN') {
-                $alloc_sum = DB::table('debtor.dballoc as da')
-                        ->where('da.compcode', '=', session('compcode'))
-                        ->where('da.debtorcode', '=', $value->debtorcode)
-                        ->where('da.refsource', '=', $value->source)
-                        ->where('da.reftrantype', '=', $value->trantype)
-                        ->where('da.refauditno', '=', $value->auditno)
-                        ->where('da.recstatus', '=', "POSTED")
-                        ->whereDate('da.allocdate', '<=', $date)
-                        ->sum('da.amount');
-                
-                $newamt = $hdr_amount - $alloc_sum;
-            }else{
-                $doc_sum = DB::table('debtor.dballoc as da')
-                        ->where('da.compcode', '=', session('compcode'))
-                        ->where('da.debtorcode', '=', $value->debtorcode)
-                        ->where('da.docsource', '=', $value->source)
-                        ->where('da.doctrantype', '=', $value->trantype)
-                        ->where('da.docauditno', '=', $value->auditno)
-                        ->where('da.recstatus', '=', "POSTED")
-                        ->whereDate('da.allocdate', '<=', $date)
-                        ->sum('da.amount');
-                
-                $ref_sum = DB::table('debtor.dballoc as da')
-                        ->where('da.compcode', '=', session('compcode'))
-                        ->where('da.debtorcode', '=', $value->debtorcode)
-                        ->where('da.refsource', '=', $value->source)
-                        ->where('da.reftrantype', '=', $value->trantype)
-                        ->where('da.refauditno', '=', $value->auditno)
-                        ->where('da.recstatus', '=', "POSTED")
-                        ->whereDate('da.allocdate', '<=', $date)
-                        ->sum('da.amount');
-                
-                $newamt = -($hdr_amount - $doc_sum - $ref_sum);
+        $glmasref_coll = collect($glmasdtl)->unique('glaccno');
+        $glmasref = [];
+        foreach ($glmasref_coll as $key_glrf => $obj_glrf) {
+            $obj_glrf = $this->init_object($obj_glrf,$array_month);
+            foreach ($glmasdtl as $obj_gldt) {
+                if($obj_glrf->glaccno == $obj_gldt->glaccount){
+                    $obj_glrf = $this->get_openbalance($obj_glrf,$obj_gldt,$array_open);
+                    $obj_glrf = $this->get_array_month($obj_glrf,$obj_gldt,$array_month);
+                }
+                $obj_glrf = $this->get_ytd($obj_glrf,$array_month);
             }
-            
-            switch ($value->trantype) {
-                case 'IN':
-                    if($value->mrn == '0' || $value->mrn == ''){
-                        $value->remark = $value->remark;
-                    }else{
-                        $value->remark = $value->pm_name;
-                    }
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->invno, 5, "0", STR_PAD_LEFT);
-                    $value->newamt = $newamt;
-                    if(floatval($newamt) != 0.00){
-                        array_push($array_report, $value);
-                    }
-                    break;
-                case 'DN':
-                    $value->remark = $value->remark;
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
-                    $value->newamt = $newamt;
-                    if(floatval($newamt) != 0.00){
-                        array_push($array_report, $value);
-                    }
-                    break;
-                case 'BC':
-                    // $value->remark
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
-                    $value->newamt = $newamt;
-                    if(floatval($newamt) != 0.00){
-                        array_push($array_report, $value);
-                    }
-                    break;
-                case 'RF':
-                    $value->remark = $value->remark;
-                    $value->doc_no = $value->recptno;
-                    $value->newamt = $newamt;
-                    if(floatval($newamt) != 0.00){
-                        array_push($array_report, $value);
-                    }
-                    break;
-                case 'CN':
-                    $value->remark = $value->remark;
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
-                    $value->newamt = $newamt;
-                    if(floatval($newamt) != 0.00){
-                        array_push($array_report, $value);
-                    }
-                    break;
-                case 'RC':
-                    $value->remark = $value->remark;
-                    $value->doc_no = $value->recptno;
-                    $value->newamt = $newamt;
-                    if(floatval($newamt) != 0.00){
-                        array_push($array_report, $value);
-                    }
-                    break;
-                case 'RD':
-                    $value->remark = $value->remark;
-                    $value->doc_no = $value->recptno;
-                    $value->newamt = $newamt;
-                    if(floatval($newamt) != 0.00){
-                        array_push($array_report, $value);
-                    }
-                    break;
-                case 'RT':
-                    // $value->remark
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
-                    $value->newamt = $newamt;
-                    if(floatval($newamt) != 0.00){
-                        array_push($array_report, $value);
-                    }
-                    break;
-                default:
-                    // code...
-                    break;
-            }
-            
+            array_push($glmasref,(array)$obj_glrf);
         }
 
-        // dd($grouping);
-
-        $debtortype = collect($array_report)->unique('debtortycode');
-        $debtorcode = collect($array_report)->unique('debtorcode');
-
-        return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel',compact('debtortype','debtorcode','array_report','grouping'));
+        return view('finance.GL.trialBalance.trialBalance_excel',compact('glmasref','array_month','array_month_name'));
     }
     
-    public function registerEvents(): array
-    {
+    public function registerEvents(): array{
         return [
             AfterSheet::class => function(AfterSheet $event) {
                 // foreach ($this->break_loop as $value) {
@@ -250,21 +139,43 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths
                 
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nAR AGEING DETAILS"."\n"
-                .sprintf('DATE %s',Carbon::parse($this->date)->format('d-m-Y'))
-                .sprintf('FROM %s TO %s',$this->debtorcode_from, $this->debtorcode_to)
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nTRIAL BALANCE"."\n"
+                .sprintf('FROM %s %s TO %s %s',$this->monthfrom_name, $this->yearfrom,$this->monthto_name, $this->yearto)
                 .'&L'
                 .'PRINTED BY : '.session('username')
                 ."\nPAGE : &P/&N"
                 .'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')
                 ."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 
+                $alphabet = range('A', 'Z');
+
                 $event->sheet->getPageMargins()->setTop(1);
+
+                $array_month = $this->array_month;
+
+                $event->sheet->getStyle('D')
+                    ->getNumberFormat()
+                    ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+
+                $index=4; 
+                foreach ($array_month as $key => $value) {
+                    $event->sheet->getStyle($alphabet[$index])
+                        ->getNumberFormat()
+                        ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                    $index++;
+                    $event->sheet->getStyle($alphabet[$index])
+                        ->getNumberFormat()
+                        ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                    $index++;
+                }
+                $event->sheet->getStyle($alphabet[$index])
+                    ->getNumberFormat()
+                    ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                 
-                $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
-                $event->sheet->getStyle('A:H')->getAlignment()->setWrapText(true);
-                $event->sheet->getPageSetup()->setFitToWidth(1);
-                $event->sheet->getPageSetup()->setFitToHeight(0);
+                // $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
+                // $event->sheet->getStyle('A:H')->getAlignment()->setWrapText(true);
+                // $event->sheet->getPageSetup()->setFitToWidth(1);
+                // $event->sheet->getPageSetup()->setFitToHeight(0);
             },
         ];
     }
@@ -308,5 +219,48 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths
         }
 
         return $group;
+    }
+
+    public function init_object($obj_glrf,$array_month){
+        $arr_glrf = (array) $obj_glrf;
+        $arr_glrf['tot_openbalance'] = 0.00;
+        $arr_glrf['tot_ytd'] = 0.00;
+        foreach ($array_month as $value) {
+            $arr_glrf['tot_actamount'.$value] = 0.00;
+        }
+        return json_decode(json_encode($arr_glrf));
+    }
+
+    public function get_openbalance($obj_glrf,$obj_gldt,$array_open){
+        $arr_gldt = (array) $obj_gldt;
+        $balance = $obj_glrf->tot_openbalance;
+        foreach ($array_open as $value) {
+            if($value == 0){
+                $balance = $balance + $arr_gldt['openbalance'];
+            }else{
+                $balance = $balance + $arr_gldt['actamount'.$value];
+            }
+        }
+        $obj_glrf->tot_openbalance = $balance;
+        return $obj_glrf;
+    }
+
+    public function get_array_month($obj_glrf,$obj_gldt,$array_month){
+        $arr_glrf = (array) $obj_glrf;
+        $arr_gldt = (array) $obj_gldt;
+        foreach ($array_month as $value) {
+            $arr_glrf['tot_actamount'.$value] = $arr_glrf['tot_actamount'.$value] + $arr_gldt['actamount'.$value];
+        }
+        return json_decode(json_encode($arr_glrf));
+    }
+
+    public function get_ytd($obj_glrf,$array_month){
+        $arr_glrf = (array) $obj_glrf;
+        $ytd = $arr_glrf['tot_openbalance'];
+        foreach ($array_month as $value) {
+            $ytd = $ytd + $arr_glrf['actamount'.$value];
+        }
+        $arr_glrf['tot_ytd'] = $ytd;
+        return json_decode(json_encode($arr_glrf));
     }
 }
