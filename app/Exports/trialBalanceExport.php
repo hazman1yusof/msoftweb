@@ -108,10 +108,23 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
                         ->leftJoin('finance.glmasdtl as gldt', function($join) use ($yearfrom,$yearto){
                             $join = $join->where('gldt.compcode', session('compcode'))
                                          ->on('gldt.glaccount','=','glrf.glaccno')
-                                         ->whereBetween('gldt.year', [$yearfrom,$yearto]);
+                                         ->where('gldt.year', $yearfrom);
+                                         // ->whereBetween('gldt.year', [$yearfrom,$yearto]);
                         })
                         ->where('glrf.compcode',session('compcode'))
                         ->get();
+
+        // $glmasdtl = DB::table('finance.glmasref as glrf')
+        //                 ->select('glrf.glaccno','glrf.description','glrf.accgroup','gldt.glaccount','gldt.openbalance','gldt.actamount1','gldt.actamount2','gldt.actamount3','gldt.actamount4','gldt.actamount5','gldt.actamount6','gldt.actamount7','gldt.actamount8','gldt.actamount9','gldt.actamount10','gldt.actamount11','gldt.actamount12')
+        //                 ->leftJoin('finance.glmasdtl as gldt', function($join) use ($yearfrom,$yearto){
+        //                     $join = $join->where('gldt.compcode', session('compcode'))
+        //                                  ->on('gldt.glaccount','=','glrf.glaccno')
+        //                                  ->where('gldt.year', $yearfrom);
+        //                                  // ->whereBetween('gldt.year', [$yearfrom,$yearto]);
+        //                 })
+        //                 ->where('glrf.compcode',session('compcode'))
+        //                 ->get();
+
 
         $glmasref_coll = collect($glmasdtl)->unique('glaccno');
         $glmasref = [];
@@ -122,7 +135,7 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
                     $obj_glrf = $this->get_openbalance($obj_glrf,$obj_gldt,$array_open);
                     $obj_glrf = $this->get_array_month($obj_glrf,$obj_gldt,$array_month);
                 }
-                // $obj_glrf = $this->get_ytd($obj_glrf,$array_month);
+                $obj_glrf = $this->get_ytd($obj_glrf,$array_month);
             }
             array_push($glmasref,(array)$obj_glrf);
         }
@@ -233,12 +246,12 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
 
     public function get_openbalance($obj_glrf,$obj_gldt,$array_open){
         $arr_gldt = (array) $obj_gldt;
-        $balance = $obj_glrf->tot_openbalance;
+        $balance = floatval($obj_glrf->tot_openbalance);
         foreach ($array_open as $value) {
             if($value == 0){
-                $balance = $balance + $arr_gldt['openbalance'];
+                $balance = $balance + floatval($arr_gldt['openbalance']);
             }else{
-                $balance = $balance + $arr_gldt['actamount'.$value];
+                $balance = $balance + floatval($arr_gldt['actamount'.$value]);
             }
         }
         $obj_glrf->tot_openbalance = $balance;
@@ -249,16 +262,16 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
         $arr_glrf = (array) $obj_glrf;
         $arr_gldt = (array) $obj_gldt;
         foreach ($array_month as $value) {
-            $arr_glrf['tot_actamount'.$value] = $arr_glrf['tot_actamount'.$value] + $arr_gldt['actamount'.$value];
+            $arr_glrf['tot_actamount'.$value] = floatval($arr_glrf['tot_actamount'.$value]) + floatval($arr_gldt['actamount'.$value]);
         }
         return json_decode(json_encode($arr_glrf));
     }
 
     public function get_ytd($obj_glrf,$array_month){
         $arr_glrf = (array) $obj_glrf;
-        $ytd = $arr_glrf['tot_openbalance'];
+        $ytd = floatval($arr_glrf['tot_openbalance']);
         foreach ($array_month as $value) {
-            $ytd = $ytd + $arr_glrf['actamount'.$value];
+            $ytd = floatval($ytd) + floatval($arr_glrf['tot_actamount'.$value]);
         }
         $arr_glrf['tot_ytd'] = $ytd;
         return json_decode(json_encode($arr_glrf));
