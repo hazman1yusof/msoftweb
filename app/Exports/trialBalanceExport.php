@@ -103,17 +103,6 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
         $array_month = $this->array_month;
         $array_month_name = $this->array_month_name;
 
-        $glmasdtl = DB::table('finance.glmasref as glrf')
-                        ->select('glrf.glaccno','glrf.description','glrf.accgroup','gldt.glaccount','gldt.openbalance','gldt.actamount1','gldt.actamount2','gldt.actamount3','gldt.actamount4','gldt.actamount5','gldt.actamount6','gldt.actamount7','gldt.actamount8','gldt.actamount9','gldt.actamount10','gldt.actamount11','gldt.actamount12')
-                        ->leftJoin('finance.glmasdtl as gldt', function($join) use ($yearfrom,$yearto){
-                            $join = $join->where('gldt.compcode', session('compcode'))
-                                         ->on('gldt.glaccount','=','glrf.glaccno')
-                                         ->where('gldt.year', $yearfrom);
-                                         // ->whereBetween('gldt.year', [$yearfrom,$yearto]);
-                        })
-                        ->where('glrf.compcode',session('compcode'))
-                        ->get();
-
         // $glmasdtl = DB::table('finance.glmasref as glrf')
         //                 ->select('glrf.glaccno','glrf.description','glrf.accgroup','gldt.glaccount','gldt.openbalance','gldt.actamount1','gldt.actamount2','gldt.actamount3','gldt.actamount4','gldt.actamount5','gldt.actamount6','gldt.actamount7','gldt.actamount8','gldt.actamount9','gldt.actamount10','gldt.actamount11','gldt.actamount12')
         //                 ->leftJoin('finance.glmasdtl as gldt', function($join) use ($yearfrom,$yearto){
@@ -125,20 +114,69 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
         //                 ->where('glrf.compcode',session('compcode'))
         //                 ->get();
 
+        $glmasref_ = DB::table('finance.glmasref as glrf')
+                        ->select('glrf.glaccno','glrf.description','glrf.accgroup')
+                        ->where('glrf.compcode',session('compcode'))
+                        ->get();
 
-        $glmasref_coll = collect($glmasdtl)->unique('glaccno');
         $glmasref = [];
-        foreach ($glmasref_coll as $key_glrf => $obj_glrf) {
-            $obj_glrf = $this->init_object($obj_glrf,$array_month);
+        foreach ($glmasref_ as $key_glrf => $obj_glrf) {
+            $arr_glrf = (array) $obj_glrf;
+            $glmasdtl = DB::table('finance.glmasdtl as gldt')
+                            ->select('gldt.glaccount','gldt.openbalance','gldt.actamount1','gldt.actamount2','gldt.actamount3','gldt.actamount4','gldt.actamount5','gldt.actamount6','gldt.actamount7','gldt.actamount8','gldt.actamount9','gldt.actamount10','gldt.actamount11','gldt.actamount12')
+                            ->where('gldt.glaccount','=',$obj_glrf->glaccno)
+                            ->where('gldt.year', $yearfrom)
+                            ->where('gldt.compcode',session('compcode'))
+                            ->get();
+
             foreach ($glmasdtl as $obj_gldt) {
-                if($obj_glrf->glaccno == $obj_gldt->glaccount){
-                    $obj_glrf = $this->get_openbalance($obj_glrf,$obj_gldt,$array_open);
-                    $obj_glrf = $this->get_array_month($obj_glrf,$obj_gldt,$array_month);
+                $arr_gldt = (array) $obj_gldt;
+                $balance = 0;
+                foreach ($array_open as $value) {
+                    if($value == 0){
+                        $balance = $balance + floatval($arr_gldt['openbalance']);
+                    }else{
+                        $balance = $balance + floatval($arr_gldt['actamount'.$value]);
+                    }
                 }
-                $obj_glrf = $this->get_ytd($obj_glrf,$array_month);
             }
-            array_push($glmasref,(array)$obj_glrf);
+            $arr_glrf['tot_openbalance'] = $balance;
+
+            foreach ($array_month as $value) {
+                $arr_glrf['tot_actamount'.$value] = 0.00;
+            }
+
+            foreach ($glmasdtl as $obj_gldt) {
+                $arr_gldt = (array) $obj_gldt;
+                foreach ($array_month as $value) {
+                    $arr_glrf['tot_actamount'.$value] = $arr_glrf['tot_actamount'.$value] + $arr_gldt['actamount'.$value];
+                }
+            }
+
+            $ytd = $balance;
+            foreach ($array_month as $value) {
+                $ytd = $ytd + $arr_glrf['tot_actamount'.$value];
+            }
+            $arr_glrf['tot_ytd'] = $ytd;
+            
+            array_push($glmasref,$arr_glrf);
         }
+
+        // dd($glmasref_);
+
+        // $glmasref_coll = collect($glmasdtl)->unique('glaccno');
+        // $glmasref = [];
+        // foreach ($glmasref_coll as $key_glrf => $obj_glrf) {
+        //     $obj_glrf = $this->init_object($obj_glrf,$array_month);
+        //     foreach ($glmasdtl as $obj_gldt) {
+        //         if($obj_glrf->glaccno == $obj_gldt->glaccount){
+        //             $obj_glrf = $this->get_openbalance($obj_glrf,$obj_gldt,$array_open);
+        //             $obj_glrf = $this->get_array_month($obj_glrf,$obj_gldt,$array_month);
+        //         }
+        //         $obj_glrf = $this->get_ytd($obj_glrf,$array_month);
+        //     }
+        //     array_push($glmasref,(array)$obj_glrf);
+        // }
 
         return view('finance.GL.trialBalance.trialBalance_excel',compact('glmasref','array_month','array_month_name'));
     }
@@ -146,9 +184,6 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
     public function registerEvents(): array{
         return [
             AfterSheet::class => function(AfterSheet $event) {
-                // foreach ($this->break_loop as $value) {
-                //     $event->sheet->setBreak('A'.$value, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
-                // }
                 
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
@@ -185,7 +220,7 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
                     ->getNumberFormat()
                     ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                 
-                // $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
+                $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
                 // $event->sheet->getStyle('A:H')->getAlignment()->setWrapText(true);
                 // $event->sheet->getPageSetup()->setFitToWidth(1);
                 // $event->sheet->getPageSetup()->setFitToHeight(0);
