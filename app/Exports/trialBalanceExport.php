@@ -122,7 +122,7 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
                     $obj_glrf = $this->get_openbalance($obj_glrf,$obj_gldt,$array_open);
                     $obj_glrf = $this->get_array_month($obj_glrf,$obj_gldt,$array_month);
                 }
-                $obj_glrf = $this->get_ytd($obj_glrf,$array_month);
+                // $obj_glrf = $this->get_ytd($obj_glrf,$array_month);
             }
             array_push($glmasref,(array)$obj_glrf);
         }
