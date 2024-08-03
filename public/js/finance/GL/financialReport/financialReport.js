@@ -135,7 +135,7 @@ $(document).ready(function () {
 	
     /////////////////////////////////////dialog handler///////////////////////////////
 	var reporttype = new ordialog(
-		'reporttype','finance.glrpthdr','#reporttype','errorField',
+		'reporttype','finance.glrpthdr','#reportname','errorField',
 		{	
 			colModel:[
 				{label:'Report Name',name:'rptname',width:200,classes:'pointer', canSearch: true, or_search: true, checked: true },
@@ -147,6 +147,17 @@ $(document).ready(function () {
 				filterVal:['session.compcode']
 			},
 			ondblClickRow: function () {
+				let data=selrowData('#'+reporttype.gridname);
+
+				$("#reporttype").val(data['rpttype']);
+
+				if(data['rpttype'] == 'PROFIT & LOSS (DETAIL)'){
+					$('div.divto,div.topradio').show();
+				}else if(data['rpttype'] == 'BALANCE SHEET'){
+					$('div.divto,div.topradio').hide();
+				}else{
+					$('div.divto,div.topradio').show();
+				}
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -169,6 +180,17 @@ $(document).ready(function () {
 	);
 	reporttype.makedialog(true);
 
+	$('#summary_excel').click(function(){
+
+		if($('#reportname').val()==''){
+			alert('Report type is Null!');
+			return 0;
+		}
+		var reporttype = $("#reporttype").val();
+
+		window.open('./financialReport/table?action=genexcel&monthfrom='+$("#monthfrom").val()+'&monthto='+$("#monthto").val()+'&yearfrom='+$("#yearfrom").val()+'&yearto='+$("#yearto").val()+'&reportname='+$("#reportname").val()+'&reporttype='+$("#reporttype").val(), '_blank');
+	});
+
 });
 
 function set_yearperiod(){
@@ -190,6 +212,6 @@ function set_yearperiod(){
 		}
 	});
 
-	$('select#monthfrom').val(moment().format('MM'));
-	$('select#monthto').val(moment().format('MM'));
+	$('select#monthfrom').val(moment().format('M'));
+	$('select#monthto').val(moment().format('M'));
 }

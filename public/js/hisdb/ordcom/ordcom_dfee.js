@@ -120,7 +120,7 @@ $(document).ready(function(){
 		    }
 		},
 		loadComplete: function(data){
-			calc_jq_height_onchange("jqGrid_dfee",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
+			calc_jq_height_onchange("jqGrid_dfee",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 			myfail_msg_dfee.clear_fail;
 			if($("#jqGrid_dfee").data('lastselrow')==undefined||$("#jqGrid_dfee").data('lastselrow')==null||$("#jqGrid_dfee").data('lastselrow').includes("jqg")){
 				$("#jqGrid_dfee").setSelection($("#jqGrid_dfee").getDataIDs()[0]);
@@ -256,7 +256,7 @@ var myEditOptions_dfee = {
 		// 	}
 		// });
 
-		calc_jq_height_onchange("jqGrid_dfee",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
+		calc_jq_height_onchange("jqGrid_dfee",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 		$("#jqGrid_dfee input[name='trxdate']").on('focus',function(){
 			let focus = $(this).data('focus');
 			if(focus == undefined){
@@ -273,7 +273,7 @@ var myEditOptions_dfee = {
 	aftersavefunc: function (rowid, response, options) {
 		let retval = JSON.parse(response.responseText);
 		set_ordcom_totamount(retval.totamount);
-		calc_jq_height_onchange("jqGrid_dfee",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
+		calc_jq_height_onchange("jqGrid_dfee",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 		refreshGrid('#jqGrid_dfee',urlParam_dfee,'add');
     	$("#jqGrid_dfee_pagerRefresh,#jqGrid_dfee_pagerDelete").show();
 		errorField.length=0;
@@ -317,7 +317,7 @@ var myEditOptions_dfee = {
 		// delay(function(){
 		// 	fixPositionsOfFrozenDivs.call($('#jqGrid_dfee')[0]);
 		// }, 500 );
-		calc_jq_height_onchange("jqGrid_dfee",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
+		calc_jq_height_onchange("jqGrid_dfee",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
     },
     errorTextFormat: function (data) {
     	alert(data);
@@ -396,7 +396,7 @@ var myEditOptions_edit_dfee = {
 		// 	}
 		// });
 
-		calc_jq_height_onchange("jqGrid_dfee",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
+		calc_jq_height_onchange("jqGrid_dfee",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 		$("#jqGrid_dfee input[name='trxdate']").on('focus',function(){
 			let focus = $(this).data('focus');
 			if(focus == undefined){
@@ -408,7 +408,7 @@ var myEditOptions_edit_dfee = {
 	aftersavefunc: function (rowid, response, options) {
 		let retval = JSON.parse(response.responseText);
 		set_ordcom_totamount(retval.totamount);
-		calc_jq_height_onchange("jqGrid_dfee",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
+		calc_jq_height_onchange("jqGrid_dfee",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 		refreshGrid('#jqGrid_dfee',urlParam_dfee,'add');
     	$("#jqGrid_dfee_pagerRefresh,#jqGrid_dfee_pagerDelete").show();
 		errorField.length=0;
@@ -451,7 +451,7 @@ var myEditOptions_edit_dfee = {
 		// delay(function(){
 		// 	fixPositionsOfFrozenDivs.call($('#jqGrid_dfee')[0]);
 		// }, 500 );
-		calc_jq_height_onchange("jqGrid_dfee",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
+		calc_jq_height_onchange("jqGrid_dfee",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
     },
     errorTextFormat: function (data) {
     	alert(data);
@@ -931,7 +931,7 @@ function showdetail_dfee(cellvalue, options, rowObject){
 	}
 	
 	if(cellvalue == null)cellvalue = " ";
-	calc_jq_height_onchange("jqGrid_dfee",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
+	calc_jq_height_onchange("jqGrid_dfee",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 	return cellvalue;
 }
 

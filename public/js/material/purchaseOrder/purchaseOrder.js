@@ -11,6 +11,7 @@ $(document).ready(function () {
 		},
 	});
 
+
 	var errorField = [];
 	conf = {
 		onValidate: function ($form) {
@@ -39,6 +40,7 @@ $(document).ready(function () {
 	var oper=null;
 	var unsaved = false;
 	scrollto_topbtm();
+	page_to_view_only($('#viewonly').val());
 
 	$("#dialogForm")
 		.dialog({
@@ -572,9 +574,9 @@ $(document).ready(function () {
 		unsaved = true; //kalu dia change apa2 bagi prompt
 	});
 
-	$("#dialogForm").on('click','#formdata a.input-group-addon',function(){
-		unsaved = true; //kalu dia change apa2 bagi prompt
-	});
+	// $("#dialogForm").on('click','#formdata a.input-group-addon',function(){
+	// 	unsaved = true; //kalu dia change apa2 bagi prompt
+	// });
 
 	///////////////////utk dropdown search By/////////////////////////////////////////////////
 	searchBy();

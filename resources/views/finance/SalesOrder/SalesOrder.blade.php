@@ -48,6 +48,7 @@ div#fail_msg{
 	<input id="reqdept" name="reqdept" type="hidden" value="{{Session::get('reqdept')}}">
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+	<input id="viewonly" name="viewonly" type="hidden" value="{{Request::get('viewonly')}}">
 
 	@if (Request::get('scope') == 'ALL')
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="ALL">
@@ -70,7 +71,7 @@ div#fail_msg{
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-							<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+							<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('auditno'))){{Request::get('auditno')}}@endif">
 
 							<div id="customer_text">
 								<div class='input-group'>
@@ -93,7 +94,6 @@ div#fail_msg{
 								TO DATE <input id="docuDate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
 								<button type="button" class="btn btn-primary btn-sm" id="docuDate_search">SEARCH</button>
 							</div>
-														
 							
 						</div>
 

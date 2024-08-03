@@ -519,9 +519,9 @@ $(document).ready(function () {
 		unsaved = true; //kalu dia change apa2 bagi prompt
 	});
 
-	$("#dialogForm").on('click','#formdata a.input-group-addon',function(){
-		unsaved = true; //kalu dia change apa2 bagi prompt
-	});
+	// $("#dialogForm").on('click','#formdata a.input-group-addon',function(){
+	// 	unsaved = true; //kalu dia change apa2 bagi prompt
+	// });
 
 	///////////////////utk dropdown search By/////////////////////////////////////////////////
 	searchBy();

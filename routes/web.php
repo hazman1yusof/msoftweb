@@ -742,6 +742,11 @@ Route::get('/acctenq_date','finance\acctenq_dateController@show');
 Route::get('/acctenq_date/table','finance\acctenq_dateController@table');
 Route::post('/acctenq_date/form','finance\acctenq_dateController@form');
 
+//// Reprint Bill ///
+Route::get('/reprintBill','finance\ReprintBillController@show');
+Route::get('/reprintBill/table','finance\ReprintBillController@table');
+Route::post('/reprintBill/form','finance\ReprintBillController@form');
+
 //// Department setup ///
 Route::get('/department','finance\DepartmentController@show');
 Route::get('/department/table','finance\DepartmentController@table');

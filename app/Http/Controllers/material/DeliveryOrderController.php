@@ -22,7 +22,13 @@ class DeliveryOrderController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('material.deliveryOrder.deliveryOrder');
+        $purdept = DB::table('sysdb.department')
+                        ->select('deptcode')
+                        ->where('compcode',session('compcode'))
+                        ->where('purdept',1)
+                        ->get();
+
+        return view('material.deliveryOrder.deliveryOrder',compact('purdept'));
     }
 
     public function form(Request $request)

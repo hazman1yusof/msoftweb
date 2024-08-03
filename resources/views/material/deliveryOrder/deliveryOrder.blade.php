@@ -60,6 +60,7 @@ div#fail_msg{
 	<input id="deldept" name="deldept" type="hidden" value="{{Session::get('deldept')}}">
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+	<input id="viewonly" name="viewonly" type="hidden" value="{{Request::get('viewonly')}}">
 
 	@if (Request::get('scope') == 'all')
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="POSTED">
@@ -84,7 +85,7 @@ div#fail_msg{
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('recno'))){{Request::get('recno')}}@endif">
 
 								<div  id="tunjukname" style="display:none">
 									<div class='input-group'>
@@ -113,7 +114,14 @@ div#fail_msg{
 	            <div class="col-md-2">
 			  		<label class="control-label" for="trandept">Purchase Dept</label> 
 						<select id='trandept' class="form-control input-sm">
-				      		<option value="All" selected>ALL</option>
+				      	<option value="All" selected>ALL</option>
+			      		@foreach($purdept as $dept_)
+			      			@if(Request::get('scope') == 'ALL' && $dept_->deptcode == Session::get('deptcode'))
+			      			<option value="{{$dept_->deptcode}}" selected>{{$dept_->deptcode}}</option>
+			      			@else
+			      			<option value="{{$dept_->deptcode}}">{{$dept_->deptcode}}</option>
+			      			@endif
+			      		@endforeach
 						</select>
 				</div>
 

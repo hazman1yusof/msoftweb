@@ -128,7 +128,7 @@ $(document).ready(function(){
 		    }
 		},
 		loadComplete: function(data){
-			calc_jq_height_onchange("jqGrid_rehab",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
+			calc_jq_height_onchange("jqGrid_rehab",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 			myfail_msg_rehab.clear_fail();
 			if($("#jqGrid_rehab").data('lastselrow')==undefined||$("#jqGrid_rehab").data('lastselrow')==null){
 				$("#jqGrid_rehab").setSelection($("#jqGrid_rehab").getDataIDs()[0]);
@@ -273,7 +273,7 @@ var myEditOptions_rehab = {
 		$("#jqGrid_rehab input[name='quantity']").on('keyup',{currency: [mycurrency_rehab,mycurrency_np_rehab]},calculate_line_totgst_and_totamt_rehab);
 		$("#jqGrid_rehab input[name='quantity']").on('blur',{currency: [mycurrency_rehab,mycurrency_np_rehab]},calculate_line_totgst_and_totamt_rehab);
 
-		calc_jq_height_onchange("jqGrid_rehab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
+		calc_jq_height_onchange("jqGrid_rehab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 
 		$("#jqGrid_rehab input[name='trxdate']").on('focus',function(){
 			let focus = $(this).data('focus');
@@ -291,7 +291,7 @@ var myEditOptions_rehab = {
 	aftersavefunc: function (rowid, response, options) {
 		let retval = JSON.parse(response.responseText);
 		set_ordcom_totamount(retval.totamount);
-		calc_jq_height_onchange("jqGrid_rehab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
+		calc_jq_height_onchange("jqGrid_rehab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 		refreshGrid('#jqGrid_rehab',urlParam_rehab,'add');
     	$("#jqGrid_rehab_pagerRefresh,#jqGrid_rehab_pagerDelete").show();
 		errorField.length=0;
@@ -336,7 +336,7 @@ var myEditOptions_rehab = {
 		// delay(function(){
 		// 	fixPositionsOfFrozenDivs.call($('#jqGrid_rehab')[0]);
 		// }, 500 );
-		calc_jq_height_onchange("jqGrid_rehab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
+		calc_jq_height_onchange("jqGrid_rehab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 		refreshGrid('#jqGrid_rehab',urlParam_rehab,'add');
     },
     errorTextFormat: function (data) {
@@ -455,7 +455,7 @@ var myEditOptions_rehab_edit = {
 		$("#jqGrid_rehab input[name='quantity']").on('keyup',{currency: [mycurrency_rehab,mycurrency_np_rehab]},calculate_line_totgst_and_totamt_rehab);
 		$("#jqGrid_rehab input[name='quantity']").on('blur',{currency: [mycurrency_rehab,mycurrency_np_rehab]},calculate_line_totgst_and_totamt_rehab);
 
-		calc_jq_height_onchange("jqGrid_rehab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
+		calc_jq_height_onchange("jqGrid_rehab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 		
 		$("#jqGrid_rehab input[name='trxdate']").on('focus',function(){
 			let focus = $(this).data('focus');
@@ -468,7 +468,7 @@ var myEditOptions_rehab_edit = {
 	aftersavefunc: function (rowid, response, options) {
 		let retval = JSON.parse(response.responseText);
 		set_ordcom_totamount(retval.totamount);
-		calc_jq_height_onchange("jqGrid_rehab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
+		calc_jq_height_onchange("jqGrid_rehab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 		refreshGrid('#jqGrid_rehab',urlParam_rehab,'add');
     	$("#jqGrid_rehab_pagerRefresh,#jqGrid_rehab_pagerDelete").show();
 		errorField.length=0;
@@ -521,7 +521,7 @@ var myEditOptions_rehab_edit = {
 		// delay(function(){
 		// 	fixPositionsOfFrozenDivs.call($('#jqGrid_rehab')[0]);
 		// }, 500 );
-		calc_jq_height_onchange("jqGrid_rehab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
+		calc_jq_height_onchange("jqGrid_rehab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 		refreshGrid('#jqGrid_rehab',urlParam_rehab,'add');
     },
     errorTextFormat: function (data) {
@@ -1206,7 +1206,7 @@ function showdetail_rehab(cellvalue, options, rowObject){
 	}
 	
 	if(cellvalue == null)cellvalue = " ";
-	calc_jq_height_onchange("jqGrid_rehab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
+	calc_jq_height_onchange("jqGrid_rehab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-241);
 	return cellvalue;
 }
 

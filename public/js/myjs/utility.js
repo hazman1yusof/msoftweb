@@ -2354,6 +2354,21 @@ function scrollto_topbtm(pad=150){
   });
 }
 
+function page_to_view_only(viewonly,callback){
+	if(viewonly=='viewonly'){
+		$('textarea').prop("readonly",true);
+		$('input').prop("readonly",true);
+		$('input[type=radio]').prop("disabled",true);
+		$('input[type=checkbox]').prop("disabled",true);
+		$('select').prop("disabled",true);
+		$("#jqGridPager td[title='Edit Selected Row'],#jqGridPager td[title='Add New Row'],#jqGridPager td[title='Reload Grid']").hide();
+
+		if (callback !== undefined) {
+	    callback();
+	  }
+	}
+}
+
 
 $(document).ready(function () {
 

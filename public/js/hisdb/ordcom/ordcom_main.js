@@ -305,25 +305,30 @@ function set_userdeptcode(tab){
 }
 
 function final_bill(grid,param){
-	var lastrowdata = getrow_bootgrid();
-	var url = "./ordcom/table?action=final_bill_invoice&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno;
-	let urlparam = {	
-		action: 'final_bill',
-	};
-	let urlobj={
-		oper:'final_bill',
-		_token: $("#csrf_token").val(),
-		mrn: lastrowdata.MRN,
-		episno: lastrowdata.Episno
-	};
+	if (confirm("Are you sure to run final bill for this patient?") == true) {
+		var lastrowdata = getrow_bootgrid();
+		var url = "./ordcom/table?action=final_bill_invoice&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno;
+		let urlparam = {	
+			action: 'final_bill',
+		};
+		let urlobj={
+			oper:'final_bill',
+			_token: $("#csrf_token").val(),
+			mrn: lastrowdata.MRN,
+			episno: lastrowdata.Episno
+		};
 
-	$.post( "./ordcom/form?"+$.param(urlparam),urlobj, function( data ){	
-	}).fail(function (data) {
-		$('#tabcoverage').collapse('hide');
-		refreshGrid(grid, param);
-	}).done(function (data) {
-		$('#tabcoverage').collapse('hide');
-		refreshGrid(grid, param);
-		window.open(url, '_blank').focus();
-	});	
+		$.post( "./ordcom/form?"+$.param(urlparam),urlobj, function( data ){	
+		}).fail(function (data) {
+			$('#tabcoverage').collapse('hide');
+			refreshGrid(grid, param);
+		}).done(function (data) {
+			$('#tabcoverage').collapse('hide');
+			$("#grid-command-buttons").bootgrid('reload');
+			window.scrollTo(0,0);
+			$('#jqGrid_ordcom_panel').collapse('hide');
+			// refreshGrid(grid, param);
+			window.open(url, '_blank').focus();
+		});	
+	}
 }

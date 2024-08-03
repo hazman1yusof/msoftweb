@@ -1,12 +1,24 @@
 <table>
+    <tr></tr>
     <tr>
+        <td style="font-weight:bold; text-align: left">{{$title1}}</td>
+    </tr>
+    <tr>
+        <td style="font-weight:bold; text-align: left">{{$title2}}</td>
+    </tr>
+    <tr>
+        <td style="font-weight:bold; text-align: left">{{$title3}}</td>
+    </tr>
+    <tr>
+        <td style="font-weight:bold; text-align: left">{{$title4}}</td>
+    </tr>
     <tr>
         <td ></td>
         <td ></td>
         <td ></td>
         <td ></td>
         @foreach ($array_month_name as $month_name)
-        <td style="text-align: center;" colspan="2">{{$month_name}}</td>
+        <td style="font-weight:bold; text-align: center;" colspan="2">{{$month_name}}</td>
         @endforeach
     </tr> 
     <tr>
@@ -20,27 +32,45 @@
         @endforeach
         <td style="font-weight:bold; text-align: right">YTD</td>
     </tr>      
-
+    @php($totline = 7)
     @foreach ($glmasref as $obj_ar)
-    <tr>
-        <td>{{$obj_ar['glaccno']}}</td>
-        <td>{{$obj_ar['accgroup']}}</td>
-        <td>{{$obj_ar['description']}}</td>
-        <td style="text-align: right">{{$obj_ar['tot_openbalance']}}</td>
-        @foreach ($array_month as $month)
-            @if($obj_ar['tot_actamount'.$month] == 0)
-                <td style="text-align: right"></td>
-                <td style="text-align: right"></td>
-            @elseif($obj_ar['tot_actamount'.$month] < 0)
-                <td style="text-align: right"></td>
-                <td style="text-align: right">{{abs($obj_ar['tot_actamount'.$month])}}</td>
-            @else
-                <td style="text-align: right">{{abs($obj_ar['tot_actamount'.$month])}}</td>
-                <td style="text-align: right"></td>
-            @endif
-        @endforeach
-        <td style="text-align: right">{{$obj_ar['tot_ytd']}}</td>
-
-    </tr>
+        @if($obj_ar['skip'] == 1)
+            @continue
+        @endif
+        <tr>
+            <td>{{$obj_ar['glaccno']}}</td>
+            <td>{{$obj_ar['accgroup']}}</td>
+            <td>{{$obj_ar['description']}}</td>
+            <td style="text-align: right">{{$obj_ar['tot_openbalance']}}</td>
+            @foreach ($array_month as $month)
+                @if($obj_ar['tot_actamount'.$month] == 0)
+                    <td style="text-align: right"></td>
+                    <td style="text-align: right"></td>
+                @elseif($obj_ar['tot_actamount'.$month] < 0)
+                    <td style="text-align: right"></td>
+                    <td style="text-align: right">{{abs($obj_ar['tot_actamount'.$month])}}</td>
+                @else
+                    <td style="text-align: right">{{abs($obj_ar['tot_actamount'.$month])}}</td>
+                    <td style="text-align: right"></td>
+                @endif
+            @endforeach
+            <td style="text-align: right">{{$obj_ar['tot_ytd']}}</td>
+            @php($totline++)
+        </tr>
     @endforeach
+    <tr>
+        <td></td>
+        <td></td>
+        <td style="font-weight:bold; text-align: left">TOTAL</td>
+        <td>=SUM(D4:D{{$totline}})</td>
+        @php($index=4)
+        @foreach ($array_month as $month)
+            <td>=SUM({{$alphabet[$index]}}4:{{$alphabet[$index]}}{{$totline}})</td>
+            @php($index++)
+            <td>=SUM({{$alphabet[$index]}}4:{{$alphabet[$index]}}{{$totline}})</td>
+            @php($index++)
+        @endforeach
+        <td>=SUM({{$alphabet[$index]}}4:{{$alphabet[$index]}}{{$totline}})</td>
+    </tr>
+    <tr></tr>
 </table>

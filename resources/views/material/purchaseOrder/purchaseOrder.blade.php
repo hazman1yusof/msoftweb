@@ -4,7 +4,7 @@
 
 @section('style')
 
- .panel-heading.collapsed .fa-angle-double-up,
+.panel-heading.collapsed .fa-angle-double-up,
 .panel-heading .fa-angle-double-down {
   display: none;
 }
@@ -54,6 +54,7 @@ div#fail_msg{
 	<input id="deldept" name="deldept" type="hidden" value="{{Session::get('deldept')}}">
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+	<input id="viewonly" name="viewonly" type="hidden" value="{{Request::get('viewonly')}}">
 
 	@if (Request::get('scope') == 'ALL')
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="ALL">

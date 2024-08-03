@@ -661,6 +661,7 @@ class PatEnqController extends defaultController
                     ->leftJoin('hisdb.guarantee AS g', function($join) use ($request){
                                 $join = $join->on('g.mrn', '=', 'ep.mrn')
                                                 ->on('g.episno','=','ep.episno')
+                                                ->on('g.debtorcode','=','ep.payercode')
                                                 ->where('g.compcode','=',session('compcode'));
                             })
                     ->where('ep.compcode',session('compcode'))

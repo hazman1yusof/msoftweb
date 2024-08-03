@@ -79,8 +79,8 @@ class ItemEnquiryController extends defaultController
                 ->where('d.trandate','>=',$request->trandate_from)
                 ->where('d.trandate','<=',$request->trandate_to)
                 ->where('d.amount','!=',0)
-                ->orderBy('d.trandate', 'asc')
-                ->orderBy('h.trantime', 'asc')
+                ->orderBy('d.adddate', 'asc')
+                // ->orderBy('h.trantime', 'desc')
                 ->get();
 
         $det_mov_deptcode = $det_mov_deptcode->each(function ($item, $key) {
@@ -106,8 +106,8 @@ class ItemEnquiryController extends defaultController
             ->where('d.trandate','>=',$request->trandate_from)
             ->where('d.trandate','<=',$request->trandate_to)
             ->where('d.amount','!=',0)
-            ->orderBy('d.trandate', 'asc')
-            ->orderBy('d.updtime', 'asc')
+            ->orderBy('d.adddate', 'asc')
+            // ->orderBy('d.updtime', 'desc')
             ->get();
 
         $det_mov_deptcode_ivdspdt = $det_mov_deptcode_ivdspdt->each(function ($item, $key) {
@@ -143,7 +143,7 @@ class ItemEnquiryController extends defaultController
                 ->where('d.trandate','<=',$request->trandate_to)
                 ->where('d.amount','!=',0)
                 ->orderBy('d.trandate', 'asc')
-                ->orderBy('h.trantime', 'asc')
+                // ->orderBy('h.trantime', 'desc')
                 ->get();
 
         $det_mov_sndrcv = $det_mov_sndrcv->each(function ($item, $key) {

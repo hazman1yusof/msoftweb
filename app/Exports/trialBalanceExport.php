@@ -51,6 +51,7 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
 
         $array_open = [];
         $array_month = [];
+        $array_month_tot = [];
         $array_month_name = [];
 
         for ($i=0; $i < $monthfrom; $i++) { 
@@ -59,11 +60,13 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
 
         for ($i=$monthfrom; $i <= $monthto; $i++) { 
             array_push($array_month,$i);
+            array_push($array_month_tot,'0.00');
             array_push($array_month_name,Carbon::create()->month($i)->format('F'));
         }
 
         $this->array_open = $array_open;
         $this->array_month = $array_month;
+        $this->array_month_tot = $array_month_tot;
         $this->array_month_name = $array_month_name;
     }
     
@@ -75,17 +78,17 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
             'A' => 12,
             'B' => 5,
             'C' => 40,
-            'D' => 12,
+            'D' => 17,
         ];
 
         $index=4; 
         foreach ($array_month as $key => $value) {
-            $width_[$alphabet[$index]] = 12;
+            $width_[$alphabet[$index]] = 17;
             $index++;
-            $width_[$alphabet[$index]] = 12;
+            $width_[$alphabet[$index]] = 17;
             $index++;
         }
-        $width_[$alphabet[$index]] = 12;
+        $width_[$alphabet[$index]] = 17;
 
         return $width_;
 
@@ -101,6 +104,7 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
 
         $array_open = $this->array_open;
         $array_month = $this->array_month;
+        $array_month_tot = $this->array_month_tot;
         $array_month_name = $this->array_month_name;
 
         // $glmasdtl = DB::table('finance.glmasref as glrf')
@@ -117,9 +121,14 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
         $glmasref_ = DB::table('finance.glmasref as glrf')
                         ->select('glrf.glaccno','glrf.description','glrf.accgroup')
                         ->where('glrf.compcode',session('compcode'))
+                        ->where('glrf.accgroup','<>','H')
+                        ->orderBy('glrf.glaccno')
+                        // ->where('glrf.glaccno',10010001)
                         ->get();
 
         $glmasref = [];
+        $totall_openbalance = 0;
+        $totall_ytd = 0;
         foreach ($glmasref_ as $key_glrf => $obj_glrf) {
             $arr_glrf = (array) $obj_glrf;
             $glmasdtl = DB::table('finance.glmasdtl as gldt')
@@ -129,9 +138,9 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
                             ->where('gldt.compcode',session('compcode'))
                             ->get();
 
+            $balance = 0;
             foreach ($glmasdtl as $obj_gldt) {
                 $arr_gldt = (array) $obj_gldt;
-                $balance = 0;
                 foreach ($array_open as $value) {
                     if($value == 0){
                         $balance = $balance + floatval($arr_gldt['openbalance']);
@@ -141,6 +150,11 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
                 }
             }
             $arr_glrf['tot_openbalance'] = $balance;
+            $skip_counter=0;
+            $totall_openbalance = $totall_openbalance + $balance;
+            if(floatval($balance) != 0){
+                $skip_counter++;
+            }
 
             foreach ($array_month as $value) {
                 $arr_glrf['tot_actamount'.$value] = 0.00;
@@ -148,7 +162,7 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
 
             foreach ($glmasdtl as $obj_gldt) {
                 $arr_gldt = (array) $obj_gldt;
-                foreach ($array_month as $value) {
+                foreach ($array_month as $index => $value) {
                     $arr_glrf['tot_actamount'.$value] = $arr_glrf['tot_actamount'.$value] + $arr_gldt['actamount'.$value];
                 }
             }
@@ -156,13 +170,25 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
             $ytd = $balance;
             foreach ($array_month as $value) {
                 $ytd = $ytd + $arr_glrf['tot_actamount'.$value];
+                if(floatval($arr_glrf['tot_actamount'.$value]) != 0){
+                    $skip_counter++;
+                }
             }
             $arr_glrf['tot_ytd'] = $ytd;
-            
+            if($skip_counter>0){
+                $arr_glrf['skip'] = 0;
+            }else{
+                $arr_glrf['skip'] = 1;
+            }
+            $totall_ytd = $totall_ytd + $ytd;
+
+            // foreach ($array_month as $value) {
+            //     $arr_glrf['tot_actamount'.$value] = $glmasdtl->sum('gldt.actamount'.$value);
+            // }
             array_push($glmasref,$arr_glrf);
         }
 
-        // dd($glmasref_);
+        // dd($glmasref);
 
         // $glmasref_coll = collect($glmasdtl)->unique('glaccno');
         // $glmasref = [];
@@ -177,8 +203,14 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
         //     }
         //     array_push($glmasref,(array)$obj_glrf);
         // }
+        $alphabet = range('A', 'Z');
 
-        return view('finance.GL.trialBalance.trialBalance_excel',compact('glmasref','array_month','array_month_name'));
+        $title1 = strtoupper($this->comp->name);
+        $title2 = 'TRIAL BALANCE';
+        $title3 = 'FROM '.$this->monthfrom_name.' '.$this->yearfrom.' TO '.$this->monthto_name.' '.$this->yearto;
+        $title4 = 'PRINTED BY: '.session('username').' on '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i');
+
+        return view('finance.GL.trialBalance.trialBalance_excel',compact('glmasref','array_month','array_month_name','alphabet','title1','title2','title3','title4'));
     }
     
     public function registerEvents(): array{
@@ -220,7 +252,7 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
                     ->getNumberFormat()
                     ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                 
-                $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
+                // $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
                 // $event->sheet->getStyle('A:H')->getAlignment()->setWrapText(true);
                 // $event->sheet->getPageSetup()->setFitToWidth(1);
                 // $event->sheet->getPageSetup()->setFitToHeight(0);

@@ -38,6 +38,7 @@ $(document).ready(function () {
 	////////////////////////////////////start dialog//////////////////////////////////////
 	var oper = null;
 	var unsaved = false;
+	page_to_view_only($('#viewonly').val());
 
 	$("#dialogForm")
 		.dialog({
@@ -337,6 +338,9 @@ $(document).ready(function () {
 			}else{
 				$("#searchForm input[name=Stext]").focus();
 			}
+			page_to_view_only($('#viewonly').val(),function(){
+				$('#customer_text').hide();
+			});
 		},
 		loadComplete:function(data){
 			calc_jq_height_onchange("jqGrid");
@@ -413,7 +417,7 @@ $(document).ready(function () {
 	populateSelect('#jqGrid', '#searchForm');
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
-	addParamField('#jqGrid', true, urlParam,['Checkbox']);
+	addParamField('#jqGrid', false, urlParam,['Checkbox']);
 	addParamField('#jqGrid', false, saveParam, ['db_idno','db_auditno','db_adduser', 'db_adddate', 'db_mrn', 'dm_name','db_upduser','db_upddate','db_deluser', 'db_recstatus','db_unit','Checkbox','queuepr_AuthorisedID']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
@@ -533,9 +537,9 @@ $(document).ready(function () {
 		unsaved = true; //kalu dia change apa2 bagi prompt
 	});
 
-	$("#dialogForm").on('click','#formdata a.input-group-addon',function(){
-		unsaved = true; //kalu dia change apa2 bagi prompt
-	});
+	// $("#dialogForm").on('click','#formdata a.input-group-addon',function(){
+	// 	unsaved = true; //kalu dia change apa2 bagi prompt
+	// });
 
 	///////////////////utk dropdown search By/////////////////////////////////////////////////
 	searchBy();
@@ -587,7 +591,8 @@ $(document).ready(function () {
 		refreshGrid('#jqGrid',urlParam);
 	}
 
-	function searchChange(){
+	searchChange(true);
+	function searchChange(once=false){
 		var arrtemp = [$('#Status option:selected').val()];
 		var filter = arrtemp.reduce(function(a,b,c){
 			if(b=='All'){
@@ -601,6 +606,21 @@ $(document).ready(function () {
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
+		urlParam.WhereInCol = null;
+		urlParam.WhereInVal = null;
+
+		if(once){
+			urlParam.searchCol=null;
+			urlParam.searchVal=null;
+			if($('#searchForm [name=Stext]').val().trim() != ''){
+				let searchCol = ['auditno'];
+				let searchVal = ['%'+$('#searchForm [name=Stext]').val().trim()+'%'];
+				urlParam.searchCol=searchCol;
+				urlParam.searchVal=searchVal;
+			}
+			once=false;
+		}
+
 		refreshGrid('#jqGrid',urlParam);
 	}
 

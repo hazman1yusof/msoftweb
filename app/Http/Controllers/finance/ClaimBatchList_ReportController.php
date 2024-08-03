@@ -211,8 +211,129 @@ class ClaimBatchList_ReportController extends defaultController
         $header->date1 = $date1;
         $header->epis_type = $epis_type;
         $header->debtorcode_to = $debtorcode_to;
+
+        $datefr = Carbon::parse($request->date1)->startOfMonth()->format('Y-m-d');
+        $dateto = Carbon::parse($request->date1)->format('Y-m-d');
         
-        return view('finance.AR.ClaimBatchList_Report.ClaimBatchList_Report_pdfmake',compact('date1','epis_type','title','content','sign_off','officer','designation','debtormast','company','header'));
+        $debtormast_obj = DB::table('debtor.dbacthdr as dh')
+                    ->select('dh.debtorcode', 'dm.debtorcode', 'dm.name', 'dm.address1', 'dm.address2', 'dm.address3', 'dm.address4')
+                    ->leftJoin('debtor.debtormast as dm', function ($join){
+                        $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
+                                    ->where('dm.compcode', '=', session('compcode'));
+                    })
+                    ->where('dh.compcode', '=', session('compcode'))
+                    ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+                    ->where('dh.debtorcode',$debtorcode_to)
+                    ->whereBetween('dh.posteddate', [$datefr, $dateto])
+                    ->orderBy('dm.debtorcode', 'ASC')
+                    ->distinct('dm.debtorcode');
+        
+        $debtormast_obj = $debtormast_obj->get(['dm.debtorcode', 'dm.name', 'dm.address1', 'dm.address2', 'dm.address3', 'dm.address4']);
+        
+        $array_report = [];
+        foreach($debtormast_obj as $key => $value){
+            $dbacthdr = DB::table('debtor.dbacthdr as dh')
+                        ->select('dh.idno', 'dh.source', 'dh.trantype', 'pm.Name', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'dh.datesend')
+                        ->leftJoin('hisdb.pat_mast as pm', function ($join){
+                            $join = $join->on('pm.MRN', '=', 'dh.mrn')
+                                        ->where('pm.compcode', '=', session('compcode'));
+                        })
+                        ->where('dh.compcode', '=', session('compcode'))
+                        ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+                        ->where('debtorcode',$value->debtorcode)
+                        ->whereBetween('dh.posteddate', [$datefr, $dateto])
+                        ->orderBy('dh.posteddate', 'ASC')
+                        ->get();
+            
+            $calc_openbal = DB::table('debtor.dbacthdr as dh')
+                            ->where('dh.compcode', '=', session('compcode'))
+                            ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+                            ->where('dh.debtorcode', '=', $value->debtorcode)
+                            ->whereDate('dh.posteddate', '<', $datefr);
+            
+            $openbal = $this->calc_openbal($calc_openbal);
+            $value->openbal = $openbal;
+            
+            // $value->datesend = '';
+            $value->reference = '';
+            $value->amount_dr = 0;
+            $value->amount_cr = 0;
+            $balance = $openbal;
+            foreach($dbacthdr as $key => $value){
+                switch($value->trantype){
+                    case 'IN':
+                        // $value->datesend = $value->datesend;
+                        if($value->mrn == '0' || $value->mrn == ''){
+                            $value->reference = $value->remark;
+                        }else{
+                            $value->reference = $value->Name;
+                        }
+                        $value->amount_dr = $value->amount;
+                        $balance = $balance + floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'DN':
+                        $value->reference = $value->remark;
+                        $value->amount_dr = $value->amount;
+                        $balance = $balance + floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'BC':
+                        // $value->reference
+                        $value->amount_dr = $value->amount;
+                        $balance = $balance + floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'RF':
+                        if($value->mrn == '0' || $value->mrn == ''){
+                            $value->reference = $value->remark;
+                        }else{
+                            $value->reference = $value->Name;
+                        }
+                        $value->amount_dr = $value->amount;
+                        $balance = $balance + floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'CN':
+                        $value->reference = $value->remark;
+                        $value->amount_cr = $value->amount;
+                        $balance = $balance - floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'RC':
+                        $value->reference = $value->recptno;
+                        $value->amount_cr = $value->amount;
+                        $balance = $balance - floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'RD':
+                        $value->reference = $value->recptno;
+                        $value->amount_cr = $value->amount;
+                        $balance = $balance - floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'RT':
+                        // $value->reference
+                        $value->amount_cr = $value->amount;
+                        $balance = $balance - floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    default:
+                        // code...
+                        break;
+                }
+            }
+        }
+        
+        return view('finance.AR.ClaimBatchList_Report.ClaimBatchList_Report_pdfmake',compact('date1','epis_type','title','content','sign_off','officer','designation','debtormast','company','header','array_report','debtormast_obj'));
     }
     
     public function ClaimBatchList_xls(Request $request){
@@ -235,6 +356,45 @@ class ClaimBatchList_ReportController extends defaultController
         $designation = $request->designation;
         
         return Excel::download(new ClaimBatchListExport($date1,$epis_type,$debtorcode_to,$title,$content,$sign_off,$officer,$designation), 'Claim Batch Listing.xlsx');
+    }
+
+    public function calc_openbal($obj){
+        
+        $balance = 0;
+        
+        foreach($obj->get() as $key => $value){
+            switch($value->trantype){
+                case 'IN':
+                    $balance = $balance + floatval($value->amount);
+                    break;
+                case 'DN':
+                    $balance = $balance + floatval($value->amount);
+                    break;
+                case 'BC':
+                    $balance = $balance + floatval($value->amount);
+                    break;
+                case 'RF':
+                    $balance = $balance + floatval($value->amount);
+                    break;
+                case 'CN':
+                    $balance = $balance - floatval($value->amount);
+                    break;
+                case 'RC':
+                    $balance = $balance - floatval($value->amount);
+                    break;
+                case 'RD':
+                    $balance = $balance - floatval($value->amount);
+                    break;
+                case 'RT':
+                    $balance = $balance - floatval($value->amount);
+                    break;
+                default:
+                    // code...
+                    break;
+            }
+        }
+        
+        return $balance;
     }
     
 }

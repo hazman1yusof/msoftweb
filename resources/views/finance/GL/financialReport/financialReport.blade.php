@@ -57,7 +57,7 @@
                 <div class="col-md-9">
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="form-group">
+                            <div class="form-group topradio">
                                 <div class="col-md-12">
                                     <label class="radio-inline"><input type="radio" name="Class" value='All' checked>All</label>
                                     <label class="radio-inline"><input type="radio" name="Class" value='Department'>Department</label>
@@ -66,10 +66,11 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <input id="reporttype" name="reporttype" type="hidden">
                                 <label class="col-md-2 control-label" for="subcatcode">Report Type</label>  
                                 <div class="col-md-10">
                                     <div class='input-group'>
-                                        <input id="reporttype" name="reporttype" type="text" maxlength="15" class="form-control input-sm text-uppercase">
+                                        <input id="reportname" name="reportname" type="text" class="form-control input-sm text-uppercase">
                                         <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
                                     </div>
                                     <span class="help-block"></span>
@@ -80,15 +81,15 @@
                                 <div class="col-md-4">
                                     <select id="monthfrom" name="monthfrom"  class="form-control input-sm">
                                       <option value="monthfrom" selected>-- MONTH --</option>
-                                      <option value="01">January</option>
-                                      <option value="02">February</option>
-                                      <option value="03">March</option>
-                                      <option value="04">April</option>
-                                      <option value="05">May</option>
-                                      <option value="06">June</option>
-                                      <option value="07">July</option>
-                                      <option value="08">August</option>
-                                      <option value="09">September</option>
+                                      <option value="1">January</option>
+                                      <option value="2">February</option>
+                                      <option value="3">March</option>
+                                      <option value="4">April</option>
+                                      <option value="5">May</option>
+                                      <option value="6">June</option>
+                                      <option value="7">July</option>
+                                      <option value="8">August</option>
+                                      <option value="9">September</option>
                                       <option value="10">October</option>
                                       <option value="11">November</option>
                                       <option value="12">December</option>
@@ -100,15 +101,15 @@
                                     <div class="col-md-4">
                                         <select id="monthto" name="monthto" class="form-control input-sm">
                                           <option value="monthto" selected>-- MONTH TO --</option>
-                                          <option value="01">January</option>
-                                          <option value="02">February</option>
-                                          <option value="03">March</option>
-                                          <option value="04">April</option>
-                                          <option value="05">May</option>
-                                          <option value="06">June</option>
-                                          <option value="07">July</option>
-                                          <option value="08">August</option>
-                                          <option value="09">September</option>
+                                          <option value="1">January</option>
+                                          <option value="2">February</option>
+                                          <option value="3">March</option>
+                                          <option value="4">April</option>
+                                          <option value="5">May</option>
+                                          <option value="6">June</option>
+                                          <option value="7">July</option>
+                                          <option value="8">August</option>
+                                          <option value="9">September</option>
                                           <option value="10">October</option>
                                           <option value="11">November</option>
                                           <option value="12">December</option>
@@ -162,10 +163,10 @@
                             <div class='col-md-12 btnform' style="padding: 20px 0px;">
                                 <fieldset>
                                     <legend>Generate :</legend>
-                                    <button name="SuppListSum_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="summary_pdf">
+                                    <button name="summary_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="summary_pdf">
                                         <span class="fa fa-file-pdf-o fa-lg"></span> Generate Report PDF
                                     </button>
-                                    <button name="SuppListSum_excel" type="button" class="mybtn btn btn-sm mybtnxls" id="summary_excel">
+                                    <button name="summary_excel" type="button" class="mybtn btn btn-sm mybtnxls" id="summary_excel">
                                         <span class="fa fa-file-excel-o fa-lg"></span> Generate Report Excel
                                     </button>
                                 </fieldset>

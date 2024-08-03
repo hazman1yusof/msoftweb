@@ -388,7 +388,7 @@ $(document).ready(function (){
 			},
 			{ label: 'Row Def', name: 'rowdef', width: 40, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
 				editoptions: {
-					value: "H:Header;D:Detail;S:Spacing;TO:Total",
+					value: "H:Header;D:Detail;S:Spacing;T0:Total",
 				}
 			},
 			// { label: 'Code', name: 'code', width: 50, classes: 'wrap', editable: true },
@@ -417,7 +417,7 @@ $(document).ready(function (){
 		loadonce: false,
 		width: 1150,
 		height: 200,
-		rowNum: 10,
+		rowNum: 30,
 		sortname: 'lineno_',
 		sortorder: "asc",
 		pager: "#jqGridPager2",

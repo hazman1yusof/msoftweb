@@ -57,7 +57,7 @@
                     image: 'letterhead',width:200, height:40, style: 'tableHeader', colSpan: 5, alignment: 'center'
                 },
 				{
-                    text: 'DELIVERY ORDER',
+                    text: 'GOOD RETURN NOTE',
                     style: 'header',
                     alignment: 'center'
 				},

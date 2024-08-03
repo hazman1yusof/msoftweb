@@ -379,12 +379,13 @@ $(document).ready(function () {
 	}
 
 	var DataTable = $('#TableDetailMovement').DataTable({
-    	order: [[ 1, 'desc' ]],
-    	ordering: false,
+    	order: [[ 0, 'asc' ]],
+    	ordering: true,
 		responsive: true,
 		scrollY: 500,
 		paging: false,
 		columns: [
+			{ data: 'id' ,"width": "5%",visible:false},
 			{ data: 'open' ,"width": "60%", sClass: "open"},
 			{ data: 'trandate',"type": "date"},
 			{ data: 'trantype', sClass: "trantype"},
@@ -403,6 +404,10 @@ $(document).ready(function () {
 			{ data: 'trantime', className: "text-center"},
 			
 		],
+		columnDefs: [
+			{ "orderable": false, "targets": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15] },
+			// { "bVisible": false, "aTargets": [0] }
+		],
 		drawCallback: function( settings ) {
 			$(".dataTables_scrollBody")[0].scrollTop = DTscrollTop;
 		},
@@ -410,16 +415,6 @@ $(document).ready(function () {
 	    	$('div#TableDetailMovement_filter.dataTables_filter').hide();
 	  	}
 	});
-
-	$('#TableDetailMovement').on('click','tbody td', function() {
-
-	  	var recno = $(this).children('i').data('recno');
-		var trantype = $(this).children('i').data('trantype');
-
-        $('iframe#open_detail_iframe').attr('src','./itemEnquiry/table?action=open_detail&recno='+recno+'&trantype='+trantype);
-		$("#open_detail_dialog").dialog("open");
-	})
-
 
 	function getdtlmov(fetchall,start,limit){
 		let mon_from = $('#monthfrom').val();
@@ -443,11 +438,13 @@ $(document).ready(function () {
 				
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
+				console.log(data.rows);
 				let accumamt = ret_parsefloat(openbalval);
 				let accumqty = parseInt(openbalqty);
 				
-				data.rows.forEach(function(obj){
+				data.rows.forEach(function(obj,id){
 
+					obj.id=id;
 					obj.open="<i class='fa fa-folder-open-o fa-2x' data-trantype="+obj.trantype+" data-recno="+obj.recno+"></i>";
 					obj.trandate = moment(obj.trandate).format("DD-MM-YYYY");
 					obj.dept = '';
@@ -668,12 +665,31 @@ $(document).ready(function () {
 			docno: docno
 		}
 
-		switch(true){
-			case obj_id.trantype=='DS' :
-				dialogForm_SalesOrder(obj_id);
+		switch(trantype){
+			case 'DS' :
+				// dialogForm_SalesOrder(obj_id);
+        		$('iframe#open_detail_iframe').attr('src','./SalesOrder?scope=ALL&viewonly=viewonly&auditno='+docno);
+				break;
+			case 'GRN' :
+				// dialogForm_SalesOrder(obj_id);
+				console.log('./deliveryOrder?scope=ALL&viewonly=viewonly&recno='+docno);
+        		$('iframe#open_detail_iframe').attr('src','./deliveryOrder?scope=ALL&viewonly=viewonly&recno='+docno);
 				break;
 		}
+
+		$("#open_detail_dialog").dialog("open");
 	});
+
+
+
+	// $('#TableDetailMovement').on('click','tbody td', function() {
+
+	//   	var recno = $(this).children('i').data('recno');
+	// 	var trantype = $(this).children('i').data('trantype');
+
+    //     $('iframe#open_detail_iframe').attr('src','./itemEnquiry/table?action=open_detail&recno='+recno+'&trantype='+trantype);
+	// 	$("#open_detail_dialog").dialog("open");
+	// })
 });
 
 function calc_jq_height_onchange(jqgrid){

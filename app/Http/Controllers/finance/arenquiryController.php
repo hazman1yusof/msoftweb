@@ -956,7 +956,6 @@ class arenquiryController extends defaultController
         }
         
         return $balance;
-        
     }
     
 }

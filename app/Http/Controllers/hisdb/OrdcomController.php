@@ -288,6 +288,9 @@ class OrdcomController extends defaultController
         if($request->rows == null){
             $request->rows = 100;
         }
+        if(empty($request->mrn) || empty($request->episno)){
+            return abort(403,'No MRN or Episno');
+        }
 
         $table_chgtrx = DB::table('hisdb.chargetrx as trx')
                     ->select('trx.auditno','trx.compcode','trx.idno','trx.mrn','trx.episno','trx.epistype','trx.trxtype','trx.docref','trx.trxdate','trx.chgcode','trx.billcode','trx.costcd','trx.revcd','trx.mmacode','trx.billflag','trx.billdate','trx.billtype','trx.doctorcode','doc.doctorname','trx.chg_class','trx.unitprce','trx.quantity','trx.amount','trx.trxtime','trx.chggroup','trx.qstat','trx.dracccode','trx.cracccode','trx.arprocess','trx.taxamount','trx.billno','trx.invno','trx.uom','trx.uom_recv','trx.billtime','trx.invgroup','trx.reqdept as deptcode','trx.issdept','trx.invcode','trx.resulttype','trx.resultstatus','trx.inventory','trx.updinv','trx.invbatch','trx.doscode','trx.duration','trx.instruction','trx.discamt','trx.disccode','trx.pkgcode','trx.remarks','trx.frequency','trx.ftxtdosage','trx.addinstruction','trx.qtyorder','trx.ipqueueno','trx.itemseqno','trx.doseqty','trx.freqqty','trx.isudept','trx.qtyissue','trx.durationcode','trx.reqdoctor','trx.unit','trx.agreementid','trx.chgtype','trx.adduser','trx.adddate','trx.lastuser','trx.lastupdate','trx.daytaken','trx.qtydispense','trx.takehomeentry','trx.latechargesentry','trx.taxcode','trx.recstatus','trx.drugindicator','trx.id','trx.patmedication','trx.mmaprice','pt.avgcost as cost_price','pt.avgcost as cost_price','dos.dosedesc as doscode_desc','fre.freqdesc as frequency_desc','ins.description as addinstruction_desc','dru.description as drugindicator_desc','cm.brandname')
@@ -603,6 +606,8 @@ class OrdcomController extends defaultController
                         ->where('issdept', $request->deptcode)
                         ->where('trxtype', 'OE');
 
+
+
                 if(!$chg_oe->exists()){
                     //add
                     $quan_oe = $request->quantity;
@@ -809,7 +814,7 @@ class OrdcomController extends defaultController
                             ->where('id','=',$request->id)
                             ->first();
 
-            $this->sysdb_log('delete',$chargetrx_lama,'sysdb.chargetrxlog');
+            // $this->sysdb_log('delete',$chargetrx_lama,'sysdb.chargetrxlog');
 
             DB::table("hisdb.chargetrx")
                     ->where('compcode','=',session('compcode'))
@@ -1380,7 +1385,7 @@ class OrdcomController extends defaultController
                         //pindah yang lama ke billsumlog sebelum update
                         //recstatus->delete
 
-                        $this->sysdb_log('delete',$chargetrx_lama,'sysdb.chargetrxlog');
+                        // $this->sysdb_log('delete',$chargetrx_lama,'sysdb.chargetrxlog');
 
                     }
 
@@ -1391,7 +1396,7 @@ class OrdcomController extends defaultController
                         ->where('pkgcode','=',$pkgcode)
                         ->delete();
 
-                    $this->sysdb_log('delete',$chargetrx_obj,'sysdb.chargetrxlog');
+                    // $this->sysdb_log('delete',$chargetrx_obj,'sysdb.chargetrxlog');
 
                     DB::table("hisdb.chargetrx")
                             ->where('compcode','=',session('compcode'))
@@ -1407,7 +1412,7 @@ class OrdcomController extends defaultController
                             ->where('pkgcode','=',$pkgcode)
                             ->update(['trxtype' => 'OE']);
 
-                    $this->sysdb_log('delete',$chargetrx_obj,'sysdb.chargetrxlog');
+                    // $this->sysdb_log('delete',$chargetrx_obj,'sysdb.chargetrxlog');
 
                     DB::table("hisdb.chargetrx")
                             ->where('compcode','=',session('compcode'))
@@ -1663,7 +1668,7 @@ class OrdcomController extends defaultController
                         ->first();
         $id_lama = $chargetrx_lama->id;
 
-        $this->sysdb_log('update',$chargetrx_lama,'sysdb.chargetrxlog');
+        // $this->sysdb_log('update',$chargetrx_lama,'sysdb.chargetrxlog');
 
         $chgmast = DB::table("hisdb.chgmast")
                 ->where('compcode','=',session('compcode'))
@@ -1762,7 +1767,7 @@ class OrdcomController extends defaultController
         $new_discamt = $this->calc_discamt_2($request,$pkgdet,$unitprce_lama,$new_quantity);
         $new_taxamount = $this->calc_taxamount($request,$new_amount,$new_discamt->amount);
 
-        $this->sysdb_log('update',$chargetrx_lama,'sysdb.chargetrxlog');
+        // $this->sysdb_log('update',$chargetrx_lama,'sysdb.chargetrxlog');
 
         $chgmast = DB::table("hisdb.chgmast")
                 ->where('compcode','=',session('compcode'))
@@ -1845,8 +1850,8 @@ class OrdcomController extends defaultController
 
         //pindah yang lama ke billsumlog sebelum update
         //recstatus->delete
-
-        $this->sysdb_log('delete',$chargetrx_lama,'sysdb.chargetrxlog');
+        
+        // $this->sysdb_log('delete',$chargetrx_lama,'sysdb.chargetrxlog');
 
         DB::table("hisdb.chargetrx")
                 ->where('compcode','=',session('compcode'))
@@ -1882,7 +1887,7 @@ class OrdcomController extends defaultController
         //pindah yang lama ke billsumlog sebelum update
         //recstatus->delete
 
-        $this->sysdb_log('delete',$chargetrx_lama,'sysdb.chargetrxlog');
+        // $this->sysdb_log('delete',$chargetrx_lama,'sysdb.chargetrxlog');
 
         DB::table("hisdb.chargetrx")
                 ->where('compcode','=',session('compcode'))
@@ -1995,7 +2000,7 @@ class OrdcomController extends defaultController
         $new_quantity = $quan_pd;
         $new_amount = $new_quantity * $request->unitprce_lama;
 
-        $this->sysdb_log('update_pd',$chargetrx_lama,'sysdb.chargetrxlog');
+        // $this->sysdb_log('update_pd',$chargetrx_lama,'sysdb.chargetrxlog');
 
         $chgmast = DB::table("hisdb.chgmast")
                 ->where('compcode','=',session('compcode'))
@@ -2068,7 +2073,7 @@ class OrdcomController extends defaultController
         $new_quantity = $qty_lama + $quan_pd_added;
         $new_amount = $new_quantity * $request->unitprce_lama;
 
-        $this->sysdb_log('update_pd',$chargetrx_lama,'sysdb.chargetrxlog');
+        // $this->sysdb_log('update_pd',$chargetrx_lama,'sysdb.chargetrxlog');
 
         $chgmast = DB::table("hisdb.chgmast")
                 ->where('compcode','=',session('compcode'))
@@ -2250,7 +2255,7 @@ class OrdcomController extends defaultController
                         ->where('recno','=',$chargetrx_obj->auditno)
                         ->first();
 
-        $this->sysdb_log('update',$ivdspdt_lama,'sysdb.ivdspdtlog');
+        // $this->sysdb_log('update',$ivdspdt_lama,'sysdb.ivdspdtlog');
 
         DB::table('material.ivdspdt')
             ->where('compcode','=',session('compcode'))
@@ -2785,7 +2790,7 @@ class OrdcomController extends defaultController
                         ->where('recno','=',$chargetrx_obj->auditno)
                         ->first();
 
-        $this->sysdb_log('delete',$ivdspdt_lama,'sysdb.ivdspdtlog');
+        // $this->sysdb_log('delete',$ivdspdt_lama,'sysdb.ivdspdtlog');
 
         DB::table('material.ivdspdt')
             ->where('compcode','=',session('compcode'))
@@ -3817,6 +3822,8 @@ class OrdcomController extends defaultController
                         ->where('trx.discflag',0)
                         ->get();
 
+        // dd($this->getQueries($chargetrx));
+
         $amount = $chargetrx->sum('amount');
         $discamt = $chargetrx->sum('discamt');
         $taxamount = $chargetrx->sum('taxamount');
@@ -4038,6 +4045,8 @@ class OrdcomController extends defaultController
 
             $this->make_gst_discount($gst,$disc,$mrn,$episno,$episode->billtype,$billno,$invno);
             $this->make_billsum_and_round($mrn,$episno);
+            $this->make_dbacthdr_and_GL($mrn,$episno);
+            $this->make_discharge($mrn,$episno);
             
             DB::commit();
         } catch (\Exception $e) {
@@ -4738,9 +4747,304 @@ class OrdcomController extends defaultController
         }
     }
 
+    public function make_dbacthdr_and_GL($mrn,$episno){
+        $billdet_obj = DB::table('hisdb.billdet as bd')
+                        ->select('bd.auditno','bd.idno','bd.chgcode','bd.uom','bd.mrn','bd.episno','chgm.description','bd.lineno_','bd.trxdate','bd.unitprce','bd.taxcode','bd.invno','bd.invcode','bd.billno','bd.billtype','bd.quantity','bd.amount','bd.discamt','bd.taxamount','chgm.invgroup','chgm.chgclass','dbmst.debtorcode','dbmst.debtortype','dbmst.actdebccode','dbmst.actdebglacc','chgt.ipacccode','chgt.opacccode','ep.epistycode','dept.costcode as dept_costcode')
+                        ->where('bd.compcode',session('compcode'))
+                        ->where('bd.mrn',$mrn)
+                        ->where('bd.episno',$episno)
+                        // ->where('bd.taxflag',0)
+                        // ->where('bd.discflag',0)
+                        ->orderBy('bd.lineno_','desc')
+                        ->join('hisdb.chgmast as chgm', function($join){
+                            $join = $join->where('chgm.compcode', '=', session('compcode'));
+                            $join = $join->on('chgm.chgcode', '=', 'bd.chgcode');
+                            $join = $join->on('chgm.uom', '=', 'bd.uom');
+                        })
+                        ->join('hisdb.episode as ep', function($join){
+                            $join = $join->where('ep.compcode', '=', session('compcode'));
+                            $join = $join->on('ep.mrn', '=', 'bd.mrn');
+                            $join = $join->on('ep.episno', '=', 'bd.episno');
+                        })
+                        ->join('hisdb.epispayer as epayr', function($join){
+                            $join = $join->where('epayr.compcode', '=', session('compcode'));
+                            $join = $join->on('epayr.mrn', '=', 'bd.mrn');
+                            $join = $join->on('epayr.episno', '=', 'bd.episno');
+                            $join = $join->on('epayr.lineno', '=', 'bd.lineno_');
+                        })
+                        ->join('debtor.debtormast as dbmst', function($join){
+                            $join = $join->where('dbmst.compcode', '=', session('compcode'));
+                            $join = $join->on('dbmst.debtorcode', '=', 'epayr.payercode');
+                        })
+                        ->leftjoin('sysdb.department as dept', function($join){
+                            $join = $join->where('dept.compcode', '=', session('compcode'));
+                            $join = $join->on('dept.deptcode', '=', 'bd.issdept');
+                        })
+                        ->leftjoin('hisdb.chgtype as chgt', function($join){
+                            $join = $join->where('chgt.compcode', '=', session('compcode'));
+                            $join = $join->on('chgt.chgtype', '=', 'chgm.chgtype');
+                        })
+                        ->get();
+
+        $billdet_unq = $billdet_obj->unique('lineno_');
+        $yearperiod = $this->getyearperiod(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+        $sysparam = DB::table('sysdb.sysparam')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','AR')
+                    ->where('trantype','AD')
+                    ->first();
+
+        foreach ($billdet_unq as $key_unq => $value_unq) {
+            $billdet_feu = $billdet_obj->where('lineno_',$value_unq->lineno_);
+            $sum_amt = $billdet_feu->sum('amount');
+
+            DB::table('debtor.dbacthdr')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'source' => 'PB',
+                    'trantype' => 'IN',
+                    'auditno' => $value_unq->billno,
+                    'lineno_' => $value_unq->lineno_,
+                    'amount' => $sum_amt,
+                    'outamount' => $sum_amt,
+                    'recstatus' => 'POSTED',
+                    'entrydate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'entryuser' => session('username'),
+                    'reference' => 'Bill No @ '.$value_unq->billno,
+                    // 'recptno' => ,
+                    // 'paymode' => ,
+                    // 'tillcode' => ,
+                    // 'tillno' => ,
+                    'debtortype' => $value_unq->debtortype,
+                    'debtorcode' => $value_unq->debtorcode,
+                    'payercode' => $value_unq->debtorcode,
+                    'billdebtor' => $value_unq->debtorcode,
+                    'remark' => 'Final Bill',
+                    'mrn' => $value_unq->mrn,
+                    'episno' => $value_unq->episno,
+                    // 'authno' => ,
+                    // 'expdate' => ,
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'adduser' => session('username'),
+                    // 'upddate' => ,
+                    // 'upduser' => ,
+                    // 'deldate' => ,
+                    // 'deluser' => ,
+                    'epistype' => $value_unq->epistycode,
+                    // 'cbflag' => ,
+                    // 'conversion' => ,
+                    // 'payername' => ,
+                    // 'hdrtype' => ,
+                    // 'currency' => ,
+                    // 'rate' => ,
+                    'unit' => session('unit'),
+                    'invno' => $value_unq->invno,
+                    // 'paytype' => ,
+                    // 'bankcharges' => ,
+                    // 'RCCASHbalance' => ,
+                    // 'RCOSbalance' => ,
+                    // 'RCFinalbalance' => ,
+                    // 'PymtDescription' => ,
+                    // 'orderno' => ,
+                    // 'ponum' => ,
+                    // 'podate' => ,
+                    // 'termdays' => ,
+                    // 'termmode' => ,
+                    // 'deptcode' => ,
+                    'posteddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    // 'approvedby' => ,
+                    // 'approveddate' => ,
+                    // 'unallocated' => ,
+                    // 'datesend' => ,
+                ]);
+
+            DB::table('finance.gltran')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'auditno' => $value_unq->invno,
+                    'lineno_' => $value_unq->lineno_,
+                    'source' => 'PB', //kalau stock 'IV', lain dari stock 'DO'
+                    'trantype' => 'IN',
+                    'reference' => 'Bill No @ '.$value_unq->billno,
+                    'description' => 'Final Bill', 
+                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'year' => $yearperiod->year,
+                    'period' => $yearperiod->period,
+                    'drcostcode' => $value_unq->actdebccode,
+                    'dracc' => $value_unq->actdebglacc,
+                    'crcostcode' => $sysparam->pvalue1,
+                    'cracc' => $sysparam->pvalue2,
+                    'amount' => $sum_amt
+                ]);
+
+            $this->init_glmastdtl(
+                        $value_unq->actdebccode,//drcostcode
+                        $value_unq->actdebglacc,//dracc
+                        $sysparam->pvalue1,//crcostcode
+                        $sysparam->pvalue2,//cracc
+                        $yearperiod,
+                        $sum_amt
+                    );
+        }
+
+        foreach ($billdet_obj as $key_obj => $value_obj){
+
+            if($value_obj->epistycode == 'IP' || $value_obj->epistycode == 'DP'){
+                $cracc_ = $value_obj->ipacccode;
+            }else{
+                $cracc_ = $value_obj->opacccode;
+            }
+
+            DB::table('finance.gltran')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'auditno' => $value_obj->auditno,
+                    'lineno_' => $value_obj->lineno_,
+                    'source' => 'OE', //kalau stock 'IV', lain dari stock 'DO'
+                    'trantype' => 'IN',
+                    'reference' => $value_obj->invno,
+                    'description' => $value_obj->chgcode, 
+                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'year' => $yearperiod->year,
+                    'period' => $yearperiod->period,
+                    'drcostcode' => $sysparam->pvalue1,
+                    'dracc' => $sysparam->pvalue2,
+                    'crcostcode' => $value_obj->dept_costcode,
+                    'cracc' => $cracc_,
+                    'amount' => $value_obj->amount 
+                ]);
+
+            $this->init_glmastdtl(
+                    $sysparam->pvalue1,//drcostcode
+                    $sysparam->pvalue2,//dracc
+                    $value_obj->dept_costcode,//crcostcode
+                    $cracc_,//cracc
+                    $yearperiod,
+                    $value_obj->amount
+            );
+
+            // if(!empty(floatval($value_obj->taxamount))){
+
+            //     $sysparam_tx = DB::table('sysdb.sysparam')
+            //                     ->where('compcode',session('compcode'))
+            //                     ->where('source','TX')
+            //                     ->where('trantype','BS')
+            //                     ->first();
+
+            //     DB::table('finance.gltran')
+            //         ->insert([
+            //             'compcode' => session('compcode'),
+            //             'adduser' => session('username'),
+            //             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            //             'auditno' => $value_obj->billno,
+            //             'lineno_' => $value_obj->lineno_,
+            //             'source' => 'OE', //kalau stock 'IV', lain dari stock 'DO'
+            //             'trantype' => 'TX',
+            //             'reference' => $value_obj->invno,
+            //             'description' => $value_obj->chgcode, 
+            //             'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+            //             'year' => $yearperiod->year,
+            //             'period' => $yearperiod->period,
+            //             'drcostcode' => $sysparam->pvalue1,
+            //             'dracc' => $sysparam->pvalue2,
+            //             'crcostcode' => $sysparam_tx->pvalue1,
+            //             'cracc' => $sysparam_tx->pvalue2,
+            //             'amount' => $value_obj->taxamount
+            //         ]);
+
+            //     $this->init_glmastdtl(
+            //         $sysparam->pvalue1,//drcostcode
+            //         $sysparam->pvalue2,//dracc
+            //         $sysparam_tx->pvalue1,//crcostcode
+            //         $sysparam_tx->pvalue2,//cracc
+            //         $yearperiod,
+            //         $value_obj->taxamount
+            //     );
+            // }
+            
+            // if(!empty(floatval($value_obj->discamt))){
+            //     $sysparam_dis = DB::table('sysdb.sysparam')
+            //                     ->where('compcode',session('compcode'))
+            //                     ->where('source','OE')
+            //                     ->where('trantype','DIS')
+            //                     ->first();
+
+            //     DB::table('finance.gltran')
+            //         ->insert([
+            //             'compcode' => session('compcode'),
+            //             'adduser' => session('username'),
+            //             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            //             'auditno' => $value_obj->billno,
+            //             'lineno_' => $value_obj->lineno_,
+            //             'source' => 'OE', //kalau stock 'IV', lain dari stock 'DO'
+            //             'trantype' => 'DIS',
+            //             'reference' => $value_obj->invno,
+            //             'description' => $value_obj->chgcode, 
+            //             'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+            //             'year' => $yearperiod->year,
+            //             'period' => $yearperiod->period,
+            //             'drcostcode' => $sysparam->pvalue1,
+            //             'dracc' => $sysparam->pvalue2,
+            //             'crcostcode' => $value_obj->dept_costcode,
+            //             'cracc' => $sysparam_dis->pvalue1,
+            //             'amount' => -$value_obj->discamt
+            //         ]);
+
+            //     $this->init_glmastdtl(
+            //         $sysparam->pvalue1,//drcostcode
+            //         $sysparam->pvalue2,//dracc
+            //         $dept->costcode,//crcostcode
+            //         $sysparam_dis->pvalue1,//cracc
+            //         $yearperiod,
+            //         -$value_obj->discamt
+            //     );
+            // }
+        }
+    }
+
+    public function make_discharge($mrn,$episno){
+        DB::table('hisdb.episode')
+            ->where('compcode',session('compcode'))
+            ->where('mrn',$mrn)
+            ->where('episno',$episno)
+            ->update([
+                'dischargedate' => Carbon::now('Asia/Kuala_Lumpur'),
+                'dischargeuser' => session('username'),
+                'dischargetime' => Carbon::now('Asia/Kuala_Lumpur'),
+                'episstatus' => 'BILL',
+                'episactive' => 0,
+                'lastuser' => session('username'),
+                'lastupdate' => Carbon::now('Asia/Kuala_Lumpur'),
+            ]);
+
+        DB::table('hisdb.pat_mast')
+            ->where('compcode',session('compcode'))
+            ->where('mrn',$mrn)
+            ->update([
+                'patstatus' => 0,
+                'upduser' => session('username'),
+                'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+            ]);
+
+        DB::table('hisdb.queue')
+            ->where('compcode',session('compcode'))
+            ->where('mrn',$mrn)
+            ->where('episno',$episno)
+            ->delete();
+    }
+
     public function final_bill_invoice(Request $request){
         $mrn = $request->mrn;
         $episno = $request->episno;
+
+        if(empty($mrn) || empty($episno)){
+            abort(403, 'Patient Not Exist');
+        }
 
         $billdet = DB::table('hisdb.billdet as bd')
                         ->select('bd.idno','bd.mrn','bd.episno','bd.billno','bd.billdate','bd.trxdate','bd.billtype','btm.description as billtype_desc','bd.chgcode','chgm.description','bd.uom','bd.quantity','bd.unitprce','bd.amount','bd.taxamount','bd.discamt','bd.lineno_','ep.payercode','dm.name as debtorname','dm.address1','dm.address2','dm.address3','dm.address4','dm.contact','ep.refno','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc','chgm.invgroup','chgm.chgclass','epis.pay_type','epis.reg_date','epis.reg_time','pm.name as pat_name','pm.newic','doc.doctorname as doc_name')
@@ -5019,6 +5323,66 @@ class OrdcomController extends defaultController
         } 
 
         return view('hisdb.ordcom.cb_summary_summ',compact('patmast_episode','chargetrx','chgclass','invgroup','username','footer'));
+    }
+
+    public function init_glmastdtl($dbcc,$dbacc,$crcc,$cracc,$yearperiod,$amount){
+        //2. check glmastdtl utk debit, kalu ada update kalu xde create
+        $gltranAmount =  $this->isGltranExist($dbcc,$dbacc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$dbcc)
+                ->where('glaccount','=',$dbacc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => floatval($amount) + $gltranAmount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $dbcc,
+                    'glaccount' => $dbacc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => floatval($amount),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+        $gltranAmount = defaultController::isGltranExist_($crcc,$cracc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$crcc)
+                ->where('glaccount','=',$cracc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $gltranAmount - floatval($amount),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $crcc,
+                    'glaccount' => $cracc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => -floatval($amount),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
     }
 
 }

@@ -38,6 +38,7 @@ $(document).ready(function () {
 	var oper=null;
 	var unsaved = false;
 	scrollto_topbtm();
+	page_to_view_only($('#viewonly').val());
 
 	// init_focus_header_footer();
 	$("#dialogForm")
@@ -397,6 +398,7 @@ $(document).ready(function () {
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
 			errorField.length = 0;
+			page_to_view_only($('#viewonly').val());
 		},
 		loadComplete: function(){
 			//calc_jq_height_onchange("jqGrid");
@@ -598,9 +600,9 @@ $(document).ready(function () {
 		unsaved = true; //kalu dia change apa2 bagi prompt
 	});
 
-	$("#dialogForm").on('click','#formdata a.input-group-addon',function(){
-		unsaved = true; //kalu dia change apa2 bagi prompt
-	});
+	// $("#dialogForm").on('click','#formdata a.input-group-addon',function(){
+	// 	unsaved = true; //kalu dia change apa2 bagi prompt
+	// });
 
 	/////////////////////////////populate data for dropdown search By////////////////////////////
 	searchBy();
@@ -618,31 +620,31 @@ $(document).ready(function () {
 	}
 
 	///////////////////////////populate data for dropdown tran dept/////////////////////////////
-	trandept();
-	function trandept(){
-		var param={
-			action:'get_value_default',
-			url: 'util/get_value_default',
-			field:['deptcode'],
-			table_name:'sysdb.department',
-			filterCol:['purdept'],
-			filterVal:['1']
-		}
-		$.get( param.url+"?"+$.param(param), function( data ) {
+	// trandept();
+	// function trandept(){
+	// 	var param={
+	// 		action:'get_value_default',
+	// 		url: 'util/get_value_default',
+	// 		field:['deptcode'],
+	// 		table_name:'sysdb.department',
+	// 		filterCol:['purdept'],
+	// 		filterVal:['1']
+	// 	}
+	// 	$.get( param.url+"?"+$.param(param), function( data ) {
 			
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data)){
-				$.each(data.rows, function(index, value ) {
-					if(value.deptcode.toUpperCase()== $("#deptcode").val().toUpperCase()){
-						$( "#searchForm [id=trandept]" ).append("<option selected value='"+value.deptcode+"'>"+value.deptcode+"</option>");
-					}else{
-						$( "#searchForm [id=trandept]" ).append(" <option value='"+value.deptcode+"'>"+value.deptcode+"</option>");
-					}
-				});
-				searchChange();
-			}
-		});
-	}
+	// 	},'json').done(function(data) {
+	// 		if(!$.isEmptyObject(data)){
+	// 			$.each(data.rows, function(index, value ) {
+	// 				if(value.deptcode.toUpperCase()== $("#deptcode").val().toUpperCase()){
+	// 					$( "#searchForm [id=trandept]" ).append("<option selected value='"+value.deptcode+"'>"+value.deptcode+"</option>");
+	// 				}else{
+	// 					$( "#searchForm [id=trandept]" ).append(" <option value='"+value.deptcode+"'>"+value.deptcode+"</option>");
+	// 				}
+	// 			});
+	// 			searchChange();
+	// 		}
+	// 	});
+	// }
 
 	////////////////////////////changing status and trandept trigger search/////////////////////////
 	$('#Scol').on('change', whenchangetodate);
@@ -711,7 +713,8 @@ $(document).ready(function () {
 		search('#jqGrid', $('#searchForm [name=Stext]').val(), $('#searchForm [name=Scol] option:selected').val(), urlParam);
 	}
 	
-	function searchChange(){
+	searchChange(true);
+	function searchChange(once=false){
 		var arrtemp = ['session.compcode',  $('#Status option:selected').val(), $('#trandept option:selected').val(),'GRN'];
 		var filter = arrtemp.reduce(function(a,b,c){
 			if(b=='All'){
@@ -725,6 +728,20 @@ $(document).ready(function () {
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
+		urlParam.WhereInCol = null;
+		urlParam.WhereInVal = null;
+
+		if(once){
+			urlParam.searchCol=null;
+			urlParam.searchVal=null;
+			if($('#searchForm [name=Stext]').val().trim() != ''){
+				let searchCol = ['delordhd_recno'];
+				let searchVal = ['%'+$('#searchForm [name=Stext]').val().trim()+'%'];
+				urlParam.searchCol=searchCol;
+				urlParam.searchVal=searchVal;
+			}
+			once=false;
+		}
 		refreshGrid('#jqGrid',urlParam);
 	}
 

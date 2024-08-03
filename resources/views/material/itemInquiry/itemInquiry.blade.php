@@ -208,6 +208,7 @@
 			<table class="table table-hover  table-bordered" id='TableDetailMovement'>
 				<thead>
 					<tr>
+						<th>ID</th>
 						<th> </th>
 						<th>Transaction Date</th>
 						<th>Trantype</th>
