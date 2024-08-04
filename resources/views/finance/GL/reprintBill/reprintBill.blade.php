@@ -59,11 +59,11 @@ i.fa {
 		    <div class="panel-heading">Reprint Bill
 
 			<a class='pull-right pointer text-primary' style="padding-left: 30px" id='reprint__summbill'>
-		    	Reprint Summary Bill 
+		    	Summary Bill 
 			</a>
 			 | 
 			<a class='pull-right pointer text-primary' style="padding-left: 30px" id='reprint_bill'>
-		    	Reprint Detail Bill 
+		    	Detail Bill 
 			</a>
 		    </div>
 		    <div class="panel-body">
