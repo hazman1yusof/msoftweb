@@ -39,7 +39,7 @@ $(document).ready(function () {
 			{ label: 'idno', name: 'idno', hidden: true, key:true},	
 			{ label: 'compcode', name: 'compcode', hidden:true},					
 			{ label: 'source', name: 'source', hidden:true},
-			{ label: 'TT', name: 'trantype', width: 10, classes: 'wrap'},
+			{ label: 'TT', name: 'trantype', width: 20, classes: 'wrap'},
 			{ label: 'Bill No', name: 'auditno', width: 50, classes: 'wrap', canSearch: true},
 			{ label: 'Line No', name: 'lineno_', width: 15, classes: 'wrap'},
 			{ label: 'MRN', name: 'mrn', width: 30, classes: 'wrap', canSearch: true, checked:true},
