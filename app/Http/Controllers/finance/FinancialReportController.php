@@ -46,12 +46,12 @@ class FinancialReportController extends defaultController
         //     dd('month from need to be less than month to');
         // }
 
-        if($request->reporttype == 'PROFIT & LOSS (DETAIL)'){
+        if($request->reporttype == '1'){
             return Excel::download(new financialReportExport($request->monthfrom,$request->monthto,$request->yearfrom,$request->yearto,$request->reportname), 'FINANCIAL REPORT Profit and Loss.xlsx');
-        }else if($request->reporttype == 'BALANCE SHEET'){
+        }else if($request->reporttype == '2'){
             return Excel::download(new financialReportExport_bs($request->monthfrom,$request->monthto,$request->yearfrom,$request->yearto,$request->reportname), 'FINANCIAL REPORT Balance Sheet.xlsx');
         }else{
-
+            abort(403, 'Report Type Not Exist');
         }
     }
 

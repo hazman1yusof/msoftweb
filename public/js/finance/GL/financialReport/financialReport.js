@@ -149,13 +149,15 @@ $(document).ready(function () {
 			ondblClickRow: function () {
 				let data=selrowData('#'+reporttype.gridname);
 
-				$("#reporttype").val(data['rpttype']);
-
+				
 				if(data['rpttype'] == 'PROFIT & LOSS (DETAIL)'){
+					$("#reporttype").val(1);
 					$('div.divto,div.topradio').show();
 				}else if(data['rpttype'] == 'BALANCE SHEET'){
+					$("#reporttype").val(2);
 					$('div.divto,div.topradio').hide();
 				}else{
+					$("#reporttype").val(3);
 					$('div.divto,div.topradio').show();
 				}
 			},
