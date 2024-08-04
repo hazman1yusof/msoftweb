@@ -39,14 +39,14 @@ $(document).ready(function () {
 			{ label: 'idno', name: 'idno', hidden: true, key:true},	
 			{ label: 'compcode', name: 'compcode', hidden:true},					
 			{ label: 'source', name: 'source', hidden:true},
-			{ label: 'TT', name: 'trantype', width: 20, classes: 'wrap'},
+			{ label: 'TT', name: 'trantype', width: 25, classes: 'wrap'},
 			{ label: 'Bill No', name: 'auditno', width: 50, classes: 'wrap', canSearch: true},
-			{ label: 'Line No', name: 'lineno_', width: 15, classes: 'wrap'},
+			{ label: 'Line No', name: 'lineno_', width: 30, classes: 'wrap'},
 			{ label: 'MRN', name: 'mrn', width: 30, classes: 'wrap', canSearch: true, checked:true},
-			{ label: 'Episno', name: 'episno', width: 20, classes: 'wrap'},
-			{ label: 'Patient Name', name: 'Name', width: 130, classes: 'wrap', canSearch: true},
+			{ label: 'Episno', name: 'episno', width: 25, classes: 'wrap'},
+			{ label: 'Patient Name', name: 'Name', width: 110, classes: 'wrap', canSearch: true},
 			{ label: 'Debtor Code', name: 'debtorcode', width: 50, classes: 'wrap'},
-			{ label: 'Debtor Name', name: 'dbname', width: 130, classes: 'wrap', canSearch: true},
+			{ label: 'Debtor Name', name: 'dbname', width: 110, classes: 'wrap', canSearch: true},
 			{ label: 'Amount', name: 'amount', width: 50, align: 'right',formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}},
 			{ label: 'Bill Date', name: 'entrydate', width: 40},
 			{ label: 'invno', name: 'invno', hidden:true},
@@ -122,6 +122,12 @@ $(document).ready(function () {
 		var mrn = selrowData('#jqGrid').mrn;
 		var episno = selrowData('#jqGrid').episno;
 		window.open('./ordcom/table?action=final_bill_invoice&mrn='+mrn+'&episno='+episno, '_blank');
+	});
+
+	$('#reprint__summbill').click(function(){
+		var mrn = selrowData('#jqGrid').mrn;
+		var episno = selrowData('#jqGrid').episno;
+		window.open('./ordcom/table?action=showpdf_summ_final&mrn='+mrn+'&episno='+episno, '_blank');
 	});
 
 

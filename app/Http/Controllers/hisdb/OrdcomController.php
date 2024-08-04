@@ -58,6 +58,9 @@ class OrdcomController extends defaultController
             case 'final_bill_invoice':
                 return $this->final_bill_invoice($request);
                 break;
+            case 'showpdf_summ_final': //sama je mcm showpdf_summ
+                return $this->showpdf_summ_final($request);
+                break;
             default:
                 $data = 'error happen..';
                 break;
@@ -5231,6 +5234,109 @@ class OrdcomController extends defaultController
     public function showpdf_summ(Request $request){
         $mrn = $request->mrn;
         $episno = $request->episno;
+
+        $patmast_episode = DB::table('hisdb.pat_mast as pm')
+                                ->select('pm.mrn','pm.name','pm.newic','ep.reg_date','ep.episno','ep.reg_time','ep.pay_type','doc.doctorname as doc_name','dm.debtorcode','dm.name as debtorname','dm.address1','dm.address2','dm.address3','dm.address4','dm.contact','epayr.refno')
+                                ->where('pm.compcode',session('compcode'))
+                                ->where('pm.mrn',$mrn)
+                                ->join('hisdb.episode as ep', function($join) use ($request){
+                                    $join = $join->where('ep.compcode', '=', session('compcode'));
+                                    $join = $join->on('ep.mrn', '=', 'pm.mrn');
+                                    $join = $join->where('ep.episno', '=', $request->episno);
+                                })
+                                ->join('hisdb.epispayer as epayr', function($join) use ($request){
+                                    $join = $join->where('epayr.compcode', '=', session('compcode'));
+                                    $join = $join->on('epayr.mrn', '=', 'ep.mrn');
+                                    $join = $join->on('epayr.episno', '=', 'ep.episno');
+                                    $join = $join->where('epayr.LineNo','=','1');
+                                })
+                                ->join('hisdb.doctor as doc', function($join) use ($request){
+                                    $join = $join->where('doc.compcode', '=', session('compcode'));
+                                    $join = $join->on('doc.doctorcode', '=', 'ep.admdoctor');
+                                })
+                                ->join('debtor.debtormast as dm', function($join) use ($request){
+                                    $join = $join->where('dm.compcode', '=', session('compcode'));
+                                    $join = $join->on('dm.debtorcode', '=', 'ep.payer');
+                                });
+
+        if(!$patmast_episode->exists()){
+            abort(403, 'Patient Not Exist');
+        }
+
+        $patmast_episode = $patmast_episode->first();
+        // dd($patmast_episode);
+
+        $chargetrx = DB::table('hisdb.chargetrx as trx')
+                        ->select('trx.chgcode','trx.uom','chgm.description','trx.trxdate','trx.quantity','trx.amount','trx.discamt','trx.taxamount','chgm.invgroup','chgm.chgclass','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc','doc.doctorname','doc.doctorcode')
+                        ->where('trx.compcode',session('compcode'))
+                        ->where('trx.trxtype','!=','PD')
+                        ->where('trx.mrn' ,'=', $request->mrn)
+                        ->where('trx.episno' ,'=', $request->episno)
+                        ->where('trx.recstatus','<>','DELETE')
+                        ->orderBy('trx.chgcode','asc')
+                        ->orderBy('chgm.invgroup','desc')
+                        ->where('trx.taxflag',0)
+                        ->where('trx.discflag',0)
+                        // ->orderBy('trx.adddate','asc')
+                        ->join('hisdb.chgmast as chgm', function($join) use ($request){
+                            $join = $join->where('chgm.compcode', '=', session('compcode'));
+                            $join = $join->on('chgm.chgcode', '=', 'trx.chgcode');
+                            $join = $join->on('chgm.uom', '=', 'trx.uom');
+                        })
+                        ->leftjoin('hisdb.chggroup as chgg', function($join) use ($request){
+                            $join = $join->where('chgg.compcode', '=', session('compcode'));
+                            $join = $join->on('chgg.grpcode', '=', 'chgm.chggroup');
+                        })
+                        ->leftjoin('hisdb.chgtype as chgt', function($join) use ($request){
+                            $join = $join->where('chgt.compcode', '=', session('compcode'));
+                            $join = $join->on('chgt.chgtype', '=', 'chgm.chgtype');
+                        })
+                        ->leftjoin('hisdb.doctor as doc', function($join) use ($request){
+                            $join = $join->where('doc.compcode', '=', session('compcode'));
+                            $join = $join->on('doc.doctorcode', '=', 'trx.doctorcode');
+                        })
+                        ->leftjoin('hisdb.chgclass as chgc', function($join) use ($request){
+                            $join = $join->where('chgc.compcode', '=', session('compcode'));
+                            $join = $join->on('chgc.classcode', '=', 'chgm.chgclass');
+                        })
+                        ->get();
+
+        // dd($chargetrx);
+
+        foreach ($chargetrx as $key => $value) {
+            if(strtoupper($value->invgroup) == 'CC'){
+                $value->pdescription = $value->description;
+            }else if(strtoupper($value->invgroup) == 'CT'){
+                $value->pdescription = $value->chgt_desc;
+            }else{
+                $value->pdescription = $value->chgg_desc;
+            }
+        }
+
+        $chgclass = $chargetrx->unique('chgclass')->sortBy('classlevel');
+        $invgroup = $chargetrx->unique('pdescription')->sortBy('pdescription');
+        $username = session('username');
+        $footer = '';
+        $footer_ = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','PB')
+                        ->where('trantype','note');
+
+        if($footer_->exists()){
+            $footer_ = $footer_->first();
+            $footer = $footer_->description;
+        } 
+
+        return view('hisdb.ordcom.cb_summary_summ',compact('patmast_episode','chargetrx','chgclass','invgroup','username','footer'));
+    }
+
+    public function showpdf_summ_final(Request $request){
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+
+        if(empty($mrn) || empty($episno)){
+            abort(403, 'Patient Not Exist');
+        }
 
         $patmast_episode = DB::table('hisdb.pat_mast as pm')
                                 ->select('pm.mrn','pm.name','pm.newic','ep.reg_date','ep.episno','ep.reg_time','ep.pay_type','doc.doctorname as doc_name','dm.debtorcode','dm.name as debtorname','dm.address1','dm.address2','dm.address3','dm.address4','dm.contact','epayr.refno')
