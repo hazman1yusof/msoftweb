@@ -3777,6 +3777,7 @@ class OrdcomController extends defaultController
 
         $rows = $table->get();
 
+        $array_return = [];
         foreach ($rows as $key => $value) {
             $billtype_amt_percent = $this->get_billtype_amt_percent($billtype_obj,$value);
             $value->billty_amount = $billtype_amt_percent->amount; 
@@ -3801,10 +3802,11 @@ class OrdcomController extends defaultController
                     continue;
                 }
             }
+            array_push($array_return,$value);
         }
 
         $responce = new stdClass();
-        $responce->rows = $rows;
+        $responce->rows = $array_return;
         $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
