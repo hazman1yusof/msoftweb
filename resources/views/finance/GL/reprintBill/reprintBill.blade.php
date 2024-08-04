@@ -81,7 +81,7 @@ i.fa {
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 			</div>
 			<div id="acctent_panel" class="panel-collapse collapse">
-				<div class="panel-body">
+				<div class="panel-body" style="min-height: 50vh;">
 					<b>Account Entries - <span id="acctent_title_span">Sales</span></b>
 					<div class='pull-right pointer text-primary' style="padding-right:20px">
 						<b>

@@ -215,8 +215,8 @@ $(document).ready(function(){
 		onClickButton: function () {
 			refreshGrid("#jqGrid_oth", urlParam_oth);	
 		},	
-	}).jqGrid('navButtonAdd', "#jqGrid_phar_pager", {	
-		id: "jqGrid_phar_pagerFinalBill",	
+	}).jqGrid('navButtonAdd', "#jqGrid_oth_pager", {	
+		id: "jqGrid_oth_pagerFinalBill",	
 		caption: "Final Bill", cursor: "pointer", position: "last",
 		buttonicon: "",	
 		title: "Final Bill",	
