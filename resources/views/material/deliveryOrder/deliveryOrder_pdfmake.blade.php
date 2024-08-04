@@ -57,7 +57,7 @@
                     image: 'letterhead',width:200, height:40, style: 'tableHeader', colSpan: 5, alignment: 'center'
                 },
 				{
-                    text: 'GOOD RECEIVE NOTE',
+                    text: 'GOOD RECEIVED NOTE',
                     style: 'header',
                     alignment: 'center'
 				},
