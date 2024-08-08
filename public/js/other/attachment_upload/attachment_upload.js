@@ -49,6 +49,11 @@ $(document).ready(function () {
         $("#formdata").trigger('reset');
     });
 
+    $( "#formdata" ).on( "submit", function( event ) {
+        $("#submit").attr('disabled','disabled');
+        // event.preventDefault();
+    });
+
     preview_load_data();
 
     function preview_load_data(){
