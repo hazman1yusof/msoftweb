@@ -935,6 +935,7 @@ function populate_triage_currpt_getdata(){
 			if(!emptyobj_(data.triage_gen))autoinsert_rowdata("#formTriageInfo",data.triage_gen);
 			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 			if(!emptyobj_(data.triage_gen))$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
+			if(!emptyobj_(data.triage_nurshistory))autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'add');
 			button_state_ti('edit');
@@ -950,8 +951,6 @@ function populate_triage_currpt_getdata(){
 			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 			textare_init_triage();
 		}
-		
-		if(!emptyobj_(data.triage_nurshistory))autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
 	});
 }
 
