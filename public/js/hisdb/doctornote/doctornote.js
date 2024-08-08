@@ -551,6 +551,13 @@ dialog_icd_ref.makedialog();
 
 button_state_doctorNote('empty');
 function button_state_doctorNote(state){
+	if($('#isdoctor').val() != '1'){
+		$("#toggle_doctorNote").removeAttr('data-toggle');
+		$('#cancel_doctorNote').data('oper','add');
+		$('#new_doctorNote,#save_doctorNote,#cancel_doctorNote,#edit_doctorNote').attr('disabled',true);
+		return 0;
+	}
+
 	switch(state){
 		case 'empty':
 			$("#toggle_doctorNote").removeAttr('data-toggle');

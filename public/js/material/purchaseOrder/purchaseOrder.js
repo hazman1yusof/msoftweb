@@ -709,7 +709,7 @@ $(document).ready(function () {
 			urlParam.searchVal=null;
 			if($('#searchForm [name=Stext]').val().trim() != ''){
 				let searchCol = ['purordhd_recno'];
-				let searchVal = ['%'+$('#searchForm [name=Stext]').val().trim()+'%'];
+				let searchVal = [$('#searchForm [name=Stext]').val().trim()];
 				urlParam.searchCol=searchCol;
 				urlParam.searchVal=searchVal;
 			}

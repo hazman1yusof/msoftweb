@@ -287,6 +287,7 @@ $(document).ready(function() {
                     populate_dieteticCareNotes_currpt(lastrowdata);
                 }else if($('#user_nurse').val() == '1'){
                     populate_triage_currpt(lastrowdata);
+                    populate_doctorNote_currpt(lastrowdata);
                 }
                 
                 if($('#user_billing').val() == '1'){
@@ -304,6 +305,7 @@ $(document).ready(function() {
                     populate_triage_currpt(lastrowdata);
                     populate_nursAssessment_currpt(lastrowdata);
                     populate_nursingnote(lastrowdata);
+                    populate_doctorNote_currpt(lastrowdata);
                 }
                 
                 if($('#user_billing').val() == '1'){

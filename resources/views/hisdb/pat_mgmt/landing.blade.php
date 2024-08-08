@@ -183,6 +183,10 @@
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
 					</div>
+					
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.doctornote.doctornote')
+					</div>
 				@endif
 				
 				@if (Auth::user()->billing == 1)
@@ -233,6 +237,10 @@
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.nursingnote.nursingnote')
+					</div>
+					
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.doctornote.doctornote')
 					</div>
 				@endif
 				
@@ -307,6 +315,10 @@
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 			@elseif (Auth::user()->nurse == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
+				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
 			@endif
 
 			@if (Auth::user()->billing == 1)
@@ -349,6 +361,10 @@
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
 				<script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js"></script>
+				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
 			@endif
 
 			@if (Auth::user()->billing == 1)

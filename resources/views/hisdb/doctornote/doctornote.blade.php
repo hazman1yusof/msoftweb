@@ -111,9 +111,10 @@
                                     <div class="col-md-5">
                                         <input id="complain" name="complain" type="text" class="form-control input-sm">
                                     </div>
-                                    
+                                    @if(Auth::user()->doctor == '1')
                                     <button class="btn btn-default btn-sm" type="button" id="referLetter" style="float: right; margin-right: 40px;">Referral Letter</button>
                                     <button class="btn btn-default btn-sm" type="button" id="doctornote_medc" style="float: right; margin-right: 20px;">MC Letter</button>
+                                    @endif>
                                     
                                     <!-- <span class="label label-info" style="margin-left: 30px;font-size: 100%;">Written By: <span id="doctorcode" name="doctorcode"></span></span> -->
                                 </div>

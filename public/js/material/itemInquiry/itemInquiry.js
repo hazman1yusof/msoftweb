@@ -386,7 +386,7 @@ $(document).ready(function () {
 		paging: false,
 		columns: [
 			{ data: 'id' ,"width": "5%",visible:false},
-			{ data: 'open' ,"width": "60%", sClass: "open"},
+			{ data: 'open', sClass: "open"},
 			{ data: 'trandate',"type": "date"},
 			{ data: 'trantype', sClass: "trantype"},
 			{ data: 'description'},
