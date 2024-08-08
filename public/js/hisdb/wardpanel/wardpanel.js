@@ -607,14 +607,14 @@ function populate_nursAssessment_currpt_getdata(){
 			autoinsert_rowdata("#formWard",data.ward_history);
 			
 			// autoinsert_rowdata("#formWard",data.ward_exm);
-			if(!$.isEmptyObject(data.ward_exm)){
+			// if(!$.isEmptyObject(data.ward_exm)){
 				urlParam_Exam.filterVal[0] = $("#mrn_ward").val();
 				urlParam_Exam.filterVal[1] = $("#episno_ward").val();
 				refreshGrid('#jqGridExam',urlParam_Exam,'add');
 				// examination_ward.empty();
 				// examination_ward.examarray = data.ward_exm;
 				// examination_ward.loadexam().disable();
-			}
+			// }
 			
 			button_state_ward('edit');
 			textare_init_nursAssessment();
