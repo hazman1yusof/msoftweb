@@ -131,7 +131,7 @@
 							<div class="ui secondary segment">Vital Sign</div>
 							<div class="ui segment">
 								<div class="field">
-									<label>Medical History</label>
+									<label>Temperature</label>
 									<div class="ui right labeled input">
 									  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="ncase_temperature" name="ncase_temperature">
 									  <div class="ui basic label">°C</div>
@@ -308,7 +308,7 @@
 									<div class="ui secondary segment">Vital Sign</div>
 									<div class="ui segment">
 										<div class="field">
-											<label>Medical History</label>
+											<label>Temperature</label>
 											<div class="ui right labeled input">
 											  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="fup_temperature" name="fup_temperature">
 											  <div class="ui basic label">°C</div>
