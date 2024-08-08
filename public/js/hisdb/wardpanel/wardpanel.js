@@ -187,13 +187,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			addmore_jqgrid.more=true;	// only addmore after save inline
 			// state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridExam',urlParam_Exam,'add_exam');
+			refreshGrid('#jqGridExam',urlParam_Exam,'add');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridExam',urlParam_Exam,'add_exam');
+			refreshGrid('#jqGridExam',urlParam_Exam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -240,13 +240,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;	// only addmore after save inline
 			// state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridExam',urlParam_Exam,'add_exam');
+			refreshGrid('#jqGridExam',urlParam_Exam,'add');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridExam',urlParam_Exam,'add_exam');
+			refreshGrid('#jqGridExam',urlParam_Exam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -537,7 +537,7 @@ function populate_nursAssessment(obj,rowdata){
 			if(!$.isEmptyObject(data.ward_exm)){
 				urlParam_Exam.filterVal[0] = obj.mrn;
 				urlParam_Exam.filterVal[1] = obj.episno;
-				refreshGrid('#jqGridExam',urlParam_Exam,'add_exam');
+				refreshGrid('#jqGridExam',urlParam_Exam,'add');
 				// examination_ward.empty();
 				// examination_ward.examarray = data.ward_exm;
 				// examination_ward.loadexam().disable();
@@ -610,7 +610,7 @@ function populate_nursAssessment_currpt_getdata(){
 			if(!$.isEmptyObject(data.ward_exm)){
 				urlParam_Exam.filterVal[0] = $("#mrn_ward").val();
 				urlParam_Exam.filterVal[1] = $("#episno_ward").val();
-				refreshGrid('#jqGridExam',urlParam_Exam,'add_exam');
+				refreshGrid('#jqGridExam',urlParam_Exam,'add');
 				// examination_ward.empty();
 				// examination_ward.examarray = data.ward_exm;
 				// examination_ward.loadexam().disable();

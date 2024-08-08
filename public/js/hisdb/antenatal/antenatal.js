@@ -323,13 +323,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridPrevObstetrics',urlParam_PrevObstetrics,'add_prevObstetrics');
+			refreshGrid('#jqGridPrevObstetrics',urlParam_PrevObstetrics,'add');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridPrevObstetrics',urlParam_PrevObstetrics,'add_prevObstetrics');
+			refreshGrid('#jqGridPrevObstetrics',urlParam_PrevObstetrics,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -376,13 +376,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridPrevObstetrics',urlParam_PrevObstetrics,'edit_prevObstetrics');
+			refreshGrid('#jqGridPrevObstetrics',urlParam_PrevObstetrics,'edit');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridPrevObstetrics',urlParam_PrevObstetrics,'edit_prevObstetrics');
+			refreshGrid('#jqGridPrevObstetrics',urlParam_PrevObstetrics,'edit');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -567,13 +567,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridCurrPregnancy',urlParam_CurrPregnancy,'add_currPregnancy');
+			refreshGrid('#jqGridCurrPregnancy',urlParam_CurrPregnancy,'add');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridCurrPregnancy',urlParam_CurrPregnancy,'add_currPregnancy');
+			refreshGrid('#jqGridCurrPregnancy',urlParam_CurrPregnancy,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -621,13 +621,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridCurrPregnancy',urlParam_CurrPregnancy,'edit_currPregnancy');
+			refreshGrid('#jqGridCurrPregnancy',urlParam_CurrPregnancy,'edit');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridCurrPregnancy',urlParam_CurrPregnancy,'edit_currPregnancy');
+			refreshGrid('#jqGridCurrPregnancy',urlParam_CurrPregnancy,'edit');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -849,13 +849,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridObstetricsUltrasound',urlParam_ObstetricsUltrasound,'add_obstetricsUltrasound');
+			refreshGrid('#jqGridObstetricsUltrasound',urlParam_ObstetricsUltrasound,'add');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridObstetricsUltrasound',urlParam_ObstetricsUltrasound,'add_obstetricsUltrasound');
+			refreshGrid('#jqGridObstetricsUltrasound',urlParam_ObstetricsUltrasound,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -903,13 +903,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridObstetricsUltrasound',urlParam_ObstetricsUltrasound,'edit_obstetricsUltrasound');
+			refreshGrid('#jqGridObstetricsUltrasound',urlParam_ObstetricsUltrasound,'edit');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridObstetricsUltrasound',urlParam_ObstetricsUltrasound,'edit_obstetricsUltrasound');
+			refreshGrid('#jqGridObstetricsUltrasound',urlParam_ObstetricsUltrasound,'edit');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -1551,8 +1551,8 @@ $(document).ready(function () {
 					urlParam_CurrPregnancy.filterVal[2] = data.pregnancy.idno;
 					urlParam_ObstetricsUltrasound.filterVal[1] = data.pregnancy.idno;
 					
-					refreshGrid('#jqGridCurrPregnancy',urlParam_CurrPregnancy,'add_currPregnancy');
-					refreshGrid('#jqGridObstetricsUltrasound',urlParam_ObstetricsUltrasound,'add_obstetricsUltrasound');
+					refreshGrid('#jqGridCurrPregnancy',urlParam_CurrPregnancy,'add');
+					refreshGrid('#jqGridObstetricsUltrasound',urlParam_ObstetricsUltrasound,'add');
 				}else{
 					button_state_antenatal('add_pregnancy');
 				}
@@ -1560,7 +1560,7 @@ $(document).ready(function () {
 				button_state_antenatal('add_antenatal');
 				button_state_antenatal('add_pregnancy');
 			}
-			refreshGrid('#jqGridPrevObstetrics',urlParam_PrevObstetrics,'add_prevObstetrics');
+			refreshGrid('#jqGridPrevObstetrics',urlParam_PrevObstetrics,'add');
 		});
 	});
 	
@@ -1778,8 +1778,8 @@ function populate_antenatal(obj){
 	// 			urlParam_CurrPregnancy.filterVal[2] = data.pregnancy.idno;
 	// 			urlParam_ObstetricsUltrasound.filterVal[1] = data.pregnancy.idno;
 				
-	// 			refreshGrid('#jqGridCurrPregnancy',urlParam_CurrPregnancy,'add_currPregnancy');
-	// 			refreshGrid('#jqGridObstetricsUltrasound',urlParam_ObstetricsUltrasound,'add_obstetricsUltrasound');
+	// 			refreshGrid('#jqGridCurrPregnancy',urlParam_CurrPregnancy,'add');
+	// 			refreshGrid('#jqGridObstetricsUltrasound',urlParam_ObstetricsUltrasound,'add');
 	// 		}else{
 	// 			button_state_antenatal('add_pregnancy');
 	// 		}
@@ -1787,7 +1787,7 @@ function populate_antenatal(obj){
 	// 		button_state_antenatal('add_antenatal');
 	// 		button_state_antenatal('add_pregnancy');
 	// 	}
-	// 	refreshGrid('#jqGridPrevObstetrics',urlParam_PrevObstetrics,'add_prevObstetrics');
+	// 	refreshGrid('#jqGridPrevObstetrics',urlParam_PrevObstetrics,'add');
 	// });
 }
 
@@ -1887,8 +1887,8 @@ function populate_pregnancy(idno){
 			urlParam_CurrPregnancy.filterVal[2] = data.pregnancy.idno;
 			urlParam_ObstetricsUltrasound.filterVal[1] = data.pregnancy.idno;
 
-			refreshGrid('#jqGridCurrPregnancy',urlParam_CurrPregnancy,'add_currPregnancy');
-			refreshGrid('#jqGridObstetricsUltrasound',urlParam_ObstetricsUltrasound,'add_obstetricsUltrasound');
+			refreshGrid('#jqGridCurrPregnancy',urlParam_CurrPregnancy,'add');
+			refreshGrid('#jqGridObstetricsUltrasound',urlParam_ObstetricsUltrasound,'add');
 		}
 	});
 }
