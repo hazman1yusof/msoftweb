@@ -461,7 +461,7 @@ $(document).ready(function () {
         urlParam_PatMedic.filterVal[1] = data.episno;
         urlParam_PatMedic.filterVal[2] = data.auditno;
         urlParam_PatMedic.filterVal[3] = data.chgcode;
-        refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'add_patMedic');
+        refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'add');
         
         // var saveParam={
         //     action: 'get_table_drug',
@@ -594,14 +594,14 @@ $(document).ready(function () {
         aftersavefunc: function (rowid, response, options) {
             // addmore_jqgrid.more=true;	// only addmore after save inline
             // state true maksudnyer ada isi, tak kosong
-            refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'add_patMedic');
+            refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'add');
             errorField.length=0;
             $("#jqGridPagerRefresh_patMedic").show();
             get_total_qty();
         },
         errorfunc: function(rowid,response){
             $('#p_error').text(response.responseText);
-            refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'add_patMedic');
+            refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'add');
         },
         beforeSaveRow: function (options, rowid) {
             $('#p_error').text('');

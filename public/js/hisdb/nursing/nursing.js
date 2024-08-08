@@ -228,13 +228,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			addmore_jqgrid.more=true;	// only addmore after save inline
 			// state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
+			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
+			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -281,13 +281,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;	// only addmore after save inline
 			// state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
+			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
+			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -420,13 +420,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			// addmore_jqgrid.more=true;	// only addmore after save inline
 			// state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
+			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'add');
 			errorField.length=0;
 			$("#jqGridPagerDelete_addnotestriage,#jqGridPagerRefresh_addnotestriage").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
+			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -652,8 +652,8 @@ $(document).ready(function () {
 				autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 				autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
 				$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
-				refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
-				refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
+				refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add');
+				refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'add');
 				button_state_ti('disableAll');
 				textare_init_triage();
 			}else{
@@ -796,15 +796,15 @@ function populate_formNursing(obj,rowdata){
 	}
 	
 	if(rowdata.nurse_exm != undefined){
-		refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
-		refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
+		refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add');
+		refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'add');
 		// var newrowdata = $.extend(true,{}, rowdata);
 		// examination_nursing.empty();
 		// examination_nursing.examarray = newrowdata.nurse_exm;
 		// examination_nursing.loadexam().off().disable();
 	}else{
-		refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
-		refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
+		refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add');
+		refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'add');
 		// examination_nursing.empty().off().disable();
 	}
 }
@@ -861,8 +861,8 @@ function populate_triage(obj,rowdata){
 			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 			autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
 			$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
-			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
-			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
+			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add');
+			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'add');
 			button_state_ti('disableAll');
 			textare_init_triage();
 		}else{
@@ -910,7 +910,7 @@ function populate_triage_currpt(obj){
 	// document.getElementById('showTriage_curpt').style.display = 'inline';
 }
 
-function  populate_triage_currpt_getdata(){
+function populate_triage_currpt_getdata(){
 	emptyFormdata(errorField,"#formTriageInfo",["#mrn_ti","#episno_ti"]);
 	$(dialog_tri_col.textfield).removeClass("red").removeClass("yellow").removeClass("green");
 	$(dialog_tri_col.textfield).next().removeClass("red").removeClass("yellow").removeClass("green");
@@ -935,8 +935,8 @@ function  populate_triage_currpt_getdata(){
 			if(!emptyobj_(data.triage_gen))autoinsert_rowdata("#formTriageInfo",data.triage_gen);
 			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 			if(!emptyobj_(data.triage_gen))$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
-			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
-			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
+			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add');
+			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'add');
 			button_state_ti('edit');
 			textare_init_triage();
 			dialog_tri_col.check('errorField');
@@ -1007,8 +1007,8 @@ function populate_triage_casenote(obj){
 			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 			autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
 			$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
-			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
-			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
+			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add');
+			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'add');
 			button_state_ti('disableAll');
 			textare_init_triage();
 		}else{

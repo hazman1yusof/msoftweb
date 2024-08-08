@@ -305,13 +305,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			// addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
+			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
+			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -1115,7 +1115,7 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 			if(!emptyobj_(data.patexam))autoinsert_rowdata("#formDoctorNote",data.patexam);
 			if(!emptyobj_(data.episdiag))autoinsert_rowdata("#formDoctorNote",data.episdiag);
 			if(!emptyobj_(data.pathealthadd))autoinsert_rowdata("#formDoctorNote",data.pathealthadd);
-			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
+			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add');
 			getBMI();
 			textare_init_doctornote();
 			refreshGrid("#jqGrid_trans_doctornote", urlParam_trans);
@@ -1143,7 +1143,7 @@ function get_default_patdata(){
 			if(!emptyobj_(data.patexam))autoinsert_rowdata("#formDoctorNote",data.patexam);
 			if(!emptyobj_(data.episdiag))autoinsert_rowdata("#formDoctorNote",data.episdiag);
 			if(!emptyobj_(data.pathealthadd))autoinsert_rowdata("#formDoctorNote",data.pathealthadd);
-			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
+			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add');
 			getBMI();
 			textare_init_doctornote();
 			refreshGrid("#jqGrid_trans_doctornote", urlParam_trans);
