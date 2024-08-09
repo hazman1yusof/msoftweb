@@ -438,16 +438,16 @@ $(document).ready(function () {
 				
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
-				console.log(data.rows);
 				let accumamt = ret_parsefloat(openbalval);
 				let accumqty = parseInt(openbalqty);
 				
 				data.rows.forEach(function(obj,id){
 
 					obj.id=id;
-					obj.open="<i class='fa fa-folder-open-o fa-2x' data-trantype="+obj.trantype+" data-recno="+obj.recno+"></i>";
+					obj.open="<i class='fa fa-folder-open-o fa-2x' data-id="+obj.id+"></i>";
 					obj.trandate = moment(obj.trandate).format("DD-MM-YYYY");
 					obj.dept = '';
+					obj.lineno_=obj.lineno_;
 					
 					// obj.trantype = '-';
 					obj.qtyin = '-';
@@ -658,26 +658,27 @@ $(document).ready(function () {
 	$("#pg_jqGridPager3 table").hide();
 
 	$('#TableDetailMovement').on('click','td.open', function () {
-		var trantype = $(this).siblings("td.trantype").text();
-		var docno = $(this).siblings("td.docno").text();
-		var obj_id = {
-			trantype: trantype,
-			docno: docno
-		}
+		var tr = $(this).parent('tr');
+		var row = DataTable.row(tr).data();
+		let src = null;
 
-		switch(trantype){
+		switch(row.trantype){
 			case 'DS' :
-				// dialogForm_SalesOrder(obj_id);
-        		$('iframe#open_detail_iframe').attr('src','./SalesOrder?scope=ALL&viewonly=viewonly&auditno='+docno);
+				if(row.mrn != '-' && row.episno != '-'){
+					src = './reprintBill?viewonly=viewonly&auditno='+row.recno+'&lineno_='+row.lineno_;
+				}else{
+					src = './SalesOrder?scope=ALL&viewonly=viewonly&auditno='+row.recno;;
+				}
 				break;
 			case 'GRN' :
-				// dialogForm_SalesOrder(obj_id);
-				console.log('./deliveryOrder?scope=ALL&viewonly=viewonly&recno='+docno);
-        		$('iframe#open_detail_iframe').attr('src','./deliveryOrder?scope=ALL&viewonly=viewonly&recno='+docno);
+				src = './deliveryOrder?scope=ALL&viewonly=viewonly&recno='+row.recno;
 				break;
 		}
 
-		$("#open_detail_dialog").dialog("open");
+		if(src != null){
+			$('iframe#open_detail_iframe').attr('src',src);
+			$("#open_detail_dialog").dialog("open");
+		}
 	});
 
 

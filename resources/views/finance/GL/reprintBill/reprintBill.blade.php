@@ -30,6 +30,12 @@ i.fa {
 
 @section('body')
 
+<input id="viewonly" name="viewonly" type="hidden" value="{{Request::get('viewonly')}}">
+@if(Request::get('viewonly') == 'viewonly')
+<input id="viewonly_auditno" type="hidden" value="{{Request::get('auditno')}}">
+<input id="viewonly_lineno_" type="hidden" value="{{Request::get('lineno_')}}">
+@endif
+
 <div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
 			<fieldset>

@@ -61,7 +61,7 @@ class ItemEnquiryController extends defaultController
     public function detailMovement(Request $request){
         //yg ni yg keluar kot
         $det_mov_deptcode = DB::table('material.ivtxndt as d')
-                ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty','d.recno', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcoderecv', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description','d.sndrcv')
+                ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty','d.recno','d.lineno_', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcoderecv', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description','d.sndrcv')
                 ->leftJoin('material.ivtxnhd as h', function($join){
                         $join = $join->on('h.recno', '=', 'd.recno')
                                      ->on('h.trantype', '=', 'd.trantype')
@@ -94,7 +94,7 @@ class ItemEnquiryController extends defaultController
 
         //yg ni ivdspdt
         $det_mov_deptcode_ivdspdt = DB::table('material.ivdspdt as d')
-            ->select('d.adddate','d.trandate','d.trantype','d.reqdept as deptcode','d.txnqty', 'd.upduser','d.recno', 'd.updtime', 'd.recno as docno', 'd.uomcode', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'd.updtime as trantime','t.crdbfl', 't.description', 'd.mrn', 'd.episno')
+            ->select('d.adddate','d.trandate','d.trantype','d.reqdept as deptcode','d.txnqty', 'd.upduser','d.recno','d.lineno_', 'd.updtime', 'd.recno as docno', 'd.uomcode', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'd.updtime as trantime','t.crdbfl', 't.description', 'd.mrn', 'd.episno')
             ->leftJoin('material.ivtxntype as t', function($join){
                     $join = $join->on('t.trantype', '=', 'd.trantype')
                                  ->where('t.compcode','=',session('compcode'));
@@ -124,7 +124,7 @@ class ItemEnquiryController extends defaultController
 
         //yg ni masuk kot
         $det_mov_sndrcv = DB::table('material.ivtxndt as d')
-                ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty','d.recno', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcoderecv', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description','d.sndrcv')
+                ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty','d.lineno_','d.recno', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcoderecv', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description','d.sndrcv')
                 ->leftJoin('material.ivtxnhd as h', function($join){
                         $join = $join->on('h.recno', '=', 'd.recno')
                                      ->on('h.trantype', '=', 'd.trantype')

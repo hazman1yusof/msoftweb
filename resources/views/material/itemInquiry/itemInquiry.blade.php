@@ -243,6 +243,7 @@
 	<div id="open_detail_dialog" title="Detail View">
 		<div class='col-md-12' style="padding:0 0 15px 0" >
 			<iframe id='open_detail_iframe' src='' style="height: calc(100vh - 100px);width: 100%; border: none;"></iframe>
+			<!-- guna nama 'open_detail_iframe' dialog utk semua detail view, utk tak error dkt parent_close_disabled -->
 		</div>
 	</div>
 

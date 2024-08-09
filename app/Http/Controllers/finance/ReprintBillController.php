@@ -70,6 +70,11 @@ class ReprintBillController extends defaultController
                         ->where('db.mrn','!=','0')
                         ->where('db.episno','!=','0');
 
+        if(!empty($request->viewonly)){
+            $table = $table->where('auditno',$request->auditno)
+                           ->where('lineno_',$request->lineno_);
+        }
+
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
         }
@@ -159,6 +164,7 @@ class ReprintBillController extends defaultController
                         ->join('finance.gltran as gl', function($join) use ($request){
                             $join = $join->where('bd.compcode', '=', session('compcode'));
                             $join = $join->on('gl.auditno', 'bd.auditno');
+                            $join = $join->on('gl.lineno_', 'bd.lineno_');
                             $join = $join->where('gl.source','OE');
                             $join = $join->where('gl.trantype','IN');
                         })
@@ -168,6 +174,7 @@ class ReprintBillController extends defaultController
                         })
                         ->where('bd.compcode', '=', session('compcode'))
                         ->where('bd.invno', $invno)
+                        ->where('bd.lineno_',$lineno_)
                         ->get();
 
         foreach ($billdet as $key => $value) {
@@ -204,6 +211,7 @@ class ReprintBillController extends defaultController
                         ->join('finance.gltran as gl', function($join) use ($request){
                             $join = $join->where('bd.compcode', '=', session('compcode'));
                             $join = $join->on('gl.auditno', 'bd.auditno');
+                            $join = $join->on('gl.lineno_', 'bd.lineno_');
                             $join = $join->where('gl.source','IV');
                             $join = $join->where('gl.trantype','DS');
                         })
@@ -221,6 +229,7 @@ class ReprintBillController extends defaultController
                         })
                         ->where('bd.compcode', '=', session('compcode'))
                         ->where('bd.invno', $invno)
+                        ->where('bd.lineno_',$lineno_)
                         ->get();
 
         foreach ($billdet as $key => $value) {

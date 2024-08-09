@@ -25,6 +25,7 @@ $(document).ready(function () {
 	};
 
 	var fdl = new faster_detail_load();
+	page_to_view_only($('#viewonly').val());
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
@@ -139,7 +140,14 @@ $(document).ready(function () {
 	searchClick2('#jqGrid','#searchForm',urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid',true,urlParam);
+	if($('#viewonly').val() == 'viewonly'){
+		addParamField('#jqGrid',false,urlParam);
+		urlParam.viewonly = 'viewonly';
+		urlParam.auditno = $('#viewonly_auditno').val();
+		urlParam.lineno_ = $('#viewonly_lineno_').val();
+	}else{
+		addParamField('#jqGrid',true,urlParam);
+	}
 
 	$("#acctent_panel").on("shown.bs.collapse", function(){
         SmoothScrollTo("#acctent_panel",100);

@@ -111,6 +111,7 @@ $(document).ready(function () {
 				{ label: 'HP', name: 'telhp', width: 13 ,classes: 'wrap' , hidden:true},
 				{ label: 'Sex', name: 'Sex', width: 6 ,classes: 'wrap' },
 				{ label: 'Mode', name: 'pyrmode', width: 8 ,classes: 'wrap'},
+				{ label: 'Discharge', name: 'episstatus', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2},
 				{ label: 'Seen', name: 'doctorstatus', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick,hidden: true },
 				{ label: 'idno', name: 'idno', hidden: true, key:true},
 				{ label: 'DOB', name: 'DOB', hidden: true },
@@ -213,6 +214,7 @@ $(document).ready(function () {
 				{ label: 'HP', name: 'telhp', width: 10 ,classes: 'wrap' },
 				{ label: 'Sex', name: 'Sex', width: 5 ,classes: 'wrap' },
 				{ label: 'Mode', name: 'pyrmode', width: 10 ,classes: 'wrap'},
+				{ label: 'Discharge', name: 'episstatus', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2},
 				{ label: 'Seen', name: 'doctorstatus', width: 5 ,classes: 'wrap',formatter: formatterstatus_tick,hidden: true },
 				{ label: 'idno', name: 'idno', hidden: true, key:true},
 				{ label: 'DOB', name: 'DOB', hidden: true },
@@ -320,7 +322,9 @@ $(document).ready(function () {
 	}
 
 	function formatterstatus_tick2(cellvalue, option, rowObject) {
-		if (cellvalue != null && cellvalue.toUpperCase() == 'YES') {
+		if(cellvalue == 'BILL'){
+			return '<span class="fa fa-check" ></span>';
+		}else if (cellvalue != null && cellvalue.toUpperCase() == 'YES') {
 			return '<span class="fa fa-check" ></span>';
 		}else{
 			return "";
@@ -399,6 +403,7 @@ $(document).ready(function () {
 
 	function timer_stop_tbl(){
 	  	clearInterval(fetch_tbl);
+	  	clearInterval(fetch_evt);
 	}
 
 	function ordercompleteInit(){

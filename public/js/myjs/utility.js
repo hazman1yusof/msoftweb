@@ -230,7 +230,9 @@ function hideOne(form){
 
 function parent_close_disabled(isClose){
 	if (window.frameElement) {
-		parent.disableCloseButton(isClose);
+		if($(window.frameElement).attr('id') != 'open_detail_iframe'){
+			parent.disableCloseButton(isClose);
+		}
 	}
 }
 

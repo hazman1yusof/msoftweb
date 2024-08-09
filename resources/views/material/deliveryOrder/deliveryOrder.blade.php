@@ -116,7 +116,7 @@ div#fail_msg{
 						<select id='trandept' class="form-control input-sm">
 				      	<option value="All" selected>ALL</option>
 			      		@foreach($purdept as $dept_)
-			      			@if(Request::get('scope') == 'ALL' && $dept_->deptcode == Session::get('deptcode'))
+			      			@if(Request::get('viewonly') != 'viewonly' && Request::get('scope') == 'ALL' && $dept_->deptcode == Session::get('deptcode'))
 			      			<option value="{{$dept_->deptcode}}" selected>{{$dept_->deptcode}}</option>
 			      			@else
 			      			<option value="{{$dept_->deptcode}}">{{$dept_->deptcode}}</option>
