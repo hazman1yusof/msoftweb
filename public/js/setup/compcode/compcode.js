@@ -50,7 +50,7 @@ $(document).ready(function () {
 			{ label: 'Address 2', name: 'address2', width: 30, hidden: true},
 			{ label: 'Address 3', name: 'address3', width: 30, hidden: true},
 			{ label: 'Address 4', name: 'address4', width: 30, hidden: true},
-			{ label: 'Bmppath', name: 'bmppath1', width: 25, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Bmppath', name: 'bmppath1', width: 25, canSearch: true, editable: true, editrules: { required: false }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Bmppath', name: 'bmppath2', width: 30, hidden: true},
 			{ label: 'Address', name: 'address1', width: 30, hidden: true},
 			{ label: 'Logo', name: 'logo1', width: 50, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
