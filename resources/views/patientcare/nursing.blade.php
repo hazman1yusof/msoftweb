@@ -166,7 +166,7 @@
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                 <label>Height</label>
                                                 <div class="ui right labeled input">
-                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="height" name="height">
+                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_height" name="vs_height">
                                                   <div class="ui basic label">CM</div>
                                                 </div>
                                             </div>
@@ -174,7 +174,7 @@
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                 <label>Weight</label>
                                                 <div class="ui right labeled input">
-                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="weight" name="weight">
+                                                  <input type="text" onKeyPress="if(this.value.length==6) return false;" id="vs_weight" name="vs_weight">
                                                   <div class="ui basic label">KG</div>
                                                 </div>
                                             </div>

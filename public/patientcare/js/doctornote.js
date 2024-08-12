@@ -2,6 +2,7 @@
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
+var dateParam_docnote,doctornote_docnote,curr_obj;
 
 /////////////////////parameter for jqGridAddNotes url/////////////////////////////////////////////////
 var urlParam_AddNotes = {
@@ -384,8 +385,6 @@ function button_state_doctorNote(state){
 
 }
 
-var dateParam_docnote,doctornote_docnote,curr_obj;
-
 function empty_currDoctorNote(){
 	emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
 	button_state_doctorNote('empty');
@@ -443,12 +442,8 @@ function populate_currDoctorNote(obj){
 		recorddate:''
 	};
 
-    button_state_doctorNote('add');
-
-    docnote_date_tbl.ajax.url( "./ptcare_doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
-		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
-		// $('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
-    });
+    $("#tab_doctornote").collapse('hide');
+    button_state_doctorNote('disableAll');
 
 }
 
@@ -574,7 +569,7 @@ var docnote_date_tbl = $('#docnote_date_tbl').DataTable({
         {'data': 'adduser'},
         {'data': 'adddate'},
         {'data': 'recordtime'},
-        {'data': 'type'},
+        {'data': 'doctorname'},
     ]
     ,columnDefs: [
         { targets: [0, 1, 3, 4, 5, 6], visible: false},
@@ -588,11 +583,22 @@ var docnote_date_tbl = $('#docnote_date_tbl').DataTable({
     }
 });
 
+
+$('#tab_doctornote').on('show.bs.collapse', function () {
+	return check_if_user_selected();
+});
+
 $('#tab_doctornote').on('shown.bs.collapse', function () {
 	SmoothScrollTo('#tab_doctornote', 300);
 	// datable_medication.columns.adjust();
 	$('div#docnote_date_tbl_sticky').show();
 	$("#jqGrid_trans").jqGrid ('setGridWidth', Math.floor($("#jqGrid_trans_c")[0].offsetWidth-$("#jqGrid_trans_c")[0].offsetLeft-14));
+
+    docnote_date_tbl.ajax.url( "./ptcare_doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
+		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
+		// $('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
+    });
+    refreshGrid("#jqGrid_trans", urlParam_trans);
 
 });
 

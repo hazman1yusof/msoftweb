@@ -5,6 +5,10 @@ $(document).ready(function () {
         populate_userfile(selrowData('#jqGrid'));
     });
 
+    $("#tab_userfile").on("show.bs.collapse", function(){
+        return check_if_user_selected();
+    });
+
 	$("#tab_userfile").on("shown.bs.collapse", function(){
         DataTable_preview.columns.adjust();
 		SmoothScrollTo("#tab_userfile", 300);
@@ -195,4 +199,7 @@ function populate_userfile(obj){
     $('#occupation_show_userfile').text(if_none(obj.OccupCode).toUpperCase());
     $('#citizenship_show_userfile').text(if_none(obj.Citizencode).toUpperCase());
     $('#area_show_userfile').text(if_none(obj.AreaCode).toUpperCase());
+    
+    DataTable_preview.clear().draw();
+    $("#tab_userfile").collapse('hide')
 }

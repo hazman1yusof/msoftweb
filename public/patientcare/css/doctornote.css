@@ -118,11 +118,11 @@
     padding: 0px 8px !important;
 }
 
-.panel-heading#toggle_doctornote, .panel-heading#toggle_nursing, .panel-heading#toggle_trans, .panel-heading#toggle_diet, .panel-heading#toggle_userfile{
+/*.panel-heading#toggle_doctornote, .panel-heading#toggle_nursing, .panel-heading#toggle_trans, .panel-heading#toggle_diet, .panel-heading#toggle_userfile{
     position: sticky;
     top: 40px;
     z-index: 3;
-}
+}*/
 
 #showSidebar{
     background: rgb(255 255 255 / 0%) !mportant;
@@ -180,7 +180,7 @@ table#medication_tbl th {
 .paneldiv{
     padding-top: 0px !important;
     overflow-y: auto;
-    height: calc(100vh - 125px);
+    height: calc(100vh - 100px);
 }
 
 .input-sm{

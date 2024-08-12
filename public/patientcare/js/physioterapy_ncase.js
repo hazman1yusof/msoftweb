@@ -211,29 +211,6 @@ function populate_phys_ncase(obj){
 		$('#referdiet_ncase').val('yes');
 	}
 
-
-	var phys_ncase_urlparam={
-		action:'get_table_phys_ncase'
-	};
-    var postobj={
-    	_token : $('#_token').val(),
-		mrn:obj.MRN,
-    };
-
-	$.post( "./ptcare_phys/form?"+$.param(phys_ncase_urlparam), $.param(postobj), function( data ) {
-        
-    },'json').fail(function(data) {
-        alert('there is an error');
-    }).done(function(data){
-    	if(!$.isEmptyObject(data)){
-			autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehab_ncase);
-			button_state_phys_ncase('edit');
-        }else{
-			button_state_phys_ncase('add');
-        }
-
-	});
-
 }
 
 function autoinsert_rowdata_phys_ncase(form,rowData){

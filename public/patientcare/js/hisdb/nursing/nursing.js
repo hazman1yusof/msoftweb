@@ -136,9 +136,46 @@ $(document).ready(function () {
     	$("#jqGridTriageInfo_panel > div").scrollTop(0);
     });
 
+    $('#jqGridTriageInfo_panel').on('show.bs.collapse', function () {
+		return check_if_user_selected();
+    });
+
 	$('#jqGridTriageInfo_panel').on('shown.bs.collapse', function () {
 		SmoothScrollTo("#jqGridTriageInfo_panel", 500)	
 		sticky_docnotetbl(on=true);
+
+		var saveParam={
+	        action:'get_table_triage',
+	    }
+	    var postobj={
+	    	_token : $('#csrf_token').val(),
+	    	mrn:obj.MRN,
+	    	episno:obj.Episno
+	    };
+
+	    $.post( "./nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+	        
+	    },'json').fail(function(data) {
+	        alert('there is an error');
+	    }).success(function(data){
+	    	if(!$.isEmptyObject(data)){
+				if(!emptyobj_(data.triage))autoinsert_rowdata("#formTriageInfo",data.triage);
+				if(!emptyobj_(data.triage_gen))autoinsert_rowdata("#formTriageInfo",data.triage_gen);
+				if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+				if(!emptyobj_(data.triage_nurshistory))autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
+				if(!emptyobj_(data.triage_gen))$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
+				refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
+				refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
+				button_state_ti('edit');
+	        }else{
+				button_state_ti('add');
+				refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
+				refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
+				examination_nursing.empty();
+				if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+	        }
+
+	    });
 	});
 
 	$('#jqGridTriageInfo_panel').on('hidden.bs.collapse', function () {
@@ -896,39 +933,6 @@ function populate_triage_currpt(obj){
 	urlParam_AddNotesTriage.filterVal[2] = 'TRIAGE';
 
 	// document.getElementById('showTriage_curpt').style.display = 'inline';
-
-	var saveParam={
-        action:'get_table_triage',
-    }
-    var postobj={
-    	_token : $('#csrf_token').val(),
-    	mrn:obj.MRN,
-    	episno:obj.Episno
-    };
-
-    $.post( "./nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
-        
-    },'json').fail(function(data) {
-        alert('there is an error');
-    }).success(function(data){
-    	if(!$.isEmptyObject(data)){
-			if(!emptyobj_(data.triage))autoinsert_rowdata("#formTriageInfo",data.triage);
-			if(!emptyobj_(data.triage_gen))autoinsert_rowdata("#formTriageInfo",data.triage_gen);
-			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
-			if(!emptyobj_(data.triage_nurshistory))autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
-			if(!emptyobj_(data.triage_gen))$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
-			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
-			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
-			button_state_ti('edit');
-        }else{
-			button_state_ti('add');
-			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
-			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
-			examination_nursing.empty();
-			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
-        }
-
-    });
 	
 }
 
