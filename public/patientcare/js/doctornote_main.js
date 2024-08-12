@@ -3,6 +3,7 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
+    stop_scroll_on();
 
 	$('#calendar').fullCalendar({
 		// events: events,
@@ -131,10 +132,9 @@ $(document).ready(function () {
 			height: 365,
 			rowNum: 30,
 			onSelectRow:function(rowid, selected){
-				if(checkifedited()){
-					return false;
-				}
-				empty_userfile();
+				// if(checkifedited()){
+				// 	return false;
+				// }
 				$('button#timer_stop').click();
 				urlParam_trans.mrn = selrowData('#jqGrid').MRN;
 				urlParam_trans.episno = selrowData('#jqGrid').Episno;
@@ -145,9 +145,9 @@ $(document).ready(function () {
 				addmore_onadd = false;
 				addmore_onadd_phys = false;
 				addmore_onadd_diet = false;
-				refreshGrid("#jqGrid_trans", urlParam_trans);
-				refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
-				refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
+				// refreshGrid("#jqGrid_trans", urlParam_trans);
+				// refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
+				// refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
 	            populate_currDoctorNote(selrowData('#jqGrid'));
 	            populate_triage_currpt(selrowData('#jqGrid'));
 	            populate_dieteticCareNotes_currpt(selrowData('#jqGrid'));
@@ -236,10 +236,10 @@ $(document).ready(function () {
 			height: 365,
 			rowNum: 30,
 			onSelectRow:function(rowid, selected){
-				if(checkifedited()){
-					return false;
-				}
-				empty_userfile();
+				// if(checkifedited()){
+				// 	return false;
+				// }
+				// empty_userfile();
 				$('button#timer_stop').click();
 				urlParam_trans.mrn = selrowData('#jqGrid').MRN;
 				urlParam_trans.episno = selrowData('#jqGrid').Episno;
@@ -250,9 +250,9 @@ $(document).ready(function () {
 				addmore_onadd = false;
 				addmore_onadd_phys = false;
 				addmore_onadd_diet = false;
-				refreshGrid("#jqGrid_trans", urlParam_trans);
-				refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
-				refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
+				// refreshGrid("#jqGrid_trans", urlParam_trans);
+				// refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
+				// refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
 	            populate_currDoctorNote(selrowData('#jqGrid'));
 	            populate_triage_currpt(selrowData('#jqGrid'));
 	            populate_dieteticCareNotes_currpt(selrowData('#jqGrid'));
@@ -530,3 +530,27 @@ $(document).ready(function () {
 	}
 
 });
+
+function check_if_user_selected(){
+	let selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+	if(selrow == null || selrow == undefined){
+		alert('Select a patient first!');
+		return false;
+	}
+}
+
+function stop_scroll_on(){
+    $('div.paneldiv').on('mouseenter',function(){
+        let parentdiv = $(this).parent('div.panel-collapse').attr('id');
+        switch(parentdiv){
+            case 'jqGrid_ordcom_panel': SmoothScrollTo('#'+parentdiv, 300,70);break;
+            default : SmoothScrollTo('#'+parentdiv, 300);break;
+        }
+
+        $('body').addClass('stop-scrolling');
+    });
+
+    $('div.paneldiv').on('mouseleave',function(){
+        $('body').removeClass('stop-scrolling')
+    });
+}

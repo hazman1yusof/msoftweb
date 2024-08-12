@@ -1827,7 +1827,7 @@ function if_none(str){
 	return (str)?str:'NONE';
 }
 
-function SmoothScrollTo(id_or_Name, timelength,callback,minustop=120){
+function SmoothScrollTo(id_or_Name, timelength,callback,minustop=90){
   var timelength = timelength || 500;
   $('html, body').animate({
       scrollTop: $(id_or_Name).offset().top-minustop
