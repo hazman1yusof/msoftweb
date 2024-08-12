@@ -295,6 +295,7 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid2",urlParam2);
 
 			refreshGrid("#jqGrid3",urlParam2);
+			$("#pdfgen1").attr('href','./creditNote/showpdf?auditno='+selrowData("#jqGrid").apacthdr_auditno);
 			populate_form(selrowData("#jqGrid"));
 			if_cancel_hide();
 		},

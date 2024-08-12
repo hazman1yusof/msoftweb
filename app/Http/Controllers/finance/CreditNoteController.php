@@ -8,8 +8,9 @@ use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
+use PDF;
 
-    class CreditNoteController extends defaultController
+class CreditNoteController extends defaultController
 {   
 
     public function __construct()
@@ -996,7 +997,6 @@ use Carbon\Carbon;
         }
     }
 
-
     public function gltran_fromdept($deptcode){
         $obj = DB::table('sysdb.department')
                 ->select('costcode')
@@ -1067,4 +1067,59 @@ use Carbon\Carbon;
         }
     }
 
+    public function showpdf(Request $request){
+        $auditno = $request->auditno;
+        if(!$auditno){
+            abort(404);
+        }
+
+        $apacthdr = DB::table('finance.apacthdr as h')
+            ->select('h.compcode', 'h.auditno', 'h.trantype', 'h.source','h.doctype', 'h.suppcode', 'm.Name as suppname', 'm.Addr1 as addr1', 'm.Addr2 as addr2', 'm.Addr3 as addr3', 'm.TelNo as telno', 'm.TINNo', 'm.CompRegNo', 'm.AccNo', 'h.actdate', 'h.document', 'h.deptcode', 'h.amount', 'h.outamount', 'h.recstatus', 'h.payto', 'h.category', 'h.remarks', 'h.paymode', 'h.bankcode', 'h.cheqno','b.bankname', 'b.bankaccount as bankaccno')
+            ->leftJoin('material.supplier as m', function($join) use ($request){
+                $join = $join->on('m.suppcode', '=', 'h.suppcode');
+                $join = $join->where('m.compcode', '=', session('compcode'));
+            })
+            ->leftJoin('finance.bank as b', function($join) use ($request){
+                $join = $join->on('b.bankcode', '=', 'h.bankcode');
+                $join = $join->where('b.compcode', '=', session('compcode'));
+            })
+            ->where('h.compcode', '=', session('compcode'))
+            ->where('h.trantype','=', 'CN')
+            ->where('h.auditno','=',$auditno)
+            ->first();
+
+        if ($apacthdr->recstatus == "OPEN") {
+            $title = "DRAFT";
+        } elseif ($apacthdr->recstatus == "POSTED"){
+            $title = " CREDIT NOTE";
+        }
+
+        $apalloc = DB::table('finance.apalloc')
+                    ->select('compcode','source','trantype', 'auditno', 'lineno_', 'docsource', 'doctrantype', 'docauditno', 'refsource', 'reftrantype', 'refauditno', 'refamount', 'allocdate', 'allocamount', 'recstatus', 'remarks', 'suppcode', 'reference' )
+                    ->where('compcode','=', session('compcode'))
+                    ->where('source','=', 'AP')
+                    ->where('trantype','=', 'AL')
+                    ->where('docsource','=', 'AP')
+                    ->where('doctrantype','=', 'CN')
+                    ->where('docauditno','=', $auditno)
+                    ->where('recstatus','!=','CANCELLED')
+                    ->get();
+
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+                    
+        $totamount_expld = explode(".", (float)$apacthdr->amount);
+   
+        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
+        $totamt_eng = $totamt_eng_rm." ONLY";
+
+        if(count($totamount_expld) > 1){
+            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
+        }
+
+        return view('finance.AP.creditNote.creditNote_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
+
+    }
 }

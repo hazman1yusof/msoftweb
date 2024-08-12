@@ -939,6 +939,7 @@ Route::post('/creditNote/form','finance\CreditNoteController@form');
 Route::get('/creditNote/form','finance\CreditNoteController@form');
 Route::post('/CreditNoteAPDetail/form','finance\CreditNoteDetailController@form');
 Route::get('/CreditNoteAPDetail/table','finance\CreditNoteDetailController@table');
+Route::get('/creditNote/showpdf','finance\CreditNoteController@showpdf');
 
 /// Credit Note AP - report  ///
 Route::get('/creditNote_Report','finance\CreditNote_ReportController@show');
