@@ -2536,18 +2536,18 @@ $(document).ready(function (){
 		removeValidationClass(['#customer_search,#department_search']);
 		if($('#Scol').val() == 'db_entrydate'){
 			urlParam.searchCol = urlParam.searchVal = null;
-			$("input[name='Stext'], #customer_text, #department_text").hide("fast");
+			$("input[name='Stext'], #customer_text, #department_text, #debtor_outamount").hide("fast");
 			$("#docuDate_text").show("fast");
 		}else if($('#Scol').val() == 'db_debtorcode'){
-			$("input[name='Stext'],#docuDate_text,#department_text").hide("fast");
-			$("#customer_text").show("fast");
+			$("input[name='Stext'], #docuDate_text, #department_text").hide("fast");
+			$("#customer_text, #debtor_outamount").show("fast");
 			customer_search.on();
 		}else if($('#Scol').val() == 'db_deptcode'){
-			$("input[name='Stext'],#docuDate_text,#customer_text").hide("fast");
+			$("input[name='Stext'], #docuDate_text, #customer_text, #debtor_outamount").hide("fast");
 			$("#department_text").show("fast");
 			department_search.on();
 		}else{
-			$("#customer_text,#docuDate_text,#department_text").hide("fast");
+			$("#customer_text, #docuDate_text, #department_text, #debtor_outamount").hide("fast");
 			$("input[name='Stext']").show("fast");
 			$("input[name='Stext']").velocity({ width: "100%" });
 		}
@@ -2987,6 +2987,20 @@ $(document).ready(function (){
 				// 	urlParam.searchVal = [data];
 				// }
 				refreshGrid('#jqGrid', urlParam);
+				
+				var param = {
+					action: 'get_debtor_outamount',
+					url: './arenquiry/table',
+					debtorcode: data,
+				};
+				
+				$.get("./arenquiry/table?" + $.param(param), function (data){
+					
+				}, 'json').done(function (data){
+					if(!$.isEmptyObject(data)){
+						$('#debtor_outamount').val(data.outamount);
+					} 
+				});
 			},
 			gridComplete: function (obj){
 				var gridname = '#'+obj.gridname;

@@ -106,7 +106,7 @@
 							</div>
 						</div>
 						
-						<div class="col-md-2" style="float: right; display: none">
+						<div id="debtor_outamount" class="col-md-2" style="float: right;">
 							<label class="control-label" for="debtor_outamount">OutAmount</label>
 							<input id="debtor_outamount" name="debtor_outamount" maxlength="10" class="form-control input-sm" readonly>
 						</div>

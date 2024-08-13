@@ -42,6 +42,8 @@ class arenquiryController extends defaultController
                 return $this->get_table_dtl($request);
             case 'get_debtorcode_outamount':
                 return $this->get_debtorcode_outamount($request);
+            case 'get_outamount':
+                return $this->get_outamount($request);
             default:
                 return 'error happen..';
         }
@@ -135,8 +137,8 @@ class arenquiryController extends defaultController
         }
         
         if(!empty($request->filterdate)){
-            $table = $table->where('db.entrydate','>=',$request->filterdate[0]);
-            $table = $table->where('db.entrydate','<=',$request->filterdate[1]);
+            $table = $table->where('db.posteddate','>=',$request->filterdate[0]);
+            $table = $table->where('db.posteddate','<=',$request->filterdate[1]);
         }
         
         if(!empty($request->searchCol)){
@@ -483,6 +485,19 @@ class arenquiryController extends defaultController
         }
         
         return json_encode($responce);
+        
+    }
+    
+    public function get_outamount(Request $request){
+        
+        $calc_outamount = DB::table('debtor.dbacthdr')
+                        ->where('compcode', '=', session('compcode'))
+                        ->whereIn('recstatus', ['POSTED','ACTIVE'])
+                        ->where('debtorcode', '=', $value->debtorcode);
+                        // ->whereDate('posteddate', '<=', Carbon::now("Asia/Kuala_Lumpur"));
+        
+        $outamount = $this->calc_openbal($calc_outamount);
+        $value->outamount = $outamount;
         
     }
     
