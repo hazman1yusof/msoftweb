@@ -2988,6 +2988,8 @@ $(document).ready(function (){
 				// }
 				refreshGrid('#jqGrid', urlParam);
 				
+				var mycurrency3 = new currencymode(["#debtor_outamt"]);
+				
 				var param = {
 					action: 'get_outamount',
 					url: './arenquiry/table',
@@ -2998,8 +3000,9 @@ $(document).ready(function (){
 					
 				}, 'json').done(function (data){
 					if(!$.isEmptyObject(data)){
-						$('#debtor_outamount').val(data.outamount);
-					} 
+						$('#debtor_outamt').val(data.outamount);
+						mycurrency3.formatOn();
+					}
 				});
 			},
 			gridComplete: function (obj){
