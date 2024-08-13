@@ -379,7 +379,7 @@ $(document).ready(function (){
 			oper = 'edit';
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit', '');
-			recstatusDisable();
+			// recstatusDisable();
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
 		caption: "", cursor: "pointer", position: "first",
@@ -398,7 +398,7 @@ $(document).ready(function (){
 	
 	//////////////////////////add field into param, refresh grid if needed//////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['depamt','idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress']);
+	addParamField('#jqGrid',false,saveParam,['depamt','idno','compcode','adduser','adddate','upduser','upddate','computerid','ipaddress']);
 	
 	$('#excelgen1').click(function (){
 		window.location='./debtorMaster/showExcel?compcode='+selrowData('#jqGrid').compcode;

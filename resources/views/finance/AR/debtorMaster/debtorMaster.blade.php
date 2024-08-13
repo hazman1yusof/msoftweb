@@ -175,10 +175,10 @@
 				<div class="col-md-8">
 					<label class="radio-inline"><input type="radio" name="recstatus" value='ACTIVE' checked>Active</label>
 					<label class="radio-inline"><input type="radio" name="recstatus" value='DEACTIVE'>Deactive</label>
-					<label class="radio-inline"><input type="radio" name="recstatus" value='Suspend'>Suspend</label>
-					<label class="radio-inline"><input type="radio" name="recstatus" value='Legal'>Legal</label>
-					<label class="radio-inline"><input type="radio" name="recstatus" value='Debt-Collector'>Debt-Collector</label>
-					<label class="radio-inline"><input type="radio" name="recstatus" value='Yes'>Yes</label>
+					<label class="radio-inline"><input type="radio" name="recstatus" value='SUSPEND'>Suspend</label>
+					<label class="radio-inline"><input type="radio" name="recstatus" value='LEGAL'>Legal</label>
+					<label class="radio-inline"><input type="radio" name="recstatus" value='DEBT-COLLECTOR'>Debt-Collector</label>
+					<label class="radio-inline"><input type="radio" name="recstatus" value='YES'>Yes</label>
 				</div>
 			</div>
 			
