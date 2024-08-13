@@ -203,7 +203,7 @@ $(document).ready(function () {
 			{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap', align: 'right', formatter:'currency'},
 			{ label: 'Outstanding', name: 'apacthdr_outamount', width: 30 , classes: 'wrap', align: 'right', formatter:'currency'},
-			{ label: 'Status', name: 'apacthdr_recstatus', width: 23, classes: 'wrap text-uppercase',},
+			{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap text-uppercase',},
 			{ label: 'Last Payment<br/>Date', name: 'apalloc_allocdate', width: 30, classes: 'wrap text-uppercase',formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Remarks', name: 'apacthdr_remarks', width: 90, hidden:false, classes: 'wrap text-uppercase'},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },	
@@ -1714,16 +1714,24 @@ $(document).ready(function () {
 	function if_cancel_hide(){
 		if(selrowData('#jqGrid').apacthdr_recstatus.trim().toUpperCase() == 'CANCELLED'){
 			$('#jqGrid3_panel').collapse('hide');
-			$('#gridDo_panel').collapse('hide');
-			$('#gridDo').hide();
+			$('#jqGridAPAlloc_panel').collapse('hide');
+			$('#jqGrid3').hide();
+			$('#jqGridAlloc').hide();
 			$('#ifcancel_show').text(' - CANCELLED');
+			$('#ifcancel_showpv').text(' - CANCELLED');
 			$('#panel_jqGrid3').attr('data-target','-');
+			$('#panel_gridpv').attr('data-target','-');
+
 		}else{
 			$('#jqGrid3_panel').collapse('show');
-			$('#gridDo_panel').collapse('show');
-			$('#gridDo').show();
+			$('#panel_gridpv').collapse('show');
+			$('#jqGrid3').show();
+			$('#jqGridAlloc').show();
 			$('#ifcancel_show').text('');
+			$('#ifcancel_showpv').text('');
 			$('#panel_jqGrid3').attr('data-target','#jqGrid3_panel');
+			$('#panel_gridpv').attr('data-target','#jqGrid3_panel');
+
 		}
 	}
 
