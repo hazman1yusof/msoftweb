@@ -1758,17 +1758,35 @@ $(document).ready(function () {
 		if(selrowData('#jqGrid').apacthdr_recstatus.trim().toUpperCase() == 'CANCELLED'){
 			$('#jqGrid3_panel').collapse('hide');
 			$('#gridDo_panel').collapse('hide');
+			$('#gridPV_panel').collapse('hide');
+			$('#gridAttch_panel').collapse('hide');
 			$('#gridDo').hide();
+			$('#jqgridpv').hide();
+			$('#attach_iframe').hide();
 			$('#ifcancel_show').text(' - CANCELLED');
+			$('#ifcancel_showDo').text(' - CANCELLED');
+			$('#ifcancel_showPV').text(' - CANCELLED');
+			$('#ifcancel_showattach').text(' - CANCELLED');
 			$('#panel_jqGrid3').attr('data-target','-');
 			$('#panel_gridDo').attr('data-target','-')
+			$('#panel_gridpv').attr('data-target','-')
+			$('#panel_gridattach').attr('data-target','-')
+
 		}else{
 			$('#jqGrid3_panel').collapse('show');
 			$('#gridDo_panel').collapse('show');
+			$('#gridPV_panel').collapse('show');
+			$('#gridAttch_panel').collapse('show');
 			$('#gridDo').show();
+			$('#jqgridpv').show();
+			$('#attach_iframe').show();
 			$('#ifcancel_show').text('');
+			$('#ifcancel_showDo').text('');
+			$('#ifcancel_showPV').text('');
+			$('#ifcancel_showattach').text('');
 			$('#panel_jqGrid3').attr('data-target','#jqGrid3_panel');
 			$('#panel_gridDo').attr('data-target','#gridDo_panel');
+			$('#panel_gridattach').attr('data-target','#gridAttch_panel');
 		}
 	}
 

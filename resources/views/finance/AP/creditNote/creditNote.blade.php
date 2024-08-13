@@ -138,7 +138,7 @@ i.fa {
 		</div>
 
 		<div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
-			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel" id="panel_jqGrid3">
 				<b>DOCUMENT NO: </b><span id="trantype_show"></span> - <span id="document_show"></span><span id="ifcancel_show" style="color: red;"></span><br>
 				<b>CREDITOR NAME: </b><span id="suppcode_show"></span>
 
@@ -171,8 +171,8 @@ i.fa {
 		</div>
 
 	    <div class="panel panel-default" style="position: relative;" id="jqGridAPAlloc_c">
-			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridAPAlloc_panel">
-			<b>DOCUMENT NO: </b><span id="allocTrantype_show"></span> - <span id="allocDocument_show"></span><span id="ifcancel_show" style="color: red;"></span><br>
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridAPAlloc_panel" id="panel_alloc">
+			<b>DOCUMENT NO: </b><span id="allocTrantype_show"></span> - <span id="allocDocument_show"></span><span id="ifcancel_showalloc" style="color: red;"></span><br>
 			<b>CREDITOR NAME: </b><span id="allocSuppcode_show"></span>
 
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>

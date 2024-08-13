@@ -2236,12 +2236,20 @@ $(document).ready(function () {
 	function if_cancel_hide(){
 		if(selrowData('#jqGrid').apacthdr_recstatus.trim().toUpperCase() == 'CANCELLED'){
 			$('#jqGrid3_panel').collapse('hide');
+			$('#jqGridAPAlloc_panel').collapse('hide');
 			$('#ifcancel_show').text(' - CANCELLED');
+			$('#ifcancel_showalloc').text(' - CANCELLED');
 			$('#panel_jqGrid3').attr('data-target','-');
+			$('#panel_alloc').attr('data-target','-');
+
 		}else{
 			$('#jqGrid3_panel').collapse('show');
+			$('#jqGridAPAlloc_panel').collapse('show');
 			$('#ifcancel_show').text('');
+			$('#ifcancel_showalloc').text('');
 			$('#panel_jqGrid3').attr('data-target','#jqGrid3_panel');
+			$('#panel_alloc').attr('data-target','#jqGrid3_panel');
+
 		}
 	}
 
