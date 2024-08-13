@@ -2998,7 +2998,7 @@ $(document).ready(function (){
 					
 				}, 'json').done(function (data){
 					if(!$.isEmptyObject(data)){
-						$('#debtor_outamount').val(data.outamount);
+						$('#debtor_outamt').val(data.outamount);
 					} 
 				});
 			},
