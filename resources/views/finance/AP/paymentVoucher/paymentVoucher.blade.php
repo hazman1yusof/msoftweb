@@ -32,6 +32,20 @@ i.fa {
 	white-space: pre-wrap !important;
 }
 
+#div_print_alloc{
+	display: inline-block;
+	position: absolute;
+	right: 170px;
+	top: 20px;
+}
+#div_print_alloc a{
+	padding-right:10px;
+}
+#div_print_alloc span{
+	float: right;
+    padding-right: 10px;
+}
+
 @endsection
 
 @section('body')
@@ -146,15 +160,21 @@ i.fa {
 		</div>
 
 	    <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
-			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel" id="panel_jqGrid3">
-				<b>DOCUMENT NO: </b><span id="trantype_show"></span> - <span id="pvno_show"></span><span id="ifcancel_show" style="color: red;"></span><br>
-				<b>AUDIT NO: </b><span id="auditno_show"></span><br>
+			<div class="panel-heading clearfix collapsed" id="panel_jqGrid3">
+				<b>DOCUMENT NO: </b><span id="trantype_show"></span> - <span id="pvno_show"></span><span id="ifcancel_show" style="color: red;"></span>
+				<b style="padding-left: 20px;">AUDIT NO: </b><span id="auditno_show"></span><br>
 				<b>CREDITOR NAME: </b><span id="suppcode_show"></span>
 
-				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid3_panel" ></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid3_panel" ></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 70px; top: 10px;">
 					<h5>Allocation</h5>
+				</div>
+
+				<div class="pull-right" id="div_print_alloc">
+					<a class='pull-right pointer text-primary' id='link_do' href="" target="_blank">GRN</a><span>|</span>
+					<a class='pull-right pointer text-primary' id='link_po' href="" target="_blank">Purchase Order</a><span>|</span>
+					<a class='pull-right pointer text-primary' id='link_invoice' href="" target="_blank">Invoice</a>
 				</div>
 			</div>
 			<div id="jqGrid3_panel" class="panel-collapse collapse">

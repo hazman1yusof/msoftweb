@@ -30,7 +30,7 @@ class attachment_uploadController extends defaultController
             case 'purchaserequest':
                 return $this->default_page($request);
             default:
-                abort(404);
+                return $this->default_page($request);
         }
     }
 
@@ -44,7 +44,7 @@ class attachment_uploadController extends defaultController
             case 'purchaserequest':
                 return $this->default_data($request);
             default:
-                abort(404);
+                return $this->default_data($request);
         }
     }
 
@@ -58,7 +58,7 @@ class attachment_uploadController extends defaultController
             case 'purchaserequest':
                 return $this->default_form($request);
             default:
-                abort(404);
+                return $this->default_form($request);
         }
     }
     
@@ -88,7 +88,7 @@ class attachment_uploadController extends defaultController
         }else{
             $filename = $request->file('file')->getClientOriginalName();
         }
-        $file_path = $request->file('file')->store('attachment', 'attachment_uploads');
+        $file_path = $request->file('file')->store('attachment', \config('get_config.ATTACHMENT_UPLOAD'));
         DB::table('finance.attachment')
             ->insert([
                 'compcode' => session('compcode'),
@@ -113,7 +113,7 @@ class attachment_uploadController extends defaultController
 
     
     public function thumbnail($folder,$image_path){
-        $attachment_path = 'C:\laragon\www\medicare';
+        $attachment_path = \config('get_config.ATTACHMENT_PATH');
 
         if($folder == 'attachment'){ //image
             $img = Image::make($attachment_path.'/uploads/'.$folder.'/'.$image_path)->resize(64, 64);
@@ -144,7 +144,7 @@ class attachment_uploadController extends defaultController
     }
 
     public function download(Request $request,$folder,$image_path){
-        $attachment_path = 'C:\laragon\www\medicare';
+        $attachment_path = \config('get_config.ATTACHMENT_PATH');
 
         $file = $attachment_path."\\uploads\\".$folder."\\".$image_path;
         // dump($file);

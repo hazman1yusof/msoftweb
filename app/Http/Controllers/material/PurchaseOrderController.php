@@ -163,7 +163,11 @@ class PurchaseOrderController extends defaultController
                             ->where('recno','=',$request->purordhd_recno)->first();
 
         $purreqno = $purordhd_obj->purreqno;
-       
+
+        if($purordhd_obj->recstatus != 'OPEN'){
+            throw new \Exception("Cant Edit this document, status is not OPEN!");
+        }
+
         if($purreqno == $request->purordhd_purreqno){
             // ni edit macam biasa, nothing special
             DB::beginTransaction();

@@ -33,6 +33,8 @@ class PaymentVoucherController extends defaultController
                 return $this->get_alloc_table($request);
             case 'get_alloc_when_edit':
                 return $this->get_alloc_when_edit($request);
+            case 'link_pv':
+                return $this->link_pv($request);
             default:
                 return 'error happen..';
         }
@@ -227,8 +229,7 @@ class PaymentVoucherController extends defaultController
 
     }
 
-    public function form(Request $request)
-    {   
+    public function form(Request $request){   
         DB::enableQueryLog();
         switch($request->oper){
             case 'add':
@@ -306,6 +307,11 @@ class PaymentVoucherController extends defaultController
                     'amount' => $request->apacthdr_amount,
                     'outamount' => $request->apacthdr_amount,
                 ];
+
+                if($request->apacthdr_paymode == 'TT'){
+                    $last_tt = $this->defaultSysparam('AP','TT');
+                    $array_insert['cheqno'] = $last_tt;
+                }
 
                 $idno_apacthdr = $table->insertGetId($array_insert);
 
@@ -436,6 +442,11 @@ class PaymentVoucherController extends defaultController
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'OPEN'
                 ];
+
+                if($request->apacthdr_paymode == 'TT'){
+                    $last_tt = $this->defaultSysparam('AP','TT');
+                    $array_insert['cheqno'] = $last_tt;
+                }
 
                 $idno_apacthdr = $table->insertGetId($array_insert);
 
@@ -1237,6 +1248,76 @@ class PaymentVoucherController extends defaultController
         //     return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
  
         // }
+    }
+
+    public function link_pv(Request $request){
+
+        switch ($request->type) {
+            case 'do':
+                $apdt = DB::table('finance.apactdtl as apdt')
+                                ->where('apdt.compcode',session('compcode'))
+                                ->where('apdt.auditno',$request->auditno)
+                                ->where('apdt.recstatus','!=','DELETE')
+                                ->where('apdt.source','AP');
+                if(!$apdt->exists()){
+                    dd('No delivery Order');
+                }
+
+                $apdt = $apdt->first();
+                $delordhd = DB::table('material.delordhd')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('delordno','=',$apdt->document)
+                            ->first();
+
+                $recno = $delordhd->recno;
+                return redirect('/deliveryOrder/showpdf?recno='.$recno);
+
+                break;
+            case 'po':
+                $apdt = DB::table('finance.apactdtl as apdt')
+                                ->where('apdt.compcode',session('compcode'))
+                                ->where('apdt.auditno',$request->auditno)
+                                ->where('apdt.recstatus','!=','DELETE')
+                                ->where('apdt.source','AP');
+
+                if(!$apdt->exists()){
+                    dd('No delivery Order');
+                }
+
+                $apdt = $apdt->first();
+                $delordhd = DB::table('material.delordhd')
+                            ->select('reqdept','srcdocno')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('delordno','=',$apdt->document)
+                            ->whereNotNull('srcdocno');
+
+                if(!$delordhd->exists()){
+                    dd('No Purchase Order');
+                }
+                $delordhd = $delordhd->first();
+                $purordhd = DB::table('material.purordhd')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('prdept','=',$delordhd->reqdept)
+                            ->where('purordno','=',$delordhd->srcdocno)
+                            ->first();
+
+                $recno = $purordhd->recno;
+                return redirect('/purchaseOrder/showpdf?recno='.$recno);
+
+                break;
+
+            case 'invoice':
+
+                return redirect('/attachment_upload?page=invoiceap&idno='.$request->idno);
+            
+            default:
+                // code...
+                break;
+        }
+
+        dd($apdt);
+        dump($request->type);
+        dd($request->idno);
     }
 
 }

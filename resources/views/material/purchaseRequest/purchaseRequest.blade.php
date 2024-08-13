@@ -91,14 +91,14 @@ i.fa {
 						      <option value="All" selected>ALL</option>
 						      <option value="OPEN">OPEN</option>
 						      <option value="CANCELLED">CANCELLED</option>
-						      <option value="REQUEST">REQUEST</option>
+						      <option value="REQUEST">PREPARED</option>
 						      <option value="SUPPORT">SUPPORT</option>
 						      <option value="VERIFIED">VERIFIED</option>
 						      <option value="APPROVED">APPROVED</option>
 						      <option value="COMPLETED">COMPLETED</option>
 						      <option value="PARTIAL">PARTIAL</option>
 							@elseif (Request::get('scope') == 'SUPPORT')
-								<option value="REQUEST">REQUEST</option>
+								<option value="REQUEST">PREPARED</option>
 							@elseif (Request::get('scope') == 'VERIFIED')
 								<option value="SUPPORT">SUPPORT</option>
 							@elseif (Request::get('scope') == 'APPROVED')
@@ -333,7 +333,7 @@ i.fa {
 							</div>
 
 							<div class="form-group">
-					  			<label class="col-md-2 control-label" for="purreqhd_purreqdt">Request Date</label>
+					  			<label class="col-md-2 control-label" for="purreqhd_purreqdt">Prepared Date</label>
 					  			<div class="col-md-3">
 									<input id="purreqhd_purreqdt" name="purreqhd_purreqdt" data-validation="required" data-validation-error-msg="Please Enter Value" type="date" class="form-control input-sm">
 					  			</div>
@@ -353,7 +353,7 @@ i.fa {
 
 					    	<div class="form-group data_info">
 								<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_requestby">Request By</label>  
+									<label class="control-label" for="purreqhd_requestby">Prepared By</label>  
 						  			<input id="purreqhd_requestby" name="purreqhd_requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 

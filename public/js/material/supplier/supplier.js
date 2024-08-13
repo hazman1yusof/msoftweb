@@ -28,6 +28,7 @@ $(document).ready(function () {
 	//////////////////////////////////////////////////////////////
 
 	var fdl = new faster_detail_load();
+	var myattachment = new attachment_page("supplierAP","#jqGrid","idno");
 
 	////////////////////object for dialog handler//////////////////
 	var dialog_SuppGroup = new ordialog(

@@ -1,0 +1,5 @@
+<?php
+return [
+  'ATTACHMENT_PATH' => env('ATTACHMENT_PATH'),
+  'ATTACHMENT_UPLOAD' => env('ATTACHMENT_UPLOAD')
+];

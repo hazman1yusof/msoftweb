@@ -29,6 +29,7 @@ $(document).ready(function () {
 	var radbuts=new checkradiobutton(['delordhd_taxclaimable']);
 	var fdl = new faster_detail_load();
 	var myfail_msg = new fail_msg_func();
+	var myattachment = new attachment_page("deliveryorder","#jqGrid","delordhd_idno");
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#delordhd_trandate"]);

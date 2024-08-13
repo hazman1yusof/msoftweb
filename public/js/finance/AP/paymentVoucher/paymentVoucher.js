@@ -293,6 +293,9 @@ $(document).ready(function () {
 
 			refreshGrid("#jqGrid3",urlParam2);
 			$("#pdfgen1").attr('href','./paymentVoucher/showpdf?auditno='+selrowData("#jqGrid").apacthdr_auditno);
+			$("#link_do").attr('href','./paymentVoucher/table?action=link_pv&type=do&idno='+selrowData("#jqGrid").apacthdr_idno);
+			$("#link_po").attr('href','./paymentVoucher/table?action=link_pv&type=do&idno='+selrowData("#jqGrid").apacthdr_idno);
+			$("#link_invoice").attr('href','./paymentVoucher/table?action=link_pv&type=invoice&idno='+selrowData("#jqGrid").apacthdr_idno);
 			if_cancel_hide();
 
 			populate_form(selrowData("#jqGrid"));
@@ -1330,14 +1333,21 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager3",
 		loadComplete: function(data){
-
+			$("#jqGrid3").setSelection($("#jqGrid3").getDataIDs()[0]);
 			setjqgridHeight(data,'jqGrid3');
 			calc_jq_height_onchange("jqGrid3");
 			
 		},
 		gridComplete: function(){
-			
 			fdl.set_array().reset();
+		},
+		onSelectRow:function(rowid, selected){
+			let refauditno = selrowData("#jqGrid3").refauditno;
+			let idno = selrowData("#jqGrid3").idno;
+			
+			$("#link_do").attr('href','./paymentVoucher/table?action=link_pv&type=do&auditno='+refauditno);
+			$("#link_po").attr('href','./paymentVoucher/table?action=link_pv&type=po&auditno='+refauditno);
+			$("#link_invoice").attr('href','./paymentVoucher/table?action=link_pv&type=invoice&idno='+idno);
 		},
 	});
 	jqgrid_label_align_right("#jqGrid3");
@@ -1395,6 +1405,7 @@ $(document).ready(function () {
 								break;
 
 					case 'TT':
+								$('#apacthdr_cheqno').prop('readonly',true);
 								$('#cheqno_parent').text('TT No');
 								dialog_cheqno.off();
 								$('#cheqno_parent').show();

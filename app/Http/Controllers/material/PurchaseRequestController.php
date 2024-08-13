@@ -237,6 +237,13 @@ class PurchaseRequestController extends defaultController
         try {
             //////////where//////////
             $table = $table->where('idno','=',$request->purreqhd_idno);
+
+            $obj_ = $table->first();
+
+            if($obj_->recstatus != 'OPEN'){
+                throw new \Exception("Cant Edit this document, status is not OPEN!");
+            }
+
             $table->update($array_update);
 
             $responce = new stdClass();
