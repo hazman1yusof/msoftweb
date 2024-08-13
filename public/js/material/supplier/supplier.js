@@ -382,6 +382,8 @@ $(document).ready(function () {
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 			$("#searchForm input[name=Stext]").focus();
 			fdl.set_array().reset();
+			populate_form(selrowData("#jqGrid"));
+
 		},
 		onSelectRow:function(rowid, selected){
 			if(rowid != null) {
@@ -392,6 +394,7 @@ $(document).ready(function () {
 				//$("#Fsuppitems :input[name='billtype']").val(selrowData("#jqGrid").billtype);
 				$("#Fsuppitems :input[name='si_suppcode']").val(selrowData("#jqGrid").SuppCode);
 				refreshGrid('#gridSuppitems',urlParam_suppitems);
+				populate_form(selrowData("#jqGrid"));
 				$('#gridSuppBonus').jqGrid('clearGridData');
 				$("#pg_jqGridPager3 table").hide();
 				$("#pg_jqGridPager2 table").show();
@@ -1223,3 +1226,24 @@ $(document).ready(function () {
 	});
 
 });
+
+function populate_form(obj){
+
+	//panel header
+	$('#suppItemCode_show').text(obj.SuppCode);
+	$('#suppItemname_show').text(obj.Name);
+
+	$('#suppBonCode_show').text(obj.SuppCode);
+	$('#suppBonName_show').text(obj.Name);
+
+	$('#attachCode_show').text(obj.SuppCode);
+	$('#attachName_show').text(obj.Name);
+	
+}
+
+function empty_form(){
+
+	$('#suppcode_show').text('');
+	$('#suppname_show').text('');
+
+}

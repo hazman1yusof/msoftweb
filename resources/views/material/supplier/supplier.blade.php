@@ -73,40 +73,50 @@ i.fa {
             </div>
         </div>
 
-		<div class="panel panel-default" id="gridSuppitems_c">
+		<div class="panel panel-default" style="position: relative;" id="gridSuppitems_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel1">
-				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
-    			<i class="fa fa-angle-double-down" style="font-size:24px"></i>
-    			Supplier Item </div>
-				<div id="jqGrid3_panel1" class="panel-collapse collapse">
-					<div class="panel-body">
-					    <div class='col-md-12' style="padding:0 0 15px 0">
-			            	<table id="gridSuppitems" class="table table-striped"></table>
-			            		<div id="jqGridPager2"></div>
-			        	</div>
+				<b>SUPPLIER : </b><span id="suppItemCode_show"></span> - <span id="suppItemname_show"></span>
+					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+							<h5>Supplier Item</h5>
+						</div>
+			</div>
+
+			<div id="jqGrid3_panel1" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="gridSuppitems" class="table table-striped"></table>
+							<div id="jqGridPager2"></div>
 					</div>
-				</div>	
+				</div>
+			</div>	
 		</div>
 
-		<div class="panel panel-default" id="gridSuppBonus_c">
+		<div class="panel panel-default" style="position: relative;" id="gridSuppBonus_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel2">
-				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
-    			<i class="fa fa-angle-double-down" style="font-size:24px"></i>
-    		Supplier Bonus </div>
-				<div id="jqGrid3_panel2" class="panel-collapse collapse">
-					<div class="panel-body">
-					    <div class='col-md-12' style="padding:0 0 15px 0">
-			            	<table id="gridSuppBonus" class="table table-striped"></table>
-			            		<div id="jqGridPager3"></div>
-			        	</div>
+			<b>SUPPLIER : </b><span id="suppBonCode_show"></span> - <span id="suppBonName_show"></span>
+					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+							<h5>Supplier Bonus</h5>
+						</div>
+			</div>
+
+			<div id="jqGrid3_panel2" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="gridSuppBonus" class="table table-striped"></table>
+							<div id="jqGridPager3"></div>
 					</div>
-				</div>	
+				</div>
+			</div>	
 		</div>
 
 		<!-- attachment -->
 		<div class="panel panel-default" style="position: relative;" id="gridAttch_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridAttch_panel" id="panel_gridpv">
-
+			<b>SUPPLIER : </b><span id="attachCode_show"></span> - <span id="attachName_show"></span>
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">

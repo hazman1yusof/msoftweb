@@ -341,6 +341,8 @@ $(document).ready(function () {
 			}
 			urlParam2_alloc.idno=selrowData("#jqGrid").apacthdr_idno;
 			refreshGrid("#gridAlloc",urlParam2_alloc);
+			populate_form(selrowData("#jqGrid"));
+
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
@@ -357,6 +359,8 @@ $(document).ready(function () {
 				$("#searchForm input[name=Stext]").focus();
 			}
 			fdl.set_array().reset();
+			populate_form(selrowData("#jqGrid"));
+
 		},
 		loadComplete: function(data){
 			calc_jq_height_onchange("jqGrid");
@@ -1634,4 +1638,29 @@ $(document).ready(function () {
 			$('#grid_detail').show();
 		}
 
+	}
+
+	function populate_form(obj){
+
+		//panel header
+		$('#inTrantype_show').text(obj.apacthdr_trantype);
+		$('#inDocument_show').text(padzero(obj.apacthdr_auditno));
+		$('#inSuppcode_show').text(obj.supplier_name);
+
+		$('#pvTrantype_show').text(obj.apacthdr_trantype);
+		$('#pvDocument_show').text(padzero(obj.apacthdr_auditno));
+		$('#pvSuppcode_show').text(obj.supplier_name);
+
+		$('#dnTrantype_show').text(obj.apacthdr_trantype);
+		$('#dnDocument_show').text(padzero(obj.apacthdr_auditno));
+		$('#dnSuppcode_show').text(obj.supplier_name);
+
+		$('#cnTrantype_show').text(obj.apacthdr_trantype);
+		$('#cnDocument_show').text(padzero(obj.apacthdr_auditno));
+		$('#cnSuppcode_show').text(obj.supplier_name);
+
+		$('#allocTrantype_show').text(obj.apacthdr_trantype);
+		$('#allocDocument_show').text(padzero(obj.apacthdr_auditno));
+		$('#allocSuppcode_show').text(obj.supplier_name);
+	
 	}

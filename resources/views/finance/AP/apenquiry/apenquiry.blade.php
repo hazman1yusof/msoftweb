@@ -103,8 +103,14 @@
                     </div>
             </div>
 
-			<div class="panel panel-default" id="jqGrid3_div_in" style="display:none;">
-			    <div class="panel-heading">Invoice Detail</div>
+			<div class="panel panel-default" id="jqGrid3_div_in" style="position: relative;">
+				<div class="panel-heading">
+					<b>DOCUMENT NO: </b><span id="inTrantype_show"></span> - <span id="inDocument_show"></span><br>
+					<b>CREDITOR NAME: </b><span id="inSuppcode_show"></span>
+						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+							<h5>Invoice Detail</h5>
+						</div>
+				</div>
 				<div class="panel-body">
 					<div class='col-md-12' style="padding:0 0 15px 0">
 						<table id="jqGrid3_in" class="table table-striped"></table>
@@ -113,8 +119,14 @@
 				</div>
 			</div>
 
-            <div class="panel panel-default" id="jqGrid3_div_pv" style="display:none;">
-			    <div class="panel-heading">Payment Voucher Detail</div>
+            <div class="panel panel-default" id="jqGrid3_div_pv" style="position: relative;">
+				<div class="panel-heading">
+					<b>DOCUMENT NO: </b><span id="pvTrantype_show"></span> - <span id="pvDocument_show"></span><br>
+					<b>CREDITOR NAME: </b><span id="pvSuppcode_show"></span>
+						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+							<h5>Payment Voucher Detail</h5>
+						</div>
+				</div>
 				<div class="panel-body">
 					<div class='col-md-12' style="padding:0 0 15px 0">
 						<table id="jqGrid3_pv" class="table table-striped"></table>
@@ -123,8 +135,14 @@
 				</div>
 			</div>
 
-			<div class="panel panel-default" id="jqGrid3_div_dn" style="display:none;">
-			    <div class="panel-heading">Debit Note Detail</div>
+			<div class="panel panel-default" id="jqGrid3_div_dn" style="position: relative;">
+				<div class="panel-heading">
+					<b>DOCUMENT NO: </b><span id="dnTrantype_show"></span> - <span id="dnDocument_show"></span><br>
+					<b>CREDITOR NAME: </b><span id="dnSuppcode_show"></span>
+						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+							<h5>Debit Note Detail</h5>
+						</div>
+				</div>
 				<div class="panel-body">
 					<div class='col-md-12' style="padding:0 0 15px 0">
 						<table id="jqGrid3_dn" class="table table-striped"></table>
@@ -133,8 +151,14 @@
 				</div>
 			</div>
 
-            <div class="panel panel-default" id="jqGrid3_div_cn" style="display:none;">
-			    <div class="panel-heading">Credit Note Detail</div>
+            <div class="panel panel-default" id="jqGrid3_div_cn" style="position: relative;">
+				<div class="panel-heading">
+					<b>DOCUMENT NO: </b><span id="cnTrantype_show"></span> - <span id="cnDocument_show"></span></span><br>
+					<b>CREDITOR NAME: </b><span id="cnSuppcode_show"></span>
+						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+							<h5>Credit Note Detail</h5>
+						</div>
+				</div>
 				<div class="panel-body">
 					<div class='col-md-12' style="padding:0 0 15px 0">
 						<table id="jqGrid3_cn" class="table table-striped"></table>
@@ -145,6 +169,8 @@
 
 			<div class="panel panel-default" style="position: relative;" id="gridAlloc_c">
 				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridAlloc_panel">
+				<b>DOCUMENT NO: </b><span id="allocTrantype_show"></span> - <span id="allocDocument_show"></span><br>
+				<b>CREDITOR NAME: </b><span id="allocSuppcode_show"></span>
 
 					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>

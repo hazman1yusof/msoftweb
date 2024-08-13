@@ -178,7 +178,8 @@ i.fa {
 		
 		<div class="panel panel-default" style="position: relative;" id="jqGridAPAlloc_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridAPAlloc_panel">
-				
+			<b>DOCUMENT NO: </b><span id="pvTrantype_show"></span> - <span id="pvDocument_show"></span><span id="ifcancel_show" style="color: red;"></span><br>
+			<b>SUPPLIER NAME: </b><span id="pvSuppcode_show"></span>
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">

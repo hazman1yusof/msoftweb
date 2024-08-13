@@ -1853,6 +1853,18 @@ function populate_form(obj){
 	$('#trantype_show').text(obj.apacthdr_trantype);
 	$('#document_show').text(obj.apacthdr_document);
 	$('#suppcode_show').text(obj.supplier_name);
+
+	$('#doTrantype_show').text(obj.apacthdr_trantype);
+	$('#doDocument_show').text(obj.apacthdr_document);
+	$('#doSuppcode_show').text(obj.supplier_name);
+
+	$('#pvTrantype_show').text(obj.apacthdr_trantype);
+	$('#pvDocument_show').text(obj.apacthdr_document);
+	$('#pvSuppcode_show').text(obj.supplier_name);
+
+	$('#attachTrantype_show').text(obj.apacthdr_trantype);
+	$('#attachDocument_show').text(obj.apacthdr_document);
+	$('#attachSuppcode_show').text(obj.supplier_name);
 	
 	if($('#scope').val().trim().toUpperCase() == 'CANCEL'){
 		$('td#glyphicon-plus,td#glyphicon-edit').hide();

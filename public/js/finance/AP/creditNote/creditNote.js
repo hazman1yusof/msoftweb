@@ -2420,6 +2420,11 @@ function populate_form(obj){
 	$('#document_show').text(obj.apacthdr_document);
 	$('#suppcode_show').text(obj.supplier_name);
 
+	$('#allocTrantype_show').text(obj.apacthdr_trantype);
+	$('#allocDocument_show').text(obj.apacthdr_document);
+	$('#allocSuppcode_show').text(obj.supplier_name);
+
+
 	if($('#scope').val().trim().toUpperCase() == 'CANCEL'){
 		$('td#glyphicon-plus,td#glyphicon-edit').hide();
 	}else{

@@ -217,7 +217,8 @@ i.fa {
 
 		<div class="panel panel-default" style="position: relative;" id="gridDo_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridDo_panel" id="panel_gridDo">
-
+			<b>DOCUMENT NO: </b><span id="doTrantype_show"></span> - <span id="doDocument_show"></span><span id="ifcancel_show" style="color: red;"></span><br>
+			<b>SUPPLIER NAME: </b><span id="doSuppcode_show"></span>
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
@@ -236,7 +237,8 @@ i.fa {
 
 		<div class="panel panel-default" style="position: relative;" id="gridPV_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridPV_panel" id="panel_gridpv">
-
+			<b>DOCUMENT NO: </b><span id="pvTrantype_show"></span> - <span id="pvDocument_show"></span><span id="ifcancel_show" style="color: red;"></span><br>
+			<b>SUPPLIER NAME: </b><span id="pvSuppcode_show"></span>
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
@@ -256,7 +258,8 @@ i.fa {
 		<!-- attachment -->
 		<div class="panel panel-default" style="position: relative;" id="gridAttch_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridAttch_panel" id="panel_gridpv">
-
+			<b>DOCUMENT NO: </b><span id="attachTrantype_show"></span> - <span id="attachDocument_show"></span><span id="ifcancel_show" style="color: red;"></span><br>
+			<b>SUPPLIER NAME: </b><span id="attachSuppcode_show"></span>
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
