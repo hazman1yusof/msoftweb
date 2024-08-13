@@ -81,7 +81,7 @@
 				if(currentPage == 1){
 					var logohdr = {image: 'logohdr',style:'header_img',width:350, height:75, alignment: 'center'};
 					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true};
-					var compbankdet = {text: 'COMP A/C NO: '+ini_compbankdet.bankaccno+ ' ' +ini_compbankdet.bankname,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};
+					var compbankdet = {text: 'COMP A/C NO: '+ini_compbankdet.bankname+ ' ' +ini_compbankdet.bankaccno,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};
 					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
 					retval.push(logohdr);
 					retval.push(title);
@@ -89,7 +89,7 @@
 					retval.push(pageno);
 				}else{
 					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true, margin: [0, 71, 0, 0]};
-					var compbankdet = {text: 'COMP A/C NO: '+ini_compbankdet.bankaccno+ ' ' +ini_compbankdet.bankname,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
+					var compbankdet = {text: 'COMP A/C NO: '+ini_compbankdet.bankname+ ' ' +ini_compbankdet.bankaccno,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
 					retval.push(title);
 					retval.push(compbankdet);
 					retval.push(pageno);
@@ -199,7 +199,7 @@ function make_pdf(){
 						{text: ''}, {text: ''},
 					],
 					[{},{},{},{}],
-					[{text:'PAYEE TEL NO',bold: true},{text: ': '+ini_header.ptelno},{text:'A/C NO',bold: true},{text: ': '+ini_header.AccNo}],
+					[{text:'PAYEE TEL NO',bold: true},{text: ': '+ini_header.ptelno},{text:'BANK A/C NO',bold: true},{text: ': '+ini_header.AccNo}],
 					[{text:'REG NO',bold: true},{text: ': '+ini_header.CompRegNo},{text:'TIN NO',bold: true},{text: ': '+ini_header.TINNo}]
 				],
             },
