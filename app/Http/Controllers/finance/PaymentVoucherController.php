@@ -1261,7 +1261,7 @@ class PaymentVoucherController extends defaultController
         if(!$apalloc_PV->exists()){
             return 0 ;
         }
-        
+
         $apalloc_PV = $apalloc_PV->first();
         $apalloc_CN = DB::table('finance.apalloc')
                     ->where('compcode',session('compcode'))
@@ -1373,7 +1373,7 @@ class PaymentVoucherController extends defaultController
 
                 $apdt = $apdt->first();
                 $delordhd = DB::table('material.delordhd')
-                            ->select('reqdept','srcdocno')
+                            ->select('prdept','srcdocno')
                             ->where('compcode','=',session('compcode'))
                             ->where('delordno','=',$apdt->document)
                             ->whereNotNull('srcdocno');
@@ -1385,10 +1385,14 @@ class PaymentVoucherController extends defaultController
                 $delordhd = $delordhd->first();
                 $purordhd = DB::table('material.purordhd')
                             ->where('compcode','=',session('compcode'))
-                            ->where('prdept','=',$delordhd->reqdept)
-                            ->where('purordno','=',$delordhd->srcdocno)
-                            ->first();
+                            ->where('prdept','=',$delordhd->prdept)
+                            ->where('purordno','=',$delordhd->srcdocno);
 
+                if(!$purordhd->exists()){
+                    abort(403,'No Purchase Order');
+                    // dd('No Purchase Order');
+                }
+                $purordhd = $purordhd->first();
                 $recno = $purordhd->recno;
                 return redirect('/purchaseOrder/showpdf?recno='.$recno);
 
