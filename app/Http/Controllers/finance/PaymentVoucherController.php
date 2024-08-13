@@ -1236,9 +1236,9 @@ class PaymentVoucherController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
 
-        $this->get_CN_from_PV($apacthdr);
+        $CN_obj = $this->get_CN_from_PV($apacthdr);
 
-        return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
+        return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title','CN_obj'));
 
         // if(empty($request->type)){
 
@@ -1257,9 +1257,12 @@ class PaymentVoucherController extends defaultController
                     ->where('compcode',session('compcode'))
                     ->where('docsource',$apacthdr->source)
                     ->where('doctrantype',$apacthdr->trantype)
-                    ->where('docauditno',$apacthdr->auditno)
-                    ->first();
-
+                    ->where('docauditno',$apacthdr->auditno);
+        if(!$apalloc_PV->exists()){
+            return 0 ;
+        }
+        
+        $apalloc_PV = $apalloc_PV->first();
         $apalloc_CN = DB::table('finance.apalloc')
                     ->where('compcode',session('compcode'))
                     ->where('recstatus','POSTED')
@@ -1276,8 +1279,61 @@ class PaymentVoucherController extends defaultController
         $apalloc_CN = $apalloc_CN->first();
         $auditno = $apalloc_CN->docauditno;
 
-        
-        
+        $apacthdr = DB::table('finance.apacthdr as h')
+            ->select('h.compcode', 'h.auditno', 'h.trantype', 'h.source','h.doctype', 'h.suppcode', 'm.Name as suppname', 'm.Addr1 as addr1', 'm.Addr2 as addr2', 'm.Addr3 as addr3', 'm.TelNo as telno', 'm.TINNo', 'm.CompRegNo', 'm.AccNo', 'h.actdate', 'h.document', 'h.deptcode', 'h.amount', 'h.outamount', 'h.recstatus', 'h.payto', 'h.category', 'h.remarks', 'h.paymode', 'h.bankcode', 'h.cheqno','b.bankname', 'b.bankaccount as bankaccno')
+            ->leftJoin('material.supplier as m', function($join){
+                $join = $join->on('m.suppcode', '=', 'h.suppcode');
+                $join = $join->where('m.compcode', '=', session('compcode'));
+            })
+            ->leftJoin('finance.bank as b', function($join){
+                $join = $join->on('b.bankcode', '=', 'h.bankcode');
+                $join = $join->where('b.compcode', '=', session('compcode'));
+            })
+            ->where('h.compcode', '=', session('compcode'))
+            ->where('h.trantype','=', 'CN')
+            ->where('h.auditno','=',$auditno)
+            ->first();
+
+        if ($apacthdr->recstatus == "OPEN") {
+            $title = "DRAFT";
+        } elseif ($apacthdr->recstatus == "POSTED"){
+            $title = " CREDIT NOTE";
+        }
+
+        $apalloc = DB::table('finance.apalloc')
+                    ->select('compcode','source','trantype', 'auditno', 'lineno_', 'docsource', 'doctrantype', 'docauditno', 'refsource', 'reftrantype', 'refauditno', 'refamount', 'allocdate', 'allocamount', 'recstatus', 'remarks', 'suppcode', 'reference' )
+                    ->where('compcode','=', session('compcode'))
+                    ->where('source','=', 'AP')
+                    ->where('trantype','=', 'AL')
+                    ->where('docsource','=', 'AP')
+                    ->where('doctrantype','=', 'CN')
+                    ->where('docauditno','=', $auditno)
+                    ->where('recstatus','!=','CANCELLED')
+                    ->get();
+
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+                    
+        $totamount_expld = explode(".", (float)$apacthdr->amount);
+   
+        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
+        $totamt_eng = $totamt_eng_rm." ONLY";
+
+        if(count($totamount_expld) > 1){
+            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
+        }
+
+        $CN_obj = new stdClass();
+        $CN_obj->apacthdr = $apacthdr;
+        $CN_obj->apalloc = $apalloc;
+        $CN_obj->totamt_eng = $totamt_eng;
+        $CN_obj->company = $company;
+        $CN_obj->title = $title;
+
+        return $CN_obj;
+
     }
 
     public function link_pv(Request $request){
@@ -1353,10 +1409,6 @@ class PaymentVoucherController extends defaultController
                 // code...
                 break;
         }
-
-        dd($apdt);
-        dump($request->type);
-        dd($request->idno);
     }
 
 }
