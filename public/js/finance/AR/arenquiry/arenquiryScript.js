@@ -2989,7 +2989,7 @@ $(document).ready(function (){
 				refreshGrid('#jqGrid', urlParam);
 				
 				var param = {
-					action: 'get_debtor_outamount',
+					action: 'get_outamount',
 					url: './arenquiry/table',
 					debtorcode: data,
 				};

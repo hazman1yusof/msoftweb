@@ -493,11 +493,14 @@ class arenquiryController extends defaultController
         $calc_outamount = DB::table('debtor.dbacthdr')
                         ->where('compcode', '=', session('compcode'))
                         ->whereIn('recstatus', ['POSTED','ACTIVE'])
-                        ->where('debtorcode', '=', $value->debtorcode);
+                        ->where('debtorcode', '=', $request->debtorcode);
                         // ->whereDate('posteddate', '<=', Carbon::now("Asia/Kuala_Lumpur"));
         
         $outamount = $this->calc_openbal($calc_outamount);
-        $value->outamount = $outamount;
+        $responce = new stdClass();
+        $responce->outamount = $outamount;
+        
+        return json_encode($responce);
         
     }
     

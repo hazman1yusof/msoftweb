@@ -461,6 +461,9 @@ use Carbon\Carbon;
             foreach ($request->idno_array as $auditno){
 
                 $apacthdr = DB::table('finance.apacthdr')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=','AP')
+                    ->where('trantype','=','IN')
                     ->where('auditno','=',$auditno)
                     ->first();
 
@@ -489,6 +492,9 @@ use Carbon\Carbon;
                 }
 
                 DB::table('finance.apacthdr')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=','AP')
+                    ->where('trantype','=','IN')
                     ->where('auditno','=',$auditno)
                     ->update([
                         'recstatus' => 'POSTED',
@@ -513,8 +519,11 @@ use Carbon\Carbon;
         try {
 
             $apacthdr = DB::table('finance.apacthdr')
-                ->where('auditno','=',$request->auditno)
-                ->first();
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=','AP')
+                    ->where('trantype','=','IN')
+                    ->where('auditno','=',$request->auditno)
+                    ->first();
 
             if($apacthdr->recstatus = 'POSTED'){
                 $delordhd = DB::table('material.delordhd')
@@ -527,6 +536,8 @@ use Carbon\Carbon;
 
                 $apactdtl = DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
+                    ->where('source','=','AP')
+                    ->where('trantype','=','IN')
                     ->where('auditno','=', $request->auditno)
                     ->update([
                         'recstatus' => 'CANCELLED'
@@ -536,6 +547,9 @@ use Carbon\Carbon;
 
                 DB::table('finance.apacthdr')
                     ->where('auditno','=',$request->auditno)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=','AP')
+                    ->where('trantype','=','IN')
                     ->update([
                         'recstatus' => 'CANCELLED',
                         'upduser' => session('username'),
@@ -554,6 +568,8 @@ use Carbon\Carbon;
 
                 $apactdtl = DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
+                    ->where('source','=','AP')
+                    ->where('trantype','=','IN')
                     ->where('auditno','=', $request->auditno)
                     ->update([
                         'recstatus' => 'CANCELLED'
@@ -561,6 +577,9 @@ use Carbon\Carbon;
 
                 DB::table('finance.apacthdr')
                     ->where('auditno','=',$request->auditno)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=','AP')
+                    ->where('trantype','=','IN')
                     ->update([
                         'recstatus' => 'CANCELLED',
                         'upduser' => session('username'),
@@ -581,6 +600,8 @@ use Carbon\Carbon;
     public function gltran($auditno){
         $apacthdr_obj = DB::table('finance.apacthdr')
                             ->where('compcode','=',session('compcode'))
+                            ->where('source','=','AP')
+                            ->where('trantype','=','IN')
                             ->where('auditno','=',$auditno)
                             ->first();
 
@@ -681,6 +702,8 @@ use Carbon\Carbon;
     public function gltran_cancel($auditno){
         $apacthdr_obj = DB::table('finance.apacthdr')
                             ->where('compcode','=',session('compcode'))
+                            ->where('source','=','AP')
+                            ->where('trantype','=','IN')
                             ->where('auditno','=',$auditno)
                             ->first();
 

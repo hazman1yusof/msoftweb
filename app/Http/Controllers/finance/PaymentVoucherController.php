@@ -1236,6 +1236,8 @@ class PaymentVoucherController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
 
+        $this->get_CN_from_PV($apacthdr);
+
         return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
 
         // if(empty($request->type)){
@@ -1248,6 +1250,34 @@ class PaymentVoucherController extends defaultController
         //     return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
  
         // }
+    }
+
+    public function get_CN_from_PV($apacthdr){
+        $apalloc_PV = DB::table('finance.apalloc')
+                    ->where('compcode',session('compcode'))
+                    ->where('docsource',$apacthdr->source)
+                    ->where('doctrantype',$apacthdr->trantype)
+                    ->where('docauditno',$apacthdr->auditno)
+                    ->first();
+
+        $apalloc_CN = DB::table('finance.apalloc')
+                    ->where('compcode',session('compcode'))
+                    ->where('recstatus','POSTED')
+                    ->where('refsource',$apalloc_PV->refsource)
+                    ->where('reftrantype',$apalloc_PV->reftrantype)
+                    ->where('refauditno',$apalloc_PV->refauditno)
+                    ->where('docsource','AP')
+                    ->where('doctrantype','CN');
+
+        if(!$apalloc_CN->exists()){
+            return 0 ;
+        }
+
+        $apalloc_CN = $apalloc_CN->first();
+        $auditno = $apalloc_CN->docauditno;
+
+        
+        
     }
 
     public function link_pv(Request $request){
@@ -1281,6 +1311,7 @@ class PaymentVoucherController extends defaultController
                                 ->where('apdt.source','AP');
 
                 if(!$apdt->exists()){
+                    abort(403,'No delivery Order');
                     dd('No delivery Order');
                 }
 
@@ -1292,7 +1323,8 @@ class PaymentVoucherController extends defaultController
                             ->whereNotNull('srcdocno');
 
                 if(!$delordhd->exists()){
-                    dd('No Purchase Order');
+                    abort(403,'No Purchase Order');
+                    // dd('No Purchase Order');
                 }
                 $delordhd = $delordhd->first();
                 $purordhd = DB::table('material.purordhd')
@@ -1307,8 +1339,15 @@ class PaymentVoucherController extends defaultController
                 break;
 
             case 'invoice':
+                $aphr = DB::table('finance.apacthdr as aphr')
+                                ->where('aphr.compcode',session('compcode'))
+                                ->where('aphr.auditno',$request->auditno)
+                                ->where('aphr.recstatus','!=','DELETE')
+                                ->where('aphr.source','AP')
+                                ->where('aphr.trantype','IN')
+                                ->first();
 
-                return redirect('/attachment_upload?page=invoiceap&idno='.$request->idno);
+                return redirect('/attachment_upload?page=invoiceap&idno='.$aphr->idno);
             
             default:
                 // code...

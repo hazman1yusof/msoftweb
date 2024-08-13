@@ -1347,7 +1347,7 @@ $(document).ready(function () {
 			
 			$("#link_do").attr('href','./paymentVoucher/table?action=link_pv&type=do&auditno='+refauditno);
 			$("#link_po").attr('href','./paymentVoucher/table?action=link_pv&type=po&auditno='+refauditno);
-			$("#link_invoice").attr('href','./paymentVoucher/table?action=link_pv&type=invoice&idno='+idno);
+			$("#link_invoice").attr('href','./paymentVoucher/table?action=link_pv&type=invoice&auditno='+refauditno);
 		},
 	});
 	jqgrid_label_align_right("#jqGrid3");
