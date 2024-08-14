@@ -159,8 +159,8 @@ class PurchaseOrderController extends defaultController
         }
 
         $purordhd_obj = DB::table('material.purordhd')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('recno','=',$request->purordhd_recno)->first();
+                            // ->where('compcode','=',session('compcode'))
+                            ->where('idno','=',$request->purordhd_idno)->first();
 
         $purreqno = $purordhd_obj->purreqno;
 
@@ -179,6 +179,10 @@ class PurchaseOrderController extends defaultController
                 'upduser' => session('username'),
                 'upddate' => Carbon::now()
             ];
+
+            if($purordhd_obj->compcode == 'DD'){
+                $array_update['compcode'] = 'DD';
+            }
 
             foreach ($field as $key => $value) {
                 $array_update[$value] = $request[$request->field[$key]];

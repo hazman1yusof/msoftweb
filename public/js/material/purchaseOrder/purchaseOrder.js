@@ -989,7 +989,7 @@ $(document).ready(function () {
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
 
-			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+			addmore_jqgrid2.more = false; //reset
 			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 		},
 		gridComplete: function(){
@@ -1633,6 +1633,7 @@ $(document).ready(function () {
 		dialog_purreqno.off();
 
 		$("#purordhd_reqdept,#purordhd_purreqno").prop('readonly',true);
+		addmore_jqgrid2.state = addmore_jqgrid2.more = false;
 
 		$(".noti").empty();
 		refreshGrid("#jqGrid2", urlParam2);

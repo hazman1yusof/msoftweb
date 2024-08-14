@@ -220,7 +220,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
-			{ label: 'Payer Code', name: 'db_payercode', width: 35, canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Debtor Code', name: 'db_payercode', width: 35, canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Customer', name: 'dm_name', width: 40, canSearch: false, classes: 'wrap', hidden:true},
 			{ label: 'Document Date', name: 'db_entrydate', width: 12, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right', formatter: padzero, unformat: unpadzero},
@@ -343,7 +343,6 @@ $(document).ready(function () {
 			});
 		},
 		loadComplete:function(data){
-			calc_jq_height_onchange("jqGrid");
 		},
 		beforeRequest: function(){
 			refreshGrid("#jqGrid2", urlParam, 'kosongkan')
@@ -930,7 +929,7 @@ $(document).ready(function () {
 			
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 			
-			calc_jq_height_onchange("jqGrid2");
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 
 		},
 		
@@ -1054,6 +1053,7 @@ $(document).ready(function () {
 			myfail_msg.clear_fail();
 			errorField.length=0;
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
         	get_billtype(mycurrency2);
 
 			dialog_chggroup.on();
@@ -1077,7 +1077,6 @@ $(document).ready(function () {
 			$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='billtypeamt'],#jqGrid2 input[name='quantity'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
 
 			$("#jqGrid2 input[name='qtyonhand']").keydown(function(e) {//when click tab at totamount, auto save
-				console.log(code)
 				var code = e.keyCode || e.which;
 				if (code == '9'){
 					delay(function(){
@@ -1096,6 +1095,7 @@ $(document).ready(function () {
 			refreshGrid('#jqGrid2',urlParam2,'add');
 	    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
 			errorField.length=0;
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 		},
 		errorfunc: function(rowid,response){
         	alert(response.responseText);
@@ -1130,6 +1130,7 @@ $(document).ready(function () {
 			// 	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			// }, 500 );
 			hideatdialogForm(false);
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 	    },
 	    errorTextFormat: function (data) {
 	    	alert(data);
@@ -1361,6 +1362,7 @@ $(document).ready(function () {
 		fdl.get_array('SalesOrder',options,param,case_,cellvalue);
 		
 		if(cellvalue == null)cellvalue = " ";
+		calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 		return cellvalue;
 	}
 
@@ -1397,11 +1399,7 @@ $(document).ready(function () {
 	function uomcodeCustomEdit(val,opt){  	
 
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
-		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="uom" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>
-			<span><input id="`+opt.id+`_discamt" name="discamt" type="hidden"></span>
-			<span><input id="`+opt.id+`_convfactor_uom" name="convfactor_uom" type="hidden"></span>
-			<span><input id="`+opt.id+`_convfactor_uom_recv" name="convfactor_uom_recv" type="hidden"></span>
-			<span><input id="`+opt.id+`_uom_rate" name="rate" type="hidden"></span>`);
+		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="uom" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span><span><input id="`+opt.id+`_discamt" name="discamt" type="hidden"></span><span><input id="`+opt.id+`_convfactor_uom" name="convfactor_uom" type="hidden"></span><span><input id="`+opt.id+`_convfactor_uom_recv" name="convfactor_uom_recv" type="hidden"></span><span><input id="`+opt.id+`_uom_rate" name="rate" type="hidden"></span>`);
 	}
 	function uom_recvCustomEdit(val,opt){  	
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
@@ -2454,16 +2452,6 @@ function get_billtype(mycurrency2){
 				mycurrency2.formatOn();
 			}
 		});
-}
-
-function calc_jq_height_onchange(jqgrid){
-	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
-	if(scrollHeight<80){
-		scrollHeight = 80;
-	}else if(scrollHeight>300){
-		scrollHeight = 300;
-	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+30);
 }
 
 function formatterstatus_tick2(cellvalue, option, rowObject) {

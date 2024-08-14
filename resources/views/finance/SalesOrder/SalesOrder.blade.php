@@ -189,8 +189,8 @@ div#fail_msg{
 						@endif
 					</button>
 
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
+					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
+					<!-- <button type="button" class="btn btn-danger btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button> -->
 				</div>
 
 			 </fieldset> 
@@ -263,165 +263,164 @@ div#fail_msg{
 			<div class="panel-heading">Sales Order Header
 				<a class='pull-right pointer text-primary' id='pdfgen2' href="" target="_blank"><span class='fa fa-print'></span> Print Sales Invoice</a>
 			</div>
-				<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
-					<form class='form-horizontal' style='width:99%' id='formdata'>
-						{{ csrf_field() }}
-						<input id="db_idno" name="db_idno" type="hidden">
-						<input id="db_source" name="db_source" type="hidden">
-						<input id="db_trantype" name="db_trantype" type="hidden">
-						<input id="pricebilltype" name="pricebilltype" type="hidden">
+			<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
+				<form class='form-horizontal' style='width:99%' id='formdata'>
+					{{ csrf_field() }}
+					<input id="db_idno" name="db_idno" type="hidden">
+					<input id="db_source" name="db_source" type="hidden">
+					<input id="db_trantype" name="db_trantype" type="hidden">
+					<input id="pricebilltype" name="pricebilltype" type="hidden">
 
 
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_deptcode">Store Dept</label>	 
-							<div class="col-md-4">
-								<div class='input-group'>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="db_deptcode">Store Dept</label>	 
+						<div class="col-md-4">
+							<div class='input-group'>
 								<input id="db_deptcode" name="db_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-									<span class="help-block"></span>
-								</div>
-
-							<label class="col-md-1 control-label" for="db_invno">Invoice No</label>  
-							<div class="col-md-2">
-								<input id="db_invno" name="db_invno" type="text" class="form-control input-sm" rdonly>
 							</div>
-
-							<label class="col-md-1 control-label" for="db_entrydate">Document Date</label>  
-							<div class="col-md-2">
-								<input id="db_entrydate" name="db_entrydate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"  value="{{Carbon\Carbon::now()->format('Y-m-d')}}" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_debtorcode">Customer</label>	 
-							<div class="col-md-4">
-								<div class='input-group'>
-								<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
 								<span class="help-block"></span>
-							</div>
-
-							<label class="col-md-1 control-label" for="db_hdrtype">Bill Type</label>  
-							<div class="col-md-2"> 
-								<div class='input-group'>
-									<input id="db_hdrtype" name="db_hdrtype" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span class="help-block"></span>
-							</div>							
 						</div>
 
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_termdays">Term</label>  
-							<div class="col-md-1">
-								<input id="db_termdays" name="db_termdays" type="text" value ="30" class="form-control input-sm">
-							</div>
-
-							<div class="col-md-2">
-								<select class="form-control col-md-3" id='db_termmode' name='db_termmode' data-validation="required" data-validation-error-msg="Please Enter Value">
-									<option value='DAYS' selected>DAYS</option>
-									<option value='MONTH'>MONTH</option>
-									<option value='YEAR'>YEAR</option>
-								</select> 
-							</div>
-
-							<label class="col-md-2 control-label" for="db_posteddate">Posted Date</label>  
-							<div class="col-md-2">
-								<input id="db_posteddate" name="db_posteddate" type="text" maxlength="10" class="form-control input-sm" max="<?php echo date("Y-m-d"); ?>" rdonly>
-							</div>
-	
+						<label class="col-md-1 control-label" for="db_invno">Invoice No</label>  
+						<div class="col-md-2">
+							<input id="db_invno" name="db_invno" type="text" class="form-control input-sm" rdonly>
 						</div>
 
-						<div class="form-group">		
-							<label class="col-md-2 control-label" for="db_orderno">Order No</label>  
-							<div class="col-md-2"> 
-								<input id="db_orderno" name="db_orderno" type="text" class="form-control input-sm text-uppercase" >
+						<label class="col-md-1 control-label" for="db_entrydate">Document Date</label>  
+						<div class="col-md-2">
+							<input id="db_entrydate" name="db_entrydate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"  value="{{Carbon\Carbon::now()->format('Y-m-d')}}" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="db_debtorcode">Customer</label>	 
+						<div class="col-md-4">
+							<div class='input-group'>
+							<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
-							
-							<label class="col-md-3 control-label" for="db_auditno">Auto No</label>  
-							<div class="col-md-2"> 
-								<input id="db_auditno" name="db_auditno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
-							</div>
+							<span class="help-block"></span>
 						</div>
 
-						<hr>
-							
-						<div class="form-group">		
-							<label class="col-md-2 control-label" for="db_ponum">PO No</label>  
-							<div class="col-md-2"> 
-								<input id="db_ponum" name="db_ponum" type="text" class="form-control input-sm text-uppercase">
+						<label class="col-md-1 control-label" for="db_hdrtype">Bill Type</label>  
+						<div class="col-md-2"> 
+							<div class='input-group'>
+								<input id="db_hdrtype" name="db_hdrtype" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
+							<span class="help-block"></span>
+						</div>							
+					</div>
 
-							<label class="col-md-3 control-label" for="db_podate">PO Date</label>  
-							<div class="col-md-2">
-								<input id="db_podate" name="db_podate" type="date" maxlength="10" class="form-control input-sm" value="" max="<?php echo date("Y-m-d"); ?>">
-							</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="db_termdays">Term</label>  
+						<div class="col-md-1">
+							<input id="db_termdays" name="db_termdays" type="text" value ="30" class="form-control input-sm">
 						</div>
 
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_amount">Total Amount</label>
-							<div class="col-md-2">
-								<input id="db_amount" name="db_amount" type="text" maxlength="11" class="form-control input-sm" value="0.00" rdonly>
-							</div>
-
-							<label class="col-md-3 control-label" for="db_recstatus">Record Status</label>  
-							<div class="col-md-2">
-									<input id="db_recstatus" name="db_recstatus" maxlength="10" class="form-control input-sm" rdonly>
-							</div>
-
-							<button type="button" id='save' class='btn btn-info btn-sm' style='margin: 0.2%;'>Save</button>
+						<div class="col-md-2">
+							<select class="form-control col-md-3" id='db_termmode' name='db_termmode' data-validation="required" data-validation-error-msg="Please Enter Value">
+								<option value='DAYS' selected>DAYS</option>
+								<option value='MONTH'>MONTH</option>
+								<option value='YEAR'>YEAR</option>
+							</select> 
 						</div>
 
-						<hr>
+						<label class="col-md-2 control-label" for="db_posteddate">Posted Date</label>  
+						<div class="col-md-2">
+							<input id="db_posteddate" name="db_posteddate" type="text" maxlength="10" class="form-control input-sm" max="<?php echo date("Y-m-d"); ?>" rdonly>
+						</div>
+					</div>
 
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_remark">Remarks</label> 
-							<div class="col-md-6"> 
-							<textarea class="form-control input-sm text-uppercase" name="db_remark" rows="5" cols="55" maxlength="400" id="db_remark" ></textarea>
-							</div>
+					<div class="form-group">		
+						<label class="col-md-2 control-label" for="db_orderno">Order No</label>  
+						<div class="col-md-2"> 
+							<input id="db_orderno" name="db_orderno" type="text" class="form-control input-sm text-uppercase" >
+						</div>
+						
+						<label class="col-md-3 control-label" for="db_auditno">Auto No</label>  
+						<div class="col-md-2"> 
+							<input id="db_auditno" name="db_auditno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
+						</div>
+					</div>
+
+					<hr>
+						
+					<div class="form-group">		
+						<label class="col-md-2 control-label" for="db_ponum">PO No</label>  
+						<div class="col-md-2"> 
+							<input id="db_ponum" name="db_ponum" type="text" class="form-control input-sm text-uppercase">
 						</div>
 
-						<div class="form-group data_info">
-							<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="db_adduser">Last Entered By</label>  
-						  			<input id="db_adduser" name="db_adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-					  			<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="db_adddate">Last Entered Date</label>
-						  			<input id="db_adddate" name="db_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-					    		<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="postedby">Authorized By</label>  
-						  			<input id="postedby" name="postedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-					  			<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="posteddate">Authorized Date</label>
-						  			<input id="posteddate" name="posteddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>						    	
-							</div>
+						<label class="col-md-3 control-label" for="db_podate">PO Date</label>  
+						<div class="col-md-2">
+							<input id="db_podate" name="db_podate" type="date" maxlength="10" class="form-control input-sm" value="" max="<?php echo date("Y-m-d"); ?>">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="db_amount">Total Amount</label>
+						<div class="col-md-2">
+							<input id="db_amount" name="db_amount" type="text" maxlength="11" class="form-control input-sm" value="0.00" rdonly>
+						</div>
+
+						<label class="col-md-3 control-label" for="db_recstatus">Record Status</label>  
+						<div class="col-md-2">
+								<input id="db_recstatus" name="db_recstatus" maxlength="10" class="form-control input-sm" rdonly>
+						</div>
+
+						<button type="button" id='save' class='btn btn-info btn-sm' style='margin: 0.2%;'>Save</button>
+					</div>
+
+					<hr>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="db_remark">Remarks</label> 
+						<div class="col-md-6"> 
+						<textarea class="form-control input-sm text-uppercase" name="db_remark" rows="5" cols="55" maxlength="400" id="db_remark" ></textarea>
+						</div>
+					</div>
+
+					<div class="form-group data_info">
+						<div class="col-md-6 minuspad-13">
+						<label class="control-label" for="db_adduser">Last Entered By</label>  
+			  			<input id="db_adduser" name="db_adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+		  			</div>
+		  			<div class="col-md-6 minuspad-13">
+							<label class="control-label" for="db_adddate">Last Entered Date</label>
+			  			<input id="db_adddate" name="db_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+		  			</div>
+		    		<div class="col-md-6 minuspad-13">
+							<label class="control-label" for="postedby">Authorized By</label>  
+			  			<input id="postedby" name="postedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+		  			</div>
+		  			<div class="col-md-6 minuspad-13">
+							<label class="control-label" for="posteddate">Authorized Date</label>
+			  			<input id="posteddate" name="posteddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+		  			</div>						    	
+					</div>
 					<hr/>
 
-					</form>
-					<div class="panel-body">
+				</form>
+				<div class="panel-body">
 					<div class="noti2" style="font-size: bold; color: red"><ol></ol></div>
 				</div>
 			</div>
-			
-			<div class='panel panel-info'>
-				<div class="panel-heading">Sales Order Detail</div>
-					<div class="panel-body">
-						<div id="fail_msg"></div>
-						<form id='formdata2' class='form-vertical' style='width:99%'>
-							<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
+		</div>
 
-							<div id="jqGrid2_c" class='col-md-12'>
-								<table id="jqGrid2" class="table table-striped"></table>
-					            <div id="jqGridPager2"></div>
-							</div>
-						</form>
-					</div>
+		<div class='panel panel-info'>
+			<div class="panel-heading">Sales Order Detail</div>
+				<div class="panel-body">
+					<div id="fail_msg"></div>
+					<form id='formdata2' class='form-vertical' style='width:99%'>
+						<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
+
+						<div id="jqGrid2_c" class='col-md-12' style="overflow-y: hidden;overflow-x: hidden;height: calc(100vh - 80px);">
+							<table id="jqGrid2" class="table table-striped"></table>
+				      <div id="jqGridPager2"></div>
+						</div>
+					</form>
 				</div>
 			</div>
 				
