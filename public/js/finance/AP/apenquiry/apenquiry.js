@@ -1645,22 +1645,27 @@ $(document).ready(function () {
 		//panel header
 		$('#inTrantype_show').text(obj.apacthdr_trantype);
 		$('#inDocument_show').text(padzero(obj.apacthdr_auditno));
-		$('#inSuppcode_show').text(obj.supplier_name);
+		$('#inSuppcode_show').text(obj.apacthdr_suppcode);
+		$('#inSuppname_show').text(obj.supplier_name);
 
 		$('#pvTrantype_show').text(obj.apacthdr_trantype);
 		$('#pvDocument_show').text(padzero(obj.apacthdr_auditno));
-		$('#pvSuppcode_show').text(obj.supplier_name);
+		$('#pvSuppcode_show').text(obj.apacthdr_suppcode);
+		$('#pvSuppname_show').text(obj.supplier_name);
 
 		$('#dnTrantype_show').text(obj.apacthdr_trantype);
 		$('#dnDocument_show').text(padzero(obj.apacthdr_auditno));
-		$('#dnSuppcode_show').text(obj.supplier_name);
+		$('#dnSuppcode_show').text(obj.apacthdr_suppcode);
+		$('#dnSuppname_show').text(obj.supplier_name);
 
 		$('#cnTrantype_show').text(obj.apacthdr_trantype);
 		$('#cnDocument_show').text(padzero(obj.apacthdr_auditno));
-		$('#cnSuppcode_show').text(obj.supplier_name);
+		$('#cnSuppcode_show').text(obj.apacthdr_suppcode);
+		$('#cnSuppname_show').text(obj.supplier_name);
 
 		$('#allocTrantype_show').text(obj.apacthdr_trantype);
 		$('#allocDocument_show').text(padzero(obj.apacthdr_auditno));
-		$('#allocSuppcode_show').text(obj.supplier_name);
+		$('#allocSuppcode_show').text(obj.apacthdr_suppcode);
+		$('#allocSuppname_show').text(obj.supplier_name);
 	
 	}
