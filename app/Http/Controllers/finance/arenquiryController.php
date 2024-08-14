@@ -219,6 +219,15 @@ class arenquiryController extends defaultController
                 // dd($till->dept);
                 $value->db_deptcode = $till->dept;
             }
+
+            switch($value->db_trantype){
+                case 'IN':
+                    $value->db_recptno = str_pad($value->db_invno, 8, "0", STR_PAD_LEFT);
+                    break;
+                case 'CN':
+                    $value->db_recptno = 'CN-'.str_pad($value->db_auditno, 8, "0", STR_PAD_LEFT);
+                    break;
+            }
         }
         
         /////////////////paginate/////////////////
