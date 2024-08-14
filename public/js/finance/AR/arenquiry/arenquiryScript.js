@@ -738,6 +738,7 @@ $(document).ready(function (){
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'Debtor Code', name: 'db_debtorcode', width: 30, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat: un_showdetail },
+			{ label: 'Debtor Name', name: 'dm_name', width: 20, hidden: true },
 			{ label: 'Payer Code', name: 'db_payercode', width: 20, hidden: true },
 			{ label: 'Audit No', name: 'db_auditno', width: 10, align: 'right', classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true, classes: 'wrap' },
@@ -788,10 +789,11 @@ $(document).ready(function (){
 			}else{
 				$('#allocate').hide();
 			}
-			$('#payercode_show').text(selrowData("#jqGrid").db_debtorcode);
-			$('#docno_show').text(selrowData("#jqGrid").db_recptno);
-			$('#amount_show').text(selrowData("#jqGrid").db_amount);
-			$('#outamount_show').text(selrowData("#jqGrid").db_outamount);
+			$('#CN_debtorcode_show, #DN_debtorcode_show, #IN_debtorcode_show, #alloc_debtorcode_show, #track_debtorcode_show').text(selrowData("#jqGrid").db_debtorcode);
+			$('#CN_debtorname_show, #DN_debtorname_show, #IN_debtorname_show, #alloc_debtorname_show, #track_debtorname_show').text(selrowData("#jqGrid").dm_name);
+			$('#CN_docno_show, #DN_docno_show, #IN_docno_show, #alloc_docno_show, #track_docno_show').text(selrowData("#jqGrid").db_recptno);
+			$('#CN_amount_show, #DN_amount_show, #IN_amount_show, #alloc_amount_show, #track_amount_show').text(selrowData("#jqGrid").db_amount);
+			$('#CN_outamount_show, #DN_outamount_show, #IN_outamount_show, #alloc_outamount_show, #track_outamount_show').text(selrowData("#jqGrid").db_outamount);
 			
 			$('#jqGrid3_CN_c,#jqGrid3_DN_c,#jqGrid3_IN_c,#jqGrid_Tracking_c').hide();
 			
@@ -848,11 +850,9 @@ $(document).ready(function (){
 			refreshGrid("#jqGridAlloc",urlParamAlloc);
 			
 			if(selrowData("#jqGrid").db_trantype == 'RC' || selrowData("#jqGrid").db_trantype == 'RD'){
-				$('#alloctitle2, #pdf_RCRD').show();
-				$('#alloctitle1').hide();
+				$('#pdf_RCRD').show();
 			}else{
-				$('#alloctitle2, #pdf_RCRD').hide();
-				$('#alloctitle1').show();
+				$('#pdf_RCRD').hide();
 			}
 			
 			$("#pdf_CN").attr('href','./CreditNoteAR/showpdf?auditno='+selrowData("#jqGrid").db_auditno);
