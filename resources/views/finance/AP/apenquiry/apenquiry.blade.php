@@ -106,7 +106,7 @@
 			<div class="panel panel-default" id="jqGrid3_div_in" style="position: relative;">
 				<div class="panel-heading">
 					<b>DOCUMENT NO: </b><span id="inTrantype_show"></span> - <span id="inDocument_show"></span><br>
-					<b>CREDITOR NAME: </b><span id="inSuppcode_show"></span>
+					<b>CREDITOR NAME: </b><span id="inSuppcode_show"></span> - <span id="inSuppname_show"></span>
 						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
 							<h5>Invoice Detail</h5>
 						</div>
@@ -122,7 +122,7 @@
             <div class="panel panel-default" id="jqGrid3_div_pv" style="position: relative;">
 				<div class="panel-heading">
 					<b>DOCUMENT NO: </b><span id="pvTrantype_show"></span> - <span id="pvDocument_show"></span><br>
-					<b>CREDITOR NAME: </b><span id="pvSuppcode_show"></span>
+					<b>CREDITOR NAME: </b><span id="pvSuppcode_show"></span> - <span id="pvSuppname_show"></span>
 						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
 							<h5>Payment Voucher Detail</h5>
 						</div>
@@ -138,7 +138,7 @@
 			<div class="panel panel-default" id="jqGrid3_div_dn" style="position: relative;">
 				<div class="panel-heading">
 					<b>DOCUMENT NO: </b><span id="dnTrantype_show"></span> - <span id="dnDocument_show"></span><br>
-					<b>CREDITOR NAME: </b><span id="dnSuppcode_show"></span>
+					<b>CREDITOR NAME: </b><span id="dnSuppcode_show"></span> - <span id="dnSuppname_show"></span>
 						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
 							<h5>Debit Note Detail</h5>
 						</div>
@@ -154,7 +154,7 @@
             <div class="panel panel-default" id="jqGrid3_div_cn" style="position: relative;">
 				<div class="panel-heading">
 					<b>DOCUMENT NO: </b><span id="cnTrantype_show"></span> - <span id="cnDocument_show"></span></span><br>
-					<b>CREDITOR NAME: </b><span id="cnSuppcode_show"></span>
+					<b>CREDITOR NAME: </b><span id="cnSuppcode_show"></span> - <span id="cnSuppname_show"></span>
 						<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
 							<h5>Credit Note Detail</h5>
 						</div>
@@ -170,7 +170,7 @@
 			<div class="panel panel-default" style="position: relative;" id="gridAlloc_c">
 				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridAlloc_panel">
 				<b>DOCUMENT NO: </b><span id="allocTrantype_show"></span> - <span id="allocDocument_show"></span><br>
-				<b>CREDITOR NAME: </b><span id="allocSuppcode_show"></span>
+				<b>CREDITOR NAME: </b><span id="allocSuppcode_show"></span> - <span id="allocSuppname_show"></span>
 
 					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
