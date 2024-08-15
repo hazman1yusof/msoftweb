@@ -787,6 +787,11 @@ Route::get('/glmaster','finance\GlmasterController@show');
 Route::get('/glmaster/table','finance\GlmasterController@table');
 Route::post('/glmaster/form','finance\GlmasterController@form');
 
+//// Chart Account ///
+Route::get('/chartAccount','finance\ChartAccountController@show');
+Route::get('/chartAccount/table','finance\ChartAccountController@table');
+Route::post('/chartAccount/form','finance\ChartAccountController@form');
+
 //// financialReport setup ///
 Route::get('/financialReport','finance\financialReportController@show');
 Route::get('/financialReport/table','finance\financialReportController@table');
