@@ -178,7 +178,6 @@
 					<label class="radio-inline"><input type="radio" name="recstatus" value='SUSPEND'>Suspend</label>
 					<label class="radio-inline"><input type="radio" name="recstatus" value='LEGAL'>Legal</label>
 					<label class="radio-inline"><input type="radio" name="recstatus" value='DEBT-COLLECTOR'>Debt-Collector</label>
-					<label class="radio-inline"><input type="radio" name="recstatus" value='YES'>Yes</label>
 				</div>
 			</div>
 			
