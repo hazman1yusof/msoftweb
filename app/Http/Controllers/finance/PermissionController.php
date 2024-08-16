@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\material;
+namespace App\Http\Controllers\finance;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 use stdClass;
 use DB;
 
-class AuthorizationController extends defaultController
+class PermissionController extends defaultController
 {   
 
     var $table;
@@ -21,7 +21,7 @@ class AuthorizationController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('material.Authorization.authorization');
+        return view('finance.permission.permission');
     }
 
     public function form(Request $request)
@@ -40,7 +40,7 @@ class AuthorizationController extends defaultController
     }
 
     public function check_duplicate(Request $request){
-        $authdtl_obj = DB::table('material.authorise')
+        $authdtl_obj = DB::table('finance.permission')
             ->where('compcode','=',session('compcode'))
             ->where('authorid','=',$request->authorid);
 
@@ -57,7 +57,7 @@ class AuthorizationController extends defaultController
     //         ->where('trantype','=',$request->dtl_trantype);
 
     //     if($authdtl_obj->exists()){
-    //         throw new \Exception('User Authorization Detail already exist', 500);
+    //         throw new \Exception('User permission Detail already exist', 500);
     //     }
     // }
 }

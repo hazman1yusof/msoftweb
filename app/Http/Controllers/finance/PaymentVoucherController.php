@@ -72,7 +72,22 @@ class PaymentVoucherController extends defaultController
                         'ap.paymode AS apacthdr_paymode',
                         'ap.bankcode AS apacthdr_bankcode',
                         'ap.postdate AS apacthdr_postdate',
-                        'ap.cheqdate AS apacthdr_cheqdate'
+                        'ap.cheqdate AS apacthdr_cheqdate',
+                        'ap.requestby AS apacthdr_requestby',
+                        'ap.requestdate AS apacthdr_requestdate',
+                        'ap.request_remark AS apacthdr_request_remark',
+                        'ap.supportby AS apacthdr_supportby',
+                        'ap.supportdate AS apacthdr_supportdate',
+                        'ap.support_remark AS apacthdr_support_remark',
+                        'ap.verifiedby AS apacthdr_verifiedby',
+                        'ap.verifieddate AS apacthdr_verifieddate',
+                        'ap.verified_remark AS apacthdr_verified_remark',
+                        'ap.approvedby AS apacthdr_approvedby',
+                        'ap.approveddate AS apacthdr_approveddate',
+                        'ap.approved_remark AS apacthdr_approved_remark',
+                        'ap.cancelby AS apacthdr_cancelby',
+                        'ap.canceldate AS apacthdr_canceldate',
+                        'ap.cancelled_remark AS apacthdr_cancelled_remark',
                     )
                     ->where('ap.compcode',session('compcode'))
                     ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
@@ -81,7 +96,14 @@ class PaymentVoucherController extends defaultController
                     ->whereIn('ap.trantype',['PD','PV']);
 
         if(!empty($request->filterCol)){
-            $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+            if($request->filterCol[0] == 'ap.recstatus' && $request->filterVal[0] == 'All2'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('ap.recstatus','=','SUPPORT');
+                        $table->orWhere('ap.recstatus','=','PREPARED');
+                    });
+            }else{
+                $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+            }
         }
 
         if(!empty($request->filterdate)){
@@ -120,7 +142,7 @@ class PaymentVoucherController extends defaultController
         }
 
 
-       $paginate = $table->paginate($request->rows);
+        $paginate = $table->paginate($request->rows);
 
         foreach ($paginate->items() as $key => $value) {
             $apactdtl = DB::table('finance.apactdtl')
@@ -240,8 +262,18 @@ class PaymentVoucherController extends defaultController
                 return $this->del($request);break;
             case 'posted':
                 return $this->posted($request);break;
+            case 'support':
+                return $this->support($request);break;
+            case 'verify':
+                return $this->verify($request);break;
+            case 'approved':
+                return $this->approved($request);break;
             case 'cancel':
                 return $this->cancel($request);break;
+            case 'reject':
+                return $this->reject($request);break;
+            case 'reopen':
+                return $this->reopen($request);break;
             case 'del_alloc':
                 return $this->del_alloc($request);break;
             default:
@@ -463,7 +495,6 @@ class PaymentVoucherController extends defaultController
 
             return response($e->getMessage(), 500);
         }
-
     }
 
     public function edit(Request $request){
@@ -481,7 +512,7 @@ class PaymentVoucherController extends defaultController
             ->where('compcode','=',session('compcode'))
             ->where('auditno','=',$request->apacthdr_auditno)->first();
           
-        if ($request->apacthdr_trantype == 'PV'){
+        if ($apacthdr_trantype->trantype == 'PV'){
             
             DB::beginTransaction();
             // $this->checkduplicate_docno('edit', $request);
@@ -599,7 +630,6 @@ class PaymentVoucherController extends defaultController
 
                 DB::commit();
 
-
                 $responce = new stdClass();
                 $responce->result = 'success';
 
@@ -654,11 +684,9 @@ class PaymentVoucherController extends defaultController
         }
     }
 
-    public function posted(Request $request){
+    public function posted_lama(Request $request){
         DB::beginTransaction();
         try {
-
-
             foreach ($request->idno_array as $idno_obj){
                 $apacthdr = DB::table('finance.apacthdr')
                     ->where('idno','=',$idno_obj['idno'])
@@ -701,6 +729,333 @@ class PaymentVoucherController extends defaultController
             }
 
             DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function posted(Request $request){
+        DB::beginTransaction();
+
+        try{
+            foreach ($request->idno_array as $idno_obj){
+                $apacthdr = DB::table('finance.apacthdr')
+                    ->where('idno','=',$idno_obj['idno'])
+                    ->first();
+
+                if($apacthdr->recstatus != 'OPEN'){
+                    continue;
+                }
+
+                if($apacthdr->trantype == 'PV'){
+                    $queue = 'finance.queuepv';
+                    $trantype = 'VERIFIED';
+                }else{
+                    $queue = 'finance.queuepd';
+                    $trantype = 'SUPPORT';
+                }
+
+                DB::table($queue)
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'recno' => $apacthdr->auditno,
+                        'AuthorisedID' => session('username'),
+                        'deptcode' => 'ALL',
+                        'recstatus' => 'PREPARED',
+                        'trantype' => $trantype,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+                $yearperiod = defaultController::getyearperiod_($apacthdr->recdate);
+                if($yearperiod->status == 'C'){
+                    throw new \Exception('Auditno: '.$apacthdr->auditno.' Period already close, Year: '.$yearperiod->year.' Month: '.$yearperiod->period, 500);
+                }
+
+                DB::table('finance.apacthdr')
+                    ->where('idno','=',$idno_obj['idno'])
+                    ->update([
+                        'requestby' => session('username'),
+                        'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'PREPARED'
+                    ]);
+
+                if($apacthdr->trantype == 'PV'){
+                    DB::table('finance.apalloc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('unit','=',session('unit'))
+                        ->where('docsource','=','AP')
+                        ->where('doctrantype','=','PV')
+                        ->where('docauditno','=',$apacthdr->auditno)
+                        ->where('recstatus','!=','DELETE')
+                        ->update([
+                            'recstatus' => 'PREPARED'
+                        ]);
+                }
+
+            }
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function support(Request $request){//skip kalu pv
+
+         DB::beginTransaction();
+
+        try{
+
+            foreach ($request->idno_array as $idno_obj){
+                $apacthdr = DB::table('finance.apacthdr')
+                    ->where('idno','=',$idno_obj['idno'])
+                    ->first();
+
+                if($apacthdr->recstatus != 'PREPARED'){
+                    continue;
+                }
+
+                if($apacthdr->trantype == 'PV'){
+                    $queue = 'finance.queuepv';
+                    $trantype = 'VERIFIED';
+
+                    throw new \Exception("PV cant be supported, got to verified",500);
+                }else{
+                    $queue = 'finance.queuepd';
+                    $trantype = 'VERIFIED';
+                }
+
+                $authorise = DB::table('finance.permissiondtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('authorid','=',session('username'))
+                    ->where('trantype','=',$apacthdr->trantype)
+                    ->where('cando','=', 'ACTIVE')
+                    ->where('recstatus','=','SUPPORT')
+                    // ->where('deptcode','=',$purordhd_get->prdept)
+                    ->where('maxlimit','>=',$apacthdr->amount);
+
+                if(!$authorise->exists()){
+                    throw new \Exception("The user doesnt have authority",500);
+                }
+
+                $authorise_use = $authorise->first();
+
+                DB::table('finance.apacthdr')
+                    ->where('idno','=',$idno_obj['idno'])
+                    ->update([
+                        'supportby' => session('username'),
+                        'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'SUPPORT'
+                    ]);
+
+                if($apacthdr->trantype == 'PV'){
+                    DB::table('finance.apalloc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('unit','=',session('unit'))
+                        ->where('docsource','=','AP')
+                        ->where('doctrantype','=','PV')
+                        ->where('docauditno','=',$apacthdr->auditno)
+                        ->where('recstatus','!=','DELETE')
+                        ->update([
+                            'recstatus' => 'SUPPORT'
+                        ]);
+                }
+
+                DB::table($queue)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$apacthdr->auditno)
+                    ->update([
+                        'AuthorisedID' => $authorise_use->authorid,
+                        'recstatus' => 'SUPPORT',
+                        'trantype' => 'VERIFIED',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function verify(Request $request){
+
+         DB::beginTransaction();
+
+        try{
+
+            foreach ($request->idno_array as $idno_obj){
+                $apacthdr = DB::table('finance.apacthdr')
+                    ->where('idno','=',$idno_obj['idno'])
+                    ->first();
+
+                // if(!in_array($apacthdr->recstatus, ['PREPARED','SUPPORT']){
+                //     continue;
+                // }
+
+                if($apacthdr->trantype == 'PV'){
+                    $queue = 'finance.queuepv';
+                    if($apacthdr->recstatus != 'PREPARED'){
+                        continue;
+                    }
+                }else{
+                    $queue = 'finance.queuepd';
+                    if($apacthdr->recstatus != 'SUPPORT'){
+                        continue;
+                    }
+                }
+
+                $authorise = DB::table('finance.permissiondtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('authorid','=',session('username'))
+                    ->where('trantype','=',$apacthdr->trantype)
+                    ->where('cando','=', 'ACTIVE')
+                    ->where('recstatus','=','VERIFIED')
+                    // ->where('deptcode','=',$purordhd_get->prdept)
+                    ->where('maxlimit','>=',$apacthdr->amount);
+
+                if(!$authorise->exists()){
+                    throw new \Exception("The user doesnt have authority",500);
+                }
+
+                $authorise_use = $authorise->first();
+
+                DB::table('finance.apacthdr')
+                    ->where('idno','=',$idno_obj['idno'])
+                    ->update([
+                        'supportby' => session('username'),
+                        'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'VERIFIED'
+                    ]);
+
+                if($apacthdr->trantype == 'PV'){
+                    DB::table('finance.apalloc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('unit','=',session('unit'))
+                        ->where('docsource','=','AP')
+                        ->where('doctrantype','=','PV')
+                        ->where('docauditno','=',$apacthdr->auditno)
+                        ->where('recstatus','!=','DELETE')
+                        ->update([
+                            'recstatus' => 'VERIFIED'
+                        ]);
+                }
+
+                DB::table($queue)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$apacthdr->auditno)
+                    ->update([
+                        'AuthorisedID' => $authorise_use->authorid,
+                        'recstatus' => 'VERIFIED',
+                        'trantype' => 'APPROVED',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function approved(Request $request){
+
+         DB::beginTransaction();
+
+        try{
+
+            foreach ($request->idno_array as $idno_obj){
+                $apacthdr = DB::table('finance.apacthdr')
+                    ->where('idno','=',$idno_obj['idno'])
+                    ->first();
+
+                if(!in_array($apacthdr->recstatus, ['VERIFIED','RECOMMENDED1','RECOMMENDED2'])){
+                    continue;
+                }
+
+                if($apacthdr->trantype == 'PV'){
+                    $queue = 'finance.queuepv';
+                }else{
+                    $queue = 'finance.queuepd';
+                }
+
+                $authorise = DB::table('finance.permissiondtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('authorid','=',session('username'))
+                    ->where('trantype','=','PV')
+                    ->where('cando','=', 'ACTIVE')
+                    ->where('recstatus','=','APPROVED')
+                    // ->where('deptcode','=',$purordhd_get->prdept)
+                    ->where('maxlimit','>=',$apacthdr->amount);
+
+                if(!$authorise->exists()){
+                    throw new \Exception("The user doesnt have authority",500);
+                }
+
+                $authorise_use = $authorise->first();
+
+                $yearperiod = defaultController::getyearperiod_($apacthdr->recdate);
+                if($yearperiod->status == 'C'){
+                    throw new \Exception('Auditno: '.$apacthdr->auditno.' Period already close, Year: '.$yearperiod->year.' Month: '.$yearperiod->period, 500);
+                }
+
+                $pvno = $this->defaultSysparam('HIS','PV');
+
+                DB::table('finance.apacthdr')
+                    ->where('idno','=',$idno_obj['idno'])
+                    ->update([
+                        'pvno' => $pvno,
+                        'recdate' => $apacthdr->postdate,
+                        'recstatus' => 'POSTED',
+                        'outamount' => 0.00,
+                        'supportby' => session('username'),
+                        'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'APPROVED'
+                    ]);
+
+                $this->gltran($idno_obj['idno']);
+
+                if($apacthdr->trantype == 'PV'){
+                    DB::table('finance.apalloc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('unit','=',session('unit'))
+                        ->where('docsource','=','AP')
+                        ->where('doctrantype','=','PV')
+                        ->where('docauditno','=',$apacthdr->auditno)
+                        ->where('recstatus','!=','DELETE')
+                        ->update([
+                            'recstatus' => 'POSTED'
+                        ]);
+
+                }
+
+                DB::table($queue)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$apacthdr->auditno)
+                    ->update([
+                        'AuthorisedID' => $authorise_use->authorid,
+                        'recstatus' => 'APPROVED',
+                        'trantype' => 'done',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }
+            DB::commit();
+        
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -812,8 +1167,152 @@ class PaymentVoucherController extends defaultController
             DB::rollback();
             return response($e->getMessage(), 500);
         }
-           
     }
+
+    public function reject(Request $request){
+        DB::beginTransaction();
+
+        try{
+           
+            foreach ($request->idno_array as $value){
+                $apacthdr = DB::table('finance.apacthdr')
+                    ->where('idno','=',$value)
+                    ->first();
+
+                if($apacthdr->trantype == 'PV'){
+                    $queue = 'finance.queuepv';
+                }else{
+                    $queue = 'finance.queuepd';
+                }
+
+                if(!in_array($apacthdr->recstatus, ['PREPARED','SUPPORT','VERIFIED'])){
+                    continue;
+                }
+
+                $apacthdr_update = [
+                    'recstatus' => 'CANCELLED',
+                    'cancelby' => session('username'),
+                    'canceldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                ];
+
+                if(!empty($request->remarks)){
+                    $apacthdr_update['cancelled_remark'] = $request->remarks;
+                }
+
+                DB::table('finance.apacthdr')
+                    ->where('idno','=',$value)
+                    ->update($apacthdr_update);
+
+                if($apacthdr->trantype == 'PV'){
+                    DB::table('finance.apalloc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('unit','=',session('unit'))
+                        ->where('docsource','=','AP')
+                        ->where('doctrantype','=','PV')
+                        ->where('docauditno','=',$apacthdr->auditno)
+                        ->where('recstatus','!=','DELETE')
+                        ->update([
+                            'recstatus' => 'CANCELLED'
+                        ]);
+
+                }
+
+                // DB::table($queue)
+                //     ->where('recno','=',$apacthdr->auditno)
+                //     ->delete();
+
+                DB::table($queue)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$apacthdr->auditno)
+                    ->update([
+                        'AuthorisedID' => $apacthdr->adduser,
+                        'recstatus' => 'CANCELLED',
+                        'trantype' => 'REOPEN',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+            }
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function reopen(Request $request){
+
+        DB::beginTransaction();
+
+        try{
+
+            foreach ($request->idno_array as $idno_obj){
+                $apacthdr = DB::table('finance.apacthdr')
+                    ->where('idno','=',$idno_obj['idno'])
+                    ->first();
+
+                if($apacthdr->trantype == 'PV'){
+                    $queue = 'finance.queuepv';
+                }else{
+                    $queue = 'finance.queuepd';
+                }
+
+                if($apacthdr->recstatus != 'CANCELLED'){
+                    continue;
+                }
+
+                $array_update= [
+                    'recstatus' => 'OPEN',
+                    'requestby' => null,
+                    'requestdate' => null,
+                    'supportby' => null,
+                    'supportdate' => null,
+                    'support_remark' => null,
+                    'verifiedby' => null,
+                    'verifieddate' => null,
+                    'verified_remark' => null,
+                    'approvedby' => null,
+                    'approveddate' => null,
+                    'approved_remark' => null,
+                ];
+
+                DB::table('finance.apacthdr')
+                    ->where('idno','=',$idno_obj['idno'])
+                    ->update($array_update);
+
+                if($apacthdr->trantype == 'PV'){
+                    DB::table('finance.apalloc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('unit','=',session('unit'))
+                        ->where('docsource','=','AP')
+                        ->where('doctrantype','=','PV')
+                        ->where('docauditno','=',$apacthdr->auditno)
+                        ->where('recstatus','!=','DELETE')
+                        ->update([
+                            'recstatus' => 'OPEN'
+                        ]);
+
+                }
+
+                DB::table($queue)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$apacthdr->auditno)
+                    ->delete();
+
+            }
+
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
 
     public function del_alloc(Request $request){
 
@@ -895,7 +1394,6 @@ class PaymentVoucherController extends defaultController
 
             return response($e->getMessage(), 500);
         }
-        
     }
 
     public function get_alloc_table(Request $request){
@@ -1188,10 +1686,10 @@ class PaymentVoucherController extends defaultController
             ->where('h.auditno','=',$auditno)
             ->first();
 
-        if ($apacthdr->recstatus == "OPEN") {
-            $title = "DRAFT";
-        } elseif ($apacthdr->recstatus == "POSTED"){
+        if ($apacthdr->recstatus == "APPROVED"){
             $title = " PAYMENT VOUCHER";
+        }ELSE{
+            $title = "DRAFT";
         }
 
         // $apalloc = DB::table('finance.apalloc')
@@ -1333,7 +1831,6 @@ class PaymentVoucherController extends defaultController
         $CN_obj->title = $title;
 
         return $CN_obj;
-
     }
 
     public function link_pv(Request $request){
@@ -1346,7 +1843,7 @@ class PaymentVoucherController extends defaultController
                                 ->where('apdt.recstatus','!=','DELETE')
                                 ->where('apdt.source','AP');
                 if(!$apdt->exists()){
-                    dd('No delivery Order');
+                    abort(403,'No delivery Order');
                 }
 
                 $apdt = $apdt->first();
@@ -1368,7 +1865,6 @@ class PaymentVoucherController extends defaultController
 
                 if(!$apdt->exists()){
                     abort(403,'No delivery Order');
-                    dd('No delivery Order');
                 }
 
                 $apdt = $apdt->first();
@@ -1380,7 +1876,6 @@ class PaymentVoucherController extends defaultController
 
                 if(!$delordhd->exists()){
                     abort(403,'No Purchase Order');
-                    // dd('No Purchase Order');
                 }
                 $delordhd = $delordhd->first();
                 $purordhd = DB::table('material.purordhd')
@@ -1390,7 +1885,6 @@ class PaymentVoucherController extends defaultController
 
                 if(!$purordhd->exists()){
                     abort(403,'No Purchase Order');
-                    // dd('No Purchase Order');
                 }
                 $purordhd = $purordhd->first();
                 $recno = $purordhd->recno;

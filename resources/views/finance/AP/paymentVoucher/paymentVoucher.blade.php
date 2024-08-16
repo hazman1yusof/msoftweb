@@ -45,6 +45,9 @@ i.fa {
 	float: right;
     padding-right: 10px;
 }
+.data_info .col-md-2.minuspad-15{
+	width: 16.5% !important;
+}
 
 @endsection
 
@@ -75,7 +78,7 @@ i.fa {
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-							  	<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+							  	<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('auditno'))){{Request::get('auditno')}}@endif">
 									
 								<div id="creditor_text">
 									<div class='input-group'>
@@ -98,22 +101,60 @@ i.fa {
 				<div class="col-md-2">
 				  	<label class="control-label" for="Status">Status</label>  
 					  	<select id="Status" name="Status" class="form-control input-sm">
-					      <option value="All" selected>ALL</option>
-					      <option value="Open">OPEN</option>
-					      <option value="Posted">POSTED</option>
-					      <option value="Cancelled">CANCELLED</option>
+						  	@if (Request::get('scope') == 'ALL')
+						      <option value="All" selected>ALL</option>
+						      <option value="OPEN">OPEN</option>
+						      <option value="CANCELLED">CANCELLED</option>
+						      <option value="PREPARED">PREPARED</option>
+						      <option value="SUPPORT">SUPPORT</option>
+						      <option value="VERIFIED">VERIFIED</option>
+						      <option value="APPROVED">APPROVED</option>
+							@elseif (Request::get('scope') == 'SUPPORT')
+								<option value="PREPARED">PREPARED</option>
+							@elseif (Request::get('scope') == 'VERIFIED')
+						      <option value="All2" selected>ALL</option>
+								<option value="SUPPORT">SUPPORT</option>
+								<option value="PREPARED">PREPARED</option>
+							@elseif (Request::get('scope') == 'APPROVED')
+								<option value="VERIFIED">VERIFIED</option>
+							@elseif (Request::get('scope') == 'REOPEN')
+								<option value="CANCELLED">CANCELLED</option>
+							@endif
 					    </select>
 	            </div>
+
+	          <?php 
+					$scope_use = 'posted';
+
+					if(Request::get('scope') == 'ALL'){
+						$scope_use = 'posted';
+					}else if(Request::get('scope') == 'PREPARED'){
+						$scope_use = 'posted';
+					}else if(Request::get('scope') == 'SUPPORT'){
+						$scope_use = 'support';
+					}else if(Request::get('scope') == 'VERIFIED'){
+						$scope_use = 'verify';
+					}else if(Request::get('scope') == 'APPROVED'){
+						$scope_use = 'approved';
+					}else if(Request::get('scope') == 'REOPEN'){
+						$scope_use = 'reopen';
+					}
+				?>
 
 				<div id="div_for_but_post" class="col-md-8 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<span id="error_infront" style="color: red"></span>
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
-					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
+
+					@if (Request::get('scope') != 'ALL' && Request::get('scope') != 'REOPEN')
+					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_jq" data-oper="reject" style="display: none;">REJECT</button>
+					@endif
+
+					<!-- <button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button> -->
 					<button 
 						type="button" 
 						class="btn btn-primary btn-sm" 
 						id="but_post_jq" 
-						data-oper="posted" 
+						data-oper="{{$scope_use}}"
 						style="display: none;">
 						@if (strtoupper(Request::get('scope')) == 'ALL')
 							{{'POST'}}
@@ -130,8 +171,8 @@ i.fa {
 						@endif
 					</button>
 
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
+					<!-- <button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button> -->
+					<!-- <button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button> -->
 				</div>
 
 			</fieldset> 
@@ -204,7 +245,7 @@ i.fa {
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">Payment Voucher/Deposit Header</div>
-			<div class="panel-body" style="position: relative;">
+			<div class="panel-body" style="position: relative;padding-bottom: 0px;">
 				<form class='form-horizontal' style='width:99%' id='formdata'>
 					{{ csrf_field() }}
 					<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="{{$_GET['source']}}">
@@ -365,10 +406,71 @@ i.fa {
 					</div>		  	 -->
 					
 					<button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button>
+					<div class="form-group data_info">
+						<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="apacthdr_requestby">Prepared By</label>  
+				  			<input id="apacthdr_requestby" name="apacthdr_requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+
+			  			<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="apacthdr_supportby">Support By</label>
+				  			<input id="apacthdr_supportby" name="apacthdr_supportby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+				  			<i class="fa fa-info-circle my_remark" aria-hidden="true" id='support_remark_i'></i>
+			  			</div>
+
+					  <div class="col-md-2 minuspad-15">
+							<label class="control-label" for="apacthdr_verifiedby">Verified By</label>  
+				  			<input id="apacthdr_verifiedby" name="apacthdr_verifiedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+				  			<i class="fa fa-info-circle my_remark" aria-hidden="true" id='verified_remark_i'></i>
+			  			</div>
+
+			  			<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="apacthdr_approvedby">Approved By</label>
+				  			<input id="apacthdr_approvedby" name="apacthdr_approvedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+				  			<i class="fa fa-info-circle my_remark" aria-hidden="true" id='approved_remark_i'></i>
+			  			</div>
+
+					  <div class="col-md-2 minuspad-15">
+							<label class="control-label" for="apacthdr_adduser">Add By</label>
+				  			<input id="apacthdr_adduser" name="apacthdr_adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+						
+						<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="apacthdr_upduser">Last User</label>
+				  			<input id="apacthdr_upduser" name="apacthdr_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+
+			  			<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="apacthdr_requestdate">Prepared Date</label>  
+				  			<input id="apacthdr_requestdate" name="apacthdr_requestdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+
+			  			<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="apacthdr_supportdate">Support Date</label>
+				  			<input id="apacthdr_supportdate" name="apacthdr_supportdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+
+			  			<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="apacthdr_verifieddate">Verified Date</label>  
+				  			<input id="apacthdr_verifieddate" name="apacthdr_verifieddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+
+			  			<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="apacthdr_approveddate">Approved Date</label>
+				  			<input id="apacthdr_approveddate" name="apacthdr_approveddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+
+						<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="apacthdr_adddate">Add Date</label>
+				  			<input id="apacthdr_adddate" name="apacthdr_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+
+						<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="apacthdr_upddate">Last Date</label>
+				  			<input id="apacthdr_upddate" name="apacthdr_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+					</div>
 				</form>
-				<div class="panel-body">
-					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
-				</div>
 			</div>
 		</div>
 			
@@ -382,9 +484,28 @@ i.fa {
 						        <div id="jqGridPager2"></div>
 						</div>
 					</form>
+					<div class="panel-body">
+						<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
+					</div>
 				</div>
 		</div>
-	</div>						
+	</div>
+
+	<div id="dialog_remarks_oper" title="Remarks">
+	  <div class="panel panel-default">
+	    <div class="panel-body">
+	    	<textarea id='remarks_oper' name='remarks_oper' rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
+	    </div>
+	  </div>
+	</div>
+
+	<div id="dialog_remarks_view" title="Remarks">
+	  <div class="panel panel-default">
+	    <div class="panel-body">
+	    	<textarea id='remarks_view' name='remarks_view' readonly rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
+	    </div>
+	  </div>
+	</div>	
 </div>
 @endsection
 

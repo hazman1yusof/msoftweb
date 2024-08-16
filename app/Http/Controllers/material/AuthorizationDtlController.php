@@ -8,7 +8,7 @@ use stdClass;
 use DB;
 use Carbon\Carbon;
 
-class AuthorizationDtlController extends defaultController
+class AuthorizationDtlController extends defaultController // DONT DELETE THIS CONTROLLER, ITS FOR WARNING AT DAHSBOARD
 {   
 
     var $table;
@@ -79,7 +79,7 @@ class AuthorizationDtlController extends defaultController
                     ->where('qpr.trantype','<>','DONE')
                     ->get();
 
-            $queuepo = DB::table('material.queuepo as qpo')
+        $queuepo = DB::table('material.queuepo as qpo')
                     ->select('qpo.trantype','adtl.authorid','pohd.recno','pohd.prdept','pohd.purordno','pohd.purdate','pohd.recstatus','pohd.totamount','pohd.adduser')
                     ->join('material.authdtl as adtl', function($join) use ($request){
                         $join = $join
@@ -108,10 +108,110 @@ class AuthorizationDtlController extends defaultController
                     ->where('qpo.trantype','<>','DONE')
                     ->get();
 
+        $queuepv = DB::table('finance.queuepv as qpv')
+                    ->select('qpv.trantype','prdtl.authorid','apact.auditno','apact.suppcode','supp.Name','apact.actdate','apact.recstatus','apact.amount','apact.adduser')
+                    ->join('finance.permissiondtl as prdtl', function($join) use ($request){
+                        $join = $join
+                            ->where('prdtl.compcode',session('compcode'))
+                            ->where('prdtl.authorid',session('username'))
+                            ->where('prdtl.trantype','PV')
+                            ->where('prdtl.cando','ACTIVE')
+                            ->on('prdtl.recstatus','qpv.trantype');
+                    })
+                    ->join('finance.apacthdr as apact', function($join) use ($request){
+                        $join = $join
+                            ->where('apact.compcode',session('compcode'))
+                            ->on('apact.auditno','qpv.recno')
+                            ->on('apact.recstatus','qpv.recstatus')
+                            ->where(function ($query) {
+                                $query
+                                    ->on('apact.amount','>=','prdtl.minlimit')
+                                    ->on('apact.amount','<', 'prdtl.maxlimit');
+                            });
+                    })
+                    ->join('material.supplier as supp', function($join) use ($request){
+                        $join = $join
+                            ->where('supp.compcode',session('compcode'))
+                            ->on('supp.suppcode','apact.suppcode');
+                    })
+                    ->where('qpv.compcode',session('compcode'))
+                    ->where('qpv.trantype','<>','DONE')
+                    ->get();
+
+        $queuepv_reject = DB::table('finance.queuepv as qpv')
+                    ->select('qpv.trantype','apact.adduser','apact.auditno','apact.suppcode','supp.Name','apact.actdate','apact.recstatus','apact.amount','apact.adduser','apact.cancelby','apact.canceldate')
+                    ->join('finance.apacthdr as apact', function($join) use ($request){
+                        $join = $join
+                            ->where('apact.compcode',session('compcode'))
+                            ->on('apact.auditno','qpv.recno')
+                            ->on('apact.recstatus','qpv.recstatus');
+                    })
+                    ->join('material.supplier as supp', function($join) use ($request){
+                        $join = $join
+                            ->where('supp.compcode',session('compcode'))
+                            ->on('supp.suppcode','apact.suppcode');
+                    })
+                    ->where('qpv.compcode',session('compcode'))
+                    ->where('qpv.trantype','REOPEN')
+                    ->get();
+
+        $queuepv = $queuepv->merge($queuepv_reject);
+
+        $queuepd = DB::table('finance.queuepd as qpd')
+                    ->select('qpd.trantype','prdtl.authorid','apact.auditno','apact.suppcode','supp.Name','apact.actdate','apact.recstatus','apact.amount','apact.adduser')
+                    ->join('finance.permissiondtl as prdtl', function($join) use ($request){
+                        $join = $join
+                            ->where('prdtl.compcode',session('compcode'))
+                            ->where('prdtl.authorid',session('username'))
+                            ->where('prdtl.trantype','PV')
+                            ->where('prdtl.cando','ACTIVE')
+                            ->on('prdtl.recstatus','qpd.trantype');
+                    })
+                    ->join('finance.apacthdr as apact', function($join) use ($request){
+                        $join = $join
+                            ->where('apact.compcode',session('compcode'))
+                            ->on('apact.auditno','qpd.recno')
+                            ->on('apact.recstatus','qpd.recstatus')
+                            ->where(function ($query) {
+                                $query
+                                    ->on('apact.amount','>=','prdtl.minlimit')
+                                    ->on('apact.amount','<', 'prdtl.maxlimit');
+                            });
+                    })
+                    ->join('material.supplier as supp', function($join) use ($request){
+                        $join = $join
+                            ->where('supp.compcode',session('compcode'))
+                            ->on('supp.suppcode','apact.suppcode');
+                    })
+                    ->where('qpd.compcode',session('compcode'))
+                    ->where('qpd.trantype','<>','DONE')
+                    ->get();
+
+        $queuepd_reject = DB::table('finance.queuepd as qpd')
+                    ->select('qpd.trantype','apact.adduser','apact.auditno','apact.suppcode','supp.Name','apact.actdate','apact.recstatus','apact.amount','apact.adduser')
+                    ->join('finance.apacthdr as apact', function($join) use ($request){
+                        $join = $join
+                            ->where('apact.compcode',session('compcode'))
+                            ->on('apact.auditno','qpd.recno')
+                            ->on('apact.recstatus','qpd.recstatus');
+                    })
+                    ->join('material.supplier as supp', function($join) use ($request){
+                        $join = $join
+                            ->where('supp.compcode',session('compcode'))
+                            ->on('supp.suppcode','apact.suppcode');
+                    })
+                    ->where('qpd.compcode',session('compcode'))
+                    ->where('qpd.trantype','REOPEN')
+                    ->get();
+
+        $queuepd = $queuepd->merge($queuepd_reject);
+
 
         $responce = new stdClass();
         $responce->queuepr = $queuepr;
         $responce->queuepo = $queuepo;
+        $responce->queuepv = $queuepv;
+        $responce->queuepd = $queuepd;
 
         return json_encode($responce);
     }

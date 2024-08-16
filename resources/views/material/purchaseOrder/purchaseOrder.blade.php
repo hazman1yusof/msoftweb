@@ -137,7 +137,7 @@ div#fail_msg{
 
 					if(Request::get('scope') == 'ALL'){
 						$scope_use = 'posted';
-					}else if(Request::get('scope') == 'REQUEST'){
+					}else if(Request::get('scope') == 'PREPARED'){
 						$scope_use = 'posted';
 					}else if(Request::get('scope') == 'SUPPORT'){
 						$scope_use = 'support';

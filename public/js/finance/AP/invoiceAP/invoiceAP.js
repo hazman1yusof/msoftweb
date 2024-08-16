@@ -1776,7 +1776,7 @@ $(document).ready(function () {
 			$('#jqGrid3_panel').collapse('show');
 			$('#gridDo_panel').collapse('show');
 			$('#gridPV_panel').collapse('show');
-			$('#gridAttch_panel').collapse('show');
+			// $('#gridAttch_panel').collapse('show');
 			$('#gridDo').show();
 			$('#jqgridpv').show();
 			$('#attach_iframe').show();

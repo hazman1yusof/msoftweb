@@ -653,6 +653,13 @@ Route::get('/authorizationDtl','material\AuthorizationDtlController@show');
 Route::get('/authorizationDtl/table','material\AuthorizationDtlController@table');
 Route::post('/authorizationDtl/form','material\authorizationDetailController@form');
 
+//// Permission finance setup ///
+Route::get('/permission','finance\PermissionController@show');
+Route::get('/permission/table','finance\PermissionController@table');
+Route::post('/permission/form','finance\PermissionController@form');
+Route::get('/permission/form','finance\PermissionDetailController@form');
+Route::post('/permissionDetail/form','finance\PermissionDetailController@form');
+
 //// UOM material setup ///
 Route::get('/uom','material\UomController@show');
 Route::get('/uom/table','material\UomController@table');

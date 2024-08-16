@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Authorization')
+@section('title', 'permission')
 
 @section('style')
 
@@ -59,7 +59,7 @@ i.fa {
 		</form>
 		    
 		<div class="panel panel-default">
-		    <div class="panel-heading">Authorization Header</div>
+		    <div class="panel-heading">Permission Header</div>
 		    	<div class="panel-body">
 		    		<div class='col-md-12' style="padding:0 0 15px 0">
             			<table id="jqGrid" class="table table-striped"></table>
@@ -71,21 +71,21 @@ i.fa {
 
 		
 
-	    <div class="panel panel-default" id="gridAuthdtl_c" style="position: relative;">
+	    <div class="panel panel-default" id="gridpermissiondtl_c" style="position: relative;">
 	    <!-- t=input type="button" class="click_row pull-right btn btn-primary" id="but_cando">
 			<label class="control-label" style="margin-top: 10px;">Active</label>
         </input> -->
-			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#gridAuthdtl_panel">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#gridpermissiondtl_panel">
 				<i class="fa fa-angle-double-up" style="font-size:24px"></i>
-				<i class="fa fa-angle-double-down" style="font-size:24px"></i>Authorization Detail
+				<i class="fa fa-angle-double-down" style="font-size:24px"></i>Permission Detail
 		    </div>
 
 	    	<input type="button" class="btn btn-sm btn-primary pull-right show_deactive" style="position:absolute;right:60px;top: 8px" id="but_show_deactive" value="Show Deactive">
 		
-			<div id="gridAuthdtl_panel" class="panel-collapse collapse">
+			<div id="gridpermissiondtl_panel" class="panel-collapse collapse">
 				<div class="panel-body">
 					<div class='col-md-12' style="padding:0 0 15px 0">
-						<table id="gridAuthdtl" class="table table-striped"></table>
+						<table id="gridpermissiondtl" class="table table-striped"></table>
 						<div id="jqGridPager3"></div>
 					</div>
 				</div>
@@ -133,8 +133,8 @@ i.fa {
 				<div class="form-group">
 				  	<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
 				  		<div class="col-md-2">
-							<label class="radio-inline"><input type="radio" name="recstatus" value='ACTIVE' checked >Active</label>
-							<label class="radio-inline"><input type="radio" name="recstatus" value='DEACTIVE' >Deactive</label>
+							<label class="radio-inline"><input type="radio" name="recstatus" value='ACTIVE' checked rdonly>Active</label>
+							<label class="radio-inline"><input type="radio" name="recstatus" value='DEACTIVE' rdonly>Deactive</label>
 				  		</div>
 				</div> 
 
@@ -167,7 +167,7 @@ i.fa {
         </div>     
 
 			<div class='panel panel-info'>
-				<div class="panel-heading">Authorization Detail</div>
+				<div class="panel-heading">Permission Detail</div>
 					<div class="panel-body">
 						<form id='formdata2' class='form-vertical' style='width:99%'>
 							<div id="jqGrid2_c" class='col-md-12'>
@@ -184,10 +184,10 @@ i.fa {
 			</div>	
 	</div>
 
-		 <!--------------------------------Authdtl Form ------------------>
+		 <!--------------------------------permissiondtl Form ------------------>
 
-		<div id="Authdtl" title="Authorization Detail" >
-        	<form class='form-horizontal' style='width:99%' id='FAuthdtl'>
+		<div id="permissiondtl" title="Permission Detail" >
+        	<form class='form-horizontal' style='width:99%' id='Fpermissiondtl'>
 			
 				{{ csrf_field() }}
 				<input type="hidden" id="d_idno" name="dtl_idno">
@@ -215,6 +215,8 @@ i.fa {
 							<select id="d_recstatus" name="dtl_recstatus" class="form-control input-sm">
 							    <option value="SUPPORT">SUPPORT</option>
 							    <option value="VERIFIED">VERIFIED</option>
+							    <option value="RECOMMENDED1">RECOMMENDED1</option>
+							    <option value="RECOMMENDED2">RECOMMENDED2</option>
 							    <option value="APPROVED">APPROVED</option>
 							</select>
 						</div>	
@@ -222,8 +224,9 @@ i.fa {
 					<label class="col-md-2 control-label" for="d_trantype">Type</label>  
 						<div class="col-md-2">
 							<select id="d_trantype" name="dtl_trantype" class="form-control input-sm">
-							    <option value="PR">Purchase Request</option>
-							    <option value="PO">Purchase Order</option>
+							    <option value="SO">Sales Order</option>
+							    <option value="PV">Payment Voucher</option>
+							    <option value="PD">Payment Deposit</option>
 							</select>
 						</div>
                 </div>		
@@ -231,7 +234,7 @@ i.fa {
                 <div class="form-group">
 				  <label class="col-md-2 control-label" for="d_cando">Recstatus</label> 
 				  <div class="col-md-2">
-					<label class="radio-inline"><input type="radio" name="dtl_cando" value='ACTIVE' checked>Active</label>
+					<label class="radio-inline"><input type="radio" name="dtl_cando" value='ACTIVE' checked readonly>Active</label>
 					<label class="radio-inline"><input type="radio" name="dtl_cando" value='DEACTIVE' >Deactive</label>
 				  </div>
 				</div> 
@@ -249,7 +252,7 @@ i.fa {
                 </div>
 			</form>
 		</div>
-		<!------------------------------end authdtl---------------------------------->	
+		<!------------------------------end permissiondtl---------------------------------->	
 
 			
 	</div>
@@ -291,6 +294,6 @@ i.fa {
 		});
 	</script>
 
-	<script src="js/material/Authorization/authorization.js?v=2"></script>
+	<script src="js/finance/permission/permission.js"></script>
 
 @endsection

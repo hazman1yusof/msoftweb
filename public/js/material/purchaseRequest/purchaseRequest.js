@@ -30,6 +30,7 @@ $(document).ready(function () {
 	sequence.set($("#deptcode").val()).get();
 	var fdl = new faster_detail_load();
 	var myattachment = new attachment_page("purchaserequest","#jqGrid","purreqhd_idno");
+	var my_remark_button = new remark_button_class('#jqgrid');
 
 	////////////////////////////////////start dialog//////////////////////////////////////
 	var oper = null;
@@ -45,6 +46,7 @@ $(document).ready(function () {
 				unsaved = false;
 				errorField.length=0;
 				parent_close_disabled(true);
+				my_remark_button.remark_btn_init(selrowData("#jqGrid"));
 				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth - $("#jqGrid2_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
 				mycurrency.formatOn();
@@ -112,13 +114,13 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
 
-	var recstatus_filter = [['OPEN','REQUEST','PARTIAL']];
+	var recstatus_filter = [['OPEN','PREPARED','PARTIAL']];
 	if($("#recstatus_use").val() == 'ALL'){
-		recstatus_filter = [['OPEN','REQUEST','SUPPORT','INCOMPLETED','VERIFIED','APPROVED','CANCELLED','COMPLETED','PARTIAL']];
+		recstatus_filter = [['OPEN','PREPARED','SUPPORT','INCOMPLETED','VERIFIED','APPROVED','CANCELLED','COMPLETED','PARTIAL']];
 		filterCol_urlParam = ['purreqhd.compcode'];
 		filterVal_urlParam = ['session.compcode'];
 	}else if($("#recstatus_use").val() == 'SUPPORT'){
-		recstatus_filter = [['REQUEST']];
+		recstatus_filter = [['PREPARED']];
 		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
 		filterVal_urlParam = ['session.compcode','session.username'];
 	}else if($("#recstatus_use").val() == 'VERIFIED'){
@@ -220,6 +222,10 @@ $(document).ready(function () {
 			{ label: 'reopenby', name: 'purreqhd_reopenby', width: 40, hidden: true},
 			{ label: 'requestby', name: 'purreqhd_requestby', width: 90, hidden: true },
 			{ label: 'requestdate', name: 'purreqhd_requestdate', width: 90, hidden: true },
+			{ label: 'recommended1by', name: 'purreqhd_recommended1by', width: 90, hidden: true },
+			{ label: 'recommended1date', name: 'purreqhd_recommended1date', width: 90, hidden: true },
+			{ label: 'recommended2by', name: 'purreqhd_recommended2by', width: 90, hidden: true },
+			{ label: 'recommended2date', name: 'purreqhd_recommended2date', width: 90, hidden: true },
 			{ label: 'supportby', name: 'purreqhd_supportby', width: 90, hidden: true },
 			{ label: 'supportdate', name: 'purreqhd_supportdate', width: 40, hidden: true},
 			{ label: 'verifiedby', name: 'purreqhd_verifiedby', width: 90, hidden: true },
@@ -227,6 +233,13 @@ $(document).ready(function () {
 			{ label: 'approvedby', name: 'purreqhd_approvedby', width: 90, hidden: true },
 			{ label: 'approveddate', name: 'purreqhd_approveddate', width: 40, hidden: true},
 			{ label: 'reopendate', name: 'purreqhd_reopendate', width: 40, hidden:true},
+			{ label: 'support_remark', name: 'purreqhd_support_remark', width: 40, hidden:true},
+			{ label: 'verified_remark', name: 'purreqhd_verified_remark', width: 40, hidden:true},
+			{ label: 'approved_remark', name: 'purreqhd_approved_remark', width: 40, hidden:true},
+			{ label: 'cancelled_remark', name: 'purreqhd_cancelled_remark', width: 40, hidden:true},
+			{ label: 'recommended1_remark', name: 'purreqhd_recommended1_remark', width: 40, hidden:true},
+			{ label: 'recommended2_remark', name: 'purreqhd_recommended2_remark', width: 40, hidden:true},
+			{ label: 'prtype', name: 'purreqhd_prtype', width: 40, hidden:true},
 			{ label: 'cancelby', name: 'purreqhd_cancelby', width: 40, hidden:true},
 			{ label: 'canceldate', name: 'purreqhd_canceldate', width: 40, hidden:true},
 			{ label: 'unit', name: 'purreqhd_unit', width: 40, hidden:true},
@@ -367,7 +380,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid', false, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['purreqhd_recno','purreqhd_purordno','purreqhd_adduser', 'purreqhd_adddate', 'purreqhd_idno', 'supplier_name','purreqhd_purreqno','purreqhd_upduser','purreqhd_upddate','purreqhd_deluser', 'purreqhd_recstatus','purreqhd_unit','Checkbox','queuepr_AuthorisedID']);
+	addParamField('#jqGrid', false, saveParam, ['purreqhd_recno','purreqhd_purordno','purreqhd_adduser', 'purreqhd_adddate', 'purreqhd_idno', 'supplier_name','purreqhd_purreqno','purreqhd_upduser','purreqhd_upddate','purreqhd_deluser', 'purreqhd_recstatus','purreqhd_unit','Checkbox','queuepr_AuthorisedID','purreqhd_recommended1by','purreqhd_recommended1date','purreqhd_recommended2by','purreqhd_recommended2date','purreqhd_support_remark','purreqhd_verified_remark','purreqhd_approved_remark','purreqhd_cancelled_remark','purreqhd_recommended1_remark','purreqhd_recommended2_remark','purreqhd_prtype']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide,saveallrow){
@@ -2504,6 +2517,58 @@ function empty_form(){
 	$('#suppcode_show').text('');
 }
 
-function reset_all_error(){
+function remark_button_class(grid){
+	$("#dialog_remarks_view").dialog({
+		autoOpen: false,
+		width: 4/10 * $(window).width(),
+		modal: true,
+		open: function( event, ui ) {
+		},
+		close: function( event, ui ) {
+			$('#remarks_view').val('');
+		},
+		buttons : [{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}]
+	});
 
+	this.grid=grid;
+	this.selrowdata;
+
+	this.remark_btn_init = function(selrowdata){
+		this.selrowdata = selrowdata;
+		$('i.my_remark').hide();
+		$('i.my_remark').off('click');
+		if(this.selrowdata.purreqhd_support_remark != ''){
+			$('i#support_remark_i').show();
+			$('i#support_remark_i').data('remark',this.selrowdata.purreqhd_support_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Support Remark');
+		}
+		if(this.selrowdata.purreqhd_verified_remark != ''){
+			$('i#verified_remark_i').show();
+			$('i#verified_remark_i').data('remark',this.selrowdata.purreqhd_verified_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Verified Remark');
+		}
+		if(this.selrowdata.purreqhd_recommended1_remark != ''){
+			$('i#recommended1_remark_i').show();
+			$('i#recommended1_remark_i').data('remark',this.selrowdata.purreqhd_recommended1_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Recommended 1 Remark');
+		}
+		if(this.selrowdata.purreqhd_recommended2_remark != ''){
+			$('i#recommended2_remark_i').show();
+			$('i#recommended2_remark_i').data('remark',this.selrowdata.purreqhd_recommended2_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Recommended 2 Remark');
+		}
+		if(this.selrowdata.purreqhd_approved_remark != ''){
+			$('i#approved_remark_i').show();
+			$('i#approved_remark_i').data('remark',this.selrowdata.purreqhd_approved_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Approved Remark');
+		}
+		$('i.my_remark').on('click',function(){
+			$('#remarks_view').val($(this).data('remark'));
+			$("#dialog_remarks_view").dialog( "open" );
+		});
+	}
 }

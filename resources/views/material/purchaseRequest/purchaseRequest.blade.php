@@ -32,6 +32,10 @@ i.fa {
 	white-space: pre-wrap !important;
 }
 
+.data_info .col-md-2.minuspad-15{
+	width: 12.5% !important;
+}
+
 #more {display: none;}
 
 @endsection
@@ -91,18 +95,20 @@ i.fa {
 						      <option value="All" selected>ALL</option>
 						      <option value="OPEN">OPEN</option>
 						      <option value="CANCELLED">CANCELLED</option>
-						      <option value="REQUEST">PREPARED</option>
+						      <option value="PREPARED">PREPARED</option>
 						      <option value="SUPPORT">SUPPORT</option>
 						      <option value="VERIFIED">VERIFIED</option>
 						      <option value="APPROVED">APPROVED</option>
 						      <option value="COMPLETED">COMPLETED</option>
 						      <option value="PARTIAL">PARTIAL</option>
 							@elseif (Request::get('scope') == 'SUPPORT')
-								<option value="REQUEST">PREPARED</option>
+								<option value="PREPARED">PREPARED</option>
 							@elseif (Request::get('scope') == 'VERIFIED')
 								<option value="SUPPORT">SUPPORT</option>
 							@elseif (Request::get('scope') == 'APPROVED')
 								<option value="VERIFIED">VERIFIED</option>
+							@elseif (Request::get('scope') == 'REOPEN')
+								<option value="CANCELLED">CANCELLED</option>
 							@endif
 					    </select>
 	            </div>
@@ -126,7 +132,7 @@ i.fa {
 
 					if(Request::get('scope') == 'ALL'){
 						$scope_use = 'posted';
-					}else if(Request::get('scope') == 'REQUEST'){
+					}else if(Request::get('scope') == 'PREPARED'){
 						$scope_use = 'posted';
 					}else if(Request::get('scope') == 'SUPPORT'){
 						$scope_use = 'support';
@@ -333,10 +339,10 @@ i.fa {
 							</div>
 
 							<div class="form-group">
-					  			<label class="col-md-2 control-label" for="purreqhd_purreqdt">Prepared Date</label>
-					  			<div class="col-md-3">
+				  			<label class="col-md-2 control-label" for="purreqhd_purreqdt">Prepared Date</label>
+				  			<div class="col-md-3">
 									<input id="purreqhd_purreqdt" name="purreqhd_purreqdt" data-validation="required" data-validation-error-msg="Please Enter Value" type="date" class="form-control input-sm">
-					  			</div>
+				  			</div>
 
 								<label class="col-md-2 control-label" for="purreqhd_recstatus">Status</label>  
 								<div class="col-md-3">
@@ -346,68 +352,93 @@ i.fa {
 
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="purreqhd_remarks">Remark</label>   
-						  			<div class="col-md-6">
-						  				<textarea rows="5" id='purreqhd_remarks' name='purreqhd_remarks' class="form-control input-sm text-uppercase" ></textarea>
-						  			</div>
-					    	</div>
+					  			<div class="col-md-6">
+					  				<textarea rows="5" id='purreqhd_remarks' name='purreqhd_remarks' class="form-control input-sm text-uppercase" ></textarea>
+					  			</div>
+				    	</div>
 
-					    	<div class="form-group data_info">
-								<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_requestby">Prepared By</label>  
+					    <div class="form-group data_info">
+									<div class="col-md-2 minuspad-15">
+										<label class="control-label" for="purreqhd_requestby">Prepared By</label>  
 						  			<input id="purreqhd_requestby" name="purreqhd_requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
 					  			<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_supportby">Support By</label>
+										<label class="control-label" for="purreqhd_supportby">Support By</label>
 						  			<input id="purreqhd_supportby" name="purreqhd_supportby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  			<i class="fa fa-info-circle my_remark" aria-hidden="true" id='support_remark_i'></i>
 					  			</div>
 
 								  <div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_verifiedby">Verified By</label>  
+										<label class="control-label" for="purreqhd_verifiedby">Verified By</label>  
 						  			<input id="purreqhd_verifiedby" name="purreqhd_verifiedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  			<i class="fa fa-info-circle my_remark" aria-hidden="true" id='verified_remark_i'></i>
 					  			</div>
 
 					  			<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_approvedby">Approved By</label>
+										<label class="control-label" for="recommended1by">Recommended 1 By</label>  
+						  			<input id="recommended1by" name="recommended1by" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  			<i class="fa fa-info-circle my_remark" aria-hidden="true" id='recommended1_remark_i'></i>
+					  			</div>
+
+					  			<div class="col-md-2 minuspad-15">
+										<label class="control-label" for="recommended2by">Recommended 2 By</label>  
+						  			<input id="recommended2by" name="recommended2by" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  			<i class="fa fa-info-circle my_remark" aria-hidden="true" id='recommended2_remark_i'></i>
+					  			</div>
+
+					  			<div class="col-md-2 minuspad-15">
+										<label class="control-label" for="purreqhd_approvedby">Approved By</label>
 						  			<input id="purreqhd_approvedby" name="purreqhd_approvedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  			<i class="fa fa-info-circle my_remark" aria-hidden="true" id='approved_remark_i'></i>
 					  			</div>
 
 								  <div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_adduser">Add By</label>
+										<label class="control-label" for="purreqhd_adduser">Add By</label>
 						  			<input id="purreqhd_adduser" name="purreqhd_adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 								
-								<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_upduser">Last User</label>
+									<div class="col-md-2 minuspad-15">
+										<label class="control-label" for="purreqhd_upduser">Last User</label>
 						  			<input id="purreqhd_upduser" name="purreqhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
 					  			<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_requestdate">Request Date</label>  
+										<label class="control-label" for="purreqhd_requestdate">Prepared Date</label>  
 						  			<input id="purreqhd_requestdate" name="purreqhd_requestdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
 					  			<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_supportdate">Support Date</label>
+										<label class="control-label" for="purreqhd_supportdate">Support Date</label>
 						  			<input id="purreqhd_supportdate" name="purreqhd_supportdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
 					  			<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_verifieddate">Verified Date</label>  
+										<label class="control-label" for="purreqhd_verifieddate">Verified Date</label>  
 						  			<input id="purreqhd_verifieddate" name="purreqhd_verifieddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
 					  			<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_approveddate">Approved Date</label>
+										<label class="control-label" for="recommended1date">Recommended 1 Date</label>  
+						  			<input id="recommended1date" name="recommended1date" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			</div>
+
+					  			<div class="col-md-2 minuspad-15">
+										<label class="control-label" for="recommended2date">Recommended 2 Date</label>  
+						  			<input id="recommended2date" name="recommended2date" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			</div>
+
+					  			<div class="col-md-2 minuspad-15">
+										<label class="control-label" for="purreqhd_approveddate">Approved Date</label>
 						  			<input id="purreqhd_approveddate" name="purreqhd_approveddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
-								<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_adddate">Add Date</label>
+									<div class="col-md-2 minuspad-15">
+										<label class="control-label" for="purreqhd_adddate">Add Date</label>
 						  			<input id="purreqhd_adddate" name="purreqhd_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
-								<div class="col-md-2 minuspad-15">
+									<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purreqhd_upddate">Update Date</label>
 						  			<input id="purreqhd_upddate" name="purreqhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
@@ -451,6 +482,15 @@ i.fa {
 			    </div>
 			  </div>
 			</div>
+
+			<div id="dialog_remarks_view" title="Remarks">
+			  <div class="panel panel-default">
+			    <div class="panel-body">
+			    	<textarea id='remarks_view' name='remarks_view' readonly rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
+			    </div>
+			  </div>
+			</div>
+
 		</div>
 @endsection
 

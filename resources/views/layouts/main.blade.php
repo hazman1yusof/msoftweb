@@ -224,7 +224,7 @@
 				text-align: center;
 				color: #286090;
 				background: #d9edf7;
-				width: 60%;
+				width: 80%;
 			    margin: auto !important;
 			    padding: 5px 5px 15px 5px !important;
 			    border-top-left-radius: 30px;
@@ -234,8 +234,15 @@
 			    /*position: absolute;
 			    bottom: 0px;
 			    right: 0px;*/
-			    cursor: pointer;
+/*			    cursor: pointer;*/
 			    display: block;
+			}
+			.data_info .col-md-2.minuspad-15 .my_remark{
+				position: absolute;
+		    right: 10px;
+		    top: 20px;
+		    cursor: pointer;
+		    color: #ff4343;
 			}
 			.click_row{
 				width:15%;

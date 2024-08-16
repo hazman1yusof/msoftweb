@@ -95,7 +95,7 @@ $(document).ready(function () {
 			$(".noti").empty();
 			$("#refresh_jqGrid").click();
 			// refreshGrid("#jqGrid2",null,"kosongkan");
-			// refreshGrid("#gridAuthdtl",null,"kosongkan");
+			// refreshGrid("#gridpermissiondtl",null,"kosongkan");
 			
 		},
 	  });
@@ -108,7 +108,7 @@ $(document).ready(function () {
 		field:'',
 		filterCol:['compcode'],
 		filterVal:['session.compcode'],
-		table_name:'material.authorise',
+		table_name:'finance.permission',
 		table_id:'authorid',
 		sort_idno:true,
 	}
@@ -116,10 +116,10 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam={
 		action:'save_table_default',
-		url:'./authorization/form',
+		url:'./permission/form',
 		field:'',
 		oper:oper,
-		table_name:'material.authorise',
+		table_name:'finance.permission',
 		table_id:'authorid',
 		saveip:'true'
 	};
@@ -152,9 +152,9 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-			urlParam_authdtl.filterVal[1]=selrowData("#jqGrid").authorid;
+			urlParam_permissiondtl.filterVal[1]=selrowData("#jqGrid").authorid;
 			urlParam2.filterVal[1]=selrowData("#jqGrid").authorid;
-			refreshGrid("#gridAuthdtl",urlParam_authdtl);
+			refreshGrid("#gridpermissiondtl",urlParam_permissiondtl);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridPager td[title='Edit Selected Row']").click();
@@ -300,11 +300,11 @@ var urlParam2={
 	url:'util/get_table_default',
 	field:'',
 	fixPost:'true',
-	table_name:['material.authdtl AS dtl'],
+	table_name:['finance.permissiondtl AS dtl'],
 	table_id:'lineno_',
 	filterCol:['compcode','authorid'],
 	filterVal:['session.compcode','']
-	/*WhereInCol:['authdtl.cando'],
+	/*WhereInCol:['permissiondtl.cando'],
 	WhereInVal: cando_filter,*/
 };
 
@@ -312,7 +312,7 @@ var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, a
 ////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 $("#jqGrid2").jqGrid({
 	datatype: "local",
-	editurl: "./authorizationDetail/form",
+	editurl: "./permissionDetail/form",
 	colModel: [
 	 	{ label: 'idno', name: 'dtl_idno', width: 20, classes: 'wrap', key: true, editable: true, hidden:true},
 	 	{ label: 'compcode', name: 'dtl_compcode', width: 20, classes: 'wrap', hidden:true},
@@ -320,7 +320,7 @@ $("#jqGrid2").jqGrid({
 			 editable: true,
                  edittype: "select",
                  editoptions: {
-                     value: "PR:Purchase Request;PO:Purchase Order"
+                     value: "SO:Sales Order;PV:Payment Voucher;PD:Payment Deposit"
                  }
 		},
 		{ label: 'Department', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true,
@@ -460,9 +460,9 @@ var myEditOptions = {
 		mycurrency2.formatOff();
 
 		let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
-		let editurl = "./authorizationDetail/form?"+
+		let editurl = "./permissionDetail/form?"+
 			$.param({
-				action: 'authorizationDetail_save',
+				action: 'permissionDetail_save',
 				authorid:$('#authorid').val()
 			});
 		$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
@@ -500,11 +500,11 @@ $("#jqGrid2").inlineNav('#jqGridPager2',{
 			    callback: function (result) {
 			    	if(result == true){
 			    		param={
-			    			action: 'authorizationDetail_save',
+			    			action: 'permissionDetail_save',
 							idno: $('#dtl_idno').val(),
 
 			    		}
-			    		$.post( "./authorizationDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+			    		$.post( "./permissionDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 						}).fail(function(data) {
 							//////////////////errorText(dialog,data.responseText);
 						}).done(function(data){
@@ -563,11 +563,11 @@ $("#jqGrid2").inlineNav('#jqGridPager2',{
 	    }
 
 		var param={
-			action: 'authorizationDetail_save',
+			action: 'permissionDetail_save',
 			_token: $("#_token").val()
 		}
 
-		$.post( "./authorizationDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+		$.post( "./permissionDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 		}).fail(function(data) {
 			//////////////////errorText(dialog,data.responseText);
 		}).done(function(data){
@@ -605,7 +605,7 @@ function showdetail(cellvalue, options, rowObject){
 	}
 	var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
-	fdl.get_array('authorization',options,param,case_,cellvalue);
+	fdl.get_array('permission',options,param,case_,cellvalue);
 	return cellvalue;
 }
 
@@ -627,7 +627,7 @@ return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id
 
 function deptcodedtlCustomEdit(val,opt){
 val = (val=="undefined")? "" : val;	
-return $('<div class="input-group"><input jqgrid="gridAuthdtl" optid="'+opt.id+'" id="'+opt.id+'" name="d_deptcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+return $('<div class="input-group"><input jqgrid="gridpermissiondtl" optid="'+opt.id+'" id="'+opt.id+'" name="d_deptcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 }
 
 function galGridCustomValue (elem, operation, value){
@@ -806,8 +806,8 @@ var buttItem1=[{
 	text: "Save",click: function() {
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
-		if( $('#FAuthdtl').isValid({requiredFields: ''}, {}, true) ) {
-			saveFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",oper_authdtl,saveParam_authdtl,urlParam_authdtl);
+		if( $('#Fpermissiondtl').isValid({requiredFields: ''}, {}, true) ) {
+			saveFormdata("#gridpermissiondtl","#permissiondtl","#Fpermissiondtl",oper_permissiondtl,saveParam_permissiondtl,urlParam_permissiondtl);
 		}else{
 			mycurrency.formatOn();
 		}
@@ -818,50 +818,50 @@ var buttItem1=[{
 	}
 }];
 
-var oper_authdtl;
-$("#Authdtl")
+var oper_permissiondtl;
+$("#permissiondtl")
   .dialog({ 
 	width: 9/10 * $(window).width(),
 	modal: true,
 	autoOpen: false,
 	open: function( event, ui ) {
 		parent_close_disabled(true);
-		switch(oper_authdtl) {
+		switch(oper_permissiondtl) {
 			case state = 'add':
 				mycurrency.formatOnBlur();
 				$( this ).dialog( "option", "title", "Add" );
-				enableForm('#FAuthdtl');
-				hideOne('#FAuthdtl');
-				rdonly('#FAuthdtl');
+				enableForm('#Fpermissiondtl');
+				hideOne('#Fpermissiondtl');
+				rdonly('#Fpermissiondtl');
 				$(this).dialog("option", "buttons",buttItem1);
 				break;
 			case state = 'edit':
 				mycurrency.formatOnBlur();
 				$( this ).dialog( "option", "title", "Edit" );
-				enableForm('#FAuthdtl');
-				frozeOnEdit("#Authdtl");
-				$('#FAuthdtl :input[hideOne]').show();
-				rdonly('#FAuthdtl');
+				enableForm('#Fpermissiondtl');
+				frozeOnEdit("#permissiondtl");
+				$('#Fpermissiondtl :input[hideOne]').show();
+				rdonly('#Fpermissiondtl');
 				$(this).dialog("option", "buttons",buttItem1);
 				break;
 			case state = 'view':
 				mycurrency.formatOnBlur();
 				$( this ).dialog( "option", "title", "View" );
-				disableForm('#FAuthdtl');
-				$('#FAuthdtl :input[hideOne]').show();
+				disableForm('#Fpermissiondtl');
+				$('#Fpermissiondtl :input[hideOne]').show();
 				$(this).dialog("option", "buttons",butt2);
 				break;
 		}
 		
-		if(oper_authdtl == 'edit'){
+		if(oper_permissiondtl == 'edit'){
 			dialog_deptcodeD.on();
 		}
 		
-		if(oper_authdtl!='add'){
+		if(oper_permissiondtl!='add'){
 			// dialog_deptcodeD.check(errorField);
 
 		}
-		if (oper_authdtl != 'view') {
+		if (oper_permissiondtl != 'view') {
 			$("#d_authorid").val(selrowData('#jqGrid').authorid);
 			$("input[name='dtl_authorid']").val(selrowData('#jqGrid').authorid);
 			dialog_deptcodeD.on();
@@ -869,7 +869,7 @@ $("#Authdtl")
 	},
 	close: function( event, ui ) {
 		parent_close_disabled(false);
-		emptyFormdata(errorField,'#FAuthdtl');
+		emptyFormdata(errorField,'#Fpermissiondtl');
 		$('.my-alert').detach();
 		dialog_deptcodeD.off();
 		if(oper=='view'){
@@ -884,35 +884,35 @@ $("#Authdtl")
 var cando_filter = [['ACTIVE','DEACTIVE']];
 if($("#dtl_cando").val() == 'DEACTIVE'){
 	cando_filter = [['ACTIVE','DEACTIVE']];
-	filterCol_urlParam = ['authdtl.compcode'];
+	filterCol_urlParam = ['permissiondtl.compcode'];
 	filterVal_urlParam = ['session.compcode'];
 		
 }
 
-var urlParam_authdtl={
+var urlParam_permissiondtl={
 	action:'get_table_default',
 	url:'util/get_table_default',
 	field:'',
 	fixPost:'true',
-	table_name:['material.authdtl AS dtl'],
+	table_name:['finance.permissiondtl AS dtl'],
 	table_id:'d_lineno_',
 	filterCol:['compcode','authorid','cando'],
 	filterVal:['session.compcode','','ACTIVE']
 }
 
-var saveParam_authdtl={
+var saveParam_permissiondtl={
 	action:'save_table_default',
-	url:'authorizationDetail/form',
+	url:'permissionDetail/form',
 	field:'',
-	oper:oper_authdtl,
-	table_name:'material.authdtl',
+	oper:oper_permissiondtl,
+	table_name:'finance.permissiondtl',
 	table_id:'d_idno',
 	saveip:'true'
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-$("#gridAuthdtl").jqGrid({
+$("#gridpermissiondtl").jqGrid({
 	datatype: "local",
 	 colModel: [
 		 	//{ label: 'compcode', name: 'd_compcode', width: 20, classes: 'wrap', hidden:true},
@@ -922,7 +922,7 @@ $("#gridAuthdtl").jqGrid({
 				 editable: true,
                      edittype: "select",
                      editoptions: {
-                         value: "PR:Purchase Request;PO:Purchase Order"
+                         value: "SO:Sales Order;PV:Payment Voucher;PD:Payment Deposit"
                      }
 			},
 			{ label: 'Department', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true, formatter: showdetail,unformat:un_showdetail,
@@ -966,33 +966,33 @@ $("#gridAuthdtl").jqGrid({
 	onPaging: function(pgButton){
 	},
 	ondblClickRow: function(rowid, iRow, iCol, e){
-		$('#d_idno').val(selrowData('#gridAuthdtl').dtl_idno);
-		$('#d_authorid').val(selrowData('#gridAuthdtl').dtl_authorid);
+		$('#d_idno').val(selrowData('#gridpermissiondtl').dtl_idno);
+		$('#d_authorid').val(selrowData('#gridpermissiondtl').dtl_authorid);
 		$("#jqGridPager3 td[title='Edit Selected Row']").click();
 	},
 	gridComplete: function(){
 		if(oper == 'add'){
-			$("#gridAuthdtl").setSelection($("#jqGrid").getDataIDs()[0]);
+			$("#gridpermissiondtl").setSelection($("#jqGrid").getDataIDs()[0]);
 		}
 
-		$('#gridAuthdtl #'+$("#gridAuthdtl").jqGrid ('getGridParam', 'selrow')).focus();
+		$('#gridpermissiondtl #'+$("#gridpermissiondtl").jqGrid ('getGridParam', 'selrow')).focus();
 		fdl.set_array().reset();
 	
 
 		/////////////////////////////// reccount ////////////////////////////
 		
-		if($("#gridAuthdtl").getGridParam("reccount") >= 1){
+		if($("#gridpermissiondtl").getGridParam("reccount") >= 1){
 			$("#jqGridPagerglyphicon-trash").hide();
 		} 
 
-		if($("#gridAuthdtl").getGridParam("reccount") < 1){
+		if($("#gridpermissiondtl").getGridParam("reccount") < 1){
 			$("#jqGridPagerglyphicon-trash").show()
 		}
 
 		
 	},
 	onSelectRow:function(rowid, selected){
-		// let stat = selrowData("#gridAuthdtl").dtl_cando;
+		// let stat = selrowData("#gridpermissiondtl").dtl_cando;
 		// if(stat=='A'){
 		// 			$('#but_cando').show();
 		// 			//$('#but_post_jq,#but_reopen_jq').hide();
@@ -1000,15 +1000,15 @@ $("#gridAuthdtl").jqGrid({
 		// 			$('#but_cando').hide();
 		// 		}
 		/*if(rowid != null) {
-			rowData = $('#gridAuthdtl').jqGrid ('getRowData', rowid);
+			rowData = $('#gridpermissiondtl').jqGrid ('getRowData', rowid);
 			//console.log(rowData.svc_billtype);
-			urlParam_suppbonus.filterVal[0]=selrowData("#gridAuthdtl").si_itemcode; 
+			urlParam_suppbonus.filterVal[0]=selrowData("#gridpermissiondtl").si_itemcode; 
 
-			$("#Fsuppbonus :input[name*='sb_suppcode']").val(selrowData("#gridAuthdtl").si_suppcode);
-			$("#Fsuppbonus :input[name*='sb_pricecode']").val(selrowData("#gridAuthdtl").si_pricecode);
-			$("#Fsuppbonus :input[name*='sb_itemcode']").val(selrowData("#gridAuthdtl").si_itemcode);
-			$("#Fsuppbonus :input[name*='sb_uomcode']").val(selrowData("#gridAuthdtl").si_uomcode);
-			$("#Fsuppbonus :input[name*='sb_purqty']").val(selrowData("#gridAuthdtl").si_purqty);
+			$("#Fsuppbonus :input[name*='sb_suppcode']").val(selrowData("#gridpermissiondtl").si_suppcode);
+			$("#Fsuppbonus :input[name*='sb_pricecode']").val(selrowData("#gridpermissiondtl").si_pricecode);
+			$("#Fsuppbonus :input[name*='sb_itemcode']").val(selrowData("#gridpermissiondtl").si_itemcode);
+			$("#Fsuppbonus :input[name*='sb_uomcode']").val(selrowData("#gridpermissiondtl").si_uomcode);
+			$("#Fsuppbonus :input[name*='sb_purqty']").val(selrowData("#gridpermissiondtl").si_purqty);
 			refreshGrid('#gridSuppBonus',urlParam_suppbonus);
 			$("#pg_jqGridPager3 table").show();
 		}*/
@@ -1018,14 +1018,14 @@ $("#gridAuthdtl").jqGrid({
 $("#but_show_deactive").click(function(){
 	let show = $(this).hasClass( "show_deactive" );
 	if(show){
-		urlParam_authdtl.filterCol.pop();
-		urlParam_authdtl.filterVal.pop();
-		refreshGrid("#gridAuthdtl",urlParam_authdtl);
+		urlParam_permissiondtl.filterCol.pop();
+		urlParam_permissiondtl.filterVal.pop();
+		refreshGrid("#gridpermissiondtl",urlParam_permissiondtl);
 		$(this).val('Hide Deactive')
 	}else{
-		urlParam_authdtl.filterCol[2] = 'cando'
-		urlParam_authdtl.filterVal[2] = 'ACTIVE'
-		refreshGrid("#gridAuthdtl",urlParam_authdtl);
+		urlParam_permissiondtl.filterCol[2] = 'cando'
+		urlParam_permissiondtl.filterVal[2] = 'ACTIVE'
+		refreshGrid("#gridpermissiondtl",urlParam_permissiondtl);
 		$(this).val('Show Deactive')
 	}
 
@@ -1034,24 +1034,24 @@ $("#but_show_deactive").click(function(){
 
 
 
-$("#gridAuthdtl").jqGrid('navGrid','#jqGridPager3',{	
+$("#gridpermissiondtl").jqGrid('navGrid','#jqGridPager3',{	
 	view:false,edit:false,add:false,del:false,search:false,
 	beforeRefresh: function(){
-		refreshGrid("#gridAuthdtl",urlParam_authdtl);
+		refreshGrid("#gridpermissiondtl",urlParam_permissiondtl);
 	},
 }).jqGrid('navButtonAdd',"#jqGridPager3",{
 	caption:"", 
 	buttonicon:"glyphicon glyphicon-trash", 
 	id:"jqGridPager3glyphicon-trash",
 	onClickButton: function(){
-		oper_authdtl='del';
-		var selRowId = $("#gridAuthdtl").jqGrid ('getGridParam', 'selrow');
+		oper_permissiondtl='del';
+		var selRowId = $("#gridpermissiondtl").jqGrid ('getGridParam', 'selrow');
 		if(!selRowId){
 			alert('Please select row');
-			return emptyFormdata(errorField,'#FAuthdtl');
+			return emptyFormdata(errorField,'#Fpermissiondtl');
 		}else{
-			emptyFormdata(errorField,'#FAuthdtl');
-			saveFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",'del',saveParam_authdtl,urlParam_authdtl,{'idno':selrowData('#gridAuthdtl').dtl_idno});
+			emptyFormdata(errorField,'#Fpermissiondtl');
+			saveFormdata("#gridpermissiondtl","#permissiondtl","#Fpermissiondtl",'del',saveParam_permissiondtl,urlParam_permissiondtl,{'idno':selrowData('#gridpermissiondtl').dtl_idno});
 		}
 	}, 
 	position: "first", 
@@ -1061,11 +1061,11 @@ $("#gridAuthdtl").jqGrid('navGrid','#jqGridPager3',{
 	caption:"", 
 	buttonicon:"glyphicon glyphicon-info-sign", 
 	onClickButton: function(){
-		oper_authdtl='view';
-		selRowId = $("#gridAuthdtl").jqGrid ('getGridParam', 'selrow');
-		populateFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",selRowId,'view', '');
+		oper_permissiondtl='view';
+		selRowId = $("#gridpermissiondtl").jqGrid ('getGridParam', 'selrow');
+		populateFormdata("#gridpermissiondtl","#permissiondtl","#Fpermissiondtl",selRowId,'view', '');
 
-		var recstatusvalue = selrowData('#gridAuthdtl').dtl_cando;
+		var recstatusvalue = selrowData('#gridpermissiondtl').dtl_cando;
 
 			if(recstatusvalue == 'DEACTIVE'){
 				
@@ -1078,21 +1078,21 @@ $("#gridAuthdtl").jqGrid('navGrid','#jqGridPager3',{
 	caption:"", 
 	buttonicon:"glyphicon glyphicon-edit", 
 	onClickButton: function(){
-		oper_authdtl='edit';
+		oper_permissiondtl='edit';
 		var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 		if(!selRowId){
 			alert('Please select row');
-			return emptyFormdata(errorField,'#FAuthdtl');
+			return emptyFormdata(errorField,'#Fpermissiondtl');
 		}else{
-			selRowId2 = $("#gridAuthdtl").jqGrid ('getGridParam', 'selrow');
-			populateFormdata("#gridAuthdtl","#Authdtl","#FAuthdtl",selRowId2,'edit', '');
+			selRowId2 = $("#gridpermissiondtl").jqGrid ('getGridParam', 'selrow');
+			populateFormdata("#gridpermissiondtl","#permissiondtl","#Fpermissiondtl",selRowId2,'edit', '');
 			
-			var recstatusvalue = selrowData('#gridAuthdtl').dtl_cando;
+			var recstatusvalue = selrowData('#gridpermissiondtl').dtl_cando;
 
 			if(recstatusvalue == 'DEACTIVE'){
-				$("#FAuthdtl [name='dtl_cando']").prop('disabled', true);
+				$("#Fpermissiondtl [name='dtl_cando']").prop('disabled', true);
 			}else{
-				$("#FAuthdtl [name='dtl_cando']").prop('disabled', false);
+				$("#Fpermissiondtl [name='dtl_cando']").prop('disabled', false);
 			}
 		}
 	}, 
@@ -1103,15 +1103,15 @@ $("#gridAuthdtl").jqGrid('navGrid','#jqGridPager3',{
 	caption:"", 
 	buttonicon:"glyphicon glyphicon-plus", 
 	onClickButton: function(){
-		oper_authdtl='add';
+		oper_permissiondtl='add';
 		var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 		if(!selRowId){
 			alert('Please select row');
-			return emptyFormdata(errorField,'#FAuthdtl');
+			return emptyFormdata(errorField,'#Fpermissiondtl');
 		}else{
-			$( "#Authdtl" ).dialog( "open" );
+			$( "#permissiondtl" ).dialog( "open" );
 		}
-		//$('#FAuthdtl :input[name=d_lineno_]').hide();
+		//$('#Fpermissiondtl :input[name=d_lineno_]').hide();
 		//$("#Fsuppitems :input[name*='SuppCode']").val(selrowData('#jqGrid').SuppCode);
 	}, 
 	position: "first", 
@@ -1121,16 +1121,16 @@ $("#gridAuthdtl").jqGrid('navGrid','#jqGridPager3',{
 
 
 
-$("#gridAuthdtl_panel").on("shown.bs.collapse", function(){
-	SmoothScrollTo("#gridAuthdtl_panel",100);
-	$("#gridAuthdtl").jqGrid ('setGridWidth', Math.floor($("#gridAuthdtl_c")[0].offsetWidth-$("#gridAuthdtl_c")[0].offsetLeft-28));
+$("#gridpermissiondtl_panel").on("shown.bs.collapse", function(){
+	SmoothScrollTo("#gridpermissiondtl_panel",100);
+	$("#gridpermissiondtl").jqGrid ('setGridWidth', Math.floor($("#gridpermissiondtl_c")[0].offsetWidth-$("#gridpermissiondtl_c")[0].offsetLeft-28));
 });
 
-addParamField('#gridAuthdtl',false,urlParam_authdtl);
-addParamField('#gridAuthdtl',false,saveParam_authdtl,["d_idno", "d_adduser", "d_adddate", "d_upduser", "d_upddate", "d_computerid", 'd_ipaddress', 'd_recstatus']);
+addParamField('#gridpermissiondtl',false,urlParam_permissiondtl);
+addParamField('#gridpermissiondtl',false,saveParam_permissiondtl,["d_idno", "d_adduser", "d_adddate", "d_upduser", "d_upddate", "d_computerid", 'd_ipaddress', 'd_recstatus']);
 
-populateSelect('#gridAuthdtl','#searchForm2');
-searchClick('#gridAuthdtl','#searchForm2',urlParam_authdtl);
+populateSelect('#gridpermissiondtl','#searchForm2');
+searchClick('#gridpermissiondtl','#searchForm2',urlParam_permissiondtl);
 
 
 

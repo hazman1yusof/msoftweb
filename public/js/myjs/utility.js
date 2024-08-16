@@ -942,13 +942,14 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 					$("#show_sel_tbl,#but_post_jq,#but_cancel_jq").show();
 					break;
 				case 'CANCELLED':
-					$("#show_sel_tbl,#but_reopen_jq").show();
-					break;
 				case 'OPEN':
 				case 'REQUEST':
 				case 'SUPPORT':
+				case 'PREPARED':
+				case 'ALL2':
 				case 'VERIFIED':
 				case 'APPROVED':
+				case 'REOPEN':
 					$("#show_sel_tbl,#but_post_jq,#but_cancel_jq").show();
 					break;
 			}
@@ -2370,7 +2371,6 @@ function page_to_view_only(viewonly,callback){
 	  }
 	}
 }
-
 
 $(document).ready(function () {
 

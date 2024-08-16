@@ -29,6 +29,7 @@ $(document).ready(function () {
 	var mycurrency =new currencymode(['#apacthdr_outamount', '#apacthdr_amount']);
 	var mycurrency2 =new currencymode(['#apacthdr_outamount', '#apacthdr_amount']);
 	var fdl = new faster_detail_load();
+	var my_remark_button = new remark_button_class('#jqgrid');
 	
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#apacthdr_postdate"]);
@@ -47,6 +48,7 @@ $(document).ready(function () {
 				parent_close_disabled(true);
 				unsaved = false;
 				errorField.length=0;
+				my_remark_button.remark_btn_init(selrowData("#jqGrid"));
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
 				switch (oper) {
@@ -64,7 +66,6 @@ $(document).ready(function () {
 					enableForm('#formdata');
 					rdonly('#formdata');
 					alloc_button_status('add');
-					
 					break;
 				case state = 'view':
 					disableForm('#formdata');
@@ -166,13 +167,25 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var recstatus_filter = [['OPEN','POSTED']];
-	if($("#recstatus_use").val() == 'POSTED'){
-		recstatus_filter = [['OPEN','POSTED']];
-		filterCol_urlParam = ['apacthdr.compcode'];
+	if($("#recstatus_use").val() == 'ALL'){
+		recstatus_filter = [['OPEN','PREPARED','SUPPORT','VERIFIED','APPROVED','CANCELLED']];
+		filterCol_urlParam = ['purreqhd.compcode'];
 		filterVal_urlParam = ['session.compcode'];
+	}else if($("#recstatus_use").val() == 'SUPPORT'){
+		recstatus_filter = [['PREPARED']];
+		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
+		filterVal_urlParam = ['session.compcode','session.username'];
+	}else if($("#recstatus_use").val() == 'VERIFIED'){
+		recstatus_filter = [['SUPPORT','PREPARED']];
+		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
+		filterVal_urlParam = ['session.compcode','session.username'];
+	}else if($("#recstatus_use").val() == 'APPROVED'){
+		recstatus_filter = [['VERIFIED']];
+		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
+		filterVal_urlParam = ['session.compcode','session.username'];
 	}
 
-	var cbselect = new checkbox_selection("#jqGrid","Checkbox","apacthdr_idno","apacthdr_recstatus",recstatus_filter[0][0]);
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox","apacthdr_idno","apacthdr_recstatus");
 
 	var urlParam={
 		action:'maintable',
@@ -255,6 +268,24 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'apacthdr_adddate', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upduser', name: 'apacthdr_upduser', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upddate', name: 'apacthdr_upddate', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'reopenby', name: 'apacthdr_reopenby', width: 40, hidden: true},
+			{ label: 'requestby', name: 'apacthdr_requestby', width: 90, hidden: true },
+			{ label: 'requestdate', name: 'apacthdr_requestdate', width: 90, hidden: true },
+			{ label: 'recommended1by', name: 'apacthdr_recommended1by', width: 90, hidden: true },
+			{ label: 'recommended1date', name: 'apacthdr_recommended1date', width: 90, hidden: true },
+			{ label: 'recommended2by', name: 'apacthdr_recommended2by', width: 90, hidden: true },
+			{ label: 'recommended2date', name: 'apacthdr_recommended2date', width: 90, hidden: true },
+			{ label: 'supportby', name: 'apacthdr_supportby', width: 90, hidden: true },
+			{ label: 'supportdate', name: 'apacthdr_supportdate', width: 40, hidden: true},
+			{ label: 'verifiedby', name: 'apacthdr_verifiedby', width: 90, hidden: true },
+			{ label: 'verifieddate', name: 'apacthdr_verifieddate', width: 90, hidden: true },
+			{ label: 'approvedby', name: 'apacthdr_approvedby', width: 90, hidden: true },
+			{ label: 'approveddate', name: 'apacthdr_approveddate', width: 40, hidden: true},
+			{ label: 'reopendate', name: 'apacthdr_reopendate', width: 40, hidden:true},
+			{ label: 'support_remark', name: 'apacthdr_support_remark', width: 40, hidden:true},
+			{ label: 'verified_remark', name: 'apacthdr_verified_remark', width: 40, hidden:true},
+			{ label: 'approved_remark', name: 'apacthdr_approved_remark', width: 40, hidden:true},
+			{ label: 'cancelled_remark', name: 'apacthdr_cancelled_remark', width: 40, hidden:true},
 			{ label: 'source', name: 'apacthdr_source', width: 40, hidden:true},
 			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
 			{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:true},
@@ -371,7 +402,7 @@ $(document).ready(function () {
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view', '');
 			refreshGrid("#jqGrid2",urlParam2);
 
-			if(selrowData("#jqGrid").apacthdr_recstatus == 'POSTED'){
+			if(selrowData("#jqGrid").apacthdr_recstatus != 'OPEN'){
 				disableForm('#formdata');
 				$("#pg_jqGridPager2 table").hide();
 				$('#apacthdr_amount').prop('readonly',true);
@@ -402,7 +433,7 @@ $(document).ready(function () {
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2",urlParam2);
 
-			if(selrowData("#jqGrid").apacthdr_recstatus == 'POSTED'){
+			if(selrowData("#jqGrid").apacthdr_recstatus != 'OPEN'){
 				disableForm('#formdata');
 				$("#pg_jqGridPager2 table").hide();
 				$('#apacthdr_amount').prop('readonly',true);
@@ -439,7 +470,7 @@ $(document).ready(function () {
 	populateSelect('#jqGrid','#searchForm');
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid', true, urlParam);
+	addParamField('#jqGrid', false, urlParam);
 	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name', 'apacthdr_unit', 'Checkbox']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
@@ -465,7 +496,7 @@ $(document).ready(function () {
 	});
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
+	$("#but_reopen_jq").click(function(){
 
 		var idno = selrowData('#jqGrid').apacthdr_idno;
 		var obj={};
@@ -480,6 +511,62 @@ $(document).ready(function () {
 		}).success(function(data){
 			
 		});
+	});
+
+	$("#dialog_remarks_oper").dialog({
+		autoOpen: false,
+		width: 4/10 * $(window).width(),
+		modal: true,
+		open: function( event, ui ) {
+			$('#remarks_oper').val('');
+		},
+		close: function( event, ui ) {
+			$("#but_cancel_jq").attr('disabled',false);
+		},
+		buttons : [{
+			text: "Submit",click: function() {
+				$("#but_cancel_jq").attr('disabled',true);
+				if($('#remarks_oper').val() == ''){
+					alert('Remarks for rejection is required!');
+				}else{
+					$(this).attr('disabled',true);
+					var idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
+					var obj={};
+					
+					obj.idno_array = idno_array;
+					obj.oper = $("#but_cancel_jq").data('oper');
+					obj.recstatus_use = $("#recstatus_use").val();
+					obj.remarks = $("#remarks_oper").val();
+					obj._token = $('#_token').val();
+					oper=null;
+					
+					$.post( './paymentVoucher/form', obj , function( data ) {
+						refreshGrid('#jqGrid', urlParam);
+						$(this).attr('disabled',true);
+						cbselect.empty_sel_tbl();
+					}).fail(function(data) {
+						$('#error_infront').text(data.responseText);
+						$(this).attr('disabled',true);
+					}).success(function(data){
+						$(this).attr('disabled',true);
+					});
+					$(this).dialog('close');
+				}
+			}
+			},{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}]
+	});
+
+	$("#but_cancel_jq").click(function(){
+		$("#but_cancel_jq").attr('disabled',true);
+		if($(this).data('oper') == 'reject'){
+			if (confirm("Are you sure to reject this purchase request?") == true) {
+				$("#dialog_remarks_oper").dialog( "open" );
+			}
+		}
 	});
 
 	$("#but_post_jq").click(function(){
@@ -674,10 +761,12 @@ $(document).ready(function () {
 		refreshGrid('#jqGrid',urlParam);
 	}
 
-	function searchChange(){
+	searchChange(true);
+	function searchChange(once=false){
+		cbselect.empty_sel_tbl();
 		var arrtemp = [$('#Status option:selected').val()];
 		var filter = arrtemp.reduce(function(a,b,c){
-			if(b=='All'){
+			if(b.toUpperCase() == 'ALL'){
 				return a;
 			}else{
 				a.fc = a.fc.concat(a.fct[c]);
@@ -688,6 +777,19 @@ $(document).ready(function () {
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
+
+		if(once){
+			urlParam.searchCol=null;
+			urlParam.searchVal=null;
+			if($('#searchForm [name=Stext]').val().trim() != ''){
+				let searchCol = ['ap.auditno'];
+				let searchVal = ['%'+$('#searchForm [name=Stext]').val().trim()+'%'];
+				urlParam.searchCol=searchCol;
+				urlParam.searchVal=searchVal;
+			}
+			once=false;
+		}
+
 		refreshGrid('#jqGrid',urlParam);
 	}
 
@@ -918,6 +1020,15 @@ $(document).ready(function () {
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let lineno_ = cbselect.lineno_;
 		let recstatus = cbselect.recstatus;
+
+		//pv skip support
+		if($('#recstatus_use').val() == 'SUPPORT' && rowObject['apacthdr_trantype'] == 'PV'){
+			return ' ';
+		}else if($('#recstatus_use').val() == 'VERIFIED' && rowObject['apacthdr_trantype'] == 'PV'){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' onclick='click_selection(checkbox_selection_"+rowObject['apacthdr_idno']+");'>";
+		}else if($('#recstatus_use').val() == 'REOPEN' && rowObject['apacthdr_recstatus'] == 'CANCELLED'){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' onclick='click_selection(checkbox_selection_"+rowObject['apacthdr_idno']+");'>";
+		}
 		
 		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
 			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' onclick='click_selection(checkbox_selection_"+rowObject['apacthdr_idno']+");'>";
@@ -1117,7 +1228,7 @@ $(document).ready(function () {
 	///////////Validation for document number////////////////////////////////////////////////////////
 	
 	$("#apacthdr_document").blur(function(){
-		check_suppcode_duplicate();
+		// check_suppcode_duplicate();
 	});
 
 	var duplicate_documentno = false;
@@ -1765,6 +1876,7 @@ function init_jq2(oper,urlParam2){
 			$('#pvpd_detail').hide();
 			$('#apacthdr_amount').prop('readonly',false);
 		}
+		$('#apacthdr_trantype').prop('disabled',true);
 	} else if(oper == 'view'){
 		if($('#apacthdr_trantype').val() == 'PV'){
 			$('#save').hide();
@@ -2014,4 +2126,60 @@ function populate_alloc_table(){
 
 			}
 		});
+}
+
+function remark_button_class(grid){
+	$("#dialog_remarks_view").dialog({
+		autoOpen: false,
+		width: 4/10 * $(window).width(),
+		modal: true,
+		open: function( event, ui ) {
+		},
+		close: function( event, ui ) {
+			$('#remarks_view').val('');
+		},
+		buttons : [{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}]
+	});
+
+	this.grid=grid;
+	this.selrowdata;
+
+	this.remark_btn_init = function(selrowdata){
+		this.selrowdata = selrowdata;
+		$('i.my_remark').hide();
+		$('i.my_remark').off('click');
+		if(this.selrowdata.apacthdr_support_remark != ''){
+			$('i#support_remark_i').show();
+			$('i#support_remark_i').data('remark',this.selrowdata.apacthdr_support_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Support Remark');
+		}
+		if(this.selrowdata.apacthdr_verified_remark != ''){
+			$('i#verified_remark_i').show();
+			$('i#verified_remark_i').data('remark',this.selrowdata.apacthdr_verified_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Verified Remark');
+		}
+		if(this.selrowdata.apacthdr_recommended1_remark != ''){
+			$('i#recommended1_remark_i').show();
+			$('i#recommended1_remark_i').data('remark',this.selrowdata.apacthdr_recommended1_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Recommended 1 Remark');
+		}
+		if(this.selrowdata.apacthdr_recommended2_remark != ''){
+			$('i#recommended2_remark_i').show();
+			$('i#recommended2_remark_i').data('remark',this.selrowdata.apacthdr_recommended2_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Recommended 2 Remark');
+		}
+		if(this.selrowdata.apacthdr_approved_remark != ''){
+			$('i#approved_remark_i').show();
+			$('i#approved_remark_i').data('remark',this.selrowdata.apacthdr_approved_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Approved Remark');
+		}
+		$('i.my_remark').on('click',function(){
+			$('#remarks_view').val($(this).data('remark'));
+			$("#dialog_remarks_view").dialog( "open" );
+		});
+	}
 }

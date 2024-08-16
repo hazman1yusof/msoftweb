@@ -87,8 +87,7 @@ class PurchaseRequestController extends defaultController
         return view('material.purchaseRequest.purchaseRequest_mobile',compact('purreqhd','purreqdt','scope','oper'));
     }
 
-    public function form(Request $request)
-    {   
+    public function form(Request $request){
         DB::enableQueryLog();
         // return $this->request_no('GRN','2FL');
         switch($request->oper){
@@ -342,7 +341,7 @@ class PurchaseRequestController extends defaultController
                             'recno' => $purreqhd_get->recno,
                             'AuthorisedID' => session('username'),
                             'deptcode' => $purreqhd_get->reqdept,
-                            'recstatus' => 'REQUEST',
+                            'recstatus' => 'PREPARED',
                             'trantype' => 'SUPPORT',
                             'adduser' => session('username'),
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -354,14 +353,14 @@ class PurchaseRequestController extends defaultController
                             'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'upduser' => session('username'),
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'recstatus' => 'REQUEST'
+                            'recstatus' => 'PREPARED'
                         ]);
 
                     DB::table("material.purreqdt")
                         ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$purreqhd_get->recno)
                         ->update([
-                            'recstatus' => 'REQUEST',
+                            'recstatus' => 'PREPARED',
                             'upduser' => session('username'),
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
@@ -398,7 +397,7 @@ class PurchaseRequestController extends defaultController
                     ->where('idno','=',$value);
 
                 $purreqhd_get = $purreqhd->first();
-                if(!in_array($purreqhd_get->recstatus, ['CANCELLED','REQUEST','SUPPORT','VERIFIED','APPROVED'])){
+                if(!in_array($purreqhd_get->recstatus, ['CANCELLED','PREPARED','SUPPORT','VERIFIED','APPROVED'])){
                     continue;
                 }
 
@@ -500,7 +499,7 @@ class PurchaseRequestController extends defaultController
 
                 $purreqhd_get = $purreqhd->first();
 
-                if($purreqhd_get->recstatus != 'REQUEST'){
+                if($purreqhd_get->recstatus != 'PREPARED'){
                     continue;
                 }
 
