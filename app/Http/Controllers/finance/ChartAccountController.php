@@ -20,6 +20,17 @@ class ChartAccountController extends defaultController
         return view('finance.GL.chartAccount.chartAccount');
     }
 
+    public function table(Request $request){   
+        switch($request->action){
+            case 'maintable':
+                return $this->maintable($request);
+            case 'getdata':
+                return $this->getdata($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
     public function form(Request $request)
     {   
         switch($request->oper){
@@ -32,6 +43,37 @@ class ChartAccountController extends defaultController
             default:
                 return 'error happen..';
         }
+    }
+
+    public function maintable(Request $request){
+
+        $table = DB::table('finance.glmasdtl AS glm')
+                    ->select(
+                        'glm.compcode','glm.costcode','glm.glaccount','glm.year','glm.openbalance','glm.actamount1','glm.actamount2','glm.actamount3','glm.actamount4','glm.actamount5','glm.actamount6','glm.actamount7','glm.actamount8','glm.actamount9','glm.actamount10','glm.actamount11','glm.actamount12','glm.bdgamount1','glm.bdgamount2','glm.bdgamount3','glm.bdgamount4','glm.bdgamount5','glm.bdgamount6','glm.bdgamount7','glm.bdgamount8','glm.bdgamount9','glm.bdgamount10','glm.bdgamount11','glm.bdgamount12','glm.foramount1','glm.foramount2','glm.foramount3','glm.foramount4','glm.foramount5','glm.foramount6','glm.foramount7','glm.foramount8','glm.foramount9','glm.foramount10','glm.foramount11','glm.foramount12','glm.adduser','glm.adddate','glm.upduser','glm.upddate','glm.recstatus','glm.idno','cc.costcode','cc.description',
+
+                    )
+                    ->leftJoin('finance.costcenter as cc', function($join){
+                        $join = $join->on('cc.costcode', '=', 'glm.costcode')
+                                    ->where('cc.compcode','=',session('compcode'));
+                    })
+                    ->where('glm.compcode',session('compcode'))
+                    ->where('glm.glaccount',$request->glaccount)
+                    ->where('glm.year',$request->year);
+
+        $paginate = $table->paginate($request->rows);
+        //////////paginate/////////
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+
     }
 
     public function add(Request $request){
@@ -69,16 +111,6 @@ class ChartAccountController extends defaultController
             $responce->request = $_REQUEST;
 
             return response(json_encode($responce), 500);
-        }
-    }
-
-    public function table(Request $request)
-    {   
-        switch($request->action){
-            case 'getdata':
-                return $this->getdata($request);
-            default:
-                return 'error happen..';
         }
     }
 
@@ -151,6 +183,5 @@ class ChartAccountController extends defaultController
         $responce->recordsTotal = $count;
         $responce->recordsFiltered = $count;
         return json_encode($responce);
-
     }
 }

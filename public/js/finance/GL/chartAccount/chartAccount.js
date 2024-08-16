@@ -55,8 +55,8 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
-		action:'get_table_default',
-		url:'util/get_table_default',
+		action:'maintable',
+		url:'chartAccount/table',
 		field:'',
 		table_name:['finance.glmasdtl','finance.costcenter'],
 		table_id:'costcode',
@@ -74,31 +74,31 @@ $(document).ready(function () {
 		 colModel: [
             {label: 'idno', name: 'idno', width: 10, hidden: true,key:true},
 			{label: 'compcode', name: 'compcode', width: 10, hidden: true},
-			{label: 'Cost Code', name: 'glmasdtl_costcode', width: 90, canSearch:true, checked:true, classes: 'wrap', editable:true,
+			{label: 'Cost Code', name: 'costcode', width: 90, canSearch:true, checked:true, classes: 'wrap', editable:true,
                 editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
                     edittype:'custom',	editoptions:
                         {  custom_element:costcodeCustomEdit,
                            custom_value:galGridCustomValue 	
                         },
             },
-			{label: 'Description', name: 'costcenter_description', width: 90, canSearch:false, checked:false, hidden: true},
-			{label: 'GL Account', name: 'glmasdtl_glaccount', width: 90, editable:true, editrules:{required: false},editoptions:{readonly: "readonly"},},
+			{label: 'Description', name: 'description', width: 90, canSearch:false, checked:false, hidden: true},
+			{label: 'GL Account', name: 'glaccount', width: 90, editable:true, editrules:{required: false},editoptions:{readonly: "readonly"},},
             // {label: 'GL Account', name: 'glaccount', width: 90, hidden:true},
-            {label: 'Year', name: 'glmasdtl_year', width: 90, editable:true, editrules:{required: false},editoptions:{readonly: "readonly"},},
+            {label: 'Year', name: 'year', width: 90, editable:true, editrules:{required: false},editoptions:{readonly: "readonly"},},
             // {label: 'Year', name: 'year', width: 90, hidden:true},
-			{label: 'Open Balance', name: 'glmasdtl_openbalance',formatter:'currency', width: 90, readonly: true, align: 'right'},
-			{label: 'actamount1', name: 'glmasdtl_actamount1', width: 90 , hidden: true},
-			{label: 'actamount1', name: 'glmasdtl_actamount2', width: 90 , hidden: true},
-			{label: 'actamount1', name: 'glmasdtl_actamount3', width: 90 , hidden: true},
-			{label: 'actamount1', name: 'glmasdtl_actamount4', width: 90 , hidden: true},
-			{label: 'actamount1', name: 'glmasdtl_actamount5', width: 90 , hidden: true},
-			{label: 'actamount1', name: 'glmasdtl_actamount6', width: 90 , hidden: true},
-			{label: 'actamount1', name: 'glmasdtl_actamount7', width: 90 , hidden: true},
-			{label: 'actamount1', name: 'glmasdtl_actamount8', width: 90 , hidden: true},
-			{label: 'actamount1', name: 'glmasdtl_actamount9', width: 90 , hidden: true},
-			{label: 'actamount1', name: 'glmasdtl_actamount10', width: 90 , hidden: true},
-			{label: 'actamount1', name: 'glmasdtl_actamount11', width: 90 , hidden: true},
-			{label: 'actamount1', name: 'glmasdtl_actamount12', width: 90 , hidden: true},
+			{label: 'Open Balance', name: 'openbalance',formatter:'currency', width: 90, readonly: true, align: 'right'},
+			{label: 'actamount1', name: 'actamount1', width: 90 , hidden: true},
+			{label: 'actamount1', name: 'actamount2', width: 90 , hidden: true},
+			{label: 'actamount1', name: 'actamount3', width: 90 , hidden: true},
+			{label: 'actamount1', name: 'actamount4', width: 90 , hidden: true},
+			{label: 'actamount1', name: 'actamount5', width: 90 , hidden: true},
+			{label: 'actamount1', name: 'actamount6', width: 90 , hidden: true},
+			{label: 'actamount1', name: 'actamount7', width: 90 , hidden: true},
+			{label: 'actamount1', name: 'actamount8', width: 90 , hidden: true},
+			{label: 'actamount1', name: 'actamount9', width: 90 , hidden: true},
+			{label: 'actamount1', name: 'actamount10', width: 90 , hidden: true},
+			{label: 'actamount1', name: 'actamount11', width: 90 , hidden: true},
+			{label: 'actamount1', name: 'actamount12', width: 90 , hidden: true},
 
 		],
 		autowidth:true,
@@ -164,7 +164,7 @@ $(document).ready(function () {
 
 			dialog_costcode.on();
 
-			$("input[name='glmasdtl_costcode']").keydown(function(e) {//when click tab at last column in header, auto save
+			$("input[name='costcode']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;
@@ -226,7 +226,7 @@ $(document).ready(function () {
 
 			dialog_costcode.on();
 
-			$("input[name='glmasdtl_costcode']").keydown(function(e) {//when click tab at last column in header, auto save
+			$("input[name='costcode']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;
@@ -425,7 +425,7 @@ $(document).ready(function () {
 	dialog_glaccount.on();
 
 	var dialog_costcode = new ordialog(
-		'glmasdtl_costcode','finance.costcenter',"#jqGrid input[name='glmasdtl_costcode']",errorField,
+		'costcode','finance.costcenter',"#jqGrid input[name='costcode']",errorField,
 		{	colModel:[
                 {label:'Cost Code',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
                 {label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -436,8 +436,8 @@ $(document).ready(function () {
 				},
 				ondblClickRow: function () {
 					let data=selrowData('#'+dialog_costcode.gridname);
-					$("#jqGrid input[name='glmasdtl_glaccount']").val([$("#glaccountSearch").val()]);
-					$("#jqGrid input[name='glmasdtl_year']").val([$("#year").val()]);
+					$("#jqGrid input[name='glaccount']").val([$("#glaccountSearch").val()]);
+					$("#jqGrid input[name='year']").val([$("#year").val()]);
 				},
 				gridComplete: function(obj){
 						var gridname = '#'+obj.gridname;
@@ -480,8 +480,8 @@ $(document).ready(function () {
 	}
 
     $('#search').click(function(){
-		urlParam.filterCol = ['glmasdtl.glaccount','glmasdtl.year'];
-		urlParam.filterVal = [$('#glaccountSearch').val(),$('#year').val()];
+		urlParam.glaccount = $('#glaccountSearch').val();
+		urlParam.year = $('#year').val();
 		refreshGrid("#jqGrid",urlParam);
 	});
 

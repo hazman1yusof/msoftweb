@@ -41,7 +41,6 @@ class PaymentVoucherController extends defaultController
     }
 
     public function maintable(Request $request){
-
         $table = DB::table('finance.apacthdr AS ap')
                     ->select(
                         'ap.compcode AS apacthdr_compcode',
