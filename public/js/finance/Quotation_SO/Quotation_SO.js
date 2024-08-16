@@ -1279,7 +1279,12 @@ $(document).ready(function (){
 			
 			$.post("./Quotation_SO_Detail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function (data){
 			},'json').fail(function (data){
-				alert(data.responseText);
+				// alert(data.responseText);
+                myfail_msg.add_fail({
+                    id:'after_save',
+                    textfld:"",
+                    msg:data.responseText,
+                });
 			}).done(function (data){
 				$('#SL_amount').val(data.totalAmount);
 				mycurrency.formatOn();
@@ -1457,15 +1462,18 @@ $(document).ready(function (){
     	// $("#jqGrid2 input[name='chggroup'],#jqGrid2 input[name='uom'],#jqGrid2 input[name='taxcode']").attr('readonly','readonly');
 
 		errorField.length=0;
-		dialog_chggroup.on();
-		dialog_uomcode.on();
-		dialog_tax.on();
-		dialog_uom_recv.on();
+		dialog_chggroup.off();
+        $(dialog_chggroup.textfield).prop('readonly',true);
+		dialog_uomcode.off();
+        $(dialog_uomcode.textfield).prop('readonly',true);
+		dialog_uom_recv.off();
+        $(dialog_uom_recv.textfield).prop('readonly',true);
+        dialog_tax.on();
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 		
-		$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='quantity']").on('blur',{currency: [mycurrency2,mycurrency_np]},calculate_line_totgst_and_totamt);
+		$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='quantity']").on('blur',{currency: [mycurrency2,mycurrency_np],alledit:'true'},calculate_line_totgst_and_totamt);
 
 		$("#jqGrid2 input[name='uom'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
 	}
@@ -1478,6 +1486,9 @@ $(document).ready(function (){
 		event.data.currency.forEach(function(element){
 			element.formatOff();
 		});
+
+        let alledit = event.data.alledit;
+        console.log(alledit);
 		// mycurrency_np.formatOff();
 
 		var optid = event.currentTarget.id;
@@ -1502,20 +1513,21 @@ $(document).ready(function (){
 		let qtyonhand = parseFloat($("#"+id_optid+"_qtyonhand").val());
 		let st_idno = $("#jqGrid2 #"+id_optid+"_chggroup").data('st_idno');
 
-		if(qtyonhand<quantity && st_idno!=''){
-			myfail_msg.add_fail({
-				id:'qtyonhand',
-				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request must be greater than quantity on hand",
-			});
-		}else{
-			myfail_msg.del_fail({
-				id:'qtyonhand',
-				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request must be greater than quantity on hand",
-			});
-		}
-
+        if(alledit != 'true'){
+            if(qtyonhand<quantity && st_idno!=''){
+                myfail_msg.add_fail({
+                    id:'qtyonhand',
+                    textfld:"#jqGrid2 #"+id_optid+"_quantity",
+                    msg:"Quantity Request must be greater than quantity on hand",
+                });
+            }else{
+                myfail_msg.del_fail({
+                    id:'qtyonhand',
+                    textfld:"#jqGrid2 #"+id_optid+"_quantity",
+                    msg:"Quantity Request must be greater than quantity on hand",
+                });
+            }
+        }
 
 		let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
 		let billtypeperct = 100 - parseFloat($("#"+id_optid+"_billtypeperct").val());

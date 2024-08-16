@@ -1399,17 +1399,21 @@ class Quotation_SO_DetailController extends defaultController
             $salehdr = $salehdr->first();
             
             ////1. calculate rowno by recno
-            $sqlln = DB::table('finance.salesum')->select('rowno')
+            $sqlln = DB::table('finance.salesum')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
                         ->where('source','=',$source)
                         ->where('trantype','=',$trantype)
                         ->where('auditno','=',$auditno)
-                        ->count('rowno');
+                        ->count('lineno_');
             
             $li=intval($sqlln)+1;
+
+            if($request->quantity > $request->qtyonhand){
+                throw new \Exception("Qty request cant be bigger than qty on hand!",500);
+            }
             
             ///2. insert detail
-            $insertGetId = DB::table('finance.salesum')
+            DB::table('finance.salesum')
                 ->insertGetId([
                     // 'auditno' => $recno, // ->OE IN
                     'auditno' => $auditno, // dari salesum.auditno
@@ -1419,8 +1423,8 @@ class Quotation_SO_DetailController extends defaultController
                     'trantype' => $trantype,
                     'chggroup' => $request->chggroup,
                     'description' => $request->description,
-                    'lineno_' => '1',
-                    'rowno' => $li,
+                    'lineno_' => $li,
+                    // 'rowno' => $li,
                     'mrn' => (!empty($salehdr->mrn))?$salehdr->mrn:null,
                     'episno' => (!empty($salehdr->episno))?$salehdr->episno:null,
                     'uom' => $request->uom,
@@ -1428,6 +1432,7 @@ class Quotation_SO_DetailController extends defaultController
                     'taxcode' => $request->taxcode,
                     'unitprice' => $request->unitprice,
                     'quantity' => $request->quantity,
+                    'qtyonhand' => $request->qtyonhand,
                     'qtydelivered' => '0',
                     'amount' => $request->amount, // unitprice * quantity, xde tax
                     'outamt' => $request->amount,
@@ -1442,47 +1447,10 @@ class Quotation_SO_DetailController extends defaultController
                     'billtypeamt' => $request->billtypeamt,
                 ]);
             
-            $salesum_obj = db::table('finance.salesum')
-                            ->where('compcode',session('compcode'))
-                            ->where('idno', '=', $insertGetId)
-                            ->first();
-
-            Db::table('finance.salesum')
-                    ->where('compcode',session('compcode'))
-                    ->where('idno', '=', $insertGetId)
-                    ->update(['auditno' => $insertGetId]);
-            
             $product = DB::table('material.product')
                             ->where('compcode','=',session('compcode'))
                             ->where('uomcode','=',$request->uom)
                             ->where('itemcode','=',$request->chggroup);
-            
-            if($product->exists()){
-                $stockloc = DB::table('material.stockloc')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('uomcode','=',$request->uom)
-                        ->where('itemcode','=',$request->chggroup)
-                        ->where('deptcode','=',$salehdr->deptcode)
-                        ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
-                
-                if($stockloc->exists()){
-                    $stockloc = $stockloc->first();
-                }else{
-                    throw new \Exception("Stockloc not exists for item: ".$salesum_obj->chggroup." dept: ".$salehdr->deptcode." uom: ".$salesum_obj->uom,500);
-                }
-                
-                $ivdspdt = DB::table('material.ivdspdt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$salesum_obj->auditno);
-                
-                if($ivdspdt->exists()){
-                    $this->updivdspdt($salesum_obj,$salehdr);
-                    $this->updgltran($ivdspdt->first()->idno,$salehdr);
-                }else{
-                    $ivdspdt_idno = $this->crtivdspdt($salesum_obj,$salehdr);
-                    $this->crtgltran($ivdspdt_idno,$salehdr);
-                }
-            }
             
             ///3. calculate total amount from detail
             $totalAmount = DB::table('finance.salesum')
@@ -1544,52 +1512,37 @@ class Quotation_SO_DetailController extends defaultController
                             ->where('source','=',$source)
                             ->where('trantype','=',$trantype)
                             ->where('auditno','=',$auditno)
-                            ->where('rowno','=',$value['rowno'])
+                            ->where('lineno_','=',$value['lineno_'])
                             ->first();
                 
-                $chgmast = DB::table('hisdb.chgmast')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('uom','=',$value['uom'])
-                            ->where('chgcode','=',$value['chggroup']);
+                $stockloc = DB::table('material.stockloc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('uomcode','=',$value['uom'])
+                        ->where('itemcode','=',$value['chggroup'])
+                        ->where('deptcode','=',$salehdr->deptcode)
+                        ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
+                        ->first();
+
+                if($value['quantity'] > $stockloc->qtyonhand){
+                    throw new \Exception("Qty request (".$value['quantity'].") cant be bigger than qty on hand! (".$stockloc->qtyonhand.") on itemcode: ".$value['chggroup'],500);
+                }
 
                 ///2. update detail
-                if($salesum_lama->chggroup != $value['chggroup'] || $salesum_lama->uom != $value['uom']){
-
-                    $edit_lain_chggroup = true;
-                
-                    $product_lama = DB::table('hisdb.product')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('uomcode','=',$salesum_lama->uom)
-                            ->where('itemcode','=',$salesum_lama->chggroup);
-
-                    if($product_lama->exists()){
-                        $this->delivdspdt($salesum_lama,$salehdr);
-                    }
-
-                    $salesum_lama = DB::table('finance.salesum')
+                DB::table('finance.salesum')
                             ->where('compcode','=',session('compcode'))
                             ->where('source','=',$source)
                             ->where('trantype','=',$trantype)
                             ->where('auditno','=',$auditno)
-                            ->where('rowno','=',$value['rowno'])
-                            ->first();
-
-                    $this->sysdb_log('update',$salesum_lama,'sysdb.billsumlog');
-
-                    DB::table('finance.salesum')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('source','=',$source)
-                            ->where('trantype','=',$trantype)
-                            ->where('auditno','=',$auditno)
-                            ->where('rowno','=',$value['rowno'])
+                            ->where('lineno_','=',$value['lineno_'])
                             ->update([
-                                'chggroup' => $value['chggroup'],
-                                'description' => $chgmast->first()->description,
-                                'uom' => $value['uom'],
-                                'uom_recv' => $value['uom_recv'],
+                                // 'chggroup' => $value['chggroup'],
+                                // 'description' => $chgmast->first()->description,
+                                // 'uom' => $value['uom'],
+                                // 'uom_recv' => $value['uom_recv'],
                                 'taxcode' => $value['taxcode'],
                                 'unitprice' => $value['unitprice'],
                                 'quantity' => $value['quantity'],
+                                'qtyonhand' => $stockloc->qtyonhand,
                                 'qtydelivered' => $value['qtydelivered'],
                                 'amount' => $value['amount'],
                                 'outamt' => $value['amount'],
@@ -1599,91 +1552,51 @@ class Quotation_SO_DetailController extends defaultController
                                 'lastuser' => session('username'), 
                                 'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                             ]);
-
-
-                }else{
-
-                    $edit_lain_chggroup = false;
-
-                    //pindah yang lama ke billsumlog sebelum update
-                    //recstatus->update
-
-                    $salesum_lama = DB::table('finance.salesum')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('source','=',$source)
-                            ->where('trantype','=',$trantype)
-                            ->where('auditno','=',$auditno)
-                            ->where('rowno','=',$value['rowno'])
-                            ->first();
-
-                    $this->sysdb_log('update',$salesum_lama,'sysdb.billsumlog');
-
-                    DB::table('finance.salesum')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('source','=',$source)
-                            ->where('trantype','=',$trantype)
-                            ->where('auditno','=',$auditno)
-                            ->where('rowno','=',$value['rowno'])
-                            ->update([
-                                'unitprice' => $value['unitprice'],
-                                'quantity' => $value['quantity'],
-                                'qtydelivered' => $value['qtydelivered'],
-                                'amount' => $value['amount'],
-                                'outamt' => $value['amount'],
-                                'discamt' => floatval($value['discamt']),
-                                'taxamt' => floatval($value['taxamt']),
-                                'totamount' => floatval($value['totamount']),
-                                'lastuser' => session('username'), 
-                                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                                // 'billtypeperct' => $value['billtypeperct'],
-                                // 'billtypeamt' => $value['billtypeamt'],
-                            ]);
-                }
                 
-                $salesum_obj = DB::table('finance.salesum')
-                                ->where('compcode','=',session('compcode'))
-                                ->where('source','=',$source)
-                                ->where('trantype','=',$trantype)
-                                ->where('auditno','=',$auditno)
-                                ->where('rowno','=',$value['rowno'])
-                                ->first();
+                // $salesum_obj = DB::table('finance.salesum')
+                //                 ->where('compcode','=',session('compcode'))
+                //                 ->where('source','=',$source)
+                //                 ->where('trantype','=',$trantype)
+                //                 ->where('auditno','=',$auditno)
+                //                 ->where('rowno','=',$value['rowno'])
+                //                 ->first();
 
-                $product = DB::table('material.product')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('uomcode','=',$value['uom'])
-                        ->where('itemcode','=',$value['chggroup']);
+                // $product = DB::table('material.product')
+                //         ->where('compcode','=',session('compcode'))
+                //         ->where('uomcode','=',$value['uom'])
+                //         ->where('itemcode','=',$value['chggroup']);
                 
-                if($product->exists()){
-                    $stockloc = DB::table('material.stockloc')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('uomcode','=',$value['uom'])
-                            ->where('itemcode','=',$value['chggroup'])
-                            ->where('deptcode','=',$salehdr->deptcode)
-                            ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+                // if($product->exists()){
+                //     $stockloc = DB::table('material.stockloc')
+                //             ->where('compcode','=',session('compcode'))
+                //             ->where('uomcode','=',$value['uom'])
+                //             ->where('itemcode','=',$value['chggroup'])
+                //             ->where('deptcode','=',$salehdr->deptcode)
+                //             ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
                     
-                    if($stockloc->exists()){
-                        $stockloc = $stockloc->first();
-                    }else{
-                        throw new \Exception("Stockloc not exists for item: ".$value['chggroup']." dept: ".$salehdr->deptcode." uom: ".$value['uom'],500);
-                    }
+                //     if($stockloc->exists()){
+                //         $stockloc = $stockloc->first();
+                //     }else{
+                //         throw new \Exception("Stockloc not exists for item: ".$value['chggroup']." dept: ".$salehdr->deptcode." uom: ".$value['uom'],500);
+                //     }
                     
-                    $ivdspdt = DB::table('material.ivdspdt')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('recno','=',$salesum_obj->auditno);
+                //     $ivdspdt = DB::table('material.ivdspdt')
+                //         ->where('compcode','=',session('compcode'))
+                //         ->where('recno','=',$salesum_obj->auditno);
 
-                    if($edit_lain_chggroup){
-                        $ivdspdt_idno = $this->crtivdspdt($salesum_obj,$salehdr);
-                        $this->crtgltran($ivdspdt_idno,$salehdr);
-                    }else{
-                        if($ivdspdt->exists()){
-                            $this->updivdspdt($salesum_obj,$salehdr);
-                            $this->updgltran($ivdspdt->first()->idno,$salehdr);
-                        }else{
-                            $ivdspdt_idno = $this->crtivdspdt($salesum_obj,$salehdr);
-                            $this->crtgltran($ivdspdt_idno,$salehdr);
-                        }
-                    }
-                }
+                //     if($edit_lain_chggroup){
+                //         $ivdspdt_idno = $this->crtivdspdt($salesum_obj,$salehdr);
+                //         $this->crtgltran($ivdspdt_idno,$salehdr);
+                //     }else{
+                //         if($ivdspdt->exists()){
+                //             $this->updivdspdt($salesum_obj,$salehdr);
+                //             $this->updgltran($ivdspdt->first()->idno,$salehdr);
+                //         }else{
+                //             $ivdspdt_idno = $this->crtivdspdt($salesum_obj,$salehdr);
+                //             $this->crtgltran($ivdspdt_idno,$salehdr);
+                //         }
+                //     }
+                // }
                 
                 ///3. calculate total amount from detail
                 $totalAmount = DB::table('finance.salesum')
@@ -1717,10 +1630,9 @@ class Quotation_SO_DetailController extends defaultController
             
             DB::rollback();
             
-            return response($e, 500);
+            return response($e->getMessage(), 500);
             
         }
-        
     }
 
     public function del(Request $request){
@@ -1742,33 +1654,33 @@ class Quotation_SO_DetailController extends defaultController
 
             $salehdr = $salehdr->first();
 
-            $salesum = DB::table('finance.salesum')
-                            ->where('compcode',session('compcode'))
-                            ->where('idno','=',$idno);
+            // $salesum = DB::table('finance.salesum')
+            //                 ->where('compcode',session('compcode'))
+            //                 ->where('idno','=',$idno);
 
-            $salesum_obj = $salesum->first();
+            // $salesum_obj = $salesum->first();
 
-            $chgmast_lama = DB::table('hisdb.chgmast')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('uom','=',$salesum_obj->uom)
-                    ->where('chgcode','=',$salesum_obj->chggroup)
-                    ->first();
+            // $chgmast_lama = DB::table('hisdb.chgmast')
+            //         ->where('compcode','=',session('compcode'))
+            //         ->where('uom','=',$salesum_obj->uom)
+            //         ->where('chgcode','=',$salesum_obj->chggroup)
+            //         ->first();
 
-            if($chgmast_lama->invflag != '0'){
-                $this->delivdspdt($salesum_obj,$salehdr);
-            }else{
-                $this->delgltran($salesum_obj,$salehdr);
-            }
+            // if($chgmast_lama->invflag != '0'){
+            //     $this->delivdspdt($salesum_obj,$salehdr);
+            // }else{
+            //     $this->delgltran($salesum_obj,$salehdr);
+            // }
 
-            //pindah yang lama ke billsumlog sebelum update
-            //recstatus->delete
+            // //pindah yang lama ke billsumlog sebelum update
+            // //recstatus->delete
 
-            $salesum_lama = DB::table('finance.salesum')
-                            ->where('compcode',session('compcode'))
-                            ->where('idno','=',$idno)
-                            ->first();
+            // $salesum_lama = DB::table('finance.salesum')
+            //                 ->where('compcode',session('compcode'))
+            //                 ->where('idno','=',$idno)
+            //                 ->first();
 
-            $this->sysdb_log('delete',$salesum_lama,'sysdb.billsumlog');
+            // $this->sysdb_log('delete',$salesum_lama,'sysdb.billsumlog');
 
             DB::table('finance.salesum')
                     ->where('compcode',session('compcode'))
