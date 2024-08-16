@@ -3,6 +3,23 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
+var mycurrency =new currencymode(
+	[
+		'#actamount1', '#bdgamount1', '#varamount1', 
+		'#actamount2', '#bdgamount2', '#varamount2', 
+		'#actamount3', '#bdgamount3', '#varamount3', 
+		'#actamount4', '#bdgamount4', '#varamount4', 
+		'#actamount5', '#bdgamount5', '#varamount5', 
+		'#actamount6', '#bdgamount6', '#varamount6', 
+		'#actamount7', '#bdgamount7', '#varamount7', 
+		'#actamount8', '#bdgamount8', '#varamount8', 
+		'#actamount9', '#bdgamount9', '#varamount9', 
+		'#actamount10', '#bdgamount10', '#varamount10', 
+		'#actamount11', '#bdgamount11', '#varamount11', 
+		'#actamount12', '#bdgamount12', '#varamount12', 
+		'#totalActual', '#totalBdg', '#totalVar']
+);
+
 $(document).ready(function () {
 	$("body").show();
     $('#year').attr('disabled', 'disabled');
@@ -82,10 +99,8 @@ $(document).ready(function () {
                         },
             },
 			{label: 'Description', name: 'description', width: 90, canSearch:false, checked:false, hidden: true},
-			{label: 'GL Account', name: 'glaccount', width: 90, editable:true, editrules:{required: false},editoptions:{readonly: "readonly"},},
-            // {label: 'GL Account', name: 'glaccount', width: 90, hidden:true},
+			{label: 'GL Account', name: 'glaccount', width: 90, editable:true, formatter: showdetail, unformat:un_showdetail,editoptions:{readonly: "readonly"}},
             {label: 'Year', name: 'year', width: 90, editable:true, editrules:{required: false},editoptions:{readonly: "readonly"},},
-            // {label: 'Year', name: 'year', width: 90, hidden:true},
 			{label: 'Open Balance', name: 'openbalance',formatter:'currency', width: 90, readonly: true, align: 'right'},
 			{label: 'actamount1', name: 'actamount1', width: 90 , hidden: true},
 			{label: 'actamount1', name: 'actamount2', width: 90 , hidden: true},
@@ -112,6 +127,9 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
+			$('#jqGrid').data('lastselrow',rowid);
+			getActual();
+			getTotalActual();
 			// if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
 		},
 		loadComplete: function(){
@@ -123,8 +141,6 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($('#jqGrid').data('lastselrow'));
 				$('#jqGrid tr#' + $('#jqGrid').data('lastselrow')).focus();
 			}
-				$("#searchForm input[name=Stext]").focus();
-
 				addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 				// if(err_reroll.error == true){
 				// 	err_reroll.reroll();
@@ -135,6 +151,14 @@ $(document).ready(function () {
 			// $('#p_error').text('');   //hilangkan duplicate error msj after save
 		},
 		gridComplete: function () {
+			let lastselrow = $('#jqGrid').data('lastselrow');
+			if(lastselrow == undefined){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+				$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus().click();
+			}else{
+				$("#jqGrid").setSelection(lastselrow);
+				$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus().click();
+			}
 			fdl.set_array().reset();
 		},
 	});
@@ -170,10 +194,10 @@ $(document).ready(function () {
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
-			$("#jqGrid input[type='text']").on('focus',function(){
-				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
-				$("#jqGrid input[type='text']").removeClass( "error" );
-			});
+			// $("#jqGrid input[type='text']").on('focus',function(){
+			// 	$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+			// 	$("#jqGrid input[type='text']").removeClass( "error" );
+			// });
 
 		},
 		aftersavefunc: function (rowid, response, options) {
@@ -185,16 +209,17 @@ $(document).ready(function () {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			var data = JSON.parse(response.responseText)
+			//var data = JSON.parse(response.responseText)
 			//$('#p_error').text(response.responseText);
 			// err_reroll.old_data = data.request;
 			// err_reroll.error = true;
 			// err_reroll.errormsg = data.errormsg;
+			//alert(response.responseText);
 			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			// $('#p_error').text('');
-			if(errorField.length>0)return false;
+			//if(errorField.length>0)return false;
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			console.log(data);
@@ -254,7 +279,7 @@ $(document).ready(function () {
 			if(errorField.length>0)return false;
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
-			// console.log(data);
+			console.log(data);
 
 			// check_cust_rules();
 			let editurl = "./chartAccount/form?"+
@@ -279,6 +304,7 @@ $(document).ready(function () {
 		var temp;
 		switch(name){
 			case 'Cost Code':temp=$('#costcode');break;
+			// case 'Gl Account':temp=$('#glaccount');break;
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
 	}
@@ -288,7 +314,8 @@ $(document).ready(function () {
 		var field,table,case_;
 		switch(options.colModel.name){
 			case 'costcode':field=['costcode','description'];table="finance.costcenter";case_='costcode';break;
-			
+			case 'glaccount':field=['glaccno','description'];table="finance.glmasref";case_='glaccount';break;
+
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
@@ -298,9 +325,18 @@ $(document).ready(function () {
 		return cellvalue;
 	}
 
+	function unformat_showdetail(cellvalue, options, rowObject){
+		return $(rowObject).attr('title');
+	}
+
 	function costcodeCustomEdit(val, opt) {
 		val = !(opt.rowId >>> 0 === parseFloat(opt.rowId)) ? "" : val.slice(0, val.search("[<]"));
 		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="costcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	function glAccCustomEdit(val, opt) {
+		val = !(opt.rowId >>> 0 === parseFloat(opt.rowId)) ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="glaccount" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function galGridCustomValue (elem, operation, value){
@@ -401,14 +437,12 @@ $(document).ready(function () {
 			filterVal:['session.compcode','ACTIVE']
 		},
 		ondblClickRow: function () {
-			// $('#year').focus();
 		},
 		gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					// $('#year').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -438,6 +472,7 @@ $(document).ready(function () {
 					let data=selrowData('#'+dialog_costcode.gridname);
 					$("#jqGrid input[name='glaccount']").val([$("#glaccountSearch").val()]);
 					$("#jqGrid input[name='year']").val([$("#year").val()]);
+					dialog_glaccount.check(errorField,'costcode');
 				},
 				gridComplete: function(obj){
 						var gridname = '#'+obj.gridname;
@@ -483,6 +518,9 @@ $(document).ready(function () {
 		urlParam.glaccount = $('#glaccountSearch').val();
 		urlParam.year = $('#year').val();
 		refreshGrid("#jqGrid",urlParam);
+
+		$('#bdgamount1,#bdgamount2,#bdgamount3,#bdgamount4,#bdgamount5,#bdgamount6,#bdgamount7,#bdgamount8,#bdgamount9,#bdgamount10,#bdgamount11,#bdgamount12').prop("readonly", false);
+
 	});
 
 	function set_yearperiod(){
@@ -504,3 +542,31 @@ $(document).ready(function () {
 		});
 	}
 });
+function getActual(){
+	selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+	rowdata = $("#jqGrid").jqGrid ('getRowData', selrow);
+	var actamount=0;
+	$.each(rowdata, function( index, value ) {
+		if(!isNaN(parseFloat(value)) && index.indexOf('actamount') !== -1){
+			actamount=parseFloat(value);
+		}else{
+			//actamount=parseFloat(value);
+		}
+		// console.log(value)
+	});
+}
+
+function getTotalActual(){
+	mycurrency.formatOn();
+
+	selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+	rowdata = $("#jqGrid").jqGrid ('getRowData', selrow);
+	var total=0;
+	var actamount=0;
+	$.each(rowdata, function( index, value ) {
+		if(!isNaN(parseFloat(value)) && index.indexOf('actamount') !== -1){
+			total+=parseFloat(value);
+		}
+	});
+	$('#totalActual').val(numeral(total).format('0,0.00'));
+}

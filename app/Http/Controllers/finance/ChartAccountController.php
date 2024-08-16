@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use stdClass;
 use App\Http\Controllers\defaultController;
 use DB;
+use DateTime;
+use Carbon\Carbon;
 
 class ChartAccountController extends defaultController
 {   
@@ -26,20 +28,6 @@ class ChartAccountController extends defaultController
                 return $this->maintable($request);
             case 'getdata':
                 return $this->getdata($request);
-            default:
-                return 'error happen..';
-        }
-    }
-
-    public function form(Request $request)
-    {   
-        switch($request->oper){
-            case 'add':
-                return $this->add($request);
-            case 'edit':
-                return $this->edit($request);
-            case 'del':
-                return $this->del($request);
             default:
                 return 'error happen..';
         }
@@ -76,8 +64,22 @@ class ChartAccountController extends defaultController
 
     }
 
-    public function add(Request $request){
+    public function form(Request $request)
+    {   
+        //dd('dd');
+        switch($request->oper){
+            case 'add':
+                return $this->add($request);
+            case 'edit':
+                return $this->edit($request);
+            case 'del':
+                return $this->del($request);
+            default:
+                return 'error happen..';
+        }
+    }
 
+    public function add(Request $request){
         DB::beginTransaction();
         try {
 
@@ -107,11 +109,46 @@ class ChartAccountController extends defaultController
             DB::rollback();
 
             $responce = new stdClass();
-            $responce->errormsg = $e->getMessage();
+            // $responce->errormsg = $e->getMessage();
             $responce->request = $_REQUEST;
 
             return response(json_encode($responce), 500);
         }
+    }
+
+    public function edit(Request $request){
+        
+        DB::beginTransaction();
+        try {
+
+            DB::table('finance.glmasdtl')
+                ->where('idno','=',$request->idno)
+                ->update([  
+                    'costcode' => strtoupper($request->glmasdtl_costcode),
+                    'glaccount' => $request->glmasdtl_glaccount,
+                    'year' => $request->glmasdtl_year,
+                    'lastcomputerid' => session('computerid'),
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]); 
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+             return response($e->getMessage(), 500);
+        }
+    }
+
+    public function del(Request $request){
+        DB::table('finance.glmasdtl')
+            ->where('idno','=',$request->idno)
+            ->update([  
+                'recstatus' => 'DEACTIVE',
+                'deluser' => session('username'),
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => session('computerid')
+            ]);
     }
 
     public function getdata(Request $request){
