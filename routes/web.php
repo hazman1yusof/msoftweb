@@ -603,6 +603,15 @@ Route::get('/attachment_upload/table','util\attachment_uploadController@table');
 Route::post('/attachment_upload/form','util\attachment_uploadController@form');
 Route::get('/attachment_upload/thumbnail/{folder}/{image_path}','util\attachment_uploadController@thumbnail');
 
+//// Finance - Quotation page ///
+Route::get('/Quotation_SO','finance\Quotation_SO_Controller@show');
+Route::get('/Quotation_SO/table','finance\Quotation_SO_Controller@table');
+Route::post('/Quotation_SO/form','finance\Quotation_SO_Controller@form');
+Route::get('/Quotation_SO/form','finance\Quotation_SO_Controller@form');
+Route::post('/Quotation_SO_Detail/form','finance\Quotation_SO_DetailController@form');
+Route::get('/Quotation_SO_Detail/table','finance\Quotation_SO_DetailController@table');
+Route::get('/Quotation_SO_/showpdf','finance\Quotation_SO_Controller@showpdf');
+
 //// Finance - SalesOrder page ///
 Route::get('/SalesOrder','finance\SalesOrderController@show');
 Route::get('/SalesOrder/table','finance\SalesOrderController@table');
@@ -784,6 +793,11 @@ Route::get('/costcenter_Report/showExcel','finance\Costcenter_ReportController@s
 Route::get('/glmaster','finance\GlmasterController@show');
 Route::get('/glmaster/table','finance\GlmasterController@table');
 Route::post('/glmaster/form','finance\GlmasterController@form');
+
+//// Chart Account ///
+Route::get('/chartAccount','finance\ChartAccountController@show');
+Route::get('/chartAccount/table','finance\ChartAccountController@table');
+Route::post('/chartAccount/form','finance\ChartAccountController@form');
 
 //// financialReport setup ///
 Route::get('/financialReport','finance\financialReportController@show');
