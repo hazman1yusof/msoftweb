@@ -1403,7 +1403,7 @@ class PaymentVoucherController extends defaultController
                             ->where('docsource','=', 'AP')
                             ->where('doctrantype','=', 'PV')
                             ->where('docauditno','=', $request->apacthdr_auditno)
-                            ->where('recstatus','!=','CANCELLED');
+                            ->where('recstatus','!=','DELETE');
 
         $paginate = $alloc_table->paginate($request->rows);
 

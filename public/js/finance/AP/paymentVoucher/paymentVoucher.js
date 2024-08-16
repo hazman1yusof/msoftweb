@@ -271,6 +271,8 @@ $(document).ready(function () {
 			{ label: 'reopenby', name: 'apacthdr_reopenby', width: 40, hidden: true},
 			{ label: 'requestby', name: 'apacthdr_requestby', width: 90, hidden: true },
 			{ label: 'requestdate', name: 'apacthdr_requestdate', width: 90, hidden: true },
+			{ label: 'cancelby', name: 'apacthdr_cancelby', width: 90, hidden: true },
+			{ label: 'canceldate', name: 'apacthdr_canceldate', width: 90, hidden: true },
 			{ label: 'recommended1by', name: 'apacthdr_recommended1by', width: 90, hidden: true },
 			{ label: 'recommended1date', name: 'apacthdr_recommended1date', width: 90, hidden: true },
 			{ label: 'recommended2by', name: 'apacthdr_recommended2by', width: 90, hidden: true },
@@ -2176,6 +2178,11 @@ function remark_button_class(grid){
 			$('i#approved_remark_i').show();
 			$('i#approved_remark_i').data('remark',this.selrowdata.apacthdr_approved_remark);
 			$('#dialog_remarks_view').dialog('option', 'title', 'Approved Remark');
+		}
+		if(this.selrowdata.apacthdr_cancelled_remark != ''){
+			$('i#cancelled_remark_i').show();
+			$('i#cancelled_remark_i').data('remark',this.selrowdata.apacthdr_cancelled_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Rejected Remark');
 		}
 		$('i.my_remark').on('click',function(){
 			$('#remarks_view').val($(this).data('remark'));

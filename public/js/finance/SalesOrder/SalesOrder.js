@@ -78,12 +78,14 @@ $(document).ready(function () {
 					dialog_billtypeSO.check(errorField);
 					// dialog_mrn.check(errorField);
 					dialog_CustomerSO.check(errorField);
+					dialog_quoteno.check(errorField);
 					// dialog_approvedbySO.check(errorField);
 				} if (oper != 'view') {
 					dialog_deptcode.on();
 					dialog_billtypeSO.on();
 					// dialog_mrn.on();
 					dialog_CustomerSO.on();
+					dialog_quoteno.on();
 					// dialog_approvedbySO.on();
 				}
 			},
@@ -852,6 +854,12 @@ $(document).ready(function () {
 				editrules: { required: true },
 			},
 			{
+				label: 'Quantity Order', name: 'qtyorder', width: 100, align: 'right', classes: 'wrap txnum',
+				editable: true,
+				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
+				editrules: { required: true },
+			},
+			{
 				label: 'Quantity on Hand', name: 'qtyonhand', width: 100, align: 'right', classes: 'wrap txnum',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
@@ -956,6 +964,7 @@ $(document).ready(function () {
 			dialog_billtypeSO.check(errorField);
 			// dialog_mrn.check(errorField);
 			dialog_CustomerSO.check(errorField);
+			dialog_quoteno.check(errorField);
 			// dialog_approvedbySO.check(errorField);
 		}
     });
@@ -1428,6 +1437,7 @@ $(document).ready(function () {
 		dialog_billtypeSO.off();
 		// dialog_mrn.off();
 		dialog_CustomerSO.off();
+		dialog_quoteno.off();
 		// dialog_approvedbySO.off();
 
 		// errorField.length = 0;
@@ -1440,6 +1450,7 @@ $(document).ready(function () {
 			dialog_deptcode.on();
 			dialog_billtypeSO.on();
 			dialog_CustomerSO.on();
+			dialog_quoteno.on();
 			// dialog_approvedbySO.on();
 			// dialog_mrn.on();
 		}
@@ -1452,6 +1463,7 @@ $(document).ready(function () {
 		dialog_deptcode.on();
 		dialog_billtypeSO.on();
 		dialog_CustomerSO.on();
+		dialog_quoteno.on();
 		// dialog_approvedbySO.on();
 		// dialog_mrn.on();
 
@@ -1544,16 +1556,31 @@ $(document).ready(function () {
 			myfail_msg.add_fail({
 				id:'qtyonhand',
 				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request must be greater than quantity on hand",
+				msg:"Quantity Request cant be greater than quantity on hand",
 			});
 		}else{
 			myfail_msg.del_fail({
 				id:'qtyonhand',
 				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request must be greater than quantity on hand",
+				msg:"Quantity Request cant be greater than quantity on hand",
 			});
 		}
 
+		let qtyorder = parseFloat($("#"+id_optid+"_qtyorder").val());
+
+		if(quantity>qtyorder && qtyorder!=''){
+			myfail_msg.add_fail({
+				id:'qtyorder',
+				textfld:"#jqGrid2 #"+id_optid+"_quantity",
+				msg:"Quantity Request cant be greater than quantity Order",
+			});
+		}else{
+			myfail_msg.del_fail({
+				id:'qtyorder',
+				textfld:"#jqGrid2 #"+id_optid+"_quantity",
+				msg:"Quantity Request cant be greater than quantity Order",
+			});
+		}
 
 		let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
 		let billtypeperct = 100 - parseFloat($("#"+id_optid+"_billtypeperct").val());
@@ -1651,8 +1678,6 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE','1','1']
 			},
 			ondblClickRow: function (event) {
-				$('#db_debtorcode').focus();
-
 				let data=selrowData('#'+dialog_deptcode.gridname);
 				
 				sequence.set(data['deptcode']).get();
@@ -1673,7 +1698,7 @@ $(document).ready(function () {
 				dialog_deptcode.urlParam.filterVal=['ACTIVE', 'session.compcode','1','1'];
 			},
 			close: function(obj_){
-				$("#db_debtorcode").focus().select();
+				$("#db_quoteno").focus().select();
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1691,7 +1716,6 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
-				$('#db_hdrtype').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1730,7 +1754,7 @@ $(document).ready(function () {
 				url_chk: "./SalesOrder/table",
 				action_chk: "get_hdrtype_check",
 				filterCol:[],
-				filterVal:[]
+				filterVal:[],
 			},
 			// urlParam: {
 			// 	filterCol:['compcode','recstatus','opprice'],
@@ -1756,8 +1780,8 @@ $(document).ready(function () {
 				dialog_billtypeSO.urlParam.action = 'get_hdrtype';
 				dialog_billtypeSO.urlParam.url_chk = "./SalesOrder/table";
 				dialog_billtypeSO.urlParam.action_chk = "get_hdrtype_check";
-				dialog_billtypeSO.urlParam.filterCol = [];
-				dialog_billtypeSO.urlParam.filterVal = [];
+				dialog_billtypeSO.urlParam.filterCol=[];
+				dialog_billtypeSO.urlParam.filterVal=[];
 			},
 			close: function(obj_){
 				$("#db_podate").focus().select();
@@ -1765,6 +1789,115 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_billtypeSO.makedialog();
+
+	var dialog_quoteno = new ordialog(
+		'quoteno', 'finance.salehdr', '#db_quoteno', errorField,
+		{
+			colModel: [
+				{ label: 'Quote no', name: 'quoteno', width: 150, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Debtor Code', name: 'debtorcode', width: 150, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				{ label: 'Debtor Name', name: 'name', width: 400, classes: 'pointer' },
+				{ label: 'Document Date', name: 'entrydate',formatter: dateFormatter, unformat: dateUNFormatter, width: 150, classes: 'pointer' },
+				{ label: 'hdrtype', name: 'hdrtype', hidden: true },
+				{ label: 'termcode', name: 'termcode', hidden: true },
+				{ label: 'termvalue', name: 'termvalue', hidden: true },
+				{ label: 'remark', name: 'remark', hidden: true },
+				{ label: 'amount', name: 'amount', hidden: true },
+				{ label: 'auditno', name: 'auditno', hidden: true },
+			],
+			urlParam: {
+				url:"./SalesOrder/table",
+				action: 'get_quoteno',
+				url_chk: "./SalesOrder/table",
+				action_chk: "get_quoteno_check",
+				deptcode: $('#db_deptcode').val(),
+				filterCol:[],
+				filterVal:[],
+			},
+			ondblClickRow: function () {
+				let data = selrowData('#' + dialog_quoteno.gridname);
+				console.log(data);
+				$("#db_debtorcode").val(data['debtorcode']);
+				$("#db_hdrtype").val(data['hdrtype']);
+				$("#db_termdays").val(data['termvalue']);
+				$("#db_termmode").val(data['termcode']);
+				$("#db_remark").val(data['remark']);
+				$("#db_amount").val(data['amount']);
+
+				dialog_CustomerSO.check(errorField);
+				dialog_billtypeSO.check(errorField);
+				mycurrency.formatOn();
+
+				var urlParam2 = {
+					action: 'get_salesum',
+					url: 'SalesOrder/table',
+					auditno: data['auditno']
+				};
+
+				$.get("SalesOrder/table?" + $.param(urlParam2), function (data) {
+				}, 'json').done(function (data) {
+					if (!$.isEmptyObject(data.rows)) {
+						data.rows.forEach(function(elem) {
+							console.log(elem);
+							$("#jqGrid2").jqGrid('addRowData', elem['lineno_'] ,
+								{
+									chggroup:elem['chggroup'],
+									uom:elem['uom'],
+									uom_recv:elem['uom'],
+									taxcode:elem['pricecode'],
+									unitprice:elem['unitprice'],
+									quantity:elem['quantity'],
+									qtyonhand:elem['qtyonhand'],
+									qtybal:parseInt(elem['quantity']) - parseInt(elem['qtydelivered']),
+									amount:0,
+									outamt:0,
+									totamount:0,
+									discamt:0,
+									taxamt:0,
+									taxcode:elem['taxcode'],
+									billtypeperct:elem['perdisc'],
+									billtypeamt:elem['amtdisc']
+									//rate:elem['rate']
+								}
+							);
+							calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
+						});
+
+
+					} else {
+
+					}
+				});
+
+
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					// $('#db_mrn').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		}, {
+			title: "Select Billtype",
+			open: function(){
+				dialog_quoteno.urlParam.url = "./SalesOrder/table";
+				dialog_quoteno.urlParam.action = 'get_quoteno';
+				dialog_quoteno.urlParam.url_chk = "./SalesOrder/table";
+				dialog_quoteno.urlParam.action_chk = "get_quoteno_check";
+				dialog_quoteno.urlParam.deptcode = $('#db_deptcode').val();
+				dialog_quoteno.urlParam.filterCol=[];
+				dialog_quoteno.urlParam.filterVal=[];
+			},
+			close: function(obj_){
+				$("#db_debtorcode").focus();
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_quoteno.makedialog();
 
 	// var dialog_mrn = new ordialog(
 	// 	'dialog_mrn', 'hisdb.pat_mast', '#db_mrn', errorField,

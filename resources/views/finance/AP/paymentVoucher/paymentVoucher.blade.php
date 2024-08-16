@@ -436,8 +436,14 @@ i.fa {
 			  			</div>
 						
 						<div class="col-md-2 minuspad-15">
+							@if(Request::get('scope') == 'REOPEN')
+							<label class="control-label" for="apacthdr_cancelby">Reject User</label>
+				  			<input id="apacthdr_cancelby" name="apacthdr_cancelby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+				  			<i class="fa fa-info-circle my_remark" aria-hidden="true" id='cancelled_remark_i'></i>
+				  			@else
 							<label class="control-label" for="apacthdr_upduser">Last User</label>
 				  			<input id="apacthdr_upduser" name="apacthdr_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+				  			@endif
 			  			</div>
 
 			  			<div class="col-md-2 minuspad-15">
@@ -466,8 +472,13 @@ i.fa {
 			  			</div>
 
 						<div class="col-md-2 minuspad-15">
+							@if(Request::get('scope') == 'REOPEN')
+							<label class="control-label" for="apacthdr_canceldate">Reject Date</label>
+				  			<input id="apacthdr_canceldate" name="apacthdr_canceldate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+				  			@else
 							<label class="control-label" for="apacthdr_upddate">Last Date</label>
 				  			<input id="apacthdr_upddate" name="apacthdr_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+				  			@endif
 			  			</div>
 					</div>
 				</form>
