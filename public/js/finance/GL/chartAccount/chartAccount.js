@@ -222,8 +222,6 @@ $(document).ready(function () {
 			//if(errorField.length>0)return false;
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
-			console.log(data);
-
 			// check_cust_rules();
 			let editurl = "./chartAccount/form?"+
 				$.param({

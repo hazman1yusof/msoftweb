@@ -32,8 +32,14 @@ class SalesOrderController extends defaultController
                 return $this->maintable($request);
             case 'get_hdrtype':
                 return $this->get_hdrtype($request);
+            case 'get_quoteno':
+                return $this->get_quoteno($request);
+            case 'get_salesum':
+                return $this->get_salesum($request);
             case 'get_hdrtype_check':
                 return $this->get_hdrtype_check($request);
+            case 'get_quoteno_check':
+                return $this->get_quoteno_check($request);
             default:
                 return 'error happen..';
         }
@@ -229,6 +235,7 @@ class SalesOrderController extends defaultController
                 'lineno_' => 1,
                 // 'invno' => $invno,
                 'deptcode' => strtoupper($request->db_deptcode),
+                'quoteno' => strtoupper($request->db_quoteno),
                 'unit' => session('unit'),//department.sector
                 'debtorcode' => strtoupper($request->db_debtorcode),
                 'payercode' => strtoupper($request->db_debtorcode),
@@ -251,6 +258,11 @@ class SalesOrderController extends defaultController
             //////////where//////////
             // $table = $table->where('idno','=',$request->idno);
             $idno = $table->insertGetId($array_insert);
+
+            $totalAmount = 0;
+            if(!empty($request->db_quoteno)){
+                $totalAmount = $this->save_dt_from_othr_qo($request->db_quoteno,$idno);
+            }
             
             $responce = new stdClass();
             $responce->totalAmount = 0.00;
@@ -264,6 +276,18 @@ class SalesOrderController extends defaultController
             
             return response($e->getMessage(), 500);
         }
+    }
+
+    public function save_dt_from_othr_qo($quoteno,$idno){
+        $dbacthdr = DB::table("debtor.dbacthdr")
+                        ->where('compcode',session('compcode'))
+                        ->where('idno',$idno)
+                        ->first();
+
+        $qo_hd = DB::table('finance.salehdr')
+                        ->where('compcode',session('compcode'))
+                        ->where('quoteno',$quoteno)
+                        ->first();
     }
     
     public function edit(Request $request){
@@ -1387,6 +1411,44 @@ class SalesOrderController extends defaultController
         return json_encode($responce);
     }
 
+    public function get_quoteno(Request $request){
+
+        $table = DB::table('finance.salehdr as sh')
+                        ->select('sh.quoteno','sh.debtorcode','dm.name','sh.entrydate','sh.idno','sh.compcode','sh.source','sh.trantype','sh.auditno','sh.lineno_','sh.amount','sh.outamount','sh.hdrsts','sh.posteddate','sh.entrytime','sh.entryuser','sh.reference','sh.recptno','sh.paymode','sh.tillcode','sh.tillno','sh.debtortype','sh.payercode','sh.billdebtor','sh.remark','sh.mrn','sh.episno','sh.authno','sh.expdate','sh.adddate','sh.adduser','sh.upddate','sh.upduser','sh.epistype','sh.cbflag','sh.conversion','sh.payername','sh.hdrtype','sh.currency','sh.rate','sh.startdate','sh.termvalue','sh.termcode','sh.frequency','sh.pono','sh.podate','sh.saleid','sh.billtype','sh.docdate','sh.unit','sh.recstatus','sh.deptcode')
+                        ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
+                            $join = $join->where('dm.compcode',session('compcode'));
+                            $join = $join->on('dm.debtorcode', '=', 'sh.debtorcode');
+                        })
+                        ->where('sh.compcode',session('compcode'))
+                        ->where('sh.deptcode',$request->deptcode)
+                        ->where('sh.recstatus','POSTED');
+
+        
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);
+    }
+
+    public function get_salesum(Request $request){
+
+        $table = DB::table('finance.salesum as sm')
+                        ->select('sm.idno','sm.compcode','sm.source','sm.trantype','sm.auditno','sm.lineno_','sm.description','sm.quantity','sm.amount','sm.outamt','sm.totamount','sm.taxcode','sm.taxamt','sm.mrn','sm.episno','sm.paymode','sm.cardno','sm.debtortype','sm.debtorcode','sm.billno','sm.rowno','sm.billtype','sm.chgclass','sm.classlevel','sm.chggroup','sm.lastuser','sm.lastupdate','sm.invcode','sm.seqno','sm.discamt','sm.docref','sm.uprice','sm.remarks','sm.invdate','sm.percentdisc','sm.amtdisc','sm.adduser','sm.adddate','sm.upduser','sm.upddate','sm.saleid','sm.uom','sm.uom_recv','sm.pouom','sm.reference','sm.balance','sm.qtyonhand','sm.qtydelivered','sm.ucost','sm.qtydel','sm.unitprice','sm.billtypeperct','sm.billtypeamt','sm.recstatus')
+                        ->where('sm.compcode',session('compcode'))
+                        ->where('sm.auditno',$request->auditno);
+
+        $responce = new stdClass();
+        $responce->rows = $table->get();
+        
+        return json_encode($responce);
+    }
+
     public function get_hdrtype_check(Request $request){
         $hdrtype = $request->filterVal[0];
         $billtymst = collect();
@@ -1439,6 +1501,25 @@ class SalesOrderController extends defaultController
         $responce = new stdClass();
         $responce->rows = $billtymst;
 
+        return json_encode($responce);
+    }
+
+    public function get_quoteno_check(Request $request){
+        $quoteno = $request->filterVal[0];
+        $table = DB::table('finance.salehdr as sh')
+                        ->select('sh.quoteno','sh.debtorcode','dm.name','sh.entrydate')
+                        ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
+                            $join = $join->where('dm.compcode',session('compcode'));
+                            $join = $join->on('dm.debtorcode', '=', 'sh.debtorcode');
+                        })
+                        ->where('sh.compcode',session('compcode'))
+                        ->where('sh.deptcode',$request->deptcode)
+                        ->where('sh.quoteno',$quoteno)
+                        ->where('sh.recstatus','POSTED');
+        
+        $responce = new stdClass();
+        $responce->rows = $table->get();
+        
         return json_encode($responce);
     }
 

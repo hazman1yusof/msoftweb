@@ -66,7 +66,6 @@ class ChartAccountController extends defaultController
 
     public function form(Request $request)
     {   
-        //dd('dd');
         switch($request->oper){
             case 'add':
                 return $this->add($request);
@@ -83,23 +82,23 @@ class ChartAccountController extends defaultController
         DB::beginTransaction();
         try {
 
-            // $category = DB::table('material.category')
-            //                 ->where('compcode','=',session('compcode'))
-            //                 ->where('catcode','=',strtoupper($request->catcode))
-            //                 ->where('cattype','=',strtoupper($request->cattype))
-            //                 ->where('source','=',$source);
+            $glmasdtl = DB::table('finance.glmasdtl')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('year','=',$request->year)
+                            ->where('costcode','=',$request->costcode)
+                            ->where('glaccount','=',$request->glaccount);
 
-            // if($category->exists()){
-            //     throw new \Exception("Record Duplicate");
-            // }
+            if($glmasdtl->exists()){
+                throw new \Exception("Record Duplicate");
+            }
 
             DB::table('finance.glmasdtl')
                 ->insert([  
                     'compcode' => session('compcode'),
-                    'costcode' => strtoupper($request->glmasdtl_costcode),
-                    'glaccount' => $request->glmasdtl_glaccount,
-                    'year' => $request->glmasdtl_year,
-                    'computerid' => session('computerid'),
+                    'costcode' => $request->costcode,
+                    'glaccount' => $request->glaccount,
+                    'year' => $request->year,
+                    // 'computerid' => session('computerid'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -108,11 +107,11 @@ class ChartAccountController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            $responce = new stdClass();
-            // $responce->errormsg = $e->getMessage();
-            $responce->request = $_REQUEST;
+            // $responce = new stdClass();
+            // // $responce->errormsg = $e->getMessage();
+            // $responce->request = $_REQUEST;
 
-            return response(json_encode($responce), 500);
+            return response($e->getMessage(), 500);
         }
     }
 
