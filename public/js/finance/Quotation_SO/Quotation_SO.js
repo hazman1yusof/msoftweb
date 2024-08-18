@@ -952,18 +952,16 @@ $(document).ready(function (){
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
-		
-		if(rowObject.SL_recstatus == "POSTED"){
-			return ' ';
-		}
-		
-		if(options.gid == "jqGrid"){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-		}else if(options.gid != "jqGrid"){
-			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
-		}else{
-			return ' ';
-		}
+
+        if(options.gid != "jqGrid"){
+            return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+        }
+		console.log(rowObject.SL_recstatus);
+		if(rowObject.SL_recstatus == "OPEN"){
+            return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+        }
+
+        return ' ';
 	}
 	
 	var butt1_rem = 

@@ -30,6 +30,7 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 	var sequence = new Sequences('SO','#db_entrydate');
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","db_idno","recstatus");
+	var my_remark_button = new remark_button_class('#jqgrid');
 
 	///////////////////////////////// check date validate from period//////////////////////////
 	var actdateObj = new setactdate(["#db_entrydate"]);
@@ -48,6 +49,7 @@ $(document).ready(function () {
 			open: function (event, ui) {
 				$('#db_deptcode').focus();
 				errorField.length=0;
+				my_remark_button.remark_btn_init(selrowData("#jqGrid"));
 				actdateObj.getdata().set();
 				parent_close_disabled(true);
 				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth - $("#jqGrid2_c")[0].offsetLeft));
@@ -78,6 +80,7 @@ $(document).ready(function () {
 					dialog_billtypeSO.check(errorField);
 					// dialog_mrn.check(errorField);
 					dialog_CustomerSO.check(errorField);
+					dialog_quoteno.urlParam.deptcode = $('#db_deptcode').val();
 					dialog_quoteno.check(errorField);
 					// dialog_approvedbySO.check(errorField);
 				} if (oper != 'view') {
@@ -228,7 +231,7 @@ $(document).ready(function () {
 			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right', formatter: padzero, unformat: unpadzero},
 			{ label: 'Invoice No', name: 'db_invno', width: 10, align: 'right', canSearch: true, formatter: padzero, unformat: unpadzero },
 			//{ label: 'Sector', name: 'db_unit', width: 15, canSearch: true, classes: 'wrap' },
-			{ label: 'PO No', name: 'db_ponum', width: 10, align: 'right', formatter: padzero5, unformat: unpadzero },
+			{ label: 'Quotation No', name: 'db_quoteno', width: 10, align: 'right', formatter: padzero5, unformat: unpadzero },
 			{ label: 'Amount', name: 'db_amount', width: 10, align: 'right', formatter: 'currency' },
 			{ label: 'O/S<br>Amount', name: 'db_outamount', width: 10, align: 'right', formatter: 'currency' },
 			{ label: 'Remark', name: 'db_remark', width: 20, classes: 'wrap', hidden: true },
@@ -255,6 +258,14 @@ $(document).ready(function () {
 			{ label: 'upduser', name: 'db_upduser', width: 10, hidden: true },
 			{ label: 'upddate', name: 'db_upddate', width: 10, hidden: true },
 			{ label: 'remarks', name: 'db_remark', width: 10, hidden: true },
+			{ label: 'quoteno', name: 'db_quoteno', width: 10, hidden: true },
+			{ label: 'preparedby', name: 'db_preparedby', width: 10, hidden: true },
+			{ label: 'prepareddate', name: 'db_prepareddate', width: 10, hidden: true },
+			{ label: 'cancelby', name: 'db_cancelby', width: 10, hidden: true },
+			{ label: 'canceldate', name: 'db_canceldate', width: 10, hidden: true },
+			{ label: 'cancelremark', name: 'db_cancelled_remark', width: 10, hidden: true },
+			{ label: 'approvedremark', name: 'db_approved_remark', width: 10, hidden: true },
+			{ label: 'PO No', name: 'db_ponum', width: 10, hidden: true},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 8,align: "center", formatter: formatterCheckbox },
 		],
 		autowidth: true,
@@ -290,15 +301,15 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			let stat = selrowData("#jqGrid").db_recstatus;
-			
-			if(stat=='POSTED'){
-				$("#jqGridPager td[title='View Selected Row']").click();
-			}else if (stat == 'OPEN'){
+
+			if (stat == 'OPEN'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 				
 				if (rowid != null) {
 					rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				}
+			}else{
+				$("#jqGridPager td[title='View Selected Row']").click();
 			}
 			
 			let db_invno = selrowData("#jqGrid").db_invno;
@@ -380,6 +391,9 @@ $(document).ready(function () {
 		title: "Edit Selected Row",
 		onClickButton: function () {
 			oper = 'edit';
+			if(selrowData("#jqGrid").db_recstatus != 'OPEN'){
+				return false;
+			}
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', ['db_termmode']);
 			refreshGrid("#jqGrid2", urlParam2);
@@ -453,7 +467,82 @@ $(document).ready(function () {
 		$(".noti").empty();
 	});
 
-	$("#but_post_jq,#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
+	$("#but_reopen_jq").click(function(){
+
+		var idno = selrowData('#jqGrid').db_idno;
+		var obj={};
+		obj.idno = idno;
+		obj._token = $('#_token').val();
+		obj.oper = $(this).data('oper')+'_single';
+
+		$.post( './SalesOrder/form', obj , function( data ) {
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+		}).success(function(data){
+			
+		});
+	});
+
+	$("#dialog_remarks_oper").dialog({
+		autoOpen: false,
+		width: 4/10 * $(window).width(),
+		modal: true,
+		open: function( event, ui ) {
+			$('#remarks_oper').val('');
+		},
+		close: function( event, ui ) {
+			$("#but_cancel_jq").attr('disabled',false);
+		},
+		buttons : [{
+			text: "Submit",click: function() {
+				$("#but_cancel_jq").attr('disabled',true);
+				if($('#remarks_oper').val() == ''){
+					alert('Remarks for rejection is required!');
+				}else{
+					$(this).attr('disabled',true);
+					var idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
+					var obj={};
+					
+					obj.idno_array = idno_array;
+					obj.oper = $("#but_cancel_jq").data('oper');
+					obj.recstatus_use = $("#recstatus_use").val();
+					obj.remarks = $("#remarks_oper").val();
+					obj._token = $('#_token').val();
+					oper=null;
+					
+					$.post( './SalesOrder/form', obj , function( data ) {
+						refreshGrid('#jqGrid', urlParam);
+						$(this).attr('disabled',true);
+						cbselect.empty_sel_tbl();
+					}).fail(function(data) {
+						$('#error_infront').text(data.responseText);
+						$(this).attr('disabled',true);
+					}).success(function(data){
+						$(this).attr('disabled',true);
+					});
+					$(this).dialog('close');
+				}
+			}
+			},{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}]
+	});
+
+	$("#but_cancel_jq").click(function(){
+		$("#but_cancel_jq").attr('disabled',true);
+		if($(this).data('oper') == 'reject'){
+			if (confirm("Are you sure to reject this purchase request?") == true) {
+				$("#dialog_remarks_oper").dialog( "open" );
+			}else{
+				$("#but_cancel_jq").attr('disabled',false);
+			}
+		}
+	});
+
+	$("#but_post_jq").click(function(){
 		$(this).attr('disabled',true);
 		var self_ = this;
 		var idno_array = [];
@@ -504,6 +593,7 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			},'json')
 		.fail(function (data) {
+			$("#saveDetailLabel").attr('disabled',false)
 			$('#db_hdrtype').focus();
 			$('.noti').text(data.responseText);
 		}).done(function (data) {
@@ -530,6 +620,7 @@ $(document).ready(function () {
 			} else if (selfoper == 'edit') {
 				//doesnt need to do anything
 			}
+			refreshGrid('#jqGrid2', urlParam2);
 			disableForm('#formdata');
 		})
 	}
@@ -812,6 +903,8 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},
+			{ label: 'chggroup_ori', name: 'chggroup_ori', hidden:true },
+			{ label: 'uom_ori', name: 'uom_ori', hidden:true },
 			{ label: 'Item Description', name: 'description', width: 180, classes: 'wrap', editable: false, editoptions: { readonly: "readonly" }, hidden:true },
 			{
 				label: 'UOM Code', name: 'uom', width: 150, classes: 'wrap', editable: true,
@@ -857,7 +950,7 @@ $(document).ready(function () {
 				label: 'Quantity Order', name: 'qtyorder', width: 100, align: 'right', classes: 'wrap txnum',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-				editrules: { required: true },
+				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
 			{
 				label: 'Quantity on Hand', name: 'qtyonhand', width: 100, align: 'right', classes: 'wrap txnum',
@@ -995,17 +1088,29 @@ $(document).ready(function () {
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
 
-		if(rowObject.db_recstatus == "POSTED"){
-			return ' ';
+		if(options.gid != "jqGrid"){
+			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
 		}
 
-		if(options.gid == "jqGrid"){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-		}else if(options.gid != "jqGrid"){
-			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
-		}else{
-			return ' ';
+		if($('#recstatus_use').val() == 'ALL'){
+			if(rowObject.db_recstatus == "OPEN"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'DELIVERED'){
+			if(rowObject.db_recstatus == "PREPARED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'REOPEN'){
+			if(rowObject.db_recstatus == "CANCELLED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'CANCEL'){
+			if(rowObject.db_recstatus == "OPEN"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
 		}
+
+		return ' ';
 	}
 
 	var butt1_rem = 
@@ -1207,6 +1312,7 @@ $(document).ready(function () {
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
 		    for (var i = 0; i < ids.length; i++) {
 
+		        let rowdata = $("#jqGrid2").jqGrid ('getRowData', ids[i]);
 		        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
 		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount"]);
@@ -1214,9 +1320,16 @@ $(document).ready(function () {
 		        Array.prototype.push.apply(mycurrency_np.array, ["#"+ids[i]+"_quantity"]);
 
 		        dialog_chggroup.id_optid = ids[i];
+
 		        dialog_chggroup.check(errorField,ids[i]+"_chggroup","jqGrid2",null,
 		        	function(self){
-		        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+						self.urlParam.entrydate = $("#db_entrydate").val();
+						self.urlParam.billtype = $('#db_hdrtype').val();
+						self.urlParam.deptcode = $("#db_deptcode").val();
+						self.urlParam.price = $("#pricebilltype").val();
+						self.urlParam.chgcode = rowdata.chggroup_ori;
+						self.urlParam.uom = rowdata.uom_ori;
+
 			        },function(self){
 						// fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 				    }
@@ -1225,7 +1338,12 @@ $(document).ready(function () {
 		        dialog_uomcode.id_optid = ids[i];
 		        dialog_uomcode.check(errorField,ids[i]+"_uom","jqGrid2",null,
 		        	function(self){
-			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+						self.urlParam.entrydate = $("#db_entrydate").val();
+						self.urlParam.billtype = $('#db_hdrtype').val();
+						self.urlParam.deptcode = $("#db_deptcode").val();
+						self.urlParam.price = $("#pricebilltype").val();
+						self.urlParam.chgcode = rowdata.chggroup_ori;
+						self.urlParam.uom = rowdata.uom_ori;
 			        },function(self){
 						// fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			        }
@@ -1310,8 +1428,9 @@ $(document).ready(function () {
 					'amount' : $('#'+ids[i]+"_amount").val(),
 					'totamount' : $('#'+ids[i]+"_totamount").val(),
 					'taxamt' : $("#"+ids[i]+"_taxamt").val(),
-					// 'billtypeperct' : $('#'+ids[i]+"_billtypeperct").val(),
-					// 'billtypeamt' : $("#"+ids[i]+"_billtypeamt").val(),
+					'billtypeperct' : $('#'+ids[i]+"_billtypeperct").val(),
+					'billtypeamt' : $("#"+ids[i]+"_billtypeamt").val(),
+					'taxcode' : $("#"+ids[i]+"_taxcode").val(),
 				}
 				
 				jqgrid2_data.push(obj);
@@ -1507,10 +1626,17 @@ $(document).ready(function () {
     	// $("#jqGrid2 input[name='chggroup'],#jqGrid2 input[name='uom'],#jqGrid2 input[name='taxcode']").attr('readonly','readonly');
 
 		errorField.length=0;
-		dialog_chggroup.on();
-		dialog_uomcode.on();
-		dialog_tax.on();
-		dialog_uom_recv.on();
+		// dialog_chggroup.on();
+		// dialog_uomcode.on();
+		// dialog_tax.on();
+		// dialog_uom_recv.on();
+		dialog_chggroup.off();
+        $(dialog_chggroup.textfield).prop('readonly',true);
+		dialog_uomcode.off();
+        $(dialog_uomcode.textfield).prop('readonly',true);
+		dialog_uom_recv.off();
+        $(dialog_uom_recv.textfield).prop('readonly',true);
+        dialog_tax.on();
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		mycurrency_np.formatOnBlur();//make field to currency on leave cursor
@@ -1816,7 +1942,6 @@ $(document).ready(function () {
 			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_quoteno.gridname);
-				console.log(data);
 				$("#db_debtorcode").val(data['debtorcode']);
 				$("#db_hdrtype").val(data['hdrtype']);
 				$("#db_termdays").val(data['termvalue']);
@@ -1838,7 +1963,6 @@ $(document).ready(function () {
 				}, 'json').done(function (data) {
 					if (!$.isEmptyObject(data.rows)) {
 						data.rows.forEach(function(elem) {
-							console.log(elem);
 							$("#jqGrid2").jqGrid('addRowData', elem['lineno_'] ,
 								{
 									chggroup:elem['chggroup'],
@@ -1848,7 +1972,7 @@ $(document).ready(function () {
 									unitprice:elem['unitprice'],
 									quantity:elem['quantity'],
 									qtyonhand:elem['qtyonhand'],
-									qtybal:parseInt(elem['quantity']) - parseInt(elem['qtydelivered']),
+									qtyorder:parseInt(elem['quantity']) - parseInt(elem['qtydelivered']),
 									amount:0,
 									outamt:0,
 									totamount:0,
@@ -2646,6 +2770,47 @@ function fail_msg_func(fail_msg_div=null){
 		$(self.fail_msg_div).html('');
 		this.fail_msg_array.forEach(function(e,i){
 			$(self.fail_msg_div).append("<li>"+e.msg+"</li>");
+		});
+	}
+}
+
+function remark_button_class(grid){
+	$("#dialog_remarks_view").dialog({
+		autoOpen: false,
+		width: 4/10 * $(window).width(),
+		modal: true,
+		open: function( event, ui ) {
+		},
+		close: function( event, ui ) {
+			$('#remarks_view').val('');
+		},
+		buttons : [{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}]
+	});
+
+	this.grid=grid;
+	this.selrowdata;
+
+	this.remark_btn_init = function(selrowdata){
+		this.selrowdata = selrowdata;
+		$('i.my_remark').hide();
+		$('i.my_remark').off('click');
+		if(this.selrowdata.db_approved_remark != ''){
+			$('i#approved_remark_i').show();
+			$('i#approved_remark_i').data('remark',this.selrowdata.db_approved_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Approved Remark');
+		}
+		if(this.selrowdata.db_cancelled_remark != ''){
+			$('i#cancelled_remark_i').show();
+			$('i#cancelled_remark_i').data('remark',this.selrowdata.db_cancelled_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Rejected Remark');
+		}
+		$('i.my_remark').on('click',function(){
+			$('#remarks_view').val($(this).data('remark'));
+			$("#dialog_remarks_view").dialog( "open" );
 		});
 	}
 }

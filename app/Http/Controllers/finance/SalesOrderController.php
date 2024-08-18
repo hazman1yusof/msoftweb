@@ -14,18 +14,68 @@ class SalesOrderController extends defaultController
 {   
     var $gltranAmount;
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware('auth');
     }
 
-    public function show(Request $request)
-    {   
+    public function show(Request $request){   
         return view('finance.SalesOrder.SalesOrder');
     }
 
-    public function table(Request $request)
-    {   
+    public function show_mobile(Request $request){
+        $oper = strtolower($request->scope);//delivered shj sekarang
+        $scope = ucfirst(strtolower($request->scope));//Delivered
+        $auditno = $request->auditno;
+
+        $db_hd = DB::table('debtor.dbacthdr AS db')
+                        ->select('db.debtorcode','db.payercode','dm.name AS payercode_desc','db.entrydate','db.auditno','db.invno','db.ponum','db.amount','db.remark','db.lineno_','db.orderno','db.outamount','db.debtortype','db.billdebtor','db.approvedby','db.mrn','db.unit','db.source','db.trantype','db.termdays','db.termmode','db.hdrtype','db.podate','db.posteddate','db.deptcode','dept.description as deptcode_desc','db.recstatus','db.idno','db.adduser','db.adddate','db.upduser','db.quoteno','db.preparedby','db.prepareddate','db.cancelby','db.canceldate','db.cancelled_remark','db.approved_remark','db.upddate')
+                        ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
+                            $join = $join->where('dm.compcode', '=', session('compcode'));
+                            $join = $join->on('dm.debtorcode', '=', 'db.debtorcode');
+                        })->leftjoin('sysdb.department as dept', function($join) use ($request){
+                            $join = $join
+                                ->where('dept.compcode',session('compcode'))
+                                ->on('dept.deptcode','db.deptcode');
+                        })
+                        ->where('db.compcode',session('compcode'))
+                        ->where('db.source','PB')
+                        ->where('db.trantype','IN')
+                        ->where('db.auditno',$auditno)
+                        ->first();
+
+        $db_dt = DB::table('debtor.billsum AS bs')
+                ->select('bs.rowno','bs.chggroup','cm.description as chggroup_desc','bs.quantity','bs.qtyorder','bs.unitprice','bs.uom','uom.description as uom_desc','bs.uom_recv','uom.description as uom_recv_desc','bs.totamount')
+                ->leftjoin('hisdb.chgmast as cm', function($join) use ($request){
+                    $join = $join
+                        ->where('cm.compcode',session('compcode'))
+                        ->where('cm.unit',session('unit'))
+                        ->on('cm.uom','bs.uom')
+                        ->on('cm.chgcode','bs.chggroup');
+                })
+                ->leftjoin('material.uom as uom', function($join) use ($request){
+                    $join = $join
+                        ->where('uom.compcode',session('compcode'))
+                        ->on('uom.uomcode','bs.uom');
+                })
+                ->leftjoin('material.uom as uom_recv', function($join) use ($request){
+                    $join = $join
+                        ->where('uom_recv.compcode',session('compcode'))
+                        ->on('uom_recv.uomcode','bs.uom_recv');
+                })
+                ->where('bs.compcode','=',session('compcode'))
+                ->where('bs.source','=','PB')
+                ->where('bs.trantype','=','IN')
+                ->where('bs.billno','=',$auditno)
+                ->where('bs.recstatus','!=','DELETE')
+                ->get();
+
+        // dd($db_dt->get());
+
+        return view('finance.SalesOrder.SalesOrder_mobile',compact('db_hd','db_dt','scope','oper'));
+
+    }
+
+    public function table(Request $request){   
         DB::enableQueryLog();
         switch($request->action){
             case 'maintable':
@@ -45,8 +95,7 @@ class SalesOrderController extends defaultController
         }
     }
 
-    public function form(Request $request)
-    {   
+    public function form(Request $request){   
         DB::enableQueryLog();
         switch($request->oper){ //SalesOrder_header_save 
             case 'add':
@@ -57,6 +106,10 @@ class SalesOrderController extends defaultController
                 return $this->del($request);
             case 'posted':
                 return $this->posted($request);
+            case 'delivered':
+                return $this->delivered($request);
+            case 'reject':
+                return $this->reject($request);
             case 'reopen':
                 return $this->reopen($request);
             case 'cancel':
@@ -108,6 +161,13 @@ class SalesOrderController extends defaultController
                         'db.adduser AS db_adduser',
                         'db.adddate AS db_adddate',
                         'db.upduser AS db_upduser',
+                        'db.quoteno AS db_quoteno',
+                        'db.preparedby AS db_preparedby',
+                        'db.prepareddate AS db_prepareddate',
+                        'db.cancelby AS db_cancelby',
+                        'db.canceldate AS db_canceldate',
+                        'db.cancelled_remark AS db_cancelled_remark',
+                        'db.approved_remark AS db_approved_remark',
                         'db.upddate AS db_upddate'
                     )
                     ->where('db.compcode',session('compcode'))
@@ -198,8 +258,7 @@ class SalesOrderController extends defaultController
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);
         
-        return json_encode($responce);
-        
+        return json_encode($responce);       
     }
     
     public function add(Request $request){
@@ -231,6 +290,8 @@ class SalesOrderController extends defaultController
                 'compcode' => session('compcode'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'upduser' => session('username'),
+                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'recstatus' => 'OPEN',
                 'lineno_' => 1,
                 // 'invno' => $invno,
@@ -252,7 +313,7 @@ class SalesOrderController extends defaultController
                 'ponum' => strtoupper($request->db_ponum),
                 'podate' => (!empty($request->db_podate))?$request->db_podate:null,
                 'remark' => strtoupper($request->db_remark),
-                'approvedby' => $request->db_approvedby
+                // 'approvedby' => $request->db_approvedby
             ];
             
             //////////where//////////
@@ -286,8 +347,103 @@ class SalesOrderController extends defaultController
 
         $qo_hd = DB::table('finance.salehdr')
                         ->where('compcode',session('compcode'))
+                        ->where('source','SL')
+                        ->where('trantype','RECNO')
                         ->where('quoteno',$quoteno)
                         ->first();
+
+        $qo_dt = DB::table('finance.salesum')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','SL')
+                        ->where('trantype','RECNO')
+                        ->where('auditno',$qo_hd->auditno)
+                        ->get();
+
+        foreach ($qo_dt as $key => $value) {
+            
+            ////1. calculate rowno by recno
+            // $sqlln = DB::table('debtor.billsum')->select('rowno')
+            //             ->where('compcode','=',session('compcode'))
+            //             ->where('source','=','PB')
+            //             ->where('trantype','=','IN')
+            //             ->where('billno','=',$dbacthdr->auditno)
+            //             ->count('rowno');
+            
+            // $li=intval($sqlln)+1;
+
+            $quantity = floatval($value->quantity) - floatval($value->qtydelivered);
+            $amount = $value->unitprice * $quantity;
+            $discamt = ($amount * (100-$value->billtypeperct) / 100) + $value->billtypeamt;
+            $rate = $this->taxrate($value->taxcode);
+            $taxamt = $amount * $rate / 100;
+            $totamount = $amount - $discamt + $taxamt;
+            
+            ///2. insert detail
+            $insertGetId = DB::table('debtor.billsum')
+                ->insertGetId([
+                    // 'auditno' => $recno, //->OE IN
+                    'billno' => $dbacthdr->auditno, // dari dbacthdr.auditno
+                    'invno' => $dbacthdr->auditno, // dari dbacthdr.auditno
+                    // 'idno' => $recno, //autogen
+                    'compcode' => session('compcode'),
+                    'source' => 'PB',
+                    'trantype' => 'IN',
+                    'chggroup' => $value->chggroup,
+                    'description' => $value->description,
+                    'lineno_' => '1',
+                    'rowno' => $value->lineno_,
+                    // 'mrn' => (!empty($dbacthdr->mrn))?$dbacthdr->mrn:null,
+                    // 'episno' => (!empty($dbacthdr->episno))?$dbacthdr->episno:null,
+                    'uom' => $value->uom,
+                    'uom_recv' => $value->uom_recv,
+                    'taxcode' => $value->taxcode,
+                    'unitprice' => $value->unitprice,
+                    'quantity' => $quantity,
+                    'qtyonhand' => $value->qtyonhand,
+                    'qtyorder' => $quantity,
+                    'amount' => $amount, //unitprice * quantity, xde tax
+                    'outamt' => $amount,
+                    'totamount' => $totamount,
+                    'discamt' => floatval($discamt),
+                    'taxamt' => floatval($taxamt),
+                    'lastuser' => session('username'), 
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'OPEN',
+                    'taxcode' => $value->taxcode,
+                    'billtypeperct' => $value->billtypeperct,
+                    'billtypeamt' => $value->billtypeamt,
+                ]);
+            
+            $billsum_obj = db::table('debtor.billsum')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno', '=', $insertGetId)
+                            ->first();
+
+            Db::table('debtor.billsum')
+                    ->where('compcode',session('compcode'))
+                    ->where('idno', '=', $insertGetId)
+                    ->update(['auditno' => $insertGetId]);
+        }
+
+        //3. calculate total amount from detail
+        $totalAmount = DB::table('debtor.billsum')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=','PB')
+                ->where('trantype','=','IN')
+                ->where('billno','=',$dbacthdr->auditno)
+                ->where('recstatus','!=','DELETE')
+                ->sum('totamount');
+        
+        ///4. then update to header
+        DB::table('debtor.dbacthdr')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=','PB')
+                ->where('trantype','=','IN')
+                ->where('auditno','=',$dbacthdr->auditno)
+                ->update([
+                    'amount' => $totalAmount,
+                    'outamount' => $totalAmount,
+                ]);
     }
     
     public function edit(Request $request){
@@ -311,7 +467,7 @@ class SalesOrderController extends defaultController
             'ponum' => strtoupper($request->db_ponum),
             'podate' => (!empty($request->db_podate))?$request->db_podate:null,
             'remark' => strtoupper($request->db_remark),
-            'approvedby' => strtoupper($request->db_approvedby)
+            // 'approvedby' => strtoupper($request->db_approvedby)
         ];
         
         try {
@@ -335,12 +491,10 @@ class SalesOrderController extends defaultController
             DB::rollback();
             
             return response($e->getMessage(), 500);
-        }
-        
+        }//xguna     
     }
     
-    public function del(Request $request){
-        
+    public function del(Request $request){        
     }
     
     public function posted(Request $request){
@@ -360,6 +514,86 @@ class SalesOrderController extends defaultController
                     continue;
                 }
                 
+                DB::table("debtor.dbacthdr")
+                    ->where('compcode',session('compcode'))
+                    ->where('idno','=',$value)
+                    ->update([
+                        'recstatus' => 'PREPARED',
+                        'preparedby' => session('username'),
+                        'prepareddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+                
+                DB::table("debtor.billsum")
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=',$dbacthdr->source)
+                    ->where('trantype','=',$dbacthdr->trantype)
+                    ->where('billno','=',$dbacthdr->auditno)
+                    ->update([
+                        'recstatus' => 'PREPARED',
+                    ]);
+
+                DB::table('finance.queueso')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'recno' => $dbacthdr->auditno,
+                        'AuthorisedID' => session('username'),
+                        'deptcode' => 'ALL',
+                        'recstatus' => 'PREPARED',
+                        'trantype' => 'DELIVERED',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }
+            
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function delivered(Request $request){
+        
+        DB::beginTransaction();
+        
+        try{
+            
+            foreach ($request->idno_array as $value){
+                
+                $dbacthdr = DB::table("debtor.dbacthdr")
+                            ->where('compcode',session('compcode'))
+                            ->where('idno','=',$value)
+                            ->first();
+
+                $authorise = DB::table('finance.permissiondtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('authorid','=',session('username'))
+                    ->where('trantype','=','SO')
+                    ->where('cando','=', 'ACTIVE')
+                    ->where('recstatus','=','DELIVERED')
+                    // ->where('deptcode','=',$purordhd_get->prdept)
+                    ->where('maxlimit','>=',$dbacthdr->amount);
+
+                if(!$authorise->exists()){
+                    throw new \Exception("The user doesnt have authority",500);
+                }
+
+                if($dbacthdr->recstatus != 'PREPARED'){
+                    continue;
+                }
+
+                if(!empty($dbacthdr->quoteno)){
+                    $qo_hd = DB::table('finance.salehdr')
+                                ->where('compcode',session('compcode'))
+                                ->where('source','SL')
+                                ->where('trantype','RECNO')
+                                ->where('quoteno',$dbacthdr->quoteno)
+                                ->first();
+                }
+                
                 $invno = $this->recno('PB','INV');
                 
                 $billsum = DB::table("debtor.billsum")
@@ -369,7 +603,44 @@ class SalesOrderController extends defaultController
                             ->where('billno','=',$dbacthdr->auditno)
                             ->get();
                 
+                $qo_dt_recstatus = 'COMPLETED';
                 foreach ($billsum as $billsum_obj){
+
+                    if(!empty($dbacthdr->quoteno)){
+                        $qo_dt = DB::table('finance.salesum')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('source','SL')
+                                    ->where('trantype','RECNO')
+                                    ->where('lineno_',$billsum_obj->rowno)
+                                    ->where('auditno',$qo_hd->auditno)
+                                    ->first();
+
+                        $qo_dt_qtydelivered = $qo_dt->qtydelivered;
+                        $qo_dt_quantity = $qo_dt->quantity;
+                        $new_qtydelivered = $billsum_obj->quantity + $qo_dt_qtydelivered;
+                        if($new_qtydelivered > $qo_dt_quantity){
+                            $cant_exceed = $qo_dt->quantity - $qo_dt->qtydelivered;
+                            throw new \Exception("Quotation Quantity Delivered Exceed for item: ".$billsum_obj->chggroup." uom: ".$billsum_obj->uom." Quantity delivered cant exceed: ".$cant_exceed,500);
+                        }
+
+                        DB::table('finance.salesum')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('source','SL')
+                                    ->where('trantype','RECNO')
+                                    ->where('lineno_',$billsum_obj->rowno)
+                                    ->where('auditno',$qo_hd->auditno)
+                                    ->update([
+                                        'qtydelivered' => $new_qtydelivered
+                                    ]);
+
+                        if($qo_dt_recstatus == 'PARTIAL'){
+                            $qo_dt_recstatus = 'PARTIAL';
+                        }else{
+                           if($qo_dt_quantity - $new_qtydelivered > 0){
+                                $qo_dt_recstatus = 'PARTIAL';
+                            } 
+                        }
+                    }
                     
                     $chgmast = DB::table("hisdb.chgmast")
                             ->where('compcode','=',session('compcode'))
@@ -378,6 +649,38 @@ class SalesOrderController extends defaultController
                             ->first();
                     
                     $updinv = ($chgmast->invflag == '1')? 1 : 0;
+
+                    $product = DB::table('material.product')
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('uomcode','=',$billsum_obj->uom)
+                                    ->where('itemcode','=',$billsum_obj->chggroup);
+                    
+                    if($product->exists()){
+                        $stockloc = DB::table('material.stockloc')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('uomcode','=',$billsum_obj->uom)
+                                ->where('itemcode','=',$billsum_obj->chggroup)
+                                ->where('deptcode','=',$dbacthdr->deptcode)
+                                ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+                        
+                        if($stockloc->exists()){
+                            $stockloc = $stockloc->first();
+                        }else{
+                            throw new \Exception("Stockloc not exists for item: ".$billsum_obj->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$billsum_obj->uom,500);
+                        }
+                        
+                        $ivdspdt = DB::table('material.ivdspdt')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('recno','=',$billsum_obj->auditno);
+                        
+                        if($ivdspdt->exists()){
+                            $this->updivdspdt($billsum_obj,$dbacthdr);
+                            $this->updgltran($ivdspdt->first()->idno,$dbacthdr);
+                        }else{
+                            $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$dbacthdr);
+                            $this->crtgltran($ivdspdt_idno,$dbacthdr);
+                        }
+                    }
         
                     $recno = $this->recno('OE','IN');
                     
@@ -599,6 +902,29 @@ class SalesOrderController extends defaultController
                         );
                     }
                 }
+
+                if(!empty($dbacthdr->quoteno)){
+                    $qo_hd = DB::table('finance.salehdr')
+                                ->where('compcode',session('compcode'))
+                                ->where('source','SL')
+                                ->where('trantype','RECNO')
+                                ->where('quoteno',$dbacthdr->quoteno)
+                                ->update([
+                                    'recstatus' => $qo_dt_recstatus
+                                ]);
+                }    
+
+                DB::table('finance.queueso')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$dbacthdr->auditno)
+                    ->update([
+                        'AuthorisedID' => session('username'),
+                        'deptcode' => 'ALL',
+                        'recstatus' => 'POSTED',
+                        'trantype' => 'DONE',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
                 
                 DB::table("debtor.billsum")
                     ->where('compcode',session('compcode'))
@@ -616,9 +942,13 @@ class SalesOrderController extends defaultController
                     ->update([
                         'invno' => $invno,
                         'recstatus' => 'POSTED',
-                        'posteddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        //'amount' => accumalated amount (billsum.amt-billsum.discamt+billsum.taxamt)
-                        //'outamount' => accumalated amount (billsum.amt-billsum.discamt+billsum.taxamt)
+                        'posteddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'approvedby' => session('username'),
+                        'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        // 'amount' => accumalated amount (billsum.amt-billsum.discamt+billsum.taxamt)
+                        // 'outamount' => accumalated amount (billsum.amt-billsum.discamt+billsum.taxamt)
                     ]);
 
                 $debtormast = DB::table("debtor.debtormast")
@@ -660,15 +990,11 @@ class SalesOrderController extends defaultController
             }
             
             DB::commit();
-            
         } catch (\Exception $e) {
-            
             DB::rollback();
             
-            return response($e, 500);
-            
+            return response($e->getMessage(), 500);
         }
-        
     }
 
     public function init_glmastdtl($dbcc,$dbacc,$crcc,$cracc,$yearperiod,$amount){
@@ -731,86 +1057,154 @@ class SalesOrderController extends defaultController
         }
     }
     
-    // public function reopen(Request $request){
+    public function reopen(Request $request){
 
-    //     DB::beginTransaction();
+        DB::beginTransaction();
 
-    //     try{
+        try{
 
-    //         foreach ($request->idno_array as $value){
+            foreach ($request->idno_array as $value){
+                
+                $dbacthdr = DB::table("debtor.dbacthdr")
+                            ->where('compcode',session('compcode'))
+                            ->where('idno','=',$value)
+                            ->first();
 
-    //             $purreqhd = DB::table("material.purreqhd")
-    //                 ->where('idno','=',$value);
+                if($dbacthdr->recstatus != 'CANCELLED'){
+                    continue;
+                }
 
-    //             $purreqhd_get = $purreqhd->first();
-    //             if(!in_array($purreqhd_get->recstatus, ['CANCELLED','REQUEST','SUPPORT','VERIFIED','APPROVED'])){
-    //                 continue;
-    //             }
+                DB::table("debtor.dbacthdr")
+                    ->where('compcode',session('compcode'))
+                    ->where('idno','=',$value)
+                    ->update([
+                        'recstatus' => 'OPEN',
+                        'preparedby' => null,
+                        'prepareddate' => null,
+                    ]);
+                
+                DB::table("debtor.billsum")
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=',$dbacthdr->source)
+                    ->where('trantype','=',$dbacthdr->trantype)
+                    ->where('billno','=',$dbacthdr->auditno)
+                    ->update([
+                        'recstatus' => 'OPEN',
+                    ]);
 
-    //             $purreqhd->update([
-    //                 'recstatus' => 'OPEN',
-    //                 'requestby' => null,
-    //                 'requestdate' => null,
-    //                 'supportby' => null,
-    //                 'supportdate' => null,
-    //                 'verifiedby' => null,
-    //                 'verifieddate' => null,
-    //                 'approvedby' => null,
-    //                 'approveddate' => null,
-    //             ]);
+                DB::table('finance.queueso')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$dbacthdr->auditno)
+                    ->delete();
+            }
 
-    //             DB::table("material.purreqdt")
-    //                 ->where('recno','=',$purreqhd_get->recno)
-    //                 ->update([
-    //                     'recstatus' => 'OPEN',
-    //                     'upduser' => session('username'),
-    //                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-    //                 ]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
 
-    //             DB::table("material.queuepr")
-    //                 ->where('recno','=',$purreqhd_get->recno)
-    //                 ->delete();
+            return response($e->getMessage(), 500);
+        }
+    }
 
-    //         }
+    public function reject(Request $request){
+        DB::beginTransaction();
 
-    //         DB::commit();
+        try{
+           
+            foreach ($request->idno_array as $value){
+
+                $dbacthdr = DB::table("debtor.dbacthdr")
+                            ->where('compcode',session('compcode'))
+                            ->where('idno','=',$value)
+                            ->first();
+
+                if($dbacthdr->recstatus != 'PREPARED'){
+                    continue;
+                }
+
+                $dbacthdr_update = [
+                    'recstatus' => 'CANCELLED',
+                    'cancelby' => session('username'),
+                    'canceldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                ];
+
+                if(!empty($request->remarks)){
+                    $dbacthdr_update['cancelled_remark'] = $request->remarks;
+                }
+
+                DB::table('debtor.dbacthdr')
+                    ->where('compcode',session('compcode'))
+                    ->where('idno','=',$value)
+                    ->update($dbacthdr_update);
+                
+                DB::table("debtor.billsum")
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=',$dbacthdr->source)
+                    ->where('trantype','=',$dbacthdr->trantype)
+                    ->where('billno','=',$dbacthdr->auditno)
+                    ->update([
+                        'recstatus' => 'CANCELLED',
+                    ]);
+
+                DB::table('finance.queueso')
+                    ->update([
+                        'compcode' => session('compcode'),
+                        'recno' => $dbacthdr->auditno,
+                        'AuthorisedID' => $dbacthdr->adduser,
+                        'deptcode' => 'ALL',
+                        'recstatus' => 'CANCELLED',
+                        'trantype' => 'REOPEN',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+            }
+           
+            DB::commit();
         
-    //     } catch (\Exception $e) {
-    //         DB::rollback();
+        } catch (\Exception $e) {
+            DB::rollback();
 
-    //         return response($e->getMessage(), 500);
-    //     }
-    // }
+            return response($e->getMessage(), 500);
+        }
+    }
 
     public function cancel(Request $request){
         DB::beginTransaction();
 
         try{
+            
+            foreach ($request->idno_array as $value){
+                
+                $dbacthdr = DB::table("debtor.dbacthdr")
+                            ->where('compcode',session('compcode'))
+                            ->where('idno','=',$value)
+                            ->first();
 
+                if($dbacthdr->recstatus != 'OPEN'){
+                    continue;
+                }
 
-            $dbacthdr = DB::table("debtor.dbacthdr")
-                        ->where('idno','=',$request->idno)
-                        ->first();
-
-            $billsum = DB::table("debtor.billsum")
-                        ->where('source','=',$dbacthdr->source)
-                        ->where('trantype','=',$dbacthdr->trantype)
-                        ->where('auditno','=',$dbacthdr->auditno)
-                        ->get();
-
-            DB::table("debtor.billsum")
-                ->where('source','=',$dbacthdr->source)
-                ->where('trantype','=',$dbacthdr->trantype)
-                ->where('auditno','=',$dbacthdr->auditno)
-                ->update([
+                $dbacthdr_update = [
                     'recstatus' => 'CANCELLED',
-                ]);
+                    'cancelby' => session('username'),
+                    'canceldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                ];
 
-            DB::table("debtor.dbacthdr")
-                ->where('idno','=',$request->idno)
-                ->update([
-                    'recstatus' => 'CANCELLED',
-                ]);
+                DB::table('debtor.dbacthdr')
+                    ->where('compcode',session('compcode'))
+                    ->where('idno','=',$value)
+                    ->update($dbacthdr_update);
+
+                DB::table("debtor.billsum")
+                    ->where('source','=',$dbacthdr->source)
+                    ->where('trantype','=',$dbacthdr->trantype)
+                    ->where('auditno','=',$dbacthdr->auditno)
+                    ->update([
+                        'recstatus' => 'CANCELLED',
+                    ]);
+
+            }
            
             DB::commit();
         
@@ -1213,152 +1607,6 @@ class SalesOrderController extends defaultController
         return false;   
     }
 
-    public function updivdspdt($billsum_obj,$product,$dbacthdr,$stockloc,$insertGetId){
-        $ivdspdt_arr = [
-            'compcode' => session('compcode'),
-            'recno' => $billsum_obj->idno,
-            'lineno_' => $billsum_obj->lineno_,
-            'itemcode' => $billsum_obj->chggroup,
-            'txnqty' => $billsum_obj->quantity,
-            'adduser' => session('username'),
-            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'netprice' => $billsum_obj->unitprice,
-            'productcat' => $product->productcat,
-            'reqdept' => $dbacthdr->deptcode,
-            'saleamt' => $billsum_obj->amount,
-            'trantype' => $billsum_obj->trantype,
-            'trandate' => $dbacthdr->entrydate,
-            'trxaudno' => $billsum_obj->idno,
-            'mrn' => $dbacthdr->mrn,
-            'episno' => $dbacthdr->episno,
-            'updtime' => Carbon::now("Asia/Kuala_Lumpur")
-        ];
-
-        $ivtntype = DB::table('material.ivtntype')
-                        ->where('compcode','=', session('compcode'))
-                        ->where('trantype','=', $stockloc->disptype)
-                        ->first();
-
-        if($ivtntype->updamt = 1){
-            $category = DB::table('material.category')
-                        ->where('compcode','=', session('compcode'))
-                        ->where('catcode','=', $product->productcat)
-                        ->first();
-
-            $department = DB::table('sysdb.departmet')
-                        ->where('compcode','=', session('compcode'))
-                        ->where('deptcode','=',$dbacthdr->deptcode)
-                        ->first();
-
-            $ivdspdt_arr['DrCcode'] = $department->costcode;
-            $ivdspdt_arr['DrAccNo'] = $category->cosacct;
-            $ivdspdt_arr['CrCcode'] = $department->costcode;
-            $ivdspdt_arr['CrAccNo'] = $category->stockacct;
-
-            $glinface_arr = [
-                'compcode' => session('compcode'),
-                'Source' => 'IV',
-                'TranType' => $stockloc->disptype,
-                'AuditNo' => $insertGetId,
-                'LineNo' => 1,
-                'Reference' => $dbacthdr->deptcode.' - '.$billsum_obj->chggroup,
-                'IdNo' => $dbacthdr->mrn.' - '.$dbacthdr->episno,
-                'Description' => 'Posted from Online-Dispensing',
-                'Amount' => $billsum_obj->amount,
-                'PostDate' => $dbacthdr->entrydate,
-                'OprType' => 'A',
-                'LastUser' => session('username'),
-                'LastUpdate' => Carbon::now("Asia/Kuala_Lumpur")
-            ];
-
-            if($ivtntype->crdbfl = 'OUT'){
-                $glinface_arr['DrCcode'] = $department->costcode;
-                $glinface_arr['DrAccNo'] = $category->cosacct;
-                $glinface_arr['CrCcode'] = $department->costcode;
-                $glinface_arr['CrAccNo'] = $category->stockacct;
-            }
-
-            DB::table('finance.glinface')
-                ->insert($glinface_arr);
-        }
-
-        DB::table('material.ivdspdt')
-                ->insert($ivdspdt_arr);
-    }
-
-    public function crtivdspdt($billsum_obj,$product,$dbacthdr,$stockloc){//xguna
-        $ivdspdt_arr = [
-            'compcode' => session('compcode'),
-            'recno' => $billsum_obj->idno,
-            'lineno_' => $billsum_obj->lineno_,
-            'itemcode' => $billsum_obj->chggroup,
-            'txnqty' => $billsum_obj->quantity,
-            'adduser' => session('username'),
-            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'netprice' => $billsum_obj->unitprice,
-            'productcat' => $product->productcat,
-            'reqdept' => $dbacthdr->deptcode,
-            'saleamt' => $billsum_obj->amount,
-            'trantype' => $billsum_obj->trantype,
-            'trandate' => $dbacthdr->entrydate,
-            'trxaudno' => $billsum_obj->idno,
-            'mrn' => $dbacthdr->mrn,
-            'episno' => $dbacthdr->episno,
-            'updtime' => Carbon::now("Asia/Kuala_Lumpur")
-        ];
-
-        $ivtntype = DB::table('material.ivtntype')
-                        ->where('compcode','=', session('compcode'))
-                        ->where('trantype','=', $stockloc->disptype)
-                        ->first();
-
-        if($ivtntype->updamt = 1){
-            $category = DB::table('material.category')
-                        ->where('compcode','=', session('compcode'))
-                        ->where('catcode','=', $product->productcat)
-                        ->first();
-
-            $department = DB::table('sysdb.departmet')
-                        ->where('compcode','=', session('compcode'))
-                        ->where('deptcode','=',$dbacthdr->deptcode)
-                        ->first();
-
-            $ivdspdt_arr['DrCcode'] = $department->costcode;
-            $ivdspdt_arr['DrAccNo'] = $category->cosacct;
-            $ivdspdt_arr['CrCcode'] = $department->costcode;
-            $ivdspdt_arr['CrAccNo'] = $category->stockacct;
-
-            $glinface_arr = [
-                'compcode' => session('compcode'),
-                'Source' => 'IV',
-                'TranType' => $stockloc->disptype,
-                'AuditNo' => $insertGetId,
-                'LineNo' => 1,
-                'Reference' => $dbacthdr->deptcode.' - '.$billsum_obj->chggroup,
-                'IdNo' => $dbacthdr->mrn.' - '.$dbacthdr->episno,
-                'Description' => 'Posted from Online-Dispensing',
-                'Amount' => $billsum_obj->amount,
-                'PostDate' => $dbacthdr->entrydate,
-                'OprType' => 'A',
-                'LastUser' => session('username'),
-                'LastUpdate' => Carbon::now("Asia/Kuala_Lumpur")
-            ];
-
-            if($ivtntype->crdbfl = 'OUT'){
-                $glinface_arr['DrCcode'] = $department->costcode;
-                $glinface_arr['DrAccNo'] = $category->cosacct;
-                $glinface_arr['CrCcode'] = $department->costcode;
-                $glinface_arr['CrAccNo'] = $category->stockacct;
-            }
-
-            DB::table('finance.glinface')
-                ->insert($glinface_arr);
-        }
-
-        DB::table('material.ivdspdt')
-                ->insert($ivdspdt_arr);
-    }
-
     public function get_hdrtype(Request $request){
 
         $billtymst = collect();
@@ -1581,6 +1829,760 @@ class SalesOrderController extends defaultController
         }
 
         return $responce;
+    }
+
+    public function crtivdspdt($billsum_obj,$dbacthdr){
+
+        $my_uom = $billsum_obj->uom;
+        $my_chggroup = $billsum_obj->chggroup;
+
+        $product = DB::table('material.product')
+            ->where('compcode','=',session('compcode'))
+            ->where('unit','=',session('unit'))
+            ->where('uomcode','=',$my_uom)
+            ->where('itemcode','=',$my_chggroup);
+
+        $stockloc = DB::table('material.stockloc')
+            ->where('compcode','=',session('compcode'))
+            ->where('unit','=',session('unit'))
+            ->where('uomcode','=',$my_uom)
+            ->where('itemcode','=',$my_chggroup)
+            ->where('deptcode','=',$dbacthdr->deptcode)
+            ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+
+        // dapatkan uom conversion factor untuk dapatkan txnqty dgn netprice
+        $convuom_recv = DB::table('material.uom')
+            ->where('compcode','=',session('compcode'))
+            ->where('uomcode','=',$billsum_obj->uom_recv)
+            ->first();
+        $convuom_recv = $convuom_recv->convfactor;
+
+        $conv_uom = DB::table('material.uom')
+            ->where('compcode','=',session('compcode'))
+            ->where('uomcode','=',$billsum_obj->uom)
+            ->first();
+        $conv_uom = $conv_uom->convfactor;
+
+        $curr_netprice = $product->first()->avgcost;
+        $curr_quan = $billsum_obj->quantity * ($convuom_recv / $conv_uom);
+        if($stockloc->exists()){
+            $qoh_quan = $stockloc->first()->qtyonhand;
+            $new_qoh = floatval($qoh_quan) - floatval($curr_quan);
+
+            $stockloc_first = $stockloc->first();
+            $stockloc_arr = (array)$stockloc_first;
+
+            $month = defaultController::toMonth($dbacthdr->entrydate);
+            $NetMvQty = floatval($stockloc_arr['netmvqty'.$month]) - floatval($curr_quan);
+            $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) - floatval(floatval($curr_netprice) * floatval($curr_quan));
+
+            $stockloc
+                ->update([
+                    'QtyOnHand' => $new_qoh,
+                    'NetMvQty'.$month => $NetMvQty, 
+                    'NetMvVal'.$month => $NetMvVal
+                ]);
+
+            $sumqtyonhand = DB::table('material.stockloc')
+                                ->select(DB::raw('SUM(qtyonhand) AS sum_qtyonhand'))
+                                ->where('compcode','=',session('compcode'))
+                                ->where('unit','=',session('unit'))
+                                ->where('uomcode','=',$my_uom)
+                                ->where('itemcode','=',$my_chggroup)
+                                ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
+                                ->first();
+
+            DB::table('material.product')
+                ->where('compcode','=',session('compcode'))
+                ->where('unit','=',session('unit'))
+                ->where('uomcode','=',$my_uom)
+                ->where('itemcode','=',$my_chggroup)
+                ->update([
+                    'qtyonhand' => $sumqtyonhand->sum_qtyonhand,
+                ]);
+
+            //4. tolak expdate, kalu ada batchno
+            $expdate_obj = DB::table('material.stockexp')
+                ->where('compcode',session('compcode'))
+                ->where('Year','=',defaultController::toYear($dbacthdr->entrydate))
+                ->where('DeptCode','=',$dbacthdr->deptcode)
+                ->where('ItemCode','=',$my_chggroup)
+                ->where('UomCode','=',$my_uom)
+                ->orderBy('expdate', 'asc');
+
+            if($expdate_obj->exists()){
+                $expdate_get = $expdate_obj->get();
+                $txnqty_ = $curr_quan;
+                $balqty = 0;
+                foreach ($expdate_get as $value2) {
+                    $balqty = $value2->balqty;
+                    if($txnqty_-$balqty>0){
+                        $txnqty_ = $txnqty_-$balqty;
+                        DB::table('material.stockexp')
+                            ->where('idno','=',$value2->idno)
+                            ->update([
+                                'balqty' => '0'
+                            ]);
+                    }else{
+                        $balqty = $balqty-$txnqty_;
+                        DB::table('material.stockexp')
+                            ->where('idno','=',$value2->idno)
+                            ->update([
+                                'balqty' => $balqty
+                            ]);
+                        break;
+                    }
+                }
+
+            }else{
+                //3.kalu xde Stock Expiry, buat baru
+                $BalQty = -$curr_quan;
+
+                DB::table('material.stockexp')
+                    ->insert([
+                        'compcode' => session('compcode'), 
+                        'unit' => session('unit'), 
+                        'deptcode' => $dbacthdr->deptcode, 
+                        'itemcode' => $my_chggroup, 
+                        'uomcode' => $my_uom, 
+                        'balqty' => $BalQty, 
+                        'adduser' => session('username'), 
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                       // 'lasttt' => 'GRN', 
+                        'year' => Carbon::now("Asia/Kuala_Lumpur")->year
+                    ]);
+            }
+
+
+        }
+
+        $ivdspdt_arr = [
+            'compcode' => session('compcode'),
+            'recno' => $billsum_obj->auditno,//OE IN
+            'lineno_' => 1,
+            'itemcode' => $billsum_obj->chggroup,
+            'uomcode' => $billsum_obj->uom,
+            'txnqty' => $curr_quan,
+            'adduser' => session('username'),
+            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'netprice' => $curr_netprice,
+            'saleamt' => $billsum_obj->amount,
+            'productcat' => $product->first()->productcat,
+            'issdept' => $dbacthdr->deptcode,
+            'reqdept' => $dbacthdr->deptcode,
+            'amount' => floatval(floatval($curr_netprice) * floatval($curr_quan)),
+            'trantype' => 'DS',
+            'trandate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'trxaudno' => $billsum_obj->auditno,
+            'mrn' => $this->givenullifempty($dbacthdr->mrn),
+            'episno' => $this->givenullifempty($dbacthdr->episno),
+            'updtime' => Carbon::now("Asia/Kuala_Lumpur")
+        ];
+
+
+        $insertGetId = DB::table('material.ivdspdt')
+                            ->insertGetId($ivdspdt_arr);
+
+        return $insertGetId;
+    }
+
+    public function updivdspdt($billsum_obj,$dbacthdr){
+
+        $ivdspdt_lama = DB::table('material.ivdspdt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$billsum_obj->auditno);
+
+        $product = DB::table('material.product')
+            ->where('compcode','=',session('compcode'))
+            ->where('unit','=',session('unit'))
+            ->where('uomcode','=',$billsum_obj->uom)
+            ->where('itemcode','=',$billsum_obj->chggroup);
+
+        $stockloc = DB::table('material.stockloc')
+            ->where('compcode','=',session('compcode'))
+            ->where('unit','=',session('unit'))
+            ->where('uomcode','=',$billsum_obj->uom)
+            ->where('itemcode','=',$billsum_obj->chggroup)
+            ->where('deptcode','=',$dbacthdr->deptcode)
+            ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+
+        // dapatkan uom conversion factor untuk dapatkan txnqty dgn netprice
+        $convuom_recv = DB::table('material.uom')
+            ->where('compcode','=',session('compcode'))
+            ->where('uomcode','=',$billsum_obj->uom_recv)
+            ->first();
+        $convuom_recv = $convuom_recv->convfactor;
+
+        $conv_uom = DB::table('material.uom')
+            ->where('compcode','=',session('compcode'))
+            ->where('uomcode','=',$billsum_obj->uom)
+            ->first();
+        $conv_uom = $conv_uom->convfactor;
+
+        if($stockloc->exists()){
+
+            $prev_netprice = $product->first()->avgcost; 
+            $prev_quan = $ivdspdt_lama->first()->txnqty;
+            $curr_netprice = $product->first()->avgcost;
+            $curr_quan = $billsum_obj->quantity * ($convuom_recv / $conv_uom);
+            $qoh_quan = $stockloc->first()->qtyonhand;
+            $new_qoh = floatval($qoh_quan) + floatval($prev_quan) - floatval($curr_quan);
+
+            $stockloc_first = $stockloc->first();
+            $stockloc_arr = (array)$stockloc_first;
+
+            $month = defaultController::toMonth($dbacthdr->entrydate);
+            $NetMvQty = floatval($stockloc_arr['netmvqty'.$month]) + floatval($prev_quan) - floatval($curr_quan);
+            $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) + floatval(floatval($prev_netprice) * floatval($prev_quan)) - floatval(floatval($curr_netprice) * floatval($curr_quan));
+
+            $stockloc
+                ->update([
+                    'QtyOnHand' => $new_qoh,
+                    'NetMvQty'.$month => $NetMvQty, 
+                    'NetMvVal'.$month => $NetMvVal
+                ]);
+
+            $sumqtyonhand = DB::table('material.stockloc')
+                                ->select(DB::raw('SUM(qtyonhand) AS sum_qtyonhand'))
+                                ->where('compcode','=',session('compcode'))
+                                ->where('unit','=',session('unit'))
+                                ->where('uomcode','=',$billsum_obj->uom)
+                                ->where('itemcode','=',$billsum_obj->chggroup)
+                                ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
+                                ->first();
+
+            $product
+                ->update([
+                    'qtyonhand' => $sumqtyonhand->sum_qtyonhand,
+                ]);
+
+            //4. tolak expdate, kalu ada batchno
+            $expdate_obj = DB::table('material.stockexp')
+                ->where('compcode',session('compcode'))
+                ->where('Year','=',defaultController::toYear($dbacthdr->entrydate))
+                ->where('DeptCode','=',$dbacthdr->deptcode)
+                ->where('ItemCode','=',$billsum_obj->chggroup)
+                ->where('UomCode','=',$billsum_obj->uom)
+                ->orderBy('expdate', 'asc');
+
+            if($expdate_obj->exists()){
+                $expdate_first = $expdate_obj->first();
+                $txnqty_ = $curr_quan;
+                $balqty = floatval($expdate_first->balqty) + floatval($prev_quan) - floatval($curr_quan);
+                $expdate_obj
+                        ->update([
+                            'balqty' => $balqty
+                        ]);
+
+            }else{
+                $BalQty = floatval($prev_quan) - floatval($curr_quan);
+
+                DB::table('material.stockexp')
+                    ->insert([
+                        'compcode' => session('compcode'), 
+                        'unit' => session('unit'), 
+                        'deptcode' => $dbacthdr->deptcode, 
+                        'itemcode' => $billsum_obj->chggroup, 
+                        'uomcode' => $billsum_obj->uom, 
+                        'balqty' => $BalQty, 
+                        'adduser' => session('username'), 
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                       // 'lasttt' => 'GRN', 
+                        'year' => Carbon::now("Asia/Kuala_Lumpur")->year
+                    ]);
+            }
+
+        }
+
+        $ivdspdt_arr = [
+            'txnqty' => $curr_quan,
+            'upduser' => session('username'),
+            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'netprice' => $curr_netprice,
+            'saleamt' => $billsum_obj->amount,
+            'amount' => floatval(floatval($curr_netprice) * floatval($curr_quan)),
+            'updtime' => Carbon::now("Asia/Kuala_Lumpur")
+        ];
+
+        // pindah ke ivdspdtlog
+        // recstatus->update
+        $ivdspdt_lama = DB::table('material.ivdspdt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$billsum_obj->auditno)
+                        ->first();
+
+        $this->sysdb_log('update',$ivdspdt_lama,'sysdb.ivdspdtlog');
+
+        DB::table('material.ivdspdt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$billsum_obj->auditno)
+            ->update($ivdspdt_arr);
+    }
+
+    public function delivdspdt($billsum_obj,$dbacthdr){
+
+        $ivdspdt_lama = DB::table('material.ivdspdt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$billsum_obj->auditno);
+
+        $product = DB::table('material.product')
+            ->where('compcode','=',session('compcode'))
+            ->where('unit','=',session('unit'))
+            ->where('uomcode','=',$billsum_obj->uom)
+            ->where('itemcode','=',$billsum_obj->chggroup);
+
+        $stockloc = DB::table('material.stockloc')
+            ->where('compcode','=',session('compcode'))
+            ->where('unit','=',session('unit'))
+            ->where('uomcode','=',$billsum_obj->uom)
+            ->where('itemcode','=',$billsum_obj->chggroup)
+            ->where('deptcode','=',$dbacthdr->deptcode)
+            ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+
+        if($stockloc->exists()){
+
+            $prev_netprice = $ivdspdt_lama->first()->netprice; 
+            $prev_quan = $ivdspdt_lama->first()->txnqty;
+            $qoh_quan = $stockloc->first()->qtyonhand;
+            $new_qoh = floatval($qoh_quan) + floatval($prev_quan);
+
+            $stockloc_first = $stockloc->first();
+            $stockloc_arr = (array)$stockloc_first;
+
+            $month = defaultController::toMonth($dbacthdr->entrydate);
+            $NetMvQty = floatval($stockloc_arr['netmvqty'.$month]) + floatval($prev_quan);
+            $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) + floatval(floatval($prev_netprice) * floatval($prev_quan));
+
+            $stockloc
+                ->update([
+                    'QtyOnHand' => $new_qoh,
+                    'NetMvQty'.$month => $NetMvQty, 
+                    'NetMvVal'.$month => $NetMvVal
+                ]);
+
+            $product
+                ->update([
+                    'qtyonhand' => $new_qoh,
+                ]);
+
+            //4. tolak expdate, kalu ada batchno
+            $expdate_obj = DB::table('material.stockexp')
+                ->where('compcode',session('compcode'))
+                ->where('Year','=',defaultController::toYear($dbacthdr->entrydate))
+                ->where('DeptCode','=',$dbacthdr->deptcode)
+                ->where('ItemCode','=',$billsum_obj->chggroup)
+                ->where('UomCode','=',$billsum_obj->uom)
+                ->orderBy('expdate', 'asc');
+
+            if($expdate_obj->exists()){
+                $expdate_first = $expdate_obj->first();
+                $txnqty_ = $curr_quan;
+                $balqty = floatval($expdate_first->balqty) + floatval($prev_quan);
+                $expdate_obj
+                        ->update([
+                            'balqty' => $balqty
+                        ]);
+
+            }else{
+                $BalQty = $curr_quan;
+
+                DB::table('material.stockexp')
+                    ->insert([
+                        'compcode' => session('compcode'), 
+                        'unit' => session('unit'), 
+                        'deptcode' => $dbacthdr->deptcode, 
+                        'itemcode' => $billsum_obj->chggroup, 
+                        'uomcode' => $billsum_obj->uom, 
+                        'balqty' => $BalQty, 
+                        'adduser' => session('username'), 
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                       // 'lasttt' => 'GRN', 
+                        'year' => Carbon::now("Asia/Kuala_Lumpur")->year
+                    ]);
+            }
+
+        }
+
+        $gltran = DB::table('finance.gltran')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('auditno','=',$billsum_obj->auditno);
+
+        if($gltran->exists()){
+            $gltran_first = $gltran->first();
+
+            $OldAmount = $gltran_first->amount;
+            $yearperiod = $this->getyearperiod($ivdspdt_lama->first()->trandate);
+            $drcostcode = $gltran_first->drcostcode;
+            $dracc = $gltran_first->dracc;
+            $crcostcode = $gltran_first->crcostcode;
+            $cracc = $gltran_first->cracc;
+
+            //2. check glmastdtl utk debit, kalu ada update kalu xde create
+            $gltranAmount =  $this->isGltranExist($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$drcostcode)
+                    ->where('glaccount','=',$dracc)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $gltranAmount - $OldAmount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $drcostcode,
+                        'glaccount' => $dracc,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => -$OldAmount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+
+            //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+            $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$crcostcode)
+                    ->where('glaccount','=',$cracc)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $gltranAmount + $OldAmount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $crcostcode,
+                        'glaccount' => $cracc,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => +$OldAmount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+
+            DB::table('finance.gltran')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$billsum_obj->auditno)
+                ->delete();
+        }
+
+        // pindah ke ivdspdtlog
+        // recstatus->delete
+        $ivdspdt_lama = DB::table('material.ivdspdt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$billsum_obj->auditno)
+                        ->first();
+
+        $this->sysdb_log('delete',$ivdspdt_lama,'sysdb.ivdspdtlog');
+
+        DB::table('material.ivdspdt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$billsum_obj->auditno)
+            ->delete();
+    }
+
+    public function crtgltran($ivdspdt_idno,$dbacthdr){
+        $yearperiod = $this->getyearperiod(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+
+        $ivdspdt = DB::table('material.ivdspdt')
+                        ->where('compcode',session('compcode'))
+                        ->where('idno','=',$ivdspdt_idno)
+                        ->first();
+
+        //tengok product category
+        $product_obj = DB::table('material.product')
+            ->where('compcode','=', session('compcode'))
+            ->where('unit','=', session('unit'))
+            ->where('itemcode','=', $ivdspdt->itemcode)
+            ->first();
+
+        $row_dept = DB::table('sysdb.department')
+            ->select('costcode')
+            ->where('compcode','=',session('compcode'))
+            ->where('deptcode','=',$dbacthdr->deptcode)
+            ->first();
+        //utk debit accountcode
+        $row_cat = DB::table('material.category')
+            ->select('stockacct','cosacct')
+            ->where('compcode','=',session('compcode'))
+            ->where('catcode','=',$product_obj->productcat)
+            ->first();
+
+        $drcostcode = $row_dept->costcode;
+        $dracc = $row_cat->cosacct;
+        $crcostcode = $row_dept->costcode;
+        $cracc = $row_cat->stockacct;
+
+        //1. buat gltran
+        DB::table('finance.gltran')
+            ->insert([
+                'compcode' => session('compcode'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'auditno' => $ivdspdt->recno,//billsum auditno
+                'lineno_' => 1,
+                'source' => 'IV', //kalau stock 'IV', lain dari stock 'DO'
+                'trantype' => 'DS',
+                'reference' => $ivdspdt->uomcode,
+                'description' => $ivdspdt->itemcode, 
+                'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'year' => $yearperiod->year,
+                'period' => $yearperiod->period,
+                'drcostcode' => $drcostcode,
+                'dracc' => $dracc,
+                'crcostcode' => $crcostcode,
+                'cracc' => $cracc,
+                'amount' => $ivdspdt->amount
+            ]);
+
+        //2. check glmastdtl utk debit, kalu ada update kalu xde create
+        $gltranAmount =  $this->isGltranExist($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$drcostcode)
+                ->where('glaccount','=',$dracc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $ivdspdt->amount + $gltranAmount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $drcostcode,
+                    'glaccount' => $dracc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => $ivdspdt->amount,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+        $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$crcostcode)
+                ->where('glaccount','=',$cracc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $gltranAmount - $ivdspdt->amount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $crcostcode,
+                    'glaccount' => $cracc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => -$ivdspdt->amount,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+    }
+
+    public function updgltran($ivdspdt_idno,$dbacthdr){
+        $ivdspdt = DB::table('material.ivdspdt')
+                        ->where('idno','=',$ivdspdt_idno)
+                        ->first();
+
+        $gltran = DB::table('finance.gltran')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('auditno','=',$ivdspdt->recno);
+
+        if($gltran->exists()){
+            $gltran_first = $gltran->first();
+
+            $OldAmount = $gltran_first->amount;
+            $yearperiod = $this->getyearperiod($ivdspdt->trandate);
+            $drcostcode = $gltran_first->drcostcode;
+            $dracc = $gltran_first->dracc;
+            $crcostcode = $gltran_first->crcostcode;
+            $cracc = $gltran_first->cracc;
+
+            $gltran->update([
+                'amount' => $ivdspdt->amount
+            ]);
+
+            //2. check glmastdtl utk debit, kalu ada update kalu xde create
+            $gltranAmount =  $this->isGltranExist($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$drcostcode)
+                    ->where('glaccount','=',$dracc)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $gltranAmount - $OldAmount + $ivdspdt->amount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $drcostcode,
+                        'glaccount' => $dracc,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => $ivdspdt->amount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+
+            //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+            $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$crcostcode)
+                    ->where('glaccount','=',$cracc)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $gltranAmount + $OldAmount - $ivdspdt->amount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $crcostcode,
+                        'glaccount' => $cracc,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => -$ivdspdt->amount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+
+        }else{
+            throw new \Exception("Gltran doesnt exists");
+        }
+    }
+
+    public function delgltran($billsum_obj,$dbacthdr){
+        $gltran = DB::table('finance.gltran')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('auditno','=',$billsum_obj->auditno);
+
+        if($gltran->exists()){
+            $gltran_first = $gltran->first();
+
+            $OldAmount = $gltran_first->amount;
+            $yearperiod = $this->getyearperiod(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+            $drcostcode = $gltran_first->drcostcode;
+            $dracc = $gltran_first->dracc;
+            $crcostcode = $gltran_first->crcostcode;
+            $cracc = $gltran_first->cracc;
+
+            // $gltran->update([
+            //     'amount' => $ivdspdt->amount
+            // ]);
+
+            //2. check glmastdtl utk debit, kalu ada update kalu xde create
+            $gltranAmount =  $this->isGltranExist($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$drcostcode)
+                    ->where('glaccount','=',$dracc)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $gltranAmount - $OldAmount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $drcostcode,
+                        'glaccount' => $dracc,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => -$OldAmount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+
+            //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+            $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$crcostcode)
+                    ->where('glaccount','=',$cracc)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $gltranAmount + $OldAmount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $crcostcode,
+                        'glaccount' => $cracc,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => +$OldAmount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+
+            DB::table('finance.gltran')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$billsum_obj->auditno)
+                ->delete();
+        }
     }
 
     

@@ -567,6 +567,8 @@ $(document).ready(function () {
 		if($(this).data('oper') == 'reject'){
 			if (confirm("Are you sure to reject this purchase request?") == true) {
 				$("#dialog_remarks_oper").dialog( "open" );
+			}else{
+				$("#but_cancel_jq").attr('disabled',false);
 			}
 		}
 	});

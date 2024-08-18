@@ -949,6 +949,7 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 				case 'ALL2':
 				case 'VERIFIED':
 				case 'APPROVED':
+				case 'DELIVERED':
 				case 'REOPEN':
 					$("#show_sel_tbl,#but_post_jq,#but_cancel_jq").show();
 					break;

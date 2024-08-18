@@ -1312,7 +1312,6 @@ class PaymentVoucherController extends defaultController
         }
     }
 
-
     public function del_alloc(Request $request){
 
         DB::beginTransaction();
