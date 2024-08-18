@@ -544,14 +544,14 @@ function getActual(){
 	selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 	rowdata = $("#jqGrid").jqGrid ('getRowData', selrow);
 	var actamount=0;
-	$.each(rowdata, function( index, value ) {
-		if(!isNaN(parseFloat(value)) && index.indexOf('actamount') !== -1){
-			actamount=parseFloat(value);
-		}else{
-			//actamount=parseFloat(value);
-		}
-		// console.log(value)
-	});
+	// $.each(rowData, function( index, value ) {
+	// 	// if(value){
+	// 	// 	$('#addChartAcc #'+index+' input').text(numeral(value).format('0,0.00'))
+	// 	// }else{
+	// 	// 	$('#addChartAcc #'+index+' input').text("0.00");
+	// 	// }
+	// 	// console.log(value);
+	// });
 }
 
 function getTotalActual(){
