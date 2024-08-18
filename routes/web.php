@@ -795,6 +795,13 @@ Route::get('/glmaster','finance\GlmasterController@show');
 Route::get('/glmaster/table','finance\GlmasterController@table');
 Route::post('/glmaster/form','finance\GlmasterController@form');
 
+//// Journal Entry ///
+Route::get('/journalEntry','finance\JournalEntryController@show');
+Route::get('/journalEntry/table','finance\JournalEntryController@table');
+Route::post('/journalEntry/form','finance\JournalEntryController@form');
+Route::post('/journalEntryDetail/form','finance\JournalEntryDetailController@form');
+Route::get('/journalEntryDetail/table','finance\JournalEntryDetailController@table');
+
 //// Chart Account ///
 Route::get('/chartAccount','finance\ChartAccountController@show');
 Route::get('/chartAccount/table','finance\ChartAccountController@table');
