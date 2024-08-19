@@ -381,6 +381,10 @@ $(document).ready(function (){
                 refreshGrid("#jqGrid2", urlParam2);
             }
             
+            if(selrowData("#jqGrid").SL_posteddate == 'undefined' || selrowData("#jqGrid").SL_posteddate == 'Invalid date'){
+                $('#SL_posteddate').val('');
+            }
+            
             let SL_quoteno = selrowData("#jqGrid").SL_quoteno;
             let quoteno = SL_quoteno.toString().padStart(8, '0');
             
@@ -1041,7 +1045,7 @@ $(document).ready(function (){
 			// $("#jqGrid2 input[name='quantity']").on('blur',calculate_conversion_factor);
 			$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='billtypeamt'],#jqGrid2 input[name='quantity'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
 			
-			$("#jqGrid2 input[name='qtydelivered']").keydown(function (e){ // when click tab at totamount, auto save
+			$("#jqGrid2 input[name='qtydelivered']").keydown(function (e){ // when click tab at qtydelivered, auto save
 				var code = e.keyCode || e.which;
 				if(code == '9'){
 					delay(function (){
