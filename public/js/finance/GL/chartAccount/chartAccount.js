@@ -133,6 +133,7 @@ $(document).ready(function () {
 			}			
 			getActual();
 			getTotalActual();
+			selectYear();
 			$("#save").show();
 			// if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
 		},
@@ -541,6 +542,17 @@ $(document).ready(function () {
 				data.rows.forEach(function(element){	
 					$('#year').append("<option>"+element.year+"</option>")
 				});
+			}
+		});
+	}
+	
+	function selectYear(){
+		$.each(selrowData("#jqGrid"), function( index, value ) {
+			var input=$("#formdata [name='"+index+"']");
+			if(input.is("[type=radio]")){
+				$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+			}else{
+				input.val(value);
 			}
 		});
 	}
