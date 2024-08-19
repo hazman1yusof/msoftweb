@@ -18,6 +18,7 @@ function get_authdtl_alert(){
 			populate_authdtl_alert_pd(data.queuepd);
 			populate_authdtl_alert_pr(data.queuepr);
 			populate_authdtl_alert_po(data.queuepo);
+			populate_authdtl_alert_so(data.queueso);
 		}
 	});
 }
@@ -106,8 +107,7 @@ function populate_authdtl_alert_pv(data){
 							</a>
 						</div>
 				</div>
-			</div>
-			`;
+			</div>`;
 		}else{
 			var block_pr = `
 			<div class='col-lg-3 col-md-6'>
@@ -131,8 +131,7 @@ function populate_authdtl_alert_pv(data){
 							</a>
 						</div>
 				</div>
-			</div>
-			`;
+			</div>`;
 		}
 		$('#authdtl_alert_div').append(block_pr);
 	})
@@ -140,30 +139,108 @@ function populate_authdtl_alert_pv(data){
 
 function populate_authdtl_alert_pd(data){
 	data.forEach(function(e,i){
-		var block_pr = `
-		<div class='col-lg-3 col-md-6'>
-			<div class='panel panel-grey'>
-				<div class='panel-heading'>
-					<div class='row'>
-						<div class='col-xs-2 nopadleft'><i class='fa fa-suitcase fa-4x'></i></div>
-						<div class='col-xs-10 text-right'>
-							<div class='huge'>Payment Deposit</div>
-							<div><b>Auditno: </b><span>`+e.auditno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
-							<div><b>Supplier: </b><span>`+e.suppcode+` - `+e.Name+`</span></div>
-							<div><b>Prepared On: </b><span>`+moment(e.actdate, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.adduser+`</span></div>
+		if(e.trantype == 'REOPEN'){
+			var block_pr = `
+			<div class='col-lg-3 col-md-6'>
+				<div class='panel panel-grey'>
+					<div class='panel-heading'>
+						<div class='row'>
+							<div class='col-xs-2 nopadleft'><i class='fa fa-suitcase fa-4x'></i></div>
+							<div class='col-xs-10 text-right'>
+								<div class='huge'><span class='reject_span1'>(Rejected)</span> Payment Deposit</div>
+								<div><b>Auditno: </b><span>`+e.auditno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
+								<div><b>Reject On: </b><span>`+moment(e.canceldate, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.cancelby+`</span></div>
+							</div>
 						</div>
 					</div>
+						<div class='panel-footer'>
+							<a onclick="authdtl_alert_click('pv','`+e.trantype+`','`+e.auditno+`')">
+								<span class='pull-left'>Detail</span>
+								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+								<div class='clearfix'></div>
+							</a>
+						</div>
 				</div>
-					<div class='panel-footer'>
-						<a onclick="authdtl_alert_click('pv','`+e.trantype+`','`+e.auditno+`')">
-							<span class='pull-left'>Detail</span>
-							<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
-							<div class='clearfix'></div>
-						</a>
+			</div>`;
+		}else{
+			var block_pr = `
+			<div class='col-lg-3 col-md-6'>
+				<div class='panel panel-grey'>
+					<div class='panel-heading'>
+						<div class='row'>
+							<div class='col-xs-2 nopadleft'><i class='fa fa-suitcase fa-4x'></i></div>
+							<div class='col-xs-10 text-right'>
+								<div class='huge'>Payment Deposit</div>
+								<div><b>Auditno: </b><span>`+e.auditno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
+								<div><b>Supplier: </b><span>`+e.suppcode+` - `+e.Name+`</span></div>
+								<div><b>Prepared On: </b><span>`+moment(e.actdate, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.adduser+`</span></div>
+							</div>
+						</div>
 					</div>
-			</div>
-		</div>
-		`;
+						<div class='panel-footer'>
+							<a onclick="authdtl_alert_click('pv','`+e.trantype+`','`+e.auditno+`')">
+								<span class='pull-left'>Detail</span>
+								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+								<div class='clearfix'></div>
+							</a>
+						</div>
+				</div>
+			</div>`;
+		}
+		$('#authdtl_alert_div').append(block_pr);
+	})
+}
+
+function populate_authdtl_alert_so(data){
+	data.forEach(function(e,i){
+		if(e.trantype == 'REOPEN'){
+			var block_pr = `
+			<div class='col-lg-3 col-md-6'>
+				<div class='panel panel-purple'>
+					<div class='panel-heading'>
+						<div class='row'>
+							<div class='col-xs-2 nopadleft'><i class='fa fa-suitcase fa-4x'></i></div>
+							<div class='col-xs-10 text-right'>
+								<div class='huge'><span class='reject_span1'>(Rejected)</span> Sales Order</div>
+								<div><b>Auditno: </b><span>`+e.auditno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
+								<div><b>Reject On: </b><span>`+moment(e.canceldate, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.cancelby+`</span></div>
+							</div>
+						</div>
+					</div>
+						<div class='panel-footer'>
+							<a onclick="authdtl_alert_click('so','`+e.trantype+`','`+e.auditno+`')">
+								<span class='pull-left'>Detail</span>
+								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+								<div class='clearfix'></div>
+							</a>
+						</div>
+				</div>
+			</div>`;
+		}else{
+			var block_pr = `
+			<div class='col-lg-3 col-md-6'>
+				<div class='panel panel-purple'>
+					<div class='panel-heading'>
+						<div class='row'>
+							<div class='col-xs-2 nopadleft'><i class='fa fa-suitcase fa-4x'></i></div>
+							<div class='col-xs-10 text-right'>
+								<div class='huge'>Sales Order</div>
+								<div><b>Auditno: </b><span>`+e.auditno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
+								<div><b>Supplier: </b><span>`+e.payercode+` - `+e.name+`</span></div>
+								<div><b>Prepared On: </b><span>`+moment(e.adddate, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.adduser+`</span></div>
+							</div>
+						</div>
+					</div>
+						<div class='panel-footer'>
+							<a onclick="authdtl_alert_click('so','`+e.trantype+`','`+e.auditno+`')">
+								<span class='pull-left'>Detail</span>
+								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+								<div class='clearfix'></div>
+							</a>
+						</div>
+				</div>
+			</div>`;
+		}
 		$('#authdtl_alert_div').append(block_pr);
 	})
 }
@@ -187,6 +264,9 @@ function authdtl_alert_click(type,trantype,recno){
 		case 'pd':
 			Menu.new_dialog('dataentryPV','paymentVoucher?source=AP&scope='+trantype+'&auditno='+recno,'Payment Voucher');
 			break;
+		case 'so':
+			Menu.new_dialog('salesorder_datentry','SalesOrder?scope='+trantype+'&auditno='+recno,'Sales Order');
+			break;
 	}
 }
 
@@ -199,10 +279,13 @@ function authdtl_alert_click_mobile(type,trantype,recno){
 			open_mobile_page('purchaseOrder_mobile?scope='+trantype+'&recno='+recno);
 			break;
 		case 'pv':
-			open_mobile_page('paymentVoucher_mobile?scope='+trantype+'&recno='+recno);
+			open_mobile_page('paymentVoucher_mobile?scope='+trantype+'&auditno='+recno);
 			break;
 		case 'pd':
-			open_mobile_page('paymentVoucher_mobile?scope='+trantype+'&recno='+recno);
+			open_mobile_page('paymentVoucher_mobile?scope='+trantype+'&auditno='+recno);
+			break;
+		case 'so':
+			open_mobile_page('SalesOrder_mobile?scope='+trantype+'&auditno='+recno);
 			break;
 	}
 }

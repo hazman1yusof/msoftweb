@@ -204,16 +204,6 @@ iframe{
 	height: 113px;
 	overflow: hidden;
 }
-.panel-purple{
-	border-color:#9C27B0;
-}
-.panel-purple .panel-heading{
-	border-color:#9C27B0;
-	background-color:#9C27B0;
-	color:#fff;
-	height: 113px;
-	overflow: hidden;
-}
 .panel-grey{
 	border-color:#607D8B;
 }

@@ -218,15 +218,16 @@ i.fa {
 							    <option value="RECOMMENDED1">RECOMMENDED1</option>
 							    <option value="RECOMMENDED2">RECOMMENDED2</option>
 							    <option value="APPROVED">APPROVED</option>
+							    <option value="DELIVERED">DELIVERED</option>
 							</select>
 						</div>	
 
 					<label class="col-md-2 control-label" for="d_trantype">Type</label>  
 						<div class="col-md-2">
 							<select id="d_trantype" name="dtl_trantype" class="form-control input-sm">
-							    <option value="SO">Sales Order</option>
 							    <option value="PV">Payment Voucher</option>
 							    <option value="PD">Payment Deposit</option>
+							    <option value="SO">Sales Order</option>
 							</select>
 						</div>
                 </div>		

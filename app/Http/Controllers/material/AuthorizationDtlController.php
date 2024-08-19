@@ -121,6 +121,8 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                     ->join('finance.apacthdr as apact', function($join) use ($request){
                         $join = $join
                             ->where('apact.compcode',session('compcode'))
+                            ->where('apact.source','AP')
+                            ->where('apact.trantype','PV')
                             ->on('apact.auditno','qpv.recno')
                             ->on('apact.recstatus','qpv.recstatus')
                             ->where(function ($query) {
@@ -143,6 +145,8 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                     ->join('finance.apacthdr as apact', function($join) use ($request){
                         $join = $join
                             ->where('apact.compcode',session('compcode'))
+                            ->where('apact.source','AP')
+                            ->where('apact.trantype','PV')
                             ->on('apact.auditno','qpv.recno')
                             ->on('apact.recstatus','qpv.recstatus');
                     })
@@ -163,13 +167,15 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                         $join = $join
                             ->where('prdtl.compcode',session('compcode'))
                             ->where('prdtl.authorid',session('username'))
-                            ->where('prdtl.trantype','PV')
+                            ->where('prdtl.trantype','PD')
                             ->where('prdtl.cando','ACTIVE')
                             ->on('prdtl.recstatus','qpd.trantype');
                     })
                     ->join('finance.apacthdr as apact', function($join) use ($request){
                         $join = $join
                             ->where('apact.compcode',session('compcode'))
+                            ->where('apact.source','AP')
+                            ->where('apact.trantype','PD')
                             ->on('apact.auditno','qpd.recno')
                             ->on('apact.recstatus','qpd.recstatus')
                             ->where(function ($query) {
@@ -188,10 +194,12 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                     ->get();
 
         $queuepd_reject = DB::table('finance.queuepd as qpd')
-                    ->select('qpd.trantype','apact.adduser','apact.auditno','apact.suppcode','supp.Name','apact.actdate','apact.recstatus','apact.amount','apact.adduser')
+                    ->select('qpd.trantype','apact.adduser','apact.auditno','apact.suppcode','supp.Name','apact.actdate','apact.recstatus','apact.amount','apact.adduser','apact.cancelby','apact.canceldate')
                     ->join('finance.apacthdr as apact', function($join) use ($request){
                         $join = $join
                             ->where('apact.compcode',session('compcode'))
+                            ->where('apact.source','AP')
+                            ->where('apact.trantype','PD')
                             ->on('apact.auditno','qpd.recno')
                             ->on('apact.recstatus','qpd.recstatus');
                     })
@@ -206,12 +214,66 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
 
         $queuepd = $queuepd->merge($queuepd_reject);
 
+        $queueso = DB::table('finance.queueso as qso')
+                    ->select('qso.trantype','prdtl.authorid','dbact.auditno','dbact.payercode','dbm.name','dbact.adddate','dbact.recstatus','dbact.amount','dbact.adduser')
+                    ->join('finance.permissiondtl as prdtl', function($join) use ($request){
+                        $join = $join
+                            ->where('prdtl.compcode',session('compcode'))
+                            ->where('prdtl.authorid',session('username'))
+                            ->where('prdtl.trantype','SO')
+                            ->where('prdtl.cando','ACTIVE')
+                            ->on('prdtl.recstatus','qso.trantype');
+                    })
+                    ->join('debtor.dbacthdr as dbact', function($join) use ($request){
+                        $join = $join
+                            ->where('dbact.compcode',session('compcode'))
+                            ->where('dbact.source','PB')
+                            ->where('dbact.trantype','IN')
+                            ->on('dbact.auditno','qso.recno')
+                            ->on('dbact.recstatus','qso.recstatus')
+                            ->where(function ($query) {
+                                $query
+                                    ->on('dbact.amount','>=','prdtl.minlimit')
+                                    ->on('dbact.amount','<', 'prdtl.maxlimit');
+                            });
+                    })
+                    ->join('debtor.debtormast as dbm', function($join) use ($request){
+                        $join = $join
+                            ->where('dbm.compcode',session('compcode'))
+                            ->on('dbm.debtorcode','dbact.payercode');
+                    })
+                    ->where('qso.compcode',session('compcode'))
+                    ->where('qso.trantype','<>','DONE')
+                    ->get();
+
+        $queueso_reject = DB::table('finance.queueso as qso')
+                    ->select('qso.trantype','dbact.adduser','dbact.auditno','dbact.payercode','dbm.name','dbact.adddate','dbact.recstatus','dbact.amount','dbact.adduser','dbact.cancelby','dbact.canceldate')
+                    ->join('debtor.dbacthdr as dbact', function($join) use ($request){
+                        $join = $join
+                            ->where('dbact.compcode',session('compcode'))
+                            ->where('dbact.source','PB')
+                            ->where('dbact.trantype','IN')
+                            ->on('dbact.auditno','qso.recno')
+                            ->on('dbact.recstatus','qso.recstatus');
+                    })
+                    ->join('debtor.debtormast as dbm', function($join) use ($request){
+                        $join = $join
+                            ->where('dbm.compcode',session('compcode'))
+                            ->on('dbm.debtorcode','dbact.payercode');
+                    })
+                    ->where('qso.compcode',session('compcode'))
+                    ->where('qso.trantype','REOPEN')
+                    ->get();
+
+        $queueso = $queueso->merge($queueso_reject);
+
 
         $responce = new stdClass();
         $responce->queuepr = $queuepr;
         $responce->queuepo = $queuepo;
         $responce->queuepv = $queuepv;
         $responce->queuepd = $queuepd;
+        $responce->queueso = $queueso;
 
         return json_encode($responce);
     }

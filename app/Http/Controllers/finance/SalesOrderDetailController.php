@@ -72,7 +72,7 @@ class SalesOrderDetailController extends defaultController
 
     public function get_table_dtl(Request $request){
         $table = DB::table('debtor.billsum as bs')
-                    ->select('bs.idno','bs.compcode','bs.lineno_','bs.rowno','bs.chggroup','bs.description','bs.uom','bs.uom_recv','bs.taxcode','bs.unitprice','bs.quantity','bs.billtypeperct','bs.billtypeamt','bs.taxamt','bs.discamt','bs.amount','bs.totamount','bs.recstatus','bs.qtyonhand')
+                    ->select('bs.idno','bs.compcode','bs.lineno_','bs.rowno','bs.chggroup','bs.description','bs.uom','bs.uom_recv','bs.taxcode','bs.unitprice','bs.quantity','bs.billtypeperct','bs.billtypeamt','bs.taxamt','bs.discamt','bs.amount','bs.totamount','bs.recstatus','bs.qtyonhand','bs.qtyorder','bs.chggroup as chggroup_ori','bs.uom as uom_ori')
                     // ->leftjoin('material.stockloc as st', function($join) use ($request){
                     //         $join = $join->where('st.compcode', '=', session('compcode'));
                     //         $join = $join->where('st.unit', '=', session('unit'));
@@ -654,96 +654,105 @@ class SalesOrderDetailController extends defaultController
         $entrydate = $request->entrydate;
         $chgcode = $request->chgcode;
         $uom = $request->uom;
-        $billtype_obj = $this->billtype_obj_get($request);
-
-        switch ($priceuse) {
-            case 'PRICE1':
-                $cp_fld = 'amt1';
-                break;
-            case 'PRICE2':
-                $cp_fld = 'amt2';
-                break;
-            case 'PRICE3':
-                $cp_fld = 'amt3';
-                break;
-            default:
-                $cp_fld = 'costprice';
-                break;
-        }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE')
                         ->where('cm.chgcode','=',$chgcode)
                         ->where('cm.uom','=',$uom);
-                        // ->where(function ($query) {
-                        //    $query->whereNotNull('st.idno')
-                        //          ->orWhere('cm.invflag', '=', 0);
-                        // });
-
-        $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
-                            $join = $join->where('cp.compcode', '=', session('compcode'));
-                            $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
-                            $join = $join->on('cp.uom', '=', 'cm.uom');
-                            if($request->from != 'chgcode_dfee'){
-                                $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
-                            }
-                            $join = $join->where('cp.effdate', '<=', $entrydate);
-                        });
-
-        $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
-                            $join = $join->on('st.itemcode', '=', 'cm.chgcode');
-                            $join = $join->on('st.uomcode', '=', 'cm.uom');
-                            $join = $join->where('st.compcode', '=', session('compcode'));
-                            $join = $join->where('st.unit', '=', session('unit'));
-                            $join = $join->where('st.deptcode', '=', $deptcode);
-                            $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
-                        });
-
-        $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
-                            $join = $join->where('pt.compcode', '=', session('compcode'));
-                            $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
-                            $join = $join->on('pt.uomcode', '=', 'cm.uom');
-                            $join = $join->where('pt.unit', '=', session('unit'));
-                        });
-
-        $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
-                            $join = $join->where('cp.compcode', '=', session('compcode'));
-                            $join = $join->on('cp.optax', '=', 'tm.taxcode');
-                        });
-
-        $table = $table->join('material.uom as uom', function($join){
-                            $join = $join->on('uom.uomcode', '=', 'cm.uom')
-                                        ->where('uom.compcode', '=', session('compcode'))
-                                        ->where('uom.recstatus','=','ACTIVE');
-                    });
 
         $result = $table->get()->toArray();
 
-        foreach ($result as $key => $value) {
-            $billtype_amt_percent = $this->get_billtype_amt_percent($billtype_obj,$value);
-            $value->billty_amount = $billtype_amt_percent->amount; 
-            $value->billty_percent = $billtype_amt_percent->percent_;
+        // $billtype_obj = $this->billtype_obj_get($request);
 
-            $chgprice_obj = DB::table('hisdb.chgprice as cp')
-                ->select('cp.idno',$cp_fld,'cp.optax','tm.rate','cp.chgcode')
-                ->leftJoin('hisdb.taxmast as tm', 'cp.optax', '=', 'tm.taxcode')
-                ->where('cp.compcode', '=', session('compcode'))
-                ->where('cp.chgcode', '=', $value->chgcode)
-                ->where('cp.uom', '=', $value->uom)
-                ->whereDate('cp.effdate', '<=', $entrydate)
-                ->orderBy('cp.effdate','desc');
+        // switch ($priceuse) {
+        //     case 'PRICE1':
+        //         $cp_fld = 'amt1';
+        //         break;
+        //     case 'PRICE2':
+        //         $cp_fld = 'amt2';
+        //         break;
+        //     case 'PRICE3':
+        //         $cp_fld = 'amt3';
+        //         break;
+        //     default:
+        //         $cp_fld = 'costprice';
+        //         break;
+        // }
 
-            if($chgprice_obj->exists()){
-                $chgprice_obj = $chgprice_obj->first();
+        // $table = DB::table('hisdb.chgmast as cm')
+        //                 ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
+        //                 ->where('cm.compcode','=',session('compcode'))
+        //                 ->where('cm.recstatus','<>','DELETE')
+        //                 ->where('cm.chgcode','=',$chgcode)
+        //                 ->where('cm.uom','=',$uom);
+        //                 // ->where(function ($query) {
+        //                 //    $query->whereNotNull('st.idno')
+        //                 //          ->orWhere('cm.invflag', '=', 0);
+        //                 // });
 
-                if($value->chgcode == $chgprice_obj->chgcode && $value->idno != $chgprice_obj->idno){
-                    unset($result[$key]);
-                    continue;
-                }
-            }
-        }
+        // $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
+        //                     $join = $join->where('cp.compcode', '=', session('compcode'));
+        //                     $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
+        //                     $join = $join->on('cp.uom', '=', 'cm.uom');
+        //                     if($request->from != 'chgcode_dfee'){
+        //                         $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+        //                     }
+        //                     $join = $join->where('cp.effdate', '<=', $entrydate);
+        //                 });
+
+        // $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
+        //                     $join = $join->on('st.itemcode', '=', 'cm.chgcode');
+        //                     $join = $join->on('st.uomcode', '=', 'cm.uom');
+        //                     $join = $join->where('st.compcode', '=', session('compcode'));
+        //                     $join = $join->where('st.unit', '=', session('unit'));
+        //                     $join = $join->where('st.deptcode', '=', $deptcode);
+        //                     $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+        //                 });
+
+        // $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
+        //                     $join = $join->where('pt.compcode', '=', session('compcode'));
+        //                     $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
+        //                     $join = $join->on('pt.uomcode', '=', 'cm.uom');
+        //                     $join = $join->where('pt.unit', '=', session('unit'));
+        //                 });
+
+        // $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
+        //                     $join = $join->where('cp.compcode', '=', session('compcode'));
+        //                     $join = $join->on('cp.optax', '=', 'tm.taxcode');
+        //                 });
+
+        // $table = $table->join('material.uom as uom', function($join){
+        //                     $join = $join->on('uom.uomcode', '=', 'cm.uom')
+        //                                 ->where('uom.compcode', '=', session('compcode'))
+        //                                 ->where('uom.recstatus','=','ACTIVE');
+        //             });
+
+        // $result = $table->get()->toArray();
+
+        // foreach ($result as $key => $value) {
+        //     $billtype_amt_percent = $this->get_billtype_amt_percent($billtype_obj,$value);
+        //     $value->billty_amount = $billtype_amt_percent->amount; 
+        //     $value->billty_percent = $billtype_amt_percent->percent_;
+
+        //     $chgprice_obj = DB::table('hisdb.chgprice as cp')
+        //         ->select('cp.idno',$cp_fld,'cp.optax','tm.rate','cp.chgcode')
+        //         ->leftJoin('hisdb.taxmast as tm', 'cp.optax', '=', 'tm.taxcode')
+        //         ->where('cp.compcode', '=', session('compcode'))
+        //         ->where('cp.chgcode', '=', $value->chgcode)
+        //         ->where('cp.uom', '=', $value->uom)
+        //         ->whereDate('cp.effdate', '<=', $entrydate)
+        //         ->orderBy('cp.effdate','desc');
+
+        //     if($chgprice_obj->exists()){
+        //         $chgprice_obj = $chgprice_obj->first();
+
+        //         if($value->chgcode == $chgprice_obj->chgcode && $value->idno != $chgprice_obj->idno){
+        //             unset($result[$key]);
+        //             continue;
+        //         }
+        //     }
+        // }
 
         // $table =  DB::table('hisdb.chgmast as cm')
         //             ->select('cm.chgcode','cm.description')
@@ -1223,36 +1232,41 @@ class SalesOrderDetailController extends defaultController
     }
 
     public function get_itemcode_uom_recv_check(Request $request){
-        $chgcode = $request->chgcode;
-        $deptcode = $request->deptcode;
+        // $chgcode = $request->chgcode;
+        // $deptcode = $request->deptcode;
         $uom = $request->uom;
-        $entrydate = $request->entrydate;
+        // $entrydate = $request->entrydate;
 
-        $table = DB::table('material.stockloc as st')
-                        ->select('uom.description','st.uomcode','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
-                            ->where('st.compcode','=',session('compcode'))
-                            ->where('st.unit','=',session('unit'))
-                            ->where('st.deptcode','=',$deptcode)
-                            ->where('st.year','=',Carbon::parse($entrydate)->format('Y'))
-                            ->where('st.itemcode','=',$chgcode)
-                            ->where('st.uomcode','=',$uom)
-                            ->where('st.recstatus','<>','DELETE');
-                            // ->where(function ($query) {
-                            //    $query->whereNotNull('st.idno')
-                            //          ->orWhere('cm.invflag', '=', 0);
-                            // });
-        $table = $table->join('material.uom as uom', function($join) use ($chgcode){
-                            $join = $join->on('uom.uomcode', '=', 'st.uomcode')
-                                        ->where('uom.compcode', '=', session('compcode'))
-                                        ->where('uom.recstatus','=','ACTIVE');
-                    });
+        // $table = DB::table('material.stockloc as st')
+        //                 ->select('uom.description','st.uomcode','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
+        //                     ->where('st.compcode','=',session('compcode'))
+        //                     ->where('st.unit','=',session('unit'))
+        //                     ->where('st.deptcode','=',$deptcode)
+        //                     ->where('st.year','=',Carbon::parse($entrydate)->format('Y'))
+        //                     ->where('st.itemcode','=',$chgcode)
+        //                     ->where('st.uomcode','=',$uom)
+        //                     ->where('st.recstatus','<>','DELETE');
+        //                     // ->where(function ($query) {
+        //                     //    $query->whereNotNull('st.idno')
+        //                     //          ->orWhere('cm.invflag', '=', 0);
+        //                     // });
+        // $table = $table->join('material.uom as uom', function($join) use ($chgcode){
+        //                     $join = $join->on('uom.uomcode', '=', 'st.uomcode')
+        //                                 ->where('uom.compcode', '=', session('compcode'))
+        //                                 ->where('uom.recstatus','=','ACTIVE');
+        //             });
 
-        $table = $table->join('material.product as pt', function($join) use ($deptcode,$entrydate){
-                        $join = $join->where('pt.compcode', '=', session('compcode'));
-                        $join = $join->on('pt.itemcode', '=', 'st.itemcode');
-                        $join = $join->on('pt.uomcode', '=', 'st.uomcode');
-                        $join = $join->where('pt.unit', '=', session('unit'));
-                    });
+        // $table = $table->join('material.product as pt', function($join) use ($deptcode,$entrydate){
+        //                 $join = $join->where('pt.compcode', '=', session('compcode'));
+        //                 $join = $join->on('pt.itemcode', '=', 'st.itemcode');
+        //                 $join = $join->on('pt.uomcode', '=', 'st.uomcode');
+        //                 $join = $join->where('pt.unit', '=', session('unit'));
+        //             });
+
+        $table = DB::table('material.uom as uom')
+                        ->where('uom.compcode', '=', session('compcode'))
+                        ->where('uom.recstatus','=','ACTIVE')
+                        ->where('uom.uomcode', '=', $uom);
 
         $responce = new stdClass();
         $responce->rows = $table->get();
@@ -1453,37 +1467,37 @@ class SalesOrderDetailController extends defaultController
                     ->where('idno', '=', $insertGetId)
                     ->update(['auditno' => $insertGetId]);
             
-            $product = DB::table('material.product')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('uomcode','=',$request->uom)
-                            ->where('itemcode','=',$request->chggroup);
+            // $product = DB::table('material.product')
+            //                 ->where('compcode','=',session('compcode'))
+            //                 ->where('uomcode','=',$request->uom)
+            //                 ->where('itemcode','=',$request->chggroup);
             
-            if($product->exists()){
-                $stockloc = DB::table('material.stockloc')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('uomcode','=',$request->uom)
-                        ->where('itemcode','=',$request->chggroup)
-                        ->where('deptcode','=',$dbacthdr->deptcode)
-                        ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+            // if($product->exists()){
+            //     $stockloc = DB::table('material.stockloc')
+            //             ->where('compcode','=',session('compcode'))
+            //             ->where('uomcode','=',$request->uom)
+            //             ->where('itemcode','=',$request->chggroup)
+            //             ->where('deptcode','=',$dbacthdr->deptcode)
+            //             ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
                 
-                if($stockloc->exists()){
-                    $stockloc = $stockloc->first();
-                }else{
-                    throw new \Exception("Stockloc not exists for item: ".$billsum_obj->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$billsum_obj->uom,500);
-                }
+            //     if($stockloc->exists()){
+            //         $stockloc = $stockloc->first();
+            //     }else{
+            //         throw new \Exception("Stockloc not exists for item: ".$billsum_obj->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$billsum_obj->uom,500);
+            //     }
                 
-                $ivdspdt = DB::table('material.ivdspdt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$billsum_obj->auditno);
+            //     $ivdspdt = DB::table('material.ivdspdt')
+            //         ->where('compcode','=',session('compcode'))
+            //         ->where('recno','=',$billsum_obj->auditno);
                 
-                if($ivdspdt->exists()){
-                    $this->updivdspdt($billsum_obj,$dbacthdr);
-                    $this->updgltran($ivdspdt->first()->idno,$dbacthdr);
-                }else{
-                    $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$dbacthdr);
-                    $this->crtgltran($ivdspdt_idno,$dbacthdr);
-                }
-            }
+            //     if($ivdspdt->exists()){
+            //         $this->updivdspdt($billsum_obj,$dbacthdr);
+            //         $this->updgltran($ivdspdt->first()->idno,$dbacthdr);
+            //     }else{
+            //         $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$dbacthdr);
+            //         $this->crtgltran($ivdspdt_idno,$dbacthdr);
+            //     }
+            // }
             
             ///3. calculate total amount from detail
             $totalAmount = DB::table('debtor.billsum')
@@ -1540,84 +1554,91 @@ class SalesOrderDetailController extends defaultController
             foreach ($request->dataobj as $key => $value) {
                 
                 //billsum lama
-                $billsum_lama = DB::table('debtor.billsum')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('source','=',$source)
-                            ->where('trantype','=',$trantype)
-                            ->where('billno','=',$auditno)
-                            ->where('rowno','=',$value['rowno'])
-                            ->first();
+                // $billsum_lama = DB::table('debtor.billsum')
+                //             ->where('compcode','=',session('compcode'))
+                //             ->where('source','=',$source)
+                //             ->where('trantype','=',$trantype)
+                //             ->where('billno','=',$auditno)
+                //             ->where('rowno','=',$value['rowno'])
+                //             ->first();
                 
-                $chgmast = DB::table('hisdb.chgmast')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('uom','=',$value['uom'])
-                            ->where('chgcode','=',$value['chggroup']);
+                // $chgmast = DB::table('hisdb.chgmast')
+                            // ->where('compcode','=',session('compcode'))
+                            // ->where('uom','=',$value['uom'])
+                            // ->where('chgcode','=',$value['chggroup']);
 
-                ///2. update detail
-                if($billsum_lama->chggroup != $value['chggroup'] || $billsum_lama->uom != $value['uom']){
+                ///2. update detail // takkan berlaku lain chggroup atau lain uom
+                // if($billsum_lama->chggroup != $value['chggroup'] || $billsum_lama->uom != $value['uom']){
 
-                    $edit_lain_chggroup = true;
+                //     $edit_lain_chggroup = true;
                 
-                    $product_lama = DB::table('hisdb.product')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('uomcode','=',$billsum_lama->uom)
-                            ->where('itemcode','=',$billsum_lama->chggroup);
+                //     $product_lama = DB::table('hisdb.product')
+                //             ->where('compcode','=',session('compcode'))
+                //             ->where('uomcode','=',$billsum_lama->uom)
+                //             ->where('itemcode','=',$billsum_lama->chggroup);
 
-                    if($product_lama->exists()){
-                        $this->delivdspdt($billsum_lama,$dbacthdr);
-                    }
+                //     if($product_lama->exists()){
+                //         $this->delivdspdt($billsum_lama,$dbacthdr);
+                //     }
 
-                    $billsum_lama = DB::table('debtor.billsum')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('source','=',$source)
-                            ->where('trantype','=',$trantype)
-                            ->where('billno','=',$auditno)
-                            ->where('rowno','=',$value['rowno'])
-                            ->first();
+                //     $billsum_lama = DB::table('debtor.billsum')
+                //             ->where('compcode','=',session('compcode'))
+                //             ->where('source','=',$source)
+                //             ->where('trantype','=',$trantype)
+                //             ->where('billno','=',$auditno)
+                //             ->where('rowno','=',$value['rowno'])
+                //             ->first();
 
-                    $this->sysdb_log('update',$billsum_lama,'sysdb.billsumlog');
+                //     $this->sysdb_log('update',$billsum_lama,'sysdb.billsumlog');
 
-                    DB::table('debtor.billsum')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('source','=',$source)
-                            ->where('trantype','=',$trantype)
-                            ->where('billno','=',$auditno)
-                            ->where('rowno','=',$value['rowno'])
-                            ->update([
-                                'chggroup' => $value['chggroup'],
-                                'description' => $chgmast->first()->description,
-                                'uom' => $value['uom'],
-                                'uom_recv' => $value['uom_recv'],
-                                'taxcode' => $value['taxcode'],
-                                'unitprice' => $value['unitprice'],
-                                'quantity' => $value['quantity'],
-                                'qtyonhand' => $value['qtyonhand'],
-                                'amount' => $value['amount'],
-                                'outamt' => $value['amount'],
-                                'discamt' => floatval($value['discamt']),
-                                'taxamt' => floatval($value['taxamt']),
-                                'totamount' => floatval($value['totamount']),
-                                'lastuser' => session('username'), 
-                                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
-                            ]);
+                //     DB::table('debtor.billsum')
+                //             ->where('compcode','=',session('compcode'))
+                //             ->where('source','=',$source)
+                //             ->where('trantype','=',$trantype)
+                //             ->where('billno','=',$auditno)
+                //             ->where('rowno','=',$value['rowno'])
+                //             ->update([
+                //                 'chggroup' => $value['chggroup'],
+                //                 'description' => $chgmast->first()->description,
+                //                 'uom' => $value['uom'],
+                //                 'uom_recv' => $value['uom_recv'],
+                //                 'taxcode' => $value['taxcode'],
+                //                 'unitprice' => $value['unitprice'],
+                //                 'quantity' => $value['quantity'],
+                //                 'qtyonhand' => $value['qtyonhand'],
+                //                 'amount' => $value['amount'],
+                //                 'outamt' => $value['amount'],
+                //                 'discamt' => floatval($value['discamt']),
+                //                 'taxamt' => floatval($value['taxamt']),
+                //                 'totamount' => floatval($value['totamount']),
+                //                 'lastuser' => session('username'), 
+                //                 'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                //             ]);
 
 
-                }else{
+                // }else{
 
-                    $edit_lain_chggroup = false;
+                    // $edit_lain_chggroup = false;
 
                     //pindah yang lama ke billsumlog sebelum update
                     //recstatus->update
 
-                    $billsum_lama = DB::table('debtor.billsum')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('source','=',$source)
-                            ->where('trantype','=',$trantype)
-                            ->where('billno','=',$auditno)
-                            ->where('rowno','=',$value['rowno'])
-                            ->first();
+                    // $billsum_lama = DB::table('debtor.billsum')
+                    //         ->where('compcode','=',session('compcode'))
+                    //         ->where('source','=',$source)
+                    //         ->where('trantype','=',$trantype)
+                    //         ->where('billno','=',$auditno)
+                    //         ->where('rowno','=',$value['rowno'])
+                    //         ->first();
 
-                    $this->sysdb_log('update',$billsum_lama,'sysdb.billsumlog');
+                    // $this->sysdb_log('update',$billsum_lama,'sysdb.billsumlog');
+
+                    $quantity = floatval($value['quantity']);
+                    $amount = $value['unitprice'] * $quantity;
+                    $discamt = ($amount * (100-$value['billtypeperct']) / 100) + $value['billtypeamt'];
+                    $rate = $this->taxrate($value['taxcode']);
+                    $taxamt = $amount * $rate / 100;
+                    $totamount = $amount - $discamt + $taxamt;
 
                     DB::table('debtor.billsum')
                             ->where('compcode','=',session('compcode'))
@@ -1627,64 +1648,64 @@ class SalesOrderDetailController extends defaultController
                             ->where('rowno','=',$value['rowno'])
                             ->update([
                                 'unitprice' => $value['unitprice'],
-                                'quantity' => $value['quantity'],
+                                'quantity' => $quantity,
                                 'qtyonhand' => $value['qtyonhand'],
-                                'amount' => $value['amount'],
-                                'outamt' => $value['amount'],
-                                'discamt' => floatval($value['discamt']),
-                                'taxamt' => floatval($value['taxamt']),
-                                'totamount' => floatval($value['totamount']),
+                                'amount' => $amount,
+                                'outamt' => $amount,
+                                'discamt' => floatval($discamt),
+                                'taxamt' => floatval($taxamt),
+                                'totamount' => floatval($totamount),
                                 'lastuser' => session('username'), 
                                 'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                                // 'billtypeperct' => $value['billtypeperct'],
-                                // 'billtypeamt' => $value['billtypeamt'],
+                                'billtypeperct' => $value['billtypeperct'],
+                                'billtypeamt' => $value['billtypeamt'],
                             ]);
-                }
+                // }
                 
-                $billsum_obj = DB::table('debtor.billsum')
-                                ->where('compcode','=',session('compcode'))
-                                ->where('source','=',$source)
-                                ->where('trantype','=',$trantype)
-                                ->where('billno','=',$auditno)
-                                ->where('rowno','=',$value['rowno'])
-                                ->first();
+                // $billsum_obj = DB::table('debtor.billsum')
+                //                 ->where('compcode','=',session('compcode'))
+                //                 ->where('source','=',$source)
+                //                 ->where('trantype','=',$trantype)
+                //                 ->where('billno','=',$auditno)
+                //                 ->where('rowno','=',$value['rowno'])
+                //                 ->first();
 
-                $product = DB::table('material.product')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('uomcode','=',$value['uom'])
-                        ->where('itemcode','=',$value['chggroup']);
+                // $product = DB::table('material.product')
+                //         ->where('compcode','=',session('compcode'))
+                //         ->where('uomcode','=',$value['uom'])
+                //         ->where('itemcode','=',$value['chggroup']);
                 
-                if($product->exists()){
-                    $stockloc = DB::table('material.stockloc')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('uomcode','=',$value['uom'])
-                            ->where('itemcode','=',$value['chggroup'])
-                            ->where('deptcode','=',$dbacthdr->deptcode)
-                            ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+                // if($product->exists()){
+                //     $stockloc = DB::table('material.stockloc')
+                //             ->where('compcode','=',session('compcode'))
+                //             ->where('uomcode','=',$value['uom'])
+                //             ->where('itemcode','=',$value['chggroup'])
+                //             ->where('deptcode','=',$dbacthdr->deptcode)
+                //             ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
                     
-                    if($stockloc->exists()){
-                        $stockloc = $stockloc->first();
-                    }else{
-                        throw new \Exception("Stockloc not exists for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
-                    }
+                //     if($stockloc->exists()){
+                //         $stockloc = $stockloc->first();
+                //     }else{
+                //         throw new \Exception("Stockloc not exists for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
+                //     }
                     
-                    $ivdspdt = DB::table('material.ivdspdt')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('recno','=',$billsum_obj->auditno);
+                //     $ivdspdt = DB::table('material.ivdspdt')
+                //         ->where('compcode','=',session('compcode'))
+                //         ->where('recno','=',$billsum_obj->auditno);
 
-                    if($edit_lain_chggroup){
-                        $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$dbacthdr);
-                        $this->crtgltran($ivdspdt_idno,$dbacthdr);
-                    }else{
-                        if($ivdspdt->exists()){
-                            $this->updivdspdt($billsum_obj,$dbacthdr);
-                            $this->updgltran($ivdspdt->first()->idno,$dbacthdr);
-                        }else{
-                            $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$dbacthdr);
-                            $this->crtgltran($ivdspdt_idno,$dbacthdr);
-                        }
-                    }
-                }
+                //     if($edit_lain_chggroup){
+                //         $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$dbacthdr);
+                //         $this->crtgltran($ivdspdt_idno,$dbacthdr);
+                //     }else{
+                //         if($ivdspdt->exists()){
+                //             $this->updivdspdt($billsum_obj,$dbacthdr);
+                //             $this->updgltran($ivdspdt->first()->idno,$dbacthdr);
+                //         }else{
+                //             $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$dbacthdr);
+                //             $this->crtgltran($ivdspdt_idno,$dbacthdr);
+                //         }
+                //     }
+                // }
                 
                 ///3. calculate total amount from detail
                 $totalAmount = DB::table('debtor.billsum')
@@ -1703,6 +1724,7 @@ class SalesOrderDetailController extends defaultController
                         ->where('auditno','=',$auditno)
                         ->update([
                             'amount' => $totalAmount,
+                            'outamount' => $totalAmount,
                         ]);
                 
             }
@@ -1735,41 +1757,41 @@ class SalesOrderDetailController extends defaultController
             $auditno = $request->auditno;
             $idno = $request->idno;
 
-            $dbacthdr = DB::table('debtor.dbacthdr')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('source','=',$source)
-                    ->where('trantype','=',$trantype)
-                    ->where('auditno','=',$auditno);
+            // $dbacthdr = DB::table('debtor.dbacthdr')
+            //         ->where('compcode','=',session('compcode'))
+            //         ->where('source','=',$source)
+            //         ->where('trantype','=',$trantype)
+            //         ->where('auditno','=',$auditno);
 
-            $dbacthdr = $dbacthdr->first();
+            // $dbacthdr = $dbacthdr->first();
 
-            $billsum = DB::table('debtor.billsum')
-                            ->where('compcode',session('compcode'))
-                            ->where('idno','=',$idno);
+            // $billsum = DB::table('debtor.billsum')
+            //                 ->where('compcode',session('compcode'))
+            //                 ->where('idno','=',$idno);
 
-            $billsum_obj = $billsum->first();
+            // $billsum_obj = $billsum->first();
 
-            $chgmast_lama = DB::table('hisdb.chgmast')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('uom','=',$billsum_obj->uom)
-                    ->where('chgcode','=',$billsum_obj->chggroup)
-                    ->first();
+            // $chgmast_lama = DB::table('hisdb.chgmast')
+            //         ->where('compcode','=',session('compcode'))
+            //         ->where('uom','=',$billsum_obj->uom)
+            //         ->where('chgcode','=',$billsum_obj->chggroup)
+            //         ->first();
 
-            if($chgmast_lama->invflag != '0'){
-                $this->delivdspdt($billsum_obj,$dbacthdr);
-            }else{
-                $this->delgltran($billsum_obj,$dbacthdr);
-            }
+            // if($chgmast_lama->invflag != '0'){
+            //     $this->delivdspdt($billsum_obj,$dbacthdr);
+            // }else{
+            //     $this->delgltran($billsum_obj,$dbacthdr);
+            // }
 
             //pindah yang lama ke billsumlog sebelum update
             //recstatus->delete
 
-            $billsum_lama = DB::table('debtor.billsum')
-                            ->where('compcode',session('compcode'))
-                            ->where('idno','=',$idno)
-                            ->first();
+            // $billsum_lama = DB::table('debtor.billsum')
+            //                 ->where('compcode',session('compcode'))
+            //                 ->where('idno','=',$idno)
+            //                 ->first();
 
-            $this->sysdb_log('delete',$billsum_lama,'sysdb.billsumlog');
+            // $this->sysdb_log('delete',$billsum_lama,'sysdb.billsumlog');
 
             DB::table('debtor.billsum')
                     ->where('compcode',session('compcode'))

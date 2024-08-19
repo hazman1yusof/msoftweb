@@ -614,6 +614,7 @@ Route::get('/Quotation_SO_/showpdf','finance\Quotation_SO_Controller@showpdf');
 
 //// Finance - SalesOrder page ///
 Route::get('/SalesOrder','finance\SalesOrderController@show');
+Route::get('/SalesOrder_mobile','finance\SalesOrderController@show_mobile');
 Route::get('/SalesOrder/table','finance\SalesOrderController@table');
 Route::post('/SalesOrder/form','finance\SalesOrderController@form');
 Route::get('/SalesOrder/form','finance\SalesOrderController@form');
@@ -793,6 +794,13 @@ Route::get('/costcenter_Report/showExcel','finance\Costcenter_ReportController@s
 Route::get('/glmaster','finance\GlmasterController@show');
 Route::get('/glmaster/table','finance\GlmasterController@table');
 Route::post('/glmaster/form','finance\GlmasterController@form');
+
+//// Journal Entry ///
+Route::get('/journalEntry','finance\JournalEntryController@show');
+Route::get('/journalEntry/table','finance\JournalEntryController@table');
+Route::post('/journalEntry/form','finance\JournalEntryController@form');
+Route::post('/journalEntryDetail/form','finance\JournalEntryDetailController@form');
+Route::get('/journalEntryDetail/table','finance\JournalEntryDetailController@table');
 
 //// Chart Account ///
 Route::get('/chartAccount','finance\ChartAccountController@show');

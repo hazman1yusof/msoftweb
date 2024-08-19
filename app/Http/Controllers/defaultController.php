@@ -615,6 +615,21 @@ abstract class defaultController extends Controller{
     //     return intval($row['count']) + 1;
     // }
 
+    public function taxrate($taxcode){
+        if(empty($taxcode)){
+            return 0;
+        }
+        $tax = DB::table('hisdb.taxmast')
+                    ->where('compcode',session('compcode'))
+                    ->where('taxcode',$taxcode);
+
+        if(!$tax->exists()){
+            return 0;
+        }else{
+            return $tax->first()->rate;
+        }
+    }
+
     public function request_no($trantype,$dept){
         $seqno = DB::table('material.sequence')
                 ->select('seqno')
