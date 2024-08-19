@@ -99,6 +99,8 @@ class Quotation_SO_Controller extends defaultController
                     'SL.episno AS SL_episno',
                     'SL.authno AS SL_authno',
                     'SL.expdate AS SL_expdate',
+                    'SL.adddate AS SL_adddate',
+                    'SL.adduser AS SL_adduser',
                     'SL.upddate AS SL_upddate',
                     'SL.upduser AS SL_upduser',
                     'SL.epistype AS SL_epistype',
@@ -136,8 +138,8 @@ class Quotation_SO_Controller extends defaultController
         }
         
         if(!empty($request->filterdate)){
-            $table = $table->where('SL.entrydate','>=',$request->filterdate[0]);
-            $table = $table->where('SL.entrydate','<=',$request->filterdate[1]);
+            $table = $table->where('SL.posteddate','>=',$request->filterdate[0]);
+            $table = $table->where('SL.posteddate','<=',$request->filterdate[1]);
         }
         
         if(!empty($request->searchCol)){
@@ -354,14 +356,15 @@ class Quotation_SO_Controller extends defaultController
                 
                 // $invno = $this->recno('PB','INV');
                 $quoteno = $this->recno('SL','QN');
-
+                
                 DB::table("finance.salehdr")
-                        ->where('compcode',session('compcode'))
-                        ->where('idno','=',$value)
-                        ->update([
-                            'quoteno' => $quoteno,
-                            'recstatus' => 'POSTED',
-                        ]);
+                    ->where('compcode',session('compcode'))
+                    ->where('idno','=',$value)
+                    ->update([
+                        'quoteno' => $quoteno,
+                        'recstatus' => 'POSTED',
+                        'posteddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
                 
                 $salesum = DB::table("finance.salesum")
                         ->where('compcode',session('compcode'))
@@ -384,11 +387,11 @@ class Quotation_SO_Controller extends defaultController
         }
         
     }
-
+    
     public function init_glmastdtl($dbcc,$dbacc,$crcc,$cracc,$yearperiod,$amount){
-        //2. check glmastdtl utk debit, kalu ada update kalu xde create
-        $gltranAmount =  $this->isGltranExist($dbcc,$dbacc,$yearperiod->year,$yearperiod->period);
-
+        // 2. check glmastdtl utk debit, kalu ada update kalu xde create
+        $gltranAmount = $this->isGltranExist($dbcc,$dbacc,$yearperiod->year,$yearperiod->period);
+        
         if($gltranAmount!==false){
             DB::table('finance.glmasdtl')
                 ->where('compcode','=',session('compcode'))
@@ -414,10 +417,10 @@ class Quotation_SO_Controller extends defaultController
                     'recstatus' => 'ACTIVE'
                 ]);
         }
-
-        //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+        
+        // 3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
         $gltranAmount = defaultController::isGltranExist_($crcc,$cracc,$yearperiod->year,$yearperiod->period);
-
+        
         if($gltranAmount!==false){
             DB::table('finance.glmasdtl')
                 ->where('compcode','=',session('compcode'))
@@ -446,21 +449,20 @@ class Quotation_SO_Controller extends defaultController
     }
     
     // public function reopen(Request $request){
-
+        
     //     DB::beginTransaction();
-
-    //     try{
-
-    //         foreach ($request->idno_array as $value){
-
+        
+    //     try {
+            
+    //         foreach($request->idno_array as $value){
     //             $purreqhd = DB::table("material.purreqhd")
-    //                 ->where('idno','=',$value);
-
+    //                         ->where('idno','=',$value);
+                
     //             $purreqhd_get = $purreqhd->first();
     //             if(!in_array($purreqhd_get->recstatus, ['CANCELLED','REQUEST','SUPPORT','VERIFIED','APPROVED'])){
     //                 continue;
     //             }
-
+                
     //             $purreqhd->update([
     //                 'recstatus' => 'OPEN',
     //                 'requestby' => null,
@@ -472,7 +474,7 @@ class Quotation_SO_Controller extends defaultController
     //                 'approvedby' => null,
     //                 'approveddate' => null,
     //             ]);
-
+                
     //             DB::table("material.purreqdt")
     //                 ->where('recno','=',$purreqhd_get->recno)
     //                 ->update([
@@ -480,108 +482,112 @@ class Quotation_SO_Controller extends defaultController
     //                     'upduser' => session('username'),
     //                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
     //                 ]);
-
+                
     //             DB::table("material.queuepr")
     //                 ->where('recno','=',$purreqhd_get->recno)
     //                 ->delete();
-
     //         }
-
+            
     //         DB::commit();
-        
+            
     //     } catch (\Exception $e) {
+            
     //         DB::rollback();
-
+            
     //         return response($e->getMessage(), 500);
+            
     //     }
-    // }
-
-    public function cancel(Request $request){
-        DB::beginTransaction();
-
-        try{
-
-
-            $dbacthdr = DB::table("debtor.dbacthdr")
-                        ->where('idno','=',$request->idno)
-                        ->first();
-
-            $billsum = DB::table("debtor.billsum")
-                        ->where('source','=',$dbacthdr->source)
-                        ->where('trantype','=',$dbacthdr->trantype)
-                        ->where('auditno','=',$dbacthdr->auditno)
-                        ->get();
-
-            DB::table("debtor.billsum")
-                ->where('source','=',$dbacthdr->source)
-                ->where('trantype','=',$dbacthdr->trantype)
-                ->where('auditno','=',$dbacthdr->auditno)
-                ->update([
-                    'recstatus' => 'CANCELLED',
-                ]);
-
-            DB::table("debtor.dbacthdr")
-                ->where('idno','=',$request->idno)
-                ->update([
-                    'recstatus' => 'CANCELLED',
-                ]);
-           
-            DB::commit();
         
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-    }
-
-    public function support(Request $request){
+    // }
+    
+    public function cancel(Request $request){
+        
         DB::beginTransaction();
-
-        try{
-
-            foreach ($request->idno_array as $value){
-
+        
+        try {
+            
+            foreach($request->idno_array as $value){
+                $salehdr = DB::table("finance.salehdr")
+                        ->where('idno','=',$value)
+                        ->first();
+                
+                $salesum = DB::table("finance.salesum")
+                        ->where('source','=',$salehdr->source)
+                        ->where('trantype','=',$salehdr->trantype)
+                        ->where('auditno','=',$salehdr->auditno)
+                        ->get();
+                
+                DB::table("finance.salesum")
+                    ->where('source','=',$salehdr->source)
+                    ->where('trantype','=',$salehdr->trantype)
+                    ->where('auditno','=',$salehdr->auditno)
+                    ->update([
+                        'recstatus' => 'CANCELLED',
+                    ]);
+                
+                DB::table("finance.salehdr")
+                    ->where('idno','=',$value)
+                    ->update([
+                        'recstatus' => 'CANCELLED',
+                    ]);
+            }
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+    
+    public function support(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            foreach($request->idno_array as $value){
                 $purreqhd = DB::table("material.purreqhd")
-                    ->where('idno','=',$value);
-
+                            ->where('idno','=',$value);
+                
                 $purreqhd_get = $purreqhd->first();
-
+                
                 if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
-
                     $authorise = DB::table('material.authdtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('trantype','=','PR')
-                        ->where('cando','=', 'ACTIVE')
-                        ->where('recstatus','=','VERIFIED')
-                        ->where('deptcode','=',$purreqhd_get->reqdept)
-                        ->where('maxlimit','>=',$purreqhd_get->totamount);
-
+                                ->where('compcode','=',session('compcode'))
+                                ->where('trantype','=','PR')
+                                ->where('cando','=', 'ACTIVE')
+                                ->where('recstatus','=','VERIFIED')
+                                ->where('deptcode','=',$purreqhd_get->reqdept)
+                                ->where('maxlimit','>=',$purreqhd_get->totamount);
+                    
                     if(!$authorise->exists()){
-
                         $authorise = DB::table('material.authdtl')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('trantype','=','PR')
-                            ->where('cando','=', 'ACTIVE')
-                            ->where('recstatus','=','VERIFIED')
-                            ->where('deptcode','=','ALL')
-                            ->where('deptcode','=','all')
-                            ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                            if(!$authorise->exists()){
-                                throw new \Exception("Authorization for this purchase request doesnt exists",500);
-                            }
-                            
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('trantype','=','PR')
+                                    ->where('cando','=', 'ACTIVE')
+                                    ->where('recstatus','=','VERIFIED')
+                                    ->where('deptcode','=','ALL')
+                                    ->where('deptcode','=','all')
+                                    ->where('maxlimit','>=',$purreqhd_get->totamount);
+                        
+                        if(!$authorise->exists()){
+                            throw new \Exception("Authorization for this purchase request doesnt exists",500);
+                        }
                     }
-
+                    
                     $authorise_use = $authorise->first();
-
+                    
                     $purreqhd->update([
-                            'verifiedby' => $authorise_use->authorid,
-                            'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'recstatus' => 'SUPPORT'
-                        ]);
-
+                        'verifiedby' => $authorise_use->authorid,
+                        'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'SUPPORT'
+                    ]);
+                    
                     DB::table("material.purreqdt")
                         ->where('recno','=',$purreqhd_get->recno)
                         ->update([
@@ -589,7 +595,7 @@ class Quotation_SO_Controller extends defaultController
                             'upduser' => session('username'),
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
-
+                    
                     DB::table("material.queuepr")
                         ->where('recno','=',$purreqhd_get->recno)
                         ->update([
@@ -600,8 +606,7 @@ class Quotation_SO_Controller extends defaultController
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
                 }
-
-
+                
                 // 4. email and whatsapp
                 $data = new stdClass();
                 $data->status = 'SUPPORT';
@@ -609,68 +614,66 @@ class Quotation_SO_Controller extends defaultController
                 $data->purreqno = $purreqhd_get->purreqno;
                 $data->email_to = 'hazman.yusof@gmail.com';
                 $data->whatsapp = '01123090948';
-            
-                //$this->sendemail($data);
-
+                
+                // $this->sendemail($data);
             }
-
-           
+            
             DB::commit();
-        
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+        
         }
+        
     }
-
+    
     public function verify(Request $request){
-         DB::beginTransaction();
-
-        try{
-
-            foreach ($request->idno_array as $value){
-
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            foreach($request->idno_array as $value){
                 $purreqhd = DB::table("material.purreqhd")
-                    ->where('idno','=',$value);
-
+                            ->where('idno','=',$value);
+                
                 $purreqhd_get = $purreqhd->first();
-
+                
                 if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
-
                     $authorise = DB::table('material.authdtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('trantype','=','PR')
-                        ->where('cando','=', 'ACTIVE')
-                        ->where('recstatus','=','APPROVED')
-                        ->where('deptcode','=',$purreqhd_get->reqdept)
-                        ->where('maxlimit','>=',$purreqhd_get->totamount);
-
+                                ->where('compcode','=',session('compcode'))
+                                ->where('trantype','=','PR')
+                                ->where('cando','=', 'ACTIVE')
+                                ->where('recstatus','=','APPROVED')
+                                ->where('deptcode','=',$purreqhd_get->reqdept)
+                                ->where('maxlimit','>=',$purreqhd_get->totamount);
+                    
                     if(!$authorise->exists()){
-
                         $authorise = DB::table('material.authdtl')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('trantype','=','PR')
-                            ->where('cando','=', 'ACTIVE')
-                            ->where('recstatus','=','APPROVED')
-                            ->where('deptcode','=','ALL')
-                            ->where('deptcode','=','all')
-                            ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                            if(!$authorise->exists()){
-                                throw new \Exception("Authorization for this purchase request doesnt exists",500);
-                            }
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('trantype','=','PR')
+                                    ->where('cando','=', 'ACTIVE')
+                                    ->where('recstatus','=','APPROVED')
+                                    ->where('deptcode','=','ALL')
+                                    ->where('deptcode','=','all')
+                                    ->where('maxlimit','>=',$purreqhd_get->totamount);
                             
+                        if(!$authorise->exists()){
+                            throw new \Exception("Authorization for this purchase request doesnt exists",500);
+                        }
                     }
-
+                    
                     $authorise_use = $authorise->first();
-
+                    
                     $purreqhd->update([
-                            'approvedby' => $authorise_use->authorid,
-                            'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'recstatus' => 'VERIFIED'
-                        ]);
-
+                        'approvedby' => $authorise_use->authorid,
+                        'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'VERIFIED'
+                    ]);
+                    
                     DB::table("material.purreqdt")
                         ->where('recno','=',$purreqhd_get->recno)
                         ->update([
@@ -678,7 +681,7 @@ class Quotation_SO_Controller extends defaultController
                             'upduser' => session('username'),
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
-
+                    
                     DB::table("material.queuepr")
                         ->where('recno','=',$purreqhd_get->recno)
                         ->update([
@@ -688,10 +691,8 @@ class Quotation_SO_Controller extends defaultController
                             'adduser' => session('username'),
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
-
                 }
-
-
+                
                 // 4. email and whatsapp
                 $data = new stdClass();
                 $data->status = 'APPROVED';
@@ -699,38 +700,38 @@ class Quotation_SO_Controller extends defaultController
                 $data->purreqno = $purreqhd_get->purreqno;
                 $data->email_to = 'hazman.yusof@gmail.com';
                 $data->whatsapp = '01123090948';
-
-                //$this->sendemail($data);
-
+                
+                // $this->sendemail($data);
             }
-
-           
+            
             DB::commit();
-        
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+            
         }
+        
     }
-
+    
     public function approved(Request $request){
-         DB::beginTransaction();
-
-        try{
-
-            foreach ($request->idno_array as $value){
-
+        DB::beginTransaction();
+        
+        try {
+            
+            foreach($request->idno_array as $value){
                 $purreqhd = DB::table("material.purreqhd")
-                    ->where('idno','=',$value);
-
+                            ->where('idno','=',$value);
+                
                 $purreqhd_get = $purreqhd->first();
-
+                
                 $purreqhd->update([
-                        'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'recstatus' => 'APPROVED'
-                    ]);
-
+                    'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'APPROVED'
+                ]);
+                
                 DB::table("material.purreqdt")
                     ->where('recno','=',$purreqhd_get->recno)
                     ->update([
@@ -738,7 +739,7 @@ class Quotation_SO_Controller extends defaultController
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
-
+                
                 DB::table("material.queuepr")
                     ->where('recno','=',$purreqhd_get->recno)
                     ->update([
@@ -747,19 +748,20 @@ class Quotation_SO_Controller extends defaultController
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
-
             }
-
-           
+            
             DB::commit();
-        
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+            
         }
+        
     }
-
+    
     public function showpdf(Request $request){
         $idno = $request->idno;
         if(!$idno){
@@ -776,7 +778,7 @@ class Quotation_SO_Controller extends defaultController
             ->where('h.mrn','=','0')
             ->where('h.compcode','=',session('compcode'))
             ->first();
-// dd($dbacthdr);
+        // dd($dbacthdr);
         $billsum = DB::table('debtor.billsum AS b', 'material.productmaster AS p', 'material.uom as u', 'debtor.debtormast as d', 'hisdb.chgmast as m')
             ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
             'u.description as uom_desc', 
@@ -829,8 +831,8 @@ class Quotation_SO_Controller extends defaultController
         
         return view('finance.SalesOrder.SalesOrder_pdfmake',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
     }
-
-    //function sendmeail($data) -- nak kena ada atau tak
+    
+    // function sendmeail($data) -- nak kena ada atau tak
 
     function skip_authorization(Request $request, $deptcode, $idno){
         $authdtl = DB::table('material.authdtl')
