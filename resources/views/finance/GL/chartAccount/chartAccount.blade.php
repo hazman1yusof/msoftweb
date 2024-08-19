@@ -45,8 +45,8 @@
                         <span class="help-block"></span>
                 </div>
                 <div class="col-md-2">
-                    <label class="control-label" for="year">Year</label>  
-                    <select id='year' name='year' class="form-control input-sm"></select>
+                    <label class="control-label" for="yearSearch">Year</label>  
+                    <select id='yearSearch' name='yearSearch' class="form-control input-sm"></select>
                 </div>
                 <div class="col-md-1">
                     <button type="button" id="search" class="btn btn-primary" style="position:absolute;top:17px">Search</button>
@@ -65,6 +65,10 @@
 
             <div class='panel panel-default'>
                 <div class="panel-body">
+                <input id="costcode" name="costcode" type="text">
+                <input id="glaccount" name="glaccount" type="text">
+                <input id="year" name="year" type="text">
+
                 <table id="addChartAcc" class ="table table-bordered">
                             <thead>
                             <tr>
@@ -248,7 +252,7 @@
                         </table>
                         <div class="prevnext btn-group pull-right">
                             <button type="button" id='save' class='btn btn-info'>Save</button>
-					        <button id='cancel' class='btn btn-info'>Cancel</button>
+					        <!-- <button id='cancel' class='btn btn-info'>Cancel</button> -->
 				        </div>
                 </div>
             </div>

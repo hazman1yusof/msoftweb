@@ -221,7 +221,7 @@ $(document).ready(function (){
             { label: 'Debtor Code', name: 'SL_debtorcode', width: 35, canSearch: true, formatter: showdetail, unformat: un_showdetail },
             { label: 'Payber Code', name: 'SL_payercode', hidden: true },
             { label: 'Customer', name: 'dm_name', width: 40, canSearch: false, classes: 'wrap', hidden: true },
-            { label: 'Document Date', name: 'SL_entrydate', width: 12, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
+            { label: 'Document Date', name: 'SL_entrydate', width: 12, classes: 'wrap text-uppercase', formatter: dateFormatter, unformat: dateUNFormatter },
             { label: 'Posted Date', name: 'SL_posteddate', width: 12, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
             { label: 'Audit No', name: 'SL_auditno', width: 12, align: 'right', formatter: padzero, unformat: unpadzero },
             { label: 'Quotation No', name: 'SL_quoteno', width: 10, align: 'right', canSearch: true, formatter: padzero, unformat: unpadzero },
@@ -379,6 +379,10 @@ $(document).ready(function (){
                 $("#pg_jqGridPager2 table").hide();
                 $('#save').show();
                 refreshGrid("#jqGrid2", urlParam2);
+            }
+            
+            if(selrowData("#jqGrid").SL_posteddate == 'undefined' || selrowData("#jqGrid").SL_posteddate == 'Invalid date'){
+                $('#SL_posteddate').val('');
             }
             
             let SL_quoteno = selrowData("#jqGrid").SL_quoteno;
@@ -554,10 +558,10 @@ $(document).ready(function (){
         $('#department_search_hb').text('');
         urlParam.filterdate = null;
         removeValidationClass(['#customer_search,#department_search']);
-        if($('#Scol').val()=='SL_entrydate'){
+        if($('#Scol').val()=='SL_posteddate'){
             $("input[name='Stext'], #customer_text, #department_text").hide("fast");
             $("#docuDate_text").show("fast");
-        }else if($('#Scol').val() == 'SL_payercode'){
+        }else if($('#Scol').val() == 'SL_debtorcode'){
             $("input[name='Stext'],#docuDate_text,#department_text").hide("fast");
             $("#customer_text").show("fast");
             customer_search.on();
@@ -1041,7 +1045,7 @@ $(document).ready(function (){
 			// $("#jqGrid2 input[name='quantity']").on('blur',calculate_conversion_factor);
 			$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='billtypeamt'],#jqGrid2 input[name='quantity'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
 			
-			$("#jqGrid2 input[name='qtydelivered']").keydown(function (e){ // when click tab at totamount, auto save
+			$("#jqGrid2 input[name='qtydelivered']").keydown(function (e){ // when click tab at qtydelivered, auto save
 				var code = e.keyCode || e.which;
 				if(code == '9'){
 					delay(function (){
