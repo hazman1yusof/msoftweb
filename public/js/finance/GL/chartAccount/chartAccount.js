@@ -23,6 +23,7 @@ var mycurrency =new currencymode(
 $(document).ready(function () {
 	$("body").show();
     $('#year').attr('disabled', 'disabled');
+	$("#save").hide();
 
     set_yearDefault();
 	function set_yearDefault(){
@@ -127,9 +128,12 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-			$('#jqGrid').data('lastselrow',rowid);
+			if(rowid != null) {
+				rowData = $('#jqGrid').jqGrid ('getRowData', rowid);
+			}			
 			getActual();
 			getTotalActual();
+			$("#save").show();
 			// if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
 		},
 		loadComplete: function(){
@@ -408,6 +412,7 @@ $(document).ready(function () {
 		onClickButton: function(){
             $("#year").prop("disabled",false);
             set_yearperiod();
+			$("#select_year").hide();
 			//refreshGrid("#jqGrid",urlParam);
 		}
 	});
@@ -540,18 +545,20 @@ $(document).ready(function () {
 		});
 	}
 });
+
 function getActual(){
 	selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 	rowdata = $("#jqGrid").jqGrid ('getRowData', selrow);
 	var actamount=0;
-	// $.each(rowData, function( index, value ) {
-	// 	// if(value){
-	// 	// 	$('#addChartAcc #'+index+' input').text(numeral(value).format('0,0.00'))
-	// 	// }else{
-	// 	// 	$('#addChartAcc #'+index+' input').text("0.00");
-	// 	// }
-	// 	// console.log(value);
-	// });
+	$.each(rowData, function( index, value ) {
+		if(value){
+			$('#tr #'+index+' input').text(numeral(value).format('0,0.00'))
+		}else{
+			$('#tr #'+index+' input').text("0.00");
+		}
+		console.log(value);
+	});
+	
 }
 
 function getTotalActual(){
