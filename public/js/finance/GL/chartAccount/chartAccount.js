@@ -22,7 +22,7 @@ var mycurrency =new currencymode(
 
 $(document).ready(function () {
 	$("body").show();
-    $('#year').attr('disabled', 'disabled');
+    $('#yearSearch').attr('disabled', 'disabled');
 	$("#save").hide();
 
     set_yearDefault();
@@ -42,7 +42,7 @@ $(document).ready(function () {
 		},'json').done(function(data) {
           	if(!$.isEmptyObject(data.rows)){
 				data.rows.forEach(function(element){
-					$('#year').append("<option>"+element.pvalue2+"</option>")
+					$('#yearSearch').append("<option>"+element.pvalue2+"</option>")
 
 				});
 			}	
@@ -115,6 +115,18 @@ $(document).ready(function () {
 			{label: 'actamount1', name: 'actamount10', width: 90 , hidden: true},
 			{label: 'actamount1', name: 'actamount11', width: 90 , hidden: true},
 			{label: 'actamount1', name: 'actamount12', width: 90 , hidden: true},
+			{label: 'bdgamount1', name: 'bdgamount1', width: 90 , hidden: true},
+			{label: 'bdgamount2', name: 'bdgamount2', width: 90 , hidden: true},
+			{label: 'bdgamount3', name: 'bdgamount3', width: 90 , hidden: true},
+			{label: 'bdgamount4', name: 'bdgamount4', width: 90 , hidden: true},
+			{label: 'bdgamount5', name: 'bdgamount5', width: 90 , hidden: true},
+			{label: 'bdgamount6', name: 'bdgamount6', width: 90 , hidden: true},
+			{label: 'bdgamount7', name: 'bdgamount7', width: 90 , hidden: true},
+			{label: 'bdgamount8', name: 'bdgamount8', width: 90 , hidden: true},
+			{label: 'bdgamount9', name: 'bdgamount9', width: 90 , hidden: true},
+			{label: 'bdgamount10', name: 'bdgamount10', width: 90 , hidden: true},
+			{label: 'bdgamount11', name: 'bdgamount11', width: 90 , hidden: true},
+			{label: 'bdgamount12', name: 'bdgamount12', width: 90 , hidden: true},
 
 		],
 		autowidth:true,
@@ -132,8 +144,9 @@ $(document).ready(function () {
 				rowData = $('#jqGrid').jqGrid ('getRowData', rowid);
 			}			
 			getActual();
+			getBudget();
 			getTotalActual();
-			selectYear();
+			getTotalBudget();
 			$("#save").show();
 			// if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
 		},
@@ -411,13 +424,48 @@ $(document).ready(function () {
 		buttonicon:"",
 		title:"Year",
 		onClickButton: function(){
-            $("#year").prop("disabled",false);
+            $("#yearSearch").prop("disabled",false);
             set_yearperiod();
 			$("#select_year").hide();
 			//refreshGrid("#jqGrid",urlParam);
 		}
 	});
 
+	function saveBudget(callback){
+		var saveParam={
+			action:'save_budget',
+			oper:'saveBudget'
+		}
+		
+		var postobj={
+			_token : $('#_token').val(),
+			costcode : $('#costcode').val(),
+			glaccount : $('#glaccount').val(),
+			year : $('#year').val(),
+			bdgamount1 : $('#bdgamount1').val(),
+
+		};
+		
+		$.post( './chartAccount/form?'+$.param(saveParam),  $.param(postobj), function( data ) {
+			
+		},'json').done(function(data) {
+			callback(data);
+		}).fail(function(data){
+			callback(data);
+		});
+	}
+
+	$("#save").click(function(){
+		if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+			saveBudget(function(data){
+				disableForm('#formdata');
+				$('#save').attr('disabled',true);
+			});
+		}else{
+			enableForm('#formdata');
+			rdonly('#formdata');
+		}
+	});
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
@@ -475,7 +523,7 @@ $(document).ready(function () {
 				ondblClickRow: function () {
 					let data=selrowData('#'+dialog_costcode.gridname);
 					$("#jqGrid input[name='glaccount']").val([$("#glaccountSearch").val()]);
-					$("#jqGrid input[name='year']").val([$("#year").val()]);
+					$("#jqGrid input[name='year']").val([$("#yearSearch").val()]);
 					dialog_glaccount.check(errorField,'costcode');
 				},
 				gridComplete: function(obj){
@@ -520,7 +568,7 @@ $(document).ready(function () {
 
     $('#search').click(function(){
 		urlParam.glaccount = $('#glaccountSearch').val();
-		urlParam.year = $('#year').val();
+		urlParam.year = $('#yearSearch').val();
 		refreshGrid("#jqGrid",urlParam);
 
 		$('#bdgamount1,#bdgamount2,#bdgamount3,#bdgamount4,#bdgamount5,#bdgamount6,#bdgamount7,#bdgamount8,#bdgamount9,#bdgamount10,#bdgamount11,#bdgamount12').prop("readonly", false);
@@ -540,38 +588,28 @@ $(document).ready(function () {
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
 				data.rows.forEach(function(element){	
-					$('#year').append("<option>"+element.year+"</option>")
+					$('#yearSearch').append("<option>"+element.year+"</option>")
 				});
 			}
 		});
 	}
 	
-	function selectYear(){
+	function getActual(){
 		$.each(selrowData("#jqGrid"), function( index, value ) {
 			var input=$("#formdata [name='"+index+"']");
-			if(input.is("[type=radio]")){
-				$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
-			}else{
-				input.val(value);
-			}
+			input.val(numeral(value).format('0,0.00'));
+			
+		});
+	}
+
+	function getBudget(){
+		$.each(selrowData("#jqGrid"), function( index, value ) {
+			var input=$("#formdata [name='"+index+"']");
+			input.val(numeral(value).format('0,0.00'));
+			
 		});
 	}
 });
-
-function getActual(){
-	selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-	rowdata = $("#jqGrid").jqGrid ('getRowData', selrow);
-	var actamount=0;
-	$.each(rowData, function( index, value ) {
-		if(value){
-			$('#tr #'+index+' input').text(numeral(value).format('0,0.00'))
-		}else{
-			$('#tr #'+index+' input').text("0.00");
-		}
-		console.log(value);
-	});
-	
-}
 
 function getTotalActual(){
 	mycurrency.formatOn();
@@ -587,3 +625,19 @@ function getTotalActual(){
 	});
 	$('#totalActual').val(numeral(total).format('0,0.00'));
 }
+
+function getTotalBudget(){
+	mycurrency.formatOn();
+
+	selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+	rowdata = $("#jqGrid").jqGrid ('getRowData', selrow);
+	var total=0;
+	var bdgamount=0;
+	$.each(rowdata, function( index, value ) {
+		if(!isNaN(parseFloat(value)) && index.indexOf('bdgamount') !== -1){
+			total+=parseFloat(value);
+		}
+	});
+	$('#totalBdg').val(numeral(total).format('0,0.00'));
+}
+

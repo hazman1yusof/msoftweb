@@ -66,15 +66,27 @@ class ChartAccountController extends defaultController
 
     public function form(Request $request)
     {   
-        switch($request->oper){
-            case 'add':
-                return $this->add($request);
-            case 'edit':
-                return $this->edit($request);
-            case 'del':
-                return $this->del($request);
+        switch($request->action){
+            case 'save_budget':
+                switch($request->oper){
+                    case 'saveBudget':
+                        return $this->saveBudget($request);break;
+                    default:
+                        return 'error happen..';
+                }
+            case 'default':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add($request);break;
+                    case 'edit':
+                        return $this->edit($request);break;
+                    case 'del':
+                        return $this->del($request);break;
+                    default:
+                        return 'error happen..';
+                }
             default:
-                return 'error happen..';
+                    return 'error happen..';
         }
     }
 
@@ -123,9 +135,9 @@ class ChartAccountController extends defaultController
             DB::table('finance.glmasdtl')
                 ->where('idno','=',$request->idno)
                 ->update([  
-                    'costcode' => strtoupper($request->glmasdtl_costcode),
-                    'glaccount' => $request->glmasdtl_glaccount,
-                    'year' => $request->glmasdtl_year,
+                    'costcode' => strtoupper($request->costcode),
+                    'glaccount' => $request->glaccount,
+                    'year' => $request->year,
                     'lastcomputerid' => session('computerid'),
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -150,74 +162,43 @@ class ChartAccountController extends defaultController
             ]);
     }
 
-    public function getdata(Request $request){
-
-        $responce = new stdClass();
-
-        if(empty($request->costcode)){
-            $responce->data = [];
-            return json_encode($responce);
+    public function saveBudget(Request $request){
+        //  dd('hh');
+        DB::beginTransaction();
+        
+        try {
+        // dd($request->bdgamount1);
+            DB::table('finance.glmasdtl')
+                ->where('compcode',session('compcode'))
+                ->where('costcode',$request->costcode)
+                ->where('glaccount',$request->glaccount)
+                ->where('year',$request->year)
+                ->update([
+                    'bdgamount1' => $request->bdgamount1,
+                    'bdgamount2' => $request->bdgamount2,
+                    'bdgamount3' => $request->bdgamount3,
+                    'bdgamount4' => $request->bdgamount4,
+                    'bdgamount5' => $request->bdgamount5,
+                    'bdgamount6' => $request->bdgamount6,
+                    'bdgamount7' => $request->bdgamount7,
+                    'bdgamount8' => $request->bdgamount8,
+                    'bdgamount9' => $request->bdgamount9,
+                    'bdgamount10' => $request->bdgamount10,
+                    'bdgamount11' => $request->bdgamount11,
+                    'bdgamount12' => $request->bdgamount12,
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
         }
-
-        $table_ = DB::table('finance.gltran')
-                    ->select(DB::raw("'open' as open"),'gltran.source','gltran.trantype','gltran.auditno','gltran.postdate','gltran.description','gltran.reference','gltran.cracc','gltran.dracc','gltran.amount','glcr.description as acctname_cr','gldr.description as acctname_dr','gltran.id')
-                    ->leftJoin('finance.glmasref as glcr', function($join) use ($request){
-                        $join = $join->on('glcr.glaccno', '=', 'gltran.cracc')
-                                        ->where('glcr.compcode','=',session('compcode'));
-                    })
-                    ->leftJoin('finance.glmasref as gldr', function($join) use ($request){
-                        $join = $join->on('gldr.glaccno', '=', 'gltran.dracc')
-                                        ->where('gldr.compcode','=',session('compcode'));
-                    })
-                    ->where('gltran.compcode',session('compcode'))
-                    ->where('gltran.year',$request->year)
-                    ->where('gltran.period',$request->period)
-                    ->where('gltran.crcostcode',$request->costcode)
-                    ->where('gltran.cracc',$request->acc)
-                    ->orWhere(function ($table) use ($request) {
-                        $table
-                        ->where('gltran.compcode',session('compcode'))
-                        ->where('gltran.year',$request->year)
-                        ->where('gltran.period',$request->period)
-                        ->where('gltran.drcostcode',$request->costcode)
-                        ->where('gltran.dracc',$request->acc);
-                    })->orderBy('gltran.id','desc');
-
-        $count = $table_->count();
-        $table = $table_->get();
-
-        foreach ($table as $key => $value) {
-            if(strtoupper($value->cracc) == strtoupper($request->acc)){
-                $value->acccode = $value->dracc;
-                $value->dramount = '';
-                $value->cramount = $value->amount;
-                $value->acctname = $value->acctname_dr;
-            }else{
-                $value->acccode = $value->cracc;
-                $value->dramount = $value->amount;
-                $value->cramount = '';
-                $value->acctname = $value->acctname_cr;
-            }
-        }
-
-        // $table_cr = DB::table('finance.gltran')
-        //             ->select(DB::raw("'open' as open"),DB::raw("'' as dramount"),'gltran.source','gltran.trantype','gltran.auditno','gltran.postdate','gltran.description','gltran.reference','gltran.dracc as acccode','gltran.amount as cramount','glmasref.description as acctname','gltran.id')
-        //             ->leftJoin('finance.glmasref', function($join) use ($request){
-        //                 $join = $join->on('glmasref.glaccno', '=', 'gltran.dracc')
-        //                                 ->where('glmasref.compcode','=',session('compcode'));
-        //             })
-        //             ->where('gltran.compcode',session('compcode'))
-        //             ->where('gltran.crcostcode',$request->costcode)
-        //             ->where('gltran.cracc',$request->acc)
-        //             ->where('gltran.year',$request->year)
-        //             ->where('gltran.period',$request->period)
-        //             ->get();
-
-        // $table_merge = $table_dr->merge($table_cr);
-
-        $responce->data = $table;
-        $responce->recordsTotal = $count;
-        $responce->recordsFiltered = $count;
-        return json_encode($responce);
+        
     }
 }
