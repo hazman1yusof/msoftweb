@@ -138,6 +138,8 @@ i.fa {
 						$scope_use = 'approved';
 					}else if(Request::get('scope') == 'REOPEN'){
 						$scope_use = 'reopen';
+					}else if(Request::get('scope') == 'CANCEL'){
+						$scope_use = 'cancel';
 					}
 				?>
 
@@ -145,7 +147,7 @@ i.fa {
 					<span id="error_infront" style="color: red"></span>
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 
-					@if (Request::get('scope') != 'ALL' && Request::get('scope') != 'REOPEN')
+					@if (Request::get('scope') != 'ALL' && Request::get('scope') != 'REOPEN' && Request::get('scope') != 'CANCEL')
 					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_jq" data-oper="reject" style="display: none;">REJECT</button>
 					@endif
 
@@ -157,19 +159,19 @@ i.fa {
 						data-oper="{{$scope_use}}"
 						style="display: none;">
 						@if (strtoupper(Request::get('scope')) == 'ALL')
-							{{'POST'}}
+							{{'PREPARED'}}
 						@else
 							{{Request::get('scope')}}
 						@endif
 					</button>
 
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
+					<!-- <button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
 						@if (strtoupper(Request::get('scope')) == 'ALL')
 							{{'POST'}}
 						@else
 							{{Request::get('scope')}}
 						@endif
-					</button>
+					</button> -->
 
 					<!-- <button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button> -->
 					<!-- <button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button> -->

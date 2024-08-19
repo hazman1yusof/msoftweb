@@ -98,18 +98,26 @@ i.fa {
 						      <option value="PREPARED">PREPARED</option>
 						      <option value="SUPPORT">SUPPORT</option>
 						      <option value="VERIFIED">VERIFIED</option>
+						      <option value="RECOMMENDED1">RECOMMENDED 1</option>
+						      <option value="RECOMMENDED2">RECOMMENDED 2</option>
 						      <option value="APPROVED">APPROVED</option>
 						      <option value="COMPLETED">COMPLETED</option>
 						      <option value="PARTIAL">PARTIAL</option>
-							@elseif (Request::get('scope') == 'SUPPORT')
-								<option value="PREPARED">PREPARED</option>
-							@elseif (Request::get('scope') == 'VERIFIED')
-								<option value="SUPPORT">SUPPORT</option>
-							@elseif (Request::get('scope') == 'APPROVED')
-								<option value="VERIFIED">VERIFIED</option>
-							@elseif (Request::get('scope') == 'REOPEN')
-								<option value="CANCELLED">CANCELLED</option>
-							@endif
+								@elseif (Request::get('scope') == 'SUPPORT')
+									<option value="PREPARED">PREPARED</option>
+								@elseif (Request::get('scope') == 'VERIFIED')
+									<option value="SUPPORT">SUPPORT</option>
+								@elseif (Request::get('scope') == 'RECOMMENDED1')
+									<option value="VERIFIED">VERIFIED</option>
+								@elseif (Request::get('scope') == 'RECOMMENDED2')
+									<option value="RECOMMENDED1">RECOMMENDED 1</option>
+								@elseif (Request::get('scope') == 'APPROVED')
+									<option value="VERIFIED">VERIFIED</option>
+									<option value="RECOMMENDED1">RECOMMENDED 1</option>
+									<option value="RECOMMENDED2">RECOMMENDED 2</option>
+								@elseif (Request::get('scope') == 'REOPEN')
+									<option value="CANCELLED">CANCELLED</option>
+								@endif
 					    </select>
 	            </div>
 
@@ -138,6 +146,10 @@ i.fa {
 						$scope_use = 'support';
 					}else if(Request::get('scope') == 'VERIFIED'){
 						$scope_use = 'verify';
+					}else if(Request::get('scope') == 'RECOMMENDED1'){
+						$scope_use = 'recommended1';
+					}else if(Request::get('scope') == 'RECOMMENDED2'){
+						$scope_use = 'recommended2';
 					}else if(Request::get('scope') == 'APPROVED'){
 						$scope_use = 'approved';
 					}
@@ -148,12 +160,12 @@ i.fa {
 					<span id="error_infront" style="color: red"></span>
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					
-					@if (Request::get('scope') == 'ALL')
+					<!-- @if (Request::get('scope') == 'ALL')
 					<button type="button" class="btn btn-info btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
 					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					@endif
+					@endif -->
 
-					@if (Request::get('scope') != 'ALL')
+					@if (Request::get('scope') != 'ALL' && Request::get('scope') != 'REOPEN' && Request::get('scope') != 'CANCEL')
 					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">REJECT</button>
 					@endif
 
@@ -164,7 +176,7 @@ i.fa {
 						data-oper="{{$scope_use}}" 
 						style="display: none;">
 						@if (Request::get('scope') == 'ALL')
-							{{'POST'}}
+							{{'PREPARED'}}
 						@else
 							{{Request::get('scope')}}
 						@endif

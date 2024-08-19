@@ -109,6 +109,10 @@ class PurchaseRequestController extends defaultController
                 return $this->verify($request);
             case 'verified':
                 return $this->verify($request);
+            case 'recommended1':
+                return $this->recommended1($request);
+            case 'recommended2':
+                return $this->recommended2($request);
             case 'approved':
                 return $this->approved($request);
             case 'refresh_do':
@@ -450,7 +454,7 @@ class PurchaseRequestController extends defaultController
                     ->where('idno','=',$value);
 
                 $purreqhd_get = $purreqhd->first();
-                if(in_array(strtoupper($purreqhd_get->recstatus), ['CANCELLED','COMPLETED','PARTIAL','APPROVED'])){
+                if($purreqhd_get->recstatus != 'OPEN'){
                     continue;
                 }
 
@@ -592,6 +596,20 @@ class PurchaseRequestController extends defaultController
 
         try{
 
+            $recomm_limit = DB::table('sysdb.sysparam')
+                            ->select('pvalue1','pvalue2')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','IV')
+                            ->where('trantype','PRLIMIT');
+
+            if($recomm_limit->exists()){
+                $pvalue1 = $recomm_limit->first()->pvalue1;
+                $pvalue2 = $recomm_limit->first()->pvalue2;
+            }else{
+                $pvalue1 = 0;
+                $pvalue2 = 0;
+            }
+
             foreach ($request->idno_array as $value){
 
                 $purreqhd = DB::table("material.purreqhd")
@@ -650,12 +668,257 @@ class PurchaseRequestController extends defaultController
                             'recstatus' => 'VERIFIED'
                         ]);
 
+                    if(!empty($pvalue1) && $purreqhd_get->totamount >= $pvalue1){
+
+                        DB::table("material.queuepr")
+                            ->where('compcode','=',session('compcode'))
+                            ->where('recno','=',$purreqhd_get->recno)
+                            ->update([
+                                'AuthorisedID' => session('username'),
+                                'recstatus' => 'VERIFIED',
+                                'trantype' => 'RECOMMENDED1',
+                                'upduser' => session('username'),
+                                'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            ]);
+                    }else{
+
+                        DB::table("material.queuepr")
+                            ->where('compcode','=',session('compcode'))
+                            ->where('recno','=',$purreqhd_get->recno)
+                            ->update([
+                                'AuthorisedID' => session('username'),
+                                'recstatus' => 'VERIFIED',
+                                'trantype' => 'APPROVED',
+                                'upduser' => session('username'),
+                                'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            ]);
+
+                    }
+
+                // }
+
+
+                // 4. email and whatsapp
+                $data = new stdClass();
+                $data->status = 'APPROVED';
+                $data->deptcode = $purreqhd_get->reqdept;
+                $data->purreqno = $purreqhd_get->purreqno;
+                $data->email_to = 'hazman.yusof@gmail.com';
+                $data->whatsapp = '01123090948';
+
+                //$this->sendemail($data);
+
+            }
+
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function recommended1(Request $request){
+         DB::beginTransaction();
+
+        try{
+
+            $recomm_limit = DB::table('sysdb.sysparam')
+                            ->select('pvalue1','pvalue2')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','IV')
+                            ->where('trantype','PRLIMIT');
+
+            if($recomm_limit->exists()){
+                $pvalue1 = $recomm_limit->first()->pvalue1;
+                $pvalue2 = $recomm_limit->first()->pvalue2;
+            }else{
+                $pvalue1 = 0;
+                $pvalue2 = 0;
+            }
+
+            foreach ($request->idno_array as $value){
+
+                $purreqhd = DB::table("material.purreqhd")
+                    ->where('idno','=',$value);
+
+                $purreqhd_get = $purreqhd->first();
+
+                if($purreqhd_get->recstatus != 'VERIFIED'){
+                    continue;
+                }
+
+                // if(!$this->skip_authorization_2($request,$purreqhd_get)){
+                    $authorise = DB::table('material.authdtl')
+                        ->where('authorid','=',session('username'))
+                        ->where('compcode','=',session('compcode'))
+                        ->where('trantype','=','PR')
+                        ->where('cando','=', 'ACTIVE')
+                        ->where('recstatus','=','RECOMMENDED1')
+                        ->where('deptcode','=',$purreqhd_get->reqdept)
+                        ->where('maxlimit','>=',$purreqhd_get->totamount);
+
+                    if(!$authorise->exists()){
+
+                        $authorise = DB::table('material.authdtl')
+                            ->where('authorid','=',session('username'))
+                            ->where('compcode','=',session('compcode'))
+                            ->where('trantype','=','PR')
+                            ->where('cando','=', 'ACTIVE')
+                            ->where('recstatus','=','RECOMMENDED1')
+                            ->where('deptcode','=','ALL')
+                            ->where('deptcode','=','all')
+                            ->where('maxlimit','>=',$purreqhd_get->totamount);
+
+                            if(!$authorise->exists()){
+                                throw new \Exception("The user doesnt have authority",500);
+                            }
+                            
+                    }
+
+                    $purreqhd_update = [
+                        'verifiedby' => session('username'),
+                        'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'RECOMMENDED1'
+                    ];
+
+                    if(!empty($request->remarks)){
+                        $purreqhd_update['recommended1_remark'] = $request->remarks;
+                    }
+
+                    $purreqhd->update($purreqhd_update);
+
+                    DB::table("material.purreqdt")
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$purreqhd_get->recno)
+                        ->update([
+                            'recstatus' => 'RECOMMENDED1'
+                        ]);
+
+                    if(!empty($pvalue2) && $purreqhd_get->totamount >= $pvalue2){
+
+                        DB::table("material.queuepr")
+                            ->where('compcode','=',session('compcode'))
+                            ->where('recno','=',$purreqhd_get->recno)
+                            ->update([
+                                'AuthorisedID' => session('username'),
+                                'recstatus' => 'RECOMMENDED1',
+                                'trantype' => 'RECOMMENDED2',
+                                'upduser' => session('username'),
+                                'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            ]);
+                    }else{
+
+                        DB::table("material.queuepr")
+                            ->where('compcode','=',session('compcode'))
+                            ->where('recno','=',$purreqhd_get->recno)
+                            ->update([
+                                'AuthorisedID' => session('username'),
+                                'recstatus' => 'RECOMMENDED1',
+                                'trantype' => 'APPROVED',
+                                'upduser' => session('username'),
+                                'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            ]);
+
+                    }
+
+                // }
+
+
+                // 4. email and whatsapp
+                $data = new stdClass();
+                $data->status = 'APPROVED';
+                $data->deptcode = $purreqhd_get->reqdept;
+                $data->purreqno = $purreqhd_get->purreqno;
+                $data->email_to = 'hazman.yusof@gmail.com';
+                $data->whatsapp = '01123090948';
+
+                //$this->sendemail($data);
+
+            }
+
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function recommended2(Request $request){
+         DB::beginTransaction();
+
+        try{
+
+            foreach ($request->idno_array as $value){
+
+                $purreqhd = DB::table("material.purreqhd")
+                    ->where('idno','=',$value);
+
+                $purreqhd_get = $purreqhd->first();
+
+                if($purreqhd_get->recstatus != 'RECOMMENDED1'){
+                    continue;
+                }
+
+                // if(!$this->skip_authorization_2($request,$purreqhd_get)){
+                    $authorise = DB::table('material.authdtl')
+                        ->where('authorid','=',session('username'))
+                        ->where('compcode','=',session('compcode'))
+                        ->where('trantype','=','PR')
+                        ->where('cando','=', 'ACTIVE')
+                        ->where('recstatus','=','RECOMMENDED2')
+                        ->where('deptcode','=',$purreqhd_get->reqdept)
+                        ->where('maxlimit','>=',$purreqhd_get->totamount);
+
+                    if(!$authorise->exists()){
+
+                        $authorise = DB::table('material.authdtl')
+                            ->where('authorid','=',session('username'))
+                            ->where('compcode','=',session('compcode'))
+                            ->where('trantype','=','PR')
+                            ->where('cando','=', 'ACTIVE')
+                            ->where('recstatus','=','RECOMMENDED2')
+                            ->where('deptcode','=','ALL')
+                            ->where('deptcode','=','all')
+                            ->where('maxlimit','>=',$purreqhd_get->totamount);
+
+                            if(!$authorise->exists()){
+                                throw new \Exception("The user doesnt have authority",500);
+                            }
+                            
+                    }
+
+                    $purreqhd_update = [
+                        'verifiedby' => session('username'),
+                        'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'RECOMMENDED2'
+                    ];
+
+                    if(!empty($request->remarks)){
+                        $purreqhd_update['recommended2_remark'] = $request->remarks;
+                    }
+
+                    $purreqhd->update($purreqhd_update);
+
+                    DB::table("material.purreqdt")
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$purreqhd_get->recno)
+                        ->update([
+                            'recstatus' => 'RECOMMENDED2'
+                        ]);
+
+
                     DB::table("material.queuepr")
                         ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$purreqhd_get->recno)
                         ->update([
                             'AuthorisedID' => session('username'),
-                            'recstatus' => 'VERIFIED',
+                            'recstatus' => 'RECOMMENDED2',
                             'trantype' => 'APPROVED',
                             'upduser' => session('username'),
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -698,7 +961,7 @@ class PurchaseRequestController extends defaultController
 
                 $purreqhd_get = $purreqhd->first();
 
-                if($purreqhd_get->recstatus != 'VERIFIED'){
+                if(!in_array(strtoupper($purreqhd_get->recstatus), ['VERIFIED','RECOMMENDED1','RECOMMENDED2'])){
                     continue;
                 }
 

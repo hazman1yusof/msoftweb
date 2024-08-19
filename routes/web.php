@@ -937,6 +937,7 @@ Route::get('/creditDebitTransDetail/table','finance\CreditDebitTransDetailContro
 
 //// Payment Voucher Transaction ///
 Route::get('/paymentVoucher','finance\PaymentVoucherController@show');
+Route::get('/paymentVoucher_mobile','finance\PaymentVoucherController@show_mobile');
 Route::get('/paymentVoucher/table','finance\PaymentVoucherController@table');
 Route::post('/paymentVoucher/form','finance\PaymentVoucherController@form');
 Route::get('/paymentVoucher/form','finance\PaymentVoucherController@form');
@@ -1393,7 +1394,9 @@ Route::get('/thumbnail/{folder}/{image_path}','hisdb\ReviewController@thumbnail'
 Route::get('/download/{folder}/{image_path}','hisdb\ReviewController@download');
 
 /// Test route /// 
+Route::get('/test','util\TestController@show');
 Route::get('/test/table','util\TestController@table');
+Route::post('/test/form','util\TestController@form');
 
 Route::get('/barcode','util\BarcodeController@show');
 Route::post('/barcode/form','util\BarcodeController@form');

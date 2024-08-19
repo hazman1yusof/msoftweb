@@ -13,18 +13,62 @@ use PDF;
 class PaymentVoucherController extends defaultController
 {   
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware('auth');
     }
 
-    public function show(Request $request)
-    {   
+    public function show(Request $request){   
         return view('finance.AP.paymentVoucher.paymentVoucher');
     }
 
-    public function table(Request $request)
-    {   
+    public function show_mobile(Request $request){
+        $oper = strtolower($request->scope);//delivered shj sekarang
+        $scope = ucfirst(strtolower($request->scope));//Delivered
+        $auditno = $request->auditno;
+        $type = $request->type;
+
+        $ap_hd = DB::table('finance.apacthdr AS ap')
+                        ->select('ap.compcode','ap.auditno','ap.trantype','ap.doctype','ap.suppcode','su.name as suppcode_desc','ap.actdate','ap.document','ap.cheqno','ap.deptcode','ap.amount','ap.outamount','ap.recstatus','ap.payto','ap.recdate','ap.category','ap.remarks','ap.adduser','ap.adddate','ap.upduser','ap.upddate','ap.source','ap.idno','ap.unit','ap.pvno','ap.paymode','pm.description as paymode_desc','ap.bankcode','bn.bankname as bankcode_desc','ap.postdate','ap.cheqdate','ap.requestby','ap.requestdate')
+                        ->leftJoin('finance.bank as bn', function($join){
+                            $join = $join->where('bn.compcode', '=', session('compcode'));
+                            $join = $join->on('bn.bankcode', '=', 'ap.bankcode');
+                        })->leftjoin('material.supplier as su', function($join){
+                            $join = $join
+                                ->where('su.compcode',session('compcode'))
+                                ->on('su.SuppCode','ap.suppcode');
+                        })->leftjoin('debtor.paymode as pm', function($join){
+                            $join = $join
+                                ->where('pm.compcode',session('compcode'))
+                                ->on('pm.paymode','ap.paymode')
+                                ->where('pm.source','AP');
+                        })
+                        ->where('ap.compcode',session('compcode'))
+                        ->where('ap.source','AP')
+                        ->where('ap.trantype',$type)
+                        ->where('ap.auditno',$auditno)
+                        ->first();
+
+
+        $ap_dt = DB::table('finance.apalloc AS al')
+                        ->select('al.suppcode','su.name as suppcode_desc','al.allocdate','al.reference','al.refamount','al.outamount','al.allocamount','al.balance')
+                        ->leftjoin('material.supplier as su', function($join){
+                            $join = $join
+                                ->where('su.compcode',session('compcode'))
+                                ->on('su.SuppCode','al.suppcode');
+                        })
+                        ->where('al.compcode','=', session('compcode'))
+                        ->where('al.source','=', 'AP')
+                        ->where('al.trantype','=', 'AL')
+                        ->where('al.docsource','=', 'AP')
+                        ->where('al.doctrantype','=', 'PV')
+                        ->where('al.docauditno','=', $auditno)
+                        ->where('al.recstatus','!=','DELETE')
+                        ->get();
+
+        return view('finance.AP.paymentVoucher.paymentVoucher_mobile',compact('ap_hd','ap_dt','scope','oper'));
+    }
+
+    public function table(Request $request){   
         DB::enableQueryLog();
         switch($request->action){
             case 'maintable':
@@ -182,7 +226,6 @@ class PaymentVoucherController extends defaultController
         $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
-
     }
 
     public function get_alloc_when_edit(Request $request){
@@ -247,7 +290,6 @@ class PaymentVoucherController extends defaultController
         $responce->rows = $return_array;
 
         return json_encode($responce);
-
     }
 
     public function form(Request $request){   

@@ -10,11 +10,12 @@
     "require": {
         "php": "^7.4",
         "barryvdh/laravel-dompdf": "^2.0",
+        "clegginabox/pdf-merger": "dev-master",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
         "hwi/oauth-bundle": "^1.4",
-        "intervention/image": "dev-master",
+        "intervention/image": "^2.7",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "maatwebsite/excel": "^3.1",

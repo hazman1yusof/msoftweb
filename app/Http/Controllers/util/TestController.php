@@ -8,19 +8,37 @@ use stdClass;
 use DB;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 use App\Jobs\SendEmailPR;
 
 class TestController extends defaultController
 {   
 
-    public function __construct()
-    {
+    public function __construct(){
 
     }
 
-    public function table(Request $request)
-    {  
+    public function show(Request $request){
+        $pdf = new \Clegginabox\PDFMerger\PDFMerger;
+        $pdf->addPDF(public_path() . '/uploads/pdf_merge/pdf1.pdf', 'all');
+        $pdf->addPDF(public_path() . '/uploads/pdf_merge/pdf2.pdf', 'all');
+
+        $pdf->merge('file', public_path() . '/uploads/pdf_merge/merge_pdf.pdf', 'P');
+
+        return view('test.test');
+    }
+
+    public function form(Request $request){
+        switch($request->action){
+            case 'merge_pdf':
+                return $this->merge_pdf($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function table(Request $request){  
         switch($request->action){
             case 'chgmast_invflag_tukar_dari_product':
                 return $this->chgmast_invflag_tukar_dari_product($request);
@@ -38,6 +56,8 @@ class TestController extends defaultController
                 return $this->test_alert_auth($request);
             case 'test_glmasdtl':
                 return $this->test_glmasdtl($request);
+            case 'get_merge_pdf':
+                return $this->get_merge_pdf($request);
             default:
                 return 'error happen..';
         }
@@ -420,6 +440,41 @@ class TestController extends defaultController
                     ]);
             }
         }
+    }
+
+    public function merge_pdf(Request $request){
+        Storage::disk('pdf_merge')->put($request->merge_key.'_'.$request->lineno_.'.pdf',base64_decode($request->base64));
+        DB::table('sysdb.pdf_merge')
+            ->insert([
+                'compcode' => session('compcode'),
+                'merge_key' => $request->merge_key,
+                'lineno_' => $request->lineno_,
+            ]);
+    }
+
+    public function get_merge_pdf(Request $request){
+        // Storage::disk('pdf_merge')->put($request->merge_key.'_'.$request->lineno_.'.pdf',base64_decode($request->base64));
+        // DB::table('sysdb.pdf_merge')
+        //     ->insert([
+        //         'compcode' => session('compcode'),
+        //         'merge_key' => $request->merge_key,
+        //         'lineno_' => $request->lineno_,
+        //     ]);
+        $merge_key = $request->merge_key;
+        $pdf_merge = DB::table('sysdb.pdf_merge')
+                        ->where('compcode',session('compcode'))
+                        ->where('merge_key',$merge_key);
+
+        if($pdf_merge->exists()){
+            $pdf_merge = $pdf_merge->get();
+            $pdf = new \Clegginabox\PDFMerger\PDFMerger;
+
+            foreach ($pdf_merge as $obj) {
+                $pdf->addPDF(public_path().'/uploads/pdf_merge/'.$merge_key.'_'.$obj->lineno_.'.pdf', 'all');
+            }
+        }
+
+        $pdf->merge('browser', public_path() . '/uploads/pdf_merge/'.$merge_key.'.pdf', 'P');
     }
     
 }

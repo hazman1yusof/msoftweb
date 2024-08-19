@@ -19,7 +19,8 @@
 </object>
 
 <script>
-	
+	var merge_done = [false,false];
+	var merge_key = makeid(20); 
 	var ini_header={
 				pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_LEFT)}}`,
 				pvdate:`{{\Carbon\Carbon::parse($apacthdr->actdate)->format('d/m/Y')}}`,
@@ -169,6 +170,21 @@
 
 		pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
 			$('#pdfiframe').attr('src',dataURL);
+		});
+
+		pdfMake.createPdf(docDefinition).getBase64(function(dataURL) {
+			var obj = {
+				base64:dataURL,
+				_token:$('#_token').val(),
+				merge_key:merge_key,
+				lineno_:1
+			};
+
+			$.post( '../test/form?action=merge_pdf',$.param(obj) , function( data ) {
+			}).done(function(data) {
+				merge_done[0] = true;
+				get_merge_pdf();
+			});
 		});
 	});
 
@@ -499,6 +515,21 @@
 		pdfMake.createPdf(docDefinition_cn).getDataUrl(function(dataURL_cn) {
 			$('#pdfiframe_cn').attr('src',dataURL_cn);
 		});
+
+		pdfMake.createPdf(docDefinition_cn).getBase64(function(dataURL) {
+			var obj = {
+				base64:dataURL,
+				_token:$('#_token').val(),
+				merge_key:merge_key,
+				lineno_:2
+			};
+
+			$.post( '../test/form?action=merge_pdf',$.param(obj) , function( data ) {
+			}).done(function(data){
+				merge_done[1] = true;
+				get_merge_pdf();
+			});
+		});
 	});
 
 	function make_pdf_cn(){
@@ -704,10 +735,40 @@
 
 
 @endif
+function get_merge_pdf(){
+	let execute = true;
+	merge_done.forEach(function(e,i){
+		if(e==false){
+			execute = false
+		}
+	});
+	if(execute){
+		var obj = {
+			action:'get_merge_pdf',
+			merge_key:merge_key,
+		};
+
+		$('#pdfiframe_merge').attr('src',"../test/table?"+$.param(obj));
+	}
+}
+
+function makeid(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result;
+}
+
 
 </script>
 
 <body style="margin: 0px;">
+<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
 @if(is_object($CN_obj))
 <div class="ui segments" style="width: 18vw;height: 50vh;float: left; margin: 10px; position: fixed;">
@@ -723,6 +784,7 @@
 </div>
 <iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;"></iframe>
 <iframe id="pdfiframe_cn" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;"></iframe>
+<iframe id="pdfiframe_merge" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;"></iframe>
 
 @else
 <iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="height: 99vh;float: right;"></iframe>

@@ -215,6 +215,8 @@ i.fa {
 							<select id="d_recstatus" name="dtl_recstatus" class="form-control input-sm">
 							    <option value="SUPPORT">SUPPORT</option>
 							    <option value="VERIFIED">VERIFIED</option>
+							    <option value="RECOMMENDED1">RECOMMENDED 1</option>
+							    <option value="RECOMMENDED2">RECOMMENDED 2</option>
 							    <option value="APPROVED">APPROVED</option>
 							</select>
 						</div>	

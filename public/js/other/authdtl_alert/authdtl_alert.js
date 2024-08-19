@@ -279,10 +279,10 @@ function authdtl_alert_click_mobile(type,trantype,recno){
 			open_mobile_page('purchaseOrder_mobile?scope='+trantype+'&recno='+recno);
 			break;
 		case 'pv':
-			open_mobile_page('paymentVoucher_mobile?scope='+trantype+'&auditno='+recno);
+			open_mobile_page('paymentVoucher_mobile?scope='+trantype+'&auditno='+recno+'&type=PV');
 			break;
 		case 'pd':
-			open_mobile_page('paymentVoucher_mobile?scope='+trantype+'&auditno='+recno);
+			open_mobile_page('paymentVoucher_mobile?scope='+trantype+'&auditno='+recno+'&type=PD');
 			break;
 		case 'so':
 			open_mobile_page('SalesOrder_mobile?scope='+trantype+'&auditno='+recno);

@@ -337,7 +337,7 @@ $("#jqGrid2").jqGrid({
 			 editable: true,
                  edittype: "select",
                  editoptions: {
-                     value: "SUPPORT:SUPPORT;VERIFIED:VERIFIED;RECOMMENDED1:RECOMMENDED1;RECOMMENDED2:RECOMMENDED2;APPROVED:APPROVED"
+                     value: "SUPPORT:SUPPORT;VERIFIED:VERIFIED;RECOMMENDED1:RECOMMENDED 1;RECOMMENDED2:RECOMMENDED 2;APPROVED:APPROVED"
                  }
 		},
 	
@@ -935,7 +935,7 @@ $("#gridAuthdtl").jqGrid({
 				 editable: true,
                      edittype: "select",
                      editoptions: {
-                         value: "SUPPORT:SUPPORT;VERIFIED:VERIFIED;RECOMMENDED1:RECOMMENDED1;RECOMMENDED2:RECOMMENDED2;APPROVED:APPROVED"
+                         value: "SUPPORT:SUPPORT;VERIFIED:VERIFIED;RECOMMENDED1:RECOMMENDED 1;RECOMMENDED2:RECOMMENDED 2;APPROVED:APPROVED"
                      }
 			},
 			{ label: 'Recstatus', name: 'dtl_cando', width: 150, classes: 'wrap', canSearch: true, editable: true,

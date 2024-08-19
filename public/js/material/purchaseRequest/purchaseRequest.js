@@ -116,7 +116,7 @@ $(document).ready(function () {
 
 	var recstatus_filter = [['OPEN','PREPARED','PARTIAL']];
 	if($("#recstatus_use").val() == 'ALL'){
-		recstatus_filter = [['OPEN','PREPARED','SUPPORT','INCOMPLETED','VERIFIED','APPROVED','CANCELLED','COMPLETED','PARTIAL']];
+		recstatus_filter = [['OPEN','PREPARED','SUPPORT','INCOMPLETED','VERIFIED','APPROVED','CANCELLED','COMPLETED','PARTIAL','RECOMMENDED1','RECOMMENDED2']];
 		filterCol_urlParam = ['purreqhd.compcode'];
 		filterVal_urlParam = ['session.compcode'];
 	}else if($("#recstatus_use").val() == 'SUPPORT'){
@@ -127,8 +127,16 @@ $(document).ready(function () {
 		recstatus_filter = [['SUPPORT']];
 		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
 		filterVal_urlParam = ['session.compcode','session.username'];
-	}else if($("#recstatus_use").val() == 'APPROVED'){
+	}else if($("#recstatus_use").val() == 'RECOMMENDED1'){
 		recstatus_filter = [['VERIFIED']];
+		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
+		filterVal_urlParam = ['session.compcode','session.username'];
+	}else if($("#recstatus_use").val() == 'RECOMMENDED2'){
+		recstatus_filter = [['RECOMMENDED1']];
+		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
+		filterVal_urlParam = ['session.compcode','session.username'];
+	}else if($("#recstatus_use").val() == 'APPROVED'){
+		recstatus_filter = [['VERIFIED','RECOMMENDED1','RECOMMENDED2']];
 		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
 		filterVal_urlParam = ['session.compcode','session.username'];
 	}
@@ -670,6 +678,13 @@ $(document).ready(function () {
 				urlParam.searchCol=searchCol;
 				urlParam.searchVal=searchVal;
 			}
+
+			if($("#recstatus_use").val() == 'APPROVED'){
+				urlParam.filterCol[1] = null; 
+				urlParam.filterVal[1] = null; 
+				urlParam.WhereInCol = ['purreqhd.recstatus'];
+				urlParam.WhereInVal = [['VERIFIED','RECOMMENDED1','RECOMMENDED2']];
+			}
 			once=false;
 		}
 
@@ -1022,13 +1037,44 @@ $(document).ready(function () {
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
 
-		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+		if(options.gid != "jqGrid"){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
-		}else{
-			return ' ';
 		}
+		if($('#recstatus_use').val() == 'ALL'){
+			if(rowObject.purreqhd_recstatus == "OPEN"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'SUPPORT'){
+			if(rowObject.purreqhd_recstatus == "PREPARED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'VERIFIED'){
+			if(rowObject.purreqhd_recstatus == "SUPPORT"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'RECOMMENDED1'){
+			if(rowObject.purreqhd_recstatus == "VERIFIED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'RECOMMENDED2'){
+			if(rowObject.purreqhd_recstatus == "RECOMMENDED1"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'APPROVED'){
+			if(rowObject.purreqhd_recstatus == "VERIFIED" || rowObject.purreqhd_recstatus == "RECOMMENDED1" || rowObject.purreqhd_recstatus == "RECOMMENDED2"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'CANCEL'){
+			if(rowObject.purreqhd_recstatus == "OPEN"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'REOPEN'){
+			if(rowObject.purreqhd_recstatus == "CANCELLED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}
+
+		return ' ';
 	}
 
 	var butt1_rem = 

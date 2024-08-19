@@ -72,7 +72,6 @@ class SalesOrderController extends defaultController
         // dd($db_dt->get());
 
         return view('finance.SalesOrder.SalesOrder_mobile',compact('db_hd','db_dt','scope','oper'));
-
     }
 
     public function table(Request $request){   
