@@ -434,6 +434,7 @@ Route::get('/purchaseRequestDetail/table','material\PurchaseRequestDetailControl
 
 //// purchase Order setup page ///
 Route::get('/purchaseOrder','material\PurchaseOrderController@show');
+Route::get('/purchaseOrder_mobile','material\purchaseOrderController@show_mobile');
 Route::get('/purchaseOrder/table','material\PurchaseOrderController@table');
 Route::post('/purchaseOrder/form','material\PurchaseOrderController@form');
 Route::get('/purchaseOrder/form','material\PurchaseOrderController@form');

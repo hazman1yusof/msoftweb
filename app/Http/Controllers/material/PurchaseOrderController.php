@@ -15,13 +15,11 @@ use App\Jobs\SendEmailPR;
 
 class PurchaseOrderController extends defaultController
 {   
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware('auth');
     }
 
-    public function show(Request $request)
-    {   
+    public function show(Request $request){   
         $purdept = DB::table('sysdb.department')
                         ->select('deptcode')
                         ->where('compcode',session('compcode'))
@@ -31,8 +29,61 @@ class PurchaseOrderController extends defaultController
         return view('material.purchaseOrder.purchaseOrder',compact('purdept'));
     }
 
-    public function form(Request $request)
-    {   
+    public function show_mobile(Request $request){   
+        $oper = strtolower($request->scope);
+        $scope = ucfirst(strtolower($request->scope));
+        $recno = $request->recno;
+        $purordhd = DB::table('material.purordhd as pohd')
+                        ->select('pohd.idno','pohd.recno','pohd.prdept','dept_pr.description as reqdept_desc','pohd.deldept','dept_del.description as prdept_desc','pohd.purreqno','pohd.purdate','pohd.totamount','pohd.suppcode','supp.Name as suppcode_desc','pohd.recstatus','pohd.remarks')
+                        ->leftjoin('sysdb.department as dept_del', function($join) use ($request){
+                            $join = $join
+                                ->where('dept_del.compcode',session('compcode'))
+                                ->on('dept_del.deptcode','pohd.deldept');
+                        })
+                        ->leftjoin('sysdb.department as dept_pr', function($join) use ($request){
+                            $join = $join
+                                ->where('dept_pr.compcode',session('compcode'))
+                                ->on('dept_pr.deptcode','pohd.prdept');
+                        })
+                        ->leftjoin('material.supplier as supp', function($join) use ($request){
+                            $join = $join
+                                ->where('supp.compcode',session('compcode'))
+                                ->on('supp.SuppCode','pohd.suppcode');
+                        })
+                        ->where('pohd.compcode',session('compcode'))
+                        ->where('pohd.recno',$recno)
+                        ->first();
+
+        $purorddt = DB::table('material.purorddt as podt')
+                        ->select('podt.lineno_','podt.pricecode','psrc.description as pricecode_desc','podt.itemcode','pmast.description as itemcode_desc','podt.uomcode','uom.description as uom_desc','podt.pouom','pouom.description as pouom_desc','podt.qtyorder','podt.unitprice','podt.totamount','podt.remarks')
+                        ->leftjoin('material.pricesource as psrc', function($join) use ($request){
+                            $join = $join
+                                ->where('psrc.compcode',session('compcode'))
+                                ->on('psrc.pricecode','podt.pricecode');
+                        })
+                        ->leftjoin('material.productmaster as pmast', function($join) use ($request){
+                            $join = $join
+                                ->where('pmast.compcode',session('compcode'))
+                                ->on('pmast.itemcode','podt.itemcode');
+                        })
+                        ->leftjoin('material.uom as uom', function($join) use ($request){
+                            $join = $join
+                                ->where('uom.compcode',session('compcode'))
+                                ->on('uom.uomcode','podt.uomcode');
+                        })
+                        ->leftjoin('material.uom as pouom', function($join) use ($request){
+                            $join = $join
+                                ->where('pouom.compcode',session('compcode'))
+                                ->on('pouom.uomcode','podt.pouom');
+                        })
+                        ->where('podt.compcode',session('compcode'))
+                        ->where('podt.recno',$recno)
+                        ->get();
+
+        return view('material.purchaseOrder.purchaseOrder_mobile',compact('purordhd','purorddt','scope','oper'));
+    }
+
+    public function form(Request $request){   
         switch($request->oper){
             case 'add':
                 return $this->add($request);
@@ -42,18 +93,18 @@ class PurchaseOrderController extends defaultController
                 return $this->del($request);
             case 'posted':
                 return $this->posted($request);
-            case 'reopen_single':
+            case 'reopen':
                 return $this->reopen($request);
-            case 'soft_cancel':
-                return $this->soft_cancel($request);
             case 'support':
                 return $this->support($request);
             case 'verify':
                 return $this->verify($request);
             case 'approved':
                 return $this->approved($request);
-            case 'cancel_single':
+            case 'cancel':
                 return $this->cancel($request);
+            case 'reject':
+                return $this->reject($request);
             case 'refresh_do':
                 return $this->refresh_do($request);
             case 'add_from_pr':
@@ -286,8 +337,6 @@ class PurchaseOrderController extends defaultController
                 if($purordhd_get->recstatus != 'OPEN'){
                     continue;
                 }
-
-                $this->need_upd_purreq($value);
             
                 DB::table("material.queuepo")
                     ->insert([
@@ -350,26 +399,45 @@ class PurchaseOrderController extends defaultController
 
         try{
 
-            $purordhd = DB::table("material.purordhd")
-                ->where('idno','=',$request->idno);
+            foreach ($request->idno_array as $value){
 
-            $purordhd_get = $purordhd->first();
+                $purordhd = DB::table("material.purordhd")
+                            ->where('idno','=',$value);
 
-            $purordhd->update([
-                    'recstatus' => 'OPEN'
-                ]);
+                $purordhd_get = $purordhd->first();
 
-            DB::table("material.purorddt")
-                ->where('recno','=',$purordhd_get->recno)
-                ->update([
+                if($purordhd_get->recstatus != 'CANCELLED'){
+                    continue;
+                }
+
+                $purordhd->update([
                     'recstatus' => 'OPEN',
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'requestby' => null,
+                    'requestdate' => null,
+                    'supportby' => null,
+                    'supportdate' => null,
+                    'support_remark' => null,
+                    'verifiedby' => null,
+                    'verifieddate' => null,
+                    'verified_remark' => null,
+                    'approvedby' => null,
+                    'approveddate' => null,
+                    'approved_remark' => null,
                 ]);
 
-            DB::table("material.queuepo")
-                ->where('recno','=',$purordhd_get->recno)
-                ->delete();
+                DB::table("material.purorddt")
+                    ->where('recno','=',$purordhd_get->recno)
+                    ->update([
+                        'recstatus' => 'OPEN',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+                DB::table("material.queuepo")
+                    ->where('recno','=',$purordhd_get->recno)
+                    ->delete();
+
+            }
 
             DB::commit();
         
@@ -384,6 +452,30 @@ class PurchaseOrderController extends defaultController
         DB::beginTransaction();
 
         try{
+
+            foreach ($request->idno_array as $value){
+
+                $purordhd = DB::table("material.purordhd")
+                            ->where('idno','=',$value);
+
+                $purordhd_get = $purordhd->first();
+
+                if($purordhd_get->recstatus != 'OPEN'){
+                    continue;
+                }
+
+                $purordhd->update([
+                    'recstatus' => 'CANCELLED'
+                ]);
+
+                DB::table("material.purorddt")
+                    ->where('recno','=',$purordhd_get->recno)
+                    ->update([
+                        'recstatus' => 'CANCELLED',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }
 
             $purordhd = DB::table("material.purordhd")
                 ->where('idno','=',$request->idno);
@@ -429,7 +521,62 @@ class PurchaseOrderController extends defaultController
 
             return response($e->getMessage(), 500);
         }
-    }                      
+    }
+
+    public function reject(Request $request){
+        DB::beginTransaction();
+
+        try{
+
+            foreach ($request->idno_array as $value){
+
+                $purordhd = DB::table("material.purordhd")
+                    ->where('idno','=',$value);
+
+                $purordhd_get = $purordhd->first();
+                if(!in_array($purordhd_get->recstatus, ['SUPPORT','VERIFIED','APPROVED'])){
+                    continue;
+                }
+
+                $purordhd_update = [
+                    'recstatus' => 'CANCELLED',
+                    'cancelby' => session('username'),
+                    'canceldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                ];
+
+                if(!empty($request->remarks)){
+                    $purordhd_update['cancelled_remark'] = $request->remarks;
+                }
+
+                $purordhd->update($purordhd_update);
+
+                DB::table("material.purorddt")
+                    ->where('recno','=',$purordhd_get->recno)
+                    ->update([
+                        'recstatus' => 'CANCELLED'
+                    ]);
+
+                DB::table("material.queuepo")
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$purordhd_get->recno)
+                    ->update([
+                        'AuthorisedID' => $purordhd_get->adduser,
+                        'recstatus' => 'CANCELLED',
+                        'trantype' => 'REOPEN',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+            }
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }                
 
     public function support(Request $request){
          DB::beginTransaction();
@@ -641,6 +788,8 @@ class PurchaseOrderController extends defaultController
                     continue;
                 }
 
+                $this->need_upd_purreq($value);
+
                 $authorise = DB::table('material.authdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('authorid','=',session('username'))
@@ -839,7 +988,7 @@ class PurchaseOrderController extends defaultController
                 'itemcode' => $value->itemcode, 
                 'uomcode' => $value->uomcode, 
                 'pouom' => $value->pouom, 
-                'qtyorder' => 0, 
+                'qtyorder' => $value->qtyrequest, 
                 'qtydelivered' => 0,
                 'qtyoutstand' => $value->qtybalance,
                 'qtyrequest' => $value->qtyrequest,

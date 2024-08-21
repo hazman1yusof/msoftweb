@@ -89,40 +89,41 @@ class JournalEntryDetailController extends defaultController
                 ]);
 
             // 3. calculate total amount for dr/cr
-                if($request->drcrsign == 'DR'){
-                    // dd($request->drcrsign);
-                    $totalAmountDR = DB::table('finance.gljnldtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('auditno','=',$auditno)
-                        ->where('recstatus','!=','DELETE')
-                        ->sum('amount');
-                    // dd($totalAmountDR);
-                } else {
+            $totalAmountDR = DB::table('finance.gljnldtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$auditno)
+                ->where('drcrsign','=','DR')
+                ->where('recstatus','!=','DELETE')
+                ->sum('amount');
 
-                    $totalAmountCR = DB::table('finance.gljnldtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('auditno','=',$auditno)
-                        ->where('recstatus','!=','DELETE')
-                        ->sum('amount');
-                
-                }
-                //4. update different dr/cr
-                     DB::table('finance.gljnlhdr')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('auditno','=',$auditno)
-                        ->update([
-                            // 'creditAmt' => $totalAmountCR,
-                            // 'debitAmt' => $totalAmountDR,
-                            'different' => $totalAmountDR-$totalAmountCR, 
-                        ]);
+            $totalAmountCR = DB::table('finance.gljnldtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$auditno)
+                ->where('drcrsign','=','CR')
+                ->where('recstatus','!=','DELETE')
+                ->sum('amount');
+            
+            //4. update different dr/cr
+            DB::table('finance.gljnlhdr')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$auditno)
+                ->update([
+                    'creditAmt' => $totalAmountCR,
+                    'debitAmt' => $totalAmountDR,
+                    'different' => $totalAmountDR-$totalAmountCR, 
+                ]);
+
+
+            DB::commit();
 
             $responce = new stdClass();
             $responce->totalAmountDR = $totalAmountDR;
             $responce->totalAmountCR = $totalAmountCR;
+            $responce->different = $totalAmountDR-$totalAmountCR;
             $responce->auditno = $auditno;
 
-            DB::commit();
-            
+            return json_encode($responce);
+
         } catch (\Exception $e) {
             DB::rollback();
 

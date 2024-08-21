@@ -58,6 +58,7 @@ $(document).ready(function () {
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
+					gljnlhdr_docdate_getYM();
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();
@@ -75,8 +76,8 @@ $(document).ready(function () {
 				}
 				if(oper!='add'){
 					refreshGrid("#jqGrid2",urlParam2);
-	
 				}
+
 			},
 			beforeClose: function(event, ui){
 				mycurrency.formatOff();
@@ -183,6 +184,8 @@ $(document).ready(function () {
 			{ label: 'upduser', name: 'gljnlhdr_upduser', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upddate', name: 'gljnlhdr_upddate', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'source', name: 'gljnlhdr_source', width: 40, hidden:'true'},
+			{ label: 'debitAmt', name: 'gljnlhdr_debitAmt', width: 40, hidden:'true'},
+			{ label: 'creditAmt', name: 'gljnlhdr_creditAmt', width: 40, hidden:'true'},
             { label: 'trantype', name: 'gljnlhdr_trantype', width: 40, hidden:'true'},
             { label: 'docno', name: 'gljnlhdr_docno', width: 40, hidden:'true'},
             { label: 'year', name: 'gljnlhdr_year', width: 40, hidden:'true'},
@@ -426,11 +429,14 @@ $(document).ready(function () {
 	
 	///////////retrieve month & year///////////////////
 	$('#gljnlhdr_docdate').on('change',function(){
+		gljnlhdr_docdate_getYM();
+	});
+	function gljnlhdr_docdate_getYM(){
 		var month = moment($('#gljnlhdr_docdate').val()).format("M");
 		var year = moment($('#gljnlhdr_docdate').val()).format("Y");
 		$('#gljnlhdr_period').val(month);
 		$('#gljnlhdr_year').val(year);
-	});
+	}
 	//////////////////////////////////////////////////////
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
@@ -722,7 +728,9 @@ $(document).ready(function () {
         aftersavefunc: function (rowid, response, options) {
 			var resobj = JSON.parse(response.responseText);
 			// $('#gljnlhdr_auditno').val(resobj.auditno);
-        	$('#gljnlhdr_different').val(resobj.different);
+        	$('#gljnlhdr_creditAmt').val(numeral(resobj.totalAmountCR).format('0,0'));
+        	$('#gljnlhdr_debitAmt').val(numeral(resobj.totalAmountDR).format('0,0'));
+        	$('#gljnlhdr_different').val(numeral(resobj.different).format('0,0'));
         	mycurrency.formatOn();
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
 

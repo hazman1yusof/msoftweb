@@ -1515,21 +1515,21 @@ $(document).ready(function (){
 		let qtyonhand = parseFloat($("#"+id_optid+"_qtyonhand").val());
 		let st_idno = $("#jqGrid2 #"+id_optid+"_chggroup").data('st_idno');
 
-        if(alledit != 'true'){
-            if(qtyonhand<quantity && st_idno!=''){
-                myfail_msg.add_fail({
-                    id:'qtyonhand',
-                    textfld:"#jqGrid2 #"+id_optid+"_quantity",
-                    msg:"Quantity Request must be greater than quantity on hand",
-                });
-            }else{
-                myfail_msg.del_fail({
-                    id:'qtyonhand',
-                    textfld:"#jqGrid2 #"+id_optid+"_quantity",
-                    msg:"Quantity Request must be greater than quantity on hand",
-                });
-            }
-        }
+        // if(alledit != 'true'){
+        //     if(qtyonhand<quantity && st_idno!=''){
+        //         myfail_msg.add_fail({
+        //             id:'qtyonhand',
+        //             textfld:"#jqGrid2 #"+id_optid+"_quantity",
+        //             msg:"Quantity Request must be greater than quantity on hand",
+        //         });
+        //     }else{
+        //         myfail_msg.del_fail({
+        //             id:'qtyonhand',
+        //             textfld:"#jqGrid2 #"+id_optid+"_quantity",
+        //             msg:"Quantity Request must be greater than quantity on hand",
+        //         });
+        //     }
+        // }
 
 		let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
 		let billtypeperct = 100 - parseFloat($("#"+id_optid+"_billtypeperct").val());

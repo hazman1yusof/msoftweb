@@ -117,6 +117,8 @@ i.fa {
 									<option value="RECOMMENDED2">RECOMMENDED 2</option>
 								@elseif (Request::get('scope') == 'REOPEN')
 									<option value="CANCELLED">CANCELLED</option>
+								@elseif (Request::get('scope') == 'CANCEL')
+									<option value="OPEN">OPEN</option>
 								@endif
 					    </select>
 	            </div>
@@ -152,6 +154,10 @@ i.fa {
 						$scope_use = 'recommended2';
 					}else if(Request::get('scope') == 'APPROVED'){
 						$scope_use = 'approved';
+					}else if(Request::get('scope') == 'REOPEN'){
+						$scope_use = 'reopen';
+					}else if(Request::get('scope') == 'CANCEL'){
+						$scope_use = 'cancel';
 					}
 				?>
 

@@ -102,18 +102,23 @@ div#fail_msg{
 					      @if (Request::get('scope') == 'ALL')
 						      <option value="All" selected>ALL</option>
 						      <option value="OPEN">OPEN</option>
-						      <option value="REQUEST">REQUEST</option>
+						      <option value="CANCELLED">CANCELLED</option>
+						      <option value="PREPARED">PREPARED</option>
 						      <option value="SUPPORT">SUPPORT</option>
 						      <option value="VERIFIED">VERIFIED</option>
 						      <option value="APPROVED">APPROVED</option>
 						      <option value="COMPLETED">COMPLETED</option>
 						      <option value="PARTIAL">PARTIAL</option>
 								@elseif (Request::get('scope') == 'SUPPORT')
-									<option value="REQUEST">REQUEST</option>
+									<option value="PREPARED">PREPARED</option>
 								@elseif (Request::get('scope') == 'VERIFIED')
 									<option value="SUPPORT">SUPPORT</option>
 								@elseif (Request::get('scope') == 'APPROVED')
 									<option value="VERIFIED">VERIFIED</option>
+								@elseif (Request::get('scope') == 'REOPEN')
+									<option value="CANCELLED">CANCELLED</option>
+								@elseif (Request::get('scope') == 'CANCEL')
+									<option value="OPEN">OPEN</option>
 								@endif
 					    </select>
 	      		</div>
@@ -145,11 +150,21 @@ div#fail_msg{
 						$scope_use = 'verify';
 					}else if(Request::get('scope') == 'APPROVED'){
 						$scope_use = 'approved';
+					}else if(Request::get('scope') == 'REOPEN'){
+						$scope_use = 'reopen';
+					}else if(Request::get('scope') == 'CANCEL'){
+						$scope_use = 'cancel';
 					}
 				?>
 
+
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
+
+					@if (Request::get('scope') != 'ALL' && Request::get('scope') != 'REOPEN' && Request::get('scope') != 'CANCEL')
+					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">REJECT</button>
+					@endif
+
 					<span id="error_infront" style="color: red"></span>
 					<!-- <button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button> -->
 					<button 
@@ -159,9 +174,9 @@ div#fail_msg{
 						data-oper="{{$scope_use}}" 
 						style="display: none;">
 						@if (Request::get('scope') == 'ALL')
-							{{'POST'}}
+							{{'PREPARED'}}
 						@else
-							{{Request::get('scope').' ALL'}}
+							{{Request::get('scope')}}
 						@endif
 					</button>
 					<!-- <button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
@@ -482,16 +497,19 @@ div#fail_msg{
 								<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_supportby">Support By</label>
 									<input id="purordhd_supportby" name="purordhd_supportby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  		<i class="fa fa-info-circle my_remark" aria-hidden="true" id='support_remark_i'></i>
 								</div>
 
 									<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_verifiedby">Verified By</label>  
 									<input id="purordhd_verifiedby" name="purordhd_verifiedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  		<i class="fa fa-info-circle my_remark" aria-hidden="true" id='verified_remark_i'></i>
 								</div>
 
 								<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_approvedby">Approved By</label>
 									<input id="purordhd_approvedby" name="purordhd_approvedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  		<i class="fa fa-info-circle my_remark" aria-hidden="true" id='approved_remark_i'></i>
 								</div>
 
 									<div class="col-md-2 minuspad-15">
@@ -568,6 +586,23 @@ div#fail_msg{
 			</div>
 			</div>
 		</div>
+
+		<div id="dialog_remarks_oper" title="Remarks">
+		  <div class="panel panel-default">
+		    <div class="panel-body">
+		    	<textarea id='remarks_oper' name='remarks_oper' rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
+		    </div>
+		  </div>
+		</div>
+
+		<div id="dialog_remarks_view" title="Remarks">
+		  <div class="panel panel-default">
+		    <div class="panel-body">
+		    	<textarea id='remarks_view' name='remarks_view' readonly rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
+		    </div>
+		  </div>
+		</div>
+
 	</div>
 
 @endsection

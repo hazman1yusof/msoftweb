@@ -114,7 +114,7 @@
 
 		</div>
 
-		<div id="authdtl_alert_div" class="panel-body">
+		<div id="authdtl_alert_div" class="row">
 		</div>
 
 		<!-- <div class='col-lg-3 col-md-6'>

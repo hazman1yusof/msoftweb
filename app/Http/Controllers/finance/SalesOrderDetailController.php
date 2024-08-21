@@ -1633,12 +1633,30 @@ class SalesOrderDetailController extends defaultController
 
                     // $this->sysdb_log('update',$billsum_lama,'sysdb.billsumlog');
 
+                    $stockloc = DB::table('material.stockloc')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('uomcode','=',$value['uom'])
+                            ->where('itemcode','=',$value['chggroup'])
+                            ->where('deptcode','=',$dbacthdr->deptcode)
+                            ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+
+                    if($stockloc->exists()){
+                        $stockloc = $stockloc->first();
+                    }else{
+                        throw new \Exception("Stockloc not exists for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
+                    }
+
+                    $qtyonhand = $stockloc->qtyonhand;
                     $quantity = floatval($value['quantity']);
                     $amount = $value['unitprice'] * $quantity;
                     $discamt = ($amount * (100-$value['billtypeperct']) / 100) + $value['billtypeamt'];
                     $rate = $this->taxrate($value['taxcode']);
                     $taxamt = $amount * $rate / 100;
                     $totamount = $amount - $discamt + $taxamt;
+
+                    if($quantity > $qtyonhand){
+                        throw new \Exception("Quantity exceed quantity on hand for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
+                    }
 
                     DB::table('debtor.billsum')
                             ->where('compcode','=',session('compcode'))

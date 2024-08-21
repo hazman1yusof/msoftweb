@@ -1408,9 +1408,9 @@ class Quotation_SO_DetailController extends defaultController
             
             $li=intval($sqlln)+1;
 
-            if($request->quantity > $request->qtyonhand){
-                throw new \Exception("Qty request cant be bigger than qty on hand!",500);
-            }
+            // if($request->quantity > $request->qtyonhand){
+            //     throw new \Exception("Qty request cant be bigger than qty on hand!",500);
+            // }
             
             ///2. insert detail
             DB::table('finance.salesum')

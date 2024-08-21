@@ -251,7 +251,7 @@ $(document).ready(function () {
 			{ label: 'PO Date', name: 'db_podate', width: 12, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true, formatter: dateFormatter },
 			{ label: 'Department Code', name: 'db_deptcode', width: 18, canSearch: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Status', name: 'db_recstatus', width: 10 },
+			{ label: 'Status', name: 'db_recstatus', width: 10 , formatter: recstatus_formatter, unformat:recstatus_unformatter},
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
@@ -1921,6 +1921,7 @@ $(document).ready(function () {
 		{
 			colModel: [
 				{ label: 'Quote no', name: 'quoteno', width: 150, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Recstatus', name: 'recstatus', width: 150, classes: 'pointer' },
 				{ label: 'Debtor Code', name: 'debtorcode', width: 150, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
 				{ label: 'Debtor Name', name: 'name', width: 400, classes: 'pointer' },
 				{ label: 'Document Date', name: 'entrydate',formatter: dateFormatter, unformat: dateUNFormatter, width: 150, classes: 'pointer' },
@@ -2726,6 +2727,23 @@ function unformatstatus_tick2(cellvalue, option, rowObject) {
 	}else{
 		return '0';
 	}
+}
+
+function recstatus_formatter(cellvalue, option, rowObject){
+	if (cellvalue == 'POSTED') {
+		return 'DELIVERED';
+	}else{
+		return cellvalue;
+	}
+}
+
+function recstatus_unformatter(cellvalue, option, rowObject){
+	if (cellvalue == 'DELIVERED') {
+		return 'POSTED';
+	}else{
+		return cellvalue;
+	}
+	
 }
 
 function fail_msg_func(fail_msg_div=null){

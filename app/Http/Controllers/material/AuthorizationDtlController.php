@@ -79,6 +79,20 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                     ->where('qpr.trantype','<>','DONE')
                     ->get();
 
+        $queuepr_reject = DB::table('material.queuepr as qpr')
+                    ->select('qpr.trantype','prhd.recno','prhd.reqdept','prhd.cancelby','prhd.canceldate','prhd.recstatus','prhd.totamount','prhd.adduser')
+                    ->join('material.purreqhd as prhd', function($join) use ($request){
+                        $join = $join
+                            ->where('prhd.compcode',session('compcode'))
+                            ->on('prhd.recno','qpr.recno')
+                            ->on('prhd.recstatus','qpr.recstatus');
+                    })
+                    ->where('qpr.compcode',session('compcode'))
+                    ->where('qpr.trantype','REOPEN')
+                    ->get();
+
+        $queuepr = $queuepr->merge($queuepr_reject);
+
         $queuepo = DB::table('material.queuepo as qpo')
                     ->select('qpo.trantype','adtl.authorid','pohd.recno','pohd.prdept','pohd.purordno','pohd.purdate','pohd.recstatus','pohd.totamount','pohd.adduser')
                     ->join('material.authdtl as adtl', function($join) use ($request){
@@ -107,6 +121,20 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                     ->where('qpo.compcode',session('compcode'))
                     ->where('qpo.trantype','<>','DONE')
                     ->get();
+
+        $queuepo_reject = DB::table('material.queuepo as qpo')
+                    ->select('qpo.trantype','pohd.recno','pohd.prdept','pohd.cancelby','pohd.canceldate','pohd.recstatus','pohd.totamount','pohd.adduser')
+                    ->join('material.purordhd as pohd', function($join) use ($request){
+                        $join = $join
+                            ->where('pohd.compcode',session('compcode'))
+                            ->on('pohd.recno','qpo.recno')
+                            ->on('pohd.recstatus','qpo.recstatus');
+                    })
+                    ->where('qpo.compcode',session('compcode'))
+                    ->where('qpo.trantype','REOPEN')
+                    ->get();
+
+        $queuepo = $queuepo->merge($queuepo_reject);
 
         $queuepv = DB::table('finance.queuepv as qpv')
                     ->select('qpv.trantype','prdtl.authorid','apact.auditno','apact.suppcode','supp.Name','apact.actdate','apact.recstatus','apact.amount','apact.adduser')

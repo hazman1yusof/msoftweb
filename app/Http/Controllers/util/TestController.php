@@ -20,11 +20,11 @@ class TestController extends defaultController
     }
 
     public function show(Request $request){
-        $pdf = new \Clegginabox\PDFMerger\PDFMerger;
-        $pdf->addPDF(public_path() . '/uploads/pdf_merge/pdf1.pdf', 'all');
-        $pdf->addPDF(public_path() . '/uploads/pdf_merge/pdf2.pdf', 'all');
+        // $pdf = new \Clegginabox\PDFMerger\PDFMerger;
+        // $pdf->addPDF(public_path() . '/uploads/pdf_merge/pdf1.pdf', 'all');
+        // $pdf->addPDF(public_path() . '/uploads/pdf_merge/pdf2.pdf', 'all');
 
-        $pdf->merge('file', public_path() . '/uploads/pdf_merge/merge_pdf.pdf', 'P');
+        // $pdf->merge('file', public_path() . '/uploads/pdf_merge/merge_pdf.pdf', 'P');
 
         return view('test.test');
     }
@@ -453,13 +453,6 @@ class TestController extends defaultController
     }
 
     public function get_merge_pdf(Request $request){
-        // Storage::disk('pdf_merge')->put($request->merge_key.'_'.$request->lineno_.'.pdf',base64_decode($request->base64));
-        // DB::table('sysdb.pdf_merge')
-        //     ->insert([
-        //         'compcode' => session('compcode'),
-        //         'merge_key' => $request->merge_key,
-        //         'lineno_' => $request->lineno_,
-        //     ]);
         $merge_key = $request->merge_key;
         $pdf_merge = DB::table('sysdb.pdf_merge')
                         ->where('compcode',session('compcode'))

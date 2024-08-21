@@ -371,11 +371,22 @@ class SalesOrderController extends defaultController
             // $li=intval($sqlln)+1;
 
             $quantity = floatval($value->quantity) - floatval($value->qtydelivered);
-            $amount = $value->unitprice * $quantity;
-            $discamt = ($amount * (100-$value->billtypeperct) / 100) + $value->billtypeamt;
-            $rate = $this->taxrate($value->taxcode);
-            $taxamt = $amount * $rate / 100;
-            $totamount = $amount - $discamt + $taxamt;
+            if($quantity == 0){
+                continue;
+            }
+            // $amount = $value->unitprice * $quantity;
+            // $discamt = ($amount * (100-$value->billtypeperct) / 100) + $value->billtypeamt;
+            // $rate = $this->taxrate($value->taxcode);
+            // $taxamt = $amount * $rate / 100;
+            // $totamount = $amount - $discamt + $taxamt;
+
+            $stockloc = DB::table('material.stockloc')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('uomcode','=',$value->uom)
+                    ->where('itemcode','=',$value->chggroup)
+                    ->where('deptcode','=',$dbacthdr->deptcode)
+                    ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
+                    ->first();
             
             ///2. insert detail
             $insertGetId = DB::table('debtor.billsum')
@@ -397,14 +408,14 @@ class SalesOrderController extends defaultController
                     'uom_recv' => $value->uom_recv,
                     'taxcode' => $value->taxcode,
                     'unitprice' => $value->unitprice,
-                    'quantity' => $quantity,
-                    'qtyonhand' => $value->qtyonhand,
+                    'quantity' => 0,
+                    'qtyonhand' => $stockloc->qtyonhand,
                     'qtyorder' => $quantity,
-                    'amount' => $amount, //unitprice * quantity, xde tax
-                    'outamt' => $amount,
-                    'totamount' => $totamount,
-                    'discamt' => floatval($discamt),
-                    'taxamt' => floatval($taxamt),
+                    'amount' => 0, //unitprice * quantity, xde tax
+                    'outamt' => 0,
+                    'totamount' => 0,
+                    'discamt' => 0,
+                    'taxamt' => 0,
                     'lastuser' => session('username'), 
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
@@ -1668,7 +1679,7 @@ class SalesOrderController extends defaultController
                         })
                         ->where('sh.compcode',session('compcode'))
                         ->where('sh.deptcode',$request->deptcode)
-                        ->where('sh.recstatus','POSTED');
+                        ->whereIn('sh.recstatus',['POSTED','PARTIAL']);
 
         
         $paginate = $table->paginate($request->rows);
@@ -1762,7 +1773,7 @@ class SalesOrderController extends defaultController
                         ->where('sh.compcode',session('compcode'))
                         ->where('sh.deptcode',$request->deptcode)
                         ->where('sh.quoteno',$quoteno)
-                        ->where('sh.recstatus','POSTED');
+                        ->whereIn('sh.recstatus',['POSTED','PARTIAL']);
         
         $responce = new stdClass();
         $responce->rows = $table->get();

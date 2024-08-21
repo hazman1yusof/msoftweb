@@ -2,6 +2,9 @@ $(document).ready(function(){
 	get_authdtl_alert();
 });
 
+function reload_authdtl_alert(){
+	console.log('reload_authdtl_alert');
+}
 
 function get_authdtl_alert(){
 	$('#authdtl_alert_div').html('');
@@ -25,60 +28,111 @@ function get_authdtl_alert(){
 
 function populate_authdtl_alert_pr(data){
 	data.forEach(function(e,i){
-		var block_pr = `
-		<div class='col-lg-3 col-md-6'>
-			<div class='panel panel-green'>
-				<div class='panel-heading'>
-					<div class='row'>
-						<div class='col-xs-2 nopadleft'><i class='fa fa-archive fa-4x'></i></div>
-						<div class='col-xs-10 text-right'>
-							<div class='huge'>Purchase Request</div>
-							<div><b>Recno: </b><span>`+e.recno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
-							<div><b>Request Dept: </b><span>`+e.reqdept+` - `+e.purreqno+`</span></div>
-							<div><b>Prepared On: </b><span>`+moment(e.purreqdt, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.adduser+`</span></div>
+		if(e.trantype == 'REOPEN'){
+			var block_pr = `
+			<div class='col-md-3'>
+				<div class='panel panel-green'>
+					<div class='panel-heading'>
+						<div class='row'>
+							<div class='col-xs-2 nopadleft'><i class='fa fa-suitcase fa-4x'></i></div>
+							<div class='col-xs-10 text-right'>
+								<div class='huge'><span class='reject_span1'>(Rejected)</span> Purchase Request</div>
+								<div><b>Recno: </b><span>`+e.recno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
+								<div><b>Reject On: </b><span>`+moment(e.canceldate, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.cancelby+`</span></div>
+							</div>
 						</div>
 					</div>
+						<div class='panel-footer'>
+							<a onclick="authdtl_alert_click('pr','`+e.trantype+`','`+e.recno+`')">
+								<span class='pull-left'>Detail</span>
+								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+								<div class='clearfix'></div>
+							</a>
+						</div>
 				</div>
-					<div class='panel-footer'>
-						<a onclick="authdtl_alert_click('pr','`+e.trantype+`','`+e.recno+`')">
-							<span class='pull-left'>Detail</span>
-							<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
-							<div class='clearfix'></div>
-						</a>
+			</div>`;
+		}else{
+			var block_pr = `
+			<div class='col-md-3'>
+				<div class='panel panel-green'>
+					<div class='panel-heading'>
+						<div class='row'>
+							<div class='col-xs-2 nopadleft'><i class='fa fa-archive fa-4x'></i></div>
+							<div class='col-xs-10 text-right'>
+								<div class='huge'>Purchase Request</div>
+								<div><b>Recno: </b><span>`+e.recno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
+								<div><b>Request Dept: </b><span>`+e.reqdept+` - `+e.purreqno+`</span></div>
+								<div><b>Prepared On: </b><span>`+moment(e.purreqdt, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.adduser+`</span></div>
+							</div>
+						</div>
 					</div>
+						<div class='panel-footer'>
+							<a onclick="authdtl_alert_click('pr','`+e.trantype+`','`+e.recno+`')">
+								<span class='pull-left'>Detail</span>
+								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+								<div class='clearfix'></div>
+							</a>
+						</div>
+				</div>
 			</div>
-		</div>
-		`;
+			`;
+		}
 		$('#authdtl_alert_div').append(block_pr);
 	})
 }
 
 function populate_authdtl_alert_po(data){
 	data.forEach(function(e,i){
-		var block_pr = `
-		<div class='col-lg-3 col-md-6'>
-			<div class='panel panel-yellow'>
-				<div class='panel-heading'>
-					<div class='row'>
-						<div class='col-xs-2 nopadleft'><i class='fa fa-suitcase fa-4x'></i></div>
-						<div class='col-xs-10 text-right'>
-							<div class='huge'>Purchase Order</div>
-							<div><b>Recno: </b><span>`+e.recno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
-							<div><b>Request Dept: </b><span>`+e.prdept+` - `+e.purordno+`</span></div>
-							<div><b>Prepared On: </b><span>`+moment(e.purdate, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.adduser+`</span></div>
+		if(e.trantype == 'REOPEN'){
+			var block_pr = `
+			<div class='col-md-3'>
+				<div class='panel panel-yellow'>
+					<div class='panel-heading'>
+						<div class='row'>
+							<div class='col-xs-2 nopadleft'><i class='fa fa-suitcase fa-4x'></i></div>
+							<div class='col-xs-10 text-right'>
+								<div class='huge'><span class='reject_span1'>(Rejected)</span> Purchase Order</div>
+								<div><b>Recno: </b><span>`+e.recno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
+								<div><b>Reject On: </b><span>`+moment(e.canceldate, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.cancelby+`</span></div>
+							</div>
 						</div>
 					</div>
+						<div class='panel-footer'>
+							<a onclick="authdtl_alert_click('po','`+e.trantype+`','`+e.recno+`')">
+								<span class='pull-left'>Detail</span>
+								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+								<div class='clearfix'></div>
+							</a>
+						</div>
 				</div>
-					<div class='panel-footer'>
-						<a onclick="authdtl_alert_click('po','`+e.trantype+`','`+e.recno+`')">
-							<span class='pull-left'>Detail</span>
-							<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
-							<div class='clearfix'></div>
-						</a>
+			</div>`;
+		}else{
+			var block_pr = `
+			<div class='col-md-3'>
+				<div class='panel panel-yellow'>
+					<div class='panel-heading'>
+						<div class='row'>
+							<div class='col-xs-2 nopadleft'><i class='fa fa-suitcase fa-4x'></i></div>
+							<div class='col-xs-10 text-right'>
+								<div class='huge'>Purchase Order</div>
+								<div><b>Recno: </b><span>`+e.recno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
+								<div><b>Request Dept: </b><span>`+e.prdept+` - `+e.purordno+`</span></div>
+								<div><b>Prepared On: </b><span>`+moment(e.purdate, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.adduser+`</span></div>
+							</div>
+						</div>
 					</div>
+						<div class='panel-footer'>
+							<a onclick="authdtl_alert_click('po','`+e.trantype+`','`+e.recno+`')">
+								<span class='pull-left'>Detail</span>
+								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+								<div class='clearfix'></div>
+							</a>
+						</div>
+				</div>
 			</div>
-		</div>
-		`;
+			`;
+
+		}
 		$('#authdtl_alert_div').append(block_pr);
 	})
 }
@@ -87,7 +141,7 @@ function populate_authdtl_alert_pv(data){
 	data.forEach(function(e,i){
 		if(e.trantype == 'REOPEN'){
 			var block_pr = `
-			<div class='col-lg-3 col-md-6'>
+			<div class='col-md-3'>
 				<div class='panel panel-teal'>
 					<div class='panel-heading'>
 						<div class='row'>
@@ -110,7 +164,7 @@ function populate_authdtl_alert_pv(data){
 			</div>`;
 		}else{
 			var block_pr = `
-			<div class='col-lg-3 col-md-6'>
+			<div class='col-md-3'>
 				<div class='panel panel-teal'>
 					<div class='panel-heading'>
 						<div class='row'>
@@ -141,7 +195,7 @@ function populate_authdtl_alert_pd(data){
 	data.forEach(function(e,i){
 		if(e.trantype == 'REOPEN'){
 			var block_pr = `
-			<div class='col-lg-3 col-md-6'>
+			<div class='col-md-3'>
 				<div class='panel panel-grey'>
 					<div class='panel-heading'>
 						<div class='row'>
@@ -164,7 +218,7 @@ function populate_authdtl_alert_pd(data){
 			</div>`;
 		}else{
 			var block_pr = `
-			<div class='col-lg-3 col-md-6'>
+			<div class='col-md-3'>
 				<div class='panel panel-grey'>
 					<div class='panel-heading'>
 						<div class='row'>
@@ -195,7 +249,7 @@ function populate_authdtl_alert_so(data){
 	data.forEach(function(e,i){
 		if(e.trantype == 'REOPEN'){
 			var block_pr = `
-			<div class='col-lg-3 col-md-6'>
+			<div class='col-md-3'>
 				<div class='panel panel-purple'>
 					<div class='panel-heading'>
 						<div class='row'>
@@ -218,7 +272,7 @@ function populate_authdtl_alert_so(data){
 			</div>`;
 		}else{
 			var block_pr = `
-			<div class='col-lg-3 col-md-6'>
+			<div class='col-md-3'>
 				<div class='panel panel-purple'>
 					<div class='panel-heading'>
 						<div class='row'>

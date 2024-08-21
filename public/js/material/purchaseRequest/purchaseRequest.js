@@ -139,7 +139,16 @@ $(document).ready(function () {
 		recstatus_filter = [['VERIFIED','RECOMMENDED1','RECOMMENDED2']];
 		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
 		filterVal_urlParam = ['session.compcode','session.username'];
+	}else if($("#recstatus_use").val() == 'REOPEN'){
+		recstatus_filter = [['CANCELLED']];
+		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
+		filterVal_urlParam = ['session.compcode','session.username'];
+	}else if($("#recstatus_use").val() == 'CANCEL'){
+		recstatus_filter = [['OPEN']];
+		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
+		filterVal_urlParam = ['session.compcode','session.username'];
 	}
+
 
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","purreqhd_idno","purreqhd_recstatus");
 
@@ -268,11 +277,11 @@ $(document).ready(function () {
 			$('#error_infront').text('');
 			let stat = selrowData("#jqGrid").purreqhd_recstatus;
 			let scope = $("#recstatus_use").val();
-			if(scope == 'ALL' && stat == "CANCELLED"){
-				$('#but_reopen_jq').show();
-			}else{
-				$('#but_reopen_jq').hide();
-			}
+			// if(scope == 'ALL' && stat == "CANCELLED"){
+			// 	$('#but_reopen_jq').show();
+			// }else{
+			// 	$('#but_reopen_jq').hide();
+			// }
 
 			// $('#but_post_single_jq,#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 			// if (stat == scope || stat == "CANCELLED") {
@@ -430,7 +439,7 @@ $(document).ready(function () {
 					var obj={};
 					
 					obj.idno_array = idno_array;
-					obj.oper = $("#but_cancel_jq").data('oper');
+					obj.oper = 'reject';
 					obj.remarks = $("#remarks_oper").val();
 					obj._token = $('#_token').val();
 					oper=null;
@@ -464,7 +473,7 @@ $(document).ready(function () {
 		}
 	});
 
-	$("#but_post_jq,#but_reopen_jq,#but_post_single_jq").click(function(){
+	$("#but_post_jq").click(function(){
 		$(this).attr('disabled',true);
 		var self_ = this;
 		var idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');

@@ -31,6 +31,7 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 	var myfail_msg = new fail_msg_func();
 	var myattachment = new attachment_page("purchaseorder","#jqGrid","purordhd_idno");
+	var my_remark_button = new remark_button_class('#jqgrid');
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#purdate"]);
@@ -195,6 +196,14 @@ $(document).ready(function () {
 		recstatus_filter = [['VERIFIED']];
 		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
 		filterVal_urlParam = ['session.compcode','session.username'];
+	}else if($("#recstatus_use").val() == 'REOPEN'){
+		recstatus_filter = [['CANCELLED']];
+		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
+		filterVal_urlParam = ['session.compcode','session.username'];
+	}else if($("#recstatus_use").val() == 'CANCEL'){
+		recstatus_filter = [['OPEN']];
+		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
+		filterVal_urlParam = ['session.compcode','session.username'];
 	}
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","purordhd_idno","purordhd_recstatus",recstatus_filter[0][0]);
 
@@ -330,24 +339,24 @@ $(document).ready(function () {
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
 			let scope = $("#recstatus_use").val();
 
-			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
-			if (stat == scope || stat == "CANCELLED") {
-				$('#but_reopen_jq').show();
-			} else {
-				if(scope == 'ALL'){
-					if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0 && stat=='OPEN'){
-						$('#but_cancel_jq').show();
-					}else if(stat=='OPEN'){
-						$('#but_post_jq').show();
-					}
-				}else{
-					if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
-						$('#but_cancel_jq').show();
-					}else{
-						$('#but_post_jq').show();
-					}
-				}
-			}
+			// $('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			// if (stat == scope || stat == "CANCELLED") {
+			// 	$('#but_reopen_jq').show();
+			// } else {
+			// 	if(scope == 'ALL'){
+			// 		if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0 && stat=='OPEN'){
+			// 			$('#but_cancel_jq').show();
+			// 		}else if(stat=='OPEN'){
+			// 			$('#but_post_jq').show();
+			// 		}
+			// 	}else{
+			// 		if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
+			// 			$('#but_cancel_jq').show();
+			// 		}else{
+			// 			$('#but_post_jq').show();
+			// 		}
+			// 	}
+			// }
 
 			urlParam2.filterVal[0] = selrowData("#jqGrid").purordhd_recno;
 			refreshGrid("#jqGrid3",urlParam2);
@@ -380,7 +389,7 @@ $(document).ready(function () {
 			
 		},
 		gridComplete: function () {
-			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			$('#but_post_jq').hide();
 			if (oper == 'add' || oper == null || $("#jqGrid").data('lastselrow') == undefined) { 
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}else{
@@ -479,24 +488,59 @@ $(document).ready(function () {
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 
-	$("#but_reopen_jq,#but_cancel_jq").click(function(){
-		$(this).attr('disabled',true);
-		var self_ = this;
-		var idno = selrowData('#jqGrid').purordhd_idno;
-		var obj={};
-		obj.idno = idno;
-		obj._token = $('#_token').val();
-		obj.oper = $(this).data('oper')+'_single';
+	$("#dialog_remarks_oper").dialog({
+		autoOpen: false,
+		width: 4/10 * $(window).width(),
+		modal: true,
+		open: function( event, ui ) {
+			$('#remarks_oper').val('');
+		},
+		close: function( event, ui ) {
+			$("#but_cancel_jq").attr('disabled',false);
+		},
+		buttons : [{
+			text: "Submit",click: function() {
+				$("#but_cancel_jq").attr('disabled',true);
+				if($('#remarks_oper').val() == ''){
+					alert('Remarks for rejection is required!');
+				}else{
+					$(this).attr('disabled',true);
+					var idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
+					var obj={};
+					
+					obj.idno_array = idno_array;
+					obj.oper = 'reject';
+					obj.remarks = $("#remarks_oper").val();
+					obj._token = $('#_token').val();
+					oper=null;
+					
+					$.post( './purchaseOrder/form', obj , function( data ) {
+						refreshGrid('#jqGrid', urlParam);
+						$(this).attr('disabled',true);
+						cbselect.empty_sel_tbl();
+					}).fail(function(data) {
+						$('#error_infront').text(data.responseText);
+						$(this).attr('disabled',true);
+					}).success(function(data){
+						$(this).attr('disabled',true);
+					});
+					$(this).dialog('close');
+				}
+			}
+			},{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}]
+	});
 
-		$.post( './purchaseOrder/form', obj , function( data ) {
-			refreshGrid('#jqGrid', urlParam);
-			$(self_).attr('disabled',false);
-		}).fail(function(data) {
-			$('#error_infront').text(data.responseText);
-			$(self_).attr('disabled',false);
-		}).success(function(data){
-			
-		});
+	$("#but_cancel_jq").click(function(){
+		$("#but_cancel_jq").attr('disabled',true);
+		if($(this).data('oper') == 'cancel'){
+			if (confirm("Are you sure to reject this purchase request?") == true) {
+				$("#dialog_remarks_oper").dialog( "open" );
+			}
+		}
 	});
 
 	$("#but_post_jq").click(function(){
@@ -1081,13 +1125,36 @@ $(document).ready(function () {
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
 
-		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+		if(options.gid != "jqGrid"){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
-		}else{
-			return ' ';
 		}
+		if($('#recstatus_use').val() == 'ALL'){
+			if(rowObject.purordhd_recstatus == "OPEN"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'SUPPORT'){
+			if(rowObject.purordhd_recstatus == "PREPARED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'VERIFIED'){
+			if(rowObject.purordhd_recstatus == "SUPPORT"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'APPROVED'){
+			if(rowObject.purordhd_recstatus == "VERIFIED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'CANCEL'){
+			if(rowObject.purordhd_recstatus == "OPEN"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'REOPEN'){
+			if(rowObject.purordhd_recstatus == "CANCELLED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}
+
+		return ' ';
 	}
 
 	var butt1_rem = 
@@ -2684,7 +2751,6 @@ $(document).ready(function () {
 				}, 'json').done(function (data) {
 					if (!$.isEmptyObject(data.rows)) {
 						data.rows.forEach(function(elem) {
-							console.log(elem);
 							$("#jqGrid2").jqGrid('addRowData', elem['lineno_'] ,
 								{
 									compcode:elem['compcode'],
@@ -3675,6 +3741,52 @@ function fail_msg_func(fail_msg_div=null){
 		$(self.fail_msg_div).html('');
 		this.fail_msg_array.forEach(function(e,i){
 			$(self.fail_msg_div).append("<li>"+e.msg+"</li>");
+		});
+	}
+}
+
+function remark_button_class(grid){
+	$("#dialog_remarks_view").dialog({
+		autoOpen: false,
+		width: 4/10 * $(window).width(),
+		modal: true,
+		open: function( event, ui ) {
+		},
+		close: function( event, ui ) {
+			$('#remarks_view').val('');
+		},
+		buttons : [{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}]
+	});
+
+	this.grid=grid;
+	this.selrowdata;
+
+	this.remark_btn_init = function(selrowdata){
+		this.selrowdata = selrowdata;
+		$('i.my_remark').hide();
+		$('i.my_remark').off('click');
+		if(this.selrowdata.purordhd_support_remark != ''){
+			$('i#support_remark_i').show();
+			$('i#support_remark_i').data('remark',this.selrowdata.purordhd_support_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Support Remark');
+		}
+		if(this.selrowdata.purordhd_verified_remark != ''){
+			$('i#verified_remark_i').show();
+			$('i#verified_remark_i').data('remark',this.selrowdata.purordhd_verified_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Verified Remark');
+		}
+		if(this.selrowdata.purordhd_approved_remark != ''){
+			$('i#approved_remark_i').show();
+			$('i#approved_remark_i').data('remark',this.selrowdata.purordhd_approved_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Approved Remark');
+		}
+		$('i.my_remark').on('click',function(){
+			$('#remarks_view').val($(this).data('remark'));
+			$("#dialog_remarks_view").dialog( "open" );
 		});
 	}
 }

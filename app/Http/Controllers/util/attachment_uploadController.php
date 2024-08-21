@@ -9,6 +9,7 @@ use DB;
 use Carbon\Carbon;
 use Intervention\Image\Facades\Image;
 use Response;
+use Illuminate\Support\Facades\Storage;
 
 class attachment_uploadController extends defaultController
 {   
@@ -43,6 +44,10 @@ class attachment_uploadController extends defaultController
                 return $this->default_data($request);
             case 'purchaserequest':
                 return $this->default_data($request);
+            case 'get_merge_pdf':
+                return $this->get_merge_pdf($request);
+            case 'merge_pdf_with_attachment':
+                return $this->merge_pdf_with_attachment($request);
             default:
                 return $this->default_data($request);
         }
@@ -57,6 +62,8 @@ class attachment_uploadController extends defaultController
                 return $this->default_form($request);
             case 'purchaserequest':
                 return $this->default_form($request);
+            case 'merge_pdf':
+                return $this->merge_pdf($request);
             default:
                 return $this->default_form($request);
         }
@@ -151,23 +158,60 @@ class attachment_uploadController extends defaultController
         return Response::download($file,$request->filename);
     }
 
+    public function merge_pdf(Request $request){
+        Storage::disk('pdf_merge')->put($request->merge_key.'_'.$request->lineno_.'.pdf',base64_decode($request->base64));
+        DB::table('sysdb.pdf_merge')
+            ->insert([
+                'compcode' => session('compcode'),
+                'merge_key' => $request->merge_key,
+                'lineno_' => $request->lineno_,
+            ]);
+    }
 
-    // public function form(Request $request)
-    // {   
-    //     $type = $request->file('file')->getClientMimeType();
-    //     $filename = $request->file('file')->getClientOriginalName();
-    //     $file_path = $request->file('file')->store('pat_enq', 'public_uploads');
-    //     DB::table('hisdb.patresult')
-    //         ->insert([
-    //             'compcode' => '-',
-    //             'resulttext' => $filename,
-    //             'attachmentfile' => $file_path,
-    //             'adduser' => 'system',
-    //             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-    //             'mrn' => $request->mrn,
-    //             'type' => $type,
-    //             'trxdate' => $request->trxdate
-    //         ]);
-    // }
+    public function get_merge_pdf(Request $request){//guna database bila merge antara document
+        $merge_key = $request->merge_key;
+        $pdf_merge = DB::table('sysdb.pdf_merge')
+                        ->where('compcode',session('compcode'))
+                        ->where('merge_key',$merge_key);
+
+        if($pdf_merge->exists()){
+            $pdf_merge = $pdf_merge->get();
+            $pdf = new \Clegginabox\PDFMerger\PDFMerger;
+
+            foreach ($pdf_merge as $obj) {
+                $pdf->addPDF(public_path().'/uploads/pdf_merge/'.$merge_key.'_'.$obj->lineno_.'.pdf', 'all');
+            }
+        }
+
+        $filesForDelete = array_filter(glob(public_path().'/uploads/pdf_merge/*'), function($file) use ($merge_key) {
+            if(str_contains($file, $merge_key)){
+                return false;
+            }
+            unlink($file);
+            return true;
+        });
+        $pdf->merge('browser', public_path() . '/uploads/pdf_merge/'.$merge_key.'.pdf', 'P');
+    }
+
+    public function merge_pdf_with_attachment(Request $request){
+        $merge_key = $request->merge_key;
+        $pdf_merge = DB::table('sysdb.pdf_merge')
+                        ->where('compcode',session('compcode'))
+                        ->where('merge_key',$merge_key);
+
+        if($pdf_merge->exists()){
+            $pdf_merge = $pdf_merge->get();
+            $pdf = new \Clegginabox\PDFMerger\PDFMerger;
+
+            foreach ($pdf_merge as $obj) {
+                $pdf->addPDF(public_path().'/uploads/pdf_merge/'.$merge_key.'_'.$obj->lineno_.'.pdf', 'all');
+            }
+        }
+        
+        foreach ($request->attach_array as $attach) {
+            $pdf->addPDF(public_path().'/uploads/'.$attach, 'all');
+        }
+        $pdf->merge('browser', public_path() . '/uploads/pdf_merge/'.$merge_key.'_merged.pdf', 'P');
+    }
 
 }

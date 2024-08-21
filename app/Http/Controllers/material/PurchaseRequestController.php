@@ -103,6 +103,8 @@ class PurchaseRequestController extends defaultController
                 return $this->reopen($request);
             case 'cancel':
                 return $this->cancel($request);
+            case 'reject':
+                return $this->reject($request);
             case 'support':
                 return $this->support($request);
             case 'verify':
@@ -476,9 +478,64 @@ class PurchaseRequestController extends defaultController
                         'recstatus' => 'CANCELLED'
                     ]);
 
-                DB::table("material.queuepr")
+                // DB::table("material.queuepr")
+                //     ->where('recno','=',$purreqhd_get->recno)
+                //     ->delete();
+
+            }
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function reject(Request $request){
+        DB::beginTransaction();
+
+        try{
+
+            foreach ($request->idno_array as $value){
+
+                $purreqhd = DB::table("material.purreqhd")
+                    ->where('idno','=',$value);
+
+                $purreqhd_get = $purreqhd->first();
+                if(!in_array($purreqhd_get->recstatus, ['SUPPORT','VERIFIED','RECOMMENDED1','RECOMMENDED2','APPROVED'])){
+                    continue;
+                }
+
+                $purreqhd_update = [
+                    'recstatus' => 'CANCELLED',
+                    'cancelby' => session('username'),
+                    'canceldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                ];
+
+                if(!empty($request->remarks)){
+                    $purreqhd_update['cancelled_remark'] = $request->remarks;
+                }
+
+                $purreqhd->update($purreqhd_update);
+
+                DB::table("material.purreqdt")
                     ->where('recno','=',$purreqhd_get->recno)
-                    ->delete();
+                    ->update([
+                        'recstatus' => 'CANCELLED'
+                    ]);
+
+                DB::table("material.queuepr")
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$purreqhd_get->recno)
+                    ->update([
+                        'AuthorisedID' => $purreqhd_get->adduser,
+                        'recstatus' => 'CANCELLED',
+                        'trantype' => 'REOPEN',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
 
             }
            
@@ -1142,10 +1199,12 @@ class PurchaseRequestController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen. " ONLY";
         }
 
+        $attachment_files =$this->get_attachment_files($purreqhd->idno);
+
         // $pdf = PDF::loadView('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm','company', 'supplier', 'prdept', 'total_tax', 'total_discamt'));
         // return $pdf->stream();      
 
-        return view('material.purchaseRequest.purchaseRequest_pdfmake',compact('purreqhd','purreqdt','totamt_eng','company', 'supplier', 'reqdept', 'total_tax', 'total_discamt'));
+        return view('material.purchaseRequest.purchaseRequest_pdfmake',compact('purreqhd','purreqdt','totamt_eng','company', 'supplier', 'reqdept', 'total_tax', 'total_discamt','attachment_files'));
     }
 
     function sendemail($data){
@@ -1365,10 +1424,19 @@ class PurchaseRequestController extends defaultController
             return true;
         }
         
-        return false;   
-        
+        return false;      
     }
 
+    function get_attachment_files($auditno){
+        $attachment_files = DB::table('finance.attachment')
+            ->where('compcode','=',session('compcode'))
+            ->where('page','=','purchaserequest')
+            ->where('type','=','application/pdf')
+            ->where('auditno','=',$auditno)
+            ->get();
+
+        return $attachment_files;
+    }
     
 }
 

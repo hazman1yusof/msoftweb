@@ -180,7 +180,7 @@
 				lineno_:1
 			};
 
-			$.post( '../test/form?action=merge_pdf',$.param(obj) , function( data ) {
+			$.post( '../attachment_upload/form?page=merge_pdf',$.param(obj) , function( data ) {
 			}).done(function(data) {
 				merge_done[0] = true;
 				get_merge_pdf();
@@ -524,7 +524,7 @@
 				lineno_:2
 			};
 
-			$.post( '../test/form?action=merge_pdf',$.param(obj) , function( data ) {
+			$.post( '../attachment_upload/form?page=merge_pdf',$.param(obj) , function( data ) {
 			}).done(function(data){
 				merge_done[1] = true;
 				get_merge_pdf();
@@ -744,11 +744,11 @@ function get_merge_pdf(){
 	});
 	if(execute){
 		var obj = {
-			action:'get_merge_pdf',
+			page:'get_merge_pdf',
 			merge_key:merge_key,
 		};
 
-		$('#pdfiframe_merge').attr('src',"../test/table?"+$.param(obj));
+		$('#pdfiframe_merge').attr('src',"../attachment_upload/table?"+$.param(obj));
 	}
 }
 
@@ -771,7 +771,7 @@ function makeid(length) {
 <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
 @if(is_object($CN_obj))
-<div class="ui segments" style="width: 18vw;height: 50vh;float: left; margin: 10px; position: fixed;">
+<div class="ui segments" style="width: 18vw;height: 95vh;float: left; margin: 10px; position: fixed;">
   <div class="ui secondary segment">
     <h3><b>Navigation</b></h3>
   </div>
@@ -780,6 +780,9 @@ function makeid(length) {
   </div>
   <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_cn'>
     <p>Credit Note</p>
+  </div>
+  <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_merge'>
+    <p>Merged File</p>
   </div>
 </div>
 <iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;"></iframe>

@@ -47,6 +47,8 @@ use Carbon\Carbon;
                         'h.year AS gljnlhdr_year',
                         'h.period AS gljnlhdr_period',
                         'h.different AS gljnlhdr_different',
+                        'h.creditAmt AS gljnlhdr_creditAmt',
+                        'h.debitAmt AS gljnlhdr_debitAmt',
                         'h.recstatus AS gljnlhdr_recstatus',
                         'h.docdate AS gljnlhdr_docdate',
                         'h.postdate AS gljnlhdr_postdate',
@@ -59,6 +61,8 @@ use Carbon\Carbon;
                     ->where('h.compcode','=',session('compcode'))
                     ->where('h.source','=','GL')
                     ->where('h.trantype','=','JNL');
+
+
 
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
@@ -169,13 +173,7 @@ use Carbon\Carbon;
                 'recstatus' => 'OPEN',
                 'unit' => session('unit'),
             ];
-
-            foreach ($field as $key => $value){
-                if($key == 'remarks' || $key == 'document'|| $value == 'outamt' || $value == 'outamount'){
-                    continue;
-                }
-                $array_insert[$value] = $request[$request->field[$key]];
-            }
+            
             // dd($array_insert);
             $idno = $table->insertGetId($array_insert);
 
