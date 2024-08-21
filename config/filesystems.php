@@ -74,7 +74,7 @@ return [
 
         'ptcare_uploads' => [
             'driver' => 'local',
-            'root'   => 'C:/laragon/www/msdemo/uploads',
+            'root'   => env('ATTACHMENT_PATH').'/uploads',
         ],
 
         's3' => [
