@@ -8,6 +8,7 @@ use App\Http\Controllers\defaultController;
 use DB;
 use DateTime;
 use Carbon\Carbon;
+use Illuminate\Support\Number;
 
 class ChartAccountController extends defaultController
 {   
@@ -167,7 +168,6 @@ class ChartAccountController extends defaultController
         DB::beginTransaction();
         
         try {
-        // dd($request->bdgamount1);
             DB::table('finance.glmasdtl')
                 ->where('compcode',session('compcode'))
                 ->where('costcode',$request->costcode)
