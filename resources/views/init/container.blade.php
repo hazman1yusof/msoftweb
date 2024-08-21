@@ -274,12 +274,8 @@
 <script type="text/ecmascript" src="plugins/numeral.min.js"></script>
 <script type="text/ecmascript" src="plugins/moment.js"></script>
 <script type="text/ecmascript" src="plugins/velocity.min.js"></script>
-
-<!-- JS Implementing Plugins -->
-<script src="js/myjs/menu.js"></script>
-<!-- JS Customization -->
-
-<!-- JS Page Level -->
+<script type="text/ecmascript" src="js/other/authdtl_alert/authdtl_alert.js"></script>
+<script type="text/ecmascript" src="js/myjs/menu.js"></script>
 
 <script>
 	$(document).ready(function(){
@@ -483,7 +479,5 @@
 		}
 	});
 </script>
-
-<script type="text/ecmascript" src="js/other/authdtl_alert/authdtl_alert.js"></script>
 
 </html>

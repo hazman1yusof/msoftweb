@@ -114,6 +114,7 @@ var Menu = function () {
 			height: $(window).height() - 50,
 			close: function( event, ui ) {
 				deleteDialog(programid);
+				get_authdtl_alert();
 			},
 		  })
 		  .dialogExtend({

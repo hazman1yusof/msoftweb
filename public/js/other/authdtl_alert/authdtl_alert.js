@@ -2,10 +2,6 @@ $(document).ready(function(){
 	get_authdtl_alert();
 });
 
-function reload_authdtl_alert(){
-	console.log('reload_authdtl_alert');
-}
-
 function get_authdtl_alert(){
 	$('#authdtl_alert_div').html('');
 
