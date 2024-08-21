@@ -87,6 +87,7 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                             ->on('prhd.recno','qpr.recno')
                             ->on('prhd.recstatus','qpr.recstatus');
                     })
+                    ->where('qpr.AuthorisedID',session('username'))
                     ->where('qpr.compcode',session('compcode'))
                     ->where('qpr.trantype','REOPEN')
                     ->get();
@@ -130,6 +131,7 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                             ->on('pohd.recno','qpo.recno')
                             ->on('pohd.recstatus','qpo.recstatus');
                     })
+                    ->where('qpo.AuthorisedID',session('username'))
                     ->where('qpo.compcode',session('compcode'))
                     ->where('qpo.trantype','REOPEN')
                     ->get();
@@ -183,6 +185,7 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                             ->where('supp.compcode',session('compcode'))
                             ->on('supp.suppcode','apact.suppcode');
                     })
+                    ->where('qpv.AuthorisedID',session('username'))
                     ->where('qpv.compcode',session('compcode'))
                     ->where('qpv.trantype','REOPEN')
                     ->get();
@@ -236,6 +239,7 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                             ->where('supp.compcode',session('compcode'))
                             ->on('supp.suppcode','apact.suppcode');
                     })
+                    ->where('qpd.AuthorisedID',session('username'))
                     ->where('qpd.compcode',session('compcode'))
                     ->where('qpd.trantype','REOPEN')
                     ->get();
@@ -289,6 +293,7 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                             ->where('dbm.compcode',session('compcode'))
                             ->on('dbm.debtorcode','dbact.payercode');
                     })
+                    ->where('qso.AuthorisedID',session('username'))
                     ->where('qso.compcode',session('compcode'))
                     ->where('qso.trantype','REOPEN')
                     ->get();
