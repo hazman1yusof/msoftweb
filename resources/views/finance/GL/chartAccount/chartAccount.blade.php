@@ -251,8 +251,8 @@
                             
                         </table>
                         <div class="prevnext btn-group pull-right">
-                            <button type="button" id='save' class='btn btn-info'>Save</button>
-					        <!-- <button id='cancel' class='btn btn-info'>Cancel</button> -->
+                            <button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button>
+					        <button type="button" id='edit' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Edit</button>
 				        </div>
                 </div>
             </div>

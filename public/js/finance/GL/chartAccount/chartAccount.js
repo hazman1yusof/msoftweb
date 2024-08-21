@@ -24,6 +24,7 @@ $(document).ready(function () {
 	$("body").show();
     $('#yearSearch').attr('disabled', 'disabled');
 	$("#save").hide();
+	$("#edit").hide();
 
     set_yearDefault();
 	function set_yearDefault(){
@@ -150,13 +151,7 @@ $(document).ready(function () {
 			getTotalVariance();
 			calc_variance();
 			$("#save").show();
-
-			// $("#input[name='varamount1']").on(' change' ,calc_variance);$("#input[name='varamount2']").on(' change' ,calc_variance);
-			// $("#input[name='varamount3']").on(' change' ,calc_variance);$("#input[name='varamount4']").on(' change' ,calc_variance);
-			// $("#input[name='varamount5']").on(' change' ,calc_variance);$("#input[name='varamount6']").on(' change' ,calc_variance);
-			// $("#input[name='varamount7']").on(' change' ,calc_variance);$("#input[name='varamount8']").on(' change' ,calc_variance);
-			// $("#input[name='varamount9']").on(' change' ,calc_variance);$("#input[name='varamount10]").on(' change' ,calc_variance);
-			// $("#input[name='varamount11']").on(' change' ,calc_variance);$("#input[name='varamount12']").on(' change' ,calc_variance);
+			$('#edit').hide();
 
 			// if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
 		},
@@ -360,11 +355,6 @@ $(document).ready(function () {
 		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="costcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
-	function glAccCustomEdit(val, opt) {
-		val = !(opt.rowId >>> 0 === parseFloat(opt.rowId)) ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="glaccount" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}
-
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
 			return $(elem).find("input").val();
@@ -476,12 +466,19 @@ $(document).ready(function () {
 		if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 			saveBudget(function(data){
 				disableForm('#formdata');
-				$('#save').attr('disabled',true);
+				$('#save').hide();
+				$('#edit').show();
+				refreshGrid('#jqGrid',urlParam);
 			});
 		}else{
 			enableForm('#formdata');
 			rdonly('#formdata');
 		}
+	});
+
+	$("#edit").click(function(){
+		$("#search").click();
+
 	});
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
