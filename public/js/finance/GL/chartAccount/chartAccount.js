@@ -141,15 +141,18 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
+			console.log(rowid);
 			if(rowid != null) {
 				rowData = $('#jqGrid').jqGrid ('getRowData', rowid);
 			}			
-			getActual();
-			getBudget();
-			getTotalActual();
-			getTotalBudget();
-			getTotalVariance();
-			calc_variance();
+			if(!rowid.startsWith("jqg")){
+				getActual();
+				getBudget();
+				getTotalActual();
+				getTotalBudget();
+				getTotalVariance();
+				calc_variance();
+			};
 
 			// if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
 		},
@@ -349,8 +352,8 @@ $(document).ready(function () {
 	}
 
 	function costcodeCustomEdit(val, opt) {
-		val = !(opt.rowId >>> 0 === parseFloat(opt.rowId)) ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="costcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="costcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function galGridCustomValue (elem, operation, value){

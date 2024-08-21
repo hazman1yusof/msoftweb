@@ -177,6 +177,7 @@ class PurchaseRequestController extends defaultController
                 'suppcode' => strtoupper($request->purreqhd_suppcode),
                 'totamount' => $request->purreqhd_totamount,
                 'remarks' => strtoupper($request->purreqhd_remarks),
+                'prtype' => $request->purreqhd_prtype,
                 'perdisc' => $request->purreqhd_perdisc,
                 'amtdisc' => $request->purreqhd_amtdisc,
                 'subamount' => $request->purreqhd_subamount
@@ -231,7 +232,8 @@ class PurchaseRequestController extends defaultController
             'remarks' => strtoupper($request->purreqhd_remarks),
             'perdisc' => $request->purreqhd_perdisc,
             'amtdisc' => $request->purreqhd_amtdisc,
-            'subamount' => $request->purreqhd_subamount
+            'subamount' => $request->purreqhd_subamount,
+            'prtype' => $request->purreqhd_prtype,
 
         ];
 

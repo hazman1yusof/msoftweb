@@ -329,9 +329,10 @@ i.fa {
 									<span class="help-block"></span>
 								</div>
 
-					  		<label class="col-md-2 control-label" for="purreqhd_recno">Request Type</label>  
-				  			<div class="col-md-2">
-									<input id="purreqhd_recno" name="purreqhd_recno" type="text" maxlength="11" class="form-control input-sm" rdonly>
+					  		<label class="col-md-2 control-label" for="purreqhd_prtype">Request Type</label>  
+				  			<div class="col-md-3">
+										<label class="radio-inline"><input type="radio" name="purreqhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='Stock' checked>Stock</label><br>
+										<label class="radio-inline"><input type="radio" name="purreqhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value"  value='Non-Stock' selected>Non-Stock</label>
 				  			</div>
 							</div>
 

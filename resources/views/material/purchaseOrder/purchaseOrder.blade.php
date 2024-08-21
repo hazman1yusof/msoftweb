@@ -424,6 +424,12 @@ div#fail_msg{
 										<span class="help-block"></span>
 									</div>
 									
+								<label class="col-md-2 control-label" for="purordhd_prtype">Purchase Type</label>
+				  			<div class="col-md-2">
+										<label class="radio-inline"><input type="radio" name="purordhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='Stock' checked>Stock</label><br>
+										<label class="radio-inline"><input type="radio" name="purordhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value"  value='Non-Stock' selected>Non-Stock</label>
+				  			</div>
+
 							</div>
 							<hr/>
 

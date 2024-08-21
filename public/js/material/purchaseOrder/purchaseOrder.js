@@ -97,8 +97,10 @@ $(document).ready(function () {
 				if(oper == 'edit'){
 					dialog_reqdept.off();
 					dialog_purreqno.off();
+					dialog_deldept.off();
 
-					$("#purordhd_reqdept,#purordhd_purreqno").prop('readonly',true);
+					$("#purordhd_reqdept,#purordhd_purreqno,#purordhd_deldept").prop('readonly',true);
+					$('#dialogForm input:radio[name=purordhd_prtype]').attr('disabled',true);
 				}
 			},
 			beforeClose: function (event, ui) {
@@ -132,7 +134,8 @@ $(document).ready(function () {
 				dialog_credcode.off();
 				$(".noti").empty();
 				$("#refresh_jqGrid").click();
-				$("#purordhd_reqdept,#purordhd_purreqno").prop('readonly',false);
+				$("#purordhd_reqdept,#purordhd_reqdept,#purordhd_purreqno").prop('readonly',false);
+				$('#dialogForm input:radio[name=purordhd_prtype]').attr('disabled',false);
 				refreshGrid("#jqGrid2",null,"kosongkan");
 				radbuts.reset();
 			},
@@ -323,6 +326,7 @@ $(document).ready(function () {
 			{ label: 'verified_remark', name: 'purordhd_verified_remark', width: 40, hidden:true},
 			{ label: 'approved_remark', name: 'purordhd_approved_remark', width: 40, hidden:true},
 			{ label: 'cancelled_remark', name: 'purordhd_cancelled_remark', width: 40, hidden:true},
+			{ label: 'purordhd_prtype', name: 'purordhd_prtype', width: 40, hidden:true},
 			{ label: 'idno', name: 'purordhd_idno', width: 90, hidden: true },
 			{ label: 'unit', name: 'purordhd_unit', width: 40, hidden:true},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox ,hidden:false},
@@ -2704,6 +2708,7 @@ $(document).ready(function () {
 				{label:'Sub Amount',name:'h_subamount',width:400,classes:'pointer',hidden:true},
 				{label:'Status',name:'h_recstatus',width:400,classes:'pointer',hidden:true},
 				{label:'Remark',name:'h_remarks',width:400,classes:'pointer',hidden:true},
+				{label:'prtype',name:'h_prtype',width:50,classes:'pointer',hidden:true},
 				{label:'recno',name:'h_recno',width:50,classes:'pointer',hidden:false}
 				],
 			sortname: 'h_recno',
@@ -2719,6 +2724,7 @@ $(document).ready(function () {
 			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_purreqno.gridname);
+				console.log(data);
 				$("#purordhd_purreqno").val(data['h_purreqno']);
 				$("#purordhd_reqdept").val(data['h_reqdept']);
 				$("#purordhd_suppcode").val(data['h_suppcode']);
@@ -2730,6 +2736,7 @@ $(document).ready(function () {
 				$("#purordhd_subamount").val(data['h_subamount']);
 				$("#purordhd_recstatus").val("OPEN");
 				$("#purordhd_remarks").val(data['h_remarks']);
+				$('input[type=radio][name=purordhd_prtype][value='+data['h_prtype']+']').prop('checked',true);
 				$('#referral').val(data['h_recno']);
 
 

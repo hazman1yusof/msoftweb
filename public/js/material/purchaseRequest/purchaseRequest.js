@@ -50,6 +50,7 @@ $(document).ready(function () {
 				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth - $("#jqGrid2_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
 				mycurrency.formatOn();
+				$('#dialogForm #purreqhd_reqdept,#dialogForm input:radio[name=purreqhd_prtype]').attr('disabled',false);
 				switch (oper) {
 					case state = 'add':
 						$("#jqGrid2").jqGrid("clearGridData", true);
@@ -65,6 +66,7 @@ $(document).ready(function () {
 						hideatdialogForm(true);
 						enableForm('#formdata');
 						rdonly('#formdata');
+						$('#dialogForm #purreqhd_reqdept,#dialogForm input:radio[name=purreqhd_prtype]').attr('disabled',true);
 						break;
 					case state = 'view':
 						disableForm('#formdata');
@@ -78,6 +80,8 @@ $(document).ready(function () {
 					dialog_reqdept.on();
 					dialog_prdept.on();
 					dialog_suppcode.on();
+				} if(oper == 'edit'){
+					dialog_reqdept.off();
 				}
 			},
 			beforeClose: function (event, ui) {
@@ -397,7 +401,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid', false, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['purreqhd_recno','purreqhd_purordno','purreqhd_adduser', 'purreqhd_adddate', 'purreqhd_idno', 'supplier_name','purreqhd_purreqno','purreqhd_upduser','purreqhd_upddate','purreqhd_deluser', 'purreqhd_recstatus','purreqhd_unit','Checkbox','queuepr_AuthorisedID','purreqhd_recommended1by','purreqhd_recommended1date','purreqhd_recommended2by','purreqhd_recommended2date','purreqhd_support_remark','purreqhd_verified_remark','purreqhd_approved_remark','purreqhd_cancelled_remark','purreqhd_recommended1_remark','purreqhd_recommended2_remark','purreqhd_prtype']);
+	addParamField('#jqGrid', false, saveParam, ['purreqhd_recno','purreqhd_purordno','purreqhd_adduser', 'purreqhd_adddate', 'purreqhd_idno', 'supplier_name','purreqhd_purreqno','purreqhd_upduser','purreqhd_upddate','purreqhd_deluser', 'purreqhd_recstatus','purreqhd_unit','Checkbox','queuepr_AuthorisedID','purreqhd_recommended1by','purreqhd_recommended1date','purreqhd_recommended2by','purreqhd_recommended2date','purreqhd_support_remark','purreqhd_verified_remark','purreqhd_approved_remark','purreqhd_cancelled_remark','purreqhd_recommended1_remark','purreqhd_recommended2_remark']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide,saveallrow){
@@ -791,7 +795,7 @@ $(document).ready(function () {
 			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable: false},
 			{
 				label: 'Price Code', name: 'pricecode', width: 110, classes: 'wrap', editable: true,
-				editrules: { required: true, custom: true, custom_func: cust_rules },
+				editrules: { required: true, custom: true, custom_func: cust_rules },editoptions: { readonly: "readonly" },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
 				{
@@ -1146,7 +1150,11 @@ $(document).ready(function () {
 			dialog_pouom.on();
 			dialog_taxcode.on();
 
-			$("#jqGrid2 #"+rowid+"_pricecode").val('IV');
+			if($('#dialogForm input:radio[name=purreqhd_prtype]:checked').val() == 'Non-Stock'){
+				$("#jqGrid2 #"+rowid+"_pricecode").val('MS');
+			}else{
+				$("#jqGrid2 #"+rowid+"_pricecode").val('IV');
+			}
 
 			dialog_pricecode.id_optid = rowid;
 	        dialog_pricecode.check(errorField,rowid+"_pricecode","jqGrid2",null,
@@ -2095,8 +2103,14 @@ $(document).ready(function () {
 		},{
 			title:"Select Price Code For Item",
 			open: function(){
-				dialog_pricecode.urlParam.filterCol=['compcode','recstatus'];
-				dialog_pricecode.urlParam.filterVal=['session.compcode','ACTIVE'];
+				let prtype = $('#dialogForm input:radio[name=purreqhd_prtype]:checked').val();
+				if(prtype == 'Non-Stock'){
+					dialog_pricecode.urlParam.filterCol=['compcode','recstatus','pricecode'];
+					dialog_pricecode.urlParam.filterVal=['session.compcode','ACTIVE','<>.IV'];
+				}else{
+					dialog_pricecode.urlParam.filterCol=['compcode','recstatus','pricecode'];
+					dialog_pricecode.urlParam.filterVal=['session.compcode','ACTIVE','IV'];
+				}
 			},
 			close: function(){
 			}
