@@ -150,8 +150,6 @@ $(document).ready(function () {
 			getTotalBudget();
 			getTotalVariance();
 			calc_variance();
-			$("#save").show();
-			$('#edit').hide();
 
 			// if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
 		},
@@ -278,10 +276,10 @@ $(document).ready(function () {
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
-			$("#jqGrid input[type='text']").on('focus',function(){
-				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
-				$("#jqGrid input[type='text']").removeClass( "error" );
-			});
+			// $("#jqGrid input[type='text']").on('focus',function(){
+			// 	$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+			// 	$("#jqGrid input[type='text']").removeClass( "error" );
+			// });
 
 		},
 		aftersavefunc: function (rowid, response, options) {
@@ -580,6 +578,8 @@ $(document).ready(function () {
 	}
 
     $('#search').click(function(){
+		$("#save").show();
+		$('#edit').hide();
 		urlParam.glaccount = $('#glaccountSearch').val();
 		urlParam.year = $('#yearSearch').val();
 		refreshGrid("#jqGrid",urlParam);

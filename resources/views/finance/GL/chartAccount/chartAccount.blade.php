@@ -82,168 +82,168 @@
                                 <tr id="td1">
                                     <th scope="row">1</th>
                                         <td>
-                                            <input id="actamount1" name="actamount1" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="actamount1" name="actamount1" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="bdgamount1" name="bdgamount1" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="bdgamount1" name="bdgamount1" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="varamount1" name="varamount1" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="varamount1" name="varamount1" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                 </tr>
 
                                 <tr id="td2">
                                     <th scope="row">2</th>
                                         <td>
-                                            <input id="actamount2" name="actamount2" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="actamount2" name="actamount2" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="bdgamount2" name="bdgamount2" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="bdgamount2" name="bdgamount2" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="varamount2" name="varamount2" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="varamount2" name="varamount2" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                 </tr>
 
                                 <tr id="td3">
                                 <th scope="row">3</th>
                                         <td>
-                                            <input id="actamount3" name="actamount3" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="actamount3" name="actamount3" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="bdgamount3" name="bdgamount3" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="bdgamount3" name="bdgamount3" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="varamount3" name="varamount3" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="varamount3" name="varamount3" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                 </tr>
 
                                 <tr id="td4">
                                     <th scope="row">4</th>
                                         <td>
-                                            <input id="actamount4" name="actamount4" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="actamount4" name="actamount4" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="bdgamount4" name="bdgamount4" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="bdgamount4" name="bdgamount4" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="varamount4" name="varamount4" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="varamount4" name="varamount4" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                 </tr>
 
                                 <tr id="td5">
                                     <th scope="row">5</th>
                                         <td>
-                                            <input id="actamount5" name="actamount5" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="actamount5" name="actamount5" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="bdgamount5" name="bdgamount5" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="bdgamount5" name="bdgamount5" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="varamount5" name="varamount5" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="varamount5" name="varamount5" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                 </tr>
 
                                 <tr id="td6">
                                     <th scope="row">6</th>
                                         <td>
-                                            <input id="actamount6" name="actamount6" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="actamount6" name="actamount6" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="bdgamount6" name="bdgamount6" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="bdgamount6" name="bdgamount6" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="varamount6" name="varamount6" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="varamount6" name="varamount6" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                 </tr>
 
                                 <tr id="td7">
                                     <th scope="row">7</th>
                                         <td>
-                                            <input id="actamount7" name="actamount7" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="actamount7" name="actamount7" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="bdgamount7" name="bdgamount7" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="bdgamount7" name="bdgamount7" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="varamount7" name="varamount7" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="varamount7" name="varamount7" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                 </tr>
 
                                 <tr id="td8">
                                     <th scope="row">8</th>
                                         <td>
-                                            <input id="actamount8" name="actamount8" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="actamount8" name="actamount8" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="bdgamount8" name="bdgamount8" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="bdgamount8" name="bdgamount8" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="varamount8" name="varamount8" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="varamount8" name="varamount8" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                 </tr>
 
                                 <tr id="td9">
                                     <th scope="row">9</th>
                                         <td>
-                                            <input id="actamount9" name="actamount9" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="actamount9" name="actamount9" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="bdgamount9" name="bdgamount9" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="bdgamount9" name="bdgamount9" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="varamount9" name="varamount9" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="varamount9" name="varamount9" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                 </tr>
 
                                 <tr id="td10">
                                     <th scope="row">10</th>
                                         <td>
-                                            <input id="actamount10" name="actamount10" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="actamount10" name="actamount10" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="bdgamount10" name="bdgamount10" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="bdgamount10" name="bdgamount10" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="varamount10" name="varamount10" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="varamount10" name="varamount10" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                 </tr>
 
                                 <tr id="td11">
                                     <th scope="row">11</th>
                                         <td>
-                                            <input id="actamount11" name="actamount11" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="actamount11" name="actamount11" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="bdgamount11" name="bdgamount11" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="bdgamount11" name="bdgamount11" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="varamount11" name="varamount11" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="varamount11" name="varamount11" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                 </tr>
 
                                 <tr id="td12">
                                     <th scope="row">12</th>
                                         <td>
-                                            <input id="actamount12" name="actamount12" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="actamount12" name="actamount12" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="bdgamount12" name="bdgamount12" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="bdgamount12" name="bdgamount12" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="varamount12" name="varamount12" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="varamount12" name="varamount12" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                 </tr>
                                 <tr id="td13">
                                     <th scope="row">Total</th>
                                         <td>
-                                            <input id="totalActual" name="totalActual" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="totalActual" name="totalActual" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="totalBdg" name="totalBdg" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="totalBdg" name="totalBdg" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                         <td>
-                                            <input id="totalVar" name="totalVar" type="text" class="form-control text-right" data-validation="required" data-sanitize-number-format="0,0.00" readonly>
+                                            <input id="totalVar" name="totalVar" type="text" class="form-control text-right" data-sanitize-number-format="0,0.00" readonly>
                                         </td>
                                 </tr>
                             </tbody>
