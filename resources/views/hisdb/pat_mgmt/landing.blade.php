@@ -337,7 +337,7 @@
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
-				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js"></script>
+				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script>
 			@elseif (Auth::user()->nurse == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
@@ -345,7 +345,7 @@
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
-				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js"></script>
+				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script>
 			@endif
 
 			@if (Auth::user()->billing == 1)
@@ -384,7 +384,7 @@
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
-				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js"></script>
+				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script>
 			@elseif (Auth::user()->nurse == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
 				<script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script>
@@ -394,7 +394,7 @@
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
-				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js"></script>
+				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script>
 			@endif
 
 			@if (Auth::user()->billing == 1)

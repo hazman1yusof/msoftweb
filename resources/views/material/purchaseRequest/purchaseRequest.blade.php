@@ -313,10 +313,10 @@ i.fa {
 									<span class="help-block"></span>
 								</div>
 
-						  		<label class="col-md-2 control-label" for="purreqhd_recno">Record No.</label>  
-						  			<div class="col-md-2">
-										<input id="purreqhd_recno" name="purreqhd_recno" type="text" maxlength="11" class="form-control input-sm" rdonly>
-						  			</div>
+					  		<label class="col-md-2 control-label" for="purreqhd_recno">Record No.</label>  
+				  			<div class="col-md-2">
+									<input id="purreqhd_recno" name="purreqhd_recno" type="text" maxlength="11" class="form-control input-sm" rdonly>
+				  			</div>
 							</div>
 
 							<div class="form-group">
@@ -328,6 +328,11 @@ i.fa {
 									</div>
 									<span class="help-block"></span>
 								</div>
+
+					  		<label class="col-md-2 control-label" for="purreqhd_recno">Request Type</label>  
+				  			<div class="col-md-2">
+									<input id="purreqhd_recno" name="purreqhd_recno" type="text" maxlength="11" class="form-control input-sm" rdonly>
+				  			</div>
 							</div>
 
 							<hr/>
