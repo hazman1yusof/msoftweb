@@ -175,7 +175,7 @@
 				    closable: false,
 				    onApprove:function(){
 				    	$('button#submit_remark').attr('disabled');
-				    	return save_authdtl('cancel');
+				    	return save_authdtl('reject');
 				    }
 				  }).modal('show');
 			}
