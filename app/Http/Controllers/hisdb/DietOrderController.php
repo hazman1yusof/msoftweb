@@ -24,7 +24,7 @@ class DietOrderController extends defaultController
     {
         return view('hisdb.dietorder.dietorder');
     }
-
+    
     public function table(Request $request)
     {
         switch($request->action){
@@ -100,7 +100,7 @@ class DietOrderController extends defaultController
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'lastuser'  => session('username'),
-                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
             
             DB::commit();
@@ -160,7 +160,7 @@ class DietOrderController extends defaultController
                         'remark' => $request->remark,
                         'remarkkitchen' => $request->remarkkitchen,
                         'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
             }else{
                 DB::table('nursing.dietorder')
@@ -198,7 +198,7 @@ class DietOrderController extends defaultController
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
             }
             
@@ -244,41 +244,42 @@ class DietOrderController extends defaultController
         return json_encode($responce);
         
     }
-
+    
     public function dietorder_preview(Request $request){
-
+        
         if(empty($request->mrn) || empty($request->episno)){
             abort(403,'No mrn or episno');
         }
-
+        
         $dietorder = DB::table('nursing.dietorder as do')
-            ->select('do.idno','do.compcode','do.mrn','do.episno','do.lodgerflag','do.lodgervalue','do.nbm','do.rtf','do.rof','do.tpn','do.oral','do.regular_a','do.regular_b','do.soft','do.vegetarian_c','do.western_d','do.highprotein','do.highcalorie','do.highfiber','do.diabetic','do.lowprotein','do.lowfat','do.soft_lodger','do.red1200kcal','do.red1500kcal','do.paed6to12mth','do.paed1to3yr','do.paed4to9yr','do.paedgt10yr','do.disposable','do.remark','do.lastuser','do.lastupdate','do.regular_a_lodger','do.regular_b_lodger','do.vegetarian_c_lodger','do.western_d_lodger','do.highprotein_lodger','do.highcalorie_lodger','do.highfiber_lodger','do.diabetic_lodger','do.lowprotein_lodger','do.lowfat_lodger','do.red1200kcal_lodger','do.red1500kcal_lodger','do.paed6to12mth_lodger','do.paed1to3yr_lodger','do.paed4to9yr_lodger','do.paedgt10yr_lodger','do.remarkkitchen','do.adduser','do.adddate','pm.dob','pm.Name','ep.diagfinal','ep.ward','ep.bed')
-            ->leftJoin('hisdb.pat_mast as pm', function($join){
-                $join = $join->where('pm.compcode', '=', session('compcode'));
-                $join = $join->on('pm.mrn', '=', 'do.mrn');
-            })->leftJoin('hisdb.episode as ep', function($join){
-                $join = $join->where('ep.compcode', '=', session('compcode'));
-                $join = $join->on('ep.mrn', '=', 'do.mrn');
-                $join = $join->on('ep.episno', '=', 'do.episno');
-            })
-            ->where('do.compcode',session('compcode'))
-            ->where('do.mrn',$request->mrn)
-            ->where('do.episno',$request->episno)
-            ->get();
-
-        foreach ($dietorder as $diet) {
+                    ->select('do.idno','do.compcode','do.mrn','do.episno','do.lodgerflag','do.lodgervalue','do.nbm','do.rtf','do.rof','do.tpn','do.oral','do.regular_a','do.regular_b','do.soft','do.vegetarian_c','do.western_d','do.highprotein','do.highcalorie','do.highfiber','do.diabetic','do.lowprotein','do.lowfat','do.soft_lodger','do.red1200kcal','do.red1500kcal','do.paed6to12mth','do.paed1to3yr','do.paed4to9yr','do.paedgt10yr','do.disposable','do.remark','do.lastuser','do.lastupdate','do.regular_a_lodger','do.regular_b_lodger','do.vegetarian_c_lodger','do.western_d_lodger','do.highprotein_lodger','do.highcalorie_lodger','do.highfiber_lodger','do.diabetic_lodger','do.lowprotein_lodger','do.lowfat_lodger','do.red1200kcal_lodger','do.red1500kcal_lodger','do.paed6to12mth_lodger','do.paed1to3yr_lodger','do.paed4to9yr_lodger','do.paedgt10yr_lodger','do.remarkkitchen','do.adduser','do.adddate','pm.dob','pm.Name','ep.diagfinal','ep.ward','ep.bed')
+                    ->leftJoin('hisdb.pat_mast as pm', function ($join){
+                        $join = $join->where('pm.compcode', '=', session('compcode'));
+                        $join = $join->on('pm.mrn', '=', 'do.mrn');
+                    })->leftJoin('hisdb.episode as ep', function ($join){
+                        $join = $join->where('ep.compcode', '=', session('compcode'));
+                        $join = $join->on('ep.mrn', '=', 'do.mrn');
+                        $join = $join->on('ep.episno', '=', 'do.episno');
+                    })
+                    ->where('do.compcode',session('compcode'))
+                    ->where('do.mrn',$request->mrn)
+                    ->where('do.episno',$request->episno)
+                    ->get();
+        
+        foreach($dietorder as $diet){
             $DOB = $diet->dob;
-
+            
             if(!empty($DOB)){
                 $age = Carbon::createFromFormat("Y-m-d", $DOB)->age;
             }else{
                 $age = '';
             }
-
-            $diet->age=$age;
+            
+            $diet->age = $age;
         }
-
+        
         return view('hisdb.dietorder.dietorder_preview',compact('dietorder'));
+        
     }
     
 }

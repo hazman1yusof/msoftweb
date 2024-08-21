@@ -94,6 +94,12 @@ $(document).ready(function (){
 		// $("#jqGridDietOrder_panel > div").scrollTop(0);
 	});
 	
+	$("#preview").click(function (){
+		// window.location='./dietorder/table?action=dietorder_preview&mrn='+$('#mrn_dietOrder').val()+'&episno='+$("#episno_dietOrder").val();
+		
+		window.open('./dietorder/table?action=dietorder_preview&mrn='+$('#mrn_dietOrder').val()+'&episno='+$("#episno_dietOrder").val(), '_blank');
+	});
+	
 });
 
 // hide show No of Lodger
