@@ -147,7 +147,17 @@ $(document).ready(function () {
 			getBudget();
 			getTotalActual();
 			getTotalBudget();
+			getTotalVariance();
+			calc_variance();
 			$("#save").show();
+
+			// $("#input[name='varamount1']").on(' change' ,calc_variance);$("#input[name='varamount2']").on(' change' ,calc_variance);
+			// $("#input[name='varamount3']").on(' change' ,calc_variance);$("#input[name='varamount4']").on(' change' ,calc_variance);
+			// $("#input[name='varamount5']").on(' change' ,calc_variance);$("#input[name='varamount6']").on(' change' ,calc_variance);
+			// $("#input[name='varamount7']").on(' change' ,calc_variance);$("#input[name='varamount8']").on(' change' ,calc_variance);
+			// $("#input[name='varamount9']").on(' change' ,calc_variance);$("#input[name='varamount10]").on(' change' ,calc_variance);
+			// $("#input[name='varamount11']").on(' change' ,calc_variance);$("#input[name='varamount12']").on(' change' ,calc_variance);
+
 			// if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
 		},
 		loadComplete: function(){
@@ -442,7 +452,12 @@ $(document).ready(function () {
 			costcode : $('#costcode').val(),
 			glaccount : $('#glaccount').val(),
 			year : $('#year').val(),
-			bdgamount1 : $('#bdgamount1').val(),
+			bdgamount1 : $('#bdgamount1').val(),bdgamount2 : $('#bdgamount2').val(),
+			bdgamount3 : $('#bdgamount3').val(),bdgamount4 : $('#bdgamount4').val(),
+			bdgamount5 : $('#bdgamount5').val(),bdgamount6 : $('#bdgamount6').val(),
+			bdgamount7 : $('#bdgamount7').val(),bdgamount8 : $('#bdgamount8').val(),
+			bdgamount9 : $('#bdgamount9').val(),bdgamount10 : $('#bdgamount10').val(),
+			bdgamount11 : $('#bdgamount11').val(),bdgamount12 : $('#bdgamount12').val(),
 
 		};
 		
@@ -456,6 +471,8 @@ $(document).ready(function () {
 	}
 
 	$("#save").click(function(){
+		mycurrency.formatOff();
+
 		if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 			saveBudget(function(data){
 				disableForm('#formdata');
@@ -466,7 +483,6 @@ $(document).ready(function () {
 			rdonly('#formdata');
 		}
 	});
-
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
@@ -597,17 +613,57 @@ $(document).ready(function () {
 	function getActual(){
 		$.each(selrowData("#jqGrid"), function( index, value ) {
 			var input=$("#formdata [name='"+index+"']");
-			input.val(numeral(value).format('0,0.00'));
-			
+			input.val((value));
 		});
 	}
 
 	function getBudget(){
 		$.each(selrowData("#jqGrid"), function( index, value ) {
 			var input=$("#formdata [name='"+index+"']");
-			input.val(numeral(value).format('0,0.00'));
+			input.val((value));
 			
 		});
+	}
+
+	function calc_variance() {
+		mycurrency.formatOff();
+		// $.each(selrowData("#jqGrid"), function( index, value ) {
+		// 	var actamt=$("#formdata [name='actamount"+index+"']");
+		// 	var bdgamt=$("#formdata [name='bdgamount"+index+"']");
+
+		// 	var varamt = actamt.val(numeral(value).format('0,0.00')-bdgamt.val(numeral(value).format('0,0.00')));
+		// 	$("#input[name='varamount"+index+"']").val(parseFloat(varamt).toFixed(2));
+
+		// });
+		
+		let actamount1 = parseFloat($('#actamount1').val());let bdgamount1 = parseFloat($('#bdgamount1').val());
+		let actamount2 = parseFloat($('#actamount2').val());let bdgamount2 = parseFloat($('#bdgamount2').val());
+		let actamount3 = parseFloat($('#actamount3').val());let bdgamount3 = parseFloat($('#bdgamount3').val());
+		let actamount4 = parseFloat($('#actamount4').val());let bdgamount4 = parseFloat($('#bdgamount4').val());
+		let actamount5 = parseFloat($('#actamount5').val());let bdgamount5 = parseFloat($('#bdgamount5').val());
+		let actamount6 = parseFloat($('#actamount6').val());let bdgamount6 = parseFloat($('#bdgamount6').val());
+		let actamount7 = parseFloat($('#actamount7').val());let bdgamount7 = parseFloat($('#bdgamount7').val());
+		let actamount8 = parseFloat($('#actamount8').val());let bdgamount8 = parseFloat($('#bdgamount8').val());
+		let actamount9 = parseFloat($('#actamount9').val());let bdgamount9 = parseFloat($('#bdgamount9').val());
+		let actamount10 = parseFloat($('#actamount10').val());let bdgamount10 = parseFloat($('#bdgamount10').val());
+		let actamount11 = parseFloat($('#actamount11').val());let bdgamount11 = parseFloat($('#bdgamount11').val());
+		let actamount12 = parseFloat($('#actamount12').val());let bdgamount12 = parseFloat($('#bdgamount12').val());
+
+		var varamount1 = actamount1 - bdgamount1;var varamount2 = actamount2 - bdgamount2;
+		var varamount3 = actamount3 - bdgamount3;var varamount4 = actamount4 - bdgamount4;
+		var varamount5 = actamount5 - bdgamount5;var varamount6 = actamount6 - bdgamount6;
+		var varamount7 = actamount7 - bdgamount7;var varamount8 = actamount8 - bdgamount8;
+		var varamount9 = actamount9 - bdgamount9;var varamount10 = actamount10 - bdgamount10;
+		var varamount11 = actamount11 - bdgamount11;var varamount12 = actamount12 - bdgamount12;
+
+		$('input[name=varamount1]').val(parseFloat(varamount1).toFixed(2));$('input[name=varamount2]').val(parseFloat(varamount2).toFixed(2));
+		$('input[name=varamount3]').val(parseFloat(varamount3).toFixed(2));$('input[name=varamount4]').val(parseFloat(varamount4).toFixed(2));
+		$('input[name=varamount5]').val(parseFloat(varamount5).toFixed(2));$('input[name=varamount6]').val(parseFloat(varamount6).toFixed(2));
+		$('input[name=varamount7]').val(parseFloat(varamount7).toFixed(2));$('input[name=varamount8]').val(parseFloat(varamount8).toFixed(2));
+		$('input[name=varamount9]').val(parseFloat(varamount9).toFixed(2));$('input[name=varamount10]').val(parseFloat(varamount10).toFixed(2));
+		$('input[name=varamount11]').val(parseFloat(varamount11).toFixed(2));$('input[name=varamount12]').val(parseFloat(varamount12).toFixed(2));
+
+		mycurrency.formatOn();
 	}
 });
 
@@ -639,5 +695,20 @@ function getTotalBudget(){
 		}
 	});
 	$('#totalBdg').val(numeral(total).format('0,0.00'));
+}
+
+function getTotalVariance(){
+	mycurrency.formatOn();
+
+	selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+	rowdata = $("#jqGrid").jqGrid ('getRowData', selrow);
+	var total=0;
+	var varamount=0;
+	$.each(rowdata, function( index, value ) {
+		if(!isNaN(parseFloat(value)) && index.indexOf('varamount') !== -1){
+			total+=parseFloat(value);
+		}
+	});
+	$('#totalVar').val(numeral(total).format('0,0.00'));
 }
 
