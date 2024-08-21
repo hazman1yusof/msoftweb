@@ -25,14 +25,14 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency =new currencymode(['#amount','#gljnlhdr_amount','#gljnldtl_outamt']);
+	var mycurrency =new currencymode(['#gljnlhdr_creditAmt','#gljnlhdr_debitAmt','#gljnlhdr_different']);
 	var mycurrency2 =new currencymode([]);
 	var fdl = new faster_detail_load();
 	// var myattachment = new attachment_page("invoiceap","#jqGrid","gljnlhdr_idno");
 	
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
-	// var actdateObj = new setactdate(["#gljnlhdr_postdate"]);
-	// actdateObj.getdata().set();
+	var actdateObj = new setactdate(["#gljnlhdr_postdate"]);
+	actdateObj.getdata().set();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
 	var oper=null;
@@ -45,7 +45,7 @@ $(document).ready(function () {
 			autoOpen: false,
 			open: function (event, ui) {
 				unsaved = false;
-				// actdateObj.getdata().set();
+				actdateObj.getdata().set();
 				counter_save=0;
 				parent_close_disabled(true);
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
@@ -72,7 +72,8 @@ $(document).ready(function () {
 					break;
 				}
 				if(oper!='view'){
-					
+					mycurrency.formatOnBlur();
+					mycurrency.formatOn();
 				}
 				if(oper!='add'){
 					refreshGrid("#jqGrid2",urlParam2);
@@ -174,8 +175,8 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'Audit No', name: 'gljnlhdr_auditno', width: 10, classes: 'wrap text-uppercase', canSearch: true,formatter: padzero, unformat: unpadzero},
-			{ label: 'Description', name: 'gljnlhdr_description', width: 40, classes: 'wrap text-uppercase'},
-			{ label: 'Doc Date', name: 'gljnlhdr_docdate', width: 20, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Description', name: 'gljnlhdr_description', width: 40, classes: 'wrap text-uppercase',canSearch: true},
+			{ label: 'Doc Date', name: 'gljnlhdr_docdate', width: 20, classes: 'wrap text-uppercase', formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Different', name: 'gljnlhdr_different', width: 20, classes: 'wrap text-uppercase',align: 'right', formatter:'currency'},
 			{ label: 'Status', name: 'gljnlhdr_recstatus', width: 20, classes: 'wrap text-uppercase',},
 			// { label: ' ', name: 'Checkbox',sortable:false, width: 15,align: "center", formatter: formatterCheckbox },	
@@ -339,18 +340,18 @@ $(document).ready(function () {
 	addParamField('#jqGrid', true, urlParam);
 	addParamField('#jqGrid', false, saveParam, ['gljnlhdr_idno','gljnlhdr_auditno','gljnlhdr_adduser','gljnlhdr_adddate','gljnlhdr_upduser','gljnlhdr_upddate','gljnlhdr_recstatus', 'gljnlhdr_unit', 'gljnlhdr_idno','gljnlhdr_compcode']);
 
-	$("#save").click(function(){
-		unsaved = false;
-		mycurrency.formatOff();
-		mycurrency.check0value(errorField);
-		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-			saveHeader("#formdata", oper,saveParam,{idno:$('#gljnlhdr_idno').val()},'refreshGrid');
-			unsaved = false;
-			$("#dialogForm").dialog('close');
-		}else{
-			mycurrency.formatOn();
-		}
-	});
+	// $("#save").click(function(){
+	// 	unsaved = false;
+	// 	mycurrency.formatOff();
+	// 	mycurrency.check0value(errorField);
+	// 	if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+	// 		saveHeader("#formdata", oper,saveParam,{idno:$('#gljnlhdr_idno').val()},'refreshGrid');
+	// 		unsaved = false;
+	// 		$("#dialogForm").dialog('close');
+	// 	}else{
+	// 		mycurrency.formatOn();
+	// 	}
+	// });
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 
@@ -453,9 +454,10 @@ $(document).ready(function () {
 		}).done(function (data) {
 			mycurrency.formatOn();
 			hideatdialogForm(false);
-			
+
+			addmore_jqgrid2.state = true;
+
 			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
-				addmore_jqgrid2.state = true;
 				$('#jqGrid2_iladd').click();
 			}
 			if(selfoper=='add'){
@@ -489,8 +491,25 @@ $(document).ready(function () {
 
 	////////////////////////////searching////////////////////////////
 	// $('#Scol').on('change', whenchangetodate);
-	// $('#Status').on('change', searchChange);
+	$('#Status').on('change', searchChange);
 	// $('#actdate_search').on('click', searchDate);
+
+	function searchChange(){
+		var arrtemp = [$('#Status option:selected').val()];
+		var filter = arrtemp.reduce(function(a,b,c){
+			if(b=='All'){
+				return a;
+			}else{
+				a.fc = a.fc.concat(a.fct[c]);
+				a.fv = a.fv.concat(b);
+				return a;
+			}
+		},{fct:['gljnlhdr.recstatus'],fv:[],fc:[]});
+
+		urlParam.filterCol = filter.fc;
+		urlParam.filterVal = filter.fv;
+		refreshGrid('#jqGrid',urlParam);
+	}
 
 	// function whenchangetodate() {
 	// 	creditor_search.off();
@@ -529,23 +548,6 @@ $(document).ready(function () {
 
 	// function searchDate(){
 	// 	urlParam.filterdate = [$('#actdate_from').val(),$('#actdate_to').val()];
-	// 	refreshGrid('#jqGrid',urlParam);
-	// }
-
-	// function searchChange(){
-	// 	var arrtemp = [$('#Status option:selected').val()];
-	// 	var filter = arrtemp.reduce(function(a,b,c){
-	// 		if(b=='All'){
-	// 			return a;
-	// 		}else{
-	// 			a.fc = a.fc.concat(a.fct[c]);
-	// 			a.fv = a.fv.concat(b);
-	// 			return a;
-	// 		}
-	// 	},{fct:['ap.recstatus'],fv:[],fc:[]});
-
-	// 	urlParam.filterCol = filter.fc;
-	// 	urlParam.filterVal = filter.fv;
 	// 	refreshGrid('#jqGrid',urlParam);
 	// }
 
@@ -673,10 +675,10 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager2",
 		loadComplete: function(data){
-			// if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
-			// else{
-			// 	$('#jqGrid2').jqGrid ('setSelection', "1");
-			// }
+			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
+			else{
+				$('#jqGrid2').jqGrid ('setSelection', "1");
+			}
 
 			setjqgridHeight(data,'jqGrid2');
 
@@ -733,7 +735,7 @@ $(document).ready(function () {
         	$('#gljnlhdr_different').val(numeral(resobj.different).format('0,0'));
         	mycurrency.formatOn();
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
-
+			$('#jqGrid2_iladd').click();
 			// urlParam2.filterVal[1]=resobj.auditno;
         	refreshGrid('#jqGrid2',urlParam2,'add');
 	    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
@@ -864,7 +866,9 @@ $(document).ready(function () {
 			var param={
     			action: 'journalEntryDetail_save',
 				_token: $("#_token").val(),
-				auditno: $('#gljnlhdr_auditno').val()
+				auditno: $('#gljnlhdr_auditno').val(),
+				// idno: $('#idno').val()
+
     		}
 
     		$.post( "./journalEntryDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
@@ -1016,7 +1020,30 @@ $(document).ready(function () {
 					filterCol:['compcode','recstatus'],
 					filterVal:['session.compcode','ACTIVE']
 					},
-			ondblClickRow:function(){
+			ondblClickRow:function(event){
+				if(event.type == 'keydown'){
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}else{
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}
+				$("#jqGrid2 #"+id_optid+"_glaccount").focus().select();
+			},
+			loadComplete: function(data,obj){
+				var searchfor = $("#jqGrid2 input#"+obj.id_optid+"_costcode").val()
+				var rows = data.rows;
+				var gridname = '#'+obj.gridname;
+
+				if(searchfor != undefined && rows.length > 1 && obj.ontabbing){
+					rows.forEach(function(e,i){
+						if(e.costcode.toUpperCase() == searchfor.toUpperCase().trim()){
+							let id = parseInt(i)+1;
+							$(gridname+' tr#'+id).click();
+							$(gridname+' tr#'+id).dblclick();
+						}
+					});
+				}
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1042,7 +1069,7 @@ $(document).ready(function () {
 		{	
 			colModel:[
 				{label:'GL Acc No',name:'glm_glaccount',width:100,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'glms_description',width:300,classes:'pointer',canSearch:true,or_search:true}, 
+				{label:'Description',name:'glms_description',width:300,classes:'pointer',checked:true,canSearch:true,or_search:true}, 
 				{label:'costcode',name:'glm_costcode',width:400,classes:'pointer', hidden:true},
 				{label:'year',name:'glm_year',width:400,classes:'pointer', hidden:true},
 				
@@ -1051,16 +1078,39 @@ $(document).ready(function () {
 				filterCol:['glm.compcode','glm.recstatus', 'glm.costcode', 'glm.year'],
 				filterVal:['session.compcode','ACTIVE',$("#jqGrid2 input[name='costcode']").val(),$('#gljnlhdr_year').val()]
 			},
-			ondblClickRow:function(){
+			ondblClickRow:function(event){
+				if(event.type == 'keydown'){
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}else{
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}
+				$("#jqGrid2 #"+id_optid+"_description").focus().select();
+			},
+			loadComplete: function(data,obj){
+				var searchfor = $("#jqGrid2 input#"+obj.id_optid+"_glaccount").val()
+				var rows = data.rows;
+				var gridname = '#'+obj.gridname;
+
+				if(searchfor != undefined && rows.length > 1 && obj.ontabbing){
+					rows.forEach(function(e,i){
+						if(e.glaccount.toUpperCase() == searchfor.toUpperCase().trim()){
+							let id = parseInt(i)+1;
+							$(gridname+' tr#'+id).click();
+							$(gridname+' tr#'+id).dblclick();
+						}
+					});
+				}
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-						$('#'+obj.dialogname).dialog('close');
-					}
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
 			}
 		},{
 			title:"Select DO No",
@@ -1149,7 +1199,7 @@ function populate_form(obj){
 
 	//panel header
 	$('#trantype_show').text(obj.gljnlhdr_trantype);
-	$('#document_show').text(obj.gljnlhdr_document);
+	$('#auditno_show').text(padzero(obj.gljnlhdr_auditno));
 	
 	if($('#scope').val().trim().toUpperCase() == 'CANCEL'){
 		$('td#glyphicon-plus,td#glyphicon-edit').hide();
@@ -1161,7 +1211,7 @@ function populate_form(obj){
 function empty_form(){
 
 	$('#trantype_show').text('');
-	$('#document_show').text('');
+	$('#auditno_show').text('');
 
 }
 

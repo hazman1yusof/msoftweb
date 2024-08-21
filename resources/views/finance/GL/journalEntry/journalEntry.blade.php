@@ -167,7 +167,7 @@ i.fa {
 
 	    <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel" id="panel_jqGrid3">
-				<b>DOCUMENT NO: </b><span id="trantype_show"></span> - <span id="document_show"></span><span id="ifcancel_show" style="color: red;"></span><br>
+				<b>DOCUMENT NO: </b><span id="trantype_show"></span> - <span id="auditno_show"></span><span id="ifcancel_show" style="color: red;"></span><br>
 
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>

@@ -62,28 +62,24 @@ use Carbon\Carbon;
                     ->where('h.source','=','GL')
                     ->where('h.trantype','=','JNL');
 
-
-
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
         }
 
-        if(!empty($request->filterdate)){
-            $table = $table->where('h.actdate','>',$request->filterdate[0]);
-            $table = $table->where('h.actdate','<',$request->filterdate[1]);
-        }
-
         if(!empty($request->searchCol)){
-            if($request->searchCol[0] == 'gljnlhdr_document'){
+            if($request->searchCol[0] == 'gljnlhdr_description'){
                 $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('h.document','like',$request->searchVal[0]);
+                        $table->Where('h.description','like',$request->searchVal[0]);
+                    });
+            }else if($request->searchCol[0] == 'gljnlhdr_auditno'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('h.auditno','like',$request->searchVal[0]);
                     });
             }else{
                 $table = $table->Where(function ($table) use ($request) {
                         $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
                     });
             }
-            
         }
 
         if(!empty($request->sidx)){
@@ -102,7 +98,6 @@ use Carbon\Carbon;
         }else{
             $table = $table->orderBy('h.idno','DESC');
         }
-
 
         $paginate = $table->paginate($request->rows);
 
@@ -163,7 +158,7 @@ use Carbon\Carbon;
                 'trantype' => $request->gljnlhdr_trantype,
                 'description' => strtoupper($request->gljnlhdr_description),
                 'docdate' => $request->gljnlhdr_docdate,
-                'postdate' => $request->gljnlhdr_postdate,
+                'postdate' => $request->gljnlhdr_docdate,
                 'year' => $request->gljnlhdr_year,
                 'period' => $request->gljnlhdr_period,
                 'docno' => str_pad($auditno,8,"0",STR_PAD_LEFT),
@@ -214,7 +209,7 @@ use Carbon\Carbon;
             'trantype' => $request->gljnlhdr_trantype,
             'description' => strtoupper($request->gljnlhdr_description),
             'docdate' => $request->gljnlhdr_docdate,
-            'postdate' => $request->gljnlhdr_postdate,
+            'postdate' => $request->gljnlhdr_docdate,
             'year' => $request->gljnlhdr_year,
             'period' => $request->gljnlhdr_period,
             'recstatus' => 'OPEN',
