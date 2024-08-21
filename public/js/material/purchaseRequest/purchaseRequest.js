@@ -2621,6 +2621,11 @@ function remark_button_class(grid){
 			$('i#approved_remark_i').data('remark',this.selrowdata.purreqhd_approved_remark);
 			$('#dialog_remarks_view').dialog('option', 'title', 'Approved Remark');
 		}
+		if(this.selrowdata.purreqhd_cancelled_remark != ''){
+			$('i#cancelled_remark_i').show();
+			$('i#cancelled_remark_i').data('remark',this.selrowdata.purreqhd_cancelled_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Cancelled Remark');
+		}
 		$('i.my_remark').on('click',function(){
 			$('#remarks_view').val($(this).data('remark'));
 			$("#dialog_remarks_view").dialog( "open" );

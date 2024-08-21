@@ -277,15 +277,19 @@
 				attach_array.push($(this).data('src'));
 			});
 
-			var obj = {
-				page:'merge_pdf_with_attachment',
-				merge_key:merge_key,
-				attach_array:attach_array
-			};
+			if(attach_array.length > 0 ){
+				var obj = {
+					page:'merge_pdf_with_attachment',
+					merge_key:merge_key,
+					attach_array:attach_array
+				};
 
-			$('#pdfiframe_merge').attr('src',"../attachment_upload/table?"+$.param(obj));
-			$('#btn_merge,#pdfiframe_merge').show();
-			$('#btn_merge').click();
+				$('#pdfiframe_merge').attr('src',"../attachment_upload/table?"+$.param(obj));
+				$('#btn_merge,#pdfiframe_merge').show();
+				$('#btn_merge').click();
+			}else{
+				alert('Select at least 1 PDF Attachment to merge with main PDF');
+			}
 		});
 
 		populate_attachmentfile();

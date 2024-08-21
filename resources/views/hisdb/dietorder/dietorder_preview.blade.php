@@ -117,7 +117,7 @@
           remarks:`{{$diet->remark}}`,
           remarks_kitchen:`{{$diet->remarkkitchen}}`,
           diet_time:`{{$diet->lastupdate}}`,
-        }
+        },
       @endforeach 
     ];
 

@@ -33,7 +33,7 @@ class PurchaseOrderController extends defaultController
         $oper = strtolower($request->scope);
         $scope = ucfirst(strtolower($request->scope));
         $recno = $request->recno;
-        $purordhd = DB::table('material.purordhd as pohd')
+        $po_hd = DB::table('material.purordhd as pohd')
                         ->select('pohd.idno','pohd.recno','pohd.prdept','dept_pr.description as reqdept_desc','pohd.deldept','dept_del.description as prdept_desc','pohd.purreqno','pohd.purdate','pohd.totamount','pohd.suppcode','supp.Name as suppcode_desc','pohd.recstatus','pohd.remarks')
                         ->leftjoin('sysdb.department as dept_del', function($join) use ($request){
                             $join = $join
@@ -54,7 +54,7 @@ class PurchaseOrderController extends defaultController
                         ->where('pohd.recno',$recno)
                         ->first();
 
-        $purorddt = DB::table('material.purorddt as podt')
+        $po_dt = DB::table('material.purorddt as podt')
                         ->select('podt.lineno_','podt.pricecode','psrc.description as pricecode_desc','podt.itemcode','pmast.description as itemcode_desc','podt.uomcode','uom.description as uom_desc','podt.pouom','pouom.description as pouom_desc','podt.qtyorder','podt.unitprice','podt.totamount','podt.remarks')
                         ->leftjoin('material.pricesource as psrc', function($join) use ($request){
                             $join = $join
@@ -80,7 +80,7 @@ class PurchaseOrderController extends defaultController
                         ->where('podt.recno',$recno)
                         ->get();
 
-        return view('material.purchaseOrder.purchaseOrder_mobile',compact('purordhd','purorddt','scope','oper'));
+        return view('material.purchaseOrder.purchaseOrder_mobile',compact('po_hd','po_dt','scope','oper'));
     }
 
     public function form(Request $request){   
@@ -98,6 +98,8 @@ class PurchaseOrderController extends defaultController
             case 'support':
                 return $this->support($request);
             case 'verify':
+                return $this->verify($request);
+            case 'verified':
                 return $this->verify($request);
             case 'approved':
                 return $this->approved($request);

@@ -948,6 +948,8 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 				case 'PREPARED':
 				case 'ALL2':
 				case 'VERIFIED':
+				case 'RECOMMENDED1':
+				case 'RECOMMENDED2':
 				case 'APPROVED':
 				case 'DELIVERED':
 				case 'REOPEN':

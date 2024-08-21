@@ -90,7 +90,7 @@
             </div>
             <div class="row">
                 <div class="eight wide column">
-                 <b>Date:</b><span> {{\Carbon\Carbon::parse($po_hd->purreqdt)->format('d-m-Y')}}</span>
+                 <b>Date:</b><span> {{\Carbon\Carbon::parse($po_hd->purdate)->format('d-m-Y')}}</span>
                 </div>
                 <div class="eight wide column cont2">
                  <b>Total Amount:</b><span> {{number_format($po_hd->totamount,2)}}</span>
@@ -108,7 +108,7 @@
                   <td><b>Description</b> <span class="span_txt">{{$dt->itemcode_desc}}</span></td>
                   <td><b>UOM</b> <span class="span_txt">{{$dt->uomcode}} - {{$dt->uom_desc}}</span></td>
                   <td><b>PO UOM</b> <span class="span_txt">{{$dt->pouom}} - {{$dt->pouom_desc}}</span></td>
-                  <td><b>Quantity Request</b> <span class="span_txt">{{$dt->qtyrequest}}</span></td>
+                  <td><b>Quantity Order</b> <span class="span_txt">{{$dt->qtyorder}}</span></td>
                   <td><b>Unit Price</b> <span class="span_txt">{{number_format($dt->unitprice,2)}}</span></td>
                   <td><b>Total Amount</b> <span class="span_txt">{{number_format($dt->totamount,2)}}</span></td>
                   <td><b>remarks</b> <span class="span_txt">{{$dt->remarks}}</span></td>
@@ -196,7 +196,7 @@
         obj._token = $('#_token').val();
         obj.remarks = $('#remarks').val();
         
-        $.post( './purchaseRequest/form', obj , function( data ) {
+        $.post( './purchaseOrder/form', obj , function( data ) {
 
         }).fail(function(data) {
 

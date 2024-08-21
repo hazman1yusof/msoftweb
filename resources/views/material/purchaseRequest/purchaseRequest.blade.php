@@ -417,8 +417,14 @@ i.fa {
 					  			</div>
 								
 									<div class="col-md-2 minuspad-15">
-										<label class="control-label" for="purreqhd_upduser">Last User</label>
-						  			<input id="purreqhd_upduser" name="purreqhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+										@if(Request::get('scope') == 'REOPEN')
+											<label class="control-label" for="purreqhd_cancelby">Reject User</label>
+							  			<input id="purreqhd_cancelby" name="purreqhd_cancelby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+							  			<i class="fa fa-info-circle my_remark" aria-hidden="true" id='cancelled_remark_i'></i>
+						  			@else
+											<label class="control-label" for="purreqhd_upduser">Last User</label>
+							  			<input id="purreqhd_upduser" name="purreqhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+							  		@endif
 					  			</div>
 
 					  			<div class="col-md-2 minuspad-15">
@@ -457,8 +463,13 @@ i.fa {
 					  			</div>
 
 									<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purreqhd_upddate">Update Date</label>
-						  			<input id="purreqhd_upddate" name="purreqhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+										@if(Request::get('scope') == 'REOPEN')
+											<label class="control-label" for="purreqhd_canceldate">Reject Date</label>
+							  			<input id="purreqhd_canceldate" name="purreqhd_canceldate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  			@else
+											<label class="control-label" for="purreqhd_upddate">Update Date</label>
+							  			<input id="purreqhd_upddate" name="purreqhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								  	@endif
 					  			</div>
 							</div>
 					</form>

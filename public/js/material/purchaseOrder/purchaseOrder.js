@@ -55,6 +55,7 @@ $(document).ready(function () {
 				errorField.length=0;
 				$("#jqGrid2").jqGrid("setFrozenColumns");
 				parent_close_disabled(true);
+				my_remark_button.remark_btn_init(selrowData("#jqGrid"));
 				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth - $("#jqGrid2_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
 				switch (oper) {
@@ -318,6 +319,10 @@ $(document).ready(function () {
 			{ label: 'reopendate', name: 'purordhd_reopendate', width: 40, hidden:true},
 			{ label: 'cancelby', name: 'purordhd_cancelby', width: 40, hidden:true},
 			{ label: 'canceldate', name: 'purordhd_canceldate', width: 40, hidden:true},
+			{ label: 'support_remark', name: 'purordhd_support_remark', width: 40, hidden:true},
+			{ label: 'verified_remark', name: 'purordhd_verified_remark', width: 40, hidden:true},
+			{ label: 'approved_remark', name: 'purordhd_approved_remark', width: 40, hidden:true},
+			{ label: 'cancelled_remark', name: 'purordhd_cancelled_remark', width: 40, hidden:true},
 			{ label: 'idno', name: 'purordhd_idno', width: 90, hidden: true },
 			{ label: 'unit', name: 'purordhd_unit', width: 40, hidden:true},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox ,hidden:false},
@@ -389,7 +394,7 @@ $(document).ready(function () {
 			
 		},
 		gridComplete: function () {
-			$('#but_post_jq').hide();
+			$('#but_post_jq,#but_cancel_jq').hide();
 			if (oper == 'add' || oper == null || $("#jqGrid").data('lastselrow') == undefined) { 
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}else{
@@ -537,7 +542,7 @@ $(document).ready(function () {
 	$("#but_cancel_jq").click(function(){
 		$("#but_cancel_jq").attr('disabled',true);
 		if($(this).data('oper') == 'cancel'){
-			if (confirm("Are you sure to reject this purchase request?") == true) {
+			if (confirm("Are you sure to reject this purchase Order?") == true) {
 				$("#dialog_remarks_oper").dialog( "open" );
 			}
 		}
@@ -3783,6 +3788,11 @@ function remark_button_class(grid){
 			$('i#approved_remark_i').show();
 			$('i#approved_remark_i').data('remark',this.selrowdata.purordhd_approved_remark);
 			$('#dialog_remarks_view').dialog('option', 'title', 'Approved Remark');
+		}
+		if(this.selrowdata.purordhd_cancelled_remark != ''){
+			$('i#cancelled_remark_i').show();
+			$('i#cancelled_remark_i').data('remark',this.selrowdata.purordhd_cancelled_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Cancelled Remark');
 		}
 		$('i.my_remark').on('click',function(){
 			$('#remarks_view').val($(this).data('remark'));

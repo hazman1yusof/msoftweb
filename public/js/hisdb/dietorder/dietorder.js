@@ -97,7 +97,7 @@ $(document).ready(function (){
 	$("#preview").click(function (){
 		// window.location='./dietorder/table?action=dietorder_preview&mrn='+$('#mrn_dietOrder').val()+'&episno='+$("#episno_dietOrder").val();
 		
-		window.open('./dietorder/table?action=dietorder_preview&mrn='+$('#mrn_dietOrder').val()+'&episno='+$("#episno_dietOrder").val(), '_blank');
+		window.open('./dietorder/table?action=dietorder_preview&epistycode='+$('#epistycode').val(), '_blank');
 	});
 	
 });

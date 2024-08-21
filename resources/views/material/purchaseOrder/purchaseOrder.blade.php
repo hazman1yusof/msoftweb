@@ -490,7 +490,7 @@ div#fail_msg{
 
 							<div class="form-group data_info">
 								<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purordhd_requestby">Posted By</label>  
+									<label class="control-label" for="purordhd_requestby">Prepared By</label>  
 									<input id="purordhd_requestby" name="purordhd_requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 								</div>
 
@@ -518,13 +518,19 @@ div#fail_msg{
 								</div>
 								
 								<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purordhd_upduser">Last User</label>
-									<input id="purordhd_upduser" name="purordhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+									@if(Request::get('scope') == 'REOPEN')
+										<label class="control-label" for="purordhd_cancelby">Reject User</label>
+						  			<input id="purordhd_cancelby" name="purordhd_cancelby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  			<i class="fa fa-info-circle my_remark" aria-hidden="true" id='cancelled_remark_i'></i>
+					  			@else
+										<label class="control-label" for="purordhd_upduser">Last User</label>
+										<input id="purordhd_upduser" name="purordhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						  		@endif
 								</div>
 
 								<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purordhd_requestdate">Posted Date</label>  
-									<input id="purordhd_requestdate" name="purordhd_requestdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+										<label class="control-label" for="purordhd_requestdate">Prepared Date</label>  
+										<input id="purordhd_requestdate" name="purordhd_requestdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 								</div>
 
 								<div class="col-md-2 minuspad-15">
@@ -548,8 +554,13 @@ div#fail_msg{
 								</div>
 
 								<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purordhd_upddate">Update Date</label>
-									<input id="purordhd_upddate" name="purordhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+									@if(Request::get('scope') == 'REOPEN')
+										<label class="control-label" for="purordhd_canceldate">Reject Date</label>
+						  			<input id="purordhd_canceldate" name="purordhd_canceldate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  			@else
+										<label class="control-label" for="purordhd_upddate">Update Date</label>
+										<input id="purordhd_upddate" name="purordhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+							  	@endif
 								</div>
 							</div>
 					</form>

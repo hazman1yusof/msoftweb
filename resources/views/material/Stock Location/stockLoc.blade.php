@@ -106,13 +106,13 @@
 					</div>
 				</div>
 
-				<div class="form-group">
+				<!-- <div class="form-group" >
 				 	<label class="col-md-2 control-label" for="frozen">Freeze</label>  
 				  	<div class="col-md-3">
-					  	<label class="radio-inline"><input type="radio" name="frozen" value='1'>Yes</label>
-						<label class="radio-inline"><input type="radio" name="frozen" value='0' >No</label>			
+					  	<label class="radio-inline"><input type="radio" name="frozen" value='1' disabled>Yes</label>
+						<label class="radio-inline"><input type="radio" name="frozen" value='0' disabled>No</label>			
                 	</div>
-				</div>
+				</div> -->
                   
                   <div class="form-group" hidden = 'true'>
 				  <label class="col-md-2 control-label" for="disptype">Dispensing Type</label>  
