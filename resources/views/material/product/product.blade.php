@@ -301,26 +301,26 @@
 						  	<label class="col-md-2 control-label" for="reuse">Reuse</label>  
 						  		<div class="col-md-2">
 									<label class="radio-inline"><input type="radio" name="reuse" value='1' data-validation="required">Yes</label>
-									<label class="radio-inline"><input type="radio" name="reuse" value='0' >No</label>
+									<label class="radio-inline"><input type="radio" name="reuse" value='0' checked>No</label>
 						  		</div>
 						  
 						  	<label class="col-md-1 control-label" for="rpkitem">Repack Item</label>  
 						  		<div class="col-md-2">
 									<label class="radio-inline"><input type="radio" name="rpkitem" value='1' data-validation="required">Yes</label>
-									<label class="radio-inline"><input type="radio" name="rpkitem" value='0'>No</label>
+									<label class="radio-inline"><input type="radio" name="rpkitem" value='0' checked>No</label>
 						  		</div>
 		                  
 		                  	<label class="col-md-2 control-label" for="tagging">Tagging</label>  
 						  		<div class="col-md-2">
 									<label class="radio-inline"><input type="radio" name="tagging" value='1' data-validation="required">Yes</label>
-									<label class="radio-inline"><input type="radio" name="tagging" value='0'>No</label>
+									<label class="radio-inline"><input type="radio" name="tagging" value='0' checked>No</label>
 						  		</div>
 						</div>
                 
 		                <div class="form-group">
 						  	<label class="col-md-2 control-label" for="expdtflg">Expiry Date</label>  
 						  		<div class="col-md-2">
-									<label class="radio-inline"><input type="radio" name="expdtflg" value='1' data-validation="required">Yes</label>
+									<label class="radio-inline"><input type="radio" name="expdtflg" value='1' data-validation="required" checked>Yes</label>
 									<label class="radio-inline"><input type="radio" name="expdtflg" value='0'>No</label>
 						  		</div>
 						  

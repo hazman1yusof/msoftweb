@@ -856,7 +856,7 @@ $(document).ready(function () {
 			{ label: 'Uom Code', name: 'uomcode', width: 30, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Qty On Hand', name: 'qtyonhand', width: 40, classes: 'wrap',hidden:false,align: 'right'},
 			{ label: 'Average Cost', name: 'avgcost', width: 40, formatter: 'currency',align: 'right'},
-			{ label: 'Current Price', name: 'currprice', width: 40, formatter: 'currency',align: 'right'},
+			{ label: 'Current Cost', name: 'currprice', width: 40, formatter: 'currency',align: 'right'},
 			{ label: 'Group Code', name: 'groupcode', width: 30, sorttype: 'text', classes: 'wrap'  },
 			{ label: 'Class', name: 'Class', width: 40, sorttype: 'text', classes: 'wrap', hidden:true   },
 			{ label: 'Product Category', name: 'productcat', width: 40, sorttype: 'text', classes: 'wrap' ,canSearch: true, formatter: showdetail,unformat:un_showdetail},
