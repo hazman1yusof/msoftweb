@@ -157,8 +157,8 @@
 					margin: [0, 5, 0, 5]
 				},
 				body_sign: {
-					fontSize: 9,
-					margin: [5, 20, 0, 0]
+					fontSize: 8,
+					margin: [1, 20, 0, 0]//left, top, right, bottom
 				},
 
 			},
@@ -252,13 +252,15 @@
 	        {
 	            style: 'body_sign',
 	            table: {
-	                widths: ['*','*','*','*'],//panjang standard dia 515
+	                widths: ['*','*','*','*','*'],//panjang standard dia 515
 	                body: [
 	                	[
-							{text: 'Prepared by\n\n\n\n\n______________________\n\nName:',bold: true,alignment: 'left'}, 
-							{text: 'Checked By\n\n\n\n\n______________________\n\nName:',bold: true,alignment: 'left'},
-							{text: 'Approved By\n\n\n\n\n______________________\n\nName:',bold: true,alignment: 'left'}, 
-							{text: 'Signatures\n\n\n\n\n______________________\n\nName:',bold: true,alignment: 'left'},
+							{text: 'Prepared by\n\n\n\n\n__________________\n\nName:',bold: true,alignment: 'left'}, 
+							{text: 'Checked By\n\n\n\n\n__________________\n\nName:',bold: true,alignment: 'left'},
+							{text: 'Approved By\n\n\n\n\n__________________\n\nName:',bold: true,alignment: 'left'}, 
+							{text: 'Signatures\n\n\n\n\n__________________\n\nName:',bold: true,alignment: 'left'},
+							{text: 'Signatures\n\n\n\n\n__________________\n\nName:',bold: true,alignment: 'left'},
+
 	                	]
 	                ]
 	            },
@@ -501,8 +503,8 @@
 					margin: [0, 5, 0, 5]
 				},
 				body_sign: {
-					fontSize: 9,
-					margin: [5, 20, 0, 0]
+					fontSize: 8,
+					margin: [1, 20, 0, 0]//left, top, right, bottom
 				},
 
 			},
@@ -596,13 +598,14 @@
 	        {
 	            style: 'body_sign',
 	            table: {
-	                widths: ['*','*','*','*'],//panjang standard dia 515
+	                widths: ['*','*','*','*','*'],//panjang standard dia 515
 	                body: [
 	                	[
-							{text: 'Prepared by\n\n\n\n\n______________________\n\nName:',bold: true,alignment: 'left'}, 
-							{text: 'Checked By\n\n\n\n\n______________________\n\nName:',bold: true,alignment: 'left'},
-							{text: 'Approved By\n\n\n\n\n______________________\n\nName:',bold: true,alignment: 'left'}, 
-							{text: 'Signatures\n\n\n\n\n______________________\n\nName:',bold: true,alignment: 'left'},
+							{text: 'Prepared ddby\n\n\n\n\n__________________\n\nName:',bold: true,alignment: 'left'}, 
+							{text: 'Checked By\n\n\n\n\n__________________\n\nName:',bold: true,alignment: 'left'},
+							{text: 'Approved By\n\n\n\n\n__________________\n\nName:',bold: true,alignment: 'left'}, 
+							{text: 'Signatures\n\n\n\n\n__________________\n\nName:',bold: true,alignment: 'left'},
+							{text: 'Signatures\n\n\n\n\n__________________\n\nName:',bold: true,alignment: 'left'},
 	                	]
 	                ]
 	            },
