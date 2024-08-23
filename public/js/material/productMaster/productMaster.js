@@ -279,6 +279,15 @@
 					urlParam.filterCol = ['groupcode','compcode'];
 					urlParam.filterVal = [postGroupcode,'session.compcode'];
 					refreshGrid('#jqGrid',urlParam);
+				}else if(postGroupcode == "Consignment"){
+					showPostClass();
+					$(":radio[name='postClass']").prop("checked", false);
+					hideAssetClass();
+					hideOtherClass();
+					showStockClass();
+					urlParam.filterCol = ['groupcode','compcode'];
+					urlParam.filterVal = [postGroupcode,'session.compcode'];
+					refreshGrid('#jqGrid',urlParam);
 				}
 			})
 
