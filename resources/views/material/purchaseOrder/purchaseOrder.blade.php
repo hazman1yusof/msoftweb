@@ -165,6 +165,10 @@ div#fail_msg{
 					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">REJECT</button>
 					@endif
 
+					@if (Request::get('scope') == 'REOPEN' && !empty(Request::get('recno')))
+					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_from_reject_jq" data-oper="cancel_from_reject" style="display: none;">REJECT</button>
+					@endif
+
 					<span id="error_infront" style="color: red"></span>
 					<!-- <button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button> -->
 					<button 
