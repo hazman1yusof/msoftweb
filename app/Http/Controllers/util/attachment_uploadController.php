@@ -169,6 +169,7 @@ class attachment_uploadController extends defaultController
     }
 
     public function get_merge_pdf(Request $request){//guna database bila merge antara document
+        $attachment_path = \config('get_config.ATTACHMENT_PATH');
         $merge_key = $request->merge_key;
         $pdf_merge = DB::table('sysdb.pdf_merge')
                         ->where('compcode',session('compcode'))
@@ -179,7 +180,7 @@ class attachment_uploadController extends defaultController
             $pdf = new \Clegginabox\PDFMerger\PDFMerger;
 
             foreach ($pdf_merge as $obj) {
-                $pdf->addPDF(public_path().'/uploads/pdf_merge/'.$merge_key.'_'.$obj->lineno_.'.pdf', 'all');
+                $pdf->addPDF($attachment_path.'/uploads/pdf_merge/'.$merge_key.'_'.$obj->lineno_.'.pdf', 'all');
             }
         }
 
@@ -194,6 +195,8 @@ class attachment_uploadController extends defaultController
     }
 
     public function merge_pdf_with_attachment(Request $request){
+        $attachment_path = \config('get_config.ATTACHMENT_PATH');
+
         $merge_key = $request->merge_key;
         $pdf_merge = DB::table('sysdb.pdf_merge')
                         ->where('compcode',session('compcode'))
@@ -204,12 +207,12 @@ class attachment_uploadController extends defaultController
             $pdf = new \Clegginabox\PDFMerger\PDFMerger;
 
             foreach ($pdf_merge as $obj) {
-                $pdf->addPDF(public_path().'/uploads/pdf_merge/'.$merge_key.'_'.$obj->lineno_.'.pdf', 'all');
+                $pdf->addPDF($attachment_path.'/uploads/pdf_merge/'.$merge_key.'_'.$obj->lineno_.'.pdf', 'all');
             }
         }
         
         foreach ($request->attach_array as $attach) {
-            $pdf->addPDF(public_path().'/uploads/'.$attach, 'all');
+            $pdf->addPDF($attachment_path.'/uploads/attachment'.$attach, 'all');
         }
         $pdf->merge('browser', public_path() . '/uploads/pdf_merge/'.$merge_key.'_merged.pdf', 'P');
     }
