@@ -184,7 +184,7 @@ class attachment_uploadController extends defaultController
             }
         }
 
-        $filesForDelete = array_filter(glob(public_path().'/uploads/pdf_merge/*'), function($file) use ($merge_key) {
+        $filesForDelete = array_filter(glob($attachment_path.'/uploads/pdf_merge/*'), function($file) use ($merge_key) {
             if(str_contains($file, $merge_key)){
                 return false;
             }
@@ -212,7 +212,7 @@ class attachment_uploadController extends defaultController
         }
         
         foreach ($request->attach_array as $attach) {
-            $pdf->addPDF($attachment_path.'/uploads/attachment'.$attach, 'all');
+            $pdf->addPDF($attachment_path.'/uploads/'.$attach, 'all');
         }
         $pdf->merge('browser', public_path() . '/uploads/pdf_merge/'.$merge_key.'_merged.pdf', 'P');
     }
