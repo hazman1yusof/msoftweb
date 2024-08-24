@@ -73,8 +73,11 @@
 		var docDefinition = {
 			footer: function(currentPage, pageCount) {
 				return [
-			      { text: currentPage.toString() + ' of ' + pageCount, alignment: 'center' }
-			    ]
+					{
+						text: 'This is a computer-generated document. No signature is required.', alignment: 'center', fontSize: 10
+					},
+					{ text: currentPage.toString() + ' of ' + pageCount, alignment: 'center', fontSize: 10 }
+				]
 			},
 			pageSize: 'A4',
 			// pageOrientation: 'landscape',
@@ -255,9 +258,9 @@
 						]
 					}
 				},
-				{
-					text: 'This is a computer-generated document. No signature is required.', alignment: 'center', fontSize: 8,
-				},
+				// {
+				// 	text: 'This is a computer-generated document. No signature is required.', alignment: 'center', fontSize: 8,
+				// },
 			],
 			styles: {
 				header: {
