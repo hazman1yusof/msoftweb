@@ -202,7 +202,7 @@ i.fa {
 				  	<label class="col-md-2 control-label" for="d_deptcode">Department</label>  
 				  		<div class="col-md-2">
 					  		<div class='input-group'>
-								<input id="d_deptcode" name="dtl_deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="d_deptcode" name="dtl_deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" value="ALL">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  		</div>
 					 		<span class="help-block"></span>
@@ -226,6 +226,7 @@ i.fa {
 							<select id="d_trantype" name="dtl_trantype" class="form-control input-sm">
 							    <option value="PR">Purchase Request</option>
 							    <option value="PO">Purchase Order</option>
+							    <option value="IV">Inventory Transaction</option>
 							</select>
 						</div>
                 </div>		

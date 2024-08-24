@@ -26,6 +26,7 @@ $(document).ready(function () {
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency = new currencymode(['#amount']);
 	var fdl = new faster_detail_load();
+	var myfail_msg = new fail_msg_func();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
 	var oper = null;
@@ -106,10 +107,10 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
 
 	var recstatus_filter = [['OPEN','POSTED']];
-		if($("#recstatus_use").val() == 'POSTED'){
-			recstatus_filter = [['OPEN','POSTED']];
-			filterCol_urlParam = ['ivreqhd.compcode'];
-			filterVal_urlParam = ['session.compcode'];
+	if($("#recstatus_use").val() == 'ALL'){
+		recstatus_filter = [['OPEN','POSTED']];
+		filterCol_urlParam = ['ivreqhd.compcode'];
+		filterVal_urlParam = ['session.compcode'];
 	}
 
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","idno","recstatus", recstatus_filter[0][0]);
@@ -122,8 +123,8 @@ $(document).ready(function () {
 		table_id: 'idno',
 		filterCol: ['reqdept','compcode'],
 		filterVal: [$('#deptcode').val(),'session.compcode'],
-		// WhereInCol:['ivreqhd.recstatus'],
-		// WhereInVal: recstatus_filter,
+		WhereInCol:['ivreqhd.recstatus'],
+		WhereInVal: recstatus_filter,
 		//fixPost: true,
 	}
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
@@ -174,7 +175,6 @@ $(document).ready(function () {
 	}
 
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
-	searchChange(true);
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
@@ -537,6 +537,7 @@ $(document).ready(function () {
 		search('#jqGrid', $('#searchForm [name=Stext]').val(), $('#searchForm [name=Scol] option:selected').val(), urlParam);
 	}
 
+	searchChange(true);
 	function searchChange(init=false) {
 		var arrtemp = ['session.compcode', $('#Status option:selected').val(), $('#trandept option:selected').val()];
 
@@ -631,7 +632,7 @@ $(document).ready(function () {
 		url:'util/get_table_default',
 		field: ['ivdt.compcode', 'ivdt.recno', 'ivdt.lineno_', 'ivdt.itemcode', 'ivdt.uomcode', 'ivdt.pouom',
 		'ivdt.maxqty', 'ivdt.qtyonhand', 'ivdt.qtyrequest', 'ivdt.qtytxn', 'ivdt.qohconfirm','ivdt.netprice',
-		'ivdt.recstatus'],
+		'ivdt.recstatus','ivdt.expdate','ivdt.batchno'],
 		table_name: ['material.ivreqdt AS ivdt '],
 		table_id: 'lineno_',
 		// join_type: ['LEFT JOIN', 'LEFT JOIN'],
@@ -740,7 +741,17 @@ $(document).ready(function () {
 				label: 'Type', name: 'recstatus', width: 100, classes: 'wrap', hidden: true, editable: false,
 				editoptions: { readonly: "readonly" },
 			},
-
+			{ label: 'Expiry Date', name: 'expdate', width: 80, classes: 'wrap', editable:true,
+			formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},editoptions:{readonly: "readonly"},
+					editrules:{required: false,custom:true, custom_func:cust_rules},
+						edittype:'custom',	editoptions:
+						    {  custom_element:expdateCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+			},
+			{ label: 'Batch No', name: 'batchno', width: 100, classes: 'wrap', editable:true,editoptions:{readonly: "readonly"},
+					maxlength: 100,
+			},
 
 		],
 		autowidth: true,
@@ -871,13 +882,15 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
 		oneditfunc: function (rowid) {
+			myfail_msg.clear_fail();
 			errorField.length=0;
 			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
-				dialog_itemcode.on();
-				dialog_uomcodereqdept.on();
-				dialog_uomcodereqto.on();
+			dialog_itemcode.on();
+			dialog_uomcodereqdept.on();
+			dialog_uomcodereqto.on();
+			dialog_expdate.on();
 
 			mycurrency2.array.length = 0;
 			mycurrency_np.array.length = 0;
@@ -900,6 +913,7 @@ $(document).ready(function () {
 
 		},
 		aftersavefunc: function (rowid, response, options) {
+			myfail_msg.clear_fail();
 			var resobj = JSON.parse(response.responseText);
 			$('#recno').val(resobj.recno);
 			$('#ivreqno').val(resobj.ivreqno);
@@ -914,16 +928,35 @@ $(document).ready(function () {
 			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 		},
 		errorfunc: function(rowid,response){
-        	alert(response.responseText);
-        	refreshGrid('#jqGrid2',urlParam2,'add');
-	    	$("#jqGridPager2Delete").show();
+			errorField.length=0;
+        	myfail_msg.add_fail({
+				id:'response',
+				textfld:"",
+				msg:response.responseText,
+			});
+        	// refreshGrid('#jqGrid2',urlParam2,'add');
+	    	// $("#jqGridPager2Delete").show();
         },
+        restoreAfterError : false,
 		beforeSaveRow: function (options, rowid) {
         	if(errorField.length>0)return false;
 			mycurrency2.formatOff();
 			mycurrency_np.formatOff();
 
-			if(parseInt($('#jqGrid2 input[name="qtyrequest"]').val()) <= 0)return false;
+			if(parseInt($('#jqGrid2 input[name="qtyrequest"]').val()) <= 0){
+	        	myfail_msg.add_fail({
+					id:'qtyrequest_is_zero',
+					textfld:'#jqGrid2 input[name="qtyrequest"]',
+					msg:'Quantity Request cant be 0',
+				});
+				return false;
+			}else{
+				myfail_msg.del_fail({
+					id:'qtyrequest_is_zero',
+					textfld:null,
+					msg:null,
+				});
+			}
 
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 
@@ -933,6 +966,7 @@ $(document).ready(function () {
 					idno: $('#idno').val(),
 					recno: $('#recno').val(),
 					reqdept: $('#reqdept').val(),
+					reqdt: $('#reqdt').val(),
 					ivreqno: $('#ivreqno').val(),
 					remarks:data.remarks,
 					amount:data.amount,
@@ -1046,6 +1080,15 @@ $(document).ready(function () {
         				calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 			        }
 			    );
+
+			    dialog_expdate.id_optid = ids[i];
+		        // dialog_expdate.check(errorField,ids[i]+"_expdate","jqGrid2",null,
+		        // 	function(self){
+			    //     	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			    //     },function(self){
+        		// 		calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
+			    //     }
+			    // );
 
 		       // cari_gstpercent(ids[i]);
 		    }
@@ -1204,6 +1247,11 @@ $(document).ready(function () {
 
 			`);
 	}
+	function expdateCustomEdit(val,opt){
+		val = (val.slice(0, val.search("[<]")) == "undefine") ? "" : val.slice(0, val.search("[<]"));
+		 return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'"  name="expdate" type="text" class="form-control input-sm" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+		
+	}
 
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
@@ -1238,6 +1286,7 @@ $(document).ready(function () {
 	$("#saveHeaderLabel").click(function () {
 		emptyFormdata(errorField, '#formdata2');
 		hideatdialogForm(true);
+		addmore_jqgrid2.state = false;
 		dialog_reqdept.on();
 		dialog_reqtodept.on();
 
@@ -1437,6 +1486,7 @@ $(document).ready(function () {
 				{label:'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
 				{label:'Max Quantity',name:'s_maxqty',width:100,classes:'pointer', hidden:true},
 				{label:'Average Cost', name: 'p_avgcost', width: 100, classes: 'pointer', hidden:false },
+				{label: 'Exp', name: 'p_expdtflg', width: 50, classes: 'pointer',formatter:formatterstatus_tick_number,unformat:unformatstatus_tick_number },
 				{label:'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
 			],
 			urlParam: {
@@ -1665,6 +1715,45 @@ $(document).ready(function () {
 		}, 'urlParam','radio','tab'
 	);
 	dialog_uomcodereqto.makedialog(false);
+
+
+	var dialog_expdate = new ordialog(
+		'expdate',['material.stockexp'],"#jqGrid2 input[name='expdate']",'errorField',
+		{	colModel:
+			[
+				{label:'Expiry Date',name:'expdate',width:200,classes:'pointer',canSearch:true,or_search:true,checked:true,},
+				{label:'Batch No',name:'batchno',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Quantity',name:'balqty',width:400,classes:'pointer'},
+				{label:'itemcode', name: 'itemcode', width: 50, classes: 'pointer', hidden:true },
+				{label:'uomcode', name: 'uomcode', width: 50, classes: 'pointer', hidden:true },
+				{label:'deptcode', name: 'deptcode', width: 50, classes: 'pointer', hidden:true },
+			],
+			urlParam: {
+				filterCol:['compcode','year','deptcode', 'uomcode', 'itemcode'],
+				filterVal:['session.compcode',moment($('#reqdt').val()).year(),$("#reqtodept").val(), $("#jqGrid2 input[name='uomcode']").val(), $("#jqGrid2 input[name='itemcode']").val()]
+			},
+			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_expdate.gridname);
+				$("#jqGrid2 input[name='batchno']").val(data['batchno']);
+			},
+		/*	gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+				}
+			}*/
+		},{
+			title:"Select Expiry Date",
+			open: function(obj){
+				dialog_expdate.urlParam.filterCol=['compcode','year','deptcode', 'uomcode', 'itemcode'];
+				dialog_expdate.urlParam.filterVal=['session.compcode',moment($('#reqdt').val()).year(),$("#reqtodept").val(),$("#jqGrid2 input#"+obj.id_optid+"_uomcode").val(), $("#jqGrid2 input#"+obj.id_optid+"_itemcode").val()];
+			
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_expdate.makedialog(false);
 
 	/////////////////////////////end dialog handler/////////////////////////////////////////
 

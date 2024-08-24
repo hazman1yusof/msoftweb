@@ -396,7 +396,7 @@
 
 				</form>
 				<div class="panel-body">
-					<div class="noti2" style="font-size: bold; color: red"><ol></ol></div>
+					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
 				</div>
 			</div>
 		</div>

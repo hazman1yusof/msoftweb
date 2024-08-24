@@ -83,6 +83,34 @@ class InventoryRequestDetailController extends defaultController
                     ]);
             }
 
+            $product = DB::table('material.product')
+                        ->where('compcode',session('compcode'))
+                        ->where('unit',session('unit'))
+                        ->where('itemcode',$request->itemcode)
+                        ->where('uomcode',$request->uomcode);
+
+            if(!$product->exists()){
+                throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' not exist!');
+            }
+
+            $product = $product->first();
+
+            if($product->expdtflg == 1 && empty($request->expdate)) {
+                throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' need to supply Expiry Date!');
+            }
+
+            $stockloc = DB::table('material.stockloc')
+                        ->where('compcode',session('compcode'))
+                        ->where('unit',session('unit'))
+                        ->where('itemcode',$request->itemcode)
+                        ->where('uomcode',$request->uomcode)
+                        ->where('deptcode',$request->reqdept)
+                        ->where('year',$this->toYear($request->reqdt));
+
+            if(!$stockloc->exists()) {
+                throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' doesnt have stock location!');
+            }
+
 
             //$request->expdate = $this->null_date($request->expdate);
             ////1. calculate lineno_ by recno
@@ -113,6 +141,8 @@ class InventoryRequestDetailController extends defaultController
                     'qtyrequest'=> $request->qtyrequest,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),  
+                    'expdate'=> $this->turn_date($request->expdate,'d/m/Y'),  
+                    'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
                     'unit' => session('unit')
                 ]);
@@ -162,7 +192,6 @@ class InventoryRequestDetailController extends defaultController
 
             return response($e->getMessage(), 500);
         }
-
     }
 
     public function del(Request $request){
@@ -183,8 +212,7 @@ class InventoryRequestDetailController extends defaultController
             DB::rollback();
 
             return response($e->getMessage(), 500);
-        }
-        
+        }        
     }
 
     public function edit_all(Request $request){
@@ -219,7 +247,6 @@ class InventoryRequestDetailController extends defaultController
 
             return response($e->getMessage(), 500);
         }
-
     }
 
     public function delete_dd(Request $request){

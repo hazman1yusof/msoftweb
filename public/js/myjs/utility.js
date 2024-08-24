@@ -773,6 +773,14 @@ function formatterstatus_tick(cellvalue, option, rowObject) {
 	}
 }
 
+function formatterstatus_tick_number(cellvalue, option, rowObject) {
+	if (cellvalue == '1') {
+		return '<span class="fa fa-check" ></span>';
+	}else{
+		return '';
+	}
+}
+
 ////////////////////unformatter status////////////////////////////////////////
 function unformatstatus(cellvalue, option, rowObject) {
 	if (cellvalue == 'ACTIVE') {
@@ -787,6 +795,14 @@ function unformatstatus_tick(cellvalue, option, rowObject) {
 		return 'A';
 	}else if (cellvalue == '<span class="fa fa-times" ></span>') {
 		return 'D';
+	}
+}
+
+function unformatstatus_tick_number(cellvalue, option, rowObject) {
+	if (cellvalue == '<span class="fa fa-check"></span>') {
+		return '1';
+	}else{
+		return '0';
 	}
 }
 
@@ -2372,6 +2388,52 @@ function page_to_view_only(viewonly,callback){
 		if (callback !== undefined) {
 	    callback();
 	  }
+	}
+}
+
+function fail_msg_func(fail_msg_div=null){
+	this.fail_msg_div = (fail_msg_div!=null)?fail_msg_div:'div#fail_msg';
+	this.fail_msg_array=[];
+	this.add_fail=function(fail_msg){
+		let found=false;
+		this.fail_msg_array.forEach(function(e,i){
+			if(e.id == fail_msg.id){
+				e.msg=fail_msg.msg;
+				found=true;
+			}
+		});
+		if(!found){
+			this.fail_msg_array.push(fail_msg);
+		}
+		if(fail_msg.textfld !=null){
+			myerrorIt_only(fail_msg.id,true);
+		}
+		this.pop_fail();
+	}
+	this.del_fail=function(fail_msg){
+		var new_msg_array = this.fail_msg_array.filter(function(e,i){
+			if(e.id == fail_msg.id){
+				return false;
+			}
+			return true;
+		});
+
+		if(fail_msg.textfld !=null){
+			myerrorIt_only(fail_msg.id,true);
+		}
+		this.fail_msg_array = new_msg_array;
+		this.pop_fail();
+	}
+	this.clear_fail=function(){
+		this.fail_msg_array=[];
+		this.pop_fail();
+	}
+	this.pop_fail=function(){
+		var self=this;
+		$(self.fail_msg_div).html('');
+		this.fail_msg_array.forEach(function(e,i){
+			$(self.fail_msg_div).append("<li>"+e.msg+"</li>");
+		});
 	}
 }
 

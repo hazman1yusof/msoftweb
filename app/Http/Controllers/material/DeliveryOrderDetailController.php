@@ -185,7 +185,6 @@ class DeliveryOrderDetailController extends defaultController
 
         try{
 
-
             if($request->pricecode == 'MS'){
                 //check unique
                 $duplicate = DB::table('material.purreqdt')
@@ -199,7 +198,6 @@ class DeliveryOrderDetailController extends defaultController
                     throw new \Exception("Duplicate itemcode and uom");
                 }
             }
-
 
             $recno = $request->recno;
             
@@ -224,6 +222,36 @@ class DeliveryOrderDetailController extends defaultController
                             ->where('compcode','=', session('compcode'))
                             ->first();
                 $delordno =  $delordhd->docno;
+            }
+
+            if($request->pricecode == 'IV'){
+                $product = DB::table('material.product')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',session('unit'))
+                            ->where('itemcode',$request->itemcode)
+                            ->where('uomcode',$request->uomcode);
+
+                if(!$product->exists()){
+                    throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' not exist!');
+                }
+
+                $product = $product->first();
+
+                if($product->expdtflg == 1 && empty($request->expdate)) {
+                    throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' need to supply Expiry Date!');
+                }
+
+                $stockloc = DB::table('material.stockloc')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',session('unit'))
+                            ->where('itemcode',$request->itemcode)
+                            ->where('uomcode',$request->uomcode)
+                            ->where('deptcode',$request->deldept)
+                            ->where('year',$this->toYear($request->deliverydate));
+
+                if(!$stockloc->exists()) {
+                    throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' doesnt have stock location!');
+                }
             }
 
             $draccno = $this->get_draccno($request->itemcode,$request->pricecode);
@@ -323,12 +351,55 @@ class DeliveryOrderDetailController extends defaultController
         }
     }
 
-    public function edit(Request $request){
+    public function edit(Request $request){//xguna, guna edit_all
 
         DB::beginTransaction();
 
         try {
 
+            if($request->pricecode == 'MS'){
+                //check unique
+                $duplicate = DB::table('material.purreqdt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('itemcode','=',strtoupper($request->itemcode))
+                    ->where('uomcode','=',strtoupper($request->uomcode))
+                    ->where('pouom','=',strtoupper($request->pouom))
+                    ->exists();
+
+                if($duplicate){
+                    throw new \Exception("Duplicate itemcode and uom");
+                }
+            }
+
+            if($request->pricecode == 'IV'){
+                $product = DB::table('material.product')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',session('unit'))
+                            ->where('itemcode',$request->itemcode)
+                            ->where('uomcode',$request->uomcode);
+
+                if(!$product->exists()){
+                    throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' not exist!');
+                }
+
+                $product = $product->first();
+
+                if($product->expdtflg == 1 && empty($request->expdate)) {
+                    throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' need to supply Expiry Date!');
+                }
+
+                $stockloc = DB::table('material.stockloc')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',session('unit'))
+                            ->where('itemcode',$request->itemcode)
+                            ->where('uomcode',$request->uomcode)
+                            ->where('deptcode',$request->deldept)
+                            ->where('year',$this->toYear($request->deliverydate));
+
+                if(!$stockloc->exists()) {
+                    throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' doesnt have stock location!');
+                }
+            }
 
             ///1. update detail
             DB::table('material.delorddt')
@@ -391,7 +462,6 @@ class DeliveryOrderDetailController extends defaultController
 
             return response($e->getMessage(), 500);
         }
-
     }
 
     public function edit_all(Request $request){
@@ -648,8 +718,6 @@ class DeliveryOrderDetailController extends defaultController
         }
 
     }
-
-
 
     public function delete_dd(Request $request){
         DB::table('material.delordhd')

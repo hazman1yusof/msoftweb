@@ -538,7 +538,7 @@ class PurchaseRequestController extends defaultController
                     ->where('idno','=',$value);
 
                 $purreqhd_get = $purreqhd->first();
-                if(!in_array($purreqhd_get->recstatus, ['SUPPORT','VERIFIED','RECOMMENDED1','RECOMMENDED2','APPROVED'])){
+                if(!in_array($purreqhd_get->recstatus, ['SUPPORT','VERIFIED','RECOMMENDED1','RECOMMENDED2','PREPARED'])){
                     continue;
                 }
 

@@ -36,6 +36,12 @@ div.noti > li{
 	color:red;
 }
 
+div#fail_msg{
+  padding-left: 40px;
+  padding-bottom: 10px;
+  color: darkred;
+}
+
 #more {display: none;}
 
 @endsection
@@ -48,7 +54,7 @@ div.noti > li{
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
 	@if (Request::get('scope') == 'all')
-		<input id="recstatus_use" name="recstatus_use" type="hidden" value="POSTED">
+		<input id="recstatus_use" name="recstatus_use" type="hidden" value="ALL">
 	@else
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="{{Request::get('scope')}}">
 	@endif
@@ -91,14 +97,21 @@ div.noti > li{
 				</div>
 
 				<div class="col-md-2">
-				  	<label class="control-label" for="Status">Status</label>  
-					  	<select id="Status" name="Status" class="form-control input-sm">
-					      <option value="All" selected>ALL</option>
-					      <option value="Open">OPEN</option>
-					      <option value="Confirmed">CONFIRMED</option>
-					      <option value="Posted">POSTED</option>
-					      <option value="Cancelled">CANCELLED</option>
-					    </select>
+			  	<label class="control-label" for="Status">Status</label>  
+				  	<select id="Status" name="Status" class="form-control input-sm">
+					  	@if (Request::get('scope') == 'ALL')
+				      <option value="All" selected>ALL</option>
+				      <option value="OPEN">OPEN</option>
+				      <option value="PARTIAL">PARTIAL</option>
+				      <option value="COMPLETED">COMPLETED</option>
+				      <option value="POSTED">POSTED</option>
+				      <option value="CANCELLED">CANCELLED</option>
+							@elseif (Request::get('scope') == 'REOPEN')
+								<option value="CANCELLED">CANCELLED</option>
+							@elseif (Request::get('scope') == 'CANCEL')
+								<option value="OPEN">OPEN</option>
+							@endif
+				    </select>
 	      </div>
 
 	      <div class="col-md-2">
@@ -108,36 +121,36 @@ div.noti > li{
 						</select>
 				</div>
 
+				<?php 
+					$scope_use = 'posted';
+
+					if(Request::get('scope') == 'ALL'){
+						$scope_use = 'posted';
+					}else if(Request::get('scope') == 'REOPEN'){
+						$scope_use = 'reopen';
+					}else if(Request::get('scope') == 'CANCEL'){
+						$scope_use = 'cancel';
+					}
+				?>
+
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<span id="error_infront" style="color: red"></span>
-					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
+
 					<button 
 						type="button" 
 						class="btn btn-primary btn-sm" 
 						id="but_post_jq" 
-						data-oper="posted" 
+						data-oper="{{$scope_use}}" 
 						style="display: none;">
-						@if (strtoupper(Request::get('scope')) == 'ALL')
-							{{'POST'}}
-						@else
-							{{Request::get('scope').' ALL'}}
-						@endif
-					</button>
-
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
 						@if (strtoupper(Request::get('scope')) == 'ALL')
 							{{'POST'}}
 						@else
 							{{Request::get('scope')}}
 						@endif
 					</button>
-
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
 				</div>
-
-
+				
 			 </fieldset> 
 		</form>
 
@@ -301,6 +314,7 @@ div.noti > li{
 		<div class='panel panel-info'>
 			<div class="panel-heading">Purchase Request Detail</div>
 				<div class="panel-body">
+					<div id="fail_msg"></div>
 					<form id='formdata2' class='form-vertical' style='width:99%'>
 						<!-- <input id="gstpercent" name="gstpercent" type="hidden">
 						<input id="convfactor_uom" name="convfactor_uom" type="hidden" value='1'>

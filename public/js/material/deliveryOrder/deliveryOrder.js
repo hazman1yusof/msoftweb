@@ -266,7 +266,7 @@ $(document).ready(function () {
 			{ label: 'Trantype', name: 'delordhd_trantype', width: 200, classes: 'wrap', hidden: true},
 			{ label: 'Total Amount', name: 'delordhd_totamount', width: 200, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'delordhd_recstatus', width: 200},
-			{ label: ' ', name: 'Refresh', width: 120,formatter: formatterRefresh,unformat: unformatRemarks},
+			{ label: ' ', name: 'Refresh', width: 120,formatter: formatterRefresh,unformat: unformatRemarks, hidden: true},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 120,align: "center", formatter: formatterCheckbox },		        
 			{ label: 'Sub Amount', name: 'delordhd_subamount', width: 50, classes: 'wrap', hidden:true, align: 'right', formatter: 'currency' },
 			{ label: 'Amount Discount', name: 'delordhd_amtdisc', width: 250, classes: 'wrap', hidden:true},
@@ -922,8 +922,8 @@ $(document).ready(function () {
                     }
                 }
 			},
-			{ label: 'Batch No', name: 'batchno', width: 170, classes: 'wrap', editable:true,
-					maxlength: 30,
+			{ label: 'Batch No', name: 'batchno', width: 170, classes: 'wrap', editable:true,editoptions:{readonly: "readonly"},
+					maxlength: 100,
 			},
 			{ label: 'PO Line No', name: 'polineno', width: 75, classes: 'wrap', editable:false, hidden:true},
 			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
@@ -1230,15 +1230,15 @@ $(document).ready(function () {
         }, 
         errorfunc: function(rowid,response){
 			errorField.length=0;
-        	// alert(response.responseText);
         	myfail_msg.add_fail({
 				id:'response',
 				textfld:"",
 				msg:response.responseText,
 			});
-        	refreshGrid('#jqGrid2',urlParam2,'add');
-	    	$("#jqGridPager2Delete").show();
+        	// refreshGrid('#jqGrid2',urlParam2,'add');
+	    	// $("#jqGridPager2Delete").show();
         },
+        restoreAfterError : false,
         beforeSaveRow: function(options, rowid) {
         	// console.log($('#jqGrid2 input[name=uomcode]').val()=='')
         	if(errorField.length>0 || $('#jqGrid2 input[name=uomcode]').val()=='')return false;
@@ -1268,6 +1268,8 @@ $(document).ready(function () {
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
         },
         afterrestorefunc : function( response ) {
+        	console.log('restore');
+        	console.log(response);
 			delay(function(){
 				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			}, 500 );
@@ -1656,6 +1658,7 @@ $(document).ready(function () {
 	$("#saveHeaderLabel").click(function(){
 		emptyFormdata(errorField,'#formdata2');
 		hideatdialogForm(true);
+		addmore_jqgrid2.state = false;
 		dialog_authorise.on();
 		dialog_prdept.on();
 		dialog_suppcode.on();
@@ -1746,11 +1749,14 @@ $(document).ready(function () {
     	// 	$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='taxcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='pricecode']").attr('readonly','readonly');
 
 		// }else{
-			dialog_pricecode.on();//start binding event on jqgrid2
-			dialog_itemcode.on();
-			dialog_uomcode.on();
-			dialog_pouom.on();
-			dialog_taxcode.on();
+		dialog_pricecode.off();//start binding event on jqgrid2
+		$(dialog_pricecode.textfield).attr('disabled',true);
+		dialog_itemcode.off();
+		$(dialog_itemcode.textfield).attr('disabled',true);
+		dialog_uomcode.off();
+		$(dialog_uomcode.textfield).attr('disabled',true);
+		dialog_pouom.on();
+		dialog_taxcode.on();
 
 		//}
 		
@@ -2444,9 +2450,10 @@ $(document).ready(function () {
 				{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
 				{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
 				{label: 'Group Code', name: 'p_groupcode', width: 100, classes: 'pointer' },
+				{label: 'Exp', name: 'p_expdtflg', width: 50, classes: 'pointer',formatter:formatterstatus_tick_number,unformat:unformatstatus_tick_number },
 				{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
 				{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
-				{label: 'Unit', name:'s_unit'},
+				{label: 'Unit', name:'s_unit', width: 50},
 			],
 			urlParam: {
 				open:function(){
@@ -2550,6 +2557,7 @@ $(document).ready(function () {
 							{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
 							{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
 							{label: 'Group Code', name: 'p_groupcode', width: 100, classes: 'pointer' },
+							{label: 'Exp', name: 'p_expdtflg', width: 50, classes: 'pointer',formatter:formatterstatus_tick_number,unformat:unformatstatus_tick_number },
 							{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
 							{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
 							{label: 'Unit', name:'p_unit'},
@@ -2577,6 +2585,7 @@ $(document).ready(function () {
 							{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
 							{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
 							{label: 'Group Code', name: 'p_groupcode', width: 100, classes: 'pointer' },
+							{label: 'Exp', name: 'p_expdtflg', width: 50, classes: 'pointer',formatter:formatterstatus_tick_number,unformat:unformatstatus_tick_number },
 							{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
 							{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
 							{label: 'Unit', name:'s_unit'},
@@ -2921,52 +2930,6 @@ function empty_form(){
 	$('#grnno_show').text('');
 	$('#suppcode_show').text('');
 
-}
-
-function fail_msg_func(fail_msg_div=null){
-	this.fail_msg_div = (fail_msg_div!=null)?fail_msg_div:'div#fail_msg';
-	this.fail_msg_array=[];
-	this.add_fail=function(fail_msg){
-		let found=false;
-		this.fail_msg_array.forEach(function(e,i){
-			if(e.id == fail_msg.id){
-				e.msg=fail_msg.msg;
-				found=true;
-			}
-		});
-		if(!found){
-			this.fail_msg_array.push(fail_msg);
-		}
-		if(fail_msg.textfld !=null){
-			myerrorIt_only(fail_msg.id,true);
-		}
-		this.pop_fail();
-	}
-	this.del_fail=function(fail_msg){
-		var new_msg_array = this.fail_msg_array.filter(function(e,i){
-			if(e.id == fail_msg.id){
-				return false;
-			}
-			return true;
-		});
-
-		if(fail_msg.textfld !=null){
-			myerrorIt_only(fail_msg.id,true);
-		}
-		this.fail_msg_array = new_msg_array;
-		this.pop_fail();
-	}
-	this.clear_fail=function(){
-		this.fail_msg_array=[];
-		this.pop_fail();
-	}
-	this.pop_fail=function(){
-		var self=this;
-		$(self.fail_msg_div).html('');
-		this.fail_msg_array.forEach(function(e,i){
-			$(self.fail_msg_div).append("<li>"+e.msg+"</li>");
-		});
-	}
 }
 
 // function init_focus_header_footer(){

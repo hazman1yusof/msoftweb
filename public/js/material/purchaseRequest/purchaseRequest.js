@@ -1592,6 +1592,7 @@ $(document).ready(function () {
 	//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
 	$("#saveHeaderLabel").click(function () {
 		emptyFormdata(errorField, '#formdata2');
+		addmore_jqgrid2.state = false;
 		hideatdialogForm(true);
 		dialog_reqdept.on();
 		dialog_prdept.on();

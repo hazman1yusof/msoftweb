@@ -289,7 +289,7 @@ abstract class defaultController extends Controller{
         //////////where in //////////
         // WhereInCol:['groupcode'],
         // WhereInVal:[['10','70','35','30']]
-        if(!empty($request->WhereInCol)){
+        if(!empty($request->WhereInCol[0])){
             foreach ($request->WhereInCol as $key => $value) {
                 $table = $table->whereIn($value,$request->WhereInVal[$key]);
             }
@@ -298,7 +298,7 @@ abstract class defaultController extends Controller{
         /////////where not in///////
         // whereNotIn:['groupcode'],
         // whereNotInVal:[['10','70','35','30']]
-        if(!empty($request->whereNotInCol)){
+        if(!empty($request->whereNotInCol[0])){
             foreach ($request->whereNotInCol as $key => $value) {
                 $table = $table->whereNotIn($value,$request->whereNotInVal[$key]);
             }

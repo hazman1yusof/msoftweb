@@ -33,8 +33,8 @@ i.fa {
 
 	<input id="deptcode" name="deptcode" type="hidden" value="{{Session::get('deptcode')}}">
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
+	<input id="ttype" name="ttype" type="hidden" value="{{Request::get('ttype')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
-
 	 
 	<!--***************************** Search + table ******************-->
 	<div class='row'>
@@ -68,21 +68,62 @@ i.fa {
 
 				<div class="col-md-2">
 				  	<label class="control-label" for="Status">Status</label>  
-					  	<select id="Status" name="Status" class="form-control input-sm">
-					      <option value="All" selected>ALL</option>
-					      <option value="Open">OPEN</option>
-					      <option value="Confirmed">CONFIRMED</option>
-					      <option value="Posted">POSTED</option>
-					      <option value="Cancelled">CANCELLED</option>
-					    </select>
-	            </div>
+				  	<select id="Status" name="Status" class="form-control input-sm">
+				  	@if (Request::get('scope') == 'ALL')
+				      <option value="All" selected>ALL</option>
+				      <option value="Open">OPEN</option>
+				      <option value="Confirmed">CONFIRMED</option>
+				      <option value="Posted">POSTED</option>
+				      <option value="Cancelled">CANCELLED</option>
+						@elseif (Request::get('scope') == 'SUPPORT')
+							<option value="PREPARED">PREPARED</option>
+						@elseif (Request::get('scope') == 'VERIFIED')
+							<option value="SUPPORT">SUPPORT</option>
+						@elseif (Request::get('scope') == 'APPROVED')
+							<option value="VERIFIED">VERIFIED</option>
+						@elseif (Request::get('scope') == 'REOPEN')
+							<option value="CANCELLED">CANCELLED</option>
+						@elseif (Request::get('scope') == 'CANCEL')
+							<option value="OPEN">OPEN</option>
+						@endif
+				    </select>
+	      </div>
 
-	            <div class="col-md-2">
-			  		<label class="control-label" for="trandept">Transaction Dept</label> 
-						<select id='trandept' class="form-control input-sm">
-				      		<option value="All" selected>ALL</option>
-						</select>
+	      <div class="col-md-2">
+		  		<label class="control-label" for="trandept">Purchase Dept</label> 
+					<select id='trandept' class="form-control input-sm">
+	      		<option value="All">ALL</option>
+	      		@foreach($storedept as $dept_)
+	      			@if(Request::get('scope') == 'ALL' && $dept_->deptcode == Session::get('deptcode'))
+	      			<option value="{{$dept_->deptcode}}" selected>{{$dept_->deptcode}}</option>
+	      			@else
+	      			<option value="{{$dept_->deptcode}}">{{$dept_->deptcode}}</option>
+	      			@endif
+	      		@endforeach
+					</select>
 				</div>
+
+				<?php 
+					$scope_use = 'posted';
+
+					if(Request::get('scope') == 'ALL'){
+						if(Request::get('ttype') == 'AI' || Request::get('ttype') == 'AO'){
+							$scope_use = 'prepared';
+						}else{
+							$scope_use = 'posted';
+						}
+					}else if(Request::get('scope') == 'SUPPORT'){
+						$scope_use = 'support';
+					}else if(Request::get('scope') == 'VERIFIED'){
+						$scope_use = 'verify';
+					}else if(Request::get('scope') == 'APPROVED'){
+						$scope_use = 'approved';
+					}else if(Request::get('scope') == 'REOPEN'){
+						$scope_use = 'reopen';
+					}else if(Request::get('scope') == 'CANCEL'){
+						$scope_use = 'cancel';
+					}
+				?>
 
 				<div id="div_for_but_post" class="col-md-3 col-md-offset-5" style="padding-top: 20px; text-align: end;">
 
@@ -90,18 +131,30 @@ i.fa {
 
 					<span id="error_infront" style="color: red"></span>
 
-					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
+					@if (Request::get('scope') != 'ALL' && Request::get('scope') != 'REOPEN' && Request::get('scope') != 'CANCEL')
+					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">REJECT</button>
+					@endif
+
+					@if (Request::get('scope') == 'REOPEN' && !empty(Request::get('recno')))
+					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_from_reject_jq" data-oper="cancel_from_reject" style="display: none;">CANCEL</button>
+					@endif
 
 					<button 
 						type="button" 
 						class="btn btn-primary btn-sm" 
 						id="but_post_jq" 
-						data-oper="posted" 
+						data-oper="{{$scope_use}}" 
 						style="display: none;">
-						POST
+						@if (Request::get('scope') == 'ALL')
+							@if (Request::get('ttype') == 'ALL' || Request::get('ttype') == 'AO' || Request::get('ttype') == 'AI')
+							{{'PREPARED'}}
+							@else
+							{{'POSTED'}}
+							@endif
+						@else
+							{{Request::get('scope')}}
+						@endif
 					</button>
-
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
 				</div>
 
 			 </fieldset> 
@@ -316,6 +369,22 @@ i.fa {
 
 						<div class="noti" style="font-size: bold; color: red"></div>
 					</div>
+			</div>
+			
+			<div id="dialog_remarks_oper" title="Remarks">
+			  <div class="panel panel-default">
+			    <div class="panel-body">
+			    	<textarea id='remarks_oper' name='remarks_oper' rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
+			    </div>
+			  </div>
+			</div>
+
+			<div id="dialog_remarks_view" title="Remarks">
+			  <div class="panel panel-default">
+			    <div class="panel-body">
+			    	<textarea id='remarks_view' name='remarks_view' readonly rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
+			    </div>
+			  </div>
 			</div>		
 			
 		</div>

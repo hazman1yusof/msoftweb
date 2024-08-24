@@ -163,11 +163,17 @@ class DeliveryOrderController extends defaultController
             $field = $request->field;
             $idno = $request->table_id;
         }
-
         $srcdocno = DB::table('material.delordhd')
-                    ->select('srcdocno')
                     ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$request->delordhd_recno)->first();
+                    ->where('recno','=',$request->delordhd_recno);
+
+        if(!$srcdocno->exists()){
+            $srcdocno = DB::table('material.delordhd')
+                    ->where('compcode','=','DD')
+                    ->where('recno','=',$request->delordhd_recno);
+        }
+
+        $srcdocno = $srcdocno->first();
         
         if($srcdocno->srcdocno == $request->delordhd_srcdocno){
             // ni edit macam biasa, nothing special
@@ -177,7 +183,7 @@ class DeliveryOrderController extends defaultController
 
             $array_update = [
                 'unit' => session('unit'),
-                'compcode' => session('compcode'),
+                'compcode' => $srcdocno->compcode,
                 'upduser' => session('username'),
                 'upddate' => Carbon::now("Asia/Kuala_Lumpur")
             ];
@@ -215,18 +221,21 @@ class DeliveryOrderController extends defaultController
                 //1. update po.delordno lama jadi 0, kalu do yang dulu pon copy existing po 
                 if($srcdocno->srcdocno != '0'){
                     DB::table('material.purordhd')
-                    ->where('purordno','=', $srcdocno->srcdocno)->where('compcode','=',session('compcode'))
+                    ->where('purordno','=', $srcdocno->srcdocno)
+                    ->where('compcode','=',session('compcode'))
                     ->update(['delordno' => '0']);
                 }
 
                 //2. Delete detail from delorddt
-                DB::table('material.delorddt')->where('recno','=',$request->delordhd_recno);
+                DB::table('material.delorddt')
+                    ->where('recno','=',$request->delordhd_recno)
+                    ->delete();
 
                 //3. Update srcdocno_delordhd
                 $table = DB::table("material.delordhd");
 
                 $array_update = [
-                    'compcode' => session('compcode'),
+                    'compcode' => $srcdocno->compcode,
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ];
@@ -247,9 +256,9 @@ class DeliveryOrderController extends defaultController
                     $delordno = $request->delordhd_delordno;
 
                     ////dekat po header sana, save balik delordno dkt situ
-                    DB::table('material.purordhd')
-                        ->where('purordno','=',$srcdocno)->where('compcode','=',session('compcode'))
-                        ->update(['delordno' => $delordno]);
+                    // DB::table('material.purordhd')
+                    //     ->where('purordno','=',$srcdocno)->where('compcode','=',session('compcode'))
+                    //     ->update(['delordno' => $delordno]);
                 }
 
                 $responce = new stdClass();

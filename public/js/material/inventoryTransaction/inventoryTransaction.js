@@ -29,6 +29,7 @@ $(document).ready(function () {
 	var mycurrency =new currencymode(['#amount', "#jqGrid2 input[name='netprice']"]);
 	var fdl = new faster_detail_load();
 	var myfail_msg = new fail_msg_func();
+	var my_remark_button = new remark_button_class('#jqgrid');
 
 	///////////////////////////////// trandate check date validate from period////////////
 	var actdateObj = new setactdate(["#trandate"]);
@@ -50,6 +51,7 @@ $(document).ready(function () {
 			unsaved = false;
 			errorField.length=0;
 			parent_close_disabled(true);
+			my_remark_button.remark_btn_init(selrowData("#jqGrid"));
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 			mycurrency.formatOnBlur();
 			switch(oper) {
@@ -221,6 +223,18 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'adddate', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upduser', name: 'upduser', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upddate', name: 'upddate', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'requestby', name: 'requestby', width: 90, hidden: true },
+			{ label: 'requestdate', name: 'requestdate', width: 90, hidden: true },
+			{ label: 'supportby', name: 'supportby', width: 90, hidden: true },
+			{ label: 'supportdate', name: 'supportdate', width: 40, hidden: true},
+			{ label: 'verifiedby', name: 'verifiedby', width: 90, hidden: true },
+			{ label: 'verifieddate', name: 'verifieddate', width: 90, hidden: true },
+			{ label: 'approvedby', name: 'approvedby', width: 90, hidden: true },
+			{ label: 'approveddate', name: 'approveddate', width: 40, hidden: true},
+			{ label: 'support_remark', name: 'support_remark', width: 40, hidden:true},
+			{ label: 'verified_remark', name: 'verified_remark', width: 40, hidden:true},
+			{ label: 'approved_remark', name: 'approved_remark', width: 40, hidden:true},
+			{ label: 'cancelled_remark', name: 'cancelled_remark', width: 40, hidden:true},
 			{ label: 'source', name: 'source', width: 40, hidden:'true'},
 			{ label: 'idno', name: 'idno', width: 90, hidden:true},
 			{ label: 'isstype', name: 'isstype', width: 90, hidden:true},
@@ -340,7 +354,6 @@ $(document).ready(function () {
 	populateSelect('#jqGrid','#searchForm');
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
-	refreshGrid('#jqGrid',urlParam);
 	addParamField('#jqGrid',false,saveParam,['upddate','upduser','source','crdbfl','isstype','adduser','adddate','idno','docno','recno','compcode','recstatus','Checkbox']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
@@ -423,8 +436,7 @@ $(document).ready(function () {
 			$("#sndrcv").attr('data-validation', 'required');
 			$("#sndrcvtype").attr('data-validation', 'required');
 
-			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
-			
+			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));			
 		}
 
 		function caseAdjustment(crdbfl){
@@ -484,6 +496,73 @@ $(document).ready(function () {
 		}
 	}
 
+	function case_tui_tuo(ttype){
+		$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
+		$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
+		$("#jqGrid2").jqGrid('setColProp', 'netprice', 
+			{formatter:'currency', 
+			formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
+			 editrules:{required:true}, editable:true, editoptions: {readonly: null}});
+
+		$("#jqGrid2").jqGrid('setColProp', 'uomcoderecv', 
+			{ label: 'UOM Code Recv Dept', name: 'uomcoderecv', width: 130, classes: 'wrap', editable:true,
+				editrules:{required: false,custom:true, custom_func:cust_rules},
+				formatter: showdetail,
+					edittype:'custom',	editoptions:
+					    {  custom_element:uomcoderecvCustomEdit,
+					       custom_value:galGridCustomValue 	
+					    },
+			});
+
+		if(ttype.toUpperCase() == 'TUI'){
+			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
+				{width: 100,editable:true,formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},edittype: 'text',editrules:{required: false,custom:false, custom_func:null},
+					editoptions: {
+	                    dataInit: function (element) {
+	                        $(element).datepicker({
+	                            id: 'expdate_datePicker',
+	                            dateFormat: 'dd/mm/yy',
+	                            minDate: 1,
+	                            showOn: 'focus',
+	                            changeMonth: true,
+			  					changeYear: true,
+								onSelect : function(){
+									$(this).focus();
+								}
+	                        });
+	                    }
+	                } 
+				});
+
+			$("label[for=sndrcv],label[for=sndrcvtype],#sndrcvtype_parent, #sndrcv_parent").hide();
+			hideReqRecNo();
+				
+			$("#sndrcv").removeAttr('data-validation');
+			$("#sndrcvtype").removeAttr('data-validation');
+			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
+		}else if(ttype.toUpperCase() == 'TUO'){
+			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
+				{ width: 130, classes: 'wrap', editable:true,
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+						editrules:{required: false,custom:true, custom_func:cust_rules},
+							edittype:'custom',	editoptions:
+							    {  custom_element:expdateCustomEdit,
+							       custom_value:galGridCustomValue ,
+							       dataInit:null
+							    }
+				});
+
+			$("#sndrcv_parent, label[for=sndrcv],#sndrcvtype_parent, label[for=sndrcvtype]").show();
+			showReqRecNo();
+
+			$("#sndrcvtype option[value='DEPARTMENT']").show();
+			$("#sndrcvtype option[value='Supplier'], #sndrcvtype option[value='Other']").hide();
+
+			$("#sndrcv").attr('data-validation', 'required');
+			$("#sndrcvtype").attr('data-validation', 'required');
+		}
+	}
+
 	function expdate_stat(isstype,crdbfl){
 		dialog_expdate.off();
 		switch(isstype.toUpperCase()){
@@ -537,7 +616,91 @@ $(document).ready(function () {
 	}
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq").click(function(){
+	$("#dialog_remarks_oper").dialog({
+		autoOpen: false,
+		width: 4/10 * $(window).width(),
+		modal: true,
+		open: function( event, ui ) {
+			$('#remarks_oper').val('');
+		},
+		close: function( event, ui ) {
+			$("#but_cancel_jq").attr('disabled',false);
+		},
+		buttons : [{
+			text: "Submit",click: function() {
+				$("#but_cancel_jq").attr('disabled',true);
+				if($('#remarks_oper').val() == ''){
+					alert('Remarks for rejection is required!');
+				}else{
+					$(this).attr('disabled',true);
+					var idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
+					var obj={};
+					
+					obj.idno_array = idno_array;
+					obj.oper = 'reject';
+					obj.remarks = $("#remarks_oper").val();
+					obj._token = $('#_token').val();
+					oper=null;
+					
+					$.post( './inventoryTransaction/form', obj , function( data ) {
+						refreshGrid('#jqGrid', urlParam);
+						$(this).attr('disabled',true);
+						cbselect.empty_sel_tbl();
+					}).fail(function(data) {
+						$('#error_infront').text(data.responseText);
+						$(this).attr('disabled',true);
+					}).success(function(data){
+						$(this).attr('disabled',true);
+					});
+					$(this).dialog('close');
+				}
+			}
+			},{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}]
+	});
+
+	$("#but_cancel_jq").click(function(){
+		$("#but_cancel_jq").attr('disabled',true);
+		if($(this).data('oper') == 'cancel'){
+			if (confirm("Are you sure to reject this purchase request?") == true) {
+				$("#dialog_remarks_oper").dialog( "open" );
+			}
+		}
+	});
+
+	$("#but_cancel_from_reject_jq").click(function(){
+		$(this).attr('disabled',true);
+		var self_ = this;
+		var idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
+		var obj={};
+		
+		obj.idno_array = idno_array;
+		obj.oper = $(self_).data('oper');//cancel_from_reject
+		obj._token = $('#_token').val();
+		oper=null;
+
+		if(confirm("Are you sure you want to cancel this Document?") == true) {
+			obj.idno_array = [selrowData('#jqGrid').purreqhd_idno];
+		}else{
+			return false
+		}
+		
+		$.post( './inventoryTransaction/form', obj , function( data ) {
+			refreshGrid('#jqGrid', urlParam);
+			$(self_).attr('disabled',false);
+			cbselect.empty_sel_tbl();
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+			$(self_).attr('disabled',false);
+		}).success(function(data){
+			$(self_).attr('disabled',false);
+		});
+	});
+	
+	$("#but_post_jq").click(function(){
 		var idno_array = [];
 	
 		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
@@ -630,30 +793,30 @@ $(document).ready(function () {
 	}
 
 	///////////////////////////populate data for dropdown tran dept/////////////////////////////
-	trandept();
-	function trandept(){
-		var param={
-			action:'get_value_default',
-			url: 'util/get_value_default',
-			field:['deptcode'],
-			table_name:'sysdb.department',
-			filterCol:['storedept'],
-			filterVal:['1']
-		}
-		$.get( param.url+"?"+$.param(param), function( data ) {
+	// trandept();
+	// function trandept(){
+	// 	var param={
+	// 		action:'get_value_default',
+	// 		url: 'util/get_value_default',
+	// 		field:['deptcode'],
+	// 		table_name:'sysdb.department',
+	// 		filterCol:['storedept'],
+	// 		filterVal:['1']
+	// 	}
+	// 	$.get( param.url+"?"+$.param(param), function( data ) {
 			
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data)){
-				$.each(data.rows, function(index, value ) {
-					if(value.deptcode.toUpperCase()== $("#deptcode").val().toUpperCase()){
-						$( "#searchForm [id=trandept]" ).append("<option selected value='"+value.deptcode+"'>"+value.deptcode+"</option>");
-					}else{
-						$( "#searchForm [id=trandept]" ).append(" <option value='"+value.deptcode+"'>"+value.deptcode+"</option>");
-					}
-				});
-			}
-		});
-	}
+	// 	},'json').done(function(data) {
+	// 		if(!$.isEmptyObject(data)){
+	// 			$.each(data.rows, function(index, value ) {
+	// 				if(value.deptcode.toUpperCase()== $("#deptcode").val().toUpperCase()){
+	// 					$( "#searchForm [id=trandept]" ).append("<option selected value='"+value.deptcode+"'>"+value.deptcode+"</option>");
+	// 				}else{
+	// 					$( "#searchForm [id=trandept]" ).append(" <option value='"+value.deptcode+"'>"+value.deptcode+"</option>");
+	// 				}
+	// 			});
+	// 		}
+	// 	});
+	// }
 
 	////////////////////////////changing status and trandept trigger search/////////////////////////
 	$('#Scol').on('change', whenchangetodate);
@@ -720,7 +883,8 @@ $(document).ready(function () {
 		search('#jqGrid', $('#searchForm [name=Stext]').val(), $('#searchForm [name=Scol] option:selected').val(), urlParam);
 	}
 	
-	function searchChange(){
+	searchChange(true);
+	function searchChange(once=false){
 		var arrtemp = ['session.compcode',  $('#Status option:selected').val(), $('#trandept option:selected').val()];
 		var filter = arrtemp.reduce(function(a,b,c){
 			if(b=='All'){
@@ -734,6 +898,36 @@ $(document).ready(function () {
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
+		urlParam.WhereInCol = null;
+		urlParam.WhereInVal = null;
+
+		if(once){
+			urlParam.searchCol=null;
+			urlParam.searchVal=null;
+			if($('#searchForm [name=Stext]').val().trim() != ''){
+				let searchCol = ['ivt.recno'];
+				let searchVal = ['%'+$('#searchForm [name=Stext]').val().trim()+'%'];
+				urlParam.searchCol=searchCol;
+				urlParam.searchVal=searchVal;
+			}
+
+			if($('#ttype').val() == 'TUO' || $('#ttype').val() == 'TUI'){
+				urlParam.WhereInCol = ['ivt.trantype'];
+				urlParam.WhereInVal = [['TUO', 'TUI']];
+			}else if($('#ttype').val() == 'AI' || $('#ttype').val() == 'AO'){
+				urlParam.WhereInCol = ['ivt.trantype'];
+				urlParam.WhereInVal = [['AI','AO']];
+			}else if($('#ttype').val() == 'GRI'){
+				urlParam.WhereInCol = ['ivt.trantype'];
+				urlParam.WhereInVal = [['GRI']];
+			}else{
+				urlParam.WhereNotInCol = ['ivt.trantype'];
+				urlParam.WhereNotInVal = [['DS1', 'DS','TUO', 'TUI','AI','AO','GRI']];
+			}
+
+			once=false;
+		}
+
 		refreshGrid('#jqGrid',urlParam);
 	}
 
@@ -1048,9 +1242,10 @@ $(document).ready(function () {
 				textfld:"",
 				msg:response.responseText,
 			});
-        	refreshGrid('#jqGrid2',urlParam2,'add');
-	    	$("#jqGridPager2Delete").show();
+        	// refreshGrid('#jqGrid2',urlParam2,'add');
+	    	// $("#jqGridPager2Delete").show();
         },
+        restoreAfterError : false,
 		beforeSaveRow: function (options, rowid) {
 			if($("label[for=srcdocno]").is(":hidden")){
 				if($.inArray(rowid+"_uomcoderecv",errorField)!==-1){
@@ -1181,11 +1376,11 @@ $(document).ready(function () {
 			    );
 
 				dialog_expdate.id_optid = ids[i];
-		        dialog_expdate.check('errorField',ids[i]+"_expdate","jqGrid2",null,
-		        	function(self){
-		        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			        }
-			    );
+		        // dialog_expdate.check('errorField',ids[i]+"_expdate","jqGrid2",null,
+		        // 	function(self){
+		        // 		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			    //     }
+			    // );
 
 		        dialog_uomcoderecv.id_optid = ids[i];
 		        dialog_uomcoderecv.check(errorField,ids[i]+"_uomcoderecv","jqGrid2",null,
@@ -1246,7 +1441,7 @@ $(document).ready(function () {
                     'unit' : $("#"+ids[i]+"_unit").val(),
 		    		'amount' : $('#'+ids[i]+"_amount").val(),
 		    		'batchno' : $('#'+ids[i]+"_batchno").val(),
-		    		'expdate' : $('#'+ids[i]+"_expdate").val(),
+		    		'expdate' : $('#jqGrid2 input#'+ids[i]+"_expdate").val(),
 
 		    	}
 
@@ -1316,14 +1511,39 @@ $(document).ready(function () {
 
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
-		let recstatus = cbselect.recstatus;
-		if(options.gid == "jqGrid" && rowObject.recstatus == 'OPEN'){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject.idno+"' data-idno='"+rowObject.idno+"' data-rowid='"+options.rowId+"'>";
-		}else if(options.gid != "jqGrid" && rowObject.recstatus == 'OPEN'){
+		let recstatus = rowObject.recstatus;
+
+		if(options.gid != "jqGrid" && rowObject.recstatus == 'OPEN'){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject.idno+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
-		}else{
-			return ' ';
 		}
+
+		if($('#scope').val() == 'ALL'){
+			if(recstatus == "OPEN"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#scope').val() == 'SUPPORT'){
+			if(recstatus == "PREPARED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#scope').val() == 'VERIFIED'){
+			if(recstatus == "SUPPORT"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#scope').val() == 'APPROVED'){
+			if(recstatus == "VERIFIED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#scope').val() == 'CANCEL'){
+			if(recstatus == "OPEN"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#scope').val() == 'REOPEN'){
+			if(recstatus == "CANCELLED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}
+
+		return ' ';
 	}
 
 	function formatter_recvqtyonhand(cellvalue, options, rowObject){
@@ -1352,7 +1572,7 @@ $(document).ready(function () {
 			case 'Item Code':temp=$('#itemcode');break;
 			case 'UOM Code Tran Dept':temp=$('#uomcode');break;
 			case 'UOM Code Recv Dept':temp=$('#uomcoderecv');break;
-			case 'Expiry Date':temp=$('#expdate');break;
+			// case 'Expiry Date':temp=$('#expdate');break;
 		}
 		if(temp == null) return [true,''];
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
@@ -1428,6 +1648,7 @@ $(document).ready(function () {
 	$("#saveHeaderLabel").click(function(){
 		emptyFormdata(errorField,'#formdata2');
 		hideatdialogForm(true);
+		addmore_jqgrid2.state = false;
 		dialog_txndept.on();
 		dialog_trantype.on();
 		dialog_sndrcv.on();
@@ -1651,10 +1872,13 @@ $(document).ready(function () {
 	
 		errorField.length=0;
 		//start binding event on jqgrid2
-		dialog_itemcode.on();
+		dialog_itemcode.off();
+		$(dialog_itemcode.textfield).attr('disabled',true);
 		dialog_expdate.on();
-		dialog_uomcoderecv.on();
-		dialog_uomcodetrdept.on();
+		dialog_uomcoderecv.off();
+		$(dialog_uomcoderecv.textfield).attr('disabled',true);
+		dialog_uomcodetrdept.off();
+		$(dialog_uomcodetrdept.textfield).attr('disabled',true);
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		mycurrency_np.formatOnBlur();//make field to currency on leave cursor
@@ -1747,14 +1971,18 @@ $(document).ready(function () {
 			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_trantype.gridname);
-				inputTrantypeValue(data['isstype'],data['crdbfl']);
+				if($('#ttype').val() == 'TUO' || $('#ttype').val() == 'TUI'){
+					case_tui_tuo(data['trantype']);
+				}else{
+					inputTrantypeValue(data['isstype'],data['crdbfl']);
+				}
 
-				$('#crdbfl').val(data['crdbfl']);
-				$('#isstype').val(data['isstype']);
-				// reqRecNo(data['isstype']);
-				
-				$("#sndrcvtype").val("");
-				$('#trandate').focus();
+					$('#crdbfl').val(data['crdbfl']);
+					$('#isstype').val(data['isstype']);
+					// reqRecNo(data['isstype']);
+					
+					$("#sndrcvtype").val("");
+					$('#trandate').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1771,10 +1999,27 @@ $(document).ready(function () {
 		},{
 			title:"Select Transaction Type",
 			open: function(){
-				dialog_trantype.urlParam.whereNotInCol=['trantype'];
-				dialog_trantype.urlParam.whereNotInVal=[['DS1', 'DS']];
-				dialog_trantype.urlParam.filterCol=['recstatus'];
-				dialog_trantype.urlParam.filterVal=['ACTIVE'];
+				if($('#ttype').val() == 'TUO' || $('#ttype').val() == 'TUI'){
+					dialog_trantype.urlParam.WhereInCol=['trantype'];
+					dialog_trantype.urlParam.WhereInVal=[['TUO', 'TUI']];
+					dialog_trantype.urlParam.filterCol=['recstatus'];
+					dialog_trantype.urlParam.filterVal=['ACTIVE'];
+				}else if($('#ttype').val() == 'GRI'){
+					dialog_trantype.urlParam.WhereInCol=['trantype'];
+					dialog_trantype.urlParam.WhereInVal=[['GRI']];
+					dialog_trantype.urlParam.filterCol=['recstatus'];
+					dialog_trantype.urlParam.filterVal=['ACTIVE'];
+				}else if($('#ttype').val() == 'AI' || $('#ttype').val() == 'AO'){
+					dialog_trantype.urlParam.WhereInCol=['trantype'];
+					dialog_trantype.urlParam.WhereInVal=[['AI','AO']];
+					dialog_trantype.urlParam.filterCol=['recstatus'];
+					dialog_trantype.urlParam.filterVal=['ACTIVE'];
+				}else{
+					dialog_trantype.urlParam.whereNotInCol=['trantype'];
+					dialog_trantype.urlParam.whereNotInVal=[['DS1', 'DS','TUO', 'TUI','AI','AO','GRI']];
+					dialog_trantype.urlParam.filterCol=['recstatus'];
+					dialog_trantype.urlParam.filterVal=['ACTIVE'];
+				}
 			},
 			close: function(obj_){
 				$("#trandate").focus().select();
@@ -2150,10 +2395,9 @@ $(document).ready(function () {
 			}*/
 		},{
 			title:"Select Expiry Date",
-			open: function(){
+			open: function(obj){
 				dialog_expdate.urlParam.filterCol=['compcode','year','deptcode', 'uomcode', 'itemcode'];
-				dialog_expdate.urlParam.filterVal=['session.compcode',moment($('#trandate').val()).year(),$("#txndept").val(), $("#jqGrid2 input[name='uomcode']").val(), $("#jqGrid2 input[name='itemcode']").val()];
-			
+				dialog_expdate.urlParam.filterVal=['session.compcode',moment($('#trandate').val()).year(),$("#txndept").val(),$("#jqGrid2 input#"+obj.id_optid+"_uomcode").val(),$("#jqGrid2 input#"+obj.id_optid+"_itemcode").val()];
 			}
 		},'urlParam','radio','tab'
 	);
@@ -2177,25 +2421,35 @@ $(document).ready(function () {
 				WhereInVal:[['PARTIAL','POSTED']]
 			},	
 			ondblClickRow:function(){
+				refreshGrid("#jqGrid2",null,"kosongkan");
 				let data = selrowData('#' + dialog_requestRecNo.gridname);
 				
 				$("#recstatus").val('ACTIVE');
 				$("#remarks").val(data['remarks']);
 				$('#referral').val(data['recno']);
 				$('#sndrcv').val(data['reqdept']);
-				$('#trantype').val('TR');
-				inputTrantypeValue('TRANSFER','IN');
-				$('#crdbfl').val('TRANSFER');
-				$('#isstype').val('IN');
 				$('#sndrcvtype').val('DEPARTMENT');
 				$('#sndrcvtype').focus();
+
+				if($('#ttype').val() == 'TUO' || $('#ttype').val() == 'TUI'){
+					$('#trantype').val('TUO');
+					case_tui_tuo('TUO');
+					$('#crdbfl').val('TRANSFER');
+					$('#isstype').val('OUT');
+
+				}else{
+					$('#trantype').val('TR');
+					inputTrantypeValue('TRANSFER','IN');
+					$('#crdbfl').val('TRANSFER');
+					$('#isstype').val('IN');
+				}
 
 				var urlParam2 = {
 					action: 'get_value_default',
 					url: 'util/get_value_default',
 					field: ['ivdt.compcode', 'ivdt.recno', 'ivdt.lineno_', 'ivdt.itemcode', 'p.description', 'ivdt.uomcode', 'ivdt.pouom',
 					's.maxqty', 's.qtyonhand', 'ivdt.qtyrequest', 'ivdt.qtytxn', 'ivdt.qohconfirm', 'ivdt.reqdept', 'ivdt.ivreqno',
-					'ivdt.recstatus','ivdt.netprice'],
+					'ivdt.recstatus','ivdt.netprice','ivdt.expdate','ivdt.batchno'],
 					table_name: ['material.ivreqdt AS ivdt ', 'material.stockloc AS s', 'material.productmaster AS p'],
 					table_id: 'lineno_',
 					join_type: ['LEFT JOIN', 'LEFT JOIN'],
@@ -2228,7 +2482,9 @@ $(document).ready(function () {
 										txnqty:elem['qtytxn'],
 										maxqty:elem['maxqty'],
 										qtyrequest:elem['qtyrequest'],
-										netprice:elem['netprice']
+										netprice:elem['netprice'],
+										expdate:elem['expdate'],
+										batchno:elem['batchno']
 									
 									}
 								);
@@ -2395,3 +2651,53 @@ function fail_msg_func(fail_msg_div=null){
 	}
 }
 
+function remark_button_class(grid){
+	$("#dialog_remarks_view").dialog({
+		autoOpen: false,
+		width: 4/10 * $(window).width(),
+		modal: true,
+		open: function( event, ui ) {
+		},
+		close: function( event, ui ) {
+			$('#remarks_view').val('');
+		},
+		buttons : [{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}]
+	});
+
+	this.grid=grid;
+	this.selrowdata;
+
+	this.remark_btn_init = function(selrowdata){
+		this.selrowdata = selrowdata;
+		$('i.my_remark').hide();
+		$('i.my_remark').off('click');
+		if(this.selrowdata.support_remark != ''){
+			$('i#support_remark_i').show();
+			$('i#support_remark_i').data('remark',this.selrowdata.support_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Support Remark');
+		}
+		if(this.selrowdata.verified_remark != ''){
+			$('i#verified_remark_i').show();
+			$('i#verified_remark_i').data('remark',this.selrowdata.verified_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Verified Remark');
+		}
+		if(this.selrowdata.approved_remark != ''){
+			$('i#approved_remark_i').show();
+			$('i#approved_remark_i').data('remark',this.selrowdata.approved_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Approved Remark');
+		}
+		if(this.selrowdata.cancelled_remark != ''){
+			$('i#cancelled_remark_i').show();
+			$('i#cancelled_remark_i').data('remark',this.selrowdata.cancelled_remark);
+			$('#dialog_remarks_view').dialog('option', 'title', 'Cancelled Remark');
+		}
+		$('i.my_remark').on('click',function(){
+			$('#remarks_view').val($(this).data('remark'));
+			$("#dialog_remarks_view").dialog( "open" );
+		});
+	}
+}

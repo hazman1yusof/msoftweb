@@ -90,38 +90,38 @@ i.fa {
 
 				<div class="col-md-2">
 				  	<label class="control-label" for="Status">Status</label>  
-					  	<select id="Status" name="Status" class="form-control input-sm">
-						  	@if (Request::get('scope') == 'ALL')
-						      <option value="All" selected>ALL</option>
-						      <option value="OPEN">OPEN</option>
-						      <option value="CANCELLED">CANCELLED</option>
-						      <option value="PREPARED">PREPARED</option>
-						      <option value="SUPPORT">SUPPORT</option>
-						      <option value="VERIFIED">VERIFIED</option>
-						      <option value="RECOMMENDED1">RECOMMENDED 1</option>
-						      <option value="RECOMMENDED2">RECOMMENDED 2</option>
-						      <option value="APPROVED">APPROVED</option>
-						      <option value="COMPLETED">COMPLETED</option>
-						      <option value="PARTIAL">PARTIAL</option>
-								@elseif (Request::get('scope') == 'SUPPORT')
-									<option value="PREPARED">PREPARED</option>
-								@elseif (Request::get('scope') == 'VERIFIED')
-									<option value="SUPPORT">SUPPORT</option>
-								@elseif (Request::get('scope') == 'RECOMMENDED1')
-									<option value="VERIFIED">VERIFIED</option>
-								@elseif (Request::get('scope') == 'RECOMMENDED2')
-									<option value="RECOMMENDED1">RECOMMENDED 1</option>
-								@elseif (Request::get('scope') == 'APPROVED')
-									<option value="VERIFIED">VERIFIED</option>
-									<option value="RECOMMENDED1">RECOMMENDED 1</option>
-									<option value="RECOMMENDED2">RECOMMENDED 2</option>
-								@elseif (Request::get('scope') == 'REOPEN')
-									<option value="CANCELLED">CANCELLED</option>
-								@elseif (Request::get('scope') == 'CANCEL')
-									<option value="OPEN">OPEN</option>
-								@endif
-					    </select>
-	            </div>
+				  	<select id="Status" name="Status" class="form-control input-sm">
+					  	@if (Request::get('scope') == 'ALL')
+					      <option value="All" selected>ALL</option>
+					      <option value="OPEN">OPEN</option>
+					      <option value="CANCELLED">CANCELLED</option>
+					      <option value="PREPARED">PREPARED</option>
+					      <option value="SUPPORT">SUPPORT</option>
+					      <option value="VERIFIED">VERIFIED</option>
+					      <option value="RECOMMENDED1">RECOMMENDED 1</option>
+					      <option value="RECOMMENDED2">RECOMMENDED 2</option>
+					      <option value="APPROVED">APPROVED</option>
+					      <option value="COMPLETED">COMPLETED</option>
+					      <option value="PARTIAL">PARTIAL</option>
+							@elseif (Request::get('scope') == 'SUPPORT')
+								<option value="PREPARED">PREPARED</option>
+							@elseif (Request::get('scope') == 'VERIFIED')
+								<option value="SUPPORT">SUPPORT</option>
+							@elseif (Request::get('scope') == 'RECOMMENDED1')
+								<option value="VERIFIED">VERIFIED</option>
+							@elseif (Request::get('scope') == 'RECOMMENDED2')
+								<option value="RECOMMENDED1">RECOMMENDED 1</option>
+							@elseif (Request::get('scope') == 'APPROVED')
+								<option value="VERIFIED">VERIFIED</option>
+								<option value="RECOMMENDED1">RECOMMENDED 1</option>
+								<option value="RECOMMENDED2">RECOMMENDED 2</option>
+							@elseif (Request::get('scope') == 'REOPEN')
+								<option value="CANCELLED">CANCELLED</option>
+							@elseif (Request::get('scope') == 'CANCEL')
+								<option value="OPEN">OPEN</option>
+							@endif
+				    </select>
+            </div>
 
 	      <div class="col-md-2">
 		  		<label class="control-label" for="trandept">Purchase Dept</label> 
@@ -176,7 +176,7 @@ i.fa {
 					@endif
 
 					@if (Request::get('scope') == 'REOPEN' && !empty(Request::get('recno')))
-					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_from_reject_jq" data-oper="cancel_from_reject" style="display: none;">REJECT</button>
+					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_from_reject_jq" data-oper="cancel_from_reject" style="display: none;">CANCEL</button>
 					@endif
 
 					<button 

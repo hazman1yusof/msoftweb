@@ -143,7 +143,7 @@ class InventoryTransactionDetailController extends defaultController
                 }
             }
 
-            ///2. insert detail
+            ///2. insert detailF
             DB::table('material.ivtmpdt')
                 ->insert([
                     'compcode' => session('compcode'),
