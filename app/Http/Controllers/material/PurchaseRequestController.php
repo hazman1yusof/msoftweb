@@ -1143,11 +1143,37 @@ class PurchaseRequestController extends defaultController
         if(!$recno){
             abort(404);
         }
-
-        $purreqhd = DB::table('material.purreqhd')
-            ->where('recno','=',$recno)
-            ->first();
-            
+        
+        $purreqhd = DB::table('material.purreqhd as ph')
+                    ->select('ph.idno','ph.compcode','ph.reqdept','ph.purreqno','ph.purreqdt','ph.recno','ph.reqpersonid','ph.prdept','ph.authpersonid','ph.authdate','ph.remarks','ph.recstatus','ph.subamount','ph.amtdisc','ph.perdisc','ph.totamount','ph.adduser','ph.adddate','ph.upduser','ph.upddate','ph.cancelby','ph.canceldate','ph.reopenby','ph.reopendate','ph.suppcode','ph.purordno','ph.prortdisc','ph.unit','ph.trantype','ph.TaxAmt','ph.requestby','ph.requestdate','ph.supportby','ph.supportdate','ph.verifiedby','ph.verifieddate','ph.approvedby','ph.approveddate','ph.support_remark','ph.verified_remark','ph.approved_remark','ph.cancelled_remark','ph.recommended1by','ph.recommended2by','ph.recommended1date','ph.recommended2date','ph.recommended1_remark','ph.recommended2_remark','ph.prtype','u.name as requestby_name','u.designation as requestby_dsg','s.name as supportby_name','s.designation as supportby_dsg','e.name as verifiedby_name','e.designation as verifiedby_dsg','r.name as recommended1by_name','r.designation as recommended1by_dsg','us.name as recommended2by_name','us.designation as recommended2by_dsg','ur.name as approvedby_name','ur.designation as approvedby_dsg')
+                    ->leftJoin('sysdb.users as u', function ($join) use ($request){
+                        $join = $join->on('u.username', '=', 'ph.requestby')
+                                    ->where('u.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('sysdb.users as s', function ($join) use ($request){
+                        $join = $join->on('s.username', '=', 'ph.supportby')
+                                    ->where('s.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('sysdb.users as e', function ($join) use ($request){
+                        $join = $join->on('e.username', '=', 'ph.verifiedby')
+                                    ->where('e.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('sysdb.users as r', function ($join) use ($request){
+                        $join = $join->on('r.username', '=', 'ph.recommended1by')
+                                    ->where('r.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('sysdb.users as us', function ($join) use ($request){
+                        $join = $join->on('us.username', '=', 'ph.recommended2by')
+                                    ->where('us.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('sysdb.users as ur', function ($join) use ($request){
+                        $join = $join->on('ur.username', '=', 'ph.approvedby')
+                                    ->where('ur.compcode','=',session('compcode'));
+                    })
+                    ->where('ph.recno','=',$recno)
+                    ->first();
+        // dd($purreqhd);
+        
         $purreqdt = DB::table('material.purreqdt AS prdt', 'material.productmaster AS p', 'material.uom as u')
             ->select('prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode', 'prdt.pouom', 'prdt.qtyrequest', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax as tot_gst','prdt.netunitprice', 'prdt.totamount','prdt.amount', 'prdt.rem_but AS remarks_button', 'prdt.remarks', 'prdt.recstatus', 'prdt.unit', 'u.description as uom_desc')
             ->leftJoin('material.productmaster as p', 'prdt.itemcode', '=', 'p.itemcode')
@@ -1161,7 +1187,7 @@ class PurchaseRequestController extends defaultController
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
-
+        
         $supplier = DB::table('material.supplier')
             ->where('compcode','=',session('compcode'))
             ->where('SuppCode','=',$purreqhd->suppcode)
@@ -1205,8 +1231,8 @@ class PurchaseRequestController extends defaultController
 
         // $pdf = PDF::loadView('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm','company', 'supplier', 'prdept', 'total_tax', 'total_discamt'));
         // return $pdf->stream();      
-
-        return view('material.purchaseRequest.purchaseRequest_pdfmake',compact('purreqhd','purreqdt','totamt_eng','company', 'supplier', 'reqdept', 'total_tax', 'total_discamt','attachment_files'));
+        
+        return view('material.purchaseRequest.purchaseRequest_pdfmake',compact('purreqhd','purreqdt','totamt_eng','company','supplier','reqdept','total_tax','total_discamt','attachment_files'));
     }
 
     function sendemail($data){
