@@ -508,7 +508,7 @@ class InventoryTransactionController extends defaultController
                             ->where('idno','=',$idno)
                             ->first();
 
-                if($ivtmphd->recstatus != 'OPEN' || $ivtmphd->recstatus != 'VERIFIED' ){
+                if(!in_array($ivtmphd->recstatus, ['OPEN','VERIFIED'])){
                     continue;
                 }
 
@@ -874,6 +874,11 @@ class InventoryTransactionController extends defaultController
 
             if($ivreqhd->exists()){
                 $ivreqhd = $ivreqhd->first();
+
+                if($ivreqhd->recstatus == 'COMPLETED'){
+                    throw new \Exception("Inventory Request document RECNO: ".$ivtmphd->srcdocno." already COMPLETED", 500);
+                }
+
                 $ivreqdt = DB::table('material.ivreqdt')
                             ->where('recno','=',$ivtmphd->srcdocno)
                             ->where('compcode', '=', session('compcode'))
@@ -898,6 +903,8 @@ class InventoryTransactionController extends defaultController
                             $newbalance = intval($qtybalance) - intval($qtytxn);
                             if($newbalance > 0){
                                 $status = 'PARTIAL';
+                            }else if($newbalance < 0){
+                                throw new \Exception("Inventory Request document RECNO: ".$ivtmphd->srcdocno." on lineno: ".$value->lineno_." exceed Qty balance: ".$qtybalance, 500);
                             }
 
                             DB::table('material.ivreqdt')

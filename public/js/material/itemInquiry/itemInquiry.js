@@ -431,8 +431,8 @@ $(document).ready(function () {
 					itemcode:selrowData("#detail").s_itemcode,
 					deptcode:selrowData("#detail").s_deptcode,
 					uomcode:selrowData("#detail").s_uomcode,
-					trandate_from:yr_from+'-'+mon_from+"-01",
-					trandate_to:yr_to+'-'+mon_to+"-31"
+					trandate_from:$('#datefrom').val(),
+					trandate_to:$('#dateto').val()
 				}
 		$.get( "./itemEnquiry/form?"+$.param(param), function( data ) {
 				
@@ -555,7 +555,7 @@ $(document).ready(function () {
 			table_name:'material.stockloc',
 			table_id:'itemcode',
 			filterCol:['itemcode', 'uomcode', 'deptcode', 'year'],
-			filterVal:[itemcode, uomcode, deptcode, $("#yearfrom").val()]
+			filterVal:[itemcode, uomcode, deptcode, moment($('#datefrom').val(), "YYYY/MM/DD").format("YYYY")]
 		}
 		$.get( "util/get_value_default?"+$.param(param), function( data ) {
 					

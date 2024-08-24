@@ -1133,7 +1133,8 @@ $(document).ready(function () {
 		    		'qtyrequest' : $('#'+ids[i]+"_qtyrequest").val(),
 					'qtyonhand' : $('#'+ids[i]+"_qtyonhand").val(),
 					'qohconfirm' : $('#'+ids[i]+"_qohconfirm").val(),
-                    'unit' : $("#"+ids[i]+"_unit").val()
+                    'expdate' : $("#jqGrid2 input#"+ids[i]+"_expdate").val(),
+                    'batchno' : $("#"+ids[i]+"_batchno").val()
 		    	}
 
 		    	jqgrid2_data.push(obj);
@@ -1248,7 +1249,7 @@ $(document).ready(function () {
 			`);
 	}
 	function expdateCustomEdit(val,opt){
-		val = (val.slice(0, val.search("[<]")) == "undefine") ? "" : val.slice(0, val.search("[<]"));
+		val = getEditVal(val);
 		 return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'"  name="expdate" type="text" class="form-control input-sm" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
 		
 	}
@@ -1346,6 +1347,7 @@ $(document).ready(function () {
 		dialog_itemcode.on();
 		dialog_uomcodereqdept.on();
 		dialog_uomcodereqto.on();
+		dialog_expdate.on();
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		mycurrency_np.formatOnBlur();//make field to currency on leave cursor

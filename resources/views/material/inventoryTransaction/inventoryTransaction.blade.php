@@ -27,6 +27,13 @@ i.fa {
 	overflow: auto;
 }
 
+div#fail_msg{
+  padding-left: 40px;
+  padding-bottom: 10px;
+  color: darkred;
+}
+
+
 @endsection
 
 @section('body')
@@ -51,7 +58,7 @@ i.fa {
 
 				  	<div class="col-md-5">
 				  		<label class="control-label"></label>  
-							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('recno'))){{Request::get('recno')}}@endif">
 
 							<div  id="tunjukname" style="display:none">
 								<div class='input-group'>
@@ -356,6 +363,7 @@ i.fa {
 			<div class='panel panel-info'>
 				<div class="panel-heading">Inventory Transaction Detail</div>
 					<div class="panel-body">
+						<div id="fail_msg"></div>
 						<form id='formdata2' class='form-vertical' style='width:99%'>
 							<input id="gstpercent" name="gstpercent" type="hidden">
 							<input id="convfactoruomcodetrdept" name="convfactoruomcodetrdept" type="hidden" value='1'>

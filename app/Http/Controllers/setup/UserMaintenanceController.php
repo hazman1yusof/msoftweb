@@ -25,6 +25,15 @@ class UserMaintenanceController extends defaultController
         $this->table = DB::table('sysdb.users');
         $this->duplicateCode = "username";
     }
+
+    public function show_profile(){
+            $user = DB::table('sysdb.users')
+                    ->where('compcode',session('compcode'))
+                    ->where('username',session('username'))
+                    ->first();
+
+        return view('setup.user_maintenance.user_profile',compact('user'));
+    }
     
     public function duplicate($check,$mode,$idno){
         if($mode == 'add'){
@@ -69,9 +78,36 @@ class UserMaintenanceController extends defaultController
         }
     }
     
-    public function show(Request $request)
-    {
+    public function show(Request $request){
         return view('setup.user_maintenance.user_maintenance');
+    }
+
+    public function save_profile(Request $request){
+
+        DB::beginTransaction();
+        try {
+            DB::table('users')
+                ->where('compcode',session('compcode'))
+                ->where('username',session('username'))
+                ->update([
+                    'name' => $request->name,
+                    'designation' => $request->designation,
+                    'password' => $request->password,
+                ]);
+
+            DB::commit();
+
+            $responce = new stdClass();
+            $responce->return = 'SUCCESS';
+            
+            return json_encode($responce);
+            
+        } catch (Exception $e) {
+            
+            
+            DB::rollback();
+            return response($e->getMessage(), 500);
+        }
     }
     
     public function table(Request $request)
@@ -125,6 +161,8 @@ class UserMaintenanceController extends defaultController
                 return $this->edit($request);
             case 'del':
                 return $this->del($request);
+            case 'save_profile':
+                return $this->save_profile($request);
             default:
                 return 'error happen..';
         }

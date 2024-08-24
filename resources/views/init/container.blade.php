@@ -91,8 +91,7 @@
 						<i class="fa fa-caret-down"></i>
 					</a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="#" >Profile Settings</a></li>
-						<li><a href="#" >Close Till</a></li>
+						<li><a href="#" id="profilebtn">Profile Settings</a></li>
 						<li class="divider"></li>
 						<li><a href="./logout" >Log-out</a></li>
 					</ul>
@@ -320,6 +319,10 @@
 	        	});
 			}
 		});
+
+		$('#profilebtn').click(function(){
+			Menu.new_dialog('profile_setings','user_profile','User Profile');
+		});	
 
 		// var mychat = new chat();
 

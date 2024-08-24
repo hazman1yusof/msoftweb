@@ -109,28 +109,38 @@
 				
 		    	<div class="panel-heading">Detail Movement by Item</div>
 		    		<div class="panel-body">
-
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
         					<div class="form-group">
-            					
             					<label class="col-md-1 control-label" for="itemcodedtl">Item Code</label>  
-						  			<div class="col-md-2">
-										<input id="itemcodedtl" name="itemcodedtl" class="form-control input-sm" type="text" readonly="true"><span class="help-block" id="itemcodedtl_">sdsd</span>
-						  			</div>
+					  			<div class="col-md-2">
+									<input id="itemcodedtl" name="itemcodedtl" class="form-control input-sm" type="text" readonly="true"><span class="help-block" id="itemcodedtl_">sdsd</span>
+					  			</div>
 						  		<label class="col-md-1 control-label" for="deptcodedtl">Dept Code</label>  
-						  			<div class="col-md-2">
-										<input id="deptcodedtl" name="deptcodedtl" class="form-control input-sm" value = "" readonly="true"><span class="help-block" id="deptcodedtl_">sdsd</span>
-						  			</div>
+					  			<div class="col-md-2">
+									<input id="deptcodedtl" name="deptcodedtl" class="form-control input-sm" value = "" readonly="true"><span class="help-block" id="deptcodedtl_">sdsd</span>
+					  			</div>
 						  		<label class="col-md-1 control-label" for="uomcodedtl">UOM Code</label>  
-						  			<div class="col-md-2">
-										<input id="uomcodedtl" name="uomcodedtl" class="form-control input-sm" value = "" readonly="true"><span class="help-block" id="uomcodedtl_">sdsd</span>
-						  			</div>		
+					  			<div class="col-md-2">
+									<input id="uomcodedtl" name="uomcodedtl" class="form-control input-sm" value = "" readonly="true"><span class="help-block" id="uomcodedtl_">sdsd</span>
+					  			</div>		
 					  		</div>
-
 						</div>	 
 
+						<div class='col-md-12' style="padding:0 0 15px 0">
+							<label class="col-md-1 control-label" for="monthfrom">Date From</label>
+							<div class="col-md-2">
+								<input type="date" id="datefrom" class="form-control input-sm" name="datefrom" value="{{\Carbon\Carbon::now('Asia/Kuala_Lumpur')->format('Y-m-d')}}" />
+							</div>
 
-							<div class='col-md-12' style="padding:0 0 15px 0">
+
+							<label class="col-md-1 control-label" for="monthfrom">Date To</label>
+							<div class="col-md-2">
+								<input type="date" id="dateto" class="form-control input-sm" name="dateto" value="{{\Carbon\Carbon::now('Asia/Kuala_Lumpur')->format('Y-m-d')}}" />
+							</div>
+						</div>
+
+
+							<!-- <div class='col-md-12' style="padding:0 0 15px 0">
 	        					<div class="form-group">
 	        						
 		            					<label class="col-md-1 control-label" for="monthfrom">Month From</label>  
@@ -184,7 +194,7 @@
 										</div>    			
 						  		</div> 
 						 
-						  	</div>	
+						  	</div> -->	
 
 						  	<div class='col-md-14' style="padding:0 0 20px 0">
 		        				<div class="form-group">
@@ -199,8 +209,8 @@
 								</div>
 							</div> 
 							<div class="col-md-12">
-										<button type="button" id="search" class="pull-right btn btn-primary" >Search</button>
-			              			</div>
+								<button type="button" id="search" class="pull-right btn btn-primary" >Search</button>
+	              			</div>
         				</div>
 		    		</div>
 		</div>

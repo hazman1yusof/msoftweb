@@ -300,6 +300,60 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
 
         $queueso = $queueso->merge($queueso_reject);
 
+        $queueiv = DB::table('material.queueiv as qiv')
+                    ->select('qiv.trantype','adtl.authorid','ivhd.recno','ivhd.txndept as deptcode','dept.description as deptcode_desc','ivhd.adddate','ivhd.recstatus','ivhd.amount','ivhd.adduser')
+                    ->join('material.authdtl as adtl', function($join) use ($request){
+                        $join = $join
+                            ->where('adtl.compcode',session('compcode'))
+                            ->where('adtl.authorid',session('username'))
+                            ->where('adtl.trantype','PO')
+                            ->where('adtl.cando','ACTIVE')
+                            ->on('adtl.recstatus','qiv.trantype');
+                            // ->where(function ($query) {
+                            //     $query->on('adtl.deptcode','qpo.deptcode')
+                            //           ->orWhere('adtl.deptcode', 'ALL');
+                            // });
+                    })
+                    ->join('material.ivtmphd as ivhd', function($join) use ($request){
+                        $join = $join
+                            ->where('ivhd.compcode',session('compcode'))
+                            ->on('ivhd.recno','qiv.recno')
+                            ->on('ivhd.recstatus','qiv.recstatus')
+                            ->where(function ($query) {
+                                $query
+                                    ->on('ivhd.amount','>=','adtl.minlimit')
+                                    ->on('ivhd.amount','<', 'adtl.maxlimit');
+                            });
+                    })
+                    ->join('sysdb.department as dept', function($join) use ($request){
+                        $join = $join
+                            ->where('dept.compcode',session('compcode'))
+                            ->on('dept.deptcode','ivhd.txndept');
+                    })
+                    ->where('qiv.compcode',session('compcode'))
+                    ->where('qiv.trantype','<>','DONE')
+                    ->get();
+
+        $queueiv_reject = DB::table('material.queueiv as qiv')
+                    ->select('qiv.trantype','ivhd.adduser','ivhd.recno','ivhd.txndept as deptcode','dept.description as deptcode_desc','ivhd.adddate','ivhd.recstatus','ivhd.amount','ivhd.adduser','ivhd.cancelby','ivhd.canceldate')
+                    ->join('material.ivtmphd as ivhd', function($join) use ($request){
+                        $join = $join
+                            ->where('ivhd.compcode',session('compcode'))
+                            ->on('ivhd.recno','qiv.recno')
+                            ->on('ivhd.recstatus','qiv.recstatus');
+                    })
+                    ->join('sysdb.department as dept', function($join) use ($request){
+                        $join = $join
+                            ->where('dept.compcode',session('compcode'))
+                            ->on('dept.deptcode','ivhd.txndept');
+                    })
+                    ->where('qiv.AuthorisedID',session('username'))
+                    ->where('qiv.compcode',session('compcode'))
+                    ->where('qiv.trantype','REOPEN')
+                    ->get();
+
+        $queueiv = $queueiv->merge($queueiv_reject);
+
 
         $responce = new stdClass();
         $responce->queuepr = $queuepr;
@@ -307,6 +361,7 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
         $responce->queuepv = $queuepv;
         $responce->queuepd = $queuepd;
         $responce->queueso = $queueso;
+        $responce->queueiv = $queueiv;
 
         return json_encode($responce);
     }

@@ -18,6 +18,7 @@ function get_authdtl_alert(){
 			populate_authdtl_alert_pr(data.queuepr);
 			populate_authdtl_alert_po(data.queuepo);
 			populate_authdtl_alert_so(data.queueso);
+			populate_authdtl_alert_IV(data.queueso);
 		}
 	});
 }
@@ -295,6 +296,60 @@ function populate_authdtl_alert_so(data){
 	})
 }
 
+function populate_authdtl_alert_iv(data){
+	data.forEach(function(e,i){
+		if(e.trantype == 'REOPEN'){
+			var block_pr = `
+			<div class='col-md-3'>
+				<div class='panel panel-purple'>
+					<div class='panel-heading'>
+						<div class='row'>
+							<div class='col-xs-2 nopadleft'><i class='fa fa-suitcase fa-4x'></i></div>
+							<div class='col-xs-10 text-right'>
+								<div class='huge'><span class='reject_span1'>(Rejected)</span> Inventory Transaction</div>
+								<div><b>Auditno: </b><span>`+e.recno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
+								<div><b>Reject On: </b><span>`+moment(e.canceldate, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.cancelby+`</span></div>
+							</div>
+						</div>
+					</div>
+						<div class='panel-footer'>
+							<a onclick="authdtl_alert_click('so','`+e.trantype+`','`+e.recno+`')">
+								<span class='pull-left'>Detail</span>
+								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+								<div class='clearfix'></div>
+							</a>
+						</div>
+				</div>
+			</div>`;
+		}else{
+			var block_pr = `
+			<div class='col-md-3'>
+				<div class='panel panel-purple'>
+					<div class='panel-heading'>
+						<div class='row'>
+							<div class='col-xs-2 nopadleft'><i class='fa fa-suitcase fa-4x'></i></div>
+							<div class='col-xs-10 text-right'>
+								<div class='huge'>Inventory Transaction</div>
+								<div><b>Auditno: </b><span>`+e.recno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
+								<div><b>Department: </b><span>`+e.deptcode+` - `+e.deptcode_desc+`</span></div>
+								<div><b>Prepared On: </b><span>`+moment(e.adddate, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.adduser+`</span></div>
+							</div>
+						</div>
+					</div>
+						<div class='panel-footer'>
+							<a onclick="authdtl_alert_click('so','`+e.trantype+`','`+e.recno+`')">
+								<span class='pull-left'>Detail</span>
+								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+								<div class='clearfix'></div>
+							</a>
+						</div>
+				</div>
+			</div>`;
+		}
+		$('#authdtl_alert_div').append(block_pr);
+	})
+}
+
 function authdtl_alert_click(type,trantype,recno){
     let mql = window.matchMedia("(max-width: 768px)");
 	if(mql.matches){
@@ -317,6 +372,9 @@ function authdtl_alert_click(type,trantype,recno){
 		case 'so':
 			Menu.new_dialog('salesorder_datentry','SalesOrder?scope='+trantype+'&auditno='+recno,'Sales Order');
 			break;
+		case 'iv':
+			Menu.new_dialog('material_invtran_AIAO','inventoryTransaction?scope='+trantype+'&ttype=AI&recno='+recno,'Sales Order');
+			break;
 	}
 }
 
@@ -336,6 +394,9 @@ function authdtl_alert_click_mobile(type,trantype,recno){
 			break;
 		case 'so':
 			open_mobile_page('SalesOrder_mobile?scope='+trantype+'&auditno='+recno);
+			break;
+		case 'iv':
+			open_mobile_page('inventoryTransaction_mobile?scope='+trantype+'&recno='+recno);
 			break;
 	}
 }

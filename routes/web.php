@@ -56,6 +56,7 @@ Route::post('/group_maintenance/form','setup\GroupMaintenanceController@form');
 
 //// user mainatenance page ///
 Route::get('/user_maintenance','setup\UserMaintenanceController@show');
+Route::get('/user_profile','setup\UserMaintenanceController@show_profile');
 Route::get('/user_maintenance/table','setup\UserMaintenanceController@table');
 Route::post('/user_maintenance/form','setup\UserMaintenanceController@form');
 Route::get('/user_maintenance/showExcel','setup\UserMaintenanceController@showExcel');
