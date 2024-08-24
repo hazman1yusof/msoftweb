@@ -1215,7 +1215,8 @@ class PurchaseRequestController extends defaultController
             ->where('u.compcode','=',session('compcode'))
             ->where('recno','=',$recno)
             ->get();
-
+        // dd($purreqdt);
+                    
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
