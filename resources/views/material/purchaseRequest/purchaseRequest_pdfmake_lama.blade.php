@@ -77,23 +77,7 @@
 			    ]
 			},
 			pageSize: 'A4',
-			// pageOrientation: 'landscape',
-			content: [
-				{
-					image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center'
-				},
-				{ text: ' ' },
-				{
-					text: 'PURCHASE REQUEST (PR)',
-					style: 'header',
-					alignment: 'center',
-					// background: 'black',
-					// color: 'white',
-				},
-				{
-					text: '(1) REQUESTED BY',
-					style: 'subheader'
-				},
+		  	content: [
 				{
 					style: 'tableExample',
 					table: {
@@ -102,171 +86,121 @@
 						// keepWithHeaderRows: 5,
 						body: [
 							[
+								{image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'},{},{},{},{},
+
+								{text: 'Purchase Request', style: 'tableHeader', colSpan: 6, alignment: 'center'},{},{},{},{},{}
+							],
+
+							[
 								{
-									text: 'Name: ',
-									colSpan: 2, alignment: 'left'
-								},{},
+									text: 'Address To:\n{{$supplier->SuppCode}}\n{{$supplier->Name}}\n{{$supplier->Addr1}}\n{{$supplier->Addr2}}\n{{$supplier->Addr3}}\n{{$supplier->Addr4}}', 
+									colSpan: 5, 
+									rowSpan: 4,
+									alignment: 'left'},{},{},{},{},
 								{
-									text: '{{$purreqhd->requestby}}',
-									colSpan: 4, alignment: 'left'
-								},{},{},{},
+								 	text: 'Purchase No.',
+								 	colSpan: 2, alignment: 'left'},{},
 								{
-									text: 'Date: ',
-									colSpan: 2, alignment: 'left'
-								},{},
+									text: '{{$purreqhd->reqdept}}'+'{{str_pad($purreqhd->purreqno, 9, '0', STR_PAD_LEFT)}}',
+								 	colSpan: 4, alignment: 'left'},{},{},{}
+							],
+							
+							[
+								{},{},{},{},{},
+								{
+								 	text: 'Purchase Date.',
+								 	colSpan: 2, alignment: 'left'},{},
 								{
 									text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$purreqhd->purreqdt)->format('d-m-Y')}}',
-									colSpan: 3, alignment: 'left'
-								},{},{}
+								 	colSpan: 4, alignment: 'left'},{},{},{}
 							],
+
 							[
+								{},{},{},{},{},
 								{
-									text: 'Designation: ',
-									colSpan: 2, alignment: 'left'
-								},{},
+								 	text: 'Contact Person.',
+								 	colSpan: 2, alignment: 'left'},{},
 								{
-									text: '{{$purreqhd->requestby_dsg}}',
-									colSpan: 4, alignment: 'left'
-								},{},{},{},
-								{
-									text: 'Department/Unit:\n{{$purreqhd->reqdept}}',
-									colSpan: 5, rowSpan: 2, alignment: 'left'
-								},{},{},{},{}
+									text: '{{$supplier->ContPers}}',
+								 	colSpan: 4, alignment: 'left'},{},{},{}
 							],
+
+							[{},{},{},{},{},
+							{
+							 	text: 'Contact No.',
+							 	colSpan: 2, alignment: 'left'},{},
+							{
+								text: '{{$supplier->TelNo}}',
+							 	colSpan: 4, alignment: 'left'},{},{},{}],
+
+							[{text:'No.'},{text:'Description',colSpan: 4},{},{},{},{text:'UOM'},{text:'Quantity'},{text:'Unit Price'},{text:'Tax Amt'},{text:'Discount Amount'},{text:'Nett Amount'}],
+
+							@foreach ($purreqdt as $index=>$obj)
 							[
-								{
-									text: 'Supplier / Vendor: ',
-									colSpan: 2, alignment: 'left'
-								},{},
-								{
-									text: '{{$supplier->Name}}',
-									colSpan: 4, alignment: 'left'
-								},{},{},{},{},{},{},{},{}
-							],
-							[
-								{
-									text: [
-										'Remarks:\n',
-										{ text: '(Compulsory)', bold: true },
-									], colSpan: 2, rowSpan: 2, alignment: 'left'
-								},{},
-								{
-									text: '{{$purreqhd->remarks}}',
-									colSpan: 9, rowSpan: 2, alignment: 'left'
-								},{},{},{},{},{},{},{},{}
-							],
-							[ {},{},{},{},{},{},{},{},{},{},{} ],
-						]
-					}
-				},
-				{
-					text: 'Note:-', fontSize: 8, bold: true
-				},
-				{
-					text: '1)	Asset of RM3000 and above (per unit/set) must be verified by Finance Executive (Asset Management)\n2)	Amount below RM1,000 (1 quotation)\n3)	Amount RM1,000 - RM100,000 (Min 3 quotations)\n4)	RM100,000 - RM200,000 (Min 4 quotations/sebutharga kecil)\n5)	RM200,000 - RM500,000.00 (Min 5 quotations/ quotation process)\n6)	Amount above RM 500,000 (tendering process)', fontSize: 8
-				},
-				{
-					text: '(2) APPLICATION (Please use additional sheet(s) if required)',
-					style: 'subheader'
-				},
-				{
-					style: 'tableExample',
-					table: {
-						widths: ['*','*','*','*','*','*','*','*','*','*','*'],
-						// headerRows: 5,
-						// keepWithHeaderRows: 5,
-						body: [
-							[
-								{ text: 'No.' },
-								{ text: 'Item Description', colSpan: 5 },{},{},{},{},
-								{ text: 'Qty', alignment: 'right' },
-								{ text: 'Price/n(Per Unit)', alignment: 'right', colSpan: 2 },{},
-								{ text: 'Price (RM)', alignment: 'right', colSpan: 2 },{}
-							],
-							@foreach($purreqdt as $index=>$obj)
-							[
-								{ text: '{{++$index}}' },
-								{ text: `{{$obj->description}}\n{{$obj->remarks}}`, colSpan: 5 },{},{},{},{},
-								{ text: '{{$obj->qtyrequest}}', alignment: 'right' },
-								{ text: '{{number_format($obj->unitprice,2)}}', alignment: 'right', colSpan: 2 },{},
-								{ text: '{{number_format($obj->amount,2)}}', alignment: 'right', colSpan: 2 },{},
+								{text:'{{++$index}}'},
+								{text:`{{$obj->description}}\n{{$obj->remarks}}`,colSpan: 4},{},{},{},
+								{text:'{{$obj->uomcode}}'},
+								{text:'{{$obj->qtyrequest}}', alignment: 'right'},
+								{text:'{{number_format($obj->unitprice,2)}}', alignment: 'right'},
+								{text:'{{number_format($obj->tot_gst,2)}}', alignment: 'right'},
+								{text:'{{number_format($obj->amtdisc,2)}}', alignment: 'right'},
+								{text:'{{number_format($obj->amount,2)}}', alignment: 'right'},
 							],
 							@endforeach
+
 							[
-								{
-									text: [
-										'1)	New Asset [	] / Replacement [	] / Additional [	]: ',
-										{ text: 'Please tick (√)', fontSize: 7 },
-										'\n2)	Budget : Yes [	] / No [	]',
-										'\n3)	Justification: \n____________________________________________________\n____________________________________________________',
-										'\n\n4)	Charge to patient per use: _____________________',
-									], colSpan: 6
-								},{},{},{},{},{},{},
-								{ text: ' ', colSpan: 2, border: [true, false, true, true] },{},
-								{ text: ' ', colSpan: 2 },{}
+								{text:'TOTAL', style: 'totalbold', colSpan: 5},{},{},{},{},{},{},{},
+								{text:'{{number_format($total_tax,2)}}', alignment: 'right'},
+								{text:'{{number_format($total_discamt,2)}}', alignment: 'right'},
+								{text:'{{number_format($purreqhd->totamount,2)}}', alignment: 'right'}
 							],
+
 							[
-								{ text: 'Total', style: 'totalbold', colSpan: 9, alignment: 'right' },{},{},{},{},{},{},{},{},
-								{ text: '{{number_format($purreqhd->totamount,2)}}', colSpan: 2, alignment: 'right' },{}
+								{text:'RINGGIT MALAYSIA: {{$totamt_eng}}', style: 'totalbold', italics: true, colSpan: 11}
 							],
+							
 							[
-								{ text: 'Requested By: \n\n{{$purreqhd->requestby_name}}\n{{$purreqhd->requestby_dsg}}\n', style: 'totalbold', colSpan: 3, rowSpan: 3 },{},{},
-								{ text: 'Supported By: \n\n{{$purreqhd->supportby_name}}\n{{$purreqhd->supportby_dsg}}\n', style: 'totalbold', colSpan: 3 ,rowSpan: 3 },{},{},
-								{
-									text: [
-										{ text: 'Verified By: ', bold: true },
-										'(finance) \n\n',
-										{ text: '{{$purreqhd->verifiedby_name}}\n{{$purreqhd->verifiedby_dsg}}\n', bold: true },
-									], colSpan: 5, rowSpan: 3
-								},{},{},{},{}
+								{text:
+
+									`Please Deliver goods/services/works with original purchase order, delivery order and invoice to:\n\nAddress To:\n{{$reqdept->description}}\n{{$reqdept->addr1}}\n{{$reqdept->addr2}}\n{{$reqdept->addr3}}\n{{$reqdept->addr4}}\n
+									Contact Person: {{$reqdept->contactper}}\n
+									Tel No.: {{$reqdept->tel}}\n
+									Email: {{$reqdept->email}}\n
+									`
+									,colSpan: 6,rowSpan:4},{},{},{},{},{},
+								{text:'Delivered By: \n\n\n\n\n\n', style: 'totalbold',colSpan: 3,rowSpan:3},{},{},
+								{text:'Approval: \n\n\n\n\n\n', style: 'totalbold',colSpan: 2,rowSpan:3},{}
 							],
+							
 							[
 								{},{},{},{},{},{},
 								{},{},{},
 								{},{}
 							],
+							
 							[
 								{},{},{},{},{},{},
 								{},{},{},
 								{},{}
 							],
-							[
-								{ text: 'Joint Recommended By: \n\n{{$purreqhd->recommended1by_name}}\n{{$purreqhd->recommended1by_dsg}}\n', style: 'totalbold', colSpan: 3, rowSpan: 3 },{},{},
-								{ text: 'Joint Recommended By: \n\n{{$purreqhd->recommended2by_name}}\n{{$purreqhd->recommended2by_dsg}}\n', style: 'totalbold', colSpan: 3 ,rowSpan: 3 },{},{},
-								{
-									text: [
-										{ text: 'Approved By ', bold: true },
-										{ text: 'Manager/Director\n', italics: true },
-										{ text: '[	] Approved [	] NOT Approved\n\n', bold: true },
-										{ text: '{{$purreqhd->approvedby_name}}\n{{$purreqhd->approvedby_dsg}}\n', bold: true },
-									], colSpan: 5, rowSpan: 3
-								},{},{},{},{}
-							],
+							
 							[
 								{},{},{},{},{},{},
-								{},{},{},
+								{text:'Sign: \n\n\n\n\n\n   Position:\n\n Date:\n\n', style: 'totalbold',colSpan: 5},{},{},
 								{},{}
-							],
-							[
-								{},{},{},{},{},{},
-								{},{},{},
-								{},{}
-							],
+							]
 						]
 					}
-				},
-				{
-					text: 'This is a computer-generated document. No signature is required.', alignment: 'center', fontSize: 8,
 				},
 			],
 			styles: {
 				header: {
-					fontSize: 16,
+					fontSize: 18,
 					bold: true,
 					margin: [0, 0, 0, 10]
 				},
 				subheader: {
-					fontSize: 10,
+					fontSize: 16,
 					bold: true,
 					margin: [0, 10, 0, 5]
 				},

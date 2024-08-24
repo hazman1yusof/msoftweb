@@ -623,6 +623,15 @@ Route::post('/SalesOrderDetail/form','finance\SalesOrderDetailController@form');
 Route::get('/SalesOrderDetail/table','finance\SalesOrderDetailController@table');
 Route::get('/SalesOrder/showpdf','finance\SalesOrderController@showpdf');
 
+//// Finance - Point of Sales page ///
+Route::get('/PointOfSales','finance\PointOfSalesController@show');
+Route::get('/PointOfSales/table','finance\PointOfSalesController@table');
+Route::post('/PointOfSales/form','finance\PointOfSalesController@form');
+Route::get('/PointOfSales/form','finance\PointOfSalesController@form');
+Route::post('/PointOfSalesDetail/form','finance\PointOfSalesDetailController@form');
+Route::get('/PointOfSalesDetail/table','finance\PointOfSalesDetailController@table');
+Route::get('/PointOfSales/showpdf','finance\PointOfSalesController@showpdf');
+
 //// Finance - report sales ///
 Route::get('/SalesOrder_Report','finance\SalesOrder_ReportController@show');
 Route::get('/SalesOrder_Report/table','finance\SalesOrder_ReportController@table');
@@ -942,6 +951,7 @@ Route::post('/creditDebitTrans/form','finance\CreditDebitTransController@form');
 Route::get('/creditDebitTrans/form','finance\CreditDebitTransController@form');
 Route::post('/creditDebitTransDetail/form','finance\CreditDebitTransDetailController@form');
 Route::get('/creditDebitTransDetail/table','finance\CreditDebitTransDetailController@table');
+Route::get('/creditDebitTrans/showpdf','finance\CreditDebitTransController@showpdf');
 
 //// Payment Voucher Transaction ///
 Route::get('/paymentVoucher','finance\PaymentVoucherController@show');

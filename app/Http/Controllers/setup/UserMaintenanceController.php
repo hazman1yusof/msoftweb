@@ -147,6 +147,7 @@ class UserMaintenanceController extends defaultController
             DB::table('sysdb.users')->insert([
                 'username' => $request->username,
                 'name' => $request->name,
+                'designation' => $request->designation,
                 'groupid' => $request->groupid,
                 'dept' => $request->dept,
                 'cashier' => $request->cashier,
@@ -197,6 +198,7 @@ class UserMaintenanceController extends defaultController
             $table->update([
                 'username' => $request->username,
                 'name' => $request->name,
+                'designation' => $request->designation,
                 'groupid' => $request->groupid,
                 'dept' => $request->dept,
                 'cashier' => $request->cashier,

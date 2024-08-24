@@ -60,6 +60,13 @@
 			</div>
 			
 			<div class="form-group">
+				<label class="col-md-2 control-label" for="designation">Designation</label>
+				<div class="col-md-5">
+					<input id="designation" name="designation" type="text" class="form-control input-sm" data-validation="required">
+				</div>
+			</div>
+			
+			<div class="form-group">
 				<label class="col-md-2 control-label" for="password">Password</label>
 				<div class="col-md-4">
 					<input id="password" name="password" type="text" class="form-control input-sm" data-validation="required">

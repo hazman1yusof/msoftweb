@@ -127,6 +127,7 @@ $(document).ready(function (){
 			{ label: 'CancelPTcolor', name: 'CancelPTcolor', hidden: true },
 			{ label: 'CurrentPTcolor', name: 'CurrentPTcolor', hidden: true },
 			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'designation', name: 'designation', hidden: true },
 		],
 		autowidth: true,
 		multiSort: true,
