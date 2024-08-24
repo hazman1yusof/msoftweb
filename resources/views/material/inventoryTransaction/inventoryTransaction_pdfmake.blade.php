@@ -115,7 +115,7 @@
                     style: 'tableDetail',
                     table: {
                         headerRows: 1,
-                        widths: ['*','*','*','*','*','*','*','*'],//panjang standard dia 515
+                        widths: ['*','*','*','*','*','*','*','*','*'],//panjang standard dia 515
 
                         body: [
                             [
@@ -123,6 +123,7 @@
 								{text: 'Itemcode', style: 'tableHeader'}, 
 								{text: 'UOM', style: 'tableHeader'}, 
 								{text: 'Qty', style: 'tableHeader'},
+								{text: 'Net Price', style: 'tableHeader'},
 								{text: 'Amount', style: 'tableHeader'}, 
                                 {text: 'Expiry\nDate', style: 'tableHeader'}, 
                                 {text: 'Tran\nDate', style: 'tableHeader'}, 
@@ -135,8 +136,9 @@
 								
 								{text:'{{$obj->lineno_}}'},
 								{text:'{{$obj->itemcode}}\n{{$obj->description}}'},
-								{text:'{{$obj->uomcode}}'},
-                                {text:'{{$obj->qtyonhand}}'},
+								{text: `{!!$obj->uomcode!!}`},
+                                {text:'{{$obj->qtyonhand}}', alignment: 'right'},
+								{text:'{{number_format($obj->netprice,4)}}', alignment: 'right'},
 								{text:'{{number_format($obj->amount,2)}}', alignment: 'right'},
 
 								@if(!empty($obj->expdate))
@@ -150,7 +152,7 @@
                                 @else
 									{text: ''},
 								@endif
-                                {text:'{{$obj->qtyonhand}}'},
+                                {text:'{{$obj->qtyonhand}}', alignment: 'right'},
 								
 							],
 							@endforeach

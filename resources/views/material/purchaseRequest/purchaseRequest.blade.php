@@ -175,6 +175,10 @@ i.fa {
 					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">REJECT</button>
 					@endif
 
+					@if (Request::get('scope') == 'REOPEN' && !empty(Request::get('recno')))
+					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_from_reject_jq" data-oper="cancel_from_reject" style="display: none;">REJECT</button>
+					@endif
+
 					<button 
 						type="button" 
 						class="btn btn-primary btn-sm" 

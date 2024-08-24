@@ -105,6 +105,8 @@ class PurchaseOrderController extends defaultController
                 return $this->approved($request);
             case 'cancel':
                 return $this->cancel($request);
+            case 'cancel_from_reject':
+                return $this->cancel_from_reject($request);
             case 'reject':
                 return $this->reject($request);
             case 'refresh_do':
@@ -524,6 +526,36 @@ class PurchaseOrderController extends defaultController
             return response($e->getMessage(), 500);
         }
     }
+
+    public function cancel_from_reject(Request $request){
+    DB::beginTransaction();
+
+    try{
+
+        foreach ($request->idno_array as $value){
+
+            $purordhd = DB::table("material.purordhd")
+                        ->where('idno','=',$value);
+
+            $purordhd_get = $purordhd->first();
+
+            if($purordhd_get->recstatus != 'CANCELLED'){
+                continue;
+            }
+
+            DB::table("material.queuepo")
+                ->where('recno','=',$purordhd_get->recno)
+                ->delete();
+        }
+       
+        DB::commit();
+        
+    } catch (\Exception $e) {
+        DB::rollback();
+
+        return response($e->getMessage(), 500);
+    }
+}
 
     public function reject(Request $request){
         DB::beginTransaction();

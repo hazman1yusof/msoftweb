@@ -103,6 +103,8 @@ class PurchaseRequestController extends defaultController
                 return $this->reopen($request);
             case 'cancel':
                 return $this->cancel($request);
+            case 'cancel_from_reject':
+                return $this->cancel_from_reject($request);
             case 'reject':
                 return $this->reject($request);
             case 'support':
@@ -495,6 +497,36 @@ class PurchaseRequestController extends defaultController
         }
     }
 
+    public function cancel_from_reject(Request $request){
+        DB::beginTransaction();
+
+        try{
+
+            foreach ($request->idno_array as $value){
+
+                $purreqhd = DB::table("material.purreqhd")
+                    ->where('idno','=',$value);
+
+                $purreqhd_get = $purreqhd->first();
+                if($purreqhd_get->recstatus != 'CANCELLED'){
+                    continue;
+                }
+
+                DB::table("material.queuepr")
+                    ->where('recno','=',$purreqhd_get->recno)
+                    ->delete();
+
+            }
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
     public function reject(Request $request){
         DB::beginTransaction();
 
@@ -838,8 +870,8 @@ class PurchaseRequestController extends defaultController
                     }
 
                     $purreqhd_update = [
-                        'verifiedby' => session('username'),
-                        'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recommended1by' => session('username'),
+                        'recommended1date' => Carbon::now("Asia/Kuala_Lumpur"),
                         'recstatus' => 'RECOMMENDED1'
                     ];
 
@@ -953,8 +985,8 @@ class PurchaseRequestController extends defaultController
                     }
 
                     $purreqhd_update = [
-                        'verifiedby' => session('username'),
-                        'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recommended2by' => session('username'),
+                        'recommended2date' => Carbon::now("Asia/Kuala_Lumpur"),
                         'recstatus' => 'RECOMMENDED2'
                     ];
 

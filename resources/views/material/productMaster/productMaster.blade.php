@@ -60,26 +60,7 @@
 				<input type="hidden" name="idno">
 
 				<div class="form-group">
-                	<label class="col-md-2 control-label" for="itemcode">Item Code</label>  
-                    	<div class="col-md-4">
-                      		<input id="itemcode" name="itemcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
-                      	</div>
-				</div>
-                
-                <div class="form-group">
-                	<label class="col-md-2 control-label" for="description">Description</label>  
-                      <div class="col-md-8">
-                      <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
-                      </div>
-				</div>
-
-				<div class="form-group">
-                   <label class="col-md-2 control-label" for="groupcode">Group Code</label>  
-				  <div class="col-md-3">
-					<input id="groupcode" name="groupcode" type="text" class="form-control input-sm" frozeOnEdit>
-				  </div>
-
-				  	<label class="col-md-2 control-label" for="productcat">Product Category</label>  
+					<label class="col-md-2 control-label" for="productcat">Product Category</label>  
 				  		<div class="col-md-3" id="productcat_asset_div" style="display:none">
 					  		<div class='input-group'>
 								<input id="productcat_asset" name="productcat_asset" type="text" class="form-control input-sm text-uppercase">
@@ -111,15 +92,31 @@
 					  		</div>
 					  		<span class="help-block"></span>
 				  		</div>
+
+                	<label class="col-md-2 control-label" for="itemcode">Item Code</label>  
+                    	<div class="col-md-4">
+                      		<input id="itemcode" name="itemcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+                      	</div>
+				</div>
+                
+                <div class="form-group">
+                	<label class="col-md-2 control-label" for="description">Description</label>  
+						<div class="col-md-9">
+							<input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
+						</div>
 				</div>
 
 				<div class="form-group">
-                   <label class="col-md-2 control-label" for="avgcost">Avg Cost</label>  
-				  <div class="col-md-3">
-					<input id="avgcost" name="avgcost" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" disabled>
-				  </div>
-				</div>
+                	<label class="col-md-2 control-label" for="groupcode">Group Code</label>  
+						<div class="col-md-3">
+							<input id="groupcode" name="groupcode" type="text" class="form-control input-sm" frozeOnEdit>
+						</div>
 
+					<label class="col-md-2 control-label" for="avgcost">Avg Cost</label>  
+						<div class="col-md-3">
+						<input id="avgcost" name="avgcost" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" disabled>
+						</div>
+				</div>
                 
                 <div class="form-group">
 

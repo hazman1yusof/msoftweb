@@ -64,7 +64,7 @@ return [
 
         'pdf_merge' => [
             'driver' => 'local',
-            'root'   => public_path() . '/uploads/pdf_merge',
+            'root'   => env('ATTACHMENT_PATH').'/uploads/pdf_merge',
         ],
 
         'public_uploads' => [

@@ -552,6 +552,35 @@ $(document).ready(function () {
 		}
 	});
 
+	$("#but_cancel_from_reject_jq").click(function(){
+		$(this).attr('disabled',true);
+		var self_ = this;
+		var idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
+		var obj={};
+		
+		obj.idno_array = idno_array;
+		obj.oper = $(self_).data('oper');//cancel_from_reject
+		obj._token = $('#_token').val();
+		oper=null;
+
+		if(confirm("Are you sure you want to cancel this Document?") == true) {
+			obj.idno_array = [selrowData('#jqGrid').purordhd_idno];
+		}else{
+			return false;
+		}
+		
+		$.post( './purchaseOrder/form', obj , function( data ) {
+			refreshGrid('#jqGrid', urlParam);
+			$(self_).attr('disabled',false);
+			cbselect.empty_sel_tbl();
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+			$(self_).attr('disabled',false);
+		}).success(function(data){
+			$(self_).attr('disabled',false);
+		});
+	});
+
 	$("#but_post_jq").click(function(){
 		$(this).attr('disabled',true);
 		var self_ = this;
