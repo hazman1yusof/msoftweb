@@ -73,8 +73,11 @@
 		var docDefinition = {
 			footer: function(currentPage, pageCount) {
 				return [
-			      { text: currentPage.toString() + ' of ' + pageCount, alignment: 'center' }
-			    ]
+					{
+						text: 'This is a computer-generated document. No signature is required.', alignment: 'center', fontSize: 10
+					},
+					{ text: currentPage.toString() + ' of ' + pageCount, alignment: 'center', fontSize: 10 }
+				]
 			},
 			pageSize: 'A4',
 			// pageOrientation: 'landscape',
@@ -180,7 +183,8 @@
 								{ text: 'No.' },
 								{ text: 'Item Description', colSpan: 5 },{},{},{},{},
 								{ text: 'Qty', alignment: 'right' },
-								{ text: 'Price/n(Per Unit)', alignment: 'right', colSpan: 2 },{},
+								{ text: 'Price\n(Per Unit)', alignment: 'right' },
+								{ text: 'Tax Amt', alignment: 'right' },
 								{ text: 'Price (RM)', alignment: 'right', colSpan: 2 },{}
 							],
 							@foreach($purreqdt as $index=>$obj)
@@ -188,8 +192,9 @@
 								{ text: '{{++$index}}' },
 								{ text: `{{$obj->description}}\n{{$obj->remarks}}`, colSpan: 5 },{},{},{},{},
 								{ text: '{{$obj->qtyrequest}}', alignment: 'right' },
-								{ text: '{{number_format($obj->unitprice,2)}}', alignment: 'right', colSpan: 2 },{},
-								{ text: '{{number_format($obj->amount,2)}}', alignment: 'right', colSpan: 2 },{},
+								{ text: '{{number_format($obj->unitprice,2)}}', alignment: 'right' },
+								{ text: '{{number_format($obj->tot_gst,2)}}', alignment: 'right' },
+								{ text: '{{number_format($obj->totamount,2)}}', alignment: 'right', colSpan: 2 },{}
 							],
 							@endforeach
 							[
@@ -201,13 +206,13 @@
 										'\n3)	Justification: \n____________________________________________________\n____________________________________________________',
 										'\n\n4)	Charge to patient per use: _____________________',
 									], colSpan: 6
-								},{},{},{},{},{},{},
-								{ text: ' ', colSpan: 2, border: [true, false, true, true] },{},
+								},{},{},{},{},{},{},{},{},
 								{ text: ' ', colSpan: 2 },{}
 							],
 							[
-								{ text: 'Total', style: 'totalbold', colSpan: 9, alignment: 'right' },{},{},{},{},{},{},{},{},
-								{ text: '{{number_format($purreqhd->totamount,2)}}', colSpan: 2, alignment: 'right' },{}
+								{ text: 'Total', style: 'totalbold', colSpan: 8, alignment: 'right' },{},{},{},{},{},{},{},
+								{ text: '{{number_format($total_tax,2)}}', alignment: 'right' },
+								{ text: '{{number_format($purreqhd->totamount,2)}}', alignment: 'right', colSpan: 2 },{}
 							],
 							[
 								{ text: 'Requested By: \n\n{{$purreqhd->requestby_name}}\n{{$purreqhd->requestby_dsg}}\n', style: 'totalbold', colSpan: 3, rowSpan: 3 },{},{},
@@ -255,9 +260,9 @@
 						]
 					}
 				},
-				{
-					text: 'This is a computer-generated document. No signature is required.', alignment: 'center', fontSize: 8,
-				},
+				// {
+				// 	text: 'This is a computer-generated document. No signature is required.', alignment: 'center', fontSize: 8,
+				// },
 			],
 			styles: {
 				header: {
