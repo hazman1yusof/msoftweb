@@ -91,7 +91,9 @@ i.fa {
 	</form>
 
 		<div class="panel panel-default">
-		    <div class="panel-heading">Credit/Debit Header</div>
+		    <div class="panel-heading">Credit/Debit Header
+				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
+			</div>
 		    	<div class="panel-body">
 		    		<div class='col-md-12' style="padding:0 0 15px 0">
             			<table id="jqGrid" class="table table-striped"></table>
@@ -175,7 +177,7 @@ i.fa {
 						 			<label class="col-md-2 control-label" for="TaxClaimable">GST</label>  
 										<div class="col-md-3">
 											<label class="radio-inline"><input type="radio" name="TaxClaimable" data-validation="required" value='Claimable'>Claimable</label><br>
-											<label class="radio-inline"><input type="radio" name="TaxClaimable" data-validation="required" value='Non-Claimable'>Non-Claimable</label>
+											<label class="radio-inline"><input type="radio" name="TaxClaimable" data-validation="required" value='Non-Claimable' checked>Non-Claimable</label>
 									  	</div>
 						 		</div>
 

@@ -166,14 +166,16 @@
 
 						<div class="form-group">
                    			<label class="col-md-2 control-label" for="groupcode">Group Code</label>  
-				  				<div class="col-md-3">
+				  				<div class="col-md-4">
 									<label class="radio-inline"><input type="radio" name="groupcode" value='Stock' data-validation="required">Stock</label>
 									<label class="radio-inline"><input type="radio" name="groupcode" value='Asset' data-validation="">Asset</label>
                     				<label class="radio-inline"><input type="radio" name="groupcode" value='Others' data-validation="">Others</label>
+                    				<label class="radio-inline"><input type="radio" name="groupcode" value='Consignment' data-validation="">Consignment</label>
+
 				 				</div>
 
-                  			<label class="col-md-2 control-label" for="productcat">Product Category</label>  
-				  				<div class="col-md-2" id="uomcode_parent">
+                  			<label class="col-md-1 control-label" for="productcat">Product Category</label>  
+				  				<div class="col-md-3" id="uomcode_parent">
 									<input id="productcat" name="productcat" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit rdonly>
 						 		 </div>
 						</div>
@@ -243,6 +245,7 @@
 										<label class="radio-inline"><input type="radio" name="Class" value='Non-Pharmacy'>Non-Pharmacy</label>
 										<label class="radio-inline"><input type="radio" name="Class" value='Others'>Others</label>
 										<label class="radio-inline"><input type="radio" name="Class" value='Asset'>Asset</label>
+										<label class="radio-inline"><input type="radio" name="Class" value='Consignment'>Consignment</label>
 									</div>
 							</div> 
 						</div>
@@ -509,6 +512,7 @@
 							<label class="radio-inline"><input type="radio" id="groupcodeStock" name="groupcode" value='Stock' data-validation="required">Stock</label>
 							<label class="radio-inline"><input type="radio" id="groupcodeAsset" name="groupcode" value='Asset' data-validation="">Asset</label>
                     		<label class="radio-inline"><input type="radio" id="groupcodeOther" name="groupcode" value='Others' data-validation="">Others</label>
+							<label class="radio-inline"><input type="radio" id="groupcodeConsignment" name="groupcode" value='Consignment' data-validation="">Consignment</label>
 				  </div>
 
                   <label class="col-md-2 control-label" for="productcat">Product Category</label>  
@@ -521,8 +525,11 @@
 				  			@elseif (request()->get('groupcode') == 'Asset')
 				  			<input id="productcatAddNew_asset" name="productcat" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
 				  				<a class='input-group-addon btn btn-primary' id="2"><span class='fa fa-ellipsis-h' id-="3"></span></a>
-				  			@else
+				  			@elseif (request()->get('groupcode') == 'Others')
 				  			<input id="productcatAddNew_other" name="productcat" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
+				  				<a class='input-group-addon btn btn-primary' id="2"><span class='fa fa-ellipsis-h' id-="3"></span></a>
+							@else (request()->get('groupcode') == 'Consignment')
+				  			<input id="productcatAddNew_consign" name="productcat" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
 				  				<a class='input-group-addon btn btn-primary' id="2"><span class='fa fa-ellipsis-h' id-="3"></span></a>
 				  			@endif
 
@@ -539,6 +546,8 @@
 							<label class="radio-inline"><input type="radio" name="Class" id="np" value='Non-Pharmacy'>Non-Pharmacy</label>
 							<label class="radio-inline"><input type="radio" name="Class" id="o" value='Others'>Others</label>
 							<label class="radio-inline"><input type="radio" name="Class" id="a" value='Asset'>Asset</label>
+							<label class="radio-inline"><input type="radio" name="Class" id="c" value='Consignment'>Consignment</label>
+
 						</div>
 				</div>
 <!-- 
@@ -557,7 +566,7 @@
 			</form>
 		</div>
 
-	<!---*********************************** ADD NEW PRODUCT ************************************************** -->
+	<!---*********************************** ADD NEW CHARGE PRICE ************************************************** -->
 		<div id="addNewChgprice" title="Add New Charge Prize" >
 			<form id='formdata2' class='form-vertical' style='width:99%'>
 				<div id="jqGrid2_c" class='col-md-12'>

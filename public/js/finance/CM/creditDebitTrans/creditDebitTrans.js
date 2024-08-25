@@ -209,6 +209,7 @@ $(document).ready(function () {
 			
 			urlParam2.filterVal[1]=selrowData("#jqGrid").auditno;
 			refreshGrid("#jqGrid3",urlParam2);
+			$("#pdfgen1").attr('href','./creditDebitTrans/showpdf?auditno='+selrowData("#jqGrid").auditno);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").recstatus;
@@ -708,6 +709,9 @@ $(document).ready(function () {
         	$("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
         	errorField.length=0;
 			$("#jqGrid2 input[name='deptcode']").focus().select();
+			$("#jqGrid2 input[name='GSTCode']").val('EP');
+			dialog_GSTCode.check(errorField);
+
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
 			dialog_deptcode.on();//start binding event on jqgrid2

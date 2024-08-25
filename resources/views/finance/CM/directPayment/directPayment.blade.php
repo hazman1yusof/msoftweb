@@ -216,7 +216,7 @@ i.fa {
 									<label class="col-md-2 control-label" for="TaxClaimable">GST</label>  
 									  <div class="col-md-3">
 										<label class="radio-inline"><input type="radio" data-validation="required" name="TaxClaimable" value='Claimable'>Claimable</label><br>
-										<label class="radio-inline"><input type="radio" data-validation="required" name="TaxClaimable" value='Non-Claimable'>Non-Claimable</label>
+										<label class="radio-inline"><input type="radio" data-validation="required" name="TaxClaimable" value='Non-Claimable' checked>Non-Claimable</label>
 									  </div>
 							    </div>
 

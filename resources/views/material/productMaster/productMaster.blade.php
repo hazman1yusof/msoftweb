@@ -17,6 +17,7 @@
 					      <option value="Asset">Asset</option>
 					      <option value="Stock" selected>Stock</option>
 					      <option value="Others">Others</option>
+						  <option value="Consignment">Consignment</option>
 					    </select>
 		        </div>
 					  <div class="col-md-6">
@@ -26,6 +27,7 @@
 					  	<label class="radio-inline"><input type="radio" id="postClassNon-Pharmacy" name="postClass" value='Non-Pharmacy' data-validation="required">Non-Pharmacy</label>
 					  	<label class="radio-inline"><input type="radio" id="postClassOther" name="postClass" value='Others' data-validation="required">Others</label>
 					  	<label class="radio-inline"><input type="radio" id="postClassAsset" name="postClass" value='Asset' data-validation="required">Asset</label>
+						<label class="radio-inline"><input type="radio" id="postClassConsign" name="postClass" value='Consignment' data-validation="required">Consignment</label>
 		        </div>
 		      </div>
 				</div>
@@ -88,6 +90,14 @@
 				  		<div class="col-md-3" id="productcat_nonph_div" style="display:none">
 					  		<div class='input-group'>
 								<input id="productcat_nonph" name="productcat_nonph" type="text" class="form-control input-sm text-uppercase">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					  		</div>
+					  		<span class="help-block"></span>
+				  		</div>
+
+						<div class="col-md-3" id="productcat_consign_div" style="display:none">
+					  		<div class='input-group'>
+								<input id="productcat_consign" name="productcat_consign" type="text" class="form-control input-sm text-uppercase">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  		</div>
 					  		<span class="help-block"></span>

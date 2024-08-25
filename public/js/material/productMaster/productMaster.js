@@ -219,6 +219,10 @@
 				$(":input[id='postClassNon-Pharmacy']").hide();
 				$(":radio[id='postClassNon-Pharmacy']").parent('label').hide();
 			}
+			function hideConsignClass(){
+				$(":input[id='postClassConsign']").hide();
+				$(":radio[id='postClassConsign']").parent('label').hide();
+			}
 
 
 			////////////////////////function show radio button ////////////////////////////////////////////////
@@ -244,6 +248,11 @@
 				$(":radio[id='postClassNon-Pharmacy']").parent('label').show();
 			}
 
+			function showConsignClass(){
+				$(":input[id='postClassConsign']").show();
+				$(":radio[id='postClassConsign']").parent('label').show();
+			}
+
 			///////////////////////// on change //////////////////////////////////////////////////////////////
 
 			$('#postGroupcode').on('change', function() {
@@ -255,6 +264,7 @@
 					hideOtherClass();
 					hideStockClass();
 					showAssetClass();
+					hideConsignClass();
 					$("#postClassAsset").prop("checked", true);
 
 					urlParam.filterCol = ['groupcode','Class','compcode'];
@@ -265,6 +275,7 @@
 					hideAssetClass();
 					hideStockClass();
 					showOtherClass();
+					hideConsignClass();
 					$("#postClassOther").prop("checked", true);
 
 					urlParam.filterCol = ['groupcode','Class','compcode'];
@@ -276,17 +287,20 @@
 					hideAssetClass();
 					hideOtherClass();
 					showStockClass();
+					hideConsignClass();
 					urlParam.filterCol = ['groupcode','compcode'];
 					urlParam.filterVal = [postGroupcode,'session.compcode'];
 					refreshGrid('#jqGrid',urlParam);
 				}else if(postGroupcode == "Consignment"){
 					showPostClass();
-					$(":radio[name='postClass']").prop("checked", false);
 					hideAssetClass();
 					hideOtherClass();
-					showStockClass();
-					urlParam.filterCol = ['groupcode','compcode'];
-					urlParam.filterVal = [postGroupcode,'session.compcode'];
+					hideStockClass();
+					showConsignClass();
+					$("#postClassConsign").prop("checked", true);
+
+					urlParam.filterCol = ['groupcode','Class','compcode'];
+					urlParam.filterVal = [postGroupcode, $("input[name=postClass]:checked").val(),'session.compcode'];
 					refreshGrid('#jqGrid',urlParam);
 				}
 			})
@@ -520,6 +534,39 @@
 				},'urlParam', 'radio', 'tab'
 			);
 			dialog_category_nonph.makedialog();
+			
+			var dialog_category_consign = new ordialog(
+				'productcat_consign','material.category','#productcat_consign',errorField,
+				{	colModel:[
+						{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+					],
+					urlParam: {
+						filterCol:['recstatus','cattype', 'source', 'Class'],
+						filterVal:['ACTIVE','Stock', 'PO', 'Consignment'],
+					},
+					ondblClickRow: function () {
+						$('#recstatus').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#recstatus').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
+				},{
+					title:"Select Category",
+					open: function(){
+						// dialog_category_other.urlParam.table_name="material.category";
+						// dialog_category_other.urlParam.field=['catcode', 'description'];
+					}
+				},'urlParam', 'radio', 'tab'
+			);
+			dialog_category_consign.makedialog();
 
 			function showing_which_ordialog(check){
 				var pg = $("#postGroupcode option:selected" ).val();
@@ -528,11 +575,12 @@
 				dialog_category_nonph.off();
 				dialog_category_other.off();
 				dialog_category_asset.off();
+				dialog_category_consign.off();
 
-				$("#productcat_asset_div,#productcat_other_div,#productcat_ph_div,#productcat_nonph_div").hide();	
+				$("#productcat_asset_div,#productcat_other_div,#productcat_ph_div,#productcat_nonph_div,#productcat_consign_div").hide();	
 
 				if (pg == 'Please Select First') {
-					$("#productcat_asset_div,#productcat_other_div,#productcat_ph_div,#productcat_nonph_div").hide();	
+					$("#productcat_asset_div,#productcat_other_div,#productcat_ph_div,#productcat_nonph_div,#productcat_consign_div").hide();	
 				}else if (pg == "Stock") {
 					if(pc == "Pharmacy") {
 						$("#productcat_ph_div").show();	
@@ -562,6 +610,13 @@
 						if(check == 'check'){
 							$(dialog_category_asset.textfield).val(selrowData('#jqGrid').productcat);
 							dialog_category_asset.check(errorField)
+						}
+				}else if (pg == "Consignment") {
+					$("#productcat_consign_div").show();
+					dialog_category_consign.on();
+						if(check == 'check'){
+							$(dialog_category_consign.textfield).val(selrowData('#jqGrid').productcat);
+							dialog_category_consign.check(errorField)
 						}
 				}
 

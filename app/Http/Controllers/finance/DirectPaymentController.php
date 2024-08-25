@@ -186,6 +186,10 @@ class DirectPaymentController extends defaultController
                         'recstatus' => 'OPEN'
                     ]);
 
+                    if($request->paymode == 'TT'){
+                        $last_tt = $this->defaultSysparam('CM','TT');
+                        $array_insert['cheqno'] = $last_tt;
+                    }
 
             $responce = new stdClass();
             $responce->auditno = $auditno;

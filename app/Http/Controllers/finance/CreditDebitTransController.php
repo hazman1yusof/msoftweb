@@ -9,6 +9,7 @@ use DB;
 use Auth;
 use Carbon\Carbon;
 use DateTime;
+use PDF;
 
 class CreditDebitTransController extends defaultController
 {   
@@ -586,5 +587,78 @@ class CreditDebitTransController extends defaultController
 
             return response($e->getMessage().$e, 500);
         }
+    }
+
+    public function showpdf(Request $request){
+        $auditno = $request->auditno;
+        if(!$auditno){
+            abort(404);
+        }
+
+        $apacthdr = DB::table('finance.apacthdr as h')
+            ->select('h.compcode', 'h.auditno', 'h.trantype', 'h.source','h.pvno', 'h.bankcode AS h_bankcode', 'b.bankname as h_bankname','b.address1 as address1', 'b.address2 as address2', 'b.address3 as address3', 'b.postcode', 'b.statecode','b.telno','h.actdate','h.amount', 'h.recstatus', 'h.remarks', 'h.paymode', 'h.bankcode', 'h.refsource','bd.bankname as b_bankname', 'bd.bankaccount as bankaccno')
+            ->leftJoin('finance.bank as b', function($join) use ($request){
+                $join = $join->on('b.bankcode', '=', 'h.bankcode');
+                $join = $join->where('b.compcode', '=', session('compcode'));
+            })
+            ->leftJoin('finance.bank as bd', function($join) use ($request){
+                $join = $join->on('bd.bankcode', '=', 'h.bankcode');
+                $join = $join->where('bd.compcode', '=', session('compcode'));
+            })
+            ->where('h.compcode', '=', session('compcode'))
+            ->where('h.source','=','CM')
+            ->whereIn('h.trantype',['CA','DA'])
+            ->where('h.auditno','=',$auditno)
+            ->first();
+
+        if ($apacthdr->trantype == "CA"){
+            $title = " CREDIT TRANSACTION";
+        }else{
+            $title = " DEBIT TRANSACTION";
+        }
+
+        $apactdtl = DB::table('finance.apactdtl as d')
+                    ->select('d.idno','d.compcode','d.source','d.trantype','d.auditno','d.deptcode','d.category','c.description as cat_desc','d.document','d.GSTCode','d.AmtB4GST','d.taxamt as tot_gst','d.amount')
+                    ->leftJoin('finance.apacthdr as h', function($join) use ($request){
+                        $join = $join->on('h.auditno', '=', 'd.auditno');
+                        $join = $join->on('h.source', '=', 'd.source');
+                        $join = $join->on('h.trantype', '=', 'd.trantype');
+                        $join = $join->where('h.compcode', '=', session('compcode'));
+                    })
+                    ->leftJoin('material.category as c', function($join) use ($request){
+                        $join = $join->on('c.catcode', '=', 'd.category');
+                        $join = $join->where('h.compcode', '=', session('compcode'));
+                    })
+                    ->where('d.compcode','=', session('compcode'))
+                    ->where('d.recstatus','!=','CANCELLED')
+                    ->where('d.source','=','CM')
+                    ->whereIn('d.trantype',['CA','DA'])
+                    ->where('d.auditno','=',$auditno)
+                    ->get();
+
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+                    
+        $totamount_expld = explode(".", (float)$apacthdr->amount);
+        
+        // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
+        // $totamt_bm = $totamt_bm_rm." SAHAJA";
+
+        // if(count($totamount_expld) > 1){
+        //     $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
+        //     $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        // }
+
+        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
+        $totamt_eng = $totamt_eng_rm." ONLY";
+
+        if(count($totamount_expld) > 1){
+            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
+        }
+
+        return view('finance.CM.creditDebitTrans.creditDebitTrans_pdfmake',compact('apacthdr','apactdtl','totamt_eng','company', 'title'));
+
     }
 }

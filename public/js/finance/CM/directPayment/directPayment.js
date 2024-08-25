@@ -1423,7 +1423,7 @@ $(document).ready(function () {
 	var dialog_deptcode = new ordialog(
 		'deptcode','sysdb.department',"#jqGrid2 input[name='deptcode']",errorField,
 		{	colModel:[
-				{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Department Code',name:'deptcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
 				
 			],
@@ -1477,7 +1477,7 @@ $(document).ready(function () {
 	var dialog_category = new ordialog(
 		'category','material.category',"#jqGrid2 input[name='category']",errorField,
 		{	colModel:[
-				{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
 				
 			],
@@ -1625,6 +1625,7 @@ $(document).ready(function () {
 			$('#chg_label').text('BD No');
 		}else if (paymode == "TT"){
 			$('#chg_div').show();
+			$('#cheqno').attr('disabled',true);
 			$('#chg_label').text('TT No');
 		}
 	}

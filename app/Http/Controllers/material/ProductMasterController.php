@@ -57,6 +57,8 @@ class ProductMasterController extends defaultController
                 $productcat = $request->productcat_nonph;
             }else if(strtoupper($request->Class) == 'PHARMACY'){
                 $productcat = $request->productcat_ph;
+            }else if(strtoupper($request->Class) == 'CONSIGNMENT'){
+                $productcat = $request->productcat_consign;
             }
 
             DB::beginTransaction();
@@ -82,6 +84,8 @@ class ProductMasterController extends defaultController
                 $this->save_prod_asset($request,$productcat);
             }else if(strtoupper($request->Class) == 'OTHERS'){
                 $this->save_prod_others($request,$productcat);
+            }else if(strtoupper($request->Class) == 'CONSIGNMENT'){
+                $this->save_prod_consign($request,$productcat);
             }else{
                 $this->save_prod_stock($request,$productcat);
             }
@@ -112,6 +116,8 @@ class ProductMasterController extends defaultController
                 $productcat = $request->productcat_nonph;
             }else if(strtoupper($request->Class) == 'PHARMACY'){
                 $productcat = $request->productcat_ph;
+            }else if(strtoupper($request->Class) == 'CONSIGNMENT'){
+                $productcat = $request->productcat_consign;
             }
 
             DB::beginTransaction();
@@ -194,6 +200,25 @@ class ProductMasterController extends defaultController
     }
 
     public function save_prod_stock(Request $request,$productcat){
+        $table = 
+            DB::table('material.product')
+                ->insert([
+                    'itemcode' => strtoupper($request->itemcode),
+                    'description' => strtoupper($request->description),
+                    'groupcode' => strtoupper($request->groupcode),
+                    'uomcode' => 'EA',
+                    'productcat' => $productcat,
+                    'Class' => $request->Class,
+                    'unit' => session('unit'),
+                    'compcode' => session('compcode'),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'ACTIVE',
+                    'computerid' => session('computerid'),
+                ]);
+    }
+
+    public function save_prod_consign(Request $request,$productcat){
         $table = 
             DB::table('material.product')
                 ->insert([

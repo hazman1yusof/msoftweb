@@ -4,6 +4,7 @@ var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
+
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
@@ -22,6 +23,8 @@ $(document).ready(function () {
 			}
 		},
 	};
+	/////////////////////////////////////////////////////////Get Class /////////////////////////////
+	var Class = $('#class').val();
 	//////////////////////////////////////////////////////////////
 
 	var fdl = new faster_detail_load();
@@ -59,6 +62,7 @@ $(document).ready(function () {
 					enableForm('#formdata');
 					hideOne('#formdata');
 					rdonly("#dialogForm");
+					init_jq2();
 					break;
 				case state = 'edit':
 					$( this ).dialog( "option", "title", "Edit" );
@@ -66,12 +70,14 @@ $(document).ready(function () {
 					frozeOnEdit("#dialogForm");
 					$('#formdata :input[hideOne]').show();
 					rdonly("#dialogForm");
+					init_jq2();
 					break;
 				case state = 'view':
 					$( this ).dialog( "option", "title", "View" );
 					disableForm('#formdata');
 					$('#formdata :input[hideOne]').show();
 					$(this).dialog("option", "buttons",butt2);
+					init_jq2();
 					break;
 			}
 			if(oper!='view'){
@@ -81,6 +87,7 @@ $(document).ready(function () {
 				dialog_woffacct.on();
 				dialog_expacct.on();
 				dialog_loanacct.on();
+				dialog_ConsignAcct.on();
 			}
 			if(oper!='add'){
 				dialog_stockacct.check();
@@ -89,7 +96,9 @@ $(document).ready(function () {
 				dialog_woffacct.check();
 				dialog_expacct.check();
 				dialog_loanacct.check();
-			}
+				dialog_ConsignAcct.check();
+			}	
+
 		},
 		close: function( event, ui ) {
 			emptyFormdata(errorField,'#formdata');
@@ -102,6 +111,7 @@ $(document).ready(function () {
 			dialog_woffacct.off();
 			dialog_expacct.off();
 			dialog_loanacct.off();
+			dialog_ConsignAcct.off();
 			if(oper=='view'){
 				$(this).dialog("option", "buttons",butt1);
 			}
@@ -153,7 +163,8 @@ $(document).ready(function () {
 			{label: 'Adjustment <br> Account', name: 'adjacct', width: 70, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},					
 			{label: 'Write Off <br> Account', name: 'woffacct', width: 70, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},					
 			{label: 'Expenses <br> Account', name: 'expacct', width: 70, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},					
-			{label: 'Loan <br> Account', name: 'loanacct', width: 70, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},					
+			{label: 'Loan <br> Account', name: 'loanacct', width: 70, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},	
+			{label: 'Consignment <br> Account', name: 'ConsignAcct', width: 70, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},									
 			{label: 'PO Validate', name: 'povalidate', width: 30, classes: 'wrap', formatter:formatter, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },					
 			{label: 'accrualacc', name: 'accrualacc', width: 90, hidden: true},					
 			{label: 'stktakeadjacct', name: 'stktakeadjacct', width: 90, hidden: true},					
@@ -192,6 +203,14 @@ $(document).ready(function () {
 			$("#searchForm input[name=Stext]").focus();
 			fdl.set_array().reset();
 		},
+		loadComplete: function(){
+			if($('#class').val() !== 'Consignment'){
+				$("#jqGrid").jqGrid('hideCol', 'ConsignAcct');
+				$("#jqGrid").jqGrid('setGridWidth', 1290);
+			}else{
+				$("#jqGrid").jqGrid('showCol', 'ConsignAcct');
+			}
+		},
 		
 	});
 
@@ -203,7 +222,6 @@ $(document).ready(function () {
 			return '';
 		}
 	}
-
 
 	function unformatstatus_tick2(cellvalue, option, rowObject) {
 		if ($(rowObject).children('span').attr('class') == 'fa fa-check') {
@@ -238,6 +256,7 @@ $(document).ready(function () {
 			case 'woffacct':field=['glaccno','description'];table="finance.glmasref";case_='woffacct';break;
 			case 'expacct':field=['glaccno','description'];table="finance.glmasref";case_='expacct';break;
 			case 'loanacct':field=['glaccno','description'];table="finance.glmasref";case_='loanacct';break;
+			case 'ConsignAcct':field=['glaccno','description'];table="finance.glmasref";case_='ConsignAcct';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
@@ -488,6 +507,39 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
+				$('#ConsignAcct').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#ConsignAcct').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}	
+		},{
+			title:"Select Loan Account",
+			open: function(){
+				dialog_loanacct.urlParam.filterCol=['recstatus', 'compcode'],
+				dialog_loanacct.urlParam.filterVal=['ACTIVE','session.compcode']
+			}
+		},'urlParam', 'radio', 'tab'
+	);
+	dialog_loanacct.makedialog();
+
+	var dialog_ConsignAcct = new ordialog(
+		'ConsignAcct','finance.glmasref','#ConsignAcct',errorField,
+		{	colModel:[
+				{label:'Gl Acc No',name:'glaccno',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
 				$('#povalidate').focus();
 			},
 			gridComplete: function(obj){
@@ -503,10 +555,46 @@ $(document).ready(function () {
 		},{
 			title:"Select Loan Account",
 			open: function(){
-				dialog_loanacct.urlParam.filterCol=['recstatus', 'compcode'],
-				dialog_loanacct.urlParam.filterVal=['ACTIVE','session.compcode']
+				dialog_ConsignAcct.urlParam.filterCol=['recstatus', 'compcode'],
+				dialog_ConsignAcct.urlParam.filterVal=['ACTIVE','session.compcode']
 			}
 		},'urlParam', 'radio', 'tab'
 	);
-	dialog_loanacct.makedialog();
+	dialog_ConsignAcct.makedialog();
+
+	/////////////////////////////////Show/Hide Consign///////////////////////////////
+	function init_jq2(){
+		if(oper == 'add'){
+			if($('#class').val() !== 'Consignment'){
+				dialog_ConsignAcct.off();
+				$('#ConsignForm').hide();
+
+			}else if($('#class').val() == 'Consignment'){
+				dialog_ConsignAcct.on();
+				$('#ConsignForm').show();
+			}
+		}
+
+		if(oper == 'edit'){
+			if($('#class').val() !== 'Consignment'){
+				dialog_ConsignAcct.off();
+				$('#ConsignForm').hide();
+
+			}else if($('#class').val() == 'Consignment'){
+				dialog_ConsignAcct.on();
+				$('#ConsignForm').show();
+			}
+		}
+
+		if(oper == 'view'){
+			if($('#class').val() !== 'Consignment'){
+				dialog_ConsignAcct.off();
+				$('#ConsignForm').hide();
+
+			}else if($('#class').val() == 'Consignment'){
+				dialog_ConsignAcct.on();
+				$('#ConsignForm').show();
+			}
+		}
+	}
 });

@@ -651,6 +651,37 @@ $(document).ready(function () {
 					},'urlParam'
 				);
 				dialog_cat_selection.makedialog(false);
+
+			}else if($('#groupcode2').val()=="Consignment"){
+				dialog_cat_selection = new ordialog(
+					'dialog_cat_selection','material.category','#dialog_cat_selection',errorField,
+					{	colModel:[
+							{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+							{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+						],
+						urlParam: {
+							filterCol:['cattype', 'source', 'recstatus'],
+							filterVal:['Consignment', 'PO', 'ACTIVE']
+						},
+						ondblClickRow:function(){
+							let data = selrowData('#' + dialog_cat_selection.gridname);
+							$("#Dtext_itemcodesearch").val(data.catcode);
+
+							dialog_itemcode.urlParam.searchCol=["productcat"];
+							dialog_itemcode.urlParam.searchVal=[data.catcode];
+
+							refreshGrid("#"+dialog_itemcode.gridname,dialog_itemcode.urlParam);
+						}	
+					},{
+						title:"Select Product Category",
+						open: function(){
+							dialog_cat_selection.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
+							dialog_cat_selection.urlParam.filterVal=['Consignment', 'PO', 'ACTIVE',$('#Class2').val()];
+						}
+					},'urlParam'
+				);
+				dialog_cat_selection.makedialog(false);
+
 			}
 
 			$("#Dparentdiv_itemcodesearch").after(`
@@ -857,7 +888,7 @@ $(document).ready(function () {
 			{ label: 'Qty On Hand', name: 'qtyonhand', width: 40, classes: 'wrap',hidden:false,align: 'right'},
 			{ label: 'Average Cost', name: 'avgcost', width: 40, formatter: 'currency',align: 'right'},
 			{ label: 'Current Cost', name: 'currprice', width: 40, formatter: 'currency',align: 'right'},
-			{ label: 'Group Code', name: 'groupcode', width: 30, sorttype: 'text', classes: 'wrap'  },
+			{ label: 'Group Code', name: 'groupcode', width: 40, sorttype: 'text', classes: 'wrap'  },
 			{ label: 'Class', name: 'Class', width: 40, sorttype: 'text', classes: 'wrap', hidden:true   },
 			{ label: 'Product Category', name: 'productcat', width: 40, sorttype: 'text', classes: 'wrap' ,canSearch: true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Charge', name: 'chgflag', width: 25, formatter:formatter, unformat:unformat, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'  },
@@ -1299,6 +1330,7 @@ $(document).ready(function () {
 				case 'Asset': $("#div_product_infront_asset").show(); break;
 				case 'Stock': $("#div_product_infront_stock").show(); break;
 				case 'Others': $("#div_product_infront_others").show(); break;
+				case 'Consignment': $("#div_product_infront_others").show(); break;
 			}
 		} else {
 			$("#div_product_infront_asset,#div_product_infront_stock,#div_product_infront_others").hide();
@@ -1469,6 +1501,33 @@ $(document).ready(function () {
 					dialog_cat.makedialog();
 					dialog_cat.on();
 				}
+			} else if($('#groupcode2').val()=="Consignment" && $('#othergrid_productcatAddNew4').length == 0){
+				if(dialog_cat == null){
+					let dialog_cat = new ordialog(
+						'productcatAddNew4','material.category','#productcatAddNew_consign',errorField,
+						{	colModel:[
+								{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+								{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+							],
+							urlParam: {
+								filterCol:['cattype', 'source', 'recstatus'],
+								filterVal:['Stock', 'PO', 'ACTIVE']
+							},
+							ondblClickRow:function(){
+							}	
+						},{
+							title:"Select Product Category",
+							open: function(){
+								// var gc2 = $('#groupcode2').val();
+								dialog_cat.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
+								dialog_cat.urlParam.filterVal=['Stock', 'PO', 'ACTIVE',$('#Class2').val()];
+							}
+						},'urlParam'
+					);
+					dialog_cat.makedialog();
+					dialog_cat.on();
+				}
+
 			}
 		},
 		close: function( event, ui ) {

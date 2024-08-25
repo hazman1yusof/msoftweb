@@ -97,7 +97,7 @@ $(document).ready(function () {
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var butt1=[{
 		text: "Save",click: function() {
-			if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+			if($('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 				saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
 			}
 		}
@@ -127,6 +127,7 @@ $(document).ready(function () {
 					enableForm('#formdata');
 					rdonly("#formdata");
 					hideOne("#formdata");
+					// pettycash();
 					break;
 				case state = 'edit':
 					$( this ).dialog( "option", "title", "Edit" );
@@ -134,6 +135,7 @@ $(document).ready(function () {
 					frozeOnEdit("#dialogForm");
 					rdonly("#formdata");
 					$('#formdata :input[hideOne]').show();
+					// pettycash();
 					break;
 				case state = 'view':
 					$( this ).dialog( "option", "title", "View" );
@@ -341,7 +343,23 @@ $(document).ready(function () {
 	});
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
+	//////////////////////////////////////remove validation if petty cash is YES//////////////////////////
+
+	$('input[name="pctype"]').on("click", function() {
+		var pc = $('input[name = "pctype"]:checked').val();
+		pettycash();
+		});
+
+	function pettycash(){
 	
+		if ($('input[name = "pctype"]:checked').val() == '1'){
+			$('input[name="address1"]').removeAttr('required');
+			$('input[name="bankaccount"]').removeAttr('required');
+		} else {
+			$('input[name=address1]').attr("required","");
+			$('input[name=bankaccount]').attr("required","");
+		}
+	}
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 	
 	populateSelect('#jqGrid','#searchForm');

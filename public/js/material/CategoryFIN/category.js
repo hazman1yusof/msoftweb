@@ -46,23 +46,23 @@ $(document).ready(function () {
 		editurl: "./categoryfin/form",
 		 colModel: [
 			{label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
-			{label: 'Category Code', name: 'catcode', width: 30, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-			{label: 'Description', name: 'description', width: 100, classes: 'wrap',checked:true, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},					
+			{label: 'Expenses Account', name: 'expacct', width: 60, hidden: false, classes: 'wrap', editable:true,
+				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+					edittype:'custom',	editoptions:
+						{  custom_element:expacctCustomEdit,
+						   custom_value:galGridCustomValue 	
+						},
+			},		
+			{label: 'Category Code', name: 'catcode', width: 50, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
+			{label: 'Description', name: 'description', width: 170, classes: 'wrap',checked:true, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},					
 			{label: 'Category Type', name: 'cattype', width: 90 , hidden: true},					
 			{label: 'Source', name: 'source', width: 90 , hidden: true},					
 			{label: 'Stock Account', name: 'stockacct', width: 90 ,  hidden: true},					
 			{label: 'COS Account', name: 'cosacct', width: 90, hidden: true,},					
 			{label: 'Adjustment Account', name: 'adjacct', width: 90, hidden: true},					
 			{label: 'Write Off Account', name: 'woffacct', width: 90, hidden: true},					
-			{label: 'Expenses Account', name: 'expacct', width: 60, hidden: false, classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-						edittype:'custom',	editoptions:
-						    {  custom_element:expacctCustomEdit,
-						       custom_value:galGridCustomValue 	
-						    },
-			},					
 			{label: 'Loan Account', name: 'loanacct', width: 90, hidden: true},					
-			{label: 'PO Validate', name: 'povalidate', width: 30, hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"1:YES;0:NO"},formatter:formatter, unformat:unformat, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },					
+			{label: 'PO Validate', name: 'povalidate', width: 35, hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"1:YES;0:NO"},formatter:formatter, unformat:unformat, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },					
 			{label: 'accrualacc', name: 'accrualacc', width: 90, hidden: true},					
 			{label: 'stktakeadjacct', name: 'stktakeadjacct', width: 90, hidden: true},					
 			{ label: 'Add User', name: 'adduser', width: 40, hidden:false},
@@ -408,6 +408,9 @@ $(document).ready(function () {
 					$("#adjacct").val(data['glaccno']);
 					$("#woffacct").val(data['glaccno']);
 					$("#loanacct").val(data['glaccno']);
+					$("#jqGrid input[name='catcode']").val(data['glaccno']);
+					$("#jqGrid input[name='description']").val(data['description']);
+
 					//$('#povalidate').focus();
 				},
 				gridComplete: function(obj){
