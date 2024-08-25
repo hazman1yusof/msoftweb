@@ -10,54 +10,54 @@ use DateTime;
 use Carbon\Carbon;
 use PDF;
 
-class SalesOrderController extends defaultController
-{   
+class PointOfSalesController extends defaultController
+{
     var $gltranAmount;
-
+    
     public function __construct(){
         $this->middleware('auth');
     }
-
+    
     public function show(Request $request){   
-        return view('finance.SalesOrder.SalesOrder');
+        return view('finance.PointOfSales.PointOfSales');
     }
-
+    
     public function show_mobile(Request $request){
-        $oper = strtolower($request->scope);//delivered shj sekarang
-        $scope = ucfirst(strtolower($request->scope));//Delivered
+        $oper = strtolower($request->scope); // delivered shj sekarang
+        $scope = ucfirst(strtolower($request->scope)); // Delivered
         $auditno = $request->auditno;
-
+        
         $db_hd = DB::table('debtor.dbacthdr AS db')
-                        ->select('db.debtorcode','db.payercode','dm.name AS payercode_desc','db.entrydate','db.auditno','db.invno','db.ponum','db.amount','db.remark','db.lineno_','db.orderno','db.outamount','db.debtortype','db.billdebtor','db.approvedby','db.mrn','db.unit','db.source','db.trantype','db.termdays','db.termmode','db.hdrtype','db.podate','db.posteddate','db.deptcode','dept.description as deptcode_desc','db.recstatus','db.idno','db.adduser','db.adddate','db.upduser','db.quoteno','db.preparedby','db.prepareddate','db.cancelby','db.canceldate','db.cancelled_remark','db.approved_remark','db.upddate')
-                        ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
-                            $join = $join->where('dm.compcode', '=', session('compcode'));
-                            $join = $join->on('dm.debtorcode', '=', 'db.debtorcode');
-                        })->leftjoin('sysdb.department as dept', function($join) use ($request){
-                            $join = $join
-                                ->where('dept.compcode',session('compcode'))
-                                ->on('dept.deptcode','db.deptcode');
-                        })
-                        ->where('db.compcode',session('compcode'))
-                        ->where('db.source','PB')
-                        ->where('db.trantype','IN')
-                        ->where('db.auditno',$auditno)
-                        ->first();
+                ->select('db.debtorcode','db.payercode','dm.name AS payercode_desc','db.entrydate','db.auditno','db.invno','db.ponum','db.amount','db.remark','db.lineno_','db.orderno','db.outamount','db.debtortype','db.billdebtor','db.approvedby','db.mrn','db.unit','db.source','db.trantype','db.termdays','db.termmode','db.hdrtype','db.podate','db.posteddate','db.deptcode','dept.description as deptcode_desc','db.recstatus','db.idno','db.adduser','db.adddate','db.upduser','db.quoteno','db.preparedby','db.prepareddate','db.cancelby','db.canceldate','db.cancelled_remark','db.approved_remark','db.upddate')
+                ->leftJoin('debtor.debtormast as dm', function ($join) use ($request){
+                    $join = $join->where('dm.compcode', '=', session('compcode'));
+                    $join = $join->on('dm.debtorcode', '=', 'db.debtorcode');
+                })->leftjoin('sysdb.department as dept', function ($join) use ($request){
+                    $join = $join
+                        ->where('dept.compcode',session('compcode'))
+                        ->on('dept.deptcode','db.deptcode');
+                })
+                ->where('db.compcode',session('compcode'))
+                ->where('db.source','PB')
+                ->where('db.trantype','IN')
+                ->where('db.auditno',$auditno)
+                ->first();
 
         $db_dt = DB::table('debtor.billsum AS bs')
                 ->select('bs.rowno','bs.chggroup','cm.description as chggroup_desc','bs.quantity','bs.qtyorder','bs.unitprice','bs.uom','uom.description as uom_desc','bs.uom_recv','uom.description as uom_recv_desc','bs.totamount')
-                ->leftjoin('hisdb.chgmast as cm', function($join) use ($request){
+                ->leftjoin('hisdb.chgmast as cm', function ($join) use ($request){
                     $join = $join
                         ->where('cm.compcode',session('compcode'))
                         ->where('cm.unit',session('unit'))
                         ->on('cm.uom','bs.uom')
                         ->on('cm.chgcode','bs.chggroup');
                 })
-                ->leftjoin('material.uom as uom', function($join) use ($request){
+                ->leftjoin('material.uom as uom', function ($join) use ($request){
                     $join = $join
                         ->where('uom.compcode',session('compcode'))
                         ->on('uom.uomcode','bs.uom');
                 })
-                ->leftjoin('material.uom as uom_recv', function($join) use ($request){
+                ->leftjoin('material.uom as uom_recv', function ($join) use ($request){
                     $join = $join
                         ->where('uom_recv.compcode',session('compcode'))
                         ->on('uom_recv.uomcode','bs.uom_recv');
@@ -68,12 +68,12 @@ class SalesOrderController extends defaultController
                 ->where('bs.billno','=',$auditno)
                 ->where('bs.recstatus','!=','DELETE')
                 ->get();
-
+        
         // dd($db_dt->get());
-
+        
         return view('finance.SalesOrder.SalesOrder_mobile',compact('db_hd','db_dt','scope','oper'));
     }
-
+    
     public function table(Request $request){   
         DB::enableQueryLog();
         switch($request->action){
@@ -93,10 +93,10 @@ class SalesOrderController extends defaultController
                 return 'error happen..';
         }
     }
-
+    
     public function form(Request $request){   
         DB::enableQueryLog();
-        switch($request->oper){ //SalesOrder_header_save 
+        switch($request->oper){ // PointOfSales_header_save 
             case 'add':
                 return $this->add($request);
             case 'edit':
@@ -125,57 +125,57 @@ class SalesOrderController extends defaultController
                 return 'Errors happen';
         }
     }
-
+    
     public function maintable(Request $request){
         
         $table = DB::table('debtor.dbacthdr AS db')
-                    ->select(
-                        'db.debtorcode AS db_debtorcode',
-                        'db.payercode AS db_payercode',
-                        'dm.name AS dm_name', 
-                        'db.entrydate AS db_entrydate',
-                        'db.auditno AS db_auditno',
-                        'db.invno AS db_invno',
-                        'db.ponum AS db_ponum',
-                        'db.amount AS db_amount',
-                        'db.remark AS db_remark',
-                        'db.lineno_ AS db_lineno_',
-                        'db.orderno AS db_orderno',
-                        'db.outamount AS db_outamount',
-                        'db.debtortype AS db_debtortype',
-                        'db.billdebtor AS db_billdebtor',
-                        'db.approvedby AS db_approvedby',
-                        'db.mrn AS db_mrn',
-                        'db.unit AS db_unit',
-                        'db.source AS db_source',
-                        'db.trantype AS db_trantype',
-                        'db.termdays AS db_termdays',
-                        'db.termmode AS db_termmode',
-                        'db.hdrtype AS db_hdrtype',
-                        'db.podate AS db_podate',
-                        'db.posteddate AS db_posteddate',
-                        'db.deptcode AS db_deptcode',
-                        'db.recstatus AS db_recstatus',
-                        'db.idno AS db_idno',
-                        'db.adduser AS db_adduser',
-                        'db.adddate AS db_adddate',
-                        'db.upduser AS db_upduser',
-                        'db.quoteno AS db_quoteno',
-                        'db.preparedby AS db_preparedby',
-                        'db.prepareddate AS db_prepareddate',
-                        'db.cancelby AS db_cancelby',
-                        'db.canceldate AS db_canceldate',
-                        'db.cancelled_remark AS db_cancelled_remark',
-                        'db.approved_remark AS db_approved_remark',
-                        'db.upddate AS db_upddate',
-                        'db.pointofsales AS db_pointofsales'
-                    )
-                    ->where('db.compcode',session('compcode'))
-                    ->where('db.source','PB')
-                    ->where('db.trantype','IN')
-                    ->where('db.pointofsales','0');
+                ->select(
+                    'db.debtorcode AS db_debtorcode',
+                    'db.payercode AS db_payercode',
+                    'dm.name AS dm_name', 
+                    'db.entrydate AS db_entrydate',
+                    'db.auditno AS db_auditno',
+                    'db.invno AS db_invno',
+                    // 'db.ponum AS db_ponum',
+                    'db.amount AS db_amount',
+                    // 'db.remark AS db_remark',
+                    'db.lineno_ AS db_lineno_',
+                    // 'db.orderno AS db_orderno',
+                    'db.outamount AS db_outamount',
+                    'db.debtortype AS db_debtortype',
+                    'db.billdebtor AS db_billdebtor',
+                    'db.approvedby AS db_approvedby',
+                    'db.mrn AS db_mrn',
+                    'db.unit AS db_unit',
+                    'db.source AS db_source',
+                    'db.trantype AS db_trantype',
+                    'db.termdays AS db_termdays',
+                    'db.termmode AS db_termmode',
+                    'db.hdrtype AS db_hdrtype',
+                    // 'db.podate AS db_podate',
+                    'db.posteddate AS db_posteddate',
+                    'db.deptcode AS db_deptcode',
+                    'db.recstatus AS db_recstatus',
+                    'db.idno AS db_idno',
+                    'db.adduser AS db_adduser',
+                    'db.adddate AS db_adddate',
+                    'db.upduser AS db_upduser',
+                    // 'db.quoteno AS db_quoteno',
+                    'db.preparedby AS db_preparedby',
+                    'db.prepareddate AS db_prepareddate',
+                    'db.cancelby AS db_cancelby',
+                    'db.canceldate AS db_canceldate',
+                    'db.cancelled_remark AS db_cancelled_remark',
+                    'db.approved_remark AS db_approved_remark',
+                    'db.upddate AS db_upddate',
+                    'db.pointofsales AS db_pointofsales'
+                )
+                ->where('db.compcode',session('compcode'))
+                ->where('db.source','PB')
+                ->where('db.trantype','IN')
+                ->where('db.pointofsales','1');
         
-        $table = $table->join('debtor.debtormast as dm', function($join) use ($request){
+        $table = $table->join('debtor.debtormast as dm', function ($join) use ($request){
                 $join = $join->where('dm.compcode', '=', session('compcode'));
                 $join = $join->on('dm.debtorcode', '=', 'db.debtorcode');
         });
@@ -204,10 +204,10 @@ class SalesOrderController extends defaultController
         if(!empty($request->sidx)){
             $pieces = explode(", ", $request->sidx .' '. $request->sord);
             
-            if(count($pieces)==1){
+            if(count($pieces) == 1){
                 $table = $table->orderBy($request->sidx, $request->sord);
             }else{
-                foreach ($pieces as $key => $value) {
+                foreach($pieces as $key => $value){
                     $value_ = substr_replace($value,"db.",0,strpos($value,"_")+1);
                     $pieces_inside = explode(" ", $value_);
                     $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
@@ -246,7 +246,7 @@ class SalesOrderController extends defaultController
         //     // }
         // }
         
-        //////////paginate/////////
+        //////////paginate//////////
         
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
@@ -270,7 +270,7 @@ class SalesOrderController extends defaultController
             
             $auditno = $this->recno('PB','IN');
             $chk_billtype = $this->chk_billtype($request);
-
+            
             if($chk_billtype->error){
                 throw new \Exception($chk_billtype->msg,500);
             }
@@ -291,11 +291,13 @@ class SalesOrderController extends defaultController
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'upduser' => session('username'),
                 'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'preparedby' => session('username'),
+                'prepareddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'recstatus' => 'OPEN',
                 'lineno_' => 1,
                 // 'invno' => $invno,
                 'deptcode' => strtoupper($request->db_deptcode),
-                'quoteno' => strtoupper($request->db_quoteno),
+                // 'quoteno' => strtoupper($request->db_quoteno),
                 'unit' => session('unit'),//department.sector
                 'debtorcode' => strtoupper($request->db_debtorcode),
                 'payercode' => strtoupper($request->db_debtorcode),
@@ -308,21 +310,22 @@ class SalesOrderController extends defaultController
                 'episno' => (!empty($request->db_mrn))?$pat_mast->Episno:null,
                 'termdays' => strtoupper($request->db_termdays),
                 'termmode' => strtoupper($request->db_termmode),
-                'orderno' => strtoupper($request->db_orderno),
-                'ponum' => strtoupper($request->db_ponum),
-                'podate' => (!empty($request->db_podate))?$request->db_podate:null,
-                'remark' => strtoupper($request->db_remark),
+                'pointofsales' => '1',
+                // 'orderno' => strtoupper($request->db_orderno),
+                // 'ponum' => strtoupper($request->db_ponum),
+                // 'podate' => (!empty($request->db_podate))?$request->db_podate:null,
+                // 'remark' => strtoupper($request->db_remark),
                 // 'approvedby' => $request->db_approvedby
             ];
             
             //////////where//////////
             // $table = $table->where('idno','=',$request->idno);
             $idno = $table->insertGetId($array_insert);
-
+            
             $totalAmount = 0;
-            if(!empty($request->db_quoteno)){
-                $totalAmount = $this->save_dt_from_othr_qo($request->db_quoteno,$idno);
-            }
+            // if(!empty($request->db_quoteno)){
+            //     $totalAmount = $this->save_dt_from_othr_qo($request->db_quoteno,$idno);
+            // }
             
             $responce = new stdClass();
             $responce->totalAmount = 0.00;
@@ -331,35 +334,38 @@ class SalesOrderController extends defaultController
             echo json_encode($responce);
             
             DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
             
             return response($e->getMessage(), 500);
+            
         }
+        
     }
-
+    
     public function save_dt_from_othr_qo($quoteno,$idno){
         $dbacthdr = DB::table("debtor.dbacthdr")
-                        ->where('compcode',session('compcode'))
-                        ->where('idno',$idno)
-                        ->first();
-
+                    ->where('compcode',session('compcode'))
+                    ->where('idno',$idno)
+                    ->first();
+        
         $qo_hd = DB::table('finance.salehdr')
-                        ->where('compcode',session('compcode'))
-                        ->where('source','SL')
-                        ->where('trantype','RECNO')
-                        ->where('quoteno',$quoteno)
-                        ->first();
-
+                ->where('compcode',session('compcode'))
+                ->where('source','SL')
+                ->where('trantype','RECNO')
+                ->where('quoteno',$quoteno)
+                ->first();
+        
         $qo_dt = DB::table('finance.salesum')
-                        ->where('compcode',session('compcode'))
-                        ->where('source','SL')
-                        ->where('trantype','RECNO')
-                        ->where('auditno',$qo_hd->auditno)
-                        ->get();
-
-        foreach ($qo_dt as $key => $value) {
-            
+                ->where('compcode',session('compcode'))
+                ->where('source','SL')
+                ->where('trantype','RECNO')
+                ->where('auditno',$qo_hd->auditno)
+                ->get();
+        
+        foreach($qo_dt as $key => $value){
             ////1. calculate rowno by recno
             // $sqlln = DB::table('debtor.billsum')->select('rowno')
             //             ->where('compcode','=',session('compcode'))
@@ -369,7 +375,7 @@ class SalesOrderController extends defaultController
             //             ->count('rowno');
             
             // $li=intval($sqlln)+1;
-
+            
             $quantity = floatval($value->quantity) - floatval($value->qtydelivered);
             if($quantity == 0){
                 continue;
@@ -379,14 +385,14 @@ class SalesOrderController extends defaultController
             // $rate = $this->taxrate($value->taxcode);
             // $taxamt = $amount * $rate / 100;
             // $totamount = $amount - $discamt + $taxamt;
-
+            
             $stockloc = DB::table('material.stockloc')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('uomcode','=',$value->uom)
-                    ->where('itemcode','=',$value->chggroup)
-                    ->where('deptcode','=',$dbacthdr->deptcode)
-                    ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
-                    ->first();
+                        ->where('compcode','=',session('compcode'))
+                        ->where('uomcode','=',$value->uom)
+                        ->where('itemcode','=',$value->chggroup)
+                        ->where('deptcode','=',$dbacthdr->deptcode)
+                        ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
+                        ->first();
             
             ///2. insert detail
             $insertGetId = DB::table('debtor.billsum')
@@ -428,32 +434,32 @@ class SalesOrderController extends defaultController
                             ->where('compcode',session('compcode'))
                             ->where('idno', '=', $insertGetId)
                             ->first();
-
+            
             Db::table('debtor.billsum')
                     ->where('compcode',session('compcode'))
                     ->where('idno', '=', $insertGetId)
                     ->update(['auditno' => $insertGetId]);
         }
-
+        
         //3. calculate total amount from detail
         $totalAmount = DB::table('debtor.billsum')
-                ->where('compcode','=',session('compcode'))
-                ->where('source','=','PB')
-                ->where('trantype','=','IN')
-                ->where('billno','=',$dbacthdr->auditno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('totamount');
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=','PB')
+                        ->where('trantype','=','IN')
+                        ->where('billno','=',$dbacthdr->auditno)
+                        ->where('recstatus','!=','DELETE')
+                        ->sum('totamount');
         
         ///4. then update to header
         DB::table('debtor.dbacthdr')
-                ->where('compcode','=',session('compcode'))
-                ->where('source','=','PB')
-                ->where('trantype','=','IN')
-                ->where('auditno','=',$dbacthdr->auditno)
-                ->update([
-                    'amount' => $totalAmount,
-                    'outamount' => $totalAmount,
-                ]);
+            ->where('compcode','=',session('compcode'))
+            ->where('source','=','PB')
+            ->where('trantype','=','IN')
+            ->where('auditno','=',$dbacthdr->auditno)
+            ->update([
+                'amount' => $totalAmount,
+                'outamount' => $totalAmount,
+            ]);
     }
     
     public function edit(Request $request){
@@ -473,21 +479,21 @@ class SalesOrderController extends defaultController
             'mrn' => '0',
             'termdays' => strtoupper($request->db_termdays),
             'termmode' => strtoupper($request->db_termmode),
-            'orderno' => strtoupper($request->db_orderno),
-            'ponum' => strtoupper($request->db_ponum),
-            'podate' => (!empty($request->db_podate))?$request->db_podate:null,
-            'remark' => strtoupper($request->db_remark),
+            // 'orderno' => strtoupper($request->db_orderno),
+            // 'ponum' => strtoupper($request->db_ponum),
+            // 'podate' => (!empty($request->db_podate))?$request->db_podate:null,
+            // 'remark' => strtoupper($request->db_remark),
             // 'approvedby' => strtoupper($request->db_approvedby)
         ];
         
         try {
-
+            
             $chk_billtype = $this->chk_billtype($request);
-
+            
             if($chk_billtype->error){
                 throw new \Exception($chk_billtype->msg,500);
             }
-
+            
             //////////where//////////
             $table = $table->where('idno','=',$request->db_idno);
             $table->update($array_update);
@@ -497,29 +503,32 @@ class SalesOrderController extends defaultController
             echo json_encode($responce);
             
             DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
             
             return response($e->getMessage(), 500);
-        }//xguna     
+        
+        } // xguna
+        
     }
     
-    public function del(Request $request){        
+    public function del(Request $request){
     }
     
     public function posted(Request $request){
         
         DB::beginTransaction();
         
-        try{
+        try {
             
-            foreach ($request->idno_array as $value){
-                
+            foreach($request->idno_array as $value){
                 $dbacthdr = DB::table("debtor.dbacthdr")
                             ->where('compcode',session('compcode'))
                             ->where('idno','=',$value)
                             ->first();
-
+                
                 if($dbacthdr->recstatus != 'OPEN'){
                     continue;
                 }
@@ -528,9 +537,9 @@ class SalesOrderController extends defaultController
                     ->where('compcode',session('compcode'))
                     ->where('idno','=',$value)
                     ->update([
-                        'recstatus' => 'PREPARED',
-                        'preparedby' => session('username'),
-                        'prepareddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'POSTED',
+                        'approvedby' => session('username'),
+                        'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
@@ -541,16 +550,17 @@ class SalesOrderController extends defaultController
                     ->where('trantype','=',$dbacthdr->trantype)
                     ->where('billno','=',$dbacthdr->auditno)
                     ->update([
-                        'recstatus' => 'PREPARED',
+                        'recstatus' => 'POSTED',
                     ]);
-
+                
                 DB::table('finance.queueso')
                     ->insert([
                         'compcode' => session('compcode'),
                         'recno' => $dbacthdr->auditno,
                         'AuthorisedID' => session('username'),
                         'deptcode' => 'ALL',
-                        'recstatus' => 'PREPARED',
+                        // 'recstatus' => 'PREPARED',
+                        'recstatus' => 'POSTED',
                         'trantype' => 'DELIVERED',
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -558,50 +568,53 @@ class SalesOrderController extends defaultController
             }
             
             DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
             
             return response($e->getMessage(), 500);
+            
         }
+        
     }
-
+    
     public function delivered(Request $request){
         
         DB::beginTransaction();
         
-        try{
+        try {
             
-            foreach ($request->idno_array as $value){
-                
+            foreach($request->idno_array as $value){
                 $dbacthdr = DB::table("debtor.dbacthdr")
                             ->where('compcode',session('compcode'))
                             ->where('idno','=',$value)
                             ->first();
-
+                
                 $authorise = DB::table('finance.permissiondtl')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('authorid','=',session('username'))
-                    ->where('trantype','=','SO')
-                    ->where('cando','=', 'ACTIVE')
-                    ->where('recstatus','=','DELIVERED')
-                    // ->where('deptcode','=',$purordhd_get->prdept)
-                    ->where('maxlimit','>=',$dbacthdr->amount);
-
+                            ->where('compcode','=',session('compcode'))
+                            ->where('authorid','=',session('username'))
+                            ->where('trantype','=','SO')
+                            ->where('cando','=', 'ACTIVE')
+                            ->where('recstatus','=','DELIVERED')
+                            // ->where('deptcode','=',$purordhd_get->prdept)
+                            ->where('maxlimit','>=',$dbacthdr->amount);
+                
                 if(!$authorise->exists()){
                     throw new \Exception("The user doesnt have authority",500);
                 }
-
+                
                 if($dbacthdr->recstatus != 'PREPARED'){
                     continue;
                 }
-
+                
                 if(!empty($dbacthdr->quoteno)){
                     $qo_hd = DB::table('finance.salehdr')
-                                ->where('compcode',session('compcode'))
-                                ->where('source','SL')
-                                ->where('trantype','RECNO')
-                                ->where('quoteno',$dbacthdr->quoteno)
-                                ->first();
+                            ->where('compcode',session('compcode'))
+                            ->where('source','SL')
+                            ->where('trantype','RECNO')
+                            ->where('quoteno',$dbacthdr->quoteno)
+                            ->first();
                 }
                 
                 $invno = $this->recno('PB','INV');
@@ -614,17 +627,16 @@ class SalesOrderController extends defaultController
                             ->get();
                 
                 $qo_dt_recstatus = 'COMPLETED';
-                foreach ($billsum as $billsum_obj){
-
+                foreach($billsum as $billsum_obj){
                     if(!empty($dbacthdr->quoteno)){
                         $qo_dt = DB::table('finance.salesum')
-                                    ->where('compcode',session('compcode'))
-                                    ->where('source','SL')
-                                    ->where('trantype','RECNO')
-                                    ->where('lineno_',$billsum_obj->rowno)
-                                    ->where('auditno',$qo_hd->auditno)
-                                    ->first();
-
+                                ->where('compcode',session('compcode'))
+                                ->where('source','SL')
+                                ->where('trantype','RECNO')
+                                ->where('lineno_',$billsum_obj->rowno)
+                                ->where('auditno',$qo_hd->auditno)
+                                ->first();
+                        
                         $qo_dt_qtydelivered = $qo_dt->qtydelivered;
                         $qo_dt_quantity = $qo_dt->quantity;
                         $new_qtydelivered = $billsum_obj->quantity + $qo_dt_qtydelivered;
@@ -632,17 +644,17 @@ class SalesOrderController extends defaultController
                             $cant_exceed = $qo_dt->quantity - $qo_dt->qtydelivered;
                             throw new \Exception("Quotation Quantity Delivered Exceed for item: ".$billsum_obj->chggroup." uom: ".$billsum_obj->uom." Quantity delivered cant exceed: ".$cant_exceed,500);
                         }
-
+                        
                         DB::table('finance.salesum')
-                                    ->where('compcode',session('compcode'))
-                                    ->where('source','SL')
-                                    ->where('trantype','RECNO')
-                                    ->where('lineno_',$billsum_obj->rowno)
-                                    ->where('auditno',$qo_hd->auditno)
-                                    ->update([
-                                        'qtydelivered' => $new_qtydelivered
-                                    ]);
-
+                            ->where('compcode',session('compcode'))
+                            ->where('source','SL')
+                            ->where('trantype','RECNO')
+                            ->where('lineno_',$billsum_obj->rowno)
+                            ->where('auditno',$qo_hd->auditno)
+                            ->update([
+                                'qtydelivered' => $new_qtydelivered
+                            ]);
+                        
                         if($qo_dt_recstatus == 'PARTIAL'){
                             $qo_dt_recstatus = 'PARTIAL';
                         }else{
@@ -653,25 +665,25 @@ class SalesOrderController extends defaultController
                     }
                     
                     $chgmast = DB::table("hisdb.chgmast")
-                            ->where('compcode','=',session('compcode'))
-                            ->where('chgcode','=',$billsum_obj->chggroup)
-                            ->where('uom','=',$billsum_obj->uom)
-                            ->first();
+                                ->where('compcode','=',session('compcode'))
+                                ->where('chgcode','=',$billsum_obj->chggroup)
+                                ->where('uom','=',$billsum_obj->uom)
+                                ->first();
                     
                     $updinv = ($chgmast->invflag == '1')? 1 : 0;
-
+                    
                     $product = DB::table('material.product')
-                                    ->where('compcode','=',session('compcode'))
-                                    ->where('uomcode','=',$billsum_obj->uom)
-                                    ->where('itemcode','=',$billsum_obj->chggroup);
+                                ->where('compcode','=',session('compcode'))
+                                ->where('uomcode','=',$billsum_obj->uom)
+                                ->where('itemcode','=',$billsum_obj->chggroup);
                     
                     if($product->exists()){
                         $stockloc = DB::table('material.stockloc')
-                                ->where('compcode','=',session('compcode'))
-                                ->where('uomcode','=',$billsum_obj->uom)
-                                ->where('itemcode','=',$billsum_obj->chggroup)
-                                ->where('deptcode','=',$dbacthdr->deptcode)
-                                ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('uomcode','=',$billsum_obj->uom)
+                                    ->where('itemcode','=',$billsum_obj->chggroup)
+                                    ->where('deptcode','=',$dbacthdr->deptcode)
+                                    ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
                         
                         if($stockloc->exists()){
                             $stockloc = $stockloc->first();
@@ -680,8 +692,8 @@ class SalesOrderController extends defaultController
                         }
                         
                         $ivdspdt = DB::table('material.ivdspdt')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('recno','=',$billsum_obj->auditno);
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('recno','=',$billsum_obj->auditno);
                         
                         if($ivdspdt->exists()){
                             $this->updivdspdt($billsum_obj,$dbacthdr);
@@ -691,51 +703,51 @@ class SalesOrderController extends defaultController
                             $this->crtgltran($ivdspdt_idno,$dbacthdr);
                         }
                     }
-        
+                    
                     $recno = $this->recno('OE','IN');
                     
                     $insertGetId = DB::table("hisdb.chargetrx")
-                        ->insertGetId([
-                            'auditno' => $recno,
-                            'idno' => $billsum_obj->idno,
-                            'compcode'  => session('compcode'),
-                            'mrn'  => $billsum_obj->mrn,
-                            'episno'  => $billsum_obj->episno,
-                            'trxdate' => $dbacthdr->entrydate,
-                            'chgcode' => $billsum_obj->chggroup,
-                            'billflag' => 1,
-                            'billdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'billtype'  => $billsum_obj->billtype,
-                            'chg_class' => $chgmast->chgclass,
-                            'unitprce' => $billsum_obj->unitprice,
-                            'quantity' => $billsum_obj->quantity,
-                            'amount' => $billsum_obj->amount,
-                            'trxtime' => $dbacthdr->entrytime,
-                            'chggroup' => $chgmast->chggroup,
-                            'taxamount' => $billsum_obj->taxamt,
-                            'billno' => $billsum_obj->billno,
-                            'invno' => $invno,
-                            'uom' => $billsum_obj->uom,
-                            'billtime' => $dbacthdr->entrytime,
-                            'invgroup' => $chgmast->invgroup,
-                            'reqdept' => $dbacthdr->deptcode,
-                            'issdept' => $dbacthdr->deptcode,
-                            'invcode' => $chgmast->chggroup,
-                            'inventory' => $chgmast->invflag,
-                            'updinv' =>  $updinv,
-                            'discamt' => $billsum_obj->discamt,
-                            'qtyorder' => $billsum_obj->quantity,
-                            'qtyissue' => $billsum_obj->quantity,
-                            'unit' => session('unit'),
-                            'chgtype' => $chgmast->chgtype,
-                            'adduser' => session('username'),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'lastuser' => session('username'),
-                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'qtydispense' => $billsum_obj->quantity,
-                            'taxcode' => $billsum_obj->taxcode,
-                            'recstatus' => 'POSTED',
-                        ]);
+                                    ->insertGetId([
+                                        'auditno' => $recno,
+                                        'idno' => $billsum_obj->idno,
+                                        'compcode'  => session('compcode'),
+                                        'mrn'  => $billsum_obj->mrn,
+                                        'episno'  => $billsum_obj->episno,
+                                        'trxdate' => $dbacthdr->entrydate,
+                                        'chgcode' => $billsum_obj->chggroup,
+                                        'billflag' => 1,
+                                        'billdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                        'billtype'  => $billsum_obj->billtype,
+                                        'chg_class' => $chgmast->chgclass,
+                                        'unitprce' => $billsum_obj->unitprice,
+                                        'quantity' => $billsum_obj->quantity,
+                                        'amount' => $billsum_obj->amount,
+                                        'trxtime' => $dbacthdr->entrytime,
+                                        'chggroup' => $chgmast->chggroup,
+                                        'taxamount' => $billsum_obj->taxamt,
+                                        'billno' => $billsum_obj->billno,
+                                        'invno' => $invno,
+                                        'uom' => $billsum_obj->uom,
+                                        'billtime' => $dbacthdr->entrytime,
+                                        'invgroup' => $chgmast->invgroup,
+                                        'reqdept' => $dbacthdr->deptcode,
+                                        'issdept' => $dbacthdr->deptcode,
+                                        'invcode' => $chgmast->chggroup,
+                                        'inventory' => $chgmast->invflag,
+                                        'updinv' =>  $updinv,
+                                        'discamt' => $billsum_obj->discamt,
+                                        'qtyorder' => $billsum_obj->quantity,
+                                        'qtyissue' => $billsum_obj->quantity,
+                                        'unit' => session('unit'),
+                                        'chgtype' => $chgmast->chgtype,
+                                        'adduser' => session('username'),
+                                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                        'lastuser' => session('username'),
+                                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                        'qtydispense' => $billsum_obj->quantity,
+                                        'taxcode' => $billsum_obj->taxcode,
+                                        'recstatus' => 'POSTED',
+                                    ]);
                     
                     DB::table("hisdb.billdet")
                         ->insert([
@@ -780,29 +792,29 @@ class SalesOrderController extends defaultController
                             'recstatus' => 'POSTED',
                         ]);
                     
-                    //gltran
+                    // gltran
                     $yearperiod = $this->getyearperiod(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
                     $chgmast = DB::table('hisdb.chgmast')
                                 ->where('compcode',session('compcode'))
                                 ->where('chgcode',$billsum_obj->chggroup)
                                 ->first();
-
+                    
                     $chgtype = DB::table('hisdb.chgtype')
                                 ->where('compcode',session('compcode'))
                                 ->where('chgtype',$chgmast->chgtype)
                                 ->first();
-
+                    
                     $dept = DB::table('sysdb.department')
-                                ->where('compcode',session('compcode'))
-                                ->where('deptcode',$dbacthdr->deptcode)
-                                ->first();
-
+                            ->where('compcode',session('compcode'))
+                            ->where('deptcode',$dbacthdr->deptcode)
+                            ->first();
+                    
                     $sysparam = DB::table('sysdb.sysparam')
                                 ->where('compcode',session('compcode'))
                                 ->where('source','AR')
                                 ->where('trantype','AD')
                                 ->first();
-
+                    
                     // 1. buat gltran
                     DB::table('finance.gltran')
                         ->insert([
@@ -824,7 +836,7 @@ class SalesOrderController extends defaultController
                             'cracc' => $chgtype->opacccode,
                             'amount' => $billsum_obj->amount 
                         ]);
-
+                    
                     $this->init_glmastdtl(
                             $sysparam->pvalue1,//drcostcode
                             $sysparam->pvalue2,//dracc
@@ -833,16 +845,14 @@ class SalesOrderController extends defaultController
                             $yearperiod,
                             $billsum_obj->amount
                     );
-
-
+                    
                     if(!empty(floatval($billsum_obj->taxamt))){
-
                         $sysparam_tx = DB::table('sysdb.sysparam')
                                         ->where('compcode',session('compcode'))
                                         ->where('source','TX')
                                         ->where('trantype','BS')
                                         ->first();
-
+                        
                         DB::table('finance.gltran')
                             ->insert([
                                 'compcode' => session('compcode'),
@@ -863,7 +873,7 @@ class SalesOrderController extends defaultController
                                 'cracc' => $sysparam_tx->pvalue2,
                                 'amount' => $billsum_obj->taxamt
                             ]);
-
+                        
                         $this->init_glmastdtl(
                             $sysparam->pvalue1,//drcostcode
                             $sysparam->pvalue2,//dracc
@@ -880,7 +890,7 @@ class SalesOrderController extends defaultController
                                         ->where('source','OE')
                                         ->where('trantype','DIS')
                                         ->first();
-
+                        
                         DB::table('finance.gltran')
                             ->insert([
                                 'compcode' => session('compcode'),
@@ -901,7 +911,7 @@ class SalesOrderController extends defaultController
                                 'cracc' => $sysparam_dis->pvalue1,
                                 'amount' => -$billsum_obj->discamt
                             ]);
-
+                        
                         $this->init_glmastdtl(
                             $sysparam->pvalue1,//drcostcode
                             $sysparam->pvalue2,//dracc
@@ -912,7 +922,7 @@ class SalesOrderController extends defaultController
                         );
                     }
                 }
-
+                
                 if(!empty($dbacthdr->quoteno)){
                     $qo_hd = DB::table('finance.salehdr')
                                 ->where('compcode',session('compcode'))
@@ -922,8 +932,8 @@ class SalesOrderController extends defaultController
                                 ->update([
                                     'recstatus' => $qo_dt_recstatus
                                 ]);
-                }    
-
+                }
+                
                 DB::table('finance.queueso')
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$dbacthdr->auditno)
@@ -960,12 +970,12 @@ class SalesOrderController extends defaultController
                         // 'amount' => accumalated amount (billsum.amt-billsum.discamt+billsum.taxamt)
                         // 'outamount' => accumalated amount (billsum.amt-billsum.discamt+billsum.taxamt)
                     ]);
-
+                
                 $debtormast = DB::table("debtor.debtormast")
-                                ->where('compcode',session('compcode'))
-                                ->where('debtorcode',$dbacthdr->payercode)
-                                ->first();
-
+                            ->where('compcode',session('compcode'))
+                            ->where('debtorcode',$dbacthdr->payercode)
+                            ->first();
+                
                 DB::table('finance.gltran')
                     ->insert([
                         'compcode' => session('compcode'),
@@ -986,27 +996,29 @@ class SalesOrderController extends defaultController
                         'cracc' => $sysparam->pvalue2,
                         'amount' => $dbacthdr->amount
                     ]);
-
+                
                 $this->init_glmastdtl(
-                            $debtormast->actdebccode,//drcostcode
-                            $debtormast->actdebglacc,//dracc
-                            $sysparam->pvalue1,//crcostcode
-                            $sysparam->pvalue2,//cracc
-                            $yearperiod,
-                            $dbacthdr->amount
-                        );
-                
-                
+                    $debtormast->actdebccode,//drcostcode
+                    $debtormast->actdebglacc,//dracc
+                    $sysparam->pvalue1,//crcostcode
+                    $sysparam->pvalue2,//cracc
+                    $yearperiod,
+                    $dbacthdr->amount
+                );
             }
             
             DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
             
             return response($e->getMessage(), 500);
+            
         }
+        
     }
-
+    
     public function init_glmastdtl($dbcc,$dbacc,$crcc,$cracc,$yearperiod,$amount){
         //2. check glmastdtl utk debit, kalu ada update kalu xde create
         $gltranAmount =  $this->isGltranExist($dbcc,$dbacc,$yearperiod->year,$yearperiod->period);
