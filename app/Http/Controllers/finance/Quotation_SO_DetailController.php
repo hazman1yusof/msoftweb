@@ -87,10 +87,14 @@ class Quotation_SO_DetailController extends defaultController
                     ->where('ss.compcode','=',session('compcode'))
                     ->where('ss.recstatus','<>','DELETE')
                     ->orderBy('ss.idno','desc');
-
+        
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
-
+        
+        foreach ($paginate->items() as $key => $value) {
+            $value->qty_outstanding = $value->quantity - $value->qtydelivered;
+        }
+        
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();

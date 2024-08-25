@@ -34,6 +34,8 @@ class Quotation_SO_Controller extends defaultController
                 return $this->get_hdrtype($request);
             case 'get_hdrtype_check':
                 return $this->get_hdrtype_check($request);
+            case 'get_debtorMaster':
+                return $this->get_debtorMaster($request);
             default:
                 return 'error happen..';
         }
@@ -237,6 +239,16 @@ class Quotation_SO_Controller extends defaultController
                             ->first();
             }
             
+            $debtormast = DB::table('debtor.debtormast')
+                        // ->select('recstatus')
+                        ->where('compcode', '=', session('compcode'))
+                        ->where('debtorcode', '=', $request->SL_debtorcode)
+                        ->first();
+            
+            if($debtormast->recstatus !== 'ACTIVE'){
+                throw new \Exception("This debtor is not active.",500);
+            }
+            
             $array_insert = [
                 'compcode' => session('compcode'),
                 'source' => 'SL',
@@ -312,6 +324,16 @@ class Quotation_SO_Controller extends defaultController
             
             if($chk_billtype->error){
                 throw new \Exception($chk_billtype->msg,500);
+            }
+            
+            $debtormast = DB::table('debtor.debtormast')
+                        // ->select('recstatus')
+                        ->where('compcode', '=', session('compcode'))
+                        ->where('debtorcode', '=', $request->SL_debtorcode)
+                        ->first();
+            
+            if($debtormast->recstatus !== 'ACTIVE'){
+                throw new \Exception("This debtor is not active.",500);
             }
             
             //////////where//////////
@@ -1181,7 +1203,100 @@ class Quotation_SO_Controller extends defaultController
 
         return json_encode($responce);
     }
-
+    
+    public function get_debtorMaster(Request $request){
+        
+        $table = DB::table('debtor.debtormast')
+                ->where('compcode',session('compcode'))
+                ->where('recstatus','!=',' ');
+        
+        if(!empty($request->searchCol)){
+            $searchCol_array = $request->searchCol;
+            
+            $count = array_count_values($searchCol_array);
+            
+            foreach($count as $key => $value){
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+                
+                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar){
+                    foreach($searchCol_array as $key => $value){
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false){
+                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                            // $table->Where('uom.'.$searchCol_array[$key],'like',$request->searchVal[$key]);
+                        }
+                    }
+                });
+            }
+        }
+        
+        if(!empty($request->searchCol2)){
+            $searchCol_array = $request->searchCol2;
+            $table = $table->where(function ($table) use ($searchCol_array, $request){
+                foreach($searchCol_array as $key => $value){
+                    if($key > 1) break;
+                    $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    // $table->orwhere('uom.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
+                }
+            });
+            
+            if(count($searchCol_array) > 2){
+                $table = $table->where(function ($table) use ($searchCol_array, $request){
+                    foreach($searchCol_array as $key => $value){
+                        if($key <= 1) continue;
+                        $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                        // $table->orwhere('uom.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    }
+                });
+            }
+        }
+        
+        if(!empty($request->filterCol)){
+            foreach($request->filterCol as $key => $value){
+                $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+            }
+        }
+        
+        if(!empty($request->sidx)){
+            if(!empty($request->fixPost)){
+                $request->sidx = substr_replace($request->sidx, ".", strpos($request->sidx, "_"), strlen("."));
+            }
+            
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            if(count($pieces) == 1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                for($i = sizeof($pieces)-1; $i >= 0 ; $i--){
+                    $pieces_inside = explode(" ", $pieces[$i]);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('idno','asc');
+        }
+        
+        //////////paginate//////////
+        $paginate = $table->paginate($request->rows);
+        
+        foreach($paginate->items() as $key => $value){
+            if($value->recstatus == 'ACTIVE' || $value->recstatus == 'A'){
+                $value->recstatus = ' ';
+            }
+        }
+        
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);
+        
+    }
+    
     public function chk_billtype(Request $request){ 
         $hdrtype = $request->SL_hdrtype;
         $posteddate = $request->SL_entrydate;

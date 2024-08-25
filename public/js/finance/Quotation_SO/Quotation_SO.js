@@ -282,7 +282,7 @@ $(document).ready(function (){
         ondblClickRow: function (rowid, iRow, iCol, e){
             let stat = selrowData("#jqGrid").SL_recstatus;
             
-            if(stat == 'POSTED'){
+            if(stat == 'POSTED' || stat == 'PARTIAL' || stat == 'COMPLETED'){
                 $("#jqGridPager td[title='View Selected Row']").click();
             }else if (stat == 'OPEN'){
                 $("#jqGridPager td[title='Edit Selected Row']").click();
@@ -367,11 +367,14 @@ $(document).ready(function (){
         title: "Edit Selected Row",
         onClickButton: function (){
             oper = 'edit';
+            // if(selrowData("#jqGrid").SL_recstatus != 'OPEN'){
+            // 	return false;
+            // }
             selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
             populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', ['SL_termcode']);
             refreshGrid("#jqGrid2", urlParam2);
             
-            if(selrowData("#jqGrid").SL_recstatus == 'POSTED'){
+            if(selrowData("#jqGrid").SL_recstatus == 'POSTED' || selrowData("#jqGrid").SL_recstatus == 'PARTIAL' || selrowData("#jqGrid").SL_recstatus == 'COMPLETED'){
                 disableForm('#formdata');
                 // $('#SL_orderno').prop('readonly',false);
                 // $('#SL_podate').prop('readonly',false);
@@ -485,43 +488,48 @@ $(document).ready(function (){
     });
     
     /////////////////////////////////////////saveHeader/////////////////////////////////////////
-    function saveHeader(form, selfoper, saveParam, obj){
-        if(obj == null){
-            obj = {};
-        }
-        saveParam.oper = selfoper;
-        
-        $.post(saveParam.url+"?"+$.param(saveParam), $(form).serialize()+'&'+ $.param(obj), function (data){
-            
-        },'json').fail(function (data){
-            $('#SL_hdrtype').focus();
-            $('.noti').text(data.responseText);
-        }).done(function (data){
-            $("#saveDetailLabel").attr('disabled',false)
-            unsaved = false;
-            hideatdialogForm(false);
-            
-            addmore_jqgrid2.state = true;
-            if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
-                $('#jqGrid2_iladd').click();
-            }
-            
-            if(selfoper == 'add'){
-                oper = 'edit'; // sekali dia add terus jadi edit lepas tu
-                $('#SL_auditno').val(data.auditno);
-                $('#SL_idno').val(data.idno); // just save idno for edit later
-                $('#SL_amount').val(data.totalAmount);
-                
-                urlParam2.source = 'SL';
-                urlParam2.trantype = 'RECNO';
-                urlParam2.auditno = data.auditno;
-                urlParam2.deptcode = $('#SL_deptcode').val();
-            }else if(selfoper == 'edit'){
-                // doesnt need to do anything
-            }
-            disableForm('#formdata');
-        })
-    }
+	function saveHeader(form, selfoper, saveParam, obj){
+		if(obj == null){
+			obj = {};
+		}
+		saveParam.oper = selfoper;
+		
+		$.post(saveParam.url+"?"+$.param(saveParam), $(form).serialize()+'&'+ $.param(obj), function (data){
+			
+		},'json').fail(function (data){
+			$('#SL_hdrtype').focus();
+			$('.noti').text(data.responseText);
+			dialog_deptcode.on();
+			dialog_billtypeSO.on();
+			dialog_CustomerSO.on();
+		}).done(function (data){
+			$("#saveDetailLabel").attr('disabled',false);
+			unsaved = false;
+			hideatdialogForm(false);
+			// $(".noti").empty();
+			$('.noti').text(' ');
+			
+			addmore_jqgrid2.state = true;
+			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
+				$('#jqGrid2_iladd').click();
+			}
+			
+			if(selfoper == 'add'){
+				oper = 'edit'; // sekali dia add terus jadi edit lepas tu
+				$('#SL_auditno').val(data.auditno);
+				$('#SL_idno').val(data.idno); // just save idno for edit later
+				$('#SL_amount').val(data.totalAmount);
+				
+				urlParam2.source = 'SL';
+				urlParam2.trantype = 'RECNO';
+				urlParam2.auditno = data.auditno;
+				urlParam2.deptcode = $('#SL_deptcode').val();
+			}else if(selfoper == 'edit'){
+				// doesnt need to do anything
+			}
+			disableForm('#formdata');
+		})
+	}
     
     $("#dialogForm").on('change keypress', '#formdata :input', '#formdata :textarea', function (){
         unsaved = true; // kalu dia change apa2 bagi prompt
@@ -836,6 +844,10 @@ $(document).ready(function (){
 				editrules: { required: true }, editoptions: { readonly: "readonly" }, hidden: true
 			},
 			{ label: 'Quantity Delivered', name: 'qtydelivered', width: 100, align: 'right', classes: 'wrap txnum', editable: true,
+				formatter: 'integer', formatoptions: { thousandsSeparator: "," },
+				editrules: { required: true }, editoptions: { readonly: "readonly" }
+			},
+			{ label: 'Outstanding Quantity', name: 'qty_outstanding', width: 100, align: 'right', classes: 'wrap txnum', editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: "," },
 				editrules: { required: true }, editoptions: { readonly: "readonly" }
 			},
@@ -1388,7 +1400,7 @@ $(document).ready(function (){
 	}
 
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
-	$("#saveDetailLabel").click(function () {
+	$("#saveDetailLabel").click(function (){
 		$("#saveDetailLabel").attr('disabled',true)
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
@@ -1404,7 +1416,7 @@ $(document).ready(function (){
 			saveHeader("#formdata",oper,saveParam);
 			mycurrency.formatOn();
 			unsaved = false;
-		} else {
+		}else{
 			mycurrency.formatOn();
 			dialog_deptcode.on();
 			dialog_billtypeSO.on();
@@ -1415,7 +1427,7 @@ $(document).ready(function (){
 	});
 
 	//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
-	$("#saveHeaderLabel").click(function () {
+	$("#saveHeaderLabel").click(function (){
 		emptyFormdata(errorField, '#formdata2');
 		hideatdialogForm(true);
 		dialog_deptcode.on();
@@ -1659,17 +1671,34 @@ $(document).ready(function (){
 		'customer', 'debtor.debtormast', '#SL_debtorcode', errorField,
 		{
 			colModel: [
-				{ label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true, checked: true },
+				{ label: 'Status', name: 'recstatus', width: 200, classes: 'pointer' },
 			],
 			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','ACTIVE']
+				url: "./Quotation_SO/table",
+				action: 'get_debtorMaster',
+				filterCol: [],
+				filterVal: []
 			},
-			ondblClickRow: function () {
+			ondblClickRow: function (){
 				$('#SL_hdrtype').focus();
 			},
-			gridComplete: function(obj){
+			loadComplete: function (data,obj){
+				// var rows = data.rows;
+				// var gridname = '#'+obj.gridname; // #othergrid_customer
+				
+				// if(rows.length > 1 && obj.ontabbing){
+					// rows.forEach(function(e,i){
+					// 	if(e.recstatus == 'ACTIVE'){
+					// 		// let id = parseInt(i)+1;
+					// 		// $(gridname+' tr#'+id).val('');
+					// 		// $(gridname+'_recstatus').val('');
+					// 	}
+					// });
+				// }
+			},
+			gridComplete: function (obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
@@ -1680,11 +1709,16 @@ $(document).ready(function (){
 			}
 		}, {
 			title: "Select Customer",
-			open: function(){
-				dialog_CustomerSO.urlParam.filterCol=['recstatus', 'compcode'];
-				dialog_CustomerSO.urlParam.filterVal=['ACTIVE', 'session.compcode'];
+			open: function (){
+				dialog_CustomerSO.urlParam.url = "./Quotation_SO/table";
+				dialog_CustomerSO.urlParam.action = 'get_debtorMaster';
+				// dialog_CustomerSO.urlParam.table_name = ['debtor.debtormast'];
+				// dialog_CustomerSO.urlParam.fixPost = "true";
+				// dialog_CustomerSO.urlParam.table_id = "none_";
+				dialog_CustomerSO.urlParam.filterCol = [];
+				dialog_CustomerSO.urlParam.filterVal = [];
 			},
-			close: function(obj_){
+			close: function (obj_){
 				$("#SL_hdrtype").focus().select();
 			}
 		},'urlParam','radio','tab'
@@ -2376,7 +2410,7 @@ $(document).ready(function (){
 		});
 		return cust_val;
 	}
-
+	
 });
 
 function populate_form(obj){
