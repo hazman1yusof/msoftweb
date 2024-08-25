@@ -1177,7 +1177,7 @@ class PurchaseRequestController extends defaultController
         }
         
         $purreqhd = DB::table('material.purreqhd as ph')
-                    ->select('ph.idno','ph.compcode','ph.reqdept','ph.purreqno','ph.purreqdt','ph.recno','ph.reqpersonid','ph.prdept','ph.authpersonid','ph.authdate','ph.remarks','ph.recstatus','ph.subamount','ph.amtdisc','ph.perdisc','ph.totamount','ph.adduser','ph.adddate','ph.upduser','ph.upddate','ph.cancelby','ph.canceldate','ph.reopenby','ph.reopendate','ph.suppcode','ph.purordno','ph.prortdisc','ph.unit','ph.trantype','ph.TaxAmt','ph.requestby','ph.requestdate','ph.supportby','ph.supportdate','ph.verifiedby','ph.verifieddate','ph.approvedby','ph.approveddate','ph.support_remark','ph.verified_remark','ph.approved_remark','ph.cancelled_remark','ph.recommended1by','ph.recommended2by','ph.recommended1date','ph.recommended2date','ph.recommended1_remark','ph.recommended2_remark','ph.prtype','u.name as requestby_name','u.designation as requestby_dsg','s.name as supportby_name','s.designation as supportby_dsg','e.name as verifiedby_name','e.designation as verifiedby_dsg','r.name as recommended1by_name','r.designation as recommended1by_dsg','us.name as recommended2by_name','us.designation as recommended2by_dsg','ur.name as approvedby_name','ur.designation as approvedby_dsg')
+                    ->select('ph.idno','ph.compcode','ph.reqdept','ph.purreqno','ph.purreqdt','ph.recno','ph.reqpersonid','ph.prdept','ph.authpersonid','ph.authdate','ph.remarks','ph.recstatus','ph.subamount','ph.amtdisc','ph.perdisc','ph.totamount','ph.adduser','ph.adddate','ph.upduser','ph.upddate','ph.cancelby','ph.canceldate','ph.reopenby','ph.reopendate','ph.suppcode','ph.purordno','ph.prortdisc','ph.unit','ph.trantype','ph.TaxAmt','ph.requestby','ph.requestdate','ph.supportby','ph.supportdate','ph.verifiedby','ph.verifieddate','ph.approvedby','ph.approveddate','ph.support_remark','ph.verified_remark','ph.approved_remark','ph.cancelled_remark','ph.recommended1by','ph.recommended2by','ph.recommended1date','ph.recommended2date','ph.recommended1_remark','ph.recommended2_remark','ph.prtype','u.name as requestby_name','u.designation as requestby_dsg','s.name as supportby_name','s.designation as supportby_dsg','e.name as verifiedby_name','e.designation as verifiedby_dsg','r.name as recommended1by_name','r.designation as recommended1by_dsg','us.name as recommended2by_name','us.designation as recommended2by_dsg','ur.name as approvedby_name','ur.designation as approvedby_dsg','d.description as reqdept_name')
                     ->leftJoin('sysdb.users as u', function ($join) use ($request){
                         $join = $join->on('u.username', '=', 'ph.requestby')
                                     ->where('u.compcode','=',session('compcode'));
@@ -1201,6 +1201,10 @@ class PurchaseRequestController extends defaultController
                     ->leftJoin('sysdb.users as ur', function ($join) use ($request){
                         $join = $join->on('ur.username', '=', 'ph.approvedby')
                                     ->where('ur.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('sysdb.department as d', function ($join) use ($request){
+                        $join = $join->on('d.deptcode', '=', 'ph.reqdept')
+                                    ->where('d.compcode','=',session('compcode'));
                     })
                     ->where('ph.recno','=',$recno)
                     ->first();

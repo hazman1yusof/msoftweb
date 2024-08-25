@@ -110,7 +110,7 @@
 									colSpan: 2, alignment: 'left'
 								},{},
 								{
-									text: '{{$purreqhd->requestby}}',
+									text: '{{$purreqhd->requestby_name}}',
 									colSpan: 4, alignment: 'left'
 								},{},{},{},
 								{
@@ -132,7 +132,7 @@
 									colSpan: 4, alignment: 'left'
 								},{},{},{},
 								{
-									text: 'Department/Unit:\n{{$purreqhd->reqdept}}',
+									text: 'Department/Unit: {{$purreqhd->reqdept_name}}',
 									colSpan: 5, rowSpan: 2, alignment: 'left'
 								},{},{},{},{}
 							],
