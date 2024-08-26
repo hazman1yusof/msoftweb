@@ -541,11 +541,11 @@ $(document).ready(function () {
 
 	function populateSummary(itemcode,uomcode,deptcode){
 
-		let mon_from = $('#monthfrom').val();
-		let yr_from = $('#yearfrom').val();
+		let mon_from = moment($('#datefrom').val(), "YYYY/MM/DD").format("MM");
+		let yr_from = moment($('#datefrom').val(), "YYYY/MM/DD").format("YYYY");
 
-		let mon_to = $('#monthto').val();
-		let yr_to = $('#yearto').val();
+		let mon_to = moment($('#dateto').val(), "YYYY/MM/DD").format("MM");
+		let yr_to = moment($('#dateto').val(), "YYYY/MM/DD").format("YYYY");;
 
 		let param={
 			action:'get_value_default',

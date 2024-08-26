@@ -18,7 +18,7 @@ function get_authdtl_alert(){
 			populate_authdtl_alert_pr(data.queuepr);
 			populate_authdtl_alert_po(data.queuepo);
 			populate_authdtl_alert_so(data.queueso);
-			populate_authdtl_alert_IV(data.queueso);
+			populate_authdtl_alert_iv(data.queueiv);
 		}
 	});
 }
