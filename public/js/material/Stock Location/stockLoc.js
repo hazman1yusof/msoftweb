@@ -456,8 +456,8 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 			],
 			urlParam: {
-				filterCol:['recstatus','compcode','sector'],
-				filterVal:['ACTIVE','session.compcode','session.unit']
+				filterCol:['recstatus','compcode'],
+				filterVal:['ACTIVE','session.compcode']
 			},
 			ondblClickRow:function(){
 				$('#stocktxntype').focus();
@@ -475,8 +475,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Dept",
 			open: function(){
-				dialog_deptcode.urlParam.filterCol = ['recstatus','compcode','sector'];
-				dialog_deptcode.urlParam.filterVal = [ 'ACTIVE','session.compcode','session.unit'];
+				dialog_deptcode.urlParam.filterCol = ['recstatus','compcode'];
+				dialog_deptcode.urlParam.filterVal = [ 'ACTIVE','session.compcode'];
 			}
 		},'urlParam', 'radio', 'tab'
 	);
