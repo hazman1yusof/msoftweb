@@ -481,11 +481,6 @@ class PurchaseOrderController extends defaultController
                     ]);
             }
 
-            $purordhd = DB::table("material.purordhd")
-                ->where('idno','=',$request->idno);
-
-            $purordhd_get = $purordhd->first();
-
 
             // $po_dt = DB::table('material.purorddt')
             //     ->where('recno', '=', $purordhd_get->recno)
@@ -523,7 +518,7 @@ class PurchaseOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+            return response($e, 500);
         }
     }
 
