@@ -59,11 +59,11 @@
 		@endforeach 
 	};
 
-	var reqdept = {
-		@foreach($reqdept as $key => $val) 
-			'{{$key}}' : '{{$val}}',
-		@endforeach 
-	};
+	// var reqdept = {
+	// 	@foreach($reqdept as $key => $val) 
+	// 		'{{$key}}' : '{{$val}}',
+	// 	@endforeach 
+	// };
 
 	var totamt_eng = '{{$totamt_eng}}';
 	var total_tax = '{{$total_tax}}';
