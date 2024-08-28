@@ -63,6 +63,7 @@ class PaymentVoucherController extends defaultController
                         ->where('al.doctrantype','=', 'PV')
                         ->where('al.docauditno','=', $auditno)
                         ->where('al.recstatus','!=','DELETE')
+                        ->where('al.recstatus','!=','CANCELLED')
                         ->get();
 
         return view('finance.AP.paymentVoucher.paymentVoucher_mobile',compact('ap_hd','ap_dt','scope','oper'));
@@ -244,7 +245,8 @@ class PaymentVoucherController extends defaultController
                     ->where('docsource','AP')
                     ->where('doctrantype','PV')
                     ->where('docauditno',$request->auditno)
-                    ->where('recstatus','!=','CANCELLED');
+                    ->where('recstatus','!=','CANCELLED')
+                    ->where('recstatus','!=','DELETE');
 
         $return_array=[];
         $got_array=[];
@@ -462,6 +464,7 @@ class PaymentVoucherController extends defaultController
                     ->where('doctrantype','=','PV')
                     ->where('docauditno','=',$auditno)
                     ->where('recstatus','!=','DELETE')
+                    ->where('recstatus','!=','CANCELLED')
                     ->sum('allocamount');
                 
                 DB::table('finance.apacthdr')
@@ -833,6 +836,7 @@ class PaymentVoucherController extends defaultController
                         ->where('doctrantype','=','PV')
                         ->where('docauditno','=',$apacthdr->auditno)
                         ->where('recstatus','!=','DELETE')
+                        ->where('recstatus','!=','CANCELLED')
                         ->update([
                             'recstatus' => 'PREPARED'
                         ]);
@@ -905,6 +909,7 @@ class PaymentVoucherController extends defaultController
                         ->where('doctrantype','=','PV')
                         ->where('docauditno','=',$apacthdr->auditno)
                         ->where('recstatus','!=','DELETE')
+                        ->where('recstatus','!=','CANCELLED')
                         ->update([
                             'recstatus' => 'SUPPORT'
                         ]);
@@ -988,6 +993,7 @@ class PaymentVoucherController extends defaultController
                         ->where('doctrantype','=','PV')
                         ->where('docauditno','=',$apacthdr->auditno)
                         ->where('recstatus','!=','DELETE')
+                        ->where('recstatus','!=','CANCELLED')
                         ->update([
                             'recstatus' => 'VERIFIED'
                         ]);
@@ -1078,6 +1084,7 @@ class PaymentVoucherController extends defaultController
                         ->where('doctrantype','=','PV')
                         ->where('docauditno','=',$apacthdr->auditno)
                         ->where('recstatus','!=','DELETE')
+                        ->where('recstatus','!=','CANCELLED')
                         ->update([
                             'recstatus' => 'POSTED'
                         ]);
@@ -1252,6 +1259,7 @@ class PaymentVoucherController extends defaultController
                         ->where('doctrantype','=','PV')
                         ->where('docauditno','=',$apacthdr->auditno)
                         ->where('recstatus','!=','DELETE')
+                        ->where('recstatus','!=','CANCELLED')
                         ->update([
                             'recstatus' => 'CANCELLED'
                         ]);
@@ -1332,6 +1340,7 @@ class PaymentVoucherController extends defaultController
                         ->where('doctrantype','=','PV')
                         ->where('docauditno','=',$apacthdr->auditno)
                         ->where('recstatus','!=','DELETE')
+                        ->where('recstatus','!=','CANCELLED')
                         ->update([
                             'recstatus' => 'OPEN'
                         ]);
@@ -1364,7 +1373,6 @@ class PaymentVoucherController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->first();
-                
 
             $allocamt = floatval($apalloc->allocamount);
             $balance = floatval($apalloc->balance);
@@ -1385,7 +1393,7 @@ class PaymentVoucherController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'recstatus' => 'CANCELLED',
+                    'recstatus' => 'DELETE',
                     ]);
 
             //calculate total amount from detail
@@ -1395,6 +1403,7 @@ class PaymentVoucherController extends defaultController
                 ->where('docsource','=',$apalloc->docsource)
                 ->where('doctrantype','=',$apalloc->doctrantype)
                 ->where('docauditno','=',$apalloc->docauditno)
+                ->where('recstatus','!=','DELETE')
                 ->where('recstatus','!=','CANCELLED')
                 ->sum('allocamount');
             
@@ -1444,7 +1453,8 @@ class PaymentVoucherController extends defaultController
                             ->where('docsource','=', 'AP')
                             ->where('doctrantype','=', 'PV')
                             ->where('docauditno','=', $request->apacthdr_auditno)
-                            ->where('recstatus','!=','DELETE');
+                            ->where('recstatus','!=','DELETE')
+                            ->where('recstatus','!=','CANCELLED');
 
         $paginate = $alloc_table->paginate($request->rows);
 
@@ -1881,6 +1891,7 @@ class PaymentVoucherController extends defaultController
                                 ->where('apdt.compcode',session('compcode'))
                                 ->where('apdt.auditno',$request->auditno)
                                 ->where('apdt.recstatus','!=','DELETE')
+                                ->where('apdt.recstatus','!=','CANCELLED')
                                 ->where('apdt.source','AP');
                 if(!$apdt->exists()){
                     abort(403,'No delivery Order');
@@ -1901,6 +1912,7 @@ class PaymentVoucherController extends defaultController
                                 ->where('apdt.compcode',session('compcode'))
                                 ->where('apdt.auditno',$request->auditno)
                                 ->where('apdt.recstatus','!=','DELETE')
+                                ->where('apdt.recstatus','!=','CANCELLED')
                                 ->where('apdt.source','AP');
 
                 if(!$apdt->exists()){
@@ -1937,6 +1949,7 @@ class PaymentVoucherController extends defaultController
                                 ->where('aphr.compcode',session('compcode'))
                                 ->where('aphr.auditno',$request->auditno)
                                 ->where('aphr.recstatus','!=','DELETE')
+                                ->where('aphr.recstatus','!=','CANCELLED')
                                 ->where('aphr.source','AP')
                                 ->where('aphr.trantype','IN')
                                 ->first();

@@ -473,6 +473,8 @@ class DeliveryOrderController extends defaultController
                             $status = 'PARTIAL';
                         }
 
+                        dd($status);
+
                         if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
                             throw new \Exception("Quantity delivered exceed quantity order");
                         }
@@ -506,7 +508,7 @@ class DeliveryOrderController extends defaultController
             // dump($queries);
 
 
-            DB::commit();
+            // DB::commit();
         
         } catch (\Exception $e) {
             DB::rollback();
