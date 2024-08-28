@@ -1726,19 +1726,15 @@ class PaymentVoucherController extends defaultController
             ->where('h.auditno','=',$auditno)
             ->first();
 
-        if ($apacthdr->recstatus == "APPROVED"){
+        if ($apacthdr->recstatus == "APPROVED" && $apacthdr->trantype == "PV"){
             $title = " PAYMENT VOUCHER";
-        }ELSE{
-            $title = "DRAFT";
+        }else if ($apacthdr->recstatus == "APPROVED" && $apacthdr->trantype == "PD") {
+            $title = " PAYMENT DEPOSIT";
+        }else if ($apacthdr->recstatus != "APPROVED" && $apacthdr->trantype == "PV") {
+            $title = " DRAFT PAYMENT VOUCHER";
+        }else if ($apacthdr->recstatus != "APPROVED" && $apacthdr->trantype == "PD") {
+            $title = " DRAFT PAYMENT DEPOSIT";
         }
-
-        // $apalloc = DB::table('finance.apalloc')
-        //     ->select('compcode','source','trantype', 'auditno', 'lineno_', 'docsource', 'doctrantype', 'docauditno', 'refsource', 'reftrantype', 'refauditno', 'refamount', 'allocdate', 'allocamount', 'recstatus', 'remarks', 'suppcode', 'reference' )
-        //     ->where('docauditno','=',$auditno)
-        //     ->where('recstatus', '!=', 'CANCELLED')
-        //     ->where('compcode', '=', session('compcode'))
-        //     ->get();
-
 
         $apalloc = DB::table('finance.apalloc')
                     ->select('compcode','source','trantype', 'auditno', 'lineno_', 'docsource', 'doctrantype', 'docauditno', 'refsource', 'reftrantype', 'refauditno', 'refamount', 'allocdate', 'allocamount', 'recstatus', 'remarks', 'suppcode', 'reference' )
