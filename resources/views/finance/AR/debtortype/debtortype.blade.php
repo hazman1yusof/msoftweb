@@ -99,6 +99,11 @@
 						<label class="radio-inline"><input type="radio" name="recstatus" value='ACTIVE' checked>Active</label>
 						<label class="radio-inline"><input type="radio" name="recstatus" value='DEACTIVE' >Deactive</label>
 				  </div>
+					
+					<label class="col-md-2 control-label" for="lastrunningno">Last Running Number</label>
+						<div class="col-md-3">
+							<input id="lastrunningno" name="lastrunningno" type="text" class="form-control input-sm text-uppercase" rdonly>
+				  </div>
 				</div>
 			
 			 <div class="form-group">

@@ -143,7 +143,7 @@ i.fa {
 
 		<div class="panel panel-default">
 			<div class="panel-heading"> Debit Note Data Entry Header 
-				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
+			<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
 			</div>
 			<div class="panel-body">
 				<div class='col-md-12' style="padding:0 0 15px 0">
@@ -268,8 +268,13 @@ i.fa {
 					<hr>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="db_approveddate">Approved Date</label>  
-						<div class="col-md-2"> 
+						<label class="col-md-2 control-label" for="db_reference">Reference No.</label>
+						<div class="col-md-2">
+							<input id="db_reference" name="db_reference" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+						</div>
+						
+						<label class="col-md-3 control-label" for="db_approveddate">Approved Date</label>
+						<div class="col-md-2">
 							<input id="db_approveddate" name="db_approveddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
 									max="<?php echo date('Y-m-d');?>">
 						</div>

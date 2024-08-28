@@ -71,7 +71,8 @@ class DebitNoteController extends defaultController
                         'db.adduser AS db_adduser',
                         'db.adddate AS db_adddate',
                         'db.upduser AS db_upduser',
-                        'db.upddate AS db_upddate'                  
+                        'db.upddate AS db_upddate',
+                        'db.reference AS db_reference'
                     )
                     ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
                     ->where('db.compcode',session('compcode'))
@@ -314,7 +315,8 @@ class DebitNoteController extends defaultController
                 'ponum' => strtoupper($request->db_ponum),
                 'remark' => strtoupper($request->db_remark),
                 'approvedby' => $request->db_approvedby,
-                'approveddate' => strtoupper($request->db_approveddate)
+                'approveddate' => strtoupper($request->db_approveddate),
+                'reference' => $request->db_reference,
             ];
             
             //////////where//////////
@@ -359,7 +361,8 @@ class DebitNoteController extends defaultController
             'orderno' => strtoupper($request->db_orderno),
             'ponum' => strtoupper($request->db_ponum),
             'remark' => strtoupper($request->db_remark),
-            'approvedby' => $request->approvedby
+            'approvedby' => $request->approvedby,
+            'reference' => $request->db_reference,
         ];
         
         try {
@@ -756,7 +759,7 @@ class DebitNoteController extends defaultController
         }
         
         $dbacthdr = DB::table('debtor.dbacthdr as h', 'debtor.debtormast as m')
-                    ->select('h.idno', 'h.compcode', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.entrydate', 'h.debtortype', 'h.debtorcode', 'h.remark', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4')
+                    ->select('h.idno', 'h.compcode', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.entrydate', 'h.debtortype', 'h.debtorcode', 'h.remark', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.reference', 'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4')
                     ->leftJoin('debtor.debtormast as m', 'h.debtorcode', '=', 'm.debtorcode')
                     ->where('h.compcode',session('compcode'))
                     ->where('h.source','=','PB')

@@ -43,11 +43,6 @@
 			<input id='idno' name='idno' type='hidden'>
 			
 			<div class="form-group">
-				<label class="col-md-2 control-label" for="debtorcode">Debtor Code</label>
-				<div class="col-md-3">
-					<input id="debtorcode" name="debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit>
-				</div>
-				
 				<label class="col-md-2 control-label" for="debtortype">Financial Class</label>
 				<div class="col-md-3">
 					<div class='input-group'>
@@ -55,6 +50,11 @@
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					</div>
 					<span class="help-block"></span>
+				</div>
+				
+				<label class="col-md-2 control-label" for="debtorcode">Debtor Code</label>
+				<div class="col-md-3">
+					<input id="debtorcode" name="debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit>
 				</div>
 			</div>
 			
@@ -98,7 +98,11 @@
 				
 				<label class="col-md-2 control-label" for="payto">Payable To</label>
 				<div class="col-md-3">
-					<input id="payto" name="payto" type="text" class="form-control input-sm text-uppercase">
+					<select class="form-control col-md-4" id='payto' name='payto' data-validation="required" data-validation-error-msg="Please Select Value">
+						<option selected></option>
+						<option value='UKM SPECIALIST CENTRE'>UKM SPECIALIST CENTRE</option>
+						<option value='UKM MEDICARE'>UKM MEDICARE</option>
+					</select> 
 				</div>
 			</div>
 			

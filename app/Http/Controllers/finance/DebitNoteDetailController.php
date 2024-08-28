@@ -213,7 +213,7 @@ class DebitNoteDetailController extends defaultController
                     'mrn' => (!empty($dbacthdr_obj->mrn))?$dbacthdr_obj->mrn:null,
                     'episno' => (!empty($dbacthdr_obj->episno))?$dbacthdr_obj->episno:null,
                     'deptcode' => strtoupper($request->deptcode),
-                    'document'  => strtoupper($request->document),
+                    // 'document'  => strtoupper($request->document),
                     'GSTCode' => strtoupper($request->GSTCode),
                     'AmtB4GST' => floatval($gstcode_obj->AmtB4GST),
                     'tot_gst' => floatval($gstcode_obj->tot_gst),
@@ -274,7 +274,7 @@ class DebitNoteDetailController extends defaultController
                 ->where('idno','=',$request->idno)
                 ->update([
                     'deptcode' => strtoupper($request->deptcode),
-                    'document'=> strtoupper($request->document),
+                    // 'document'=> strtoupper($request->document),
                     'GSTCode'=> strtoupper($request->GSTCode),
                     'AmtB4GST' => $gstcode_obj->AmtB4GST,
                     'tot_gst' => $gstcode_obj->tot_gst,
@@ -336,7 +336,7 @@ class DebitNoteDetailController extends defaultController
                     ->where('idno','=',$value['idno'])
                     ->update([
                         'deptcode' => $value['deptcode'],
-                        'document' => strtoupper($value['document']),
+                        // 'document' => strtoupper($value['document']),
                         'GSTCode' => strtoupper($value['GSTCode']),
                         'AmtB4GST' => $gstcode_obj->AmtB4GST,
                         'tot_gst' => $gstcode_obj->tot_gst,
@@ -417,7 +417,7 @@ class DebitNoteDetailController extends defaultController
                     'amount' => $totalAmount
                 ]);
                 
-            echo $totalAmount;
+            // echo $totalAmount;
             
             DB::commit();
             return response($totalAmount,200);
