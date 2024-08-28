@@ -32,6 +32,12 @@ i.fa {
 	white-space: pre-wrap !important;
 }
 
+div#fail_msg{
+  padding-left: 40px;
+  padding-bottom: 10px;
+  color: darkred;
+}
+
 .data_info .col-md-2.minuspad-15{
 	width: 12.5% !important;
 }
@@ -284,8 +290,8 @@ i.fa {
 			<div class="panel-heading">Purchase Request Header
 				<a class='pull-right pointer text-primary' id='pdfgen2' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
 			</div>
-				<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
-					<form class='form-horizontal' style='width:99%' id='formdata'>
+				<div class="panel-body" style="position: relative;padding: 5px 0px 0px 0px !important">
+					<form class='form-horizontal' id='formdata'>
 							{{ csrf_field() }}
 							<input id="referral" name="referral" type="hidden">
 							<input id="purreqhd_idno" name="purreqhd_idno" type="hidden">
@@ -404,13 +410,13 @@ i.fa {
 					  			</div>
 
 					  			<div class="col-md-2 minuspad-15">
-										<label class="control-label" for="recommended1by">Recommended 1 By</label>  
+										<label class="control-label" for="recommended1by">Recommend 1</label>  
 						  			<input id="recommended1by" name="recommended1by" type="text" maxlength="30" class="form-control input-sm" rdonly>
 						  			<i class="fa fa-info-circle my_remark" aria-hidden="true" id='recommended1_remark_i'></i>
 					  			</div>
 
 					  			<div class="col-md-2 minuspad-15">
-										<label class="control-label" for="recommended2by">Recommended 2 By</label>  
+										<label class="control-label" for="recommended2by">Recommend 2</label>  
 						  			<input id="recommended2by" name="recommended2by" type="text" maxlength="30" class="form-control input-sm" rdonly>
 						  			<i class="fa fa-info-circle my_remark" aria-hidden="true" id='recommended2_remark_i'></i>
 					  			</div>
@@ -453,12 +459,12 @@ i.fa {
 					  			</div>
 
 					  			<div class="col-md-2 minuspad-15">
-										<label class="control-label" for="recommended1date">Recommended 1 Date</label>  
+										<label class="control-label" for="recommended1date">Recommend1 Date</label>  
 						  			<input id="recommended1date" name="recommended1date" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
 					  			<div class="col-md-2 minuspad-15">
-										<label class="control-label" for="recommended2date">Recommended 2 Date</label>  
+										<label class="control-label" for="recommended2date">Recommend2 Date</label>  
 						  			<input id="recommended2date" name="recommended2date" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 
@@ -489,6 +495,7 @@ i.fa {
 			<div class='panel panel-info'>
 				<div class="panel-heading">Purchase Request Detail</div>
 					<div class="panel-body" style="padding:4px !important">
+						<div id="fail_msg"></div>
 						<form id='formdata2' class='form-vertical' style='width:99%'>
 							<!-- <input id="gstpercent" name="gstpercent" type="hidden">
 							<input id="convfactor_uom" name="convfactor_uom" type="hidden" value='1'>

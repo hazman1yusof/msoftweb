@@ -148,19 +148,36 @@ class PurchaseRequestController extends defaultController
 
 
         DB::beginTransaction();
-
-        // foreach ($field as $key => $value) {
-        //     if($value =='remarks' || $value =='prdept' || $value =='suppcode' || $value =='reqdept'){
-        //         $array_insert[$value] = strtoupper($request[$request->field[$key]]);
-        //     }else{
-        //         $array_insert[$value] = $request[$request->field[$key]];
-        //     }
-        // }
         
         try {
 
-            // $request_no = $this->request_no('PR', $request->purreqhd_reqdept);
-            // $recno = $this->recno('PUR','PR');
+            $reqdept = DB::table('sysdb.department')
+                        ->where('compcode',session('compcode'))
+                        ->where('recstatus','ACTIVE')
+                        ->where('deptcode',$request->purreqhd_reqdept)
+                        ->exists();
+            if(!$reqdept){
+                throw new \Exception("Request department doesnt exists");
+            }
+
+            $prdept = DB::table('sysdb.department')
+                        ->where('compcode',session('compcode'))
+                        ->where('recstatus','ACTIVE')
+                        ->where('purdept','1')
+                        ->where('deptcode',$request->purreqhd_prdept)
+                        ->exists();
+            if(!$prdept){
+                throw new \Exception("Purchase department doesnt exists");
+            }
+
+            $suppcode = DB::table('material.supplier')
+                        ->where('compcode',session('compcode'))
+                        ->where('recstatus','ACTIVE')
+                        ->where('suppcode',$request->purreqhd_suppcode)
+                        ->exists();
+            if(!$suppcode){
+                throw new \Exception("supplier doesnt exists");
+            }
 
             $table = DB::table("material.purreqhd");
 
@@ -175,7 +192,7 @@ class PurchaseRequestController extends defaultController
                 'recstatus' => 'OPEN',
                 'reqdept' => strtoupper($request->purreqhd_reqdept),
                 'prdept' => strtoupper($request->purreqhd_prdept),
-                'purreqdt' => strtoupper($request->purreqhd_purreqdt),
+                'purreqdt' => $request->purreqhd_purreqdt,
                 'suppcode' => strtoupper($request->purreqhd_suppcode),
                 'totamount' => $request->purreqhd_totamount,
                 'remarks' => strtoupper($request->purreqhd_remarks),
@@ -209,41 +226,57 @@ class PurchaseRequestController extends defaultController
     }
 
     public function edit(Request $request){
-        if(!empty($request->fixPost)){
-            $field = $this->fixPost2($request->field);
-            $idno = substr(strstr($request->table_id,'_'),1);
-        }else{
-            $field = $request->field;
-            $idno = $request->table_id;
-        }
-
         DB::beginTransaction();
 
-        $table = DB::table("material.purreqhd");
-
-        $array_update = [
-            'unit' => session('unit'),
-            'compcode' => session('compcode'),
-            'upduser' => session('username'),
-            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'reqdept' => strtoupper($request->purreqhd_reqdept),
-            'prdept' => strtoupper($request->purreqhd_prdept),
-            'purreqdt' => strtoupper($request->purreqhd_purreqdt),
-            'suppcode' => strtoupper($request->purreqhd_suppcode),
-            'totamount' => $request->purreqhd_totamount,
-            'remarks' => strtoupper($request->purreqhd_remarks),
-            'perdisc' => $request->purreqhd_perdisc,
-            'amtdisc' => $request->purreqhd_amtdisc,
-            'subamount' => $request->purreqhd_subamount,
-            'prtype' => $request->purreqhd_prtype,
-
-        ];
-
-        // foreach ($field as $key => $value) {
-        //     $array_update[$value] = strtoupper($request[$request->field[$key]]);
-        // }
-
         try {
+
+            if(!empty($request->fixPost)){
+                $field = $this->fixPost2($request->field);
+                $idno = substr(strstr($request->table_id,'_'),1);
+            }else{
+                $field = $request->field;
+                $idno = $request->table_id;
+            }
+
+            $prdept = DB::table('sysdb.department')
+                        ->where('compcode',session('compcode'))
+                        ->where('recstatus','ACTIVE')
+                        ->where('purdept','1')
+                        ->where('deptcode',$request->purreqhd_prdept)
+                        ->exists();
+            if(!$prdept){
+                throw new \Exception("Purchase department doesnt exists");
+            }
+
+            $suppcode = DB::table('material.supplier')
+                        ->where('compcode',session('compcode'))
+                        ->where('recstatus','ACTIVE')
+                        ->where('suppcode',$request->purreqhd_suppcode)
+                        ->exists();
+            if(!$suppcode){
+                throw new \Exception("supplier doesnt exists");
+            }
+
+            $table = DB::table("material.purreqhd");
+
+            $array_update = [
+                'unit' => session('unit'),
+                'compcode' => session('compcode'),
+                'upduser' => session('username'),
+                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                // 'reqdept' => strtoupper($request->purreqhd_reqdept),
+                'prdept' => strtoupper($request->purreqhd_prdept),
+                'purreqdt' => $request->purreqhd_purreqdt,
+                'suppcode' => strtoupper($request->purreqhd_suppcode),
+                'totamount' => $request->purreqhd_totamount,
+                'remarks' => strtoupper($request->purreqhd_remarks),
+                'perdisc' => $request->purreqhd_perdisc,
+                'amtdisc' => $request->purreqhd_amtdisc,
+                'subamount' => $request->purreqhd_subamount,
+                // 'prtype' => $request->purreqhd_prtype,
+
+            ];
+
             //////////where//////////
             $table = $table->where('idno','=',$request->purreqhd_idno);
 
@@ -314,36 +347,7 @@ class PurchaseRequestController extends defaultController
                         ]);
 
                 }
-                //
-
-                // if(!$this->skip_authorization_2($request,$purreqhd_get)){
-
-                    // 1. check authorization
-                    // $authorise = DB::table('material.authdtl')
-                    //     ->where('compcode','=',session('compcode'))
-                    //     ->where('trantype','=','PR')
-                    //     ->where('cando','=', 'ACTIVE')
-                    //     ->where('recstatus','=','SUPPORT')
-                    //     ->where('deptcode','=',$purreqhd_get->reqdept)
-                    //     ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                    // if(!$authorise->exists()){
-
-                    //     $authorise = DB::table('material.authdtl')
-                    //         ->where('compcode','=',session('compcode'))
-                    //         ->where('trantype','=','PR')
-                    //         ->where('cando','=', 'ACTIVE')
-                    //         ->where('recstatus','=','SUPPORT')
-                    //         ->where('deptcode','=','ALL')
-                    //         // ->where('deptcode','=','all')
-                    //         ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                    //         if(!$authorise->exists()){
-                    //             throw new \Exception("The user doesnt have authority");
-                    //         }
-
-                    // }
-
+                
                     // $authorise_use = $authorise->first();
                     DB::table("material.queuepr")
                         ->insert([

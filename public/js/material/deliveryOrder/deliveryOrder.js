@@ -564,6 +564,14 @@ $(document).ready(function () {
 				textfld:"",
 				msg:data.responseText,
 			});
+			mycurrency.formatOn();
+			dialog_authorise.on();
+			dialog_prdept.on();
+			dialog_suppcode.on();
+			dialog_credcode.on();
+			dialog_deldept.on();
+			dialog_reqdept.on();
+			dialog_srcdocno.on();
 		}).done(function (data) {
 			hideatdialogForm(false);
 
@@ -922,7 +930,7 @@ $(document).ready(function () {
                     }
                 }
 			},
-			{ label: 'Batch No', name: 'batchno', width: 170, classes: 'wrap', editable:true,editoptions:{readonly: "readonly"},
+			{ label: 'Batch No', name: 'batchno', width: 170, classes: 'wrap', editable:true,
 					maxlength: 100,
 			},
 			{ label: 'PO Line No', name: 'polineno', width: 75, classes: 'wrap', editable:false, hidden:true},
@@ -978,6 +986,9 @@ $(document).ready(function () {
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
+		},
+		onSelectRow: function (rowid, selected) {
+			myfail_msg.clear_fail();
 		},
 		gridComplete: function(){
 			$("#jqGrid2").find(".remarks_button").on("click", function(e){
@@ -2446,14 +2457,14 @@ $(document).ready(function () {
 			[
 				{label: 'Item Code',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label: 'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
+				{label: 'Quantity On Hand',name:'p_qtyonhand',width:100,classes:'pointer',},
 				{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
 				{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
 				{label: 'Group Code', name: 'p_groupcode', width: 100, classes: 'pointer' },
 				{label: 'Exp', name: 'p_expdtflg', width: 50, classes: 'pointer',formatter:formatterstatus_tick_number,unformat:unformatstatus_tick_number },
 				{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
 				{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
-				{label: 'Unit', name:'s_unit', width: 50},
+				{label: 'Unit', name:'p_unit', width: 50},
 			],
 			urlParam: {
 				open:function(){
@@ -2581,14 +2592,14 @@ $(document).ready(function () {
 					let newcolmodel = [
 							{label: 'Item Code',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 							{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true, checked:true},
-							{label: 'Quantity On Hand',name:'s_qtyonhand',width:100,classes:'pointer',},
+							{label: 'Quantity On Hand',name:'p_qtyonhand',width:100,classes:'pointer',},
 							{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
 							{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
 							{label: 'Group Code', name: 'p_groupcode', width: 100, classes: 'pointer' },
 							{label: 'Exp', name: 'p_expdtflg', width: 50, classes: 'pointer',formatter:formatterstatus_tick_number,unformat:unformatstatus_tick_number },
 							{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
 							{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
-							{label: 'Unit', name:'s_unit'},
+							{label: 'Unit', name:'p_unit'},
 						]
 
 

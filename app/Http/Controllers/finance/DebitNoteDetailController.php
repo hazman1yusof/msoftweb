@@ -48,8 +48,8 @@ class DebitNoteDetailController extends defaultController
     public function get_table_dtl(Request $request){
         
         $table = DB::table('debtor.dbactdtl')
-                    ->where('source','=',$request->source)
-                    ->where('trantype','=',$request->trantype)
+                    ->where('source','=','PB')
+                    ->where('trantype','=','DN')
                     ->where('auditno','=',$request->auditno)
                     ->where('compcode','=',session('compcode'))
                     ->where('recstatus','<>','DELETE')
@@ -413,6 +413,7 @@ class DebitNoteDetailController extends defaultController
                 ->where('trantype','=',$request->trantype)
                 ->where('auditno','=',$request->auditno)
                 ->update([
+                    'outamount' => $totalAmount, 
                     'amount' => $totalAmount
                 ]);
                 

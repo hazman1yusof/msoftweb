@@ -251,8 +251,8 @@ div#fail_msg{
 					<span class='fa fa-print'></span> Print 
 				</a>
 			</div>
-			<div class="panel-body" style="position: relative;">
-				<form class='form-horizontal' style='width:99%' id='formdata'>
+			<div class="panel-body" style="position: relative;padding: 5px 5px 0px 0px !important">
+				<form class='form-horizontal' id='formdata'>
 						{{ csrf_field() }}
 						<input id="delordhd_trantype" name="delordhd_trantype" type="hidden">
 						<input id="delordhd_idno" name="delordhd_idno" type="hidden">

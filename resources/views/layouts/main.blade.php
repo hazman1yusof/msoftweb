@@ -224,7 +224,7 @@
 				text-align: center;
 				color: #286090;
 				background: #d9edf7;
-				width: 80%;
+				width: 100%;
 			    margin: auto !important;
 			    padding: 5px 5px 15px 5px !important;
 			    border-top-left-radius: 30px;

@@ -172,7 +172,7 @@ class PurchaseOrderController extends defaultController
 
                 ////ni kalu dia amik dari pr
                 ////amik detail dari pr sana, save dkt po detail, amik total amount
-                $totalAmount = $this->save_dt_from_othr_pr($request->referral,$recno,$purordno,$compcode);
+                $totalAmount = $this->save_dt_from_othr_pr($request->referral,$recno,$purordno,$compcode,$request->purordhd_deldept);
 
                 $purreqno = $request->purordhd_purreqno;
                 // $purordno = $request->purordhd_purordno;
@@ -295,7 +295,7 @@ class PurchaseOrderController extends defaultController
                 $totalAmount = $request->purordhd_totamount;
                 //4. Update delorddt
                 if(!empty($request->referral)){
-                    $totalAmount = $this->save_dt_from_othr_pr($request->referral,$purordhd_obj->recno,$purordhd_obj->purordno,session('compcode'));
+                    $totalAmount = $this->save_dt_from_othr_pr($request->referral,$purordhd_obj->recno,$purordhd_obj->purordno,session('compcode'),$request->purordhd_deldept);
 
                     // $purreqno = $request->purordhd_purreqno;
                     // $purordno = $request->purordhd_purordno;
@@ -991,22 +991,44 @@ class PurchaseOrderController extends defaultController
 
      //    }
 
-    public function save_dt_from_othr_pr($refer_recno,$recno,$purordno,$compcode){
+    public function save_dt_from_othr_pr($refer_recno,$recno,$purordno,$compcode,$del_dept){
         $pr_dt = DB::table('material.purreqdt')
                 ->where('recno', '=', $refer_recno)
                 ->where('compcode', '=', session('compcode'))
-                ->where('unit', '=', session('unit'))
+                // ->where('unit', '=', session('unit'))
                 ->where('recstatus', '<>', 'DELETE')
                 ->get();
 
-        $pr_hd = DB::table('material.purreqdt')
+        $pr_hd = DB::table('material.purreqhd')
                 ->where('recno', '=', $refer_recno)
                 ->where('compcode', '=', session('compcode'))
-                ->where('unit', '=', session('unit'))
+                // ->where('unit', '=', session('unit'))
                 ->first();
 
         foreach ($pr_dt as $key => $value) {
             ///1. insert detail we get from existing purchase request
+
+            $product = DB::table("material.product as p")
+                        ->where('p.compcode',session('compcode'))
+                        ->where('p.unit',session('unit'))
+                        ->where('p.itemcode',$value->itemcode)
+                        ->where('p.uomcode',$value->uomcode);
+            if(!$product->exists()){
+                throw new \Exception("Product Doesnt Exists for item: ".$value->itemcode." uomcode: ".$value->uomcode);
+            }
+
+            $stockloc = DB::table("material.stockloc as s")
+                        ->where('s.compcode',session('compcode'))
+                        ->where('s.unit',session('unit'))
+                        ->where('s.itemcode',$value->itemcode)
+                        ->where('s.uomcode',$value->uomcode)
+                        ->where('s.year',Carbon::now("Asia/Kuala_Lumpur")->year)
+                        ->where('s.deptcode',$del_dept);
+            if(!$stockloc->exists()){
+                throw new \Exception("Stock Location for this Product Doesnt Exists for item: ".$value->itemcode." uomcode: ".$value->uomcode." Department: ".$del_dept." year ".Carbon::now("Asia/Kuala_Lumpur")->year);
+            }
+
+
             $table = DB::table("material.purorddt");
             $table->insert([
                 'compcode' => $compcode, 

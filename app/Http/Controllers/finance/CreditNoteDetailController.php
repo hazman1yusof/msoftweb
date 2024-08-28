@@ -244,7 +244,7 @@ class CreditNoteDetailController extends defaultController
                 ->where('auditno','=',$request->auditno)
                 ->update([
                     'amount' => $totalAmount
-                  
+                    'outamount' => $totalAmount, 
                 ]);
 
             DB::commit();

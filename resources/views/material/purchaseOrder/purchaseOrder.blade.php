@@ -353,8 +353,8 @@ div#fail_msg{
 					<span class='fa fa-print'></span> Print 
 				</a>
 			</div>
-				<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
-					<form class='form-horizontal' style='width:99%' id='formdata'>
+				<div class="panel-body" style="position: relative;padding: 5px 5px 0px 0px !important">
+					<form class='form-horizontal' id='formdata'>
 						{{ csrf_field() }}
 						<input id="purordhd_idno" name="purordhd_idno" type="hidden">
 						<input id="referral" name="referral" type="hidden">
@@ -403,7 +403,7 @@ div#fail_msg{
 								<label class="col-md-2 control-label" for="purordhd_purreqno">Req No</label>	 
 									<div class="col-md-2">
 										<div class='input-group'>
-											<input id="purordhd_purreqno" name="purordhd_purreqno" type="text" maxlength="12" class="form-control input-sm text-uppercase">
+											<input id="purordhd_purreqno" name="purordhd_purreqno" type="text" maxlength="12" class="form-control input-sm text-uppercase" frozeOnEdit rdonly>
 											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 										</div>
 									</div>

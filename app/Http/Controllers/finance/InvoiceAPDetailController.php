@@ -89,8 +89,6 @@ class InvoiceAPDetailController extends defaultController
 
         try {
 
-
-           
             $auditno = $request->auditno;
             
             $apacthdr = DB::table("finance.apacthdr")
