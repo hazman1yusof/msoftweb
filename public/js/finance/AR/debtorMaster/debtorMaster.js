@@ -287,6 +287,7 @@ $(document).ready(function (){
 			// { label: 'adddate', name: 'adddate', width: 90, hidden: true },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
 			{ label: 'upddate', name: 'upddate', width: 90, hidden: true },
+			{ label: 'payto', name: 'payto', width: 90, hidden: true },
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true },
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true },
 			{ label: 'Status', name: 'recstatus', width: 50, classes: 'wrap',

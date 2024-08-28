@@ -56,6 +56,7 @@ hr {
                         <td>
                             <p>Document No &nbsp; : &nbsp; DN-{{str_pad($dbacthdr->auditno, 5, "0", STR_PAD_LEFT)}}</p>
                             <p>Date <span style="margin-left: 50px;"> : &nbsp; {{\Carbon\Carbon::parse($dbacthdr->entrydate)->format('d/m/Y')}}</p>
+                            <p>Reference No &nbsp; : &nbsp; {{$dbacthdr->reference}}</p>
                         </td>
                     </tr>
                 </table>

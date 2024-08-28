@@ -215,6 +215,7 @@ $(document).ready(function () {
 			{ label: 'billdebtor', name: 'db_billdebtor', width: 20, hidden: true },
 			{ label: 'approvedby', name: 'db_approvedby', width: 20, hidden: true },
 			{ label: 'db_paymode', name: 'db_paymode', width: 20, hidden: true },
+			{ label: 'db_reference', name: 'db_reference', width: 20, hidden: true },
 			{ label: 'mrn', name: 'db_mrn', width: 10, hidden: true },
 			{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
@@ -670,16 +671,15 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'AuditNo', name: 'auditno', hidden: true },
-			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true },
-			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true },
-			{ label: 'Department', name: 'deptcode', width: 150, classes: 'wrap', canSearch: true, editable: true,
-				editrules:{required: true,custom:true, custom_func:cust_rules},
-				formatter: showdetail,
-				edittype:'custom',	editoptions:
-					{
-						custom_element:deptcodeCustomEdit,
-						custom_value:galGridCustomValue
-					},
+			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden: true, editable: true },
+			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden: true, editable: true },
+			{ label: 'Department', name: 'deptcode', width: 150, classes: 'wrap', canSearch: true, editable: true, 
+				editrules: { required: true, custom: true, custom_func: cust_rules },
+				formatter: showdetail, edittype: 'custom', 
+				editoptions: {
+					custom_element: deptcodeCustomEdit,
+					custom_value: galGridCustomValue
+				},
 			},
 			// { label: 'Category', name: 'category', width: 150, edittype:'text', classes: 'wrap', editable: true,
 			// 	editrules:{required: true,custom:true, custom_func:cust_rules},
@@ -690,12 +690,12 @@ $(document).ready(function () {
 			// 			custom_value:galGridCustomValue
 			// 		},
 			// },
-			{ label: 'Document', name: 'document', width: 120, classes: 'wrap', editable: true,
-				//editrules:{required: true},
-				edittype:"text",
-				editoptions: {style: "text-transform: uppercase"},
+			{ label: 'Document', name: 'document', width: 120, classes: 'wrap', editable: true, hidden: true, 
+				// editrules: { required: true },
+				edittype: "text",
+				editoptions: { style: "text-transform: uppercase" },
 			},
-			{ label: 'GST Code', name: 'GSTCode', width: 90, classes: 'wrap', editable: true,
+			{ label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
 				formatter: showdetail,
 				edittype:'custom',	editoptions:
@@ -973,9 +973,9 @@ $(document).ready(function () {
 							}
 							$.post( "./DebitNoteDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, 
 							function( data ){
-							}).fail(function (data) {
+							}).fail(function (data){
 								//////////////////errorText(dialog,data.responseText);
-							}).done(function (data) {
+							}).done(function (data){
 								$('#db_amount').val(data);
 								// $('#amount').val(data);
 								refreshGrid("#jqGrid2", urlParam2);
@@ -1065,7 +1065,7 @@ $(document).ready(function () {
 					'idno' : data.idno,
 					'deptcode' : $("#jqGrid2 input#"+ids[i]+"_deptcode").val(),
 					// 'category' : $("#jqGrid2 input#"+ids[i]+"_category").val(),
-					'document' : $("#jqGrid2 input#"+ids[i]+"_document").val(),
+					// 'document' : $("#jqGrid2 input#"+ids[i]+"_document").val(),
 					'GSTCode' : $("#jqGrid2 input#"+ids[i]+"_GSTCode").val(),
 					'AmtB4GST' : $("#jqGrid2 input#"+ids[i]+"_AmtB4GST").val(),
 					'tot_gst' : $("#jqGrid2 input#"+ids[i]+"_tot_gst").val(),
@@ -1528,7 +1528,7 @@ $(document).ready(function () {
 					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
 				}
-				$("#jqGrid2 #"+id_optid+"_document").focus().select();
+				$("#jqGrid2 #"+id_optid+"_GSTCode").focus().select();
 			},
 			loadComplete: function(data,obj){
 				var searchfor = $("#jqGrid2 input#"+obj.id_optid+"_deptcode").val()
@@ -1577,14 +1577,14 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE', 'AR', 'Debit Note']
 			},
 			ondblClickRow:function(){
-				$('#db_approveddate').focus();
+				$('#db_reference').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#db_approveddate').focus();
+					$('#db_reference').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1705,17 +1705,17 @@ $(document).ready(function () {
 		'customer', 'debtor.debtormast', '#db_debtorcode', errorField,
 		{
 			colModel: [
-				{ label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true },
+				{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true, checked: true },
 			],
 			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','ACTIVE']
+				filterCol: ['compcode','recstatus'],
+				filterVal: ['session.compcode','ACTIVE']
 			},
-			ondblClickRow: function () {
+			ondblClickRow: function (){
 				$('#db_entrydate').focus();
 			},
-			gridComplete: function(obj){
+			gridComplete: function (obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
@@ -1727,9 +1727,9 @@ $(document).ready(function () {
 			}
 		}, {
 			title: "Select Customer",
-			open: function(){
-				dialog_CustomerDN.urlParam.filterCol=['compcode','recstatus'];
-				dialog_CustomerDN.urlParam.filterVal=['session.compcode','ACTIVE'];
+			open: function (){
+				dialog_CustomerDN.urlParam.filterCol = ['compcode','recstatus'];
+				dialog_CustomerDN.urlParam.filterVal = ['session.compcode','ACTIVE'];
 			}
 		},'urlParam','radio','tab'
 	);

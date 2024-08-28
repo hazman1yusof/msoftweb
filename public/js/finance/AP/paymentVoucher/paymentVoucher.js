@@ -4,6 +4,8 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 var mycurrency =new currencymode(['#apacthdr_outamount', '#apacthdr_amount']);
 $(document).ready(function () {
+    $('#apacthdr_actdate').attr('disabled', 'disabled');
+
 	/////////////////////////////////////////validation//////////////////////////
 	$.validate({
 		modules : 'sanitize',
@@ -116,7 +118,7 @@ $(document).ready(function () {
 				dialog_cheqno.off();
 				dialog_suppcode.off();
 				dialog_payto.off();
-				$(".noti").empty();
+				$(".notiH").empty();
 				$("#refresh_jqGrid").click();
 				refreshGrid("#jqGrid2",null,"kosongkan");
 				errorField.length=0;
@@ -307,6 +309,7 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 			$('#error_infront').text('');
+			
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
 			let scope = $("#recstatus_use").val();
 
@@ -317,12 +320,21 @@ $(document).ready(function () {
 				$("#pg_jqGridPager2 table").show();
 			}
 
+			if(selrowData("#jqGrid").apacthdr_trantype=='PV'){
+				$('#jqGrid3_c').show();
+				urlParam2.apacthdr_auditno=selrowData("#jqGrid").apacthdr_auditno;
+				$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft));
+				refreshGrid("#jqGrid3",urlParam2);
+
+			} else {
+				$('#jqGrid3_c').hide();
+			}
+
 			$('#auditnodepan').text(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
 			$('#trantypedepan').text(selrowData("#jqGrid").apacthdr_trantype);
 			$('#docnodepan').text(selrowData("#jqGrid").apacthdr_document);
 			$('#idno').val(selrowData("#jqGrid").apacthdr_idno);
 
-			urlParam2.apacthdr_auditno=selrowData("#jqGrid").apacthdr_auditno;
 
 			refreshGrid("#jqGrid3",urlParam2);
 			$("#pdfgen1").attr('href','./paymentVoucher/showpdf?auditno='+selrowData("#jqGrid").apacthdr_auditno);
@@ -333,14 +345,30 @@ $(document).ready(function () {
 
 			populate_form(selrowData("#jqGrid"));
 			
+			if(stat=='APPROVED' || stat=='PREPARED' || stat=='VERIFIED' || stat=='SUPPORT'){
+				$("#glyphicon-edit").hide();
+			}else{
+				$("#glyphicon-edit").show();
+			}
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
-			if(stat=='POSTED'){
+			if(stat=='APPROVED' || stat=='PREPARED' || stat=='VERIFIED' || stat=='SUPPORT'){
 				$("#jqGridPager td[title='View Selected Row']").click();
+				if(selrowData("#jqGrid").apacthdr_trantype=='PV'){
+					$('#save').hide()
+				} else {
+					$('#save').hide();
+				}
+				$("#glyphicon-edit").hide();
+
 			}else{
 				$("#jqGridPager td[title='Edit Selected Row']").click();
-
+				if(selrowData("#jqGrid").apacthdr_trantype=='PV'){
+					$('#save').hide()
+				} else {
+					$('#save').show();
+				}
 				if (rowid != null) {
 					rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				}
@@ -377,8 +405,15 @@ $(document).ready(function () {
 			});
 			cbselect.refresh_seltbl();
 			cbselect.show_hide_table();
+			
 		},
 		loadComplete: function(){
+			let stat = selrowData("#jqGrid").apacthdr_recstatus;
+			if(stat=='APPROVED' || stat=='PREPARED' || stat=='VERIFIED' || stat=='SUPPORT'){
+				$("#glyphicon-edit").hide();
+			}else{
+				$("#glyphicon-edit").show();
+			}
 			//calc_jq_height_onchange("jqGrid");
 		},
 		
@@ -638,7 +673,7 @@ $(document).ready(function () {
 
 		text_success1('#apacthdr_postdate')
 		text_success1('#apacthdr_actdate')
-		$("#dialogForm .noti ol").empty();
+		$("#dialogForm .notiH ol").empty();
 		var failmsg=[];
 
 		if(moment(apacthdr_postdate).isBefore(apacthdr_actdate)){
@@ -647,19 +682,19 @@ $(document).ready(function () {
 			text_error1('#apacthdr_actdate')
 		}
 
-		if(moment(apacthdr_postdate).isAfter(moment())){
-			failmsg.push("Post Date cannot be higher than today");
-			text_error1('#apacthdr_postdate')
-		}
+		// if(moment(apacthdr_postdate).isAfter(moment())){
+		// 	failmsg.push("Post Date cannot be higher than today");
+		// 	text_error1('#apacthdr_postdate')
+		// }
 
-		if(moment(apacthdr_actdate).isAfter(moment())){
-			failmsg.push("Doc Date cannot be higher than today");
-			text_error1('#apacthdr_actdate')
-		}
+		// if(moment(apacthdr_actdate).isAfter(moment())){
+		// 	failmsg.push("Doc Date cannot be higher than today");
+		// 	text_error1('#apacthdr_actdate')
+		// }
 
 		if(failmsg.length){
 			failmsg.forEach(function(element){
-				$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
+				$('#dialogForm .notiH ol').prepend('<li>'+element+'</li>');
 			});
 			if(nkreturn)return false;
 		}else{
@@ -1324,7 +1359,7 @@ $(document).ready(function () {
 		dialog_payto.on();
 		enableForm('#formdata');
 		rdonly('#formdata');
-		$(".noti").empty();
+		$(".notiH").empty();
 		refreshGrid("#jqGrid2",urlParam2);
 		errorField.length=0;
 	});

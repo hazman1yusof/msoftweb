@@ -372,6 +372,9 @@ i.fa {
 								<input id="apacthdr_pvno" name="apacthdr_pvno" type="text" class="form-control input-sm text-uppercase" maxlength="30" rdonly>
 				  			</div>
 					</div>
+					<div class="panel-body">
+						<div class="notiH" style="font-size: bold; color: red"><ol></ol></div>
+					</div>
 
 					<!-- <hr/>
 
