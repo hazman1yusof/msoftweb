@@ -309,6 +309,7 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 			$('#error_infront').text('');
+			
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
 			let scope = $("#recstatus_use").val();
 
@@ -344,6 +345,11 @@ $(document).ready(function () {
 
 			populate_form(selrowData("#jqGrid"));
 			
+			if(stat=='APPROVED' || stat=='PREPARED' || stat=='VERIFIED' || stat=='SUPPORT'){
+				$("#glyphicon-edit").hide();
+			}else{
+				$("#glyphicon-edit").show();
+			}
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
@@ -354,6 +360,8 @@ $(document).ready(function () {
 				} else {
 					$('#save').hide();
 				}
+				$("#glyphicon-edit").hide();
+
 			}else{
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 				if(selrowData("#jqGrid").apacthdr_trantype=='PV'){
@@ -397,8 +405,15 @@ $(document).ready(function () {
 			});
 			cbselect.refresh_seltbl();
 			cbselect.show_hide_table();
+			
 		},
 		loadComplete: function(){
+			let stat = selrowData("#jqGrid").apacthdr_recstatus;
+			if(stat=='APPROVED' || stat=='PREPARED' || stat=='VERIFIED' || stat=='SUPPORT'){
+				$("#glyphicon-edit").hide();
+			}else{
+				$("#glyphicon-edit").show();
+			}
 			//calc_jq_height_onchange("jqGrid");
 		},
 		
