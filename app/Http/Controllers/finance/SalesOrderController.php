@@ -295,7 +295,7 @@ class SalesOrderController extends defaultController
                 'lineno_' => 1,
                 // 'invno' => $invno,
                 'deptcode' => strtoupper($request->db_deptcode),
-                'quoteno' => strtoupper($request->db_quoteno),
+                'quoteno' =>  (!empty($request->db_quoteno))?$request->db_quoteno:null,
                 'unit' => session('unit'),//department.sector
                 'debtorcode' => strtoupper($request->db_debtorcode),
                 'payercode' => strtoupper($request->db_debtorcode),
@@ -348,8 +348,14 @@ class SalesOrderController extends defaultController
                         ->where('compcode',session('compcode'))
                         ->where('source','SL')
                         ->where('trantype','RECNO')
-                        ->where('quoteno',$quoteno)
-                        ->first();
+                        ->where('recstatus','!=','COMPLETED')
+                        ->where('quoteno',$quoteno);
+
+        if(!$qo_hd->exists()){
+            throw new \Exception('Wrong Quotation, please check',500);
+        }
+
+        $qo_hd = $qo_hd->first();
 
         $qo_dt = DB::table('finance.salesum')
                         ->where('compcode',session('compcode'))

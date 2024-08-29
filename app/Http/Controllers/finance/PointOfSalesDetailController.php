@@ -1418,9 +1418,34 @@ class PointOfSalesDetailController extends defaultController
                         ->where('source','=',$source)
                         ->where('trantype','=',$trantype)
                         ->where('billno','=',$auditno)
-                        ->count('rowno');
+                        ->max('rowno');
             
             $li=intval($sqlln)+1;
+
+            $stockloc = DB::table('material.stockloc')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('uomcode','=',$request->uom)
+                    ->where('itemcode','=',$request->chggroup)
+                    ->where('deptcode','=',$dbacthdr->deptcode)
+                    ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+
+            if($stockloc->exists()){
+                $stockloc = $stockloc->first();
+            }else{
+                throw new \Exception("Stockloc not exists for item: ".$request->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$request->uom,500);
+            }
+
+            $qtyonhand = $stockloc->qtyonhand;
+            $quantity = floatval($request->quantity);
+            $amount = $request->unitprice * $quantity;
+            $discamt = ($amount * (100-$request->billtypeperct) / 100) + $request->billtypeamt;
+            $rate = $this->taxrate($request->taxcode);
+            $taxamt = $amount * $rate / 100;
+            $totamount = $amount - $discamt + $taxamt;
+
+            if($quantity > $qtyonhand){
+                throw new \Exception("Quantity exceed quantity on hand for item: ".$request->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$request->uom,500);
+            }
             
             ///2. insert detail
             $insertGetId = DB::table('debtor.billsum')
@@ -1533,8 +1558,7 @@ class PointOfSalesDetailController extends defaultController
         
     }
 
-    public function edit_all(Request $request){
-        
+    public function edit_all(Request $request){       
         DB::beginTransaction();
         
         try {
@@ -1552,179 +1576,52 @@ class PointOfSalesDetailController extends defaultController
             $dbacthdr = $dbacthdr->first();
             
             foreach ($request->dataobj as $key => $value) {
-                
-                //billsum lama
-                // $billsum_lama = DB::table('debtor.billsum')
-                //             ->where('compcode','=',session('compcode'))
-                //             ->where('source','=',$source)
-                //             ->where('trantype','=',$trantype)
-                //             ->where('billno','=',$auditno)
-                //             ->where('rowno','=',$value['rowno'])
-                //             ->first();
-                
-                // $chgmast = DB::table('hisdb.chgmast')
-                            // ->where('compcode','=',session('compcode'))
-                            // ->where('uom','=',$value['uom'])
-                            // ->where('chgcode','=',$value['chggroup']);
+                $stockloc = DB::table('material.stockloc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('uomcode','=',$value['uom'])
+                        ->where('itemcode','=',$value['chggroup'])
+                        ->where('deptcode','=',$dbacthdr->deptcode)
+                        ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
 
-                ///2. update detail // takkan berlaku lain chggroup atau lain uom
-                // if($billsum_lama->chggroup != $value['chggroup'] || $billsum_lama->uom != $value['uom']){
+                if($stockloc->exists()){
+                    $stockloc = $stockloc->first();
+                }else{
+                    throw new \Exception("Stockloc not exists for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
+                }
 
-                //     $edit_lain_chggroup = true;
-                
-                //     $product_lama = DB::table('hisdb.product')
-                //             ->where('compcode','=',session('compcode'))
-                //             ->where('uomcode','=',$billsum_lama->uom)
-                //             ->where('itemcode','=',$billsum_lama->chggroup);
+                $qtyonhand = $stockloc->qtyonhand;
+                $quantity = floatval($value['quantity']);
+                $amount = $value['unitprice'] * $quantity;
+                $discamt = ($amount * (100-$value['billtypeperct']) / 100) + $value['billtypeamt'];
+                $rate = $this->taxrate($value['taxcode']);
+                $taxamt = $amount * $rate / 100;
+                $totamount = $amount - $discamt + $taxamt;
 
-                //     if($product_lama->exists()){
-                //         $this->delivdspdt($billsum_lama,$dbacthdr);
-                //     }
+                if($quantity > $qtyonhand){
+                    throw new \Exception("Quantity exceed quantity on hand for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
+                }
 
-                //     $billsum_lama = DB::table('debtor.billsum')
-                //             ->where('compcode','=',session('compcode'))
-                //             ->where('source','=',$source)
-                //             ->where('trantype','=',$trantype)
-                //             ->where('billno','=',$auditno)
-                //             ->where('rowno','=',$value['rowno'])
-                //             ->first();
-
-                //     $this->sysdb_log('update',$billsum_lama,'sysdb.billsumlog');
-
-                //     DB::table('debtor.billsum')
-                //             ->where('compcode','=',session('compcode'))
-                //             ->where('source','=',$source)
-                //             ->where('trantype','=',$trantype)
-                //             ->where('billno','=',$auditno)
-                //             ->where('rowno','=',$value['rowno'])
-                //             ->update([
-                //                 'chggroup' => $value['chggroup'],
-                //                 'description' => $chgmast->first()->description,
-                //                 'uom' => $value['uom'],
-                //                 'uom_recv' => $value['uom_recv'],
-                //                 'taxcode' => $value['taxcode'],
-                //                 'unitprice' => $value['unitprice'],
-                //                 'quantity' => $value['quantity'],
-                //                 'qtyonhand' => $value['qtyonhand'],
-                //                 'amount' => $value['amount'],
-                //                 'outamt' => $value['amount'],
-                //                 'discamt' => floatval($value['discamt']),
-                //                 'taxamt' => floatval($value['taxamt']),
-                //                 'totamount' => floatval($value['totamount']),
-                //                 'lastuser' => session('username'), 
-                //                 'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
-                //             ]);
-
-
-                // }else{
-
-                    // $edit_lain_chggroup = false;
-
-                    //pindah yang lama ke billsumlog sebelum update
-                    //recstatus->update
-
-                    // $billsum_lama = DB::table('debtor.billsum')
-                    //         ->where('compcode','=',session('compcode'))
-                    //         ->where('source','=',$source)
-                    //         ->where('trantype','=',$trantype)
-                    //         ->where('billno','=',$auditno)
-                    //         ->where('rowno','=',$value['rowno'])
-                    //         ->first();
-
-                    // $this->sysdb_log('update',$billsum_lama,'sysdb.billsumlog');
-
-                    $stockloc = DB::table('material.stockloc')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('uomcode','=',$value['uom'])
-                            ->where('itemcode','=',$value['chggroup'])
-                            ->where('deptcode','=',$dbacthdr->deptcode)
-                            ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
-
-                    if($stockloc->exists()){
-                        $stockloc = $stockloc->first();
-                    }else{
-                        throw new \Exception("Stockloc not exists for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
-                    }
-
-                    $qtyonhand = $stockloc->qtyonhand;
-                    $quantity = floatval($value['quantity']);
-                    $amount = $value['unitprice'] * $quantity;
-                    $discamt = ($amount * (100-$value['billtypeperct']) / 100) + $value['billtypeamt'];
-                    $rate = $this->taxrate($value['taxcode']);
-                    $taxamt = $amount * $rate / 100;
-                    $totamount = $amount - $discamt + $taxamt;
-
-                    if($quantity > $qtyonhand){
-                        throw new \Exception("Quantity exceed quantity on hand for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
-                    }
-
-                    DB::table('debtor.billsum')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('source','=',$source)
-                            ->where('trantype','=',$trantype)
-                            ->where('billno','=',$auditno)
-                            ->where('rowno','=',$value['rowno'])
-                            ->update([
-                                'unitprice' => $value['unitprice'],
-                                'quantity' => $quantity,
-                                'qtyonhand' => $value['qtyonhand'],
-                                'amount' => $amount,
-                                'outamt' => $amount,
-                                'discamt' => floatval($discamt),
-                                'taxamt' => floatval($taxamt),
-                                'totamount' => floatval($totamount),
-                                'lastuser' => session('username'), 
-                                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                                'billtypeperct' => $value['billtypeperct'],
-                                'billtypeamt' => $value['billtypeamt'],
-                            ]);
-                // }
-                
-                // $billsum_obj = DB::table('debtor.billsum')
-                //                 ->where('compcode','=',session('compcode'))
-                //                 ->where('source','=',$source)
-                //                 ->where('trantype','=',$trantype)
-                //                 ->where('billno','=',$auditno)
-                //                 ->where('rowno','=',$value['rowno'])
-                //                 ->first();
-
-                // $product = DB::table('material.product')
-                //         ->where('compcode','=',session('compcode'))
-                //         ->where('uomcode','=',$value['uom'])
-                //         ->where('itemcode','=',$value['chggroup']);
-                
-                // if($product->exists()){
-                //     $stockloc = DB::table('material.stockloc')
-                //             ->where('compcode','=',session('compcode'))
-                //             ->where('uomcode','=',$value['uom'])
-                //             ->where('itemcode','=',$value['chggroup'])
-                //             ->where('deptcode','=',$dbacthdr->deptcode)
-                //             ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
-                    
-                //     if($stockloc->exists()){
-                //         $stockloc = $stockloc->first();
-                //     }else{
-                //         throw new \Exception("Stockloc not exists for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
-                //     }
-                    
-                //     $ivdspdt = DB::table('material.ivdspdt')
-                //         ->where('compcode','=',session('compcode'))
-                //         ->where('recno','=',$billsum_obj->auditno);
-
-                //     if($edit_lain_chggroup){
-                //         $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$dbacthdr);
-                //         $this->crtgltran($ivdspdt_idno,$dbacthdr);
-                //     }else{
-                //         if($ivdspdt->exists()){
-                //             $this->updivdspdt($billsum_obj,$dbacthdr);
-                //             $this->updgltran($ivdspdt->first()->idno,$dbacthdr);
-                //         }else{
-                //             $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$dbacthdr);
-                //             $this->crtgltran($ivdspdt_idno,$dbacthdr);
-                //         }
-                //     }
-                // }
-                
+                DB::table('debtor.billsum')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=',$source)
+                        ->where('trantype','=',$trantype)
+                        ->where('billno','=',$auditno)
+                        ->where('rowno','=',$value['rowno'])
+                        ->update([
+                            'unitprice' => $value['unitprice'],
+                            'quantity' => $quantity,
+                            'qtyonhand' => $value['qtyonhand'],
+                            'amount' => $amount,
+                            'outamt' => $amount,
+                            'discamt' => floatval($discamt),
+                            'taxamt' => floatval($taxamt),
+                            'totamount' => floatval($totamount),
+                            'lastuser' => session('username'), 
+                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'billtypeperct' => $value['billtypeperct'],
+                            'billtypeamt' => $value['billtypeamt'],
+                        ]);
+               
                 ///3. calculate total amount from detail
                 $totalAmount = DB::table('debtor.billsum')
                         ->where('compcode','=',session('compcode'))
@@ -1760,8 +1657,7 @@ class PointOfSalesDetailController extends defaultController
             
             return response($e, 500);
             
-        }
-        
+        }        
     }
 
     public function del(Request $request){
@@ -1848,7 +1744,6 @@ class PointOfSalesDetailController extends defaultController
 
             return response($e, 500);
         }
-        
     }
 
     public function crtivdspdt($billsum_obj,$dbacthdr){

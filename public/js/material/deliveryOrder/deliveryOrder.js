@@ -989,6 +989,7 @@ $(document).ready(function () {
 		},
 		onSelectRow: function (rowid, selected) {
 			myfail_msg.clear_fail();
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 		},
 		gridComplete: function(){
 			$("#jqGrid2").find(".remarks_button").on("click", function(e){

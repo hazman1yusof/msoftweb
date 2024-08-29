@@ -2970,7 +2970,7 @@ $(document).ready(function (){
 		{
 			colModel: [
 				{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true, checked: true },
-				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: false, or_search: false, checked: false },
+				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: false, checked: false },
 			],
 			urlParam: {
 				filterCol: ['compcode','recstatus'],

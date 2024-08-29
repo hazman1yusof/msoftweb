@@ -593,9 +593,17 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			},'json')
 		.fail(function (data) {
+			myfail_msg.add_fail({
+				id:'response',
+				textfld:"",
+				msg:data.responseText,
+			});
+			mycurrency.formatOn();
+			dialog_deptcode.on();
+			dialog_billtypeSO.on();
+			dialog_CustomerSO.on();
+			dialog_quoteno.on();
 			$("#saveDetailLabel").attr('disabled',false)
-			$('#db_hdrtype').focus();
-			$('.noti').text(data.responseText);
 		}).done(function (data) {
 			$("#saveDetailLabel").attr('disabled',false)
 			unsaved = false;
@@ -1033,7 +1041,10 @@ $(document).ready(function () {
 			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 
 		},
-		
+		onSelectRow: function (rowid, selected) {
+			myfail_msg.clear_fail();
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
+		},
 		gridComplete: function(){
 			$("#jqGrid2").find(".remarks_button").on("click", function(e){
 				$("#remarks2").data('rowid',$(this).data('rowid'));

@@ -595,8 +595,17 @@ $(document).ready(function () {
 			},'json')
 		.fail(function (data) {
 			$("#saveDetailLabel").attr('disabled',false)
-			$('#db_hdrtype').focus();
-			$('.noti').text(data.responseText);
+			myfail_msg.add_fail({
+				id:'response',
+				textfld:"",
+				msg:data.responseText,
+			});
+			mycurrency.formatOn();
+			dialog_deptcode.on();
+			dialog_billtypeSO.on();
+			dialog_CustomerSO.on();
+			// $('#db_hdrtype').focus();
+			// $('.noti').text(data.responseText);
 		}).done(function (data) {
 			$("#saveDetailLabel").attr('disabled',false)
 			unsaved = false;
@@ -1033,7 +1042,10 @@ $(document).ready(function () {
 			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 
 		},
-		
+		onSelectRow: function (rowid, selected) {
+			myfail_msg.clear_fail();
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
+		},
 		gridComplete: function(){
 			$("#jqGrid2").find(".remarks_button").on("click", function(e){
 				$("#remarks2").data('rowid',$(this).data('rowid'));
@@ -1212,20 +1224,23 @@ $(document).ready(function () {
 			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 		},
 		errorfunc: function(rowid,response){
-        	alert(response.responseText);
-        	refreshGrid('#jqGrid2',urlParam2,'add');
-	    	$("#jqGridPager2Delete").show();
+        	// alert(response.responseText);
+        	// refreshGrid('#jqGrid2',urlParam2,'add');
+	    	// $("#jqGridPager2Delete").show();
+			errorField.length=0;
+        	myfail_msg.add_fail({
+				id:'response',
+				textfld:"",
+				msg:response.responseText,
+			});
         },
+        restoreAfterError : false,
 		beforeSaveRow: function (options, rowid) {
         	if(errorField.length>0)return false;
 			mycurrency2.formatOff();
 			mycurrency_np.formatOff();
 
 			if(parseInt($('#jqGrid2 input[name="quantity"]').val()) <= 0)return false;
-
-			if(myfail_msg.fail_msg_array.length>0){
-				return false;
-			}
 
 			let editurl = "./PointOfSalesDetail/form?"+
 				$.param({
