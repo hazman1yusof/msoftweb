@@ -145,6 +145,7 @@ class PointOfSalesController extends defaultController
                     'db.debtortype AS db_debtortype',
                     'db.billdebtor AS db_billdebtor',
                     'db.approvedby AS db_approvedby',
+                    'db.approveddate AS db_approveddate',
                     'db.mrn AS db_mrn',
                     'db.unit AS db_unit',
                     'db.source AS db_source',

@@ -386,6 +386,11 @@ $(document).ready(function () {
 
 			$("#pdfgen2").attr('href','./purchaseOrder/showpdf?recno='+selrowData("#jqGrid").purordhd_recno);
 
+			if(stat=='PREPARED' || stat=='SUPPORT' || stat=='INCOMPLETED' || stat=='VERIFIED' || stat=='APPROVED' || stat=='CANCELLED' || stat=='COMPLETED' || stat=='VERIFIED'){
+				$("#jqGridPager td[title='Edit Selected Row']").hide();
+			}else{
+				$("#jqGridPager td[title='Edit Selected Row']").show();
+			}
 		},
 
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -417,9 +422,18 @@ $(document).ready(function () {
 			errorField.length = 0;
 		},
 		loadComplete: function(){
+			let stat = selrowData("#jqGrid").purordhd_recstatus;
+			if(stat=='PREPARED' || stat=='SUPPORT' || stat=='INCOMPLETED' || stat=='VERIFIED' || stat=='APPROVED' || stat=='CANCELLED' || stat=='COMPLETED' || stat=='VERIFIED'){
+				$("#jqGridPager td[title='Edit Selected Row']").hide();
+			}else{
+				$("#jqGridPager td[title='Edit Selected Row']").show();
+			}
 			//calc_jq_height_onchange("jqGrid");
 			if($('#scope').val() != 'ALL'){
 				$("#jqGridPager td[title='Edit Selected Row'],#jqGridPager td[title='Add New Row']").hide();
+			}
+			if($('#scope').val() == 'CANCEL'){
+				$('#trandeptSearch').hide();
 			}
 		},
 	});

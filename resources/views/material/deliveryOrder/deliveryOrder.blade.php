@@ -111,7 +111,7 @@ div#fail_msg{
 					    </select>
 	            </div>
 
-	            <div class="col-md-2">
+	            <div class="col-md-2" id="trandeptSearch">
 			  		<label class="control-label" for="trandept">Purchase Dept</label> 
 						<select id='trandept' class="form-control input-sm">
 				      	<option value="All" selected>ALL</option>

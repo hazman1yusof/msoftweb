@@ -348,9 +348,9 @@ $(document).ready(function () {
 			populate_form(selrowData("#jqGrid"));
 			
 			if(stat=='APPROVED' || stat=='PREPARED' || stat=='VERIFIED' || stat=='SUPPORT'){
-				$("#glyphicon-edit").hide();
+				$("#jqGridPager td[title='Edit Selected Row']").hide();
 			}else{
-				$("#glyphicon-edit").show();
+				$("#jqGridPager td[title='Edit Selected Row']").show();
 			}
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -362,7 +362,7 @@ $(document).ready(function () {
 				} else {
 					$('#save').hide();
 				}
-				$("#glyphicon-edit").hide();
+				$("#jqGridPager td[title='Edit Selected Row']").hide();
 
 			}else{
 				$("#jqGridPager td[title='Edit Selected Row']").click();
@@ -412,9 +412,9 @@ $(document).ready(function () {
 		loadComplete: function(){
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
 			if(stat=='APPROVED' || stat=='PREPARED' || stat=='VERIFIED' || stat=='SUPPORT'){
-				$("#glyphicon-edit").hide();
+				$("#jqGridPager td[title='Edit Selected Row']").hide();
 			}else{
-				$("#glyphicon-edit").show();
+				$("#jqGridPager td[title='Edit Selected Row']").show();
 			}
 			//calc_jq_height_onchange("jqGrid");
 		},

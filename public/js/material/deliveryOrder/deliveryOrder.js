@@ -330,6 +330,7 @@ $(document).ready(function () {
 			$('#error_infront').text('');
 			let stat = selrowData("#jqGrid").delordhd_recstatus;
 			let scope = $("#recstatus_use").val();
+			
 
 			// // $('#but_post_single_jq,#but_cancel_jq,#but_soft_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 			// if (stat == scope ) {
@@ -371,6 +372,13 @@ $(document).ready(function () {
 			$("#pdfgen2").attr('href','./deliveryOrder/showpdf?recno='+selrowData("#jqGrid").delordhd_recno);
 
 			if_cancel_hide();
+			
+			if(stat=='POSTED'){
+				$("#jqGridPager td[title='Edit Selected Row']").hide();
+			}else{
+				$("#jqGridPager td[title='Edit Selected Row']").show();
+			}
+			
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").delordhd_recstatus;
@@ -403,8 +411,19 @@ $(document).ready(function () {
 		},
 		loadComplete: function(){
 			//calc_jq_height_onchange("jqGrid");
+			let stat = selrowData("#jqGrid").delordhd_recstatus;
+
+			if(stat=='POSTED'){
+				$("#jqGridPager td[title='Edit Selected Row']").hide();
+			}else{
+				$("#jqGridPager td[title='Edit Selected Row']").show();
+			}
+
 			if($('#scope').val() != 'ALL'){
 				$("#jqGridPager td[title='Edit Selected Row'],#jqGridPager td[title='Add New Row']").hide();
+			}
+			if($('#scope').val() == 'CANCEL'){
+				$('#trandeptSearch').hide();
 			}
 		},
 		

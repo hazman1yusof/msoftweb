@@ -242,6 +242,7 @@ $(document).ready(function () {
 			{ label: 'debtortype', name: 'db_debtortype', hidden: true },
 			{ label: 'billdebtor', name: 'db_billdebtor', hidden: true },
 			{ label: 'approvedby', name: 'db_approvedby', hidden: true },
+			{ label: 'approveddate', name: 'db_approveddate', hidden: true },
 			{ label: 'mrn', name: 'db_mrn', width: 10, hidden: true },
 			{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'termdays', name: 'db_termdays', width: 10, hidden: true },

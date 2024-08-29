@@ -129,18 +129,18 @@ div#fail_msg{
 				    </select>
             </div>
 
-	      <div class="col-md-2">
-		  		<label class="control-label" for="trandept">Purchase Dept</label> 
-					<select id='trandept' class="form-control input-sm">
-	      		<option value="All">ALL</option>
-	      		@foreach($purdept as $dept_)
-	      			@if(Request::get('scope') == 'ALL' && $dept_->deptcode == Session::get('deptcode'))
-	      			<option value="{{$dept_->deptcode}}" selected>{{$dept_->deptcode}}</option>
-	      			@else
-	      			<option value="{{$dept_->deptcode}}">{{$dept_->deptcode}}</option>
-	      			@endif
-	      		@endforeach
-					</select>
+	    		<div class="col-md-2" id="trandeptSearch">
+					<label class="control-label" for="trandept">Purchase Dept</label> 
+						<select id='trandept' class="form-control input-sm">
+							<option value="All">ALL</option>
+							@foreach($purdept as $dept_)
+								@if(Request::get('scope') == 'ALL' && $dept_->deptcode == Session::get('deptcode'))
+								<option value="{{$dept_->deptcode}}" selected>{{$dept_->deptcode}}</option>
+								@else
+								<option value="{{$dept_->deptcode}}">{{$dept_->deptcode}}</option>
+								@endif
+							@endforeach
+						</select>
 				</div>
 
 				<?php 
@@ -207,7 +207,7 @@ div#fail_msg{
 
 				</div>
 
-			 </fieldset> 
+			</fieldset> 
 		</form>
 
 		<div class="panel panel-default" id="sel_tbl_panel" style="display:none">
