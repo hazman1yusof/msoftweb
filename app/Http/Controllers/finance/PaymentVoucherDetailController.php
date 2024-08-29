@@ -156,7 +156,6 @@ class PaymentVoucherDetailController extends defaultController
                 ->where('auditno','=',$auditno)
                 ->update([
                     'allocamount' => $totalAmount
-                  
                 ]);
             DB::commit();
             return response($totalAmount,200);

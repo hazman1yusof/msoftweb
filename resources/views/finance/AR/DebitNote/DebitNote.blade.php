@@ -111,18 +111,18 @@ i.fa {
 						type="button" 
 						class="btn btn-primary btn-sm" 
 						id="but_post_jq" 
-						data-oper="posted"
+						data-oper="{{$scope_use}}"
 						style="display: none;">						
 						POST
 					</button>
 
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
+					<!-- <button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
 						@if (strtoupper(Request::get('scope')) == 'ALL')
 							{{'POST'}}
 						@else
 							{{Request::get('scope')}}
 						@endif
-					</button>
+					</button> -->
 
 					<!-- <button type="button" class="btn btn-default btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>

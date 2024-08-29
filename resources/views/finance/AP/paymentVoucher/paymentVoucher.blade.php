@@ -48,6 +48,11 @@ i.fa {
 .data_info .col-md-2.minuspad-15{
 	width: 16.5% !important;
 }
+div#fail_msg{
+  padding-left: 40px;
+  padding-bottom: 10px;
+  color: darkred;
+}
 
 @endsection
 
@@ -110,15 +115,19 @@ i.fa {
 						      <option value="VERIFIED">VERIFIED</option>
 						      <option value="APPROVED">APPROVED</option>
 							@elseif (Request::get('scope') == 'SUPPORT')
-								<option value="PREPARED">PREPARED</option>
+								<option value="PREPARED" selected>PREPARED</option>
 							@elseif (Request::get('scope') == 'VERIFIED')
 						      <option value="All2" selected>ALL</option>
 								<option value="SUPPORT">SUPPORT</option>
 								<option value="PREPARED">PREPARED</option>
 							@elseif (Request::get('scope') == 'APPROVED')
-								<option value="VERIFIED">VERIFIED</option>
+								<option value="VERIFIED" selected>VERIFIED</option>
 							@elseif (Request::get('scope') == 'REOPEN')
+								<option value="REJECTED" selected>REJECTED</option>
 								<option value="CANCELLED">CANCELLED</option>
+							@elseif (Request::get('scope') == 'CANCEL')
+								<option value="OPEN" selected>OPEN</option>
+								<option value="APPROVED">APPROVED</option>
 							@endif
 					    </select>
 	            </div>
@@ -494,15 +503,13 @@ i.fa {
 		<div class='panel panel-info' id="pvpd_detail">
 			<div class="panel-heading">Allocation</div>
 				<div class="panel-body">
+					<div id="fail_msg"></div>
 					<form id='formdata2' class='form-vertical' style='width:99%'>
 						<div id="jqGrid2_c" class='col-md-12'>
 							<table id="jqGrid2" class="table table-striped"></table>
 						        <div id="jqGridPager2"></div>
 						</div>
 					</form>
-					<div class="panel-body">
-						<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
-					</div>
 				</div>
 		</div>
 	</div>

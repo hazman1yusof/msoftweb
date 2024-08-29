@@ -32,6 +32,7 @@ $(document).ready(function () {
 	var mycurrency2 =new currencymode(['#apacthdr_outamount', '#apacthdr_amount']);
 	var fdl = new faster_detail_load();
 	var my_remark_button = new remark_button_class('#jqgrid');
+	var myfail_msg = new fail_msg_func();
 	
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#apacthdr_postdate"]);
@@ -46,6 +47,7 @@ $(document).ready(function () {
 			modal: true,
 			autoOpen: false,
 			open: function (event, ui) {
+				myfail_msg.clear_fail();
 				duplicate_documentno = false;
 				parent_close_disabled(true);
 				unsaved = false;
@@ -643,21 +645,29 @@ $(document).ready(function () {
 	});
 
 	$("#but_post2_jq").click(function(){
-	
-		var obj={};
-		obj.idno = selrowData('#jqGrid').apacthdr_idno;
-		obj.oper = $(this).data('oper');
-		obj._token = $('#_token').val();
-		oper=null;
-			
-		$.post(  './paymentVoucher/form', obj , function( data ) {
-			cbselect.empty_sel_tbl();
-			refreshGrid('#jqGrid', urlParam);
-		}).fail(function(data) {
-			$('#error_infront').text(data.responseText);
-		}).success(function(data){
-			
-		});
+		if (confirm("Are you sure to cancel this document?") == true) {
+
+			var idno_array = [];
+			idno_array.push({
+	    		idno:selrowData('#jqGrid').apacthdr_idno
+	    	});
+		
+			var obj={};
+			obj.idno_array = idno_array;
+			obj.oper = $(this).data('oper');
+			obj._token = $('#_token').val();
+			oper=null;
+				
+			$.post(  './paymentVoucher/form', obj , function( data ) {
+				cbselect.empty_sel_tbl();
+				refreshGrid('#jqGrid', urlParam);
+			}).fail(function(data) {
+				$('#error_infront').text(data.responseText);
+			}).success(function(data){
+				
+			});
+
+		}
 	});
 
 	///////////check postdate & docdate///////////////////
@@ -717,7 +727,11 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			
 		},'json').fail(function (data) {
-			alert(data.responseText);
+        	myfail_msg.add_fail({
+				id:'response',
+				textfld:"",
+				msg:data.responseText,
+			});
 		}).success(function (data) {
 			hideatdialogForm(false);
 			
@@ -1002,7 +1016,10 @@ $(document).ready(function () {
 			//calc_jq_height_onchange("jqGrid2");
 			
 		},
-
+		onSelectRow: function (rowid, selected) {
+			myfail_msg.clear_fail();
+			calc_jq_height_onchange("jqGrid2");
+		},
 		gridComplete: function(){
 			
 		

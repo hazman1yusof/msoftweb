@@ -360,7 +360,7 @@ class PaymentVoucherController extends defaultController
                     'source' => 'AP',
                     'auditno' => $auditno,
                     'trantype' => $request->apacthdr_trantype,
-                    'actdate' => $request->apacthdr_actdate,
+                    'actdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recdate' => $request->apacthdr_postdate,
                     'postdate' => $request->apacthdr_postdate,
                     // 'pvno' => $pvno,
@@ -663,6 +663,7 @@ class PaymentVoucherController extends defaultController
                     ->where('doctrantype','=','PV')
                     ->where('docauditno','=',$apacthdr_->auditno)
                     ->where('recstatus','!=','CANCELLED')
+                    ->where('recstatus','!=','DELETE')
                     ->sum('allocamount');
                 
                 DB::table('finance.apacthdr')
@@ -1086,7 +1087,8 @@ class PaymentVoucherController extends defaultController
                         ->where('recstatus','!=','DELETE')
                         ->where('recstatus','!=','CANCELLED')
                         ->update([
-                            'recstatus' => 'POSTED'
+                            'recstatus' => 'POSTED',
+                            'allocdate' => $apacthdr->postdate,
                         ]);
 
                 }
@@ -1117,99 +1119,104 @@ class PaymentVoucherController extends defaultController
 
         try {
 
-            $apacthdr = DB::table('finance.apacthdr')
-                ->where('idno','=', $request->idno)
-                ->first();
+            foreach ($request->idno_array as $idno_obj){
+                $apacthdr = DB::table('finance.apacthdr')
+                    ->where('idno','=', $idno_obj['idno'])
+                    ->first();
 
-            if($apacthdr->recstatus == 'OPEN'){
+                if($apacthdr->recstatus == 'OPEN'){
+                    $apalloc = DB::table('finance.apalloc')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('unit','=',session('unit'))
+                                ->where('docsource','=',$apacthdr->source)
+                                ->where('doctrantype','=',$apacthdr->trantype)
+                                ->where('docauditno','=',$apacthdr->auditno)
+                                ->get();
 
-                $apalloc = DB::table('finance.apalloc')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('unit','=',session('unit'))
-                            ->where('docsource','=',$apacthdr->source)
-                            ->where('doctrantype','=',$apacthdr->trantype)
-                            ->where('docauditno','=',$apacthdr->auditno)
-                            ->where('recstatus','!=','CANCELLED')
-                            ->get();
-                            
-                $sum_allocamount = 0;
-                $balance = floatval($apacthdr->outamount);
-                //dd($balance);
-
-                foreach($apalloc as $value){
-                    $value = (array)$value;
-                    $sum_allocamount = $sum_allocamount + $value['allocamount'];
-                    
-                    $refapacthdr = DB::table('finance.apacthdr')
-                                    ->where('compcode','=',session('compcode'))
-                                    ->where('unit','=',session('unit'))
-                                    ->where('source','=',$value['refsource'])
-                                    ->where('trantype','=',$value['reftrantype'])
-                                    ->where('auditno','=',$value['refauditno']);
-                    $refapacthdr
-                        ->update([
-                            'outamount' => floatval($refapacthdr->first()->outamount) + floatval($value['allocamount'])
-                        ]);
+                    foreach($apalloc as $value){
+                        $value = (array)$value;
                         
+                        $refapacthdr = DB::table('finance.apacthdr')
+                                        ->where('compcode','=',session('compcode'))
+                                        ->where('unit','=',session('unit'))
+                                        ->where('source','=',$value['refsource'])
+                                        ->where('trantype','=',$value['reftrantype'])
+                                        ->where('auditno','=',$value['refauditno']);
+                        $refapacthdr
+                            ->update([
+                                'outamount' => floatval($refapacthdr->first()->outamount) + floatval($value['allocamount'])
+                            ]);
+                            
+                        DB::table('finance.apalloc')
+                            ->where('idno','=',$value['idno'])
+                            ->update([
+                                'allocamount' => 0,
+                                'recstatus' => 'CANCELLED',
+                            ]);
+                    }
+
+                    DB::table('finance.apacthdr')
+                        ->where('idno','=',$idno_obj['idno'])
+                        ->update([
+                            'recstatus' => 'CANCELLED',
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'amount' => 0,
+                            'outamount' => 0,
+                        ]);
+
+                }else if($apacthdr->recstatus == 'APPROVED'){
+
+                    $this->gltran_cancel($idno_obj['idno']);
+
+                    $apalloc = DB::table('finance.apalloc')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('unit','=',session('unit'))
+                                ->where('docsource','=',$apacthdr->source)
+                                ->where('doctrantype','=',$apacthdr->trantype)
+                                ->where('docauditno','=',$apacthdr->auditno)
+                                ->get();
+                    foreach($apalloc as $value){ //update reference document
+                        $value = (array)$value;
+                        
+                        $refapacthdr = DB::table('finance.apacthdr')
+                                        ->where('compcode','=',session('compcode'))
+                                        ->where('unit','=',session('unit'))
+                                        ->where('source','=',$value['refsource'])
+                                        ->where('trantype','=',$value['reftrantype'])
+                                        ->where('auditno','=',$value['refauditno']);
+                        $refapacthdr
+                            ->update([
+                                'outamount' => floatval($refapacthdr->first()->outamount) + floatval($value['allocamount'])
+                            ]);
+                    }
+
+                    DB::table('finance.apacthdr')
+                        ->where('idno','=', $idno_obj['idno'])
+                        ->update([
+                            'recstatus' => 'CANCELLED',
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'amount' => 0,
+                            'outamount' => 0
+                        ]);
+
                     DB::table('finance.apalloc')
-                        ->where('idno','=',$value['idno'])
+                        ->where('compcode','=',session('compcode'))
+                        ->where('unit','=',session('unit'))
+                        ->where('docsource','=',$apacthdr->source)
+                        ->where('doctrantype','=',$apacthdr->trantype)
+                        ->where('docauditno','=',$apacthdr->auditno)
                         ->update([
                             'allocamount' => 0,
                             'recstatus' => 'CANCELLED',
+                            'lastuser' => session('username'),
+                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
                 }
-
-                DB::table('finance.apacthdr')
-                    ->where('idno','=',$request->idno)
-                    ->update([
-                        'recstatus' => 'CANCELLED',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'amount' => $apacthdr->amount - $sum_allocamount,
-                    ]);
-
-            }else if($apacthdr->recstatus == 'POSTED'){
-                DB::table('finance.apacthdr')
-                    ->where('idno','=', $request->idno)
-                    ->update([
-                        'recstatus' => 'CANCELLED',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-                $this->gltran_cancel($request->idno);
-
-                $totalAmount = DB::table('finance.apalloc')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('unit','=',session('unit'))
-                    ->where('docsource','=',$apacthdr->source)
-                    ->where('doctrantype','=',$apacthdr->trantype)
-                    ->where('docauditno','=',$apacthdr->auditno)
-                    ->where('recstatus','!=','CANCELLED')
-                    ->sum('allocamount');
-                
-                DB::table('finance.apacthdr')
-                    ->where('idno','=',$request->idno)
-                    ->update([
-                        'amount' => $apacthdr->amount - $totalAmount,
-                        // 'outamount' => '0',
-                        'recstatus' => 'CANCELLED'
-                    ]);
-
-                DB::table('finance.apalloc')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('unit','=',session('unit'))
-                    ->where('docsource','=',$apacthdr->source)
-                    ->where('doctrantype','=',$apacthdr->trantype)
-                    ->where('docauditno','=',$apacthdr->auditno)
-                    ->update([
-                        'allocamount' => 0,
-                        'recstatus' => 'CANCELLED',
-                        'lastuser' => session('username'),
-                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
+                   
             }
-               
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -1238,7 +1245,7 @@ class PaymentVoucherController extends defaultController
                 }
 
                 $apacthdr_update = [
-                    'recstatus' => 'CANCELLED',
+                    'recstatus' => 'REJECTED',
                     'cancelby' => session('username'),
                     'canceldate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ];
@@ -1261,7 +1268,7 @@ class PaymentVoucherController extends defaultController
                         ->where('recstatus','!=','DELETE')
                         ->where('recstatus','!=','CANCELLED')
                         ->update([
-                            'recstatus' => 'CANCELLED'
+                            'recstatus' => 'REJECTED'
                         ]);
 
                 }
@@ -1275,7 +1282,7 @@ class PaymentVoucherController extends defaultController
                     ->where('recno','=',$apacthdr->auditno)
                     ->update([
                         'AuthorisedID' => $apacthdr->adduser,
-                        'recstatus' => 'CANCELLED',
+                        'recstatus' => 'REJECTED',
                         'trantype' => 'REOPEN',
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -1309,7 +1316,7 @@ class PaymentVoucherController extends defaultController
                     $queue = 'finance.queuepd';
                 }
 
-                if($apacthdr->recstatus != 'CANCELLED'){
+                if($apacthdr->recstatus != 'CANCELLED' || $apacthdr->recstatus != 'REJECTED'){
                     continue;
                 }
 
@@ -1374,20 +1381,29 @@ class PaymentVoucherController extends defaultController
                 ->where('idno','=',$request->idno)
                 ->first();
 
-            $allocamt = floatval($apalloc->allocamount);
-            $balance = floatval($apalloc->balance);
-            $curr_outamthdr = floatval($allocamt + $balance);
+            $apacthdr = DB::table('finance.apacthdr')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('unit','=',session('unit'))
+                        ->where('source','=',$apalloc->docsource)
+                        ->where('trantype','=',$apalloc->doctrantype)
+                        ->where('auditno','=',$apalloc->docauditno)
+                        ->first();
 
-            //update alloc amount asal IN/DN
-            DB::table('finance.apacthdr')
-                ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$apalloc->refauditno)
-                ->where('source','=',$apalloc->refsource)
-                ->where('trantype','=',$apalloc->reftrantype)
+            if($apacthdr->recstatus != 'OPEN'){
+                throw new \Exception('Cant delete from PV that is not OPEN', 500);
+            }
+
+            $refapacthdr = DB::table('finance.apacthdr')
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('unit','=',session('unit'))
+                                    ->where('source','=',$apalloc->refsource)
+                                    ->where('trantype','=',$apalloc->reftrantype)
+                                    ->where('auditno','=',$apalloc->refauditno);
+            $refapacthdr
                 ->update([
-                    'outamount' => $curr_outamthdr
+                    'outamount' => floatval($refapacthdr->first()->outamount) + floatval($apalloc->allocamount)
                 ]);
-            //dd($request->idno);
+
             //update status
             DB::table('finance.apalloc')
                 ->where('compcode','=',session('compcode'))
@@ -1415,7 +1431,6 @@ class PaymentVoucherController extends defaultController
                 ->where('auditno','=',$apalloc->docauditno)
                 ->update([
                     'amount' => $totalAmount,
-                    'recstatus' => 'OPEN'
                 ]);
 
             // $apacthdr_outamount = floatVal($request->apacthdr_outamount);
@@ -1755,6 +1770,7 @@ class PaymentVoucherController extends defaultController
                     ->where('doctrantype','=', 'PV')
                     ->where('docauditno','=', $auditno)
                     ->where('recstatus','!=','CANCELLED')
+                    ->where('recstatus','!=','DELETE')
                     ->get();
 
 
@@ -1853,6 +1869,7 @@ class PaymentVoucherController extends defaultController
                     ->where('doctrantype','=', 'CN')
                     ->where('docauditno','=', $auditno)
                     ->where('recstatus','!=','CANCELLED')
+                    ->where('recstatus','!=','DELETE')
                     ->get();
 
         $company = DB::table('sysdb.company')

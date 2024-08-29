@@ -408,22 +408,22 @@ $(document).ready(function () {
 	});
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
+	// $("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
 
-		var idno = selrowData('#jqGrid').apacthdr_idno;
-		var obj={};
-		obj.idno = idno;
-		obj._token = $('#_token').val();
-		obj.oper = $(this).data('oper')+'_single';
+	// 	var idno = selrowData('#jqGrid').apacthdr_idno;
+	// 	var obj={};
+	// 	obj.idno = idno;
+	// 	obj._token = $('#_token').val();
+	// 	obj.oper = $(this).data('oper')+'_single';
 
-		$.post( './debitNoteAP/form', obj , function( data ) {
-			refreshGrid('#jqGrid', urlParam);
-		}).fail(function(data) {
-			$('#error_infront').text(data.responseText);
-		}).success(function(data){
+	// 	$.post( './debitNoteAP/form', obj , function( data ) {
+	// 		refreshGrid('#jqGrid', urlParam);
+	// 	}).fail(function(data) {
+	// 		$('#error_infront').text(data.responseText);
+	// 	}).success(function(data){
 			
-		});
-	});
+	// 	});
+	// });
 
 	$("#but_post_jq").click(function(){
 		var idno_array = [];
