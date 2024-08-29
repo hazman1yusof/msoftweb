@@ -737,8 +737,9 @@ $(document).ready(function (){
 		datatype: "local",
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
-			{ label: 'Debtor Code', name: 'db_debtorcode', width: 30, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat: un_showdetail },
-			{ label: 'Debtor Name', name: 'dm_name', width: 20, hidden: true },
+			// { label: 'Debtor Code', name: 'db_debtorcode', width: 30, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat: un_showdetail },
+			{ label: 'Debtor Code', name: 'db_debtorcode', width: 20, classes: 'wrap text-uppercase', canSearch: true },
+			{ label: 'Debtor Name', name: 'dm_name', width: 30, classes: 'wrap text-uppercase', canSearch: true, selected: true },
 			{ label: 'Payer Code', name: 'db_payercode', width: 20, hidden: true },
 			{ label: 'Audit No', name: 'db_auditno', width: 10, align: 'right', classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true, classes: 'wrap' },
@@ -2534,7 +2535,7 @@ $(document).ready(function (){
 		$('#customer_search_hb').text('');
 		$('#department_search_hb').text('');
 		removeValidationClass(['#customer_search,#department_search']);
-		if($('#Scol').val() == 'db_entrydate'){
+		if($('#Scol').val() == 'db_posteddate'){
 			urlParam.searchCol = urlParam.searchVal = null;
 			$("input[name='Stext'], #customer_text, #department_text, #debtor_outamount").hide("fast");
 			$("#docuDate_text").show("fast");
@@ -2968,8 +2969,8 @@ $(document).ready(function (){
 		'customer_search', 'debtor.debtormast', '#customer_search', 'errorField',
 		{
 			colModel: [
-				{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true, checked: true },
+				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: false, or_search: false, checked: false },
 			],
 			urlParam: {
 				filterCol: ['compcode','recstatus'],

@@ -162,6 +162,10 @@ class arenquiryController extends defaultController
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where('db.debtorcode','like',$request->searchVal[0]);
                 });
+            }else if($request->searchCol[0] == 'dm_name'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('dm.name','like',$request->searchVal[0]);
+                });
             }else{
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
@@ -865,7 +869,8 @@ class arenquiryController extends defaultController
                         array_push($array_report, $value);
                         break;
                     case 'DN':
-                        $value->reference = $value->remark;
+                        // $value->reference = $value->remark;
+                        $value->reference = $value->reference;
                         $value->amount_dr = $value->amount;
                         $balance = $balance + floatval($value->amount);
                         $value->balance = $balance;
@@ -880,7 +885,8 @@ class arenquiryController extends defaultController
                         break;
                     case 'RF':
                         if($value->mrn == '0' || $value->mrn == ''){
-                            $value->reference = $value->remark;
+                            // $value->reference = $value->remark;
+                            $value->reference = $value->reference;
                         }else{
                             $value->reference = $value->Name;
                         }
@@ -890,7 +896,8 @@ class arenquiryController extends defaultController
                         array_push($array_report, $value);
                         break;
                     case 'CN':
-                        $value->reference = $value->remark;
+                        // $value->reference = $value->remark;
+                        $value->reference = $value->reference;
                         $value->amount_cr = $value->amount;
                         $balance = $balance - floatval($value->amount);
                         $value->balance = $balance;
