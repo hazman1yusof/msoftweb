@@ -81,9 +81,9 @@
 						
 						<div class="col-md-5" style="margin-top: 4px;">
 							<label class="control-label"></label>
-							<input style="display: none" name="Stext" type="search" placeholder="Search Here ..." class="form-control text-uppercase" tabindex="2">
+							<input name="Stext" type="search" placeholder="Search Here ..." class="form-control text-uppercase" tabindex="2">
 							
-							<div id="customer_text">
+							<div id="customer_text" style="display: none">
 								<div class='input-group'>
 									<input id="customer_search" name="customer_search" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -106,7 +106,7 @@
 							</div>
 						</div>
 						
-						<div id="debtor_outamount" class="col-md-2" style="float: right;">
+						<div id="debtor_outamount" class="col-md-2" style="display: none; float: right;">
 							<label class="control-label" for="debtor_outamt">OutAmount</label>
 							<input id="debtor_outamt" name="debtor_outamt" maxlength="10" class="form-control input-sm" readonly>
 						</div>
