@@ -316,7 +316,12 @@ $(document).ready(function () {
 			$("#pdfgen1").attr('href','./purchaseRequest/showpdf?recno='+selrowData("#jqGrid").purreqhd_recno);
 
 			$("#pdfgen2").attr('href','./purchaseRequest/showpdf?recno='+selrowData("#jqGrid").purreqhd_recno);
-
+			
+			if(stat=='PREPARED' || stat=='SUPPORT' || stat=='INCOMPLETED' || stat=='VERIFIED' || stat=='APPROVED' || stat=='CANCELLED' || stat=='COMPLETED' || stat=='RECOMMENDED1' || stat=='RECOMMENDED2' || stat=='PARTIAL'){
+				$("#jqGridPager td[title='Edit Selected Row']").hide();
+			}else{
+				$("#jqGridPager td[title='Edit Selected Row']").show();
+			}
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			let stat = selrowData("#jqGrid").purreqhd_recstatus;
@@ -345,8 +350,19 @@ $(document).ready(function () {
 		},
 		loadComplete: function(){
 			//calc_jq_height_onchange("jqGrid");
+						let stat = selrowData("#jqGrid").purreqhd_recstatus;
+
+			if(stat=='PREPARED' || stat=='SUPPORT' || stat=='INCOMPLETED' || stat=='VERIFIED' || stat=='APPROVED' || stat=='CANCELLED' || stat=='COMPLETED' || stat=='RECOMMENDED1' || stat=='RECOMMENDED2' || stat=='PARTIAL'){
+				$("#jqGridPager td[title='Edit Selected Row']").hide();
+			}else{
+				$("#jqGridPager td[title='Edit Selected Row']").show();
+			}
 			if($('#scope').val() != 'ALL'){
 				$("#jqGridPager td[title='Edit Selected Row'],#jqGridPager td[title='Add New Row']").hide();
+			}
+			if($('#scope').val() == 'CANCEL'){
+				$('#trandeptSearch').hide();
+
 			}
 		},
 	});
@@ -1755,6 +1771,28 @@ $(document).ready(function () {
 			}
 		}
 
+		var id="#jqGrid2 #"+id_optid+"_unitprice";
+		var fail_msg = "Please enter Unit Price";
+		var name = "unitprice";
+
+		if(name_from != 'taxcode'){
+			if (unitprice != 0) {
+				if($.inArray(id,errorField)!==-1){
+					errorField.splice($.inArray(id,errorField), 1);
+				}
+				$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
+				$( id ).removeClass( "error" ).addClass( "valid" );
+				$('.noti').find("li[data-errorid='"+name+"']").detach();
+			} else {
+				$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
+				$( id ).removeClass( "valid" ).addClass( "error" );
+				if(!$('.noti').find("li[data-errorid='"+name+"']").length)$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
+				if($.inArray(id,errorField)===-1){
+					errorField.push( id );
+				}
+			}
+		}
+
 		mycurrency2.formatOn();//change format to currency on each calculation
 		mycurrency_np.formatOn();
 
@@ -1807,6 +1845,28 @@ $(document).ready(function () {
 
 		if(name_from != 'taxcode'){
 			if (qtyrequest > 0) {
+				if($.inArray(id,errorField)!==-1){
+					errorField.splice($.inArray(id,errorField), 1);
+				}
+				$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
+				$( id ).removeClass( "error" ).addClass( "valid" );
+				$('.noti').find("li[data-errorid='"+name+"']").detach();
+			} else {
+				$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
+				$( id ).removeClass( "valid" ).addClass( "error" );
+				if(!$('.noti').find("li[data-errorid='"+name+"']").length)$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
+				if($.inArray(id,errorField)===-1){
+					errorField.push( id );
+				}
+			}
+		}
+
+		var id="#jqGrid2 #"+id_optid+"_unitprice";
+		var fail_msg = "Please enter Unit Price";
+		var name = "unitprice";
+
+		if(name_from != 'taxcode'){
+			if (unitprice != 0) {
 				if($.inArray(id,errorField)!==-1){
 					errorField.splice($.inArray(id,errorField), 1);
 				}
