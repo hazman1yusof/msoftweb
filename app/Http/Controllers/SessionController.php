@@ -34,6 +34,10 @@ class SessionController extends Controller
     }
 
     public function store(Request $request){
+        if(empty(request('computerid'))){
+            return back();
+        }
+
     	$user = User::where('username',request('username'))
     				->where('password',request('password'))
     				->where('compcode',request('cmb_companies'))

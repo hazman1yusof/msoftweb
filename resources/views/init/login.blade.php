@@ -27,7 +27,17 @@
       margin-top: 10px;
       padding: 10px;
       font-weight: bold;
-      text-align: center;
+    }
+
+    #computerid_warning select,#computerid_warning button,#computerid_warning input{
+      padding: 5px;
+      font-size: 12px;
+    }
+
+    input#computerid_show{
+      padding: 5px;
+      font-size: 12px;
+      background:#daeeff;
     }
     
   </style>
@@ -61,7 +71,19 @@
       <input type="hidden" id="mobile" name="mobile" value="false">
       <input type="hidden" id="computerid" name="computerid" >
       <button class="btn btn-lg btn-primary btn-block">Sign in</button>
-      <div id="computerid_warning" class="alert alert-danger" role="alert" style="display:none;">Computer ID are not set yet, please ask admin to set your computer id</div>
+      <div id="computerid_warning" class="alert alert-danger" role="alert" style="display:none;">
+        <span>Set Computer ID</span><br>
+        <select id="compid_type" class="form-control">
+          <option>DESKTOP</option>
+          <option>LAPTOP</option>
+          <option>MOBILE</option>
+        </select>
+        <input class="form-control" type="text" id="compid_name" placeholder="Type Your Name">
+        <br>
+        <button type="button" class="btn form-control" id="setid">Set ID</button>
+      </div>
+      <br>
+      <input class="form-control" type="text" id="computerid_show" name="computerid_show" disabled>
     </form>
 
   </div> 
@@ -96,15 +118,23 @@
           $('#inputPassword').attr('type','password');
         }
       });
+
+      $("#setid").click(function(){
+        let type = $('#compid_type').val();
+        let name = $('#compid_name').val();
+
+        localStorage.setItem('computerid', type+'_'+name);
+        $('#computerid').val(type+'_'+name);
+        $('#computerid_show').val(type+'_'+name);
+      });
     });
 
     var computerid_val = localStorage.getItem('computerid');
     if(!computerid_val){
-      if(!mql.matches){
-        $('#computerid_warning').show();
-      }
+      $('#computerid_warning').show();
     }else{
       $('#computerid').val(computerid_val);
+      $('#computerid_show').val(computerid_val);
     }
 
     // function signing_in()

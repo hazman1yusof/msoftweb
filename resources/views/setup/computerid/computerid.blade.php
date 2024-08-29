@@ -27,6 +27,7 @@
           <input type="text" name="computerid" id="computerid" autocomplete="off">
         </div>
          <button type="button" class="ui button" onclick="setcompid()">Set ID</button>
+         <button type="button" class="ui button" onclick="resetcompid()">Reset ID</button>
       </form>
   </div>
 </div>

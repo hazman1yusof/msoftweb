@@ -40,6 +40,5 @@ class ComputeridController extends defaultController
         if(!empty($request->computerid)){
             $request->session()->put('computerid',$request->computerid);
         }
-        dd(session('computerid'));
     }
 }

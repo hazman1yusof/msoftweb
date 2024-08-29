@@ -23,12 +23,28 @@ function setcompid(){
     		error_fld('#computerid');
 		}).done(function(data){
         	success_fld('#computerid');
-        	alert('Computerid successfully set');
+        	
+            $.toast({
+              message: 'Computer ID Set!',
+              class : 'inverted green',   //cycle through all colors
+              showProgress: 'bottom'
+            });
 		});
 	}else{
     	error_fld('#computerid');
         alert('Computerid field cant be blank!');
     }
+}
+
+function resetcompid(){
+    localStorage.removeItem('computerid');
+    $('#computerid').val('');
+
+     $.toast({
+      message: 'Computer ID Reset! Please login again',
+      class : 'inverted green',   //cycle through all colors
+      showProgress: 'bottom'
+    });
 }
 
 function error_fld(fld){
