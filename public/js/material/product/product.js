@@ -554,8 +554,6 @@ $(document).ready(function () {
 	);
 	dialog_instruction.makedialog(true);
 
-
-
 	function dialog_cat_selection_event(){
 		$('#dialog_cat_selection_div').show();
 		if($('#dialog_cat_selection_div').length == 0){
@@ -750,89 +748,68 @@ $(document).ready(function () {
 
 	var oper = 'add';
 	$("#dialogForm")
-	  .dialog({ 
-		width: 9/10 * $(window).width(),
-		modal: true,
-		autoOpen: false,
-		open: function( event, ui ) {
-			parent_close_disabled(true);
-			switch(oper) {
-				case state = 'add':
-					$( this ).dialog( "option", "title", "Add" );
-					enableForm('#formdata');
-					hideOne('#formdata');
-					rdonly("#dialogForm");
-					$('#formdataSearch input[rdonly]').prop("readonly",false);
-					readonlyRTTrue();
-					whenAdd();
-					$("#Cancel").hide();
-					break;
-				case state = 'edit':
-					$( this ).dialog( "option", "title", "Edit" );
-					enableForm('#formdata');
-					frozeOnEdit("#dialogForm");
-					$('#formdata [hideOne]').show();
-					//rdonly("#dialogForm");
-					whenEdit();
-					getgcforAdd();
-					errorField.length=0;
-					$("#Cancel").hide();
-					break;
-				case state = 'view':
-					$( this ).dialog( "option", "title", "View" );
-					disableForm('#formdata');
-					$('#formdata [hideOne]').show();
-					$(this).dialog("option", "buttons",butt2);
-					whenEdit();
-					$("#Cancel").hide();
-					hiderad.check();
-					break;
-			}
-			if(oper!='view'){
-				dialog_uomcode.on();
-				dialog_pouom.on();
-				dialog_suppcode.on();
-				dialog_mstore.on();
-				dialog_subcategory.on();
-				dialog_taxCode.on();
-				dialog_chgclass.on();
-				dialog_chgtype.on();
-				dialog_chggroup.on();
-				dialog_dosage.on();
-				dialog_frequency.on();
-				dialog_instruction.on();
-			}if(oper!='add'){
-				showing_charges_fieldset();
-				dialog_pouom.check(errorField);
-				dialog_suppcode.check(errorField);
-				dialog_mstore.check(errorField);
-				// dialog_subcategory.check(errorField);
-				dialog_taxCode.check(errorField);
-			}if(oper == 'add') {
-				dialog_itemcode.on();
-				dialog_pouom.off();
-				dialog_suppcode.off();
-				dialog_mstore.off();
-				dialog_subcategory.off();
-				dialog_taxCode.off();
-				dialog_chgclass.off();
-				dialog_chgtype.off();
-				dialog_chggroup.off();
-				dialog_dosage.off();
-				dialog_frequency.off();
-				dialog_instruction.off();
-			}
-		},
-		close: function( event, ui ) {
-			parent_close_disabled(false);
-			emptyFormdata(errorField,'#formdata');
-			emptyFormdata(errorField,'#formdataSearch');
+	.dialog({ 
+	width: 9/10 * $(window).width(),
+	modal: true,
+	autoOpen: false,
+	open: function( event, ui ) {
+		parent_close_disabled(true);
+		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 
-			urlParam.filterCol=['groupcode', 'Class'];
-			urlParam.filterVal=[$('#groupcode2').val(), $('#Class2').val()];
-			refreshGrid('#jqGrid',urlParam,oper);
-
-			dialog_itemcode.off();
+		switch(oper) {
+			case state = 'add':
+				$( this ).dialog( "option", "title", "Add" );
+				enableForm('#formdata');
+				hideOne('#formdata');
+				rdonly("#dialogForm");
+				$('#formdataSearch input[rdonly]').prop("readonly",false);
+				readonlyRTTrue();
+				whenAdd();
+				$("#Cancel").hide();
+				break;
+			case state = 'edit':
+				$( this ).dialog( "option", "title", "Edit" );
+				enableForm('#formdata');
+				frozeOnEdit("#dialogForm");
+				$('#formdata [hideOne]').show();
+				//rdonly("#dialogForm");
+				whenEdit();
+				getgcforAdd();
+				errorField.length=0;
+				$("#Cancel").hide();
+				break;
+			case state = 'view':
+				$( this ).dialog( "option", "title", "View" );
+				disableForm('#formdata');
+				$('#formdata [hideOne]').show();
+				$(this).dialog("option", "buttons",butt2);
+				whenEdit();
+				$("#Cancel").hide();
+				hiderad.check();
+				break;
+		}
+		if(oper!='view'){
+			dialog_uomcode.on();
+			dialog_pouom.on();
+			dialog_suppcode.on();
+			dialog_mstore.on();
+			dialog_subcategory.on();
+			dialog_taxCode.on();
+			dialog_chgclass.on();
+			dialog_chgtype.on();
+			dialog_chggroup.on();
+			dialog_dosage.on();
+			dialog_frequency.on();
+			dialog_instruction.on();
+		}if(oper!='add'){
+			showing_charges_fieldset();
+			dialog_pouom.check(errorField);
+			dialog_suppcode.check(errorField);
+			dialog_mstore.check(errorField);
+			// dialog_subcategory.check(errorField);
+			dialog_taxCode.check(errorField);
+		}if(oper == 'add') {
+			dialog_itemcode.on();
 			dialog_pouom.off();
 			dialog_suppcode.off();
 			dialog_mstore.off();
@@ -844,18 +821,41 @@ $(document).ready(function () {
 			dialog_dosage.off();
 			dialog_frequency.off();
 			dialog_instruction.off();
+		}
+	},
+	close: function( event, ui ) {
+		parent_close_disabled(false);
+		emptyFormdata(errorField,'#formdata');
+		emptyFormdata(errorField,'#formdataSearch');
 
-			$('.my-alert').detach();
-			if(oper=='view'){
-				$(this).dialog("option", "buttons",butt1);
-			}
+		urlParam.filterCol=['groupcode', 'Class'];
+		urlParam.filterVal=[$('#groupcode2').val(), $('#Class2').val()];
+		refreshGrid('#jqGrid',urlParam,oper);
 
-			if(oper == "add"){
-				$("#cancelBut").click();
-			}
-		},
-		buttons :butt1,
-	  });
+		dialog_itemcode.off();
+		dialog_pouom.off();
+		dialog_suppcode.off();
+		dialog_mstore.off();
+		dialog_subcategory.off();
+		dialog_taxCode.off();
+		dialog_chgclass.off();
+		dialog_chgtype.off();
+		dialog_chggroup.off();
+		dialog_dosage.off();
+		dialog_frequency.off();
+		dialog_instruction.off();
+
+		$('.my-alert').detach();
+		if(oper=='view'){
+			$(this).dialog("option", "buttons",butt1);
+		}
+
+		if(oper == "add"){
+			$("#cancelBut").click();
+		}
+	},
+	buttons :butt1,
+	});
 	////////////////////////////////////////end dialog///////////////////////////////////////////
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
@@ -892,7 +892,8 @@ $(document).ready(function () {
 			{ label: 'Class', name: 'Class', width: 40, sorttype: 'text', classes: 'wrap', hidden:true   },
 			{ label: 'Product Category', name: 'productcat', width: 40, sorttype: 'text', classes: 'wrap' ,canSearch: true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Charge', name: 'chgflag', width: 25, formatter:formatter, unformat:unformat, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'  },
-			{ label: 'Supplier Code', name: 'suppcode', width: 40, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Supplier Code', name: 'suppcode',  hidden:true, width: 40, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Generic', name: 'generic', width: 40, sorttype: 'text', classes: 'wrap',},
 			{ label: 'actavgcost', name: 'actavgcost', width: 50, hidden:true },
 			{ label: 'bonqty', name: 'bonqty', width: 50, hidden:true },
 			{ label: 'rpkitem', name: 'rpkitem', width: 50, hidden:true },
@@ -914,7 +915,6 @@ $(document).ready(function () {
 			{ label: 'deactivedate', name: 'deactivedate', width: 50, hidden:true },
 			{ label: 'tagging', name: 'tagging', width: 50, hidden:true },
 			{ label: 'itemtype', name: 'itemtype', width: 50, hidden:true },
-			{ label: 'generic', name: 'generic', width: 50, hidden:true },
 			{ label: 'cm_packqty', name: 'cm_packqty', width: 50, hidden:true },
 			{ label: 'cm_druggrcode', name: 'cm_druggrcode', width: 50, hidden:true },
 			{ label: 'cm_subgroup', name: 'cm_subgroup', width: 50, hidden:true },
@@ -943,6 +943,20 @@ $(document).ready(function () {
 		onSelectRow:function(rowid, selected){
 			var jg=$("#jqGrid").jqGrid('getRowData',rowid);
 			idno=rowid;
+
+			let chgflg = selrowData("#jqGrid").chgflag;
+
+			if(selrowData('#jqGrid').chgflag == '1'){
+				$("#jqGrid3_c").show();
+				urlParam2.filterVal[2]=selrowData("#jqGrid").itemcode;
+				urlParam2.filterVal[3]=selrowData("#jqGrid").uomcode;
+
+				refreshGrid("#jqGrid3",urlParam2,'add');
+				hideatdialogForm_jqGrid3(false);
+
+			} else {
+				$("#jqGrid3_c").hide();
+			}
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridPager td[title='Edit Selected Row']").click();
@@ -1110,7 +1124,6 @@ $(document).ready(function () {
 			urlParam2.filterVal[2]=$('#itemcodesearch').val();
 			urlParam2.filterVal[3]=$('#uomcodesearch').val();
 
-
 			dialog_itemcode.off();
 			dialog_uomcode.off();
 
@@ -1143,6 +1156,8 @@ $(document).ready(function () {
 			$("#formdata [name=Class][value='"+Class+"']").prop('checked', true);
 
 			get_product_detail();
+			$("#formdata input[name='TaxCode']").val('EP');
+			dialog_taxCode.check(errorField);
 		}
 	});
 
@@ -1579,10 +1594,8 @@ $(document).ready(function () {
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 			refreshGrid('#jqGrid2',urlParam2,'add');
 			hideatdialogForm(false);
-							
 		},
 		close: function(event, ui){
-
 		}
 	});
 
@@ -1963,6 +1976,410 @@ $(document).ready(function () {
 			}
 			
 		}
+
+	function onall_editfunc(jqgrid="none"){
+		dialog_dtliptax.on();
+		dialog_dtloptax.on();
+
+		mycurrency2.formatOnBlur();//make field to currency on leave cursor
+
+	}
+	////////////////////////////////////////////////jqgrid3 charge price//////////////////////////////////////////////
+	var addmore_jqgrid3={more:false,state:true,edit:false}
+
+	$("#jqGrid3").jqGrid({
+		datatype: "local",
+		editurl: "./chargemasterDetail/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
+			{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
+			{ label: 'Effective date', name: 'effdate', width: 130, classes: 'wrap', editable:true,
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+				editoptions: {
+					dataInit: function (element) {
+						$(element).datepicker({
+							id: 'expdate_datePicker',
+							dateFormat: 'dd/mm/yy',
+							minDate: "dateToday",
+							showOn: 'focus',
+							changeMonth: true,
+							changeYear: true,
+							onSelect : function(){
+								$(this).focus();
+							}
+						});
+					}
+				}
+			},
+			{ label: 'Inpatient Tax', name: 'iptax', width: 150, classes: 'wrap', editable:true,
+				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+					edittype:'custom',	editoptions:
+						{  custom_element:iptax3CustomEdit,
+							custom_value:galGridCustomValue 	
+						},
+			},
+			{ label: 'Outpatient Tax', name: 'optax', width: 150, classes: 'wrap', editable:true,
+				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+					edittype:'custom',	editoptions:
+						{  custom_element:optax3CustomEdit,
+							custom_value:galGridCustomValue 	
+						},
+			},
+			{ label: 'Price 1', name: 'amt1', width: 100, align: 'right', classes: 'wrap', editable:true,
+				edittype:"text",
+				editoptions:{
+					maxlength: 100,
+				},
+			},
+			{ label: 'Price 2', name: 'amt2', width: 100, align: 'right', classes: 'wrap', editable:true,
+				edittype:"text",
+				editoptions:{
+					maxlength: 100,
+				},
+			},
+			{ label: 'Price 3', name: 'amt3', width: 100, align: 'right', classes: 'wrap', editable:true,
+				edittype:"text",
+				editoptions:{
+					maxlength: 100,
+				},
+			},
+			{ label: 'Cost Price', name: 'costprice', width: 100, align: 'right', classes: 'wrap', editable:true,
+				edittype:"text",
+				editoptions:{
+					maxlength: 100,
+				},
+			},				
+			{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail, editable:true,editoptions: {
+					dataInit: function (element) {
+						$(element).attr('disabled','true');
+						$(element).val(selrowData('#jqGrid').uomcode);
+					}
+			}},
+			{ label: 'Status', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
+					dataInit: function (element) {
+						if($(element).attr('id').search("jqg") != -1)$(element).val('ACTIVE');
+						$(element).attr('disabled','true');
+					}
+			}},
+			{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
+
+		],
+		autowidth: true,
+		shrinkToFit: true,
+		multiSort: true,
+		viewrecords: true,
+		loadonce:false,
+		width: 1150,
+		height: 200,
+		rowNum: 30,
+		sortname: 'idno',
+		sortorder: "desc",
+		pager: "#jqGridPager3",
+		loadComplete: function(){
+			if(addmore_jqgrid3.more == true){$('#jqGrid3_iladd').click();}
+			else{
+				$('#jqGrid3').jqGrid ('setSelection', "1");
+			}
+
+			addmore_jqgrid3.edit = addmore_jqgrid3.more = false; //reset
+		},
+		gridComplete: function(){
+
+			fdl.set_array().reset();
+			if(!hide_init){
+				hide_init=1;
+				hideatdialogForm_jqGrid3(false);
+			}
+		}
+	});
+	var hide_init=0;
+
+	jqgrid_label_align_right("#jqGrid3");
+
+	$("#jqGrid3_panel").on("show.bs.collapse", function(){
+		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
+	});
+
+	//////////////////////////////////////////myEditOptions2 for Charge Price/////////////////////////////////////////////
+	var myEditOptions2 = {
+		keys: true,
+		extraparam:{
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid) {
+
+			$("#jqGridPager3EditAll,#jqGridPager3Delete,#jqGridPager3Refresh").hide();
+
+			dialog_dtliptax.on();
+			dialog_dtloptax.on();
+
+			unsaved = false;
+			mycurrency2.array.length = 0;
+			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid3 input[name='amt1']","#jqGrid3 input[name='amt2']","#jqGrid3 input[name='amt3']","#jqGrid3 input[name='costprice']"]);
+
+			mycurrency2.formatOnBlur();//make field to currency on leave cursor
+
+			$("input[name='costprice']").keydown(function(e) {//when click tab at document, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGrid3_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options) {
+			if(addmore_jqgrid3.state==true)addmore_jqgrid3.more=true; //only addmore after save inline
+			refreshGrid('#jqGrid3',urlParam2,'add');
+			$("#jqGridPager3EditAll,#jqGridPager3Delete,#jqGridPager3Refresh").show();
+		}, 
+		errorfunc: function(rowid,response){
+			$(".noti").text(response.responseText);
+			// alert(response.responseText);
+			refreshGrid('#jqGrid3',urlParam2,'add');
+			$("#jqGridPager3Delete,#jqGridPager3Refresh").show();
+		},
+		beforeSaveRow: function(options, rowid) {
+
+			//if(errorField.length>0)return false;  
+
+			let data = $('#jqGrid3').jqGrid ('getRowData', rowid);
+			let editurl = "./chargemasterDetail/form?"+
+				$.param({
+					action: 'chargemasterDetail_save',
+					oper: 'add',
+					chgcode: selrowData('#jqGrid').itemcode,//$('#chgcode').val(),
+					uom: selrowData('#jqGrid').uomcode//$('#uom').val(),
+					// authorid:$('#authorid').val()
+				});
+			$("#jqGrid3").jqGrid('setGridParam',{editurl:editurl});
+		},
+		afterrestorefunc : function( response ) {
+			hideatdialogForm_jqGrid3(false);
+		}
+	};
+
+	//////////////////////////////////////////pager jqgrid3/////////////////////////////////////////////
+	$("#jqGrid3").inlineNav('#jqGridPager3',{	
+		add:true,
+		edit:true,
+		cancel: true,
+		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: { 
+			addRowParams: myEditOptions2
+		},
+		editParams: myEditOptions2
+	}).jqGrid('navButtonAdd',"#jqGridPager3",{
+		id: "jqGridPager3Delete",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-trash",
+		title:"Delete Selected Row",
+		onClickButton: function(){
+			selRowId = $("#jqGrid3").jqGrid ('getGridParam', 'selrow');
+			if(!selRowId){
+				bootbox.alert('Please select row');
+			}else{
+				bootbox.confirm({
+					message: "Are you sure you want to delete this row?",
+					buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+					},
+					callback: function (result) {
+						if(result == true){
+							param={
+								action: 'chargemasterDetail_save',
+								idno: selrowData('#jqGrid3').idno,
+
+							}
+							$.post( "./chargemasterDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+							}).fail(function(data) {
+								//////////////////errorText(dialog,data.responseText);
+							}).done(function(data){
+								refreshGrid("#jqGrid3",urlParam2);
+							});
+						}else{
+							$("#jqGridPager3EditAll").show();
+						}
+					}
+				});
+			}
+		},
+	}).jqGrid('navButtonAdd',"#jqGridPager3",{
+		id: "jqGridPager3EditAll",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-th-list",
+		title:"Edit All Row",
+		onClickButton: function(){
+			mycurrency2.array.length = 0;
+			var ids = $("#jqGrid3").jqGrid('getDataIDs');
+			for (var i = 0; i < ids.length; i++) {
+
+				$("#jqGrid3").jqGrid('editRow',ids[i]);
+
+				Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amt1","#"+ids[i]+"_amt2","#"+ids[i]+"_amt3","#"+ids[i]+"_costprice"]);
+			}
+			mycurrency2.formatOnBlur();
+			onall_editfunc();
+			hideatdialogForm_jqGrid3(true,'saveallrow');
+		},
+	}).jqGrid('navButtonAdd',"#jqGridPager3",{
+		id: "jqGridPager3SaveAll",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-download-alt",
+		title:"Save All Row",
+		onClickButton: function(){
+			var ids = $("#jqGrid3").jqGrid('getDataIDs');
+
+			var jqgrid3_data = [];
+			mycurrency2.formatOff();
+			for (var i = 0; i < ids.length; i++) {
+
+				var data = $('#jqGrid3').jqGrid('getRowData',ids[i]);
+				var obj = 
+				{
+					'idno' : data.idno,
+					'effdate' : $("#jqGrid3 input#"+ids[i]+"_effdate").val(),
+					'amt1' : $("#jqGrid3 input#"+ids[i]+"_amt1").val(),
+					'amt2' : $("#jqGrid3 input#"+ids[i]+"_amt2").val(),
+					'amt3' : $("#jqGrid3 input#"+ids[i]+"_amt3").val(),
+					'costprice' : $("#jqGrid3 input#"+ids[i]+"_costprice").val(),
+					'iptax' : $("#jqGrid3 input#"+ids[i]+"_iptax").val(),
+					'optax' : $("#jqGrid3 input#"+ids[i]+"_optax").val()
+				}
+
+				jqgrid3_data.push(obj);
+			}
+
+			var param={
+				action: 'chargemasterDetail_save',
+				_token: $("#_token").val()
+			}
+
+			$.post( "./chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid3_data}, function( data ){
+			}).fail(function(data) {
+				//////////////////errorText(dialog,data.responseText);
+			}).done(function(data){
+				hideatdialogForm_jqGrid3(false);
+				refreshGrid("#jqGrid3",urlParam2);
+			});
+		},	
+	}).jqGrid('navButtonAdd',"#jqGridPager3",{
+		id: "jqGridPager3CancelAll",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-remove-circle",
+		title:"Cancel",
+		onClickButton: function(){
+			hideatdialogForm_jqGrid3(false);
+			refreshGrid("#jqGrid3",urlParam2);
+		},	
+	}).jqGrid('navButtonAdd', "#jqGridPager3", {
+		id: "jqGridPager3Refresh",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function () {
+			refreshGrid("#jqGrid3", urlParam2);
+		},
+	});
+
+	var dialog_dtliptax = new ordialog(
+		'dtl_iptax','hisdb.taxmast',"#jqGrid3 input[name='iptax']",errorField,
+		{	colModel:[
+				{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Tax Type',name:'taxtype',width:200,classes:'pointer', hidden:true},
+				{label:'Rate',name:'rate',width:200,classes:'pointer'},
+			],
+			urlParam: {
+				filterCol:['recstatus','compcode','taxtype'],
+				filterVal:['ACTIVE', 'session.compcode','Output']
+					},
+			ondblClickRow:function(){
+				$('#dtl_optax').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#dtl_optax').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Tax Master",
+			open: function(){
+				dialog_dtliptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
+				dialog_dtliptax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
+			},
+			close: function(){
+				$("#jqGrid3 input[name='optax']").focus();
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_dtliptax.makedialog();
+
+	var dialog_dtloptax = new ordialog(
+		'dtl_optax','hisdb.taxmast',"#jqGrid3 input[name='optax']",errorField,
+		{	colModel:[
+				{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Tax Type',name:'taxtype',width:200,classes:'pointer', hidden:true},
+				{label:'Rate',name:'rate',width:200,classes:'pointer'},
+			],
+			urlParam: {
+				filterCol:['recstatus','compcode','taxtype'],
+				filterVal:['ACTIVE', 'session.compcode','Output']
+					},
+			ondblClickRow:function(){
+				$('#amt1').focus();
+			},
+			gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#amt1').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
+		},{
+			title:"Select Tax Master",
+			open: function(){
+				dialog_dtloptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
+				dialog_dtloptax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
+			},
+			close: function(){
+				$("#jqGrid3 input[name='amt1']").focus();
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_dtloptax.makedialog();
+
+	///chargeprice///
+	function hideatdialogForm_jqGrid3(hide,saveallrow){
+		if(saveallrow == 'saveallrow'){
+
+			$("#jqGrid3_iledit,#jqGrid3_iladd,#jqGrid3_ilcancel,#jqGrid3_ilsave,#jqGridPager3Delete,#jqGridPager3EditAll,#jqGridPager3Refresh").hide();
+			$("#jqGridPager3SaveAll,#jqGridPager3CancelAll").show();
+		}else if(hide){
+
+			$("#jqGrid3_iledit,#jqGrid3_iladd,#jqGrid3_ilcancel,#jqGrid3_ilsave,#jqGridPager3Delete,#jqGridPager3EditAll,#jqGridPager3SaveAll,#jqGridPager3CancelAll,#jqGridPager3Refresh").hide();
+		}else{
+
+			$("#jqGrid3_iladd,#jqGrid3_ilcancel,#jqGrid3_ilsave,#jqGridPager3Delete,#jqGridPager3EditAll,#jqGridPager3Refresh").show();
+			$("#jqGridPager3SaveAll,#jqGrid3_iledit,#jqGridPager3CancelAll").hide();
+		}
+		
+	}
+
+	function iptax3CustomEdit(val, opt) {
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid3" optid="'+opt.id+'" id="'+opt.id+'" name="iptax" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	function optax3CustomEdit(val, opt) {
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid3" optid="'+opt.id+'" id="'+opt.id+'" name="optax" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
 
 });
 

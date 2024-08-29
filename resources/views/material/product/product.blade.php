@@ -93,6 +93,24 @@
 	    		</div>
 		    </div>
 		</div>
+
+		<div class="panel-group">
+  			<div class="panel panel-default" id="jqGrid3_c">
+    			<div class="panel-heading"  href="#jqGrid3_panel">
+					Charge Price<!-- <i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i>Charge Price -->
+    			</div>
+    			<div id="jqGrid3_panel" >
+					<div class="panel-body">
+						<form id='formdata3' class='form-vertical' style='width:99%'>
+							<div class='col-md-12' style="padding:0 0 15px 0">
+								<table id="jqGrid3" class="table table-striped"></table>
+								<div id="jqGridPager3"></div>
+							</div>
+						</form>
+					</div>
+    			</div>
+  			</div>
+		</div>
 	</div>
 
 	<input id="Class2" name="Class" type="hidden" value="{{ $_GET['Class'] }}">
@@ -567,7 +585,7 @@
 		</div>
 
 	<!---*********************************** ADD NEW CHARGE PRICE ************************************************** -->
-		<div id="addNewChgprice" title="Add New Charge Prize" >
+		<div id="addNewChgprice" title="Add New Charge Price" >
 			<form id='formdata2' class='form-vertical' style='width:99%'>
 				<div id="jqGrid2_c" class='col-md-12'>
 					<table id="jqGrid2" class="table table-striped"></table>
