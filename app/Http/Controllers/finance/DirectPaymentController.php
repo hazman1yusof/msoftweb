@@ -186,10 +186,10 @@ class DirectPaymentController extends defaultController
                         'recstatus' => 'OPEN'
                     ]);
 
-                    if($request->paymode == 'TT'){
-                        $last_tt = $this->defaultSysparam('CM','TT');
-                        $array_insert['cheqno'] = $last_tt;
-                    }
+            if($request->paymode == 'TT'){
+                $last_tt = $this->defaultSysparam('CM','TT');
+                $array_insert['cheqno'] = $last_tt;
+            }
 
             $responce = new stdClass();
             $responce->auditno = $auditno;
@@ -423,24 +423,54 @@ class DirectPaymentController extends defaultController
                 }
             }
             
-            //step update stat at cheqtran
-            if($this->isPaytypeCheque($apacthdr_get->paymode == "Cheque")){
-                DB::table('finance.chqtran')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('bankcode','=',$apacthdr_get->bankcode)
-                    ->where('cheqno','=',$apacthdr_get->cheqno)
-                    ->update([
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                        'cheqdate' => $apacthdr_get->cheqdate,
-                        'amount' => $apacthdr_get->amount,
-                        'remarks' => strtoupper($apacthdr_get->remarks),
-                        'recstatus' => 'ISSUED',
-                        'auditno' => $apacthdr_get->auditno,
-                        'trantype' => $apacthdr_get->trantype,
-                        'source' => $apacthdr_get->source,
+            //step update stat at cheqtran   //->dah buat waktu add, kalu buat waktu posted nanti
+            // if($this->isPaytypeCheque($apacthdr_get->paymode == "Cheque")){
+            //     DB::table('finance.chqtran')
+            //         ->where('compcode','=',session('compcode'))
+            //         ->where('bankcode','=',$apacthdr_get->bankcode)
+            //         ->where('cheqno','=',$apacthdr_get->cheqno)
+            //         ->update([
+            //             'upduser' => session('username'),
+            //             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+            //             'cheqdate' => $apacthdr_get->cheqdate,
+            //             'amount' => $apacthdr_get->amount,
+            //             'remarks' => strtoupper($apacthdr_get->remarks),
+            //             'recstatus' => 'ISSUED',
+            //             'auditno' => $apacthdr_get->auditno,
+            //             'trantype' => $apacthdr_get->trantype,
+            //             'source' => $apacthdr_get->source,
                        
-                    ]);
+            //         ]);
+            // } 
+
+            if($apacthdr_get->paymode == 'CHEQUE'){
+                $chqtran =  DB::table('finance.chqtran')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('bankcode','=',$apacthdr_get->bankcode)
+                            ->where('cheqno','=',$apacthdr_get->cheqno)
+                            ->where('recstatus','OPEN');
+
+                if(!$chqtran->exists()){
+                    throw new \Exception("Cheque Error, try again..");
+                }
+
+                DB::table('finance.chqtran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('bankcode','=',$apacthdr_get->bankcode)
+                        ->where('cheqno','=',$apacthdr_get->cheqno)
+                        ->where('recstatus','OPEN')
+                        ->update([
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'cheqdate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'amount' => $apacthdr_get->amount,
+                            'remarks' => strtoupper($apacthdr_get->remarks),
+                            'recstatus' => 'ISSUED',
+                            'auditno' => $apacthdr_get->auditno,
+                            'trantype' => $apacthdr_get->trantype,
+                            'source' => $apacthdr_get->source,
+                            'payto' => $apacthdr_get->payto,
+                        ]);
             }
 
             //5th step change status to posted
