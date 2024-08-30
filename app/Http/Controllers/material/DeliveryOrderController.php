@@ -390,6 +390,9 @@ class DeliveryOrderController extends defaultController
                     //2. start looping untuk delorddt
 
                 foreach ($delorddt_obj as $value) {
+                    if($value->qtydelivered == 0){
+                        continue;
+                    }
                     
                     $productcat = $value->productcat;
 
@@ -473,17 +476,21 @@ class DeliveryOrderController extends defaultController
                             $status = 'PARTIAL';
                         }
 
-                        dd($status);
-
                         if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
                             throw new \Exception("Quantity delivered exceed quantity order");
                         }
 
-                        $podt_obj->update([
-                            'qtydelivered' => $jumlah_qtydelivered,
-                            'qtyoutstand' => $qtyoutstand,
-                            'recstatus' => $status
-                        ]);
+                        DB::table('material.purorddt')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('itemcode','=',$value->itemcode)
+                            ->where('prdept','=',$value->prdept)
+                            ->where('purordno','=',$value->srcdocno)
+                            ->where('lineno_','=',$value->polineno)
+                            ->update([
+                                'qtydelivered' => $jumlah_qtydelivered,
+                                'qtyoutstand' => $qtyoutstand,
+                                'recstatus' => $status
+                            ]);
 
                         //update qtyoutstand utk suma DO pulak 
                         DB::table('material.delorddt')
@@ -499,16 +506,16 @@ class DeliveryOrderController extends defaultController
 
                 } // habis looping untuk delorddt
 
-                //--- 8. change recstatus to posted -dd--//
-                $this->chg_recstatus_do_then_po($delordhd_obj);
-
             }
 
-            $queries = DB::getQueryLog();
+            //--- 8. change recstatus to posted -dd--//
+            $this->chg_recstatus_do_then_po($delordhd_obj);
+
+            // $queries = DB::getQueryLog();
             // dump($queries);
 
 
-            // DB::commit();
+            DB::commit();
         
         } catch (\Exception $e) {
             DB::rollback();
@@ -1253,6 +1260,12 @@ class DeliveryOrderController extends defaultController
                 ->where('compcode', '=' ,session('compcode'))
                 ->first();
 
+        $po_hd = DB::table('material.purordhd')
+                ->where('prdept', '=', $do_hd->prdept)
+                ->where('purordno', '=', $do_hd->srcdocno)
+                ->where('compcode', '=' ,session('compcode'))
+                ->first();
+
         DB::table('material.delordhd')
                 ->where('recno', '=', $delordhd_obj->recno)
                 ->where('compcode', '=' ,session('compcode'))
@@ -1264,25 +1277,12 @@ class DeliveryOrderController extends defaultController
                 ->update(['recstatus'  => 'POSTED']);
 
         if(!empty($do_hd->srcdocno)){
-            // $do_dt = DB::table('material.delorddt')
-            //         ->where('recno', '=', $delordhd_obj->recno)
-            //         ->where('compcode', '=', session('compcode'))
-            //         ->where('recstatus', '<>', 'DELETE')
-            //         ->get();
-
-            // $partial = false;
-            
-            // foreach ($do_dt as $key => $dodt) {
-            //     if(floatval($dodt->qtydelivered) < floatval($dodt->qtyorder)){
-            //         $partial = true;
-            //     }
-            // }
-
             $podt_obj = DB::table('material.purorddt')
                             ->where('compcode','=',session('compcode'))
-                            ->where('purordno','=',$do_hd->srcdocno)
-                            ->where('prdept','=',$do_hd->prdept)
+                            ->where('recno',$po_hd->recno)
                             ->where('recstatus','!=','COMPLETED');
+                            // ->where('purordno','=',$do_hd->srcdocno)
+                            // ->where('prdept','=',$do_hd->prdept);
 
             if($podt_obj->exists()){
                 $recstatus = 'PARTIAL';
@@ -1290,11 +1290,11 @@ class DeliveryOrderController extends defaultController
                 $recstatus = 'COMPLETED';
             }
 
-            $po_hd = DB::table('material.purordhd')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('purordno', '=', $do_hd->srcdocno)
-                    ->where('prdept', '=', $do_hd->prdept)
-                    ->update(['recstatus'  => $recstatus]);
+            DB::table('material.purordhd')
+                ->where('compcode','=',session('compcode'))
+                ->where('purordno', '=', $do_hd->srcdocno)
+                ->where('prdept', '=', $do_hd->prdept)
+                ->update(['recstatus'  => $recstatus]);
         }
     }
 

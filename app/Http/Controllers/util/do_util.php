@@ -78,7 +78,7 @@ class do_util extends defaultController{
 
         }else{
         //3.kalu xde stockloc, create stockloc baru
-
+            throw new \Exception("Prodcut doesnt have stockloc: ".$value->itemcode." UOM: ".$value->uomcode." Dept: ".$value->deldept." Year: ".defaultController::toYear($value->trandate));
         }
 	}
 
@@ -165,7 +165,9 @@ class do_util extends defaultController{
 	                'currprice' => $currprice
 	            ]);
 
-	    }
+	    }else{
+            throw new \Exception("Prodcut doesnt exists Item: ".$value->itemcode." UOM: ".$value->uomcode);
+        }
 	}
 
 	public static function postingGL($value,$delordhd_obj,$productcat){
@@ -307,7 +309,6 @@ class do_util extends defaultController{
                     'recstatus' => 'ACTIVE'
                 ]);
         }
-
 	}
 
 	public static function postingGL_GST($value,$delordhd_obj){

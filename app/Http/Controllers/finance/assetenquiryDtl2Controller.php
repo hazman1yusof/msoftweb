@@ -260,7 +260,6 @@ class assetenquiryDtl2Controller extends defaultController
         }
 
         return json_encode($responce);
-
     }
 
 }

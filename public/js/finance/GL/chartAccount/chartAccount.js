@@ -325,7 +325,7 @@ $(document).ready(function () {
 	function cust_rules(value,name){
 		var temp;
 		switch(name){
-			case 'Cost Code':temp=$('#costcode');break;
+			case 'Cost Code':temp=$('#jqGrid input#costcode');break;
 			// case 'Gl Account':temp=$('#glaccount');break;
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];

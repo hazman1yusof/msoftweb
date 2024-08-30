@@ -75,7 +75,7 @@ class ChartAccountController extends defaultController
                     default:
                         return 'error happen..';
                 }
-            case 'default':
+            case 'chartAccount_save':
                 switch($request->oper){
                     case 'add':
                         return $this->add($request);break;
