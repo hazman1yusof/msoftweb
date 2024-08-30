@@ -243,7 +243,7 @@ class CreditNoteDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->update([
-                    'amount' => $totalAmount
+                    'amount' => $totalAmount,
                     'outamount' => $totalAmount, 
                 ]);
 
