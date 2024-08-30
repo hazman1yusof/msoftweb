@@ -66,20 +66,24 @@ class AuthorizationDetailController extends defaultController
                             ->exists();
             // }
 
-            if(!$duplicate){
-                $duplicate2 = DB::table('material.authdtl')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('authorid','!=',$authorid_)
-                            ->where('maxlimit','=',$request->dtl_maxlimit)
-                            ->where('trantype','=',$request->dtl_trantype)
-                            ->where('deptcode','=',$request->dtl_deptcode)
-                            ->where('recstatus','=',$request->dtl_recstatus);
-
-            }else{
+            if($duplicate){
                 throw new \Exception("Duplicate entry", 500);
             }
 
-            if(!$duplicate2->exists()){
+            // if(!$duplicate){
+            //     $duplicate2 = DB::table('material.authdtl')
+            //                 ->where('compcode','=',session('compcode'))
+            //                 ->where('authorid','!=',$authorid_)
+            //                 ->where('maxlimit','=',$request->dtl_maxlimit)
+            //                 ->where('trantype','=',$request->dtl_trantype)
+            //                 ->where('deptcode','=',$request->dtl_deptcode)
+            //                 ->where('recstatus','=',$request->dtl_recstatus);
+
+            // }else{
+            //     throw new \Exception("Duplicate entry", 500);
+            // }
+
+            // if(!$duplicate2->exists()){
 
 
                 ///2. insert detail
@@ -96,11 +100,11 @@ class AuthorizationDetailController extends defaultController
                         'adduser' => session('username'), 
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
-            }else{
-                $first_get = $duplicate2->first();
+            // }else{
+            //     $first_get = $duplicate2->first();
 
-                throw new \Exception("Authorise Entry has been entered by ".$first_get->authorid, 500);
-            }
+            //     throw new \Exception("Authorise Entry has been entered by ".$first_get->authorid, 500);
+            // }
 
             DB::commit();
         } catch (\Exception $e) {

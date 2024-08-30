@@ -638,6 +638,15 @@ $(document).ready(function () {
 				textfld:"",
 				msg:data.responseText,
 			});
+			
+			mycurrency.formatOn();
+			dialog_prdept.on();
+			dialog_reqdept.on();
+			dialog_purreqno.on();
+		    dialog_suppcode.on();
+		    dialog_credcode.on();
+		    dialog_deldept.on();
+
 		}).done(function (data) {
 			$("#saveDetailLabel").attr('disabled',false)
 			hideatdialogForm(false);
