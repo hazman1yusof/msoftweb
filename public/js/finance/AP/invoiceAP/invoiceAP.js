@@ -442,22 +442,22 @@ $(document).ready(function () {
 
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
+	// $("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
 
-		var idno = selrowData('#jqGrid').apacthdr_idno;
-		var obj={};
-		obj.idno = idno;
-		obj._token = $('#_token').val();
-		obj.oper = $(this).data('oper')+'_single';
+	// 	var idno = selrowData('#jqGrid').apacthdr_idno;
+	// 	var obj={};
+	// 	obj.idno = idno;
+	// 	obj._token = $('#_token').val();
+	// 	obj.oper = $(this).data('oper')+'_single';
 
-		$.post( './invoiceAP/form', obj , function( data ) {
-			refreshGrid('#jqGrid', urlParam);
-		}).fail(function(data) {
-			$('#error_infront').text(data.responseText);
-		}).success(function(data){
+	// 	$.post( './invoiceAP/form', obj , function( data ) {
+	// 		refreshGrid('#jqGrid', urlParam);
+	// 	}).fail(function(data) {
+	// 		$('#error_infront').text(data.responseText);
+	// 	}).success(function(data){
 			
-		});
-	});
+	// 	});
+	// });
 
 	$("#but_post_jq").click(function(){
 		var idno_array = [];
@@ -1051,14 +1051,23 @@ $(document).ready(function () {
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
-		
-		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+
+
+		if(options.gid != "jqGrid"){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
-		}else{
-			return ' ';
 		}
+
+		if($('#recstatus_use').val() == 'ALL'){
+			if(rowObject.apacthdr_recstatus == "OPEN"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'CANCEL'){
+			if(rowObject.apacthdr_recstatus == "OPEN"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}
+
+		return ' ';
 	}
 
 	function formatterRemarks(cellvalue, options, rowObject){

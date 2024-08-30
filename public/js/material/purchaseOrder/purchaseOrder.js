@@ -216,13 +216,13 @@ $(document).ready(function () {
 		url:'util/get_table_default',
 		field:'',
 		fixPost: 'true',
-		table_name: ['material.purordhd', 'material.supplier','material.queuepo'],
+		table_name: ['material.purordhd', 'material.supplier'],
 		table_id: 'purordhd_idno',
-		join_type: ['LEFT JOIN','LEFT JOIN'],
-		join_onCol: ['supplier.SuppCode','queuepo.recno'],
-		join_onVal: ['purordhd.suppcode','purordhd.recno'],
-		join_filterCol: [['supplier.compcode ='],['queuepo.compcode =']],
-		join_filterVal: [['session.compcode'],['session.compcode']],
+		join_type: ['LEFT JOIN'],
+		join_onCol: ['supplier.SuppCode'],
+		join_onVal: ['purordhd.suppcode'],
+		join_filterCol: [['supplier.compcode =']],
+		join_filterVal: [['session.compcode']],
 		// filterCol:['purordhd.prdept'],
 		// filterVal:[$('#deptcode').val()],
 		filterCol: filterCol_urlParam,
@@ -1105,6 +1105,7 @@ $(document).ready(function () {
 		},
 		onSelectRow: function (rowid, selected) {
 			myfail_msg.clear_fail();
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 		},
 		gridComplete: function(){
 			$("#jqGrid2").find(".remarks_button").on("click", function(e){

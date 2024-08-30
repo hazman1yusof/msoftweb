@@ -56,6 +56,18 @@ class PurchaseOrderDetailController extends defaultController
     }
     
     public function PurchaseOrderDetail(Request $request){
+        if(empty($request->filterVal[0])){
+            $responce = new stdClass();
+            $responce->page = 0;
+            $responce->total = 0;
+            $responce->records = 0;
+            $responce->rows = [];
+            $responce->sql = 0;
+            $responce->sql_bind = 0;
+
+            return json_encode($responce);
+        }
+
         $table = DB::table('material.purorddt AS podt')
                 ->select('podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder','podt.qtydelivered','podt.qtyoutstand','podt.qtyrequest', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount','podt.rem_but AS remarks_button','podt.remarks', 'podt.unit', 't.rate')
                 ->leftJoin('material.productmaster AS p', function($join) use ($request){
@@ -135,6 +147,24 @@ class PurchaseOrderDetailController extends defaultController
                         'recno' => $recno,
                         'compcode' => session('compcode'),
                     ]);
+            }else{
+
+                $purordno = $request->purordno;
+                $recno = $request->recno;
+
+                if($purreqno == 0 && $recno == 0){
+                    $purordno = $this->request_no('PO',$purordhd->first()->prdept);
+                    $recno = $this->recno('PUR','PO');
+                
+                    DB::table("material.purordhd")
+                        ->where('idno','=',$request->idno)
+                        ->update([
+                            'purordno' => $purordno,
+                            'recno' => $recno,
+                            'compcode' => session('compcode'),
+                        ]);
+
+                }
             }
 
             //check unique

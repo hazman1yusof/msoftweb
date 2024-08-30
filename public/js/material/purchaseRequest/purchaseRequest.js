@@ -161,11 +161,11 @@ $(document).ready(function () {
 		action: 'get_table_default',
 		url:'util/get_table_default',
 		field:'',
-		table_name: ['material.purreqhd', 'material.supplier','material.queuepr'],
+		table_name: ['material.purreqhd', 'material.supplier'],
 		table_id: 'purreqhd_idno',
-		join_type: ['LEFT JOIN','LEFT JOIN'],
-		join_onCol: ['supplier.SuppCode','queuepr.recno'],
-		join_onVal: ['purreqhd.suppcode','purreqhd.recno'],
+		join_type: ['LEFT JOIN'],
+		join_onCol: ['supplier.SuppCode'],
+		join_onVal: ['purreqhd.suppcode'],
 		filterCol: filterCol_urlParam,
 		filterVal: filterVal_urlParam,
 		WhereInCol:['purreqhd.recstatus'],
@@ -223,7 +223,7 @@ $(document).ready(function () {
 			{ label: 'Request Department', name: 'purreqhd_reqdept', width: 15, canSearch: true, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Purchase Department', name: 'purreqhd_prdept', width: 15, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Request No', name: 'purreqhd_purreqno', width: 10, canSearch: true, align:'right', formatter: padzero, unformat: unpadzero  },
-			{ label: 'Authorise ID', name: 'queuepr_AuthorisedID', width: 10, canSearch: true , hidden: true},
+			// { label: 'Authorise ID', name: 'queuepr_AuthorisedID', width: 10, canSearch: true , hidden: true},
 			{ label: 'PO No', name: 'purreqhd_purordno', width: 10, formatter: padzero, unformat: unpadzero,hidden: true },
 			{ label: 'Request Date', name: 'purreqhd_purreqdt', width: 15, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'Supplier Code', name: 'purreqhd_suppcode', width: 30, canSearch: true, formatter: showdetail,unformat:un_showdetail},
@@ -418,7 +418,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid', false, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['purreqhd_recno','purreqhd_purordno','purreqhd_adduser', 'purreqhd_adddate', 'purreqhd_idno', 'supplier_name','purreqhd_purreqno','purreqhd_upduser','purreqhd_upddate','purreqhd_deluser', 'purreqhd_recstatus','purreqhd_unit','Checkbox','queuepr_AuthorisedID','purreqhd_recommended1by','purreqhd_recommended1date','purreqhd_recommended2by','purreqhd_recommended2date','purreqhd_support_remark','purreqhd_verified_remark','purreqhd_approved_remark','purreqhd_cancelled_remark','purreqhd_recommended1_remark','purreqhd_recommended2_remark']);
+	addParamField('#jqGrid', false, saveParam, ['purreqhd_recno','purreqhd_purordno','purreqhd_adduser', 'purreqhd_adddate', 'purreqhd_idno', 'supplier_name','purreqhd_purreqno','purreqhd_upduser','purreqhd_upddate','purreqhd_deluser', 'purreqhd_recstatus','purreqhd_unit','Checkbox','purreqhd_recommended1by','purreqhd_recommended1date','purreqhd_recommended2by','purreqhd_recommended2date','purreqhd_support_remark','purreqhd_verified_remark','purreqhd_approved_remark','purreqhd_cancelled_remark','purreqhd_recommended1_remark','purreqhd_recommended2_remark']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide,saveallrow){

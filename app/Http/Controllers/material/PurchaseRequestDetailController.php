@@ -56,6 +56,18 @@ class PurchaseRequestDetailController extends defaultController
     }
 
     public function get_table_dtl(Request $request){
+        if(empty($request->filterVal[0])){
+            $responce = new stdClass();
+            $responce->page = 0;
+            $responce->total = 0;
+            $responce->records = 0;
+            $responce->rows = [];
+            $responce->sql = 0;
+            $responce->sql_bind = 0;
+
+            return json_encode($responce);
+        }
+
         $table = DB::table('material.purreqdt as prdt')
                     ->select('prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode', 'prdt.pouom', 'prdt.qtyrequest' , 'prdt.qtybalance', 'prdt.qtyapproved', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax as tot_gst','prdt.netunitprice', 'prdt.totamount','prdt.amount', 'prdt.rem_but AS remarks_button', 'prdt.remarks', 'prdt.recstatus', 'prdt.unit', 't.rate')
                     ->leftJoin('material.productmaster AS p', function($join) use ($request){
@@ -112,7 +124,6 @@ class PurchaseRequestDetailController extends defaultController
         DB::beginTransaction();
         try {
 
-            $recno = null;
             $purreqhd = DB::table("material.purreqhd")
                             ->where('idno','=',$request->idno)
                             ->where('compcode','=','DD');
@@ -128,11 +139,25 @@ class PurchaseRequestDetailController extends defaultController
                                     'recno' => $recno,
                                     'compcode' => session('compcode'),
                                 ]);
-            }
+            }else{
 
-            if($recno == null){
                 $purreqno = $request->purreqno;
                 $recno = $request->recno;
+
+                if($purreqno == 0 && $recno == 0){
+
+                    $purreqno = $this->request_no('PR', $purreqhd->first()->reqdept);
+                    $recno = $this->recno('PUR','PR');
+
+                    $purreqhd = DB::table("material.purreqhd")
+                                    ->where('idno','=',$request->idno)
+                                    ->update([
+                                        'purreqno' => $purreqno,
+                                        'recno' => $recno,
+                                        'compcode' => session('compcode'),
+                                    ]);
+                }
+
             }
 
             //$suppcode = $request->suppcode;
