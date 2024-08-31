@@ -1473,18 +1473,35 @@ class SalesOrderController extends defaultController
             ->where('h.compcode','=',session('compcode'))
             ->first();
 // dd($dbacthdr);
-        $billsum = DB::table('debtor.billsum AS b', 'material.productmaster AS p', 'material.uom as u', 'debtor.debtormast as d', 'hisdb.chgmast as m')
+        $billsum = DB::table('debtor.billsum AS b')
             ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
             'u.description as uom_desc', 
             'd.debtorcode as debt_debtcode','d.name as debt_name', 
-            'm.description as chgmast_desc')
+            'm.description as chgmast_desc','iv.expdate','iv.batchno')
             ->leftJoin('hisdb.chgmast as m', function($join) use ($request){
                 $join = $join->on('b.chggroup', '=', 'm.chgcode');
                 $join = $join->on('b.uom', '=', 'm.uom');
+                $join = $join->where('m.compcode', '=', session('compcode'));
+                $join = $join->where('m.unit', '=', session('unit'));
+            })
+            ->leftJoin('material.uom as u', function($join) use ($request){
+                $join = $join->on('b.uom', '=', 'u.uomcode');
+                $join = $join->where('u.compcode', '=', session('compcode'));
             })
             //->leftJoin('material.productmaster as p', 'b.description', '=', 'p.description')
-            ->leftJoin('material.uom as u', 'b.uom', '=', 'u.uomcode')
-            ->leftJoin('debtor.debtormast as d', 'b.debtorcode', '=', 'd.debtorcode')
+            // ->leftJoin('material.uom as u', 'b.uom', '=', 'u.uomcode')
+            // ->leftJoin('debtor.debtormast as d', 'b.debtorcode', '=', 'd.debtorcode')
+            ->leftJoin('debtor.debtormast as d', function($join) use ($request){
+                $join = $join->on('b.debtorcode', '=', 'd.debtorcode');
+                $join = $join->where('d.compcode', '=', session('compcode'));
+            })
+            ->leftJoin('material.ivdspdt as iv', function($join) use ($request){
+                $join = $join->on('iv.recno', '=', 'b.auditno');
+                $join = $join->where('iv.lineno_', '=', '1');
+                $join = $join->on('iv.itemcode', '=', 'b.chggroup');
+                $join = $join->on('iv.uomcode', '=', 'b.uom');
+                $join = $join->where('iv.compcode', '=', session('compcode'));
+            })
             ->where('b.source','=',$dbacthdr->source)
             ->where('b.trantype','=',$dbacthdr->trantype)
             ->where('b.billno','=',$dbacthdr->auditno)
@@ -1930,6 +1947,8 @@ class SalesOrderController extends defaultController
                 $expdate_get = $expdate_obj->get();
                 $txnqty_ = $curr_quan;
                 $balqty = 0;
+                $stockexp_use = $expdate_obj->first();
+
                 foreach ($expdate_get as $value2) {
                     $balqty = $value2->balqty;
                     if($txnqty_-$balqty>0){
@@ -1970,8 +1989,6 @@ class SalesOrderController extends defaultController
                         'year' => Carbon::now("Asia/Kuala_Lumpur")->year
                     ]);
             }
-
-
         }
 
         $ivdspdt_arr = [
@@ -1994,7 +2011,9 @@ class SalesOrderController extends defaultController
             'trxaudno' => $billsum_obj->auditno,
             'mrn' => $this->givenullifempty($dbacthdr->mrn),
             'episno' => $this->givenullifempty($dbacthdr->episno),
-            'updtime' => Carbon::now("Asia/Kuala_Lumpur")
+            'updtime' => Carbon::now("Asia/Kuala_Lumpur"),
+            'expdate' => $stockexp_use->expdate,
+            'batchno' => $stockexp_use->batchno
         ];
 
 
@@ -2081,6 +2100,8 @@ class SalesOrderController extends defaultController
                 ->where('DeptCode','=',$dbacthdr->deptcode)
                 ->where('ItemCode','=',$billsum_obj->chggroup)
                 ->where('UomCode','=',$billsum_obj->uom)
+                ->where('batchno','=',$ivdspdt_lama->first()->batchno)
+                ->where('expdate','=',$ivdspdt_lama->first()->expdate)
                 ->orderBy('expdate', 'asc');
 
             if($expdate_obj->exists()){
@@ -2192,6 +2213,8 @@ class SalesOrderController extends defaultController
                 ->where('DeptCode','=',$dbacthdr->deptcode)
                 ->where('ItemCode','=',$billsum_obj->chggroup)
                 ->where('UomCode','=',$billsum_obj->uom)
+                ->where('batchno','=',$ivdspdt_lama->first()->batchno)
+                ->where('expdate','=',$ivdspdt_lama->first()->expdate)
                 ->orderBy('expdate', 'asc');
 
             if($expdate_obj->exists()){

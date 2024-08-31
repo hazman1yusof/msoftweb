@@ -130,26 +130,30 @@
 				{
 					style: 'tableExample',
 					table: {
-						widths: ['*','*','*','*','*','*','*','*','*','*'],
+						widths: [60,30,30,25,40,40,35,40,46,40], //515
 						body: [
 
 							[
-                                {text:'Description',colSpan: 5, style:'totalbold'},{},{},{},{},
+                                {text:'Description',colSpan: 3, style:'totalbold'},{},{},
                                 {text:'UOM', style:'totalbold'},
-                                {text:'Quantity', style:'totalbold'},
-                                {text:'Unit Price', style:'totalbold'},
-                                {text:'Tax Amt', style:'totalbold'},
-                                {text:'Amount', style:'totalbold'}
+                                {text:'Quantity', style:'totalbold', alignment: 'right'},
+                                {text:'Unit Price', style:'totalbold', alignment: 'right'},
+                                {text:'Tax Amt', style:'totalbold', alignment: 'right'},
+                                {text:'Amount', style:'totalbold', alignment: 'right'},
+                                {text:'Expiry', style:'totalbold'},
+                                {text:'Batchno', style:'totalbold'}
                             ],
 
 							@foreach ($billsum as $obj)
 							[
-								{text:`{{$obj->chgmast_desc}}`,colSpan: 5},{},{},{},{},
+								{text:`{{$obj->chgmast_desc}}`,colSpan: 3},{},{},
 								{text:`{!!$obj->uom!!}`},
 								{text:'{{$obj->quantity}}', alignment: 'right'},
 								{text:'{{number_format($obj->unitprice,2)}}', alignment: 'right'},
 								{text:'{{number_format($obj->taxamt,2)}}', alignment: 'right'},
 								{text:'{{number_format($obj->amount,2)}}', alignment: 'right'},
+								{text:`{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$obj->expdate)->format('d-m-Y')}}`},
+								{text:`{!!$obj->batchno!!}`},
 							],
 							@endforeach
 
