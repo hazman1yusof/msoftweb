@@ -71,8 +71,8 @@ class StockCountController extends defaultController
             $idno = $request->table_id;
         }
 
-        $request_no = $this->request_no('PHY', $request->srcdept);
-        $recno = $this->recno('IV','PHY');
+        $request_no = $this->request_no('PHYCNT', $request->srcdept);
+        $recno = $this->recno('IV','PHYCNT');
 
         try {
 
@@ -197,10 +197,14 @@ class StockCountController extends defaultController
     public function edit_all(Request $request){
         DB::beginTransaction();
 
-
         try {
 
             foreach ($request->dataobj as $obj){
+
+                $vrqty =  floatval($obj['phyqty']) - floatval($obj['thyqty']);
+                if($vrqty != 0 && empty($obj['remark'])){
+                    throw new \Exception("Remark needed if quantity has variance! itemcode ".$obj['itemcode']." on line no ".$obj['lineno_'], 500);
+                }
 
                 DB::table("material.phycntdt")
                     ->where('compcode',session('compcode'))
@@ -208,7 +212,8 @@ class StockCountController extends defaultController
                     ->update([
                         'phyqty' => $obj['phyqty'],
                         'thyqty' => $obj['thyqty'],
-                        'dspqty' =>  floatval($obj['phyqty']) - floatval($obj['thyqty']),
+                        // 'dspqty' =>  floatval($obj['phyqty']) - floatval($obj['thyqty']),
+                        'remark' => $obj['remark'],
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
@@ -218,7 +223,7 @@ class StockCountController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -245,18 +250,19 @@ class StockCountController extends defaultController
                 //-- 2. transfer from ivtmpdt to ivtxndt --//
                 $phycntdt_obj = DB::table('material.phycntdt')
                         ->where('compcode','=',session('compcode'))
-                        ->where('recno','=',$phycnthd_obj->recno)
-                        ->get();
+                        ->where('recno','=',$phycnthd_obj->recno);
 
+                if($phycntdt_obj->exists()){
+                    $needheader = true;
+                }
+                $phycntdt_obj = $phycntdt_obj->get();
                 // $this->need_upd_ivreqdt($idno);
 
                 foreach ($phycntdt_obj as $value) {
-
-                    if(floatval($value->dspqty) == 0){
+                    $vrqty =  floatval($value->phyqty) - floatval($value->thyqty);
+                    if(floatval($vrqty) == 0){
                         continue;
                     }
-
-                    $needheader = true;
 
                     $obj_acc = $this->get_acc($value,$phycnthd_obj);
 
@@ -264,7 +270,7 @@ class StockCountController extends defaultController
                     $crccode = $obj_acc->crccode;
                     $draccno = $obj_acc->draccno;
                     $drccode = $obj_acc->drccode;
-                    $amount = floatval($value->dspqty) * floatval($value->unitcost);
+                    $amount = floatval($vrqty) * floatval($value->unitcost);
                     $full_amount = floatval($full_amount) + floatval($amount);
 
                     DB::table('material.ivtxndt')
@@ -276,13 +282,13 @@ class StockCountController extends defaultController
                             'itemcode' => $value->itemcode, 
                             'uomcode' => $value->uomcode,
                             'uomcoderecv' => $value->uomcode,  
-                            'txnqty' => $value->dspqty, 
+                            'txnqty' => $vrqty, 
                             'netprice' => $value->unitcost, 
                             'adduser' => session('username'), 
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                             'upduser' => session('username'), 
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'TranType' => 'PHY',
+                            'TranType' => 'PHYCNT',
                             'deptcode'  => $value->srcdept,
                             // 'productcat' => $productcat, 
                             'draccno' => $draccno, 
@@ -319,8 +325,8 @@ class StockCountController extends defaultController
                     //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
                         $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
                         $month = defaultController::toMonth($phycntdate);
-                        $QtyOnHand = $stockloc_first->qtyonhand + $value->dspqty; 
-                        $NetMvQty = $stockloc_arr['netmvqty'.$month] + floatval($value->dspqty);
+                        $QtyOnHand = $stockloc_first->qtyonhand + $vrqty; 
+                        $NetMvQty = $stockloc_arr['netmvqty'.$month] + floatval($vrqty);
                         $NetMvVal = $stockloc_arr['netmvval'.$month] + $amount;
 
                         $stockloc_obj
@@ -351,11 +357,33 @@ class StockCountController extends defaultController
                         $expdate_first = $expdate_obj->first();
 
                         if($expdate_obj->exists()){
-                            $balqty_new = $expdate_first->balqty + floatval($value->dspqty);
+                            
+                            // if($expdate_obj->count() > 1){
+                            //     $year_stockexp = defaultController::toYear($phycntdate);
+                            //     dd("lagi besr dari satu, year $year_stockexp , dept $value->srcdept , itemcode $value->itemcode , uomcode $value->uomcode , batchno $value->batchno , expdate $value->expdate");
 
-                            $expdate_obj->update([
-                                'balqty' => $balqty_new
-                            ]);
+                            //     DB::table('material.stockexp')
+                            //         ->where('Year','=',defaultController::toYear($phycntdate))
+                            //         ->where('DeptCode','=',$value->srcdept)
+                            //         ->where('ItemCode','=',$value->itemcode)
+                            //         ->where('UomCode','=',$value->uomcode)
+                            //         ->where('BatchNo','=',$value->batchno)
+                            //         ->where('idno','!=',$expdate_first->idno)
+                            //         ->delete();
+                            // }
+
+                            $balqty_new = $expdate_first->balqty + floatval($vrqty);
+
+                            DB::table('material.stockexp')
+                                ->where('Year','=',defaultController::toYear($phycntdate))
+                                ->where('DeptCode','=',$value->srcdept)
+                                ->where('ItemCode','=',$value->itemcode)
+                                ->where('UomCode','=',$value->uomcode)
+                                ->where('BatchNo','=',$value->batchno)
+                                ->where('idno','=',$expdate_first->idno)
+                                    ->update([
+                                    'balqty' => $balqty_new
+                                ]);
                         }else{ 
                             DB::table('material.stockexp')
                                 ->insert([
@@ -367,7 +395,7 @@ class StockCountController extends defaultController
                                     'UomCode' => $value->uomcode,
                                     'BatchNo' => $value->batchno,
                                     'expdate' => $value->expdate,
-                                    'balqty' => $value->dspqty
+                                    'balqty' => $vrqty
                                 ]);
                         }
 
@@ -387,7 +415,7 @@ class StockCountController extends defaultController
                         $product_obj = $product_obj->first();
 
                         $month = defaultController::toMonth($phycntdate);
-                        $txnqty = $value->dspqty;
+                        $txnqty = $vrqty;
 
                         $OldQtyOnHand = $product_obj->qtyonhand;
                         $Oldavgcost = $product_obj->avgcost;
@@ -424,7 +452,7 @@ class StockCountController extends defaultController
                             'auditno' => $value->recno,
                             'lineno_' => $value->lineno_,
                             'source' => 'IV',
-                            'trantype' => 'PHY',
+                            'trantype' => 'PHYCNT',
                             'reference' => $value->srcdept .' '. $value->recno,
                             'description' => $value->srcdept,
                             'postdate' => $phycntdate,
@@ -502,7 +530,6 @@ class StockCountController extends defaultController
                             ->update([
                                 'frozen' => '0',
                             ]);
-
                 }
 
                 //--- 8. change recstatus to posted ---//
@@ -529,7 +556,7 @@ class StockCountController extends defaultController
                             // 'SrcDocNo' => $ivtmphd->srcdocno,
                             'TranDate' => $phycntdate,
                             'TranTime' => $phycnttime,
-                            'TranType' => 'PHY',
+                            'TranType' => 'PHYCNT',
                             'TxnDept'  => $phycnthd_obj->srcdept,
                             'UpdDate'  => Carbon::now("Asia/Kuala_Lumpur"),
                             'UpdTime'  => Carbon::now("Asia/Kuala_Lumpur"),
@@ -558,29 +585,9 @@ class StockCountController extends defaultController
 
 
                 }
-                
-
-                // DB::table('material.ivtmphd')
-                //     ->where('recno','=',$ivtmphd->recno)
-                //     ->where('compcode','=',session('compcode'))
-                //     ->update([
-                //         'postedby' => session('username'),
-                //         'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                //         'recstatus' => 'POSTED' 
-                //     ]);
-
-                // DB::table('material.ivtmpdt')
-                //     ->where('recno','=',$ivtmphd->recno)
-                //     ->where('compcode','=',session('compcode'))
-                //     ->where('recstatus','!=','DELETE')
-                //     ->update([
-                //         'recstatus' => 'POSTED' 
-                //     ]);
             }
-            
-
-            $queries = DB::getQueryLog();
-            dump($queries);
+            // $queries = DB::getQueryLog();
+            // dump($queries);
 
 
             DB::commit();
@@ -590,11 +597,79 @@ class StockCountController extends defaultController
             
             return response($e, 500);
         }
-
     }
 
     public function cancel(Request $request){
-        
+        DB::beginTransaction();
+
+        try {
+
+            foreach ($request->idno_array as $idno){
+                $phycntdate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
+                $phycnttime = Carbon::now("Asia/Kuala_Lumpur")->format('h:i:s');
+
+                //-- 1. transfer from ivtmphd to ivtxnhd --//
+                $phycnthd_obj = DB::table('material.phycnthd')
+                                ->where('idno','=',$idno)
+                                ->first();
+
+                // $this->check_sequence_backdated($ivtmphd);
+
+                //-- 2. transfer from ivtmpdt to ivtxndt --//
+                $phycntdt_obj = DB::table('material.phycntdt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$phycnthd_obj->recno);
+
+                $phycntdt_obj = $phycntdt_obj->get();
+                $yearperiod = $this->getyearperiod($phycntdate);
+
+                foreach ($phycntdt_obj as $value) {
+
+                    DB::table('material.stockloc')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('unit','=',session('unit'))
+                            ->where('itemcode','=',$value->itemcode)
+                            ->where('uomcode','=',$value->uomcode)
+                            ->where('deptcode','=',$value->srcdept)
+                            ->where('year', '=', $yearperiod->year)
+                            ->update([
+                                'frozen' => '0',
+                            ]);
+                }
+
+                DB::table('material.phycnthd')
+                        ->where('idno','=',$idno)
+                        ->update([
+                            'recstatus' => 'CANCELLED',
+                            'phycntdate' => $phycntdate,
+                            'phycnttime' => $phycnttime,
+                            'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                            'upduser'  => session('username'),
+                        ]);
+
+                DB::table('material.phycntdt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$phycnthd_obj->recno)
+                        ->update([
+                            'phycntdate' => $phycntdate,
+                            'phycnttime' => $phycnttime,
+                            'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                            'upduser'  => session('username'),
+                        ]);
+
+
+            }
+            // $queries = DB::getQueryLog();
+            // dump($queries);
+
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            
+            return response($e, 500);
+        }
     }
 
     public function check_sequence_backdated($ivtmphd){
@@ -617,7 +692,6 @@ class StockCountController extends defaultController
         if($diff > intval($sequence->backday)){
             throw new \Exception("backdated sequence exceed ".$sequence->backday.' days', 500);
         }
-
     }
     
     public function get_table_range(Request $request){
@@ -713,8 +787,7 @@ class StockCountController extends defaultController
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);
         
-        return json_encode($responce);
-        
+        return json_encode($responce);        
     }
     
     public function get_rackno(Request $request){
@@ -760,8 +833,7 @@ class StockCountController extends defaultController
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);
         
-        return json_encode($responce);
-        
+        return json_encode($responce);        
     }
     
     public function showpdf(Request $request){
@@ -776,7 +848,7 @@ class StockCountController extends defaultController
             ->first();
 
         $phycntdt = DB::table('material.phycntdt AS pdt')
-            ->select('pdt.idno','pdt.compcode','pdt.srcdept','pdt.phycntdate','pdt.phycnttime','pdt.lineno_','pdt.itemcode','pdt.uomcode','pdt.adduser','pdt.adddate','pdt.upduser','pdt.upddate','pdt.unitcost','pdt.phyqty','pdt.thyqty','pdt.recno','pdt.expdate','pdt.updtime','pdt.stktime','pdt.frzdate','pdt.frztime','pdt.dspqty','pdt.batchno','p.description')
+            ->select('pdt.idno','pdt.compcode','pdt.srcdept','pdt.phycntdate','pdt.phycnttime','pdt.lineno_','pdt.itemcode','pdt.uomcode','pdt.adduser','pdt.adddate','pdt.upduser','pdt.upddate','pdt.unitcost','pdt.phyqty','pdt.thyqty','pdt.recno','pdt.expdate','pdt.updtime','pdt.stktime','pdt.frzdate','pdt.frztime','pdt.dspqty','pdt.remark','pdt.batchno','p.description')
             ->leftJoin('material.product as p', function($join) use ($request){
                         $join = $join->on('p.itemcode', '=', 'pdt.itemcode')
                                      ->on('p.uomcode', '=', 'pdt.uomcode')
@@ -791,8 +863,7 @@ class StockCountController extends defaultController
             ->where('compcode','=',session('compcode'))
             ->first();
 
-        return view('material.stockCount.stockCount_pdfmake',compact('phycnthd','phycntdt','company'));
-        
+        return view('material.stockCount.stockCount_pdfmake',compact('phycnthd','phycntdt','company'));        
     }
 
     public function get_acc($value,$phycnthd_obj){

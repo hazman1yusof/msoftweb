@@ -65,11 +65,10 @@ class StockFreezeController extends defaultController
             $field = $request->field;
             $idno = $request->table_id;
         }
-
-        $request_no = $this->request_no('PHY', $request->srcdept);
-        $recno = $this->recno('IV','PHY');
-
         try {
+
+            $request_no = $this->request_no('PHYCNT', $request->srcdept);
+            $recno = $this->recno('IV','PHYCNT');
 
             $table = DB::table("material.phycnthd");
 
@@ -205,7 +204,7 @@ class StockFreezeController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
             
-            return response($e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }

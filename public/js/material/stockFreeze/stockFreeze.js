@@ -34,7 +34,7 @@ $(document).ready(function () {
 	////////////////////////////////////start dialog/////////////////////////////////////
 	var oper;
 	var unsaved = false;
-	scrollto_topbtm();
+	// scrollto_topbtm();
 
 	$("#dialogForm")
 	  .dialog({ 
@@ -559,6 +559,10 @@ $(document).ready(function () {
 							});
 			if(result.length == 0 && oper=='edit')unsaved = true;
 
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
+		},
+		onSelectRow: function (rowid, selected) {
+			myfail_msg.clear_fail();
 			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 		},
 		afterShowForm: function (rowid) {

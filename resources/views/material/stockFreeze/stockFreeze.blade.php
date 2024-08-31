@@ -22,6 +22,11 @@ i.fa {
 .collapsed ~ .panel-body {
   padding: 0;
 }
+div#fail_msg{
+  padding-left: 40px;
+  padding-bottom: 10px;
+  color: darkred;
+}
 
 .clearfix {
 	overflow: auto;
@@ -290,8 +295,8 @@ i.fa {
 			<div class='panel panel-info'>
 				<div class="panel-heading">Stock Freeze Detail</div>
 					<div class="panel-body">
+					<div id="fail_msg"></div>
 						<form id='formdata2' class='form-vertical' style='width:99%'>
-
 							<div id="jqGrid2_c" class='col-md-12' style="overflow-y: hidden;overflow-x: hidden;height: calc(100vh - 80px);">
 								<table id="jqGrid2" class="table table-striped"></table>
 					            <div id="jqGridPager2"></div>

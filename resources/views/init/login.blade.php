@@ -78,6 +78,11 @@
           <option>LAPTOP</option>
           <option>MOBILE</option>
         </select>
+        <select id="compid_type2" class="form-control">
+          <option>WORK</option>
+          <option>PERSONAL</option>
+          <option>HOME</option>
+        </select>
         <input class="form-control" type="text" id="compid_name" placeholder="Type Your Name">
         <br>
         <button type="button" class="btn form-control" id="setid">Set ID</button>
@@ -121,11 +126,12 @@
 
       $("#setid").click(function(){
         let type = $('#compid_type').val();
+        let type2 = $('#compid_type2').val();
         let name = $('#compid_name').val();
 
-        localStorage.setItem('computerid', type+'_'+name);
-        $('#computerid').val(type+'_'+name);
-        $('#computerid_show').val(type+'_'+name);
+        localStorage.setItem('computerid', type+'_'+type2+'_'+name);
+        $('#computerid').val(type+'_'+type2+'_'+name);
+        $('#computerid_show').val(type+'_'+type2+'_'+name);
       });
     });
 

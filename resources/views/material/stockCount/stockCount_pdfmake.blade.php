@@ -185,22 +185,22 @@
 				{text:dateFormatter(e.expdate), style: 'body_row', border: [false, false, false, false]},
 				{text:e.uomcode, style: 'body_row', border: [false, false, false, false]},
 				{text:myparseFloat(e.thyqty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-				{text:myparseFloat('0'),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+				{text:myparseFloat(e.dspqty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
 				{text:myparseFloat(e.phyqty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-				{text:myparseFloat(e.dspqty),alignment: 'right', style: 'body_row',border: [false, false, false, false]},
+				{text:myparseFloat(parseFloat(e.phyqty) - parseFloat(e.thyqty)),alignment: 'right', style: 'body_row',border: [false, false, false, false]},
 				{text:myparseFloat(e.unitcost),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
 				{text:myparseFloatVV(e.unitcost,e.dspqty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
 			];
     		retval.push(arr1);
     		let arr2 = [
 				{text:'', style: 'body_row2', border: [false, false, false, false]},
-				{text:e.description,colSpan: 9, style: 'body_row2', border: [false, false, false, false]},
+				{text:e.description,colSpan: 6, style: 'body_row2', border: [false, false, false, false]},
 				{},
 				{},
 				{},
 				{},
 				{},
-				{},
+				{text:e.remark,colSpan: 3, style: 'body_row2', border: [false, false, false, false]},
 				{},
 				{},
 			];
@@ -232,8 +232,11 @@
 	} 
 
 	function myparseFloat(val){
-		if(val == null) return '0.00';
+		if(Number.isInteger(val)){
+			return numeral(val).format('0,0.00');
+		}
 		if(val.trim() == '') return '0.00';
+		if(val == null) return '0.00';
 		return numeral(val).format('0,0.00');
 	} 
 

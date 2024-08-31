@@ -521,6 +521,9 @@ $(document).ready(function () {
                 formatter:vrqty_formatter,
                 editrules:{required: true},editoptions:{readonly: "readonly"},
             },
+            { label: 'Remark', name: 'remark', width: 100, align: 'right', classes: 'wrap', editable:true,
+                editrules:{required: true},edittype:"textarea", editoptions:{rows:"3"},
+            },
 			{ label: 'Expiry Date', name: 'expdate', width: 80, classes: 'wrap', editable:false,
 			formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 					editrules:{required: false,custom:true, custom_func:cust_rules},
@@ -633,8 +636,9 @@ $(document).ready(function () {
 				textfld:"",
 				msg:response.responseText,
 			});
-        	refreshGrid('#jqGrid2',urlParam2,'add');
+        	// refreshGrid('#jqGrid2',urlParam2,'add');
         },
+        restoreAfterError : false,
         beforeSaveRow: function(options, rowid) {
        	
         	mycurrency2.formatOff();
@@ -701,6 +705,7 @@ $(document).ready(function () {
 		buttonicon:"glyphicon glyphicon-download-alt",
 		title:"Save All Row",
 		onClickButton: function(){
+			myfail_msg.clear_fail();
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
 
 			var jqgrid2_data = [];
@@ -713,9 +718,11 @@ $(document).ready(function () {
 		    	{
 		    		'idno' : data.idno,
 		    		'lineno_' : data.lineno_,
+		    		'itemcode' : data.itemcode,
 		    		'thyqty' : $("#jqGrid2 #"+ids[i]+"_thyqty").val(),
 		    		'phyqty' : $("#jqGrid2 #"+ids[i]+"_phyqty").val(),
-		    		'vrqty' : $("#jqGrid2 #"+ids[i]+"_vrqty").val()
+		    		'vrqty' : $("#jqGrid2 #"+ids[i]+"_vrqty").val(),
+		    		'remark' : $("#jqGrid2 #"+ids[i]+"_remark").val(),
 		    	}
 
 		    	jqgrid2_data.push(obj);
@@ -730,6 +737,11 @@ $(document).ready(function () {
     		$.post( "./stockCount/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
+				myfail_msg.add_fail({
+					id:'response',
+					textfld:"",
+					msg:data.responseText,
+				});
 			}).done(function(data){
 				
 	            $("#jqGridPager2EditAll,#jqGridPager2_center").show();
@@ -1171,52 +1183,6 @@ function populate_form(obj){
 function empty_form(){
 	$('#srcdept_show').text('');
 	$('#docno_show').text('');
-}
-
-function fail_msg_func(fail_msg_div=null){
-	this.fail_msg_div = (fail_msg_div!=null)?fail_msg_div:'div#fail_msg';
-	this.fail_msg_array=[];
-	this.add_fail=function(fail_msg){
-		let found=false;
-		this.fail_msg_array.forEach(function(e,i){
-			if(e.id == fail_msg.id){
-				e.msg=fail_msg.msg;
-				found=true;
-			}
-		});
-		if(!found){
-			this.fail_msg_array.push(fail_msg);
-		}
-		if(fail_msg.textfld !=null){
-			myerrorIt_only(fail_msg.id,true);
-		}
-		this.pop_fail();
-	}
-	this.del_fail=function(fail_msg){
-		var new_msg_array = this.fail_msg_array.filter(function(e,i){
-			if(e.id == fail_msg.id){
-				return false;
-			}
-			return true;
-		});
-
-		if(fail_msg.textfld !=null){
-			myerrorIt_only(fail_msg.id,true);
-		}
-		this.fail_msg_array = new_msg_array;
-		this.pop_fail();
-	}
-	this.clear_fail=function(){
-		this.fail_msg_array=[];
-		this.pop_fail();
-	}
-	this.pop_fail=function(){
-		var self=this;
-		$(self.fail_msg_div).html('');
-		this.fail_msg_array.forEach(function(e,i){
-			$(self.fail_msg_div).append("<li>"+e.msg+"</li>");
-		});
-	}
 }
 
 function vrqty_formatter(cellvalue, options, rowObject){

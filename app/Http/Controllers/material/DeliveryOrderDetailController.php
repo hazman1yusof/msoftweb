@@ -216,6 +216,17 @@ class DeliveryOrderDetailController extends defaultController
                         'recno' => $recno,
                         'compcode' => session('compcode'),
                     ]);
+            }else if(empty($recno)){
+                $delordno = $this->request_no('DO',$delordhd->first()->prdept);
+                $recno = $this->recno('PUR','DO');
+
+                DB::table("material.delordhd")
+                    ->where('idno','=',$request->idno)
+                    ->update([
+                        'docno' => $delordno,
+                        'recno' => $recno,
+                        'compcode' => session('compcode'),
+                    ]);
             }else{
                 $delordhd = DB::table("material.delordhd")
                             ->where('idno','=',$request->idno)
@@ -224,7 +235,7 @@ class DeliveryOrderDetailController extends defaultController
                 $delordno =  $delordhd->docno;
             }
 
-            if($request->pricecode == 'IV'){
+            if($request->pricecode == 'IV' && $request->pricecode == 'BO'){
                 $product = DB::table('material.product')
                             ->where('compcode',session('compcode'))
                             ->where('unit',session('unit'))
@@ -252,6 +263,16 @@ class DeliveryOrderDetailController extends defaultController
                 if(!$stockloc->exists()) {
                     throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' doesnt have stock location!');
                 }
+            }
+
+            if($request->pricecode == 'BO'){
+                $request->unitprice = 0;
+                $request->perdisc = 0;
+                $request->amtdisc = 0;
+                $request->tot_gst = 0;
+                $request->netunitprice = 0;
+                $request->amount = 0;
+                $request->totamount = 0;
             }
 
             $draccno = $this->get_draccno($request->itemcode,$request->pricecode);
@@ -470,7 +491,53 @@ class DeliveryOrderDetailController extends defaultController
 
         try {
 
+            $do_hd = DB::table('material.delordhd')
+                        ->where('compcode',session('compcode'))
+                        ->where('recno', '=', $request->recno)
+                        ->first();
+
             foreach ($request->dataobj as $key => $value) {
+
+                if($value['pricecode'] == 'IV' && $value['pricecode'] == 'BO'){
+                    $product = DB::table('material.product')
+                                ->where('compcode',session('compcode'))
+                                ->where('unit',session('unit'))
+                                ->where('itemcode',$value['itemcode'])
+                                ->where('uomcode',$value->uomcode);
+
+                    if(!$product->exists()){
+                        throw new \Exception("The item: ".$value['itemcode'].' UOM '.$value['uomcode'].' not exist!');
+                    }
+
+                    $product = $product->first();
+
+                    if($product->expdtflg == 1 && empty($value['expdate'])) {
+                        throw new \Exception("The item: ".$value['itemcode'].' UOM '.$value['uomcode'].' need to supply Expiry Date!');
+                    }
+
+                    $stockloc = DB::table('material.stockloc')
+                                ->where('compcode',session('compcode'))
+                                ->where('unit',session('unit'))
+                                ->where('itemcode',$value['itemcode'])
+                                ->where('uomcode',$value['uomcode'])
+                                ->where('deptcode',$value['deldept'])
+                                ->where('year',$this->toYear($do_hd->deliverydate));
+
+                    if(!$stockloc->exists()) {
+                        throw new \Exception("The item: ".$value['itemcode'].' UOM '.$value['uomcode'].' doesnt have stock location!');
+                    }
+                }
+
+                if($value['pricecode'] == 'BO'){
+                    $value['unitprice'] = 0;
+                    $value['perdisc'] = 0;
+                    $value['amtdisc'] = 0;
+                    $value['tot_gst'] = 0;
+                    $value['netunitprice'] = 0;
+                    $value['amount'] = 0;
+                    $value['totamount'] = 0;
+                }
+
                 ///1. update detail
                 DB::table('material.delorddt')
                     ->where('compcode','=',session('compcode'))
@@ -533,7 +600,6 @@ class DeliveryOrderDetailController extends defaultController
 
             return response($e->getMessage(), 500);
         }
-
     }
 
     public function del(Request $request){

@@ -1502,6 +1502,11 @@ $(document).ready(function () {
     		$.post( "./deliveryOrderDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
+				myfail_msg.add_fail({
+					id:'response',
+					textfld:"",
+					msg:data.responseText,
+				});
 			}).done(function(data){
 				if(data){
 					$('#delordhd_subamount, #delordhd_totamount').val(data);

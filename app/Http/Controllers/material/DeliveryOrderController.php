@@ -283,8 +283,6 @@ class DeliveryOrderController extends defaultController
         DB::beginTransaction();
 
         try{
-
-
             foreach ($request->idno_array as $idno){
                 //--- 1. copy delordhd masuk dalam ivtxnhd ---//
 
