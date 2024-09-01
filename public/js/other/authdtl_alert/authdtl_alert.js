@@ -313,7 +313,7 @@ function populate_authdtl_alert_iv(data){
 						</div>
 					</div>
 						<div class='panel-footer'>
-							<a onclick="authdtl_alert_click('so','`+e.trantype+`','`+e.recno+`')">
+							<a onclick="authdtl_alert_click('iv','`+e.trantype+`','`+e.recno+`')">
 								<span class='pull-left'>Detail</span>
 								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
 								<div class='clearfix'></div>
@@ -337,7 +337,7 @@ function populate_authdtl_alert_iv(data){
 						</div>
 					</div>
 						<div class='panel-footer'>
-							<a onclick="authdtl_alert_click('so','`+e.trantype+`','`+e.recno+`')">
+							<a onclick="authdtl_alert_click('iv','`+e.trantype+`','`+e.recno+`')">
 								<span class='pull-left'>Detail</span>
 								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
 								<div class='clearfix'></div>
@@ -373,7 +373,7 @@ function authdtl_alert_click(type,trantype,recno){
 			Menu.new_dialog('salesorder_datentry','SalesOrder?scope='+trantype+'&auditno='+recno,'Sales Order');
 			break;
 		case 'iv':
-			Menu.new_dialog('material_invtran_AIAO','inventoryTransaction?scope='+trantype+'&ttype=AI&recno='+recno,'Sales Order');
+			Menu.new_dialog('material_invtran_AIAO','inventoryTransaction?scope='+trantype+'&ttype=AI&recno='+recno,'Inventory Transaction');
 			break;
 	}
 }
