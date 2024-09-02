@@ -591,6 +591,7 @@ Route::get('/invoiceAP/table','finance\InvoiceAPController@table');
 Route::post('/invoiceAP/form','finance\InvoiceAPController@form');
 Route::get('/invoiceAP/form','finance\InvoiceAPController@form');
 Route::post('/invoiceAPDetail/form','finance\InvoiceAPDetailController@form');
+Route::post('/invoiceAPDetail/form2','finance\InvoiceAPDetailController@form');
 
 //// invoice AP - report  ///
 Route::get('/invoiceAP_Report','finance\InvoiceAP_ReportController@show');
