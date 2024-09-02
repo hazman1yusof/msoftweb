@@ -30,10 +30,11 @@ class HomeController extends Controller
                 ->first();
             $unit_user = $unit_user_->sector;
         }
-        $company = DB::table('sysdb.company')->where('compcode',session('compcode'))->first(); 
+        $title = DB::table('sysdb.company')->where('compcode',session('compcode'))->first()->name; 
         $dept_desc = $unit_user_->description;
+        $shortcut=false;
 
-        return view('init.container',compact('menu','units','unit_user','company','dept_desc'));
+        return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut'));
     }
 
     public function ptcare(){
@@ -72,6 +73,27 @@ class HomeController extends Controller
         }
         $dept_desc = $unit_user_->description;
         return view('init.container_ptcare',compact('menu','units','unit_user','title','dept_desc'));
+    }
+
+    public function warehouse(){
+        $user = Auth::user();
+        $menu = $this->create_warehouse_menu();
+        $units = DB::table('sysdb.sector')
+                ->where('compcode','=',$user->compcode)
+                ->get();
+        $unit_user = '';
+        if($user->dept != ''){
+            $unit_user_ = DB::table('sysdb.department')
+                ->where('compcode','=',$user->compcode)
+                ->where('deptcode','=',$user->dept)
+                ->first();
+            $unit_user = $unit_user_->sector;
+        }
+        $title="Warehouse";
+        $dept_desc = $unit_user_->description;
+        $shortcut=true;
+
+        return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut'));
     }
 
     public function mobile(){
@@ -160,16 +182,38 @@ class HomeController extends Controller
         return $menu;
     }
 
-    public function create_mobile_menu(){
+    public function create_warehouse_menu(){
         $user = Auth::user();
         $groupid = $user->groupid;
         $company = $user->compcode;
 
-        $menu="<li><a style='padding-left:9px;' title='Patient List' class='clickable' programid='pat_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=HIS' >Patient List</a></li>";
+        $menu="<li><a style='padding-left:9px;' title='Purchase Request' class='clickable' programid='PurReq_dataentry' targetURL='purchaseRequest?scope=ALL' >PR</a></li>";
+        $menu.="<li><a style='padding-left:9px;' title='Dialysis' class='clickable' programid='purOrd_prepared' targetURL='purchaseOrder?scope=ALL' >PO</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Delivery Order' class='clickable' programid='DeliveryOrd_dataentr' targeturl='deliveryOrder?scope=ALL'>DO</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Prepared' class='clickable' programid='invap_dataentry' targeturl='invoiceAP?source=AP&amp;trantype=IN&amp;scope=ALL'>Invoice</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Sales Order' class='clickable' programid='SalesOrder_scope_ALL' targeturl='./SalesOrder?scope=ALL'>Sales Order</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Receipt' class='clickable' programid='ARreceipt' targeturl='./receipt'>Receipt</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='AR Enquiry' class='clickable' programid='arenquiry' targeturl='./arenquiry'>AR Enquiry</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Till Enquiry' class='clickable' programid='tillenquiry' targeturl='./tillenquiry'>Till Enquiry</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Close Till' class='clickable' programid='till_close' targeturl='./till_close'>Close Till</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Charge Master' class='clickable' programid='chgmaster' targeturl='./chgmaster'>Charge Master</a></li>";
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Product</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Pharmacy' class='clickable' programid='stockPharmacy' targeturl='product?groupcode=Stock&amp;&amp;Class=Pharmacy'>Pharmacy</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Pharmacy' class='clickable' programid='stockNon-Pharmacy' targeturl='product?groupcode=Stock&&Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Pharmacy' class='clickable' programid='stockConsignment' targeturl='product?groupcode=Consignment&&Class=Consignment'>Consignment</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Other' class='clickable' programid='productFin' targeturl='product?groupcode=Others&&Class=Others'>Other</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='asset' targeturl='\product?groupcode=Asset&&Class=Asset'>Asset</a></li>";
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Enquiry</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemPhar' targeturl='\itemEnquiry?Class=Pharmacy'>Pharmacy</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemNonPhar' targeturl='\itemEnquiry?Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
 
-        $menu.="<li><a style='padding-left:9px;' title='Dashboard' class='clickable' programid='dashboard' targetURL='ptcare_dashboard' >Dashboard</a></li>";
+        return $menu;
+    }
 
-        $menu.="<li><a style='padding-left:9px;' title='Document Upload' class='clickable' programid='docupload' targetURL='ptcare_emergency' >Document Upload</a></li>";
+    public function create_mobile_menu(){
+        $user = Auth::user();
+        $groupid = $user->groupid;
+        $company = $user->compcode;
 
         $menu.="<li><a style='padding-left:9px;' title='Alert' class='clickable' programid='alert' targetURL='' >Alert</a></li>";
 

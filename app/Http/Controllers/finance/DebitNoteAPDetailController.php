@@ -141,7 +141,7 @@ class DebitNoteAPDetailController extends defaultController
                         ->where('source','=','AP')
                         ->where('trantype','=','DN')
                         ->where('auditno','=',$auditno)
-                        ->count('lineno_');
+                        ->max('lineno_');
 
             $li=intval($sqlln)+1;
             

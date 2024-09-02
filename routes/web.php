@@ -17,6 +17,7 @@ Route::get('/','HomeController@index')->name('home');
 Route::get('/util','HomeController@util');
 Route::get('/ptcare','HomeController@ptcare');
 Route::get('/home','HomeController@dialysis');
+Route::get('/warehouse','HomeController@warehouse');
 Route::post('/sessionUnit','HomeController@changeSessionUnit');
 Route::get('/login','SessionController@create')->name('login');
 Route::get('/loginappt','SessionController@create2')->name('login2');

@@ -200,6 +200,8 @@ class GoodReturnController extends defaultController
                 DB::table('material.delordno')
                 ->where('purordno','=',$srcdocno)->where('compcode','=',session('compcode'))
                 ->update(['delordno' => $delordno]);*/
+            }else{
+                throw new Exception("No GRN No.");
             }
 
             $responce = new stdClass();
@@ -213,7 +215,7 @@ class GoodReturnController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }

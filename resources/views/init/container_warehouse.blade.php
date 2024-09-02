@@ -19,7 +19,7 @@
     if(mql.matches){
     	window.location.replace("./mobile");
     }
-
+    
 		function disableCloseButton(isClose){
 			if(isClose){
 				$('button[role=button][title=Close]').prop('disabled',true);
@@ -38,14 +38,12 @@
 
   <body>	
 	<div class="navbar navbar-fixed-top">
-		@if($shortcut)
-		<a type="button" class="btn btn-default btn-lg" aria-label="Left Align" style="border-radius: 50%;border-color: white;color: #00608f;float: left;margin: 3px 20px;background: rgb(0 0 0 / 4%);" href="./">
-		  <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-		</a>
-		@endif
-		<a class="navbar-brand" href="#" style="padding: 0px 50px 0px 0px;float: right;">
-			<img src="img/logo.jpg" alt="logo" height="50px" width="auto">
-		</a>
+	<a type="button" class="btn btn-default btn-lg" aria-label="Left Align" style="border-radius: 50%;border-color: white;color: #00608f;float: left;margin: 3px 20px;background: rgb(0 0 0 / 4%);" href="./">
+	  <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+	</a>
+	<a class="navbar-brand" href="#" style="padding: 0px 50px 0px 0px;float: right;">
+		<img src="img/logo.jpg" alt="logo" height="50px" width="auto">
+	</a>
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -56,8 +54,8 @@
 			</button>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
-			<h4 class="company_name">{{strtoupper($title)}}</h4>
 
+			<h4 style="margin: 20px 0px 0px 0px;float: left;color: #565656;">{{$title}}</h4>
 			@if(Auth::user()->dept == '')
 			<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 			<ul class="nav navbar-nav navbar-right" style="margin-top: 8px;color: #999">
@@ -84,7 +82,7 @@
 			<ul class="nav navbar-nav navbar-right" style="margin-top: 8px;color: #999">
 				<li><h4 style="font-size: 15px">&nbsp;Department :&nbsp;</h4></li>
 				<li>
-					<input type='text' class="form-control" id="session_deptcode" readonly value="{{$dept_desc}}">
+					<input type='text' class="form-control" id="session_deptcode" readonly value="{{Session::get('deptcode')}}">
 				</li>
 			</ul>
 
@@ -96,7 +94,8 @@
 						<i class="fa fa-caret-down"></i>
 					</a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="#" id="profilebtn">Profile Settings</a></li>
+						<li><a href="#" >Profile Settings</a></li>
+						<li><a href="#" >Close Till</a></li>
 						<li class="divider"></li>
 						<li><a href="./logout" >Log-out</a></li>
 					</ul>
@@ -118,10 +117,7 @@
 
 		</div>
 
-		<div id="authdtl_alert_div" class="row">
-		</div>
-
-		<!-- <div class='col-lg-3 col-md-6'>
+		<div id='cardTill' class='col-lg-3 col-md-6'>
 			<div class='panel panel-primary'>
 				<div class='panel-heading'>
 					<div class='row'>
@@ -221,9 +217,9 @@
 						</a>
 					</div>
 			</div>
-		</div> -->
+		</div>
 
-		<!-- <div class="panel panel-info col-xs-3" id='chat-panel' style="position:fixed;bottom:0;right:0;padding: 0;width:105px;">
+		<div class="panel panel-info col-xs-3" id='chat-panel' style="position:fixed;bottom:0;right:0;padding: 0;width:105px;">
 			<div class="panel-heading panel-primary">
 				<span class='whenshow' style='display: none;'>
 					<i class="fa fa-comments-o" aria-hidden="true"></i>
@@ -260,7 +256,7 @@
 					</div>
 				</div>
 			</div>
-		</div> -->
+		</div>
 
 	</div>
 
@@ -278,56 +274,70 @@
 <script type="text/ecmascript" src="plugins/numeral.min.js"></script>
 <script type="text/ecmascript" src="plugins/moment.js"></script>
 <script type="text/ecmascript" src="plugins/velocity.min.js"></script>
-<script type="text/ecmascript" src="js/other/authdtl_alert/authdtl_alert.js"></script>
-<script type="text/ecmascript" src="js/myjs/menu.js"></script>
+
+<!-- JS Implementing Plugins -->
+<script src="js/myjs/menu.js"></script>
+
+<!-- JS Customization -->
+
+<!-- JS Page Level -->
 
 <script>
-	$(document).ready(function(){
-    Menu.init_menu();
-    Menu.init_announce();
-    // Menu.init_card();
-    $("#session_unit").change(function(){
-    	$.post( '/sessionUnit', {_token:$('#_token').val(), unit:$(this).val()}, function( data ) {
+	jQuery(document).ready(function() 
+    {	
+        Menu.init_menu();
+        Menu.init_announce();
+        // Menu.init_card();
+        $("#session_unit").change(function(){
+        	$.post( '/sessionUnit', {_token:$('#_token').val(), unit:$(this).val()}, function( data ) {
 				
 			}).fail(function(data) {
 				
 			}).success(function(data){
 				
 			});
-	  });
+        });
 
-		var timeoutId;
-		$("#myNavmenu").hover(function() {
-			if (!timeoutId) {
-				timeoutId = window.setTimeout(function() {
-					timeoutId = null; // EDIT: added this line
-		        	$( "#myNavmenu" ).animate({ width:"20%" }, 'fast' ,"linear", function() {
-		        		$( ".lilabel" ).show();
-		        	});
-		        	// $( ".navmenu" ).velocity({ width:"20%" }, 130, "linear", function() { 
-		        	// 	$( ".lilabel" ).velocity("fadeIn", { duration: 130 })
-		        	// });
-				}, 300);
-			}
-		},function () {
-			if (timeoutId) {
-				window.clearTimeout(timeoutId);
-				timeoutId = null;
-			}else{
-				// $( ".lilabel" ).velocity("fadeOut", { duration: 0 })
-				// $( ".navmenu" ).velocity({ width:"7%" }, 130, "linear", function() { 
-				// 	$( ".lilabel" ).velocity("fadeOut", { duration: 0 })
-	   //      	});
-	        	$( ".lilabel" ).hide();
-	        	$( "#myNavmenu" ).animate({ width:"8%" }, 'fast' ,"linear", function() {
-	        		$( ".lilabel" ).hide();
-	        	});
-			}
-		});
+  //       var timeoutId;
+		// $("#myNavmenu").hover(function() {
+  //       	$( "#myNavmenu" ).animate({ width:"20%" }, 'fast' ,"linear", function() {
+  //       		$( ".lilabel" ).show();
+  //       	});
+		// },function () {
+  //       	$( ".lilabel" ).hide();
+  //       	$( "#myNavmenu" ).animate({ width:"8%" }, 'fast' ,"linear", function() {
+  //       		$( ".lilabel" ).hide();
+  //       	});
+		// });
 
-		$('#profilebtn').click(function(){
-			Menu.new_dialog('profile_setings','user_profile','User Profile');
-		});	
+		// var timeoutId;
+		// $("#myNavmenu").hover(function() {
+		// 	if (!timeoutId) {
+		// 		timeoutId = window.setTimeout(function() {
+		// 			timeoutId = null; // EDIT: added this line
+		//         	$( "#myNavmenu" ).animate({ width:"20%" }, 'fast' ,"linear", function() {
+		//         		$( ".lilabel" ).show();
+		//         	});
+		//         	// $( ".navmenu" ).velocity({ width:"20%" }, 130, "linear", function() { 
+		//         	// 	$( ".lilabel" ).velocity("fadeIn", { duration: 130 })
+		//         	// });
+		// 		}, 300);
+		// 	}
+		// },function () {
+		// 	if (timeoutId) {
+		// 		window.clearTimeout(timeoutId);
+		// 		timeoutId = null;
+		// 	}else{
+		// 		// $( ".lilabel" ).velocity("fadeOut", { duration: 0 })
+		// 		// $( ".navmenu" ).velocity({ width:"7%" }, 130, "linear", function() { 
+		// 		// 	$( ".lilabel" ).velocity("fadeOut", { duration: 0 })
+	 //   //      	});
+	 //        	$( ".lilabel" ).hide();
+	 //        	$( "#myNavmenu" ).animate({ width:"8%" }, 'fast' ,"linear", function() {
+	 //        		$( ".lilabel" ).hide();
+	 //        	});
+		// 	}
+		// });
 
 		// var mychat = new chat();
 
@@ -342,150 +352,155 @@
 		});
 
 		function chat(username){
-			this.date = null;
-			this.interval;
+		this.date = null;
+		this.interval;
 
-			$('#chat-panel .chat-hide').click(function(){
-				$("#chat-panel .panel-body, #chat-panel .panel-footer, #chat-panel .panel-heading span").hide();
-				$('#chat-panel').css( "width",'105px' );
-				$('#chat-panel .whenhide').show();
-				stopinterval();
-			});
-			$('#chat-panel .chat-show').click(function(){
-				$("#chat-panel .panel-body, #chat-panel .panel-footer, #chat-panel .panel-heading span").show();
-				$('#chat-panel').css( "width",'' );
-				$('#chat-panel .panel-heading').css( "padding",'' );
-				$('#chat-panel .whenhide').hide();
-				setinterval();
-				focusbtm();
-			});
+		$('#chat-panel .chat-hide').click(function(){
+			$("#chat-panel .panel-body, #chat-panel .panel-footer, #chat-panel .panel-heading span").hide();
+			$('#chat-panel').css( "width",'105px' );
+			$('#chat-panel .whenhide').show();
+			stopinterval();
+		});
+		$('#chat-panel .chat-show').click(function(){
+			$("#chat-panel .panel-body, #chat-panel .panel-footer, #chat-panel .panel-heading span").show();
+			$('#chat-panel').css( "width",'' );
+			$('#chat-panel .panel-heading').css( "padding",'' );
+			$('#chat-panel .whenhide').hide();
+			setinterval();
+			focusbtm();
+		});
 
-			function setinterval(){
+		function setinterval(){
+			mychat.getmessage();
+			this.interval = setInterval(function(){
 				mychat.getmessage();
-				this.interval = setInterval(function(){
-					mychat.getmessage();
-				}, 3000);
+			}, 3000);
+		}
+
+		function stopinterval(){
+			clearInterval(this.interval);
+		}
+
+		getalluser();
+		function getalluser(){
+			var param={
+				action:'get_value_default',
+				field: ['username'],
+				table_name:'sysdb.users',
+				table_id:'idno'
 			}
-
-			function stopinterval(){
-				clearInterval(this.interval);
-			}
-
-			getalluser();
-			function getalluser(){
-				var param={
-					action:'get_value_default',
-					field: ['username'],
-					table_name:'sysdb.users',
-					table_id:'idno'
-				}
-				$.get( "assets/php/entry.php?"+$.param(param), function( data ) {
-						
-				},'json').done(function(data) {
-					if(!$.isEmptyObject(data.rows)){
-						data.rows.forEach(function(element){
-							if($('#username').text()!=element.username)
-							$('#chat-panel .drop-up ').append("<li><a>"+element.username+"</a></li>")
-						});
-						$('#chat-panel .drop-up li').click(function(){
-							$('#chat-panel .whenshow .chat-title').text(' Chat with '+$(this).text());
-							$('#chatmsto').val($(this).text());
-						});
-					}
-				});
-			}
-
-			this.getmessage = function(){
-				self=this;
-				param={
-					action:'chat',
-					oper:'get',
-					date:self.date
-				}
-
-				$.get( "assets/php/entry.php?"+$.param(param), function(data) {
-						
-				},'json').done(function(data) {
-					if(!$.isEmptyObject(data.rows)){
-						self.date = data.rows[0].datesend;
-						data.rows.reverse();
-						data.rows.forEach(function(element){
-							if(element.msto == self.username){
-								element.name = "<small>Whisper from</small> "+element.name;
-							}
-							if(element.msfrom == self.username){
-								$('#chat-panel .chat ').append(
-									"<li><div class='chat-body'><div class='header'>"
-									+"<small class='text-muted pull-right'><i class='fa fa-clock-o fa-fw'></i>"+
-										datediff(element.datesend)
-									+"</small><strong class='text-primary'>"+
-										element.name
-									+"</strong> to "+element.msto+"</div><p>"+
-										element.remark
-									+"</p></div></li>");	
-							}else{
-								$('#chat-panel .chat ').append(
-									"<li><div class='chat-body'><div class='header'>"
-									+"<small class='text-muted'><i class='fa fa-clock-o fa-fw'></i>"+
-										datediff(element.datesend)
-									+"</small><strong class='pull-right'>"+
-										element.name
-									+"</strong></div><p>"+
-										element.remark
-									+"</p></div></li>");
-							}
-						});
-						focusbtm();
-					}
-				});
-			}
-
-			function focusbtm(){
-				// var btm = $('#chat-panel .panel-body')[0].scrollHeight - $('#chat-panel .panel-body')[0].clientHeight
-				// $('#chat-panel .panel-body').animate({
-				// 	scrollTop: btm
-				// }, 'slow');
-				// $( ".navmenu" ).velocity({ width:"7%" }, 130, "linear", function() { 
-				// 	$( ".lilabel" ).velocity("fadeOut", { duration: 0 })
-				// });
-				$('#chat-panel .panel-body').velocity("scroll", { 
-					container: $("#chat-panel .panel-body"),
-					duration: 1500, 
-					easing: "linear",
-					offset: $('#chat-panel .panel-body')[0].scrollHeight
-				});
-				// $('#chat-panel .panel-body').velocity({scrollTop:897}, 897, "linear");
-			}
-
-			function datediff(date){
-				var now = moment(new Date()); //todays date
-				var end = moment(date); // another date
-				var duration = moment.duration(end.diff(now));
-				return duration.humanize(true);
-			}
-
-			this.sendmessage = function(){
-				var param={
-					action:'chat',
-					oper:'add'
-				}
-
-				if($('#chattext').val().trim()!=""){
-					$.post( "assets/php/entry.php?"+$.param(param),
-						{msto:$('#chatmsto').val(),remark:$('#chattext').val()}, 
-						function( data ) {
-							
-						}
-					).fail(function(data) {
-						alert('Error');
-					}).success(function(data){
-						mychat.getmessage();
-						$('#chattext').val("");
+			$.get( "assets/php/entry.php?"+$.param(param), function( data ) {
+					
+			},'json').done(function(data) {
+				if(!$.isEmptyObject(data.rows)){
+					data.rows.forEach(function(element){
+						if($('#username').text()!=element.username)
+						$('#chat-panel .drop-up ').append("<li><a>"+element.username+"</a></li>")
+					});
+					$('#chat-panel .drop-up li').click(function(){
+						$('#chat-panel .whenshow .chat-title').text(' Chat with '+$(this).text());
+						$('#chatmsto').val($(this).text());
 					});
 				}
+			});
+		}
+
+		this.getmessage = function(){
+			self=this;
+			param={
+				action:'chat',
+				oper:'get',
+				date:self.date
+			}
+
+			$.get( "assets/php/entry.php?"+$.param(param), function(data) {
+					
+			},'json').done(function(data) {
+				if(!$.isEmptyObject(data.rows)){
+					self.date = data.rows[0].datesend;
+					data.rows.reverse();
+					data.rows.forEach(function(element){
+						if(element.msto == self.username){
+							element.name = "<small>Whisper from</small> "+element.name;
+						}
+						if(element.msfrom == self.username){
+							$('#chat-panel .chat ').append(
+								"<li><div class='chat-body'><div class='header'>"
+								+"<small class='text-muted pull-right'><i class='fa fa-clock-o fa-fw'></i>"+
+									datediff(element.datesend)
+								+"</small><strong class='text-primary'>"+
+									element.name
+								+"</strong> to "+element.msto+"</div><p>"+
+									element.remark
+								+"</p></div></li>");	
+						}else{
+							$('#chat-panel .chat ').append(
+								"<li><div class='chat-body'><div class='header'>"
+								+"<small class='text-muted'><i class='fa fa-clock-o fa-fw'></i>"+
+									datediff(element.datesend)
+								+"</small><strong class='pull-right'>"+
+									element.name
+								+"</strong></div><p>"+
+									element.remark
+								+"</p></div></li>");
+						}
+					});
+					focusbtm();
+				}
+			});
+		}
+
+		function focusbtm(){
+			// var btm = $('#chat-panel .panel-body')[0].scrollHeight - $('#chat-panel .panel-body')[0].clientHeight
+			// $('#chat-panel .panel-body').animate({
+			// 	scrollTop: btm
+			// }, 'slow');
+			// $( ".navmenu" ).velocity({ width:"7%" }, 130, "linear", function() { 
+			// 	$( ".lilabel" ).velocity("fadeOut", { duration: 0 })
+			// });
+			$('#chat-panel .panel-body').velocity("scroll", { 
+				container: $("#chat-panel .panel-body"),
+				duration: 1500, 
+				easing: "linear",
+				offset: $('#chat-panel .panel-body')[0].scrollHeight
+			});
+			// $('#chat-panel .panel-body').velocity({scrollTop:897}, 897, "linear");
+		}
+
+		function datediff(date){
+			var now = moment(new Date()); //todays date
+			var end = moment(date); // another date
+			var duration = moment.duration(end.diff(now));
+			return duration.humanize(true);
+		}
+
+		this.sendmessage = function(){
+			var param={
+				action:'chat',
+				oper:'add'
+			}
+
+			if($('#chattext').val().trim()!=""){
+				$.post( "assets/php/entry.php?"+$.param(param),
+					{msto:$('#chatmsto').val(),remark:$('#chattext').val()}, 
+					function( data ) {
+						
+					}
+				).fail(function(data) {
+					alert('Error');
+				}).success(function(data){
+					mychat.getmessage();
+					$('#chattext').val("");
+				});
 			}
 		}
+	}
+
 	});
+		
+		
 </script>
 
+
+  
 </html>

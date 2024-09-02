@@ -340,16 +340,12 @@ use Carbon\Carbon;
             // $auditno = $this->recno($request->apacthdr_source, $request->apacthdr_trantype);
             // $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
 
-            if($request->apacthdr_doctype == 'Supplier'){
+            // if($request->apacthdr_doctype == 'Supplier'){
                 // $auditno = $this->recno($request->apacthdr_source, $request->apacthdr_trantype);
                 $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
                 $auditno = 0;
                 $compcode = 'DD';
-            }else{
-                $auditno = $this->recno($request->apacthdr_source, $request->apacthdr_trantype);
-                $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
-                $compcode = session('compcode');
-            }
+            // }
 
             $table = DB::table("finance.apacthdr");
             
@@ -396,7 +392,6 @@ use Carbon\Carbon;
 
             return response($e->getMessage(), 500);
         }
-
     }
 
     public function edit(Request $request){
@@ -415,7 +410,7 @@ use Carbon\Carbon;
         $array_update = [
             'unit' => session('unit'),
             'compcode' => session('compcode'),
-            'doctype' => $request->apacthdr_doctype,
+            // 'doctype' => $request->apacthdr_doctype,
             'postdate' => $request->apacthdr_postdate,
             'actdate' => $request->apacthdr_actdate,
             'recdate' => $request->apacthdr_postdate,
@@ -428,7 +423,7 @@ use Carbon\Carbon;
         ];
 
         foreach ($field as $key => $value) {
-            if($value == 'remarks' || $value == 'document' || $value == 'outamt' || $value == 'outamount'){
+            if($value == 'remarks' || $value == 'document' || $value == 'outamt' || $value == 'outamount' || $value == 'doctype'){
                 continue;
             }
             $array_update[$value] = $request[$request->field[$key]];
@@ -458,7 +453,6 @@ use Carbon\Carbon;
         DB::beginTransaction();
         try {
 
-
             foreach ($request->idno_array as $auditno){
 
                 $apacthdr = DB::table('finance.apacthdr')
@@ -480,9 +474,10 @@ use Carbon\Carbon;
                     }
                 $this->check_outamt($apacthdr,$apactdtl);
 
-                $this->gltran($auditno);
 
-                if($apactdtl->exists()){ 
+                if($apacthdr->doctype == 'Supplier'){ 
+                    $this->gltran($auditno);
+
                     foreach ($apactdtl->get() as $value) {
                         DB::table('material.delordhd')
                             ->where('compcode','=',session('compcode'))
@@ -490,6 +485,8 @@ use Carbon\Carbon;
                             ->where('delordno','=',$value->document)
                             ->update(['invoiceno'=>$apacthdr->document]);
                     }
+                }else{
+                    $this->gltran_others($auditno);
                 }
 
                 DB::table('finance.apacthdr')
@@ -510,7 +507,7 @@ use Carbon\Carbon;
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+            return response($e, 500);
         }
     }
       
@@ -545,7 +542,11 @@ use Carbon\Carbon;
                             'recstatus' => 'CANCELLED'
                         ]);
 
-                    $this->gltran_cancel($auditno);
+                    if($apacthdr->doctype == 'Supplier'){ 
+                        $this->gltran_cancel($auditno);
+                    }else{
+                        $this->gltran_cancel_others($auditno);
+                    }
 
                     DB::table('finance.apacthdr')
                         ->where('auditno','=',$auditno)
@@ -700,6 +701,114 @@ use Carbon\Carbon;
         }
     }
 
+    public function gltran_others($auditno){
+        $apacthdr_obj = DB::table('finance.apacthdr')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('source','=','AP')
+                            ->where('trantype','=','IN')
+                            ->where('auditno','=',$auditno)
+                            ->first();
+
+        $apactdtl_obj = DB::table('finance.apactdtl')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('source','=',$apacthdr_obj->source)
+                            ->where('trantype','=',$apacthdr_obj->trantype)
+                            ->where('auditno','=',$apacthdr_obj->auditno);
+
+        if($apactdtl_obj->exists()){
+            $apactdtl_get = $apactdtl_obj->get();
+
+            foreach ($apactdtl_get as $key => $value){
+                $yearperiod = defaultController::getyearperiod_($apacthdr_obj->postdate);
+
+                $category_obj = $this->gltran_fromcategory($value->category);
+                $dept_obj = $this->gltran_fromdept_others($value->deptcode);
+                $supp_obj = $this->gltran_fromsupp($apacthdr_obj->payto);
+
+                //1. buat gltran
+                DB::table('finance.gltran')
+                    ->insert([
+                        'compcode' => $apacthdr_obj->compcode,
+                        'auditno' => $apacthdr_obj->auditno,
+                        'lineno_' => $key+1,
+                        'source' => $apacthdr_obj->source,
+                        'trantype' => $apacthdr_obj->trantype,
+                        'reference' => $value->document,
+                        'description' => $apacthdr_obj->remarks,
+                        'year' => $yearperiod->year,
+                        'period' => $yearperiod->period,
+                        'drcostcode' => $dept_obj->costcode,
+                        'dracc' => $category_obj->expacct,
+                        'crcostcode' => $supp_obj->costcode,
+                        'cracc' => $supp_obj->glaccno,
+                        'amount' => $value->amount,
+                        'postdate' => $apacthdr_obj->postdate,
+                        'adduser' => $apacthdr_obj->adduser,
+                        'adddate' => $apacthdr_obj->adddate,
+                        'idno' => null
+                    ]);
+
+                //2. check glmastdtl utk debit, kalu ada update kalu xde create
+                $gltranAmount =  defaultController::isGltranExist_($dept_obj->costcode,$category_obj->expacct,$yearperiod->year,$yearperiod->period);
+
+                if($gltranAmount!==false){
+                    DB::table('finance.glmasdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('costcode','=',$dept_obj->costcode)
+                        ->where('glaccount','=',$category_obj->expacct)
+                        ->where('year','=',$yearperiod->year)
+                        ->update([
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'actamount'.$yearperiod->period => $value->amount + $gltranAmount,
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }else{
+                    DB::table('finance.glmasdtl')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'costcode' => $dept_obj->costcode,
+                            'glaccount' => $category_obj->expacct,
+                            'year' => $yearperiod->year,
+                            'actamount'.$yearperiod->period => $value->amount,
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }
+
+                //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+                $gltranAmount = defaultController::isGltranExist_($supp_obj->costcode,$supp_obj->glaccno,$yearperiod->year,$yearperiod->period);
+
+                if($gltranAmount!==false){
+                    DB::table('finance.glmasdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('costcode','=',$supp_obj->costcode)
+                        ->where('glaccount','=',$supp_obj->glaccno)
+                        ->where('year','=',$yearperiod->year)
+                        ->update([
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'actamount'.$yearperiod->period => $gltranAmount - $value->amount,
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }else{
+                    DB::table('finance.glmasdtl')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'costcode' => $supp_obj->costcode,
+                            'glaccount' => $supp_obj->glaccno,
+                            'year' => $yearperiod->year,
+                            'actamount'.$yearperiod->period => - $value->amount,
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }
+            }
+        }
+    }
+
     public function gltran_cancel($auditno){
         $apacthdr_obj = DB::table('finance.apacthdr')
                             ->where('compcode','=',session('compcode'))
@@ -762,6 +871,74 @@ use Carbon\Carbon;
         }
     }
 
+    public function gltran_cancel_others($auditno){
+        $apacthdr_obj = DB::table('finance.apacthdr')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('source','=','AP')
+                            ->where('trantype','=','IN')
+                            ->where('auditno','=',$auditno)
+                            ->first();
+
+        $apactdtl_obj = DB::table('finance.apactdtl')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('source','=',$apacthdr_obj->source)
+                            ->where('trantype','=',$apacthdr_obj->trantype)
+                            ->where('auditno','=',$apacthdr_obj->auditno);
+
+        if($apactdtl_obj->exists()){
+            $apactdtl_get = $apactdtl_obj->get();
+
+            DB::table('finance.gltran')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=',$apacthdr_obj->source)
+                ->where('trantype','=',$apacthdr_obj->trantype)
+                ->where('auditno','=',$apacthdr_obj->auditno)
+                ->delete();
+
+            foreach ($apactdtl_get as $key => $value){
+                $yearperiod = defaultController::getyearperiod_($apacthdr_obj->postdate);
+
+                $category_obj = $this->gltran_fromcategory($value->category);
+                $dept_obj = $this->gltran_fromdept_others($value->deptcode);
+                $supp_obj = $this->gltran_fromsupp($apacthdr_obj->payto);
+
+                //2. check glmastdtl utk debit, kalu ada update kalu xde create
+                $gltranAmount =  defaultController::isGltranExist_($dept_obj->costcode,$category_obj->expacct,$yearperiod->year,$yearperiod->period);
+
+                if($gltranAmount!==false){
+                    DB::table('finance.glmasdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('costcode','=',$dept_obj->costcode)
+                        ->where('glaccount','=',$category_obj->expacct)
+                        ->where('year','=',$yearperiod->year)
+                        ->update([
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'actamount'.$yearperiod->period => $gltranAmount - $value->amount,
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }
+
+                //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+                $gltranAmount = defaultController::isGltranExist_($supp_obj->costcode,$supp_obj->glaccno,$yearperiod->year,$yearperiod->period);
+
+                if($gltranAmount!==false){
+                    DB::table('finance.glmasdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('costcode','=',$supp_obj->costcode)
+                        ->where('glaccount','=',$supp_obj->glaccno)
+                        ->where('year','=',$yearperiod->year)
+                        ->update([
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'actamount'.$yearperiod->period => $gltranAmount + $value->amount,
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }
+            }
+        }
+    }
+
     public function gltran_fromdept($deptcode,$catcode){
 
         // $ccode_obj = DB::table("sysdb.department")
@@ -787,6 +964,16 @@ use Carbon\Carbon;
         return $responce;
     }
 
+    public function gltran_fromdept_others($deptcode){
+        $obj = DB::table('sysdb.department')
+                ->select('costcode')
+                ->where('compcode','=',session('compcode'))
+                ->where('deptcode','=',$deptcode)
+                ->first();
+
+        return $obj;
+    }
+
     public function gltran_fromsupp($suppcode){
 
         $obj = DB::table("material.supplier")
@@ -808,8 +995,17 @@ use Carbon\Carbon;
             }
 
         }
+    }
 
-        
+    public function gltran_fromcategory($catcode){
+        $obj = DB::table('material.category')
+                ->select('expacct')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=','CR')
+                ->where('catcode','=',$catcode)
+                ->first();
+
+        return $obj;
     }
 
 }

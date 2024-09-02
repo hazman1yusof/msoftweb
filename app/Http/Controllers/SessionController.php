@@ -72,6 +72,10 @@ class SessionController extends Controller
                 $request->session()->put('unit', $units->sectorcode);
             }
 
+            if(strtoupper($user->programmenu) == 'WAREHOUSE'){
+                return redirect('/warehouse');
+            }
+
             if($user->groupid == 'patient'){
                 return redirect('/apptrsc?TYPE=DOC');
             }

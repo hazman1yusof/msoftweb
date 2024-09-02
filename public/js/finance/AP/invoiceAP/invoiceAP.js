@@ -50,6 +50,7 @@ $(document).ready(function () {
 				parent_close_disabled(true);
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 				$("#jqGrid2_oth").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_oth_c")[0].offsetWidth-$("#jqGrid2_oth_c")[0].offsetLeft));
+				$('select#apacthdr_doctype').prop('disabled',false);
 				mycurrency.formatOnBlur();
 				mycurrency.formatOn();
 				switch (oper) {
@@ -57,6 +58,7 @@ $(document).ready(function () {
 					$("#jqGrid2").jqGrid("clearGridData", false);
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
+					hideatdialogForm_oth(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
 					if ($('#apacthdr_trantype').val() == 'DN') {
@@ -74,6 +76,7 @@ $(document).ready(function () {
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
+					hideatdialogForm_oth(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
 					break;
@@ -90,10 +93,13 @@ $(document).ready(function () {
 				}
 				if(oper!='add'){
 					refreshGrid("#jqGrid2",urlParam2);
+					refreshGrid("#jqGrid2_oth",urlParam2_oth);
 					dialog_supplier.check(errorField);
 					dialog_payto.check(errorField);
 					dialog_category.check(errorField);
 					dialog_department.check(errorField);
+
+					$('select#apacthdr_doctype').prop('disabled',true);
 				}
 				init_jq2();
 			},
@@ -132,6 +138,8 @@ $(document).ready(function () {
 			close: function( event, ui ) {
 				addmore_jqgrid2.state = false;
 				addmore_jqgrid2.more = false;
+				addmore_jqgrid2_oth.state = false;
+				addmore_jqgrid2_oth.more = false;
 				//reset balik
 				parent_close_disabled(false);
 				emptyFormdata(errorField,'#formdata',['#apacthdr_source','#apacthdr_trantype']);
@@ -256,12 +264,6 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 
 		loadComplete: function(){
-			if ($('#apacthdr_trantype').val() == 'DN') {
-				$('#jqGrid3_c,#gridDo_c,#gridPV_c').hide();
-			} else {
-				$('#jqGrid3_c,#gridDo_c,#gridPV_c').show();
-			}
-			//calc_jq_height_onchange("jqGrid");
 		},
 		onSelectRow:function(rowid, selected){
 			$('#error_infront').text('');
@@ -282,11 +284,20 @@ $(document).ready(function () {
 			$('#apacthdr_idno').val(selrowData("#jqGrid").apacthdr_idno);
 
 			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
+			urlParam2_oth.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 			urlparampv.idno=selrowData("#jqGrid").apacthdr_idno;
-			refreshGrid("#jqGrid3",urlParam2);
-			refreshGrid("#jqgridpv",urlparampv);
 			populate_form(selrowData("#jqGrid"));
 			if_cancel_hide();
+			refreshGrid("#jqgridpv",urlparampv);
+
+			$('#jqGrid3_c,#jqGrid3_oth_c').hide();
+			if(selrowData("#jqGrid").apacthdr_doctype == 'Supplier'){
+				$('#jqGrid3_c').show();
+				refreshGrid("#jqGrid3",urlParam2);
+			}else{
+				$('#jqGrid3_oth_c').show();
+				refreshGrid("#jqGrid3_oth",urlParam2_oth,'add');
+			}
 
 			$("#attcahment_page").attr('href','./attachment_upload/?page=invoiceap&idno='+selrowData("#jqGrid").apacthdr_idno);
 		},
@@ -394,18 +405,18 @@ $(document).ready(function () {
 	addParamField('#jqGrid', true, urlParam);
 	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name', 'apacthdr_unit', 'apacthdr_idno','Checkbox','apacthdr_compcode']);
 
-	$("#save").click(function(){
-		unsaved = false;
-		mycurrency.formatOff();
-		mycurrency.check0value(errorField);
-		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-			saveHeader("#formdata", oper,saveParam,{idno:$('#apacthdr_idno').val()},'refreshGrid');
-			unsaved = false;
-			$("#dialogForm").dialog('close');
-		}else{
-			mycurrency.formatOn();
-		}
-	});
+	// $("#save").click(function(){
+	// 	unsaved = false;
+	// 	mycurrency.formatOff();
+	// 	mycurrency.check0value(errorField);
+	// 	if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+	// 		saveHeader("#formdata", oper,saveParam,{idno:$('#apacthdr_idno').val()},'refreshGrid');
+	// 		unsaved = false;
+	// 		$("#dialogForm").dialog('close');
+	// 	}else{
+	// 		mycurrency.formatOn();
+	// 	}
+	// });
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 
@@ -422,6 +433,18 @@ $(document).ready(function () {
 		}
 	}
 
+	function hideatdialogForm_oth(hide,saveallrow){
+		if(saveallrow == 'saveallrow'){
+			$("#jqGrid2_oth_iledit,#jqGrid2_oth_iladd,#jqGrid2_oth_ilcancel,#jqGrid2_oth_ilsave,#saveHeaderLabel_oth,#jqGridPager2Delete_oth,#jqGridPager2EditAll_oth,#saveDetailLabel_oth").hide();
+			$("#jqGridPager2SaveAll_oth,#jqGridPager2CancelAll_oth").show();
+		}else if(hide){
+			$("#jqGrid2_oth_iledit,#jqGrid2_oth_iladd,#jqGrid2_oth_ilcancel,#jqGrid2_oth_ilsave,#saveHeaderLabel_oth,#jqGridPager2Delete_oth,#jqGridPager2EditAll_oth,#jqGridPager2SaveAll_oth,#jqGridPager2CancelAll_oth").hide();
+			$("#saveDetailLabel_oth").show();
+		}else{
+			$("#jqGrid2_oth_iladd,#jqGrid2_oth_ilcancel,#jqGrid2_oth_ilsave,#saveHeaderLabel_oth,#jqGridPager2Delete_oth,#jqGridPager2EditAll_oth").show();
+			$("#saveDetailLabel_oth,#jqGridPager2SaveAll_oth,#jqGrid2_oth_iledit,#jqGridPager2CancelAll_oth").hide();
+		}
+	}
 	
 	////////////////////selected///////////////
 	$('#apacthdr_doctype').on('change', function() {
@@ -542,9 +565,11 @@ $(document).ready(function () {
 		}).done(function (data) {
 			mycurrency.formatOn();
 			hideatdialogForm(false);
+			hideatdialogForm_oth(false)
 			
 			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
 				addmore_jqgrid2.state = true;
+				addmore_jqgrid2_oth.state = true;
 				$('#jqGrid2_iladd').click();
 			}
 			if(selfoper=='add'){
@@ -852,10 +877,12 @@ $(document).ready(function () {
 	    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
         }, 
         errorfunc: function(rowid,response){
-        	alert(response.responseText);
-        	refreshGrid('#jqGrid2',urlParam2,'add');
-	    	$("#jqGridPager2Delete").show();
+			errorField.length=0;
+			$('#dialogForm .noti2 ol').prepend('<li>'+response.responseText+'</li>');
+        	// refreshGrid('#jqGrid2',urlParam2,'add');
+	    	// $("#jqGridPager2Delete").show();
         },
+        restoreAfterError : false,
         beforeSaveRow: function(options, rowid) {
 
         	if(errorField.length>0)return false;
@@ -1105,11 +1132,6 @@ $(document).ready(function () {
 					<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="pouom" type="text" class="form-control input-sm" data-validation="required" value="` + val + `" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 				</div>
 				<span class="help-block"></span>
-				<div class="input-group">
-					<input id="`+opt.id+`_gstpercent" name="gstpercent" type="hidden">
-					<input id="`+opt.id+`_convfactor_uom" name="convfactor_uom" type="hidden" value=`+1+`>
-					<input id="`+opt.id+`_convfactor_pouom" name="convfactor_pouom" type="hidden" value=`+1+`>
-				</div>
 			`);
 	}
 	function taxcodeCustomEdit(val,opt){
@@ -1265,39 +1287,6 @@ $(document).ready(function () {
 	});
 
 	jqgrid_label_align_right("#jqGrid3");
-
-	////////////////////////////////////////////////jqgrid3 oth//////////////////////////////////////////////
-	$("#jqGrid3_oth").jqGrid({
-		datatype: "local",
-		colModel: $("#jqGrid2_oth").jqGrid('getGridParam','colModel'),
-		shrinkToFit: true,
-		autowidth:true,
-		multiSort: true,
-		viewrecords: true,
-		rowNum: 30,
-		// sortname: 'lineno_',
-		// sortorder: "desc",
-		pager: "#jqGridPager3_oth",
-		loadComplete: function(data){
-			//setjqgridHeight(data,'jqGrid3');
-			//calc_jq_height_onchange("jqGrid3");
-		},
-		onSelectRow: function(data, rowid, selected) {
-			if(rowid != null) {
-				var rowData = $('#gridDo').jqGrid('getRowData', rowid);
-				urlParam_gridDo.filterVal[0]=selrowData("#jqGrid3_oth").dorecno;
-
-				refreshGrid('#gridDo', urlParam_gridDo);
-			}
-		},
-
-		gridComplete: function(){
-			fdl.set_array().reset();
-			$('#jqGrid3_oth').jqGrid ('setSelection', "1");
-		},
-	});
-
-	jqgrid_label_align_right("#jqGrid3_oth");
 
 	////////////////////////////////////////////////jqgridpv//////////////////////////////////////////////
 
@@ -1566,15 +1555,12 @@ $(document).ready(function () {
 	/////////////////////////////parameter for jqgrid2 other url///////////////////////////////////////////////
 	var urlParam2_oth={
 		action: 'get_table_dtl',
-		url:'invoiceAPDetail/table',
-		source:'',
-		trantype:'',
-		auditno:'',
-		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.taxamt AS tot_gst', 'apdt.dorecno', 'apdt.grnno', 'apdt.idno'],
+		url:'util/get_table_default',
+		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
 		table_name:['finance.apactdtl AS apdt'],
 		table_id:'lineno_',
-		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source', 'apdt.trantype'],
-		filterVal:['session.compcode', '', '<>.DELETE', $('#apacthdr_source').val(), 'IN']
+		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source'],
+		filterVal:['session.compcode', '', '<>.DELETE', $('#apacthdr_source').val()]
 	};
 
 	var addmore_jqgrid2_oth={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
@@ -1596,15 +1582,7 @@ $(document).ready(function () {
                         custom_value:galGridCustomValue 	
                     },
             },
-			{ label: 'Category', name: 'category', width: 150, classes: 'wrap', canSearch: true, editable: true,
-				editrules:{required: true,custom:true, custom_func:cust_rules},
-				formatter: showdetail,
-				edittype:'custom',	editoptions:
-					{  
-						custom_element:categoryCustomEdit,
-						custom_value:galGridCustomValue 	
-					},
-			},
+			{ label: 'Category', name: 'category', width: 150, classes: 'wrap', hidden: true, editable: false,},
             { label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: true,
                 editrules:{required: true,custom:true, custom_func:cust_rules},
                 formatter: showdetail,
@@ -1630,6 +1608,7 @@ $(document).ready(function () {
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules:{required: true}, edittype:"text",
 				editoptions:{
+                    readonly: "readonly",
 					maxlength: 12,
 					dataInit: function(element) {
 						element.style.textAlign = 'right';
@@ -1679,7 +1658,6 @@ $(document).ready(function () {
 		},
 		beforeSubmit: function(postdata, rowid){ 
 			dialog_deptcodeOth.check(errorField);
-			dialog_categoryOth.check(errorField);
 			dialog_GSTCodeOth.check(errorField);
 	 	}
 	});
@@ -1695,42 +1673,48 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
-			$("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
+			// $("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
         	errorField.length=0;
 			$("#jqGrid2 input[name='deptcode']").focus().select();
-        	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
+        	$("#jqGridPager2EditAll_oth,#saveHeaderLabel_oth,#jqGridPager2Delete_oth").hide();
 
 			dialog_deptcodeOth.on();//start binding event on jqgrid2
-			dialog_categoryOth.on();
 			dialog_GSTCodeOth.on();
 
 			unsaved = false;
 			mycurrency2.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='AmtB4GST']"]);
+			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2_oth input[name='amount']","#jqGrid2_oth input[name='tot_gst']","#jqGrid2_oth input[name='AmtB4GST']"]);
 			
-			$("input[name='gstpercent']").val('0')//reset gst to 0
+			$("#jqGrid2_oth input[name='gstpercent']").val('0')//reset gst to 0
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
-			$("#jqGrid2 input[name='AmtB4GST'],#jqGrid2 input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+			$("#jqGrid2_oth input[name='AmtB4GST'],#jqGrid2_oth input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
-        	$("input[name='amount']").keydown(function(e) {//when click tab at document, auto save
+        	$("#jqGrid2_oth input[name='amount']").keydown(function(e) {//when click tab at document, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
 			})
         },
         aftersavefunc: function (rowid, response, options) {
-			$('#apacthdr_amount').val(response.responseText);
-			mycurrency.formatOn();
-        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
-        	refreshGrid('#jqGrid2',urlParam2,'add');
-	    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
-	    	errorField.length=0;
+			var resobj = JSON.parse(response.responseText);
+			$('#apacthdr_auditno').val(resobj.auditno);
+        	$('#apacthdr_amount').val(resobj.totalAmount);
+        	$('#apactdtl_outamt').val(resobj.totalAmount);
+
+        	mycurrency.formatOn();
+        	if(addmore_jqgrid2_oth.state==true)addmore_jqgrid2_oth.more=true; //only addmore after save inline
+
+			urlParam2_oth.filterVal[1]=resobj.auditno;
+        	refreshGrid('#jqGrid2_oth',urlParam2_oth,'add');
+	    	$("#jqGridPager2EditAll_oth,#jqGridPager2Delete_oth").show();
         }, 
         errorfunc: function(rowid,response){
-        	alert(response.responseText);
-        	refreshGrid('#jqGrid2',urlParam2,'add');
-	    	$("#jqGridPager2Delete").show();
+			errorField.length=0;
+			$('#dialogForm .noti2 ol').prepend('<li>'+response.responseText+'</li>');
+        	// refreshGrid('#jqGrid2',urlParam2,'add');
+	    	// $("#jqGridPager2Delete").show();
         },
+        restoreAfterError : false,
         beforeSaveRow: function(options, rowid) {
         	if(errorField.length>0){
 				console.log(errorField);
@@ -1738,26 +1722,26 @@ $(document).ready(function () {
         	}
         	mycurrency2.formatOff();
 
-			if(parseInt($('#jqGrid2 input[name="amount"]').val()) == 0){
-				myerrorIt_only2('#jqGrid2 input[name="amount"]');
+			if(parseInt($('#jqGrid2_oth input[name="amount"]').val()) == 0){
+				myerrorIt_only2('#jqGrid2_oth input[name="amount"]');
 				alert('Amount cant be 0');
 				return false;
 			}
 			
-			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
-			let editurl = "./DebitNoteAPDetail/form?"+
+			let data = $('#jqGrid2_oth').jqGrid ('getRowData', rowid);
+			let editurl = "./invoiceAPDetail/form?"+
 				$.param({
-					action: 'DebitNoteAPDetail_save',
+					action: 'InvoiceAPDetail_save_oth',
 					idno: $('#apacthdr_idno').val(),
 					auditno:$('#apacthdr_auditno').val(),
 					amount:data.amount,
 					lineno_:data.lineno_,
 				});
-			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
+			$("#jqGrid2_oth").jqGrid('setGridParam',{editurl:editurl});
         },
         afterrestorefunc : function( response ) {
 			errorField.length=0;
-			hideatdialogForm(false);
+			hideatdialogForm_oth(false);
 			//$('#jqGrid2').jqGrid ('setSelection', "1");
 	    }
     };
@@ -1790,7 +1774,7 @@ $(document).ready(function () {
 				    callback: function (result) {
 				    	if(result == true){
 				    		param={
-				    			action: 'invoiceAPDetail_save',
+				    			action: 'InvoiceAPDetail_save_oth',
 								auditno: $('#apacthdr_auditno').val(),
 								lineno_: selrowData('#jqGrid2_oth').lineno_,
 				    		}
@@ -1831,13 +1815,6 @@ $(document).ready(function () {
 			        }
 			    );
 
-			    dialog_categoryOth.id_optid = ids[i];
-		        dialog_categoryOth.check(errorField,ids[i]+"_category","jqGrid2_oth",null,
-		        	function(self){
-		        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			        }
-			    );
-
 			    dialog_GSTCodeOth.id_optid = ids[i];
 		        dialog_GSTCodeOth.check(errorField,ids[i]+"_GSTCode","jqGrid2_oth",null,
 		        	function(self){
@@ -1846,8 +1823,8 @@ $(document).ready(function () {
 			    );
 
 		    }
-		   	onall_editfunc();
-			hideatdialogForm(true,'saveallrow');
+		   	onall_editfunc_oth();
+			hideatdialogForm_oth(true,'saveallrow');
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager2_oth",{
 		id: "jqGridPager2SaveAll_oth",
@@ -1862,13 +1839,13 @@ $(document).ready(function () {
 		    for (var i = 0; i < ids.length; i++) {
 
 				var data = $('#jqGrid2_oth').jqGrid('getRowData',ids[i]);
-				let retval = check_cust_rules("#jqGrid2_oth",data);
+				// let retval = check_cust_rules("#jqGrid2_oth",data);
 				// console.log(retval);
-				if(retval[0]!= true){
-					alert(retval[1]);
-					mycurrency2.formatOn();
-					return false;
-				}
+				// if(retval[0]!= true){
+				// 	alert(retval[1]);
+				// 	mycurrency2.formatOn();
+				// 	return false;
+				// }
 
 				if(parseInt($("#jqGrid2_oth input#"+ids[i]+"_amount").val()) == 0){
 					alert('Amount cant be 0');
@@ -1892,18 +1869,20 @@ $(document).ready(function () {
 		    }
 
 			var param={
-    			action: 'invoiceAPDetail_save',
+    			action: 'InvoiceAPDetail_save_oth',
 				_token: $("#_token").val(),
 				auditno: $('#apacthdr_auditno').val(),
 				idno: $('#apacthdr_idno').val()
     		}
 
-    		$.post( "./invoiceAPDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+    		$.post( "./invoiceAPDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_oth_data}, function( data ){
 			}).fail(function(data) {
+				errorField.length=0;
+				$('#dialogForm .noti2 ol').prepend('<li>'+data.responseText+'</li>');
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
 				$('#apacthdr_amount').val(data);
-				hideatdialogForm(false);
+				hideatdialogForm_oth(false);
 				refreshGrid("#jqGrid2_oth",urlParam2_oth,'add');
 			});
 		},	
@@ -1913,7 +1892,7 @@ $(document).ready(function () {
 		buttonicon:"glyphicon glyphicon-remove-circle",
 		title:"Cancel",
 		onClickButton: function(){
-			hideatdialogForm(false);
+			hideatdialogForm_oth(false);
 			refreshGrid("#jqGrid2_oth",urlParam2_oth,'add');
 		},	
 	}).jqGrid('navButtonAdd',"#jqGridPager2_oth",{
@@ -1950,7 +1929,7 @@ $(document).ready(function () {
 	//////////////////////////////////////////saveHeaderLabel oth////////////////////////////////////////////
 	$("#saveHeaderLabel_oth").click(function(){
 		emptyFormdata(errorField,'#formdata2_oth');
-		hideatdialogForm(true);
+		hideatdialogForm_oth(true);
 		dialog_supplier.on();
 		dialog_payto.on();
 		dialog_category.on();
@@ -1964,15 +1943,46 @@ $(document).ready(function () {
 
 
 	////////////////////////////// jqGrid2_iladd + jqGrid2_iledit /////////////////////////////	
-	function onall_editfunc(){
+	function onall_editfunc_oth(){
 		
 		dialog_deptcodeOth.on();//start binding event on jqgrid2
-		dialog_categoryOth.on();
 		dialog_GSTCodeOth.on();
 
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		
 	}
+	////////////////////////////////////////////////jqgrid3 oth//////////////////////////////////////////////
+	$("#jqGrid3_oth").jqGrid({
+		datatype: "local",
+		colModel: $("#jqGrid2_oth").jqGrid('getGridParam','colModel'),
+		shrinkToFit: true,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		rowNum: 30,
+		// sortname: 'lineno_',
+		// sortorder: "desc",
+		pager: "#jqGridPager3_oth",
+		loadComplete: function(data){
+			//setjqgridHeight(data,'jqGrid3');
+			//calc_jq_height_onchange("jqGrid3");
+		},
+		onSelectRow: function(data, rowid, selected) {
+			if(rowid != null) {
+				var rowData = $('#gridDo').jqGrid('getRowData', rowid);
+				urlParam_gridDo.filterVal[0]=selrowData("#jqGrid3_oth").dorecno;
+
+				refreshGrid('#gridDo', urlParam_gridDo);
+			}
+		},
+
+		gridComplete: function(){
+			fdl.set_array().reset();
+			$('#jqGrid3_oth').jqGrid ('setSelection', "1");
+		},
+	});
+
+	jqgrid_label_align_right("#jqGrid3_oth");
 
 	////////////////////object for dialog handler///////////////////
 	var dialog_supplier = new ordialog(
@@ -2179,7 +2189,7 @@ $(document).ready(function () {
 	dialog_document.makedialog(true);
 
 	var dialog_deptcodeOth = new ordialog(
-		'department','sysdb.department',"#jqGrid2_oth input[name='deptcode']",errorField,
+		'department_oth','sysdb.department',"#jqGrid2_oth input[name='deptcode']",errorField,
 		{	colModel:[
 				{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -2231,65 +2241,8 @@ $(document).ready(function () {
 		},'urlParam','radio','tab');
 		dialog_deptcodeOth.makedialog(true);
 
-	var dialog_categoryOth = new ordialog(
-		'category','material.category',"#jqGrid2_oth input[name='category']",errorField,
-		{	colModel:[
-				{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'povalidate',name:'povalidate',width:400,classes:'pointer', hidden:true},
-				{label:'source',name:'source',width:400,classes:'pointer', hidden:true},
-			],
-			urlParam: {
-				filterCol:['recstatus', 'compcode','source','povalidate'],
-				filterVal:['ACTIVE', 'session.compcode','CR','0']
-			},
-			ondblClickRow:function(event){
-				if(event.type == 'keydown'){
-					var optid = $(event.currentTarget).get(0).getAttribute("optid");
-					var id_optid = optid.substring(0,optid.search("_"));
-				}else{
-					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
-					var id_optid = optid.substring(0,optid.search("_"));
-				}
-				$("#jqGrid2_oth #"+id_optid+"_GSTCode").focus().select();
-			},
-			loadComplete: function(data,obj){
-				var searchfor = $("#jqGrid2_oth input#"+obj.id_optid+"_category").val()
-				var rows = data.rows;
-				var gridname = '#'+obj.gridname;
-
-				if(searchfor != undefined && rows.length > 1 && obj.ontabbing){
-					rows.forEach(function(e,i){
-						if(e.catcode.toUpperCase() == searchfor.toUpperCase().trim()){
-							let id = parseInt(i)+1;
-							$(gridname+' tr#'+id).click();
-							$(gridname+' tr#'+id).dblclick();
-						}
-					});
-				}
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-		},{	
-			title:"Select Category Code",
-			open: function(){
-				dialog_categoryOth.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
-				dialog_categoryOth.urlParam.filterVal=['ACTIVE', 'session.compcode', 'CR', '0'];
-			},
-		},'urlParam','radio','tab'
-		
-	);
-	dialog_categoryOth.makedialog(true);
-
 	var dialog_GSTCodeOth = new ordialog(
-		'GSTCode',['hisdb.taxmast'],"#jqGrid2_oth input[name='GSTCode']",errorField,
+		'GSTCode_oth',['hisdb.taxmast'],"#jqGrid2_oth input[name='GSTCode']",errorField,
 		{	colModel:
 			[
 				{label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,or_search:true},
@@ -2308,10 +2261,10 @@ $(document).ready(function () {
 					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
 				}
-				let data=selrowData('#'+dialog_GSTCode.gridname);
+				let data=selrowData('#'+dialog_GSTCodeOth.gridname);
 				$("#jqGrid2_oth #"+id_optid+"_gstpercent").val(data['rate']);
 				$("#jqGrid2_oth #"+id_optid+"_AmtB4GST").focus().select();
-				calculate_line_totgst_and_totamt2("#jqGrid2_oth #"+id_optid);
+				calculate_line_totgst_and_totamt2(id_optid);
 			},
 			loadComplete: function(data,obj){
 				var searchfor = $("#jqGrid2_oth input#"+obj.id_optid+"_GSTCode").val()
@@ -2347,7 +2300,7 @@ $(document).ready(function () {
 			after_check: function(data,obj,id){
 				var id_optid = id.substring(0,id.search("_"));
 				if(data.rows.length>0 && !obj.ontabbing){
-					$(id_optid+'_gstpercent').val(data.rows[0].rate);
+					$("#jqGrid2_oth #"+id_optid+'_gstpercent').val(data.rows[0].rate);
 					calculate_line_totgst_and_totamt2(id_optid);
 					calc_jq_height_onchange("jqGrid2_oth");
 					$(id_optid+"_AmtB4GST").focus().select();
@@ -2518,6 +2471,83 @@ $(document).ready(function () {
 					
 			});
 		}
+	}
+
+	function calculate_line_totgst_and_totamt(event){
+
+		mycurrency.formatOff();
+	    mycurrency2.formatOff();
+
+		var optid = event.currentTarget.id;
+		var id_optid = optid.substring(0,optid.search("_"));
+
+		let amntb4gst = parseFloat($("#jqGrid2_oth input#"+id_optid+"_AmtB4GST").val());
+		let gstpercent = parseFloat($("#jqGrid2_oth input#"+id_optid+"_gstpercent").val());
+		var amount = 0;
+
+		if(gstpercent == 0){
+			$("#jqGrid2_oth  input#"+id_optid+"_tot_gst").prop('disabled',true);
+			tot_gst = 0;
+			amount = amntb4gst;
+		}else{
+			$("#jqGrid2_oth input#"+id_optid+"_tot_gst").prop('disabled',false);
+			var tot_gst_real = parseFloat($("#jqGrid2_oth input#"+id_optid+"_tot_gst").val());
+			var tot_gst_rate = parseFloat(amntb4gst * (gstpercent / 100));
+
+			if(tot_gst_real == tot_gst_rate || tot_gst_real == 0){
+				amount = amntb4gst + tot_gst_rate;
+				tot_gst = tot_gst_rate;
+			}else{
+				amount = amntb4gst + tot_gst_real;
+				tot_gst = tot_gst_real;
+			}
+
+		}
+
+		$("#jqGrid2_oth input#"+id_optid+"_tot_gst").val(tot_gst);
+
+		$("#jqGrid2_oth input#"+id_optid+"_amount").val(amount);
+
+		// calculate_total_header();
+		
+		mycurrency.formatOn();
+		mycurrency2.formatOn();
+	}
+
+	function calculate_line_totgst_and_totamt2(id_optid) {
+		mycurrency.formatOff();
+		mycurrency2.formatOff();
+		
+		let amntb4gst = parseFloat($("#jqGrid2_oth input#"+id_optid+"_AmtB4GST").val());
+		let gstpercent = parseFloat($("#jqGrid2_oth input#"+id_optid+"_gstpercent").val());
+		var amount = 0;
+
+		if(gstpercent == 0){
+			$("#jqGrid2_oth input#"+id_optid+"_tot_gst").prop('disabled',true);
+			tot_gst = 0;
+			amount = amntb4gst;
+		}else{
+			$("#jqGrid2_oth input#"+id_optid+"_tot_gst").prop('disabled',false);
+			var tot_gst_real = parseFloat($(id_optid+"_tot_gst").val());
+			var tot_gst_rate = parseFloat(amntb4gst * (gstpercent / 100));
+
+			if(tot_gst_real == tot_gst_rate || tot_gst_real == 0){
+				amount = amntb4gst + tot_gst_rate;
+				tot_gst = tot_gst_rate;
+			}else{
+				amount = amntb4gst + tot_gst_real;
+				tot_gst = tot_gst_real;
+			}
+		}
+
+		$("#jqGrid2_oth input#"+id_optid+"_tot_gst").val(tot_gst);
+		
+		$("#jqGrid2_oth input#"+id_optid+"_amount").val(amount);
+
+		// calculate_total_header();
+		
+		mycurrency.formatOn();
+		mycurrency2.formatOn();
 	}
 
 });

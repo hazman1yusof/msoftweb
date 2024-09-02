@@ -726,13 +726,7 @@ $(document).ready(function () {
 						}
 					},
 			},
-			{ label: 'Tax Code', name: 'taxcode', width: 130, classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-						edittype:'custom',	editoptions:
-						    {  custom_element:taxcodeCustomEdit,
-						       custom_value:galGridCustomValue 	
-						    },
-			},
+			{ label: 'Tax Code', name: 'taxcode', width: 130, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
 			{ label: 'Percentage Discount (%)', name: 'perdisc', width: 90, align: 'right', classes: 'wrap', 
 				editable:true,
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4},
@@ -973,8 +967,8 @@ $(document).ready(function () {
 
     //////////////////////////////////////////pager jqgrid2/////////////////////////////////////////////
 	$("#jqGrid2").inlineNav('#jqGridPager2',{	
-		add:true,
-		edit:true,
+		add:false,
+		edit:false,
 		cancel: true,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
@@ -982,41 +976,42 @@ $(document).ready(function () {
 			addRowParams: myEditOptions
 		},
 		editParams: myEditOptions
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "jqGridPager2Delete",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-trash",
-		title:"Delete Selected Row",
-		onClickButton: function(){
-			selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
-			if(!selRowId){
-				bootbox.alert('Please select row');
-			}else{
-				bootbox.confirm({
-				    message: "Are you sure you want to delete this row?",
-				    buttons: {confirm: {label: 'Yes', className: 'btn-danger',},cancel: {label: 'No', className: 'btn-success' }
-				    },
-				    callback: function (result) {
-				    	if(result == true){
-				    		param={
-				    			action: 'goodReturnDetail_save',
-								recno: $('#delordhd_recno').val(),
-								lineno_: selrowData('#jqGrid2').lineno_,
-				    		}
-				    		$.post( "./goodReturnDetail/form"+$.param(param),{oper:'del'}, function( data ){
-							}).fail(function(data) {
-								//////////////////errorText(dialog,data.responseText);
-							}).done(function(data){
-								$('#amount').val(data);
-								refreshGrid("#jqGrid2",urlParam2);
-							});
-				    	}else{
-        					$("#jqGridPager2EditAll").show();
-				    	}
-				    }
-				});
-			}
-		},
+	})
+	// .jqGrid('navButtonAdd',"#jqGridPager2",{
+	// 	id: "jqGridPager2Delete",
+	// 	caption:"",cursor: "pointer",position: "last", 
+	// 	buttonicon:"glyphicon glyphicon-trash",
+	// 	title:"Delete Selected Row",
+	// 	onClickButton: function(){
+	// 		selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
+	// 		if(!selRowId){
+	// 			bootbox.alert('Please select row');
+	// 		}else{
+	// 			bootbox.confirm({
+	// 			    message: "Are you sure you want to delete this row?",
+	// 			    buttons: {confirm: {label: 'Yes', className: 'btn-danger',},cancel: {label: 'No', className: 'btn-success' }
+	// 			    },
+	// 			    callback: function (result) {
+	// 			    	if(result == true){
+	// 			    		param={
+	// 			    			action: 'goodReturnDetail_save',
+	// 							recno: $('#delordhd_recno').val(),
+	// 							lineno_: selrowData('#jqGrid2').lineno_,
+	// 			    		}
+	// 			    		$.post( "./goodReturnDetail/form"+$.param(param),{oper:'del'}, function( data ){
+	// 						}).fail(function(data) {
+	// 							//////////////////errorText(dialog,data.responseText);
+	// 						}).done(function(data){
+	// 							$('#amount').val(data);
+	// 							refreshGrid("#jqGrid2",urlParam2);
+	// 						});
+	// 			    	}else{
+    //     					$("#jqGridPager2EditAll").show();
+	// 			    	}
+	// 			    }
+	// 			});
+	// 		}
+	// 	},
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
 		id: "jqGridPager2EditAll",
 		caption:"",cursor: "pointer",position: "last", 
@@ -1025,26 +1020,26 @@ $(document).ready(function () {
 		onClickButton: function(){
 			mycurrency2.array.length = 0;
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
-		    for (var i = 0; i < ids.length; i++) {
+		    // for (var i = 0; i < ids.length; i++) {
 
-		        $("#jqGrid2").jqGrid('editRow',ids[i]);
+		    //     $("#jqGrid2").jqGrid('editRow',ids[i]);
 
-		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst"]);
+		    //     Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst"]);
 
-				dialog_taxcode.id_optid = ids[i];
-		        dialog_taxcode.check(errorField,ids[i]+"_taxcode","jqGrid2",null,
-		        	function(self){
-			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			        },function(data,self){
-			        	if(data.rows.length > 0){
-							$("#jqGrid2 #"+self.id_optid+"_taxcode_gstpercent").val(data.rows[0].rate);
-			        	}
-						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-			        }
-		        );
+			// 	dialog_taxcode.id_optid = ids[i];
+		    //     dialog_taxcode.check(errorField,ids[i]+"_taxcode","jqGrid2",null,
+		    //     	function(self){
+			//         	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			//         },function(data,self){
+			//         	if(data.rows.length > 0){
+			// 				$("#jqGrid2 #"+self.id_optid+"_taxcode_gstpercent").val(data.rows[0].rate);
+			//         	}
+			// 			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			//         }
+		    //     );
 
-		        cari_gstpercent(ids[i]);
-		    }
+		    //     cari_gstpercent(ids[i]);
+		    // }
 		    onall_editfunc();
 			hideatdialogForm(true,'saveallrow');
 		},
@@ -1335,7 +1330,6 @@ $(document).ready(function () {
 		
 		var tot_gst = amount * (gstpercent / 100);
 		var totalAmount = amount + tot_gst;
-		console.log(totalAmount);
 
 		var netunitprice = (unitprice-amtdisc);//?
 

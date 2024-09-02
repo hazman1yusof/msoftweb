@@ -21,9 +21,9 @@ class GoodReturnDetailController extends defaultController
     {   
         switch($request->oper){
             case 'add':
-                return $this->add($request);
+                // return $this->add($request);
             case 'edit':
-                return $this->edit($request);
+                // return $this->edit($request);
             case 'edit_all':
                 return $this->edit_all($request);
             case 'del':

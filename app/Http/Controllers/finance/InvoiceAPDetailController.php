@@ -18,24 +18,37 @@ class InvoiceAPDetailController extends defaultController
 
      public function form(Request $request)
     {   
-
         DB::enableQueryLog();
-        switch($request->oper){
-            case 'add': 
-                return $this->add($request);
-            case 'edit':
-                return $this->edit($request);
-            case 'edit_all':
-                return $this->edit_all($request);
-            case 'del':
-                return $this->del($request);
-            default:
-                return 'error happen..';
+        if($request->action == 'invoiceAPDetail_save'){
+            switch($request->oper){
+                case 'add': 
+                    return $this->add($request);
+                case 'edit':
+                    return $this->edit($request);
+                case 'edit_all':
+                    return $this->edit_all($request);
+                case 'del':
+                    return $this->del($request);
+                default:
+                    return 'error happen..';
+            }
+        }else if($request->action == 'InvoiceAPDetail_save_oth'){
+            switch($request->oper){
+                case 'add': 
+                    return $this->add_oth($request);
+                // case 'edit':
+                //     return $this->edit($request);
+                case 'edit_all':
+                    return $this->edit_all_oth($request);
+                case 'del':
+                    return $this->del_oth($request);
+                default:
+                    return 'error happen..';
+            }
         }
     }
 
-    public function table(Request $request)
-    {   
+    public function table(Request $request){   
         switch($request->action){
             case 'get_table_dtl':
                 return $this->get_table_dtl($request);
@@ -330,7 +343,6 @@ class InvoiceAPDetailController extends defaultController
 
             return response($e->getMessage(), 500);
         }
-
     }
 
     public function del(Request $request){
@@ -342,6 +354,8 @@ class InvoiceAPDetailController extends defaultController
             ///1. update detail
             DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
+                ->where('source','AP')
+                ->where('trantype','IN')
                 ->where('auditno','=',$request->auditno)
                 ->where('lineno_','=',$request->lineno_)
                 ->delete();
@@ -349,6 +363,8 @@ class InvoiceAPDetailController extends defaultController
             ///2. recalculate total amount
             $totalAmount = DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
+                ->where('source','AP')
+                ->where('trantype','IN')
                 ->where('auditno','=',$request->auditno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amount');
@@ -357,11 +373,12 @@ class InvoiceAPDetailController extends defaultController
             //3. update total amount to header
             DB::table('finance.apacthdr')
                 ->where('compcode','=',session('compcode'))
+                ->where('source','AP')
+                ->where('trantype','IN')
                 ->where('auditno','=',$request->auditno)
                 ->update([
                     'amount' => $totalAmount,
                     'outamount' => $totalAmount
-                  
                 ]);
 
             DB::table('material.delordhd')
@@ -382,10 +399,8 @@ class InvoiceAPDetailController extends defaultController
             DB::rollback();
 
             return response($e->getMessage(), 500);
-        }
-        
+        }       
     }
-
 
     public function edit_all(Request $request){
 
@@ -398,6 +413,8 @@ class InvoiceAPDetailController extends defaultController
                 ///1. update detail
                 DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
+                    ->where('source','AP')
+                    ->where('trantype','IN')
                     ->where('auditno','=',$request->auditno)
                     ->where('lineno_','=',$value['lineno_'])
                     ->update([
@@ -407,14 +424,16 @@ class InvoiceAPDetailController extends defaultController
                         'dorecno' => $value['dorecno'],
                         'grnno' => $value['grnno'],
                         'deptcode' => $value['deptcode'],
-                        'adduser' => session('username'), 
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                        
                     ]);
 
                 ///2. recalculate total amount
                 $totalAmount = DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
+                    ->where('source','AP')
+                    ->where('trantype','IN')
                     ->where('auditno','=',$request->auditno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('amount');
@@ -422,6 +441,8 @@ class InvoiceAPDetailController extends defaultController
                 ///3. update total amount to header
                 DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
+                    ->where('source','AP')
+                    ->where('trantype','IN')
                     ->where('auditno','=',$request->auditno)
                     ->update([
                         'amount' => $totalAmount, 
@@ -436,7 +457,212 @@ class InvoiceAPDetailController extends defaultController
 
             return response($e->getMessage(), 500);
         }
+    }
 
+    public function add_oth(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $auditno = $request->auditno;
+            
+            $apacthdr = DB::table("finance.apacthdr")
+                            ->where('idno','=',$request->idno)
+                            ->where('compcode','=','DD');
+
+            if($apacthdr->exists()){
+                $auditno = $this->recno('AP','IN');
+
+                DB::table("finance.apacthdr")
+                    ->where('idno','=',$request->idno)
+                    ->update([
+                        'auditno' => $auditno,
+                        'compcode' => session('compcode'),
+                    ]);
+            }
+
+            if(empty($auditno)){
+                $auditno = $this->recno('AP','IN');
+
+                DB::table("finance.apacthdr")
+                    ->where('idno','=',$request->idno)
+                    ->update([
+                        'auditno' => $auditno,
+                        'compcode' => session('compcode'),
+                    ]);
+            }
+
+            $apacthdr = DB::table("finance.apacthdr")
+                        ->where('idno','=',$request->idno)
+                        ->first();
+
+            $sqlln = DB::table('finance.apactdtl')
+                ->select('lineno_')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=','AP')
+                ->where('trantype','=','IN')
+                ->where('auditno','=',$auditno)
+                ->max('lineno_');
+
+            $li=intval($sqlln)+1;
+
+            $gstcode_obj = $this->check_gstcode($request);
+            
+              ///2. insert detail
+            DB::table('finance.apactdtl')
+              ->insert([
+                  'compcode' => session('compcode'),
+                  'auditno' => $auditno,
+                  'lineno_' => $li,
+                  'source' => 'AP',
+                  'trantype' => 'IN',
+                  'amount' => floatval($gstcode_obj->amount),
+                  'GSTCode' => strtoupper($request->GSTCode),
+                  'AmtB4GST' => floatval($gstcode_obj->AmtB4GST),
+                  'taxamt' => floatval($gstcode_obj->tot_gst),
+                  'deptcode' => strtoupper($request->deptcode),
+                  'category' => strtoupper($apacthdr->category),
+                  'adduser' => session('username'), 
+                  'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                  'recstatus' => 'OPEN',
+                  'unit' => session('unit')
+              ]);
+
+          ///3. calculate total amount from detail
+          $totalAmount = DB::table('finance.apactdtl')
+                  ->where('compcode','=',session('compcode'))
+                  ->where('auditno','=',$auditno)
+                  ->where('source','=','AP')
+                  ->where('trantype','=','IN')
+                  ->where('recstatus','!=','DELETE')
+                  ->sum('amount');
+
+          ///4. then update to header
+          DB::table('finance.apacthdr')
+              ->where('compcode','=',session('compcode'))
+              ->where('idno','=',$request->idno)
+              ->update([
+                  'amount' => $totalAmount,
+                  'outamount' => $totalAmount
+              ]);
+          DB::commit();
+
+        $responce = new stdClass();
+        $responce->totalAmount = $totalAmount;
+        $responce->auditno = $auditno;
+        return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e, 500);
+        }
+    }
+
+    public function del_oth(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            ///1. update detail
+            DB::table('finance.apactdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','AP')
+                ->where('trantype','IN')
+                ->where('auditno','=',$request->auditno)
+                ->where('lineno_','=',$request->lineno_)
+                ->delete();
+
+            ///2. recalculate total amount
+            $totalAmount = DB::table('finance.apactdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','AP')
+                ->where('trantype','IN')
+                ->where('auditno','=',$request->auditno)
+                ->where('recstatus','!=','DELETE')
+                ->sum('amount');
+
+          
+            //3. update total amount to header
+            DB::table('finance.apacthdr')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','AP')
+                ->where('trantype','IN')
+                ->where('auditno','=',$request->auditno)
+                ->update([
+                    'amount' => $totalAmount,
+                    'outamount' => $totalAmount
+                  
+                ]);
+
+            DB::commit();
+
+
+            $responce = new stdClass();
+            $responce->totalAmount = $totalAmount;
+
+            return json_encode($responce);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        } 
+    }
+
+    public function edit_all_oth(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            foreach ($request->dataobj as $key => $value) {
+
+                $gstcode_obj = $this->check_gstcode2($value);
+
+                ///1. update detail
+                DB::table('finance.apactdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','AP')
+                    ->where('trantype','IN')
+                    ->where('auditno','=',$request->auditno)
+                    ->where('lineno_','=',$value['lineno_'])
+                    ->update([
+                        'GSTCode' => strtoupper($value['GSTCode']),
+                        'AmtB4GST' => floatval($gstcode_obj->AmtB4GST),
+                        'taxamt' => floatval($gstcode_obj->tot_gst),
+                        'amount' => floatval($gstcode_obj->amount),
+                        'deptcode' => $value['deptcode'],
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    ]);
+
+                ///2. recalculate total amount
+                $totalAmount = DB::table('finance.apactdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','AP')
+                    ->where('trantype','IN')
+                    ->where('auditno','=',$request->auditno)
+                    ->where('recstatus','!=','DELETE')
+                    ->sum('amount');
+
+                ///3. update total amount to header
+                DB::table('finance.apacthdr')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','AP')
+                    ->where('trantype','IN')
+                    ->where('auditno','=',$request->auditno)
+                    ->update([
+                        'amount' => $totalAmount, 
+                    ]);
+            }
+
+            DB::commit();
+            return response($totalAmount,200);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
 
     public function check_dotrandate($delordno,$apacthdr){
@@ -490,6 +716,76 @@ class InvoiceAPDetailController extends defaultController
         if($delordhd->exists()){
             throw new \Exception("Delivery Order already have invoice");
         }
+    }
+
+    public function check_gstcode(Request $request){
+        $gstcode = DB::table('hisdb.taxmast')
+                    ->where('compcode',session('compcode'))
+                    ->where('taxtype','Input')
+                    ->where('taxcode',$request->GSTCode);
+
+        if(!$gstcode->exists()){
+            throw new \Exception('Tax Code '.$request->GSTCode.' doesnt exist', 500);
+        }
+
+        $gstcode_ = $gstcode->first();
+
+        $rate = floatval($gstcode_->rate);
+        $AmtB4GST = floatval($request->AmtB4GST);
+        
+        $tot_gst_real = 0;
+        $tot_gst_rate = $AmtB4GST * $rate / 100;
+
+        if($tot_gst_real == $tot_gst_rate || $tot_gst_real==0){
+            $amount = $AmtB4GST + $tot_gst_rate;
+            $tot_gst = $tot_gst_rate;
+        }else{
+            $amount = $AmtB4GST + $tot_gst_real;
+            $tot_gst = $tot_gst_real;
+        }
+
+        $responce = new stdClass();
+        $responce->rate = $rate;
+        $responce->AmtB4GST = $AmtB4GST;
+        $responce->tot_gst = $tot_gst;
+        $responce->amount = $amount;
+
+        return $responce;
+    }
+
+    public function check_gstcode2($value){
+        $gstcode = DB::table('hisdb.taxmast')
+                    ->where('compcode',session('compcode'))
+                    ->where('taxtype','Input')
+                    ->where('taxcode',$value['GSTCode']);
+
+        if(!$gstcode->exists()){
+            throw new \Exception('Tax Code '.$value['GSTCode'].' doesnt exist', 500);
+        }
+
+        $gstcode_ = $gstcode->first();
+
+        $rate = floatval($gstcode_->rate);
+        $AmtB4GST = floatval($value['AmtB4GST']);
+
+        $tot_gst_real = 0;
+        $tot_gst_rate = $AmtB4GST * $rate / 100;
+
+        if($tot_gst_real == $tot_gst_rate || $tot_gst_real==0){
+            $amount = $AmtB4GST + $tot_gst_rate;
+            $tot_gst = $tot_gst_rate;
+        }else{
+            $amount = $AmtB4GST + $tot_gst_real;
+            $tot_gst = $tot_gst_real;
+        }
+
+        $responce = new stdClass();
+        $responce->rate = $rate;
+        $responce->AmtB4GST = $AmtB4GST;
+        $responce->tot_gst = $tot_gst;
+        $responce->amount = $amount;
+
+        return $responce;
     }
 
 }
