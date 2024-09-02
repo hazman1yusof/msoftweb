@@ -75,9 +75,9 @@ div#fail_msg{
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-							<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('auditno'))){{Request::get('auditno')}}@endif">
+							<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('auditno'))){{Request::get('auditno')}}@endif">
 
-							<div id="customer_text">
+							<div id="customer_text" style="display: none">
 								<div class='input-group'>
 									<input id="customer_search" name="customer_search" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -85,7 +85,7 @@ div#fail_msg{
 								<span id="customer_search_hb" class="help-block"></span>
 							</div>
 
-							<div id="department_text" style="display:none">
+							<div id="department_text" style="display: none;">
 								<div class='input-group'>
 									<input id="department_search" name="department_search" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -93,7 +93,7 @@ div#fail_msg{
 								<span id="department_search_hb" class="help-block"></span>
 							</div>
 
-							<div id="docuDate_text" class="form-inline" style="display:none">
+							<div id="docuDate_text" class="form-inline" style="display: none;">
 								FROM DATE <input id="docuDate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
 								TO DATE <input id="docuDate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
 								<button type="button" class="btn btn-primary btn-sm" id="docuDate_search">SEARCH</button>
@@ -171,7 +171,7 @@ div#fail_msg{
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-6" style="padding-top: 20px; text-align: end;">
 					
 					<span id="error_infront" style="color: red"></span>
-					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
+					<button style="display: none;" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<!-- <button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button> -->
 
 					@if (Request::get('scope') != 'ALL' && Request::get('scope') != 'REOPEN' && Request::get('scope') != 'CANCEL')
@@ -206,7 +206,7 @@ div#fail_msg{
 		 </fieldset> 
 	</form>
 
-		<div class="panel panel-default" id="sel_tbl_panel" style="display:none">
+		<div class="panel panel-default" id="sel_tbl_panel" style="display: none;">
     		<div class="panel-heading heading_panel_">List Of Selected Item</div>
     		<div class="panel-body">
     			<div id="sel_tbl_div" class='col-md-12' style="padding:0 0 15px 0">
@@ -217,7 +217,7 @@ div#fail_msg{
 		</div>
 
     <div class="panel panel-default">
-			<div class="panel-heading">Sales Order DataEntry Header
+			<div class="panel-heading">Sales Order Data Entry Header
 				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print Sales Invoice</a>
 			</div>
 			

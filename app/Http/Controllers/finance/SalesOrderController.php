@@ -194,6 +194,10 @@ class SalesOrderController extends defaultController
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where('db.invno','like',$request->searchVal[0]);
                 });
+            }else if($request->searchCol[0] == 'dm_name'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('dm.name','like',$request->searchVal[0]);
+                });
             }else{
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
@@ -1472,7 +1476,8 @@ class SalesOrderController extends defaultController
             ->where('h.mrn','=','0')
             ->where('h.compcode','=',session('compcode'))
             ->first();
-// dd($dbacthdr);
+        // dd($dbacthdr);
+
         $billsum = DB::table('debtor.billsum AS b')
             ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
             'u.description as uom_desc', 
@@ -1516,7 +1521,7 @@ class SalesOrderController extends defaultController
         //     ->where('b.billno','=',$dbacthdr->auditno)
         //     ->get();
         
-        if ( $dbacthdr->recstatus == "OPEN") {
+        if($dbacthdr->recstatus == "OPEN"){
             $title = "DELIVERY ORDER";
         }else{
             $title = " INVOICE";

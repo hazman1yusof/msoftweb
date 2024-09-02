@@ -2553,7 +2553,7 @@ $(document).ready(function (){
 			$("input[name='Stext']").velocity({ width: "100%" });
 		}
 		
-		if($('#Scol').val() == 'db_entrydate'){
+		if($('#Scol').val() == 'db_posteddate'){
 			refreshGrid('#jqGrid', urlParam);
 		}else{
 			search('#jqGrid',$('#searchForm [name=Stext]').val(),$('#searchForm [name=Scol] option:selected').val(),urlParam);

@@ -288,7 +288,7 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="db_reference">Reference No.</label>  
 						<div class="col-md-2">
-							<input id="db_reference" name="db_reference" class="form-control input-sm text-uppercase">
+							<input id="db_reference" name="db_reference" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 						</div>
 					
 						<label class="col-md-3 control-label" for="db_paymode">Pay Mode</label>	 

@@ -399,7 +399,7 @@
 								<div class="form-group">
 							  		<div class='col-md-12'>
 										<label class="control-label" for="dbacthdr_reference">Reference</label> 
-										<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase">
+										<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									</div>
 								</div>
 								<div class="form-group">
