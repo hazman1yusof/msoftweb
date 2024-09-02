@@ -68,7 +68,7 @@
 				   	</select>
 	      		</div>
 
-				  <?php 
+				<?php 
 					$scope_use = 'posted';
 
 					if(Request::get('scope') == 'ALL'){
@@ -83,29 +83,29 @@
 				?>
 
 			<div id="div_for_but_post" class="col-md-6 col-md-offset-6" style="padding-top: 20px; text-align: end;">
-					
-					<span id="error_infront" style="color: red"></span>
-					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
-					<!-- <button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button> -->
+				
+				<span id="error_infront" style="color: red"></span>
+				<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
+				<!-- <button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button> -->
 
-					@if (Request::get('scope') != 'ALL' && Request::get('scope') != 'REOPEN' && Request::get('scope') != 'CANCEL')
-					<button type="button" class="btn btn-danger btn-sm" id="but_cancel_jq" data-oper="reject" style="display: none;">REJECT</button>
+				@if (Request::get('scope') != 'ALL' && Request::get('scope') != 'REOPEN' && Request::get('scope') != 'CANCEL')
+				<button type="button" class="btn btn-danger btn-sm" id="but_cancel_jq" data-oper="reject" style="display: none;">REJECT</button>
+				@endif
+
+				<button 
+				type="button" 
+					class="btn btn-primary btn-sm" 
+					id="but_post_jq" 
+					data-oper="{{$scope_use}}" 
+					style="display: none;">
+					@if (strtoupper(Request::get('scope')) == 'ALL')
+						{{'POSTED'}}
+					@else
+						{{Request::get('scope')}}
 					@endif
+				</button>
 
-					<button 
-					type="button" 
-						class="btn btn-primary btn-sm" 
-						id="but_post_jq" 
-						data-oper="{{$scope_use}}" 
-						style="display: none;">
-						@if (strtoupper(Request::get('scope')) == 'ALL')
-							{{'POSTED'}}
-						@else
-							{{Request::get('scope')}}
-						@endif
-					</button>
-
-				</div>
+			</div>
 
 				<!-- <div id="div_for_but_post" class="col-md-10 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>

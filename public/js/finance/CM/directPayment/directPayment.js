@@ -121,6 +121,16 @@ $(document).ready(function () {
 	});
 	////////////////////////////////////////end dialog///////////////////////////////////////////
 
+	/////////////////////recstatus filter for checkbox/////////////////////////////////////////////////
+	var recstatus_filter = [['OPEN','POSTED']];
+	if($("#recstatus_use").val() == 'POSTED'){
+		recstatus_filter = [['OPEN','POSTED']];
+		filterCol_urlParam = ['compcode'];
+		filterVal_urlParam = ['session.compcode'];
+	}
+
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox","idno","recstatus",recstatus_filter[0][0]);
+
 	////////////////////padzero///////////////////
 	function padzero(cellvalue, options, rowObject){
 		let padzero = 7, str="";
@@ -184,6 +194,7 @@ $(document).ready(function () {
 			{ label: 'Post Date', name: 'actdate', width: 25, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Amount', name: 'amount', width: 30,  align: 'right',formatter:'currency'},
 			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap text-uppercase'},
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 15,align: "center", formatter: formatterCheckbox },	
 			{ label: 'Payment Mode', name: 'paymode', width: 30, hidden:true },
 			{ label: 'Cheque No', name: 'cheqno', width: 40, hidden:true},//formatter:formatterCheqnno, unformat:unformatterCheqnno
 			{ label: 'Entered By', name: 'adduser', width: 35,  hidden:true},
@@ -263,6 +274,9 @@ $(document).ready(function () {
 			}
 			
 			fdl.set_array().reset();
+			cbselect.refresh_seltbl();
+			cbselect.show_hide_table();
+			cbselect.checkbox_function_on();
 			populate_form(selrowData("#jqGrid"));
 			//empty_form()
 		},
@@ -323,7 +337,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress', 'supplier_name']);
+	addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress', 'supplier_name','Checkbox']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 
@@ -357,21 +371,62 @@ $(document).ready(function () {
 	// 	});
 	// });
 
-	$("#but_cancel_jq,#but_post_jq").click(function(){
-		var idno = selrowData('#jqGrid').idno;
-		var obj={};
-		obj.idno = idno;
-		obj._token = $('#_token').val();
-		obj.oper = "posted";
+	// $("#but_cancel_jq,#but_post_jq").click(function(){
+	// 	var idno = selrowData('#jqGrid').idno;
+	// 	var obj={};
+	// 	obj.idno = idno;
+	// 	obj._token = $('#_token').val();
+	// 	obj.oper = "posted";
 
+	// 	$.post( './directPayment/form', obj , function( data ) {
+	// 		refreshGrid('#jqGrid', urlParam);
+	// 	}).fail(function(data) {
+	// 		//$('#error_infront').text(data.responseText);
+	// 	}).success(function(data){
+			
+	// 	});
+	// });
+	$("#but_post_jq").click(function(){
+		$(this).attr('disabled',true);
+		var self_ = this;
+		var idno_array = [];
+	
+		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
+		var obj={};
+		obj.idno_array = idno_array;
+		obj.oper = $(this).data('oper');
+		obj._token = $('#_token').val();
+		
+		$.post( 'directPayment/form', obj , function( data ) {
+			refreshGrid('#jqGrid', urlParam);
+			$(self_).attr('disabled',false);
+			cbselect.empty_sel_tbl();
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+			$(self_).attr('disabled',false);
+		}).success(function(data){
+			$(self_).attr('disabled',false);
+		});
+	});
+
+	$("#but_post2_jq").click(function(){
+	
+		var obj={};
+		obj.auditno = selrowData('#jqGrid').auditno;
+		obj.oper = $(this).data('oper');
+		obj._token = $('#_token').val();
+		oper=null;
+		
 		$.post( './directPayment/form', obj , function( data ) {
+			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
-			//$('#error_infront').text(data.responseText);
+			$('#error_infront').text(data.responseText);
 		}).success(function(data){
 			
 		});
 	});
+
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form,selfoper,saveParam,obj,needrefresh){
 		if(obj==null){
@@ -744,6 +799,9 @@ $(document).ready(function () {
 			$("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
         	errorField.length=0;
 			$("#jqGrid2 input[name='deptcode']").focus().select();
+			$("#jqGrid2 input[name='GSTCode']").val('EP');
+			dialog_GSTCode.check(errorField);
+
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
 			dialog_deptcode.on();//start binding event on jqgrid2
@@ -975,6 +1033,20 @@ $(document).ready(function () {
 		buttonicon:"",
 		title:"Detail"
 	});
+	
+	//////////////////////////formatter checkbox//////////////////////////////////////////////////
+	function formatterCheckbox(cellvalue, options, rowObject){
+		let idno = cbselect.idno;
+		let recstatus = cbselect.recstatus;
+		
+		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+		}else{
+			return ' ';
+		}
+	}
 
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
 	function showdetail(cellvalue, options, rowObject){
@@ -1629,6 +1701,27 @@ $(document).ready(function () {
 			$('#chg_label').text('TT No');
 		}
 	}
+
+	////////////////////////////////////jqGrid_selection////////////////////////////////////
+	$("#jqGrid_selection").jqGrid({
+		datatype: "local",
+		colModel: $("#jqGrid").jqGrid('getGridParam','colModel'),
+		shrinkToFit: false,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		sortname: 'idno',
+		sortorder: "desc",
+		onSelectRow: function (rowid, selected) {
+			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
+			console.log(rowdata);
+		},
+		gridComplete: function(){
+			
+		},
+	})
+	jqgrid_label_align_right("#jqGrid_selection");
+	cbselect.on();
 });
 
 function populate_form(obj){

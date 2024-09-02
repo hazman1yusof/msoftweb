@@ -259,9 +259,10 @@ class BankTransferController extends defaultController
         DB::beginTransaction();
 
         try {
+
             foreach ($request->idno_array as $idno){
                 $apacthdr = DB::table('finance.apacthdr')
-                        ->where('idno','=',$request->idno);
+                        ->where('idno','=',$idno);
 
                 $apacthdr_get = $apacthdr->first();
                 $yearperiod = $this->getyearperiod($apacthdr_get->actdate);
@@ -269,21 +270,22 @@ class BankTransferController extends defaultController
 
                 //1st step add cbtran credit
                 DB::table('finance.cbtran')
-                    ->insert([  'compcode' => $apacthdr_get->compcode , 
-                                'bankcode' => $apacthdr_get->bankcode , 
-                                'source' => $apacthdr_get->source , 
-                                'trantype' => $apacthdr_get->trantype , 
-                                'auditno' => $apacthdr_get->auditno , 
-                                'postdate' => $apacthdr_get->actdate , 
-                                'year' => $yearperiod->year , 
-                                'period' => $yearperiod->period , 
-                                'cheqno' => $apacthdr_get->cheqno , 
-                                'amount' => -$apacthdr_get->amount , 
-                                'remarks' => strtoupper($apacthdr_get->remarks) , 
-                                'upduser' => session('username') , 
-                                'upddate' => Carbon::now("Asia/Kuala_Lumpur") , 
-                                'reference' => 'Transfer from :'. ' ' .$apacthdr_get->bankcode  . ' ' . 'to'. ' '. $apacthdr_get->payto , 
-                                'recstatus' => 'ACTIVE' 
+                    ->insert([  
+                            'compcode' => $apacthdr_get->compcode, 
+                            'bankcode' => $apacthdr_get->bankcode, 
+                            'source' => $apacthdr_get->source, 
+                            'trantype' => $apacthdr_get->trantype, 
+                            'auditno' => $apacthdr_get->auditno, 
+                            'postdate' => $apacthdr_get->actdate, 
+                            'year' => $yearperiod->year, 
+                            'period' => $yearperiod->period, 
+                            'cheqno' => $apacthdr_get->cheqno, 
+                            'amount' => -$apacthdr_get->amount, 
+                            'remarks' => strtoupper($apacthdr_get->remarks), 
+                            'upduser' => session('username'), 
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                            'reference' => 'Transfer from :'. ' ' .$apacthdr_get->bankcode  . ' ' . 'to'. ' '. $apacthdr_get->payto, 
+                            'recstatus' => 'ACTIVE' 
                             ]);
 
                 //1st step, 2nd phase, update bank detail
@@ -313,20 +315,20 @@ class BankTransferController extends defaultController
 
                 //2nd step add cbtran + 
                 DB::table('finance.cbtran')
-                    ->insert([  'compcode' => $apacthdr_get->compcode , 
-                                'bankcode' => $apacthdr_get->payto , 
-                                'source' => $apacthdr_get->source , 
-                                'trantype' => $apacthdr_get->trantype , 
-                                'auditno' => $apacthdr_get->auditno , 
-                                'postdate' => $apacthdr_get->actdate , 
-                                'year' => $yearperiod->year , 
-                                'period' => $yearperiod->period , 
-                                'cheqno' => $apacthdr_get->cheqno , 
-                                'amount' => $apacthdr_get->amount , 
-                                'remarks' => strtoupper($apacthdr_get->remarks) , 
-                                'upduser' => session('username') , 
-                                'upddate' => Carbon::now("Asia/Kuala_Lumpur") , 
-                                'reference' => 'Transfer from :'. ' ' .$apacthdr_get->bankcode  . ' ' . 'to'. ' '. $apacthdr_get->payto , 
+                    ->insert([  'compcode' => $apacthdr_get->compcode, 
+                                'bankcode' => $apacthdr_get->payto, 
+                                'source' => $apacthdr_get->source, 
+                                'trantype' => $apacthdr_get->trantype, 
+                                'auditno' => $apacthdr_get->auditno, 
+                                'postdate' => $apacthdr_get->actdate, 
+                                'year' => $yearperiod->year, 
+                                'period' => $yearperiod->period, 
+                                'cheqno' => $apacthdr_get->cheqno, 
+                                'amount' => $apacthdr_get->amount, 
+                                'remarks' => strtoupper($apacthdr_get->remarks), 
+                                'upduser' => session('username'), 
+                                'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                                'reference' => 'Transfer from :'. ' ' .$apacthdr_get->bankcode  . ' ' . 'to'. ' '. $apacthdr_get->payto, 
                                 'recstatus' => 'ACTIVE' 
                             ]);
 

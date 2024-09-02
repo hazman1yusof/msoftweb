@@ -35,6 +35,12 @@ i.fa {
 <input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
+@if (Request::get('scope') == 'ALL')
+	<input id="recstatus_use" name="recstatus_use" type="hidden" value="ALL">
+@else
+	<input id="recstatus_use" name="recstatus_use" type="hidden" value="{{Request::get('scope')}}">
+@endif
+
 <!--***************************** Search + table ******************-->
 	 
 <div class='row'>
@@ -43,52 +49,117 @@ i.fa {
 			<input id="getYear" name="getYear" type="hidden"  value="{{Carbon\Carbon::now()->year}}">
 
 			<div class='col-md-12' style="padding:0 0 15px 0;">
-					<div class="form-group"> 
-						<div class="col-md-2">
-						  	<label class="control-label" for="Scol">Search By : </label>  
-						  		<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
-			            </div>
+				<div class="form-group"> 
+					<div class="col-md-2">
+						<label class="control-label" for="Scol">Search By : </label>  
+							<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
+					</div>
 
-						<div class="col-md-5">
-					  		<label class="control-label"></label>  
-							<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+					<div class="col-md-5">
+						<label class="control-label"></label>  
+						<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
 
-							<div id="bankcode_text">
-								<div class='input-group'>
-									<input id="bankcode_search" name="bankcode_search" type="text" maxlength="12" class="form-control input-sm">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span id="bankcode_search_hb" class="help-block"></span>
+						<div id="bankcode_text">
+							<div class='input-group'>
+								<input id="bankcode_search" name="bankcode_search" type="text" maxlength="12" class="form-control input-sm">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
-
-							<div id="actdate_text" class="form-inline" style="display:none">
-								FROM DATE <input id="actdate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
-								TO <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
-								<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH</button>
-							</div>
-							
+							<span id="bankcode_search_hb" class="help-block"></span>
 						</div>
 
-			        </div>
+						<div id="actdate_text" class="form-inline" style="display:none">
+							FROM DATE <input id="actdate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
+							TO <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+							<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH</button>
+						</div>
+					</div>
 				</div>
+			</div>
 
-				<div class='col-md-12' style="padding:0 0 15px 0;">
-					<div class="form-group"> 
-					  <div class="col-md-4">
-					  	<label class="control-label" for="adjustment">Transaction</label>  
-					  	<select id="adjustment" name="adjustment" class="form-control input-sm">
-					      <option selected value="CA">Credit</option>
-					      <option value="DA">Debit</option>
-					    </select>
-		              </div>
-            	</div>
+			<div class="col-md-2">
+					<label class="control-label" for="Status">Status</label>  
+					<select id="Status" name="Status" class="form-control input-sm">
+							@if (Request::get('scope') == 'ALL')
+							<option value="All" selected>ALL</option>
+							<option value="OPEN">OPEN</option>
+							<option value="POSTED">POSTED</option>
+							<option value="CANCELLED">CANCELLED</option>
+							@elseif (Request::get('scope') == 'OPEN')
+								<option value="OPEN">OPEN</option>
+							@elseif (Request::get('scope') == 'POSTED')
+								<option value="POSTED">POSTED</option>
+							@elseif (Request::get('scope') == 'CANCEL')
+								<option value="OPEN">OPEN</option>
+							@endif
+				   	</select>
+	      		</div>
 
-				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-				</div>
+				<?php 
+					$scope_use = 'posted';
+
+					if(Request::get('scope') == 'ALL'){
+						$scope_use = 'posted';
+					}else if(Request::get('scope') == 'DELIVERED'){
+						$scope_use = 'delivered';
+					}else if(Request::get('scope') == 'REOPEN'){
+						$scope_use = 'reopen';
+					}else if(Request::get('scope') == 'CANCEL'){
+						$scope_use = 'cancel';
+					}
+				?>
+
+
+			<div class='col-md-12' style="padding:0 0 15px 0;">
+				<div class="form-group"> 
+					<div class="col-md-4">
+					<label class="control-label" for="adjustment">Transaction</label>  
+					<select id="adjustment" name="adjustment" class="form-control input-sm">
+						<option selected value="CA">Credit</option>
+						<option value="DA">Debit</option>
+					</select>
+					</div>
+			</div>
+			
+			<div id="div_for_but_post" class="col-md-6 col-md-offset-6" style="padding-top: 20px; text-align: end;">
+				
+				<span id="error_infront" style="color: red"></span>
+				<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
+				<!-- <button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button> -->
+
+				@if (Request::get('scope') != 'ALL' && Request::get('scope') != 'REOPEN' && Request::get('scope') != 'CANCEL')
+				<button type="button" class="btn btn-danger btn-sm" id="but_cancel_jq" data-oper="reject" style="display: none;">REJECT</button>
+				@endif
+
+				<button 
+				type="button" 
+					class="btn btn-primary btn-sm" 
+					id="but_post_jq" 
+					data-oper="{{$scope_use}}" 
+					style="display: none;">
+					@if (strtoupper(Request::get('scope')) == 'ALL')
+						{{'POSTED'}}
+					@else
+						{{Request::get('scope')}}
+					@endif
+				</button>
+
+			</div>
+			<!-- <div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
+				<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
+				<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
+			</div> -->
 		</fieldset> 
 	</form>
+
+		<div class="panel panel-default" id="sel_tbl_panel" style="display:none">
+    		<div class="panel-heading heading_panel_">List Of Selected Item</div>
+    		<div class="panel-body">
+    			<div id="sel_tbl_div" class='col-md-12' style="padding:0 0 15px 0">
+    				<table id="jqGrid_selection" class="table table-striped"></table>
+    				<div id="jqGrid_selectionPager"></div>
+				</div>
+    		</div>
+		</div>
 
 		<div class="panel panel-default">
 		    <div class="panel-heading">Credit/Debit Header

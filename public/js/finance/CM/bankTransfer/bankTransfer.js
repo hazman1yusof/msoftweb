@@ -220,7 +220,7 @@ $(document).ready(function () {
 			{label: 'Entered Date', name: 'adddate', width: 30, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
 			{label: 'Paymode', name: 'paymode', width: 30, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{label: 'Cheq No', name: 'cheqno', width: 30, classes: 'wrap', formatter:formatterCheqnno, unformat:unformatterCheqnno},
-			{ label: ' ', name: 'Checkbox',sortable:false, width: 15,align: "center", formatter: formatterCheckbox },	
+			{label: ' ', name: 'Checkbox',sortable:false, width: 15,align: "center", formatter: formatterCheckbox },	
 			{label: 'unit', name: 'unit', width: 40, hidden:'true'},
 		],
 		autowidth:true,
@@ -329,7 +329,7 @@ $(document).ready(function () {
 		 	{label: 'trantype', name: 'trantype', width: 10, hidden: true, classes: 'wrap'},
 			{label: 'Audit No', name: 'auditno', width: 10, classes: 'wrap', align: 'right', formatter: padzero, unformat: unpadzero},
 			{label: 'Payment No', name: 'pvno', width: 10, classes: 'wrap', align:'right', formatter: padzero, unformat: unpadzero},
-			{label: 'Transfer Date', name: 'actdate', width: 20, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
+			{label: 'Transfer Date', name: 'actdate', width: 20, classes: 'wrap', formatter: "date", formatter: dateFormatter, unformat: dateUNFormatter},
 			{label: 'Bank Code To', name: 'payto', width: 80, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{label: 'Cheque Date', name: 'cheqdate', width: 90, classes: 'wrap', hidden:true},
 			{label: 'Amount', name: 'amount', width: 30, classes: 'wrap', formatter:'currency', align:'right'},
@@ -620,27 +620,50 @@ $(document).ready(function () {
 	// 	});
 	// });
 
+	// $("#but_post_jq").click(function(){
+	// 	var idno_array = [];
+	
+	// 	let ids = $('#jqGrid_selection').jqGrid ('getDataIDs');
+	// 	for (var i = 0; i < ids.length; i++) {
+	// 		var data = $('#jqGrid_selection').jqGrid('getRowData',ids[i]);
+	//     	idno_array.push(data.auditno);
+	//     }
+	    
+	// 	var obj={};
+	// 	obj.idno_array = idno_array;
+	// 	obj.oper = $(this).data('oper');
+	// 	obj._token = $('#_token').val();
+		
+	// 	$.post( './bankTransfer/form', obj , function( data ) {
+	// 		cbselect.empty_sel_tbl();
+	// 		refreshGrid('#jqGrid', urlParam);
+	// 	}).fail(function(data) {
+	// 		$('#error_infront').text(data.responseText);
+	// 	}).success(function(data){
+			
+	// 	});
+	// });
+
 	$("#but_post_jq").click(function(){
+		$(this).attr('disabled',true);
+		var self_ = this;
 		var idno_array = [];
 	
-		let ids = $('#jqGrid_selection').jqGrid ('getDataIDs');
-		for (var i = 0; i < ids.length; i++) {
-			var data = $('#jqGrid_selection').jqGrid('getRowData',ids[i]);
-	    	idno_array.push(data.auditno);
-	    }
-	    
+		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
 		var obj={};
 		obj.idno_array = idno_array;
 		obj.oper = $(this).data('oper');
 		obj._token = $('#_token').val();
 		
-		$.post( './bankTransfer/form', obj , function( data ) {
-			cbselect.empty_sel_tbl();
+		$.post( 'bankTransfer/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
+			$(self_).attr('disabled',false);
+			cbselect.empty_sel_tbl();
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
+			$(self_).attr('disabled',false);
 		}).success(function(data){
-			
+			$(self_).attr('disabled',false);
 		});
 	});
 
@@ -661,7 +684,6 @@ $(document).ready(function () {
 			
 		});
 	});
-
 
 	////////////////////object for dialog handler//////////////////
 
