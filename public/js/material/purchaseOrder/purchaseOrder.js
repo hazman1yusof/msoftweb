@@ -83,6 +83,7 @@ $(document).ready(function () {
 					dialog_prdept.check(errorField);
 					dialog_suppcode.check(errorField);
 					dialog_deldept.check(errorField);
+					dialog_assetno.check(errorField);
 
 				}if (oper != 'view') {
 					backdated.set_backdate($('#purordhd_prdept').val());
@@ -92,6 +93,7 @@ $(document).ready(function () {
 					dialog_suppcode.on();
 					dialog_deldept.on();
 					dialog_credcode.on();
+					dialog_assetno.on();
 				}
 
 				if(oper == 'edit'){
@@ -132,6 +134,7 @@ $(document).ready(function () {
 				dialog_suppcode.off();
 				dialog_deldept.off();
 				dialog_credcode.off();
+				dialog_assetno.off();
 				$(".noti").empty();
 				$("#refresh_jqGrid").click();
 				$("#purordhd_reqdept,#purordhd_reqdept,#purordhd_purreqno").prop('readonly',false);
@@ -140,8 +143,16 @@ $(document).ready(function () {
 				radbuts.reset();
 			},
 		});
-	////////////////////////////////////////end dialog///////////////////////////////////////////////////
-
+	/////////////////////////////////////////////end dialog/////////////////////////////////////////////
+	
+	$('#formdata input:radio[name="purordhd_prtype"]').change(function (){
+		if($('#formdata input:radio[name=purordhd_prtype]:checked').val() == 'AssetMaintenance'){
+			$("#assetno_div").show();
+		}else{
+			$("#assetno_div").hide();
+		}
+	});
+	
 	var backdated = new func_backdated('#purordhd_deldept');
 	backdated.getdata();
 
@@ -289,8 +300,9 @@ $(document).ready(function () {
 			{ label: 'Purchase Order <br> Date', name: 'purordhd_purdate', width: 10, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'expecteddate', name: 'purordhd_expecteddate', width: 20, formatter: dateFormatter, unformat: dateUNFormatter, hidden: true },
 			{ label: 'expirydate', name: 'purordhd_expirydate', width: 20, formatter: "date", hidden: true },
-			{ label: 'Supplier Code', name: 'purordhd_suppcode', width: 30, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Supplier Name', name: 'supplier_name', width: 35, classes: 'wrap', hidden:true},
+			// { label: 'Supplier Code', name: 'purordhd_suppcode', width: 30, classes: 'wrap', formatter: showdetail, unformat: un_showdetail },
+			{ label: 'Supplier Code', name: 'purordhd_suppcode', width: 30, classes: 'wrap' },
+			{ label: 'Supplier Name', name: 'supplier_name', width: 35, classes: 'wrap', canSearch: true, selected: true },
 			{ label: 'credcode', name: 'purordhd_credcode', width: 20, classes: 'wrap', hidden: true },
 			{ label: 'termsdays', name: 'purordhd_termdays', width: 20, hidden: true },
 			{ label: 'subamount', name: 'purordhd_subamount', width: 30, hidden: true,align: 'right', formatter: 'currency'},
@@ -302,6 +314,7 @@ $(document).ready(function () {
 			{ label: 'authpersonid', name: 'purordhd_authpersonid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'authdate', name: 'purordhd_authdate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'Remark', name: 'purordhd_remarks', width: 50, classes: 'wrap', hidden: true },
+			{ label: 'Asset No.', name: 'purordhd_assetno', hidden: true },
 			{ label: 'Status', name: 'purordhd_recstatus', width: 14 },
 			{ label: 'postedby', name: 'purordhd_postedby', width: 40, hidden:true},
 			{ label: 'postdate', name: 'purordhd_postdate', width: 40, hidden:true},
@@ -459,6 +472,12 @@ $(document).ready(function () {
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view', '');
 			$('#purordhd_purordno').val(padzero($('#purordhd_purordno').val()));
 			refreshGrid("#jqGrid2", urlParam2);
+		
+			if($('#formdata input:radio[name=purordhd_prtype]:checked').val() == 'AssetMaintenance'){
+				$("#assetno_div").show();
+			}else{
+				$("#assetno_div").hide();
+			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", id: "glyphicon-edit", position: "first",
@@ -475,6 +494,12 @@ $(document).ready(function () {
 				refreshGrid("#jqGrid2", urlParam2);
 			}else{
 				$("#jqGridPager td[title='View Selected Row']").click();
+			}
+			
+			if($('#formdata input:radio[name=purordhd_prtype]:checked').val() == 'AssetMaintenance'){
+				$("#assetno_div").show();
+			}else{
+				$("#assetno_div").hide();
 			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
@@ -645,7 +670,8 @@ $(document).ready(function () {
 			dialog_purreqno.on();
 		    dialog_suppcode.on();
 		    dialog_credcode.on();
-		    dialog_deldept.on();
+			dialog_deldept.on();
+			dialog_assetno.on();
 
 		}).done(function (data) {
 			$("#saveDetailLabel").attr('disabled',false)
@@ -729,25 +755,25 @@ $(document).ready(function () {
 	// 		}
 	// 	});
 	// }
-
-	////////////////////////////changing status and trandept trigger search/////////////////////////
+	
+	////////////////////////////changing status and trandept trigger search////////////////////////////
 	$('#Scol').on('change', whenchangetodate);
 	$('#Status').on('change', searchChange);
 	$('#trandept').on('change', searchChange);
-
-	function whenchangetodate() {
+	
+	function whenchangetodate(){
 		supplierkatdepan.off();
-		if ($('#Scol').val() == 'purordhd_purdate') {
+		if($('#Scol').val() == 'purordhd_purdate'){
 			$("input[name='Stext']").show("fast");
 			$("#tunjukname").hide("fast");
 			$("input[name='Stext']").attr('type', 'date');
 			$("input[name='Stext']").velocity({ width: "250px" });
 			$("input[name='Stext']").on('change', searchbydate);
-		} else if($('#Scol').val() == 'supplier_name'){
+		}else if($('#Scol').val() == 'purordhd_suppcode'){
 			$("input[name='Stext']").hide("fast");
 			$("#tunjukname").show("fast");
 			supplierkatdepan.on();
-		} else {
+		}else{
 			$("input[name='Stext']").show("fast");
 			$("#tunjukname").hide("fast");
 			$("input[name='Stext']").attr('type', 'text');
@@ -755,7 +781,7 @@ $(document).ready(function () {
 			$("input[name='Stext']").off('change', searchbydate);
 		}
 	}
-
+	
 	var supplierkatdepan = new ordialog(
 		'supplierkatdepan', 'material.supplier', '#supplierkatdepan', 'errorField',
 		{
@@ -1331,8 +1357,7 @@ $(document).ready(function () {
 
 			$("#jqGrid2 input[name='qtyorder']").on('blur',calculate_conversion_factor);
 			$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom']").on('focus',remove_noti);
-
-
+			
 			$("input[name='totamount']").keydown(function(e) {//when click tab at totamount, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
@@ -1731,6 +1756,7 @@ $(document).ready(function () {
 		dialog_suppcode.off();
 		dialog_credcode.off();
 		dialog_deldept.off();
+		dialog_assetno.off();
 		radbuts.check();
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
@@ -1743,8 +1769,8 @@ $(document).ready(function () {
 			dialog_purreqno.on();
 		    dialog_suppcode.on();
 		    dialog_credcode.on();
-		    dialog_deldept.on();
-
+			dialog_deldept.on();
+			dialog_assetno.on();
 		}
 	});
 
@@ -1760,16 +1786,17 @@ $(document).ready(function () {
 		dialog_suppcode.on();
 		dialog_credcode.on();
 		dialog_deldept.on();
-
+		dialog_assetno.on();
+		
 		enableForm('#formdata');
 		rdonly('#formdata');
-
+		
 		dialog_reqdept.off();
 		dialog_purreqno.off();
-
+		
 		$("#purordhd_reqdept,#purordhd_purreqno").prop('readonly',true);
 		addmore_jqgrid2.state = addmore_jqgrid2.more = false;
-
+		
 		$(".noti").empty();
 		refreshGrid("#jqGrid2", urlParam2);
 	});
@@ -2753,10 +2780,11 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_reqdept.makedialog();
-
+	
 	var dialog_purreqno = new ordialog(
 		'purreqno',['material.purreqhd AS h'],'#purordhd_purreqno',errorField,
-		{	colModel:[
+		{
+			colModel:[
 				{label:'Request No',name:'h_purreqno',width:50,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Request Department', name: 'h_reqdept', width: 100, classes: 'pointer',canSearch:true,checked:true,or_search:true },
 				{label:'Supplier Code',name:'h_suppcode',width:100,classes:'pointer wrap', formatter: showdetail,unformat:un_showdetail},
@@ -2768,16 +2796,17 @@ $(document).ready(function () {
 				{label:'Status',name:'h_recstatus',width:400,classes:'pointer',hidden:true},
 				{label:'Remark',name:'h_remarks',width:400,classes:'pointer',hidden:true},
 				{label:'prtype',name:'h_prtype',width:50,classes:'pointer',hidden:true},
-				{label:'recno',name:'h_recno',width:50,classes:'pointer',hidden:false}
-				],
+				{label:'recno',name:'h_recno',width:50,classes:'pointer',hidden:false},
+				{label:'assetno',name:'h_assetno',width:50,classes:'pointer',hidden:true}
+			],
 			sortname: 'h_recno',
 			sortorder: "desc",
 			urlParam: {
-					filterCol:['h.reqdept'],
-					filterVal:[$("#purordhd_reqdept").val()],
-					WhereInCol:['h.recstatus'],
-					WhereInVal:[['PARTIAL','APPROVED']]				
-				},
+				filterCol:['h.reqdept'],
+				filterVal:[$("#purordhd_reqdept").val()],
+				WhereInCol:['h.recstatus'],
+				WhereInVal:[['PARTIAL','APPROVED']]
+			},
 			gridComplete: function() {
 				fdl.set_array().reset();
 			},
@@ -2797,14 +2826,21 @@ $(document).ready(function () {
 				$("#purordhd_remarks").val(data['h_remarks']);
 				$('input[type=radio][name=purordhd_prtype][value='+data['h_prtype']+']').prop('checked',true);
 				$('#referral').val(data['h_recno']);
-
-
+				$("#purordhd_assetno").val(data['h_assetno']);
+				
 				dialog_credcode.check(errorField);
 				dialog_suppcode.check(errorField);
 				dialog_deldept.check(errorField);
-
+				dialog_assetno.check(errorField);
+				
+				if(data['h_prtype'] == 'AssetMaintenance'){
+					$("#assetno_div").show();
+				}else{
+					$("#assetno_div").hide();
+				}
+				
 				mycurrency.formatOn();
-
+				
 				var urlParam2 = {
 					action: 'get_value_default',
 					url: 'util/get_value_default',
@@ -3019,6 +3055,42 @@ $(document).ready(function () {
 		}, 'urlParam','radio','tab'
 	);
 	dialog_credcode.makedialog();
+	
+	var dialog_assetno = new ordialog(
+		'assetno', 'finance.faregister', '#purordhd_assetno', errorField,
+		{
+			colModel: [
+				{ label: 'Asset No', name: 'assetno', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true, checked: true },
+				{ label: 'Asset Type', name: 'assettype', width: 200, classes: 'pointer' },
+			],
+			urlParam: {
+				filterCol: ['compcode','recstatus'],
+				filterVal: ['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function (){
+				// $('#purreqhd_prdept').focus();
+				let data = selrowData('#'+dialog_assetno.gridname);
+			},
+			gridComplete: function (obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					// $('#purreqhd_prdept').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		}, {
+			title: "Select Asset No.",
+			open: function(){
+				dialog_assetno.urlParam.filterCol = ['compcode','recstatus'];
+				dialog_assetno.urlParam.filterVal = ['session.compcode','ACTIVE'];
+			}
+		}, 'urlParam','radio','tab'
+	);
+	dialog_assetno.makedialog();
 
 	var dialog_pricecode = new ordialog(
 		'pricecode',['material.pricesource'],"#jqGrid2 input[name='pricecode']",errorField,

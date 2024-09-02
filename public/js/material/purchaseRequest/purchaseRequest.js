@@ -77,10 +77,12 @@ $(document).ready(function () {
 					dialog_reqdept.check(errorField);
 					dialog_prdept.check(errorField);
 					dialog_suppcode.check(errorField);
+					dialog_assetno.check(errorField);
 				} if (oper != 'view') {
 					dialog_reqdept.on();
 					dialog_prdept.on();
 					dialog_suppcode.on();
+					dialog_assetno.on();
 				} if(oper == 'edit'){
 					dialog_reqdept.off();
 				}
@@ -109,15 +111,26 @@ $(document).ready(function () {
 				dialog_reqdept.off();
 				dialog_prdept.off();
 				dialog_suppcode.off();
+				dialog_assetno.off();
 				$(".noti").empty();
 				$("#refresh_jqGrid").click();
 				refreshGrid("#jqGrid2",null,"kosongkan");
 				errorField.length=0;
 			},
 		});
-	////////////////////////////////////////end dialog///////////////////////////////////////////////////
-
-	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
+	/////////////////////////////////////////////end dialog/////////////////////////////////////////////
+	
+	$('#formdata input:radio[name="purreqhd_prtype"]').change(function (){
+		if($('#formdata input:radio[name=purreqhd_prtype]:checked').val() == 'AssetMaintenance'){
+			$("#assetno_div").show();
+		}else{
+			$("#assetno_div").hide();
+			// $("#formdata input[name='purreqhd_assetno']").val(' ');
+			// dialog_assetno.check(errorField);
+		}
+	});
+	
+	//////////////////////////////////////parameter for jqgrid url//////////////////////////////////////
 
 	var recstatus_filter = [['OPEN','PREPARED','PARTIAL']];
 	if($("#recstatus_use").val() == 'ALL'){
@@ -230,6 +243,7 @@ $(document).ready(function () {
 			{ label: 'Supplier Name', name: 'supplier_name', width: 30, canSearch: true, classes: 'wrap', hidden:true },
 			{ label: 'Amount', name: 'purreqhd_totamount', width: 15, align: 'right', formatter: 'currency' },
 			{ label: 'Remark', name: 'purreqhd_remarks', width: 50, classes: 'wrap', hidden: true },
+			{ label: 'Asset No.', name: 'purreqhd_assetno', hidden: true },
 			{ label: 'Status', name: 'purreqhd_recstatus', width: 15 },
 			{ label: 'PerDiscount', name: 'purreqhd_perdisc', width: 90, hidden: true },
 			{ label: 'AmtDiscount', name: 'purreqhd_amtdisc', width: 90, hidden: true },
@@ -375,39 +389,51 @@ $(document).ready(function () {
 
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,
-		beforeRefresh: function () {
+		beforeRefresh: function (){
 			refreshGrid("#jqGrid", urlParam, oper);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
 		buttonicon: "glyphicon glyphicon-info-sign",
 		title: "View Selected Row",
-		onClickButton: function () {
+		onClickButton: function (){
 			oper = 'view';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view', '');
 			$('#purreqhd_purreqno').val(padzero($('#purreqhd_purreqno').val()));
 			refreshGrid("#jqGrid2", urlParam2);
+		
+			if($('#formdata input:radio[name=purreqhd_prtype]:checked').val() == 'AssetMaintenance'){
+				$("#assetno_div").show();
+			}else{
+				$("#assetno_div").hide();
+			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", id: "glyphicon-edit", position: "first",
 		buttonicon: "glyphicon glyphicon-edit",
 		title: "Edit Selected Row",
-		onClickButton: function () {
+		onClickButton: function (){
 			oper = 'edit';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			$('#purreqhd_purreqno').val(padzero($('#purreqhd_purreqno').val()));
 			refreshGrid("#jqGrid2", urlParam2);
+			
+			if($('#formdata input:radio[name=purreqhd_prtype]:checked').val() == 'AssetMaintenance'){
+				$("#assetno_div").show();
+			}else{
+				$("#assetno_div").hide();
+			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
 		buttonicon: "glyphicon glyphicon-plus",
 		id: 'glyphicon-plus',
 		title: "Add New Row",
-		onClickButton: function () {
+		onClickButton: function (){
 			oper = 'add';
 			$("#dialogForm").dialog("open");
 		},
@@ -574,6 +600,7 @@ $(document).ready(function () {
 			dialog_reqdept.on();
 			dialog_prdept.on();
 			dialog_suppcode.on();
+			dialog_assetno.on();
 		}).done(function (data) {
 			$("#saveDetailLabel").attr('disabled',false);
 			hideatdialogForm(false);
@@ -1044,6 +1071,7 @@ $(document).ready(function () {
 			dialog_reqdept.check(errorField);
 			dialog_prdept.check(errorField);
 			dialog_suppcode.check(errorField);
+			dialog_assetno.check(errorField);
 		}
 
 		}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
@@ -1611,6 +1639,7 @@ $(document).ready(function () {
 		dialog_reqdept.off();
 		dialog_prdept.off();
 		dialog_suppcode.off();
+		dialog_assetno.off();
 		errorField.length = 0;
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
@@ -1621,18 +1650,20 @@ $(document).ready(function () {
 			dialog_reqdept.on();
 			dialog_prdept.on();
 			dialog_suppcode.on();
+			dialog_assetno.on();
 		}
 	});
 
 	//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
-	$("#saveHeaderLabel").click(function () {
+	$("#saveHeaderLabel").click(function (){
 		emptyFormdata(errorField, '#formdata2');
 		addmore_jqgrid2.state = false;
 		hideatdialogForm(true);
 		dialog_reqdept.on();
 		dialog_prdept.on();
 		dialog_suppcode.on();
-
+		dialog_assetno.on();
+		
 		enableForm('#formdata');
 		rdonly('#formdata');
 		$(".noti").empty();
@@ -2045,7 +2076,43 @@ $(document).ready(function () {
 		},'urlParam','radio','tab',false
 	);
 	dialog_suppcode.makedialog();
-
+	
+	var dialog_assetno = new ordialog(
+		'assetno', 'finance.faregister', '#purreqhd_assetno', errorField,
+		{
+			colModel: [
+				{ label: 'Asset No', name: 'assetno', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true, checked: true },
+				{ label: 'Asset Type', name: 'assettype', width: 200, classes: 'pointer' },
+			],
+			urlParam: {
+				filterCol: ['compcode','recstatus'],
+				filterVal: ['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function (){
+				// $('#purreqhd_prdept').focus();
+				let data = selrowData('#'+dialog_assetno.gridname);
+			},
+			gridComplete: function (obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					// $('#purreqhd_prdept').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		}, {
+			title: "Select Asset No.",
+			open: function(){
+				dialog_assetno.urlParam.filterCol = ['compcode','recstatus'];
+				dialog_assetno.urlParam.filterVal = ['session.compcode','ACTIVE'];
+			}
+		}, 'urlParam','radio','tab'
+	);
+	dialog_assetno.makedialog();
+	
 	var dialog_pricecode = new ordialog(
 		'pricecode',['material.pricesource'],"#jqGrid2 input[name='pricecode']",errorField,
 		{	colModel:

@@ -2074,11 +2074,11 @@ $(document).ready(function () {
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 	var dialog_authorise = new ordialog(
-		'authorise',['material.authorise'],"#delordhd_respersonid",errorField,
+		'authorise',['sysdb.users'],"#delordhd_respersonid",errorField,
 		{	colModel:
 			[
-				{label:'Authorize Person',name:'authorid',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true}
+				{label:'Authorize Person',name:'name',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Department',name:'dept',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true}
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
