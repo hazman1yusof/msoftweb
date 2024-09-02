@@ -58,6 +58,8 @@ class TestController extends defaultController
                 return $this->test_glmasdtl($request);
             case 'get_merge_pdf':
                 return $this->get_merge_pdf($request);
+            case 'cr8stockexp':
+                return $this->cr8stockexp($request);
             default:
                 return 'error happen..';
         }
@@ -139,51 +141,6 @@ class TestController extends defaultController
             DB::beginTransaction();
 
             try {
-
-                // $exist = DB::table('sysdb.department')
-                //             ->where('compcode','9A')
-                //             ->where('deptcode',$deptcode)
-                //             ->exists();
-
-                // if(!$exist){
-                //     DB::table('sysdb.department')
-                //         ->insert([
-                //             'compcode' => '9A',
-                //             'deptcode' => $deptcode,
-                //             'description' => $desc,
-                //             'costcode' => $ccode,
-                //             'purdept' => 0,
-                //             'regdept' => 0,
-                //             'chgdept' => 1,
-                //             'warddept' => 0,
-                //             'admdept' => 0,
-                //             'dispdept' => 0,
-                //             'sector' => 'NORTHA',
-                //             'region' => 'CENTRAL',
-                //             'storedept' => 0,
-                //             'category' => 'HOSPITAL'
-                //         ]);
-                // }else{
-                //     dump('dept exist: '.$deptcode);
-                // }
-
-                // $exist = DB::table('finance.costcenter')
-                //             ->where('compcode','9A')
-                //             ->where('costcode',$ccode)
-                //             ->exists();
-
-                // if(!$exist){
-                //     DB::table('finance.costcenter')
-                //         ->insert([
-                //             'compcode' => '9A',
-                //             'costcode' => $ccode,
-                //             'description' => $desc,
-                //             'recstatus' => 'ACTIVE'
-                //         ]);
-                // }else{
-                //     dump('costcode exist: '.$deptcode);
-                // }
-
                 $exist = DB::table('hisdb.discipline')
                             ->where('compcode','9A')
                             ->where('code',$deptcode)
@@ -468,6 +425,42 @@ class TestController extends defaultController
         }
 
         $pdf->merge('browser', public_path() . '/uploads/pdf_merge/'.$merge_key.'.pdf', 'P');
+    }
+
+    public function cr8stockexp(Request $request){
+        DB::beginTransaction();
+
+        try {
+            
+            $stockloc = DB::table('material.stockloc')
+                            ->where('compcode',session('compcode'))
+                            ->get();
+
+            foreach ($stockloc as $obj) {
+                DB::table('material.stockexp')
+                            ->insert(
+                                'compcode' => $obj->compcode, 
+                                'deptcode' => $obj->deptcode, 
+                                'itemcode' => $obj->itemcode, 
+                                'uomcode' => $obj->uomcode, 
+                                'expdate' => null, 
+                                'batchno' => 'BO', 
+                                'balqty' => $obj->qtyonhand, 
+                                'adduser' => 'SYSTEM', 
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                                'year' => $obj->year, 
+                                'unit' => $obj->unit, 
+                            );
+            }
+
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
     }
     
 }

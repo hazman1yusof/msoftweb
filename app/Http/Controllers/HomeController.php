@@ -196,7 +196,7 @@ class HomeController extends Controller
         $menu.="<li><a style='padding-left:9px' title='AR Enquiry' class='clickable' programid='arenquiry' targeturl='./arenquiry'>AR Enquiry</a></li>";
         $menu.="<li><a style='padding-left:9px' title='Till Enquiry' class='clickable' programid='tillenquiry' targeturl='./tillenquiry'>Till Enquiry</a></li>";
         $menu.="<li><a style='padding-left:9px' title='Close Till' class='clickable' programid='till_close' targeturl='./till_close'>Close Till</a></li>";
-        $menu.="<li><a style='padding-left:9px' title='Charge Master' class='clickable' programid='chgmaster' targeturl='./chgmaster'>Charge Master</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Charge Master' class='clickable' programid='chgmaster' targeturl='./chargemaster'>Charge Master</a></li>";
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Product</b></a></li>";
         $menu.="<li><a style='padding-left:21px' title='Pharmacy' class='clickable' programid='stockPharmacy' targeturl='product?groupcode=Stock&amp;&amp;Class=Pharmacy'>Pharmacy</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Pharmacy' class='clickable' programid='stockNon-Pharmacy' targeturl='product?groupcode=Stock&&Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
