@@ -298,6 +298,8 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
 			{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'bankcode', name: 'apacthdr_bankcode', width: 50, classes: 'wrap text-uppercase', hidden:true},
+			{ label: 'bankaccno', name: 'apacthdr_bankaccno', width: 40, hidden:'true'},
+
 		],
 		autowidth:true,
 		multiSort: true,
@@ -1683,6 +1685,7 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Supplier Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'bankaccno',name:'AccNo',width:400,classes:'pointer',hidden:true},
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
@@ -1694,6 +1697,7 @@ $(document).ready(function () {
 
 					let data=selrowData('#'+dialog_suppcode.gridname);
 					$("#apacthdr_payto").val(data['suppcode']);
+					$("#apacthdr_bankaccno").val(data['AccNo']);
 					$("#jqGrid2 input[name='document']").val(data['suppcode']);
 					$("#jqGrid2 input[name='entrydate']").val(data['recdate']); 
 					$("#jqGrid2 input[name='reference']").val(data['document']);
@@ -1755,6 +1759,7 @@ $(document).ready(function () {
 
 					let data=selrowData('#'+dialog_suppcode.gridname);
 					$("#apacthdr_payto").val(data['suppcode']);
+					$("#apacthdr_bankaccno").val(data['AccNo']);
 					$('#apacthdr_payto').focus();
 				}
 			},

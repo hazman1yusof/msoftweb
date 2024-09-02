@@ -371,6 +371,13 @@ div#fail_msg{
 					</div>		  	
 
 					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_bankaccno">Bank A/C No</label>  
+				  			<div class="col-md-3">
+								<input id="apacthdr_bankaccno" name="apacthdr_bankaccno" type="text" class="form-control input-sm text-uppercase" maxlength="30">
+				  			</div>
+					</div>
+
+					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_amount">Total Amount</label>  
 					  		<div class="col-md-3">
 								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm"> 

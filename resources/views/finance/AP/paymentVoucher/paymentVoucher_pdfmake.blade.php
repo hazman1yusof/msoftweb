@@ -22,50 +22,51 @@
 	var merge_done = [false,false];
 	var merge_key = makeid(20); 
 	var ini_header={
-				pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_LEFT)}}`,
-				pvdate:`{{\Carbon\Carbon::parse($apacthdr->actdate)->format('d/m/Y')}}`,
-				cred_code:`{{$apacthdr->suppcode}}`,
-				pname:`{{strtoupper($apacthdr->suppname)}}`,
-				padd1:`{{strtoupper($apacthdr->addr1)}}`,
-				padd2:`{{strtoupper($apacthdr->addr2)}}`,
-				padd3:`{{strtoupper($apacthdr->addr3)}}`,
-				ptelno:`{{$apacthdr->telno}}`,
-				desc:``,
-				remarks:`{{strtoupper($apacthdr->remarks)}}`,
-				prepby:``,
-				checkby:``,
-				approveby:``,
-				signature:``,
-				drcode:`{{$apacthdr->suppcode}}`,
-				crcode:`{{$apacthdr->bankcode}}`, 
-				suppname:`{!!strtoupper($apacthdr->suppname)!!}`,
-				bankname:`{{strtoupper($apacthdr->bankname)}}`, 
-				AccNo:`{{$apacthdr->AccNo}}`,
-				CompRegNo:`{{$apacthdr->CompRegNo}}`,
-				TINNo:`{{$apacthdr->TINNo}}`,
-				totamt:`{{$apacthdr->amount}}`,
-				totamt_str:`{{$totamt_eng}}`,
-				};	
+		pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_LEFT)}}`,
+		pvdate:`{{\Carbon\Carbon::parse($apacthdr->actdate)->format('d/m/Y')}}`,
+		cred_code:`{{$apacthdr->suppcode}}`,
+		pname:`{{strtoupper($apacthdr->suppname)}}`,
+		padd1:`{{strtoupper($apacthdr->addr1)}}`,
+		padd2:`{{strtoupper($apacthdr->addr2)}}`,
+		padd3:`{{strtoupper($apacthdr->addr3)}}`,
+		ptelno:`{{$apacthdr->telno}}`,
+		desc:``,
+		remarks:`{{strtoupper($apacthdr->remarks)}}`,
+		prepby:``,
+		checkby:``,
+		approveby:``,
+		signature:``,
+		drcode:`{{$apacthdr->suppcode}}`,
+		crcode:`{{$apacthdr->bankcode}}`, 
+		suppname:`{!!strtoupper($apacthdr->suppname)!!}`,
+		bankname:`{{strtoupper($apacthdr->bankname)}}`, 
+		AccNo:`{{$apacthdr->AccNo}}`,
+		CompRegNo:`{{$apacthdr->CompRegNo}}`,
+		TINNo:`{{$apacthdr->TINNo}}`,
+		totamt:`{{$apacthdr->amount}}`,
+		totamt_str:`{{$totamt_eng}}`,
+		};	
 
 	var ini_body=[
-				@foreach ($apalloc as $obj)
-				{
-					date:`{{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}`,
-					docno:`{{strtoupper($obj->reference)}}`,
-					desc:`{{strtoupper($obj->remarks)}}`,
-					amt:`{{$obj->allocamount}}`,
-				},
-				@endforeach
-				];
+		@foreach ($apalloc as $obj)
+		{
+			date:`{{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}`,
+			docno:`{{strtoupper($obj->reference)}}`,
+			desc:`{{strtoupper($obj->remarks)}}`,
+			amt:`{{$obj->allocamount}}`,
+		},
+		@endforeach
+		];
 
 	var ini_compbankdet={
-				bankaccno:`{{$company->bankaccno}}`,
-				bankname:`{{strtoupper($company->bankname)}}`,
+		bankaccno:`{{$company->bankaccno}}`,
+		bankname:`{{strtoupper($company->bankname)}}`,
 	};
 
     var subtotal=0;
     var disc=0;
     var nettotal=0;
+
 	$(document).ready(function () {
 		var docDefinition = {
 			header: function(currentPage, pageCount, pageSize) {
@@ -94,7 +95,8 @@
 					retval.push(pageno);
 				}else{
 					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true, margin: [0, 71, 0, 0]};
-					var compbankdet = {text: 'COMP A/C NO: '+ini_compbankdet.bankname+ ' ' +ini_compbankdet.bankaccno,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
+					var compbankdet = {text: 'COMP A/C NO: '+ini_compbankdet.bankname+ ' ' +ini_compbankdet.bankaccno,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};					
+					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
 					retval.push(title);
 					retval.push(compbankdet);
 					retval.push(pageno);
