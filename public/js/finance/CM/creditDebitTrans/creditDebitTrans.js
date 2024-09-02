@@ -186,8 +186,8 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
-		sortname:'idno',
-		sortorder:'desc',
+		// sortname:'idno',
+		// sortorder:'desc',
 		width: 900,
 		height: 250,
 		rowNum: 30,
@@ -669,8 +669,8 @@ $(document).ready(function () {
 		width: 1150,
 		height: 200,
 		rowNum: 30,
-		sortname: 'lineno_',
-		sortorder: "desc",
+		// sortname: 'lineno_',
+		// sortorder: "desc",
 		pager: "#jqGridPager2",
 		loadComplete: function(data){
 			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
@@ -1207,8 +1207,8 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		rowNum: 30,
-		sortname: 'lineno_',
-		sortorder: "desc",
+		// sortname: 'lineno_',
+		// sortorder: "desc",
 		pager: "#jqGridPager3",
 		loadComplete: function(data){
 			// setjqgridHeight(data,'jqGrid3');

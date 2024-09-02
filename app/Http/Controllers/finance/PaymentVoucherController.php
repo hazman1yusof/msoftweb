@@ -117,6 +117,7 @@ class PaymentVoucherController extends defaultController
                         'ap.bankcode AS apacthdr_bankcode',
                         'ap.postdate AS apacthdr_postdate',
                         'ap.cheqdate AS apacthdr_cheqdate',
+                        'ap.bankaccno AS apacthdr_bankaccno',
                         'ap.requestby AS apacthdr_requestby',
                         'ap.requestdate AS apacthdr_requestdate',
                         'ap.request_remark AS apacthdr_request_remark',
@@ -373,6 +374,7 @@ class PaymentVoucherController extends defaultController
                     'remarks' => strtoupper($request->apacthdr_remarks),
                     'suppcode' => $request->apacthdr_suppcode,
                     'payto' => $request->apacthdr_payto,
+                    'bankaccno' => $request->apacthdr_bankaccno,
                     'suppgroup' => $suppgroup,
                     'compcode' => session('compcode'),
                     'unit' => session('unit'),
@@ -533,6 +535,15 @@ class PaymentVoucherController extends defaultController
                 echo json_encode($responce);
             }
 
+            ////update bankaccno at supplier
+            DB::table('material.supplier')
+            ->where('SuppCode','=',$request->apacthdr_suppcode)
+            ->update([
+                'AccNo' => $request->apacthdr_bankaccno,
+                'upduser' => session('username'),
+                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            ]);
+
             DB::commit();  
         } catch (\Exception $e) {
             DB::rollback();
@@ -579,7 +590,7 @@ class PaymentVoucherController extends defaultController
                 'bankcode' => strtoupper($request->apacthdr_bankcode),
                 'cheqno' => strtoupper($request->apacthdr_cheqno),
                 'remarks' => strtoupper($request->apacthdr_remarks),
-                
+                'bankaccno' => $request->apacthdr_bankaccno,
             ];
 
             try {

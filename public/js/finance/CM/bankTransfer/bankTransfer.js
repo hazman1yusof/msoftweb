@@ -147,6 +147,16 @@ $(document).ready(function () {
 	  });
 	////////////////////////////////////////end dialog///////////////////////////////////////////
 
+	/////////////////////recstatus filter for checkbox/////////////////////////////////////////////////
+	var recstatus_filter = [['OPEN','POSTED']];
+		if($("#recstatus_use").val() == 'POSTED'){
+			recstatus_filter = [['OPEN','POSTED']];
+			filterCol_urlParam = ['compcode'];
+			filterVal_urlParam = ['session.compcode'];
+		}
+
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox","idno","recstatus",recstatus_filter[0][0]);
+
 	////////////////////////////////////padzero/////////////////////////////////////////////////
 	function padzero(cellvalue, options, rowObject){
 		let padzero = 7, str="";
@@ -210,14 +220,15 @@ $(document).ready(function () {
 			{label: 'Entered Date', name: 'adddate', width: 30, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
 			{label: 'Paymode', name: 'paymode', width: 30, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{label: 'Cheq No', name: 'cheqno', width: 30, classes: 'wrap', formatter:formatterCheqnno, unformat:unformatterCheqnno},
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 15,align: "center", formatter: formatterCheckbox },	
 			{label: 'unit', name: 'unit', width: 40, hidden:'true'},
 		],
 		autowidth:true,
         multiSort: true,
 		viewrecords: true,
 		loadonce:false,
-		sortname:'idno',
-		sortorder:'desc',
+		// sortname:'idno',
+		// sortorder:'desc',
 		width: 900,
 		height: 350,
 		rowNum: 30,
@@ -269,9 +280,14 @@ $(document).ready(function () {
 				$("#searchForm input[name=Stext]").focus();
 			}
 			fdl.set_array().reset();
+			cbselect.refresh_seltbl();
+			cbselect.show_hide_table();
+			cbselect.checkbox_function_on();
 		},
 		onSelectRow: function(rowid, selected) {
 			let recstatus = selrowData("#jqGrid").recstatus;
+			let scope = $("#recstatus_use").val();
+
 			if(recstatus=='OPEN'){
 				$('#but_cancel_jq,#but_post_jq').show();
 				
@@ -389,6 +405,7 @@ $(document).ready(function () {
 	function searchDate(){
 		urlParam.filterdate = [$('#actdate_from').val(),$('#actdate_to').val()];
 		refreshGrid('#jqGrid',urlParam);
+		refreshGrid('#jqGrid3',urlParam);
 	}
 
 	function searchChange(){
@@ -488,6 +505,20 @@ $(document).ready(function () {
 		return cellvalue;
 	}
 
+	//////////////////////////formatter checkbox//////////////////////////////////////////////////
+	function formatterCheckbox(cellvalue, options, rowObject){
+		let idno = cbselect.idno;
+		let recstatus = cbselect.recstatus;
+		
+		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+		}else{
+			return ' ';
+		}
+	}
+
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
 		view:false,edit:false,add:false,del:false,search:false,
@@ -549,25 +580,86 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress', 'auditno','pvno','trantype','source']);
+	addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress', 'auditno','pvno','trantype','source','Checkbox']);
 
 	addParamField('#jqGrid3',false,urlParam);
 
-	$("#but_post_jq").click(function(){
-		var idno = selrowData('#jqGrid').idno;
-		var obj={};
-		obj.idno = idno;
-		obj._token = $('#_token').val();
-		obj.oper = "posted";
+	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 
+	// $("#but_post_jq").click(function(){
+	// 	var idno = selrowData('#jqGrid').idno;
+	// 	var obj={};
+	// 	obj.idno = idno;
+	// 	obj._token = $('#_token').val();
+	// 	obj.oper = "posted";
+
+	// 	$.post( './bankTransfer/form', obj , function( data ) {
+	// 		refreshGrid('#jqGrid', urlParam);
+	// 	}).fail(function(data) {
+	// 		// $('#p_error').text(data.responseText);
+	// 	}).success(function(data){
+			
+	// 	});
+
+	// });
+
+	// $("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
+
+	// 	var idno = selrowData('#jqGrid').idno;
+	// 	var obj={};
+	// 	obj.idno = idno;
+	// 	obj._token = $('#_token').val();
+	// 	obj.oper = $(this).data('oper')+'_single';
+
+	// 	$.post( './bankTransfer/form', obj , function( data ) {
+	// 		refreshGrid('#jqGrid', urlParam);
+	// 	}).fail(function(data) {
+	// 		$('#error_infront').text(data.responseText);
+	// 	}).success(function(data){
+			
+	// 	});
+	// });
+
+	$("#but_post_jq").click(function(){
+		var idno_array = [];
+	
+		let ids = $('#jqGrid_selection').jqGrid ('getDataIDs');
+		for (var i = 0; i < ids.length; i++) {
+			var data = $('#jqGrid_selection').jqGrid('getRowData',ids[i]);
+	    	idno_array.push(data.auditno);
+	    }
+	    
+		var obj={};
+		obj.idno_array = idno_array;
+		obj.oper = $(this).data('oper');
+		obj._token = $('#_token').val();
+		
 		$.post( './bankTransfer/form', obj , function( data ) {
+			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
-			// $('#p_error').text(data.responseText);
+			$('#error_infront').text(data.responseText);
 		}).success(function(data){
 			
 		});
+	});
 
+	$("#but_post2_jq").click(function(){
+	
+		var obj={};
+		obj.auditno = selrowData('#jqGrid').auditno;
+		obj.oper = $(this).data('oper');
+		obj._token = $('#_token').val();
+		oper=null;
+		
+		$.post( './bankTransfer/form', obj , function( data ) {
+			cbselect.empty_sel_tbl();
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+		}).success(function(data){
+			
+		});
 	});
 
 
@@ -731,6 +823,26 @@ $(document).ready(function () {
 			$('#chg_label').text('TT No');
 		}
 	}
+
+	$("#jqGrid_selection").jqGrid({
+		datatype: "local",
+		colModel: $("#jqGrid").jqGrid('getGridParam','colModel'),
+		shrinkToFit: false,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		sortname: 'idno',
+		sortorder: "desc",
+		onSelectRow: function (rowid, selected) {
+			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
+			console.log(rowdata);
+		},
+		gridComplete: function(){
+			
+		},
+	})
+	jqgrid_label_align_right("#jqGrid_selection");
+	cbselect.on();
 });
 
 function calc_jq_height_onchange(jqgrid){
