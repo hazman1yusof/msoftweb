@@ -33,6 +33,41 @@ class InvoiceAPDetailController extends defaultController
                 return 'error happen..';
         }
     }
+
+    public function table(Request $request)
+    {   
+        switch($request->action){
+            case 'get_table_dtl':
+                return $this->get_table_dtl($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function get_table_dtl(Request $request){
+        $table = DB::table('finance.apactdtl as apdt')
+                    ->select('apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.taxamt AS tot_gst', 'apdt.dorecno', 'apdt.grnno','apdt.idno')
+                    ->where('source','=',$request->source)
+                    ->where('trantype','=',$request->trantype)
+                    ->where('auditno','=',$request->auditno)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recstatus','<>','DELETE')
+                    ->orderBy('idno','desc');
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+
+        return json_encode($responce);
+    }
+    
     public function get_draccno($itemcode){
         $query = DB::table('material.category')
                 ->select('category.stockacct')

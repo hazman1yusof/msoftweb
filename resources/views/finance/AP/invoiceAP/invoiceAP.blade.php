@@ -117,7 +117,7 @@ i.fa {
 					&nbsp;
 	            </div> -->
 
-				<div class="col-md-2">
+			<div class="col-md-2">
 			  	<label class="control-label" for="Status">Status</label>  
 			  	<select id="Status" name="Status" class="form-control input-sm">
 				  	@if (Request::get('scope') == 'ALL')
@@ -130,20 +130,20 @@ i.fa {
 			      <option value="Posted">POSTED</option>
 						@endif
 			    </select>
-	      </div>
+	      	</div>
 
-	      <?php 
+				<?php 
 
-						$data_oper = 'none';
-						if(strtoupper(Request::get('scope')) == 'ALL'){
-							$data_oper='posted';
-						}else if(strtoupper(Request::get('scope')) == 'CANCEL'){
-							$data_oper='cancel';
-						}else if(strtoupper(Request::get('scope')) == 'REOPEN'){
-							$data_oper='reopen';
-						}
+					$data_oper = 'none';
+					if(strtoupper(Request::get('scope')) == 'ALL'){
+						$data_oper='posted';
+					}else if(strtoupper(Request::get('scope')) == 'CANCEL'){
+						$data_oper='cancel';
+					}else if(strtoupper(Request::get('scope')) == 'REOPEN'){
+						$data_oper='reopen';
+					}
 
-					?>
+				?>
 
 				<div id="div_for_but_post" class="col-md-8 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<span id="error_infront" style="color: red"></span>
@@ -231,7 +231,39 @@ i.fa {
 				</div>
 				
 			</div>
-		</div>   
+		</div>  
+		
+		<div class="panel panel-default" style="position: relative;" id="jqGrid3_oth_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_oth_panel" id="panel_jqGrid3_oth">
+				<b>DOCUMENT NO: </b><span id="Othtrantype_show"></span> - <span id="Othdocument_show"></span><span id="Othifcancel_show" style="color: red;"></span><br>
+				<b>SUPPLIER NAME: </b><span id="Othsuppcode_show"></span>
+
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>Invoice Detail</h5>
+				</div>
+			</div>
+			<div id="jqGrid3_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					@if (strtoupper(Request::get('scope')) == 'CANCEL')
+						<button 
+								type="button" 
+								class="btn btn-danger btn-sm" 
+								id="but_post2_jq"
+								data-oper="cancel"
+								style="float: right;margin: 0px 20px 10px 20px;">
+								Cancel Invoice
+						</button>
+					@endif
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGrid3_oth" class="table table-striped"></table>
+						<div id="jqGridPager3_oth"></div>
+					</div>
+				</div>
+				
+			</div>
+		</div> 
 
 		<div class="panel panel-default" style="position: relative;" id="gridDo_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridDo_panel" id="panel_gridDo">
@@ -433,19 +465,19 @@ i.fa {
 			</div>
 		</div>		
 		
-		<div class='panel panel-info' id="ap_detail_oth">
+		<div class='panel panel-info' id="apOth_detail">
 			<div class="panel-heading">Invoice AP  Detail</div>
 				<div class="panel-body">
-					<form id='formdata2' class='form-vertical' style='width:99%'>
-						<div id="jqGrid2_c" class='col-md-12'>
-							<table id="jqGrid2" class="table table-striped"></table>
-						        <div id="jqGridPager2"></div>
+					<form id='formdata2_oth' class='form-vertical' style='width:99%'>
+						<div id="jqGrid2_oth_c" class='col-md-12'>
+							<table id="jqGrid2_oth" class="table table-striped"></table>
+						        <div id="jqGridPager2_oth"></div>
 						</div>
 					</form>
 				</div>
 
 				<div class="panel-body">
-					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
+					<div class="noti_oth" style="font-size: bold; color: red"><ol></ol></div>
 				</div>
 			</div>
 		</div>		
