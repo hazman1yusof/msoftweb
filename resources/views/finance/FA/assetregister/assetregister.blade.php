@@ -242,18 +242,18 @@
 							<input id="qty" name="qty" maxlength="12" class="form-control input-sm" data-validation="required"> 
 					 	</div>
 				</div>
-
+				
 				<div class="form-group">
-					<label class="col-md-2 control-label" for="currentcost">Current Cost</label>  
-						<div class="col-md-3">
-							<input id="currentcost" name="currentcost" maxlength="12" class="form-control input-sm" value="0.00" readonly>  
-					 	</div>
-					<label class="col-md-2 control-label" for="description">Description</label>  
-						<div class="col-md-3">
-							<textarea class="form-control input-sm text-uppercase" name="description" rows="4" cols="55" id="description"> </textarea>
-						</div>
+					<label class="col-md-2 control-label" for="currentcost">Total Cost</label>
+					<div class="col-md-3">
+						<input id="currentcost" name="currentcost" maxlength="12" class="form-control input-sm" value="0.00" readonly>
+					</div>
+					<label class="col-md-2 control-label" for="description">Description</label>
+					<div class="col-md-3">
+						<textarea class="form-control input-sm text-uppercase" name="description" rows="4" cols="55" id="description"> </textarea>
+					</div>
 				</div>
-
+				
 				<hr>
 
 				<div class="form-group">

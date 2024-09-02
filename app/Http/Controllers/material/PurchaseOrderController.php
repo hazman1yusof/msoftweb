@@ -910,72 +910,88 @@ class PurchaseOrderController extends defaultController
         return $seqno->seqno;
 
     }
-
+    
     public function showpdf(Request $request){
         $recno = $request->recno;
         if(!$recno){
             abort(404);
         }
-
-        $purordhd = DB::table('material.purordhd')
-            ->where('compcode','=',session('compcode'))
-            ->where('recno','=',$recno)
-            ->first();
-
+        
+        $purordhd = DB::table('material.purordhd as p')
+                    ->select('p.idno','p.recno','p.prdept','p.purordno','p.compcode','p.reqdept','p.purreqno','p.deldept','p.purdate','p.expecteddate','p.expirydate','p.suppcode','p.credcode','p.termdays','p.subamount','p.amtdisc','p.perdisc','p.totamount','p.taxclaimable','p.isspersonid','p.issdate','p.authpersonid','p.authdate','p.remarks','p.recstatus','p.adduser','p.adddate','p.upduser','p.upddate','p.assflg','p.potype','p.delordno','p.expflg','p.prortdisc','p.cancelby','p.canceldate','p.reopenby','p.reopendate','p.TaxAmt','p.postedby','p.postdate','p.unit','p.trantype','p.requestby','p.requestdate','p.supportby','p.supportdate','p.verifiedby','p.verifieddate','p.approvedby','p.approveddate','p.recommended1by','p.recommended2by','p.recommended1date','p.recommended2date','p.recommended1_remark','p.recommended2_remark','p.cancelled_remark','p.support_remark','p.verified_remark','p.approved_remark','p.prtype','u.name as requestby_name','s.name as supportby_name','e.name as verifiedby_name','r.name as approvedby_name')
+                    ->leftJoin('sysdb.users as u', function ($join) use ($request){
+                        $join = $join->on('u.username', '=', 'p.requestby')
+                                    ->where('u.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('sysdb.users as s', function ($join) use ($request){
+                        $join = $join->on('s.username', '=', 'p.supportby')
+                                    ->where('s.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('sysdb.users as e', function ($join) use ($request){
+                        $join = $join->on('e.username', '=', 'p.verifiedby')
+                                    ->where('e.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('sysdb.users as r', function ($join) use ($request){
+                        $join = $join->on('r.username', '=', 'p.approvedby')
+                                    ->where('r.compcode','=',session('compcode'));
+                    })
+                    ->where('p.compcode','=',session('compcode'))
+                    ->where('p.recno','=',$recno)
+                    ->first();
+        
         $purorddt = DB::table('material.purorddt AS podt', 'material.productmaster AS p', 'material.uom as u')
-            ->select('podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.pricecode', 'podt.itemcode', 'p.description', 'podt.uomcode', 'podt.pouom', 'podt.qtyorder', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc', 'podt.amtslstax as tot_gst','podt.netunitprice', 'podt.totamount','podt.amount', 'podt.rem_but AS remarks_button', 'podt.remarks', 'podt.recstatus', 'podt.unit', 'u.description as uom_desc')
-            ->leftJoin('material.productmaster as p', 'podt.itemcode', '=', 'p.itemcode')
-            ->leftJoin('material.uom as u', 'podt.uomcode', '=', 'u.uomcode')
-            ->where('podt.compcode','=',session('compcode'))
-            ->where('p.compcode','=',session('compcode'))
-            ->where('u.compcode','=',session('compcode'))
-            ->where('recno','=',$recno)
-            ->get();
+                    ->select('podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.pricecode', 'podt.itemcode', 'p.description', 'podt.uomcode', 'podt.pouom', 'podt.qtyorder', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc', 'podt.amtslstax as tot_gst','podt.netunitprice', 'podt.totamount','podt.amount', 'podt.rem_but AS remarks_button', 'podt.remarks', 'podt.recstatus', 'podt.unit', 'u.description as uom_desc')
+                    ->leftJoin('material.productmaster as p', 'podt.itemcode', '=', 'p.itemcode')
+                    ->leftJoin('material.uom as u', 'podt.uomcode', '=', 'u.uomcode')
+                    ->where('podt.compcode','=',session('compcode'))
+                    ->where('p.compcode','=',session('compcode'))
+                    ->where('u.compcode','=',session('compcode'))
+                    ->where('recno','=',$recno)
+                    ->get();
         
         $company = DB::table('sysdb.company')
-            ->where('compcode','=',session('compcode'))
-            ->first();
-
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
         $supplier = DB::table('material.supplier')
-            ->where('compcode','=',session('compcode'))
-            ->where('SuppCode','=',$purordhd->suppcode)
-            ->first();
-
+                    ->where('compcode','=',session('compcode'))
+                    ->where('SuppCode','=',$purordhd->suppcode)
+                    ->first();
+        
         $deldept = DB::table('material.deldept')
-            ->where('compcode','=',session('compcode'))
-            ->where('deptcode','=',$purordhd->deldept)
-            ->first();
-
+                    ->where('compcode','=',session('compcode'))
+                    ->where('deptcode','=',$purordhd->deldept)
+                    ->first();
+        
         $total_tax = DB::table('material.purorddt')
-            ->where('compcode','=',session('compcode'))
-            ->where('recno','=',$recno)
-            ->sum('amtslstax');
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$recno)
+                    ->sum('amtslstax');
         
         $total_discamt = DB::table('material.purorddt')
-            ->where('compcode','=',session('compcode'))
-            ->where('recno','=',$recno)
-            ->sum('amtdisc');
-
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$recno)
+                        ->sum('amtdisc');
+        
         $totamount_expld = explode(".", (float)$purordhd->totamount);
-
+        
         // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
         // $totamt_bm = $totamt_bm_rm." SAHAJA";
-
+        
         // if(count($totamount_expld) > 1){
         //     $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
         //     $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
         // }
-
+        
         $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
         $totamt_eng = $totamt_eng_rm." ONLY";
-
+        
         if(count($totamount_expld) > 1){
             $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1]). "CENT";
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
         return view('material.purchaseOrder.purchaseOrder_pdfmake2',compact('purordhd','purorddt','totamt_eng', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
-        
     }
 
      // public function toGetAllpurreqhd($recno){

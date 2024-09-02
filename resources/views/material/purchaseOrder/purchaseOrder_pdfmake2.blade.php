@@ -70,23 +70,30 @@
 
 			},
 			footer: function(currentPage, pageCount) {
-				if(currentPage == pageCount){
-					return [
-				      // {image: 'logofooter',width:600, alignment: 'center'}
-				    ]
-				}
+				return [
+					{
+						text: 'This is a computer-generated document. No signature is required.', alignment: 'center', fontSize: 10
+					},
+				]
 			},
+			// footer: function (currentPage, pageCount){
+			// 	if(currentPage == pageCount){
+			// 		return [
+			// 			// {image: 'logofooter',width:600, alignment: 'center'}
+			// 		]
+			// 	}
+			// },
 			pageSize: 'A4',
 			pageMargins: [30, 192, 20, 70],
-		  	content: [
-		  		{
-                    style: 'body_tbl',
-                    table: {
-                        headerRows: 1,
-                    	dontBreakRows: true,
-                        widths: [20,80,20,40,'*','*',30,'*',50],//panjang standard dia 515
-                        body: [
-                        	[
+			content: [
+				{
+					style: 'body_tbl',
+					table: {
+						headerRows: 1,
+						dontBreakRows: true,
+						widths: [20,80,20,40,'*','*',30,'*',50],//panjang standard dia 515
+						body: [
+							[
 								{text:'Line No.',bold: true, style: 'body_ttl',border: [false, true, false, true]},
 								{text:'Item',bold: true, style: 'body_ttl',border: [false, true, false, true]},
 								{text:'Qty',bold: true, style: 'body_ttl',border: [false, true, false, true]},
@@ -170,28 +177,34 @@
 						'Any goods supplied without our Purchase Order will not be entertained.'
 					]
 				},
-		        {
-                    style: 'body_sign',
-                    table: {
-                        widths: ['*','*','*','*'],//panjang standard dia 515
-                    	dontBreakRows: true,
-                        body: [
-                        	[
-								{text: 'Request By\n\n\n\n______________________\n({{$purordhd->requestby}})',bold: true,alignment: 'center'}, 
-								{text: 'Support By\n\n\n\n______________________\n({{$purordhd->supportby}})',bold: true,alignment: 'center'},
-								{text: 'Verified By\n\n\n\n______________________\n({{$purordhd->verifiedby}})',bold: true,alignment: 'center'}, 
-								{text: 'Approved By\n\n\n\n______________________\n({{$purordhd->approvedby}})',bold: true,alignment: 'center'},
-                        	],
-                        	// [
-							// 	{text: '______________________',alignment: 'center', margin: [0, 30, 0, 0]}, 
+				{
+					style: 'body_sign',
+					table: {
+						widths: ['*','*','*','*'],//panjang standard dia 515
+						dontBreakRows: true,
+						body: [
+							[
+								{text: 'Request By\n\n\n{{$purordhd->requestby_name}}',bold: true,alignment: 'center'},
+								{text: 'Support By\n\n\n{{$purordhd->supportby_name}}',bold: true,alignment: 'center'},
+								{text: 'Verified By\n\n\n{{$purordhd->verifiedby_name}}',bold: true,alignment: 'center'},
+								{text: 'Approved By\n\n\n{{$purordhd->approvedby_name}}',bold: true,alignment: 'center'},
+							],
+							// [
+							// 	{text: 'Request By\n\n\n\n______________________\n({{$purordhd->requestby_name}})',bold: true,alignment: 'center'},
+							// 	{text: 'Support By\n\n\n\n______________________\n({{$purordhd->supportby_name}})',bold: true,alignment: 'center'},
+							// 	{text: 'Verified By\n\n\n\n______________________\n({{$purordhd->verifiedby_name}})',bold: true,alignment: 'center'},
+							// 	{text: 'Approved By\n\n\n\n______________________\n({{$purordhd->approvedby_name}})',bold: true,alignment: 'center'},
+							// ],
+							// [
 							// 	{text: '______________________',alignment: 'center', margin: [0, 30, 0, 0]},
-							// 	{text: '______________________',alignment: 'center', margin: [0, 30, 0, 0]}, 
 							// 	{text: '______________________',alignment: 'center', margin: [0, 30, 0, 0]},
-                        	// ],
-                        ]
-                    },
-			        layout: 'noBorders',
-		        },
+							// 	{text: '______________________',alignment: 'center', margin: [0, 30, 0, 0]},
+							// 	{text: '______________________',alignment: 'center', margin: [0, 30, 0, 0]},
+							// ],
+						]
+					},
+					layout: 'noBorders',
+				},
 
 			],
 			styles: {

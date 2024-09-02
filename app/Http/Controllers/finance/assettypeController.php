@@ -105,10 +105,12 @@ class assettypeController extends defaultController
     public function del(Request $request){
         DB::table('finance.fatype')
             ->where('idno','=',$request->idno)
-            ->update([  
+            ->update([
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'upduser' => strtoupper(session('username')),
+                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'computerid' => session('computerid')
             ]);
     }
