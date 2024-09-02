@@ -54,7 +54,7 @@
 			    ]
 			},
 			pageSize: 'A4',
-		  	content: [
+			content: [
 				{
 					image: 'letterhead',width:350, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'
 				},
@@ -130,59 +130,51 @@
 				{
 					style: 'tableExample',
 					table: {
-						widths: [60,30,30,25,40,40,35,40,46,40], //515
+						widths: [50,30,30,25,48,40,38,40,46,40], //515
 						body: [
-
 							[
-                                {text:'Description',colSpan: 3, style:'totalbold'},{},{},
-                                {text:'UOM', style:'totalbold'},
-                                {text:'Quantity', style:'totalbold', alignment: 'right'},
-                                {text:'Unit Price', style:'totalbold', alignment: 'right'},
-                                {text:'Tax Amt', style:'totalbold', alignment: 'right'},
-                                {text:'Amount', style:'totalbold', alignment: 'right'},
-                                {text:'Expiry', style:'totalbold'},
-                                {text:'Batchno', style:'totalbold'}
-                            ],
-
+								{text:'Description',colSpan: 3, style:'totalbold'},{},{},
+								{text:'UOM', style:'totalbold'},
+								{text:'Expiry', style:'totalbold'},
+								{text:'Batchno', style:'totalbold'},
+								{text:'Quantity', style:'totalbold', alignment: 'right'},
+								{text:'Unit Price', style:'totalbold', alignment: 'right'},
+								{text:'Tax Amt', style:'totalbold', alignment: 'right'},
+								{text:'Amount', style:'totalbold', alignment: 'right'},
+							],
 							@foreach ($billsum as $obj)
 							[
 								{text:`{{$obj->chgmast_desc}}`,colSpan: 3},{},{},
 								{text:`{!!$obj->uom!!}`},
+								{text:'{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}'},
+								{text:`{!!$obj->batchno!!}`},
 								{text:'{{$obj->quantity}}', alignment: 'right'},
 								{text:'{{number_format($obj->unitprice,2)}}', alignment: 'right'},
 								{text:'{{number_format($obj->taxamt,2)}}', alignment: 'right'},
 								{text:'{{number_format($obj->amount,2)}}', alignment: 'right'},
-								{text:`{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$obj->expdate)->format('d-m-Y')}}`},
-								{text:`{!!$obj->batchno!!}`},
 							],
 							@endforeach
-
-                            [
+							[
 								{text:'TOTAL', style: 'totalbold', colSpan: 9},{},{},{},{},{},{},{},{},
 								{text:'{{number_format($dbacthdr->amount,2)}}', alignment: 'right'}
 							],
-
 							[
 								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 10}
 							],
-						
-							
 							[
 								{text:
-
-								    `ATTENTION:\n\n1. Payment of this bill can be pay to any registration counter of {{$company->name}} by stating the referral invoice number.\n
-                                    2. Payment can be made by cash.\n
-                                    3. Only cross cheque for any registered company with Ministry of Health Malaysia is acceptable and be issue to Director of	{{$company->name}}.\n
-                                    4. Any inquiries must be issue to : \n
-                                        \u200B\t\u200B\t\u200B\t\u200B\t{{$company->name}}\n\u200B\t\u200B\t\u200B\t\u200B\t{{$company->address1}}\n\u200B\t\u200B\t\u200B\t\u200B\t{{$company->address2}} {{$company->address3}}\n\u200B\t\u200B\t\u200B\t\u200B\t{{$company->address4}}\n`
-									, colSpan: 10},{},{},{},{},{},{},{},{},{},
+									`ATTENTION:\n\n1. Payment of this bill can be pay to any registration counter of {{$company->name}} by stating the referral invoice number.\n
+									2. Payment can be made by cash.\n
+									3. Only cross cheque for any registered company with Ministry of Health Malaysia is acceptable and be issue to Director of	{{$company->name}}.\n
+									4. Any inquiries must be issue to : \n
+										\u200B\t\u200B\t\u200B\t\u200B\t{{$company->name}}\n\u200B\t\u200B\t\u200B\t\u200B\t{{$company->address1}}\n\u200B\t\u200B\t\u200B\t\u200B\t{{$company->address2}} {{$company->address3}}\n\u200B\t\u200B\t\u200B\t\u200B\t{{$company->address4}}\n`,
+									colSpan: 10},{},{},{},{},{},{},{},{},{},
 							],
 						]
 					},
 					layout: 'lightHorizontalLines',
 				},
-               
-                {
+				{
 					text: '\nPrinted Date: {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')}}', fontSize: 8, italics: true,
 				},
 				{
@@ -218,39 +210,37 @@
 				}
 			},
 			images: {
-                    letterhead: {
-                        url: '{{asset('/img/MSLetterHead.jpg')}}',
-                        headers: {
-                            myheader: '123',
-                            myotherheader: 'abc',
-                        }
-                    }
-                }
+				letterhead: {
+					url: '{{asset('/img/MSLetterHead.jpg')}}',
+					headers: {
+						myheader: '123',
+						myotherheader: 'abc',
+					}
+				}
+			}
 		};
-
+		
 		// pdfMake.createPdf(docDefinition).getBase64(function(data) {
 		// 	var base64data = "data:base64"+data;
 		// 	console.log($('object#pdfPreview').attr('data',base64data));
 		// 	// document.getElementById('pdfPreview').data = base64data;
 			
 		// });
+
 		pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
 			$('#pdfiframe').attr('src',dataURL);
 		});
 	});
-
+	
 	function make_header(){
-
+		
 	}
 	
-
 	// pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
 	// 	console.log(dataURL);
 	// 	document.getElementById('pdfPreview').data = dataURL;
 	// });
-
 	
-
 	// jsreport.serverUrl = 'http://localhost:5488'
     // async function preview() {        
     //     const report = await jsreport.render({
@@ -260,9 +250,9 @@
 	// 	  data: mydata
 	// 	});
 	// 	document.getElementById('pdfPreview').data = await report.toObjectURL()
-
-    // }
-
+	
+	// }
+	
     // preview().catch(console.error)
 </script>
 
