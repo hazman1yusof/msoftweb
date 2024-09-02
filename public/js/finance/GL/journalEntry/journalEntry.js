@@ -200,8 +200,8 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
-		sortname:'gljnlhdr_idno',
-		sortorder:'desc',
+		// sortname:'gljnlhdr_idno',
+		// sortorder:'desc',
 		width: 900,
 		height: 250,
 		rowNum: 30,
@@ -639,7 +639,7 @@ $(document).ready(function () {
 					custom_value:galGridCustomValue },
 			},
 	
-			{ label: 'Description', name: 'description', width: 200, classes: 'wrap', editable: true, edittype:"text"},
+			{ label: 'Description', name: 'description', width: 200, classes: 'wrap', editable: true, edittype:"textarea",editrules:{required: true}},
             { label: 'DR/CR', name: 'drcrsign', width: 60, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
 				editoptions: {
 					value: "DR:DR;CR:CR"
