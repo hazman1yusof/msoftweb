@@ -199,8 +199,8 @@ class PurchaseRequestController extends defaultController
                 'prtype' => $request->purreqhd_prtype,
                 'perdisc' => $request->purreqhd_perdisc,
                 'amtdisc' => $request->purreqhd_amtdisc,
-                'subamount' => $request->purreqhd_subamount
-
+                'subamount' => $request->purreqhd_subamount,
+                'assetno' => $request->purreqhd_assetno,
             ];
 
             $idno = $table->insertGetId($array_insert);
@@ -274,7 +274,7 @@ class PurchaseRequestController extends defaultController
                 'amtdisc' => $request->purreqhd_amtdisc,
                 'subamount' => $request->purreqhd_subamount,
                 // 'prtype' => $request->purreqhd_prtype,
-
+                'assetno' => $request->purreqhd_assetno,
             ];
 
             //////////where//////////

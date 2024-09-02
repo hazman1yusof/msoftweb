@@ -61,27 +61,25 @@ div#fail_msg{
 	@else
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="{{Request::get('scope')}}">
 	@endif
-
-
-	<!--***************************** Search + table ******************-->
+	
+	<!--***************************** Search + table *****************************-->
 	<div class='row'>
-		<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
+		<form id="searchForm" class="formclass" style='width: 99%; position: relative;' onkeydown="return event.key != 'Enter';">
 			<fieldset>
-
-			<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
-
-				<div class='col-md-12' style="padding:0 0 5px 0;">
-					<div class="form-group"> 
+				<input id="getYear" name="getYear" type="hidden" value="<?php echo date("Y") ?>">
+				
+				<div class='col-md-12' style="padding: 0 0 5px 0;">
+					<div class="form-group">
 						<div class="col-md-2">
-							<label class="control-label" for="Scol">Search By : </label>  
-								<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
+							<label class="control-label" for="Scol">Search By : </label>
+							<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
 						</div>
-
-					  	<div class="col-md-5">
-					  		<label class="control-label"></label>  
-								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('recno'))){{Request::get('recno')}}@endif">
-
-							<div  id="tunjukname" style="display:none">
+						
+						<div class="col-md-5">
+							<label class="control-label"></label>
+							<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('recno'))){{Request::get('recno')}}@endif">
+							
+							<div id="tunjukname" style="display: none;">
 								<div class='input-group'>
 									<input id="supplierkatdepan" name="supplierkatdepan" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -89,54 +87,54 @@ div#fail_msg{
 								<span class="help-block"></span>
 							</div>
 						</div>
-
-					  	<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
-					  		<p id="p_error"></p>
-					  	</div>
-		            </div>
+						
+						<div class="col-md-5" style="padding-top: 20px; text-align: center; color: red;">
+							<p id="p_error"></p>
+						</div>
+					</div>
 				</div>
-
+				
 				<div class="col-md-2">
-				  	<label class="control-label" for="Status">Status :</label>  
-					  	<select id="Status" name="Status" class="form-control input-sm">
-					      @if (Request::get('scope') == 'ALL')
-						      <option value="All" selected>ALL</option>
-						      <option value="OPEN">OPEN</option>
-						      <option value="CANCELLED">CANCELLED</option>
-						      <option value="PREPARED">PREPARED</option>
-						      <option value="SUPPORT">SUPPORT</option>
-						      <option value="VERIFIED">VERIFIED</option>
-						      <option value="APPROVED">APPROVED</option>
-						      <option value="COMPLETED">COMPLETED</option>
-						      <option value="PARTIAL">PARTIAL</option>
-								@elseif (Request::get('scope') == 'SUPPORT')
-									<option value="PREPARED">PREPARED</option>
-								@elseif (Request::get('scope') == 'VERIFIED')
-									<option value="SUPPORT">SUPPORT</option>
-								@elseif (Request::get('scope') == 'APPROVED')
-									<option value="VERIFIED">VERIFIED</option>
-								@elseif (Request::get('scope') == 'REOPEN')
-									<option value="CANCELLED">CANCELLED</option>
-								@elseif (Request::get('scope') == 'CANCEL')
-									<option value="OPEN">OPEN</option>
-								@endif
-					    </select>
-	      		</div>
-
-			  <div class="col-md-2" id="trandeptSearch">
-		  		<label class="control-label" for="trandept">Purchase Dept</label> 
-					<select id='trandept' class="form-control input-sm">
-	      		<option value="All">ALL</option>
-	      		@foreach($purdept as $dept_)
-	      			@if(Request::get('scope') == 'ALL' && $dept_->deptcode == Session::get('deptcode'))
-	      			<option value="{{$dept_->deptcode}}" selected>{{$dept_->deptcode}}</option>
-	      			@else
-	      			<option value="{{$dept_->deptcode}}">{{$dept_->deptcode}}</option>
-	      			@endif
-	      		@endforeach
+					<label class="control-label" for="Status">Status :</label>
+					<select id="Status" name="Status" class="form-control input-sm">
+						@if (Request::get('scope') == 'ALL')
+							<option value="All" selected>ALL</option>
+							<option value="OPEN">OPEN</option>
+							<option value="CANCELLED">CANCELLED</option>
+							<option value="PREPARED">PREPARED</option>
+							<option value="SUPPORT">SUPPORT</option>
+							<option value="VERIFIED">VERIFIED</option>
+							<option value="APPROVED">APPROVED</option>
+							<option value="COMPLETED">COMPLETED</option>
+							<option value="PARTIAL">PARTIAL</option>
+						@elseif (Request::get('scope') == 'SUPPORT')
+							<option value="PREPARED">PREPARED</option>
+						@elseif (Request::get('scope') == 'VERIFIED')
+							<option value="SUPPORT">SUPPORT</option>
+						@elseif (Request::get('scope') == 'APPROVED')
+							<option value="VERIFIED">VERIFIED</option>
+						@elseif (Request::get('scope') == 'REOPEN')
+							<option value="CANCELLED">CANCELLED</option>
+						@elseif (Request::get('scope') == 'CANCEL')
+							<option value="OPEN">OPEN</option>
+						@endif
 					</select>
 				</div>
-
+				
+				<div class="col-md-2" id="trandeptSearch">
+					<label class="control-label" for="trandept">Purchase Dept</label>
+					<select id='trandept' class="form-control input-sm">
+						<option value="All">ALL</option>
+						@foreach($purdept as $dept_)
+							@if(Request::get('scope') == 'ALL' && $dept_->deptcode == Session::get('deptcode'))
+								<option value="{{$dept_->deptcode}}" selected>{{$dept_->deptcode}}</option>
+							@else
+								<option value="{{$dept_->deptcode}}">{{$dept_->deptcode}}</option>
+							@endif
+						@endforeach
+					</select>
+				</div>
+				
 				<?php 
 					$scope_use = 'posted';
 
@@ -345,236 +343,248 @@ div#fail_msg{
 		</div>    
     </div>
 	<!-------------------------------- End Search + table ------------------>
-		
-	<div id="dialogForm" title="Add Form" >
+	
+	<div id="dialogForm" title="Add Form">
 		<div class='panel panel-info'>
 			<div class="panel-heading">Purchase Order Header
 				<a class='pull-right pointer text-primary' style="padding-left: 30px" id='pdfgen2' href="" target="_blank">
 					<span class='fa fa-print'></span> Print 
 				</a>
 			</div>
-				<div class="panel-body" style="position: relative;padding: 5px 5px 0px 0px !important">
-					<form class='form-horizontal' id='formdata'>
-						{{ csrf_field() }}
-						<input id="purordhd_idno" name="purordhd_idno" type="hidden">
-						<input id="referral" name="referral" type="hidden">
-						<input id="purordhd_delordno" name="purordhd_delordno" type="hidden">
-
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="purordhd_prdept">Purchase Department</label>
-									<div class="col-md-2">
-										<div class='input-group'>
-											<input id="purordhd_prdept" name="purordhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
-											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-										</div>
-										<span class="help-block"></span>
-									</div>
-
-								<label class="col-md-2 control-label" for="purordhd_purordno">PO No</label>  
-									<div class="col-md-2"> 
-										<input id="purordhd_purordno" name="purordhd_purordno" type="text" class="form-control input-sm" frozeOnEdit hideOne rdonly>
-									</div>
-								
-								<label class="col-md-2  control-label" for="purordhd_recno">Record No</label>  
-									<div class="col-md-2">
-										<input id="purordhd_recno" name="purordhd_recno" type="text" maxlength="11" class="form-control input-sm" rdonly>
-									</div>
+			<div class="panel-body" style="position: relative;padding: 5px 5px 0px 0px !important">
+				<form class='form-horizontal' id='formdata'>
+					{{ csrf_field() }}
+					<input id="purordhd_idno" name="purordhd_idno" type="hidden">
+					<input id="referral" name="referral" type="hidden">
+					<input id="purordhd_delordno" name="purordhd_delordno" type="hidden">
+					
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="purordhd_prdept">Purchase Department</label>
+						<div class="col-md-2">
+							<div class='input-group'>
+								<input id="purordhd_prdept" name="purordhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
-
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="purordhd_deldept">Delivery Department</label>	 
-									<div class="col-md-2">
-										<div class='input-group'>
-											<input id="purordhd_deldept" name="purordhd_deldept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
-											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-										</div>
-										<span class="help-block"></span>
-									</div>
-
-								<label class="col-md-2 control-label" for="purordhd_reqdept">Req Dept</label>	 
-									<div class="col-md-2">
-										<div class='input-group'>
-											<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase">
-											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-										</div>
-										<span class="help-block"></span>
-									</div>
-
-								<label class="col-md-2 control-label" for="purordhd_purreqno">Req No</label>	 
-									<div class="col-md-2">
-										<div class='input-group'>
-											<input id="purordhd_purreqno" name="purordhd_purreqno" type="text" maxlength="12" class="form-control input-sm text-uppercase" frozeOnEdit rdonly>
-											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-										</div>
-									</div>
+							<span class="help-block"></span>
+						</div>
+						
+						<label class="col-md-2 control-label" for="purordhd_purordno">PO No</label>
+						<div class="col-md-2">
+							<input id="purordhd_purordno" name="purordhd_purordno" type="text" class="form-control input-sm" frozeOnEdit hideOne rdonly>
+						</div>
+						
+						<label class="col-md-2  control-label" for="purordhd_recno">Record No</label>
+						<div class="col-md-2">
+							<input id="purordhd_recno" name="purordhd_recno" type="text" maxlength="11" class="form-control input-sm" rdonly>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="purordhd_deldept">Delivery Department</label>
+						<div class="col-md-2">
+							<div class='input-group'>
+								<input id="purordhd_deldept" name="purordhd_deldept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
-
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="purordhd_suppcode">Supplier Code</label>	 
-									<div class="col-md-2">
-										<div class='input-group'>
-											<input id="purordhd_suppcode" name="purordhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
-											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-										</div>
-										<span class="help-block"></span>
-									</div>
-
-								<label class="col-md-2 control-label" for="credcode">Creditor</label>	  
-									<div class="col-md-2">
-										<div class='input-group'>
-											<input id="purordhd_credcode" name="purordhd_credcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
-											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-										</div>
-										<span class="help-block"></span>
-									</div>
-									
-								<label class="col-md-2 control-label" for="purordhd_prtype">Purchase Type</label>
-				  			<div class="col-md-2">
-										<label class="radio-inline"><input type="radio" name="purordhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='Stock' checked>Stock</label><br>
-										<label class="radio-inline"><input type="radio" name="purordhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value"  value='Non-Stock' selected>Non-Stock</label>
-				  			</div>
-
+							<span class="help-block"></span>
+						</div>
+						
+						<label class="col-md-2 control-label" for="purordhd_reqdept">Req Dept</label>
+						<div class="col-md-2">
+							<div class='input-group'>
+								<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
-							<hr/>
-
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="purordhd_purdate">PO Date</label>  
-									<div class="col-md-2">
-										<input id="purordhd_purdate" name="purordhd_purdate" type="date" value="<?php echo date("Y-m-d"); ?>" maxlength="10" class="form-control input-sm" min="<?php $backday= 3; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" max="<?php echo date('Y-m-d');?>" data-validation="required" data-validation-error-msg="Please Enter Value"> 
-									</div>
-								
-								<label class="col-md-2 control-label" for="purordhd_expecteddate">Expected Date</label>  
-									<div class="col-md-2">
-										<input id="purordhd_expecteddate" name="purordhd_expecteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"  value="<?php echo date("Y-m-d"); ?>" min="<?php echo date("Y-m-d"); ?>">
-									</div>
-
-								<label class="col-md-2 control-label" for="termdays">Payment Terms</label>  
-									<div class="col-md-2"> 
-										<input id="purordhd_termdays" name="purordhd_termdays" type="text" class="form-control input-sm" data-validation="number" frozeOnEdit hideOne value="30">
-									</div>
+							<span class="help-block"></span>
+						</div>
+						
+						<label class="col-md-2 control-label" for="purordhd_purreqno">Req No</label>
+						<div class="col-md-2">
+							<div class='input-group'>
+								<input id="purordhd_purreqno" name="purordhd_purreqno" type="text" maxlength="12" class="form-control input-sm text-uppercase" frozeOnEdit rdonly>
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
-
-							<hr/>
-
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="purordhd_perdisc">Discount[%]</label>  
-									<div class="col-md-2">
-										<input id="purordhd_perdisc" name="purordhd_perdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
-									</div>
-
-								<label class="col-md-2 control-label" for="purordhd_amtdisc">Amount Discount</label>	  
-									<div class="col-md-2">
-										<input id="purordhd_amtdisc" name="purordhd_amtdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
-									</div>
-								
-								<label class="col-md-2 control-label" for="purordhd_recstatus">Record Status</label>  
-									<div class="col-md-2">
-										<input id="purordhd_recstatus" name="purordhd_recstatus" type="text" class="form-control input-sm" rdonly>
-									</div>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="purordhd_suppcode">Supplier Code</label>
+						<div class="col-md-2">
+							<div class='input-group'>
+								<input id="purordhd_suppcode" name="purordhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
-								
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="purordhd_subamount">Sub Amount</label>  
-									<div class="col-md-2">
-										<input id="purordhd_subamount" name="purordhd_subamount" type="text" maxlength="12" class="form-control input-sm" rdonly>
-									</div>
-
-								<label class="col-md-2 control-label" for="purordhd_totamount">Total Amount</label>  
-									<div class="col-md-2">
-										<input id="purordhd_totamount" name="purordhd_totamount" type="text" maxlength="12" class="form-control input-sm" rdonly>
-									</div>
-
-								<label class="col-md-2 control-label" for="purordhd_taxclaimable">Tax Claim</label>  
-									<div class="col-md-2">
-										<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required" data-validation-error-msg="Please Enter Value" value='Claimable'>Yes</label><br>
-										<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required" data-validation-error-msg="Please Enter Value"  value='Non-Claimable' selected>No</label>
-									</div> 
-
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="purordhd_remarks">Remark</label>   
-									<div class="col-md-5">
-										<textarea rows="5" id='purordhd_remarks' name='purordhd_remarks' class="form-control input-sm text-uppercase"></textarea>
-									</div>
-								</div>
+							<span class="help-block"></span>
+						</div>
+						
+						<label class="col-md-2 control-label" for="credcode">Creditor</label>
+						<div class="col-md-2">
+							<div class='input-group'>
+								<input id="purordhd_credcode" name="purordhd_credcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
-
-							<div class="form-group data_info">
-								<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purordhd_requestby">Prepared By</label>  
-									<input id="purordhd_requestby" name="purordhd_requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
-								</div>
-
-								<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purordhd_supportby">Support By</label>
-									<input id="purordhd_supportby" name="purordhd_supportby" type="text" maxlength="30" class="form-control input-sm" rdonly>
-						  		<i class="fa fa-info-circle my_remark" aria-hidden="true" id='support_remark_i'></i>
-								</div>
-
-									<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purordhd_verifiedby">Verified By</label>  
-									<input id="purordhd_verifiedby" name="purordhd_verifiedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
-						  		<i class="fa fa-info-circle my_remark" aria-hidden="true" id='verified_remark_i'></i>
-								</div>
-
-								<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purordhd_approvedby">Approved By</label>
-									<input id="purordhd_approvedby" name="purordhd_approvedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
-						  		<i class="fa fa-info-circle my_remark" aria-hidden="true" id='approved_remark_i'></i>
-								</div>
-
-									<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purordhd_adduser">Add By</label>
-									<input id="purordhd_adduser" name="purordhd_adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
-								</div>
-								
-								<div class="col-md-2 minuspad-15">
-									@if(Request::get('scope') == 'REOPEN')
-										<label class="control-label" for="purordhd_cancelby">Reject User</label>
-						  			<input id="purordhd_cancelby" name="purordhd_cancelby" type="text" maxlength="30" class="form-control input-sm" rdonly>
-						  			<i class="fa fa-info-circle my_remark" aria-hidden="true" id='cancelled_remark_i'></i>
-					  			@else
-										<label class="control-label" for="purordhd_upduser">Last User</label>
-										<input id="purordhd_upduser" name="purordhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
-						  		@endif
-								</div>
-
-								<div class="col-md-2 minuspad-15">
-										<label class="control-label" for="purordhd_requestdate">Prepared Date</label>  
-										<input id="purordhd_requestdate" name="purordhd_requestdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-								</div>
-
-								<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purordhd_supportdate">Support Date</label>
-									<input id="purordhd_supportdate" name="purordhd_supportdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-								</div>
-
-								<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purordhd_verifieddate">Verified Date</label>  
-									<input id="purordhd_verifieddate" name="purordhd_verifieddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-								</div>
-
-								<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purordhd_approveddate">Approved Date</label>
-									<input id="purordhd_approveddate" name="purordhd_approveddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-								</div>
-
-								<div class="col-md-2 minuspad-15">
-									<label class="control-label" for="purordhd_adddate">Add Date</label>
-									<input id="purordhd_adddate" name="purordhd_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-								</div>
-
-								<div class="col-md-2 minuspad-15">
-									@if(Request::get('scope') == 'REOPEN')
-										<label class="control-label" for="purordhd_canceldate">Reject Date</label>
-						  			<input id="purordhd_canceldate" name="purordhd_canceldate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			@else
-										<label class="control-label" for="purordhd_upddate">Update Date</label>
-										<input id="purordhd_upddate" name="purordhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-							  	@endif
+							<span class="help-block"></span>
+						</div>
+						
+						<label class="col-md-2 control-label" for="purordhd_prtype">Purchase Type</label>
+						<div class="col-md-2">
+							<label class="radio-inline"><input type="radio" name="purordhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='Stock' checked>Stock</label><br>
+							<label class="radio-inline"><input type="radio" name="purordhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='Non-Stock' selected>Non-Stock</label><br>
+							<label class="radio-inline"><input type="radio" name="purordhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='AssetMaintenance' selected>Asset Maintenance</label>
+						</div>
+					</div>
+					
+					<hr/>
+					
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="purordhd_purdate">PO Date</label>
+						<div class="col-md-2">
+							<input id="purordhd_purdate" name="purordhd_purdate" type="date" value="<?php echo date("Y-m-d"); ?>" maxlength="10" class="form-control input-sm" min="<?php $backday= 3; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" max="<?php echo date('Y-m-d');?>" data-validation="required" data-validation-error-msg="Please Enter Value">
+						</div>
+						
+						<label class="col-md-2 control-label" for="purordhd_expecteddate">Expected Date</label>
+						<div class="col-md-2">
+							<input id="purordhd_expecteddate" name="purordhd_expecteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"  value="<?php echo date("Y-m-d"); ?>" min="<?php echo date("Y-m-d"); ?>">
+						</div>
+						
+						<label class="col-md-2 control-label" for="termdays">Payment Terms</label>
+						<div class="col-md-2">
+							<input id="purordhd_termdays" name="purordhd_termdays" type="text" class="form-control input-sm" data-validation="number" frozeOnEdit hideOne value="30">
+						</div>
+					</div>
+					
+					<hr/>
+					
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="purordhd_perdisc">Discount[%]</label>
+						<div class="col-md-2">
+							<input id="purordhd_perdisc" name="purordhd_perdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+						</div>
+						
+						<label class="col-md-2 control-label" for="purordhd_amtdisc">Amount Discount</label>
+						<div class="col-md-2">
+							<input id="purordhd_amtdisc" name="purordhd_amtdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+						</div>
+						
+						<label class="col-md-2 control-label" for="purordhd_recstatus">Record Status</label>
+						<div class="col-md-2">
+							<input id="purordhd_recstatus" name="purordhd_recstatus" type="text" class="form-control input-sm" rdonly>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="purordhd_subamount">Sub Amount</label>
+						<div class="col-md-2">
+							<input id="purordhd_subamount" name="purordhd_subamount" type="text" maxlength="12" class="form-control input-sm" rdonly>
+						</div>
+						
+						<label class="col-md-2 control-label" for="purordhd_totamount">Total Amount</label>
+						<div class="col-md-2">
+							<input id="purordhd_totamount" name="purordhd_totamount" type="text" maxlength="12" class="form-control input-sm" rdonly>
+						</div>
+						
+						<label class="col-md-2 control-label" for="purordhd_taxclaimable">Tax Claim</label>
+						<div class="col-md-2">
+							<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required" data-validation-error-msg="Please Enter Value" value='Claimable'>Yes</label><br>
+							<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required" data-validation-error-msg="Please Enter Value"  value='Non-Claimable' selected>No</label>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="purordhd_remarks">Remark</label>
+							<div class="col-md-3">
+								<textarea rows="5" id='purordhd_remarks' name='purordhd_remarks' class="form-control input-sm text-uppercase"></textarea>
+							</div>
+							
+							<div id="assetno_div" style="display: none;">
+								<label class="col-md-1 control-label" for="purordhd_assetno">Asset No.</label>
+								<div class="col-md-2">
+									<div class='input-group'>
+										<input id="purordhd_assetno" name="purordhd_assetno" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
 								</div>
 							</div>
-					</form>
-				</div>
+						</div>
+					</div>
+					
+					<div class="form-group data_info">
+						<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="purordhd_requestby">Prepared By</label>  
+							<input id="purordhd_requestby" name="purordhd_requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						</div>
+
+						<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="purordhd_supportby">Support By</label>
+							<input id="purordhd_supportby" name="purordhd_supportby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						<i class="fa fa-info-circle my_remark" aria-hidden="true" id='support_remark_i'></i>
+						</div>
+
+							<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="purordhd_verifiedby">Verified By</label>  
+							<input id="purordhd_verifiedby" name="purordhd_verifiedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						<i class="fa fa-info-circle my_remark" aria-hidden="true" id='verified_remark_i'></i>
+						</div>
+
+						<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="purordhd_approvedby">Approved By</label>
+							<input id="purordhd_approvedby" name="purordhd_approvedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						<i class="fa fa-info-circle my_remark" aria-hidden="true" id='approved_remark_i'></i>
+						</div>
+
+							<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="purordhd_adduser">Add By</label>
+							<input id="purordhd_adduser" name="purordhd_adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						</div>
+						
+						<div class="col-md-2 minuspad-15">
+							@if(Request::get('scope') == 'REOPEN')
+								<label class="control-label" for="purordhd_cancelby">Reject User</label>
+							<input id="purordhd_cancelby" name="purordhd_cancelby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+							<i class="fa fa-info-circle my_remark" aria-hidden="true" id='cancelled_remark_i'></i>
+						@else
+								<label class="control-label" for="purordhd_upduser">Last User</label>
+								<input id="purordhd_upduser" name="purordhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						@endif
+						</div>
+
+						<div class="col-md-2 minuspad-15">
+								<label class="control-label" for="purordhd_requestdate">Prepared Date</label>  
+								<input id="purordhd_requestdate" name="purordhd_requestdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						</div>
+
+						<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="purordhd_supportdate">Support Date</label>
+							<input id="purordhd_supportdate" name="purordhd_supportdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						</div>
+
+						<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="purordhd_verifieddate">Verified Date</label>  
+							<input id="purordhd_verifieddate" name="purordhd_verifieddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						</div>
+
+						<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="purordhd_approveddate">Approved Date</label>
+							<input id="purordhd_approveddate" name="purordhd_approveddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						</div>
+
+						<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="purordhd_adddate">Add Date</label>
+							<input id="purordhd_adddate" name="purordhd_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						</div>
+
+						<div class="col-md-2 minuspad-15">
+							@if(Request::get('scope') == 'REOPEN')
+								<label class="control-label" for="purordhd_canceldate">Reject Date</label>
+							<input id="purordhd_canceldate" name="purordhd_canceldate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						@else
+								<label class="control-label" for="purordhd_upddate">Update Date</label>
+								<input id="purordhd_upddate" name="purordhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+						@endif
+						</div>
+					</div>
+				</form>
+			</div>
 		</div>
 
 		<div class='panel panel-info'>
