@@ -496,7 +496,7 @@ class CreditNoteARController extends defaultController
             //             ->where('idno','=',$request->idno)
             //             ->first();
             
-            if($request->db_unallocated == '1') {
+            if($request->db_unallocated == '1'){
             
                 $this->check_alloc_exists($request);
                 
@@ -517,9 +517,10 @@ class CreditNoteARController extends defaultController
                     'remark' => strtoupper($request->db_remark),
                     'approvedby' => $request->approvedby,
                     'unallocated' => $request->db_unallocated,
+                    'reference' => $request->db_reference,
                 ];
                 
-            } else if($request->db_unallocated == '0'){
+            }else if($request->db_unallocated == '0'){
                 
                 $table = DB::table("debtor.dbacthdr");
                 
@@ -538,6 +539,7 @@ class CreditNoteARController extends defaultController
                     'remark' => strtoupper($request->db_remark),
                     'approvedby' => $request->approvedby,
                     'unallocated' => $request->db_unallocated,
+                    'reference' => $request->db_reference,
                 ];
                 
             }
@@ -1182,6 +1184,7 @@ class CreditNoteARController extends defaultController
                     ->where('h.trantype','=','CN')
                     ->where('h.auditno','=',$auditno)
                     ->first();
+        // dd($dbacthdr);
         
         $dballoc = DB::table('debtor.dballoc as a', 'debtor.dbacthdr as h')
                     ->select('a.compcode', 'a.source', 'a.trantype', 'a.auditno', 'a.lineno_', 'a.docsource', 'a.doctrantype', 'a.docauditno', 'a.refsource', 'a.reftrantype', 'a.refauditno', 'a.refamount', 'a.mrn', 'a.episno', 'a.amount', 'a.outamount', 'a.debtortype', 'a.debtorcode', 'a.payercode', 'a.paymode', 'a.allocdate', 'a.remark', 'a.balance', 'a.adddate', 'a.adduser', 'a.recstatus', 'a.idno', 'h.entrydate as entrydate_hdr')
@@ -1195,6 +1198,7 @@ class CreditNoteARController extends defaultController
                     ->where('a.doctrantype','=','CN')
                     ->where('a.docauditno','=',$auditno)
                     ->get();
+        // dd($dballoc);
         
         $dballoc_dtl = DB::table('debtor.dballoc as a', 'debtor.dbacthdr as h')
                     ->select('a.compcode', 'a.source', 'a.trantype', 'a.auditno', 'a.lineno_', 'a.docsource', 'a.doctrantype', 'a.docauditno', 'a.refsource', 'a.reftrantype', 'a.refauditno', 'a.refamount', 'a.mrn', 'a.episno', 'a.amount', 'a.outamount', 'a.debtortype', 'a.debtorcode', 'a.payercode', 'a.paymode', 'a.allocdate', 'a.remark', 'a.balance', 'a.adddate', 'a.adduser', 'a.recstatus', 'a.idno', 'h.entrydate as entrydate_hdr')
@@ -1208,13 +1212,14 @@ class CreditNoteARController extends defaultController
                     ->where('a.doctrantype','=','CN')
                     ->where('a.docauditno','=',$auditno)
                     ->first();
+        // dd($dballoc_dtl);
         
-        if ($dbacthdr->recstatus == "OPEN") {
+        if($dbacthdr->recstatus == "OPEN"){
             $title = "DRAFT";
-        } elseif ($dbacthdr->recstatus == "POSTED"){
+        }else if($dbacthdr->recstatus == "POSTED"){
             $title = "CREDIT NOTE";
         }
-        
+       
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();

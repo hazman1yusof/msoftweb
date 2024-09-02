@@ -279,8 +279,8 @@
                                 <div class="clearfix"></div>
                                 <div class="form-group">
                                     <div class='col-md-12'>
-                                        <label class="control-label" for="dbacthdr_reference">Reference</label> 
-                                        <input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase">
+                                        <label class="control-label" for="dbacthdr_reference">Reference</label>
+                                        <input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -321,8 +321,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-2" for="dbacthdr_reference">Reference</label> 
-                                <div class='col-md-8'> 
+                                <label class="control-label col-md-2" for="dbacthdr_reference">Reference</label>
+                                <div class='col-md-8'>
                                     <input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
                                 </div>
                             </div>
@@ -388,10 +388,10 @@
                                         <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" rdonly>
                                     </div>
                                 </div>
-
+                                
                                 <div class="form-group">
-                                    <div class='col-md-12'> 
-                                        <label class="control-label" for="dbacthdr_reference">Reference</label> 
+                                    <div class='col-md-12'>
+                                        <label class="control-label" for="dbacthdr_reference">Reference</label>
                                         <input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
                                     </div>
                                 </div>

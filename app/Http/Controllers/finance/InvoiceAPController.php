@@ -341,8 +341,9 @@ use Carbon\Carbon;
             // $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
 
             if($request->apacthdr_doctype == 'Supplier'){
-                $auditno = $this->recno($request->apacthdr_source, $request->apacthdr_trantype);
+                // $auditno = $this->recno($request->apacthdr_source, $request->apacthdr_trantype);
                 $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
+                $auditno = 0;
                 $compcode = 'DD';
             }else{
                 $auditno = $this->recno($request->apacthdr_source, $request->apacthdr_trantype);
@@ -518,77 +519,77 @@ use Carbon\Carbon;
 
         try {
 
-            $apacthdr = DB::table('finance.apacthdr')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('source','=','AP')
-                    ->where('trantype','=','IN')
-                    ->where('auditno','=',$request->auditno)
-                    ->first();
-
-            if($apacthdr->recstatus = 'POSTED'){
-                $delordhd = DB::table('material.delordhd')
+            foreach ($request->idno_array as $auditno){
+                $apacthdr = DB::table('finance.apacthdr')
                         ->where('compcode','=',session('compcode'))
-                        ->where('recstatus','=','POSTED')
-                        ->where('invoiceno','=',$apacthdr->document)
+                        ->where('source','=','AP')
+                        ->where('trantype','=','IN')
+                        ->where('auditno','=',$auditno)
+                        ->first();
+
+                if($apacthdr->recstatus = 'POSTED'){
+                    $delordhd = DB::table('material.delordhd')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('recstatus','=','POSTED')
+                            ->where('invoiceno','=',$apacthdr->document)
+                            ->update([
+                                'invoiceno' => null
+                            ]);
+
+                    $apactdtl = DB::table('finance.apactdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=','AP')
+                        ->where('trantype','=','IN')
+                        ->where('auditno','=', $auditno)
                         ->update([
-                            'invoiceno' => null
+                            'recstatus' => 'CANCELLED'
                         ]);
 
-                $apactdtl = DB::table('finance.apactdtl')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('source','=','AP')
-                    ->where('trantype','=','IN')
-                    ->where('auditno','=', $request->auditno)
-                    ->update([
-                        'recstatus' => 'CANCELLED'
-                    ]);
+                    $this->gltran_cancel($auditno);
 
-                $this->gltran_cancel($request->auditno);
-
-                DB::table('finance.apacthdr')
-                    ->where('auditno','=',$request->auditno)
-                    ->where('compcode','=',session('compcode'))
-                    ->where('source','=','AP')
-                    ->where('trantype','=','IN')
-                    ->update([
-                        'recstatus' => 'CANCELLED',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-            }else if($apacthdr->recstatus = 'OPEN'){
-
-                $delordhd = DB::table('material.delordhd')
+                    DB::table('finance.apacthdr')
+                        ->where('auditno','=',$auditno)
                         ->where('compcode','=',session('compcode'))
-                        ->where('recstatus','=','POSTED')
-                        ->where('invoiceno','=',$apacthdr->document)
+                        ->where('source','=','AP')
+                        ->where('trantype','=','IN')
                         ->update([
-                            'invoiceno' => null
+                            'recstatus' => 'CANCELLED',
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
 
-                $apactdtl = DB::table('finance.apactdtl')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('source','=','AP')
-                    ->where('trantype','=','IN')
-                    ->where('auditno','=', $request->auditno)
-                    ->update([
-                        'recstatus' => 'CANCELLED'
-                    ]);
+                }else if($apacthdr->recstatus = 'OPEN'){
 
-                DB::table('finance.apacthdr')
-                    ->where('auditno','=',$request->auditno)
-                    ->where('compcode','=',session('compcode'))
-                    ->where('source','=','AP')
-                    ->where('trantype','=','IN')
-                    ->update([
-                        'recstatus' => 'CANCELLED',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
+                    $delordhd = DB::table('material.delordhd')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('recstatus','=','POSTED')
+                            ->where('invoiceno','=',$apacthdr->document)
+                            ->update([
+                                'invoiceno' => null
+                            ]);
+
+                    $apactdtl = DB::table('finance.apactdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=','AP')
+                        ->where('trantype','=','IN')
+                        ->where('auditno','=', $auditno)
+                        ->update([
+                            'recstatus' => 'CANCELLED'
+                        ]);
+
+                    DB::table('finance.apacthdr')
+                        ->where('auditno','=',$auditno)
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=','AP')
+                        ->where('trantype','=','IN')
+                        ->update([
+                            'recstatus' => 'CANCELLED',
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+                }
 
             }
-
-            
                
             DB::commit();
         } catch (\Exception $e) {

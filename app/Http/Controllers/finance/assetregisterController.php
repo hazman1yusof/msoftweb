@@ -485,6 +485,8 @@ class assetregisterController extends defaultController
                     'dolineno' => $fatemp->lineno_,
                     'deptcode' => $fatemp->deptcode,
                     'loccode' => $fatemp->loccode,
+                    'currdeptcode' => $fatemp->deptcode,
+                    'currloccode' => $fatemp->loccode,
                     'suppcode' => $fatemp->suppcode,
                     'purordno' => $fatemp->purordno,
                     'delordno'  => $fatemp->delordno,

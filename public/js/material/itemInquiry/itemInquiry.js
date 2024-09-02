@@ -417,10 +417,10 @@ $(document).ready(function () {
 	});
 
 	function getdtlmov(fetchall,start,limit){
-		let mon_from = $('#monthfrom').val();
-		let yr_from = $('#yearfrom').val();
-		let mon_to = $('#monthto').val();
-		let yr_to = $('#yearto').val();
+		// let mon_from = $('#monthfrom').val();
+		// let yr_from = $('#yearfrom').val();
+		// let mon_to = $('#monthto').val();
+		// let yr_to = $('#yearto').val();
 		let openbalqty = numeral().unformat($('#openbalqty').val());
 		let openbalval = numeral().unformat($('#openbalval').val());
 
@@ -569,7 +569,7 @@ $(document).ready(function () {
 	            if(isNaN(accumval)){
 	            	accumval = 0;
 	            }
-	            var monthfrom = parseInt($('#monthfrom').val());
+	            var monthfrom = parseInt(moment($('#datefrom').val(), "YYYY/MM/DD").format("MM"));
 
 	            if(monthfrom>0){
 				    $.each(data.rows[0], function( index, value ) {
@@ -607,29 +607,29 @@ $(document).ready(function () {
 		populateSummary($('#itemcodedtl').val(),$('#uomcodedtl').val(),$('#deptcodedtl').val());
 	});
 
-	set_yearperiod();
-	function set_yearperiod(){
-		param={
-			action:'get_value_default',
-			field: ['year'],
-			table_name:'sysdb.period',
-			table_id:'idno',
-			sortby:['year desc']
-		}
-		$.get( "util/get_value_default?"+$.param(this.param), function( data ) {
+	// set_yearperiod();
+	// function set_yearperiod(){
+	// 	param={
+	// 		action:'get_value_default',
+	// 		field: ['year'],
+	// 		table_name:'sysdb.period',
+	// 		table_id:'idno',
+	// 		sortby:['year desc']
+	// 	}
+	// 	$.get( "util/get_value_default?"+$.param(this.param), function( data ) {
 				
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data.rows)){
-				data.rows.forEach(function(element){	
-					$('#yearfrom').append("<option>"+element.year+"</option>")
-					$('#yearto').append("<option>"+element.year+"</option>")
-				});
-			}
-		});
+	// 	},'json').done(function(data) {
+	// 		if(!$.isEmptyObject(data.rows)){
+	// 			data.rows.forEach(function(element){	
+	// 				$('#yearfrom').append("<option>"+element.year+"</option>")
+	// 				$('#yearto').append("<option>"+element.year+"</option>")
+	// 			});
+	// 		}
+	// 	});
 
-		$('select#monthfrom').val(moment().format('MM'));
-		$('select#monthto').val(moment().format('MM'));
-	}
+	// 	$('select#monthfrom').val(moment().format('MM'));
+	// 	$('select#monthto').val(moment().format('MM'));
+	// }
 
 
 

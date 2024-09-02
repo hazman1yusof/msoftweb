@@ -194,7 +194,8 @@ class DebitNoteDetailController extends defaultController
                     ->where('auditno','=',$auditno);
             
             if($dbactdtl->exists()){
-                $count = $dbactdtl->count();
+                // $count = $dbactdtl->count();
+                $count = $dbactdtl->max('lineno_');
                 $lineno_ = $count + 1;
                 $dbactdtl_obj = $dbactdtl->first();
             }else{
@@ -417,10 +418,11 @@ class DebitNoteDetailController extends defaultController
                     'amount' => $totalAmount
                 ]);
                 
-            // echo $totalAmount;
+            echo $totalAmount;
             
             DB::commit();
-            return response($totalAmount,200);
+            
+            // return response($totalAmount,200);
             
         } catch (\Exception $e) {
             

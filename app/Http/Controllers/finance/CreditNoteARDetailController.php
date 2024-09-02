@@ -187,7 +187,8 @@ class CreditNoteARDetailController extends defaultController
                     ->where('auditno','=',$dbacthdr_obj->auditno);
             
             if($dbactdtl->exists()){
-                $count = $dbactdtl->count();
+                // $count = $dbactdtl->count();
+                $count = $dbactdtl->max('lineno_');
                 $lineno_ = $count + 1;
             }else{
                 $lineno_ = 1;
@@ -342,12 +343,12 @@ class CreditNoteARDetailController extends defaultController
                 
                 ///2. recalculate total amount
                 $totalAmount = DB::table('debtor.dbactdtl')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('source','=','PB')
-                    ->where('trantype','=','CN')
-                    ->where('auditno','=',$request->auditno)
-                    ->where('recstatus','!=','DELETE')
-                    ->sum('amount');
+                                ->where('compcode','=',session('compcode'))
+                                ->where('source','=','PB')
+                                ->where('trantype','=','CN')
+                                ->where('auditno','=',$request->auditno)
+                                ->where('recstatus','!=','DELETE')
+                                ->sum('amount');
                 
                 ///3. update total amount to header
                 DB::table('debtor.dbacthdr')
@@ -407,13 +408,15 @@ class CreditNoteARDetailController extends defaultController
                 ->where('trantype','=',$request->trantype)
                 ->where('auditno','=',$request->auditno)
                 ->update([
-                    'amount' => $totalAmount
+                    'amount' => $totalAmount,
+                    'outamount' => $totalAmount, 
                 ]);
             
             echo $totalAmount;
             
             DB::commit();
-            return response($totalAmount,200);
+
+            // return response($totalAmount,200);
             
         } catch (\Exception $e) {
             

@@ -639,7 +639,7 @@ abstract class defaultController extends Controller{
                 ->where('recstatus','=', 'ACTIVE');
                 
         if(!$seqno->exists()){
-            throw new \Exception("Sequence Number for dept $dept is not available", 500);
+            throw new \Exception("Sequence Number for dept $dept is not available (trantype: <b>$trantype</b> , dept: <b>$dept</b>)", 500);
         }
 
         $seqno = $seqno->first();

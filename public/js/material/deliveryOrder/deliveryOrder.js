@@ -1502,6 +1502,11 @@ $(document).ready(function () {
     		$.post( "./deliveryOrderDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
+				myfail_msg.add_fail({
+					id:'response',
+					textfld:"",
+					msg:data.responseText,
+				});
 			}).done(function(data){
 				if(data){
 					$('#delordhd_subamount, #delordhd_totamount').val(data);
@@ -1846,27 +1851,27 @@ $(document).ready(function () {
 		$("#jqGrid2").jqGrid('setRowData', id_optid ,{netunitprice:netunitprice});
 
 
-		var id="#jqGrid2 #"+id_optid+"_qtydelivered";
-		var fail_msg = "Quantity Delivered must be greater than 0";
-		var name = "quantitydelivered";
+		// var id="#jqGrid2 #"+id_optid+"_qtydelivered";
+		// var fail_msg = "Quantity Delivered must be greater than 0";
+		// var name = "quantitydelivered";
 
-		if(name_from != 'taxcode'){
-			if(qtydelivered > 0) {
-				if($.inArray(id,errorField)!==-1){
-					errorField.splice($.inArray(id,errorField), 1);
-				}
-				$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
-				$( id ).removeClass( "error" ).addClass( "valid" );
-				$('.noti').find("li[data-errorid='"+name+"']").detach();
-			} else {
-				$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
-				$( id ).removeClass( "valid" ).addClass( "error" );
-				if(!$('.noti').find("li[data-errorid='"+name+"']").length)$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
-				if($.inArray(id,errorField)===-1){
-					errorField.push( id );
-				}
-			}
-		}
+		// if(name_from != 'taxcode'){
+		// 	if(qtydelivered > 0) {
+		// 		if($.inArray(id,errorField)!==-1){
+		// 			errorField.splice($.inArray(id,errorField), 1);
+		// 		}
+		// 		$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
+		// 		$( id ).removeClass( "error" ).addClass( "valid" );
+		// 		$('.noti').find("li[data-errorid='"+name+"']").detach();
+		// 	} else {
+		// 		$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
+		// 		$( id ).removeClass( "valid" ).addClass( "error" );
+		// 		if(!$('.noti').find("li[data-errorid='"+name+"']").length)$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
+		// 		if($.inArray(id,errorField)===-1){
+		// 			errorField.push( id );
+		// 		}
+		// 	}
+		// }
 
 		if(event.target.name=='unitprice'){
 
@@ -1949,27 +1954,27 @@ $(document).ready(function () {
 		});
 		$('#delordhd_subamount, #delordhd_totamount').val(all_totamt);
 
-		var id="#jqGrid2 #"+id_optid+"_qtydelivered";
-		var fail_msg = "Quantity Delivered must be greater than 0";
-		var name = "quantitydelivered";
+		// var id="#jqGrid2 #"+id_optid+"_qtydelivered";
+		// var fail_msg = "Quantity Delivered must be greater than 0";
+		// var name = "quantitydelivered";
 
-		if(name_from != 'taxcode'){
-			if(qtydelivered > 0) {
-				if($.inArray(id,errorField)!==-1){
-					errorField.splice($.inArray(id,errorField), 1);
-				}
-				$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
-				$( id ).removeClass( "error" ).addClass( "valid" );
-				$('.noti').find("li[data-errorid='"+name+"']").detach();
-			} else {
-				$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
-				$( id ).removeClass( "valid" ).addClass( "error" );
-				if(!$('.noti').find("li[data-errorid='"+name+"']").length)$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
-				if($.inArray(id,errorField)===-1){
-					errorField.push( id );
-				}
-			}
-		}
+		// if(name_from != 'taxcode'){
+		// 	if(qtydelivered > 0) {
+		// 		if($.inArray(id,errorField)!==-1){
+		// 			errorField.splice($.inArray(id,errorField), 1);
+		// 		}
+		// 		$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
+		// 		$( id ).removeClass( "error" ).addClass( "valid" );
+		// 		$('.noti').find("li[data-errorid='"+name+"']").detach();
+		// 	} else {
+		// 		$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
+		// 		$( id ).removeClass( "valid" ).addClass( "error" );
+		// 		if(!$('.noti').find("li[data-errorid='"+name+"']").length)$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
+		// 		if($.inArray(id,errorField)===-1){
+		// 			errorField.push( id );
+		// 		}
+		// 	}
+		// }
 
 		if(event.target.name=='unitprice'){
 

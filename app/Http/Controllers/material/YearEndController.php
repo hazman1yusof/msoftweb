@@ -73,7 +73,7 @@ class YearEndController extends defaultController
                             ->where('year',$lastyear)
                             ->where('compcode',session('compcode'));
 
-            if(strtoupper($request->dept_from) == 'ZZZ' && strtoupper($request->dept_to) == 'ZZZ'){
+            if((strtoupper($request->dept_from) == 'ZZZ' && strtoupper($request->dept_to) == 'ZZZ')){
 
             }else{
                 $stockloc = $stockloc->whereBetween('deptcode',[$request->dept_from,$request->dept_to]);
@@ -139,7 +139,7 @@ class YearEndController extends defaultController
                         ->where('compcode',session('compcode'))
                         ->max('year');
 
-            $lastyear = $lastyear;
+            $lastyear = $lastyear;//newyear
 
             $stockloc = DB::table('material.stockloc')
                             ->where('year',$request->year)

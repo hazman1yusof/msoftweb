@@ -980,7 +980,7 @@ $(document).ready(function () {
 			});
 		},
 		aftersavefunc: function (rowid, response, options) {
-			$('#db_amount').val(response.responseText);
+			$('#db_amount, #db_outamount').val(response.responseText);
 			show_post_button();
 			// $('#db_unit').val(response.responseText);
 			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
@@ -1070,7 +1070,7 @@ $(document).ready(function () {
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
-								$('#db_amount').val(data);
+								$('#db_amount, #db_outamount').val(data);
 								// $('#amount').val(data);
 								refreshGrid("#jqGrid2", urlParam2);
 							});
@@ -1183,7 +1183,7 @@ $(document).ready(function () {
 				if($("#db_unallocated").find(":selected").text() == 'Credit Note'){
 					show_post_button();
 				}
-				$('#db_amount').val(data);
+				$('#db_amount, #db_outamount').val(data);
 				
 				mycurrency.formatOn();
 				hideatdialogForm(false);
@@ -1428,7 +1428,7 @@ $(document).ready(function () {
 		});
 		
 		if(!isNaN(totamt)){
-			$('#db_amount').val(numeral(totamt).format('0,0.00'));
+			$('#db_amount, #db_outamount').val(numeral(totamt).format('0,0.00'));
 		}
 	}
 
@@ -1672,11 +1672,8 @@ $(document).ready(function () {
 
     ////////////////////////////////////////////////pager jqGridAlloc////////////////////////////////////////////////
 	$("#jqGridAlloc").inlineNav('#jqGridPagerAlloc',{
-		add:false,
-		edit:false,
-		cancel:false,
-		save:false,
-		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		add: false, edit: false, cancel: false, save: false,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: {
 			addRowParams: myEditOptions_alloc
@@ -1687,18 +1684,18 @@ $(document).ready(function () {
 		caption: "", cursor: "pointer", position: "last",
 		buttonicon: "glyphicon glyphicon-trash",
 		title: "Delete Selected Row",
-		onClickButton: function () {
+		onClickButton: function (){
 			selRowId = $("#jqGridAlloc").jqGrid('getGridParam', 'selrow');
-			if (!selRowId) {
+			if(!selRowId){
 				bootbox.alert('Please select row');
-			} else {
+			}else{
 				bootbox.confirm({
 					message: "Are you sure you want to delete this row?",
 					buttons: {
 						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
 					},
-					callback: function (result) {
-						if (result == true) {
+					callback: function (result){
+						if(result == true){
 							param = {
 								_token: $("#_token").val(),
 								action: 'CreditNoteAR_save',
@@ -1709,11 +1706,11 @@ $(document).ready(function () {
 								idno: selrowData('#jqGridAlloc').idno,
 								db_outamount: selrowData('#jqGrid').db_outamount,
 							}
-							$.post( "./CreditNoteAR/form?"+$.param(param),{oper:'del_alloc',"_token": $("#_token").val()},
-							function( data ){
-							},'json').fail(function (data) {
+							$.post("./CreditNoteAR/form?"+$.param(param),{oper:'del_alloc',"_token": $("#_token").val()},
+							function (data){
+							},'json').fail(function (data){
 								//////////////////errorText(dialog,data.responseText);
-							}).done(function (data) {
+							}).done(function (data){
 								mycurrency.formatOff();
 								$('#db_outamount').val(data.outamount_hdr);
 								$('#tot_alloc').val(parseFloat($('#db_amount').val()) - parseFloat($('#db_outamount').val()));

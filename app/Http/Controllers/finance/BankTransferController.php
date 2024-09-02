@@ -168,7 +168,6 @@ class BankTransferController extends defaultController
         $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
-
     }
 
     public function add(Request $request){
@@ -201,6 +200,36 @@ class BankTransferController extends defaultController
 
         foreach ($field as $key => $value){
             $array_insert[$value] = $request[$request->field[$key]];
+        }
+
+        if($request->paymode == 'CHEQUE'){
+            $chqtran =  DB::table('finance.chqtran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('bankcode','=',$request->bankcode)
+                        ->where('cheqno','=',$request->cheqno)
+                        ->where('recstatus','OPEN');
+
+            if(!$chqtran->exists()){
+                throw new \Exception("Cheque Error, try again..");
+            }
+
+            DB::table('finance.chqtran')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('bankcode','=',$request->bankcode)
+                    ->where('cheqno','=',$request->cheqno)
+                    ->where('recstatus','OPEN')
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'cheqdate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'amount' => $request->amount,
+                        'remarks' => strtoupper($request->remarks),
+                        'recstatus' => 'ISSUED',
+                        'auditno' => $auditno,
+                        'trantype' => 'CM',
+                        'source' => 'FT',
+                        'payto' => $request->payto,
+                    ]);
         }
 
         try {

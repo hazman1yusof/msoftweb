@@ -306,7 +306,7 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                         $join = $join
                             ->where('adtl.compcode',session('compcode'))
                             ->where('adtl.authorid',session('username'))
-                            ->where('adtl.trantype','PO')
+                            ->where('adtl.trantype','IV')
                             ->where('adtl.cando','ACTIVE')
                             ->on('adtl.recstatus','qiv.trantype');
                             // ->where(function ($query) {
