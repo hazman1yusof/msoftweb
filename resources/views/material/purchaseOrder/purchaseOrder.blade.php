@@ -674,7 +674,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/purchaseOrder/purchaseOrder.js"></script>
+	<script src="js/material/purchaseOrder/purchaseOrder.js?v=1.1"></script>
 	<!-- <script src="js/material/purchaseOrder/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

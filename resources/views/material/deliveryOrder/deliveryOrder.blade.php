@@ -506,7 +506,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/deliveryOrder/deliveryOrder.js"></script>
+	<script src="js/material/deliveryOrder/deliveryOrder.js?v=1.1"></script>
 	<!-- <script src="js/material/deliveryOrder/pdfgen.js"></script> -->
 	<script src="js/myjs/barcode.js"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
