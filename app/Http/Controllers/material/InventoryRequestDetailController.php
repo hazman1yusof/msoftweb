@@ -83,6 +83,19 @@ class InventoryRequestDetailController extends defaultController
                     ]);
             }
 
+            if(empty($recno)){
+                $ivreqno = $this->request_no('SR', $request->reqdept);
+                $recno = $this->recno('PUR','SR');
+
+                DB::table("material.ivreqhd")
+                    ->where('idno','=',$request->idno)
+                    ->update([
+                        'ivreqno' => $ivreqno,
+                        'recno' => $recno,
+                        'compcode' => session('compcode'),
+                    ]);
+            }
+
             $product = DB::table('material.product')
                         ->where('compcode',session('compcode'))
                         // ->where('unit',session('unit'))

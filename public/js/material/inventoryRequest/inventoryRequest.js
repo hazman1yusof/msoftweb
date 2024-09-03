@@ -1107,20 +1107,20 @@ $(document).ready(function () {
 			mycurrency2.formatOff();
 			mycurrency_np.formatOff();
 
-			if(errorField.length>0){
-				console.log(errorField)
-				return false;
-			}
+			// if(errorField.length>0){
+			// 	console.log(errorField)
+			// 	return false;
+			// }
 
 		    for (var i = 0; i < ids.length; i++) {
 				if(parseInt($('#'+ids[i]+"_qtyrequest").val()) <= 0)return false;
 				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
-				let retval = check_cust_rules("#jqGrid2",data);
-				console.log(retval);
-				if(retval[0]!= true){
-					alert(retval[1]);
-					return false;
-				}
+				// let retval = check_cust_rules("#jqGrid2",data);
+				// console.log(retval);
+				// if(retval[0]!= true){
+				// 	alert(retval[1]);
+				// 	return false;
+				// }
 
 				// cust_rules()
 
@@ -1344,9 +1344,13 @@ $(document).ready(function () {
 	
 		errorField.length=0;
 		//start binding event on jqgrid2
-		dialog_itemcode.on();
-		dialog_uomcodereqdept.on();
-		dialog_uomcodereqto.on();
+		dialog_itemcode.off();
+		$(dialog_itemcode.textfield).attr('disabled',true);
+		dialog_uomcodereqdept.off();
+		$(dialog_uomcodereqdept.textfield).attr('disabled',true);
+		dialog_uomcodereqto.off();
+		$(dialog_uomcodereqto.textfield).attr('disabled',true);
+		
 		dialog_expdate.on();
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
@@ -1548,8 +1552,8 @@ $(document).ready(function () {
 			open:function(){
 				dialog_itemcode.urlParam.fixPost="true";
 				dialog_itemcode.urlParam.table_id="none_";
-				dialog_itemcode.urlParam.filterCol=['s.compcode','s.year','s.deptcode','s.unit'];
-				dialog_itemcode.urlParam.filterVal=['session.compcode',moment($('#reqdt').val()).year(),$('#reqtodept').val(),'session.unit'];
+				dialog_itemcode.urlParam.filterCol=['s.compcode','s.year','s.deptcode'];
+				dialog_itemcode.urlParam.filterVal=['session.compcode',moment($('#reqdt').val()).year(),$('#reqtodept').val()];
 				dialog_itemcode.urlParam.join_type=['LEFT JOIN', 'LEFT JOIN'];
 				dialog_itemcode.urlParam.join_onCol=['s.itemcode','u.uomcode'];
 				dialog_itemcode.urlParam.join_onVal=['p.itemcode', 's.uomcode'];
