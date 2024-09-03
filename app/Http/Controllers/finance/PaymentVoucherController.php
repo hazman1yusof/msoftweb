@@ -485,8 +485,6 @@ class PaymentVoucherController extends defaultController
                 $responce->auditno = $auditno;
                 $responce->idno = $idno_apacthdr;
                 $responce->totalAmount = $totalAmount;
-
-                echo json_encode($responce);
             
             } else if ($request->apacthdr_trantype == 'PD'){
 
@@ -531,20 +529,52 @@ class PaymentVoucherController extends defaultController
                 $responce = new stdClass();
                 $responce->auditno = $auditno;
                 $responce->idno = $idno_apacthdr;
+            }
 
-                echo json_encode($responce);
+            if($request->apacthdr_paymode == 'CHEQUE'){
+                $chqtran =  DB::table('finance.chqtran')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('bankcode','=',$request->apacthdr_bankcode)
+                            ->where('cheqno','=',$request->apacthdr_cheqno)
+                            ->where('recstatus','OPEN');
+
+                if(!$chqtran->exists()){
+                    throw new \Exception("Cheque Error, try again..");
+                }
+
+                DB::table('finance.chqtran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('bankcode','=',$request->apacthdr_bankcode)
+                        ->where('cheqno','=',$request->apacthdr_cheqno)
+                        ->where('recstatus','OPEN')
+                        ->update([
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'cheqdate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'amount' => $request->apacthdr_amount,
+                            'remarks' => strtoupper($request->apacthdr_remarks),
+                            'recstatus' => 'ISSUED',
+                            'auditno' => $auditno,
+                            'trantype' => $request->apacthdr_trantype,
+                            'source' => 'AP',
+                            'payto' => $request->apacthdr_payto,
+                        ]);
             }
 
             ////update bankaccno at supplier
             DB::table('material.supplier')
-            ->where('SuppCode','=',$request->apacthdr_suppcode)
-            ->update([
-                'AccNo' => $request->apacthdr_bankaccno,
-                'upduser' => session('username'),
-                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            ]);
+                ->where('compcode','=',session('compcode'))
+                ->where('SuppCode','=',$request->apacthdr_suppcode)
+                ->update([
+                    'AccNo' => $request->apacthdr_bankaccno,
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                ]);
 
             DB::commit();  
+
+            echo json_encode($responce);
+
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -992,8 +1022,8 @@ class PaymentVoucherController extends defaultController
                 DB::table('finance.apacthdr')
                     ->where('idno','=',$idno_obj['idno'])
                     ->update([
-                        'supportby' => session('username'),
-                        'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'verifiedby' => session('username'),
+                        'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'recstatus' => 'VERIFIED'
                     ]);
 
@@ -1081,8 +1111,8 @@ class PaymentVoucherController extends defaultController
                         'recdate' => $apacthdr->postdate,
                         'recstatus' => 'POSTED',
                         'outamount' => 0.00,
-                        'supportby' => session('username'),
-                        'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'approvedby' => session('username'),
+                        'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'recstatus' => 'APPROVED'
                     ]);
 

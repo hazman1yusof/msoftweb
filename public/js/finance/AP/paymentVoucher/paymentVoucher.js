@@ -1968,7 +1968,7 @@ function init_paymode(oper,dialog_cheqno){
 			case 'CHEQUE':
 						$('#cheqno_parent').text('Cheque No');
 						dialog_cheqno.on();
-						dialog_cheqno.check(errorField);
+						// dialog_cheqno.check(errorField);
 						$("label[for='cheqdate_parent'], input#cheqdate_parent").show();
 						$("label[for='cheqno_parent'], input#cheqno_parent").show();
 						break;
@@ -1999,7 +1999,7 @@ function init_paymode(oper,dialog_cheqno){
 			case 'CHEQUE':
 						$('#cheqno_parent').text('Cheque No');
 						dialog_cheqno.on();
-						dialog_cheqno.check(errorField);
+						// dialog_cheqno.check(errorField);
 						$('#cheqno_parent').show();
 						$('#apacthdr_cheqno').show();
 						$('#cheqno_dh').show();
@@ -2037,7 +2037,7 @@ function init_paymode(oper,dialog_cheqno){
 						break;
 			case 'CHEQUE':
 						$('#cheqno_parent').text('Cheque No');
-						dialog_cheqno.check(errorField);
+						// dialog_cheqno.check(errorField);
 						$('#cheqno_parent').show();
 						$('#apacthdr_cheqno').show();
 						$('#cheqno_dh').show();
