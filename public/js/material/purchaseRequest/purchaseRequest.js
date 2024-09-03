@@ -2657,32 +2657,32 @@ function remark_button_class(grid){
 		this.selrowdata = selrowdata;
 		$('i.my_remark').hide();
 		$('i.my_remark').off('click');
-		if(this.selrowdata.purreqhd_support_remark != ''){
+		if((this.selrowdata.purreqhd_support_remark != null  || this.selrowdata.purreqhd_support_remark != undefined) && this.selrowdata.purreqhd_support_remark != ''){
 			$('i#support_remark_i').show();
 			$('i#support_remark_i').data('remark',this.selrowdata.purreqhd_support_remark);
 			$('#dialog_remarks_view').dialog('option', 'title', 'Support Remark');
 		}
-		if(this.selrowdata.purreqhd_verified_remark != ''){
+		if((this.selrowdata.purreqhd_verified_remark != null  || this.selrowdata.purreqhd_verified_remark != undefined) && this.selrowdata.purreqhd_verified_remark != ''){
 			$('i#verified_remark_i').show();
 			$('i#verified_remark_i').data('remark',this.selrowdata.purreqhd_verified_remark);
 			$('#dialog_remarks_view').dialog('option', 'title', 'Verified Remark');
 		}
-		if(this.selrowdata.purreqhd_recommended1_remark != ''){
+		if((this.selrowdata.purreqhd_recommended1_remark != null  || this.selrowdata.purreqhd_recommended1_remark != undefined) && this.selrowdata.purreqhd_recommended1_remark != ''){
 			$('i#recommended1_remark_i').show();
 			$('i#recommended1_remark_i').data('remark',this.selrowdata.purreqhd_recommended1_remark);
 			$('#dialog_remarks_view').dialog('option', 'title', 'Recommended 1 Remark');
 		}
-		if(this.selrowdata.purreqhd_recommended2_remark != ''){
+		if((this.selrowdata.purreqhd_recommended2_remark != null  || this.selrowdata.purreqhd_recommended2_remark != undefined) && this.selrowdata.purreqhd_recommended2_remark != ''){
 			$('i#recommended2_remark_i').show();
 			$('i#recommended2_remark_i').data('remark',this.selrowdata.purreqhd_recommended2_remark);
 			$('#dialog_remarks_view').dialog('option', 'title', 'Recommended 2 Remark');
 		}
-		if(this.selrowdata.purreqhd_approved_remark != ''){
+		if((this.selrowdata.purreqhd_approved_remark != null  || this.selrowdata.purreqhd_approved_remark != undefined) && this.selrowdata.purreqhd_approved_remark != ''){
 			$('i#approved_remark_i').show();
 			$('i#approved_remark_i').data('remark',this.selrowdata.purreqhd_approved_remark);
 			$('#dialog_remarks_view').dialog('option', 'title', 'Approved Remark');
 		}
-		if(this.selrowdata.purreqhd_cancelled_remark != ''){
+		if((this.selrowdata.purreqhd_cancelled_remark != null  || this.selrowdata.purreqhd_cancelled_remark != undefined) && this.selrowdata.purreqhd_cancelled_remark != ''){
 			$('i#cancelled_remark_i').show();
 			$('i#cancelled_remark_i').data('remark',this.selrowdata.purreqhd_cancelled_remark);
 			$('#dialog_remarks_view').dialog('option', 'title', 'Cancelled Remark');
