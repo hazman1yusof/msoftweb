@@ -88,6 +88,9 @@ class InventoryRequestDetailController extends defaultController
                         // ->where('unit',session('unit'))
                         ->where('itemcode',$request->itemcode)
                         ->where('uomcode',$request->uomcode);
+            $ivreqhd = DB::table("material.ivreqhd")
+                            ->where('idno','=',$request->idno)
+                            ->first();
 
             if(!$product->exists()){
                 throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' not exist!');
@@ -104,7 +107,7 @@ class InventoryRequestDetailController extends defaultController
                         // ->where('unit',session('unit'))
                         ->where('itemcode',$request->itemcode)
                         ->where('uomcode',$request->uomcode)
-                        ->where('deptcode',$request->reqtodept)
+                        ->where('deptcode',$ivreqhd->reqtodept)
                         ->where('year',$this->toYear($request->reqdt));
 
             if(!$stockloc->exists()) {
