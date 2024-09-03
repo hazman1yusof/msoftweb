@@ -1553,7 +1553,7 @@ $(document).ready(function () {
 				dialog_itemcode.urlParam.join_type=['LEFT JOIN', 'LEFT JOIN'];
 				dialog_itemcode.urlParam.join_onCol=['s.itemcode','u.uomcode'];
 				dialog_itemcode.urlParam.join_onVal=['p.itemcode', 's.uomcode'];
-				dialog_itemcode.urlParam.join_filterCol=[['s.compcode on =', 's.uomcode on =','p.recstatus =','s.uniton ='], []];
+				dialog_itemcode.urlParam.join_filterCol=[['s.compcode on =', 's.uomcode on =','p.recstatus =','s.unit on ='], []];
 				dialog_itemcode.urlParam.join_filterVal=[['p.compcode','p.uomcode','ACTIVE','p.unit'], []];
 			},
 			close: function(obj){
