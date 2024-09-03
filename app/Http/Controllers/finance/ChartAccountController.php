@@ -189,7 +189,7 @@ class ChartAccountController extends defaultController
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
-            
+
             DB::commit();
             
         } catch (\Exception $e) {
