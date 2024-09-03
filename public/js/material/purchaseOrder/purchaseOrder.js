@@ -3803,22 +3803,22 @@ function remark_button_class(grid){
 		this.selrowdata = selrowdata;
 		$('i.my_remark').hide();
 		$('i.my_remark').off('click');
-		if(this.selrowdata.purordhd_support_remark != ''){
+		if((this.selrowdata.purordhd_support_remark != null  || this.selrowdata.purordhd_support_remark != undefined) && this.selrowdata.purordhd_support_remark != ''){
 			$('i#support_remark_i').show();
 			$('i#support_remark_i').data('remark',this.selrowdata.purordhd_support_remark);
 			$('#dialog_remarks_view').dialog('option', 'title', 'Support Remark');
 		}
-		if(this.selrowdata.purordhd_verified_remark != ''){
+		if((this.selrowdata.purordhd_verified_remark != null  || this.selrowdata.purordhd_verified_remark != undefined) && this.selrowdata.purordhd_verified_remark != ''){
 			$('i#verified_remark_i').show();
 			$('i#verified_remark_i').data('remark',this.selrowdata.purordhd_verified_remark);
 			$('#dialog_remarks_view').dialog('option', 'title', 'Verified Remark');
 		}
-		if(this.selrowdata.purordhd_approved_remark != ''){
+		if((this.selrowdata.purordhd_approved_remark != null  || this.selrowdata.purordhd_approved_remark != undefined) && this.selrowdata.purordhd_approved_remark != ''){
 			$('i#approved_remark_i').show();
 			$('i#approved_remark_i').data('remark',this.selrowdata.purordhd_approved_remark);
 			$('#dialog_remarks_view').dialog('option', 'title', 'Approved Remark');
 		}
-		if(this.selrowdata.purordhd_cancelled_remark != ''){
+		if((this.selrowdata.purordhd_cancelled_remark != null  || this.selrowdata.purordhd_cancelled_remark != undefined) && this.selrowdata.purordhd_cancelled_remark != ''){
 			$('i#cancelled_remark_i').show();
 			$('i#cancelled_remark_i').data('remark',this.selrowdata.purordhd_cancelled_remark);
 			$('#dialog_remarks_view').dialog('option', 'title', 'Cancelled Remark');
