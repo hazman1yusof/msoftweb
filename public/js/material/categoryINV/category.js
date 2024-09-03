@@ -101,7 +101,7 @@ $(document).ready(function () {
 
 		},
 		close: function( event, ui ) {
-			emptyFormdata(errorField,'#formdata');
+			emptyFormdata(errorField,'#formdata',['#class','#cattype','#source']);
 			parent_close_disabled(false);
 			//$('.alert').detach();
 			$('.my-alert').detach();
@@ -141,7 +141,10 @@ $(document).ready(function () {
 		table_name:'material.category',
 		table_id:'catcode',
 		saveip:'true',
-		checkduplicate: 'true'
+		checkduplicate: 'true',
+		source: $('#source').val(),
+		cattype: $('#cattype').val(),
+		class: $('#class').val(),
 	};
 
 	//////////////////////////////////////////////////////////////////////////////////////////////

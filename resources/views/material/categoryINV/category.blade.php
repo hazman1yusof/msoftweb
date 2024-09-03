@@ -212,6 +212,6 @@
 		});
 	</script>
 
-	<script src="js/material/CategoryINV/category.js"></script>
+	<script src="js/material/CategoryINV/category.js?v=1.1"></script>
 
 @endsection
