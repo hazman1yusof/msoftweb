@@ -422,14 +422,14 @@ div#fail_msg{
 							</div>
 							
 							<div class="col-md-2 minuspad-15">
-								<label class="control-label" for="recommended1by">Recommend 1</label>
-								<input id="recommended1by" name="recommended1by" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								<label class="control-label" for="purreqhd_recommended1by">Recommend 1</label>
+								<input id="purreqhd_recommended1by" name="purreqhd_recommended1by" type="text" maxlength="30" class="form-control input-sm" rdonly>
 								<i class="fa fa-info-circle my_remark" aria-hidden="true" id='recommended1_remark_i'></i>
 							</div>
 							
 							<div class="col-md-2 minuspad-15">
-								<label class="control-label" for="recommended2by">Recommend 2</label>
-								<input id="recommended2by" name="recommended2by" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								<label class="control-label" for="purreqhd_recommended2by">Recommend 2</label>
+								<input id="purreqhd_recommended2by" name="purreqhd_recommended2by" type="text" maxlength="30" class="form-control input-sm" rdonly>
 								<i class="fa fa-info-circle my_remark" aria-hidden="true" id='recommended2_remark_i'></i>
 							</div>
 							
