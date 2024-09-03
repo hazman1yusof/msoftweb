@@ -207,7 +207,7 @@ $(document).ready(function () {
 		datatype: "local",
 		 colModel: [
 			{ label: 'Record No', name: 'recno', width: 20, classes: 'wrap', canSearch: true,selected:true, formatter: padzero, unformat: unpadzero},
-			{ label: 'Transaction Department', name: 'txndept', width: 30, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Supplier Department', name: 'txndept', width: 30, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Transaction Type', name: 'trantype', width: 25, classes: 'wrap', canSearch: true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Document No', name: 'docno', width: 20, classes: 'wrap', canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
 			{ label: 'Transaction Date', name: 'trandate', width: 27, classes: 'wrap', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
