@@ -1416,9 +1416,9 @@ $(document).ready(function () {
 			mycurrency2.formatOff();
 			mycurrency_np.formatOff();
 
-			if(errorField.length>0){
-				return false;
-			}
+			// if(errorField.length>0){
+			// 	return false;
+			// }
 
 		    for (var i = 0; i < ids.length; i++) {
 			//	if(parseInt($('#'+ids[i]+"_qtyrequest").val()) <= 0)return false;

@@ -747,7 +747,7 @@ class InventoryTransactionController extends defaultController
             DB::rollback();
 
             
-            return response($e->getMessage(), 500);
+            return response($e, 500);
         }
     }
 
@@ -774,7 +774,7 @@ class InventoryTransactionController extends defaultController
             ///insert detail from existing inventory request
 
             $stockloc_txndept = DB::table('material.stockloc')
-                            ->where('unit', '=', session('unit'))
+                            // ->where('unit', '=', session('unit'))
                             ->where('compcode', '=', session('compcode'))
                             ->where('itemcode',$value->itemcode)
                             ->where('uomcode',$value->uomcode)
@@ -782,14 +782,22 @@ class InventoryTransactionController extends defaultController
                             ->where('deptcode',$txndept)
                             ->first();
 
-            $stockloc_sndrcv = DB::table('material.stockloc')
-                            ->where('unit', '=', session('unit'))
+            $qtyonhand_sndrcv = 0;
+            if(!in_array($ivtmphd->trantype, ['TUO','TUI'])){
+                $stockloc_sndrcv = DB::table('material.stockloc')
+                            // ->where('unit', '=', session('unit'))
                             ->where('compcode', '=', session('compcode'))
                             ->where('itemcode',$value->itemcode)
                             ->where('uomcode',$value->uomcode)
                             ->where('year',$year)
-                            ->where('deptcode',$sndrcv)
-                            ->first();
+                            ->where('deptcode',$sndrcv);
+
+                if(!$stockloc_sndrcv->exists()){
+                    throw new \Exception("Stockloc doesnt exists for item $value->itemcode - $value->uomcode - $year - $sndrcv", 500);
+                }
+                $stockloc_sndrcv = $stockloc_sndrcv->first();
+                $qtyonhand_sndrcv = $stockloc_sndrcv->qtyonhand;
+            }
 
             $table = DB::table("material.ivtmpdt");
             $table->insert([
@@ -812,7 +820,7 @@ class InventoryTransactionController extends defaultController
                 'expdate' => $value->expdate,
                 'batchno' => $value->batchno,
                 'qtyonhand' => $stockloc_txndept->qtyonhand,
-                'qtyonhandrecv'=> $stockloc_sndrcv->qtyonhand,
+                'qtyonhandrecv'=> $qtyonhand_sndrcv,
                // 'maxqty' => $value->maxqty, 
                 'adduser' => session('username'), 
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
