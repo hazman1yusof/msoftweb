@@ -1187,8 +1187,8 @@ $(document).ready(function () {
 				table_name:'finance.apacthdr'
 			}
 
-			param.filterCol = ['document','suppcode','recstatus'];
-			param.filterVal = [$("#apacthdr_document").val(),$('#apacthdr_suppcode').val(),'<>.CANCELLED'];
+			param.filterCol = ['document','suppcode','recstatus','compcode'];
+			param.filterVal = [$("#apacthdr_document").val(),$('#apacthdr_suppcode').val(),'<>.CANCELLED','session.compcode'];
 
 			$.get( param.url+"?"+$.param(param), function( data ) {
 			

@@ -347,6 +347,16 @@ use Carbon\Carbon;
                 $compcode = 'DD';
             // }
 
+            $document = DB::table("finance.apacthdr")
+                            ->where('document',$request->apacthdr_document)
+                            ->where('compcode',session('compcode'))
+                            ->where('suppcode',$request->apacthdr_suppcode)
+                            ->where('recstatus','!=','CANCELLED');
+
+            if($document->exists){
+                throw new \Exception('document No already exist: '.$request->apacthdr_document, 500);
+            }
+
             $table = DB::table("finance.apacthdr");
             
             $array_insert = [
