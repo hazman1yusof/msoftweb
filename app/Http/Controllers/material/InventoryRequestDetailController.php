@@ -85,7 +85,7 @@ class InventoryRequestDetailController extends defaultController
 
             $product = DB::table('material.product')
                         ->where('compcode',session('compcode'))
-                        ->where('unit',session('unit'))
+                        // ->where('unit',session('unit'))
                         ->where('itemcode',$request->itemcode)
                         ->where('uomcode',$request->uomcode);
 
@@ -101,10 +101,10 @@ class InventoryRequestDetailController extends defaultController
 
             $stockloc = DB::table('material.stockloc')
                         ->where('compcode',session('compcode'))
-                        ->where('unit',session('unit'))
+                        // ->where('unit',session('unit'))
                         ->where('itemcode',$request->itemcode)
                         ->where('uomcode',$request->uomcode)
-                        ->where('deptcode',$request->reqdept)
+                        ->where('deptcode',$request->reqtodept)
                         ->where('year',$this->toYear($request->reqdt));
 
             if(!$stockloc->exists()) {
