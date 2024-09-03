@@ -1488,8 +1488,9 @@ $(document).ready(function () {
 				{label:'UOM Code',name:'s_uomcode',width:100,classes:'pointer'},
 				{label:'Max Quantity',name:'s_maxqty',width:100,classes:'pointer', hidden:true},
 				{label:'Average Cost', name: 'p_avgcost', width: 100, classes: 'pointer', hidden:false },
-				{label: 'Exp', name: 'p_expdtflg', width: 50, classes: 'pointer',formatter:formatterstatus_tick_number,unformat:unformatstatus_tick_number },
+				{label:'Exp', name: 'p_expdtflg', width: 50, classes: 'pointer',formatter:formatterstatus_tick_number,unformat:unformatstatus_tick_number },
 				{label:'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
+				{label:'Unit', name: 's_unit', width: 80, classes: 'pointer' },
 			],
 			urlParam: {
 				filterCol:['s.compcode','s.year','s.deptcode'],
@@ -1547,13 +1548,13 @@ $(document).ready(function () {
 			open:function(){
 				dialog_itemcode.urlParam.fixPost="true";
 				dialog_itemcode.urlParam.table_id="none_";
-				dialog_itemcode.urlParam.filterCol=['s.compcode','s.year','s.deptcode'];
-				dialog_itemcode.urlParam.filterVal=['session.compcode',moment($('#reqdt').val()).year(),$('#reqtodept').val()];
+				dialog_itemcode.urlParam.filterCol=['s.compcode','s.year','s.deptcode','s.unit'];
+				dialog_itemcode.urlParam.filterVal=['session.compcode',moment($('#reqdt').val()).year(),$('#reqtodept').val(),'session.unit'];
 				dialog_itemcode.urlParam.join_type=['LEFT JOIN', 'LEFT JOIN'];
 				dialog_itemcode.urlParam.join_onCol=['s.itemcode','u.uomcode'];
 				dialog_itemcode.urlParam.join_onVal=['p.itemcode', 's.uomcode'];
-				dialog_itemcode.urlParam.join_filterCol=[['s.compcode on =', 's.uomcode on =','p.recstatus ='], []];
-				dialog_itemcode.urlParam.join_filterVal=[['p.compcode','p.uomcode','ACTIVE'], []];
+				dialog_itemcode.urlParam.join_filterCol=[['s.compcode on =', 's.uomcode on =','p.recstatus =','s.unit'], []];
+				dialog_itemcode.urlParam.join_filterVal=[['p.compcode','p.uomcode','ACTIVE','p.unit'], []];
 			},
 			close: function(obj){
 				let id_optid = obj.id_optid;
