@@ -72,6 +72,7 @@ class PurchaseOrderDetailController extends defaultController
                 ->select('podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder','podt.qtydelivered','podt.qtyoutstand','podt.qtyrequest', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount','podt.rem_but AS remarks_button','podt.remarks', 'podt.unit', 't.rate')
                 ->leftJoin('material.productmaster AS p', function($join) use ($request){
                     $join = $join->on("podt.itemcode", '=', 'p.itemcode');    
+                    $join = $join->where("podt.unit", '=', session('unit'));    
                 })
                 ->leftJoin('hisdb.taxmast AS t', function($join) use ($request){
                     $join = $join->on("podt.taxcode", '=', 't.taxcode');    

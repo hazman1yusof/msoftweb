@@ -170,13 +170,15 @@ class PurchaseRequestController extends defaultController
                 throw new \Exception("Purchase department doesnt exists");
             }
 
-            $suppcode = DB::table('material.supplier')
-                        ->where('compcode',session('compcode'))
-                        ->where('recstatus','ACTIVE')
-                        ->where('suppcode',$request->purreqhd_suppcode)
-                        ->exists();
-            if(!$suppcode){
-                throw new \Exception("supplier doesnt exists");
+            if(!empty($request->purreqhd_suppcode)){
+                $suppcode = DB::table('material.supplier')
+                            ->where('compcode',session('compcode'))
+                            ->where('recstatus','ACTIVE')
+                            ->where('suppcode',$request->purreqhd_suppcode)
+                            ->exists();
+                if(!$suppcode){
+                    throw new \Exception("supplier doesnt exists");
+                }
             }
 
             $table = DB::table("material.purreqhd");
