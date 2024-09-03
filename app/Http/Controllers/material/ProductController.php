@@ -476,6 +476,7 @@ class ProductController extends defaultController
                     'expdtflg' => $request->expdtflg,
                     'chgflag' => $request->chgflag,
                     'itemtype' => $request->itemtype,
+                    'recstatus' => $request->recstatus,
 
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),

@@ -187,18 +187,18 @@ $(document).ready(function () {
 		},
 	});
 
-	function check_cust_rules(rowid){
-		var chk = ['catcode','description'];
-		chk.forEach(function(e,i){
-			var val = $("#jqGrid input[name='"+e+"']").val();
-			if(val.trim().length <= 0){
-				myerrorIt_only("#jqGrid input[name='"+e+"']",true);
-			}else{
-				myerrorIt_only("#jqGrid input[name='"+e+"']",false);
-			}
-		})
+	// function check_cust_rules(rowid){
+	// 	var chk = ['catcode','description'];
+	// 	chk.forEach(function(e,i){
+	// 		var val = $("#jqGrid input[name='"+e+"']").val();
+	// 		if(val.trim().length <= 0){
+	// 			myerrorIt_only("#jqGrid input[name='"+e+"']",true);
+	// 		}else{
+	// 			myerrorIt_only("#jqGrid input[name='"+e+"']",false);
+	// 		}
+	// 	})
 
-	}
+	// }
 
 	//////////////////////////My edit options /////////////////////////////////////////////////////////
 	var myEditOptions = {
@@ -218,9 +218,9 @@ $(document).ready(function () {
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
-			// $("#jqGrid input[type='text']").on('focus',function(){
-			// 	$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
-			// 	$("#jqGrid input[type='text']").removeClass( "error" );
+			// $("#addChartAcc input[type='text']").on('focus',function(){
+			// 	$("#addChartAcc input[type='text']").parent().removeClass( "has-error" );
+			// 	$("#addChartAcc input[type='text']").removeClass( "error" );
 			// });
 
 		},
@@ -279,9 +279,9 @@ $(document).ready(function () {
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
-			// $("#jqGrid input[type='text']").on('focus',function(){
-			// 	$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
-			// 	$("#jqGrid input[type='text']").removeClass( "error" );
+			// $("#addChartAcc input[type='text']").on('focus',function(){
+			// 	$("#addChartAcc input[type='text']").parent().removeClass( "has-error" );
+			// 	$("#addChartAcc input[type='text']").removeClass( "error" );
 			// });
 
 		},
@@ -525,7 +525,7 @@ $(document).ready(function () {
 	dialog_glaccount.on();
 
 	var dialog_costcode = new ordialog(
-		'costcode','finance.costcenter',"#jqGrid input[name='costcode']",errorField,
+		'costcode','finance.costcenter',"#jqGrid input[name='costcode']",'errorField',
 		{	colModel:[
                 {label:'Cost Code',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
                 {label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -538,7 +538,7 @@ $(document).ready(function () {
 					let data=selrowData('#'+dialog_costcode.gridname);
 					$("#jqGrid input[name='glaccount']").val([$("#glaccountSearch").val()]);
 					$("#jqGrid input[name='year']").val([$("#yearSearch").val()]);
-					dialog_glaccount.check(errorField,'costcode');
+					dialog_glaccount.check(errorField);
 				},
 				gridComplete: function(obj){
 						var gridname = '#'+obj.gridname;
