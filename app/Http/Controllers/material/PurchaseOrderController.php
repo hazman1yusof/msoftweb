@@ -942,8 +942,8 @@ class PurchaseOrderController extends defaultController
         $purorddt = DB::table('material.purorddt AS podt', 'material.productmaster AS p', 'material.uom as u')
                     ->select('podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.pricecode', 'podt.itemcode', 'p.description', 'podt.uomcode', 'podt.pouom', 'podt.qtyorder', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc', 'podt.amtslstax as tot_gst','podt.netunitprice', 'podt.totamount','podt.amount', 'podt.rem_but AS remarks_button', 'podt.remarks', 'podt.recstatus', 'podt.unit', 'u.description as uom_desc')
                     ->leftJoin('material.uom as u', function ($join){
-                        $join = $join->on('u.uomcode', '=', 'podt.uomcode')
-                                    ->where('u.uomcode','=',session('compcode'));
+                        $join = $join->on('u.uomcode', '=', 'podt.pouom')
+                                    ->where('u.compcode','=',session('compcode'));
                     })
                     ->leftJoin('material.productmaster as p', function ($join){
                         $join = $join->on('p.itemcode', '=', 'podt.itemcode')
@@ -953,7 +953,7 @@ class PurchaseOrderController extends defaultController
                     ->where('podt.compcode','=',session('compcode'))
                     ->where('recno','=',$recno)
                     ->get();
-        
+                    
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();

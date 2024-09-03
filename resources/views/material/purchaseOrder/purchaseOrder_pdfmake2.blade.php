@@ -91,7 +91,7 @@
 					table: {
 						headerRows: 1,
 						dontBreakRows: true,
-						widths: [20,80,20,40,'*','*',30,'*',50],//panjang standard dia 515
+						widths: [20,80,60,50,60,60,30,50,60],//panjang standard dia 515
 						body: [
 							[
 								{text:'Line No.',bold: true, style: 'body_ttl',border: [false, true, false, true]},

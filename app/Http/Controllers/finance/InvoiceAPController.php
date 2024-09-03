@@ -353,7 +353,7 @@ use Carbon\Carbon;
                             ->where('suppcode',$request->apacthdr_suppcode)
                             ->where('recstatus','!=','CANCELLED');
 
-            if($document->exists){
+            if($document->exists()){
                 throw new \Exception('document No already exist: '.$request->apacthdr_document, 500);
             }
 
