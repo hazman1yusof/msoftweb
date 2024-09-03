@@ -202,10 +202,10 @@ class HomeController extends Controller
         $menu.="<li><a style='padding-left:21px' title='Pharmacy' class='clickable' programid='stockNon-Pharmacy' targeturl='product?groupcode=Stock&&Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Pharmacy' class='clickable' programid='stockConsignment' targeturl='product?groupcode=Consignment&&Class=Consignment'>Consignment</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Other' class='clickable' programid='productFin' targeturl='product?groupcode=Others&&Class=Others'>Other</a></li>";
-        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='asset' targeturl='\product?groupcode=Asset&&Class=Asset'>Asset</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='asset' targeturl='./product?groupcode=Asset&&Class=Asset'>Asset</a></li>";
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Enquiry</b></a></li>";
-        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemPhar' targeturl='\itemEnquiry?Class=Pharmacy'>Pharmacy</a></li>";
-        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemNonPhar' targeturl='\itemEnquiry?Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemPhar' targeturl='./itemEnquiry?Class=Pharmacy'>Pharmacy</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemNonPhar' targeturl='./itemEnquiry?Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
 
         return $menu;
     }
