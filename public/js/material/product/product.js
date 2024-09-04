@@ -40,8 +40,8 @@ $(document).ready(function () {
 				{label:'Category',name:'productcat',hidden:false,canSearch:true}
 			],
 			urlParam: {
-				filterCol:['groupcode', 'Class','recstatus','compcode','unit'],
-				filterVal:[gc2, Class2,'ACTIVE','session.compcode','session.unit']
+				filterCol:['groupcode', 'Class','recstatus','compcode'],
+				filterVal:[gc2, Class2,'ACTIVE','session.compcode']
 			},
 			sortname:'idno',
 			sortorder:'desc',
@@ -68,8 +68,8 @@ $(document).ready(function () {
 			open: function(){
 				var gc2 = $('#groupcode2').val();
 				var Class2 = $('#Class2').val();
-				dialog_itemcode.urlParam.filterCol = ['groupcode', 'Class','recstatus','compcode','unit'];
-				dialog_itemcode.urlParam.filterVal = [ gc2, Class2,'ACTIVE','session.compcode','session.unit'];
+				dialog_itemcode.urlParam.filterCol = ['groupcode', 'Class','recstatus','compcode'];
+				dialog_itemcode.urlParam.filterVal = [ gc2, Class2,'ACTIVE','session.compcode'];
 
 				$('#Dcol_itemcodesearch input[type="radio"][value="productcat"]').on('click',dialog_cat_selection_event);
 				$('#Dcol_itemcodesearch input[type="radio"]:not([value="productcat"])').on('click',function(){

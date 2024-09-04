@@ -102,7 +102,19 @@ class InventoryTransactionDetailController extends defaultController
                             ->where('compcode','=','DD');
 
             if($ivtmphd->exists()){
+                $docno = $this->request_no($request->trantype, $request->txndept);
+                $recno = $this->recno('IV','IT');
 
+                DB::table("material.ivtmphd")
+                    ->where('idno','=',$request->idno)
+                    ->update([
+                        'docno' => $docno,
+                        'recno' => $recno,
+                        'compcode' => session('compcode'),
+                    ]);
+            }
+
+            if(empty($recno)){
                 $docno = $this->request_no($request->trantype, $request->txndept);
                 $recno = $this->recno('IV','IT');
 

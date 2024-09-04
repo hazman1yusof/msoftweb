@@ -154,7 +154,7 @@ class PurchaseOrderDetailController extends defaultController
                 $recno = $request->recno;
 
                 if($purreqno == 0 && $recno == 0){
-                    $purordno = $this->request_no('PO',$purordhd->first()->prdept);
+                    $purordno = $this->request_no('PO',$request->prdept);
                     $recno = $this->recno('PUR','PO');
                 
                     DB::table("material.purordhd")

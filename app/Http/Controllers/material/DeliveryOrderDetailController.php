@@ -217,7 +217,7 @@ class DeliveryOrderDetailController extends defaultController
                         'compcode' => session('compcode'),
                     ]);
             }else if(empty($recno)){
-                $delordno = $this->request_no('DO',$delordhd->first()->prdept);
+                $delordno = $this->request_no('DO',$request->prdept);
                 $recno = $this->recno('PUR','DO');
 
                 DB::table("material.delordhd")
