@@ -98,7 +98,7 @@ i.fa {
 		
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
-			<div class="panel-body" style="position: relative;">
+			<div class="panel-body" style="position: relative;padding-bottom: 0px;">
 			<form class='form-horizontal' style='width:99%' id='formdata'>
 
 				{{ csrf_field() }}
@@ -187,69 +187,77 @@ i.fa {
 		 <!--------------------------------Authdtl Form ------------------>
 
 		<div id="Authdtl" title="Authorization Detail" >
-        	<form class='form-horizontal' style='width:99%' id='FAuthdtl'>
+    	<form class='form-horizontal' style='width:99%' id='FAuthdtl'>
 			
 				{{ csrf_field() }}
 				<input type="hidden" id="d_idno" name="dtl_idno">
 				<input type="hidden" id="d_authorid" name="dtl_authorid">
             
-            	<div class="form-group">
-				 	<label class="col-md-2 control-label" for="d_authorid">User ID</label>  
+        	<div class="form-group">
+					 	<label class="col-md-2 control-label" for="d_authorid">User ID</label>  
 				  		<div class="col-md-2">
 				  			<input name="dtl_authorid" type="text" maxlength="12" class="form-control input-sm" rdonly>
 				  		</div>
 
-				  	<label class="col-md-2 control-label" for="d_deptcode">Department</label>  
+		  				<label class="col-md-2 control-label" for="d_deptcode">Department</label>  
 				  		<div class="col-md-2">
 					  		<div class='input-group'>
 								<input id="d_deptcode" name="dtl_deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" value="ALL">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  		</div>
-					 		<span class="help-block"></span>
+					 			<span class="help-block"></span>
 				  		</div>	
-                </div>
+            </div>
             
-            	<div class="form-group">
-					<label class="col-md-2 control-label" for="d_recstatus">Authorize Status</label>  
-						<div class="col-md-2">
-							<select id="d_recstatus" name="dtl_recstatus" class="form-control input-sm">
-							    <option value="SUPPORT">SUPPORT</option>
-							    <option value="VERIFIED">VERIFIED</option>
-							    <option value="RECOMMENDED1">RECOMMENDED 1</option>
-							    <option value="RECOMMENDED2">RECOMMENDED 2</option>
-							    <option value="APPROVED">APPROVED</option>
-							</select>
-						</div>	
+        		<div class="form-group">
+							<label class="col-md-2 control-label" for="d_recstatus">Authorize Status</label>  
+							<div class="col-md-2">
+								<select id="d_recstatus" name="dtl_recstatus" class="form-control input-sm">
+								    <option value="SUPPORT">SUPPORT</option>
+								    <option value="VERIFIED">VERIFIED</option>
+								    <option value="RECOMMENDED1">RECOMMENDED 1</option>
+								    <option value="RECOMMENDED2">RECOMMENDED 2</option>
+								    <option value="APPROVED">APPROVED</option>
+								</select>
+							</div>	
 
-					<label class="col-md-2 control-label" for="d_trantype">Type</label>  
-						<div class="col-md-2">
-							<select id="d_trantype" name="dtl_trantype" class="form-control input-sm">
-							    <option value="PR">Purchase Request</option>
-							    <option value="PO">Purchase Order</option>
-							    <option value="IV">Inventory Transaction</option>
-							</select>
-						</div>
-                </div>		
+							<label class="col-md-2 control-label" for="d_trantype">Type</label>  
+							<div class="col-md-2">
+								<select id="d_trantype" name="dtl_trantype" class="form-control input-sm">
+								    <option value="PR">Purchase Request</option>
+								    <option value="PO">Purchase Order</option>
+								    <option value="IV">Inventory Transaction</option>
+								</select>
+							</div>
+            </div>		
 
-                <div class="form-group">
-				  <label class="col-md-2 control-label" for="d_cando">Recstatus</label> 
-				  <div class="col-md-2">
-					<label class="radio-inline"><input type="radio" name="dtl_cando" value='ACTIVE' checked>Active</label>
-					<label class="radio-inline"><input type="radio" name="dtl_cando" value='DEACTIVE' >Deactive</label>
-				  </div>
-				</div> 
+            <div class="form-group">
+						  <label class="col-md-2 control-label" for="d_cando">Recstatus</label> 
+						  <div class="col-md-2">
+								<label class="radio-inline"><input type="radio" name="dtl_cando" value='ACTIVE' checked>Active</label>
+								<label class="radio-inline"><input type="radio" name="dtl_cando" value='DEACTIVE' >Deactive</label>
+						  </div>
+
+						  <label class="col-md-2 control-label" for="dtl_prtype">Stock Type</label>  
+							<div class="col-md-2">
+								<select id="dtl_prtype" name="dtl_prtype" class="form-control input-sm">
+								    <option value="STOCK">STOCK</option>
+								    <option value="OTHERS">OTHERS</option>
+								</select>
+							</div>
+						</div> 
                 
-                <div class="form-group">
+            <div class="form-group">
 				  	<label class="col-md-2 control-label" for="d_minlimit">Min Limit</label>  
 				  		<div class="col-md-2">
-				  			<input id="d_minlimit" name="dtl_minlimit" type="text" class="form-control input-sm" value="1.00" rdonly>
+				  			<input id="d_minlimit" name="dtl_minlimit" type="text" class="form-control input-sm" value="1.00" data-sanitize-number-format="0,0.00" data-validation="required">
 				  		</div>
 
 				  	<label class="col-md-2 control-label" for="d_maxlimit">Max Limit</label>  
 				  		<div class="col-md-2">
 				  			<input id="d_maxlimit" name="dtl_maxlimit" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" data-validation="required">
 				  		</div>
-                </div>
+            </div>
 			</form>
 		</div>
 		<!------------------------------end authdtl---------------------------------->	

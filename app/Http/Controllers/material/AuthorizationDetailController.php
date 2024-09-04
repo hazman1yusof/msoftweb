@@ -63,6 +63,7 @@ class AuthorizationDetailController extends defaultController
                             ->where('trantype','=',$request->dtl_trantype)
                             ->whereIn('deptcode', [$request->dtl_deptcode, "ALL", "all"])
                             ->where('recstatus','=',$request->dtl_recstatus)
+                            ->where('prtype','=',$request->dtl_prtype)
                             ->exists();
             // }
 
@@ -94,6 +95,7 @@ class AuthorizationDetailController extends defaultController
                         'deptcode' => strtoupper($request->dtl_deptcode),
                         'authorid' => $authorid_,
                         'recstatus' => strtoupper($request->dtl_recstatus),
+                        'prtype' => strtoupper($request->dtl_prtype),
                         'cando' => strtoupper($request->dtl_cando),
                         'minlimit' => $request->dtl_minlimit,
                         'maxlimit' => $request->dtl_maxlimit,
@@ -145,6 +147,7 @@ class AuthorizationDetailController extends defaultController
                             ->where('deptcode','!=',$authdtl_get->deptcode)
                             ->where('trantype','=',$request->dtl_trantype)
                             ->where('recstatus','=',$request->dtl_recstatus)
+                            ->where('prtype','=',$request->dtl_prtype)
                             ->where('cando','=','ACTIVE')
                             ->exists();
 
@@ -155,6 +158,7 @@ class AuthorizationDetailController extends defaultController
                             ->where('trantype','=',$request->dtl_trantype)
                             ->where('deptcode','==',$request->deptcode)
                             ->where('recstatus','=',$request->dtl_recstatus)
+                            ->where('prtype','=',$request->dtl_prtype)
                             ->exists();
             }  
 
@@ -162,26 +166,28 @@ class AuthorizationDetailController extends defaultController
                 throw new \Exception("Duplicate entry", 500);
             }
 
-            $duplicate2 = DB::table('material.authdtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('authorid','!=',$authorid_)
-                        ->where('maxlimit','=',$request->dtl_maxlimit)
-                        ->where('trantype','=',$request->dtl_trantype)
-                        ->where('deptcode','=',$request->dtl_deptcode)
-                        ->where('recstatus','=',$request->dtl_recstatus);
+            // $duplicate2 = DB::table('material.authdtl')
+            //             ->where('compcode','=',session('compcode'))
+            //             ->where('authorid','!=',$authorid_)
+            //             ->where('maxlimit','=',$request->dtl_maxlimit)
+            //             ->where('trantype','=',$request->dtl_trantype)
+            //             ->where('deptcode','=',$request->dtl_deptcode)
+            //             ->where('recstatus','=',$request->dtl_recstatus)
+            //             ->where('prtype','=',$request->dtl_prtype);
 
-            if($duplicate2->exists()){
-                $first_get = $duplicate2->first();
-                throw new \Exception("Authorise Entry has been entered by ".$first_get->authorid, 500);
-            }
+            // if($duplicate2->exists()){
+            //     $first_get = $duplicate2->first();
+            //     throw new \Exception("Authorise Entry has been entered by ".$first_get->authorid, 500);
+            // }
 
             ///1. update detail
             $authdtl
                 ->update([
-                    'trantype' => $request->dtl_trantype,
-                    'deptcode' => $request->dtl_deptcode,
-                    'recstatus' => $request->dtl_recstatus,
-                    'cando' => $request->dtl_cando,
+                    'trantype' => strtoupper($request->dtl_trantype),
+                    'deptcode' => strtoupper($request->dtl_deptcode),
+                    'recstatus' => strtoupper($request->dtl_recstatus),
+                    'prtype' => strtoupper($request->dtl_prtype),
+                    'cando' => strtoupper($request->dtl_cando),
                     'minlimit' => $request->dtl_minlimit,
                     'maxlimit' => $request->dtl_maxlimit,
                     'upduser' => session('username'), 
@@ -195,7 +201,6 @@ class AuthorizationDetailController extends defaultController
 
             return response($e->getMessage(), 500);
         }
-
     }
 
     public function edit_all(Request $request){
@@ -210,10 +215,11 @@ class AuthorizationDetailController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('idno','=',$value['idno'])
                     ->update([
-                        'trantype' => $value['trantype'],
-                        'deptcode' => $value['deptcode'],
-                        'recstatus' => $value['recstatus'],
-                        'cando' => $value['cando'],
+                        // 'trantype' => $value['trantype'],
+                        // 'deptcode' => $value['deptcode'],
+                        // 'recstatus' => $value['recstatus'],
+                        // 'prtype' => strtoupper($request->dtl_prtype),
+                        // 'cando' => $value['cando'],
                         'minlimit' => $value['minlimit'],
                         'maxlimit' => $value['maxlimit'],
                         'upduser' => session('username'), 
@@ -229,7 +235,6 @@ class AuthorizationDetailController extends defaultController
 
             return response('Error'.$e, 500);
         }
-
     }
 
     public function del(Request $request){
@@ -242,11 +247,12 @@ class AuthorizationDetailController extends defaultController
             DB::table('material.authdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
-                ->update([ 
-                    'deluser' => session('username'), 
-                    'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'cando' => 'DEACTIVE'
-                ]);
+                ->delete();
+                // ->update([ 
+                //     'deluser' => session('username'), 
+                //     'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                //     'cando' => 'DEACTIVE'
+                // ]);
 
        
             DB::commit();

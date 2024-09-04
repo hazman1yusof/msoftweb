@@ -41,7 +41,7 @@ $(document).ready(function () {
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 			switch(oper) {
 				case state = 'add':
-					refreshGrid("#jqGrid2", urlParam2,'kosongkan');
+					// refreshGrid("#jqGrid2",null,'kosongkan');
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
 					enableForm('#formdata');
@@ -94,6 +94,7 @@ $(document).ready(function () {
 			dialog_authorid.off();
 			$(".noti").empty();
 			$("#refresh_jqGrid").click();
+			refreshGrid("#jqGrid2",null,'kosongkan');
 			// refreshGrid("#jqGrid2",null,"kosongkan");
 			// refreshGrid("#gridAuthdtl",null,"kosongkan");
 			
@@ -165,7 +166,8 @@ $(document).ready(function () {
 			}
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
-			$("#searchForm input[name=Stext]").focus();		},
+			// $("#searchForm input[name=Stext]").focus();		
+		},
 		
 	});
 
@@ -253,6 +255,8 @@ $(document).ready(function () {
 
 		},'json').fail(function (data) {
 			alert(data.responseJSON.message);
+			mycurrency.formatOn();
+			dialog_authorid.on();
 		}).done(function (data) {
 			unsaved = false;
 			hideatdialogForm(false);
@@ -340,7 +344,6 @@ $("#jqGrid2").jqGrid({
                      value: "SUPPORT:SUPPORT;VERIFIED:VERIFIED;RECOMMENDED1:RECOMMENDED 1;RECOMMENDED2:RECOMMENDED 2;APPROVED:APPROVED"
                  }
 		},
-	
 		{ label: 'Status', name: 'dtl_cando', width: 150, classes: 'wrap', canSearch: true, editable: true,
 			 editable: true,
                  edittype: "select",
@@ -348,11 +351,17 @@ $("#jqGrid2").jqGrid({
                      value: "ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"
                  }
 		},
+		{ label: 'Stock Type', name: 'dtl_prtype', width: 150, classes: 'wrap', canSearch: true, editable: true,
+			 editable: true,
+                 edittype: "select",
+                 editoptions: {
+                     value: "STOCK:STOCK;OTHERS:OTHERS"
+                 }
+		},
 		{ label: 'Min Limit', name: 'dtl_minlimit', width: 150, align: 'right', classes: 'wrap', editable:true,
 		formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 		editrules:{required: true},edittype:"text",
 				editoptions:{
-				readonly: "readonly",
 				defaultValue: '1.00',
 				maxlength: 100,
 				dataInit: function(element) {
@@ -369,6 +378,7 @@ $("#jqGrid2").jqGrid({
 		formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 		editrules:{required: true},edittype:"text",
 				editoptions:{
+				defaultValue: '1.00',
 				maxlength: 100,
 				dataInit: function(element) {
 					element.style.textAlign = 'right';
@@ -450,8 +460,8 @@ var myEditOptions = {
     }, 
     errorfunc: function(rowid,response){
     	alert(response.responseText);
-    	refreshGrid('#jqGrid2',urlParam2,'add');
-    	$("#jqGridPager2Delete").show();
+    	// refreshGrid('#jqGrid2',urlParam2,'add');
+    	// $("#jqGridPager2Delete").show();
     },
     beforeSaveRow: function(options, rowid) {
 
@@ -499,9 +509,10 @@ $("#jqGrid2").inlineNav('#jqGridPager2',{
 			    },
 			    callback: function (result) {
 			    	if(result == true){
+
 			    		param={
 			    			action: 'authorizationDetail_save',
-							idno: $('#dtl_idno').val(),
+							idno: selrowData("#jqGrid2").dtl_idno,
 
 			    		}
 			    		$.post( "./authorizationDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
@@ -554,6 +565,7 @@ $("#jqGrid2").inlineNav('#jqGridPager2',{
 	    		'trantype' : $("#jqGrid2 select#"+ids[i]+"_dtl_trantype option:selected").val(),
 	    		'deptcode' : $("#jqGrid2 input#"+ids[i]+"_dtl_deptcode").val(),
 	    		'recstatus' : $("#jqGrid2 select#"+ids[i]+"_dtl_recstatus option:selected").val(),
+	    		'prtype' : $("#jqGrid2 select#"+ids[i]+"_dtl_prtype option:selected").val(),
 	    		'cando' : $("#jqGrid2 select#"+ids[i]+"_dtl_cando option:selected").val(),
 	    		'minlimit' : $("#jqGrid2 input#"+ids[i]+"_dtl_minlimit").val(),
                 'maxlimit' : $("#jqGrid2 input#"+ids[i]+"_dtl_maxlimit").val()
@@ -754,7 +766,12 @@ var dialog_deptcodedtl = new ordialog(
 dialog_deptcodedtl.makedialog();
 
 function onall_editfunc(){
-	dialog_deptcodedtl.on();
+	dialog_deptcodedtl.off();
+	$(dialog_deptcodedtl.textfield).attr('disabled',true);
+	$("#jqGrid2 select[name='dtl_trantype']").attr('disabled',true);
+	$("#jqGrid2 select[name='dtl_recstatus']").attr('disabled',true);
+	$("#jqGrid2 select[name='dtl_cando']").attr('disabled',true);
+	$("#jqGrid2 select[name='dtl_prtype']").attr('disabled',true);
 	
 	mycurrency2.formatOnBlur();//make field to currency on leave cursor
 }
@@ -945,7 +962,13 @@ $("#gridAuthdtl").jqGrid({
                          value: "ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"
                      }
 			},
-		
+			{ label: 'Stock Type', name: 'dtl_prtype', width: 150, classes: 'wrap', canSearch: true, editable: true,
+				 editable: true,
+	                 edittype: "select",
+	                 editoptions: {
+	                     value: "STOCK:STOCK;OTHERS:OTHERS"
+	                 }
+			},
 			{ label: 'Min Limit', name: 'dtl_minlimit', width: 200, classes: 'wrap', editable: true,
 				edittype:"text",
 			},

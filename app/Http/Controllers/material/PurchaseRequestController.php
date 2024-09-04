@@ -350,44 +350,45 @@ class PurchaseRequestController extends defaultController
 
                 }
                 
-                    // $authorise_use = $authorise->first();
-                    DB::table("material.queuepr")
-                        ->insert([
-                            'compcode' => session('compcode'),
-                            'recno' => $purreqhd_get->recno,
-                            'AuthorisedID' => session('username'),
-                            'deptcode' => $purreqhd_get->reqdept,
-                            'recstatus' => 'PREPARED',
-                            'trantype' => 'SUPPORT',
-                            'adduser' => session('username'),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
+                // $authorise_use = $authorise->first();
+                DB::table("material.queuepr")
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'recno' => $purreqhd_get->recno,
+                        'AuthorisedID' => session('username'),
+                        'deptcode' => $purreqhd_get->reqdept,
+                        'prtype' => $purreqhd_get->prtype,
+                        'recstatus' => 'PREPARED',
+                        'trantype' => 'SUPPORT',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
 
-                    // 3. update status to posted
-                    $purreqhd->update([
-                            'requestby' => session('username'),
-                            'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'recstatus' => 'PREPARED'
-                        ]);
+                // 3. update status to posted
+                $purreqhd->update([
+                        'requestby' => session('username'),
+                        'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'PREPARED'
+                    ]);
 
-                    DB::table("material.purreqdt")
-                        ->where('compcode','=',session('compcode'))
-                        ->where('recno','=',$purreqhd_get->recno)
-                        ->update([
-                            'recstatus' => 'PREPARED',
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
+                DB::table("material.purreqdt")
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$purreqhd_get->recno)
+                    ->update([
+                        'recstatus' => 'PREPARED',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
 
-                    // 5. email and whatsapp
-                    $data = new stdClass();
-                    $data->status = 'SUPPORT';
-                    $data->deptcode = $purreqhd_get->reqdept;
-                    $data->purreqno = $purreqhd_get->purreqno;
-                    $data->email_to = 'hazman.yusof@gmail.com';
-                    $data->whatsapp = '01123090948';
+                // 5. email and whatsapp
+                $data = new stdClass();
+                $data->status = 'SUPPORT';
+                $data->deptcode = $purreqhd_get->reqdept;
+                $data->purreqno = $purreqhd_get->purreqno;
+                $data->email_to = 'hazman.yusof@gmail.com';
+                $data->whatsapp = '01123090948';
 
                     //$this->sendemail($data);
                 // }
@@ -548,6 +549,36 @@ class PurchaseRequestController extends defaultController
                     continue;
                 }
 
+                $authorise = DB::table('material.authdtl')
+                    ->where('authorid','=',session('username'))
+                    ->where('compcode','=',session('compcode'))
+                    ->where('trantype','=','PR')
+                    ->where('cando','=', 'ACTIVE')
+                    ->where('prtype','=',$purreqhd_get->prtype)
+                    ->where('deptcode','=',$purreqhd_get->reqdept)
+                    ->where('maxlimit','>=',$purreqhd_get->totamount)
+                    ->whereIn('recstatus',['SUPPORT','VERIFIED','RECOMMENDED1','RECOMMENDED2','APPROVED']);
+
+                if(!$authorise->exists()){
+
+                    $authorise = DB::table('material.authdtl')
+                        ->where('authorid','=',session('username'))
+                        ->where('compcode','=',session('compcode'))
+                        ->where('trantype','=','PR')
+                        ->where('cando','=', 'ACTIVE')
+                        ->where('recstatus','=','SUPPORT')
+                        ->where('deptcode','=','ALL')
+                        ->where('deptcode','=','all')
+                        ->where('prtype','=',$purreqhd_get->prtype)
+                        ->where('maxlimit','>=',$purreqhd_get->totamount)
+                        ->whereIn('recstatus',['SUPPORT','VERIFIED','RECOMMENDED1','RECOMMENDED2','APPROVED']);
+
+                        if(!$authorise->exists()){
+                            throw new \Exception("The user doesnt have authority",500);
+                        }
+                        
+                }
+
                 $purreqhd_update = [
                     'recstatus' => 'CANCELLED',
                     'cancelby' => session('username'),
@@ -611,6 +642,7 @@ class PurchaseRequestController extends defaultController
                         ->where('trantype','=','PR')
                         ->where('cando','=', 'ACTIVE')
                         ->where('recstatus','=','SUPPORT')
+                        ->where('prtype','=',$purreqhd_get->prtype)
                         ->where('deptcode','=',$purreqhd_get->reqdept)
                         ->where('maxlimit','>=',$purreqhd_get->totamount);
 
@@ -624,6 +656,7 @@ class PurchaseRequestController extends defaultController
                             ->where('recstatus','=','SUPPORT')
                             ->where('deptcode','=','ALL')
                             ->where('deptcode','=','all')
+                            ->where('prtype','=',$purreqhd_get->prtype)
                             ->where('maxlimit','>=',$purreqhd_get->totamount);
 
                             if(!$authorise->exists()){

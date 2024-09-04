@@ -89,13 +89,13 @@ class ChargeMasterDetailController extends defaultController
                     'chgcode' => $request->chgcode,
                     'effdate' => $effdate_chg,
                     'minamt' => $request->minamt,
-                    'amt1' => $request->amt1,
-                    'amt2' => $request->amt2,
-                    'amt3' => $request->amt3,
+                    'amt1' => $this->getAmount($request->amt1),
+                    'amt2' => $this->getAmount($request->amt2),
+                    'amt3' => $this->getAmount($request->amt3),
                     'iptax' => $request->iptax,
                     'optax' => $request->optax,
                     'maxamt' => $request->maxamt,
-                    'costprice' => $request->costprice,
+                    'costprice' => $this->getAmount($request->costprice),
                     'autopull' => $request->autopull,
                     'addchg' => $request->addchg,
                     'uom' => $request->uom,
@@ -137,12 +137,12 @@ class ChargeMasterDetailController extends defaultController
                     ->where('idno','=',$value['idno'])
                     ->update([
                         'effdate' => $this->turn_date($value['effdate']),
-                        'amt1' => $value['amt1'],
-                        'amt2' => $value['amt2'],
-                        'amt3' => $value['amt3'],
+                        'amt1' => $this->getAmount($value['amt1']),
+                        'amt2' => $this->getAmount($value['amt2']),
+                        'amt3' => $this->getAmount($value['amt3']),
                         'iptax' => $value['iptax'],
                         'optax' => $value['optax'],
-                        'costprice' => $value['costprice'],
+                        'costprice' => $this->getAmount($value['costprice']),
                         'autopull' => $value['autopull'],
                         'addchg' => $value['addchg'],
                         'recstatus' => 'ACTIVE', 
@@ -397,6 +397,18 @@ class ChargeMasterDetailController extends defaultController
                 ]);
         }
 
+    }
+
+    public function getAmount($money){
+        $cleanString = preg_replace('/([^0-9\.,])/i', '', $money);
+        $onlyNumbersString = preg_replace('/([^0-9])/i', '', $money);
+
+        $separatorsCountToBeErased = strlen($cleanString) - strlen($onlyNumbersString) - 1;
+
+        $stringWithCommaOrDot = preg_replace('/([,\.])/', '', $cleanString, $separatorsCountToBeErased);
+        $removedThousandSeparator = preg_replace('/(\.|,)(?=[0-9]{3,}$)/', '',  $stringWithCommaOrDot);
+
+        return (float) str_replace(',', '.', $removedThousandSeparator);
     }
 
 }
