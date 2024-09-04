@@ -2036,7 +2036,7 @@ $(document).ready(function () {
 				}
 			}
 		},{
-			title:"Select Transaction Department",
+			title:"Select Purchase Department",
 			open: function(){
 				dialog_prdept.urlParam.filterCol=['purdept', 'recstatus', 'compcode'];
 				dialog_prdept.urlParam.filterVal=['1', 'ACTIVE','session.compcode'];
@@ -2069,7 +2069,7 @@ $(document).ready(function () {
 				}
 			}
 		},{
-			title:"Select Transaction Type",
+			title:"Select Supplier Code",
 			open: function(){
 				dialog_suppcode.urlParam.filterCol=['recstatus', 'compcode'];
 				dialog_suppcode.urlParam.filterVal=['ACTIVE', 'session.compcode'];
