@@ -215,7 +215,7 @@ class HomeController extends Controller
         $groupid = $user->groupid;
         $company = $user->compcode;
 
-        $menu.="<li><a style='padding-left:9px;' title='Alert' class='clickable' programid='alert' targetURL='' >Alert</a></li>";
+        $menu="<li><a style='padding-left:9px;' title='Alert' class='clickable' programid='alert' targetURL='' >Back</a></li>";
 
         $menu.="<li><a style='padding-left:9px;' title='Log Out' class='clickable' programid='logout' targetURL='' href='./logout' >Log Out</a></li>";
 
