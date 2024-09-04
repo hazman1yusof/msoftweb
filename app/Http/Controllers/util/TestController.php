@@ -58,8 +58,8 @@ class TestController extends defaultController
                 return $this->test_glmasdtl($request);
             case 'get_merge_pdf':
                 return $this->get_merge_pdf($request);
-            case 'cr8stockexp':
-                return $this->cr8stockexp($request);
+            case 'update_productmaster':
+                return $this->update_productmaster($request);
             default:
                 return 'error happen..';
         }
@@ -427,30 +427,33 @@ class TestController extends defaultController
         $pdf->merge('browser', public_path() . '/uploads/pdf_merge/'.$merge_key.'.pdf', 'P');
     }
 
-    public function cr8stockexp(Request $request){
+    public function update_productmaster(Request $request){
         DB::beginTransaction();
 
         try {
             
-            $stockloc = DB::table('material.stockloc')
-                            ->where('compcode',session('compcode'))
+            $productmaster = DB::table('temp.productmaster')
+                            ->where('compcode','9B')
                             ->get();
 
-            foreach ($stockloc as $obj) {
-                DB::table('material.stockexp')
-                            ->insert(
-                                'compcode' => $obj->compcode, 
-                                'deptcode' => $obj->deptcode, 
-                                'itemcode' => $obj->itemcode, 
-                                'uomcode' => $obj->uomcode, 
-                                'expdate' => null, 
-                                'batchno' => 'BO', 
-                                'balqty' => $obj->qtyonhand, 
-                                'adduser' => 'SYSTEM', 
-                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                                'year' => $obj->year, 
-                                'unit' => $obj->unit, 
-                            );
+            foreach ($productmaster as $obj) {
+                $duplicate = DB::table('temp.productmaster')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$obj->itemcode)
+                            ->get();
+
+                if($duplicate->count() > 1){
+                    $del = DB::table('temp.productmaster')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$obj->itemcode)
+                            ->first();
+                    DB::table('temp.productmaster')
+                        ->where('idno',$del->idno)
+                        ->update([
+                            'compcode' => 'XX'
+                        ]);
+                    echo  nl2br("del idno : ".$del->idno."\n");
+                }
             }
 
 

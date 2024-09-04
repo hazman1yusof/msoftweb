@@ -58,6 +58,7 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                             ->where('adtl.authorid',session('username'))
                             ->where('adtl.trantype','PR')
                             ->where('adtl.cando','ACTIVE')
+                            ->on('adtl.prtype','qpr.prtype')
                             ->on('adtl.recstatus','qpr.trantype')
                             ->where(function ($query) {
                                 $query->on('adtl.deptcode','qpr.deptcode')
@@ -72,12 +73,15 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                             ->where(function ($query) {
                                 $query
                                     ->on('prhd.totamount','>=','adtl.minlimit')
-                                    ->on('prhd.totamount','<', 'adtl.maxlimit');
+                                    ->on('prhd.totamount','<=', 'adtl.maxlimit');
                             });;
                     })
                     ->where('qpr.compcode',session('compcode'))
                     ->where('qpr.trantype','<>','DONE')
                     ->get();
+
+        
+                    // dd($this->getQueries($authorise));
 
         $queuepr_reject = DB::table('material.queuepr as qpr')
                     ->select('qpr.trantype','prhd.recno','prhd.reqdept','prhd.cancelby','prhd.canceldate','prhd.recstatus','prhd.totamount','prhd.adduser')
@@ -102,6 +106,7 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                             ->where('adtl.authorid',session('username'))
                             ->where('adtl.trantype','PO')
                             ->where('adtl.cando','ACTIVE')
+                            ->on('adtl.prtype','qpo.prtype')
                             ->on('adtl.recstatus','qpo.trantype')
                             ->where(function ($query) {
                                 $query->on('adtl.deptcode','qpo.deptcode')
@@ -116,7 +121,7 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                             ->where(function ($query) {
                                 $query
                                     ->on('pohd.totamount','>=','adtl.minlimit')
-                                    ->on('pohd.totamount','<', 'adtl.maxlimit');
+                                    ->on('pohd.totamount','<=', 'adtl.maxlimit');
                             });;
                     })
                     ->where('qpo.compcode',session('compcode'))
@@ -158,7 +163,7 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                             ->where(function ($query) {
                                 $query
                                     ->on('apact.amount','>=','prdtl.minlimit')
-                                    ->on('apact.amount','<', 'prdtl.maxlimit');
+                                    ->on('apact.amount','<=', 'prdtl.maxlimit');
                             });
                     })
                     ->join('material.supplier as supp', function($join) use ($request){
@@ -212,7 +217,7 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                             ->where(function ($query) {
                                 $query
                                     ->on('apact.amount','>=','prdtl.minlimit')
-                                    ->on('apact.amount','<', 'prdtl.maxlimit');
+                                    ->on('apact.amount','<=', 'prdtl.maxlimit');
                             });
                     })
                     ->join('material.supplier as supp', function($join) use ($request){
@@ -266,7 +271,7 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                             ->where(function ($query) {
                                 $query
                                     ->on('dbact.amount','>=','prdtl.minlimit')
-                                    ->on('dbact.amount','<', 'prdtl.maxlimit');
+                                    ->on('dbact.amount','<=', 'prdtl.maxlimit');
                             });
                     })
                     ->join('debtor.debtormast as dbm', function($join) use ($request){
@@ -322,7 +327,7 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                             ->where(function ($query) {
                                 $query
                                     ->on('ivhd.amount','>=','adtl.minlimit')
-                                    ->on('ivhd.amount','<', 'adtl.maxlimit');
+                                    ->on('ivhd.amount','<=', 'adtl.maxlimit');
                             });
                     })
                     ->join('sysdb.department as dept', function($join) use ($request){

@@ -97,8 +97,8 @@ class AuthorizationDetailController extends defaultController
                         'recstatus' => strtoupper($request->dtl_recstatus),
                         'prtype' => strtoupper($request->dtl_prtype),
                         'cando' => strtoupper($request->dtl_cando),
-                        'minlimit' => $request->dtl_minlimit,
-                        'maxlimit' => $request->dtl_maxlimit,
+                        'minlimit' => $this->getAmount($request->dtl_minlimit),
+                        'maxlimit' => $this->getAmount($request->dtl_maxlimit),
                         'adduser' => session('username'), 
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
@@ -188,8 +188,8 @@ class AuthorizationDetailController extends defaultController
                     'recstatus' => strtoupper($request->dtl_recstatus),
                     'prtype' => strtoupper($request->dtl_prtype),
                     'cando' => strtoupper($request->dtl_cando),
-                    'minlimit' => $request->dtl_minlimit,
-                    'maxlimit' => $request->dtl_maxlimit,
+                    'minlimit' => $this->getAmount($request->dtl_minlimit),
+                    'maxlimit' => $this->getAmount($request->dtl_maxlimit),
                     'upduser' => session('username'), 
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
@@ -220,8 +220,8 @@ class AuthorizationDetailController extends defaultController
                         // 'recstatus' => $value['recstatus'],
                         // 'prtype' => strtoupper($request->dtl_prtype),
                         // 'cando' => $value['cando'],
-                        'minlimit' => $value['minlimit'],
-                        'maxlimit' => $value['maxlimit'],
+                        'minlimit' => $this->getAmount($value['minlimit']),
+                        'maxlimit' => $this->getAmount($value['maxlimit']),
                         'upduser' => session('username'), 
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);

@@ -248,12 +248,12 @@ i.fa {
 						</div> 
                 
             <div class="form-group">
-				  	<label class="col-md-2 control-label" for="d_minlimit">Min Limit</label>  
-				  		<div class="col-md-2">
-				  			<input id="d_minlimit" name="dtl_minlimit" type="text" class="form-control input-sm" value="1.00" data-sanitize-number-format="0,0.00" data-validation="required">
-				  		</div>
+					  	<label class="col-md-2 control-label" for="d_minlimit">Min Limit</label>  
+					  		<div class="col-md-2">
+					  			<input id="d_minlimit" name="dtl_minlimit" type="text" class="form-control input-sm" value="1.00" data-sanitize-number-format="0,0.00">
+					  		</div>
 
-				  	<label class="col-md-2 control-label" for="d_maxlimit">Max Limit</label>  
+				  		<label class="col-md-2 control-label" for="d_maxlimit">Max Limit</label>  
 				  		<div class="col-md-2">
 				  			<input id="d_maxlimit" name="dtl_maxlimit" type="text" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" data-validation="required">
 				  		</div>
@@ -302,6 +302,6 @@ i.fa {
 		});
 	</script>
 
-	<script src="js/material/Authorization/authorization.js?v=2"></script>
+	<script src="js/material/Authorization/authorization.js?v=1.3"></script>
 
 @endsection

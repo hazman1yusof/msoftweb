@@ -3152,6 +3152,7 @@ $(document).ready(function () {
 				{label: 'Quantity On Hand',name:'p_qtyonhand',width:100,classes:'pointer',},
 				{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
 				{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
+				{label: 'Group Code',name:'p_groupcode',width:100,classes:'pointer'},
 				{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
 				{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
 				{label: 'Unit', name:'p_unit',hidden:true},
@@ -3302,8 +3303,8 @@ $(document).ready(function () {
 					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
 					dialog_itemcode.urlParam.join_onCol = ['s.itemcode','p.taxcode','u.uomcode'];
 					dialog_itemcode.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
-					dialog_itemcode.urlParam.join_filterCol = [['s.uomcode on =','s.compcode =','p.recstatus =']];
-					dialog_itemcode.urlParam.join_filterVal = [['p.uomcode','session.compcode','ACTIVE']];
+					dialog_itemcode.urlParam.join_filterCol = [['s.uomcode on =','s.compcode =','p.recstatus =','p.unit =']];
+					dialog_itemcode.urlParam.join_filterVal = [['p.uomcode','session.compcode','ACTIVE','session.unit']];
 
 				}
 			},

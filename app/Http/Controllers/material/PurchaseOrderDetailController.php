@@ -355,7 +355,6 @@ class PurchaseOrderDetailController extends defaultController
             
             return response($e->getMessage(), 500);
         }
-
     }
 
     public function edit_all(Request $request){
@@ -456,7 +455,6 @@ class PurchaseOrderDetailController extends defaultController
 
             return response('Error'.$e, 500);
         }
-
     }
 
     public function del(Request $request){
@@ -506,9 +504,7 @@ class PurchaseOrderDetailController extends defaultController
             DB::rollback();
 
             return response('Error'.$e, 500);
-        }
-
-        
+        }       
     }
 
     function check_incompleted($recno){
