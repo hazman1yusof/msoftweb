@@ -207,7 +207,7 @@ $(document).ready(function () {
 		datatype: "local",
 		 colModel: [
 			{ label: 'Record No', name: 'recno', width: 20, classes: 'wrap', canSearch: true,selected:true, formatter: padzero, unformat: unpadzero},
-			{ label: 'Transaction Department', name: 'txndept', width: 30, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Supplier Department', name: 'txndept', width: 30, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Transaction Type', name: 'trantype', width: 25, classes: 'wrap', canSearch: true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Document No', name: 'docno', width: 20, classes: 'wrap', canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
 			{ label: 'Transaction Date', name: 'trandate', width: 27, classes: 'wrap', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
@@ -964,7 +964,7 @@ $(document).ready(function () {
 			},
 			{ label: 'Item Description', name: 'description', width: 250, classes: 'wrap', editable:true,hidden:true, editoptions: { readonly: "readonly" }},
 			
-			{ label: 'UOM Code Tran Dept', name: 'uomcode', width: 130, classes: 'wrap', editable:true,
+			{ label: 'UOM Code\nSupplier Dept', name: 'uomcode', width: 130, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 					formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -973,7 +973,7 @@ $(document).ready(function () {
 						    },
 			},
 			
-			{ label: 'Qty on Hand at Tran Dept', name: 'qtyonhand', width: 100, align: 'right', classes: 'wrap', editable:true,	
+			{ label: 'Qty on Hand\nat Supplier Dept', name: 'qtyonhand', width: 100, align: 'right', classes: 'wrap', editable:true,	
 				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
@@ -1573,7 +1573,7 @@ $(document).ready(function () {
 		var temp=null;
 		switch(name){
 			case 'Item Code':temp=$('#itemcode');break;
-			case 'UOM Code Tran Dept':temp=$('#uomcode');break;
+			case 'UOM Code Supplier Dept':temp=$('#uomcode');break;
 			case 'UOM Code Recv Dept':temp=$('#uomcoderecv');break;
 			// case 'Expiry Date':temp=$('#expdate');break;
 		}

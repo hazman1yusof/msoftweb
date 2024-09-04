@@ -97,7 +97,7 @@ div#fail_msg{
 	      </div>
 
 	      <div class="col-md-2">
-		  		<label class="control-label" for="trandept">Purchase Dept</label> 
+		  		<label class="control-label" for="trandept">Supplier Dept</label> 
 					<select id='trandept' class="form-control input-sm">
 	      		<option value="All">ALL</option>
 	      		@foreach($storedept as $dept_)
@@ -246,7 +246,7 @@ div#fail_msg{
 							<input id="referral" name="referral" type="hidden">
 
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="txndept">Transaction Department</label>
+								<label class="col-md-2 control-label" for="txndept">Supplier Department</label>
 									<div class="col-md-2">
 									  <div class='input-group'>
 										<input id="txndept" name="txndept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
