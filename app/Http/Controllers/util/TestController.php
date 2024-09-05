@@ -59,7 +59,9 @@ class TestController extends defaultController
             case 'get_merge_pdf':
                 return $this->get_merge_pdf($request);
             case 'update_productmaster':
-                return $this->update_productmaster($request);
+                // return $this->update_productmaster($request);
+            case 'update_stockexp':
+                return $this->update_stockexp($request);
             default:
                 return 'error happen..';
         }
@@ -453,6 +455,58 @@ class TestController extends defaultController
                             'compcode' => 'XX'
                         ]);
                     echo  nl2br("del idno : ".$del->idno."\n");
+                }
+            }
+
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function update_stockexp(Request $request){
+        DB::beginTransaction();
+
+        try {
+            
+            $stockloc = DB::table('material.stockloc')
+                            ->where('compcode','9B')
+                            ->get();
+
+            foreach ($stockloc as $obj) {
+                $stockexp = DB::table('material.stockexp')
+                            ->where('unit',$obj->unit)
+                            ->where('compcode',$obj->compcode)
+                            ->where('year',$obj->year)
+                            ->where('deptcode',$obj->deptcode)
+                            ->where('itemcode',$obj->itemcode)
+                            ->where('uomcode',$obj->uomcode);
+
+                if(!$stockexp->exists()){
+                    DB::table('material.stockexp')
+                        ->insert([
+                            'compcode' => $obj->compcode,
+                            'deptcode' => $obj->deptcode,
+                            'itemcode' => $obj->itemcode,
+                            'uomcode' => $obj->uomcode,
+                            'expdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'batchno' => 'QO',
+                            'balqty' => $obj->qtyonhand,
+                            'adduser' => 'SYSTEM',
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            // 'addtime' => $obj->compcode,
+                            // 'upduser' => $obj->compcode,
+                            // 'upddate' => $obj->compcode,
+                            // 'updtime' => $obj->compcode,
+                            // 'lasttt' => $obj->compcode,
+                            'year' => Carbon::now("Asia/Kuala_Lumpur")->year,
+                            'unit' => $obj->unit,
+                        ]);
+                    echo  nl2br("insert stockexp : ".$obj->itemcode."\n");
                 }
             }
 

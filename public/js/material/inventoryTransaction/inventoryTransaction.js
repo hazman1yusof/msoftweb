@@ -251,6 +251,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
+			$('#error_infront').text('');
 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 			// let stat = selrowData("#jqGrid").recstatus;
 			// if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0 && stat=='OPEN'){
@@ -714,7 +715,8 @@ $(document).ready(function () {
 			cbselect.empty_sel_tbl();
 			refreshGrid("#jqGrid", urlParam);
 		}).fail(function (data) {
-			alert(data.responseText);
+			$('#error_infront').text(data.responseText);
+			// alert(data.responseText);
 		}).done(function (data) {
 			//2nd successs?
 		});
@@ -1117,6 +1119,7 @@ $(document).ready(function () {
 		},
 		onSelectRow:function(rowid, selected){
 			myfail_msg.clear_fail();
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 		},
 		afterShowForm: function (rowid) {
 		},
@@ -2154,12 +2157,12 @@ $(document).ready(function () {
 				dialog_itemcode.urlParam.fixPost="true";
 				dialog_itemcode.urlParam.table_id="none_";
 				dialog_itemcode.urlParam.filterCol=['s.compcode','s.year','s.deptcode','s.unit'];
-				dialog_itemcode.urlParam.filterVal=['session.compcode',moment($('#trandate').val()).year(),$('#txndept').val(),'session.unit'];
+				dialog_itemcode.urlParam.filterVal=['session.compcode',moment($('#trandate').val()).year(),$('#txndept').val(),'notnull'];
 				dialog_itemcode.urlParam.join_type=['LEFT JOIN', 'LEFT JOIN'];
 				dialog_itemcode.urlParam.join_onCol=['s.itemcode','u.uomcode'];
 				dialog_itemcode.urlParam.join_onVal=['p.itemcode', 's.uomcode'];
-				dialog_itemcode.urlParam.join_filterCol=[['s.compcode on =', 's.uomcode on =','p.recstatus =','p.unit ='], []];
-				dialog_itemcode.urlParam.join_filterVal=[['p.compcode','p.uomcode','ACTIVE','session.unit'], []];
+				dialog_itemcode.urlParam.join_filterCol=[['p.compcode on =', 'p.uomcode on =','p.recstatus =','p.unit on ='], []];
+				dialog_itemcode.urlParam.join_filterVal=[['s.compcode','s.uomcode','ACTIVE','s.unit'], []];
 			},
 			close:function(obj_){
 				$("#jqGrid2 #"+obj_.id_optid+"_txnqty").focus().select();
@@ -2458,8 +2461,8 @@ $(document).ready(function () {
 					join_type: ['LEFT JOIN', 'LEFT JOIN'],
 					join_onCol: ['ivdt.itemcode', 'ivdt.itemcode'],
 					join_onVal: ['s.itemcode', 'p.itemcode'],
-					join_filterCol : [['ivdt.reqdept on =','ivdt.uomcode on =','s.year =','s.unit =']],
-					join_filterVal : [['s.deptcode','s.uomcode',moment().year(),'session.unit']],
+					join_filterCol : [['ivdt.reqdept on =','ivdt.uomcode on =','s.year =','s.unit =','s.compcode ='],['p.compcode =']],
+					join_filterVal : [['s.deptcode','s.uomcode',moment().year(),'session.unit','session.compcode'],['session.compcode']],
 					filterCol: ['ivdt.recno', 'ivdt.compcode', 'ivdt.recstatus'],
 					filterVal: [data['recno'], 'session.compcode', '<>.DELETE'],
 					sortby:['lineno_ desc']

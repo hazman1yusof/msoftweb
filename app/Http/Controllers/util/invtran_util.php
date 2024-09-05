@@ -871,7 +871,7 @@ class invtran_util extends defaultController{
 
             }else{
                 //ni akan jadi mungkin sebab dia "out" pakai expdate dgn batchno, tapi expdate dgn batchno tu x ada dlm stockexp
-                throw new \Exception("No stockexp");
+                throw new \Exception("No stockexp itemcode: ".$value->itemcode." uomcode: ".$value->uomcode." deptcode: ".$ivtmphd->txndept.' year: '.defaultController::toYear($ivtmphd->trandate).' unit: '.session('unit'));
             }
 
         }else{
@@ -903,6 +903,11 @@ class invtran_util extends defaultController{
 
             $newqtyonhand = $OldQtyOnHand - $txnqty;
             $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+
+            if($newqtyonhand < 0){
+                throw new \Exception("Product itemcode: ".$value->itemcode." uomcode: ".$value->uomcode." will become -ve value : ".$newqtyonhand);
+            }
+
             // if(strtoupper($isstype) == "ADJUSTMENT"){
             //     $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
             // }else{
