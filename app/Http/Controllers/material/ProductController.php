@@ -129,9 +129,12 @@ class ProductController extends defaultController
                              'cm.freqcode as cm_freqcode',
                              'cm.instruction as cm_instruction')
                     ->where('p.compcode','=',session('compcode'))
-                    ->where('p.unit','=',session('unit'))
                     ->where('p.Class','=',$Class)
                     ->where('p.groupcode','=',$groupcode);
+
+        if(!in_array(strtoupper($groupcode), ['ASSET','OTHERS'])){
+            $table = $table->where('p.unit','=',session('unit'));
+        }
 
         $table = $table->leftjoin('hisdb.chgmast as cm', function($join) use ($groupcode){
                             $join = $join->where('cm.compcode', '=', 'p.compcode');
