@@ -36,7 +36,7 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Item Code',name:'itemcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-				{label:'groupcode',name:'groupcode',hidden:true},
+				{label:'groupcode',name:'groupcode',hidden:false},
 				{label:'Category',name:'productcat',hidden:false,canSearch:true},
 				{label:'Unit',name:'unit',hidden:false,canSearch:false}
 			],

@@ -774,7 +774,7 @@ class InventoryTransactionController extends defaultController
             ///insert detail from existing inventory request
 
             $stockloc_txndept = DB::table('material.stockloc')
-                            // ->where('unit', '=', session('unit'))
+                            ->where('unit', '=', session('unit'))
                             ->where('compcode', '=', session('compcode'))
                             ->where('itemcode',$value->itemcode)
                             ->where('uomcode',$value->uomcode)
@@ -785,7 +785,7 @@ class InventoryTransactionController extends defaultController
             $qtyonhand_sndrcv = 0;
             if(!in_array($ivtmphd->trantype, ['TUO','TUI'])){
                 $stockloc_sndrcv = DB::table('material.stockloc')
-                            // ->where('unit', '=', session('unit'))
+                            ->where('unit', '=', session('unit'))
                             ->where('compcode', '=', session('compcode'))
                             ->where('itemcode',$value->itemcode)
                             ->where('uomcode',$value->uomcode)

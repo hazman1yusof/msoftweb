@@ -637,6 +637,6 @@
 			
 		});
 	</script>
-	<script src="js/material/product/product.js?v=1.1"></script>
+	<script src="js/material/product/product.js?v=1.2"></script>
 
 @endsection

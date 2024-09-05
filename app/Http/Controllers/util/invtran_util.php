@@ -17,6 +17,7 @@ class invtran_util extends defaultController{
             ->first();
 
         $productcat_obj = DB::table('material.product')
+            ->where('product.unit','=',session('unit'))
             ->where('product.compcode','=',session('compcode'))
             ->where('product.itemcode','=',$value->itemcode)
             ->where('product.uomcode','=',$value->uomcode)
@@ -48,6 +49,7 @@ class invtran_util extends defaultController{
 	        $crccode = $dept_obj->costcode;
 
 	        $productcat_obj = DB::table('material.product')
+                ->where('product.unit','=',session('unit'))
 	            ->where('product.compcode','=',session('compcode'))
 	            ->where('product.itemcode','=',$value->itemcode)
 	            ->where('product.uomcode','=',$value->uomcoderecv)
@@ -64,6 +66,7 @@ class invtran_util extends defaultController{
 	            ->first();
 
             $stockloc_obj = DB::table('material.StockLoc')
+                ->where('StockLoc.unit',session('unit'))
                 ->where('StockLoc.CompCode','=',session('compcode'))
                 ->where('StockLoc.DeptCode','=',$ivtmphd->sndrcv)
                 ->where('StockLoc.ItemCode','=',$value->itemcode)
@@ -456,6 +459,7 @@ class invtran_util extends defaultController{
 
                 // update qtyonhand, avgcost, currprice
                 $product_obj = DB::table('material.product')
+                    ->where('product.unit','=',session('unit'))
                     ->where('product.compcode',session('compcode'))
                     ->where('product.compcode','=',session('compcode'))
                     ->where('product.itemcode','=',$value->itemcode)

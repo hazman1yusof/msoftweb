@@ -126,6 +126,9 @@ class InventoryTransactionDetailController extends defaultController
                         'compcode' => session('compcode'),
                     ]);
             }
+            $ivtmphd = DB::table("material.ivtmphd")
+                            ->where('idno','=',$request->idno)
+                            ->first();
 
 
             ////1. calculate lineno_ by recno
@@ -137,21 +140,63 @@ class InventoryTransactionDetailController extends defaultController
             $li=intval($sqlln)+1;
 
             //2.1 check ada stockloc ke tak kat sndrcv
-            $issuetype = DB::table('material.ivtxntype')->select('isstype')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('trantype','=',$request->trantype)
-                            ->first();
 
-            if(strtoupper($issuetype->isstype) == 'TRANSFER'){
+            if(empty($request->txnqty)){
+                throw new \Exception('Quantity cant be 0, delete the row first');
+            }
+
+            $product = DB::table('material.product')
+                    ->where('unit','=',session('unit'))
+                    ->where('compcode','=',session('compcode'))
+                    ->where('ItemCode','=',$request->itemcode)
+                    ->where('UomCode','=',$request->uomcode);
+
+            if(!$product->exists()){
+                throw new \Exception('product doesnt exists');
+            }
+
+            if(strtoupper($ivtmphd->trantype) == 'TUI'){
                 $stockloc_obj = DB::table('material.StockLoc')
+                        ->where('StockLoc.unit','=',session('unit'))
                         ->where('StockLoc.CompCode','=',session('compcode'))
-                        ->where('StockLoc.DeptCode','=',$request->sndrcv)
+                        ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
                         ->where('StockLoc.ItemCode','=',$request->itemcode)
                         ->where('StockLoc.Year','=', defaultController::toYear($request->trandate))
-                        ->where('StockLoc.UomCode','=',$request->uomcoderecv);
+                        ->where('StockLoc.UomCode','=',$request->uomcode);
 
                 if(!$stockloc_obj->exists()){
                     throw new \Exception('stockloc doesnt exists');
+                }
+            }else if(strtoupper($ivtmphd->trantype) == 'TUO'){
+                $stockloc_obj = DB::table('material.StockLoc')
+                        ->where('StockLoc.unit','=',session('unit'))
+                        ->where('StockLoc.CompCode','=',session('compcode'))
+                        ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
+                        ->where('StockLoc.ItemCode','=',$request->itemcode)
+                        ->where('StockLoc.Year','=', defaultController::toYear($request->trandate))
+                        ->where('StockLoc.UomCode','=',$request->uomcode);
+
+                if(!$stockloc_obj->exists()){
+                    throw new \Exception('stockloc doesnt exists');
+                }
+            }else{
+                $issuetype = DB::table('material.ivtxntype')->select('isstype')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('trantype','=',$request->trantype)
+                                ->first();
+
+                if(strtoupper($issuetype->isstype) == 'TRANSFER'){
+                    $stockloc_obj = DB::table('material.StockLoc')
+                            ->where('StockLoc.unit','=',session('unit'))
+                            ->where('StockLoc.CompCode','=',session('compcode'))
+                            ->where('StockLoc.DeptCode','=',$request->sndrcv)
+                            ->where('StockLoc.ItemCode','=',$request->itemcode)
+                            ->where('StockLoc.Year','=', defaultController::toYear($request->trandate))
+                            ->where('StockLoc.UomCode','=',$request->uomcoderecv);
+
+                    if(!$stockloc_obj->exists()){
+                        throw new \Exception('stockloc doesnt exists');
+                    }
                 }
             }
 

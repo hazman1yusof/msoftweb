@@ -503,7 +503,7 @@ $(document).ready(function () {
 		$("#jqGrid2").jqGrid('setColProp', 'netprice', 
 			{formatter:'currency', 
 			formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-			 editrules:{required:true}, editable:true, editoptions: {readonly: null}});
+			 editrules:{required:true}, editable:true, editoptions: {readonly: 'readonly'}});
 
 		$("#jqGrid2").jqGrid('setColProp', 'uomcoderecv', 
 			{ label: 'UOM Code Recv Dept', name: 'uomcoderecv', width: 130, classes: 'wrap', editable:true,
@@ -1020,7 +1020,7 @@ $(document).ready(function () {
 				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Net Price', name: 'netprice', width: 90, align: 'right', classes: 'wrap', 
+			{ label: 'Avg Cost', name: 'netprice', width: 90, align: 'right', classes: 'wrap', 
 				editable:true,
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 					editrules:{required: true},edittype:"text",
@@ -1253,17 +1253,17 @@ $(document).ready(function () {
         },
         restoreAfterError : false,
 		beforeSaveRow: function (options, rowid) {
-			if($("label[for=srcdocno]").is(":hidden")){
-				if($.inArray(rowid+"_uomcoderecv",errorField)!==-1){
-					errorField.splice($.inArray(rowid+"_uomcoderecv",errorField), 1);
-				}
-				if($.inArray(rowid+"_qtyonhand",errorField)!==-1){
-					errorField.splice($.inArray(rowid+"_qtyonhand",errorField), 1);
-				}
-				if(errorField.length>0)return false;
-			}else{
-        		if(errorField.length>0)return false;
-			}
+			// if($("label[for=srcdocno]").is(":hidden")){
+			// 	if($.inArray(rowid+"_uomcoderecv",errorField)!==-1){
+			// 		errorField.splice($.inArray(rowid+"_uomcoderecv",errorField), 1);
+			// 	}
+			// 	if($.inArray(rowid+"_qtyonhand",errorField)!==-1){
+			// 		errorField.splice($.inArray(rowid+"_qtyonhand",errorField), 1);
+			// 	}
+			// 	if(errorField.length>0)return false;
+			// }else{
+        	// 	if(errorField.length>0)return false;
+			// }
 			mycurrency2.formatOff();
 			mycurrency_np.formatOff();
 
