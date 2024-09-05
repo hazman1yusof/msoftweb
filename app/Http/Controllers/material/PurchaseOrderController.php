@@ -695,7 +695,7 @@ class PurchaseOrderController extends defaultController
                         ->where('recstatus','=','SUPPORT')
                         ->where('prtype','=',$prtype)
                         ->where('deptcode','=',$purordhd_get->prdept)
-                        ->where('minlimit','<=',$purordhd_get->minlimit)
+                        ->where('minlimit','<=',$purordhd_get->totamount)
                         ->where('maxlimit','>=',$purordhd_get->totamount);
 
                     if(!$authorise->exists()){
@@ -709,7 +709,7 @@ class PurchaseOrderController extends defaultController
                             ->where('deptcode','=','ALL')
                             ->where('deptcode','=','all')
                             ->where('prtype','=',$prtype)
-                            ->where('minlimit','<=',$purordhd_get->minlimit)
+                            ->where('minlimit','<=',$purordhd_get->totamount)
                             ->where('maxlimit','>=',$purordhd_get->totamount);
 
                             if(!$authorise->exists()){
@@ -803,7 +803,7 @@ class PurchaseOrderController extends defaultController
                         ->where('recstatus','=','VERIFIED')
                         ->where('deptcode','=',$purordhd_get->reqdept)
                         ->where('prtype','=',$prtype)
-                        ->where('minlimit','<=',$purordhd_get->minlimit)
+                        ->where('minlimit','<=',$purordhd_get->totamount)
                         ->where('maxlimit','>=',$purordhd_get->totamount);
 
                     if(!$authorise->exists()){
@@ -817,7 +817,7 @@ class PurchaseOrderController extends defaultController
                             ->where('deptcode','=','ALL')
                             ->where('deptcode','=','all')
                             ->where('prtype','=',$prtype)
-                            ->where('minlimit','<=',$purordhd_get->minlimit)
+                            ->where('minlimit','<=',$purordhd_get->totamount)
                             ->where('maxlimit','>=',$purordhd_get->totamount);
 
                             if(!$authorise->exists()){
@@ -909,7 +909,7 @@ class PurchaseOrderController extends defaultController
                     ->where('cando','=', 'ACTIVE')
                     ->where('recstatus','=','APPROVED')
                     ->where('prtype','=',$prtype)
-                    ->where('minlimit','<=',$purordhd_get->minlimit)
+                    ->where('minlimit','<=',$purordhd_get->totamount)
                     ->where('deptcode','=',$purordhd_get->reqdept)
                     ->where('maxlimit','>=',$purordhd_get->totamount);
 
@@ -924,7 +924,7 @@ class PurchaseOrderController extends defaultController
                         ->where('deptcode','=','ALL')
                         ->where('deptcode','=','all')
                         ->where('prtype','=',$prtype)
-                        ->where('minlimit','<=',$purordhd_get->minlimit)
+                        ->where('minlimit','<=',$purordhd_get->totamount)
                         ->where('maxlimit','>=',$purordhd_get->totamount);
 
                         if(!$authorise->exists()){
