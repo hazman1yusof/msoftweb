@@ -528,12 +528,14 @@ class TestController extends defaultController
         try {
             
             $sysparam = DB::table('temp.sysparam')
-                            ->where('AR','TN')
+                            ->where('source','AR')
+                            ->where('trantype','TN')
                             ->where('compcode','9B')
                             ->first();
 
             DB::table('temp.sysparam')
-                    ->where('AR','TN')
+                    ->where('source','AR')
+                    ->where('trantype','TN')
                     ->where('compcode','9B')
                     ->update([
                         'pvalue1' => $sysparam->pvalue1 + 1
