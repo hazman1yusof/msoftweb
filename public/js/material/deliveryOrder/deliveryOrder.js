@@ -2577,60 +2577,7 @@ $(document).ready(function () {
 			open:function(obj_){
 				var pricecode = $("#jqGrid2 input#"+obj_.id_optid+"_pricecode").val();
 
-				// if(data.pricecode == 'MS'){
-				// 	dialog_itemcode.urlParam.filterCol = ['p.compcode', 'p.groupcode', 'p.unit'];
-				// 	dialog_itemcode.urlParam.filterVal = ['session.compcode',  '<>.Stock', 'session.unit'];
-				// }else{
-				// 	dialog_uomcode.urlParam.filterCol=['s.compcode','s.itemcode','s.deptcode','s.year'];
-				// 	dialog_uomcode.urlParam.filterVal=['session.compcode',$("#jqGrid2 input[name='itemcode']").val(),$('#delordhd_deldept').val(),moment($('#delordhd_trandate').val()).year()];
-				// }
-
-				if(pricecode == 'MS'){
-					let newcolmodel = [
-							{label: 'Item Code',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-							{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-							{label: 'Quantity On Hand',name:'p_qtyonhand',width:100,classes:'pointer',},
-							{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
-							{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
-							{label: 'Group Code', name: 'p_groupcode', width: 100, classes: 'pointer' },
-							{label: 'Exp', name: 'p_expdtflg', width: 50, classes: 'pointer',formatter:formatterstatus_tick_number,unformat:unformatstatus_tick_number },
-							{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
-							{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
-							{label: 'Unit', name:'p_unit'},
-						]
-
-					$('#'+dialog_itemcode.gridname).jqGrid('setGridParam',{colModel:newcolmodel});
-
-					dialog_itemcode.urlParam.field = getfield(newcolmodel);
-					dialog_itemcode.urlParam.table_name = ['material.product AS p','hisdb.taxmast AS t','material.uom AS u'];
-					dialog_itemcode.urlParam.fixPost = "true";
-					dialog_itemcode.urlParam.table_id = "none_";
-					dialog_itemcode.urlParam.filterCol = ['p.compcode', 'p.groupcode', 'p.unit'];
-					dialog_itemcode.urlParam.filterVal = ['session.compcode',  '<>.Stock', 'session.unit'];
-					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN'];
-					dialog_itemcode.urlParam.join_onCol = ['p.taxcode','u.uomcode'];
-					dialog_itemcode.urlParam.join_onVal = ['t.taxcode','p.uomcode'];
-					dialog_itemcode.urlParam.join_filterCol = [];
-					dialog_itemcode.urlParam.join_filterVal = [];
-
-				}else{
-					let newcolmodel = [
-							{label: 'Item Code',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-							{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true, checked:true},
-							{label: 'Quantity On Hand',name:'p_qtyonhand',width:100,classes:'pointer',},
-							{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
-							{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
-							{label: 'Group Code', name: 'p_groupcode', width: 100, classes: 'pointer' },
-							{label: 'Exp', name: 'p_expdtflg', width: 50, classes: 'pointer',formatter:formatterstatus_tick_number,unformat:unformatstatus_tick_number },
-							{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
-							{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
-							{label: 'Unit', name:'p_unit'},
-						]
-
-
-					$('#'+dialog_itemcode.gridname).jqGrid('setGridParam',{colModel:newcolmodel});
-
-					dialog_itemcode.urlParam.field = getfield(newcolmodel);
+				if(pricecode == 'IV' || pricecode == 'BO'){
 					dialog_itemcode.urlParam.table_name = ['material.stockloc AS s','material.product AS p','hisdb.taxmast AS t','material.uom AS u']
 					dialog_itemcode.urlParam.fixPost = "true";
 					dialog_itemcode.urlParam.table_id = "none_";
@@ -2639,8 +2586,20 @@ $(document).ready(function () {
 					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
 					dialog_itemcode.urlParam.join_onCol = ['s.itemcode','p.taxcode','u.uomcode'];
 					dialog_itemcode.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
-					dialog_itemcode.urlParam.join_filterCol = [['s.uomcode on =','s.compcode =','p.recstatus =']];
-					dialog_itemcode.urlParam.join_filterVal = [['p.uomcode','session.compcode','ACTIVE']];
+					dialog_itemcode.urlParam.join_filterCol = [['p.uomcode on =','p.compcode =','p.recstatus =','p.unit =']];
+					dialog_itemcode.urlParam.join_filterVal = [['s.uomcode','session.compcode','ACTIVE','session.unit']];
+
+				}else{
+					dialog_itemcode.urlParam.table_name = ['material.product AS p','hisdb.taxmast AS t','material.uom AS u'];
+					dialog_itemcode.urlParam.fixPost = "true";
+					dialog_itemcode.urlParam.table_id = "none_";
+					dialog_itemcode.urlParam.filterCol = ['p.compcode', 'p.groupcode'];
+					dialog_itemcode.urlParam.filterVal = ['session.compcode',  '<>.Stock'];
+					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN'];
+					dialog_itemcode.urlParam.join_onCol = ['p.taxcode','u.uomcode'];
+					dialog_itemcode.urlParam.join_onVal = ['t.taxcode','p.uomcode'];
+					dialog_itemcode.urlParam.join_filterCol = [];
+					dialog_itemcode.urlParam.join_filterVal = [];
 
 				}
 
