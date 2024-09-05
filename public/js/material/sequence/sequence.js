@@ -292,7 +292,9 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_trantype.gridname);
 				$('#description').focus();
+				$("#description").val(data['description']);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
