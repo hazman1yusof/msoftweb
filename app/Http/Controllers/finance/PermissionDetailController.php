@@ -66,20 +66,20 @@ class PermissionDetailController extends defaultController
                             ->exists();
             // }
 
-            if(!$duplicate){
-                $duplicate2 = DB::table('finance.permissiondtl')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('authorid','!=',$authorid_)
-                            ->where('maxlimit','=',$request->dtl_maxlimit)
-                            ->where('trantype','=',$request->dtl_trantype)
-                            ->where('deptcode','=',$request->dtl_deptcode)
-                            ->where('recstatus','=',$request->dtl_recstatus);
+            // if(!$duplicate){
+            //     $duplicate2 = DB::table('finance.permissiondtl')
+            //                 ->where('compcode','=',session('compcode'))
+            //                 ->where('authorid','!=',$authorid_)
+            //                 ->where('maxlimit','=',$request->dtl_maxlimit)
+            //                 ->where('trantype','=',$request->dtl_trantype)
+            //                 ->where('deptcode','=',$request->dtl_deptcode)
+            //                 ->where('recstatus','=',$request->dtl_recstatus);
 
-            }else{
-                throw new \Exception("Duplicate entry", 500);
-            }
+            // }else{
+            //     throw new \Exception("Duplicate entry", 500);
+            // }
 
-            if(!$duplicate2->exists()){
+            // if(!$duplicate2->exists()){
 
 
                 ///2. insert detail
@@ -96,11 +96,11 @@ class PermissionDetailController extends defaultController
                         'adduser' => session('username'), 
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
-            }else{
-                $first_get = $duplicate2->first();
+            // }else{
+            //     $first_get = $duplicate2->first();
 
-                throw new \Exception("Permission Entry has been entered by ".$first_get->authorid, 500);
-            }
+            //     throw new \Exception("Permission Entry has been entered by ".$first_get->authorid, 500);
+            // }
 
             DB::commit();
         } catch (\Exception $e) {
@@ -158,18 +158,18 @@ class PermissionDetailController extends defaultController
                 throw new \Exception("Duplicate entry", 500);
             }
 
-            $duplicate2 = DB::table('finance.permissiondtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('authorid','!=',$authorid_)
-                        ->where('maxlimit','=',$request->dtl_maxlimit)
-                        ->where('trantype','=',$request->dtl_trantype)
-                        ->where('deptcode','=',$request->dtl_deptcode)
-                        ->where('recstatus','=',$request->dtl_recstatus);
+            // $duplicate2 = DB::table('finance.permissiondtl')
+            //             ->where('compcode','=',session('compcode'))
+            //             ->where('authorid','!=',$authorid_)
+            //             ->where('maxlimit','=',$request->dtl_maxlimit)
+            //             ->where('trantype','=',$request->dtl_trantype)
+            //             ->where('deptcode','=',$request->dtl_deptcode)
+            //             ->where('recstatus','=',$request->dtl_recstatus);
 
-            if($duplicate2->exists()){
-                $first_get = $duplicate2->first();
-                throw new \Exception("Permission Entry has been entered by ".$first_get->authorid, 500);
-            }
+            // if($duplicate2->exists()){
+            //     $first_get = $duplicate2->first();
+            //     throw new \Exception("Permission Entry has been entered by ".$first_get->authorid, 500);
+            // }
 
             ///1. update detail
             $permissiondtl
@@ -238,11 +238,7 @@ class PermissionDetailController extends defaultController
             DB::table('finance.permissiondtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
-                ->update([ 
-                    'deluser' => session('username'), 
-                    'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'cando' => 'DEACTIVE'
-                ]);
+                ->delete();
 
        
             DB::commit();

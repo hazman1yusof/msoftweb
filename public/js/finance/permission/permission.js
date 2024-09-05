@@ -165,7 +165,7 @@ $(document).ready(function () {
 			}
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
-			$("#searchForm input[name=Stext]").focus();		},
+			// $("#searchForm input[name=Stext]").focus();		},
 		
 	});
 
@@ -969,11 +969,11 @@ $("#gridpermissiondtl").jqGrid({
 		$("#jqGridPager3 td[title='Edit Selected Row']").click();
 	},
 	gridComplete: function(){
-		if(oper == 'add'){
-			$("#gridpermissiondtl").setSelection($("#jqGrid").getDataIDs()[0]);
-		}
+		// if(oper == 'add'){
+		// 	$("#gridpermissiondtl").setSelection($("#jqGrid").getDataIDs()[0]);
+		// }
 
-		$('#gridpermissiondtl #'+$("#gridpermissiondtl").jqGrid ('getGridParam', 'selrow')).focus();
+		// $('#gridpermissiondtl #'+$("#gridpermissiondtl").jqGrid ('getGridParam', 'selrow')).focus();
 		fdl.set_array().reset();
 	
 
