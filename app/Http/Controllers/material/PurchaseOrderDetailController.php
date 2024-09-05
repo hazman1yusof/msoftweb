@@ -218,7 +218,7 @@ class PurchaseOrderDetailController extends defaultController
                     throw new \Exception("Itemcode $request->itemcode - $request->uomcode - $purordhd->deldept , doesnt have stockloc or product");
                 }
 
-            }else if('Asset'){
+            }else if($prtype == 'Asset'){
                 $product = DB::table('material.product AS p')
                             ->where('p.compcode','=',session('compcode'))
                             ->where('p.itemcode','=',$request->itemcode)
