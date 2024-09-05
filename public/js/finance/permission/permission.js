@@ -41,7 +41,7 @@ $(document).ready(function () {
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 			switch(oper) {
 				case state = 'add':
-					refreshGrid("#jqGrid2", urlParam2,'kosongkan');
+					// refreshGrid("#jqGrid2", urlParam2,'kosongkan');
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
 					enableForm('#formdata');
@@ -352,8 +352,7 @@ $("#jqGrid2").jqGrid({
 		formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 		editrules:{required: true},edittype:"text",
 				editoptions:{
-				readonly: "readonly",
-				defaultValue: '1.00',
+				defaultValue: '0.00',
 				maxlength: 100,
 				dataInit: function(element) {
 					element.style.textAlign = 'right';
@@ -946,8 +945,7 @@ $("#gridpermissiondtl").jqGrid({
                      }
 			},
 		
-			{ label: 'Min Limit', name: 'dtl_minlimit', width: 200, classes: 'wrap', editable: true,
-				edittype:"text",
+			{ label: 'Min Limit', name: 'dtl_minlimit', width: 200, classes: 'wrap',formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, 
 			},
 			{ label: 'Max Limit', name: 'dtl_maxlimit', width: 200, classes: 'wrap',formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }
 			},

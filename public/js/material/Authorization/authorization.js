@@ -969,8 +969,7 @@ $("#gridAuthdtl").jqGrid({
 	                     value: "STOCK:STOCK;OTHERS:OTHERS"
 	                 }
 			},
-			{ label: 'Min Limit', name: 'dtl_minlimit', width: 200, classes: 'wrap', editable: true,
-				edittype:"text",
+			{ label: 'Min Limit', name: 'dtl_minlimit', width: 200, classes: 'wrap',formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }
 			},
 			{ label: 'Max Limit', name: 'dtl_maxlimit', width: 200, classes: 'wrap',formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }
 			},

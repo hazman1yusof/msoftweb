@@ -243,7 +243,7 @@ i.fa {
                 <div class="form-group">
 				  	<label class="col-md-2 control-label" for="d_minlimit">Min Limit</label>  
 				  		<div class="col-md-2">
-				  			<input id="d_minlimit" name="dtl_minlimit" type="text" class="form-control input-sm" value="1.00" rdonly>
+				  			<input id="d_minlimit" name="dtl_minlimit" type="text" class="form-control input-sm" value="0.00">
 				  		</div>
 
 				  	<label class="col-md-2 control-label" for="d_maxlimit">Max Limit</label>  
@@ -295,6 +295,6 @@ i.fa {
 		});
 	</script>
 
-	<script src="js/finance/permission/permission.js"></script>
+	<script src="js/finance/permission/permission.js?v=1.1"></script>
 
 @endsection
