@@ -163,11 +163,11 @@
 							],
 							[
 								{text:
-									`ATTENTION:\n\n1. Payment of this bill can be pay to any registration counter of {{$company->name}} by stating the referral invoice number.\n
-									2. Payment can be made by cash.\n
-									3. Only cross cheque for any registered company with Ministry of Health Malaysia is acceptable and be issue to Director of	{{$company->name}}.\n
-									4. Any inquiries must be issue to : \n
-										\u200B\t\u200B\t\u200B\t\u200B\t{{$company->name}}\n\u200B\t\u200B\t\u200B\t\u200B\t{{$company->address1}}\n\u200B\t\u200B\t\u200B\t\u200B\t{{$company->address2}} {{$company->address3}}\n\u200B\t\u200B\t\u200B\t\u200B\t{{$company->address4}}\n`,
+									`ATTENTION:\n\n1. All bank draft/cheques should be crossed and payable to: \n
+										\u200B\t\u200B\t\u200B\t\u200B\t{{$company->name}}/COMPANY ACCOUNT NO: MAYBANK 5641 3753 6420.\n
+									2. EFT/CDM/ATM payment: ACCOUNT NO: 5641 3753 6420 and fax/email/sms/whatsapp bank slip/transfer note to:\n
+									\u200B\t\u200B\t\u200B\t\u200B\tCREDIT CONTROL DEPT: 03-9173 7346/creditcontrol@ukmsc.com.my/012-914 5906.\n
+									3. Please ensure to receive/request correct receipt after payment is made.`,
 									colSpan: 10},{},{},{},{},{},{},{},{},{},
 							],
 						]
