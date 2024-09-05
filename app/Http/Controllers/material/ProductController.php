@@ -133,11 +133,13 @@ class ProductController extends defaultController
                     ->where('p.Class','=',$Class)
                     ->where('p.groupcode','=',$groupcode);
 
-        $table = $table->leftjoin('hisdb.chgmast as cm', function($join){
+        $table = $table->leftjoin('hisdb.chgmast as cm', function($join) use ($groupcode){
                             $join = $join->where('cm.compcode', '=', 'p.compcode');
-                            $join = $join->where('cm.unit','=',session('unit'));
                             $join = $join->on('cm.chgcode', '=', 'p.itemcode');
                             $join = $join->on('cm.uom', '=', 'p.uomcode');
+                            if(strtoupper($groupcode) == 'ASSET' || strtoupper($groupcode) == 'OTHERS' ){
+                                $join = $join->where('cm.unit','=',session('unit'));
+                            }
                         });
 
         // foreach ($table->get() as $key => $value) {
