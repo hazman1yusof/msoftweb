@@ -473,12 +473,12 @@ class TestController extends defaultController
 
         try {
             
-            $stockloc = DB::table('material.stockloc')
+            $stockloc = DB::table('temp.stockloc')
                             ->where('compcode','9B')
                             ->get();
 
             foreach ($stockloc as $obj) {
-                $stockexp = DB::table('material.stockexp')
+                $stockexp = DB::table('temp.stockexp')
                             ->where('unit',$obj->unit)
                             ->where('compcode',$obj->compcode)
                             ->where('year',$obj->year)
@@ -487,7 +487,7 @@ class TestController extends defaultController
                             ->where('uomcode',$obj->uomcode);
 
                 if(!$stockexp->exists()){
-                    DB::table('material.stockexp')
+                    DB::table('temp.stockexp')
                         ->insert([
                             'compcode' => $obj->compcode,
                             'deptcode' => $obj->deptcode,
