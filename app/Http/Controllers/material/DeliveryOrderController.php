@@ -309,6 +309,7 @@ class DeliveryOrderController extends defaultController
                 foreach ($delorddt_obj as $value) {
 
                     $stockloc_chk = DB::table('material.stockloc')
+                        ->where('unit','=',$value->unit)
                         ->where('compcode','=',$value->compcode)
                         ->where('deptcode','=',$value->deldept)
                         ->where('itemcode','=',$value->itemcode)
@@ -716,6 +717,7 @@ class DeliveryOrderController extends defaultController
                 //--- 3. cancel to stockloc ---///
                 //1. amik stockloc
                 $stockloc_obj = DB::table('material.StockLoc')
+                    ->where('StockLoc.unit','=',$value->unit)
                     ->where('StockLoc.CompCode','=',session('compcode'))
                     ->where('StockLoc.DeptCode','=',$value->deldept)
                     ->where('StockLoc.ItemCode','=',$value->itemcode)
@@ -734,6 +736,7 @@ class DeliveryOrderController extends defaultController
                     $NetMvVal = $stockloc_arr['netmvval'.$month] - ($netprice * $txnqty);
 
                     DB::table('material.StockLoc')
+                        ->where('StockLoc.unit','=',$value->unit)
                         ->where('StockLoc.CompCode','=',session('compcode'))
                         ->where('StockLoc.DeptCode','=',$value->deldept)
                         ->where('StockLoc.ItemCode','=',$value->itemcode)
@@ -753,6 +756,7 @@ class DeliveryOrderController extends defaultController
                 //--- 4. cancel to stock enquiry ---//
                 //1. amik Stock Expiry
                 $stockexp_obj = DB::table('material.stockexp')
+                    ->where('stockexp.unit','=',session('unit'))
                     ->where('stockexp.compcode','=',session('compcode'))
                     ->where('stockexp.deptcode','=',$value->deldept)
                     ->where('stockexp.itemcode','=',$value->itemcode)
@@ -770,6 +774,7 @@ class DeliveryOrderController extends defaultController
                     $BalQty = $stockexp_obj->balqty - $txnqty;
 
                     DB::table('material.stockexp')
+                        ->where('stockexp.unit','=',session('unit'))
                         ->where('stockexp.compcode','=',session('compcode'))
                         ->where('stockexp.deptcode','=',$value->deldept)
                         ->where('stockexp.itemcode','=',$value->itemcode)

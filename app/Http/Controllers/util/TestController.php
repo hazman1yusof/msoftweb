@@ -58,10 +58,12 @@ class TestController extends defaultController
                 return $this->test_glmasdtl($request);
             case 'get_merge_pdf':
                 return $this->get_merge_pdf($request);
-            case 'update_productmaster':
+            // case 'update_productmaster':
                 // return $this->update_productmaster($request);
-            case 'update_stockexp':
-                return $this->update_stockexp($request);
+            // case 'update_stockexp':
+            //     return $this->update_stockexp($request);
+            case 'update_sysparam':
+                return $this->update_sysparam($request);
             default:
                 return 'error happen..';
         }
@@ -510,6 +512,32 @@ class TestController extends defaultController
                 }
             }
 
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function update_sysparam(Request $request){
+        DB::beginTransaction();
+
+        try {
+            
+            $sysparam = DB::table('temp.sysparam')
+                            ->where('AR','TN')
+                            ->where('compcode','9B')
+                            ->first();
+
+            DB::table('temp.sysparam')
+                    ->where('AR','TN')
+                    ->where('compcode','9B')
+                    ->update([
+                        'pvalue1' => $sysparam->pvalue1 + 1
+                    ]);
 
             DB::commit();
         } catch (Exception $e) {
