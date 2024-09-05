@@ -52,6 +52,7 @@ div#fail_msg{
 	<input id="reqdept" name="reqdept" type="hidden" value="{{Session::get('reqdept')}}">
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+	<input id="pcs_dept" name="pcs_dept" type="hidden" value="PCS">
 
 	@if (Request::get('scope') == 'ALL')
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="ALL">
@@ -296,6 +297,16 @@ div#fail_msg{
 						<input id="referral" name="referral" type="hidden">
 						<input id="purreqhd_idno" name="purreqhd_idno" type="hidden">
 						<input id="purreqhd_purordno" name="purreqhd_purordno" type="hidden">
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="purreqhd_prtype">Request Type</label>
+							<div class="col-md-10">
+								<label class="radio-inline"><input type="radio" name="purreqhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='Stock' checked>Stock</label>
+								<label class="radio-inline"><input type="radio" name="purreqhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='Asset' selected>Asset</label>
+								<label class="radio-inline"><input type="radio" name="purreqhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='Others' selected>Others</label>
+								<label class="radio-inline"><input type="radio" name="purreqhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='AssetMaintenance' selected>Asset Maintenance</label>
+							</div>
+						</div>
 						
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="purreqhd_reqdept">Request Department</label>
@@ -333,17 +344,10 @@ div#fail_msg{
 							<label class="col-md-2 control-label" for="purreqhd_suppcode">Supplier Code</label>
 							<div class="col-md-4">
 								<div class='input-group'>
-									<input id="purreqhd_suppcode" name="purreqhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase">
+									<input id="purreqhd_suppcode" name="purreqhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
-							</div>
-							
-							<label class="col-md-2 control-label" for="purreqhd_prtype">Request Type</label>
-							<div class="col-md-3">
-								<label class="radio-inline"><input type="radio" name="purreqhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='Stock' checked>Stock</label><br>
-								<label class="radio-inline"><input type="radio" name="purreqhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='Non-Stock' selected>Non-Stock</label><br>
-								<label class="radio-inline"><input type="radio" name="purreqhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='AssetMaintenance' selected>Asset Maintenance</label>
 							</div>
 						</div>
 						
@@ -588,7 +592,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/purchaseRequest/purchaseRequest.js?v=1.3"></script>
+	<script src="js/material/purchaseRequest/purchaseRequest.js?v=1.4"></script>
 	<!-- <script src="js/material/purchaseRequest/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

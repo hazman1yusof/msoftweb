@@ -30,6 +30,15 @@ class ProductController extends defaultController
         switch($request->oper){
             case 'add':
                 if($request->action == 'save_productmaster'){
+                    $exists = DB::table('material.productmaster')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('itemcode','=',$request->itemcode)
+                            ->exists();
+
+                    if($exists){
+                        return response('Error itemcode for productmaster already exists', 500);
+                    }
+
                     return $this->save_productmaster($request);
                 }else{
                     $exists = DB::table('material.product')
@@ -323,6 +332,12 @@ class ProductController extends defaultController
 
             try {
 
+                if(strtoupper($request->groupcode) == 'STOCK' || strtoupper($request->groupcode) == 'CONSIGNMENT'){
+                    $unit_ = session('unit');
+                }else{
+                    $unit_ = 'ALL';
+                }
+
                 $array_insert = [
                     'itemcode' => $request->itemcode,
                     'uomcode' => $request->uomcode,
@@ -331,7 +346,7 @@ class ProductController extends defaultController
                     'generic' => strtoupper($request->generic),
                     'groupcode' => strtoupper($request->groupcode),
                     'Class' => $request->Class,
-                    'unit' => session('unit'),
+                    'unit' => $unit_,
                     'compcode' => session('compcode'),
                     'subcatcode' => strtoupper($request->subcatcode),
                     'pouom' => strtoupper($request->pouom),

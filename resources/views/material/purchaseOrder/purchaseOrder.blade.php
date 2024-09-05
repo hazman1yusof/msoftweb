@@ -55,6 +55,7 @@ div#fail_msg{
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 	<input id="viewonly" name="viewonly" type="hidden" value="{{Request::get('viewonly')}}">
+	<input id="pcs_dept" name="pcs_dept" type="hidden" value="PCS">
 
 	@if (Request::get('scope') == 'ALL')
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="ALL">
@@ -357,6 +358,16 @@ div#fail_msg{
 					<input id="purordhd_idno" name="purordhd_idno" type="hidden">
 					<input id="referral" name="referral" type="hidden">
 					<input id="purordhd_delordno" name="purordhd_delordno" type="hidden">
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="purordhd_prtype">Request Type</label>
+						<div class="col-md-10">
+							<label class="radio-inline"><input type="radio" name="purordhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='Stock' checked>Stock</label>
+							<label class="radio-inline"><input type="radio" name="purordhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='Asset' selected>Asset</label>
+							<label class="radio-inline"><input type="radio" name="purordhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='Others' selected>Others</label>
+							<label class="radio-inline"><input type="radio" name="purordhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='AssetMaintenance' selected>Asset Maintenance</label>
+						</div>
+					</div>
 					
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="purordhd_prdept">Purchase Department</label>
@@ -424,13 +435,6 @@ div#fail_msg{
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
-						</div>
-						
-						<label class="col-md-2 control-label" for="purordhd_prtype">Purchase Type</label>
-						<div class="col-md-2">
-							<label class="radio-inline"><input type="radio" name="purordhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='Stock' checked>Stock</label><br>
-							<label class="radio-inline"><input type="radio" name="purordhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='Non-Stock' selected>Non-Stock</label><br>
-							<label class="radio-inline"><input type="radio" name="purordhd_prtype" data-validation="required" data-validation-error-msg="Please Enter Value" value='AssetMaintenance' selected>Asset Maintenance</label>
 						</div>
 					</div>
 					
@@ -674,7 +678,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/purchaseOrder/purchaseOrder.js?v=1.3"></script>
+	<script src="js/material/purchaseOrder/purchaseOrder.js?v=1.4"></script>
 	<!-- <script src="js/material/purchaseOrder/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

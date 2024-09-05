@@ -232,15 +232,30 @@ class PurchaseOrderController extends defaultController
             $array_update = [
                 'compcode' => session('compcode'),
                 'upduser' => session('username'),
-                'upddate' => Carbon::now()
+                'upddate' => Carbon::now(),
+                // 'delordno' => $request->purordhd_delordno, 
+                // 'prtype' => $request->purordhd_prtype, 
+                // 'prdept' => $request->purordhd_prdept, 
+                // 'purordno' => $request->purordhd_purordno, 
+                // 'recno' => $request->purordhd_recno, 
+                // 'deldept' => $request->purordhd_deldept, 
+                // 'reqdept' => $request->purordhd_reqdept, 
+                // 'purreqno' => $request->purordhd_purreqno, 
+                'suppcode' => $request->purordhd_suppcode, 
+                'credcode' => $request->purordhd_credcode, 
+                'purdate' => $request->purordhd_purdate, 
+                'expecteddate' => $request->purordhd_expecteddate, 
+                'termdays' => $request->purordhd_termdays, 
+                'perdisc' => $request->purordhd_perdisc, 
+                'amtdisc' => $request->purordhd_amtdisc, 
+                // 'recstatus' => $request->purordhd_recstatus, 
+                // 'subamount' => $request->purordhd_subamount, 
+                // 'totamount' => $request->purordhd_totamount, 
+                'taxclaimable' => $request->purordhd_taxclaimable, 
             ];
 
             if($purordhd_obj->compcode == 'DD'){
                 $array_update['compcode'] = 'DD';
-            }
-
-            foreach ($field as $key => $value) {
-                $array_update[$value] = $request[$request->field[$key]];
             }
 
             try {
@@ -342,7 +357,7 @@ class PurchaseOrderController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purordhd_get->prtype) == 'STOCK'){
+                if(strtoupper($purordhd_get->prtype) == 'STOCK' || strtoupper($purordhd_get->prtype) == 'ASSET'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -574,7 +589,7 @@ class PurchaseOrderController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purordhd_get->prtype) == 'STOCK'){
+                if(strtoupper($purordhd_get->prtype) == 'STOCK' || strtoupper($purordhd_get->prtype) == 'ASSET'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -665,7 +680,7 @@ class PurchaseOrderController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purordhd_get->prtype) == 'STOCK'){
+                if(strtoupper($purordhd_get->prtype) == 'STOCK' || strtoupper($purordhd_get->prtype) == 'ASSET'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -773,7 +788,7 @@ class PurchaseOrderController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purordhd_get->prtype) == 'STOCK'){
+                if(strtoupper($purordhd_get->prtype) == 'STOCK' || strtoupper($purordhd_get->prtype) == 'ASSET'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -881,7 +896,7 @@ class PurchaseOrderController extends defaultController
 
                 $this->need_upd_purreq($value);
 
-                if(strtoupper($purordhd_get->prtype) == 'STOCK'){
+                if(strtoupper($purordhd_get->prtype) == 'STOCK' || strtoupper($purordhd_get->prtype) == 'ASSET'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -1100,27 +1115,66 @@ class PurchaseOrderController extends defaultController
 
         foreach ($pr_dt as $key => $value) {
             ///1. insert detail we get from existing purchase request
+            $prtype = $pr_hd->prtype;
 
-            $product = DB::table("material.product as p")
-                        ->where('p.compcode',session('compcode'))
-                        ->where('p.unit',session('unit'))
-                        ->where('p.itemcode',$value->itemcode)
-                        ->where('p.uomcode',$value->uomcode);
+            if($prtype == 'Stock'){
+                $product = DB::table('material.stockloc as s')
+                            ->leftJoin('material.product AS p', function($join){
+                                $join = $join->on("p.itemcode", '=', 's.itemcode');
+                                $join = $join->on("p.uomcode", '=', 's.uomcode');
+                                $join = $join->where("p.unit", '=', session('unit'));
+                                $join = $join->where("p.compcode", '=', session('compcode'));
+                            })
+                            ->where('s.unit','=',session('unit'))
+                            ->where('s.compcode','=',session('compcode'))
+                            ->where('s.year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
+                            ->where('s.deptcode','=',$del_dept)
+                            ->where('s.itemcode','=',$value->itemcode)
+                            ->where('s.uomcode','=',$value->uomcode)
+                            ->whereIn('p.groupcode',['STOCK','CONSIGNMENT']);
+
+                if(!$product->exists()){
+                    throw new \Exception("Itemcode $value->itemcode - $value->uomcode - $del_dept , doesnt have stockloc or product");
+                }
+
+            }else if('Asset'){
+                $product = DB::table('material.product AS p')
+                            ->where('p.compcode','=',session('compcode'))
+                            ->where('p.itemcode','=',$value->itemcode)
+                            ->where('p.uomcode','=',$value->uomcode)
+                            ->whereIn('p.groupcode',['ASSET']);
+            }else{
+                $product = DB::table('material.product AS p')
+                            ->where('p.compcode','=',session('compcode'))
+                            ->where('p.itemcode','=',$value->itemcode)
+                            ->where('p.uomcode','=',$value->uomcode)
+                            ->whereIn('p.groupcode',['OTHERS']);
+            }
+
             if(!$product->exists()){
-                throw new \Exception("Product Doesnt Exists for item: ".$value->itemcode." uomcode: ".$value->uomcode);
+                throw new \Exception("Itemcode $value->itemcode - $value->uomcode , doesnt have product");
             }
 
-            $stockloc = DB::table("material.stockloc as s")
-                        ->where('s.compcode',session('compcode'))
-                        ->where('s.unit',session('unit'))
-                        ->where('s.itemcode',$value->itemcode)
-                        ->where('s.uomcode',$value->uomcode)
-                        ->where('s.year',Carbon::now("Asia/Kuala_Lumpur")->year)
-                        ->where('s.deptcode',$del_dept);
-            if(!$stockloc->exists()){
-                throw new \Exception("Stock Location for this Product Doesnt Exists for item: ".$value->itemcode." uomcode: ".$value->uomcode." Department: ".$del_dept." year ".Carbon::now("Asia/Kuala_Lumpur")->year);
-            }
 
+            // $product = DB::table("material.product as p")
+            //             ->where('p.compcode',session('compcode'))
+            //             ->where('p.unit',session('unit'))
+            //             ->where('p.itemcode',$value->itemcode)
+            //             ->where('p.uomcode',$value->uomcode);
+            // if(!$product->exists()){
+            //     throw new \Exception("Product Doesnt Exists for item: ".$value->itemcode." uomcode: ".$value->uomcode);
+            // }
+
+            // $stockloc = DB::table("material.stockloc as s")
+            //             ->where('s.compcode',session('compcode'))
+            //             ->where('s.unit',session('unit'))
+            //             ->where('s.itemcode',$value->itemcode)
+            //             ->where('s.uomcode',$value->uomcode)
+            //             ->where('s.year',Carbon::now("Asia/Kuala_Lumpur")->year)
+            //             ->where('s.deptcode',$del_dept);
+            // if(!$stockloc->exists()){
+            //     throw new \Exception("Stock Location for this Product Doesnt Exists for item: ".$value->itemcode." uomcode: ".$value->uomcode." Department: ".$del_dept." year ".Carbon::now("Asia/Kuala_Lumpur")->year);
+            // }
 
             $table = DB::table("material.purorddt");
             $table->insert([

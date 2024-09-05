@@ -21,7 +21,6 @@ class PurchaseOrderDetailController extends defaultController
     {   
         switch($request->oper){
             case 'add':
-                // dd('asd');
                 return $this->add($request);
             case 'edit':
                 return $this->edit($request);
@@ -153,7 +152,7 @@ class PurchaseOrderDetailController extends defaultController
                 $purordno = $request->purordno;
                 $recno = $request->recno;
 
-                if($purreqno == 0 && $recno == 0){
+                if($purreqno == 0 || $recno == 0){
                     $purordno = $this->request_no('PO',$request->prdept);
                     $recno = $this->recno('PUR','PO');
                 
@@ -167,6 +166,9 @@ class PurchaseOrderDetailController extends defaultController
 
                 }
             }
+
+            $purordhd = DB::table("material.purordhd")
+                            ->where('idno','=',$request->idno);
 
             //check unique
             if($request->pricecode == 'MS'){
@@ -193,11 +195,52 @@ class PurchaseOrderDetailController extends defaultController
             if(!$has_prodmaster){
                 throw new \Exception("Itemcode ".strtoupper($request->itemcode)." doesnt have productmaster");
             }
+
+            $prtype = $purordhd->prtype;
+
+            if($prtype == 'Stock'){
+                $product = DB::table('material.stockloc as s')
+                            ->leftJoin('material.product AS p', function($join){
+                                $join = $join->on("p.itemcode", '=', 's.itemcode');
+                                $join = $join->on("p.uomcode", '=', 's.uomcode');
+                                $join = $join->where("p.unit", '=', session('unit'));
+                                $join = $join->where("p.compcode", '=', session('compcode'));
+                            })
+                            ->where('s.unit','=',session('unit'))
+                            ->where('s.compcode','=',session('compcode'))
+                            ->where('s.year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
+                            ->where('s.deptcode','=',$purordhd->deldept)
+                            ->where('s.itemcode','=',$request->itemcode)
+                            ->where('s.uomcode','=',$request->uomcode)
+                            ->whereIn('p.groupcode',['STOCK','CONSIGNMENT']);
+
+                if(!$product->exists()){
+                    throw new \Exception("Itemcode $request->itemcode - $request->uomcode - $purordhd->deldept , doesnt have stockloc or product");
+                }
+
+            }else if('Asset'){
+                $product = DB::table('material.product AS p')
+                            ->where('p.compcode','=',session('compcode'))
+                            ->where('p.itemcode','=',$request->itemcode)
+                            ->where('p.uomcode','=',$request->uomcode)
+                            ->whereIn('p.groupcode',['ASSET']);
+            }else{
+                $product = DB::table('material.product AS p')
+                            ->where('p.compcode','=',session('compcode'))
+                            ->where('p.itemcode','=',$request->itemcode)
+                            ->where('p.uomcode','=',$request->uomcode)
+                            ->whereIn('p.groupcode',['OTHERS']);
+            }
+
+            if(!$product->exists()){
+                throw new \Exception("Itemcode $request->itemcode - $request->uomcode , doesnt have product");
+            }
+
             ////1. calculate lineno_ by recno
             $sqlln = DB::table('material.purorddt')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$recno)
-                        ->count('lineno_');
+                        ->max('lineno_');
 
             $li=intval($sqlln)+1;
 
@@ -394,9 +437,9 @@ class PurchaseOrderDetailController extends defaultController
                 ->where('recno','=',$request->recno)
                 ->where('lineno_','=',$value['lineno_'])
                 ->update([
-                    'pricecode' => strtoupper($value['pricecode']),
-                    'itemcode' => strtoupper($value['itemcode']),
-                    'uomcode' => strtoupper($value['uomcode']),
+                    // 'pricecode' => strtoupper($value['pricecode']),
+                    // 'itemcode' => strtoupper($value['itemcode']),
+                    // 'uomcode' => strtoupper($value['uomcode']),
                     'pouom' => strtoupper($value['pouom']),
                     'suppcode' => strtoupper($request->suppcode),
                     'purdate' => $request->purdate,

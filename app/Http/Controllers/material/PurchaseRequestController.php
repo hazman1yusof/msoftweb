@@ -179,6 +179,8 @@ class PurchaseRequestController extends defaultController
                 if(!$suppcode){
                     throw new \Exception("supplier doesnt exists");
                 }
+            }else{
+                throw new \Exception("supplier doesnt exists");
             }
 
             $table = DB::table("material.purreqhd");
@@ -350,7 +352,7 @@ class PurchaseRequestController extends defaultController
 
                 }
 
-                if(strtoupper($purreqhd_get->prtype) == 'STOCK'){
+                if(strtoupper($purreqhd_get->prtype) == 'STOCK' || strtoupper($purreqhd_get->prtype) == 'ASSET'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -555,7 +557,7 @@ class PurchaseRequestController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purreqhd_get->prtype) == 'STOCK'){
+                if(strtoupper($purreqhd_get->prtype) == 'STOCK' || strtoupper($purreqhd_get->prtype) == 'ASSET'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -646,7 +648,7 @@ class PurchaseRequestController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purreqhd_get->prtype) == 'STOCK'){
+                if(strtoupper($purreqhd_get->prtype) == 'STOCK' || strtoupper($purreqhd_get->prtype) == 'ASSET'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -770,7 +772,7 @@ class PurchaseRequestController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purreqhd_get->prtype) == 'STOCK'){
+                if(strtoupper($purreqhd_get->prtype) == 'STOCK' || strtoupper($purreqhd_get->prtype) == 'ASSET'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -909,7 +911,7 @@ class PurchaseRequestController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purreqhd_get->prtype) == 'STOCK'){
+                if(strtoupper($purreqhd_get->prtype) == 'STOCK' || strtoupper($purreqhd_get->prtype) == 'ASSET'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -1034,7 +1036,7 @@ class PurchaseRequestController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purreqhd_get->prtype) == 'STOCK'){
+                if(strtoupper($purreqhd_get->prtype) == 'STOCK' || strtoupper($purreqhd_get->prtype) == 'ASSET'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -1146,7 +1148,7 @@ class PurchaseRequestController extends defaultController
 
                 // if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
 
-                if(strtoupper($purreqhd_get->prtype) == 'STOCK'){
+                if(strtoupper($purreqhd_get->prtype) == 'STOCK' || strtoupper($purreqhd_get->prtype) == 'ASSET'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';

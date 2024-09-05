@@ -66,6 +66,9 @@ $(document).ready(function () {
 						enableForm('#formdata');
 						rdonly('#formdata');
 						$("#purordhd_prdept").val($("#deptcode").val());
+						dialog_prdept.check(errorField);
+						$("#purordhd_reqdept").val($("#deptcode").val());
+						dialog_reqdept.check(errorField);
 						$("input[type=radio][name='purordhd_taxclaimable'][value='Non-Claimable']").prop("checked",true);
 						break;
 					case state = 'edit':
@@ -99,9 +102,11 @@ $(document).ready(function () {
 				if(oper == 'edit'){
 					dialog_reqdept.off();
 					dialog_purreqno.off();
+					dialog_prdept.off();
 					dialog_deldept.off();
-
-					$("#purordhd_reqdept,#purordhd_purreqno,#purordhd_deldept").prop('readonly',true);
+					dialog_assetno.off();
+					
+					$("#purordhd_reqdept,#purordhd_purreqno,#purordhd_prdept,#purordhd_deldept,#purordhd_assetno").prop('readonly',true);
 					$('#dialogForm input:radio[name=purordhd_prtype]').attr('disabled',true);
 				}
 			},
@@ -146,10 +151,21 @@ $(document).ready(function () {
 	/////////////////////////////////////////////end dialog/////////////////////////////////////////////
 	
 	$('#formdata input:radio[name="purordhd_prtype"]').change(function (){
-		if($('#formdata input:radio[name=purordhd_prtype]:checked').val() == 'AssetMaintenance'){
+		$("#assetno_div").hide();
+		let prtype = $('#formdata input:radio[name=purordhd_prtype]:checked').val();
+		if(prtype == 'AssetMaintenance'){
 			$("#assetno_div").show();
-		}else{
-			$("#assetno_div").hide();
+			$("#purordhd_prdept").val($("#pcs_dept").val());
+			dialog_prdept.check(errorField);
+		}else if(prtype == 'Others'){
+			$("#purordhd_prdept").val($("#pcs_dept").val());
+			dialog_prdept.check(errorField);
+		}else if(prtype == 'Asset'){
+			$("#purordhd_prdept").val($("#deptcode").val());
+			dialog_prdept.check(errorField);
+		}else if(prtype == 'Stock'){
+			$("#purordhd_prdept").val($("#deptcode").val());
+			dialog_prdept.check(errorField);
 		}
 	});
 	
@@ -1780,21 +1796,19 @@ $(document).ready(function () {
 		emptyFormdata(errorField, '#formdata2');
 		addmore_jqgrid2.state = false;
 		hideatdialogForm(true);
-		dialog_reqdept.on();
-		dialog_purreqno.on();
-		dialog_prdept.on();
+		dialog_reqdept.off();
+		dialog_purreqno.off();
+		dialog_prdept.off();
 		dialog_suppcode.on();
 		dialog_credcode.on();
-		dialog_deldept.on();
-		dialog_assetno.on();
+		dialog_deldept.off();
+		dialog_assetno.off();
 		
 		enableForm('#formdata');
 		rdonly('#formdata');
 		
-		dialog_reqdept.off();
-		dialog_purreqno.off();
-		
-		$("#purordhd_reqdept,#purordhd_purreqno").prop('readonly',true);
+		$("#purordhd_reqdept,#purordhd_purreqno,#purordhd_prdept,#purordhd_deldept,#purordhd_assetno").prop('readonly',true);
+		$('#dialogForm input:radio[name=purordhd_prtype]').attr('disabled',true);
 		addmore_jqgrid2.state = addmore_jqgrid2.more = false;
 		
 		$(".noti").empty();
@@ -1878,20 +1892,14 @@ $(document).ready(function () {
 
 	function onall_editfunc(){
 		errorField.length = 0;
-		// if($('#purordhd_purreqno').val()!=''){
-    	// 	$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='tot_gst']").attr('readonly','readonly');
-
-		// 	dialog_uomcode.on();
-		// 	dialog_pouom.on();
-		// 	dialog_taxcode.on();
-
-		// }else{
-			dialog_pricecode.on();//start binding event on jqgrid2
-			dialog_itemcode.on();
-			dialog_uomcode.on();
-			dialog_pouom.on();
-			dialog_taxcode.on();
-		//}
+		dialog_pricecode.off();
+		$(dialog_pricecode.textfield).attr('disabled',true);
+		dialog_itemcode.off();
+		$(dialog_itemcode.textfield).attr('disabled',true);
+		dialog_uomcode.off();
+		$(dialog_uomcode.textfield).attr('disabled',true);
+		dialog_pouom.on();
+		dialog_taxcode.on();
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		mycurrency_np.formatOnBlur();//make field to currency on leave cursor
@@ -2785,18 +2793,18 @@ $(document).ready(function () {
 		'purreqno',['material.purreqhd AS h'],'#purordhd_purreqno',errorField,
 		{
 			colModel:[
-				{label:'Request No',name:'h_purreqno',width:50,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Request Department', name: 'h_reqdept', width: 100, classes: 'pointer',canSearch:true,checked:true,or_search:true },
-				{label:'Supplier Code',name:'h_suppcode',width:100,classes:'pointer wrap', formatter: showdetail,unformat:un_showdetail},
-				{label:'Purchase Department',name:'h_prdept',width:200,classes:'pointer wrap', formatter: showdetail,unformat:un_showdetail},
+				{label:'Request No',name:'h_purreqno',width:20,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Request Department', name: 'h_reqdept', width: 60, classes: 'pointer',canSearch:true,checked:true,or_search:true },
+				{label:'Supplier Code',name:'h_suppcode',width:60,classes:'pointer wrap', formatter: showdetail,unformat:un_showdetail},
+				{label:'Purchase Department',name:'h_prdept',width:60,classes:'pointer wrap', formatter: showdetail,unformat:un_showdetail},
+				{label:'PR Type',name:'h_prtype',width:60,classes:'pointer'},
 				{label:'PerDisc',name:'h_perdisc',width:400,classes:'pointer',hidden:true},
 				{label:'AmtDisc',name:'h_amtdisc',width:400,classes:'pointer',hidden:true},
-				{label:'Total Amount',name:'h_totamount',width:80,classes:'pointer',formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}},
+				{label:'Total Amount',name:'h_totamount',width:40,classes:'pointer',formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}},
 				{label:'Sub Amount',name:'h_subamount',width:400,classes:'pointer',hidden:true},
 				{label:'Status',name:'h_recstatus',width:400,classes:'pointer',hidden:true},
-				{label:'Remark',name:'h_remarks',width:400,classes:'pointer',hidden:true},
-				{label:'prtype',name:'h_prtype',width:50,classes:'pointer',hidden:true},
-				{label:'recno',name:'h_recno',width:50,classes:'pointer',hidden:false},
+				{label:'Remark',name:'h_remarks',width:90,classes:'pointer wrap',hidden:false},
+				{label:'recno',name:'h_recno',width:50,classes:'pointer',hidden:true},
 				{label:'assetno',name:'h_assetno',width:50,classes:'pointer',hidden:true}
 			],
 			sortname: 'h_recno',
@@ -2844,12 +2852,9 @@ $(document).ready(function () {
 				var urlParam2 = {
 					action: 'get_value_default',
 					url: 'util/get_value_default',
-					field: ['prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.qtybalance', 'prdt.itemcode', 'p.description', 'prdt.uomcode','prdt.pouom', 'prdt.qtyrequest', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax', 'prdt.amount','rem_but AS remarks_button','prdt.remarks','prdt.recstatus','t.rate'],
-					table_name: ['material.purreqdt AS prdt', 'material.productmaster AS p', 'hisdb.taxmast AS t'],
+					field: ['prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.qtybalance', 'prdt.itemcode', 'prdt.uomcode','prdt.pouom', 'prdt.qtyrequest', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax', 'prdt.amount','rem_but AS remarks_button','prdt.remarks','prdt.recstatus'],
+					table_name: ['material.purreqdt AS prdt'],
 					table_id: 'lineno_',
-					join_type: ['LEFT JOIN', 'LEFT JOIN'],
-					join_onCol: ['prdt.itemcode','prdt.taxcode'],
-					join_onVal: ['p.itemcode', 't.taxcode'],
 					filterCol: ['prdt.recno', 'prdt.compcode', 'prdt.recstatus'],
 					filterVal: [data['h_recno'], 'session.compcode', '<>.DELETE']
 				};
@@ -2906,11 +2911,21 @@ $(document).ready(function () {
 			title:"Select Request No",
 			open: function(){
 				$("#jqGrid2").jqGrid("clearGridData", true);
-				dialog_purreqno.urlParam.fixPost = "true";
-				dialog_purreqno.urlParam.filterCol = ['h.reqdept'];
-				dialog_purreqno.urlParam.filterVal = [$("#purordhd_reqdept").val()];
-				dialog_purreqno.urlParam.WhereInCol = ['h.recstatus'];
-				dialog_purreqno.urlParam.WhereInVal = [['PARTIAL','APPROVED']];
+
+				let prtype = $('#formdata input:radio[name=purordhd_prtype]:checked').val();
+				if(prtype == 'AssetMaintenance' || prtype == 'Others'){
+					dialog_purreqno.urlParam.fixPost = "true";
+					dialog_purreqno.urlParam.filterCol = ['h.reqdept','h.prtype'];
+					dialog_purreqno.urlParam.filterVal = [$("#purordhd_reqdept").val(),prtype];
+					dialog_purreqno.urlParam.WhereInCol = ['h.recstatus'];
+					dialog_purreqno.urlParam.WhereInVal = [['PARTIAL','APPROVED']];
+				}else{
+					dialog_purreqno.urlParam.fixPost = "true";
+					dialog_purreqno.urlParam.filterCol = ['h.reqdept','h.prtype','h.unit'];
+					dialog_purreqno.urlParam.filterVal = [$("#purordhd_reqdept").val(),prtype,'session.unit'];
+					dialog_purreqno.urlParam.WhereInCol = ['h.recstatus'];
+					dialog_purreqno.urlParam.WhereInVal = [['PARTIAL','APPROVED']];
+				}
 			},
 			close: function(){
 				// $("#purordhd_suppcode").focus();
@@ -3119,16 +3134,17 @@ $(document).ready(function () {
 		},{
 			title:"Select Price Code For Item",
 			open: function(obj_){
-				dialog_pricecode.urlParam.filterCol=['compcode','recstatus'];
-				dialog_pricecode.urlParam.filterVal=['session.compcode','ACTIVE'];
-				
 				let prtype = $('#dialogForm input:radio[name=purordhd_prtype]:checked').val();
-				if(prtype == 'Non-Stock'){
-					dialog_pricecode.urlParam.filterCol=['compcode','recstatus','pricecode'];
-					dialog_pricecode.urlParam.filterVal=['session.compcode','ACTIVE','<>.IV'];
+				if(prtype == 'Stock'){
+					dialog_pricecode.urlParam.filterCol=['compcode','recstatus'];
+					dialog_pricecode.urlParam.filterVal=['session.compcode','ACTIVE'];
+					dialog_pricecode.urlParam.WhereInCol=['pricecode'];
+					dialog_pricecode.urlParam.WhereInVal=[['IV','BO']];
 				}else{
-					dialog_pricecode.urlParam.filterCol=['compcode','recstatus','pricecode'];
-					dialog_pricecode.urlParam.filterVal=['session.compcode','ACTIVE','IV'];
+					dialog_pricecode.urlParam.filterCol=['compcode','recstatus'];
+					dialog_pricecode.urlParam.filterVal=['session.compcode','ACTIVE'];
+					dialog_pricecode.urlParam.whereNotInCol=['pricecode'];
+					dialog_pricecode.urlParam.whereNotInVal=[['IV','BO']];
 				}
 			},
 			close: function(obj_){
@@ -3249,63 +3265,47 @@ $(document).ready(function () {
 		},{
 			title:"Select Item For Purchase Order",
 			open:function(obj_){
-				var pricecode = $("#jqGrid2 input#"+obj_.id_optid+"_pricecode").val();
-				
-				if(pricecode == 'MS'){
-					let newcolmodel = [
-							{label: 'Item Code',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-							{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-							{label: 'Quantity On Hand',name:'p_qtyonhand',width:100,classes:'pointer',},
-							{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
-							{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
-							{label: 'Group Code', name: 'p_groupcode', width: 100, classes: 'pointer' },
-							{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
-							{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
-							{label: 'Unit', name:'p_unit'},
-						]
+				let prtype = $('#dialogForm input:radio[name=purordhd_prtype]:checked').val();
 
-					$('#'+dialog_itemcode.gridname).jqGrid('setGridParam',{colModel:newcolmodel});
-
-					dialog_itemcode.urlParam.field = getfield(newcolmodel);
-					dialog_itemcode.urlParam.table_name = ['material.product AS p','hisdb.taxmast AS t','material.uom AS u'];
-					dialog_itemcode.urlParam.fixPost = "true";
-					dialog_itemcode.urlParam.table_id = "none_";
-					dialog_itemcode.urlParam.filterCol = ['p.compcode', 'p.groupcode', 'p.unit'];
-					dialog_itemcode.urlParam.filterVal = ['session.compcode',  '<>.Stock', 'session.unit'];
-					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN'];
-					dialog_itemcode.urlParam.join_onCol = ['p.taxcode','u.uomcode'];
-					dialog_itemcode.urlParam.join_onVal = ['t.taxcode','p.uomcode'];
-					dialog_itemcode.urlParam.join_filterCol = [];
-					dialog_itemcode.urlParam.join_filterVal = [];
-
-				}else{
-					let newcolmodel = [
-							{label: 'Item Code',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-							{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true, checked:true},
-							{label: 'Quantity On Hand',name:'p_qtyonhand',width:100,classes:'pointer',},
-							{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
-							{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
-							{label: 'Group Code', name: 'p_groupcode', width: 100, classes: 'pointer' },
-							{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
-							{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
-							{label: 'Unit', name:'p_unit'},
-						]
-
-
-					$('#'+dialog_itemcode.gridname).jqGrid('setGridParam',{colModel:newcolmodel});
-
-					dialog_itemcode.urlParam.field = getfield(newcolmodel);
+				if(prtype == 'Stock'){
 					dialog_itemcode.urlParam.table_name = ['material.stockloc AS s','material.product AS p','hisdb.taxmast AS t','material.uom AS u']
 					dialog_itemcode.urlParam.fixPost = "true";
 					dialog_itemcode.urlParam.table_id = "none_";
 					dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode', 's.unit'];
-					dialog_itemcode.urlParam.filterVal = ['on.p.compcode', moment($('#purordhd_purdate').val()).year(), $('#purordhd_deldept').val(),'session.unit'];
+					dialog_itemcode.urlParam.filterVal = ['on.p.compcode', moment($('#purordhd_purreqdt').val()).year(), $('#purordhd_deldept').val(),'session.unit'];
 					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
 					dialog_itemcode.urlParam.join_onCol = ['s.itemcode','p.taxcode','u.uomcode'];
 					dialog_itemcode.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
-					dialog_itemcode.urlParam.join_filterCol = [['s.uomcode on =','s.compcode =','p.recstatus =','p.unit =']];
-					dialog_itemcode.urlParam.join_filterVal = [['p.uomcode','session.compcode','ACTIVE','session.unit']];
-
+					dialog_itemcode.urlParam.join_filterCol = [['p.uomcode on =','p.compcode =','p.recstatus =','p.unit =']];
+					dialog_itemcode.urlParam.join_filterVal = [['s.uomcode','session.compcode','ACTIVE','session.unit']];
+					dialog_itemcode.urlParam.WhereInCol=['p.groupcode'];
+					dialog_itemcode.urlParam.WhereInVal=[['STOCK','CONSIGNMENT']];
+				}else if(prtype == 'Asset'){
+					dialog_itemcode.urlParam.table_name = ['material.product AS p','hisdb.taxmast AS t','material.uom AS u'];
+					dialog_itemcode.urlParam.fixPost = "true";
+					dialog_itemcode.urlParam.table_id = "none_";
+					dialog_itemcode.urlParam.filterCol = ['p.compcode','p.recstatus','p.unit'];
+					dialog_itemcode.urlParam.filterVal = ['session.compcode','ACTIVE','ALL'];
+					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN'];
+					dialog_itemcode.urlParam.join_onCol = ['t.taxcode','u.uomcode'];
+					dialog_itemcode.urlParam.join_onVal = ['p.taxcode','p.uomcode'];
+					dialog_itemcode.urlParam.join_filterCol = [];
+					dialog_itemcode.urlParam.join_filterVal = [];
+					dialog_itemcode.urlParam.WhereInCol=['p.groupcode'];
+					dialog_itemcode.urlParam.WhereInVal=[['ASSET']];
+				}else{
+					dialog_itemcode.urlParam.table_name = ['material.product AS p','hisdb.taxmast AS t','material.uom AS u'];
+					dialog_itemcode.urlParam.fixPost = "true";
+					dialog_itemcode.urlParam.table_id = "none_";
+					dialog_itemcode.urlParam.filterCol = ['p.compcode','p.recstatus','p.unit'];
+					dialog_itemcode.urlParam.filterVal = ['session.compcode','ACTIVE','ALL'];
+					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN'];
+					dialog_itemcode.urlParam.join_onCol = ['t.taxcode','u.uomcode'];
+					dialog_itemcode.urlParam.join_onVal = ['p.taxcode','p.uomcode'];
+					dialog_itemcode.urlParam.join_filterCol = [];
+					dialog_itemcode.urlParam.join_filterVal = [];
+					dialog_itemcode.urlParam.WhereInCol=['p.groupcode'];
+					dialog_itemcode.urlParam.WhereInVal=[['OTHERS']];
 				}
 			},
 			close: function(obj_){

@@ -60,6 +60,9 @@ $(document).ready(function () {
 						enableForm('#formdata');
 						rdonly('#formdata');
 						$("#purreqhd_reqdept").val($("#deptcode").val());
+						dialog_reqdept.check(errorField);
+						$("#purreqhd_prdept").val($("#deptcode").val());
+						dialog_prdept.check(errorField);
 						$('#purreqhd_purreqdt').val(moment().format('YYYY-MM-DD'));
 						break;
 					case state = 'edit':
@@ -121,12 +124,21 @@ $(document).ready(function () {
 	/////////////////////////////////////////////end dialog/////////////////////////////////////////////
 	
 	$('#formdata input:radio[name="purreqhd_prtype"]').change(function (){
-		if($('#formdata input:radio[name=purreqhd_prtype]:checked').val() == 'AssetMaintenance'){
+		$("#assetno_div").hide();
+		let prtype = $('#formdata input:radio[name=purreqhd_prtype]:checked').val();
+		if(prtype == 'AssetMaintenance'){
 			$("#assetno_div").show();
-		}else{
-			$("#assetno_div").hide();
-			// $("#formdata input[name='purreqhd_assetno']").val(' ');
-			// dialog_assetno.check(errorField);
+			$("#purreqhd_prdept").val($("#pcs_dept").val());
+			dialog_prdept.check(errorField);
+		}else if(prtype == 'Others'){
+			$("#purreqhd_prdept").val($("#pcs_dept").val());
+			dialog_prdept.check(errorField);
+		}else if(prtype == 'Asset'){
+			$("#purreqhd_prdept").val($("#deptcode").val());
+			dialog_prdept.check(errorField);
+		}else if(prtype == 'Stock'){
+			$("#purreqhd_prdept").val($("#deptcode").val());
+			dialog_prdept.check(errorField);
 		}
 	});
 	
@@ -1044,6 +1056,7 @@ $(document).ready(function () {
 			$(".noti").empty();
 		},
 		onSelectRow: function (rowid, selected) {
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 			myfail_msg.clear_fail();
 		},
 		gridComplete: function(){
@@ -1238,10 +1251,10 @@ $(document).ready(function () {
 			dialog_pouom.on();
 			dialog_taxcode.on();
 
-			if($('#dialogForm input:radio[name=purreqhd_prtype]:checked').val() == 'Non-Stock'){
-				$("#jqGrid2 #"+rowid+"_pricecode").val('MS');
-			}else{
+			if($('#dialogForm input:radio[name=purreqhd_prtype]:checked').val() == 'Stock'){
 				$("#jqGrid2 #"+rowid+"_pricecode").val('IV');
+			}else{
+				$("#jqGrid2 #"+rowid+"_pricecode").val('MS');
 			}
 
 			dialog_pricecode.id_optid = rowid;
@@ -1311,8 +1324,8 @@ $(document).ready(function () {
 				textfld:"",
 				msg:response.responseText,
 			});
-        	refreshGrid('#jqGrid2',urlParam2,'add');
-	    	$("#jqGridPager2Delete").show();
+        	// refreshGrid('#jqGrid2',urlParam2,'add');
+	    	// $("#jqGridPager2Delete").show();
         },
 		beforeSaveRow: function (options, rowid) {
         	if(errorField.length>0)return false;
@@ -1660,13 +1673,14 @@ $(document).ready(function () {
 		emptyFormdata(errorField, '#formdata2');
 		addmore_jqgrid2.state = false;
 		hideatdialogForm(true);
-		dialog_reqdept.on();
+		// dialog_reqdept.on();
 		dialog_prdept.on();
 		dialog_suppcode.on();
 		dialog_assetno.on();
 		
 		enableForm('#formdata');
 		rdonly('#formdata');
+		$('#dialogForm #purreqhd_reqdept,#dialogForm input:radio[name=purreqhd_prtype]').attr('disabled',true);
 		$(".noti").empty();
 		refreshGrid("#jqGrid2", urlParam2);
 	});
@@ -1729,9 +1743,12 @@ $(document).ready(function () {
 
 	function onall_editfunc(){
 		errorField.length=0;
-		dialog_pricecode.on();//start binding event on jqgrid2
-		dialog_itemcode.on();
-		dialog_uomcode.on();
+		dialog_pricecode.off();//start binding event on jqgrid2
+		$(dialog_pricecode.textfield).attr('disabled',true);
+		dialog_itemcode.off();
+		$(dialog_itemcode.textfield).attr('disabled',true);
+		dialog_uomcode.off();
+		$(dialog_uomcode.textfield).attr('disabled',true);
 		dialog_pouom.on();
 		dialog_taxcode.on();
 		
@@ -2074,7 +2091,7 @@ $(document).ready(function () {
 				dialog_suppcode.urlParam.filterCol=['recstatus', 'compcode'];
 				dialog_suppcode.urlParam.filterVal=['ACTIVE', 'session.compcode'];
 			}
-		},'urlParam','radio','tab',false
+		},'urlParam','radio','tab',true
 	);
 	dialog_suppcode.makedialog();
 	
@@ -2152,12 +2169,16 @@ $(document).ready(function () {
 			title:"Select Price Code For Item",
 			open: function(){
 				let prtype = $('#dialogForm input:radio[name=purreqhd_prtype]:checked').val();
-				if(prtype == 'Non-Stock'){
-					dialog_pricecode.urlParam.filterCol=['compcode','recstatus','pricecode'];
-					dialog_pricecode.urlParam.filterVal=['session.compcode','ACTIVE','<>.IV'];
+				if(prtype == 'Stock'){
+					dialog_pricecode.urlParam.filterCol=['compcode','recstatus'];
+					dialog_pricecode.urlParam.filterVal=['session.compcode','ACTIVE'];
+					dialog_pricecode.urlParam.WhereInCol=['pricecode'];
+					dialog_pricecode.urlParam.WhereInVal=[['IV','BO']];
 				}else{
-					dialog_pricecode.urlParam.filterCol=['compcode','recstatus','pricecode'];
-					dialog_pricecode.urlParam.filterVal=['session.compcode','ACTIVE','IV'];
+					dialog_pricecode.urlParam.filterCol=['compcode','recstatus'];
+					dialog_pricecode.urlParam.filterVal=['session.compcode','ACTIVE'];
+					dialog_pricecode.urlParam.whereNotInCol=['pricecode'];
+					dialog_pricecode.urlParam.whereNotInVal=[['IV','BO']];
 				}
 			},
 			close: function(){
@@ -2253,52 +2274,9 @@ $(document).ready(function () {
 		},{
 			title:"Select Item For Purchase Request",
 			open:function(obj_){
-				var pricecode = $("#jqGrid2 input#"+obj_.id_optid+"_pricecode").val();
+				let prtype = $('#dialogForm input:radio[name=purreqhd_prtype]:checked').val();
 				
-				if(pricecode == 'MS'){
-					let newcolmodel = [
-							{label: 'Item Code',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-							{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-							{label: 'Quantity On Hand',name:'p_qtyonhand',width:100,classes:'pointer',},
-							{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
-							{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
-							{label: 'Group Code', name: 'p_groupcode', width: 100, classes: 'pointer' },
-							{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
-							{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
-							{label: 'Unit', name:'p_unit'},
-						]
-
-					$('#'+dialog_itemcode.gridname).jqGrid('setGridParam',{colModel:newcolmodel});
-
-					dialog_itemcode.urlParam.field = getfield(newcolmodel);
-					dialog_itemcode.urlParam.table_name = ['material.product AS p','hisdb.taxmast AS t','material.uom AS u'];
-					dialog_itemcode.urlParam.fixPost = "true";
-					dialog_itemcode.urlParam.table_id = "none_";
-					dialog_itemcode.urlParam.filterCol = ['p.compcode', 'p.groupcode', 'p.unit','p.recstatus', 'p.unit'];
-					dialog_itemcode.urlParam.filterVal = ['session.compcode',  '<>.Stock', 'session.unit','ACTIVE','session.unit'];
-					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN'];
-					dialog_itemcode.urlParam.join_onCol = ['p.taxcode','u.uomcode'];
-					dialog_itemcode.urlParam.join_onVal = ['t.taxcode','p.uomcode'];
-					dialog_itemcode.urlParam.join_filterCol = [];
-					dialog_itemcode.urlParam.join_filterVal = [];
-
-				}else{
-					let newcolmodel = [
-							{label: 'Item Code',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-							{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,or_search:true, checked:true},
-							{label: 'Quantity On Hand',name:'p_qtyonhand',width:100,classes:'pointer',},
-							{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
-							{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
-							{label: 'Group Code', name: 'p_groupcode', width: 100, classes: 'pointer' },
-							{label: 'Conversion', name: 'u_convfactor', width: 50, classes: 'pointer', hidden:true },
-							{label: 'rate', name: 't_rate', width: 100, classes: 'pointer',hidden:true },
-							{label: 'Unit', name:'p_unit'},
-						]
-
-
-					$('#'+dialog_itemcode.gridname).jqGrid('setGridParam',{colModel:newcolmodel});
-
-					dialog_itemcode.urlParam.field = getfield(newcolmodel);
+				if(prtype == 'Stock'){
 					dialog_itemcode.urlParam.table_name = ['material.stockloc AS s','material.product AS p','hisdb.taxmast AS t','material.uom AS u']
 					dialog_itemcode.urlParam.fixPost = "true";
 					dialog_itemcode.urlParam.table_id = "none_";
@@ -2307,9 +2285,36 @@ $(document).ready(function () {
 					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
 					dialog_itemcode.urlParam.join_onCol = ['s.itemcode','p.taxcode','u.uomcode'];
 					dialog_itemcode.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
-					dialog_itemcode.urlParam.join_filterCol = [['s.uomcode on =','s.compcode =','p.recstatus =','p.unit =']];
-					dialog_itemcode.urlParam.join_filterVal = [['p.uomcode','session.compcode','ACTIVE','session.unit']];
-
+					dialog_itemcode.urlParam.join_filterCol = [['p.uomcode on =','p.compcode =','p.recstatus =','p.unit =']];
+					dialog_itemcode.urlParam.join_filterVal = [['s.uomcode','session.compcode','ACTIVE','session.unit']];
+					dialog_itemcode.urlParam.WhereInCol=['p.groupcode'];
+					dialog_itemcode.urlParam.WhereInVal=[['STOCK','CONSIGNMENT']];
+				}else if(prtype == 'Asset'){
+					dialog_itemcode.urlParam.table_name = ['material.product AS p','hisdb.taxmast AS t','material.uom AS u'];
+					dialog_itemcode.urlParam.fixPost = "true";
+					dialog_itemcode.urlParam.table_id = "none_";
+					dialog_itemcode.urlParam.filterCol = ['p.compcode','p.recstatus','p.unit'];
+					dialog_itemcode.urlParam.filterVal = ['session.compcode','ACTIVE','ALL'];
+					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN'];
+					dialog_itemcode.urlParam.join_onCol = ['t.taxcode','u.uomcode'];
+					dialog_itemcode.urlParam.join_onVal = ['p.taxcode','p.uomcode'];
+					dialog_itemcode.urlParam.join_filterCol = [];
+					dialog_itemcode.urlParam.join_filterVal = [];
+					dialog_itemcode.urlParam.WhereInCol=['p.groupcode'];
+					dialog_itemcode.urlParam.WhereInVal=[['ASSET']];
+				}else{
+					dialog_itemcode.urlParam.table_name = ['material.product AS p','hisdb.taxmast AS t','material.uom AS u'];
+					dialog_itemcode.urlParam.fixPost = "true";
+					dialog_itemcode.urlParam.table_id = "none_";
+					dialog_itemcode.urlParam.filterCol = ['p.compcode','p.recstatus','p.unit'];
+					dialog_itemcode.urlParam.filterVal = ['session.compcode','ACTIVE','ALL'];
+					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN'];
+					dialog_itemcode.urlParam.join_onCol = ['t.taxcode','u.uomcode'];
+					dialog_itemcode.urlParam.join_onVal = ['p.taxcode','p.uomcode'];
+					dialog_itemcode.urlParam.join_filterCol = [];
+					dialog_itemcode.urlParam.join_filterVal = [];
+					dialog_itemcode.urlParam.WhereInCol=['p.groupcode'];
+					dialog_itemcode.urlParam.WhereInVal=[['OTHERS']];
 				}
 			},
 			close: function(obj_){
@@ -2320,7 +2325,7 @@ $(document).ready(function () {
 	dialog_itemcode.makedialog(false);
 
 	var dialog_uomcode = new ordialog(
-		'uom',['material.uom AS u','material.stockloc AS s'],"#jqGrid2 input[name='uomcode']",errorField,
+		'uom',['material.uom AS u','material.stockloc AS s'],"#jqGrid2 input[name='uomcode']",'errorField',
 		{	colModel:
 			[
 				{label:'UOM code',name:'u_uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
@@ -2431,9 +2436,8 @@ $(document).ready(function () {
 	);
 	dialog_uomcode.makedialog(false);
 
-
 	var dialog_pouom = new ordialog(
-		'pouom', ['material.uom '], "#jqGrid2 input[name='pouom']", errorField,
+		'pouom', ['material.uom '], "#jqGrid2 input[name='pouom']", 'errorField',
 		{
 			colModel:
 			[
@@ -2488,7 +2492,6 @@ $(document).ready(function () {
 		}, 'urlParam', 'radio', 'tab', false
 	);
 	dialog_pouom.makedialog(false);
-
 
 	var dialog_taxcode = new ordialog(
 		'taxcode',['hisdb.taxmast'],"#jqGrid2 input[name='taxcode']",errorField,
