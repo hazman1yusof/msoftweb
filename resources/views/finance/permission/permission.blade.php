@@ -295,6 +295,6 @@ i.fa {
 		});
 	</script>
 
-	<script src="js/finance/permission/permission.js?v=1.4"></script>
+	<script src="js/finance/permission/permission.js?v=1.5"></script>
 
 @endsection

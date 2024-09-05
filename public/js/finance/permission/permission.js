@@ -40,7 +40,8 @@ $(document).ready(function () {
 			parent_close_disabled(true);
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 			switch(oper) {
-				case state = 'add':
+				case 'add':
+					$("#jqGrid2").jqGrid("clearGridData", true);
 					// refreshGrid("#jqGrid2", urlParam2,'kosongkan');
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
@@ -48,7 +49,7 @@ $(document).ready(function () {
 					hideOne('#formdata');
 					rdonly("#dialogForm");
 					break;
-				case state = 'edit':
+				case 'edit':
 					refreshGrid("#jqGrid2", urlParam2);
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
@@ -57,7 +58,7 @@ $(document).ready(function () {
 					$('#formdata :input[hideOne]').show();
 					rdonly("#dialogForm");
 					break;
-				case state = 'view':
+				case 'view':
 					refreshGrid("#jqGrid2", urlParam2);
 					$( this ).dialog( "option", "title", "View" );
 					disableForm('#formdata');
@@ -94,6 +95,7 @@ $(document).ready(function () {
 			dialog_authorid.off();
 			$(".noti").empty();
 			$("#refresh_jqGrid").click();
+			refreshGrid("#jqGrid2",null,'kosongkan');
 			// refreshGrid("#jqGrid2",null,"kosongkan");
 			// refreshGrid("#gridpermissiondtl",null,"kosongkan");
 			
@@ -254,6 +256,7 @@ $(document).ready(function () {
 
 		},'json').fail(function (data) {
 			alert(data.responseJSON.message);
+			dialog_authorid.on();
 		}).done(function (data) {
 			unsaved = false;
 			hideatdialogForm(false);
@@ -946,9 +949,10 @@ $("#gridpermissiondtl").jqGrid({
                      }
 			},
 		
-			{ label: 'Min Limit', name: 'dtl_minlimit', width: 200, classes: 'wrap',formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, 
+			{ label: 'Min Limit', name: 'dtl_minlimit', width: 200, classes: 'wrap',formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }
 			},
 			{ label: 'Max Limit', name: 'dtl_maxlimit', width: 200, classes: 'wrap',formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }
+			},
 			
 	],
 	viewrecords: true,
