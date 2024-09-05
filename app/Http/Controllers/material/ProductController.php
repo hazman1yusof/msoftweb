@@ -137,7 +137,7 @@ class ProductController extends defaultController
                             $join = $join->where('cm.compcode', '=', 'p.compcode');
                             $join = $join->on('cm.chgcode', '=', 'p.itemcode');
                             $join = $join->on('cm.uom', '=', 'p.uomcode');
-                            if(strtoupper($groupcode) == 'ASSET' || strtoupper($groupcode) == 'OTHERS' ){
+                            if(!in_array($groupcode, ['ASSET','OTHERS'])){
                                 $join = $join->where('cm.unit','=',session('unit'));
                             }
                         });
