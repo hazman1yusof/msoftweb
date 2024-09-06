@@ -472,12 +472,18 @@ class ProductController extends defaultController
             DB::beginTransaction();
             try {
 
+                if(strtoupper($request->groupcode) == 'STOCK' || strtoupper($request->groupcode) == 'CONSIGNMENT'){
+                    $unit_ = session('unit');
+                }else{
+                    $unit_ = 'ALL';
+                }
+
                 //1. update product 
                 $table = DB::table('material.product')->where('idno','=',$request->idno);
                 $array_update = [
                     'description' => strtoupper($request->description),
                     'generic' => strtoupper($request->generic),
-                    'groupcode' => strtoupper($request->groupcode),
+                    'groupcode' => $unit_,
                     'Class' => $request->Class,
                     'unit' => session('unit'),
                     'compcode' => session('compcode'),
