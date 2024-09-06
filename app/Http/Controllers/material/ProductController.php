@@ -483,9 +483,9 @@ class ProductController extends defaultController
                 $array_update = [
                     'description' => strtoupper($request->description),
                     'generic' => strtoupper($request->generic),
-                    'groupcode' => $unit_,
-                    'Class' => $request->Class,
-                    'unit' => session('unit'),
+                    'groupcode' => strtoupper($request->groupcode),
+                    'Class' => strtoupper($request->Class),
+                    'unit' => $unit_,
                     'compcode' => session('compcode'),
                     'subcatcode' => strtoupper($request->subcatcode),
                     'pouom' => strtoupper($request->pouom),
