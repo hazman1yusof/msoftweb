@@ -123,22 +123,30 @@ $(document).ready(function () {
 		});
 	/////////////////////////////////////////////end dialog/////////////////////////////////////////////
 	
-	$('#formdata input:radio[name="purreqhd_prtype"]').change(function (){
+	$('#formdata input:radio[name="purreqhd_prtype"]').click(function (){
 		$("#assetno_div").hide();
 		let prtype = $('#formdata input:radio[name=purreqhd_prtype]:checked').val();
 		if(prtype == 'AssetMaintenance'){
 			$("#assetno_div").show();
 			$("#purreqhd_prdept").val($("#pcs_dept").val());
 			dialog_prdept.check(errorField);
+			$("#purreqhd_reqdept").val($("#deptcode").val());
+			dialog_reqdept.check(errorField);
 		}else if(prtype == 'Others'){
 			$("#purreqhd_prdept").val($("#pcs_dept").val());
 			dialog_prdept.check(errorField);
+			$("#purreqhd_reqdept").val($("#deptcode").val());
+			dialog_reqdept.check(errorField);
 		}else if(prtype == 'Asset'){
 			$("#purreqhd_prdept").val($("#deptcode").val());
 			dialog_prdept.check(errorField);
+			$("#purreqhd_reqdept").val($("#deptcode").val());
+			dialog_reqdept.check(errorField);
 		}else if(prtype == 'Stock'){
 			$("#purreqhd_prdept").val($("#deptcode").val());
 			dialog_prdept.check(errorField);
+			$("#purreqhd_reqdept").val($("#deptcode").val());
+			dialog_reqdept.check(errorField);
 		}
 	});
 	
