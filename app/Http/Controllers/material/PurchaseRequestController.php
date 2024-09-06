@@ -24,13 +24,12 @@ class PurchaseRequestController extends defaultController
     }
 
     public function show(Request $request){   
-        $purdept = DB::table('sysdb.department')
+        $reqdept = DB::table('sysdb.department')
                         ->select('deptcode')
                         ->where('compcode',session('compcode'))
-                        ->where('purdept',1)
                         ->get();
 
-        return view('material.purchaseRequest.purchaseRequest',compact('purdept'));
+        return view('material.purchaseRequest.purchaseRequest',compact('reqdept'));
     }
 
     public function show_mobile(Request $request){   

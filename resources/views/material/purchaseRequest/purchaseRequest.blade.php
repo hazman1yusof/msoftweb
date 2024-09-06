@@ -131,10 +131,10 @@ div#fail_msg{
             </div>
 
 	    		<div class="col-md-2" id="trandeptSearch">
-					<label class="control-label" for="trandept">Purchase Dept</label> 
+					<label class="control-label" for="trandept">Request Dept</label> 
 						<select id='trandept' class="form-control input-sm">
 							<option value="All">ALL</option>
-							@foreach($purdept as $dept_)
+							@foreach($reqdept as $dept_)
 								@if(Request::get('scope') == 'ALL' && $dept_->deptcode == Session::get('deptcode'))
 								<option value="{{$dept_->deptcode}}" selected>{{$dept_->deptcode}}</option>
 								@else
@@ -592,7 +592,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/purchaseRequest/purchaseRequest.js?v=1.5"></script>
+	<script src="js/material/purchaseRequest/purchaseRequest.js?v=1.6"></script>
 	<!-- <script src="js/material/purchaseRequest/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

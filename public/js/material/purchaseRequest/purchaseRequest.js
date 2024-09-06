@@ -778,7 +778,7 @@ $(document).ready(function () {
 				a.fv = a.fv.concat(b);
 				return a;
 			}
-		}, { fct: ['purreqhd.compcode', 'purreqhd.recstatus', 'purreqhd.prdept'], fv: [], fc: [] });
+		}, { fct: ['purreqhd.compcode', 'purreqhd.recstatus', 'purreqhd.reqdept'], fv: [], fc: [] });
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
