@@ -206,6 +206,10 @@ class HomeController extends Controller
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Enquiry</b></a></li>";
         $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemPhar' targeturl='./itemEnquiry?Class=Pharmacy'>Pharmacy</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemNonPhar' targeturl='./itemEnquiry?Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
+        //GRI
+        //IV
+        //stock freeze
+        //stock count
 
         return $menu;
     }
