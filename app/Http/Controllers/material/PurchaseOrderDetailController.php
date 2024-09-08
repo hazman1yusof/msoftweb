@@ -168,7 +168,8 @@ class PurchaseOrderDetailController extends defaultController
             }
 
             $purordhd = DB::table("material.purordhd")
-                            ->where('idno','=',$request->idno);
+                            ->where('idno','=',$request->idno)
+                            ->first();
 
             //check unique
             if($request->pricecode == 'MS'){
@@ -197,16 +198,22 @@ class PurchaseOrderDetailController extends defaultController
             }
 
             $prtype = $purordhd->prtype;
+            $deldept_unit = DB::table('sysdb.department')
+                            ->where('compcode',session('compcode'))
+                            ->where('deptcode',$purordhd->deldept)
+                            ->first();
+
+            $deldept_unit = $deldept_unit->sector;
 
             if($prtype == 'Stock'){
                 $product = DB::table('material.stockloc as s')
                             ->leftJoin('material.product AS p', function($join){
                                 $join = $join->on("p.itemcode", '=', 's.itemcode');
                                 $join = $join->on("p.uomcode", '=', 's.uomcode');
-                                $join = $join->where("p.unit", '=', session('unit'));
+                                $join = $join->where("p.unit", '=', $deldept_unit);
                                 $join = $join->where("p.compcode", '=', session('compcode'));
                             })
-                            ->where('s.unit','=',session('unit'))
+                            ->where('s.unit','=',$deldept_unit)
                             ->where('s.compcode','=',session('compcode'))
                             ->where('s.year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
                             ->where('s.deptcode','=',$purordhd->deldept)

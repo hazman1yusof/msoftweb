@@ -58,9 +58,11 @@ class DeliveryOrderDetailController extends defaultController
                 ->select('dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode','dodt.pouom', 'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtyorder','dodt.qtydelivered', 'dodt.qtyoutstand','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks', 'dodt.unit','t.rate','dodt.idno')
                 ->leftJoin('material.productmaster AS p', function($join) use ($request){
                     $join = $join->on("dodt.itemcode", '=', 'p.itemcode');    
+                    $join = $join->where("p.compcode", '=', session('compcode'));    
                 })
                 ->leftJoin('hisdb.taxmast AS t', function($join) use ($request){
                     $join = $join->on("dodt.taxcode", '=', 't.taxcode');    
+                    $join = $join->where("t.compcode", '=', session('compcode'));
                 })
                 ->where('dodt.recno','=',$request->filterVal[0])
                 ->where('dodt.compcode','=',session('compcode'))

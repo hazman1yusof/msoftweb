@@ -245,6 +245,13 @@ class StockCountController extends defaultController
                                 ->where('idno','=',$idno)
                                 ->first();
 
+                $unit_ = DB::table('sysdb.department')
+                                ->where('compcode',session('compcode'))
+                                ->where('deptcode',$phycnthd_obj->srcdept)
+                                ->first();
+
+                $unit_ = $unit_->sector;
+
                 // $this->check_sequence_backdated($ivtmphd);
 
                 //-- 2. transfer from ivtmpdt to ivtxndt --//
@@ -311,6 +318,7 @@ class StockCountController extends defaultController
 
                     //1. amik stockloc
                     $stockloc_obj = DB::table('material.StockLoc')
+                        ->where('StockLoc.unit','=',$unit_)
                         ->where('StockLoc.CompCode','=',session('compcode'))
                         ->where('StockLoc.DeptCode','=',$value->srcdept)
                         ->where('StockLoc.ItemCode','=',$value->itemcode)
@@ -329,7 +337,13 @@ class StockCountController extends defaultController
                         $NetMvQty = $stockloc_arr['netmvqty'.$month] + floatval($vrqty);
                         $NetMvVal = $stockloc_arr['netmvval'.$month] + $amount;
 
-                        $stockloc_obj
+                        DB::table('material.StockLoc')
+                            ->where('StockLoc.unit','=',$unit_)
+                            ->where('StockLoc.CompCode','=',session('compcode'))
+                            ->where('StockLoc.DeptCode','=',$value->srcdept)
+                            ->where('StockLoc.ItemCode','=',$value->itemcode)
+                            ->where('StockLoc.Year','=', defaultController::toYear($phycntdate))
+                            ->where('StockLoc.UomCode','=',$value->uomcode)
                             ->update([
                                 'QtyOnHand' => $QtyOnHand,
                                 'NetMvQty'.$month => $NetMvQty, 
@@ -338,6 +352,8 @@ class StockCountController extends defaultController
 
                     //4. tambah expdate, kalu ada batchno
                         $expdate_obj = DB::table('material.stockexp')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('unit','=',$unit_)
                             ->where('Year','=',defaultController::toYear($phycntdate))
                             ->where('DeptCode','=',$value->srcdept)
                             ->where('ItemCode','=',$value->itemcode)
@@ -346,7 +362,7 @@ class StockCountController extends defaultController
 
                         if($value->expdate == NULL){ //ni kalu expdate dia xde @ NULL
                             $expdate_obj
-                                ->where('expdate','=',$value->expdate)
+                                // ->where('expdate','=',$value->expdate)
                                 ->orderBy('expdate', 'asc');
                         }else{ // ni kalu expdate dia exist
                              $expdate_obj
@@ -375,6 +391,8 @@ class StockCountController extends defaultController
                             $balqty_new = $expdate_first->balqty + floatval($vrqty);
 
                             DB::table('material.stockexp')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('unit','=',$unit_)
                                 ->where('Year','=',defaultController::toYear($phycntdate))
                                 ->where('DeptCode','=',$value->srcdept)
                                 ->where('ItemCode','=',$value->itemcode)
@@ -388,7 +406,7 @@ class StockCountController extends defaultController
                             DB::table('material.stockexp')
                                 ->insert([
                                     'compcode' => session('compcode'),
-                                    'unit' => session('unit'),
+                                    'unit' => $unit_,
                                     'Year' => defaultController::toYear($phycntdate),
                                     'DeptCode' => $value->srcdept,
                                     'ItemCode' => $value->itemcode,
@@ -407,6 +425,7 @@ class StockCountController extends defaultController
                     //-- 6. posting product -> update qtyonhand, avgcost, currprice --//
 
                     $product_obj = DB::table('material.product')
+                        ->where('product.unit','=',$unit_)
                         ->where('product.compcode','=',session('compcode'))
                         ->where('product.itemcode','=',$value->itemcode)
                         ->where('product.uomcode','=',$value->uomcode);
@@ -428,6 +447,7 @@ class StockCountController extends defaultController
 
                         // update qtyonhand, avgcost, currprice
                         $product_obj = DB::table('material.product')
+                            ->where('product.unit','=',$unit_)
                             ->where('product.compcode','=',session('compcode'))
                             ->where('product.itemcode','=',$value->itemcode)
                             ->where('product.uomcode','=',$value->uomcode)
@@ -436,6 +456,9 @@ class StockCountController extends defaultController
                                 'avgcost' => $newAvgCost,
                             ]);
 
+                    }else{
+                        //ni utk kalu xde product
+                        throw new \Exception("Product not exist for item: ".$value->itemcode." | deptcode: ".$value->srcdept." |uomcode: ".$value->uomcode);
                     }
 
                     //--- 7. posting GL ---//
@@ -522,7 +545,7 @@ class StockCountController extends defaultController
 
                     DB::table('material.stockloc')
                             ->where('compcode','=',session('compcode'))
-                            ->where('unit','=',session('unit'))
+                            ->where('unit','=',$unit_)
                             ->where('itemcode','=',$value->itemcode)
                             ->where('uomcode','=',$value->uomcode)
                             ->where('deptcode','=',$value->srcdept)

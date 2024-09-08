@@ -14,7 +14,7 @@ class do_util extends defaultController{
 		DB::table('material.ivtxndt')
             ->insert([
                 'compcode' => $value->compcode, 
-                'unit' => $value->unit, //ikut unit delorddt
+                'unit' => session('unit'), //ikut unit delorddt
                 'recno' => $value->recno, 
                 'lineno_' => $value->lineno_, 
                 'itemcode' => $value->itemcode, 
@@ -43,11 +43,11 @@ class do_util extends defaultController{
             ]);
 	}
 
-	public static function stockloc_ins($value,$txnqty,$netprice){
+	public static function stockloc_ins($value,$txnqty,$netprice,$deldept_unit){
 		//1. amik stockloc
         $stockloc_obj = DB::table('material.StockLoc')
             ->where('StockLoc.CompCode','=',session('compcode'))
-            ->where('StockLoc.unit','=',session('unit'))
+            ->where('StockLoc.unit','=',$deldept_unit)
             ->where('StockLoc.DeptCode','=',$value->deldept)
             ->where('StockLoc.ItemCode','=',$value->itemcode)
             ->where('StockLoc.Year','=', defaultController::toYear($value->trandate))
@@ -65,7 +65,7 @@ class do_util extends defaultController{
 
             DB::table('material.StockLoc')
                 ->where('StockLoc.CompCode','=',session('compcode'))
-                ->where('StockLoc.unit','=',session('unit'))
+                ->where('StockLoc.unit','=',$deldept_unit)
                 ->where('StockLoc.DeptCode','=',$value->deldept)
                 ->where('StockLoc.ItemCode','=',$value->itemcode)
                 ->where('StockLoc.Year','=', defaultController::toYear($value->trandate))
@@ -82,11 +82,11 @@ class do_util extends defaultController{
         }
 	}
 
-	public static function stockExp_ins($value,$txnqty,$netprice){
+	public static function stockExp_ins($value,$txnqty,$netprice,$deldept_unit){
 		//1. amik Stock Expiry
         $stockexp_obj = DB::table('material.stockexp')
             ->where('stockexp.compcode','=',$value->compcode)
-            ->where('stockexp.unit','=',$value->unit)
+            ->where('stockexp.unit','=',$deldept_unit)
             ->where('stockexp.deptcode','=',$value->deldept)
             ->where('stockexp.itemcode','=',$value->itemcode)
             ->where('stockexp.expdate','=',$value->expdate)
@@ -100,7 +100,7 @@ class do_util extends defaultController{
 
             DB::table('material.stockexp')
                 ->where('stockexp.compcode','=',$value->compcode)
-                ->where('stockexp.unit','=',$value->unit)
+                ->where('stockexp.unit','=',$deldept_unit)
                 ->where('stockexp.deptcode','=',$value->deldept)
                 ->where('stockexp.itemcode','=',$value->itemcode)
                 ->where('stockexp.expdate','=',$value->expdate)
@@ -118,7 +118,7 @@ class do_util extends defaultController{
             DB::table('material.stockexp')
                 ->insert([
                     'compcode' => $value->compcode, 
-                    'unit' => $value->unit, 
+                    'unit' => $deldept_unit, 
                     'deptcode' => $value->deldept, 
                     'itemcode' => $value->itemcode, 
                     'uomcode' => $value->uomcode, 
@@ -135,10 +135,10 @@ class do_util extends defaultController{
         }
 	}
 
-	public static function product_ins($value,$txnqty,$netprice){
+	public static function product_ins($value,$txnqty,$netprice,$deldept_unit){
 		$product_obj = DB::table('material.product')
 	        ->where('product.compcode','=',session('compcode'))
-            ->where('product.unit','=',session('unit'))
+            ->where('product.unit','=',$deldept_unit)
 	        ->where('product.itemcode','=',$value->itemcode)
 	        ->where('product.uomcode','=',$value->uomcode);
 
@@ -158,7 +158,11 @@ class do_util extends defaultController{
             }
 
 	        // update qtyonhand, avgcost, currprice
-	        $product_obj
+	        DB::table('material.product')
+                ->where('product.compcode','=',session('compcode'))
+                ->where('product.unit','=',$deldept_unit)
+                ->where('product.itemcode','=',$value->itemcode)
+                ->where('product.uomcode','=',$value->uomcode)
 	            ->update([
 	                'qtyonhand' => $newqtyonhand ,
 	                'avgcost' => $newAvgCost,
@@ -170,7 +174,7 @@ class do_util extends defaultController{
         }
 	}
 
-	public static function postingGL($value,$delordhd_obj,$productcat){
+	public static function postingGL($value,$delordhd_obj,$productcat,$deldept_unit){
 
         //amik yearperiod dari delordhd
         $yearperiod = defaultController::getyearperiod_($delordhd_obj->trandate);
@@ -178,13 +182,13 @@ class do_util extends defaultController{
         //tengok product category
         $product_obj = DB::table('material.product')
             ->where('compcode','=', $value->compcode)
-            ->where('unit','=', $value->unit)
+            ->where('unit','=', $deldept_unit)
             ->where('itemcode','=', $value->itemcode)
             ->first();
 
         //amik department,category dgn sysparam pvalue1 dgn pvalue2
         //utk debit costcode
-        if(strtoupper($product_obj->groupcode) == "STOCK" || strtoupper($product_obj->groupcode) == "OTHERS" ){
+        if(strtoupper($product_obj->groupcode) == "STOCK" || strtoupper($product_obj->groupcode) == "OTHERS" || strtoupper($product_obj->groupcode) == "CONSIGNMENT" ){
             $row_dept = DB::table('sysdb.department')
                 ->select('costcode')
                 ->where('compcode','=',session('compcode'))
@@ -229,6 +233,12 @@ class do_util extends defaultController{
             throw new \Exception("Item at delorddt doesn't have groupcode at table product");
         }
 
+        if(strtoupper($product_obj->groupcode) == "STOCK"){
+            $source_ = 'IV';
+        }else{
+            $source_ = 'DO';
+        }
+
         //1. buat gltran
         DB::table('finance.gltran')
             ->insert([
@@ -237,7 +247,7 @@ class do_util extends defaultController{
                 'adddate' => $value->adddate,
                 'auditno' => $value->recno,
                 'lineno_' => $value->lineno_,
-                'source' => 'IV', //kalau stock 'IV', lain dari stock 'DO'
+                'source' => $source_, //kalau stock 'IV', lain dari stock 'DO'
                 'trantype' => $delordhd_obj->trantype,
                 'reference' => $delordhd_obj->deldept .' '. str_pad($delordhd_obj->docno,7,"0",STR_PAD_LEFT),
                 'description' => $value->itemcode.'</br>'.$product_obj->description, 

@@ -65,6 +65,7 @@ $(document).ready(function () {
 					enableForm('#formdata');
 					rdonly('#formdata');
 					$("#delordhd_prdept").val($("#deptcode").val());
+					dialog_prdept.check(errorField);
 					$('#delordhd_trantime').val(moment().format('HH:mm:ss'));
 					$("input[type=radio][name='delordhd_taxclaimable'][value='NON-CLAIMABLE']").prop("checked",true);
 					break;
@@ -2211,6 +2212,8 @@ $(document).ready(function () {
 					join_type: ['LEFT JOIN', 'LEFT JOIN'],
 					join_onCol: ['podt.itemcode','podt.taxcode'],
 					join_onVal: ['p.itemcode','t.taxcode'],
+					join_filterCol: [['p.compcode ='],['t.compcode =']],
+					join_filterVal: [['session.compcode'],['session.compcode']],
 					filterCol: ['podt.recno', 'podt.compcode', 'podt.recstatus'],
 					filterVal: [data['h_recno'], 'session.compcode', '<>.DELETE'],
 					sortby:['lineno_ desc']

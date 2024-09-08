@@ -78,7 +78,7 @@ class ItemEnquiryController extends defaultController
                 ->where('d.uomcode','=',$request->uomcode)
                 ->where('d.trandate','>=',$request->trandate_from)
                 ->where('d.trandate','<=',$request->trandate_to)
-                ->where('d.amount','!=',0)
+                // ->where('d.amount','!=',0)
                 ->orderBy('d.adddate', 'asc')
                 // ->orderBy('h.trantime', 'desc')
                 ->get();
@@ -105,7 +105,7 @@ class ItemEnquiryController extends defaultController
             ->where('d.uomcode','=',$request->uomcode)
             ->where('d.trandate','>=',$request->trandate_from)
             ->where('d.trandate','<=',$request->trandate_to)
-            ->where('d.amount','!=',0)
+            // ->where('d.amount','!=',0)
             ->orderBy('d.adddate', 'asc')
             // ->orderBy('d.updtime', 'desc')
             ->get();
@@ -141,7 +141,7 @@ class ItemEnquiryController extends defaultController
                 ->where('d.uomcoderecv','=',$request->uomcode)
                 ->where('d.trandate','>=',$request->trandate_from)
                 ->where('d.trandate','<=',$request->trandate_to)
-                ->where('d.amount','!=',0)
+                // ->where('d.amount','!=',0)
                 ->orderBy('d.trandate', 'asc')
                 // ->orderBy('h.trantime', 'desc')
                 ->get();

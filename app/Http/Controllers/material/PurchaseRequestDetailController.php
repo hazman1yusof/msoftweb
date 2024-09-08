@@ -50,6 +50,8 @@ class PurchaseRequestDetailController extends defaultController
             case 'get_table_dtl':
                 // dd('asd');
                 return $this->get_table_dtl($request);
+            case 'get_table_dialog_itemcode':
+                return $this->get_table_dialog_itemcode($request);
             default:
                 return 'error happen..';
         }
@@ -71,7 +73,8 @@ class PurchaseRequestDetailController extends defaultController
         $table = DB::table('material.purreqdt as prdt')
                     ->select('prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode', 'prdt.pouom', 'prdt.qtyrequest' , 'prdt.qtybalance', 'prdt.qtyapproved', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax as tot_gst','prdt.netunitprice', 'prdt.totamount','prdt.amount', 'prdt.rem_but AS remarks_button', 'prdt.remarks', 'prdt.recstatus', 'prdt.unit', 't.rate')
                     ->leftJoin('material.productmaster AS p', function($join) use ($request){
-                        $join = $join->on("prdt.itemcode", '=', 'p.itemcode');    
+                        $join = $join->on("prdt.itemcode", '=', 'p.itemcode');
+                        $join = $join->where("p.compcode", '=', session('compcode'));
                     })
                     ->leftJoin('hisdb.taxmast AS t', function($join) use ($request){
                         $join = $join->on("prdt.taxcode", '=', 't.taxcode');    
@@ -108,6 +111,10 @@ class PurchaseRequestDetailController extends defaultController
         $responce->sql_bind = $table->getBindings();
 
         return json_encode($responce);
+    }
+
+    public function get_table_dialog_itemcode(Request $request){
+        
     }
    
     public function chgDate($date){
@@ -195,16 +202,22 @@ class PurchaseRequestDetailController extends defaultController
 
             //check correct groupcode
             $prtype = $purreqhd->prtype;
+            $reqdept_unit = DB::table('sysdb.department')
+                            ->where('compcode',session('compcode'))
+                            ->where('deptcode',$purreqhd->reqdept)
+                            ->first();
+
+            $reqdept_unit = $reqdept_unit->sector;
 
             if($prtype == 'Stock'){
                 $product = DB::table('material.stockloc as s')
                             ->leftJoin('material.product AS p', function($join) use ($request){
                                 $join = $join->on("p.itemcode", '=', 's.itemcode');
                                 $join = $join->on("p.uomcode", '=', 's.uomcode');
-                                $join = $join->where("p.unit", '=', session('unit'));
+                                $join = $join->where("p.unit", '=', $reqdept_unit);
                                 $join = $join->where("p.compcode", '=', session('compcode'));
                             })
-                            ->where('s.unit','=',session('unit'))
+                            ->where('s.unit','=',$reqdept_unit)
                             ->where('s.compcode','=',session('compcode'))
                             ->where('s.year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
                             ->where('s.deptcode','=',$purreqhd->reqdept)

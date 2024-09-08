@@ -1034,8 +1034,8 @@ class PurchaseOrderController extends defaultController
                     })
                     ->leftJoin('material.productmaster as p', function ($join){
                         $join = $join->on('p.itemcode', '=', 'podt.itemcode')
-                                    ->where('p.compcode','=',session('compcode'))
-                                    ->where('p.unit','=',session('unit'));
+                                    ->where('p.compcode','=',session('compcode'));
+                                    // ->where('p.unit','=',session('unit'));
                     })
                     ->where('podt.compcode','=',session('compcode'))
                     ->where('recno','=',$recno)
@@ -1113,6 +1113,13 @@ class PurchaseOrderController extends defaultController
                 // ->where('unit', '=', session('unit'))
                 ->first();
 
+        $deldept_unit = DB::table('sysdb.department')
+                        ->where('compcode',session('compcode'))
+                        ->where('deptcode',$del_dept)
+                        ->first();
+
+        $deldept_unit = $deldept_unit->sector;
+
         foreach ($pr_dt as $key => $value) {
             ///1. insert detail we get from existing purchase request
             $prtype = $pr_hd->prtype;
@@ -1122,10 +1129,10 @@ class PurchaseOrderController extends defaultController
                             ->leftJoin('material.product AS p', function($join){
                                 $join = $join->on("p.itemcode", '=', 's.itemcode');
                                 $join = $join->on("p.uomcode", '=', 's.uomcode');
-                                $join = $join->where("p.unit", '=', session('unit'));
+                                $join = $join->where("p.unit", '=', $deldept_unit);
                                 $join = $join->where("p.compcode", '=', session('compcode'));
                             })
-                            ->where('s.unit','=',session('unit'))
+                            ->where('s.unit','=',$deldept_unit)
                             ->where('s.compcode','=',session('compcode'))
                             ->where('s.year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
                             ->where('s.deptcode','=',$del_dept)

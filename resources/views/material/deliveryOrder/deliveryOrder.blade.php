@@ -412,7 +412,7 @@ div#fail_msg{
 						<div class="form-group">
 				    		<label class="col-md-2 control-label" for="delordhd_remarks">Remarks</label> 
 				    		<div class="col-md-5"> 
-				    		<textarea class="form-control input-sm text-uppercase" name="delordhd_remarks" rows="2" cols="55" maxlength="400" id="delordhd_remarks" ></textarea>
+				    		<textarea class="form-control input-sm text-uppercase" name="delordhd_remarks" rows="2" cols="55" maxlength="400" id="delordhd_remarks" data-validation="required" data-validation-error-msg="Please Enter Value"></textarea>
 				    		</div>
 				    	
 				   		</div>
@@ -506,7 +506,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/deliveryOrder/deliveryOrder.js?v=1.2"></script>
+	<script src="js/material/deliveryOrder/deliveryOrder.js?v=1.3"></script>
 	<!-- <script src="js/material/deliveryOrder/pdfgen.js"></script> -->
 	<script src="js/myjs/barcode.js"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>

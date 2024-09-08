@@ -292,6 +292,13 @@ class DeliveryOrderController extends defaultController
                     ->where('idno', '=', $idno);
 
                 $delordhd_obj = $delordhd->first();
+
+                $deldept_unit = DB::table('sysdb.department')
+                                ->where('compcode',session('compcode'))
+                                ->where('deptcode',$delordhd_obj->deldept)
+                                ->first();
+
+                $deldept_unit = $deldept_unit->sector;
                 
                 if($delordhd_obj->recstatus != 'OPEN'){
                     continue;
@@ -299,7 +306,7 @@ class DeliveryOrderController extends defaultController
 
                 $delorddt_obj = DB::table('material.delorddt')
                     ->where('delorddt.compcode','=',session('compcode'))
-                    ->where('delorddt.unit','=',session('unit'))
+                    // ->where('delorddt.unit','=',session('unit'))
                     ->where('delorddt.recno','=',$delordhd_obj->recno)
                     ->where('delorddt.recstatus','!=','DELETE')
                     ->get();
@@ -309,7 +316,7 @@ class DeliveryOrderController extends defaultController
                 foreach ($delorddt_obj as $value) {
 
                     $stockloc_chk = DB::table('material.stockloc')
-                        ->where('unit','=',$value->unit)
+                        ->where('unit','=',$deldept_unit)
                         ->where('compcode','=',$value->compcode)
                         ->where('deptcode','=',$value->deldept)
                         ->where('itemcode','=',$value->itemcode)
@@ -334,7 +341,7 @@ class DeliveryOrderController extends defaultController
                     //if product.groupcode = "other" then stockflag = other
                     $Stock_flag = DB::table('material.product')
                         ->where('compcode','=', $value->compcode)
-                        ->where('unit','=', $value->unit)
+                        ->where('unit','=', $deldept_unit)
                         ->where('groupcode','=', "Stock")
                         ->where('itemcode','=', $value->itemcode)
                         ->exists();
@@ -366,7 +373,7 @@ class DeliveryOrderController extends defaultController
                             'adduser'=>$delordhd_obj->adduser, 
                             'adddate'=>Carbon::now("Asia/Kuala_Lumpur"),
                             'remarks'=>$delordhd_obj->remarks,
-                            'unit' =>$delordhd_obj->unit
+                            'unit' =>session('unit')
                         ]);
                 }
                 
@@ -401,7 +408,7 @@ class DeliveryOrderController extends defaultController
                     $convfactorPOUOM_obj = DB::table('material.delorddt')
                         ->select('uom.convfactor')
                         ->join('material.uom','delorddt.pouom','=','uom.uomcode')
-                        ->where('delorddt.unit','=',session('unit'))
+                        // ->where('delorddt.unit','=',session('unit'))
                         ->where('delorddt.compcode','=',session('compcode'))
                         ->where('delorddt.recno','=',$delordhd_obj->recno)
                         ->where('delorddt.lineno_','=',$value->lineno_)
@@ -411,7 +418,7 @@ class DeliveryOrderController extends defaultController
                     $convfactorUOM_obj = DB::table('material.delorddt')
                         ->select('uom.convfactor')
                         ->join('material.uom','delorddt.uomcode','=','uom.uomcode')
-                        ->where('delorddt.unit','=',session('unit'))
+                        // ->where('delorddt.unit','=',session('unit'))
                         ->where('delorddt.compcode','=',session('compcode'))
                         ->where('delorddt.recno','=',$delordhd_obj->recno)
                         ->where('delorddt.lineno_','=',$value->lineno_)
@@ -422,10 +429,15 @@ class DeliveryOrderController extends defaultController
                     $netprice = $value->netunitprice * ($convfactorUOM / $convfactorPOUOM);
 
                     //4. start insert dalam ivtxndt
+                    if(in_array($value->pricecode, ['IV','BO'])){
+                        $unit_ = $deldept_unit;
+                    }else{
+                        $unit_ = 'ALL';
+                    }
 
                     $product_obj = DB::table('material.product')
                         ->where('compcode','=', $value->compcode)
-                        ->where('unit','=', $value->unit)
+                        ->where('unit','=', $unit_)
                         ->where('itemcode','=', $value->itemcode)
                         ->first();
 
@@ -434,20 +446,20 @@ class DeliveryOrderController extends defaultController
                         do_util::ivtxndt_ins($value,$txnqty,$netprice,$delordhd_obj,$productcat);
 
                         //--- 3. posting stockloc ---///
-                        do_util::stockloc_ins($value,$txnqty,$netprice);
+                        do_util::stockloc_ins($value,$txnqty,$netprice,$unit_);
 
                         //--- 4. posting stock Exp ---//
-                        do_util::stockExp_ins($value,$txnqty,$netprice);
+                        do_util::stockExp_ins($value,$txnqty,$netprice,$unit_);
 
                         //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
-                        do_util::product_ins($value,$txnqty,$netprice);
+                        do_util::product_ins($value,$txnqty,$netprice,$unit_);
 
                         //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
                         do_util::update_po($value,$txnqty,$netprice);
                     }
 
                     //--- 6. posting GL ---//
-                    do_util::postingGL($value,$delordhd_obj,$productcat);
+                    do_util::postingGL($value,$delordhd_obj,$productcat,$unit_);
 
                     //--- 7. posting GL gst punya---//
                     do_util::postingGL_GST($value,$delordhd_obj); 
@@ -519,7 +531,7 @@ class DeliveryOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+            return response($e, 500);
         }
     }
 

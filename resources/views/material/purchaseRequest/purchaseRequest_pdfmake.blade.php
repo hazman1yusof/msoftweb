@@ -24,7 +24,7 @@
 	var base64_pr = null;
 	var purreqhd = {
 		@foreach($purreqhd as $key => $val) 
-			'{{$key}}' : '{{$val}}',
+			'{{$key}}' : `{!!str_replace('`', '', $val)!!}`,
 		@endforeach 
 	};
 
@@ -48,9 +48,11 @@
 	];
 
 	var supplier = {
-		@foreach($supplier as $key => $val) 
-			'{{$key}}' : '{{$val}}',
-		@endforeach 
+		@if(!empty($supplier))
+			@foreach($supplier as $key => $val) 
+				'{{$key}}' : '{{$val}}',
+			@endforeach 
+		@endif
 	};
 
 	var company = {
@@ -136,7 +138,7 @@
 									colSpan: 2, alignment: 'left'
 								},{},
 								{
-									text: '{{$supplier->Name}}',
+									text: '@if(!empty($supplier)){{$supplier->Name}}@endif',
 									colSpan: 4, alignment: 'left'
 								},{},{},{},{},{},{},{},{}
 							],
@@ -148,7 +150,7 @@
 									], colSpan: 2, rowSpan: 2, alignment: 'left'
 								},{},
 								{
-									text: '{{$purreqhd->remarks}}',
+									text: purreqhd.remarks,
 									colSpan: 9, rowSpan: 2, alignment: 'left'
 								},{},{},{},{},{},{},{},{}
 							],
@@ -184,7 +186,7 @@
 							@foreach($purreqdt as $index=>$obj)
 							[
 								{ text: '{{++$index}}' },
-								{ text: `{{$obj->description}}\n{{$obj->remarks}}`, colSpan: 5 },{},{},{},{},
+								{ text: `{!!str_replace('`', '', $obj->description)!!}\n{!!str_replace('`', '', $obj->remarks)!!}`, colSpan: 5 },{},{},{},{},
 								{ text: '{{$obj->qtyrequest}}', alignment: 'right' },
 								{ text: '{{number_format($obj->unitprice,2)}}', alignment: 'right' },
 								{ text: '{{number_format($obj->tot_gst,2)}}', alignment: 'right' },

@@ -392,7 +392,7 @@ div#fail_msg{
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="purreqhd_remarks">Remark</label>
 							<div class="col-md-3">
-								<textarea rows="5" id='purreqhd_remarks' name='purreqhd_remarks' class="form-control input-sm text-uppercase" ></textarea>
+								<textarea rows="5" id='purreqhd_remarks' name='purreqhd_remarks' class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value"></textarea>
 							</div>
 							
 							<div id="assetno_div" style="display: none;">
