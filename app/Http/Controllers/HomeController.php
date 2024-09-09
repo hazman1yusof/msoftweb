@@ -30,11 +30,13 @@ class HomeController extends Controller
                 ->first();
             $unit_user = $unit_user_->sector;
         }
-        $title = DB::table('sysdb.company')->where('compcode',session('compcode'))->first()->name; 
+        $company = DB::table('sysdb.company')->where('compcode',session('compcode'))->first();
+        $title = $company->name; 
+        $logo1 = $company->logo1;
         $dept_desc = $unit_user_->description;
         $shortcut=false;
 
-        return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut'));
+        return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut','logo1'));
     }
 
     public function ptcare(){
@@ -89,11 +91,13 @@ class HomeController extends Controller
                 ->first();
             $unit_user = $unit_user_->sector;
         }
+        $company = DB::table('sysdb.company')->where('compcode',session('compcode'))->first();
+        $logo1 = $company->logo1;
         $title="Warehouse";
         $dept_desc = $unit_user_->description;
         $shortcut=true;
 
-        return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut'));
+        return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut','logo1'));
     }
 
     public function mobile(){

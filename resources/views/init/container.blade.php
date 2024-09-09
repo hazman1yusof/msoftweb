@@ -43,68 +43,68 @@
 		  <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
 		</a>
 		@endif
-		<a class="navbar-brand" href="#" style="padding: 0px 50px 0px 0px;float: right;">
-			<img src="img/logo.jpg" alt="logo" height="50px" width="auto">
+		<a class="navbar-brand" href="#" style="padding: 0px 10px 0px 0px;float: right;">
+			<img src="img/{{$logo1}}" alt="logo" height="50px" width="auto">
 		</a>
-	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<h4 class="company_name">{{strtoupper($title)}}</h4>
+
+				@if(Auth::user()->dept == '')
+				<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+				<ul class="nav navbar-nav navbar-right" style="margin-top: 8px;color: #999">
+					<li><h4 style="font-size: 15px">&nbsp;Unit :&nbsp;</h4></li>
+					<li>
+						<select class="form-control" id="session_unit">
+							@foreach ($units as $unit)
+						  		<option value="{{$unit->sectorcode}}">{{$unit->description}}</option>
+							@endforeach
+						</select>
+					</li>
+				</ul>
+				@else
+				<ul class="nav navbar-nav navbar-right" style="margin-top: 8px;color: #999">
+					<li><h4 style="font-size: 15px">&nbsp;Unit :&nbsp;</h4></li>
+					<li>
+						<select class="form-control" id="session_unit" readonly>
+						  	<option>{{$unit_user}}</option>
+						</select>
+					</li>
+				</ul>
+				@endif
+
+				<ul class="nav navbar-nav navbar-right" style="margin-top: 8px;color: #999">
+					<li><h4 style="font-size: 15px">&nbsp;Department :&nbsp;</h4></li>
+					<li>
+						<input type='text' class="form-control" id="session_deptcode" readonly value="{{$dept_desc}}">
+					</li>
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="#" class='dropdown-toggle active' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							<span id='username' style="font-size: 15px">{{Auth::user()->username}}</span>
+							<i class="fa fa-user fa-fw"></i>
+							<i class="fa fa-caret-down"></i>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#" id="profilebtn">Profile Settings</a></li>
+							<li class="divider"></li>
+							<li><a href="./logout" >Log-out</a></li>
+						</ul>
+					</li>
+				</ul>
+
+			</div>
 		</div>
-		<div id="navbar" class="navbar-collapse collapse">
-			<h4 class="company_name">{{strtoupper($title)}}</h4>
-
-			@if(Auth::user()->dept == '')
-			<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
-			<ul class="nav navbar-nav navbar-right" style="margin-top: 8px;color: #999">
-				<li><h4 style="font-size: 15px">&nbsp;Unit :&nbsp;</h4></li>
-				<li>
-					<select class="form-control" id="session_unit">
-						@foreach ($units as $unit)
-					  		<option value="{{$unit->sectorcode}}">{{$unit->description}}</option>
-						@endforeach
-					</select>
-				</li>
-			</ul>
-			@else
-			<ul class="nav navbar-nav navbar-right" style="margin-top: 8px;color: #999">
-				<li><h4 style="font-size: 15px">&nbsp;Unit :&nbsp;</h4></li>
-				<li>
-					<select class="form-control" id="session_unit" readonly>
-					  	<option>{{$unit_user}}</option>
-					</select>
-				</li>
-			</ul>
-			@endif
-
-			<ul class="nav navbar-nav navbar-right" style="margin-top: 8px;color: #999">
-				<li><h4 style="font-size: 15px">&nbsp;Department :&nbsp;</h4></li>
-				<li>
-					<input type='text' class="form-control" id="session_deptcode" readonly value="{{$dept_desc}}">
-				</li>
-			</ul>
-
-			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown">
-					<a href="#" class='dropdown-toggle active' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						<span id='username' style="font-size: 15px">{{Auth::user()->username}}</span>
-						<i class="fa fa-user fa-fw"></i>
-						<i class="fa fa-caret-down"></i>
-					</a>
-					<ul class="dropdown-menu" role="menu">
-						<li><a href="#" id="profilebtn">Profile Settings</a></li>
-						<li class="divider"></li>
-						<li><a href="./logout" >Log-out</a></li>
-					</ul>
-				</li>
-			</ul>
-
-		</div>
-	</div>
 	</div>
 
 	<div id='myNavmenu' class="navmenu navmenu-fixed-left">
@@ -278,7 +278,7 @@
 <script type="text/ecmascript" src="plugins/numeral.min.js"></script>
 <script type="text/ecmascript" src="plugins/moment.js"></script>
 <script type="text/ecmascript" src="plugins/velocity.min.js"></script>
-<script type="text/ecmascript" src="js/other/authdtl_alert/authdtl_alert.js"></script>
+<script type="text/ecmascript" src="js/other/authdtl_alert/authdtl_alert.js?v=1.1"></script>
 <script type="text/ecmascript" src="js/myjs/menu.js"></script>
 
 <script>

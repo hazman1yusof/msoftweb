@@ -3,7 +3,6 @@ $(document).ready(function(){
 });
 
 function get_authdtl_alert(){
-	$('#authdtl_alert_div').html('');
 
 	var param_authdtl_alert={
 		action:'get_authdtl_alert',
@@ -12,6 +11,7 @@ function get_authdtl_alert(){
 	$.get( param_authdtl_alert.url+"?"+$.param(param_authdtl_alert), function( data ) {
 		
 	},'json').done(function(data) {
+		$('#authdtl_alert_div').html('');
 		if(!$.isEmptyObject(data)){
 			populate_authdtl_alert_pv(data.queuepv);
 			populate_authdtl_alert_pd(data.queuepd);

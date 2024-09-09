@@ -976,42 +976,6 @@ $(document).ready(function () {
 			addRowParams: myEditOptions
 		},
 		editParams: myEditOptions
-	})
-	// .jqGrid('navButtonAdd',"#jqGridPager2",{
-	// 	id: "jqGridPager2Delete",
-	// 	caption:"",cursor: "pointer",position: "last", 
-	// 	buttonicon:"glyphicon glyphicon-trash",
-	// 	title:"Delete Selected Row",
-	// 	onClickButton: function(){
-	// 		selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
-	// 		if(!selRowId){
-	// 			bootbox.alert('Please select row');
-	// 		}else{
-	// 			bootbox.confirm({
-	// 			    message: "Are you sure you want to delete this row?",
-	// 			    buttons: {confirm: {label: 'Yes', className: 'btn-danger',},cancel: {label: 'No', className: 'btn-success' }
-	// 			    },
-	// 			    callback: function (result) {
-	// 			    	if(result == true){
-	// 			    		param={
-	// 			    			action: 'goodReturnDetail_save',
-	// 							recno: $('#delordhd_recno').val(),
-	// 							lineno_: selrowData('#jqGrid2').lineno_,
-	// 			    		}
-	// 			    		$.post( "./goodReturnDetail/form"+$.param(param),{oper:'del'}, function( data ){
-	// 						}).fail(function(data) {
-	// 							//////////////////errorText(dialog,data.responseText);
-	// 						}).done(function(data){
-	// 							$('#amount').val(data);
-	// 							refreshGrid("#jqGrid2",urlParam2);
-	// 						});
-	// 			    	}else{
-    //     					$("#jqGridPager2EditAll").show();
-	// 			    	}
-	// 			    }
-	// 			});
-	// 		}
-	// 	},
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
 		id: "jqGridPager2EditAll",
 		caption:"",cursor: "pointer",position: "last", 
@@ -1261,7 +1225,7 @@ $(document).ready(function () {
 	////////////////////////////// jqGrid2_iladd + jqGrid2_iledit /////////////////////////////
 
 	/////////////calculate conv fac//////////////////////////////////
-	 function calculate_conversion_factor(event) {
+	function calculate_conversion_factor(event) {
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
 
