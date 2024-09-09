@@ -31,6 +31,7 @@ $(document).ready(function () {
 	var sequence = new Sequences('SO','#db_entrydate');
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","db_idno","recstatus");
 	var my_remark_button = new remark_button_class('#jqgrid');
+	var my_receipt = new receipt_class();
 
 	///////////////////////////////// check date validate from period//////////////////////////
 	var actdateObj = new setactdate(["#db_entrydate"]);
@@ -2681,6 +2682,8 @@ function populate_form(obj){
 	//panel header
 	$('#AutoNo_show').text(obj.db_auditno);
 	$('#CustName_show').text(obj.dm_name);
+	$('#AutoNo_r_show').text(obj.db_auditno);
+	$('#CustName_r_show').text(obj.dm_name);
 
 	if($('#scope').val().trim().toUpperCase() == 'CANCEL'){
 		$('td#glyphicon-plus,td#glyphicon-edit').hide();
@@ -2847,4 +2850,220 @@ function remark_button_class(grid){
 			$("#dialog_remarks_view").dialog( "open" );
 		});
 	}
+}
+
+function receipt_class(){
+	var mycurrency_r =new currencymode(['#f_tab-cash input[name=dbacthdr_amount]','#f_tab-cash input[name=dbacthdr_outamount]','#f_tab-cash input[name=dbacthdr_RCCASHbalance]','#f_tab-cash input[name=dbacthdr_RCFinalbalance]','#f_tab-card input[name=dbacthdr_amount]','#f_tab-card input[name=dbacthdr_outamount]','#f_tab-card input[name=dbacthdr_RCFinalbalance]','#f_tab-cheque input[name=dbacthdr_amount]','#f_tab-cheque input[name=dbacthdr_outamount]','#f_tab-cheque input[name=dbacthdr_RCFinalbalance]','#f_tab-debit input[name=dbacthdr_amount]','#f_tab-debit input[name=dbacthdr_outamount]','#f_tab-debit input[name=dbacthdr_RCFinalbalance]','#f_tab-debit input[name=dbacthdr_bankcharges]','#f_tab-forex input[name=dbacthdr_amount]','#f_tab-forex input[name=dbacthdr_amount2]','#f_tab-forex input[name=dbacthdr_RCFinalbalance]','#f_tab-forex input[name=dbacthdr_outamount]']);
+	this.tabform="#f_tab-cash";
+	this.idno;
+	this.init = function(){
+		let self = this;
+		$('.nav-tabs a').on('shown.bs.tab', function(e){
+			self.tabform=$(this).attr('form');
+			rdonly(tabform);
+			handleAmount();
+			// mycurrency.formatOnBlur();
+			$('#dbacthdr_paytype').val(tabform);
+			switch(tabform) {
+				case '#f_tab-cash':
+					break;
+				case '#f_tab-card':
+					// if(oper=="view"){
+					// 	urlParam_card.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
+					// 	refreshGrid("#g_paymodecard",urlParam_card_view);
+					// }else{
+						refreshGrid("#g_paymodecard",urlParam_card);
+					// }
+					break;
+				case '#f_tab-cheque':
+					break;
+				case '#f_tab-debit':
+					// if(oper=="view"){
+					// 	urlParam_bank.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
+					// 	refreshGrid("#g_paymodebank",urlParam_bank_view);
+					// }else{
+						refreshGrid("#g_paymodebank",urlParam_bank);
+					// }
+					break;
+				case '#f_tab-forex':
+					refreshGrid("#g_forex",urlParam4);
+					break;
+			}
+			$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
+			$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
+			$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
+		});
+		$(".nav-tabs a[form='#f_tab-cash']").tab('show');
+	}
+
+	function amountchgOn(fromtab){
+		$("input[name='dbacthdr_outamount']").prop( "disabled", false );
+		$("input[name='dbacthdr_RCCASHbalance']").prop( "disabled", false );
+		$("input[name='dbacthdr_RCFinalbalance']").prop( "disabled", false );
+		$("input[name='dbacthdr_amount']").off('blur',amountFunction);
+		$(tabform+" input[name='dbacthdr_amount']").on('blur',amountFunction);
+	}
+
+	function amountFunction(){
+		if(tabform=='#f_tab-cash'){
+			getCashBal();
+			getOutBal(true);
+		}else if(tabform=='#f_tab-card'||tabform=='#f_tab-cheque'||tabform=='#f_tab-forex'){
+			getOutBal(false);
+		}else if(tabform=='#f_tab-debit'){
+			getOutBal(false,$(tabform+" input[name='dbacthdr_bankcharges']").val());
+		}
+	}
+
+	function getCashBal(){
+		mycurrency_r.formatOff();
+		var pay=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_amount']").val()));
+		var out=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_outamount']").val()));
+		var RCCASHbalance=(pay-out>0) ? pay-out : 0;
+
+		$(tabform+" input[name='dbacthdr_RCCASHbalance']").val(RCCASHbalance);
+		mycurrency_r.formatOn();
+	}
+
+	function getOutBal(iscash,bc){
+		mycurrency_r.formatOff();
+		var pay=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_amount']").val()));
+		var out=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_outamount']").val()));
+		var RCFinalbalance = 0;
+		if(iscash){
+			RCFinalbalance =(out-pay>0) ? out-pay : 0;
+		}else{
+			RCFinalbalance = out-pay;
+		}
+
+		if(bc==null)bc=0;
+		$(tabform+" input[name='dbacthdr_RCFinalbalance']").val(parseFloat(RCFinalbalance)-parseFloat(bc));
+		mycurrency_r.formatOn();
+	}
+
+	///////////////////////////////////////////Bank Paytype/////////////////////////////////
+	var urlParam_bank={
+		action:'get_table_default',
+		url: 'util/get_table_default',
+		field:'',
+		table_name:'debtor.paymode',
+		table_id:'paymode',
+		filterCol:['source','paytype','compcode'],
+		filterVal:['AR','BANK','session.compcode'],
+	}
+	
+	var urlParam_bank_view={
+		action: 'get_table_default',
+		url: 'util/get_table_default',
+		field: '',
+		table_name: 'debtor.paymode',
+		table_id: 'paymode',
+		filterCol: ['source','paytype','compcode','paymode'],
+		filterVal: ['AR','BANK','session.compcode',''],
+	}
+	
+	$("#g_paymodebank").jqGrid({
+		datatype: "local",
+		 colModel: [
+			{label: 'Pay Mode', name: 'paymode', width: 60},
+			{label: 'Description', name: 'description', width: 150 },
+			{label: 'ccode', name: 'ccode', hidden: true },
+			{label: 'glaccno', name: 'glaccno', hidden: true },
+		],
+		autowidth:true,
+		multiSort: true,
+		loadonce:true,
+		width: 300,
+		height: 150,
+		rowNum: 2000,
+		onSelectRow:function(rowid, selected){
+			if(rowid != null) {
+				rowData = $('#g_paymodebank').jqGrid ('getRowData', rowid);
+				$("#f_tab-debit .form-group input[name='dbacthdr_paymode']").val(rowData['paymode']);
+				// $("#formdata input[name='dbacthdr_drcostcode']").val(rowData['ccode']);
+				// $("#formdata input[name='dbacthdr_dracc']").val(rowData['glaccno']);
+			}
+		},
+		beforeSelectRow: function(rowid, e) {
+			// if(oper=='view'){
+			// 	$('#'+$("#g_paymodebank").jqGrid ('getGridParam', 'selrow')).focus();
+			// 	return false;
+			// }
+		}
+	});
+
+	$("#g_paymodebank").jqGrid('filterToolbar',{stringResult: true,searchOnEnter : false});
+	addParamField('#g_paymodebank',false,urlParam_bank);
+	////////////////////////////////////////////End Bank Paytype//////////////////////////////////////
+
+	///////////////////////////////////////////Card paytype//////////////////////////////////////////////
+	var urlParam_card={
+		action:'get_table_default',
+		url: 'util/get_table_default',
+		field:'',
+		table_name:'debtor.paymode',
+		table_id:'paymode',
+		filterCol:['source','paytype','compcode'],
+		filterVal:['AR','CARD','session.compcode'],
+	}
+	
+	var urlParam_card_view={
+		action: 'get_table_default',
+		url: 'util/get_table_default',
+		field: '',
+		table_name: 'debtor.paymode',
+		table_id: 'paymode',
+		filterCol: ['source','paytype','compcode','paymode'],
+		filterVal: ['AR','CARD','session.compcode',''],
+	}
+	
+	$("#g_paymodecard").jqGrid({
+		datatype: "local",
+		 colModel: [
+			{label: 'Pay Mode', name: 'paymode', width: 60},
+			{label: 'Description', name: 'description', width: 150 },
+			{label: 'ccode', name: 'ccode', hidden: true },
+			{label: 'glaccno', name: 'glaccno', hidden: true },
+			{label: 'cardflag', name: 'cardflag', hidden: true },
+			{label: 'valexpdate', name: 'valexpdate', hidden: true },
+		],
+		autowidth:true,
+		multiSort: true,
+		loadonce:true,
+		width: 300,
+		height: 150,
+		rowNum: 2000,
+		onSelectRow:function(rowid, selected){
+			if(rowid != null) {
+				rowData = $('#g_paymodecard').jqGrid ('getRowData', rowid);
+				$("#f_tab-card .form-group input[name='dbacthdr_paymode']").val(rowData['paymode']);
+				if(rowData['cardflag'] == '1'){
+					$("#f_tab-card .form-group input[name='dbacthdr_reference']").attr("data-validation","required");
+				}else{
+					$("#f_tab-card .form-group input[name='dbacthdr_reference']").attr("data-validation","");
+
+				}
+
+				if(rowData['valexpdate'] == '1'){
+					$("#f_tab-card .form-group input[name='dbacthdr_expdate']").attr("data-validation","required");
+				}else{
+					$("#f_tab-card .form-group input[name='dbacthdr_expdate']").attr("data-validation","");
+				}
+
+				// $("#formdata input[name='dbacthdr_drcostcode']").val(rowData['ccode']);
+				// $("#formdata input[name='dbacthdr_dracc']").val(rowData['glaccno']);
+			}
+		},
+		beforeSelectRow: function(rowid, e) {
+			// if(oper=='view'){
+			// 	$('#'+$("#g_paymodecard").jqGrid ('getGridParam', 'selrow')).focus();
+			// 	return false;
+			// }
+		}
+	});
+
+	$("#g_paymodecard").jqGrid('filterToolbar',{stringResult: true,searchOnEnter : false});
+	addParamField('#g_paymodecard',false,urlParam_card);
+	///////////////////////////////////end card////////////////////////////////////////////
+	
 }

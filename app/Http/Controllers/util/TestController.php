@@ -62,8 +62,8 @@ class TestController extends defaultController
                 // return $this->update_productmaster($request);
             // case 'update_stockexp':
             //     return $this->update_stockexp($request);
-            case 'update_sysparam':
-                return $this->update_sysparam($request);
+            // case 'update_sysparam':
+            //     return $this->update_sysparam($request);
             default:
                 return 'error happen..';
         }
@@ -496,7 +496,7 @@ class TestController extends defaultController
                             'itemcode' => $obj->itemcode,
                             'uomcode' => $obj->uomcode,
                             'expdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'batchno' => 'QO',
+                            'batchno' => 'OB',
                             'balqty' => $obj->qtyonhand,
                             'adduser' => 'SYSTEM',
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -508,7 +508,6 @@ class TestController extends defaultController
                             'year' => Carbon::now("Asia/Kuala_Lumpur")->year,
                             'unit' => $obj->unit,
                         ]);
-                    echo  nl2br("insert stockexp : ".$obj->itemcode."\n");
                 }
             }
 
@@ -527,21 +526,32 @@ class TestController extends defaultController
 
         try {
             
-            $sysparam = DB::table('temp.sysparam')
-                            ->where('source','AR')
-                            ->where('trantype','TN')
-                            ->where('compcode','9B')
-                            ->first();
+            $product_baru = DB::table('temp.product_baru')
+                            ->get();
 
-            DB::table('temp.sysparam')
-                    ->where('source','AR')
-                    ->where('trantype','TN')
-                    ->where('compcode','9B')
-                    ->update([
-                        'pvalue1' => $sysparam->pvalue1 + 1
-                    ]);
+            foreach ($product_baru as $obj) {
+
+                $stockloc = DB::table('temp.stockloc')
+                                ->where('compcode','9B')
+                                ->where('itemcode',$obj->itemcode)
+                                ->where('uomcode',$obj->uomcode)
+                                ->where('year','2024');
+
+                if($stockloc->exists()){
+                    $stockloc = $stockloc->get();
+                    $sum_qtyonhand = 0;
+                    foreach ($stockloc as $obj_s) {
+                        $sum_qtyonhand = $sum_qtyonhand + $obj_s->qtyonhand;
+                    }
+
+                    DB::table('temp.product_baru')
+                        ->where('idno',$obj->idno)
+                        ->update(['qtyonhand'=>$sum_qtyonhand]);
+                }
+            }
 
             DB::commit();
+
         } catch (Exception $e) {
             DB::rollback();
             report($e);
