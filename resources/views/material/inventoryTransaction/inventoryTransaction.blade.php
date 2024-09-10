@@ -433,7 +433,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/inventoryTransaction/inventoryTransaction.js?v=1.4"></script>
+	<script src="js/material/inventoryTransaction/inventoryTransaction.js?v=1.5"></script>
 	<!-- <script src="js/material/inventoryTransaction/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

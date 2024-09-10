@@ -944,6 +944,8 @@ $(document).ready(function () {
 		join_type:['LEFT JOIN', 'LEFT JOIN'],
 		join_onCol:['ivt.itemcode', 'ivt.itemcode'],
 		join_onVal:['s.itemcode','p.itemcode'],
+		join_filterCol : [[],['p.compcode =']],
+		join_filterVal : [[],['session.compcode']],
 		filterCol:['ivt.recno', 'ivt.compcode', 'ivt.recstatus'],
 		filterVal:['', 'session.compcode','<>.DELETE']
 	};
