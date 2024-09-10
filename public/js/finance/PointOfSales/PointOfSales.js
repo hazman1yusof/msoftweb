@@ -2896,6 +2896,7 @@ function receipt_class(){
 			SmoothScrollTo('#receipt_panel', 300,-10);
 			get_debtor_dtl(grid_data.db_idno);
 			myfail_msg_r.clear_fail();
+			emptyFormdata_div('#receipt_panel');
 		});
 	}
 
@@ -2923,6 +2924,7 @@ function receipt_class(){
 		obj._token = $('#_token').val();
 		obj.oper = 'pos_receipt_save';
 		obj.tabform = $('.nav-tabs a').attr('form');
+		obj.formdata = trimmall(tabform,true);
 		myfail_msg_r.clear_fail();
 
 		$.post( './PointOfSales/form', obj , function( data ) {

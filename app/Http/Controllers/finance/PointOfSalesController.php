@@ -898,6 +898,21 @@ class PointOfSalesController extends defaultController
             
         }       
     }
+
+    public function pos_receipt_save(Request $request){
+         DB::beginTransaction();
+        
+        try {
+            dd('cantik');
+            DB::commit();
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }  
+    }
     
     public function delivered(Request $request){ //xguna utk POS
         

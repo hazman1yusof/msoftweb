@@ -274,7 +274,6 @@ div#fail_msg,div#fail_msg_r{
   		<div id="receipt_panel" class="panel-collapse collapse">
     		<div class="panel-body">
 					<div class='col-md-12' style="padding:0px">
-						<div id="fail_msg_r"></div>
 						<div class='panel panel-info'>
 							<div class="panel-heading">
 								Choose type of exchange
@@ -289,6 +288,7 @@ div#fail_msg,div#fail_msg_r{
 								</span>
 							</div>
 							<div class="panel-body">
+							<div id="fail_msg_r"></div>
 								<ul class="nav nav-tabs">
 									<li class="active"><a data-toggle="tab" href="#tab-cash" form='#f_tab-cash' aria-expanded="true">Cash</a></li>
 									<li><a data-toggle="tab" href="#tab-card" form='#f_tab-card'>Card</a></li>

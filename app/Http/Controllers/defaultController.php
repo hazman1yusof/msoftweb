@@ -542,7 +542,7 @@ abstract class defaultController extends Controller{
 
     }
 
-    public function defaultSysparam($source,$trantype){
+    public function defaultSysparam($source,$trantype){//tambah dulu baru bagi, start 0, dpt 1
 
         //1. get pvalue 1
         $pvalue1 = DB::table('sysdb.sysparam')->select('pvalue1')
@@ -655,7 +655,7 @@ abstract class defaultController extends Controller{
         return $seqno->seqno;
     }
 
-    public function recno($source,$trantype){//sysparam pvalue 1 start dgn 1
+    public function recno($source,$trantype){//sysparam pvalue 1 start dgn 1, bagi dulu baru tambah 1
         $pvalue1 = DB::table('sysdb.sysparam')
                     ->where('compcode',session('compcode'))
                     ->select('pvalue1')
