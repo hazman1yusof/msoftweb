@@ -32,6 +32,7 @@ $(document).ready(function () {
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","db_idno","recstatus");
 	var my_remark_button = new remark_button_class('#jqgrid');
 	var my_receipt = new receipt_class();
+	my_receipt.init();
 
 	///////////////////////////////// check date validate from period//////////////////////////
 	var actdateObj = new setactdate(["#db_entrydate"]);
@@ -300,6 +301,7 @@ $(document).ready(function () {
 			// $("#pdfgen1").attr('href','./PointOfSales/showpdf?idno='+selrowData("#jqGrid").db_idno);
 			// $("#pdfgen2").attr('href','./PointOfSales/showpdf?idno='+selrowData("#jqGrid").db_idno);
 			if_cancel_hide();
+			$('#receipt_panel').collapse('hide');
 
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
@@ -361,10 +363,9 @@ $(document).ready(function () {
 		loadComplete:function(data){
 		},
 		beforeRequest: function(){
-			refreshGrid("#jqGrid2", urlParam, 'kosongkan')
+			refreshGrid("#jqGrid2", urlParam, 'kosongkan');
+			$('#receipt_panel').collapse('hide');
 		}
-
-
 	});
 
 	////////////////////// set label jqGrid right ////////////////////////////////////////////////
@@ -2654,11 +2655,12 @@ $(document).ready(function () {
 			$('#jqGrid3_panel').collapse('hide');
 			$('#ifcancel_show').text(' - CANCELLED');
 			$('#panel_jqGrid3').attr('data-target','-');
-		}else{
-			$('#jqGrid3_panel').collapse('show');
-			$('#ifcancel_show').text('');
-			$('#panel_jqGrid3').attr('data-target','#jqGrid3_panel');
 		}
+		// else{
+		// 	$('#jqGrid3_panel').collapse('show');
+		// 	$('#ifcancel_show').text('');
+		// 	$('#panel_jqGrid3').attr('data-target','#jqGrid3_panel');
+		// }
 	}
 
 	$("#jqGrid3_panel").on("show.bs.collapse", function(){
@@ -2857,54 +2859,72 @@ function receipt_class(){
 	this.tabform="#f_tab-cash";
 	this.idno;
 	this.init = function(){
+		rdonly('#f_tab-cash');
+		amountchgOn();
 		let self = this;
 		$('.nav-tabs a').on('shown.bs.tab', function(e){
-			self.tabform=$(this).attr('form');
+			let tabform=$(this).attr('form');
+			self.tabform = tabform;
 			rdonly(tabform);
-			handleAmount();
+			amountchgOn();
+			// handleAmount();
 			// mycurrency.formatOnBlur();
 			$('#dbacthdr_paytype').val(tabform);
 			switch(tabform) {
 				case '#f_tab-cash':
 					break;
 				case '#f_tab-card':
-					// if(oper=="view"){
-					// 	urlParam_card.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
-					// 	refreshGrid("#g_paymodecard",urlParam_card_view);
-					// }else{
-						refreshGrid("#g_paymodecard",urlParam_card);
-					// }
+					refreshGrid("#g_paymodecard",urlParam_card);
+					$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
 					break;
 				case '#f_tab-cheque':
 					break;
 				case '#f_tab-debit':
-					// if(oper=="view"){
-					// 	urlParam_bank.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
-					// 	refreshGrid("#g_paymodebank",urlParam_bank_view);
-					// }else{
-						refreshGrid("#g_paymodebank",urlParam_bank);
-					// }
+					refreshGrid("#g_paymodebank",urlParam_bank);
+					$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
 					break;
 				case '#f_tab-forex':
 					refreshGrid("#g_forex",urlParam4);
+					$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
 					break;
 			}
-			$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
-			$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
-			$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
 		});
-		$(".nav-tabs a[form='#f_tab-cash']").tab('show');
+
+		$('#receipt_panel').on('shown.bs.collapse', function(e){
+			let grid_data = selrowData("#jqGrid");
+			get_debtor_dtl(grid_data.db_idno);
+		});
 	}
 
-	function amountchgOn(fromtab){
-		$("input[name='dbacthdr_outamount']").prop( "disabled", false );
-		$("input[name='dbacthdr_RCCASHbalance']").prop( "disabled", false );
-		$("input[name='dbacthdr_RCFinalbalance']").prop( "disabled", false );
+	function get_debtor_dtl(idno){
+		var param={
+			action:'get_debtor_dtl',
+			url: 'PointOfSales/table',
+			idno:idno
+		}
+
+		$.get( param.url+"?"+$.param(param), function( data ) {
+			
+		},'json').done(function(data) {
+			mycurrency_r.formatOff();
+			$("input[name='dbacthdr_amount']").val(data.debtor.outamount);
+			$("input[name='dbacthdr_outamount']").val(data.debtor.outamount);
+			mycurrency_r.formatOn();
+		});
+	}
+
+	function amountchgOn(){
+		let tabform = this.tabform;
+		// $("input[name='dbacthdr_outamount']").prop( "disabled", false );
+		// $("input[name='dbacthdr_RCCASHbalance']").prop( "disabled", false );
+		// $("input[name='dbacthdr_RCFinalbalance']").prop( "disabled", false );
 		$("input[name='dbacthdr_amount']").off('blur',amountFunction);
 		$(tabform+" input[name='dbacthdr_amount']").on('blur',amountFunction);
 	}
 
 	function amountFunction(){
+		let tabform = this.tabform;
+		console.log(tabform);
 		if(tabform=='#f_tab-cash'){
 			getCashBal();
 			getOutBal(true);
@@ -2916,6 +2936,8 @@ function receipt_class(){
 	}
 
 	function getCashBal(){
+		let tabform = this.tabform;
+		let mycurrency_r = this.mycurrency_r;
 		mycurrency_r.formatOff();
 		var pay=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_amount']").val()));
 		var out=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_outamount']").val()));
@@ -2926,6 +2948,8 @@ function receipt_class(){
 	}
 
 	function getOutBal(iscash,bc){
+		let tabform = this.tabform;
+		let mycurrency_r = this.mycurrency_r;
 		mycurrency_r.formatOff();
 		var pay=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_amount']").val()));
 		var out=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_outamount']").val()));

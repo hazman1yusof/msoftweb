@@ -89,6 +89,8 @@ class PointOfSalesController extends defaultController
                 return $this->get_hdrtype_check($request);
             case 'get_quoteno_check':
                 return $this->get_quoteno_check($request);
+            case 'get_debtor_dtl':
+                return $this->get_debtor_dtl($request);
             default:
                 return 'error happen..';
         }
@@ -2104,6 +2106,19 @@ class PointOfSalesController extends defaultController
         
         $responce = new stdClass();
         $responce->rows = $table->get();
+        
+        return json_encode($responce);
+    }
+
+    public function get_debtor_dtl(Request $request){
+        $table = DB::table('debtor.dbacthdr AS db')
+                        ->where('db.compcode',session('compcode'))
+                        ->where('db.source','PB')
+                        ->where('db.trantype','IN')
+                        ->where('db.idno',$request->idno);
+
+        $responce = new stdClass();
+        $responce->debtor = $table->first();
         
         return json_encode($responce);
     }

@@ -254,7 +254,7 @@ div#fail_msg{
     			<div id="" class='col-md-12' style="padding:0 0 15px 0">
           			<table id="jqGrid3" class="table table-striped"></table>
           			<div id="jqGridPager3"></div>
-  				</div>'
+  				</div>
     		</div>
     	</div>
 		</div>
@@ -275,7 +275,18 @@ div#fail_msg{
     		<div class="panel-body">
 					<div class='col-md-12' style="padding:0px">
 						<div class='panel panel-info'>
-							<div class="panel-heading">Choose type of exchange</div>
+							<div class="panel-heading">
+								Choose type of exchange
+								<span>
+									<button class="btn btn-success btn-sm" type="button" style="
+										position: absolute;
+								    right: 30px;
+								    top: 5px;"
+									>
+										Submit
+									</button>
+								</span>
+							</div>
 							<div class="panel-body">
 								<ul class="nav nav-tabs">
 									<li class="active"><a data-toggle="tab" href="#tab-cash" form='#f_tab-cash' aria-expanded="true">Cash</a></li>
@@ -331,11 +342,11 @@ div#fail_msg{
 											</div>
 										</div>
 										<div class='col-md-8'>
-											<div class="form-group">
-										  		<div class='col-md-4'> 
-													<label class="control-label" for="dbacthdr_amount">Payment</label> 
-													<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
-												</div>
+											<div class="form-group row" style="padding:0px;margin:0px">
+										  		<div class='col-md-6'> 
+														<label class="control-label" for="dbacthdr_amount">Payment</label> 
+														<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
+													</div>
 											</div>
 											<div class="clearfix"></div>
 											<div class="form-group">
@@ -422,31 +433,29 @@ div#fail_msg{
 										</div>
 										<div class='col-md-8'>
 											<div class="form-group">
-										  		<div class='col-md-4'> 
-													<label class="control-label" for="dbacthdr_entrydate">Transaction Date</label> 
-													<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
-
-												</div>
+										  		<div class='col-md-6'> 
+														<label class="control-label" for="dbacthdr_entrydate">Transaction Date</label> 
+														<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+													</div>
+										  		<div class='col-md-6'> 
+														<label class="control-label" for="dbacthdr_bankcharges">Bank Charges</label> 
+														<input id="dbacthdr_bankcharges" name="dbacthdr_bankcharges" type="text" class="form-control input-sm" value="0.00">
+													</div>
 											</div>
-											<div class="clearfix"></div>
-											<div class="myformgroup">
+											<div class="form-group row" style="padding:0px;margin:0px">
 										  		<div class='col-md-6'> 
-													<label class="control-label" for="dbacthdr_bankcharges">Bank Charges</label> 
-													<input id="dbacthdr_bankcharges" name="dbacthdr_bankcharges" type="text" class="form-control input-sm" value="0.00">
-												</div>
-										  		<div class='col-md-6'> 
-													<label class="control-label" for="dbacthdr_amount">Payment</label> 
-													<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
-												</div>
+														<label class="control-label" for="dbacthdr_amount">Payment</label> 
+														<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
+													</div>
 											</div>
 											<div class="form-group">
 										  		<div class='col-md-6'>
-													<label class="control-label" for="dbacthdr_RCFinalbalance">Outstanding Balance</label> 
-													<input id="dbacthdr_RCFinalbalance" name="dbacthdr_RCFinalbalance" type="text" class="form-control input-sm" value="0.00" rdonly>
-										  		</div>
-										  		<div class='col-md-6'>
 													<label class="control-label" for="dbacthdr_outamount">Outstanding</label> 
 													<input id="dbacthdr_outamount" name="dbacthdr_outamount" type="text" class="form-control input-sm" value="0.00" rdonly>
+										  		</div>
+										  		<div class='col-md-6'>
+													<label class="control-label" for="dbacthdr_RCFinalbalance">Outstanding Balance</label> 
+													<input id="dbacthdr_RCFinalbalance" name="dbacthdr_RCFinalbalance" type="text" class="form-control input-sm" value="0.00" rdonly>
 										  		</div>
 											</div>
 											<div class="form-group">
