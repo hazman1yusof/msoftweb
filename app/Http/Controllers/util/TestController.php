@@ -62,8 +62,8 @@ class TestController extends defaultController
                 // return $this->update_productmaster($request);
             // case 'update_stockexp':
             //     return $this->update_stockexp($request);
-            // case 'update_sysparam':
-            //     return $this->update_sysparam($request);
+            case 'update_stockloc':
+                return $this->update_stockloc($request);
             default:
                 return 'error happen..';
         }
@@ -521,32 +521,37 @@ class TestController extends defaultController
         }
     }
 
-    public function update_sysparam(Request $request){
+    public function update_stockloc(Request $request){
         DB::beginTransaction();
 
         try {
             
-            $product_baru = DB::table('temp.product_baru')
+            $stockloc = DB::table('temp.stockloc')
+                            ->where('compcode','9B')
+                            ->where('itemcode','KW000102')
+                            ->whereNull('unit')
                             ->get();
 
-            foreach ($product_baru as $obj) {
+            // dd($stockloc);
 
-                $stockloc = DB::table('temp.stockloc')
+            foreach ($stockloc as $obj) {
+
+                $product = DB::table('temp.product')
                                 ->where('compcode','9B')
                                 ->where('itemcode',$obj->itemcode)
                                 ->where('uomcode',$obj->uomcode)
-                                ->where('year','2024');
+                                ->whereNotNull('unit');
 
-                if($stockloc->exists()){
-                    $stockloc = $stockloc->get();
-                    $sum_qtyonhand = 0;
-                    foreach ($stockloc as $obj_s) {
-                        $sum_qtyonhand = $sum_qtyonhand + $obj_s->qtyonhand;
-                    }
+                dd($product->first());
 
-                    DB::table('temp.product_baru')
+                if($product->exists()){
+                    DB::table('temp.stockloc')
                         ->where('idno',$obj->idno)
-                        ->update(['qtyonhand'=>$sum_qtyonhand]);
+                        ->update([
+                            'unit' => $product->first()->unit
+                        ]);
+
+                    echo nl2br("upd idno : ".$obj->idno."\n");
                 }
             }
 

@@ -351,7 +351,7 @@ class PurchaseRequestController extends defaultController
 
                 }
 
-                if(strtoupper($purreqhd_get->prtype) == 'STOCK' || strtoupper($purreqhd_get->prtype) == 'ASSET'){
+                if(strtoupper($purreqhd_get->prtype) == 'STOCK'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -556,7 +556,7 @@ class PurchaseRequestController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purreqhd_get->prtype) == 'STOCK' || strtoupper($purreqhd_get->prtype) == 'ASSET'){
+                if(strtoupper($purreqhd_get->prtype) == 'STOCK'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -647,7 +647,7 @@ class PurchaseRequestController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purreqhd_get->prtype) == 'STOCK' || strtoupper($purreqhd_get->prtype) == 'ASSET'){
+                if(strtoupper($purreqhd_get->prtype) == 'STOCK'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -771,7 +771,7 @@ class PurchaseRequestController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purreqhd_get->prtype) == 'STOCK' || strtoupper($purreqhd_get->prtype) == 'ASSET'){
+                if(strtoupper($purreqhd_get->prtype) == 'STOCK'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -910,7 +910,7 @@ class PurchaseRequestController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purreqhd_get->prtype) == 'STOCK' || strtoupper($purreqhd_get->prtype) == 'ASSET'){
+                if(strtoupper($purreqhd_get->prtype) == 'STOCK'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -1035,7 +1035,7 @@ class PurchaseRequestController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purreqhd_get->prtype) == 'STOCK' || strtoupper($purreqhd_get->prtype) == 'ASSET'){
+                if(strtoupper($purreqhd_get->prtype) == 'STOCK'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -1147,7 +1147,7 @@ class PurchaseRequestController extends defaultController
 
                 // if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
 
-                if(strtoupper($purreqhd_get->prtype) == 'STOCK' || strtoupper($purreqhd_get->prtype) == 'ASSET'){
+                if(strtoupper($purreqhd_get->prtype) == 'STOCK'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';

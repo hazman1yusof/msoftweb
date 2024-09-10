@@ -123,6 +123,8 @@ class PointOfSalesController extends defaultController
                 return $this->approved($request);
             case 'refresh_do':
                 return $this->refresh_do($request);
+            case 'pos_receipt_save':
+                return $this->pos_receipt_save($request);
             default:
                 return 'Errors happen';
         }

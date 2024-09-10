@@ -2855,18 +2855,19 @@ function remark_button_class(grid){
 }
 
 function receipt_class(){
+	var myfail_msg_r = new fail_msg_func('div#fail_msg_r');
 	var mycurrency_r =new currencymode(['#f_tab-cash input[name=dbacthdr_amount]','#f_tab-cash input[name=dbacthdr_outamount]','#f_tab-cash input[name=dbacthdr_RCCASHbalance]','#f_tab-cash input[name=dbacthdr_RCFinalbalance]','#f_tab-card input[name=dbacthdr_amount]','#f_tab-card input[name=dbacthdr_outamount]','#f_tab-card input[name=dbacthdr_RCFinalbalance]','#f_tab-cheque input[name=dbacthdr_amount]','#f_tab-cheque input[name=dbacthdr_outamount]','#f_tab-cheque input[name=dbacthdr_RCFinalbalance]','#f_tab-debit input[name=dbacthdr_amount]','#f_tab-debit input[name=dbacthdr_outamount]','#f_tab-debit input[name=dbacthdr_RCFinalbalance]','#f_tab-debit input[name=dbacthdr_bankcharges]','#f_tab-forex input[name=dbacthdr_amount]','#f_tab-forex input[name=dbacthdr_amount2]','#f_tab-forex input[name=dbacthdr_RCFinalbalance]','#f_tab-forex input[name=dbacthdr_outamount]']);
 	this.tabform="#f_tab-cash";
 	this.idno;
 	this.init = function(){
 		rdonly('#f_tab-cash');
-		amountchgOn();
+		amountchgOn('#f_tab-cash');
 		let self = this;
 		$('.nav-tabs a').on('shown.bs.tab', function(e){
 			let tabform=$(this).attr('form');
 			self.tabform = tabform;
 			rdonly(tabform);
-			amountchgOn();
+			amountchgOn(tabform);
 			// handleAmount();
 			// mycurrency.formatOnBlur();
 			$('#dbacthdr_paytype').val(tabform);
@@ -2892,7 +2893,9 @@ function receipt_class(){
 
 		$('#receipt_panel').on('shown.bs.collapse', function(e){
 			let grid_data = selrowData("#jqGrid");
+			SmoothScrollTo('#receipt_panel', 300,-10);
 			get_debtor_dtl(grid_data.db_idno);
+			myfail_msg_r.clear_fail();
 		});
 	}
 
@@ -2913,31 +2916,50 @@ function receipt_class(){
 		});
 	}
 
-	function amountchgOn(){
-		let tabform = this.tabform;
+	$('#submit_receipt').click(function(){
+		var idno = selrowData('#jqGrid').db_idno;
+		var obj={};
+		obj.idno = idno;
+		obj._token = $('#_token').val();
+		obj.oper = 'pos_receipt_save';
+		obj.tabform = $('.nav-tabs a').attr('form');
+		myfail_msg_r.clear_fail();
+
+		$.post( './PointOfSales/form', obj , function( data ) {
+			// refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			myfail_msg_r.add_fail({
+				id:'response',
+				textfld:"",
+				msg:data.responseText,
+			});
+			// $('#error_infront').text(data.responseText);
+		}).success(function(data){
+			myfail_msg_r.clear_fail();
+		});
+	});
+
+	function amountchgOn(tabform){
 		// $("input[name='dbacthdr_outamount']").prop( "disabled", false );
 		// $("input[name='dbacthdr_RCCASHbalance']").prop( "disabled", false );
 		// $("input[name='dbacthdr_RCFinalbalance']").prop( "disabled", false );
 		$("input[name='dbacthdr_amount']").off('blur',amountFunction);
-		$(tabform+" input[name='dbacthdr_amount']").on('blur',amountFunction);
+		$(tabform+" input[name='dbacthdr_amount']").on('blur',{tabform:tabform},amountFunction);
 	}
 
-	function amountFunction(){
-		let tabform = this.tabform;
-		console.log(tabform);
+	function amountFunction(event){
+		let tabform = event.data.tabform;
 		if(tabform=='#f_tab-cash'){
-			getCashBal();
-			getOutBal(true);
+			getCashBal(tabform);
+			getOutBal(true,null,tabform);
 		}else if(tabform=='#f_tab-card'||tabform=='#f_tab-cheque'||tabform=='#f_tab-forex'){
-			getOutBal(false);
+			getOutBal(false,null,tabform);
 		}else if(tabform=='#f_tab-debit'){
-			getOutBal(false,$(tabform+" input[name='dbacthdr_bankcharges']").val());
+			getOutBal(false,$(tabform+" input[name='dbacthdr_bankcharges']").val(),tabform);
 		}
 	}
 
-	function getCashBal(){
-		let tabform = this.tabform;
-		let mycurrency_r = this.mycurrency_r;
+	function getCashBal(tabform){
 		mycurrency_r.formatOff();
 		var pay=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_amount']").val()));
 		var out=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_outamount']").val()));
@@ -2947,9 +2969,7 @@ function receipt_class(){
 		mycurrency_r.formatOn();
 	}
 
-	function getOutBal(iscash,bc){
-		let tabform = this.tabform;
-		let mycurrency_r = this.mycurrency_r;
+	function getOutBal(iscash,bc,tabform){
 		mycurrency_r.formatOff();
 		var pay=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_amount']").val()));
 		var out=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_outamount']").val()));

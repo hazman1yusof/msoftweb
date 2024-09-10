@@ -357,7 +357,7 @@ class PurchaseOrderController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purordhd_get->prtype) == 'STOCK' || strtoupper($purordhd_get->prtype) == 'ASSET'){
+                if(strtoupper($purordhd_get->prtype) == 'STOCK'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -589,7 +589,7 @@ class PurchaseOrderController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purordhd_get->prtype) == 'STOCK' || strtoupper($purordhd_get->prtype) == 'ASSET'){
+                if(strtoupper($purordhd_get->prtype) == 'STOCK'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -680,7 +680,7 @@ class PurchaseOrderController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purordhd_get->prtype) == 'STOCK' || strtoupper($purordhd_get->prtype) == 'ASSET'){
+                if(strtoupper($purordhd_get->prtype) == 'STOCK'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -788,7 +788,7 @@ class PurchaseOrderController extends defaultController
                     continue;
                 }
 
-                if(strtoupper($purordhd_get->prtype) == 'STOCK' || strtoupper($purordhd_get->prtype) == 'ASSET'){
+                if(strtoupper($purordhd_get->prtype) == 'STOCK'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';
@@ -896,7 +896,7 @@ class PurchaseOrderController extends defaultController
 
                 $this->need_upd_purreq($value);
 
-                if(strtoupper($purordhd_get->prtype) == 'STOCK' || strtoupper($purordhd_get->prtype) == 'ASSET'){
+                if(strtoupper($purordhd_get->prtype) == 'STOCK'){
                     $prtype = 'STOCK';
                 }else{
                     $prtype = 'OTHERS';

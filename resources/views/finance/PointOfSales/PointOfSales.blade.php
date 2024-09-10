@@ -32,7 +32,7 @@ i.fa {
 	white-space: pre-wrap !important;
 }
 
-div#fail_msg{
+div#fail_msg,div#fail_msg_r{
   padding-left: 40px;
   padding-bottom: 10px;
   color: darkred;
@@ -274,11 +274,12 @@ div#fail_msg{
   		<div id="receipt_panel" class="panel-collapse collapse">
     		<div class="panel-body">
 					<div class='col-md-12' style="padding:0px">
+						<div id="fail_msg_r"></div>
 						<div class='panel panel-info'>
 							<div class="panel-heading">
 								Choose type of exchange
 								<span>
-									<button class="btn btn-success btn-sm" type="button" style="
+									<button class="btn btn-success btn-sm" id="submit_receipt" type="button" style="
 										position: absolute;
 								    right: 30px;
 								    top: 5px;"
