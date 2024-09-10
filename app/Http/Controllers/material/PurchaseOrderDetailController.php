@@ -152,7 +152,7 @@ class PurchaseOrderDetailController extends defaultController
                 $purordno = $request->purordno;
                 $recno = $request->recno;
 
-                if($purreqno == 0 || $recno == 0){
+                if($purordno == 0 || $recno == 0){
                     $purordno = $this->request_no('PO',$request->prdept);
                     $recno = $this->recno('PUR','PO');
                 
