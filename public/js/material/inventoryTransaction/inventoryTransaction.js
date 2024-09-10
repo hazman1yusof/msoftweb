@@ -261,8 +261,8 @@ $(document).ready(function () {
 			// }
 
 			urlParam2.filterVal[0]=selrowData("#jqGrid").recno; 
-			urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode = ','s.year ='],[]];
-			urlParam2.join_filterVal = [['s.uomcode',selrowData("#jqGrid").txndept,moment(selrowData("#jqGrid").trandate).year()],[]];
+			urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode = ','s.year =','s.compcode ='],['p.compcode =']];
+			urlParam2.join_filterVal = [['s.uomcode',selrowData("#jqGrid").txndept,moment(selrowData("#jqGrid").trandate).year(),'session.compcode'],['session.compcode']];
 			
 			populate_form(selrowData("#jqGrid"));
 
@@ -758,8 +758,8 @@ $(document).ready(function () {
 				$('#adddate').val(data.adddate);
 				
 				urlParam2.filterVal[0] = data.recno; 
-				urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode = ','s.year ='],[]];
-				urlParam2.join_filterVal = [['s.uomcode',$('#txndept').val(),moment($('#trandate').val()).year()],[]];
+				urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode = ','s.year =','s.compcode ='],['p.compcode =']];
+				urlParam2.join_filterVal = [['s.uomcode',$('#txndept').val(),moment($('#trandate').val()).year(),'session.compcode'],['session.compcode']];
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
 				$('#upduser').val(data.upduser);
