@@ -1972,7 +1972,7 @@ class PaymentVoucherController extends defaultController
                 $apdt = $apdt->first();
                 $delordhd = DB::table('material.delordhd')
                             ->where('compcode','=',session('compcode'))
-                            ->where('delordno','=',$apdt->document);
+                            ->where('recno','=',$apdt->dorecno);
 
                 if(!$delordhd->exists()){
                     abort(403,'No delivery Order');
@@ -1992,18 +1992,18 @@ class PaymentVoucherController extends defaultController
                                 ->where('apdt.source','AP');
 
                 if(!$apdt->exists()){
-                    abort(403,'No delivery Order');
+                    abort(403,'No Delivery Order');
                 }
 
                 $apdt = $apdt->first();
                 $delordhd = DB::table('material.delordhd')
-                            ->select('prdept','srcdocno')
+                            // ->select('prdept','srcdocno')
                             ->where('compcode','=',session('compcode'))
-                            ->where('delordno','=',$apdt->document)
+                            ->where('recno','=',$apdt->dorecno)
                             ->whereNotNull('srcdocno');
 
                 if(!$delordhd->exists()){
-                    abort(403,'No Purchase Order');
+                    abort(403,'No Delivery Order');
                 }
                 $delordhd = $delordhd->first();
                 $purordhd = DB::table('material.purordhd')
