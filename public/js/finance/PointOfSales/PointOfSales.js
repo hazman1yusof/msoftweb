@@ -42,6 +42,7 @@ $(document).ready(function () {
 	var oper = null;
 	var unsaved = false;
 	page_to_view_only($('#viewonly').val());
+	checkifuserlogin();
 
 	$("#dialogForm")
 		.dialog({
@@ -2860,11 +2861,13 @@ function receipt_class(){
 	this.tabform="#f_tab-cash";
 	this.idno;
 	this.init = function(){
+		$('#receipt_panel').data('tabform','#f_tab-cash');
 		rdonly('#f_tab-cash');
 		amountchgOn('#f_tab-cash');
 		let self = this;
 		$('.nav-tabs a').on('shown.bs.tab', function(e){
 			let tabform=$(this).attr('form');
+			$('#receipt_panel').data('tabform',tabform);
 			self.tabform = tabform;
 			rdonly(tabform);
 			amountchgOn(tabform);
@@ -2892,11 +2895,12 @@ function receipt_class(){
 		});
 
 		$('#receipt_panel').on('shown.bs.collapse', function(e){
+			emptyFormdata_div('#receipt_panel');
 			let grid_data = selrowData("#jqGrid");
 			SmoothScrollTo('#receipt_panel', 300,-10);
 			get_debtor_dtl(grid_data.db_idno);
 			myfail_msg_r.clear_fail();
-			emptyFormdata_div('#receipt_panel');
+			$('input[type=date][name=dbacthdr_entrydate]').val(moment().format('YYYY-MM-DD'));
 		});
 	}
 
@@ -2923,11 +2927,12 @@ function receipt_class(){
 		obj.idno = idno;
 		obj._token = $('#_token').val();
 		obj.oper = 'pos_receipt_save';
-		obj.tabform = $('.nav-tabs a').attr('form');
-		obj.formdata = trimmall(tabform,true);
+		obj.tabform = $('#receipt_panel').data('tabform');
 		myfail_msg_r.clear_fail();
 
-		$.post( './PointOfSales/form', obj , function( data ) {
+		let serializedForm = trimmall($('#receipt_panel').data('tabform'),true);
+
+		$.post( './PointOfSales/form', serializedForm+'&'+$.param(obj)  , function( data ) {
 			// refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
 			myfail_msg_r.add_fail({

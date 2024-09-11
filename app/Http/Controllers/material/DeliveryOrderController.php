@@ -531,7 +531,7 @@ class DeliveryOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -1359,63 +1359,66 @@ class DeliveryOrderController extends defaultController
 
         $totamount_expld = explode(".", (float)$delordhd->totamount);
 
-        $cc_acc = [];
-        foreach ($delorddt as $value) {
-            $gltran = DB::table('finance.gltran as gl')
-                   ->where('gl.compcode',session('compcode'))
-                   ->where('gl.auditno',$value->recno)
-                   ->where('gl.lineno_',$value->lineno_)
-                   ->where('gl.source','IV')
-                   ->where('gl.trantype',$delordhd->trantype)
-                   ->first();
-
-            $drkey = $gltran->drcostcode.'_'.$gltran->dracc;
-            $crkey = $gltran->crcostcode.'_'.$gltran->cracc;
-
-            if(!array_key_exists($drkey,$cc_acc)){
-                $cc_acc[$drkey] = floatval($gltran->amount);
-            }else{
-                $curamt = floatval($cc_acc[$drkey]);
-                $cc_acc[$drkey] = $curamt+floatval($gltran->amount);
-            }
-            if(!array_key_exists($crkey,$cc_acc)){
-                $cc_acc[$crkey] = -floatval($gltran->amount);
-            }else{
-                $curamt = floatval($cc_acc[$crkey]);
-                $cc_acc[$crkey] = $curamt-floatval($gltran->amount);
-            }
-        }
-
+        $cc_acc=[];
         $cr_acc=[];
         $db_acc=[];
-        foreach ($cc_acc as $key => $value) {
-            $cc = explode("_",$key)[0];
-            $acc = explode("_",$key)[1];
-            $cc_desc = '';
-            $acc_desc = '';
+        if($delordhd->recstatus == 'POSTED'){
+            foreach ($delorddt as $value) {
+                $gltran = DB::table('finance.gltran as gl')
+                       ->where('gl.compcode',session('compcode'))
+                       ->where('gl.auditno',$value->recno)
+                       ->where('gl.lineno_',$value->lineno_)
+                       ->where('gl.source','IV')
+                       ->where('gl.trantype',$delordhd->trantype)
+                       ->first();
 
-            $costcenter = DB::table('finance.costcenter')
-                        ->where('compcode',session('compcode'))
-                        ->where('costcode',$cc);
+                $drkey = $gltran->drcostcode.'_'.$gltran->dracc;
+                $crkey = $gltran->crcostcode.'_'.$gltran->cracc;
 
-            $glmasref = DB::table('finance.glmasref')
-                        ->where('compcode',session('compcode'))
-                        ->where('glaccno',$acc);
-
-            if($costcenter->exists()){
-                $cc_desc = $costcenter->first()->description;
+                if(!array_key_exists($drkey,$cc_acc)){
+                    $cc_acc[$drkey] = floatval($gltran->amount);
+                }else{
+                    $curamt = floatval($cc_acc[$drkey]);
+                    $cc_acc[$drkey] = $curamt+floatval($gltran->amount);
+                }
+                if(!array_key_exists($crkey,$cc_acc)){
+                    $cc_acc[$crkey] = -floatval($gltran->amount);
+                }else{
+                    $curamt = floatval($cc_acc[$crkey]);
+                    $cc_acc[$crkey] = $curamt-floatval($gltran->amount);
+                }
             }
+            
+            foreach ($cc_acc as $key => $value) {
+                $cc = explode("_",$key)[0];
+                $acc = explode("_",$key)[1];
+                $cc_desc = '';
+                $acc_desc = '';
 
-            if($glmasref->exists()){
-                $acc_desc = $glmasref->first()->description;
-            }
+                $costcenter = DB::table('finance.costcenter')
+                            ->where('compcode',session('compcode'))
+                            ->where('costcode',$cc);
 
-            if(floatval($value) > 0){
-                array_push($db_acc,[$cc,$cc_desc,$acc,$acc_desc,floatval($value),0]);
-            }else{
-                array_push($cr_acc,[$cc,$cc_desc,$acc,$acc_desc,0,-floatval($value)]);
+                $glmasref = DB::table('finance.glmasref')
+                            ->where('compcode',session('compcode'))
+                            ->where('glaccno',$acc);
+
+                if($costcenter->exists()){
+                    $cc_desc = $costcenter->first()->description;
+                }
+
+                if($glmasref->exists()){
+                    $acc_desc = $glmasref->first()->description;
+                }
+
+                if(floatval($value) > 0){
+                    array_push($db_acc,[$cc,$cc_desc,$acc,$acc_desc,floatval($value),0]);
+                }else{
+                    array_push($cr_acc,[$cc,$cc_desc,$acc,$acc_desc,0,-floatval($value)]);
+                }
             }
         }
+        
 
         $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
         $totamt_eng = $totamt_eng_rm."";

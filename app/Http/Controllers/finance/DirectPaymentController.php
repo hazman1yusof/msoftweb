@@ -256,6 +256,7 @@ class DirectPaymentController extends defaultController
                         ]);
 
                 }else{
+                    $totamt = $this->getCbtranTotamt($apacthdr_get->bankcode,$yearperiod->year,$yearperiod->period);
 
                     DB::table('finance.bankdtl')
                             ->insert([

@@ -18,7 +18,7 @@
 	
 	var delordhd = {
 		@foreach($delordhd as $key => $val) 
-			'{{$key}}' : '{{$val}}',
+			'{{$key}}' : `{!!str_replace('`', '', $val)!!}`,
 		@endforeach 
 	};
 
@@ -65,7 +65,7 @@
                     style: 'tableExample',
                     table: {
                         headerRows: 1,
-                        widths: [80, '*',220,94,'*'],//panjang standard dia 515
+                        widths: [80, '*',80,94,'*'],//panjang standard dia 515
 
                         body: [
                             [
@@ -114,7 +114,7 @@
 							],
                             [
 								{text: 'Remarks '}, 
-								{text: ': {{$delordhd->remarks}}'},{},
+								{text: ': '+delordhd.remarks},{},
 								
 								@if(!empty($delordhd->deliverydate))
 								{text: 'Delivery Date'},
@@ -139,7 +139,8 @@
                     style: 'tableDetail',
                     table: {
                         headerRows: 1,
-                        widths: [80,25,30,23,30,40,40,40,40,40,30],//panjang standard dia 515
+                        // widths: [80,25,30,23,30,40,40,40,40,40,30],//panjang standard dia 515
+                        widths: [140,30,30,25,40,40,45,40,60],
 
                         body: [
                             [
@@ -148,9 +149,9 @@
 								{text: 'Qty', style: 'tableHeader'},
 								{text: 'Tax\nCode', style: 'tableHeader'}, 
 								{text: 'Unit\nPrice', style: 'tableHeader', alignment: 'right'}, 
-								{text: 'Disc\nAmount', style: 'tableHeader', alignment: 'right'}, 
+								// {text: 'Disc\nAmount', style: 'tableHeader', alignment: 'right'}, 
                                 {text: 'Amount', style: 'tableHeader', alignment: 'right'}, 
-								{text: 'Tax\nAmount', style: 'tableHeader', alignment: 'right'}, 
+								// {text: 'Tax\nAmount', style: 'tableHeader', alignment: 'right'}, 
 								{text: 'Net\nAmount (RM)', style: 'tableHeader', alignment: 'right'}, 
                                 {text: 'Expiry\nDate', style: 'tableHeader'},  
                                 {text: 'Batch No', style: 'tableHeader'}, 
@@ -165,9 +166,9 @@
                                 {text:'{{$obj->qtydelivered}}'},
 								{text:'{{$obj->taxcode}}'},
 								{text:'{{number_format($obj->unitprice,2)}}', alignment: 'right'},
-                                {text:'{{number_format($obj->amtdisc,2)}}', alignment: 'right'},
+                                // {text:'{{number_format($obj->amtdisc,2)}}', alignment: 'right'},
 								{text:'{{number_format($obj->amount,2)}}', alignment: 'right'},
-								{text:'{{number_format($obj->tot_gst,2)}}', alignment: 'right'},
+								// {text:'{{number_format($obj->tot_gst,2)}}', alignment: 'right'},
 								{text:'{{number_format($obj->totamount,2)}}', alignment: 'right'},
 								@if(!empty($obj->expdate))
                                 {text:'{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->expdate)->format('d-m-Y')}}'},
@@ -341,7 +342,7 @@
 			},
 			images: {
                     letterhead: {
-                        url: '{{asset('/img/MSLetterHead.jpg')}}',
+                        url: '{{asset('/img/letterheadukm.png')}}',
                         headers: {
                             myheader: '123',
                             myotherheader: 'abc',

@@ -79,7 +79,7 @@
 			// pageOrientation: 'landscape',
 			content: [
 				{
-					image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center'
+					image: 'letterhead', width: 250, style: 'tableHeader', colSpan: 5, alignment: 'center'
 				},
 				{ text: ' ' },
 				{
@@ -287,7 +287,7 @@
 			},
 			images: {
 				letterhead: {
-					url: "{{asset('/img/MSLetterHead.jpg')}}",
+					url: "{{asset('/img/letterheadukm.png')}}",
 					headers: {
 						myheader: '123',
 						myotherheader: 'abc',

@@ -52,6 +52,7 @@ div#fail_msg,div#fail_msg_r{
 	<input id="reqdept" name="reqdept" type="hidden" value="{{Session::get('reqdept')}}">
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
 	<input id="viewonly" name="viewonly" type="hidden" value="{{Request::get('viewonly')}}">
 
 	@if (Request::get('scope') == 'ALL')
@@ -758,6 +759,10 @@ div#fail_msg,div#fail_msg_r{
 	    </div>
 	  </div>
 	</div>
+
+		<!-- @include('layouts.allocate_part') -->
+	@include('layouts.till_part')
+
 @endsection
 
 @section('scripts')
@@ -798,6 +803,7 @@ div#fail_msg,div#fail_msg_r{
 			});
 		</script>
 
+		<script src="js/myjs/till_part.js"></script>
 		<script src="js/finance/PointOfSales/PointOfSales.js"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
