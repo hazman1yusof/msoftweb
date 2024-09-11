@@ -90,22 +90,33 @@
 			        layout: 'noBorders',
 		        }
 
-				var addr1_unit = {text: `{!!$deldept->addr2!!}`,fontSize:7,alignment: 'center',margin: [0, 1, 0, 1]};
-				var addr2_unit = {text: `{!!$deldept->addr3!!}`,fontSize:7,alignment: 'center',margin: [0, 1, 0, 1]};
-				var addr3_unit = {text: `{!!$deldept->addr4!!}`,fontSize:7,alignment: 'center',margin: [0, 1, 0, 1]};
+				// var addr1_unit = {text: `{!!$deldept->addr2!!}`,fontSize:8,alignment: 'center',margin: [0, 1, 0, 1]};
+				// var addr2_unit = {text: `{!!$deldept->addr3!!}`,fontSize:8,alignment: 'center',margin: [0, 1, 0, 1]};
+				// var addr3_unit = {text: `{!!$deldept->addr4!!}`,fontSize:8,alignment: 'center',margin: [0, 1, 0, 1]};
+		        var header_tbl_bangi ={
+					columns: [
+					    {image: 'logohdr',style:'header_img',width:200,alignment: 'left'},
+					    {
+							width: '*',alignment: 'left',
+							text: `{!!$company->address1!!} \n {!!$company->address2!!} \n {!!$company->address3!!} \n {!!$company->address4!!}`,
+							fontSize:8,margin: [196, 20, 50, 0]
+						},
+					]
+				}
+
 				if(currentPage == 1){
-					var logohdr = {image: 'logohdr',style:'header_img',width:180, colSpan: 5, alignment: 'center'};
-					var title = {text: 'PURCHASE ORDER',fontSize:12,alignment: 'center',bold: true, margin: [0, 5, 0, 0]};
-					retval.push(logohdr);
-					retval.push(addr1_unit);
-					retval.push(addr2_unit);
-					retval.push(addr3_unit);
+					// var logohdr = {image: 'logohdr',style:'header_img',width:180, colSpan: 5, alignment: 'center'};
+					var title = {text: 'PURCHASE ORDER',fontSize:12,alignment: 'center',bold: true, margin: [0, 10, 0, 5]};
+					retval.push(header_tbl_bangi);
+					// retval.push(addr1_unit);
+					// retval.push(addr2_unit);
+					// retval.push(addr3_unit);
 					retval.push(title);
 				}else{
-					var title = {text: 'PURCHASE ORDER',fontSize:12,alignment: 'center',bold: true, margin: [0, 71, 0, 0]};
-					retval.push(addr1_unit);
-					retval.push(addr2_unit);
-					retval.push(addr3_unit);
+					var title = {text: 'PURCHASE ORDER',fontSize:12,alignment: 'center',bold: true, margin: [0, 71, 0, 5]};
+					// retval.push(addr1_unit);
+					// retval.push(addr2_unit);
+					// retval.push(addr3_unit);
 					retval.push(title);
 				}
 
@@ -254,7 +265,7 @@
 			],
 			styles: {
 				header_img: {
-					margin: [30, 5, 0, 0]
+					margin: [30, 15, 0, 0]
 				},
 				header_tbl: {
 					fontSize: 8,
