@@ -1002,6 +1002,10 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
+			{ label: 'Quantity On Hand', name: 'qtyonhand', width: 100, align: 'right', classes: 'wrap', editable:true,
+				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: false},editoptions:{readonly: "readonly"},
+			},
 			{ label: 'Quantity Request', name: 'qtyrequest', width: 100, align: 'right', classes: 'wrap', editable:true,
 				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: false},editoptions:{readonly: "readonly"},
