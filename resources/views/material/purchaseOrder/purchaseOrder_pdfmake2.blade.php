@@ -97,9 +97,9 @@
 					columns: [
 					    {image: 'logohdr',style:'header_img',width:200,alignment: 'left'},
 					    {
-							width: '*',alignment: 'left',
+							width: '*',alignment: 'right',
 							text: `{!!$company->address1!!} \n {!!$company->address2!!} \n {!!$company->address3!!} \n {!!$company->address4!!}`,
-							fontSize:9,margin: [196, 10, 50, 0]
+							fontSize:9,margin: [0, 10, 30, 0]
 						},
 					]
 				}
