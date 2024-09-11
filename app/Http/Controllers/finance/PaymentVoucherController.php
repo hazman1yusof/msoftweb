@@ -1972,9 +1972,13 @@ class PaymentVoucherController extends defaultController
                 $apdt = $apdt->first();
                 $delordhd = DB::table('material.delordhd')
                             ->where('compcode','=',session('compcode'))
-                            ->where('delordno','=',$apdt->document)
-                            ->first();
+                            ->where('delordno','=',$apdt->document);
 
+                if(!$delordhd->exists()){
+                    abort(403,'No delivery Order');
+                }
+
+                $delordhd = $delordhd->first();
                 $recno = $delordhd->recno;
                 return redirect('/deliveryOrder/showpdf?recno='.$recno);
 
