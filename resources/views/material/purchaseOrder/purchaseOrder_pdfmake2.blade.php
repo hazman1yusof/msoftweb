@@ -99,21 +99,21 @@
 					    {
 							width: '*',alignment: 'left',
 							text: `{!!$company->address1!!} \n {!!$company->address2!!} \n {!!$company->address3!!} \n {!!$company->address4!!}`,
-							fontSize:8,margin: [196, 20, 50, 0]
+							fontSize:9,margin: [196, 10, 50, 0]
 						},
 					]
 				}
 
 				if(currentPage == 1){
 					// var logohdr = {image: 'logohdr',style:'header_img',width:180, colSpan: 5, alignment: 'center'};
-					var title = {text: 'PURCHASE ORDER',fontSize:12,alignment: 'center',bold: true, margin: [0, 10, 0, 5]};
+					var title = {text: 'PURCHASE ORDER',fontSize:12,alignment: 'center',bold: true, margin: [0, 5, 0, 5]};
 					retval.push(header_tbl_bangi);
 					// retval.push(addr1_unit);
 					// retval.push(addr2_unit);
 					// retval.push(addr3_unit);
 					retval.push(title);
 				}else{
-					var title = {text: 'PURCHASE ORDER',fontSize:12,alignment: 'center',bold: true, margin: [0, 71, 0, 5]};
+					var title = {text: 'PURCHASE ORDER',fontSize:12,alignment: 'center',bold: true, margin: [0, 71, 0, 0]};
 					// retval.push(addr1_unit);
 					// retval.push(addr2_unit);
 					// retval.push(addr3_unit);
@@ -265,10 +265,10 @@
 			],
 			styles: {
 				header_img: {
-					margin: [30, 15, 0, 0]
+					margin: [30, 10, 0, 0]
 				},
 				header_tbl: {
-					fontSize: 8,
+					fontSize: 9,
 					margin: [30, 0, 40, 0]
 				},
 				body_tbl: {
