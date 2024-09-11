@@ -1244,16 +1244,26 @@ class PurchaseOrderController extends defaultController
                             ->where('recno','=',$recno)
                             ->where('pricecode','IV')
                             ->where('recstatus','<>','DELETE')
-                            ->whereNull('unitprice')
-                            ->orWhereNull('pouom');
+                            // ->whereNull('unitprice')
+                            // ->orWhereNull('pouom');
+                            ->where(function ($purorddt_null){
+                                $purorddt_null
+                                        ->whereNull('unitprice')
+                                        ->orWhereNull('pouom'); 
+                            });
 
         $purorddt_empty = DB::table('material.purorddt')
                             ->where('compcode','=',session('compcode'))
                             ->where('recno','=',$recno)
                             ->where('recstatus','<>','DELETE')
                             ->where('pricecode','IV')
-                            ->where('unitprice','=','0')
-                            ->orWhere('pouom','=','');
+                            // ->where('unitprice','=','0')
+                            // ->orWhere('pouom','=','');
+                            ->where(function ($purorddt_empty){
+                                $purorddt_empty
+                                    ->where('unitprice','=','0.00')
+                                    ->orWhere('pouom','=','');   
+                            });
 
 
 

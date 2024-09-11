@@ -563,6 +563,7 @@ class PurchaseOrderDetailController extends defaultController
         $purorddt_null = DB::table('material.purorddt')
                             ->where('compcode','=',session('compcode'))
                             ->where('recno','=',$recno)
+                            ->where('pricecode','IV')
                             ->where('recstatus','<>','DELETE')
                             ->where(function ($purorddt_null){
                                 $purorddt_null
@@ -572,6 +573,7 @@ class PurchaseOrderDetailController extends defaultController
         $purorddt_empty = DB::table('material.purorddt')
                             ->where('compcode','=',session('compcode'))
                             ->where('recno','=',$recno)
+                            ->where('pricecode','IV')
                             ->where('recstatus','<>','DELETE')
                             ->where(function ($purorddt_empty){
                                 $purorddt_empty
