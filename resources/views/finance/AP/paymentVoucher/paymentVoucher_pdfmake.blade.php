@@ -98,7 +98,7 @@
 			        }
 
 				if(currentPage == 1){
-					var logohdr = {image: 'letterhead',style:'header_img',width:350, height:75, alignment: 'center'};
+					var logohdr = {image: 'letterhead',style:'header_img',width:220, alignment: 'center'};
 					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true};
 					var compbankdet = {text: 'COMP A/C NO: '+ini_compbankdet.bankname+ ' ' +ini_compbankdet.bankaccno,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};
 					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
@@ -179,7 +179,7 @@
 			},
 			images: {
 				letterhead: {
-					url: '{{asset('/img/MSLetterHead.jpg')}}',
+					url: "{{asset('/img/letterheadukm.png')}}",
 					headers: {
 						myheader: '123',
 						myotherheader: 'abc',
@@ -202,8 +202,6 @@
 
 			$.post( '../attachment_upload/form?page=merge_pdf',$.param(obj) , function( data ) {
 			}).done(function(data) {
-				merge_done[0] = true;
-				get_merge_pdf();
 			});
 		});
 	});
@@ -530,7 +528,7 @@
 			},
 			images: {
 				letterhead: {
-					url: '{{asset('/img/MSLetterHead.jpg')}}',
+					url: "{{asset('/img/letterheadukm.png')}}",
 					headers: {
 						myheader: '123',
 						myotherheader: 'abc',
@@ -744,41 +742,64 @@
 	    return retval;
 	}
 
-	$(document).ready(function () {
-		$('div.canclick').click(function(){
-			$('div.canclick').removeClass('teal inverted');
-			$(this).addClass('teal inverted');
-			var goto = $(this).data('goto');
-
-			if($(goto).offset() != undefined){
-			$('html, body').animate({
-				scrollTop: $(goto).offset().top
-				}, 500, function(){
-
-				});
-			}
-		});
-
-	});
-
 
 @endif
-function get_merge_pdf(){
-	let execute = true;
-	merge_done.forEach(function(e,i){
-		if(e==false){
-			execute = false
+// function get_merge_pdf(){
+// 	let execute = true;
+// 	merge_done.forEach(function(e,i){
+// 		if(e==false){
+// 			execute = false
+// 		}
+// 	});
+// 	if(execute){
+// 		var obj = {
+// 			page:'get_merge_pdf',
+// 			merge_key:merge_key,
+// 		};
+
+// 		$('#pdfiframe_merge').attr('src',"../attachment_upload/table?"+$.param(obj));
+// 	}
+// }
+
+$(document).ready(function () {
+	$('div.canclick').click(function(){
+		$('div.canclick').removeClass('teal inverted');
+		$(this).addClass('teal inverted');
+		var goto = $(this).data('goto');
+
+		if($(goto).offset() != undefined){
+		$('html, body').animate({
+			scrollTop: $(goto).offset().top
+			}, 500, function(){
+
+			});
 		}
 	});
-	if(execute){
-		var obj = {
-			page:'get_merge_pdf',
-			merge_key:merge_key,
-		};
 
-		$('#pdfiframe_merge').attr('src',"../attachment_upload/table?"+$.param(obj));
-	}
-}
+	$('#merge_btn').click(function(){
+		let attach_array = [];
+		$('input:checkbox:checked').each(function(){
+			attach_array.push($(this).data('src'));
+		});
+
+		if(attach_array.length > 0 ){
+			var obj = {
+				page:'merge_pdf_with_attachment',
+				merge_key:merge_key,
+				attach_array:attach_array
+			};
+
+			$('#pdfiframe_merge').attr('src',"../attachment_upload/table?"+$.param(obj));
+			$('#btn_merge,#pdfiframe_merge').show();
+			$('#btn_merge').click();
+		}else{
+			alert('Select at least 1 PDF Attachment to merge with main PDF');
+		}
+	});
+
+	populate_attachmentfile();
+
+});
 
 function makeid(length) {
     let result = '';
@@ -797,29 +818,31 @@ function makeid(length) {
 
 <body style="margin: 0px;">
 <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
-
-@if(is_object($CN_obj))
 <div class="ui segments" style="width: 18vw;height: 95vh;float: left; margin: 10px; position: fixed;">
   <div class="ui secondary segment">
-    <h3><b>Navigation</b></h3>
+    <h3>
+		<b>Navigation</b>
+		<button id="merge_btn" class="ui small primary button" style="font-size: 12px;padding: 6px 10px;float: right;">Merge</button>
+	</h3>
   </div>
   <div class="ui segment teal inverted canclick" style="cursor: pointer;" data-goto='#pdfiframe'>
     <p>Payment Voucher</p>
   </div>
+  @if(is_object($CN_obj))
   <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_cn'>
-    <p>Credit Note</p>
+    <p>Credit Note <input type="checkbox" data-src="{{$file->attachmentfile}}" name="{{$file->idno}}" style="float: right;margin-right: 5px;"></p>
   </div>
+  @endif
   <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_merge'>
     <p>Merged File</p>
   </div>
 </div>
 <iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;"></iframe>
+@if(is_object($CN_obj))
 <iframe id="pdfiframe_cn" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;"></iframe>
+@endif
 <iframe id="pdfiframe_merge" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;"></iframe>
 
-@else
-<iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="height: 99vh;float: right;"></iframe>
-@endif
 
 </body>
 </html>

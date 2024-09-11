@@ -134,8 +134,10 @@ class PaymentVoucherController extends defaultController
                         'ap.canceldate AS apacthdr_canceldate',
                         'ap.cancelled_remark AS apacthdr_cancelled_remark',
                     )
-                    ->where('ap.compcode',session('compcode'))
-                    ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
+                    ->leftJoin('material.supplier as su', function($join) use ($request){
+                        $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
+                        $join = $join->where('su.compcode', '=', session('compcode'));
+                    })
                     ->where('ap.compcode','=', session('compcode'))
                     ->where('ap.source','=',$request->source)
                     ->whereIn('ap.trantype',['PD','PV']);

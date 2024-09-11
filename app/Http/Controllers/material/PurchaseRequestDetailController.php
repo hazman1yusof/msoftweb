@@ -211,7 +211,7 @@ class PurchaseRequestDetailController extends defaultController
 
             if($prtype == 'Stock'){
                 $product = DB::table('material.stockloc as s')
-                            ->leftJoin('material.product AS p', function($join) use ($request){
+                            ->leftJoin('material.product AS p', function($join) use ($reqdept_unit){
                                 $join = $join->on("p.itemcode", '=', 's.itemcode');
                                 $join = $join->on("p.uomcode", '=', 's.uomcode');
                                 $join = $join->where("p.unit", '=', $reqdept_unit);
