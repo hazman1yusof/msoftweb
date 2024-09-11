@@ -24,7 +24,7 @@
 	                    style: 'header_tbl',
 	                    table: {
 	                        headerRows: 1,
-	                        widths: [50,290,110,70],//panjang standard dia 515
+	                        widths: [60,290,110,70],//panjang standard dia 515
 	                        body: [
 	                            [
 									{text: 'SUPPLIER',bold: true}, 
@@ -47,25 +47,70 @@
 									{text: ''}, 
 									{text: ''},
 								],
-								[{},{},{},{}],
+								// [{},{},{},{}],
 								[{text:'TEL NO',bold: true},{text: ': {{$supplier->TelNo}}'},{},{}],
-								[{text:'FAX NO',bold: true},{text: ': {{$supplier->Faxno}}'},{},{}],
+								// [{text:'FAX NO',bold: true},{text: ': {{$supplier->Faxno}}'},{},{}],
 	                        ]
 	                    },
 				        layout: 'noBorders',
 			        }
 
+		        var header_tbl_deldept = {
+                    style: 'header_tbl',
+                    table: {
+                        headerRows: 1,
+                        widths: [60,290,110,70],//panjang standard dia 515
+                        body: [
+                            [
+								{text: 'DELIVERY TO',bold: true}, 
+								{text: `: {!!$deldept->addr1!!}`},
+								{}, 
+								{},
+							],[
+								{text: ''}, 
+								{text: `: {!!$deldept->addr2!!}`},
+								{}, 
+								{},
+							],[
+								{text: ''}, 
+								{text: `: {!!$deldept->addr3!!}`},
+								{}, 
+								{},
+							],[
+								{text: ''}, 
+								{text: `: {!!$deldept->addr4!!}`},
+								{text: ''}, 
+								{text: ''},
+							],
+							// [{},{},{},{}],
+							[{text:'TEL NO',bold: true},{text: ': {{$deldept->tel}}'},{},{}],
+							// [{text:'FAX NO',bold: true},{text: ': {{$deldept->fax}}'},{},{}],
+                        ]
+                    },
+			        layout: 'noBorders',
+		        }
+
+				var addr1_unit = {text: `{!!$deldept->addr2!!}`,fontSize:7,alignment: 'center',margin: [0, 1, 0, 1]};
+				var addr2_unit = {text: `{!!$deldept->addr3!!}`,fontSize:7,alignment: 'center',margin: [0, 1, 0, 1]};
+				var addr3_unit = {text: `{!!$deldept->addr4!!}`,fontSize:7,alignment: 'center',margin: [0, 1, 0, 1]};
 				if(currentPage == 1){
-					var logohdr = {image: 'logohdr',style:'header_img',width:250, colSpan: 5, alignment: 'center'};
-					var title = {text: 'PURCHASE ORDER',fontSize:15,alignment: 'center',bold: true, margin: [0, 10, 0, 0]};
+					var logohdr = {image: 'logohdr',style:'header_img',width:180, colSpan: 5, alignment: 'center'};
+					var title = {text: 'PURCHASE ORDER',fontSize:12,alignment: 'center',bold: true, margin: [0, 5, 0, 0]};
 					retval.push(logohdr);
+					retval.push(addr1_unit);
+					retval.push(addr2_unit);
+					retval.push(addr3_unit);
 					retval.push(title);
 				}else{
-					var title = {text: 'PURCHASE ORDER',fontSize:15,alignment: 'center',bold: true, margin: [0, 71, 0, 0]};
+					var title = {text: 'PURCHASE ORDER',fontSize:12,alignment: 'center',bold: true, margin: [0, 71, 0, 0]};
+					retval.push(addr1_unit);
+					retval.push(addr2_unit);
+					retval.push(addr3_unit);
 					retval.push(title);
 				}
 
 				retval.push(header_tbl);
+				retval.push(header_tbl_deldept);
 				return retval
 
 			},
@@ -84,7 +129,7 @@
 			// 	}
 			// },
 			pageSize: 'A4',
-			pageMargins: [30, 192, 20, 70],
+			pageMargins: [30, 225, 20, 70],
 			content: [
 				{
 					style: 'body_tbl',
@@ -209,11 +254,11 @@
 			],
 			styles: {
 				header_img: {
-					margin: [30, 20, 0, 0]
+					margin: [30, 5, 0, 0]
 				},
 				header_tbl: {
-					fontSize: 9,
-					margin: [30, 20, 40, 20]
+					fontSize: 8,
+					margin: [30, 0, 40, 0]
 				},
 				body_tbl: {
 					fontSize: 9,
