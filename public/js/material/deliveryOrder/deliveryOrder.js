@@ -778,7 +778,7 @@ $(document).ready(function () {
 	var urlParam2={
 		action:'get_table_dtl',
 		url:'./deliveryOrderDetail/table',
-		field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode','dodt.pouom', 'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtyorder','dodt.qtydelivered', 'dodt.qtyoutstand','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks', 'dodt.unit','t.rate','dodt.idno'],
+		field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode','dodt.pouom', 'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtyorder','dodt.qtydelivered', 'dodt.qtyoutstand','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks', 'dodt.unit','t.rate','dodt.idno','dodt.kkmappno'],
 		table_name:['material.delorddt AS dodt','material.productmaster AS p','hisdb.taxmast AS t'],
 		table_id:'lineno_',
 		join_type:['LEFT JOIN','LEFT JOIN'],
@@ -950,9 +950,8 @@ $(document).ready(function () {
                     }
                 }
 			},
-			{ label: 'Batch No', name: 'batchno', width: 170, classes: 'wrap', editable:true,
-					maxlength: 100,
-			},
+			{ label: 'Batch No', name: 'batchno', width: 170, classes: 'wrap', editable:true,maxlength: 100,},
+			{ label: 'MDA/NOT/MAL', name: 'kkmappno', width: 190, classes: 'wrap', editable:true,maxlength: 100,},
 			{ label: 'PO Line No', name: 'polineno', width: 75, classes: 'wrap', editable:false, hidden:true},
 			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
 			{ label: 'Remarks', name: 'remarks', hidden:true},
@@ -1229,7 +1228,7 @@ $(document).ready(function () {
 			$("#jqGrid2 input[name='qtydelivered']").on('blur',calculate_conversion_factor);
 			$("#jqGrid2 input[name='pouom']").on('blur',remove_noti);
 
-			$("input[name='batchno']").keydown(function(e) {//when click tab at batchno, auto save
+			$("input[name='kkmappno']").keydown(function(e) {//when click tab at kkmappno, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
 			});
@@ -1477,6 +1476,7 @@ $(document).ready(function () {
                     'totamount' : $("#"+ids[i]+"_totamount").val(),
                     'expdate' : $("#"+ids[i]+"_expdate").val(),
                     'batchno' : $("#"+ids[i]+"_batchno").val(),
+					'kkmappno' : $("#"+ids[i]+"_kkmappno").val(),
                     'remarks' : data.remarks,
                     'unit' : $("#"+ids[i]+"_unit").val()
 		    	}

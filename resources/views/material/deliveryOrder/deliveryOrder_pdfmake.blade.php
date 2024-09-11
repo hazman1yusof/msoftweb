@@ -161,7 +161,7 @@
 							@foreach ($delorddt as $obj)
 							[
 								
-								{text:`{{$obj->itemcode}}\n{!!str_replace('`', '', $obj->description)!!}`},
+								{text:`{{$obj->itemcode}}\n{!!str_replace('`', '', $obj->description)!!}\n{{$obj->kkmappno}}`},
 								{text:`{!!$obj->uomcode!!}`},
                                 {text:'{{$obj->qtydelivered}}'},
 								{text:'{{$obj->taxcode}}'},
