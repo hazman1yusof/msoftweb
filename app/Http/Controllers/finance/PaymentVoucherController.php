@@ -1854,6 +1854,8 @@ class PaymentVoucherController extends defaultController
         }
 
         $CN_obj = $this->get_CN_from_PV($apacthdr);
+        
+        $attachment_files =$this->get_attachment_files($purreqhd->idno);
 
         return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title','CN_obj'));
 
@@ -2030,6 +2032,17 @@ class PaymentVoucherController extends defaultController
                 // code...
                 break;
         }
+    }
+
+    function get_attachment_files($auditno){
+        $attachment_files = DB::table('finance.attachment')
+            ->where('compcode','=',session('compcode'))
+            ->where('page','=','invoiceap')
+            ->where('type','=','application/pdf')
+            ->where('auditno','=',$auditno)
+            ->get();
+
+        return $attachment_files;
     }
 
 }

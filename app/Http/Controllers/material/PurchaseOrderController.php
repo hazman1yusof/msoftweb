@@ -1242,6 +1242,7 @@ class PurchaseOrderController extends defaultController
         $purorddt_null = DB::table('material.purorddt')
                             ->where('compcode','=',session('compcode'))
                             ->where('recno','=',$recno)
+                            ->where('pricecode','IV')
                             ->where('recstatus','<>','DELETE')
                             ->whereNull('unitprice')
                             ->orWhereNull('pouom');
@@ -1250,6 +1251,7 @@ class PurchaseOrderController extends defaultController
                             ->where('compcode','=',session('compcode'))
                             ->where('recno','=',$recno)
                             ->where('recstatus','<>','DELETE')
+                            ->where('pricecode','IV')
                             ->where('unitprice','=','0')
                             ->orWhere('pouom','=','');
 

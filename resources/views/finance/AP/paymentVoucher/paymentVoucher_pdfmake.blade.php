@@ -19,8 +19,8 @@
 </object>
 
 <script>
-	var merge_done = [false,false];
 	var merge_key = makeid(20); 
+	var attachmentfiles = [];
 	var ini_header={
 		pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_LEFT)}}`,
 		pvdate:`{{\Carbon\Carbon::parse($apacthdr->actdate)->format('d/m/Y')}}`,
@@ -452,7 +452,7 @@
 			        }
 
 				if(currentPage == 1){
-					var logohdr = {image: 'letterhead',style:'header_img',width:350, height:75, alignment: 'center'};
+					var logohdr = {image: 'letterhead',style:'header_img',width:220, alignment: 'center'};
 					var title = {text: '\n{{$CN_obj->title}}',fontSize:14,alignment: 'center',bold: true};
 					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
 					retval.push(logohdr);
@@ -551,8 +551,6 @@
 
 			$.post( '../attachment_upload/form?page=merge_pdf',$.param(obj) , function( data ) {
 			}).done(function(data){
-				merge_done[1] = true;
-				get_merge_pdf();
 			});
 		});
 	});
@@ -778,22 +776,32 @@ $(document).ready(function () {
 
 	$('#merge_btn').click(function(){
 		let attach_array = [];
+		let attach_array_lineno = [];
 		$('input:checkbox:checked').each(function(){
-			attach_array.push($(this).data('src'));
+			if($(this).data('src') != null || $(this).data('src') != undefined){
+				attach_array.push($(this).data('src'));
+			}
 		});
 
-		if(attach_array.length > 0 ){
+		$('input:checkbox:checked').each(function(){
+			if($(this).data('lineno') != null || $(this).data('lineno') != undefined){
+				attach_array_lineno.push($(this).data('lineno'));
+			}
+		});
+
+		if(attach_array.length == 0 && attach_array_lineno.length == 0){
+			alert('Select at least 1 PDF Attachment to merge with main PDF');
+		}else{
 			var obj = {
 				page:'merge_pdf_with_attachment',
 				merge_key:merge_key,
-				attach_array:attach_array
+				attach_array:attach_array,
+				attach_array_lineno:attach_array_lineno
 			};
 
 			$('#pdfiframe_merge').attr('src',"../attachment_upload/table?"+$.param(obj));
 			$('#btn_merge,#pdfiframe_merge').show();
 			$('#btn_merge').click();
-		}else{
-			alert('Select at least 1 PDF Attachment to merge with main PDF');
 		}
 	});
 
@@ -813,6 +821,12 @@ function makeid(length) {
     return result;
 }
 
+function populate_attachmentfile(){
+	attachmentfiles.forEach(function(e,i){
+		$('#pdfiframe_'+e.idno).attr('src',"../uploads/"+e.src);
+	});
+}
+
 
 </script>
 
@@ -830,7 +844,7 @@ function makeid(length) {
   </div>
   @if(is_object($CN_obj))
   <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_cn'>
-    <p>Credit Note <input type="checkbox" data-src="{{$file->attachmentfile}}" name="{{$file->idno}}" style="float: right;margin-right: 5px;"></p>
+    <p>Credit Note <input type="checkbox" data-lineno="2" style="float: right;margin-right: 5px;"></p>
   </div>
   @endif
   <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_merge'>
