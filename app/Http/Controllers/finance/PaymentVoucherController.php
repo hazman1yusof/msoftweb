@@ -1855,7 +1855,7 @@ class PaymentVoucherController extends defaultController
 
         $CN_obj = $this->get_CN_from_PV($apacthdr);
         
-        $attachment_files =$this->get_attachment_files($purreqhd->idno);
+        // $attachment_files =$this->get_attachment_files($purreqhd->idno);
 
         return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title','CN_obj'));
 
