@@ -35,7 +35,7 @@
 									{text: ''}, 
 									{text: `: {!!$supplier->Addr1!!}`},
 									{text: 'PURCHASE ORDER DATE',bold: true}, 
-									{text: ': {{$purordhd->purdate}}'},
+									{text: ': {{\Carbon\Carbon::createFromFormat('Y-m-d',$purordhd->purdate)->format('d-m-Y')}}'},
 								],[
 									{text: ''}, 
 									{text: `: {!!$supplier->Addr2!!}`},
