@@ -1107,7 +1107,7 @@ class PointOfSalesController extends defaultController
             
             DB::rollback();
             
-            return response($e->getMessage(), 500);
+            return response($e, 500);
             
         }  
     }

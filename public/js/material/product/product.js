@@ -948,12 +948,13 @@ $(document).ready(function () {
 			let chgflg = selrowData("#jqGrid").chgflag;
 
 			if(selrowData('#jqGrid').chgflag == '1'){
-				$("#jqGrid3_c").show();
 				urlParam2.filterVal[2]=selrowData("#jqGrid").itemcode;
 				urlParam2.filterVal[3]=selrowData("#jqGrid").uomcode;
 
 				refreshGrid("#jqGrid3",urlParam2,'add');
 				hideatdialogForm_jqGrid3(false);
+				$("#jqGrid3_c").show();
+				$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 
 			} else {
 				$("#jqGrid3_c").hide();

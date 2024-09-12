@@ -2866,6 +2866,7 @@ function receipt_class(){
 		amountchgOn('#f_tab-cash');
 		let self = this;
 		$('.nav-tabs a').on('shown.bs.tab', function(e){
+			SmoothScrollTo('#receipt_panel', 300,-10);
 			let tabform=$(this).attr('form');
 			$('#receipt_panel').data('tabform',tabform);
 			self.tabform = tabform;
