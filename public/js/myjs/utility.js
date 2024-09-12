@@ -957,6 +957,7 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 					// $('#checkbox_all_uncheck,#checkbox_all_check').hide();
 					$("#show_sel_tbl,#but_post_jq,#but_cancel_jq").show();
 					break;
+				case 'POSTED':
 				case 'CANCELLED':
 				case 'OPEN':
 				case 'REQUEST':
