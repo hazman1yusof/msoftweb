@@ -20,7 +20,14 @@
 
 <script>
 	var merge_key = makeid(20); 
-	var attachmentfiles = [];
+	var attachmentfiles = [
+		@foreach($attachment_files as $file)
+		{	
+			idno:'{{$file->idno}}',
+			src:'{{$file->attachmentfile}}',
+		},
+		@endforeach
+	]
 	var ini_header={
 		pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_LEFT)}}`,
 		pvdate:`{{\Carbon\Carbon::parse($apacthdr->actdate)->format('d/m/Y')}}`,
@@ -739,8 +746,6 @@
 
 	    return retval;
 	}
-
-
 @endif
 // function get_merge_pdf(){
 // 	let execute = true;
@@ -847,7 +852,12 @@ function populate_attachmentfile(){
     <p>Credit Note <input type="checkbox" data-lineno="2" style="float: right;margin-right: 5px;"></p>
   </div>
   @endif
-  <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_merge'>
+  @foreach($attachment_files as $file)
+  <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_{{$file->idno}}'>
+    <p>{{$file->resulttext}} <input type="checkbox" data-src="{{$file->attachmentfile}}" name="{{$file->idno}}" style="float: right;margin-right: 5px;"></p>
+  </div>
+  @endforeach
+  <div id="btn_merge" class="ui segment canclick" style="cursor: pointer;display: none;" data-goto='#pdfiframe_merge'>
     <p>Merged File</p>
   </div>
 </div>
@@ -855,7 +865,10 @@ function populate_attachmentfile(){
 @if(is_object($CN_obj))
 <iframe id="pdfiframe_cn" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;"></iframe>
 @endif
-<iframe id="pdfiframe_merge" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;"></iframe>
+@foreach($attachment_files as $file)
+<iframe id="pdfiframe_{{$file->idno}}" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;"></iframe>
+@endforeach
+<iframe id="pdfiframe_merge" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;display: none;"></iframe>
 
 
 </body>

@@ -1855,9 +1855,9 @@ class PaymentVoucherController extends defaultController
 
         $CN_obj = $this->get_CN_from_PV($apacthdr);
         
-        // $attachment_files =$this->get_attachment_files($purreqhd->idno);
+        $attachment_files =$this->get_attachment_files($apalloc);
 
-        return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title','CN_obj'));
+        return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title','CN_obj','attachment_files'));
 
         // if(empty($request->type)){
 
@@ -2038,13 +2038,22 @@ class PaymentVoucherController extends defaultController
         }
     }
 
-    function get_attachment_files($auditno){
+    function get_attachment_files($apalloc){
+        $idno_array = [];
+        foreach ($apalloc as $obj) {
+            $apacthdr = DB::table('finance.apacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','AP')
+                            ->where('trantype','IN')
+                            ->where('auditno',$obj->refauditno)
+                            ->first();
+            array_push($idno_array,$apacthdr->idno);
+        }
+
         $attachment_files = DB::table('finance.attachment')
-            ->where('compcode','=',session('compcode'))
-            ->where('page','=','invoiceap')
-            ->where('type','=','application/pdf')
-            ->where('auditno','=',$auditno)
-            ->get();
+                        ->where('compcode',session('compcode'))
+                        ->whereIn('auditno',$idno_array)
+                        ->get();
 
         return $attachment_files;
     }
