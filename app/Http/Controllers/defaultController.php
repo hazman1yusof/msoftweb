@@ -691,8 +691,10 @@ abstract class defaultController extends Controller{
 
             if(is_null($pvalue1["actamount".$period])){
                 $this->gltranAmount = 0.00;
+                return 0.00;
             }else{
                 $this->gltranAmount = $pvalue1["actamount".$period];
+                return $pvalue1["actamount".$period];
             }
 
             return true;

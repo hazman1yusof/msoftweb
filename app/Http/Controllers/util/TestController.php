@@ -62,8 +62,8 @@ class TestController extends defaultController
                 // return $this->update_productmaster($request);
             // case 'update_stockexp':
             //     return $this->update_stockexp($request);
-            case 'update_stockloc':
-                return $this->update_stockloc($request);
+            case 'del_stockexp':
+                return $this->del_stockexp($request);
             default:
                 return 'error happen..';
         }
@@ -521,6 +521,110 @@ class TestController extends defaultController
         }
     }
 
+    public function del_stockexp(Request $request){
+        DB::beginTransaction();
+
+        try {
+            
+            $stockloc = DB::table('temp.stockloc')
+                            ->where('compcode','9B')
+                            ->where('unit',"W'HOUSE")
+                            ->get();
+
+            // dd($stockloc);
+            $i = 1;
+            foreach ($stockloc as $obj) {
+
+                $stockexp = DB::table('temp.stockexp')
+                                ->where('unit',$obj->unit)
+                                ->where('compcode',$obj->compcode)
+                                ->where('year',$obj->year)
+                                ->where('deptcode',$obj->deptcode)
+                                ->where('itemcode',$obj->itemcode)
+                                ->where('uomcode','!=',$obj->uomcode);
+
+                if($stockexp->exists()){
+                    $stockexp_f = $stockexp->first();
+
+                    DB::table('temp.stockexp')
+                                ->where('unit',$obj->unit)
+                                ->where('compcode',$obj->compcode)
+                                ->where('year',$obj->year)
+                                ->where('deptcode',$obj->deptcode)
+                                ->where('itemcode',$obj->itemcode)
+                                ->where('uomcode','=',$stockexp_f->uomcode)
+                                ->delete();
+
+
+                    echo nl2br("$i. upd : $obj->itemcode | $obj->uomcode | $obj->unit | uomcode delete: $stockexp_f->uomcode\n");
+                    $i++;
+                }
+
+            }
+
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function upd_stockexp_unit(Request $request){
+        DB::beginTransaction();
+
+        try {
+            
+            $stockloc = DB::table('temp.stockloc')
+                            ->where('compcode','9B')
+                            ->where('unit',"W'HOUSE")
+                            ->get();
+
+            // dd($stockloc);
+            $i = 1;
+            foreach ($stockloc as $obj) {
+
+                $stockexp = DB::table('temp.stockexp')
+                                ->whereNull('unit')
+                                ->where('compcode',$obj->compcode)
+                                ->where('year',$obj->year)
+                                ->where('deptcode',$obj->deptcode)
+                                ->where('itemcode',$obj->itemcode);
+                                // ->where('uomcode','!=',$obj->uomcode);
+
+                if($stockexp->exists()){
+                    $stockexp_f = $stockexp->first();
+
+                    DB::table('temp.stockexp')
+                                // ->where('unit',$obj->unit)
+                                ->where('compcode',$obj->compcode)
+                                ->where('year',$obj->year)
+                                ->where('deptcode',$obj->deptcode)
+                                ->where('itemcode',$obj->itemcode)
+                                // ->where('uomcode','=',$stockexp_f->uomcode)
+                                ->update([
+                                    'unit' => $obj->unit
+                                ]);
+
+
+                    echo nl2br("$i. upd : $obj->itemcode | $obj->uomcode | $obj->unit \n");
+                    $i++;
+                }
+
+            }
+
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
     public function update_stockloc(Request $request){
         DB::beginTransaction();
 
@@ -553,6 +657,103 @@ class TestController extends defaultController
 
                     echo nl2br("upd idno : ".$obj->idno."\n");
                 }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function update_stockloc_uomcode(Request $request){
+        DB::beginTransaction();
+
+        try {
+            
+            $product = DB::table('temp.product')
+                            ->where('compcode','9B')
+                            ->where('unit',"W'HOUSE")
+                            ->get();
+
+            // dd($stockloc);
+            $i = 1;
+            foreach ($product as $obj) {
+
+                $stockloc = DB::table('temp.stockloc')
+                                ->where('compcode','9B')
+                                ->where('itemcode',$obj->itemcode)
+                                ->where('uomcode',$obj->uomcode)
+                                ->where('unit',"W'HOUSE");
+
+                if($stockloc->exists()){
+                    continue;
+                }
+
+                $stockloc = DB::table('temp.stockloc')
+                                ->where('compcode','9B')
+                                ->where('itemcode',$obj->itemcode);
+
+                if($stockloc->exists()){
+                    $stockloc_first = $stockloc->first();
+                    DB::table('temp.stockloc')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$obj->itemcode)
+                            ->update([
+                                'uomcode' => $obj->uomcode,
+                                'unit' => $obj->unit
+                            ]);
+
+                    $balqty = $stockloc_first->netmvqty1 + $stockloc_first->netmvqty2 + $stockloc_first->netmvqty3 + $stockloc_first->netmvqty4 + $stockloc_first->netmvqty5 + $stockloc_first->netmvqty6 + $stockloc_first->netmvqty7 + $stockloc_first->netmvqty8;
+
+                    DB::table('temp.product')
+                            ->where('compcode','9B')
+                            ->where('unit',"W'HOUSE")
+                            ->where('itemcode',$obj->itemcode)
+                            ->where('uomcode',$obj->uomcode)
+                            ->update([
+                                'qtyonhand' => $balqty
+                            ]);
+
+
+                    $stockexp = DB::table('temp.stockexp')
+                                ->where('unit',$obj->unit)
+                                ->where('compcode',$obj->compcode)
+                                ->where('year',$stockloc_first->year)
+                                ->where('deptcode',$stockloc_first->deptcode)
+                                ->where('itemcode',$obj->itemcode)
+                                ->where('uomcode',$obj->uomcode);
+
+                    if(!$stockexp->exists()){
+                        DB::table('temp.stockexp')
+                            ->insert([
+                                'compcode' => $obj->compcode,
+                                'deptcode' => $stockloc_first->deptcode,
+                                'itemcode' => $obj->itemcode,
+                                'uomcode' => $obj->uomcode,
+                                'expdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'batchno' => 'OB',
+                                'balqty' => $balqty,
+                                'adduser' => 'SYSTEM',
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                // 'addtime' => $obj->compcode,
+                                // 'upduser' => $obj->compcode,
+                                // 'upddate' => $obj->compcode,
+                                // 'updtime' => $obj->compcode,
+                                // 'lasttt' => $obj->compcode,
+                                'year' => Carbon::now("Asia/Kuala_Lumpur")->year,
+                                'unit' => $obj->unit,
+                            ]);
+                    }
+                    
+                }
+
+                echo nl2br("$i. upd : $obj->itemcode | $obj->uomcode | $obj->unit | qtyonhand: $balqty\n");
+                $i++;
+
             }
 
             DB::commit();

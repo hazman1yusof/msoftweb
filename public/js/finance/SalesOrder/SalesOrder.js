@@ -62,7 +62,8 @@ $(document).ready(function () {
 						hideatdialogForm(true);
 						enableForm('#formdata');
 						rdonly('#formdata');
-						//$("#purreqhd_reqdept").val($("#x").val());
+						$("#db_deptcode").val($("#deptcode").val());
+						dialog_deptcode.check(errorField);
 						$('#save').hide();
 						break;
 					case state = 'edit':
@@ -78,7 +79,7 @@ $(document).ready(function () {
 				}if (oper != 'add') {
 					dialog_deptcode.check(errorField);
 					dialog_billtypeSO.check(errorField);
-					// dialog_mrn.check(errorField);
+					dialog_mrn.check('errorField');
 					dialog_CustomerSO.check(errorField);
 					dialog_quoteno.urlParam.deptcode = $('#db_deptcode').val();
 					dialog_quoteno.check(errorField);
@@ -86,7 +87,7 @@ $(document).ready(function () {
 				} if (oper != 'view') {
 					dialog_deptcode.on();
 					dialog_billtypeSO.on();
-					// dialog_mrn.on();
+					dialog_mrn.on();
 					dialog_CustomerSO.on();
 					dialog_quoteno.on();
 					// dialog_approvedbySO.on();
@@ -115,7 +116,7 @@ $(document).ready(function () {
 				$("#formdata a").off();
 				dialog_deptcode.off();
 				dialog_billtypeSO.off();
-				// dialog_mrn.off();
+				dialog_mrn.off();
 				dialog_CustomerSO.off();
 				// dialog_approvedbySO.off();
 				$(".noti").empty();
@@ -1067,7 +1068,7 @@ $(document).ready(function () {
 		beforeSubmit: function (postdata, rowid) {
 			dialog_deptcode.check(errorField);
 			dialog_billtypeSO.check(errorField);
-			// dialog_mrn.check(errorField);
+			dialog_mrn.check('errorField');
 			dialog_CustomerSO.check(errorField);
 			dialog_quoteno.check(errorField);
 			// dialog_approvedbySO.check(errorField);
@@ -1566,7 +1567,7 @@ $(document).ready(function () {
 		unsaved = false;
 		dialog_deptcode.off();
 		dialog_billtypeSO.off();
-		// dialog_mrn.off();
+		dialog_mrn.off();
 		dialog_CustomerSO.off();
 		dialog_quoteno.off();
 		// dialog_approvedbySO.off();
@@ -1583,7 +1584,7 @@ $(document).ready(function () {
 			dialog_CustomerSO.on();
 			dialog_quoteno.on();
 			// dialog_approvedbySO.on();
-			// dialog_mrn.on();
+			dialog_mrn.on();
 		}
 	});
 
@@ -1596,7 +1597,7 @@ $(document).ready(function () {
 		dialog_CustomerSO.on();
 		dialog_quoteno.on();
 		// dialog_approvedbySO.on();
-		// dialog_mrn.on();
+		dialog_mrn.on();
 
 		enableForm('#formdata');
 		rdonly('#formdata');
@@ -2037,39 +2038,73 @@ $(document).ready(function () {
 	);
 	dialog_quoteno.makedialog();
 
-	// var dialog_mrn = new ordialog(
-	// 	'dialog_mrn', 'hisdb.pat_mast', '#db_mrn', errorField,
-	// 	{
-	// 		colModel: [
-	// 			{ label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
-	// 			{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
-	// 		],
-	// 		urlParam: {
-	// 			filterCol:['compcode','ACTIVE'],
-	// 			filterVal:['session.compcode','1']
-	// 		},
-	// 		ondblClickRow: function () {
-	// 			$('#db_termdays').focus();
-	// 		},
-	// 		gridComplete: function(obj){
-	// 			var gridname = '#'+obj.gridname;
-	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-	// 				$(gridname+' tr#1').click();
-	// 				$(gridname+' tr#1').dblclick();
-	// 				$('#db_termdays').focus();
-	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-	// 				$('#'+obj.dialogname).dialog('close');
-	// 			}
-	// 		}
-	// 	}, {
-	// 		title: "Select MRN",
-	// 		open: function(){
-	// 			dialog_mrn.urlParam.filterCol=['recstatus', 'ACTIVE'];
-	// 			dialog_mrn.urlParam.filterVal=['ACTIVE', '1'];
-	// 		}
-	// 	},'none','radio','tab'
-	// );
-	// dialog_mrn.makedialog();
+	var dialog_mrn = new ordialog(
+		'dialog_mrn', 'hisdb.pat_mast', '#db_mrn', 'errorField',
+		{
+			colModel: [
+				{ label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
+				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+			],
+			urlParam: {
+				filterCol:['compcode','ACTIVE'],
+				filterVal:['session.compcode','1']
+			},
+			ondblClickRow: function () {
+				$('#db_termdays').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#db_termdays').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		}, {
+			title: "Select MRN",
+			open: function(){
+				dialog_mrn.urlParam.filterCol=['compcode', 'ACTIVE'];
+				dialog_mrn.urlParam.filterVal=['session.compcode', '1'];
+			}
+		},'none','radio','tab'
+	);
+	dialog_mrn.makedialog();
+	$('#otherdialog_dialog_mrn').append(`<p><button type='button' class='btn btn-default btn-sm' id='new_patient' style='float:right'>New Patient</button></p>`);
+
+	$("#dialog_new_patient").dialog({
+		autoOpen: false,
+		width: 7/10 * $(window).width(),
+		modal: true,
+		open: function( event, ui ) {
+		},
+		close: function( event, ui ) {
+		},
+		buttons : [{
+			text: "Submit",click: function() {
+					if($('#formdata_new_patient').isValid({requiredFields:''},conf,true)){
+						$.post( "./SalesOrder/form?oper=new_patient", $('#formdata_new_patient').serialize(), function( data ) {
+							},'json')
+						.fail(function (data) {
+							alert(data.responseText);
+						}).done(function (data) {
+							emptyFormdata('#formdata_new_patient');
+							$(this).dialog('close');
+						})
+					}
+				}
+			},{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}]
+	});
+
+	$('#new_patient').click(function(){
+		$("#dialog_new_patient").dialog('open');
+	});
+
 
 	// var dialog_approvedbySO = new ordialog(
 	// 	'approvedby',['material.authorise'],"#db_approvedby",errorField,

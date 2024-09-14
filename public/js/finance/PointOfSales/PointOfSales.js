@@ -303,6 +303,16 @@ $(document).ready(function () {
 			// $("#pdfgen2").attr('href','./PointOfSales/showpdf?idno='+selrowData("#jqGrid").db_idno);
 			if_cancel_hide();
 			$('#receipt_panel').collapse('hide');
+			if(selrowData("#jqGrid").db_outamount == 0){
+				$('#receipt_c').hide();
+			}else{
+				$('#receipt_c').show();
+			}
+
+			urlParamAlloc.idno = selrowData("#jqGrid").db_idno;
+			refreshGrid("#jqGridAlloc",urlParamAlloc,'add');
+
+			$(this).data('lastselrow',rowid);
 
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
@@ -329,10 +339,11 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			cbselect.show_hide_table();
-			if (oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null) {    //highlight 1st record
+			if (oper == 'add' || oper == null) {    //highlight 1st record
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}else{
+				$('#jqGrid tr#'+$(this).data('lastselrow')).focus().click();
 			}
-			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus().click();
 			$("#searchForm input[name=Stext]").focus();
 			populate_form(selrowData("#jqGrid"));
 			fdl.set_array().reset();
@@ -1503,6 +1514,13 @@ $(document).ready(function () {
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 			case 'db_deptcode':field=['deptcode','description'];table="sysdb.department";case_='db_deptcode';break;
 			case 'db_payercode':field=['debtorcode','name'];table="debtor.debtormast";case_='db_payercode';break;
+			case 'db_payercode':field=['debtorcode','name'];table="debtor.debtormast";case_='db_payercode';break;
+
+			// jqGridAlloc
+			case 'debtorcode': field = ['debtorcode','name'];table = "debtor.debtormast";case_ = 'debtorcode';break;
+			case 'payercode': field = ['debtorcode','name'];table = "debtor.debtormast";case_ = 'payercode';break;
+			case 'paymode': field = ['paymode','description'];table = "debtor.paymode";case_ = 'paymode';break;
+			case 'mrn': field = ['MRN','name'];table = "hisdb.pat_mast";case_ = 'mrn';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
@@ -1808,6 +1826,55 @@ $(document).ready(function () {
 	// fixPositionsOfFrozenDivs.call($('#jqGrid3')[0]);
 	$("#jqGrid3").jqGrid("setFrozenColumns");
 	jqgrid_label_align_right("#jqGrid3");
+
+	var urlParamAlloc = {
+		action: 'get_alloc',
+		url: './PointOfSales/table',
+		auditno: ''
+	};
+
+	$("#jqGridAlloc").jqGrid({
+		datatype: "local",
+		editurl: "./arenquiry/form",
+		colModel: [
+			// { label: 'compcode', name: 'compcode', width: 20, hidden: true },
+			// { label: 'lineno_', name: 'lineno_', width: 20, hidden: true },
+			// { label: 'idno', name: 'idno', width: 20, hidden: true },
+			{ label: 'System Auto No.', name: 'sysAutoNo', width: 50, classes: 'wrap' },
+			{ label: 'Source', name: 'source', width: 10, classes: 'wrap', hidden: true },
+			{ label: 'TT', name: 'trantype', width: 10, classes: 'wrap', hidden: true },
+			{ label: 'Audit No', name: 'auditno', width: 10, classes: 'wrap', formatter: padzero, unformat: unpadzero, hidden: true },
+			{ label: 'Debtor', name: 'debtorcode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat: un_showdetail },
+			{ label: 'Payer', name: 'payercode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat: un_showdetail },
+			{ label: 'Amount', name: 'amount', width: 40, classes: 'wrap', align: 'right', formatter: 'currency' },
+			{ label: 'Document No', name: 'recptno', width: 50, align: 'right' },
+			{ label: 'Paymode', name: 'paymode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat: un_showdetail },
+			{ label: 'Alloc Date', name: 'allocdate', width: 50, formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'MRN', name: 'mrn', width: 50, align: 'right', classes: 'wrap text-uppercase', formatter: showdetail, unformat: un_showdetail },
+			{ label: 'Episno', name: 'episno', width: 20, align: 'right' },
+		],
+		shrinkToFit: true,
+		autowidth: true,
+		multiSort: true,
+		viewrecords: true,
+		rowNum: 30,
+		pager: "#jqGridPagerAlloc",
+		loadComplete: function (data){
+			// calc_jq_height_onchange("jqGridAlloc",false,parseInt($('#jqGridAlloc_c').prop('clientHeight'))-150);
+			// $("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGridAlloc_c")[0].offsetWidth-$("#jqGridAlloc_c")[0].offsetLeft-18));
+			
+			// refreshGrid("#jqGridAlloc",urlParamAlloc,'add');
+		},
+		gridComplete: function (){
+			fdl.set_array().reset();
+		},
+	});
+	jqgrid_label_align_right("#jqGridAlloc");
+	
+	$("#allocation_panel").on("shown.bs.collapse", function (){
+		SmoothScrollTo('#allocation_panel', 300,-10);
+		$("#jqGridAlloc").jqGrid('setGridWidth', Math.floor($("#allocation_c")[0].offsetWidth-$("#allocation_c")[0].offsetLeft-18));
+	});
 
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
@@ -2944,6 +3011,7 @@ function receipt_class(){
 			// $('#error_infront').text(data.responseText);
 		}).success(function(data){
 			myfail_msg_r.clear_fail();
+			$("#refresh_jqGrid").click();
 		});
 	});
 

@@ -121,6 +121,8 @@ class SalesOrderController extends defaultController
                 return $this->approved($request);
             case 'refresh_do':
                 return $this->refresh_do($request);
+            case 'new_patient':
+                return $this->new_patient($request);
             default:
                 return 'Errors happen';
         }
@@ -2627,6 +2629,109 @@ class SalesOrderController extends defaultController
                 ->where('auditno','=',$billsum_obj->auditno)
                 ->delete();
         }
+    }
+
+    public function new_patient(Request $request){
+
+        DB::table('hisdb.pat_mast')
+            ->insert([
+                'CompCode' => session('compcode'),
+                'MRN' => $request->,
+                // 'Episno' => $request->,
+                'Name' => $request->np_name,
+                'Call_Name' => $request->,
+                'addtype' => $request->,
+                'Address1' => $request->np_address1,
+                'Address2' => $request->np_address2,
+                'Address3' => $request->np_address3,
+                'Postcode' => $request->np_postcode,
+                // 'citycode' => $request->,
+                // 'AreaCode' => $request->,
+                // 'StateCode' => $request->,
+                // 'CountryCode' => $request->,
+                // 'telh' => $request->,
+                // 'telhp' => $request->,
+                // 'telo' => $request->,
+                // 'Tel_O_Ext' => $request->,
+                // 'ptel' => $request->,
+                // 'ptel_hp' => $request->,
+                // 'ID_Type' => $request->,
+                // 'idnumber' => $request->,
+                // 'Newic' => $request->,
+                // 'Oldic' => $request->,
+                // 'icolor' => $request->,
+                // 'Sex' => $request->,
+                // 'DOB' => $request->,
+                // 'Religion' => $request->,
+                // 'AllergyCode1' => $request->,
+                // 'AllergyCode2' => $request->,
+                // 'Century' => $request->,
+                // 'Citizencode' => $request->,
+                // 'OccupCode' => $request->,
+                // 'Staffid' => $request->,
+                // 'MaritalCode' => $request->,
+                // 'LanguageCode' => $request->,
+                // 'TitleCode' => $request->,
+                // 'RaceCode' => $request->,
+                // 'bloodgrp' => $request->,
+                // 'Accum_chg' => $request->,
+                // 'Accum_Paid' => $request->,
+                // 'first_visit_date' => $request->,
+                'Reg_Date' => Carbon::now("Asia/Kuala_Lumpur"),
+                // 'last_visit_date' => $request->,
+                // 'last_episno' => $request->,
+                // 'PatStatus' => $request->,
+                // 'Confidential' => $request->,
+                'Active' => 1,
+                // 'FirstIpEpisNo' => $request->,
+                // 'FirstOpEpisNo' => $request->,
+                'AddUser' => session('username'),
+                'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'Lastupdate' => session('username'),
+                'LastUser' => Carbon::now("Asia/Kuala_Lumpur"),
+                // 'OffAdd1' => $request->,
+                // 'OffAdd2' => $request->,
+                // 'OffAdd3' => $request->,
+                // 'OffPostcode' => $request->,
+                // 'MRFolder' => $request->,
+                // 'MRLoc' => $request->,
+                // 'MRActive' => $request->,
+                // 'OldMrn' => $request->,
+                'NewMrn' => $request->np_newmrn,
+                // 'Remarks' => $request->,
+                // 'RelateCode' => $request->,
+                // 'ChildNo' => $request->,
+                // 'CorpComp' => $request->,
+                // 'Email' => $request->,
+                // 'Email_official' => $request->,
+                // 'CurrentEpis' => $request->,
+                // 'NameSndx' => $request->,
+                // 'BirthPlace' => $request->,
+                // 'TngID' => $request->,
+                // 'PatientImage' => $request->,
+                // 'pAdd1' => $request->,
+                // 'pAdd2' => $request->,
+                // 'pAdd3' => $request->,
+                // 'pPostCode' => $request->,
+                // 'DeptCode' => $request->,
+                // 'DeceasedDate' => $request->,
+                // 'PatientCat' => $request->,
+                // 'PatType' => $request->,
+                // 'PatClass' => $request->,
+                // 'upduser' => $request->,
+                // 'upddate' => $request->,
+                // 'recstatus' => $request->,
+                // 'loginid' => $request->,
+                // 'pat_category' => $request->,
+                // 'idnumber_exp' => $request->,
+                // 'telhp2' => $request->,
+                // 'patient_status' => $request->,
+                // 'totallimit' => $request->,
+                // 'HDlimit' => $request->,
+                // 'EPlimit' => $request->,
+                'computerid' => session('computerid'),
+            ]);
+
     }
 
     

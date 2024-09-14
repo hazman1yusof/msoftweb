@@ -260,6 +260,28 @@ div#fail_msg,div#fail_msg_r{
     	</div>
 		</div>
 
+		<div class="panel panel-default" style="position: relative;" id="allocation_c">
+    	<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#allocation_panel">
+				<b>SALES AUTO NO: </b><span id="AutoNo_alloc_show"></span><br>
+				<b>CUSTOMER NAME: </b><span id="CustName_alloc_show"></span>
+				
+	    	<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>Allocation</h5>
+				</div>
+			</div>
+
+  		<div id="allocation_panel" class="panel-collapse collapse" id="jqGridAlloc_c">
+    		<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0" id>
+						<table id="jqGridAlloc" class="table table-striped"></table>
+						<div id="jqGridPagerAlloc"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="panel panel-default" style="position: relative;" id="receipt_c">
     	<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#receipt_panel">
 				<b>SALES AUTO NO: </b><span id="AutoNo_r_show"></span><br>
