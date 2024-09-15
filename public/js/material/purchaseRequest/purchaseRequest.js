@@ -353,7 +353,11 @@ $(document).ready(function () {
 			$("#pdfgen2").attr('href','./purchaseRequest/showpdf?recno='+selrowData("#jqGrid").purreqhd_recno);
 			
 			if(stat=='PREPARED' || stat=='SUPPORT' || stat=='INCOMPLETED' || stat=='VERIFIED' || stat=='APPROVED' || stat=='CANCELLED' || stat=='COMPLETED' || stat=='RECOMMENDED1' || stat=='RECOMMENDED2' || stat=='PARTIAL'){
-				$("#jqGridPager td[title='Edit Selected Row']").hide();
+				if($('#scope').val()=='VERIFIED' && stat=='SUPPORT'){
+					$("#jqGridPager td[title='Edit Selected Row']").show();
+				}else{
+					$("#jqGridPager td[title='Edit Selected Row']").hide();
+				}
 			}else{
 				$("#jqGridPager td[title='Edit Selected Row']").show();
 			}
@@ -363,7 +367,11 @@ $(document).ready(function () {
 			if(stat=='OPEN' || stat=='INCOMPLETED'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 			}else{
-				$("#jqGridPager td[title='View Selected Row']").click();
+				if($('#scope').val()=='VERIFIED' && stat=='SUPPORT'){
+					$("#jqGridPager td[title='Edit Selected Row']").click();
+				}else{
+					$("#jqGridPager td[title='View Selected Row']").click();
+				}
 			}
 		},
 		gridComplete: function () {

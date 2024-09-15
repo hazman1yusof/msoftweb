@@ -359,6 +359,18 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
 
         $queueiv = $queueiv->merge($queueiv_reject);
 
+        $ivreq_posted = DB::table('material.ivreqhd as ivreq')
+                    ->select('ivreq.reqdept as dept', 'ivreq.recno', 'ivreq.postedby')
+                    // ->join('sysdb.department as dept', function($join) use ($request){
+                    //     $join = $join
+                    //         ->where('dept.compcode',session('compcode'))
+                    //         ->on('dept.deptcode','ivreq.reqdept');
+                    // })
+                    ->where('ivreq.reqtodept',session('deptcode'))
+                    ->where('ivreq.compcode',session('compcode'))
+                    ->where('ivreq.recstatus','POSTED')
+                    ->get();
+        // dd($this->getQueries($ivreq_posted));
 
         $responce = new stdClass();
         $responce->queuepr = $queuepr;
@@ -367,6 +379,7 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
         $responce->queuepd = $queuepd;
         $responce->queueso = $queueso;
         $responce->queueiv = $queueiv;
+        $responce->ivreq = $ivreq_posted;
 
         return json_encode($responce);
     }

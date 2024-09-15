@@ -338,7 +338,7 @@ div#fail_msg{
 						<label class="col-md-2 control-label" for="db_mrn">Patient</label>	 
 						<div class="col-md-4">
 							<div class='input-group'>
-							<input id="db_mrn" name="db_mrn" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+								<input id="db_mrn" name="db_mrn" type="text" maxlength="100" class="form-control input-sm text-uppercase">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -511,9 +511,9 @@ div#fail_msg{
 				<form class='form-horizontal' style='width:99%' id='formdata_new_patient'>
 					{{ csrf_field() }}
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="np_mrn">MRN</label>	 
+						<label class="col-md-2 control-label" for="np_newmrn">HUKM MRN</label>	 
 						<div class="col-md-4">
-								<input id="np_mrn" name="np_mrn" type="text" maxlength="100" class="form-control input-sm text-uppercase" readonly>
+								<input id="np_newmrn" name="np_newmrn" type="text" maxlength="100" class="form-control input-sm text-uppercase">
 						</div>
 						<label class="col-md-2 control-label" for="np_name">Name</label>	 
 						<div class="col-md-4">
@@ -539,9 +539,9 @@ div#fail_msg{
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="np_address3">Postcode</label>	 
+						<label class="col-md-2 control-label" for="np_postcode">Postcode</label>	 
 						<div class="col-md-4">
-								<input id="np_address3" name="np_address3" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+								<input id="np_postcode" name="np_postcode" type="text" maxlength="100" class="form-control input-sm text-uppercase">
 						</div>
 					</div>
 				</form>
@@ -588,7 +588,7 @@ div#fail_msg{
 			});
 		</script>
 
-		<script src="js/finance/SalesOrder/SalesOrder.js"></script>
+		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.1"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

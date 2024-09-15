@@ -15,10 +15,10 @@
   <link href="css/login.css" rel="stylesheet">
   <style type="text/css">
     body {
-      background-image:url('./img/page-hospital.jpg');
+      background-image:url('./img/carousel/Supply-Change-Management.jpg');
       background-repeat: no-repeat !important;
       background-size: cover !important;
-      background-position: bottom !important;
+      background-position: center !important;
       height: 100vh;
       width: 100vw;
     }

@@ -1849,12 +1849,16 @@ $(document).ready(function () {
 			colModel: [
 				{ label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				{ label: 'Bill Type', name: 'billtypeop', width: 100, classes: 'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
+				let data = selrowData('#' + dialog_CustomerSO.gridname);
+				$('#db_hdrtype').val(data['billtype']);
+				dialog_billtypeSO.check(errorField);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -2043,6 +2047,7 @@ $(document).ready(function () {
 		{
 			colModel: [
 				{ label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
+				{ label: 'HUKM MRN', name: 'NewMrn', width: 200, classes: 'pointer', canSearch: true},
 				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
 			],
 			urlParam: {
@@ -2090,7 +2095,10 @@ $(document).ready(function () {
 							alert(data.responseText);
 						}).done(function (data) {
 							emptyFormdata('#formdata_new_patient');
-							$(this).dialog('close');
+							$('#db_mrn').val(data.mrn);
+							$('#db_mrn').parent().next('span.help-block').text(data.name);
+							$("#dialog_new_patient").dialog('close');
+							$('#'+dialog_mrn.dialogname).dialog('close');
 						})
 					}
 				}
