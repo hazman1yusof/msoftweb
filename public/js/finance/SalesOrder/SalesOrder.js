@@ -1225,9 +1225,16 @@ $(document).ready(function () {
 			calc_jq_height_onchange("jqGrid2",false,parseInt($('#jqGrid2_c').prop('clientHeight'))-150);
 		},
 		errorfunc: function(rowid,response){
-        	alert(response.responseText);
-        	refreshGrid('#jqGrid2',urlParam2,'add');
-	    	$("#jqGridPager2Delete").show();
+        	// alert(response.responseText);
+        	// refreshGrid('#jqGrid2',urlParam2,'add');
+	    	// $("#jqGridPager2Delete").show();
+	    	
+			errorField.length=0;
+        	myfail_msg.add_fail({
+				id:'response',
+				textfld:"",
+				msg:response.responseText,
+			});
         },
 		beforeSaveRow: function (options, rowid) {
         	if(errorField.length>0)return false;

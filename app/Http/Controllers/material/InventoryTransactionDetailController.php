@@ -135,15 +135,15 @@ class InventoryTransactionDetailController extends defaultController
             $sqlln = DB::table('material.ivtmpdt')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$recno)
-                        ->count('lineno_');
+                        ->max('lineno_');
 
             $li=intval($sqlln)+1;
 
             //2.1 check ada stockloc ke tak kat sndrcv
 
-            if(empty($request->txnqty)){
-                throw new \Exception('Quantity cant be 0, delete the row first');
-            }
+            // if(empty($request->txnqty)){
+            //     throw new \Exception('Quantity cant be 0, delete the row first');
+            // }
 
             $product = DB::table('material.product')
                     ->where('unit','=',session('unit'))
@@ -178,6 +178,11 @@ class InventoryTransactionDetailController extends defaultController
 
                 if(!$stockloc_obj->exists()){
                     throw new \Exception('stockloc doesnt exists');
+                }
+                $stockloc_first = $stockloc_obj->first();
+
+                if($request->txnqty > $stockloc_first->qtyonhand){
+                    throw new \Exception('Quantity not enough at Stock location, $ivtmphd->txndept - $request->itemcode - $request->uomcode');
                 }
             }else{
                 $issuetype = DB::table('material.ivtxntype')->select('isstype')
@@ -326,46 +331,73 @@ class InventoryTransactionDetailController extends defaultController
                             ->where('recno','=',$request->recno)
                             ->first();
 
+            $year_ = defaultController::toYear($ivtmphd->trandate);
+
             foreach ($request->dataobj as $key => $value) {
 
-                // $stockloc_ = DB::table('material.stockloc as st')
-                //                 ->select('st.itemcode','p.description','st.qtyonhand','st.uomcode','st.maxqty','p.avgcost','u.convfactor')
-                //                 ->leftJoin('material.product as p', function($join) use ($request){
-                //                     $join = $join->on('p.itemcode', '=', 'st.itemcode')
-                //                             ->on('p.uomcode', '=', 'st.uomcode')
-                //                             ->where('p.compcode','=',session('compcode'))
-                //                             ->where('p.unit','=',session('unit'));
-                //                 })
-                //                 ->leftJoin('material.uom as u', function($join) use ($request){
-                //                     $join = $join->on('p.uomcode', '=', 'st.uomcode')
-                //                             ->where('u.compcode','=',session('compcode'));
-                //                 })
-                //                 ->where('st.itemcode',$value['itemcode'])
-                //                 ->where('st.uomcode',$value['uomcode'])
-                //                 ->where('st.unit',session('unit'))
-                //                 ->where('st.year',Carbon::now("Asia/Kuala_Lumpur")->format('Y'))
-                //                 ->where('st.deptcode',$ivtmphd->txndept);
-
-                // if(!empty($ivtmphd->sndrcv)){
-                //     $stockloc_rcv = DB::table('material.stockloc as st')
-                //                     ->select('st.itemcode','p.description','st.qtyonhand','st.uomcode','st.maxqty','p.avgcost','u.convfactor')
-                //                     ->leftJoin('material.product as p', function($join) use ($request){
-                //                         $join = $join->on('p.itemcode', '=', 'st.itemcode')
-                //                                 ->on('p.uomcode', '=', 'st.uomcode')
-                //                                 ->where('p.compcode','=',session('compcode'))
-                //                                 ->where('p.unit','=',session('unit'));
-                //                     })
-                //                     ->leftJoin('material.uom as u', function($join) use ($request){
-                //                         $join = $join->on('p.uomcode', '=', 'st.uomcode')
-                //                                 ->where('u.compcode','=',session('compcode'));
-                //                     })
-                //                     ->where('st.itemcode',$value['itemcode'])
-                //                     ->where('st.uomcode',$value['uomcoderecv'])
-                //                     ->where('st.compcode',session('compcode'))
-                //                     ->where('st.unit',session('unit'))
-                //                     ->where('st.year',Carbon::now("Asia/Kuala_Lumpur")->format('Y'))
-                //                     ->where('st.deptcode',$ivtmphd->sndrcv);
+                // if(empty($value['txnqty'])){
+                //     throw new \Exception('Quantity cant be 0, delete the row first');
                 // }
+
+                $product = DB::table('material.product')
+                        ->where('unit','=',session('unit'))
+                        ->where('compcode','=',session('compcode'))
+                        ->where('ItemCode','=',$value['itemcode'])
+                        ->where('UomCode','=',$value['uomcode']);
+
+                if(!$product->exists()){
+                    throw new \Exception('product doesnt exists');
+                }
+
+                if(strtoupper($ivtmphd->trantype) == 'TUI'){
+                    $stockloc_obj = DB::table('material.StockLoc')
+                            ->where('StockLoc.unit','=',session('unit'))
+                            ->where('StockLoc.CompCode','=',session('compcode'))
+                            ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
+                            ->where('StockLoc.ItemCode','=',$value['itemcode'])
+                            ->where('StockLoc.Year','=', $year_)
+                            ->where('StockLoc.UomCode','=',$value['uomcode']);
+
+                    if(!$stockloc_obj->exists()){
+                        throw new \Exception('stockloc doesnt exists');
+                    }
+                }else if(strtoupper($ivtmphd->trantype) == 'TUO'){
+                    $stockloc_obj = DB::table('material.StockLoc')
+                            ->where('StockLoc.unit','=',session('unit'))
+                            ->where('StockLoc.CompCode','=',session('compcode'))
+                            ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
+                            ->where('StockLoc.ItemCode','=',$value['itemcode'])
+                            ->where('StockLoc.Year','=', $year_)
+                            ->where('StockLoc.UomCode','=',$value['uomcode']);
+
+                    if(!$stockloc_obj->exists()){
+                        throw new \Exception('stockloc doesnt exists');
+                    }
+                    $stockloc_first = $stockloc_obj->first();
+
+                    if($stockloc_first->qtyonhand >= 0 && $value['txnqty'] > $stockloc_first->qtyonhand){
+                        throw new \Exception("Quantity not enough at Stock location, ".$ivtmphd->txndept." - ".$value['itemcode']." - ".$value['uomcode']);
+                    }
+                }else{
+                    $issuetype = DB::table('material.ivtxntype')->select('isstype')
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('trantype','=',$ivtmphd->trantype)
+                                    ->first();
+
+                    if(strtoupper($issuetype->isstype) == 'TRANSFER'){
+                        $stockloc_obj = DB::table('material.StockLoc')
+                                ->where('StockLoc.unit','=',session('unit'))
+                                ->where('StockLoc.CompCode','=',session('compcode'))
+                                ->where('StockLoc.DeptCode','=',$ivtmphd->sndrcv)
+                                ->where('StockLoc.ItemCode','=',$value['itemcode'])
+                                ->where('StockLoc.Year','=', $year_)
+                                ->where('StockLoc.UomCode','=',$value['uomcoderecv']);
+
+                        if(!$stockloc_obj->exists()){
+                            throw new \Exception('stockloc doesnt exists');
+                        }
+                    }
+                }
 
                 ///1. update detail
                 DB::table('material.ivtmpdt')
