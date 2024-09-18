@@ -54,7 +54,7 @@ class inventoryRequest_ReportController extends defaultController
                 ->leftjoin('material.stockloc as s', function($join){
                     $join = $join->on('s.itemcode', '=', 'p.itemcode')
                                 ->on('s.uomcode', '=', 'p.uomcode')
-                                ->on('s.deptcode', '=', 'd.reqtodept')
+                                ->on('s.deptcode', '=', 'h.reqtodept')
                                 ->where('s.compcode', '=', session('compcode'))
                                 ->where('s.year', '=', Carbon::now("Asia/Kuala_Lumpur")->format('Y'))
                                 ->where('s.unit', '=', session('unit'));
