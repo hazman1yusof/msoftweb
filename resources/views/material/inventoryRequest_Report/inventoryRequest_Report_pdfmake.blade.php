@@ -125,7 +125,7 @@
                 },
                 images: {
                     letterhead: {
-                        url: "{{asset('/img/MSLetterHead.jpg')}}",
+                        url: "{{asset('/img/letterheadukm.png')}}",
                         headers: {
                             myheader: '123',
                             myotherheader: 'abc',

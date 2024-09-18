@@ -54,7 +54,7 @@
 			pageMargins: [10, 20, 20, 20],
 		  	content: [
                 {
-                    image: 'letterhead',width:200, height:40, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                    image: 'letterhead',width:175, style: 'tableHeader', colSpan: 5, alignment: 'center'
                 },
 				{
                     text: 'GOOD RECEIVED NOTE',

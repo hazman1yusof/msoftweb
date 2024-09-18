@@ -69,7 +69,7 @@
 						// keepWithHeaderRows: 5,
 						body: [
 							[
-								{image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'},{},{},{},{},
+								{image: 'letterhead',width:175, style: 'tableHeader', colSpan: 5, alignment: 'center'},{},{},{},{},
 
 								{text: '\n\nPurchase Order', style: 'tableHeader', colSpan: 6, alignment: 'center'},{},{},{},{},{}
 							],
@@ -203,7 +203,7 @@
 			},
 			images: {
                     letterhead: {
-                        url: '{{asset('/img/MSLetterHead.jpg')}}',
+                        url: '{{asset('/img/letterheadukm.png')}}',
                         headers: {
                             myheader: '123',
                             myotherheader: 'abc',
