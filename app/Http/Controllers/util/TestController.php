@@ -9,8 +9,10 @@ use DB;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Mail;
 
 use App\Jobs\SendEmailPR;
+use App\Mail\sendmaildefault;
 
 class TestController extends defaultController
 {   
@@ -64,6 +66,8 @@ class TestController extends defaultController
             //     return $this->update_stockexp($request);
             case 'del_stockexp':
                 return $this->del_stockexp($request);
+            case 'test_email':
+                return $this->test_email($request);
             default:
                 return 'error happen..';
         }
@@ -764,6 +768,11 @@ class TestController extends defaultController
 
             dd('Error'.$e);
         }
+    }
+
+    public function test_email(Request $request){
+        $recipient = "hazman.yusof@gmail.com";
+        Mail::to($recipient)->send(new sendmaildefault());
     }
     
 }

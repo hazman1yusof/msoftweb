@@ -26,7 +26,7 @@
                 pageOrientation: 'landscape',
                 content: [
                     {
-                        image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead', width: 175, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
                         text: '\nINVENTORY REQUEST REPORT\n',
@@ -51,18 +51,16 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [45,20,40,40,110,40,40,25,35,35,35,35,43,45],  //panjang standard dia 515
+                            widths: [45,40,40,40,40,140,40,40,40,40,45,45],  //panjang standard dia 515
                             body: [
                                 [
                                     {text: 'REQUEST DATE', style: 'tableHeader'},
+                                    {text: 'STATUS', style: 'tableHeader'},
                                     {text: 'REQ NO', style: 'tableHeader'},
                                     {text: 'REQUEST\nDEPT', style: 'tableHeader'},
                                     {text: 'REQUEST\nTO DEPT', style: 'tableHeader'},
                                     {text: 'ITEMCODE', style: 'tableHeader'},
-                                    {text: 'UOM CODE TO REQ DEPT', style: 'tableHeader'},
-                                    {text: 'UOM CODE REQ MADE TO', style: 'tableHeader'},
-                                    {text: 'MAX QTY', style: 'tableHeader', alignment: 'right'},
-                                    {text: 'QOH REQ DEPT', style: 'tableHeader', alignment: 'right'},
+                                    {text: 'UOM CODE', style: 'tableHeader'},
                                     {text: 'QOH AT\nREQ TO DEPT', style: 'tableHeader', alignment: 'right'},
                                     {text: 'QTY REQ', style: 'tableHeader', alignment: 'right'},
                                     {text: 'QTY BAL', style: 'tableHeader', alignment: 'right'},
@@ -72,15 +70,13 @@
                                 @foreach ($ivrequest as $obj)
                                     [
                                         {text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->reqdt)->format('d-m-Y')}}'},
+                                        {text: '{{$obj->recstatus}}'},
                                         {text: '{{str_pad($obj->ivreqno, 7, "0", STR_PAD_LEFT)}}'},
                                         {text: '{{$obj->reqdept}}'},
                                         {text: '{{$obj->reqtodept}}'},
                                         {text: `{!!str_replace('`', '', $obj->itemcode)!!}\n{!!str_replace('`', '', $obj->description)!!}`},
                                         {text: `{!!$obj->uomcode!!}`},
-                                        {text: `{!!$obj->pouom!!}`},
-                                        {text: '{{number_format($obj->maxqty,2)}}', alignment: 'right'},
                                         {text: '{{number_format($obj->qtyonhand,2)}}', alignment: 'right'},
-                                        {text: '{{number_format($obj->qohconfirm,2)}}', alignment: 'right'},
                                         {text: '{{number_format($obj->qtyrequest,2)}}', alignment: 'right'},
                                         {text: '{{number_format($obj->qtybalance,2)}}', alignment: 'right'},
                                         {text: '{{number_format($obj->qtytxn,2)}}', alignment: 'right'},
