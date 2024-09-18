@@ -502,12 +502,12 @@ class DeliveryOrderDetailController extends defaultController
 
             foreach ($request->dataobj as $key => $value) {
 
-                if($value['pricecode'] == 'IV' && $value['pricecode'] == 'BO'){
+                if($value['pricecode'] == 'IV' || $value['pricecode'] == 'BO'){
                     $product = DB::table('material.product')
                                 ->where('compcode',session('compcode'))
                                 ->where('unit',session('unit'))
                                 ->where('itemcode',$value['itemcode'])
-                                ->where('uomcode',$value->uomcode);
+                                ->where('uomcode',$value['uomcode']);
 
                     if(!$product->exists()){
                         throw new \Exception("The item: ".$value['itemcode'].' UOM '.$value['uomcode'].' not exist!');
@@ -524,7 +524,7 @@ class DeliveryOrderDetailController extends defaultController
                                 ->where('unit',session('unit'))
                                 ->where('itemcode',$value['itemcode'])
                                 ->where('uomcode',$value['uomcode'])
-                                ->where('deptcode',$value['deldept'])
+                                ->where('deptcode',$do_hd->deldept)
                                 ->where('year',$this->toYear($do_hd->deliverydate));
 
                     if(!$stockloc->exists()) {
