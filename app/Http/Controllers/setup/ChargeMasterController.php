@@ -230,7 +230,7 @@ class ChargeMasterController extends defaultController
                             $join = $join->where('p.compcode', '=', session('compcode'));
                             $join = $join->on('p.uomcode', '=', 'cm.uom');
                             $join = $join->on('p.itemcode', '=', 'cm.chgcode');
-                            $join = $join->on('p.unit', '=', session('unit'));
+                            $join = $join->where('p.unit', '=', session('unit'));
                         });
 
         // foreach ($table->get() as $key => $value) {
