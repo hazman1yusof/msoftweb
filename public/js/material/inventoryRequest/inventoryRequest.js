@@ -102,6 +102,40 @@ $(document).ready(function () {
 				errorField.length=0;
 			},
 		});
+
+		$( "#reportDialog" ).dialog({
+			autoOpen: false,
+			width: 5/10 * $(window).width(),
+			modal: true,
+			open: function(){
+			
+			},
+			close: function( event, ui ){
+				parent_close_disabled(false);
+				emptyFormdata(errorField,'#formdata_report');
+			},
+			buttons:
+			[
+			{
+				text: "Generate PDF",click: function() {
+					window.open('./inventoryRequest/showpdf?reqdept_from='+$('#reqdept_from').val()+'&reqdept_to='+$("#reqdept_to").val()+'&datefrom='+$("#datefrom").val()+'&dateto='+$("#dateto").val(),  '_blank'); 
+				}
+			},
+			{
+				text: "Generate Excel",click: function() {
+					window.location='./inventoryRequest/showExcel?reqdept_from='+$('#reqdept_from').val()+'&reqdept_to='+$("#reqdept_to").val()+'&datefrom='+$("#datefrom").val()+'&dateto='+$("#dateto").val();
+				}
+			},{
+				text: "Close",click: function() {
+					$(this).dialog('close');
+					emptyFormdata(errorField,'#formdata_report');
+				}
+			}],
+		});
+	
+		$('#pdfgen_excel').click(function(){
+			$( "#reportDialog" ).dialog( "open" );
+		});
 	////////////////////////////////////////end dialog///////////////////////////////////////////////////
 
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
@@ -1407,7 +1441,106 @@ $(document).ready(function () {
 	// $("#jqGrid3").jqGrid("setFrozenColumns");
 	jqgrid_label_align_right("#jqGrid3");
 
+	//////////////////////////////dialog handler report/////////////////////////////////////////////////
+	var reqdept_from = new ordialog(
+		'reqdept_from', 'sysdb.department', '#reqdept_from', 'errorField',
+		{
+			colModel: [
+				{ label: 'Department', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				{ label:'Unit',name:'sector', hidden:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus', 'storedept'],
+				filterVal:['session.compcode','ACTIVE','1']
+			},
+			ondblClickRow: function () {
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		}, {
+			title: "Select Request Department",
+			open: function(){
+				reqdept_from.urlParam.filterCol=['recstatus', 'compcode', 'storedept'];
+				reqdept_from.urlParam.filterVal=['ACTIVE', 'session.compcode', '1'];
+			},close: function(){
+			},
+			after_check: function(data,self,id,fail,errorField){
+				let value = $(id).val();
+				if(value.toUpperCase() == 'ZZZ'){
+					ordialog_buang_error_shj(id,errorField);
+					if($.inArray('reqdept_to',errorField)!==-1){
+						errorField.splice($.inArray('reqdept_to',errorField), 1);
+					}
+				}
+			},
+			justb4refresh: function(obj_){
+				obj_.urlParam.searchCol2=[];
+				obj_.urlParam.searchVal2=[];
+			},
+			justaftrefresh: function(obj_){
+				$("#Dtext_"+obj_.unique).val('');
+			}
+		},'urlParam','radio','tab'
+	);
+	reqdept_from.makedialog(true);
 
+	var reqdept_to = new ordialog(
+		'reqdept_to', 'sysdb.department', '#reqdept_to', 'errorField',
+		{
+			colModel: [
+				{ label: 'Department', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				{ label:'Unit',name:'sector', hidden:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus', 'storedept'],
+				filterVal:['session.compcode','ACTIVE','1']
+			},
+			ondblClickRow: function () {
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		}, {
+			title: "Select Request Department",
+			open: function(){
+				reqdept_to.urlParam.filterCol=['recstatus', 'compcode', 'storedept'];
+				reqdept_to.urlParam.filterVal=['ACTIVE', 'session.compcode', '1'];
+			},close: function(){
+			},
+			after_check: function(data,self,id,fail,errorField){
+				let value = $(id).val();
+				if(value.toUpperCase() == 'ZZZ'){
+					ordialog_buang_error_shj(id,errorField);
+					if($.inArray('reqdept_to',errorField)!==-1){
+						errorField.splice($.inArray('reqdept_to',errorField), 1);
+					}
+				}
+			},
+			justb4refresh: function(obj_){
+				obj_.urlParam.searchCol2=[];
+				obj_.urlParam.searchVal2=[];
+			},
+			justaftrefresh: function(obj_){
+				$("#Dtext_"+obj_.unique).val('');
+			}
+		},'urlParam','radio','tab'
+	);
+	reqdept_to.makedialog(true);
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 	var dialog_reqdept = new ordialog(
 		'reqdept', 'sysdb.department', '#reqdept', errorField,

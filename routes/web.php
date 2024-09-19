@@ -393,7 +393,7 @@ Route::get('/bedmanagement/statistic','setup\BedManagementController@statistic')
 
 ////////////////////////////////inventory setup///////////////////////////////////////////////////////////
 
-//// inventory Request setup page ///
+//// quotation setup page ///
 Route::get('/quotation','material\QuotationController@show');
 Route::get('/quotation/table','material\QuotationController@table');
 Route::post('/quotation/form','material\QuotationController@form');
@@ -404,6 +404,7 @@ Route::get('/inventoryRequest/table','material\InventoryRequestController@table'
 Route::post('/inventoryRequest/form','material\InventoryRequestController@form');
 Route::get('/inventoryRequest/form','material\InventoryRequestController@form');
 Route::post('/inventoryRequestDetail/form','material\InventoryRequestDetailController@form');
+Route::get('/inventoryRequest/showExcel','material\InventoryRequestController@showExcel');
 Route::get('/inventoryRequest/showpdf','material\InventoryRequestController@showpdf');
 
 //// inventory Transaction setup page ///
