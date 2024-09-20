@@ -730,7 +730,7 @@ class TestController extends defaultController
                             ->where('unit',"W'HOUSE")
                             ->where('itemcode',$obj->itemcode)
                             ->where('uomcode',$obj->uomcode)
-                            ->where('deptcode',"FKWSTR")
+                            // ->where('deptcode',"FKWSTR")
                             ->update([
                                 'qtyonhand' => $balqty
                             ]);
