@@ -1031,7 +1031,12 @@ $(document).ready(function () {
 						readonly: "readonly",
 						maxlength: 12,
 						dataInit: function(element) {
-							if($('#isstype').val().toUpperCase() == 'ADJUSTMENT'){
+							// if($('#isstype').val().toUpperCase() == 'ADJUSTMENT'){
+							// 	$(element).prop('readonly',true);
+							// }
+							if($('#trantype').val().toUpperCase() == 'TUI'){
+								$(element).prop('readonly',false);
+							}else{
 								$(element).prop('readonly',true);
 							}
 							element.style.textAlign = 'right';  

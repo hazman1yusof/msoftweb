@@ -60,6 +60,8 @@ class TestController extends defaultController
                 return $this->test_glmasdtl($request);
             case 'get_merge_pdf':
                 return $this->get_merge_pdf($request);
+            case 'update_stockloc_uomcode':
+                return $this->update_stockloc_uomcode($request);
             // case 'update_productmaster':
                 // return $this->update_productmaster($request);
             // case 'update_stockexp':
@@ -675,12 +677,16 @@ class TestController extends defaultController
 
     public function update_stockloc_uomcode(Request $request){
         DB::beginTransaction();
+        if(empty($request->itemcode)){
+            dd('no itemcode');
+        }
 
         try {
             
             $product = DB::table('temp.product')
                             ->where('compcode','9B')
                             ->where('unit',"W'HOUSE")
+                            ->where('itemcode',$request->itemcode)
                             ->get();
 
             // dd($stockloc);
