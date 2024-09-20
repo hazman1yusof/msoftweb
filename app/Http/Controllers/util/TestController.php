@@ -689,33 +689,39 @@ class TestController extends defaultController
                             ->where('itemcode',$request->itemcode)
                             ->get();
 
-            dd($product);
+            // dd($product);
             $i = 1;
             foreach ($product as $obj) {
 
+                // $stockloc = DB::table('material.stockloc')
+                //                 ->where('compcode','9B')
+                //                 ->where('itemcode',$obj->itemcode)
+                //                 ->where('uomcode',$obj->uomcode)
+                //                 ->where('unit',"W'HOUSE");
+
+                // if($stockloc->exists()){
+                //     continue;
+                // }
+
                 $stockloc = DB::table('material.stockloc')
                                 ->where('compcode','9B')
-                                ->where('itemcode',$obj->itemcode)
                                 ->where('uomcode',$obj->uomcode)
-                                ->where('unit',"W'HOUSE");
-
-                if($stockloc->exists()){
-                    continue;
-                }
-
-                $stockloc = DB::table('material.stockloc')
-                                ->where('compcode','9B')
+                                ->where('unit',"W'HOUSE")
+                                ->where('deptcode',"FKWSTR")
                                 ->where('itemcode',$obj->itemcode);
 
                 if($stockloc->exists()){
                     $stockloc_first = $stockloc->first();
-                    DB::table('material.stockloc')
-                            ->where('compcode','9B')
-                            ->where('itemcode',$obj->itemcode)
-                            ->update([
-                                'uomcode' => $obj->uomcode,
-                                'unit' => $obj->unit
-                            ]);
+                    // DB::table('material.stockloc')
+                    //         ->where('compcode','9B')
+                    //         ->where('uomcode',$obj->uomcode)
+                    //         ->where('unit',"W'HOUSE")
+                    //         ->where('deptcode',"FKWSTR")
+                    //         ->where('itemcode',$obj->itemcode)
+                    //         ->update([
+                    //             'uomcode' => $obj->uomcode,
+                    //             'unit' => $obj->unit
+                    //         ]);
 
                     $balqty = $stockloc_first->netmvqty1 + $stockloc_first->netmvqty2 + $stockloc_first->netmvqty3 + $stockloc_first->netmvqty4 + $stockloc_first->netmvqty5 + $stockloc_first->netmvqty6 + $stockloc_first->netmvqty7 + $stockloc_first->netmvqty8;
 
@@ -724,6 +730,7 @@ class TestController extends defaultController
                             ->where('unit',"W'HOUSE")
                             ->where('itemcode',$obj->itemcode)
                             ->where('uomcode',$obj->uomcode)
+                            ->where('deptcode',"FKWSTR")
                             ->update([
                                 'qtyonhand' => $balqty
                             ]);
