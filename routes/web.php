@@ -1295,6 +1295,11 @@ Route::get('/doctornote/table','hisdb\DoctorNoteController@table');
 Route::post('/doctornote/form','hisdb\DoctorNoteController@form');
 Route::get('/doctornote/showpdf','hisdb\DoctorNoteController@showpdf');
 
+//// Admission Handover page ///
+Route::get('/admhandover','hisdb\AdmHandoverController@show');
+Route::get('/admhandover/table','hisdb\AdmHandoverController@table');
+Route::post('/admhandover/form','hisdb\AdmHandoverController@form');
+
 //// Dietetic Care Notes page ///
 Route::get('/dieteticCareNotes','hisdb\DieteticCareNotesController@show');
 Route::get('/dieteticCareNotes/table','hisdb\DieteticCareNotesController@table');
