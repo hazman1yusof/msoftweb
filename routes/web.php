@@ -727,6 +727,7 @@ Route::get('/itemEnquiry','material\ItemEnquiryController@show');
 Route::get('/itemEnquiry/table','material\ItemEnquiryController@table');
 Route::post('/itemEnquiry/form','material\ItemEnquiryController@form');
 Route::get('/itemEnquiry/form','material\ItemEnquiryController@form');
+Route::get('/itemEnquiry/showExcel','material\ItemEnquiryController@showExcel');
 
 //// Stock Location ///
 Route::get('/stockloc','material\StocklocController@show');
@@ -1358,6 +1359,7 @@ Route::post('/assetcategory/form','finance\assetcategoryController@form');
 Route::get('/assetenquiry','finance\assetenquiryController@show');
 Route::get('/assetenquiry/table','finance\assetenquiryController@table');
 Route::post('/assetenquiry/form','finance\assetenquiryController@form');
+Route::get('/assetenquiry/showpdf','finance\assetenquiryController@showpdf');
 
 /// Fixed Asset Enquiry Detail/// 
 Route::get('/assetenquiryDtl2','finance\assetenquiryDtl2Controller@show');

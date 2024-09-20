@@ -397,6 +397,8 @@ $(document).ready(function () {
 				}else{
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").show();
 				}
+				
+				$("#pdfgen1").attr('href','./assetenquiry/showpdf?assetno='+selrowData("#jqGrid").assetno);
 			}
 		},
 		loadComplete: function(data){
