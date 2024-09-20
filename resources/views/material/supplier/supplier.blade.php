@@ -144,7 +144,7 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="SuppCode">Supplier Code</label>  
 					<div class="col-md-2">
-						<input id="SuppCode" name="SuppCode" type="text" maxlength="10" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit>
+						<input id="SuppCode" name="SuppCode" type="text" maxlength="10" class="form-control input-sm text-uppercase" rdonly>
 					</div>
 			</div>
 				
@@ -287,12 +287,12 @@ i.fa {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="AccNo">Company Bank A/C No</label>  
 					<div class="col-md-3">
-						<input id="AccNo" name="AccNo" type="text" maxlength="15" class="form-control input-sm text-uppercase">
+						<input id="AccNo" name="AccNo" type="text" class="form-control input-sm text-uppercase">
 					</div>
 
 				<label class="col-md-2 control-label" for="CompRegNo">Company Register No</label>  
 					<div class="col-md-3">
-						<input id="CompRegNo" name="CompRegNo" type="text" maxlength="15" class="form-control input-sm text-uppercase">
+						<input id="CompRegNo" name="CompRegNo" type="text" class="form-control input-sm text-uppercase">
 					</div>
 						
 				<!-- <label class="col-md-2 control-label" for="SuppFlg">Supply Goods</label>  

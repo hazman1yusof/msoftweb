@@ -521,6 +521,33 @@ class InventoryTransactionController extends defaultController
                         'trantype' => 'DONE'
                     ]);
 
+                $ivtmpdt_obj = DB::table('material.ivtmpdt')
+                        ->where('ivtmpdt.compcode','=',session('compcode'))
+                        ->where('ivtmpdt.recno','=',$ivtmphd->recno)
+                        ->where('ivtmpdt.recstatus','!=','DELETE')
+                        ->where('ivtmpdt.txnqty','>',0);
+
+                if(!$ivtmpdt_obj->exists()){
+                    DB::table('material.ivtmphd')
+                        ->where('recno','=',$ivtmphd->recno)
+                        ->where('compcode','=',session('compcode'))
+                        ->update([
+                            'postedby' => session('username'),
+                            'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                            'recstatus' => 'POSTED' 
+                        ]);
+
+                    DB::table('material.ivtmpdt')
+                        ->where('recno','=',$ivtmphd->recno)
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recstatus','!=','DELETE')
+                        ->update([
+                            'recstatus' => 'POSTED' 
+                        ]);
+                    continue;
+                }
+
+
                 $this->check_sequence_backdated($ivtmphd);
 
                 DB::table("material.IvTxnHd")
@@ -561,6 +588,9 @@ class InventoryTransactionController extends defaultController
 
                 $this->need_upd_ivreqdt($idno);
                 foreach ($ivtmpdt_obj as $value) {
+                    if($value->txnqty == 0){
+                        continue;
+                    }
 
                     $obj_acc = invtran_util::get_acc($value,$ivtmphd);
 
@@ -747,7 +777,7 @@ class InventoryTransactionController extends defaultController
             DB::rollback();
 
             
-            return response($e->getMessage(), 500);
+            return response($e, 500);
         }
     }
 
@@ -811,10 +841,10 @@ class InventoryTransactionController extends defaultController
                 'itemcode' => $value->itemcode, 
                 'uomcode' => $value->uomcode, 
                 'uomcoderecv' => $value->pouom, 
-                'txnqty' => $value->qtybalance, 
-                'qtyrequest' => $value->qtyrequest,
+                'txnqty' => 0, 
+                'qtyrequest' => $value->qtybalance,
                 'netprice' => $value->netprice, 
-                'amount' => $value->qtybalance * $value->netprice,
+                'amount' => 0,
                 'recstatus' => 'ACTIVE',
                 'unit' => session('unit'),
                 'expdate' => $value->expdate,
@@ -909,6 +939,7 @@ class InventoryTransactionController extends defaultController
                             $qtybalance = $value->qtybalance;
 
                             $newbalance = intval($qtybalance) - intval($qtytxn);
+                            $newtxn = intval($value->qtytxn) + intval($qtytxn);
                             if($newbalance > 0){
                                 $status = 'PARTIAL';
                             }else if($newbalance < 0){
@@ -919,7 +950,8 @@ class InventoryTransactionController extends defaultController
                                 ->where('idno','=',$value->idno)
                                 ->update([
                                     'recstatus' => $status,
-                                    'qtybalance' => $newbalance
+                                    'qtybalance' => $newbalance,
+                                    'qtytxn' => $newtxn
                                 ]);
                         }
                     }

@@ -53,6 +53,7 @@ $(document).ready(function () {
 					enableForm('#formdata');
 					rdonly('#formdata');
 					$("#txndept").val($("#x").val());
+					dialog_trantype.check(errorField);
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();

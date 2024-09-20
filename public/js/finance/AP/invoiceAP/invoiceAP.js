@@ -402,7 +402,7 @@ $(document).ready(function () {
 	populateSelect('#jqGrid','#searchForm');
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid', true, urlParam);
+	addParamField('#jqGrid', false, urlParam);
 	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name', 'apacthdr_unit', 'apacthdr_idno','Checkbox','apacthdr_compcode']);
 
 	// $("#save").click(function(){
@@ -647,7 +647,8 @@ $(document).ready(function () {
 		refreshGrid('#jqGrid',urlParam);
 	}
 
-	function searchChange(){
+	searchChange(true);
+	function searchChange(once=false){
 		var arrtemp = [$('#Status option:selected').val()];
 		var filter = arrtemp.reduce(function(a,b,c){
 			if(b=='All'){
@@ -658,6 +659,30 @@ $(document).ready(function () {
 				return a;
 			}
 		},{fct:['ap.recstatus'],fv:[],fc:[]});
+
+		// urlParam.filterCol = filter.fc;
+		// urlParam.filterVal = filter.fv;
+		// urlParam.WhereInCol = null;
+		// urlParam.WhereInVal = null;
+
+		// if(once){
+		// 	urlParam.searchCol=null;
+		// 	urlParam.searchVal=null;
+		// 	if($('#searchForm [name=Stext]').val().trim() != ''){
+		// 		let searchCol = ['purreqhd_recno'];
+		// 		let searchVal = ['%'+$('#searchForm [name=Stext]').val().trim()+'%'];
+		// 		urlParam.searchCol=searchCol;
+		// 		urlParam.searchVal=searchVal;
+		// 	}
+
+		// 	if($("#recstatus_use").val() == 'APPROVED'){
+		// 		urlParam.filterCol[1] = null; 
+		// 		urlParam.filterVal[1] = null; 
+		// 		urlParam.WhereInCol = ['purreqhd.recstatus'];
+		// 		urlParam.WhereInVal = [['VERIFIED','RECOMMENDED1','RECOMMENDED2']];
+		// 	}
+		// 	once=false;
+		// }
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
@@ -1081,6 +1106,10 @@ $(document).ready(function () {
 			}
 		}else if($('#recstatus_use').val() == 'CANCEL'){
 			if(rowObject.apacthdr_recstatus == "OPEN"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+
+			if(rowObject.apacthdr_recstatus == "POSTED"){
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 			}
 		}

@@ -166,8 +166,10 @@ div#fail_msg{
 
         <div class="panel panel-default">
 		    	<div class="panel-heading">Inventory Request DataEntry Header
-					<!-- <a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a> -->
-		    	</div>
+					<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #000033;" id='pdfgen_excel'>
+						<span class='fa fa-print'></span> Print 
+					</a>		    	
+				</div>
 		    		<div class="panel-body">
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
             				<table id="jqGrid" class="table table-striped"></table>
@@ -212,6 +214,47 @@ div#fail_msg{
         
     </div>
 	<!-- ***************End Search + table ********************* -->
+	 
+	<!------------------------- ivreq dialog search -------------------->
+	<div id="reportDialog" title="Report">
+		<input id="report" type="hidden" class="form-control input-sm" readonly>
+			<div class="panel-body">
+				<form class='form-horizontal' style='width:99%' id='formdata_report'>
+					<input type="hidden" name="action" >
+					<div class="form-group">
+							<div class="col-md-6">
+								<label class="control-label" for="Scol">Request Dept From</label> 
+									<div class='input-group'> 
+										<input id="reqdept_from" name="reqdept_from" type="text" class="form-control input-sm" autocomplete="off" value="">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+							</div>
+
+							<div class="col-md-6">
+							<label class="control-label" for="Scol">Request Dept To</label>  
+								<div class='input-group'>
+									<input id="reqdept_to" name="reqdept_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-md-6">
+								<label class="control-label" for="Scol">Date From</label>  
+									<input type="date" name="datefrom" id="datefrom" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+							</div>
+
+							<div class="col-md-6">
+								<label class="control-label" for="Scol">Date To</label>  
+									<input type="date" name="dateto" id="dateto" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+						</div>
+					</div>
+				</form>
+			</div>
+	</div>
 
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
@@ -372,7 +415,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/inventoryRequest/inventoryRequest.js?v=1.5"></script>
+	<script src="js/material/inventoryRequest/inventoryRequest.js?v=1.6"></script>
 	<!-- <script src="js/material/inventoryRequest/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

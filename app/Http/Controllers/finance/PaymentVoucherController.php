@@ -134,8 +134,10 @@ class PaymentVoucherController extends defaultController
                         'ap.canceldate AS apacthdr_canceldate',
                         'ap.cancelled_remark AS apacthdr_cancelled_remark',
                     )
-                    ->where('ap.compcode',session('compcode'))
-                    ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
+                    ->leftJoin('material.supplier as su', function($join) use ($request){
+                        $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
+                        $join = $join->where('su.compcode', '=', session('compcode'));
+                    })
                     ->where('ap.compcode','=', session('compcode'))
                     ->where('ap.source','=',$request->source)
                     ->whereIn('ap.trantype',['PD','PV']);
@@ -1852,8 +1854,10 @@ class PaymentVoucherController extends defaultController
         }
 
         $CN_obj = $this->get_CN_from_PV($apacthdr);
+        
+        $attachment_files =$this->get_attachment_files($apalloc);
 
-        return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title','CN_obj'));
+        return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title','CN_obj','attachment_files'));
 
         // if(empty($request->type)){
 
@@ -1968,9 +1972,13 @@ class PaymentVoucherController extends defaultController
                 $apdt = $apdt->first();
                 $delordhd = DB::table('material.delordhd')
                             ->where('compcode','=',session('compcode'))
-                            ->where('delordno','=',$apdt->document)
-                            ->first();
+                            ->where('recno','=',$apdt->dorecno);
 
+                if(!$delordhd->exists()){
+                    abort(403,'No delivery Order');
+                }
+
+                $delordhd = $delordhd->first();
                 $recno = $delordhd->recno;
                 return redirect('/deliveryOrder/showpdf?recno='.$recno);
 
@@ -1984,18 +1992,18 @@ class PaymentVoucherController extends defaultController
                                 ->where('apdt.source','AP');
 
                 if(!$apdt->exists()){
-                    abort(403,'No delivery Order');
+                    abort(403,'No Delivery Order');
                 }
 
                 $apdt = $apdt->first();
                 $delordhd = DB::table('material.delordhd')
-                            ->select('prdept','srcdocno')
+                            // ->select('prdept','srcdocno')
                             ->where('compcode','=',session('compcode'))
-                            ->where('delordno','=',$apdt->document)
+                            ->where('recno','=',$apdt->dorecno)
                             ->whereNotNull('srcdocno');
 
                 if(!$delordhd->exists()){
-                    abort(403,'No Purchase Order');
+                    abort(403,'No Delivery Order');
                 }
                 $delordhd = $delordhd->first();
                 $purordhd = DB::table('material.purordhd')
@@ -2028,6 +2036,26 @@ class PaymentVoucherController extends defaultController
                 // code...
                 break;
         }
+    }
+
+    function get_attachment_files($apalloc){
+        $idno_array = [];
+        foreach ($apalloc as $obj) {
+            $apacthdr = DB::table('finance.apacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','AP')
+                            ->where('trantype','IN')
+                            ->where('auditno',$obj->refauditno)
+                            ->first();
+            array_push($idno_array,$apacthdr->idno);
+        }
+
+        $attachment_files = DB::table('finance.attachment')
+                        ->where('compcode',session('compcode'))
+                        ->whereIn('auditno',$idno_array)
+                        ->get();
+
+        return $attachment_files;
     }
 
 }

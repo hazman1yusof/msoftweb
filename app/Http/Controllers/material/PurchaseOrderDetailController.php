@@ -67,14 +67,35 @@ class PurchaseOrderDetailController extends defaultController
             return json_encode($responce);
         }
 
+        $po_hd = DB::table('material.purordhd as pohd')
+                    ->select('d.sector','pohd.deldept')
+                    ->leftJoin('sysdb.department AS d', function($join){
+                        $join = $join->on("d.deptcode", '=', 'pohd.deldept');    
+                        $join = $join->where("d.compcode", '=', session('compcode'));  
+                    })
+                    ->where("pohd.compcode", '=', session('compcode'))
+                    ->where("pohd.recno", '=', $request->filterVal[0])
+                    ->first();
+
+        $unit_ = $po_hd->sector;
+        $deldept = $po_hd->deldept;
+
         $table = DB::table('material.purorddt AS podt')
-                ->select('podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder','podt.qtydelivered','podt.qtyoutstand','podt.qtyrequest', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount','podt.rem_but AS remarks_button','podt.remarks', 'podt.unit', 't.rate')
-                ->leftJoin('material.productmaster AS p', function($join) use ($request){
-                    $join = $join->on("podt.itemcode", '=', 'p.itemcode');    
-                    $join = $join->where("p.unit", '=', session('unit'));    
-                })
+                ->select('podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode','podt.uomcode','podt.pouom','podt.qtyorder','podt.qtydelivered','podt.qtyoutstand','podt.qtyrequest', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount','podt.rem_but AS remarks_button','podt.remarks', 'podt.unit', 't.rate','s.qtyonhand')
+                // ->leftJoin('material.productmaster AS p', function($join) use ($request){
+                //     $join = $join->on("podt.itemcode", '=', 'p.itemcode');    
+                //     $join = $join->where("p.compcode", '=', session('compcode'));    
+                // })
                 ->leftJoin('hisdb.taxmast AS t', function($join) use ($request){
                     $join = $join->on("podt.taxcode", '=', 't.taxcode');    
+                })
+                ->leftJoin('material.stockloc AS s', function($join) use ($unit_,$deldept){
+                    $join = $join->on("s.itemcode", '=', 'podt.itemcode');    
+                    $join = $join->on("s.uomcode", '=', 'podt.uomcode');    
+                    $join = $join->where("s.compcode", session('compcode'));    
+                    $join = $join->where("s.deptcode", $deldept);    
+                    $join = $join->where("s.unit", $unit_);       
+                    $join = $join->where("s.year", Carbon::now("Asia/Kuala_Lumpur")->year);
                 })
                 ->where('podt.recno','=',$request->filterVal[0])
                 ->where('podt.compcode','=',session('compcode'))
@@ -563,6 +584,7 @@ class PurchaseOrderDetailController extends defaultController
         $purorddt_null = DB::table('material.purorddt')
                             ->where('compcode','=',session('compcode'))
                             ->where('recno','=',$recno)
+                            ->where('pricecode','IV')
                             ->where('recstatus','<>','DELETE')
                             ->where(function ($purorddt_null){
                                 $purorddt_null
@@ -572,6 +594,7 @@ class PurchaseOrderDetailController extends defaultController
         $purorddt_empty = DB::table('material.purorddt')
                             ->where('compcode','=',session('compcode'))
                             ->where('recno','=',$recno)
+                            ->where('pricecode','IV')
                             ->where('recstatus','<>','DELETE')
                             ->where(function ($purorddt_empty){
                                 $purorddt_empty

@@ -63,6 +63,7 @@ $(document).ready(function () {
 					$('#trantime').val(moment().format('HH:mm:ss'));
 					rdonly('#formdata');
 					$("#txndept").val($("#deptcode").val());
+					dialog_txndept.check(errorField);
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();
@@ -261,8 +262,8 @@ $(document).ready(function () {
 			// }
 
 			urlParam2.filterVal[0]=selrowData("#jqGrid").recno; 
-			urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode = ','s.year =','s.compcode ='],['p.compcode =']];
-			urlParam2.join_filterVal = [['s.uomcode',selrowData("#jqGrid").txndept,moment(selrowData("#jqGrid").trandate).year(),'session.compcode'],['session.compcode']];
+			urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode = ','s.year =','s.compcode =','s.unit ='],['p.compcode =']];
+			urlParam2.join_filterVal = [['s.uomcode',selrowData("#jqGrid").txndept,moment(selrowData("#jqGrid").trandate).year(),'session.compcode','session.unit'],['session.compcode']];
 			
 			populate_form(selrowData("#jqGrid"));
 
@@ -758,8 +759,8 @@ $(document).ready(function () {
 				$('#adddate').val(data.adddate);
 				
 				urlParam2.filterVal[0] = data.recno; 
-				urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode = ','s.year =','s.compcode ='],['p.compcode =']];
-				urlParam2.join_filterVal = [['s.uomcode',$('#txndept').val(),moment($('#trandate').val()).year(),'session.compcode'],['session.compcode']];
+				urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode = ','s.year =','s.compcode =','s.unit ='],['p.compcode =']];
+				urlParam2.join_filterVal = [['s.uomcode',$('#txndept').val(),moment($('#trandate').val()).year(),'session.compcode','session.unit'],['session.compcode']];
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
 				$('#upduser').val(data.upduser);
@@ -1065,7 +1066,7 @@ $(document).ready(function () {
 		loadonce:false,
 		width: 1150,
 		height: 200,
-		rowNum: 30,
+		rowNum: 100,
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
@@ -1390,19 +1391,19 @@ $(document).ready(function () {
 			    //     }
 			    // );
 
-		        dialog_uomcoderecv.id_optid = ids[i];
-		        dialog_uomcoderecv.check(errorField,ids[i]+"_uomcoderecv","jqGrid2",null,
-		        	function(self){
-			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			        }
-			    );
+		        // dialog_uomcoderecv.id_optid = ids[i];
+		        // dialog_uomcoderecv.check(errorField,ids[i]+"_uomcoderecv","jqGrid2",null,
+		        // 	function(self){
+			    //     	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			    //     }
+			    // );
 
-				dialog_uomcodetrdept.id_optid = ids[i];
-		        dialog_uomcodetrdept.check(errorField,ids[i]+"_uomcode","jqGrid2",null,
-		        	function(self){
-			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			        }
-			    );
+				// dialog_uomcodetrdept.id_optid = ids[i];
+		        // dialog_uomcodetrdept.check(errorField,ids[i]+"_uomcode","jqGrid2",null,
+		        // 	function(self){
+			    //     	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			    //     }
+			    // );
 
 		       // cari_gstpercent(ids[i]);
 		    }
@@ -1469,8 +1470,13 @@ $(document).ready(function () {
 
     		$.post( "./inventoryTransactionDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
-				alert(dialog,data.responseText);
+				myfail_msg.add_fail({
+					id:'response',
+					textfld:"",
+					msg:data.responseText,
+				});
 			}).done(function(data){
+				myfail_msg.clear_fail();
 				// $('#totamount').val(data);
 				// $('#subamount').val(data);
 				mycurrency.formatOn();
@@ -1809,10 +1815,10 @@ $(document).ready(function () {
 	////////////////////////////////////////calculate amount////////////////////////////
 	function calculate_amount_and_other(event){
 
-		if(event.target.value == 0){
-			errorIt(event.target.name,errorField,true,"Transaction Quantity Cannot Be Zero");
-			return false;
-		}
+		// if(event.target.value == 0){
+		// 	errorIt(event.target.name,errorField,true,"Transaction Quantity Cannot Be Zero");
+		// 	return false;
+		// }
 
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
@@ -1839,10 +1845,10 @@ $(document).ready(function () {
 					}
 					break;
 				case "IN":
-					if(event.target.name == 0 && isstype=='Others'){
-						fail_msg = "Transaction Quantity Cannot Be Zero";
-						event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
-					}
+					// if(event.target.name == 0 && isstype=='Others'){
+					// 	fail_msg = "Transaction Quantity Cannot Be Zero";
+					// 	event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
+					// }
 					break;
 				default:
 					break;
@@ -1909,7 +1915,7 @@ $(document).ready(function () {
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
-		rowNum: 30,
+		rowNum: 100,
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager3",
@@ -2415,10 +2421,10 @@ $(document).ready(function () {
 		'srcdocno','material.ivreqhd','#srcdocno','errorField',
 		{	colModel:[
 				{label:'Request RecNo',name:'recno',width:50,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Record Status',name:'recstatus',classes:'pointer', hidden:true},
-				{label:'Request Department',width:200,name:'reqdept',canSearch:true},
+				{label:'Record Status',name:'recstatus',width:50,classes:'pointer'},
+				{label:'Request Department',width:100,name:'reqdept',canSearch:true},
 				{label:'Request Date',width:50,name:'reqdt'},
-				{label:'Remarks',name:'remarks',width:200,classes:'pointer'},
+				{label:'Remarks',name:'remarks',width:100,classes:'pointer'},
 			],
 			sortname: 'recno',
 			sortorder: "desc",
@@ -2473,6 +2479,7 @@ $(document).ready(function () {
 				$.get("util/get_value_default?" + $.param(urlParam2), function (data) {
 				}, 'json').done(function (data) {
 					if (!$.isEmptyObject(data.rows)) {
+						$("#jqGrid2").jqGrid("clearGridData", true);
 						data.rows.forEach(function(elem) {
 								$("#jqGrid2").jqGrid('addRowData', elem['lineno_'] ,
 									{
@@ -2489,7 +2496,7 @@ $(document).ready(function () {
 										qtyonhandrecv:elem['qtyonhand'],
 										txnqty:elem['qtytxn'],
 										maxqty:elem['maxqty'],
-										qtyrequest:elem['qtyrequest'],
+										qtyrequest:elem['qtybalance'],
 										netprice:elem['netprice'],
 										expdate:elem['expdate'],
 										batchno:elem['batchno']
@@ -2611,52 +2618,6 @@ function empty_form(){
 	$('#trantype_show').text('');
 	$('#docno_show').text('');
 
-}
-
-function fail_msg_func(fail_msg_div=null){
-	this.fail_msg_div = (fail_msg_div!=null)?fail_msg_div:'div#fail_msg';
-	this.fail_msg_array=[];
-	this.add_fail=function(fail_msg){
-		let found=false;
-		this.fail_msg_array.forEach(function(e,i){
-			if(e.id == fail_msg.id){
-				e.msg=fail_msg.msg;
-				found=true;
-			}
-		});
-		if(!found){
-			this.fail_msg_array.push(fail_msg);
-		}
-		if(fail_msg.textfld !=null){
-			myerrorIt_only(fail_msg.id,true);
-		}
-		this.pop_fail();
-	}
-	this.del_fail=function(fail_msg){
-		var new_msg_array = this.fail_msg_array.filter(function(e,i){
-			if(e.id == fail_msg.id){
-				return false;
-			}
-			return true;
-		});
-
-		if(fail_msg.textfld !=null){
-			myerrorIt_only(fail_msg.id,true);
-		}
-		this.fail_msg_array = new_msg_array;
-		this.pop_fail();
-	}
-	this.clear_fail=function(){
-		this.fail_msg_array=[];
-		this.pop_fail();
-	}
-	this.pop_fail=function(){
-		var self=this;
-		$(self.fail_msg_div).html('');
-		this.fail_msg_array.forEach(function(e,i){
-			$(self.fail_msg_div).append("<li>"+e.msg+"</li>");
-		});
-	}
 }
 
 function remark_button_class(grid){

@@ -19,6 +19,7 @@ function get_authdtl_alert(){
 			populate_authdtl_alert_po(data.queuepo);
 			populate_authdtl_alert_so(data.queueso);
 			populate_authdtl_alert_iv(data.queueiv);
+			populate_authdtl_alert_ivreq(data.ivreq);
 		}
 	});
 }
@@ -350,6 +351,35 @@ function populate_authdtl_alert_iv(data){
 	})
 }
 
+function populate_authdtl_alert_ivreq(data){
+	if(data.length > 0){
+		var block_pr = `
+		<div class='col-md-3'>
+			<div class='panel panel-purple'>
+				<div class='panel-heading' style='padding:5px'>
+					<div class='row'>
+						<div class='col-xs-12'>
+							<div class='huge'>Inventory Request</div>`;
+							data.forEach(function(e,i){
+								block_pr += `<div><b>Recno:</b><span>`+e.recno+`</span><b> Request By:</b><span>`+e.postedby+` - `+e.dept+`</span></div>`;
+							})
+							
+		block_pr += `	</div>
+					</div>
+				</div>
+					<div class='panel-footer'>
+						<a onclick="authdtl_alert_click('ivreq')">
+							<span class='pull-left'>Detail</span>
+							<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+							<div class='clearfix'></div>
+						</a>
+					</div>
+			</div>
+		</div>`;
+		$('#authdtl_alert_div').append(block_pr);
+	}
+}
+
 function authdtl_alert_click(type,trantype,recno){
     let mql = window.matchMedia("(max-width: 768px)");
 	if(mql.matches){
@@ -374,6 +404,9 @@ function authdtl_alert_click(type,trantype,recno){
 			break;
 		case 'iv':
 			Menu.new_dialog('material_invtran_AIAO','inventoryTransaction?scope='+trantype+'&ttype=AI&recno='+recno,'Inventory Transaction');
+			break;
+		case 'ivreq':
+			Menu.new_dialog('material_invtran_TUITUO','inventoryTransaction?scope=ALL&ttype=TUO','Inventory Transaction');
 			break;
 	}
 }

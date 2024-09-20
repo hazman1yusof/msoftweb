@@ -52,6 +52,7 @@ div#fail_msg,div#fail_msg_r{
 	<input id="reqdept" name="reqdept" type="hidden" value="{{Session::get('reqdept')}}">
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
 	<input id="viewonly" name="viewonly" type="hidden" value="{{Request::get('viewonly')}}">
 
 	@if (Request::get('scope') == 'ALL')
@@ -259,6 +260,28 @@ div#fail_msg,div#fail_msg_r{
     	</div>
 		</div>
 
+		<div class="panel panel-default" style="position: relative;" id="allocation_c">
+    	<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#allocation_panel">
+				<b>SALES AUTO NO: </b><span id="AutoNo_alloc_show"></span><br>
+				<b>CUSTOMER NAME: </b><span id="CustName_alloc_show"></span>
+				
+	    	<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>Allocation</h5>
+				</div>
+			</div>
+
+  		<div id="allocation_panel" class="panel-collapse collapse" id="jqGridAlloc_c">
+    		<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0" id>
+						<table id="jqGridAlloc" class="table table-striped"></table>
+						<div id="jqGridPagerAlloc"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="panel panel-default" style="position: relative;" id="receipt_c">
     	<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#receipt_panel">
 				<b>SALES AUTO NO: </b><span id="AutoNo_r_show"></span><br>
@@ -274,7 +297,6 @@ div#fail_msg,div#fail_msg_r{
   		<div id="receipt_panel" class="panel-collapse collapse">
     		<div class="panel-body">
 					<div class='col-md-12' style="padding:0px">
-						<div id="fail_msg_r"></div>
 						<div class='panel panel-info'>
 							<div class="panel-heading">
 								Choose type of exchange
@@ -289,6 +311,7 @@ div#fail_msg,div#fail_msg_r{
 								</span>
 							</div>
 							<div class="panel-body">
+							<div id="fail_msg_r"></div>
 								<ul class="nav nav-tabs">
 									<li class="active"><a data-toggle="tab" href="#tab-cash" form='#f_tab-cash' aria-expanded="true">Cash</a></li>
 									<li><a data-toggle="tab" href="#tab-card" form='#f_tab-card'>Card</a></li>
@@ -758,6 +781,10 @@ div#fail_msg,div#fail_msg_r{
 	    </div>
 	  </div>
 	</div>
+
+		<!-- @include('layouts.allocate_part') -->
+	@include('layouts.till_part')
+
 @endsection
 
 @section('scripts')
@@ -798,6 +825,7 @@ div#fail_msg,div#fail_msg_r{
 			});
 		</script>
 
+		<script src="js/myjs/till_part.js"></script>
 		<script src="js/finance/PointOfSales/PointOfSales.js"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>

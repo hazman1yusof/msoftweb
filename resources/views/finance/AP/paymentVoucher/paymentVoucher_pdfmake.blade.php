@@ -19,8 +19,15 @@
 </object>
 
 <script>
-	var merge_done = [false,false];
 	var merge_key = makeid(20); 
+	var attachmentfiles = [
+		@foreach($attachment_files as $file)
+		{	
+			idno:'{{$file->idno}}',
+			src:'{{$file->attachmentfile}}',
+		},
+		@endforeach
+	]
 	var ini_header={
 		pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_LEFT)}}`,
 		pvdate:`{{\Carbon\Carbon::parse($apacthdr->actdate)->format('d/m/Y')}}`,
@@ -98,7 +105,7 @@
 			        }
 
 				if(currentPage == 1){
-					var logohdr = {image: 'letterhead',style:'header_img',width:350, height:75, alignment: 'center'};
+					var logohdr = {image: 'letterhead',style:'header_img',width:220, alignment: 'center'};
 					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true};
 					var compbankdet = {text: 'COMP A/C NO: '+ini_compbankdet.bankname+ ' ' +ini_compbankdet.bankaccno,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};
 					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
@@ -179,7 +186,7 @@
 			},
 			images: {
 				letterhead: {
-					url: '{{asset('/img/MSLetterHead.jpg')}}',
+					url: "{{asset('/img/letterheadukm.png')}}",
 					headers: {
 						myheader: '123',
 						myotherheader: 'abc',
@@ -202,8 +209,6 @@
 
 			$.post( '../attachment_upload/form?page=merge_pdf',$.param(obj) , function( data ) {
 			}).done(function(data) {
-				merge_done[0] = true;
-				get_merge_pdf();
 			});
 		});
 	});
@@ -454,7 +459,7 @@
 			        }
 
 				if(currentPage == 1){
-					var logohdr = {image: 'letterhead',style:'header_img',width:350, height:75, alignment: 'center'};
+					var logohdr = {image: 'letterhead',style:'header_img',width:220, alignment: 'center'};
 					var title = {text: '\n{{$CN_obj->title}}',fontSize:14,alignment: 'center',bold: true};
 					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
 					retval.push(logohdr);
@@ -530,7 +535,7 @@
 			},
 			images: {
 				letterhead: {
-					url: '{{asset('/img/MSLetterHead.jpg')}}',
+					url: "{{asset('/img/letterheadukm.png')}}",
 					headers: {
 						myheader: '123',
 						myotherheader: 'abc',
@@ -553,8 +558,6 @@
 
 			$.post( '../attachment_upload/form?page=merge_pdf',$.param(obj) , function( data ) {
 			}).done(function(data){
-				merge_done[1] = true;
-				get_merge_pdf();
 			});
 		});
 	});
@@ -743,42 +746,73 @@
 
 	    return retval;
 	}
+@endif
+// function get_merge_pdf(){
+// 	let execute = true;
+// 	merge_done.forEach(function(e,i){
+// 		if(e==false){
+// 			execute = false
+// 		}
+// 	});
+// 	if(execute){
+// 		var obj = {
+// 			page:'get_merge_pdf',
+// 			merge_key:merge_key,
+// 		};
 
-	$(document).ready(function () {
-		$('div.canclick').click(function(){
-			$('div.canclick').removeClass('teal inverted');
-			$(this).addClass('teal inverted');
-			var goto = $(this).data('goto');
+// 		$('#pdfiframe_merge').attr('src',"../attachment_upload/table?"+$.param(obj));
+// 	}
+// }
 
-			if($(goto).offset() != undefined){
-			$('html, body').animate({
-				scrollTop: $(goto).offset().top
-				}, 500, function(){
+$(document).ready(function () {
+	$('div.canclick').click(function(){
+		$('div.canclick').removeClass('teal inverted');
+		$(this).addClass('teal inverted');
+		var goto = $(this).data('goto');
 
-				});
+		if($(goto).offset() != undefined){
+		$('html, body').animate({
+			scrollTop: $(goto).offset().top
+			}, 500, function(){
+
+			});
+		}
+	});
+
+	$('#merge_btn').click(function(){
+		let attach_array = [];
+		let attach_array_lineno = [];
+		$('input:checkbox:checked').each(function(){
+			if($(this).data('src') != null || $(this).data('src') != undefined){
+				attach_array.push($(this).data('src'));
 			}
 		});
 
-	});
+		$('input:checkbox:checked').each(function(){
+			if($(this).data('lineno') != null || $(this).data('lineno') != undefined){
+				attach_array_lineno.push($(this).data('lineno'));
+			}
+		});
 
+		if(attach_array.length == 0 && attach_array_lineno.length == 0){
+			alert('Select at least 1 PDF Attachment to merge with main PDF');
+		}else{
+			var obj = {
+				page:'merge_pdf_with_attachment',
+				merge_key:merge_key,
+				attach_array:attach_array,
+				attach_array_lineno:attach_array_lineno
+			};
 
-@endif
-function get_merge_pdf(){
-	let execute = true;
-	merge_done.forEach(function(e,i){
-		if(e==false){
-			execute = false
+			$('#pdfiframe_merge').attr('src',"../attachment_upload/table?"+$.param(obj));
+			$('#btn_merge,#pdfiframe_merge').show();
+			$('#btn_merge').click();
 		}
 	});
-	if(execute){
-		var obj = {
-			page:'get_merge_pdf',
-			merge_key:merge_key,
-		};
 
-		$('#pdfiframe_merge').attr('src',"../attachment_upload/table?"+$.param(obj));
-	}
-}
+	populate_attachmentfile();
+
+});
 
 function makeid(length) {
     let result = '';
@@ -792,34 +826,50 @@ function makeid(length) {
     return result;
 }
 
+function populate_attachmentfile(){
+	attachmentfiles.forEach(function(e,i){
+		$('#pdfiframe_'+e.idno).attr('src',"../uploads/"+e.src);
+	});
+}
+
 
 </script>
 
 <body style="margin: 0px;">
 <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
-
-@if(is_object($CN_obj))
 <div class="ui segments" style="width: 18vw;height: 95vh;float: left; margin: 10px; position: fixed;">
   <div class="ui secondary segment">
-    <h3><b>Navigation</b></h3>
+    <h3>
+		<b>Navigation</b>
+		<button id="merge_btn" class="ui small primary button" style="font-size: 12px;padding: 6px 10px;float: right;">Merge</button>
+	</h3>
   </div>
   <div class="ui segment teal inverted canclick" style="cursor: pointer;" data-goto='#pdfiframe'>
     <p>Payment Voucher</p>
   </div>
+  @if(is_object($CN_obj))
   <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_cn'>
-    <p>Credit Note</p>
+    <p>Credit Note <input type="checkbox" data-lineno="2" style="float: right;margin-right: 5px;"></p>
   </div>
-  <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_merge'>
+  @endif
+  @foreach($attachment_files as $file)
+  <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_{{$file->idno}}'>
+    <p>{{$file->resulttext}} <input type="checkbox" data-src="{{$file->attachmentfile}}" name="{{$file->idno}}" style="float: right;margin-right: 5px;"></p>
+  </div>
+  @endforeach
+  <div id="btn_merge" class="ui segment canclick" style="cursor: pointer;display: none;" data-goto='#pdfiframe_merge'>
     <p>Merged File</p>
   </div>
 </div>
 <iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;"></iframe>
+@if(is_object($CN_obj))
 <iframe id="pdfiframe_cn" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;"></iframe>
-<iframe id="pdfiframe_merge" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;"></iframe>
-
-@else
-<iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="height: 99vh;float: right;"></iframe>
 @endif
+@foreach($attachment_files as $file)
+<iframe id="pdfiframe_{{$file->idno}}" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;"></iframe>
+@endforeach
+<iframe id="pdfiframe_merge" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;display: none;"></iframe>
+
 
 </body>
 </html>

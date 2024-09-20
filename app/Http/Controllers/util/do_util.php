@@ -157,17 +157,26 @@ class do_util extends defaultController{
                 $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
             }
 
+            if($value->pricecode == ['BO']){
+                $product_upd = [
+                    'qtyonhand' => $newqtyonhand ,
+                    'avgcost' => $newAvgCost
+                ];
+            }else{
+                $product_upd = [
+                    'qtyonhand' => $newqtyonhand ,
+                    'avgcost' => $newAvgCost,
+                    'currprice' => $currprice
+                ];
+            }
+
 	        // update qtyonhand, avgcost, currprice
 	        DB::table('material.product')
                 ->where('product.compcode','=',session('compcode'))
                 ->where('product.unit','=',$deldept_unit)
                 ->where('product.itemcode','=',$value->itemcode)
                 ->where('product.uomcode','=',$value->uomcode)
-	            ->update([
-	                'qtyonhand' => $newqtyonhand ,
-	                'avgcost' => $newAvgCost,
-	                'currprice' => $currprice
-	            ]);
+	            ->update($product_upd);
 
 	    }else{
             throw new \Exception("Prodcut doesnt exists Item: ".$value->itemcode." UOM: ".$value->uomcode);

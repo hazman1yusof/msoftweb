@@ -55,7 +55,7 @@ class DeliveryOrderDetailController extends defaultController
 
     public function DeliveryOrderDetail(Request $request){
         $table = DB::table('material.delorddt AS dodt')
-                ->select('dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode','dodt.pouom', 'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtyorder','dodt.qtydelivered', 'dodt.qtyoutstand','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks', 'dodt.unit','t.rate','dodt.idno')
+                ->select('dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode','dodt.pouom', 'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtyorder','dodt.qtydelivered', 'dodt.qtyoutstand','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks', 'dodt.unit','t.rate','dodt.idno','dodt.kkmappno')
                 ->leftJoin('material.productmaster AS p', function($join) use ($request){
                     $join = $join->on("dodt.itemcode", '=', 'p.itemcode');    
                     $join = $join->where("p.compcode", '=', session('compcode'));    
@@ -329,6 +329,7 @@ class DeliveryOrderDetailController extends defaultController
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate' => $this->chgDate($request->expdate), 
                     'batchno' => strtoupper($request->batchno), 
+                    'kkmappno' => strtoupper($request->kkmappno), 
                     'recstatus' => 'OPEN', 
                     'remarks'=> strtoupper($request->remarks),
                     'unit' => session('unit'),
@@ -448,6 +449,7 @@ class DeliveryOrderDetailController extends defaultController
                     'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate'=> $this->chgDate($request->expdate),  
                     'batchno'=> strtoupper($request->batchno), 
+                    'kkmappno' => strtoupper($request->kkmappno), 
                     'remarks'=> strtoupper($request->remarks),
                     'unit' => session('unit')
                 ]);
@@ -500,12 +502,12 @@ class DeliveryOrderDetailController extends defaultController
 
             foreach ($request->dataobj as $key => $value) {
 
-                if($value['pricecode'] == 'IV' && $value['pricecode'] == 'BO'){
+                if($value['pricecode'] == 'IV' || $value['pricecode'] == 'BO'){
                     $product = DB::table('material.product')
                                 ->where('compcode',session('compcode'))
                                 ->where('unit',session('unit'))
                                 ->where('itemcode',$value['itemcode'])
-                                ->where('uomcode',$value->uomcode);
+                                ->where('uomcode',$value['uomcode']);
 
                     if(!$product->exists()){
                         throw new \Exception("The item: ".$value['itemcode'].' UOM '.$value['uomcode'].' not exist!');
@@ -522,7 +524,7 @@ class DeliveryOrderDetailController extends defaultController
                                 ->where('unit',session('unit'))
                                 ->where('itemcode',$value['itemcode'])
                                 ->where('uomcode',$value['uomcode'])
-                                ->where('deptcode',$value['deldept'])
+                                ->where('deptcode',$do_hd->deldept)
                                 ->where('year',$this->toYear($do_hd->deliverydate));
 
                     if(!$stockloc->exists()) {
@@ -564,6 +566,7 @@ class DeliveryOrderDetailController extends defaultController
                         'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
                         'expdate'=> $this->chgDate($value['expdate']),  
                         'batchno'=> strtoupper($value['batchno']),
+                        'kkmappno'=> strtoupper($value['kkmappno']),
                         'remarks'=> strtoupper($value['remarks']),
                         'unit' => session('unit')
                     ]);

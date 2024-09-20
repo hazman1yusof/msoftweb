@@ -206,13 +206,19 @@ class attachment_uploadController extends defaultController
             $pdf_merge = $pdf_merge->get();
             $pdf = new \Clegginabox\PDFMerger\PDFMerger;
 
-            foreach ($pdf_merge as $obj) {
-                $pdf->addPDF($attachment_path.'/uploads/pdf_merge/'.$merge_key.'_'.$obj->lineno_.'.pdf', 'all');
+            $pdf->addPDF($attachment_path.'/uploads/pdf_merge/'.$merge_key.'_1.pdf', 'all');
+
+            if(!empty($request->attach_array_lineno)){
+                foreach ($request->attach_array_lineno as $lineno) {
+                    $pdf->addPDF($attachment_path.'/uploads/pdf_merge/'.$merge_key.'_'.$lineno.'.pdf', 'all');
+                }
             }
         }
         
-        foreach ($request->attach_array as $attach) {
-            $pdf->addPDF($attachment_path.'/uploads/'.$attach, 'all');
+        if(!empty($request->attach_array)){
+            foreach ($request->attach_array as $attach) {
+                $pdf->addPDF($attachment_path.'/uploads/'.$attach, 'all');
+            }
         }
         $pdf->merge('browser', public_path() . '/uploads/pdf_merge/'.$merge_key.'_merged.pdf', 'P');
     }

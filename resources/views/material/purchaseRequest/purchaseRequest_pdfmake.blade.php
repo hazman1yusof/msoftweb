@@ -79,7 +79,7 @@
 			// pageOrientation: 'landscape',
 			content: [
 				{
-					image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center'
+					image: 'letterhead', width: 250, style: 'tableHeader', colSpan: 5, alignment: 'center'
 				},
 				{ text: ' ' },
 				{
@@ -287,7 +287,7 @@
 			},
 			images: {
 				letterhead: {
-					url: "{{asset('/img/MSLetterHead.jpg')}}",
+					url: "{{asset('/img/letterheadukm.png')}}",
 					headers: {
 						myheader: '123',
 						myotherheader: 'abc',
@@ -408,9 +408,10 @@
 <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 <div class="ui segments" style="width: 18vw;height: 95vh;float: left; margin: 10px; position: fixed;">
   <div class="ui secondary segment">
-    <h3><b>Navigation</b>
+    <h3>
+    	<b>Navigation</b>
     	<button id="merge_btn" class="ui small primary button" style="font-size: 12px;padding: 6px 10px;float: right;">Merge</button>
-	</h3>
+		</h3>
   </div>
   <div class="ui segment teal inverted canclick" style="cursor: pointer;" data-goto='#pdfiframe'>
     <p>Purchase Request </p>

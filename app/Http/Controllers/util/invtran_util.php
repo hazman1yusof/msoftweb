@@ -711,6 +711,7 @@ class invtran_util extends defaultController{
 
             }else{
             	//ni akan jadi mungkin sebab dia "out" pakai expdate dgn batchno, tapi expdate dgn batchno tu x ada dlm stockexp
+                dump($value->itemcode);
                 throw new \Exception("No stockexp");
             }
 
@@ -742,7 +743,7 @@ class invtran_util extends defaultController{
             $NewAmount = $netprice * $txnqty;
 
             $newqtyonhand = $OldQtyOnHand - $txnqty;
-            $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+            // $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
             // if(strtoupper($isstype) == "ADJUSTMENT"){
             //     $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
             // }else{
@@ -757,8 +758,8 @@ class invtran_util extends defaultController{
                 ->where('product.uomcode','=',$value->uomcode)
                 ->update([
                     'qtyonhand' => $newqtyonhand,
-                    'avgcost' => $newAvgCost,
-                    'currprice' => $currprice
+                    // 'avgcost' => $newAvgCost,
+                    // 'currprice' => $currprice
                 ]);
 
         }
@@ -906,7 +907,7 @@ class invtran_util extends defaultController{
             $NewAmount = $netprice * $txnqty;
 
             $newqtyonhand = $OldQtyOnHand - $txnqty;
-            $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+            // $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
 
             if($newqtyonhand < 0){
                 throw new \Exception("Product itemcode: ".$value->itemcode." uomcode: ".$value->uomcode." will become -ve value : ".$newqtyonhand);
@@ -926,8 +927,8 @@ class invtran_util extends defaultController{
                 ->where('product.uomcode','=',$value->uomcode)
                 ->update([
                     'qtyonhand' => $newqtyonhand,
-                    'avgcost' => $newAvgCost,
-                    'currprice' => $currprice
+                    // 'avgcost' => $newAvgCost,
+                    // 'currprice' => $currprice
                 ]);
         }
     }

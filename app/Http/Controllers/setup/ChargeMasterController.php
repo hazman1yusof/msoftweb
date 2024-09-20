@@ -208,7 +208,8 @@ class ChargeMasterController extends defaultController
 
         $table = DB::table('hisdb.chgmast AS cm')
                     ->select( 'cm.idno','cm.compcode','cm.unit','cm.chgcode','cm.description','cm.brandname','cm.revcode','cm.uom','cm.packqty','cm.invflag','cm.overwrite','cm.buom','cm.adduser','cm.adddate','cm.lastuser','cm.lastupdate','cm.upduser','cm.upddate','cm.deluser','cm.deldate','cm.recstatus','cm.lastfield','cm.doctorstat','cm.chgtype','cm.chggroup','cm.qflag','cm.costcode','cm.chgflag','cm.ipacccode','cm.opacccode','cm.revdept','cm.chgclass','cm.costdept','cm.invgroup','cm.apprccode','cm.appracct','cm.active','cm.constype','cm.dosage','cm.druggrcode','cm.subgroup','cm.stockcode','cm.seqno','cm.instruction','cm.freqcode','cm.durationcode','cm.strength','cm.durqty','cm.freqqty','cm.doseqty','cm.dosecode','cm.barcode','cm.computerid','cm.ipaddress','cm.lastcomputerid','cm.lastipaddress','cc.description as cc_description','cg.description as cg_description','ct.description as ct_description','p.uomcode as uom_product')
-                    ->where('cm.compcode','=',session('compcode'));
+                    ->where('cm.compcode','=',session('compcode'))
+                    ->where('cm.unit','=',session('unit'));
 
         $table = $table->leftjoin('hisdb.chgclass AS cc', function($join){
                             $join = $join->where('cc.compcode', '=', session('compcode'));
@@ -229,6 +230,7 @@ class ChargeMasterController extends defaultController
                             $join = $join->where('p.compcode', '=', session('compcode'));
                             $join = $join->on('p.uomcode', '=', 'cm.uom');
                             $join = $join->on('p.itemcode', '=', 'cm.chgcode');
+                            $join = $join->where('p.unit', '=', session('unit'));
                         });
 
         // foreach ($table->get() as $key => $value) {

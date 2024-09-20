@@ -662,6 +662,6 @@ span.input-group-addon > strong, span.input-group-addon > label{
 		});
 	</script>
 	
-	<script src="js/setup/billtype/billtype.js"></script>
+	<script src="js/setup/billtype/billtype.js?v=1.1"></script>
 	
 @endsection
