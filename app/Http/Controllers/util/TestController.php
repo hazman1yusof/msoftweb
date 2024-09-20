@@ -683,7 +683,7 @@ class TestController extends defaultController
 
         try {
             
-            $product = DB::table('temp.product')
+            $product = DB::table('material.product')
                             ->where('compcode','9B')
                             ->where('unit',"W'HOUSE")
                             ->where('itemcode',$request->itemcode)
@@ -693,7 +693,7 @@ class TestController extends defaultController
             $i = 1;
             foreach ($product as $obj) {
 
-                $stockloc = DB::table('temp.stockloc')
+                $stockloc = DB::table('material.stockloc')
                                 ->where('compcode','9B')
                                 ->where('itemcode',$obj->itemcode)
                                 ->where('uomcode',$obj->uomcode)
@@ -703,13 +703,13 @@ class TestController extends defaultController
                     continue;
                 }
 
-                $stockloc = DB::table('temp.stockloc')
+                $stockloc = DB::table('material.stockloc')
                                 ->where('compcode','9B')
                                 ->where('itemcode',$obj->itemcode);
 
                 if($stockloc->exists()){
                     $stockloc_first = $stockloc->first();
-                    DB::table('temp.stockloc')
+                    DB::table('material.stockloc')
                             ->where('compcode','9B')
                             ->where('itemcode',$obj->itemcode)
                             ->update([
@@ -719,7 +719,7 @@ class TestController extends defaultController
 
                     $balqty = $stockloc_first->netmvqty1 + $stockloc_first->netmvqty2 + $stockloc_first->netmvqty3 + $stockloc_first->netmvqty4 + $stockloc_first->netmvqty5 + $stockloc_first->netmvqty6 + $stockloc_first->netmvqty7 + $stockloc_first->netmvqty8;
 
-                    DB::table('temp.product')
+                    DB::table('material.product')
                             ->where('compcode','9B')
                             ->where('unit',"W'HOUSE")
                             ->where('itemcode',$obj->itemcode)
@@ -729,7 +729,7 @@ class TestController extends defaultController
                             ]);
 
 
-                    $stockexp = DB::table('temp.stockexp')
+                    $stockexp = DB::table('material.stockexp')
                                 ->where('unit',$obj->unit)
                                 ->where('compcode',$obj->compcode)
                                 ->where('year',$stockloc_first->year)
@@ -738,7 +738,7 @@ class TestController extends defaultController
                                 ->where('uomcode',$obj->uomcode);
 
                     if(!$stockexp->exists()){
-                        DB::table('temp.stockexp')
+                        DB::table('material.stockexp')
                             ->insert([
                                 'compcode' => $obj->compcode,
                                 'deptcode' => $stockloc_first->deptcode,
