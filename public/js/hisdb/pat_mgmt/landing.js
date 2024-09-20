@@ -289,6 +289,7 @@ $(document).ready(function() {
                 }else if($('#user_nurse').val() == '1'){
                     populate_triage_currpt(lastrowdata);
                     populate_doctorNote_currpt(lastrowdata);
+                    populate_admhandover_currpt(lastrowdata);
                     populate_dieteticCareNotes_currpt(lastrowdata);
                     populate_dietOrder_currpt(lastrowdata);
                 }

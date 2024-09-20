@@ -193,6 +193,10 @@
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.admhandover.admhandover')
+					</div>
+
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.dieteticCareNotes.dieteticCareNotes')
 					</div>
 					
