@@ -202,4 +202,71 @@ class assetenquiryController extends defaultController
         }
         
     }
+    
+    public function showpdf(Request $request){
+        
+        $assetno = $request->assetno;
+        if(!$assetno){
+            abort(404);
+        }
+        
+        $faregister = DB::table('finance.faregister as fr')
+                    ->select('fr.idno','fr.compcode','fr.assetcode','fr.assettype','fr.assetno','fr.assetlineno','fr.description','fr.serialno','fr.lotno','fr.casisno','fr.engineno','fr.deptcode','fr.loccode','fr.suppcode','fr.purordno','fr.delordno','fr.delorddate','fr.dolineno','fr.itemcode','fr.invno','fr.invdate','fr.purdate','fr.purprice','fr.origcost','fr.insval','fr.qty','fr.startdepdate','fr.currentcost','fr.lstytddep','fr.cuytddep','fr.recstatus','fr.individualtag','fr.statdate','fr.trantype','fr.trandate','fr.lstdepdate','fr.nprefid','fr.adduser','fr.adddate','fr.upduser','fr.upddate','fr.regtype','fr.nbv','fr.method','fr.residualvalue','fr.currdeptcode','fr.currloccode','fr.condition','fr.expdate','fr.brand','fr.model','fr.equipmentname','fr.trackingno','fr.bem_no','fr.ppmschedule','fr.lastcomputerid','fc.description as category_description','ft.description as type_description','s.Name as supplier_name','d.description as dept_description')
+                    ->leftJoin('finance.facode as fc', function ($join){
+                        $join = $join->on('fc.assetcode','=','fr.assetcode')
+                                    ->where('fc.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('finance.fatype as ft', function ($join){
+                        $join = $join->on('ft.assettype','=','fr.assettype')
+                                    ->where('ft.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('material.supplier as s', function ($join){
+                        $join = $join->on('s.SuppCode','=','fr.suppcode')
+                                    ->where('s.CompCode','=',session('compcode'));
+                    })
+                    ->leftJoin('sysdb.department as d', function ($join){
+                        $join = $join->on('d.deptcode','=','fr.currdeptcode')
+                                    ->where('d.compcode','=',session('compcode'));
+                    })
+                    ->where('fr.compcode',session('compcode'))
+                    ->where('fr.assetno',$assetno)
+                    ->first();
+        // dd($faregister);
+        
+        $movement = DB::table('finance.fatran as ft')
+                    ->select('ft.assetcode','ft.assettype','ft.assetno','ft.auditno','ft.trandate','ft.trantype','ft.amount','ft.deptcode','ft.olddeptcode','ft.curloccode','ft.oldloccode','ft.idno','l.description as loc_description')
+                    ->leftJoin('finance.faregister AS fr', function ($join){
+                        $join = $join->on('fr.assetcode','=','ft.assetcode')
+                                    ->where('fr.assettype','=','ft.assettype')
+                                    ->where('fr.assetno','=','ft.assetno')
+                                    ->where('fr.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('sysdb.location as l', function ($join){
+                        $join = $join->on('l.loccode','=','ft.curloccode')
+                                    ->where('l.compcode','=',session('compcode'));
+                    })
+                    ->where('ft.compcode',session('compcode'))
+                    ->where('ft.assetno',$assetno)
+                    ->get();
+        // dd($movement);
+        
+        $curloccode = DB::table('finance.fatran as ft')
+                    ->leftJoin('sysdb.location as l', function ($join){
+                        $join = $join->on('l.loccode','=','ft.curloccode')
+                                    ->where('l.compcode','=',session('compcode'));
+                    })
+                    ->where('ft.compcode',session('compcode'))
+                    ->where('ft.assetno',$assetno)
+                    ->pluck('ft.curloccode')
+                    ->toArray();
+        // dd($curloccode);
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        return view('finance.FA.assetenquiry.assetenquiry_pdfmake', compact('faregister','movement','curloccode','company'));
+        
+    }
+    
 }
