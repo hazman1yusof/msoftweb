@@ -689,7 +689,7 @@ class TestController extends defaultController
                             ->where('itemcode',$request->itemcode)
                             ->get();
 
-            // dd($stockloc);
+            dd($stockloc);
             $i = 1;
             foreach ($product as $obj) {
 
