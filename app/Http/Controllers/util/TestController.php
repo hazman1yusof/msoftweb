@@ -686,7 +686,7 @@ class TestController extends defaultController
             $product = DB::table('material.product')
                             ->where('compcode','9B')
                             ->where('unit',"W'HOUSE")
-                            ->where('itemcode',$request->itemcode)
+                            ->whereIn('itemcode',[$request->itemcode])
                             ->get();
 
             // dd($product);
