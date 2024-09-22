@@ -56,7 +56,7 @@
 			pageSize: 'A4',
 			content: [
 				{
-					image: 'letterhead',width:350, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'
+					image: 'letterhead',width:250, style: 'tableHeader', colSpan: 5, alignment: 'center'
 				},
 				{
 					text: '\n{{$title}}\n',
@@ -211,7 +211,7 @@
 			},
 			images: {
 				letterhead: {
-					url: '{{asset('/img/MSLetterHead.jpg')}}',
+					url: "{{asset('/img/letterheadukm.png')}}",
 					headers: {
 						myheader: '123',
 						myotherheader: 'abc',
