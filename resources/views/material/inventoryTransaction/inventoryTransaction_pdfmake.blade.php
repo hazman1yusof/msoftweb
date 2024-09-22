@@ -55,7 +55,7 @@
                     alignment: 'LEFT'
 				},
                 {
-                    image: 'letterhead',width:300, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                    image: 'letterhead',width:250, style: 'tableHeader', colSpan: 5, alignment: 'center'
                 },
                 // {
                 //     text: '{{$company->name}}\n{{$company->address1}}\n{{$company->address2}}\n{{$company->address3}}\n{{$company->address4}}\n\n\n', 
@@ -72,7 +72,7 @@
                         body: [
                             [
 								{text: 'Department : {{$ivtmphd->txndept}}'}, 
-								{text: 'Document  No. : {{$ivtmphd->docno}}'},
+								{text: 'Document  No. : MS-{{$ivtmphd->trantype}}-{{str_pad($ivtmphd->docno, 6, "0", STR_PAD_LEFT)}}'},
 							],
                             [
 								{text: 'Type : {{$ivtmphd->sndrcvtype}}'}, 
@@ -122,12 +122,12 @@
 								{text: 'Line No', style: 'tableHeader'}, 
 								{text: 'Itemcode', style: 'tableHeader'}, 
 								{text: 'UOM', style: 'tableHeader'}, 
-								{text: 'Qty', style: 'tableHeader'},
-								{text: 'Net Price', style: 'tableHeader'},
-								{text: 'Amount', style: 'tableHeader'}, 
+								{text: 'Qty', style: 'tableHeader', alignment: 'right'},
+								{text: 'Net Price', style: 'tableHeader', alignment: 'right'},
+								{text: 'Amount', style: 'tableHeader', alignment: 'right'}, 
                                 {text: 'Expiry\nDate', style: 'tableHeader'}, 
                                 {text: 'Tran\nDate', style: 'tableHeader'}, 
-								{text: 'Current\nQOH', style: 'tableHeader'}, 
+								{text: 'QOH', style: 'tableHeader', alignment: 'right'}, 
 							
 							],
 
@@ -135,9 +135,9 @@
 							[
 								
 								{text:'{{$obj->lineno_}}'},
-								{text:'{{$obj->itemcode}}\n{{$obj->description}}'},
+								{text:'{{$obj->itemcode}}'},
 								{text: `{!!$obj->uomcode!!}`},
-                                {text:'{{$obj->qtyonhand}}', alignment: 'right'},
+                                {text:'{{$obj->txnqty}}', alignment: 'right'},
 								{text:'{{number_format($obj->netprice,4)}}', alignment: 'right'},
 								{text:'{{number_format($obj->amount,2)}}', alignment: 'right'},
 
@@ -155,10 +155,22 @@
                                 {text:'{{$obj->qtyonhand}}', alignment: 'right'},
 								
 							],
+							[
+								
+								{},
+								{text:`{!!$obj->description!!}`,colSpan: 8},
+								{},
+                                {},
+								{},
+								{},
+								{},
+								{},
+                                {},
+							],
 							@endforeach
                         ]
                     },
-			        layout: 'lightHorizontalLines',
+			        layout: 'noBorders',
 		        },
                 {
                     style: 'tableExample',
@@ -281,7 +293,7 @@
 			},
 			images: {
                     letterhead: {
-                        url: '{{asset('/img/MSLetterHead.jpg')}}',
+                        url: "{{asset('/img/letterheadukm.png')}}",
                         headers: {
                             myheader: '123',
                             myotherheader: 'abc',

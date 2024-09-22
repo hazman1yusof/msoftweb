@@ -56,7 +56,7 @@
                                 [
                                     {text: 'REQUEST DATE', style: 'tableHeader'},
                                     {text: 'STATUS', style: 'tableHeader'},
-                                    {text: 'REQ NO', style: 'tableHeader'},
+                                    {text: 'REC NO', style: 'tableHeader'},
                                     {text: 'REQUEST\nDEPT', style: 'tableHeader'},
                                     {text: 'REQUEST\nTO DEPT', style: 'tableHeader'},
                                     {text: 'ITEMCODE', style: 'tableHeader'},
@@ -71,7 +71,7 @@
                                     [
                                         {text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->reqdt)->format('d-m-Y')}}'},
                                         {text: '{{$obj->recstatus}}'},
-                                        {text: '{{str_pad($obj->ivreqno, 7, "0", STR_PAD_LEFT)}}'},
+                                        {text: '{{str_pad($obj->h_recno, 7, "0", STR_PAD_LEFT)}}'},
                                         {text: '{{$obj->reqdept}}'},
                                         {text: '{{$obj->reqtodept}}'},
                                         {text: `{!!str_replace('`', '', $obj->itemcode)!!}\n{!!str_replace('`', '', $obj->description)!!}`},

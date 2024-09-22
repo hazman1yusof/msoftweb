@@ -56,6 +56,7 @@ $(document).ready(function () {
 			mycurrency.formatOnBlur();
 			switch(oper) {
 				case state = 'add':
+					urlParam2.field=['ivt.compcode','ivt.recno','ivt.lineno_','ivt.itemcode','p.description', 's.qtyonhand','ivt.uomcode', 'ivt.qtyonhandrecv','ivt.uomcoderecv','s.maxqty','ivt.txnqty','ivt.qtyrequest','ivt.netprice','ivt.amount','ivt.expdate','ivt.batchno'];
 					$("#jqGrid2").jqGrid("clearGridData", true);
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
@@ -66,6 +67,7 @@ $(document).ready(function () {
 					dialog_txndept.check(errorField);
 					break;
 				case state = 'edit':
+					urlParam2.field=['ivt.compcode','ivt.recno','ivt.lineno_','ivt.itemcode','p.description', 's.qtyonhand','ivt.uomcode', 'ivt.qtyonhandrecv','ivt.uomcoderecv','s.maxqty','ivt.txnqty','ivt.qtyrequest','ivt.netprice','ivt.amount','ivt.expdate','ivt.batchno'];
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
 					enableForm('#formdata');
@@ -73,6 +75,7 @@ $(document).ready(function () {
 					inputTrantypeValue(selrowData('#jqGrid').isstype,selrowData('#jqGrid').crdbfl);
 					break;
 				case state = 'view':
+					urlParam2.field=['ivt.compcode','ivt.recno','ivt.lineno_','ivt.itemcode','p.description', 'ivt.qtyonhand','ivt.uomcode', 'ivt.qtyonhandrecv','ivt.uomcoderecv','s.maxqty','ivt.txnqty','ivt.qtyrequest','ivt.netprice','ivt.amount','ivt.expdate','ivt.batchno'];
 					disableForm('#formdata');
 					$("#pg_jqGridPager2 table").hide();
 					inputTrantypeValue(selrowData('#jqGrid').isstype,selrowData('#jqGrid').crdbfl);
@@ -1452,6 +1455,7 @@ $(document).ready(function () {
 		    		'qtyonhand' : $('#'+ids[i]+"_qtyonhand").val(),
 		    		'qtyonhandrecv' : $('#'+ids[i]+"_qtyonhandrecv").val(),
 		    		'txnqty' : $('#'+ids[i]+"_txnqty").val(),
+		    		'qtyrequest' : $('#'+ids[i]+"_qtyrequest").val(),
                     'unit' : $("#"+ids[i]+"_unit").val(),
 		    		'amount' : $('#'+ids[i]+"_amount").val(),
 		    		'batchno' : $('#'+ids[i]+"_batchno").val(),

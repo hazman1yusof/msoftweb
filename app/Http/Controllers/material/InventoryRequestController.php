@@ -317,7 +317,7 @@ class InventoryRequestController extends defaultController
             $reqdept_from = '%';
         }
         $reqdept_to = $request->reqdept_to;
-        $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
+        $datefr = Carbon::parse($request->datefrom)->format('Y-m-d');
         $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
 
         $ivrequest = DB::table('material.ivreqhd as h')
@@ -347,10 +347,12 @@ class InventoryRequestController extends defaultController
                 ->whereIn('h.recstatus',['POSTED','PARTIAL'])
                 // ->where('h.unit',session('unit'))
                 ->whereBetween('h.reqdept', [$reqdept_from, $reqdept_to.'%'])
-                ->whereBetween('h.reqdt', [$datefr, $dateto])
-                ->orderBy('h.reqdt', 'ASC')
+                ->whereDate('h.reqdt','>=',$datefr)
+                ->whereDate('h.reqdt','<=',$dateto)
+                // ->whereBetween('h.reqdt', [$datefr, $dateto])
+                ->orderBy('h.recno', 'ASC')
                 ->get();
-            // dd($ivrequest);
+            // dd($this->getQueries($ivrequest));
 
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))

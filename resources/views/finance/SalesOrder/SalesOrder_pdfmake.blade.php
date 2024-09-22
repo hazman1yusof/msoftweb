@@ -84,7 +84,7 @@
 								{text: '{{$dbacthdr->debt_debtcode}}'},
 								{text: 'BILL NO', alignment: 'right'},
 								{text: ':'},
-								{text: '{{str_pad($dbacthdr->invno, 7, "0", STR_PAD_LEFT)}}'},
+								{text: 'INV-{{str_pad($dbacthdr->invno, 6, "0", STR_PAD_LEFT)}}, DO-{{str_pad($dbacthdr->invno, 6, "0", STR_PAD_LEFT)}}'},
 							],
 							[
 								{text: 'NAME', alignment: 'right'},
@@ -144,7 +144,7 @@
 							],
 							@foreach ($billsum as $obj)
 							[
-								{text:`{{$obj->chgmast_desc}}`,colSpan: 3},{},{},
+								{text:`{!!$obj->chgmast_desc!!}`,colSpan: 3},{},{},
 								{text:`{!!$obj->uom!!}`},
 								{text:'{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}'},
 								{text:`{!!$obj->batchno!!}`},
