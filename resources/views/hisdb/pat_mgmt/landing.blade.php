@@ -350,6 +350,7 @@
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script>
+				<script type="text/javascript" src="js/hisdb/admhandover/admhandover.js"></script>
 			@endif
 
 			@if (Auth::user()->billing == 1)
