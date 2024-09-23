@@ -275,8 +275,8 @@ $(document).ready(function (){
             refreshGrid("#jqGrid3", urlParam2);
             populate_form(selrowData("#jqGrid"));
             
-            // $("#pdfgen1").attr('href','./Quotation_SO/showpdf?idno='+selrowData("#jqGrid").SL_idno);
-            // $("#pdfgen2").attr('href','./Quotation_SO/showpdf?idno='+selrowData("#jqGrid").SL_idno);
+            $("#pdfgen1").attr('href','./Quotation_SO/showpdf?idno='+selrowData("#jqGrid").SL_idno);
+            $("#pdfgen2").attr('href','./Quotation_SO/showpdf?idno='+selrowData("#jqGrid").SL_idno);
             if_cancel_hide();
         },
         ondblClickRow: function (rowid, iRow, iCol, e){

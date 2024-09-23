@@ -615,7 +615,7 @@ Route::post('/Quotation_SO/form','finance\Quotation_SO_Controller@form');
 Route::get('/Quotation_SO/form','finance\Quotation_SO_Controller@form');
 Route::post('/Quotation_SO_Detail/form','finance\Quotation_SO_DetailController@form');
 Route::get('/Quotation_SO_Detail/table','finance\Quotation_SO_DetailController@table');
-Route::get('/Quotation_SO_/showpdf','finance\Quotation_SO_Controller@showpdf');
+Route::get('/Quotation_SO/showpdf','finance\Quotation_SO_Controller@showpdf');
 
 //// Finance - SalesOrder page ///
 Route::get('/SalesOrder','finance\SalesOrderController@show');

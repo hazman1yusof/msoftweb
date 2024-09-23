@@ -786,37 +786,40 @@ class Quotation_SO_Controller extends defaultController
     
     public function showpdf(Request $request){
         $idno = $request->idno;
-        if(!$idno){
+        if(empty($idno)){
             abort(404);
         }
 
-        $dbacthdr = DB::table('debtor.dbacthdr as h', 'debtor.debtormast as m', 'debtor.debtortype as dt', 'hisdb.billtymst as bt')
-            ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate',
-            'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4', 'm.creditterm as crterm','m.billtype as billtype','dt.debtortycode as dt_debtortycode', 'dt.description as dt_description', 'bt.billtype as billtype', 'bt.description as bt_desc')
-            ->leftJoin('debtor.debtormast as m', 'h.debtorcode', '=', 'm.debtorcode')
-            ->leftJoin('debtor.debtortype as dt', 'dt.debtortycode', '=', 'm.debtortype')
-            ->leftJoin('hisdb.billtymst as bt', 'bt.billtype', '=', 'm.billtype')
-            ->where('h.idno','=',$idno)
-            ->where('h.mrn','=','0')
-            ->where('h.compcode','=',session('compcode'))
-            ->first();
-        // dd($dbacthdr);
-        $billsum = DB::table('debtor.billsum AS b', 'material.productmaster AS p', 'material.uom as u', 'debtor.debtormast as d', 'hisdb.chgmast as m')
-            ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
-            'u.description as uom_desc', 
-            'd.debtorcode as debt_debtcode','d.name as debt_name', 
-            'm.description as chgmast_desc')
-            ->leftJoin('hisdb.chgmast as m', function($join) use ($request){
-                $join = $join->on('b.chggroup', '=', 'm.chgcode');
-                $join = $join->on('b.uom', '=', 'm.uom');
+        $salehdr = DB::table('finance.salehdr as sh')
+            ->select('sh.idno','sh.compcode','sh.source','sh.trantype','sh.auditno','sh.quoteno','sh.lineno_','sh.amount','sh.outamount','sh.hdrsts','sh.posteddate','sh.entrydate','sh.entrytime','sh.entryuser','sh.reference','sh.recptno','sh.paymode','sh.tillcode','sh.tillno','sh.debtortype','sh.debtorcode','sh.payercode','sh.billdebtor','sh.remark','sh.mrn','sh.episno','sh.authno','sh.expdate','sh.adddate','sh.adduser','sh.upddate','sh.upduser','sh.epistype','sh.cbflag','sh.conversion','sh.payername','sh.hdrtype','sh.currency','sh.rate','sh.startdate','sh.termvalue','sh.termcode','sh.frequency','sh.pono','sh.podate','sh.saleid','sh.billtype','sh.docdate','sh.unit','sh.recstatus','sh.deptcode','m.name as debtorcode_desc','m.address1','m.address2','m.address3','m.address4','bt.description as billtype_desc')
+            ->leftJoin('debtor.debtormast as m', function($join) use ($request){
+                $join = $join->on("m.debtorcode", '=', 'sh.debtorcode');    
+                $join = $join->where("m.compcode", '=', session('compcode'));
             })
-            //->leftJoin('material.productmaster as p', 'b.description', '=', 'p.description')
-            ->leftJoin('material.uom as u', 'b.uom', '=', 'u.uomcode')
-            ->leftJoin('debtor.debtormast as d', 'b.debtorcode', '=', 'd.debtorcode')
-            ->where('b.source','=',$dbacthdr->source)
-            ->where('b.trantype','=',$dbacthdr->trantype)
-            ->where('b.billno','=',$dbacthdr->auditno)
-            ->where('b.compcode','=',session('compcode'))
+            ->leftJoin('hisdb.billtymst as bt', function($join) use ($request){
+                $join = $join->on("bt.billtype", '=', 'sh.hdrtype');    
+                $join = $join->where("bt.compcode", '=', session('compcode'));
+            })
+            ->where('sh.idno','=',$idno)
+            // ->where('h.mrn','=','0')
+            ->where('sh.compcode','=',session('compcode'))
+            ->first();
+        // dd($salehdr);
+        $salesum = DB::table('finance.salesum as ss')
+            ->select('ss.idno','ss.compcode','ss.source','ss.trantype','ss.auditno','ss.lineno_','ss.description','ss.quantity','ss.amount','ss.outamt','ss.totamount','ss.taxcode','ss.taxamt','ss.mrn','ss.episno','ss.paymode','ss.cardno','ss.debtortype','ss.debtorcode','ss.billno','ss.rowno','ss.billtype','ss.chgclass','ss.classlevel','ss.chggroup','ss.lastuser','ss.lastupdate','ss.invcode','ss.seqno','ss.discamt','ss.docref','ss.uprice','ss.remarks','ss.invdate','ss.percentdisc','ss.amtdisc','ss.adduser','ss.adddate','ss.upduser','ss.upddate','ss.saleid','ss.uom','ss.uom_recv','ss.pouom','ss.reference','ss.balance','ss.qtyonhand','ss.qtydelivered','ss.ucost','ss.qtydel','ss.unitprice','ss.billtypeperct','ss.billtypeamt','ss.recstatus','cm.description as chgmast_desc','u.description as uom_desc')
+            ->leftJoin('hisdb.chgmast as cm', function($join) use ($request){
+                $join = $join->on('cm.chgcode', '=', 'ss.chggroup');
+                $join = $join->on('cm.uom', '=', 'ss.uom');
+                $join = $join->where("cm.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('material.uom as u', function($join) use ($request){
+                $join = $join->on('u.uomcode', '=', 'ss.uom');
+                $join = $join->where("u.compcode", '=', session('compcode'));
+            })
+            ->where('ss.source','=','SL')
+            ->where('ss.trantype','=','RECNO')
+            ->where('ss.auditno','=',$salehdr->auditno)
+            ->where('ss.compcode','=',session('compcode'))
             ->get();
 
         // $chgmast = DB::table('debtor.billsum AS b', 'hisdb.chgmast as m')
@@ -827,17 +830,13 @@ class Quotation_SO_Controller extends defaultController
         //     ->where('b.billno','=',$dbacthdr->auditno)
         //     ->get();
         
-        if ( $dbacthdr->recstatus == "OPEN") {
-            $title = "DELIVERY ORDER";
-        } elseif ( $dbacthdr->recstatus == "POSTED"){
-            $title = " INVOICE";
-        }
+        $title = " QUOTATION";
 
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
 
-        $totamount_expld = explode(".", (float)$dbacthdr->amount);
+        $totamount_expld = explode(".", (float)$salehdr->amount);
 
         $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
         $totamt_bm = $totamt_bm_rm." SAHAJA";
@@ -851,7 +850,7 @@ class Quotation_SO_Controller extends defaultController
     
         // return $pdf->stream();
         
-        return view('finance.SalesOrder.SalesOrder_pdfmake',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
+        return view('finance.Quotation_SO.Quotation_SO_pdfmake',compact('salehdr','salesum','totamt_bm','company', 'title'));
     }
     
     // function sendmeail($data) -- nak kena ada atau tak

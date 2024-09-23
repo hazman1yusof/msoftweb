@@ -200,7 +200,7 @@
 
         <div class="panel panel-default">
 			<div class="panel-heading">Quotation Data Entry Header
-				<!-- <a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print Quotation</a> -->
+				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print Quotation</a>
 			</div>
 			
 			<div class="panel-body">
@@ -253,7 +253,7 @@
 	<div id="dialogForm" title="Add Form">
 		<div class='panel panel-info'>
 			<div class="panel-heading">Quotation Header
-				<!-- <a class='pull-right pointer text-primary' id='pdfgen2' href="" target="_blank"><span class='fa fa-print'></span> Print Quotation</a> -->
+				<a class='pull-right pointer text-primary' id='pdfgen2' href="" target="_blank"><span class='fa fa-print'></span> Print Quotation</a>
 			</div>
 			<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 				<form class='form-horizontal' style='width:99%' id='formdata'>
@@ -465,7 +465,7 @@
 			});
 		</script>
 
-		<script src="js/finance/Quotation_SO/Quotation_SO.js"></script>
+		<script src="js/finance/Quotation_SO/Quotation_SO.js?v=1.1"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 @endsection
