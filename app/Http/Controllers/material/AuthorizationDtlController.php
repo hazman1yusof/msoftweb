@@ -280,10 +280,11 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                             ->on('dbm.debtorcode','dbact.payercode');
                     })
                     ->where('qso.compcode',session('compcode'))
-                    ->where('qso.trantype','<>','DONE');
-            dd($this->getQueries($queueso));
+                    ->where('qso.trantype','<>','DONE')
+                    ->get();
+            // dd($this->getQueries($queueso));
 
-                    // ->get();
+                    // 
 
         $queueso_reject = DB::table('finance.queueso as qso')
                     ->select('qso.trantype','dbact.adduser','dbact.auditno','dbact.payercode','dbm.name','dbact.adddate','dbact.recstatus','dbact.amount','dbact.adduser','dbact.cancelby','dbact.canceldate')
