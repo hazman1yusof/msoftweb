@@ -296,8 +296,8 @@
 								{text: '___________________'}, 
 							],
                             [
-								{text: 'Name:', fontSize: 8},
-								{text: 'Name:', fontSize: 8},
+								{text: 'Name: {{$delordhd->respersonid}}', fontSize: 8},
+								{text: 'Name: {{$delordhd->postedby_name}}', fontSize: 8},
 								
 							],
                         ]

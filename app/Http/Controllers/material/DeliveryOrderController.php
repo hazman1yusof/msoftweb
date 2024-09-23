@@ -1284,7 +1284,10 @@ class DeliveryOrderController extends defaultController
         DB::table('material.delordhd')
                 ->where('recno', '=', $delordhd_obj->recno)
                 ->where('compcode', '=' ,session('compcode'))
-                ->update(['recstatus'  => 'POSTED']);
+                ->update([
+                    'recstatus'  => 'POSTED',
+                    'postedby' => session('username')
+                ]);
 
         DB::table('material.delorddt')
                 ->where('recno', '=', $delordhd_obj->recno)
@@ -1319,10 +1322,15 @@ class DeliveryOrderController extends defaultController
             abort(404);
         }
         
-        $delordhd = DB::table('material.delordhd')
-            ->where('compcode','=',session('compcode'))
-            ->where('recno','=',$recno)
-            ->first();
+        $delordhd = DB::table('material.delordhd as do')
+                        ->select('do.idno','do.compcode','do.recno','do.prdept','do.trantype','do.docno','do.delordno','do.invoiceno','do.suppcode','do.srcdocno','do.deldept','do.subamount','do.amtdisc','do.perdisc','do.totamount','do.deliverydate','do.trandate','do.trantime','do.respersonid','do.checkpersonid','do.checkdate','do.postedby','do.recstatus','do.remarks','do.adduser','do.adddate','do.upduser','do.upddate','do.reason','do.rtnflg','do.reqdept','do.credcode','do.impflg','do.allocdate','do.postdate','do.deluser','do.taxclaimable','do.TaxAmt','do.prortdisc','do.cancelby','do.canceldate','do.reopenby','do.reopendate','do.unit','do.postflag','rby.name as postedby_name')
+                        ->leftJoin('sysdb.users as rby', function($join) use ($request){
+                            $join = $join->on('rby.username', '=', 'do.postedby')
+                                    ->where('rby.compcode','=',session('compcode'));
+                        })
+                        ->where('do.compcode','=',session('compcode'))
+                        ->where('do.recno','=',$recno)
+                        ->first();
 
         $delorddt = DB::table('material.delorddt AS dodt')
             ->select('dodt.compcode', 'dodt.recno', 'dodt.lineno_', 'dodt.pricecode', 'dodt.itemcode', 'p.description', 'dodt.uomcode', 'dodt.pouom', 'dodt.qtyorder', 'dodt.qtydelivered','dodt.unitprice', 'dodt.taxcode', 'dodt.perdisc', 'dodt.amtdisc', 'dodt.amtslstax as tot_gst','dodt.netunitprice', 'dodt.totamount','dodt.amount', 'dodt.rem_but AS remarks_button', 'dodt.remarks', 'dodt.recstatus', 'dodt.batchno', 'dodt.expdate','dodt.unit','dodt.kkmappno','u.description as uom_desc')
@@ -1369,8 +1377,13 @@ class DeliveryOrderController extends defaultController
                        ->where('gl.auditno',$value->recno)
                        ->where('gl.lineno_',$value->lineno_)
                        ->where('gl.source','IV')
-                       ->where('gl.trantype',$delordhd->trantype)
-                       ->first();
+                       ->where('gl.trantype',$delordhd->trantype);
+
+                if(!$gltran->exists()){
+                    continue;
+                }
+
+                $gltran = $gltran->first();
 
                 $drkey = $gltran->drcostcode.'_'.$gltran->dracc;
                 $crkey = $gltran->crcostcode.'_'.$gltran->cracc;
