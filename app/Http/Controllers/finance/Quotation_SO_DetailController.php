@@ -1417,7 +1417,7 @@ class Quotation_SO_DetailController extends defaultController
                         ->where('source','=',$source)
                         ->where('trantype','=',$trantype)
                         ->where('auditno','=',$auditno)
-                        ->count('lineno_');
+                        ->max('lineno_');
             
             $li=intval($sqlln)+1;
 
