@@ -658,96 +658,105 @@ class Quotation_SO_DetailController extends defaultController
         $entrydate = $request->entrydate;
         $chgcode = $request->chgcode;
         $uom = $request->uom;
-        $billtype_obj = $this->billtype_obj_get($request);
-
-        switch ($priceuse) {
-            case 'PRICE1':
-                $cp_fld = 'amt1';
-                break;
-            case 'PRICE2':
-                $cp_fld = 'amt2';
-                break;
-            case 'PRICE3':
-                $cp_fld = 'amt3';
-                break;
-            default:
-                $cp_fld = 'costprice';
-                break;
-        }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE')
                         ->where('cm.chgcode','=',$chgcode)
                         ->where('cm.uom','=',$uom);
-                        // ->where(function ($query) {
-                        //    $query->whereNotNull('st.idno')
-                        //          ->orWhere('cm.invflag', '=', 0);
-                        // });
-
-        $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
-                            $join = $join->where('cp.compcode', '=', session('compcode'));
-                            $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
-                            $join = $join->on('cp.uom', '=', 'cm.uom');
-                            if($request->from != 'chgcode_dfee'){
-                                $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
-                            }
-                            $join = $join->where('cp.effdate', '<=', $entrydate);
-                        });
-
-        $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
-                            $join = $join->on('st.itemcode', '=', 'cm.chgcode');
-                            $join = $join->on('st.uomcode', '=', 'cm.uom');
-                            $join = $join->where('st.compcode', '=', session('compcode'));
-                            $join = $join->where('st.unit', '=', session('unit'));
-                            $join = $join->where('st.deptcode', '=', $deptcode);
-                            $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
-                        });
-
-        $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
-                            $join = $join->where('pt.compcode', '=', session('compcode'));
-                            $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
-                            $join = $join->on('pt.uomcode', '=', 'cm.uom');
-                            $join = $join->where('pt.unit', '=', session('unit'));
-                        });
-
-        $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
-                            $join = $join->where('cp.compcode', '=', session('compcode'));
-                            $join = $join->on('cp.optax', '=', 'tm.taxcode');
-                        });
-
-        $table = $table->join('material.uom as uom', function($join){
-                            $join = $join->on('uom.uomcode', '=', 'cm.uom')
-                                        ->where('uom.compcode', '=', session('compcode'))
-                                        ->where('uom.recstatus','=','ACTIVE');
-                    });
 
         $result = $table->get()->toArray();
 
-        foreach ($result as $key => $value) {
-            $billtype_amt_percent = $this->get_billtype_amt_percent($billtype_obj,$value);
-            $value->billty_amount = $billtype_amt_percent->amount; 
-            $value->billty_percent = $billtype_amt_percent->percent_;
+        // $billtype_obj = $this->billtype_obj_get($request);
 
-            $chgprice_obj = DB::table('hisdb.chgprice as cp')
-                ->select('cp.idno',$cp_fld,'cp.optax','tm.rate','cp.chgcode')
-                ->leftJoin('hisdb.taxmast as tm', 'cp.optax', '=', 'tm.taxcode')
-                ->where('cp.compcode', '=', session('compcode'))
-                ->where('cp.chgcode', '=', $value->chgcode)
-                ->where('cp.uom', '=', $value->uom)
-                ->whereDate('cp.effdate', '<=', $entrydate)
-                ->orderBy('cp.effdate','desc');
+        // switch ($priceuse) {
+        //     case 'PRICE1':
+        //         $cp_fld = 'amt1';
+        //         break;
+        //     case 'PRICE2':
+        //         $cp_fld = 'amt2';
+        //         break;
+        //     case 'PRICE3':
+        //         $cp_fld = 'amt3';
+        //         break;
+        //     default:
+        //         $cp_fld = 'costprice';
+        //         break;
+        // }
 
-            if($chgprice_obj->exists()){
-                $chgprice_obj = $chgprice_obj->first();
+        // $table = DB::table('hisdb.chgmast as cm')
+        //                 ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
+        //                 ->where('cm.compcode','=',session('compcode'))
+        //                 ->where('cm.recstatus','<>','DELETE')
+        //                 ->where('cm.chgcode','=',$chgcode)
+        //                 ->where('cm.uom','=',$uom);
+        //                 // ->where(function ($query) {
+        //                 //    $query->whereNotNull('st.idno')
+        //                 //          ->orWhere('cm.invflag', '=', 0);
+        //                 // });
 
-                if($value->chgcode == $chgprice_obj->chgcode && $value->idno != $chgprice_obj->idno){
-                    unset($result[$key]);
-                    continue;
-                }
-            }
-        }
+        // $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
+        //                     $join = $join->where('cp.compcode', '=', session('compcode'));
+        //                     $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
+        //                     $join = $join->on('cp.uom', '=', 'cm.uom');
+        //                     if($request->from != 'chgcode_dfee'){
+        //                         $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+        //                     }
+        //                     $join = $join->where('cp.effdate', '<=', $entrydate);
+        //                 });
+
+        // $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
+        //                     $join = $join->on('st.itemcode', '=', 'cm.chgcode');
+        //                     $join = $join->on('st.uomcode', '=', 'cm.uom');
+        //                     $join = $join->where('st.compcode', '=', session('compcode'));
+        //                     $join = $join->where('st.unit', '=', session('unit'));
+        //                     $join = $join->where('st.deptcode', '=', $deptcode);
+        //                     $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+        //                 });
+
+        // $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
+        //                     $join = $join->where('pt.compcode', '=', session('compcode'));
+        //                     $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
+        //                     $join = $join->on('pt.uomcode', '=', 'cm.uom');
+        //                     $join = $join->where('pt.unit', '=', session('unit'));
+        //                 });
+
+        // $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
+        //                     $join = $join->where('cp.compcode', '=', session('compcode'));
+        //                     $join = $join->on('cp.optax', '=', 'tm.taxcode');
+        //                 });
+
+        // $table = $table->join('material.uom as uom', function($join){
+        //                     $join = $join->on('uom.uomcode', '=', 'cm.uom')
+        //                                 ->where('uom.compcode', '=', session('compcode'))
+        //                                 ->where('uom.recstatus','=','ACTIVE');
+        //             });
+
+        // $result = $table->get()->toArray();
+
+        // foreach ($result as $key => $value) {
+        //     $billtype_amt_percent = $this->get_billtype_amt_percent($billtype_obj,$value);
+        //     $value->billty_amount = $billtype_amt_percent->amount; 
+        //     $value->billty_percent = $billtype_amt_percent->percent_;
+
+        //     $chgprice_obj = DB::table('hisdb.chgprice as cp')
+        //         ->select('cp.idno',$cp_fld,'cp.optax','tm.rate','cp.chgcode')
+        //         ->leftJoin('hisdb.taxmast as tm', 'cp.optax', '=', 'tm.taxcode')
+        //         ->where('cp.compcode', '=', session('compcode'))
+        //         ->where('cp.chgcode', '=', $value->chgcode)
+        //         ->where('cp.uom', '=', $value->uom)
+        //         ->whereDate('cp.effdate', '<=', $entrydate)
+        //         ->orderBy('cp.effdate','desc');
+
+        //     if($chgprice_obj->exists()){
+        //         $chgprice_obj = $chgprice_obj->first();
+
+        //         if($value->chgcode == $chgprice_obj->chgcode && $value->idno != $chgprice_obj->idno){
+        //             unset($result[$key]);
+        //             continue;
+        //         }
+        //     }
+        // }
 
         // $table =  DB::table('hisdb.chgmast as cm')
         //             ->select('cm.chgcode','cm.description')
