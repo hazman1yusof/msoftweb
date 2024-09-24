@@ -118,13 +118,14 @@
 			},
 			pageSize: 'A4',
 			pageMargins: [30, 150, 20, 50],
+			pageOrientation: 'landscape',
 		  	content: [
 				{
 					style: 'tableExample',
 					table: {
 	                    headerRows: 1,
 	                	dontBreakRows: true,
-	                    widths: [20,80,50,30,40,40,40,40,40,40],//panjang standard dia 515
+	                    widths: [20,150,50,60,40,50,50,50,50,50,50,60,60],//panjang standard dia 515
 						body: make_body()
 					}
 				},
@@ -167,49 +168,57 @@
 				{text:'Line\nNo.',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
 				{text:'ItemCode\nDescription',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
 				{text:'Expiry\nDate',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
-				{text:'UOM\nCode',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
+				{text:'Batch No',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
+				{text:'UOM Code',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
+				{text:'W.Avg\nCost',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
 				{text:'Freeze\nQty',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
-				{text:'Dispense\nQty',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
+				{text:'Count\nQty',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
 				{text:'Physical\nQty',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
 				{text:'Variance\nQty',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
-				{text:'W.Avg\nCost',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
+				{text:'Freeze\nValue',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
 				{text:'Variance\nValue',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]}
 			]
 	    ];
 
 		let totalvv = 0;
+		let totalfrz = 0;
 		phycntdt.forEach(function(e,i){
 			let arr1 = [
 				{text:parseInt(e.lineno_)+1, style: 'body_row', border: [false, false, false, false]},
 				{text:e.itemcode, style: 'body_row', border: [false, false, false, false]},
 				{text:dateFormatter(e.expdate), style: 'body_row', border: [false, false, false, false]},
+				{text:e.batchno, style: 'body_row', border: [false, false, false, false]},
 				{text:e.uomcode, style: 'body_row', border: [false, false, false, false]},
+				{text:myparseFloat(e.unitcost),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
 				{text:myparseFloat(e.thyqty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-				{text:myparseFloat(e.dspqty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+				{text:'',alignment: 'right', style: 'body_row', border: [false, false, false, true]},
 				{text:myparseFloat(e.phyqty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
 				{text:myparseFloat(parseFloat(e.phyqty) - parseFloat(e.thyqty)),alignment: 'right', style: 'body_row',border: [false, false, false, false]},
-				{text:myparseFloat(e.unitcost),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-				{text:myparseFloatVV(e.unitcost,e.dspqty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+				{text:myparseFloatVV(e.unitcost,parseFloat(e.thyqty)),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+				{text:myparseFloatVV(e.unitcost,parseFloat(e.phyqty) - parseFloat(e.thyqty)),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
 			];
     		retval.push(arr1);
     		let arr2 = [
 				{text:'', style: 'body_row2', border: [false, false, false, false]},
-				{text:e.description,colSpan: 6, style: 'body_row2', border: [false, false, false, false]},
+				{text:e.description,colSpan: 5, style: 'body_row2', border: [false, false, false, false]},
 				{},
 				{},
 				{},
 				{},
+				{text:e.remark,colSpan: 6, style: 'body_row2',alignment: 'right', border: [false, false, false, false]},
 				{},
-				{text:e.remark,colSpan: 3, style: 'body_row2', border: [false, false, false, false]},
+				{},
+				{},
 				{},
 				{},
 			];
     		retval.push(arr2);
-    		totalvv = parseFloat(totalvv) + parseFloat(myparseFloatVV(e.unitcost,e.dspqty));
+    		totalfrz = parseFloat(totalfrz) + parseFloat(myparseFloatVV(e.unitcost,parseFloat(e.thyqty)));
+    		totalvv = parseFloat(totalvv) + parseFloat(myparseFloatVV(e.unitcost,parseFloat(e.phyqty) - parseFloat(e.thyqty)));
 		});
 
 		let arrtot =  [
-				{text:'*** TOTAL ***',bold: true,colSpan: 9,alignment: 'left', style: 'body_row', border: [false, false, false, false]},
+				{text:'*** TOTAL ***',bold: true,colSpan: 10,alignment: 'left', style: 'body_row', border: [false, false, false, false]},
 				{},
 				{},
 				{},
@@ -218,7 +227,9 @@
 				{},
 				{},
 				{},
-				{text:parseFloat(totalvv),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+				{},
+				{text:myparseFloat(totalfrz),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+				{text:myparseFloat(totalvv),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
 			];
 		retval.push(arrtot);
 
@@ -235,15 +246,15 @@
 		if(Number.isInteger(val)){
 			return numeral(val).format('0,0.00');
 		}
-		if(val.trim() == '') return '0.00';
+		if(val == '') return '0.00';
 		if(val == null) return '0.00';
 		return numeral(val).format('0,0.00');
 	} 
 
-	function myparseFloatVV(unitcost,dspqty){
-		if(dspqty == null) return '0.00';
-		if(dspqty.trim() == '') return '0.00';
-		return numeral(unitcost*dspqty).format('0,0.00');
+	function myparseFloatVV(unitcost,varqty){
+		if(varqty == null) return '0.00';
+		if(varqty == '') return '0.00';
+		return numeral(unitcost*varqty).format('0,0.00');
 	} 
 	
 

@@ -1780,7 +1780,7 @@ class PaymentVoucherController extends defaultController
         $apacthdr = DB::table('finance.apacthdr as h')
             ->select('h.compcode', 'h.auditno', 'h.trantype', 'h.source','h.doctype', 'h.pvno', 'h.suppcode', 'm.Name as suppname', 'm.Addr1 as addr1', 'm.Addr2 as addr2', 'm.Addr3 as addr3', 'm.TelNo as telno', 'm.TINNo', 'm.CompRegNo', 'm.AccNo', 'h.actdate', 'h.document', 'h.deptcode', 'h.amount', 'h.outamount', 'h.recstatus', 'h.payto', 'h.category', 'h.remarks', 'h.paymode', 'h.bankcode', 'h.cheqno','h.bankaccno as h_bankaccno','b.bankname', 'b.bankaccount as bankaccno', 'h.requestby', 'h.supportby','h.verifiedby', 'h.approvedby','u.name as requestby_name','u.designation as requestby_dsg','s.name as supportby_name','s.designation as supportby_dsg','e.name as verifiedby_name','e.designation as verifiedby_dsg','ur.name as approvedby_name','ur.designation as approvedby_dsg',)
             ->leftJoin('material.supplier as m', function($join) use ($request){
-                $join = $join->on('m.suppcode', '=', 'h.suppcode');
+                $join = $join->on('m.suppcode', '=', 'h.payto');
                 $join = $join->where('m.compcode', '=', session('compcode'));
             })
             ->leftJoin('finance.bank as b', function($join) use ($request){
