@@ -31,7 +31,7 @@
 	var ini_header={
 		pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_LEFT)}}`,
 		pvdate:`{{\Carbon\Carbon::parse($apacthdr->actdate)->format('d/m/Y')}}`,
-		cred_code:`{{$apacthdr->suppcode}}`,
+		cred_code:`{{$apacthdr->payto}}`,
 		pname:`{{strtoupper($apacthdr->suppname)}}`,
 		padd1:`{{strtoupper($apacthdr->addr1)}}`,
 		padd2:`{{strtoupper($apacthdr->addr2)}}`,
