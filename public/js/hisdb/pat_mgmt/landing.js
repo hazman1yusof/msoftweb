@@ -285,13 +285,13 @@ $(document).ready(function() {
                     populate_paediatric(lastrowdata);
                     populate_doctorNote_currpt(lastrowdata);
                     populate_dieteticCareNotes_currpt(lastrowdata);
-                    populate_dietOrder_currpt(lastrowdata);
+                    // populate_dietOrder_currpt(lastrowdata);
                 }else if($('#user_nurse').val() == '1'){
                     populate_triage_currpt(lastrowdata);
                     populate_doctorNote_currpt(lastrowdata);
                     populate_admHandover_currpt(lastrowdata);
                     populate_dieteticCareNotes_currpt(lastrowdata);
-                    populate_dietOrder_currpt(lastrowdata);
+                    // populate_dietOrder_currpt(lastrowdata);
                 }
                 
                 if($('#user_billing').val() == '1'){

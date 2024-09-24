@@ -8,116 +8,92 @@ $(document).ready(function (){
 	// 	this.style.height = (this.scrollHeight) + 'px';
 	// });
 	
-	disableForm('#formDietOrder');
+	disableForm('#formAdmHandover');
 	
-	$("#new_dietOrder").click(function (){
-		button_state_dietOrder('wait');
-		enableForm('#formDietOrder');
-		rdonly('#formDietOrder');
+	$("#new_admHandover").click(function (){
+		button_state_admHandover('wait');
+		enableForm('#formAdmHandover');
+		rdonly('#formAdmHandover');
 		// dialog_mrn_edit.on();
 	});
 	
-	$("#edit_dietOrder").click(function (){
-		button_state_dietOrder('wait');
-		enableForm('#formDietOrder');
-		rdonly('#formDietOrder');
+	$("#edit_admHandover").click(function (){
+		button_state_admHandover('wait');
+		enableForm('#formAdmHandover');
+		rdonly('#formAdmHandover');
 		// dialog_mrn_edit.on();
 	});
 	
-	$("#save_dietOrder").click(function (){
-		disableForm('#formDietOrder');
-		if($('#formDietOrder').isValid({requiredFields: ''}, conf, true)){
-			saveForm_dietOrder(function (){
-				$("#cancel_dietOrder").data('oper','edit');
-				$("#cancel_dietOrder").click();
+	$("#save_admHandover").click(function (){
+		disableForm('#formAdmHandover');
+		if($('#formAdmHandover').isValid({requiredFields: ''}, conf, true)){
+			saveForm_admHandover(function (){
+				$("#cancel_admHandover").data('oper','edit');
+				$("#cancel_admHandover").click();
 				// $("#jqGridPagerRefresh").click();
 			});
 		}else{
-			enableForm('#formDietOrder');
-			rdonly('#formDietOrder');
+			enableForm('#formAdmHandover');
+			rdonly('#formAdmHandover');
 		}
 	});
 	
-	$("#cancel_dietOrder").click(function (){
-		disableForm('#formDietOrder');
-		button_state_dietOrder($(this).data('oper'));
+	$("#cancel_admHandover").click(function (){
+		disableForm('#formAdmHandover');
+		button_state_admHandover($(this).data('oper'));
 		// dialog_mrn_edit.off();
 	});
 	
-	// Mode of Feeding
-	// Radio button with different name but a single selection
-	$("input[id=feedingmode]").prop("checked", false);
-	$("input[id=feedingmode]:first").prop("checked", true);
-	
-	$("input[id=feedingmode]").click(function (event){
-		$("input[id=feedingmode]").prop("checked", false);
-		$(this).prop("checked", true);
-		feedingCheck();
-		// event.preventDefault();
-	});
-	
-	$("#jqGridDietOrder_panel").on("shown.bs.collapse", function (){
+	$("#jqGridAdmHandover_panel").on("shown.bs.collapse", function (){
 		var saveParam = {
-			action: 'get_table_dietorder',
+			action: 'get_table_admhandover',
 		}
 		var postobj = {
 			_token: $('#csrf_token').val(),
-			mrn: $("#mrn_dietOrder").val(),
-			episno: $("#episno_dietOrder").val(),
+			mrn: $("#mrn_admHandover").val(),
+			episno: $("#episno_admHandover").val(),
+			vs_weight: $("#vs_weight").val(),
+			medicalhistory: $("#medicalhistory").val(),
+			surgicalhistory: $("#surgicalhistory").val(),
 		};
 		
-		$.post("dietorder/form?"+$.param(saveParam), $.param(postobj), function (data){
+		$.post("admhandover/form?"+$.param(saveParam), $.param(postobj), function (data){
 			
 		},'json').fail(function (data){
 			alert('there is an error');
 		}).success(function (data){
-			if(!$.isEmptyObject(data.dietorder)){
-				autoinsert_rowdata("#formDietOrder",data.dietorder);
-				autoinsert_rowdata("#formDietOrder",data.episode);
-				button_state_dietOrder('edit');
-				yesnoCheck();
-				feedingCheck();
-				textarea_init_dietorder();
+			if(!$.isEmptyObject(data.admhandover)){
+				autoinsert_rowdata("#formAdmHandover",data.admhandover);
+				autoinsert_rowdata("#formAdmHandover",data.episode);
+				autoinsert_rowdata("#formAdmHandover",data.nurshistory);
+				autoinsert_rowdata("#formAdmHandover",data.nursassessment);
+				button_state_admHandover('edit');
+				textarea_init_admhandover();
 			}else{
-				autoinsert_rowdata("#formDietOrder",data.episode);
-				button_state_dietOrder('add');
-				textarea_init_dietorder();
+				autoinsert_rowdata("#formAdmHandover",data.episode);
+				autoinsert_rowdata("#formAdmHandover",data.nurshistory);
+				autoinsert_rowdata("#formAdmHandover",data.nursassessment);
+				button_state_admHandover('add');
+				textarea_init_admhandover();
 			}
 		});
 		
-		SmoothScrollTo("#jqGridDietOrder_panel", 500);
+		SmoothScrollTo("#jqGridAdmHandover_panel", 500);
 	});
 	
-	$("#jqGridDietOrder_panel").on("hide.bs.collapse", function (){
-		button_state_dietOrder('empty');
-		disableForm('#formDietOrder');
-		// $("#jqGridDietOrder_panel > div").scrollTop(0);
+	$("#jqGridAdmHandover_panel").on("hide.bs.collapse", function (){
+		button_state_admHandover('empty');
+		disableForm('#formAdmHandover');
+		// $("#jqGridAdmHandover_panel > div").scrollTop(0);
 	});
 	
-	$("#preview").click(function (){
-		// window.location='./dietorder/table?action=dietorder_preview&mrn='+$('#mrn_dietOrder').val()+'&episno='+$("#episno_dietOrder").val();
+	// $("#preview").click(function (){
+	// 	// window.location='./dietorder/table?action=dietorder_preview&mrn='+$('#mrn_admHandover').val()+'&episno='+$("#episno_admHandover").val();
 		
-		window.open('./dietorder/table?action=dietorder_preview&epistycode='+$('#epistycode').val(), '_blank');
-	});
+	// 	window.open('./admhandover/table?action=admhandover_preview&epistycode='+$('#epistycode').val(), '_blank');
+	// });
 	
 });
-
-// hide show No of Lodger
-function yesnoCheck(){
-	if(document.getElementById('yesCheck').checked){
-		document.getElementById('ifYes').style.display = 'inline-block';
-	}
-	else document.getElementById('ifYes').style.display = 'none';
-}
-
-// hide show order list
-function feedingCheck(){
-	if(document.getElementsByName('oral')[0].checked){
-		document.getElementById('ifOral').style.display = 'block';
-	}
-	else document.getElementById('ifOral').style.display = 'none';
-}
-// hide show order list ends
 
 var errorField = [];
 conf = {
@@ -135,127 +111,113 @@ conf = {
 	},
 };
 
-button_state_dietOrder('empty');
-function button_state_dietOrder(state){
+button_state_admHandover('empty');
+function button_state_admHandover(state){
 	switch(state){
 		case 'empty':
-			$("#toggle_dietOrder").removeAttr('data-toggle');
-			$('#cancel_dietOrder').data('oper','add');
-			$('#new_dietOrder,#save_dietOrder,#cancel_dietOrder,#edit_dietOrder').attr('disabled',true);
+			$("#toggle_admHandover").removeAttr('data-toggle');
+			$('#cancel_admHandover').data('oper','add');
+			$('#new_admHandover,#save_admHandover,#cancel_admHandover,#edit_admHandover').attr('disabled',true);
 			break;
 		case 'add':
-			$("#toggle_dietOrder").attr('data-toggle','collapse');
-			$('#cancel_dietOrder').data('oper','add');
-			$("#new_dietOrder").attr('disabled',false);
-			$('#save_dietOrder,#cancel_dietOrder,#edit_dietOrder').attr('disabled',true);
+			$("#toggle_admHandover").attr('data-toggle','collapse');
+			$('#cancel_admHandover').data('oper','add');
+			$("#new_admHandover").attr('disabled',false);
+			$('#save_admHandover,#cancel_admHandover,#edit_admHandover').attr('disabled',true);
 			break;
 		case 'edit':
-			$("#toggle_dietOrder").attr('data-toggle','collapse');
-			$('#cancel_dietOrder').data('oper','edit');
-			$("#edit_dietOrder").attr('disabled',false);
-			$('#save_dietOrder,#cancel_dietOrder,#new_dietOrder').attr('disabled',true);
+			$("#toggle_admHandover").attr('data-toggle','collapse');
+			$('#cancel_admHandover').data('oper','edit');
+			$("#edit_admHandover").attr('disabled',false);
+			$('#save_admHandover,#cancel_admHandover,#new_admHandover').attr('disabled',true);
 			break;
 		case 'wait':
-			$("#toggle_dietOrder").attr('data-toggle','collapse');
-			$("#save_dietOrder,#cancel_dietOrder").attr('disabled',false);
-			$('#edit_dietOrder,#new_dietOrder').attr('disabled',true);
+			$("#toggle_admHandover").attr('data-toggle','collapse');
+			$("#save_admHandover,#cancel_admHandover").attr('disabled',false);
+			$('#edit_admHandover,#new_admHandover').attr('disabled',true);
 			break;
 	}
 	
 	// if(!moment(gldatepicker_date).isSame(moment(), 'day')){
-	// 	$('#new_dietOrder,#save_dietOrder,#cancel_dietOrder,#edit_dietOrder').attr('disabled',true);
+	// 	$('#new_admHandover,#save_admHandover,#cancel_admHandover,#edit_admHandover').attr('disabled',true);
 	// }
 }
 
-function populate_dietOrder(obj,rowdata){
-	emptyFormdata(errorField,"#formDietOrder");
+function populate_admHandover(obj,rowdata){
+	emptyFormdata(errorField,"#formAdmHandover");
 	
 	// panel header
-	$('#name_show_dietOrder').text(obj.name);
-	$('#mrn_show_dietOrder').text(("0000000" + obj.mrn).slice(-7));
-	$('#sex_show_dietOrder').text(obj.sex);
-	$('#dob_show_dietOrder').text(dob_chg(obj.dob));
-	$('#age_show_dietOrder').text(obj.age+ ' (YRS)');
-	$('#race_show_dietOrder').text(obj.race);
-	$('#religion_show_dietOrder').text(if_none(obj.religion));
-	$('#occupation_show_dietOrder').text(if_none(obj.occupation));
-	$('#citizenship_show_dietOrder').text(obj.citizen);
-	$('#area_show_dietOrder').text(obj.area);
+	$('#name_show_admHandover').text(obj.name);
+	$('#mrn_show_admHandover').text(("0000000" + obj.mrn).slice(-7));
+	$('#sex_show_admHandover').text(obj.sex);
+	$('#dob_show_admHandover').text(dob_chg(obj.dob));
+	$('#age_show_admHandover').text(obj.age+ ' (YRS)');
+	$('#race_show_admHandover').text(obj.race);
+	$('#religion_show_admHandover').text(if_none(obj.religion));
+	$('#occupation_show_admHandover').text(if_none(obj.occupation));
+	$('#citizenship_show_admHandover').text(obj.citizen);
+	$('#area_show_admHandover').text(obj.area);
 	
-	// formDietOrder
-	$('#mrn_dietOrder').val(obj.mrn);
-	$("#episno_dietOrder").val(obj.episno);
+	// formAdmHandover
+	$('#mrn_admHandover').val(obj.mrn);
+	$("#episno_admHandover").val(obj.episno);
+	$("#vs_weight").val(obj.vs_weight);
+	$("#medicalhistory").val(obj.medicalhistory);
+	$("#surgicalhistory").val(obj.surgicalhistory);
+
 	
 	var saveParam = {
-		action: 'get_table_dietorder',
+		action: 'get_table_admhandover',
 	}
 	var postobj = {
 		_token: $('#csrf_token').val(),
 		mrn: obj.mrn,
-		episno: obj.episno
+		episno: obj.episno,
+		vs_weight: obj.vs_weight,
+		medicalhistory: obj.medicalhistory,
+		surgicalhistory: obj.surgicalhistory,
+
 	};
 	
-	$.post("dietorder/form?"+$.param(saveParam), $.param(postobj), function (data){
+	$.post("admhandover/form?"+$.param(saveParam), $.param(postobj), function (data){
 		
 	},'json').fail(function (data){
 		alert('there is an error');
 	}).success(function (data){
 		if(!$.isEmptyObject(data)){
-			autoinsert_rowdata("#formDietOrder",data.dietorder);
-			autoinsert_rowdata("#formDietOrder",data.episode);
-			button_state_dietOrder('edit');
-			yesnoCheck();
-			feedingCheck();
+			autoinsert_rowdata("#formAdmHandover",data.admhandover);
+			autoinsert_rowdata("#formAdmHandover",data.episode);
+			autoinsert_rowdata("#formAdmHandover",data.nurshistory);
+			autoinsert_rowdata("#formAdmHandover",data.nursassessment);
+			button_state_admHandover('edit');
 		}else{
-			button_state_dietOrder('add');
+			button_state_admHandover('add');
 		}
 	});
 }
 
 // screen current patient //
-function populate_admhandover_currpt(obj){
-	emptyFormdata(errorField,"#formDietOrder");
+function populate_admHandover_currpt(obj){
+	emptyFormdata(errorField,"#formAdmHandover");
 	
 	// panel header
-	$('#name_show_dietOrder').text(obj.Name);
-	$('#mrn_show_dietOrder').text(("0000000" + obj.MRN).slice(-7));
-	$('#sex_show_dietOrder').text(if_none(obj.Sex).toUpperCase());
-	$('#dob_show_dietOrder').text(dob_chg(obj.DOB));
-	$('#age_show_dietOrder').text(dob_age(obj.DOB)+' (YRS)');
-	$('#race_show_dietOrder').text(if_none(obj.raceDesc).toUpperCase());
-	$('#religion_show_dietOrder').text(if_none(obj.religionDesc).toUpperCase());
-	$('#occupation_show_dietOrder').text(if_none(obj.occupDesc).toUpperCase());
-	$('#citizenship_show_dietOrder').text(if_none(obj.cityDesc).toUpperCase());
-	$('#area_show_dietOrder').text(if_none(obj.areaDesc).toUpperCase());
+	$('#name_show_admHandover').text(obj.Name);
+	$('#mrn_show_admHandover').text(("0000000" + obj.MRN).slice(-7));
+	$('#sex_show_admHandover').text(if_none(obj.Sex).toUpperCase());
+	$('#dob_show_admHandover').text(dob_chg(obj.DOB));
+	$('#age_show_admHandover').text(dob_age(obj.DOB)+' (YRS)');
+	$('#race_show_admHandover').text(if_none(obj.raceDesc).toUpperCase());
+	$('#religion_show_admHandover').text(if_none(obj.religionDesc).toUpperCase());
+	$('#occupation_show_admHandover').text(if_none(obj.occupDesc).toUpperCase());
+	$('#citizenship_show_admHandover').text(if_none(obj.cityDesc).toUpperCase());
+	$('#area_show_admHandover').text(if_none(obj.areaDesc).toUpperCase());
 	
-	// formDietOrder
-	$('#mrn_dietOrder').val(obj.MRN);
-	$("#episno_dietOrder").val(obj.Episno);
-	
-	// var saveParam = {
-	// 	action: 'get_table_dietorder',
-	// }
-	// var postobj = {
-	// 	_token: $('#csrf_token').val(),
-	// 	mrn: obj.MRN,
-	// 	episno: obj.Episno
-	// };
-	
-	// $.post("dietorder/form?"+$.param(saveParam), $.param(postobj), function (data){
-		
-	// },'json').fail(function (data){
-	// 	alert('there is an error');
-	// }).success(function (data){
-	// 	if(!$.isEmptyObject(data)){
-	// 		autoinsert_rowdata("#formDietOrder",data.dietorder);
-	// 		autoinsert_rowdata("#formDietOrder",data.episode);
-	// 		button_state_dietOrder('edit');
-	// 		yesnoCheck();
-	// 		feedingCheck();
-	// 	}else{
-	// 		button_state_dietOrder('add');
-	// 	}
-	// });
+	// formAdmHandover
+	$('#mrn_admHandover').val(obj.MRN);
+	$("#episno_admHandover").val(obj.Episno);
+	$("#vs_weight").val(obj.vs_weight);
+	$("#medicalhistory").val(obj.medicalhistory);
+	$("#surgicalhistory").val(obj.surgicalhistory);
 }
 
 function autoinsert_rowdata(form,rowData){
@@ -273,10 +235,10 @@ function autoinsert_rowdata(form,rowData){
 	});
 }
 
-function saveForm_dietOrder(callback){
+function saveForm_admHandover(callback){
 	var saveParam = {
-		action: 'save_table_dietOrder',
-		oper: $("#cancel_dietOrder").data('oper')
+		action: 'save_table_admHandover',
+		oper: $("#cancel_admHandover").data('oper')
 	}
 	var postobj = {
 		_token: $('#csrf_token').val(),
@@ -284,37 +246,37 @@ function saveForm_dietOrder(callback){
 		// idtype_edit: $('#idtype_edit').val()
 	};
 	
-	values = $("#formDietOrder").serializeArray();
+	values = $("#formAdmHandover").serializeArray();
 	
 	values = values.concat(
-		$('#formDietOrder input[type=checkbox]:not(:checked)').map(
+		$('#formAdmHandover input[type=checkbox]:not(:checked)').map(
 			function (){
 				return {"name": this.name, "value": 0}
 			}).get()
 	);
 	
 	values = values.concat(
-		$('#formDietOrder input[type=checkbox]:checked').map(
+		$('#formAdmHandover input[type=checkbox]:checked').map(
 			function (){
 				return {"name": this.name, "value": 1}
 			}).get()
 	);
 	
 	values = values.concat(
-		$('#formDietOrder input[type=radio]:checked').map(
+		$('#formAdmHandover input[type=radio]:checked').map(
 			function (){
 				return {"name": this.name, "value": this.value}
 			}).get()
 	);
 	
 	values = values.concat(
-		$('#formDietOrder select').map(
+		$('#formAdmHandover select').map(
 			function (){
 				return {"name": this.name, "value": this.value}
 			}).get()
 	);
 	
-	$.post("./dietorder/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function (data){
+	$.post("./admhandover/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function (data){
 		
 	},'json').fail(function (data){
 		// alert('there is an error');
@@ -324,8 +286,8 @@ function saveForm_dietOrder(callback){
 	});
 }
 
-function textarea_init_dietorder(){
-	$('textarea#remark,textarea#remarkkitchen').each(function (){
+function textarea_init_admhandover(){
+	$('textarea#reasonadm,textarea#allergy,textarea#medHis,textarea#surgHis,textarea#rtkpcr_remark,textarea#bloodinv_remark,textarea#branula_remark,textarea#scan_remark,textarea#insurance_remark,textarea#medication_remark,textarea#consent_remark,textarea#smoking_remark,textarea#nbm_remark,textarea#report,textarea#medHis').each(function (){
 		if(this.value.trim() == ''){
 			this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
 		}else{
