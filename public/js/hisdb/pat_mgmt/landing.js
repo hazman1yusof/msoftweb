@@ -299,7 +299,7 @@ $(document).ready(function() {
                 }
 
                 if(lastrowdata.PatStatus == 1 ){
-                    populate_endConsult_currpt(lastrowdata);
+                    // populate_endConsult_currpt(lastrowdata);
                 }
 
             }else if($('#epistycode').val() == 'IP'){
