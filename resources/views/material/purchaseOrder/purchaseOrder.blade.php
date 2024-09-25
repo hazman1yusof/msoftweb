@@ -42,6 +42,10 @@ div#fail_msg{
   color: darkred;
 }
 
+div.data_info div.col-md-2{
+	width: 20%;
+}
+
 .frozen-div{overflow:hidden;}
 
 #more {display: none;}
@@ -103,7 +107,7 @@ div#fail_msg{
 							<option value="OPEN">OPEN</option>
 							<option value="CANCELLED">CANCELLED</option>
 							<option value="PREPARED">PREPARED</option>
-							<option value="SUPPORT">SUPPORT</option>
+							<!-- <option value="SUPPORT">SUPPORT</option> -->
 							<option value="VERIFIED">VERIFIED</option>
 							<option value="APPROVED">APPROVED</option>
 							<option value="COMPLETED">COMPLETED</option>
@@ -111,7 +115,7 @@ div#fail_msg{
 						@elseif (Request::get('scope') == 'SUPPORT')
 							<option value="PREPARED">PREPARED</option>
 						@elseif (Request::get('scope') == 'VERIFIED')
-							<option value="SUPPORT">SUPPORT</option>
+							<option value="PREPARED">PREPARED</option>
 						@elseif (Request::get('scope') == 'APPROVED')
 							<option value="VERIFIED">VERIFIED</option>
 						@elseif (Request::get('scope') == 'REOPEN')
@@ -518,11 +522,11 @@ div#fail_msg{
 							<input id="purordhd_requestby" name="purordhd_requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 						</div>
 
-						<div class="col-md-2 minuspad-15">
+						<!-- <div class="col-md-2 minuspad-15">
 							<label class="control-label" for="purordhd_supportby">Support By</label>
 							<input id="purordhd_supportby" name="purordhd_supportby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 						<i class="fa fa-info-circle my_remark" aria-hidden="true" id='support_remark_i'></i>
-						</div>
+						</div> -->
 
 							<div class="col-md-2 minuspad-15">
 							<label class="control-label" for="purordhd_verifiedby">Verified By</label>  
@@ -557,10 +561,10 @@ div#fail_msg{
 								<input id="purordhd_requestdate" name="purordhd_requestdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 						</div>
 
-						<div class="col-md-2 minuspad-15">
+						<!-- <div class="col-md-2 minuspad-15">
 							<label class="control-label" for="purordhd_supportdate">Support Date</label>
 							<input id="purordhd_supportdate" name="purordhd_supportdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-						</div>
+						</div> -->
 
 						<div class="col-md-2 minuspad-15">
 							<label class="control-label" for="purordhd_verifieddate">Verified Date</label>  

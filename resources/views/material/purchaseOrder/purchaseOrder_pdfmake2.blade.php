@@ -245,9 +245,6 @@
 						body: [
 							[
 								{text: 'Request By\n\n\n{{$purordhd->requestby_name}}',bold: true,alignment: 'center'},
-								@if($purordhd->prtype != 'Stock')
-								{text: 'Support By\n\n\n{{$purordhd->supportby_name}}',bold: true,alignment: 'center'},
-								@endif
 								{text: 'Verified By\n\n\n{{$purordhd->verifiedby_name}}',bold: true,alignment: 'center'},
 								{text: 'Approved By\n\n\n{{$purordhd->approvedby_name}}',bold: true,alignment: 'center'},
 							],

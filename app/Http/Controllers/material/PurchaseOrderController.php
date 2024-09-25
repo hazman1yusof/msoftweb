@@ -371,7 +371,7 @@ class PurchaseOrderController extends defaultController
                         'deptcode' => $purordhd_get->prdept,
                         'prtype' => $prtype,
                         'recstatus' => 'PREPARED',
-                        'trantype' => 'SUPPORT',
+                        'trantype' => 'VERIFIED',
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
@@ -784,7 +784,7 @@ class PurchaseOrderController extends defaultController
 
                 $purordhd_get = $purordhd->first();
 
-                if($purordhd_get->recstatus != 'SUPPORT'){
+                if($purordhd_get->recstatus != 'PREPARED'){
                     continue;
                 }
 

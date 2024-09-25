@@ -108,54 +108,54 @@ class MycardController extends Controller
 
     public function save_mykad_local(Request $request){
 
-        // $religion_db = DB::table('hisdb.religion')
-        //                     ->where('compcode',$request->CompCode)
-        //                     ->where('Code',$request->Religion);
-        // if(!$religion_db->exists()){
-        //     DB::table('hisdb.religion')
-        //         ->insert([
-        //             'compcode' => $request->CompCode, 
-        //             'Code' => $request->Religion, 
-        //             'Description' => $request->Religion, 
-        //             'adduser' => 'SYSTEM',
-        //             'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-        //         ]);
-        // }
+        $religion_db = DB::table('hisdb.religion')
+                            ->where('compcode',$request->CompCode)
+                            ->where('Code',$request->Religion);
+        if(!$religion_db->exists()){
+            DB::table('hisdb.religion')
+                ->insert([
+                    'compcode' => $request->CompCode, 
+                    'Code' => $request->Religion, 
+                    'Description' => $request->Religion, 
+                    'adduser' => 'SYSTEM',
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+        }
 
 
-        // $race_db = DB::table('hisdb.racecode')
-        //                     ->where('compcode',$request->CompCode)
-        //                     ->where('Code',$request->RaceCode);
-        // if(!$race_db->exists()){
-        //     DB::table('hisdb.racecode')
-        //         ->insert([
-        //             'compcode' => $request->CompCode, 
-        //             'Code' => $request->RaceCode, 
-        //             'Description' => $request->RaceCode, 
-        //             'adduser' => 'SYSTEM',
-        //             'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-        //         ]);
-        // }
+        $race_db = DB::table('hisdb.racecode')
+                            ->where('compcode',$request->CompCode)
+                            ->where('Code',$request->RaceCode);
+        if(!$race_db->exists()){
+            DB::table('hisdb.racecode')
+                ->insert([
+                    'compcode' => $request->CompCode, 
+                    'Code' => $request->RaceCode, 
+                    'Description' => $request->RaceCode, 
+                    'adduser' => 'SYSTEM',
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+        }
 
 
         DB::table('hisdb.pre_pat_mast')
                 ->insert([
                     'CompCode' => '9A',
-                    // 'Newic' => $request->Newic,
-                    // 'DOB' => $request->DOB,
-                    // 'Name' => $request->Name,
-                    // 'Religion' => $request->Religion,
-                    // 'Sex' => $request->Sex,
-                    // 'RaceCode' => $request->RaceCode,
-                    // 'Address1' => $request->Address1,
-                    // 'Address2' => $request->Address2,
-                    // 'Address3' => $request->Address3,
-                    // 'Postcode' => $request->Postcode,
-                    // 'Citizencode' => $request->Citizencode,
-                    // 'ID_Type' => 'O',
-                    // 'PatientImage' => $request->PatientImage,
-                    // 'rng' => $request->rng,
-                    // 'read_date' => Carbon::now("Asia/Kuala_Lumpur")
+                    'Newic' => $request->Newic,
+                    'DOB' => $request->DOB,
+                    'Name' => $request->Name,
+                    'Religion' => $request->Religion,
+                    'Sex' => $request->Sex,
+                    'RaceCode' => $request->RaceCode,
+                    'Address1' => $request->Address1,
+                    'Address2' => $request->Address2,
+                    'Address3' => $request->Address3,
+                    'Postcode' => $request->Postcode,
+                    'Citizencode' => $request->Citizencode,
+                    'ID_Type' => 'O',
+                    'PatientImage' => $request->PatientImage,
+                    'rng' => $request->rng,
+                    'read_date' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
     }
 

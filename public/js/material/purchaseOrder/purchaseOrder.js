@@ -220,7 +220,7 @@ $(document).ready(function () {
 		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
 		filterVal_urlParam = ['session.compcode','session.username'];
 	}else if($("#recstatus_use").val() == 'VERIFIED'){
-		recstatus_filter = [['SUPPORT']];
+		recstatus_filter = [['PREPARED']];
 		filterCol_urlParam = ['purordhd.compcode','queuepo.AuthorisedID'];
 		filterVal_urlParam = ['session.compcode','session.username'];
 	}else if($("#recstatus_use").val() == 'APPROVED'){
@@ -1254,7 +1254,7 @@ $(document).ready(function () {
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 			}
 		}else if($('#recstatus_use').val() == 'VERIFIED'){
-			if(rowObject.purordhd_recstatus == "SUPPORT"){
+			if(rowObject.purordhd_recstatus == "PREPARED"){
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 			}
 		}else if($('#recstatus_use').val() == 'APPROVED'){

@@ -1762,35 +1762,6 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function (){
 	
 	let curtype = $(this).data('curtype');
 	$('#jqGridDoctorNote_panel_tabs.nav-tabs a#'+curtype).tab('show');
-	
-	// $('.nav-tabs a').on('shown.bs.tab', function (e){
-	// 	let type = $(this).data('type');
-	// 	switch(type){
-	// 		case 'OTBOOK':
-	// 			populate_otbook_getdata();
-	// 			// textarea_init_otbook();
-	// 			break;
-	// 		case 'RAD':
-	// 			$('.nav-tabs a').on('shown.bs.tab', function (e){
-	// 				let type = $(this).data('type');
-	// 				switch(type){
-	// 					case 'RADCLINIC':
-	// 						populate_radClinic_getdata();
-	// 						// textarea_init_radClinic();
-	// 						break;
-	// 					case 'MRI':
-	// 						populate_mri_getdata();
-	// 						// textarea_init_mri();
-	// 						break;
-	// 				}
-	// 			});
-	// 			break;
-	// 		case 'PHYSIO':
-	// 			populate_physio_getdata();
-	// 			// textarea_init_physio();
-	// 			break;
-	// 	}
-	// });
 });
 
 $('#jqGridDoctorNote_panel_tabs.nav-tabs a').on('shown.bs.tab', function (e){
@@ -1803,23 +1774,24 @@ $('#jqGridDoctorNote_panel_tabs.nav-tabs a').on('shown.bs.tab', function (e){
 			// textarea_init_otbook();
 			break;
 		case 'RAD':
-			$('#jqGridDoctorNote_rad_tabs.nav-tabs a').on('shown.bs.tab', function (e){
-				let type = $(this).data('type');
-				switch(type){
-					case 'RADCLINIC':
-						populate_radClinic_getdata();
-						// textarea_init_radClinic();
-						break;
-					case 'MRI':
-						populate_mri_getdata();
-						// textarea_init_mri();
-						break;
-				}
-			});
 			break;
 		case 'PHYSIO':
 			populate_physio_getdata();
 			// textarea_init_physio();
+			break;
+	}
+});
+
+$('#jqGridDoctorNote_rad_tabs.nav-tabs a').on('shown.bs.tab', function (e){
+	let type = $(this).data('type');
+	switch(type){
+		case 'RADCLINIC':
+			populate_radClinic_getdata();
+			// textarea_init_radClinic();
+			break;
+		case 'MRI':
+			populate_mri_getdata();
+			// textarea_init_mri();
 			break;
 	}
 });
@@ -1910,6 +1882,9 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function (){
 			getBMI();
 			textarea_init_doctornote();
 			refreshGrid("#jqGrid_trans_doctornote", urlParam_trans);
+			
+			populate_otbook_getdata();
+			populate_radClinic_getdata();
 			
 			// datable_medication.clear().draw();
 			// datable_medication.rows.add(data.transaction.rows).draw();
