@@ -221,7 +221,7 @@
                     }
 		        },
 		        {text:'Purchase Order Remarks :',alignment: 'left',fontSize:9, margin: [0, 30, 0, 0]},
-		        {text:'{{$purordhd->remarks}}',alignment: 'left',fontSize:9},
+		        {text:`{!!str_replace('`', '', $purordhd->remarks)!!}`,alignment: 'left',fontSize:9},
 		        // {text:'1. Goods which are not comply to our specification and as per our Purchase Order will be rejected',alignment: 'left',fontSize:9, margin: [0, 20, 0, 0]},
 		        // {text:'2. In order to ensure prompt payment, all Delivery Order, Invoices and other documents ',alignment: 'left',fontSize:9},,
 		        // {text:'3. Any goods supplied without our Purchase Order will not be entertained.',alignment: 'left',fontSize:9},

@@ -20,8 +20,10 @@ $(document).ready(function () {
 	    var lastrowdata = getrow_bootgrid();
 	    var pages=$('#patlabel_pages').val();
 	    var param = {
+	    	action:'patlabel',
 	    	name:lastrowdata.Name,
 	    	mrn:lastrowdata.MRN,
+	    	episno:lastrowdata.Episno,
 	    	sex:lastrowdata.Sex,
 	    	age:gettheage(lastrowdata.DOB),
 	    	date:lastrowdata.reg_date,
@@ -32,6 +34,16 @@ $(document).ready(function () {
 	    	ward:lastrowdata.ward,
 	    	doc:lastrowdata.q_doctorname,
 	    	pages:pages,
+	    }
+	    window.open("./pat_mast/patlabel"+"?"+$.param(param));
+    });
+
+    $('#pharlabel_print').click(function(){
+	    var lastrowdata = getrow_bootgrid();
+	    var param = {
+	    	action:'pharlabel',
+	    	mrn:lastrowdata.MRN,
+	    	episno:lastrowdata.Episno,
 	    }
 	    window.open("./pat_mast/patlabel"+"?"+$.param(param));
     });

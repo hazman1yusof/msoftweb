@@ -3392,8 +3392,22 @@ class PatmastController extends defaultController
         return "'".implode("','",$array)."'";
     }
 
-    public function patlabel(Request $request){   
+    public function patlabel(Request $request){
+        switch ($request->action) {
+            case 'patlabel':
+                return $this->patlabel_pdf($request);
+                break;
+            case 'pharlabel':
+                return $this->pharlabel_pdf($request);
+                break;
+            
+            default:
+                dd('error');
+                break;
+        }
+    }
 
+    public function patlabel_pdf(Request $request){
         $company = DB::table('sysdb.company')
                         ->where('compcode',session('compcode'))
                         ->first();
@@ -3416,6 +3430,78 @@ class PatmastController extends defaultController
 
         if(true){
             return view('hisdb.pat_mgmt.patlabel_pdfmake',compact('ini_array'));
+        }else{
+            abort(403, 'MC not found');
+        }
+    }
+
+    public function pharlabel_pdf(Request $request){
+        $company = DB::table('sysdb.company')
+                        ->where('compcode',session('compcode'))
+                        ->first();
+
+        $ordcomtt_phar = DB::table('sysdb.sysparam')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=','OE')
+                    ->where('trantype','=','PHAR')->first();
+
+        $table_chgtrx = DB::table('hisdb.chargetrx as trx')
+                    ->select('trx.auditno','trx.compcode','trx.idno','trx.mrn','trx.episno','trx.epistype','trx.trxtype','trx.docref','trx.trxdate','trx.chgcode','trx.billcode','trx.costcd','trx.revcd','trx.mmacode','trx.billflag','trx.billdate','trx.billtype','trx.doctorcode','doc.doctorname','trx.chg_class','trx.unitprce','trx.quantity','trx.amount','trx.trxtime','trx.chggroup','trx.qstat','trx.dracccode','trx.cracccode','trx.arprocess','trx.taxamount','trx.billno','trx.invno','trx.uom','trx.uom_recv','trx.billtime','trx.invgroup','trx.reqdept as deptcode','trx.issdept','trx.invcode','trx.resulttype','trx.resultstatus','trx.inventory','trx.updinv','trx.invbatch','trx.doscode','trx.duration','trx.instruction','trx.discamt','trx.disccode','trx.pkgcode','trx.remarks','trx.frequency','trx.ftxtdosage','trx.addinstruction','trx.qtyorder','trx.ipqueueno','trx.itemseqno','trx.doseqty','trx.freqqty','trx.isudept','trx.qtyissue','trx.durationcode','trx.reqdoctor','trx.unit','trx.agreementid','trx.chgtype','trx.adduser','trx.adddate','trx.lastuser','trx.lastupdate','trx.daytaken','trx.qtydispense','trx.takehomeentry','trx.latechargesentry','trx.taxcode','trx.recstatus','trx.drugindicator','trx.id','trx.patmedication','trx.mmaprice','pt.avgcost as cost_price','pt.avgcost as cost_price','dos.dosedesc as doscode_desc','fre.freqdesc as frequency_desc','ins.description as addinstruction_desc','dru.description as drugindicator_desc','cm.brandname','cm.description')
+                    ->where('trx.mrn' ,'=', $request->mrn)
+                    ->where('trx.episno' ,'=', $request->episno)
+                    ->where('trx.compcode','=',session('compcode'))
+                    ->where('trx.recstatus','<>','DELETE')
+                    ->orderBy('trx.adddate', 'desc');
+
+        $table_chgtrx = $table_chgtrx->where('trx.chggroup',$ordcomtt_phar->pvalue1);
+
+        $table_chgtrx = $table_chgtrx->leftjoin('material.product as pt', function($join) use ($request){
+                            $join = $join->where('pt.compcode', '=', session('compcode'));
+                            $join = $join->on('pt.itemcode', '=', 'trx.chgcode');
+                            $join = $join->on('pt.uomcode', '=', 'trx.uom_recv');
+                            $join = $join->where('pt.unit', '=', session('unit'));
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.chgmast as cm', function($join) use ($request){
+                            $join = $join->where('cm.compcode', '=', session('compcode'));
+                            $join = $join->on('cm.chgcode', '=', 'trx.chgcode');
+                            $join = $join->on('cm.uom', '=', 'trx.uom');
+                            $join = $join->where('cm.unit', '=', session('unit'));
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.dose as dos', function($join) use ($request){
+                            $join = $join->where('dos.compcode', '=', session('compcode'));
+                            $join = $join->on('dos.dosecode', '=', 'trx.doscode');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.freq as fre', function($join) use ($request){
+                            $join = $join->where('fre.compcode', '=', session('compcode'));
+                            $join = $join->on('fre.freqcode', '=', 'trx.frequency');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.instruction as ins', function($join) use ($request){
+                            $join = $join->where('ins.compcode', '=', session('compcode'));
+                            $join = $join->on('ins.inscode', '=', 'trx.addinstruction');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.drugindicator as dru', function($join) use ($request){
+                            $join = $join->where('dru.compcode', '=', session('compcode'));
+                            $join = $join->on('dru.drugindcode', '=', 'trx.drugindicator');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.doctor as doc', function($join) use ($request){
+                            $join = $join->where('doc.compcode', '=', session('compcode'));
+                            $join = $join->on('doc.doctorcode', '=', 'trx.doctorcode');
+                        })
+                        ->get();
+
+        $pat_mast = DB::table('hisdb.pat_mast as pm')
+                        ->select('pm.Name','pm.Newic','pm.MRN')
+                        ->where('mrn',$request->mrn)
+                        ->where('compcode',session('compcode'))
+                        ->first();
+        if(true){
+            return view('hisdb.pat_mgmt.pharlabel_pdfmake',compact('table_chgtrx','pat_mast','company'));
         }else{
             abort(403, 'MC not found');
         }
