@@ -138,7 +138,7 @@ class PatmastController extends defaultController
         }
     }
 
-    public function post_entry(Request $request){   
+    public function post_entry(Request $request){  //get_patient_list 
 
         $mrn_range = $this->mrn_range($request);
 
@@ -201,11 +201,18 @@ class PatmastController extends defaultController
                             });
 
             if($isdoctor){
-                $table_patm = $table_patm->join('hisdb.doctor', function($join) use ($request){
+                if(empty(Auth::user()->doctorcode)){
+                    $table_patm = $table_patm->leftJoin('hisdb.doctor', function($join) use ($request){
                                 $join = $join->on('doctor.doctorcode', '=', 'queue.admdoctor')
-                                            ->where('queue.admdoctor', '=', Auth::user()->doctorcode)
                                             ->where('doctor.compcode','=',session('compcode'));
                             });
+                }else{
+                    $table_patm = $table_patm->join('hisdb.doctor', function($join) use ($request){
+                                    $join = $join->on('doctor.doctorcode', '=', 'queue.admdoctor')
+                                                ->where('queue.admdoctor', '=', Auth::user()->doctorcode)
+                                                ->where('doctor.compcode','=',session('compcode'));
+                                });
+                }
             }else{
                 $table_patm = $table_patm->leftJoin('hisdb.doctor', function($join) use ($request){
                                 $join = $join->on('doctor.doctorcode', '=', 'queue.admdoctor')
