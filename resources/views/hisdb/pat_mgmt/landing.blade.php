@@ -212,7 +212,6 @@
 				@endif
 				
 				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-					@include('hisdb.endConsult.endConsult',['type' => "OP",'type_desc' => "Out Patient"])
 				</div>
 				
 			@endif
