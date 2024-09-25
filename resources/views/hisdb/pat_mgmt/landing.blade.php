@@ -212,7 +212,7 @@
 				@endif
 				
 				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-					@include('hisdb.discharge.discharge',['type' => "OP",'type_desc' => "Out Patient"])
+					@include('hisdb.endConsult.endConsult',['type' => "OP",'type_desc' => "Out Patient"])
 				</div>
 				
 			@endif
@@ -328,7 +328,7 @@
 	<input type="hidden" id="user_doctor" value="{{Auth::user()->doctor}}">
 
 	@if (request()->get('curpat') == 'true')
-		<script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script>
+		<!-- <script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script> -->
 
 
 		@if (request()->get('epistycode') == 'OP')
@@ -375,6 +375,9 @@
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_pkg.js"></script>
 			@endif
+
+			<script type="text/javascript" src="js/hisdb/endConsult/endConsult.js"></script>
+
 		@endif
 
 		@if (request()->get('epistycode') == 'IP')
@@ -424,6 +427,9 @@
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_pkg.js"></script>
 			@endif
+
+			<script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script>
+
 		@endif
 	@endif
 

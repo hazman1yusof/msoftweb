@@ -1320,11 +1320,15 @@ Route::get('/ordcom','hisdb\OrdcomController@show');
 Route::get('/ordcom/table','hisdb\OrdcomController@table');
 Route::post('/ordcom/form','hisdb\OrdcomController@form');
 
-//// Discharge page ///
+//// Discharge page IP ///
 Route::get('/discharge','hisdb\DischargeController@show');
 Route::get('/discharge/table','hisdb\DischargeController@table');
 Route::post('/discharge/form','hisdb\DischargeController@form');
 
+//// Discharge page OP///
+Route::get('/endConsult','hisdb\EndConsultController@show');
+Route::get('/endConsult/table','hisdb\EndConsultController@table');
+Route::post('/endConsult/form','hisdb\EndConsultController@form');
 
 //// Diagnose page ///
 Route::post('/diagnose','util\DiagnoseController@post');
