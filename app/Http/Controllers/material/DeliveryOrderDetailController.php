@@ -187,19 +187,19 @@ class DeliveryOrderDetailController extends defaultController
 
         try{
 
-            if($request->pricecode == 'MS'){
-                //check unique
-                $duplicate = DB::table('material.purreqdt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('itemcode','=',strtoupper($request->itemcode))
-                    ->where('uomcode','=',strtoupper($request->uomcode))
-                    ->where('pouom','=',strtoupper($request->pouom))
-                    ->exists();
+            // if($request->pricecode == 'MS'){
+            //     //check unique
+            //     $duplicate = DB::table('material.purreqdt')
+            //         ->where('compcode','=',session('compcode'))
+            //         ->where('itemcode','=',strtoupper($request->itemcode))
+            //         ->where('uomcode','=',strtoupper($request->uomcode))
+            //         ->where('pouom','=',strtoupper($request->pouom))
+            //         ->exists();
 
-                if($duplicate){
-                    throw new \Exception("Duplicate itemcode and uom");
-                }
-            }
+            //     if($duplicate){
+            //         throw new \Exception("Duplicate itemcode and uom");
+            //     }
+            // }
 
             $recno = $request->recno;
             
@@ -381,19 +381,19 @@ class DeliveryOrderDetailController extends defaultController
 
         try {
 
-            if($request->pricecode == 'MS'){
-                //check unique
-                $duplicate = DB::table('material.purreqdt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('itemcode','=',strtoupper($request->itemcode))
-                    ->where('uomcode','=',strtoupper($request->uomcode))
-                    ->where('pouom','=',strtoupper($request->pouom))
-                    ->exists();
+            // if($request->pricecode == 'MS'){
+            //     //check unique
+            //     $duplicate = DB::table('material.purreqdt')
+            //         ->where('compcode','=',session('compcode'))
+            //         ->where('itemcode','=',strtoupper($request->itemcode))
+            //         ->where('uomcode','=',strtoupper($request->uomcode))
+            //         ->where('pouom','=',strtoupper($request->pouom))
+            //         ->exists();
 
-                if($duplicate){
-                    throw new \Exception("Duplicate itemcode and uom");
-                }
-            }
+            //     if($duplicate){
+            //         throw new \Exception("Duplicate itemcode and uom");
+            //     }
+            // }
 
             if($request->pricecode == 'IV'){
                 $product = DB::table('material.product')

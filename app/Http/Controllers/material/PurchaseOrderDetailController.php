@@ -193,20 +193,20 @@ class PurchaseOrderDetailController extends defaultController
                             ->first();
 
             //check unique
-            if($request->pricecode == 'MS'){
-                $duplicate = DB::table('material.purreqdt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$recno)
-                    ->where('itemcode','=',strtoupper($request->itemcode))
-                    ->where('uomcode','=',strtoupper($request->uomcode))
-                    ->where('pouom','=',strtoupper($request->pouom))
-                    ->exists();
+            // if($request->pricecode == 'MS'){
+            //     $duplicate = DB::table('material.purreqdt')
+            //         ->where('compcode','=',session('compcode'))
+            //         ->where('recno','=',$recno)
+            //         ->where('itemcode','=',strtoupper($request->itemcode))
+            //         ->where('uomcode','=',strtoupper($request->uomcode))
+            //         ->where('pouom','=',strtoupper($request->pouom))
+            //         ->exists();
 
-                if($duplicate){
-                    throw new \Exception("Duplicate item and uom of itemcode: ".strtoupper($request->itemcode));
-                }
+            //     if($duplicate){
+            //         throw new \Exception("Duplicate item and uom of itemcode: ".strtoupper($request->itemcode));
+            //     }
 
-            }
+            // }
 
             $has_prodmaster =  DB::table('material.productmaster')
                 ->where('compcode','=',session('compcode'))
@@ -438,23 +438,23 @@ class PurchaseOrderDetailController extends defaultController
                 ///1. update detail
 
                 //check unique
-                $duplicate = DB::table('material.purreqdt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$request->recno)
-                    ->where('lineno_','!=',$value['lineno_'])
-                    ->where('itemcode','=',strtoupper($value['itemcode']))
-                    ->where('uomcode','=',strtoupper($value['uomcode']))
-                    ->where('pouom','=',strtoupper($value['pouom']))
-                    ->exists();
+                // $duplicate = DB::table('material.purreqdt')
+                //     ->where('compcode','=',session('compcode'))
+                //     ->where('recno','=',$request->recno)
+                //     ->where('lineno_','!=',$value['lineno_'])
+                //     ->where('itemcode','=',strtoupper($value['itemcode']))
+                //     ->where('uomcode','=',strtoupper($value['uomcode']))
+                //     ->where('pouom','=',strtoupper($value['pouom']))
+                //     ->exists();
 
                 $has_prodmaster =  DB::table('material.productmaster')
                     ->where('compcode','=',session('compcode'))
                     ->where('itemcode','=',strtoupper($value['itemcode']))
                     ->exists();
                 
-                if($duplicate && $value['pricecode'] == 'MS'){
-                    throw new \Exception("Duplicate item and uom of itemcode: ".strtoupper($request->itemcode));
-                }
+                // if($duplicate && $value['pricecode'] == 'MS'){
+                //     throw new \Exception("Duplicate item and uom of itemcode: ".strtoupper($request->itemcode));
+                // }
 
                 if(!$has_prodmaster){
                     throw new \Exception("Itemcode ".strtoupper($request->itemcode)." doesnt have productmaster");
