@@ -73,12 +73,9 @@
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class='col-md-6'>
+
 						<div class="panel panel-info">
 							<div class="panel-body" style="height: 240px;margin-left: 50px">
-								<!-- <input id="mrn_admHandover" name="mrn_admHandover" type="hidden">
-								<input id="episno_admHandover" name="episno_admHandover" type="hidden"> -->
 								
 								<div class="form-group">
 									<label class="col-md-2 control-label" for="vs_weight">Weight</label>
@@ -87,12 +84,6 @@
 											<input id="vs_weight" name="vs_weight" type="text" class="form-control input-sm" data-sanitize="numberFormat" rdonly>
 											<span class="input-group-addon">kg</span>
 										</div>									
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-2 control-label" for="allergy">Allergy</label>
-									<div class="col-md-8">
-										<textarea id="allergy" name="allergy" type="text" class="form-control input-sm" readonly></textarea>
 									</div>
 								</div>
 								<div class="form-group">
@@ -107,6 +98,54 @@
 										<textarea id="surgicalhistory" name="surgicalhistory" type="text" class="form-control input-sm" readonly></textarea>
 									</div>
 								</div>
+							</div>
+						</div>
+					</div>
+					<div class='col-md-6'>
+						<div class="panel panel-info">
+							<div class="panel-heading text-center">ALLERGIES</div>
+							<div class="panel-body" style="height: 460px;margin-left: 50px">
+								
+								<table class="table table-sm table-hover">
+									<tbody>
+										<tr>
+											<td><input class="form-check-input" type="checkbox" id="allergydrugs" name="allergydrugs" value="1"></td>
+											<td><label class="form-check-label" for="allergydrugs">Drugs</label></td>
+											<td><textarea id="drugs_remarks" name="drugs_remarks" type="text" class="form-control input-sm"></textarea></td>
+										</tr>
+										<tr>
+											<td><input class="form-check-input" type="checkbox" id="allergyplaster" name="allergyplaster" value="1"></td>
+											<td><label class="form-check-label" for="allergyplaster">Plaster</label></td>
+											<td><textarea id="plaster_remarks" name="plaster_remarks" type="text" class="form-control input-sm"></textarea></td>
+										</tr>
+										<tr>
+											<td><input class="form-check-input" type="checkbox" id="allergyfood" name="allergyfood" value="1"></td>
+											<td><label class="form-check-label" for="allergyfood">Food</label></td>
+											<td><textarea id="food_remarks" name="food_remarks" type="text" class="form-control input-sm"></textarea></td>
+										</tr>
+										<tr>
+											<td><input class="form-check-input" type="checkbox" id="allergyenvironment" name="allergyenvironment" value="1"></td>
+											<td><label class="form-check-label" for="allergyenvironment">Environment</label></td>
+											<td><textarea id="environment_remarks" name="environment_remarks" type="text" class="form-control input-sm"></textarea></td>
+										</tr>
+										<tr>
+											<td><input class="form-check-input" type="checkbox" id="allergyothers" name="allergyothers" value="1"></td>
+											<td><label class="form-check-label" for="allergyothers">Others</label></td>
+											<td><textarea id="others_remarks" name="others_remarks" type="text" class="form-control input-sm"></textarea></td>
+										</tr>
+										<tr>
+											<td><input class="form-check-input" type="checkbox" id="allergyunknown" name="allergyunknown" value="1"></td>
+											<td><label class="form-check-label" for="allergyunknown">Unknown</label></td>
+											<td><textarea id="unknown_remarks" name="unknown_remarks" type="text" class="form-control input-sm"></textarea></td>
+										</tr>
+										<tr>
+											<td><input class="form-check-input" type="checkbox" id="allergynone" name="allergynone" value="1"></td>
+											<td><label class="form-check-label" for="allergynone">None</label></td>
+											<td><textarea id="none_remarks" name="none_remarks" type="text" class="form-control input-sm"></textarea></td>
+										</tr>
+									</tbody>
+								</table>
+								
 							</div>
 						</div>
 					</div>

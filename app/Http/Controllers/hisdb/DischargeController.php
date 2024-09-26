@@ -20,6 +20,11 @@ class DischargeController extends defaultController
         // $this->duplicateCode = "chgcode";
     }
 
+    public function show(Request $request)
+    {
+        return view('hisdb.discharge.discharge');
+    }    
+
     public function table(Request $request)
     {   
        switch($request->action){
@@ -58,7 +63,19 @@ class DischargeController extends defaultController
         switch($request->action){
             case 'discharge_patient':
                 return $this->discharge_patient($request);
-
+            case 'save_table_discharge':
+        
+                switch($request->oper){
+                    case 'add':
+                        return $this->add($request);
+                    case 'edit':
+                        return $this->edit($request);
+                    default:
+                        return 'error happen..';
+                }
+            
+            case 'get_table_discharge':
+                return $this->get_table_discharge($request);
             default:
                 return 'error happen..';
         }
@@ -103,6 +120,189 @@ class DischargeController extends defaultController
             return response($e->getMessage(), 500);
         }
 
+    }
+
+    public function add(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.episode')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    // 'mrn' => $request->mrn_discharge,
+                    // 'episno' => $request->episno_discharge,
+                    'reg_date' => $request->reg_date,
+                    //'regby_discharge' => $request->regby_discharge,
+                    'reg_time' => $request->reg_time,
+                    'dischargedate' => $request->dischargedate,
+                    'dischargeuser' => $request->dischargeuser,
+                    'dischargetime' => $request->dischargetime,
+                    'diagfinal' => $request->diagfinal,
+                    'patologist' => $request->patologist,
+                    'clinicalnote' => $request->clinicalnote,
+                    'phyexam' => $request->phyexam,
+                    'diagprov' => $request->diagprov,
+                    'treatment' => $request->treatment,
+                    'summary' => $request->summary,
+                    'followup' => $request->followup,
+                    'status_discWell' => $request->status_discWell,
+                    'status_discImproved' => $request->status_discImproved,
+                    'status_discAOR' => $request->status_discAOR,
+                    'status_discExpired' => $request->status_discExpired,
+                    'status_discAbsconded' => $request->status_discAbsconded,
+                    'status_discTransferred' => $request->status_discTransferred,
+                    'medondischg' => $request->medondischg,
+                    'medcert' => $request->medcert,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            $discharge = DB::table('hisdb.episode')
+                        ->where('mrn','=',$request->mrn_discharge)
+                        ->where('episno','=',$request->episno_discharge)
+                        ->where('compcode','=',session('compcode'));
+            
+            if($discharge->exists()){
+                DB::table('hisdb.episode')
+                    ->where('mrn','=',$request->mrn_discharge)
+                    ->where('episno','=',$request->episno_discharge)
+                    ->where('compcode','=',session('compcode'))
+                    ->update([
+                        'reg_date' => $request->reg_date,
+                        //'regby_discharge' => $request->regby_discharge,
+                        'reg_time' => $request->reg_time,
+                        'dischargedate' => $request->dischargedate,
+                        'dischargeuser' => $request->dischargeuser,
+                        'dischargetime' => $request->dischargetime,
+                        'diagfinal' => $request->diagfinal,
+                        'patologist' => $request->patologist,
+                        'clinicalnote' => $request->clinicalnote,
+                        'phyexam' => $request->phyexam,
+                        'diagprov' => $request->diagprov,
+                        'treatment' => $request->treatment,
+                        'summary' => $request->summary,
+                        'followup' => $request->followup,
+                        'status_discWell' => $request->status_discWell,
+                        'status_discImproved' => $request->status_discImproved,
+                        'status_discAOR' => $request->status_discAOR,
+                        'status_discExpired' => $request->status_discExpired,
+                        'status_discAbsconded' => $request->status_discAbsconded,
+                        'status_discTransferred' => $request->status_discTransferred,
+                        'medondischg' => $request->medondischg,
+                        'medcert' => $request->medcert,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+            }else{
+                DB::table('hisdb.episode')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_discharge,
+                        'episno' => $request->episno_discharge,
+                        'reg_date' => $request->reg_date,
+                        //'regby_discharge' => $request->regby_discharge,
+                        'reg_time' => $request->reg_time,
+                        'dischargedate' => $request->dischargedate,
+                        'dischargeuser' => $request->dischargeuser,
+                        'dischargetime' => $request->dischargetime,
+                        'diagfinal' => $request->diagfinal,
+                        'patologist' => $request->patologist,
+                        'clinicalnote' => $request->clinicalnote,
+                        'phyexam' => $request->phyexam,
+                        'diagprov' => $request->diagprov,
+                        'treatment' => $request->treatment,
+                        'summary' => $request->summary,
+                        'followup' => $request->followup,
+                        'status_discWell' => $request->status_discWell,
+                        'status_discImproved' => $request->status_discImproved,
+                        'status_discAOR' => $request->status_discAOR,
+                        'status_discExpired' => $request->status_discExpired,
+                        'status_discAbsconded' => $request->status_discAbsconded,
+                        'status_discTransferred' => $request->status_discTransferred,
+                        'medondischg' => $request->medondischg,
+                        'medcert' => $request->medcert,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+            }
+            
+            $queries = DB::getQueryLog();
+            // dump($queries);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function get_table_discharge(Request $request){
+        
+        $episode_obj = DB::table('hisdb.episode')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno);
+    
+        $nurshistory_obj = DB::table('nursing.nurshistory')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn);
+
+        $nursassessment_obj = DB::table('nursing.nursassessment')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno);
+        
+        $responce = new stdClass();
+        
+        if($episode_obj->exists()){
+            $episode_obj = $episode_obj->first();
+            $responce->episode = $episode_obj;
+        }
+
+        if($nurshistory_obj->exists()){
+            $nurshistory_obj = $nurshistory_obj->first();
+            $responce->nurshistory = $nurshistory_obj;
+        }
+
+        if($nursassessment_obj->exists()){
+            $nursassessment_obj = $nursassessment_obj->first();
+            // dd($nursassessment_obj);
+            $responce->nursassessment = $nursassessment_obj;
+        }
+        
+        return json_encode($responce);
+        
     }
 
     public function diagnose(Request $request)

@@ -97,6 +97,33 @@ class AdmHandoverController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
+
+            DB::table('nursing.nurshistory')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_admHandover,
+                    'medicalhistory' => $request->medicalhistory,
+                    'surgicalhistory' => $request->surgicalhistory,
+                    'familymedicalhist' => $request->familymedicalhist,
+                    'allergydrugs' => $request->allergydrugs,
+                    'drugs_remarks' => $request->drugs_remarks,
+                    'allergyplaster' => $request->allergyplaster,
+                    'plaster_remarks' => $request->plaster_remarks,
+                    'allergyfood' => $request->allergyfood,
+                    'food_remarks' => $request->food_remarks,
+                    'allergyenvironment' => $request->allergyenvironment,
+                    'environment_remarks' => $request->environment_remarks,
+                    'allergyothers' => $request->allergyothers,
+                    'others_remarks' => $request->others_remarks,
+                    'allergyunknown' => $request->allergyunknown,
+                    'unknown_remarks' => $request->unknown_remarks,
+                    'allergynone' => $request->allergynone,
+                    'none_remarks' => $request->none_remarks,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
             
             DB::commit();
             
@@ -186,6 +213,62 @@ class AdmHandoverController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
             }
+
+            $nurshistory = DB::table('nursing.nurshistory')
+                ->where('mrn','=',$request->mrn_admHandover)
+                ->where('compcode','=',session('compcode'));
+            
+            if(!$nurshistory->exists()){
+                DB::table('nursing.nurshistory')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_admHandover,
+                        'medicalhistory' => $request->medicalhistory,
+                        'surgicalhistory' => $request->surgicalhistory,
+                        'familymedicalhist' => $request->familymedicalhist,
+                        'allergydrugs' => $request->allergydrugs,
+                        'drugs_remarks' => $request->drugs_remarks,
+                        'allergyplaster' => $request->allergyplaster,
+                        'plaster_remarks' => $request->plaster_remarks,
+                        'allergyfood' => $request->allergyfood,
+                        'food_remarks' => $request->food_remarks,
+                        'allergyenvironment' => $request->allergyenvironment,
+                        'environment_remarks' => $request->environment_remarks,
+                        'allergyothers' => $request->allergyothers,
+                        'others_remarks' => $request->others_remarks,
+                        'allergyunknown' => $request->allergyunknown,
+                        'unknown_remarks' => $request->unknown_remarks,
+                        'allergynone' => $request->allergynone,
+                        'none_remarks' => $request->none_remarks,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+            }else{
+                $nurshistory
+                    ->update([
+                        'medicalhistory' => $request->medicalhistory,
+                        'surgicalhistory' => $request->surgicalhistory,
+                        'familymedicalhist' => $request->familymedicalhist,
+                        'allergydrugs' => $request->allergydrugs,
+                        'drugs_remarks' => $request->drugs_remarks,
+                        'allergyplaster' => $request->allergyplaster,
+                        'plaster_remarks' => $request->plaster_remarks,
+                        'allergyfood' => $request->allergyfood,
+                        'food_remarks' => $request->food_remarks,
+                        'allergyenvironment' => $request->allergyenvironment,
+                        'environment_remarks' => $request->environment_remarks,
+                        'allergyothers' => $request->allergyothers,
+                        'others_remarks' => $request->others_remarks,
+                        'allergyunknown' => $request->allergyunknown,
+                        'unknown_remarks' => $request->unknown_remarks,
+                        'allergynone' => $request->allergynone,
+                        'none_remarks' => $request->none_remarks,
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+            }
             
             $queries = DB::getQueryLog();
             // dump($queries);
@@ -223,8 +306,6 @@ class AdmHandoverController extends defaultController
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
         
-        // $allergy = $nurshistory_obj->pvalue1.' '.$sysparam->pvalue1;
-
         $responce = new stdClass();
         
         if($admhandover_obj->exists()){
