@@ -109,46 +109,53 @@ class MycardController extends defaultController
     }
 
     public function save_mykad_local(Request $request){
-        $religion_db = DB::table('hisdb.religion')
-                            ->where('compcode',$request->CompCode)
-                            ->where('Code',$request->Religion);
-        if(!$religion_db->exists()){
-            DB::table('hisdb.religion')
-                ->insert([
-                    'compcode' => $request->CompCode, 
-                    'Code' => $request->Religion, 
-                    'Description' => $request->Religion, 
-                    'adduser' => 'SYSTEM',
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
+
+        if(!empty($request->Religion)){
+            $religion_db = DB::table('hisdb.religion')
+                                ->where('compcode',$request->CompCode)
+                                ->where('Code',$request->Religion);
+            if(!$religion_db->exists()){
+                DB::table('hisdb.religion')
+                    ->insert([
+                        'compcode' => $request->CompCode, 
+                        'Code' => $request->Religion, 
+                        'Description' => $request->Religion, 
+                        'adduser' => 'SYSTEM',
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }
         }
 
-        $race_db = DB::table('hisdb.racecode')
-                            ->where('compcode',$request->CompCode)
-                            ->where('Code',$request->RaceCode);
-        if(!$race_db->exists()){
-            DB::table('hisdb.racecode')
-                ->insert([
-                    'compcode' => $request->CompCode, 
-                    'Code' => $request->RaceCode, 
-                    'Description' => $request->RaceCode, 
-                    'adduser' => 'SYSTEM',
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
+        if(!empty($request->RaceCode)){
+            $race_db = DB::table('hisdb.racecode')
+                                ->where('compcode',$request->CompCode)
+                                ->where('Code',$request->RaceCode);
+            if(!$race_db->exists()){
+                DB::table('hisdb.racecode')
+                    ->insert([
+                        'compcode' => $request->CompCode, 
+                        'Code' => $request->RaceCode, 
+                        'Description' => $request->RaceCode, 
+                        'adduser' => 'SYSTEM',
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }
         }
 
-        $citizene_db = DB::table('hisdb.citizen')
-                            ->where('compcode',$request->CompCode)
-                            ->where('Code',$request->Citizencode);
-        if(!$citizene_db->exists()){
-            DB::table('hisdb.citizen')
-                ->insert([
-                    'compcode' => $request->CompCode, 
-                    'Code' => $request->Citizencode, 
-                    'Description' => $request->Citizencode, 
-                    'adduser' => 'SYSTEM',
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
+        if(!empty($request->Citizencode)){
+            $citizen_db = DB::table('hisdb.citizen')
+                                ->where('compcode',$request->CompCode)
+                                ->where('Code',$request->Citizencode);
+            if(!$citizen_db->exists()){
+                DB::table('hisdb.citizen')
+                    ->insert([
+                        'compcode' => $request->CompCode, 
+                        'Code' => $request->Citizencode, 
+                        'Description' => $request->Citizencode, 
+                        'adduser' => 'SYSTEM',
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }
         }
 
 
