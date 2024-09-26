@@ -140,7 +140,7 @@ class MycardController extends Controller
 
         DB::table('hisdb.pre_pat_mast')
                 ->insert([
-                    'CompCode' => '9A',
+                    'CompCode' => $request->CompCode,
                     'Newic' => $request->Newic,
                     'DOB' => $request->DOB,
                     'Name' => $request->Name,

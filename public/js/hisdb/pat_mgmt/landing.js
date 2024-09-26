@@ -388,7 +388,7 @@ $(document).ready(function() {
     /////////////////mykad///////////////
 
     $('#btn_mykad').click(function(){
-        var rng = $('#user_dept').val()+'_'+randomString(32,'#aA');
+        var rng = $('#userdeptcode').val()+'_'+randomString(32,'#aA');
         $("#patientBox").data('scantype','mykad');
         $("#rng").val(rng);
         $("#mykadFPiframe").attr('src','http://mycard.test:8080/mykad?rng='+rng);
