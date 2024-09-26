@@ -122,7 +122,6 @@ class MycardController extends Controller
                 ]);
         }
 
-
         $race_db = DB::table('hisdb.racecode')
                             ->where('compcode',$request->CompCode)
                             ->where('Code',$request->RaceCode);
@@ -132,6 +131,20 @@ class MycardController extends Controller
                     'compcode' => $request->CompCode, 
                     'Code' => $request->RaceCode, 
                     'Description' => $request->RaceCode, 
+                    'adduser' => 'SYSTEM',
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+        }
+
+        $citizene_db = DB::table('hisdb.citizen')
+                            ->where('compcode',$request->CompCode)
+                            ->where('Code',$request->Citizencode);
+        if(!$citizene_db->exists()){
+            DB::table('hisdb.citizen')
+                ->insert([
+                    'compcode' => $request->CompCode, 
+                    'Code' => $request->Citizencode, 
+                    'Description' => $request->Citizencode, 
                     'adduser' => 'SYSTEM',
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
