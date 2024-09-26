@@ -142,26 +142,26 @@ class MycardController extends defaultController
             }
         }
 
-        if(!empty($request->Citizencode)){
-            $citizen_db = DB::table('hisdb.citizen')
-                                ->where('compcode',$request->CompCode)
-                                ->where('Code',$request->Citizencode);
-            if(!$citizen_db->exists()){
-                DB::table('hisdb.citizen')
-                    ->insert([
-                        'compcode' => $request->CompCode, 
-                        'Code' => $request->Citizencode, 
-                        'Description' => $request->Citizencode, 
-                        'adduser' => 'SYSTEM',
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-            }
-        }
+        // if(!empty($request->Citizencode)){
+        //     $citizen_db = DB::table('hisdb.citizen')
+        //                         ->where('compcode',$request->CompCode)
+        //                         ->where('Code',$request->Citizencode);
+        //     if(!$citizen_db->exists()){
+        //         DB::table('hisdb.citizen')
+        //             ->insert([
+        //                 'compcode' => $request->CompCode, 
+        //                 'Code' => $request->Citizencode, 
+        //                 'Description' => $request->Citizencode, 
+        //                 'adduser' => 'SYSTEM',
+        //                 'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+        //             ]);
+        //     }
+        // }
 
 
         DB::table('hisdb.pre_pat_mast')
                 ->insert([
-                    'CompCode' => $request->CompCode,
+                    'CompCode' => '9B',
                     'Newic' => $request->Newic,
                     'DOB' => $request->DOB,
                     'Name' => $request->Name,
