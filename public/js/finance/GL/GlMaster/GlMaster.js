@@ -50,9 +50,9 @@
 					{ label: 'compcode', name: 'compcode', width: 90, hidden:true},
 					{ label: 'Gl Account', name: 'glaccno', width: 20, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
 					{ label: 'Description', name: 'description', width: 100, classes: 'wrap', checked:true, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-					{ label: 'Act Type', name: 'acttype', width: 80, hidden:true},
+					{ label: 'Act Type', name: 'accgroup', width: 80, hidden:true},
 					{ label: 'Rep Group', name: 'repgroup', width: 90, hidden:true},
-					{ label: 'Type', name: 'accgroup', width: 40, classes: 'wrap', editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ASSET;C:CAPITAL;E:EXPENSES;H:HEADER;L:LIABILITY;R:REVENUE"}},
+					{ label: 'Type', name: 'acttype', width: 40, classes: 'wrap', editable: true, edittype:"select",formatter:'select', editoptions:{value:"A:ASSET;C:CAPITAL;E:EXPENSES;H:HEADER;L:LIABILITY;R:REVENUE"}},
 					{ label: 'Add User', name: 'adduser', width: 40, hidden:false},
 					{ label: 'Add Date', name: 'adddate', width: 50, hidden:false},
 					{ label: 'Upd User', name: 'upduser', width: 40, hidden:false},
@@ -123,7 +123,7 @@
 				oneditfunc: function (rowid) {
 					$('#jqGrid').data('lastselrow','none');
 					$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-					$("input[name='accgroup']").keydown(function(e) {//when click tab at last column in header, auto save
+					$("input[name='acttype']").keydown(function(e) {//when click tab at last column in header, auto save
 						var code = e.keyCode || e.which;
 						if (code == '9')$('#jqGrid_ilsave').click();
 						/*addmore_jqgrid.state = true;
