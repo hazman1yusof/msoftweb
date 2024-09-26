@@ -66,10 +66,12 @@ class TestController extends defaultController
                 // return $this->update_productmaster($request);
             // case 'update_stockexp':
             //     return $this->update_stockexp($request);
-            case 'del_stockexp':
-                return $this->del_stockexp($request);
+            // case 'del_stockexp':
+            //     return $this->del_stockexp($request);
             case 'test_email':
                 return $this->test_email($request);
+            // case 'update_supplier':
+            //     return $this->update_supplier($request);
             default:
                 return 'error happen..';
         }
@@ -786,6 +788,77 @@ class TestController extends defaultController
     public function test_email(Request $request){
         $recipient = "hazman.yusof@gmail.com";
         Mail::to($recipient)->send(new sendmaildefault());
+    }
+
+    public function update_supplier(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $supplier = DB::table('temp.supplier')
+                            ->get();
+
+            $i = 1;
+            foreach ($supplier as $obj) {
+                $ori_supplier = DB::table('material.supplier')
+                                    ->where('compcode','9B')
+                                    ->where('suppcode',$obj->SuppCode);
+
+                if(!$ori_supplier->exists()){
+                    DB::table('material.supplier')
+                        ->insert([
+                            'CompCode' => $obj->CompCode,
+                            'SuppCode' => $obj->SuppCode,
+                            'SuppGroup' => $obj->SuppGroup,
+                            'Name' => $obj->Name,
+                            'ContPers' => $obj->ContPers,
+                            'Addr1' => $obj->Addr1,
+                            'Addr2' => $obj->Addr2,
+                            'Addr3' => $obj->Addr3,
+                            'Addr4' => $obj->Addr4,
+                            'TelNo' => $obj->TelNo,
+                            'Faxno' => $obj->Faxno,
+                            'TermOthers' => $obj->TermOthers,
+                            'TermNonDisp' => $obj->TermNonDisp,
+                            'TermDisp' => $obj->TermDisp,
+                            'CostCode' => $obj->CostCode,
+                            'GlAccNo' => $obj->GlAccNo,
+                            'OutAmt' => $obj->OutAmt,
+                            'AccNo' => $obj->AccNo,
+                            'AddUser' => $obj->AddUser,
+                            'AddDate' => $obj->AddDate,
+                            'UpdUser' => $obj->UpdUser,
+                            'UpdDate' => $obj->UpdDate,
+                            'DelUser' => $obj->DelUser,
+                            'DelDate' => $obj->DelDate,
+                            'DepAmt' => $obj->DepAmt,
+                            'MiscAmt' => $obj->MiscAmt,
+                            'SuppFlg' => $obj->SuppFlg,
+                            'Advccode' => $obj->Advccode,
+                            'AdvGlaccno' => $obj->AdvGlaccno,
+                            'recstatus' => $obj->recstatus,
+                            'computerid' => $obj->computerid,
+                            'ipaddress' => $obj->ipaddress,
+                            'lastcomputerid' => $obj->lastcomputerid,
+                            'lastipaddress' => $obj->lastipaddress,
+                            'GSTID' => $obj->GSTID,
+                            'CompRegNo' => $obj->CompRegNo,
+                            'TermDays' => $obj->TermDays,
+                            'TINNo' => $obj->TINNo,
+                        ]);
+
+                    echo nl2br("$i. masuk supplier: $obj->SuppCode , $obj->Name \n");
+                    $i++;
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
     }
     
 }

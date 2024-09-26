@@ -616,6 +616,6 @@ i.fa {
 		});
 	</script>
 
-	<script src="js/material/supplier/supplier.js"></script>
+	<script src="js/material/supplier/supplier.js?v=1.1"></script>
 
 @endsection

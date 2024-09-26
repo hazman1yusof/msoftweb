@@ -431,6 +431,7 @@ $(document).ready(function () {
 		fdl.get_array('supplier',options,param,case_,cellvalue);
 		// faster_detail_array.push(faster_detail_load('assetregister',options,param,case_,cellvalue));
 		
+		if(cellvalue==null)return "";
 		return cellvalue;
 	}
 
