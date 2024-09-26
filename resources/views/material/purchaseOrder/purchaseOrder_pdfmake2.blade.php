@@ -12,9 +12,24 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" integrity="sha512-a9NgEEK7tsCvABL7KqtUTQjl69z7091EVPpw5KxPlZ93T141ffe1woLtbXTX+r2/8TtTvRX/v4zTL2UlMUPgwg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.min.js" integrity="sha512-P0bOMePRS378NwmPDVPU455C/TuxDS+8QwJozdc7PGgN8kLqR4ems0U/3DeJkmiE31749vYWHvBOtR+37qDCZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/numeral@2.0.6/numeral.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>
 </object>
 
 <script>
+	var merge_key = makeid(20);
+	var base64_pr = null;
+
+	var attachmentfiles = [
+		@foreach($attachment_files as $file)
+		{	
+			idno:'{{$file->idno}}',
+			src:'{{$file->attachmentfile}}',
+		},
+		@endforeach
+	]
 
 	$(document).ready(function () {
 		var docDefinition = {
@@ -30,7 +45,7 @@
 									{text: 'SUPPLIER',bold: true}, 
 									{text: `: {!!$supplier->Name!!}`},
 									{text: 'PURCHASE ORDER NO',bold: true}, 
-									{text: ': {{str_pad($purordhd->purordno, 9, '0', STR_PAD_LEFT)}}'},
+									{text: ': {{$purordhd->prdept}}-{{str_pad($purordhd->purordno, 5, '0', STR_PAD_LEFT)}}'},
 								],[
 									{text: ''}, 
 									{text: `: {!!$supplier->Addr1!!}`},
@@ -307,73 +322,169 @@
 		pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
 			$('#pdfiframe').attr('src',dataURL);
 		});
+
+		pdfMake.createPdf(docDefinition).getBase64(function(dataURL) {
+			base64_pr = dataURL;
+
+			var obj = {
+				base64:dataURL,
+				_token:$('#_token').val(),
+				merge_key:merge_key,
+				lineno_:1
+			};
+
+			$.post( '../attachment_upload/form?page=merge_pdf',$.param(obj) , function( data ) {
+			}).done(function(data) {
+			});
+		});
 	});
 
-function make_body(){
-	var retval = [
-        [
-			{text:'Line No.',bold: true, style: 'body_ttl',border: [false, true, false, true]},
-			{text:'Item',bold: true, style: 'body_ttl',border: [false, true, false, true]},
-			{text:'Qty',bold: true, style: 'body_ttl',border: [false, true, false, true]},
-			{text:'Packing',bold: true, style: 'body_ttl',border: [false, true, false, true]},
-			{text:'Unit Price',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
-			{text:'Amount',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
-			{text:'Tax Code',bold: true, style: 'body_ttl',border: [false, true, false, true]},
-			{text:'Tax Amount',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
-			{text:'Net Amount\n(RM)',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]}
-		],
-    ];
+	$(document).ready(function () {
+		$('div.canclick').click(function(){
+			$('div.canclick').removeClass('teal inverted');
+			$(this).addClass('teal inverted');
+			var goto = $(this).data('goto');
 
-    ini_body.forEach(function(e,i){
-    	let arr = [
-			{text:e.lineno, style: 'body_row', border: [false, false, false, false]},
-			{text:e.itemcode, style: 'body_row', border: [false, false, false, false]},
-			{text:e.qtyorder, style: 'body_row', border: [false, false, false, false]},
-			{text:e.uomdesc, style: 'body_row', border: [false, false, false, false]},
-			{text:e.unitprice,alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-			{text:e.amount,alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-			{text:e.taxcode, style: 'body_row',border: [false, false, false, false]},
-			{text:e.gstamt,alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-			{text:e.netamt,alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-    	];
-    	retval.push(arr);
-    	let arr2 = [
-			{text:'',style: 'body_row', border: [false, false, false, false]},
-			{colSpan:6,text:e.description, border: [false, false, false, false]},
-			{text:'',style: 'body_row', border: [false, false, false, false]},
-			{text:'',style: 'body_row', border: [false, false, false, false]},
-			{text:'',style: 'body_row', border: [false, false, false, false]},
-			{text:'',style: 'body_row', border: [false, false, false, false]},
-			{text:'',style: 'body_row', border: [false, false, false, false]},
-			{text:'',style: 'body_row', border: [false, false, false, false]},
-			{text:'',style: 'body_row', border: [false, false, false, false]}
-    	];
-    	let arr3 = [
-			{text:'',style: 'body_row', border: [false, false, false, false]},
-			{colSpan:6,text:e.remark, border: [false, false, false, false]},
-			{text:'',style: 'body_row', border: [false, false, false, false]},
-			{text:'',style: 'body_row', border: [false, false, false, false]},
-			{text:'',style: 'body_row', border: [false, false, false, false]},
-			{text:'',style: 'body_row', border: [false, false, false, false]},
-			{text:'',style: 'body_row', border: [false, false, false, false]},
-			{text:'',style: 'body_row', border: [false, false, false, false]},
-			{text:'',style: 'body_row', border: [false, false, false, false]}
-    	];
-    	retval.push(arr2);
-    	retval.push(arr3);
-    	subtotal=subtotal+parseFloat(e.amount.replace(",",""));
-    	disc=disc+parseFloat(e.amtdisc.replace(",",""));
-    	nettotal=nettotal+parseFloat(e.netamt.replace(",",""));
-    });
+			if($(goto).offset() != undefined){
+			$('html, body').animate({
+				scrollTop: $(goto).offset().top
+				}, 500, function(){
 
-    return retval;
-}
+				});
+			}
+		});
+
+		$('#merge_btn').click(function(){
+			let attach_array = [];
+			$('input:checkbox:checked').each(function(){
+				attach_array.push($(this).data('src'));
+			});
+
+			if(attach_array.length > 0 ){
+				var obj = {
+					page:'merge_pdf_with_attachment',
+					merge_key:merge_key,
+					attach_array:attach_array
+				};
+
+				$('#pdfiframe_merge').attr('src',"../attachment_upload/table?"+$.param(obj));
+				$('#btn_merge,#pdfiframe_merge').show();
+				$('#btn_merge').click();
+			}else{
+				alert('Select at least 1 PDF Attachment to merge with main PDF');
+			}
+		});
+
+		populate_attachmentfile();
+	});
+
+	function makeid(length) {
+	    let result = '';
+	    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	    const charactersLength = characters.length;
+	    let counter = 0;
+	    while (counter < length) {
+	      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	      counter += 1;
+	    }
+	    return result;
+	}
+
+	function populate_attachmentfile(){
+		attachmentfiles.forEach(function(e,i){
+			$('#pdfiframe_'+e.idno).attr('src',"../uploads/"+e.src);
+		});
+	}
+
+	function make_body(){
+		var retval = [
+	        [
+				{text:'Line No.',bold: true, style: 'body_ttl',border: [false, true, false, true]},
+				{text:'Item',bold: true, style: 'body_ttl',border: [false, true, false, true]},
+				{text:'Qty',bold: true, style: 'body_ttl',border: [false, true, false, true]},
+				{text:'Packing',bold: true, style: 'body_ttl',border: [false, true, false, true]},
+				{text:'Unit Price',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
+				{text:'Amount',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
+				{text:'Tax Code',bold: true, style: 'body_ttl',border: [false, true, false, true]},
+				{text:'Tax Amount',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
+				{text:'Net Amount\n(RM)',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]}
+			],
+	    ];
+
+	    ini_body.forEach(function(e,i){
+	    	let arr = [
+				{text:e.lineno, style: 'body_row', border: [false, false, false, false]},
+				{text:e.itemcode, style: 'body_row', border: [false, false, false, false]},
+				{text:e.qtyorder, style: 'body_row', border: [false, false, false, false]},
+				{text:e.uomdesc, style: 'body_row', border: [false, false, false, false]},
+				{text:e.unitprice,alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+				{text:e.amount,alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+				{text:e.taxcode, style: 'body_row',border: [false, false, false, false]},
+				{text:e.gstamt,alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+				{text:e.netamt,alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+	    	];
+	    	retval.push(arr);
+	    	let arr2 = [
+				{text:'',style: 'body_row', border: [false, false, false, false]},
+				{colSpan:6,text:e.description, border: [false, false, false, false]},
+				{text:'',style: 'body_row', border: [false, false, false, false]},
+				{text:'',style: 'body_row', border: [false, false, false, false]},
+				{text:'',style: 'body_row', border: [false, false, false, false]},
+				{text:'',style: 'body_row', border: [false, false, false, false]},
+				{text:'',style: 'body_row', border: [false, false, false, false]},
+				{text:'',style: 'body_row', border: [false, false, false, false]},
+				{text:'',style: 'body_row', border: [false, false, false, false]}
+	    	];
+	    	let arr3 = [
+				{text:'',style: 'body_row', border: [false, false, false, false]},
+				{colSpan:6,text:e.remark, border: [false, false, false, false]},
+				{text:'',style: 'body_row', border: [false, false, false, false]},
+				{text:'',style: 'body_row', border: [false, false, false, false]},
+				{text:'',style: 'body_row', border: [false, false, false, false]},
+				{text:'',style: 'body_row', border: [false, false, false, false]},
+				{text:'',style: 'body_row', border: [false, false, false, false]},
+				{text:'',style: 'body_row', border: [false, false, false, false]},
+				{text:'',style: 'body_row', border: [false, false, false, false]}
+	    	];
+	    	retval.push(arr2);
+	    	retval.push(arr3);
+	    	subtotal=subtotal+parseFloat(e.amount.replace(",",""));
+	    	disc=disc+parseFloat(e.amtdisc.replace(",",""));
+	    	nettotal=nettotal+parseFloat(e.netamt.replace(",",""));
+	    });
+
+	    return retval;
+	}
 
 </script>
 
 <body style="margin: 0px;">
 
-<iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 99vw;height: 99vh;"></iframe>
+<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+<div class="ui segments" style="width: 18vw;height: 95vh;float: left; margin: 10px; position: fixed;">
+  <div class="ui secondary segment">
+    <h3>
+		<b>Navigation</b>
+		<button id="merge_btn" class="ui small primary button" style="font-size: 12px;padding: 6px 10px;float: right;">Merge</button>
+		</h3>
+  </div>
+  <div class="ui segment teal inverted canclick" style="cursor: pointer;" data-goto='#pdfiframe'>
+    <p>Purchase Order </p>
+  </div>
+  @foreach($attachment_files as $file)
+  <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_{{$file->idno}}'>
+    <p>{{$file->resulttext}} <input type="checkbox" data-src="{{$file->attachmentfile}}" name="{{$file->idno}}" style="float: right;margin-right: 5px;"></p>
+  </div>
+  @endforeach
+  <div id="btn_merge" class="ui segment canclick" style="cursor: pointer;display: none;" data-goto='#pdfiframe_merge'>
+    <p>Merged File</p>
+  </div>
+</div>
+<iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;"></iframe>
+@foreach($attachment_files as $file)
+<iframe id="pdfiframe_{{$file->idno}}" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;"></iframe>
+@endforeach
+<iframe id="pdfiframe_merge" width="100%" height="100%" src="" frameborder="0" style="width: 79vw;height: 100vh;float: right;display: none;"></iframe>
 
 </body>
 </html>

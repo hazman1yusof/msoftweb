@@ -1082,8 +1082,10 @@ class PurchaseOrderController extends defaultController
             $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1]). "CENT";
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
+
+        $attachment_files =$this->get_attachment_files($purordhd->idno);
         
-        return view('material.purchaseOrder.purchaseOrder_pdfmake2',compact('purordhd','purorddt','totamt_eng', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
+        return view('material.purchaseOrder.purchaseOrder_pdfmake2',compact('purordhd','purorddt','totamt_eng', 'company', 'supplier','deldept', 'total_tax', 'total_discamt','attachment_files'));
     }
 
      // public function toGetAllpurreqhd($recno){
@@ -1521,7 +1523,6 @@ class PurchaseOrderController extends defaultController
         return json_encode($responce);
     }
 
-
     public function need_upd_purreq($idno){
 
         $purordhd = DB::table("material.purordhd")
@@ -1626,6 +1627,17 @@ class PurchaseOrderController extends defaultController
                 return;
             }
         }
+    }
+
+    function get_attachment_files($auditno){
+        $attachment_files = DB::table('finance.attachment')
+            ->where('compcode','=',session('compcode'))
+            ->where('page','=','purchaseorder')
+            ->where('type','=','application/pdf')
+            ->where('auditno','=',$auditno)
+            ->get();
+
+        return $attachment_files;
     }
 
 
