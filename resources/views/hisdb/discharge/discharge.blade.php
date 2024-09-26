@@ -94,9 +94,9 @@
 											</div>
 
 											<div class="form-group row">
-												<label class="col-md-1 control-label" for="bedtype_discharge">Bed Type</label>  
+												<label class="col-md-1 control-label" for="bedtype">Bed Type</label>  
 												<div class="col-md-1">
-													<input id="bedtype_discharge" name="bedtype_discharge" type="text" class="form-control input-sm" rdonly>
+													<input id="bedtype" name="bedtype" type="text" class="form-control input-sm" rdonly>
 												</div>
 												<div class="col-md-4">
 													<input id="bedtype_text_discharge" name="bedtype_text_discharge" type="text" class="form-control input-sm" rdonly>
@@ -104,14 +104,14 @@
 											</div>
 
 											<div class="form-group row">
-												<label class="col-md-1 control-label" for="bed_discharge">Bed</label>  
+												<label class="col-md-1 control-label" for="bed">Bed</label>  
 												<div class="col-md-1">
-													<input id="bed_discharge" name="bed_discharge" type="text" class="form-control input-sm"  rdonly>
+													<input id="bed" name="bed" type="text" class="form-control input-sm"  rdonly>
 												</div>
 
-												<label class="col-md-1 control-label" for="room_discharge">Room</label>  
+												<label class="col-md-1 control-label" for="room">Room</label>  
 												<div class="col-md-1">
-													<input id="room_discharge" name="room_discharge" type="text" class="form-control input-sm"  rdonly>
+													<input id="room" name="room" type="text" class="form-control input-sm"  rdonly>
 												</div>
 											</div>
 
@@ -175,10 +175,10 @@
 
 												<label class="control-label" for="phyexam" style="padding:15px 1px 0px 1px">Physical Examination</label>
 												<textarea id="phyexam" name="phyexam" type="text" class="form-control input-sm" rows="5" rdonly></textarea>
-
+												
 												<label class="control-label" for="diagprov" style="padding:15px 1px 0px 1px">Investigation</label>
 												<textarea id="diagprov" name="diagprov" type="text" class="form-control input-sm" rows="5" rdonly></textarea>
-												
+
 												<label class="control-label" for="treatment" style="padding:15px 1px 0px 1px">Treatment & Medication</label>
 												<textarea id="treatment" name="treatment" type="text" class="form-control input-sm" rows="5" rdonly></textarea>
 												
