@@ -287,7 +287,7 @@ class InvoiceAPDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -554,7 +554,7 @@ class InvoiceAPDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 

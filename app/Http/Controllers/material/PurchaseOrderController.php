@@ -676,6 +676,8 @@ class PurchaseOrderController extends defaultController
 
                 $purordhd_get = $purordhd->first();
 
+                throw new \Exception("PO cant be supported anymore",500);
+
                 if($purordhd_get->recstatus != 'PREPARED'){
                     continue;
                 }
