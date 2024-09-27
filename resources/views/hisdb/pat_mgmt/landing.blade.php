@@ -177,6 +177,10 @@
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.admhandover.admhandover')
+					</div>
+					
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.dieteticCareNotes.dieteticCareNotes')
 					</div>
 					
@@ -340,6 +344,7 @@
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
+				<script type="text/javascript" src="js/hisdb/admhandover/admhandover.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 				<!-- <script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script> -->
 			@elseif (Auth::user()->nurse == 1)
