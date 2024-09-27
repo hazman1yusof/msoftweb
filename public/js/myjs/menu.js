@@ -42,13 +42,17 @@ var Menu = function () {
 		colCounter++;
 	}
 
-	function dialog_title(obj_array){
+	function dialog_title(obj_array,obj){
 		var title = '';
 		obj_array.each(function( index ) {
 			title = ' > ' + $(this).children('a').find('span.lilabel').text() + title;
 		});
 
-		return title.substring(3);
+		if(title.replace(/ +/g, '') == '>'){
+			return obj.text();
+		}else{
+			return title.substring(3);
+		}
 	}
 	
 	var last;
@@ -75,7 +79,7 @@ var Menu = function () {
 					makeNewDialog(
 						$(this).attr('programid'),
 						$(this).attr('targetURL'),
-						dialog_title($(this).parents('li')),
+						dialog_title($(this).parents('li'),$(this)),
 					);
 				}else{
 					obj.dialog.dialog( "moveToTop" );
@@ -85,7 +89,7 @@ var Menu = function () {
 				makeNewDialog(
 					$(this).attr('programid'),
 					$(this).attr('targetURL'),
-					dialog_title($(this).parents('li')),
+					dialog_title($(this).parents('li'),$(this)),
 				);
 			}
 		}
