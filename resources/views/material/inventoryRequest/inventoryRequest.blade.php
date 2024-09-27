@@ -110,6 +110,7 @@ div#fail_msg{
 								<option value="CANCELLED">CANCELLED</option>
 							@elseif (Request::get('scope') == 'CANCEL')
 								<option value="OPEN">OPEN</option>
+								<option value="POSTED">POSTED</option>
 							@endif
 				    </select>
 	      </div>
@@ -415,7 +416,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/inventoryRequest/inventoryRequest.js?v=1.6"></script>
+	<script src="js/material/inventoryRequest/inventoryRequest.js?v=1.7"></script>
 	<!-- <script src="js/material/inventoryRequest/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

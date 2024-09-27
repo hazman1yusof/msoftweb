@@ -228,7 +228,7 @@ class InventoryRequestController extends defaultController
                     ->where('idno','=',$idno)
                     ->first();
 
-                if($ivreqhd->recstatus == 'CANCELLED'){
+                if(!in_array($ivreqhd->recstatus, ['OPEN','POSTED'])){
                     continue;
                 }
 

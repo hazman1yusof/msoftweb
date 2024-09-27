@@ -12,14 +12,14 @@
     
     <script>
         var mydata = {
-            "docname":"{!!$ini_array['docname']!!}",
-            "name":"{!!$ini_array['name']!!}",
-            "newic":"{!!$ini_array['newic']!!}",
-            "reftitle":"{!!$ini_array['reftitle']!!}",
-            "reffor":"{!!$ini_array['reffor']!!}",
-            "exam":"{!!$ini_array['exam']!!}",
-            "invest":"{!!$ini_array['invest']!!}",
-            "refdate":"{!!$ini_array['refdate']!!}"
+            docname:`{!!$ini_array['docname']!!}`,
+            name:`{!!str_replace("`", '', $ini_array['name'])!!}`,
+            newic:`{!!$ini_array['newic']!!}`,
+            reftitle:`{!!$ini_array['reftitle']!!}`,
+            reffor:`{!!$ini_array['reffor']!!}`,
+            exam:`{!!$ini_array['exam']!!}`,
+            invest:`{!!$ini_array['invest']!!}`,
+            refdate:`{!!$ini_array['refdate']!!}`
         };
 
         $(document).ready(function () {
