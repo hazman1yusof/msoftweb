@@ -277,6 +277,7 @@ $(document).ready(function() {
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
         let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
         var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
+        hide_all_panel();
         if($('#curpat').val() == 'true'){
             if($('#epistycode').val() == 'OP'){
                 if($('#user_doctor').val() == '1'){
@@ -284,6 +285,7 @@ $(document).ready(function() {
                     populate_antenatal(lastrowdata);
                     populate_paediatric(lastrowdata);
                     populate_doctorNote_currpt(lastrowdata);
+                    populate_admHandover_currpt(lastrowdata);
                     populate_dieteticCareNotes_currpt(lastrowdata);
                     // populate_dietOrder_currpt(lastrowdata);
                 }else if($('#user_nurse').val() == '1'){
@@ -865,8 +867,6 @@ function mykadclosemodal(){
     }).fail(function(data){
 
     });
-
-    
 }
 
 function randomString(length, chars) {
@@ -917,6 +917,9 @@ if($('#epistycode').val() == 'OP'){
 
 epis_desc_show.load_desc();
 
+function hide_all_panel(){
+    $('div.panel-collapse').collapse('hide');
+}
 
 function stop_scroll_on(){
     $('div.paneldiv').on('mouseenter',function(){
