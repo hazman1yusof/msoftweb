@@ -376,7 +376,7 @@
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_pkg.js"></script>
 			@endif
 
-			<!-- <script type="text/javascript" src="js/hisdb/endConsult/endConsult.js"></script> -->
+			<script type="text/javascript" src="js/hisdb/endConsult/endConsult.js"></script>
 
 		@endif
 
