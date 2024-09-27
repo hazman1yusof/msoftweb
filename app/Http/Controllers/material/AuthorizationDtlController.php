@@ -125,9 +125,9 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                             });;
                     })
                     ->where('qpo.compcode',session('compcode'))
-                    ->where('qpo.trantype','<>','DONE');
-        dd($this->getQueries($queuepo));
-                    // ->get();
+                    ->where('qpo.trantype','<>','DONE')
+                    ->get();
+        // dd($this->getQueries($queuepo));
 
         $queuepo_reject = DB::table('material.queuepo as qpo')
                     ->select('qpo.trantype','pohd.recno','pohd.prdept','pohd.cancelby','pohd.canceldate','pohd.recstatus','pohd.totamount','pohd.adduser')
