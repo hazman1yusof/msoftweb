@@ -33,7 +33,7 @@
 		</div>				
 	</div>
 	<div id="jqGrid_ordcom_panel" class="panel-collapse collapse">
-		<div class="panel-body paneldiv" id="jqGrid_ordcom_c">
+		<div class="panel-body paneldiv" id="jqGrid_ordcom_c" style="padding-top: 0px;">
 	    	<input type="hidden" id="mrn_ordcom" name="mrn_ordcom">
 	    	<input type="hidden" id="episno_ordcom" name="episno_ordcom">
 			<input type="hidden" id="ordcom_deptcode_hide" value="{{Auth::user()->deptcode}}">
@@ -197,6 +197,11 @@
 					<span><b>Cycle Bill : </b></span>
 					<a class="cyclebill" id="cyclebill_dtl" href="" target="_blank">Detail</a> | 
 					<a class="cyclebill" id="cyclebill_summ" href="" target="_blank">Summary</a>
+					<br>
+				</div>
+				<div id="ordcom_div_label">
+					<span><b>Label : </b></span>
+					<a class="cyclebill" id="phar_label_link" href="" target="_blank">Pharmacy</a>
 					<br>
 				</div>
 

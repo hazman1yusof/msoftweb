@@ -470,12 +470,14 @@ span.glyphicon.glyphicon-trash{
 div#ordcom_div_cyclebill{
 	position: absolute;
     right: 30px;
-    top: 0px;
-/*    border: 1px solid cadetblue;*/
-/*    padding: 2px 8px;*/
-/*    border-radius: 5px;*/
+    top: -20px;
 }
-div#ordcom_div_cyclebill > a{
+div#ordcom_div_label{
+	position: absolute;
+    right: 30px;
+    top: -0px;
+}
+div#ordcom_div_cyclebill > a,div#ordcom_div_label > a{
 	display: inline-block;
     padding: 2px;
     cursor: pointer;
