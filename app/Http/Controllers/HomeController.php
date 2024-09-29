@@ -155,7 +155,12 @@ class HomeController extends Controller
         $menu.="<li><a style='padding-left:9px;' title='GP List' class='clickable' programid='gp_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=OTC' >GP List</a></li>";
         $menu.="<li><a style='padding-left:9px' title='Current Patient' class='clickable' programid='curr_pat' targeturl='pat_mast?epistycode=OP&curpat=true&PatClass=HIS'>Current Patient</a></li>";
         $menu.="<li><a style='padding-left:9px;' title='Case Note' class='clickable' programid='casenote' targetURL='ptcare_doctornote' >Case Note</a></li>";
-        $menu.="<li><a style='padding-left:9px' title='Sales Order' class='clickable' programid='SalesOrder_scope_ALL' targeturl='./SalesOrder?scope=ALL'>Sales Order</a></li>";
+        // $menu.="<li><a style='padding-left:9px' title='Sales Order' class='clickable' programid='SalesOrder_scope_ALL' targeturl='./SalesOrder?scope=ALL'>Sales Order</a></li>";
+
+        //header
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Billing</b></a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Claim Batch Listing' class='clickable' programid='claimBatchListing_billingmenu' targeturl='./ClaimBatchList_Report'>Claim Batch Listing</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Reprint Bill' class='clickable' programid='reprintBill_bliingmenu' targeturl='./reprintBill'>Reprint Bill</a></li>";
 
         //header
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Account</b></a></li>";
@@ -167,11 +172,6 @@ class HomeController extends Controller
         $menu.="<li><a style='padding-left:9px' title='Close Till' class='clickable' programid='till_close' targeturl='./till_close'>Close Till</a></li>";
         $menu.="<li><a style='padding-left:9px' title='AR Enquiry' class='clickable' programid='arenquiry' targeturl='./arenquiry'>AR Enquiry</a></li>";
         $menu.="<li><a style='padding-left:9px' title='Till Enquiry' class='clickable' programid='tillenquiry' targeturl='./tillenquiry'>Till Enquiry</a></li>";
-
-        //header
-        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Billing</b></a></li>";
-        $menu.="<li><a style='padding-left:9px' title='Claim Batch Listing' class='clickable' programid='claimBatchListing_billingmenu' targeturl='./ClaimBatchList_Report'>Claim Batch Listing</a></li>";
-        $menu.="<li><a style='padding-left:9px' title='Reprint Bill' class='clickable' programid='reprintBill_bliingmenu' targeturl='./reprintBill'>Reprint Bill</a></li>";
 
         //header
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Inv Transaction' class=''><b>Inventory Transaction</b></a></li>";
