@@ -99,7 +99,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 				// $(search_relate_emr.textfield).parent().next().html('');
@@ -108,7 +108,7 @@ $(document).ready(function () {
 			title: "Select Relationship",
 			open: function () {
 				search_relate_emr.urlParam.filterCol=['compcode', 'recstatus'];
-				search_relate_emr.urlParam.filterVal=['session.compcode', 'A'];
+				search_relate_emr.urlParam.filterVal=['session.compcode', 'ACTIVE'];
 
 				// $('div[aria-describedby="otherdialog_search_relate"]').css("z-index", "1100");
 				// $('div.ui-widget-overlay.ui-front').css("z-index", "1099");
