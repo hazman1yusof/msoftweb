@@ -58,7 +58,7 @@ class HomeController extends Controller
         }
         $dept_desc = $unit_user_->description;
         $shortcut=true;
-        
+
         return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut','logo1'));
     }
 
@@ -159,19 +159,26 @@ class HomeController extends Controller
 
         //header
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Billing</b></a></li>";
-        $menu.="<li><a style='padding-left:9px' title='Claim Batch Listing' class='clickable' programid='claimBatchListing_billingmenu' targeturl='./ClaimBatchList_Report'>Claim Batch Listing</a></li>";
-        $menu.="<li><a style='padding-left:9px' title='Reprint Bill' class='clickable' programid='reprintBill_bliingmenu' targeturl='./reprintBill'>Reprint Bill</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Claim Batch Listing' class='clickable' programid='claimBatchListing_billingmenu' targeturl='./ClaimBatchList_Report'>Claim Batch Listing</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Reprint Bill' class='clickable' programid='reprintBill_bliingmenu' targeturl='./reprintBill'>Reprint Bill</a></li>";
 
         //header
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Account</b></a></li>";
-        $menu.="<li><a style='padding-left:9px' title='Receipt' class='clickable' programid='ARreceipt' targeturl='./receipt'>Receipt</a></li>";
-        $menu.="<li><a style='padding-left:9px' title='Refund' class='clickable' programid='refund' targeturl='./refund'>Refund</a></li>";
-        $menu.="<li><a style='padding-left:9px' title='Debit Note' class='clickable' programid='dataentryDN_AR' targeturl='./DebitNote?source=AR&trantype=DN&scope=ALL'>Debit Note</a></li>";
-        $menu.="<li><a style='padding-left:9px' title='Credit Note' class='clickable' programid='dataentryCN_AR' targeturl='./CreditNoteAR?source=AR&trantype=CN&scope=ALL'>Credit Note</a></li>";
-        $menu.="<li><a style='padding-left:9px' title='Cancellation' class='clickable' programid='cancellationAR' targeturl='./cancellation'>Cancellation</a></li>";
-        $menu.="<li><a style='padding-left:9px' title='Close Till' class='clickable' programid='till_close' targeturl='./till_close'>Close Till</a></li>";
-        $menu.="<li><a style='padding-left:9px' title='AR Enquiry' class='clickable' programid='arenquiry' targeturl='./arenquiry'>AR Enquiry</a></li>";
-        $menu.="<li><a style='padding-left:9px' title='Till Enquiry' class='clickable' programid='tillenquiry' targeturl='./tillenquiry'>Till Enquiry</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Receipt' class='clickable' programid='ARreceipt' targeturl='./receipt'>Receipt</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Refund' class='clickable' programid='refund' targeturl='./refund'>Refund</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Debit Note' class='clickable' programid='dataentryDN_AR' targeturl='./DebitNote?source=AR&trantype=DN&scope=ALL'>Debit Note</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Credit Note' class='clickable' programid='dataentryCN_AR' targeturl='./CreditNoteAR?source=AR&trantype=CN&scope=ALL'>Credit Note</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Cancellation' class='clickable' programid='cancellationAR' targeturl='./cancellation'>Cancellation</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Close Till' class='clickable' programid='till_close' targeturl='./till_close'>Close Till</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='AR Enquiry' class='clickable' programid='arenquiry' targeturl='./arenquiry'>AR Enquiry</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Till Enquiry' class='clickable' programid='tillenquiry' targeturl='./tillenquiry'>Till Enquiry</a></li>";
+
+        //header
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Inv Transaction' class=''><b>Procument</b></a></li>";
+        $menu.="<li><a style='padding-left:21px;' title='Purchase Request' class='clickable' programid='PurReq_dataentry' targetURL='purchaseRequest?scope=ALL' >Purchase Req.</a></li>";
+        $menu.="<li><a style='padding-left:21px;' title='Purchase Order' class='clickable' programid='purOrd_prepared' targetURL='purchaseOrder?scope=ALL' >Purchase Order</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Delivery Order' class='clickable' programid='DeliveryOrd_dataentr' targeturl='deliveryOrder?scope=ALL'>Delivery Order</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Invoice' class='clickable' programid='invap_dataentry' targeturl='invoiceAP?source=AP&amp;trantype=IN&amp;scope=ALL'>Invoice</a></li>";
 
         //header
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Inv Transaction' class=''><b>Inventory Transaction</b></a></li>";
@@ -226,9 +233,9 @@ class HomeController extends Controller
         $company = $user->compcode;
 
         $menu="<li><a style='padding-left:9px;' title='Purchase Request' class='clickable' programid='PurReq_dataentry' targetURL='purchaseRequest?scope=ALL' >Purchase Req.</a></li>";
-        $menu.="<li><a style='padding-left:9px;' title='Dialysis' class='clickable' programid='purOrd_prepared' targetURL='purchaseOrder?scope=ALL' >Purchase Order</a></li>";
+        $menu.="<li><a style='padding-left:9px;' title='Purchase Order' class='clickable' programid='purOrd_prepared' targetURL='purchaseOrder?scope=ALL' >Purchase Order</a></li>";
         $menu.="<li><a style='padding-left:9px' title='Delivery Order' class='clickable' programid='DeliveryOrd_dataentr' targeturl='deliveryOrder?scope=ALL'>Delivery Order</a></li>";
-        $menu.="<li><a style='padding-left:9px' title='Prepared' class='clickable' programid='invap_dataentry' targeturl='invoiceAP?source=AP&amp;trantype=IN&amp;scope=ALL'>Invoice</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Invoice' class='clickable' programid='invap_dataentry' targeturl='invoiceAP?source=AP&amp;trantype=IN&amp;scope=ALL'>Invoice</a></li>";
         $menu.="<li><a style='padding-left:9px' title='Sales Order' class='clickable' programid='SalesOrder_scope_ALL' targeturl='./SalesOrder?scope=ALL'>Sales Order</a></li>";
         $menu.="<li><a style='padding-left:9px' title='Receipt' class='clickable' programid='ARreceipt' targeturl='./receipt'>Receipt</a></li>";
         $menu.="<li><a style='padding-left:9px' title='AR Enquiry' class='clickable' programid='arenquiry' targeturl='./arenquiry'>AR Enquiry</a></li>";
