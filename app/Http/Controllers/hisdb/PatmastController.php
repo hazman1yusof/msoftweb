@@ -2739,8 +2739,8 @@ class PatmastController extends defaultController
                     'debtorcode'  =>  $request['hid_newgl_corpcomp'],
                     // 'occupcode'  =>  $request['hid_newgl_occupcode'],
                     'case'  =>  $request['newgl-case'],
-                    'name'  =>  $request['newgl-name'],
-                    'staffid' =>   $request['newgl-staffid'],
+                    'name'  =>  strtoupper($request['newgl-name']),
+                    'staffid' =>   strtoupper($request['newgl-staffid']),
                     'childno' =>   $request['newgl-childno'],
                     'relatecode' =>   $request['hid_newgl_relatecode'],
                     'gltype' =>   $request['newgl-gltype'],
@@ -2775,7 +2775,7 @@ class PatmastController extends defaultController
                         ->where('staffid',$request['newgl-staffid'])
                         ->where('childno',$request['newgl-childno'])
                         ->update([
-                            'name' => $request['newgl-name'],
+                            'name' => strtoupper($request['newgl-name']),
                             'gltype' => $request['newgl-gltype']
                         ]);
                 }else{
@@ -2786,7 +2786,7 @@ class PatmastController extends defaultController
                             'staffid' => $request['newgl-staffid'],
                             'childno' => $request['newgl-childno'],
                             'relatecode' => $request['hid_newgl_relatecode'],
-                            'name' => $request['newgl-name'],
+                            'name' => strtoupper($request['newgl-name']),
                             'recstatus' => 'ACTIVE',
                             'gltype' => $request['newgl-gltype'],
                             'adduser' => session('username'),
@@ -2826,11 +2826,11 @@ class PatmastController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn'    =>  $request->mrn,
                         'episno'  =>  $request->episno,
-                        'name'  =>  $request->name,
+                        'name'  =>  strtoupper($request->name),
                         'relationshipcode' =>  $request->relationshipcode, 
-                        'address1'    =>  $request->address1,
-                        'address2'    =>  $request->address2,
-                        'address3'    =>  $request->address3,
+                        'address1'    =>  strtoupper($request->address1),
+                        'address2'    =>  strtoupper($request->address2),
+                        'address3'    =>  strtoupper($request->address3),
                         'postcode'    =>  $request->postcode,
                         'tel_h'    =>   $request->tel_h,
                         'tel_hp'    =>   $request->tel_hp,
@@ -2850,11 +2850,11 @@ class PatmastController extends defaultController
                 if($nok_ec_obj->exists()){
                     $nok_ec_obj
                         ->update([
-                            'name'  =>  $request->name,
+                            'name'  =>  strtoupper($request->name),
                             'relationshipcode' =>  $request->relationshipcode, 
-                            'address1'    =>  $request->address1,
-                            'address2'    =>  $request->address2,
-                            'address3'    =>  $request->address3,
+                            'address1'    =>  strtoupper($request->address1),
+                            'address2'    =>  strtoupper($request->address2),
+                            'address3'    =>  strtoupper($request->address3),
                             'postcode'    =>  $request->postcode,
                             'tel_h'    =>   $request->tel_h,
                             'tel_hp'    =>   $request->tel_hp,
