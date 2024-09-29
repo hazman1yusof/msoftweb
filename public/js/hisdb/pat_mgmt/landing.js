@@ -918,7 +918,12 @@ if($('#epistycode').val() == 'OP'){
 epis_desc_show.load_desc();
 
 function hide_all_panel(){
-    $('div.panel-collapse').collapse('hide');
+
+
+        // $('').collapse('show');
+        // $('').collapse('show');
+    console.log($('div.panel-collapse:not(#tabBio,#tabAddr,#tabEpisode)'));
+    $('div.panel-collapse:not(#tabBio,#tabAddr,#tabEpisode)').collapse('hide');
 }
 
 function stop_scroll_on(){

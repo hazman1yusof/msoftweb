@@ -26,6 +26,7 @@ $(document).ready(function(){
 		$("#jqGrid_phar").jqGrid('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
 		$("#cyclebill_dtl").attr('href',"./ordcom/table?action=showpdf_detail&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
 		$("#cyclebill_summ").attr('href',"./ordcom/table?action=showpdf_summ&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
+		$("#phar_label_link").attr('href',"./pat_mast/patlabel?action=pharlabel&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
 
 		// if($('#isdoctor').val() != '1'){
         // 	let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");

@@ -68,10 +68,12 @@ class TestController extends defaultController
             //     return $this->update_stockexp($request);
             // case 'del_stockexp':
             //     return $this->del_stockexp($request);
-            case 'test_email':
-                return $this->test_email($request);
+            // case 'test_email':
+            //     return $this->test_email($request);
             // case 'update_supplier':
             //     return $this->update_supplier($request);
+            case 'update_chgmast':
+                return $this->update_chgmast($request);
             default:
                 return 'error happen..';
         }
@@ -847,6 +849,69 @@ class TestController extends defaultController
                         ]);
 
                     echo nl2br("$i. masuk supplier: $obj->SuppCode , $obj->Name \n");
+                    $i++;
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function update_chgmast(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $chgmast = DB::table('temp.chgprice')
+                            ->get();
+
+            $i = 1;
+            foreach ($chgmast as $obj) {
+                $ori_chgmast = DB::table('hisdb.chgprice')
+                                    ->where('compcode',$obj->compcode)
+                                    ->where('unit',$obj->unit)
+                                    ->where('chgcode',$obj->chgcode)
+                                    ->where('uom',$obj->uom)
+                                    ->where('effdate',$obj->effdate);
+
+                if(!$ori_chgmast->exists()){
+                    DB::table('hisdb.chgprice')
+                        ->insert([
+                            'lineno_' => $obj->lineno_,
+                            'compcode' => $obj->compcode,
+                            'chgcode' => $obj->chgcode,
+                            'uom' => $obj->uom,
+                            'effdate' => $obj->effdate,
+                            'minamt' => $obj->minamt,
+                            'amt1' => $obj->amt1,
+                            'amt2' => $obj->amt2,
+                            'amt3' => $obj->amt3,
+                            'iptax' => $obj->iptax,
+                            'optax' => $obj->optax,
+                            'maxamt' => $obj->maxamt,
+                            'costprice' => $obj->costprice,
+                            'lastuser' => $obj->lastuser,
+                            'lastupdate' => $obj->lastupdate,
+                            'lastfield' => $obj->lastfield,
+                            'unit' => $obj->unit,
+                            'adduser' => $obj->adduser,
+                            'adddate' => $obj->adddate,
+                            'autopull' => $obj->autopull,
+                            'addchg' => $obj->addchg,
+                            'pkgstatus' => $obj->pkgstatus,
+                            'recstatus' => $obj->recstatus,
+                            'deluser' => $obj->deluser,
+                            'deldate' => $obj->deldate,
+                            'lastcomputerid' => $obj->lastcomputerid,
+                            'lastipaddress' => $obj->lastipaddress,
+                        ]);
+
+                    echo nl2br("$i. masuk chgprice: $obj->chgcode \n");
                     $i++;
                 }
             }

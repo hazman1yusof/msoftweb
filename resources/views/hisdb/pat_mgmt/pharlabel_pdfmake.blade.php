@@ -30,7 +30,7 @@
 	
 	var pat_mast = {
 		@foreach($pat_mast as $key => $val) 
-			'{{$key}}' : '{{$val}}',
+			'{{$key}}' : `{!!str_replace('`', '', $val)!!}`,
 		@endforeach 
 		'company' : '{{$company->name}}'
 	};

@@ -37,14 +37,4 @@ $(document).ready(function () {
 	    }
 	    window.open("./pat_mast/patlabel"+"?"+$.param(param));
     });
-
-    $('#phar_label_link').click(function(){
-	    var lastrowdata = getrow_bootgrid();
-	    var param = {
-	    	action:'pharlabel',
-	    	mrn:lastrowdata.MRN,
-	    	episno:lastrowdata.Episno,
-	    }
-	    window.open("./pat_mast/patlabel"+"?"+$.param(param));
-    });
 });
