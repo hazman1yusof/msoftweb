@@ -99,7 +99,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 				// $(search_relate_emr.textfield).parent().next().html('');
@@ -117,7 +117,7 @@ $(document).ready(function () {
 	);
 	search_relate_emr.makedialog(false);
 
-	$("#otherdialog_search_relate_emr").append( $( "<button id='relate_emr_new'>Add New Relationship Code</button>" ) );
+	// $("#otherdialog_search_relate_emr").append( $( "<button id='relate_emr_new'>Add New Relationship Code</button>" ) );
 
 	$('#new_relationship_save').click(function(){
 	      if($('#new_relationship_form').valid()){

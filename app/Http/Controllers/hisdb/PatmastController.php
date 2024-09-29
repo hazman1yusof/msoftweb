@@ -2891,7 +2891,7 @@ class PatmastController extends defaultController
                     ->insert([
                         'compcode' => session('compcode'),
                         'mrn'    =>  $request->mrn,
-                        'name'  =>  $request->name,
+                        'name'  =>  strtoupper($request->name),
                         'relationship' =>  $request->relationshipcode, 
                         'telh'    =>   $request->tel_h,
                         'telhp'    =>   $request->tel_hp,
@@ -2907,7 +2907,7 @@ class PatmastController extends defaultController
                         ->update([
                             'compcode' => session('compcode'),
                             'mrn'    =>  $request->mrn,
-                            'name'  =>  $request->name,
+                            'name'  =>  strtoupper($request->name),
                             'relationship' =>  $request->relationshipcode, 
                             'telh'    =>   $request->tel_h,
                             'telhp'    =>   $request->tel_hp,
