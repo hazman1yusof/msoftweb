@@ -76,6 +76,7 @@ $(document).ready(function () {
 			}else{
 				button_state_nok('add');
 			}
+			$("#jqGrid_nok_pat").setSelection($("#jqGrid_nok_pat").getDataIDs()[0]);
 
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
