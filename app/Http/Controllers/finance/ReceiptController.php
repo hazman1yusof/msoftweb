@@ -164,7 +164,7 @@ class ReceiptController extends defaultController
                         ->insert($array_insert);
 
             //cbtran if paymode by bank
-            if(strtolower($request->paytype) == '#f_tab-debit'){
+            if(strtolower($request->dbacthdr_paytype) == '#f_tab-debit'){
                 $yearperiod = $this->getyearperiod(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
                 $paymode_db = DB::table('debtor.paymode')
                             ->where('compcode',session('compcode'))
