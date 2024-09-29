@@ -398,92 +398,6 @@ $(document).ready(function() {
         $('#mdl_biometric').modal('show');
     });
 
-    // $('#mdl_mykad').on('hidden.bs.modal', function (e) {
-    //    if($("#patientBox").data('gotpat') == true){
-    //         $("#patientBox").click();
-    //    }
-    // });
-
-    // $('#read_mykad').click(function(){
-    //     $.getJSON('http://mycard.test:8080/mycard_read', function(data){
-    //         if(data.status == 'failed'){
-    //             alert("Error reading Mycard");
-    //         }else{
-    //             var olddob = data.dob;
-    //             newdob = [olddob.slice(6), '-', olddob.slice(3,5), '-', olddob.slice(0,2)].join('');
-
-    //             $("#patientBox").data('gotpat',true);
-    //             $("#mykad_reponse").text("");
-    //             $("#mykad_newic").val(data.ic);
-    //             $("#mykad_DOB").val(newdob);
-    //             $("#mykad_birthPlace").val(data.birthplace);
-    //             $("#mykad_pat_name").val(data.name);
-    //             $("#mykad_oldic").val(data.oldic);
-    //             $("#mykad_religion").val(data.religion);
-    //             $("#mykad_gender").val(data.sex);
-    //             $("#mykad_race").val(data.race);
-    //             $("#mykad_address1").val(data.addr1);
-    //             $("#mykad_address2").val(data.addr2);
-    //             $("#mykad_address3").val(data.addr3);
-    //             $("#mykad_city").val(data.city);
-    //             $("#mykad_state").val(data.state);
-    //             $("#mykad_postcode").val(data.postcode);
-    //             $("#mykad_photo").attr('src', 'data:image/png;base64,'+data.photo);
-
-    //             $('#first_visit_date').val(moment().format('DD/MM/YYYY'));
-    //             $('#last_visit_date').val(moment().format('DD/MM/YYYY'));
-
-    //             $('#txt_pat_name').val(data.name);
-    //             $('#txt_pat_newic').val(data.ic);
-    //             if(data.sex == 'P' || data.sex == 'FEMALE'){
-    //                 $('#cmb_pat_sex').val('F');
-    //             }else if(data.sex == 'L' || data.sex == 'MALE'){
-    //                 $('#cmb_pat_sex').val('M');
-    //             }
-    //             $('#txt_ID_Type').val("O");
-
-    //             //"19950927"
-
-    //             $('#txt_pat_dob').val(newdob);
-    //             $('#txt_pat_age').val(gettheage(newdob));
-    //             $('#hid_RaceCode').val(data.race);
-    //             $('#hid_Religion').val(data.religion);
-    //             // $('#cmb_pat_category').val(data.pat_category);
-    //             // $('#hid_pat_citizen').val(obj.citizenship);
-
-    //             mykad_check_existing_patient(); 
-
-    //             auto_save('race',{
-    //                 _token : $('#csrf_token').val(),
-    //                 table_name: 'hisdb.racecode',
-    //                 code_name: 'Code',
-    //                 desc_name: 'Description',
-    //                 Code: data.race,
-    //                 Description: data.race,
-    //             },
-    //             desc_show.load_sp_desc('race','pat_mast/get_entry?action=get_patient_race'));
-
-    //             auto_save('religioncode',{
-    //                 _token : $('#csrf_token').val(),
-    //                 table_name: 'hisdb.religion',
-    //                 code_name: 'Code',
-    //                 desc_name: 'Description',
-    //                 Code: data.religion,
-    //                 Description: data.religion,
-    //             },
-    //             desc_show.load_sp_desc('religioncode','pat_mast/get_entry?action=get_patient_religioncode'));
-
-    //             $('#txt_pat_curradd1').val(data.addr1);
-    //             $('#txt_pat_curradd2').val(data.addr2);
-    //             $('#txt_pat_curradd3').val(data.addr3);
-    //             $('#txt_pat_currpostcode').val(data.postcode);
-    //             $("img#photobase64").attr('src','data:image/png;base64,'+data.photo);
-
-    //             desc_show.write_desc();
-    //         }
-    //     });
-    // });
-
     $('#btn_biometric').click(function(){
         $("#patientBox").data('scantype','biometric');
         $("#mykadFPiframe").get(0).contentWindow.setscantype('biometric');
@@ -504,12 +418,6 @@ $(document).ready(function() {
         $("#jqGridCurrPregnancy").jqGrid ('setGridWidth', Math.floor($("#jqGridAntenatal_c")[0].offsetWidth-$("#jqGridAntenatal_c")[0].offsetLeft-155));
         $("#jqGridObstetricsUltrasound").jqGrid ('setGridWidth', Math.floor($("#jqGridAntenatal_c")[0].offsetWidth-$("#jqGridAntenatal_c")[0].offsetLeft-155));
     });
-
-    // $('#btn_mykad_proceed').click(function(){
-    //     emptyFormdata([],"form#frm_mykad_info");
-    //     $("form#frm_mykad_info img#mykad_photo").attr('src',$("form#frm_mykad_info img#mykad_photo").attr("defaultsrc"));
-    //     $('#mdl_mykad').modal('hide');
-    // });
 
     ////////////////habis mykad///////
 
@@ -827,6 +735,14 @@ function mykadclosemodal(){
                 desc_show.write_desc();
                 $('#txt_pat_newic').blur();
 
+                if($('#first_visit_date').val() != ''){
+                    $('#first_visit_date').val(moment($('#first_visit_date').val()).format('DD/MM/YYYY'));
+                }
+
+                if($('#last_visit_date').val() != ''){
+                    $('#last_visit_date').val(moment($('#last_visit_date').val()).format('DD/MM/YYYY'));
+                }
+
                 delay(function(){
                     $("#patientBox").click();
                     $('.search-field').val(data.data.MRN);
@@ -854,6 +770,14 @@ function mykadclosemodal(){
                 });
                 desc_show.write_desc();
                 $('#txt_pat_newic').blur();
+
+                if($('#first_visit_date').val() != ''){
+                    $('#first_visit_date').val(moment($('#first_visit_date').val()).format('DD/MM/YYYY'));
+                }
+
+                if($('#last_visit_date').val() != ''){
+                    $('#last_visit_date').val(moment($('#last_visit_date').val()).format('DD/MM/YYYY'));
+                }
 
                 delay(function(){
                     $("#patientBox").click();
