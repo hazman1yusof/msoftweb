@@ -175,7 +175,7 @@ class HomeController extends Controller
 
         //header
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Inv Transaction' class=''><b>Procument</b></a></li>";
-        $menu.="<li><a style='padding-left:21px;' title='Purchase Request' class='clickable' programid='PurReq_dataentry' targetURL='purchaseRequest?scope=ALL' >Purchase Req.</a></li>";
+        $menu.="<li><a style='padding-left:21px;' title='Purchase Request' class='clickable' programid='PurReq_dataentry' targetURL='purchaseRequest?scope=ALL' >Purchase Request</a></li>";
         $menu.="<li><a style='padding-left:21px;' title='Purchase Order' class='clickable' programid='purOrd_prepared' targetURL='purchaseOrder?scope=ALL' >Purchase Order</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Delivery Order' class='clickable' programid='DeliveryOrd_dataentr' targeturl='deliveryOrder?scope=ALL'>Delivery Order</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Invoice' class='clickable' programid='invap_dataentry' targeturl='invoiceAP?source=AP&amp;trantype=IN&amp;scope=ALL'>Invoice</a></li>";
@@ -232,7 +232,7 @@ class HomeController extends Controller
         $groupid = $user->groupid;
         $company = $user->compcode;
 
-        $menu="<li><a style='padding-left:9px;' title='Purchase Request' class='clickable' programid='PurReq_dataentry' targetURL='purchaseRequest?scope=ALL' >Purchase Req.</a></li>";
+        $menu="<li><a style='padding-left:9px;' title='Purchase Request' class='clickable' programid='PurReq_dataentry' targetURL='purchaseRequest?scope=ALL' >Purchase Request</a></li>";
         $menu.="<li><a style='padding-left:9px;' title='Purchase Order' class='clickable' programid='purOrd_prepared' targetURL='purchaseOrder?scope=ALL' >Purchase Order</a></li>";
         $menu.="<li><a style='padding-left:9px' title='Delivery Order' class='clickable' programid='DeliveryOrd_dataentr' targeturl='deliveryOrder?scope=ALL'>Delivery Order</a></li>";
         $menu.="<li><a style='padding-left:9px' title='Invoice' class='clickable' programid='invap_dataentry' targeturl='invoiceAP?source=AP&amp;trantype=IN&amp;scope=ALL'>Invoice</a></li>";
