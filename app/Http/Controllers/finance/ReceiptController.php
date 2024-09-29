@@ -163,6 +163,66 @@ class ReceiptController extends defaultController
             DB::table('debtor.dbacthdr')
                         ->insert($array_insert);
 
+            //cbtran if paymode by bank
+            if(strtolower($request->paytype) == '#f_tab-debit'){
+                $yearperiod = $this->getyearperiod(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+                $paymode_db = DB::table('debtor.paymode')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','AR')
+                            ->where('paytype','Bank')
+                            ->where('paymode',$request->dbacthdr_paymode)
+                            ->first();
+                $bankcode = $paymode_db->cardcent;
+                
+                DB::table('finance.cbtran')
+                    ->insert([  
+                        'compcode' => session('compcode'), 
+                        'bankcode' => $bankcode, 
+                        'source' => 'PB', 
+                        'trantype' => 'RC', 
+                        'auditno' => $auditno, 
+                        'postdate' => Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'), 
+                        'year' => $yearperiod->year, 
+                        'period' => $yearperiod->period, 
+                        // 'cheqno' => $request->cheqno, 
+                        'amount' => $dbacthdr_amount, 
+                        'remarks' => $request->dbacthdr_payername, 
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'reference' => 'Receipt Payment :'. ' ' .$request->dbacthdr_payername, 
+                        'recstatus' => 'ACTIVE' 
+                    ]);
+
+                //1st step, 2nd phase, update bank detaild
+                if($this->isCBtranExist($bankcode,$yearperiod->year,$yearperiod->period)){
+
+                    $totamt = $this->getCbtranTotamt($bankcode,$yearperiod->year,$yearperiod->period);
+
+                    DB::table('finance.bankdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('year','=',$yearperiod->year)
+                        ->where('bankcode','=',$bankcode)
+                        ->update([
+                            "actamount".$yearperiod->period => $totamt->amount
+                        ]);
+
+                }else{
+
+                    $totamt = $this->getCbtranTotamt($bankcode,$yearperiod->year,$yearperiod->period);
+
+                    DB::table('finance.bankdtl')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'bankcode' => $bankcode,
+                                'year' => $yearperiod->year,
+                                'actamount'.$yearperiod->period => $totamt->amount,
+                                'upduser' => session('username'),
+                                'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+
+                            ]);
+                }
+            }
+
             $this->gltran($auditno,$request->dbacthdr_trantype);
 
             DB::commit();
@@ -641,6 +701,35 @@ class ReceiptController extends defaultController
                 ->first();
 
         return $obj;
+    }
+
+    public function isCBtranExist($bankcode,$year,$period){
+        $cbtran = DB::table('finance.bankdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('year','=',$year)
+                ->where('bankcode','=',$bankcode);
+
+        if($cbtran->exists()){
+            $cbtran_get = (array)$cbtran->first();
+            $this->cbtranAmount = $cbtran_get["actamount".$period];
+        }
+
+        return $cbtran->exists();
+    }
+
+    public function getCbtranTotamt($bankcode, $year, $period){
+        $cbtranamt = DB::table('finance.cbtran')
+                    ->where('compcode', '=', session('compcode'))
+                    ->where('bankcode', '=', $bankcode)
+                    ->where('year', '=', $year)
+                    ->where('period', '=', $period)
+                  /*  ->first();*/
+                    ->sum('amount');
+                
+        $responce = new stdClass();
+        $responce->amount = $cbtranamt;
+        
+        return $responce;
     }
     
     public function showpdf(Request $request){
