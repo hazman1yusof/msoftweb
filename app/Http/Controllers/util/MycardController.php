@@ -81,7 +81,7 @@ class MycardController extends defaultController
                             'Address2' => $pre_pat_mast_f->Address2,
                             'Address3' => $pre_pat_mast_f->Address3,
                             'Postcode' => $pre_pat_mast_f->Postcode,
-                            'Citizencode' => $pre_pat_mast_f->Citizencode,
+                            'Citizencode' => 'WARGANEGARA',
                             'ID_Type' => 'O',
                             'PatientImage' => $pre_pat_mast_f->PatientImage
                         ]);
@@ -172,7 +172,7 @@ class MycardController extends defaultController
                     'Address2' => $request->Address2,
                     'Address3' => $request->Address3,
                     'Postcode' => $request->Postcode,
-                    'Citizencode' => $request->Citizencode,
+                    'Citizencode' => 'WARGANEGARA',
                     'ID_Type' => 'O',
                     'PatientImage' => $request->PatientImage,
                     'rng' => $request->rng,
