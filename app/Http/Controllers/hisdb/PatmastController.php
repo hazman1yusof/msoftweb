@@ -2827,7 +2827,7 @@ class PatmastController extends defaultController
                         'mrn'    =>  $request->mrn,
                         'episno'  =>  $request->episno,
                         'name'  =>  strtoupper($request->name),
-                        'relationshipcode' =>  $request->relationshipcode, 
+                        'relationshipcode' =>  strtoupper($request->relationshipcode), 
                         'address1'    =>  strtoupper($request->address1),
                         'address2'    =>  strtoupper($request->address2),
                         'address3'    =>  strtoupper($request->address3),
@@ -2851,7 +2851,7 @@ class PatmastController extends defaultController
                     $nok_ec_obj
                         ->update([
                             'name'  =>  strtoupper($request->name),
-                            'relationshipcode' =>  $request->relationshipcode, 
+                            'relationshipcode' =>  strtoupper($request->relationshipcode), 
                             'address1'    =>  strtoupper($request->address1),
                             'address2'    =>  strtoupper($request->address2),
                             'address3'    =>  strtoupper($request->address3),
@@ -2892,7 +2892,7 @@ class PatmastController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn'    =>  $request->mrn,
                         'name'  =>  strtoupper($request->name),
-                        'relationship' =>  $request->relationshipcode, 
+                        'relationship' =>  strtoupper($request->relationshipcode), 
                         'telh'    =>   $request->tel_h,
                         'telhp'    =>   $request->tel_hp,
                         'email'    =>  $request->email
@@ -2908,7 +2908,7 @@ class PatmastController extends defaultController
                             'compcode' => session('compcode'),
                             'mrn'    =>  $request->mrn,
                             'name'  =>  strtoupper($request->name),
-                            'relationship' =>  $request->relationshipcode, 
+                            'relationship' =>  strtoupper($request->relationshipcode), 
                             'telh'    =>   $request->tel_h,
                             'telhp'    =>   $request->tel_hp,
                             'email'    =>  $request->email
