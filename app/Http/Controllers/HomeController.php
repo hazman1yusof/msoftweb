@@ -55,7 +55,7 @@ class HomeController extends Controller
             $unit_user = $unit_user_->sector;
         }
         $dept_desc = $unit_user_->description;
-        return view('init.container_ptcare',compact('menu','units','unit_user','title','dept_desc'));
+        return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut','logo1'));
     }
 
     public function dialysis(){
@@ -147,21 +147,34 @@ class HomeController extends Controller
         $groupid = $user->groupid;
         $company = $user->compcode;
 
-        // $menu="<li><a style='padding-left:9px;' title='Patient List' class='clickable' programid='pat_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=HIS' ><span class='fa plus-minus left-floated' style='float: left;padding: 2px 10px;'></span>Patient List</a></li>";
-
-        $menu="<li><a style='padding-left:9px;' title='Patient List' class='clickable' programid='pat_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=HIS' >Patient List</a></li>";
-
-        $menu.="<li><a style='padding-left:9px;' title='Dashboard' class='clickable' programid='dashboard' targetURL='ptcare_dashboard' >Dashboard</a></li>";
-
-        $menu.="<li><a style='padding-left:9px;' title='Document Upload' class='clickable' programid='docupload' targetURL='ptcare_emergency' >Document Upload</a></li>";
-
-        $menu.="<li><a style='padding-left:9px;' title='Case Note' class='clickable' programid='casenote' targetURL='ptcare_doctornote' >Case Note</a></li>";
-
-        $menu.="<li><a style='padding-left:9px;' title='Episode Statistics' class='clickable' programid='estats' targetURL='ptcare_eis' >Episode Statistics</a></li>";
-
-        $menu.="<li><a style='padding-left:9px;' title='Revenue Statistics' class='clickable' programid='rstats' targetURL='ptcare_reveis' >Revenue Statistics</a></li>";
-
-        $menu.="<li><a style='padding-left:9px;' title='Prescription' class='clickable' programid='prescription' targetURL='ptcare_prescription' >Prescription</a></li>";
+        $menu="<li><a style='padding-left:9px;' title='Purchase Request' class='clickable' programid='PurReq_dataentry' targetURL='purchaseRequest?scope=ALL' >Purchase Req.</a></li>";
+        $menu.="<li><a style='padding-left:9px;' title='Dialysis' class='clickable' programid='purOrd_prepared' targetURL='purchaseOrder?scope=ALL' >Purchase Order</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Delivery Order' class='clickable' programid='DeliveryOrd_dataentr' targeturl='deliveryOrder?scope=ALL'>Delivery Order</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Prepared' class='clickable' programid='invap_dataentry' targeturl='invoiceAP?source=AP&amp;trantype=IN&amp;scope=ALL'>Invoice</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Sales Order' class='clickable' programid='SalesOrder_scope_ALL' targeturl='./SalesOrder?scope=ALL'>Sales Order</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Receipt' class='clickable' programid='ARreceipt' targeturl='./receipt'>Receipt</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='AR Enquiry' class='clickable' programid='arenquiry' targeturl='./arenquiry'>AR Enquiry</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Till Enquiry' class='clickable' programid='tillenquiry' targeturl='./tillenquiry'>Till Enquiry</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Close Till' class='clickable' programid='till_close' targeturl='./till_close'>Close Till</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Charge Master' class='clickable' programid='chgmaster' targeturl='./chargemaster'>Charge Master</a></li>";
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Inv Transaction' class=''><b>Inventory Transaction</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Inventory Transaction' class='clickable' programid='invtran' targeturl='./inventoryTransaction?scope=ALL'>Inventory Transaction</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Transafer(TUI/TUO)' class='clickable' programid='transfer_TUI_TUO' targeturl='./inventoryTransaction?scope=ALL&ttype=TUO'>Transafer(TUI/TUO)</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Good Return In' class='clickable' programid='goodReturnIn' targeturl='./inventoryTransaction?scope=ALL&ttype=GRI'>Good Return In</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Adjusment(AI/AO)' class='clickable' programid='adjustmenAIAO' targeturl='./inventoryTransaction?scope=ALL&ttype=AI'>Adjusment(AI/AO)</a></li>";
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Product</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Pharmacy' class='clickable' programid='stockPharmacy' targeturl='product?groupcode=Stock&amp;&amp;Class=Pharmacy'>Pharmacy</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Pharmacy' class='clickable' programid='stockNon-Pharmacy' targeturl='product?groupcode=Stock&&Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Pharmacy' class='clickable' programid='stockConsignment' targeturl='product?groupcode=Consignment&&Class=Consignment'>Consignment</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Other' class='clickable' programid='productFin' targeturl='product?groupcode=Others&&Class=Others'>Others</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='asset' targeturl='./product?groupcode=Asset&&Class=Asset'>Asset</a></li>";
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Enquiry</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemPhar' targeturl='./itemEnquiry?Class=Pharmacy'>Pharmacy</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemNonPhar' targeturl='./itemEnquiry?Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
+        //GRI
+        //IV
+        //stock freeze
+        //stock count
 
         return $menu;
     }
