@@ -48,7 +48,7 @@ class HomeController extends Controller
         $unit_user = '';
         $company = DB::table('sysdb.company')->where('compcode',session('compcode'))->first();
         $logo1 = $company->logo1;
-        $title="Primary Care";
+        $title="Clinic";
         if($user->dept != ''){
             $unit_user_ = DB::table('sysdb.department')
                 ->where('compcode','=',$user->compcode)
