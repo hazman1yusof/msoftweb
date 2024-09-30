@@ -182,6 +182,7 @@ class HomeController extends Controller
 
         //header
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Inv Transaction' class=''><b>Inventory Transaction</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Inventory Request' class='clickable' programid='InvReqDataEntry' targeturl='./inventoryRequest?scope=ALL'>Inventory Request</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Inventory Transaction' class='clickable' programid='invtran' targeturl='./inventoryTransaction?scope=ALL'>Inventory Transaction</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Transafer(TUI/TUO)' class='clickable' programid='transfer_TUI_TUO' targeturl='./inventoryTransaction?scope=ALL&ttype=TUO'>Transafer(TUI/TUO)</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Good Return In' class='clickable' programid='goodReturnIn' targeturl='./inventoryTransaction?scope=ALL&ttype=GRI'>Good Return In</a></li>";
@@ -199,6 +200,10 @@ class HomeController extends Controller
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Item Enquiry</b></a></li>";
         $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemPhar' targeturl='./itemEnquiry?Class=Pharmacy'>Pharmacy</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemNonPhar' targeturl='./itemEnquiry?Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
+
+        //header
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Dashboard</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ptcare_dashboard' targeturl='./ptcare_dashboard'>Business Intelligence</a></li>";
         //GRI
         //IV
         //stock freeze
