@@ -157,17 +157,15 @@
 								<tr>
 								<th scope="col" class="col-md-1">No</th>
 								<th scope="col" class="col-md-2">Plan</th>
-								<th scope="col" class="col-md-1"></th>
-								<th scope="col" class="col-md-7">Remark</th>
+								<th scope="col" class="col-md-9">Remark</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
 									<th scope="row">1</th>
-									<td>RTK/PCR</td>
-									<td>
+									<td>RTK/PCR <br>
 										<label class="radio-inline">
-											<input type="radio" name="rtkpcr" value="1">Yes
+												<input type="radio" name="rtkpcr" value="1">Yes
 										</label>
 										<label class="radio-inline">
 											<input type="radio" name="rtkpcr" value="0">No
@@ -179,8 +177,7 @@
 								</tr>
 								<tr>
 									<th scope="row">2</th>
-									<td>Blood Investigation</td>
-									<td>
+									<td>Blood Investigation <br>
 										<label class="radio-inline">
 											<input type="radio" name="bloodinv" value="1">Yes
 										</label>
@@ -194,8 +191,7 @@
 								</tr>
 								<tr>
 									<th scope="row">3</th>
-									<td>Branula</td>
-									<td>
+									<td>Branula <br>
 										<label class="radio-inline">
 											<input type="radio" name="branula" value="1">Yes
 										</label>
@@ -209,8 +205,7 @@
 								</tr>
 								<tr>
 									<th scope="row">4</th>
-									<td>CXR/MRI/CT Scan</td>
-									<td>
+									<td>CXR/MRI/CT Scan <br>
 										<label class="radio-inline">
 											<input type="radio" name="scan" value="1">Yes
 										</label>
@@ -224,8 +219,7 @@
 								</tr>
 								<tr>
 									<th scope="row">5</th>
-									<td>Insurance</td>
-									<td>
+									<td>Insurance <br>
 										<label class="radio-inline">
 											<input type="radio" name="insurance" value="1">Yes
 										</label>
@@ -239,8 +233,7 @@
 								</tr>
 								<tr>
 									<th scope="row">6</th>
-									<td>Medication (Antiplatlet)</td>
-									<td>
+									<td>Medication (Antiplatlet) <br>
 										<label class="radio-inline">
 											<input type="radio" name="medication" value="1">Yes
 										</label>
@@ -254,8 +247,7 @@
 								</tr>
 								<tr>
 									<th scope="row">7</th>
-									<td>Consent</td>
-									<td>
+									<td>Consent <br>
 										<label class="radio-inline">
 											<input type="radio" name="consent" value="1">Yes
 										</label>
@@ -269,8 +261,7 @@
 								</tr>
 								<tr>
 									<th scope="row">8</th>
-									<td>Smoking</td>
-									<td>
+									<td>Smoking <br>
 										<label class="radio-inline">
 											<input type="radio" name="smoking" value="1">Yes
 										</label>
@@ -285,8 +276,7 @@
 								</tr>
 								<tr>
 									<th scope="row">9</th>
-									<td>NBM</td>
-									<td>
+									<td>NBM <br>
 										<label class="radio-inline">
 											<input type="radio" name="nbm" value="1">Yes
 										</label>

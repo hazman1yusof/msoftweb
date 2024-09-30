@@ -47,6 +47,8 @@ $(document).ready(function () {
 			episno: $("#episno_discharge").val(),
 			mrn: $("#mrn_dischargeForm").val(),
 			episno: $("#episno_dischargeForm").val(),
+			dischargeuser: $("#dischargeuser").val(),
+
 		};
 		
 		$.post("discharge/form?"+$.param(saveParam), $.param(postobj), function (data){
@@ -274,7 +276,8 @@ button_state_discharge('empty');
 		$("#episno_discharge").val(obj.episno);
 		$("#mrn_dischargeForm").val(obj.mrn);
 		$("#episno_dischargeForm").val(obj.episno);
-
+		$("#adduser").val(obj.adduser);
+		$("#dischargeuser").val(obj.dischargeuser);
 		
 		var saveParam = {
 			action: 'get_table_discharge',
@@ -285,7 +288,9 @@ button_state_discharge('empty');
 			episno: obj.episno,
 			mrn_dischargeForm: obj.mrn_dischargeForm,
 			episno_dischargeForm: obj.episno_dischargeForm,
-	
+			adduser: obj.adduser,
+			dischargeuser: obj.dischargeuser,
+
 		};
 		
 		$.post("discharge/form?"+$.param(saveParam), $.param(postobj), function (data){
@@ -324,6 +329,9 @@ button_state_discharge('empty');
 		$("#episno_discharge").val(obj.Episno);
 		$('#mrn_dischargeForm').val(obj.MRN);
 		$("#episno_dischargeForm").val(obj.Episno);
+		$("#adduser").val(obj.adduser);
+		$("#dischargeuser").val(obj.dischargeuser);
+
 	}
 
 	function autoinsert_rowdata(form,rowData){
@@ -348,7 +356,7 @@ button_state_discharge('empty');
 		}
 		var postobj = {
 			_token: $('#csrf_token').val(),
-			// sex_edit: $('#sex_edit').val(),
+			dischargeuser: $('#dischargeuser').val(),
 			// idtype_edit: $('#idtype_edit').val()
 		};
 		

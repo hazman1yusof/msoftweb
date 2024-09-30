@@ -134,10 +134,10 @@ class DischargeController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'reg_date' => $request->reg_date,
-                    //'regby_discharge' => $request->regby_discharge,
+                    'regby_discharge' => $request->regby_discharge,
                     'reg_time' => $request->reg_time,
                     'dischargedate' => $request->dischargedate,
-                    'dischargeuser' => $request->dischargeuser,
+                    'dischargeuser' => session('username'),
                     'dischargetime' => $request->dischargetime,
                     'diagfinal' => $request->diagfinal,
                     'patologist' => $request->patologist,
@@ -158,7 +158,7 @@ class DischargeController extends defaultController
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'lastuser'  => session('username'),
-                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
             
             DB::commit();
@@ -191,10 +191,10 @@ class DischargeController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->update([
                         'reg_date' => $request->reg_date,
-                        //'regby_discharge' => $request->regby_discharge,
+                        'adduser' => $request->adduser,
                         'reg_time' => $request->reg_time,
                         'dischargedate' => $request->dischargedate,
-                        'dischargeuser' => $request->dischargeuser,
+                        'dischargeuser' => session('username'),
                         'dischargetime' => $request->dischargetime,
                         'diagfinal' => $request->diagfinal,
                         'patologist' => $request->patologist,
@@ -212,10 +212,10 @@ class DischargeController extends defaultController
                         'status_discTransferred' => $request->status_discTransferred,
                         'medondischg' => $request->medondischg,
                         'medcert' => $request->medcert,
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        // 'adduser'  => session('username'),
+                        // 'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }else{
                 DB::table('hisdb.episode')
@@ -224,10 +224,10 @@ class DischargeController extends defaultController
                         'mrn' => $request->mrn_discharge,
                         'episno' => $request->episno_discharge,
                         'reg_date' => $request->reg_date,
-                        //'regby_discharge' => $request->regby_discharge,
+                        'adduser' => $request->adduser,
                         'reg_time' => $request->reg_time,
                         'dischargedate' => $request->dischargedate,
-                        'dischargeuser' => $request->dischargeuser,
+                        'dischargeuser' => session('username'),
                         'dischargetime' => $request->dischargetime,
                         'diagfinal' => $request->diagfinal,
                         'patologist' => $request->patologist,
@@ -248,13 +248,13 @@ class DischargeController extends defaultController
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }
             
             $queries = DB::getQueryLog();
             // dump($queries);
-            
+
             DB::commit();
             
         } catch (\Exception $e) {
@@ -269,10 +269,11 @@ class DischargeController extends defaultController
     
     public function get_table_discharge(Request $request){
         
-        $episode_obj = DB::table('hisdb.episode')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$request->mrn)
-                    ->where('episno','=',$request->episno);
+        $episode_obj = DB::table('hisdb.episode as e')
+                    ->where('e.compcode','=',session('compcode'))
+                    ->where('e.mrn','=',$request->mrn)
+                    ->where('e.episno','=',$request->episno)
+                    ->leftJoin('hisdb.bedtype as bt','bt.bedtype','=','e.bedtype');
     
         $nurshistory_obj = DB::table('nursing.nurshistory')
                     ->where('compcode','=',session('compcode'))
