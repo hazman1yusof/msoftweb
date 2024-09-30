@@ -60,6 +60,8 @@ $(document).ready(function (){
                         hideatdialogForm(true);
                         enableForm('#formdata');
                         rdonly('#formdata');
+                        $("#SL_deptcode").val($("#deptcode").val());
+                        dialog_deptcode.check(errorField);
                         // $("#purreqhd_reqdept").val($("#x").val());
                         $('#save').hide();
                         break;
@@ -76,15 +78,15 @@ $(document).ready(function (){
                 }if(oper != 'add'){
                     dialog_deptcode.check(errorField);
                     dialog_billtypeSO.check(errorField);
-                    // dialog_mrn.check(errorField);
+                    dialog_mrn.check('errorField');
                     dialog_CustomerSO.check(errorField);
-                    // dialog_approvedbySO.check(errorField);
+                    dialog_doctor.check('errorField');
                 }if(oper != 'view'){
                     dialog_deptcode.on();
                     dialog_billtypeSO.on();
-                    // dialog_mrn.on();
+                    dialog_mrn.on();
                     dialog_CustomerSO.on();
-                    // dialog_approvedbySO.on();
+                    dialog_doctor.on();
                 }
             },
             beforeClose: function (event, ui){
@@ -110,9 +112,9 @@ $(document).ready(function (){
                 $("#formdata a").off();
                 dialog_deptcode.off();
                 dialog_billtypeSO.off();
-                // dialog_mrn.off();
+                dialog_mrn.off();
                 dialog_CustomerSO.off();
-                // dialog_approvedbySO.off();
+                dialog_doctor.off();
                 $(".noti").empty();
                 $("#refresh_jqGrid").click();
                 refreshGrid("#jqGrid2",null,"kosongkan");
@@ -240,6 +242,7 @@ $(document).ready(function (){
             { label: 'billdebtor', name: 'SL_billdebtor', hidden: true },
             { label: 'Remark', name: 'SL_remark', width: 10, hidden: true },
             { label: 'mrn', name: 'SL_mrn', width: 10, hidden: true },
+            { label: 'mrn', name: 'SL_doctorcode', width: 10, hidden: true },
             { label: 'adduser', name: 'SL_adduser', width: 10, hidden: true },
             { label: 'adddate', name: 'SL_adddate', width: 10, hidden: true },
             { label: 'upduser', name: 'SL_upduser', width: 10, hidden: true },
@@ -502,6 +505,8 @@ $(document).ready(function (){
 			dialog_deptcode.on();
 			dialog_billtypeSO.on();
 			dialog_CustomerSO.on();
+            dialog_doctor.on();
+            dialog_mrn.on();
 		}).done(function (data){
 			$("#saveDetailLabel").attr('disabled',false);
 			unsaved = false;
@@ -939,9 +944,9 @@ $(document).ready(function (){
 		beforeSubmit: function (postdata, rowid){
 			dialog_deptcode.check(errorField);
 			dialog_billtypeSO.check(errorField);
-			// dialog_mrn.check(errorField);
+			dialog_mrn.check('errorField');
 			dialog_CustomerSO.check(errorField);
-			// dialog_approvedbySO.check(errorField);
+			dialog_doctor.check('errorField');
 		}
 	});
 	
@@ -1407,9 +1412,9 @@ $(document).ready(function (){
 		unsaved = false;
 		dialog_deptcode.off();
 		dialog_billtypeSO.off();
-		// dialog_mrn.off();
+		dialog_mrn.off();
 		dialog_CustomerSO.off();
-		// dialog_approvedbySO.off();
+		dialog_doctor.off();
 
 		// errorField.length = 0;
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
@@ -1421,8 +1426,8 @@ $(document).ready(function (){
 			dialog_deptcode.on();
 			dialog_billtypeSO.on();
 			dialog_CustomerSO.on();
-			// dialog_approvedbySO.on();
-			// dialog_mrn.on();
+			dialog_doctor.on();
+			dialog_mrn.on();
 		}
 	});
 
@@ -1433,8 +1438,9 @@ $(document).ready(function (){
 		dialog_deptcode.on();
 		dialog_billtypeSO.on();
 		dialog_CustomerSO.on();
-		// dialog_approvedbySO.on();
-		// dialog_mrn.on();
+		dialog_doctor.on();
+		dialog_mrn.on();
+
 
 		enableForm('#formdata');
 		rdonly('#formdata');
@@ -1667,63 +1673,109 @@ $(document).ready(function (){
 	);
 	dialog_deptcode.makedialog();
 
-	var dialog_CustomerSO = new ordialog(
-		'customer', 'debtor.debtormast', '#SL_debtorcode', errorField,
-		{
-			colModel: [
-				{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true, checked: true },
-				{ label: 'Status', name: 'recstatus', width: 200, classes: 'pointer' },
-			],
-			urlParam: {
-				url: "./Quotation_SO/table",
-				action: 'get_debtorMaster',
-				filterCol: [],
-				filterVal: []
-			},
-			ondblClickRow: function (){
-				$('#SL_hdrtype').focus();
-			},
-			loadComplete: function (data,obj){
-				// var rows = data.rows;
-				// var gridname = '#'+obj.gridname; // #othergrid_customer
+	// var dialog_CustomerSO = new ordialog(
+	// 	'customer', 'debtor.debtormast', '#SL_debtorcode', errorField,
+	// 	{
+	// 		colModel: [
+	// 			{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+	// 			{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true, checked: true },
+	// 			{ label: 'Status', name: 'recstatus', width: 200, classes: 'pointer' },
+	// 		],
+	// 		urlParam: {
+	// 			url: "./Quotation_SO/table",
+	// 			action: 'get_debtorMaster',
+	// 			filterCol: [],
+	// 			filterVal: []
+	// 		},
+	// 		ondblClickRow: function (){
+	// 			$('#SL_hdrtype').focus();
+	// 		},
+	// 		loadComplete: function (data,obj){
+	// 			// var rows = data.rows;
+	// 			// var gridname = '#'+obj.gridname; // #othergrid_customer
 				
-				// if(rows.length > 1 && obj.ontabbing){
-					// rows.forEach(function(e,i){
-					// 	if(e.recstatus == 'ACTIVE'){
-					// 		// let id = parseInt(i)+1;
-					// 		// $(gridname+' tr#'+id).val('');
-					// 		// $(gridname+'_recstatus').val('');
-					// 	}
-					// });
-				// }
-			},
-			gridComplete: function (obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-		}, {
-			title: "Select Customer",
-			open: function (){
-				dialog_CustomerSO.urlParam.url = "./Quotation_SO/table";
-				dialog_CustomerSO.urlParam.action = 'get_debtorMaster';
-				// dialog_CustomerSO.urlParam.table_name = ['debtor.debtormast'];
-				// dialog_CustomerSO.urlParam.fixPost = "true";
-				// dialog_CustomerSO.urlParam.table_id = "none_";
-				dialog_CustomerSO.urlParam.filterCol = [];
-				dialog_CustomerSO.urlParam.filterVal = [];
-			},
-			close: function (obj_){
-				$("#SL_hdrtype").focus().select();
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_CustomerSO.makedialog();
+	// 			// if(rows.length > 1 && obj.ontabbing){
+	// 				// rows.forEach(function(e,i){
+	// 				// 	if(e.recstatus == 'ACTIVE'){
+	// 				// 		// let id = parseInt(i)+1;
+	// 				// 		// $(gridname+' tr#'+id).val('');
+	// 				// 		// $(gridname+'_recstatus').val('');
+	// 				// 	}
+	// 				// });
+	// 			// }
+	// 		},
+	// 		gridComplete: function (obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 				$(gridname+' tr#1').click();
+	// 				$(gridname+' tr#1').dblclick();
+	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 				$('#'+obj.dialogname).dialog('close');
+	// 			}
+	// 		}
+	// 	}, {
+	// 		title: "Select Customer",
+	// 		open: function (){
+	// 			dialog_CustomerSO.urlParam.url = "./Quotation_SO/table";
+	// 			dialog_CustomerSO.urlParam.action = 'get_debtorMaster';
+	// 			// dialog_CustomerSO.urlParam.table_name = ['debtor.debtormast'];
+	// 			// dialog_CustomerSO.urlParam.fixPost = "true";
+	// 			// dialog_CustomerSO.urlParam.table_id = "none_";
+	// 			dialog_CustomerSO.urlParam.filterCol = [];
+	// 			dialog_CustomerSO.urlParam.filterVal = [];
+	// 		},
+	// 		close: function (obj_){
+	// 			$("#SL_hdrtype").focus().select();
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// dialog_CustomerSO.makedialog();
+    var dialog_CustomerSO = new ordialog(
+        'customer', 'debtor.debtormast', '#SL_debtorcode', errorField,
+        {
+            colModel: [
+                { label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+                { label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+                { label: 'Bill Type', name: 'billtypeop', width: 100, classes: 'pointer'},
+                { label: 'idno', name: 'idno',hidden:true},
+                { label: 'name', name: 'name',hidden:true},
+                { label: 'debtortype', name: 'debtortype',hidden:true},
+                { label: 'address1', name: 'address1',hidden:true},
+                { label: 'address2', name: 'address2',hidden:true},
+                { label: 'address3', name: 'address3',hidden:true},
+                { label: 'postcode', name: 'postcode',hidden:true},
+            ],
+            urlParam: {
+                filterCol:['compcode','recstatus'],
+                filterVal:['session.compcode','ACTIVE']
+            },
+            ondblClickRow: function () {
+                let data = selrowData('#' + dialog_CustomerSO.gridname);
+                $('#SL_hdrtype').val(data['billtypeop']);
+                dialog_billtypeSO.check(errorField);
+            },
+            gridComplete: function(obj){
+                var gridname = '#'+obj.gridname;
+                if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+                    $(gridname+' tr#1').click();
+                    $(gridname+' tr#1').dblclick();
+                }else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+                    $('#'+obj.dialogname).dialog('close');
+                }
+            }
+        }, {
+            title: "Select Customer",
+            open: function(){
+                dialog_CustomerSO.urlParam.filterCol=['recstatus', 'compcode'];
+                dialog_CustomerSO.urlParam.filterVal=['ACTIVE', 'session.compcode'];
+            },
+            close: function(obj_){
+                $("#SL_hdrtype").focus().select();
+            }
+        },'urlParam','radio','tab'
+    );
+    dialog_CustomerSO.makedialog();
+    $('#otherdialog_customer').append(`<p><button type='button' class='btn btn-default btn-sm' id='new_customer' style='float:right'>New Customer</button> <button type='button' class='btn btn-default btn-sm' id='edit_customer' style='float:right;margin-right: 10px'>Edit Customer</button></p>`);
 
 	var dialog_billtypeSO = new ordialog(
 		'billtype', 'hisdb.billtymst', '#SL_hdrtype', errorField,
@@ -1776,73 +1828,210 @@ $(document).ready(function (){
 	);
 	dialog_billtypeSO.makedialog();
 
-	// var dialog_mrn = new ordialog(
-	// 	'dialog_mrn', 'hisdb.pat_mast', '#SL_mrn', errorField,
-	// 	{
-	// 		colModel: [
-	// 			{ label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
-	// 			{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
-	// 		],
-	// 		urlParam: {
-	// 			filterCol:['compcode','ACTIVE'],
-	// 			filterVal:['session.compcode','1']
-	// 		},
-	// 		ondblClickRow: function () {
-	// 			$('#SL_termdays').focus();
-	// 		},
-	// 		gridComplete: function(obj){
-	// 			var gridname = '#'+obj.gridname;
-	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-	// 				$(gridname+' tr#1').click();
-	// 				$(gridname+' tr#1').dblclick();
-	// 				$('#SL_termdays').focus();
-	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-	// 				$('#'+obj.dialogname).dialog('close');
-	// 			}
-	// 		}
-	// 	}, {
-	// 		title: "Select MRN",
-	// 		open: function(){
-	// 			dialog_mrn.urlParam.filterCol=['recstatus', 'ACTIVE'];
-	// 			dialog_mrn.urlParam.filterVal=['ACTIVE', '1'];
-	// 		}
-	// 	},'none','radio','tab'
-	// );
-	// dialog_mrn.makedialog();
+    var dialog_mrn = new ordialog(
+        'dialog_mrn', 'hisdb.pat_mast', '#SL_mrn', 'errorField',
+        {
+            colModel: [
+                { label: 'HUKM MRN', name: 'NewMrn', width: 200, classes: 'pointer', canSearch: true},
+                { label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+                { label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
+                { label: 'idno', name: 'idno', hidden:true},
+                { label: 'newmrn', name: 'newmrn', hidden:true},
+                { label: 'address1', name: 'address1', hidden:true},
+                { label: 'address2', name: 'address2', hidden:true},
+                { label: 'address3', name: 'address3', hidden:true},
+                { label: 'postcode', name: 'postcode', hidden:true},
+            ],
+            urlParam: {
+                filterCol:['compcode','ACTIVE'],
+                filterVal:['session.compcode','1']
+            },
+            ondblClickRow: function () {
+                $('#SL_doctorcode').focus();
+            },
+            gridComplete: function(obj){
+                var gridname = '#'+obj.gridname;
+                if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+                    $(gridname+' tr#1').click();
+                    $(gridname+' tr#1').dblclick();
+                    $('#db_termdays').focus();
+                }else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+                    $('#'+obj.dialogname).dialog('close');
+                }
+            }
+        }, {
+            title: "Select MRN",
+            open: function(){
+                dialog_mrn.urlParam.filterCol=['compcode', 'ACTIVE'];
+                dialog_mrn.urlParam.filterVal=['session.compcode', '1'];
+            }
+        },'none','radio','tab'
+    );
+    dialog_mrn.makedialog();
+    $('#otherdialog_dialog_mrn').append(`<p><button type='button' class='btn btn-default btn-sm' id='new_patient' style='float:right'>New Patient</button> <button type='button' class='btn btn-default btn-sm' id='edit_patient' style='float:right;margin-right: 10px;'>Edit Patient</button></p>`);
 
-	// var dialog_approvedbySO = new ordialog(
-	// 	'approvedby',['material.authorise'],"#SL_approvedby",errorField,
-	// 	{	colModel:
-	// 		[
-	// 			{label:'Authorize Person',name:'authorid',width:200,classes:'pointer',canSearch:true,or_search:true},
-	// 			{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true}
-	// 		],
-	// 		urlParam: {
-	// 					filterCol:['compcode','recstatus'],
-	// 					filterVal:['session.compcode','ACTIVE']
-	// 		},
-	// 		ondblClickRow: function () {
-	// 			$('#remarks').focus();
-	// 		},
-	// 		gridComplete: function(obj){
-	// 					var gridname = '#'+obj.gridname;
-	// 					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-	// 						$(gridname+' tr#1').click();
-	// 						$(gridname+' tr#1').dblclick();
-	// 						$('#remarks').focus();
-	// 					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-	// 						$('#'+obj.dialogname).dialog('close');
-	// 					}
-	// 				}
-	// 	},{
-	// 		title:"Authorize Person",
-	// 		open: function(){
-	// 			dialog_approvedbySO.urlParam.filterCol=['compcode','recstatus'];
-	// 			dialog_approvedbySO.urlParam.filterVal=['session.compcode','ACTIVE'];
-	// 		}
-	// 	},'none','radio','tab'
-	// );
-	// dialog_approvedbySO.makedialog(false);
+    var dialog_doctor = new ordialog(
+        'dialog_doctor', 'hisdb.doctor', '#SL_doctorcode', 'errorField',
+        {
+            colModel: [
+                { label: 'Doctor Code', name: 'doctorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+                { label: 'Doctor Name', name: 'doctorname', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+            ],
+            urlParam: {
+                filterCol:['compcode','recstatus'],
+                filterVal:['session.compcode','ACTIVE']
+            },
+            ondblClickRow: function () {
+                $('#db_termdays').focus();
+            },
+            gridComplete: function(obj){
+                var gridname = '#'+obj.gridname;
+                if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+                    $(gridname+' tr#1').click();
+                    $(gridname+' tr#1').dblclick();
+                    $('#db_termdays').focus();
+                }else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+                    $('#'+obj.dialogname).dialog('close');
+                }
+            }
+        }, {
+            title: "Select Doctor",
+            open: function(){
+                dialog_doctor.urlParam.filterCol=['compcode', 'recstatus'];
+                dialog_doctor.urlParam.filterVal=['session.compcode', 'ACTIVE'];
+            }
+        },'none','radio','tab'
+    );
+    dialog_doctor.makedialog();
+
+    $("#dialog_new_patient").dialog({
+        autoOpen: false,
+        width: 7/10 * $(window).width(),
+        modal: true,
+        open: function( event, ui ) {
+            if($("#dialog_new_patient").data('oper') == 'edit'){
+                if($('#'+dialog_mrn.gridname).jqGrid ('getGridParam', 'selrow') == null){
+                    alert('select patient to edit!');
+                    $("#dialog_new_patient").dialog('close');
+                }else{
+                    let rowdata = selrowData('#'+dialog_mrn.gridname);
+                    $('#np_idno').val(rowdata.idno);
+                    $('#np_newmrn').val(rowdata.newmrn);
+                    $('#np_name').val(rowdata.name);
+                    $('#np_address1').val(rowdata.address1);
+                    $('#np_address2').val(rowdata.address2);
+                    $('#np_address3').val(rowdata.address3);
+                    $('#np_postcode').val(rowdata.postcode);
+                }
+            }
+        },
+        close: function( event, ui ) {
+            emptyFormdata_div('#formdata_new_patient');
+        },
+        buttons : [{
+            text: "Submit",click: function() {
+                    if($('#formdata_new_patient').isValid({requiredFields:''},conf,true)){
+                        let oper_ = $("#dialog_new_patient").data('oper');
+                        $.post( "./SalesOrder/form?oper=new_patient&oper_="+oper_, $('#formdata_new_patient').serialize(), function( data ) {
+                            },'json')
+                        .fail(function (data) {
+                            alert(data.responseText);
+                        }).done(function (data) {
+                            if(data.mrn == 'none'){
+                                $("#dialog_new_patient").dialog('close');
+                                refreshGrid("#"+dialog_mrn.gridname,dialog_mrn.urlParam);
+                            }else{
+                                emptyFormdata_div('#formdata_new_patient');
+                                $('#SL_mrn').val(data.mrn);
+                                dialog_mrn.check('errorField');
+                                $("#dialog_new_patient").dialog('close');
+                                $('#'+dialog_mrn.dialogname).dialog('close');
+                            }
+                        })
+                    }
+                }
+            },{
+            text: "Cancel",click: function() {
+                $(this).dialog('close');
+            }
+        }]
+    });
+
+    $('#new_patient').click(function(){
+        $("#dialog_new_patient").data('oper','add');
+        $("#dialog_new_patient").dialog('open');
+    });
+
+    $('#edit_patient').click(function(){
+        $("#dialog_new_patient").data('oper','edit');
+        $("#dialog_new_patient").dialog('open');
+    });
+
+    $("#dialog_new_customer").dialog({
+        autoOpen: false,
+        width: 7/10 * $(window).width(),
+        modal: true,
+        open: function( event, ui ) {
+            if($("#dialog_new_customer").data('oper') == 'edit'){
+                if($('#'+dialog_CustomerSO.gridname).jqGrid ('getGridParam', 'selrow') == null){
+                    alert('select customer to edit!');
+                    $('#dialog_new_customer').dialog('close');
+                }else{
+                    let rowdata = selrowData('#'+dialog_CustomerSO.gridname);
+                    $('#nc_idno').val(rowdata.idno);
+                    $('#nc_name').val(rowdata.name);
+                    $('#nc_debtortype').val(rowdata.debtortype);
+                    $('#nc_debtorcode').val(rowdata.debtorcode);
+                    $('#nc_address1').val(rowdata.address1);
+                    $('#nc_address2').val(rowdata.address2);
+                    $('#nc_address3').val(rowdata.address3);
+                    $('#nc_postcode').val(rowdata.postcode);
+                }
+            }
+        },
+        close: function( event, ui ) {
+            emptyFormdata_div('#formdata_new_customer');
+        },
+        buttons : [{
+            text: "Submit",click: function() {
+                    if($('#formdata_new_customer').isValid({requiredFields:''},conf,true)){
+                        let oper_ = $("#dialog_new_customer").data('oper');
+                        $.post( "./SalesOrder/form?oper=new_customer&oper_="+oper_, $('#formdata_new_customer').serialize(), function( data ) {
+                            },'json')
+                        .fail(function (data) {
+                            alert(data.responseText);
+                        }).done(function (data) {
+                            if(data.debtorcode == 'none'){
+                                $("#dialog_new_customer").dialog('close');
+                                refreshGrid("#"+dialog_CustomerSO.gridname,dialog_CustomerSO.urlParam);
+                            }else{
+                                emptyFormdata_div('#formdata_new_customer');
+                                $('#SL_debtorcode').val(data.debtorcode);
+                                dialog_CustomerSO.check(errorField);
+                                $('#SL_hdrtype').val('OP');
+                                dialog_billtypeSO.check(errorField);
+                                $("#dialog_new_customer").dialog('close');
+                                $('#'+dialog_CustomerSO.dialogname).dialog('close');
+                            }
+                        })
+                    }
+                }
+            },{
+            text: "Cancel",click: function() {
+                $(this).dialog('close');
+            }
+        }]
+    });
+
+    $('#new_customer').click(function(){
+        $("#dialog_new_customer").data('oper','add');
+        $("#dialog_new_customer").dialog('open');
+    });
+
+    $('#edit_customer').click(function(){
+        $("#dialog_new_customer").data('oper','edit');
+        $("#dialog_new_customer").dialog('open');
+    });
 
 	///dialog for itemcode for Quotation Detail//
 	var dialog_chggroup = new ordialog(

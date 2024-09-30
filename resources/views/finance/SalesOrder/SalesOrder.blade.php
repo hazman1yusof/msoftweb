@@ -334,11 +334,10 @@ div#fail_msg{
 					</div>
 
 					<div class="form-group">
-
-						<label class="col-md-2 control-label" for="db_mrn">Patient</label>	 
+						<label class="col-md-2 control-label" for="SL_mrn">HUKM MRN</label>	 
 						<div class="col-md-4">
 							<div class='input-group'>
-								<input id="db_mrn" name="db_mrn" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+								<input id="SL_mrn" name="SL_mrn" type="text" maxlength="100" class="form-control input-sm text-uppercase">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -356,12 +355,21 @@ div#fail_msg{
 					</div>
 
 					<div class="form-group">	
-						<label class="col-md-2 control-label" for="db_termdays">Term</label>  
-						<div class="col-md-2">
+						<label class="col-md-2 control-label" for="db_doctorcode">Doctor</label>	 
+						<div class="col-md-4">
+							<div class='input-group'>
+								<input id="db_doctorcode" name="db_doctorcode" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>
+
+						<label class="col-md-1 control-label" for="db_termdays">Term</label>  
+						<div class="col-md-1">
 							<input id="db_termdays" name="db_termdays" type="text" value ="30" class="form-control input-sm">
 						</div>
 
-						<div class="col-md-2">
+						<div class="col-md-1">
 							<select class="form-control col-md-3" id='db_termmode' name='db_termmode' data-validation="required" data-validation-error-msg="Please Enter Value">
 								<option value='DAYS' selected>DAYS</option>
 								<option value='MONTH'>MONTH</option>
@@ -505,11 +513,12 @@ div#fail_msg{
 	  </div>
 	</div>
 
-	<div id="dialog_new_patient" title="New Patient">
+	<div id="dialog_new_patient" title="Patient Form">
 	  <div class="panel panel-default">
 	    <div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 				<form class='form-horizontal' style='width:99%' id='formdata_new_patient'>
 					{{ csrf_field() }}
+					<input type="hidden" id="np_idno" name="np_idno">
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="np_newmrn">HUKM MRN</label>	 
 						<div class="col-md-4">
@@ -542,6 +551,57 @@ div#fail_msg{
 						<label class="col-md-2 control-label" for="np_postcode">Postcode</label>	 
 						<div class="col-md-4">
 								<input id="np_postcode" name="np_postcode" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+						</div>
+					</div>
+				</form>
+	    </div>
+	  </div>
+	</div>
+
+	<div id="dialog_new_customer" title="Customer Form">
+	  <div class="panel panel-default">
+	    <div class="panel-body" style="position: relative;padding-bottom: 0px !important">
+				<form class='form-horizontal' style='width:99%' id='formdata_new_customer'>
+					{{ csrf_field() }}
+					<input type="hidden" id="nc_idno" name="nc_idno">
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="nc_debtorcode">Debtorcode</label>	 
+						<div class="col-md-5">
+								<input id="nc_debtorcode" name="nc_debtorcode" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+						</div>
+						<label class="col-md-1 control-label" for="nc_debtortype">Class</label>	 
+						<div class="col-md-4">
+								<input id="nc_debtortype" name="nc_debtortype" type="text" maxlength="100" value="PT" class="form-control input-sm text-uppercase" readonly >
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="nc_name">Name</label>	 
+						<div class="col-md-10">
+								<input id="nc_name" name="nc_name" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="nc_address1">Address 1</label>	 
+						<div class="col-md-10">
+								<input id="nc_address1" name="nc_address1" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="nc_address2">Address 2</label>	 
+						<div class="col-md-10">
+								<input id="nc_address2" name="nc_address2" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="nc_address3">Address 3</label>	 
+						<div class="col-md-10">
+								<input id="nc_address3" name="nc_address3" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="nc_postcode">Postcode</label>	 
+						<div class="col-md-4">
+								<input id="nc_postcode" name="nc_postcode" type="text" maxlength="100" class="form-control input-sm text-uppercase">
 						</div>
 					</div>
 				</form>
@@ -588,7 +648,7 @@ div#fail_msg{
 			});
 		</script>
 
-		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.2"></script>
+		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.3"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

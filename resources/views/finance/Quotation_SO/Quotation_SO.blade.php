@@ -305,23 +305,43 @@
 						</div>							
 					</div>
 
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="SL_mrn">HUKM MRN</label>  
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <input id="SL_mrn" name="SL_mrn" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+                                <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+                            </div>
+                            <span class="help-block"></span>
+                        </div>
+
+                        <label class="col-md-1 control-label" for="SL_posteddate">Posted Date</label>  
+                        <div class="col-md-2">
+                            <input id="SL_posteddate" name="SL_posteddate" type="text" maxlength="10" class="form-control input-sm" max="<?php echo date("Y-m-d"); ?>" rdonly>
+                        </div>
+                    </div>
+
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="SL_termvalue">Term</label>  
+                        <label class="col-md-2 control-label" for="SL_doctorcode">Doctor</label>     
+                        <div class="col-md-4">
+                            <div class='input-group'>
+                                <input id="SL_doctorcode" name="SL_doctorcode" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+                                <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+                            </div>
+                            <span class="help-block"></span>
+                        </div>
+
+						<label class="col-md-1 control-label" for="SL_termvalue">Term</label>  
 						<div class="col-md-1">
 							<input id="SL_termvalue" name="SL_termvalue" type="text" value ="30" class="form-control input-sm">
 						</div>
 
-						<div class="col-md-2">
+						<div class="col-md-1">
 							<select class="form-control col-md-3" id='SL_termcode' name='SL_termcode' data-validation="required" data-validation-error-msg="Please Enter Value">
 								<option value='DAYS' selected>DAYS</option>
 								<option value='MONTH'>MONTH</option>
 								<option value='YEAR'>YEAR</option>
 							</select> 
-						</div>
-
-						<label class="col-md-2 control-label" for="SL_posteddate">Posted Date</label>  
-						<div class="col-md-2">
-							<input id="SL_posteddate" name="SL_posteddate" type="text" maxlength="10" class="form-control input-sm" max="<?php echo date("Y-m-d"); ?>" rdonly>
 						</div>
 					</div>
 
@@ -425,6 +445,102 @@
 			</div>
 		</div>
 	</div>
+
+    <div id="dialog_new_patient" title="Patient Form">
+      <div class="panel panel-default">
+        <div class="panel-body" style="position: relative;padding-bottom: 0px !important">
+                <form class='form-horizontal' style='width:99%' id='formdata_new_patient'>
+                    {{ csrf_field() }}
+                    <input type="hidden" id="np_idno" name="np_idno">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="np_newmrn">HUKM MRN</label>   
+                        <div class="col-md-4">
+                                <input id="np_newmrn" name="np_newmrn" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+                        </div>
+                        <label class="col-md-2 control-label" for="np_name">Name</label>     
+                        <div class="col-md-4">
+                                <input id="np_name" name="np_name" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="np_address1">Address 1</label>    
+                        <div class="col-md-10">
+                                <input id="np_address1" name="np_address1" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="np_address2">Address 2</label>    
+                        <div class="col-md-10">
+                                <input id="np_address2" name="np_address2" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="np_address3">Address 3</label>    
+                        <div class="col-md-10">
+                                <input id="np_address3" name="np_address3" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="np_postcode">Postcode</label>     
+                        <div class="col-md-4">
+                                <input id="np_postcode" name="np_postcode" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+                        </div>
+                    </div>
+                </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="dialog_new_customer" title="Customer Form">
+      <div class="panel panel-default">
+        <div class="panel-body" style="position: relative;padding-bottom: 0px !important">
+                <form class='form-horizontal' style='width:99%' id='formdata_new_customer'>
+                    {{ csrf_field() }}
+                    <input type="hidden" id="nc_idno" name="nc_idno">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="nc_debtorcode">Debtorcode</label>     
+                        <div class="col-md-5">
+                                <input id="nc_debtorcode" name="nc_debtorcode" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+                        </div>
+                        <label class="col-md-1 control-label" for="nc_debtortype">Class</label>  
+                        <div class="col-md-4">
+                                <input id="nc_debtortype" name="nc_debtortype" type="text" maxlength="100" value="PT" class="form-control input-sm text-uppercase" readonly >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="nc_name">Name</label>     
+                        <div class="col-md-10">
+                                <input id="nc_name" name="nc_name" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="nc_address1">Address 1</label>    
+                        <div class="col-md-10">
+                                <input id="nc_address1" name="nc_address1" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="nc_address2">Address 2</label>    
+                        <div class="col-md-10">
+                                <input id="nc_address2" name="nc_address2" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="nc_address3">Address 3</label>    
+                        <div class="col-md-10">
+                                <input id="nc_address3" name="nc_address3" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="nc_postcode">Postcode</label>     
+                        <div class="col-md-4">
+                                <input id="nc_postcode" name="nc_postcode" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+                        </div>
+                    </div>
+                </form>
+        </div>
+      </div>
+    </div>
 @endsection
 
 @section('scripts')
@@ -465,7 +581,7 @@
 			});
 		</script>
 
-		<script src="js/finance/Quotation_SO/Quotation_SO.js?v=1.1"></script>
+		<script src="js/finance/Quotation_SO/Quotation_SO.js?v=1.2"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 @endsection

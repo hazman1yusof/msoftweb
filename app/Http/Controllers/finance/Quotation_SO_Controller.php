@@ -98,6 +98,7 @@ class Quotation_SO_Controller extends defaultController
                     'SL.billdebtor AS SL_billdebtor',
                     'SL.remark AS SL_remark',
                     'SL.mrn AS SL_mrn',
+                    'SL.doctorcode AS SL_doctorcode',
                     'SL.episno AS SL_episno',
                     'SL.authno AS SL_authno',
                     'SL.expdate AS SL_expdate',
@@ -127,6 +128,7 @@ class Quotation_SO_Controller extends defaultController
                     'dm.name AS dm_name',
                 )
                 ->where('SL.compcode',session('compcode'))
+                ->where('SL.deptcode',session('deptcode'))
                 ->where('SL.source','SL')
                 ->where('SL.trantype','RECNO');
         
@@ -235,7 +237,7 @@ class Quotation_SO_Controller extends defaultController
             if(!empty($request->SL_mrn)){
                 $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('compcode','=',session('compcode'))
-                            ->where('MRN','=',$request->SL_mrn)
+                            ->where('newmrn','=',$request->SL_mrn)
                             ->first();
             }
             
@@ -261,9 +263,9 @@ class Quotation_SO_Controller extends defaultController
                 'debtorcode' => strtoupper($request->SL_debtorcode),
                 'payercode' => strtoupper($request->SL_debtorcode),
                 'remark' => strtoupper($request->SL_remark),
-                'mrn' => '0',
-                // 'mrn' => strtoupper($request->SL_mrn),
-                'episno' => (!empty($request->SL_mrn))?$pat_mast->Episno:null,
+                // 'mrn' => '0',
+                'mrn' => strtoupper($request->SL_mrn),
+                // 'episno' => (!empty($request->SL_mrn))?$pat_mast->Episno:null,
                 'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'hdrtype' => strtoupper($request->SL_hdrtype),

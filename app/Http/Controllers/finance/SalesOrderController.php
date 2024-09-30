@@ -123,6 +123,8 @@ class SalesOrderController extends defaultController
                 return $this->refresh_do($request);
             case 'new_patient':
                 return $this->new_patient($request);
+            case 'new_customer':
+                return $this->new_customer($request);
             default:
                 return 'Errors happen';
         }
@@ -175,6 +177,7 @@ class SalesOrderController extends defaultController
                     ->where('db.compcode',session('compcode'))
                     ->where('db.source','PB')
                     ->where('db.trantype','IN')
+                    ->where('db.deptcode',session('deptcode'))
                     ->where('db.pointofsales','0');
         
         $table = $table->join('debtor.debtormast as dm', function($join) use ($request){
@@ -2637,111 +2640,69 @@ class SalesOrderController extends defaultController
         
         try{
 
-            $mrn_ = $this->recno('HIS','MRN');
+            if($request->oper_ == 'add'){
 
-            DB::table('hisdb.pat_mast')
-                ->insert([
-                    'CompCode' => session('compcode'),
-                    'MRN' => $mrn_,
-                    // 'Episno' => $request->,
-                    'Name' => $request->np_name,
-                    // 'Call_Name' => $request->,
-                    // 'addtype' => $request->,
-                    'Address1' => $request->np_address1,
-                    'Address2' => $request->np_address2,
-                    'Address3' => $request->np_address3,
-                    'Postcode' => $request->np_postcode,
-                    // 'citycode' => $request->,
-                    // 'AreaCode' => $request->,
-                    // 'StateCode' => $request->,
-                    // 'CountryCode' => $request->,
-                    // 'telh' => $request->,
-                    // 'telhp' => $request->,
-                    // 'telo' => $request->,
-                    // 'Tel_O_Ext' => $request->,
-                    // 'ptel' => $request->,
-                    // 'ptel_hp' => $request->,
-                    // 'ID_Type' => $request->,
-                    // 'idnumber' => $request->,
-                    // 'Newic' => $request->,
-                    // 'Oldic' => $request->,
-                    // 'icolor' => $request->,
-                    // 'Sex' => $request->,
-                    // 'DOB' => $request->,
-                    // 'Religion' => $request->,
-                    // 'AllergyCode1' => $request->,
-                    // 'AllergyCode2' => $request->,
-                    // 'Century' => $request->,
-                    // 'Citizencode' => $request->,
-                    // 'OccupCode' => $request->,
-                    // 'Staffid' => $request->,
-                    // 'MaritalCode' => $request->,
-                    // 'LanguageCode' => $request->,
-                    // 'TitleCode' => $request->,
-                    // 'RaceCode' => $request->,
-                    // 'bloodgrp' => $request->,
-                    // 'Accum_chg' => $request->,
-                    // 'Accum_Paid' => $request->,
-                    // 'first_visit_date' => $request->,
-                    'Reg_Date' => Carbon::now("Asia/Kuala_Lumpur"),
-                    // 'last_visit_date' => $request->,
-                    // 'last_episno' => $request->,
-                    // 'PatStatus' => $request->,
-                    // 'Confidential' => $request->,
-                    'Active' => 1,
-                    // 'FirstIpEpisNo' => $request->,
-                    // 'FirstOpEpisNo' => $request->,
-                    'AddUser' => session('username'),
-                    'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'LastUser' => session('username'),
-                    // 'OffAdd1' => $request->,
-                    // 'OffAdd2' => $request->,
-                    // 'OffAdd3' => $request->,
-                    // 'OffPostcode' => $request->,
-                    // 'MRFolder' => $request->,
-                    // 'MRLoc' => $request->,
-                    // 'MRActive' => $request->,
-                    // 'OldMrn' => $request->,
-                    'NewMrn' => $request->np_newmrn,
-                    // 'Remarks' => $request->,
-                    // 'RelateCode' => $request->,
-                    // 'ChildNo' => $request->,
-                    // 'CorpComp' => $request->,
-                    // 'Email' => $request->,
-                    // 'Email_official' => $request->,
-                    // 'CurrentEpis' => $request->,
-                    // 'NameSndx' => $request->,
-                    // 'BirthPlace' => $request->,
-                    // 'TngID' => $request->,
-                    // 'PatientImage' => $request->,
-                    // 'pAdd1' => $request->,
-                    // 'pAdd2' => $request->,
-                    // 'pAdd3' => $request->,
-                    // 'pPostCode' => $request->,
-                    // 'DeptCode' => $request->,
-                    // 'DeceasedDate' => $request->,
-                    // 'PatientCat' => $request->,
-                    // 'PatType' => $request->,
-                    'PatClass' => 'HIS',
-                    // 'upduser' => $request->,
-                    // 'upddate' => $request->,
-                    // 'recstatus' => $request->,
-                    // 'loginid' => $request->,
-                    // 'pat_category' => $request->,
-                    // 'idnumber_exp' => $request->,
-                    // 'telhp2' => $request->,
-                    // 'patient_status' => $request->,
-                    // 'totallimit' => $request->,
-                    // 'HDlimit' => $request->,
-                    // 'EPlimit' => $request->,
-                    'computerid' => session('computerid'),
-                ]);
+                $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('compcode',session('compcode'))
+                            ->where('NewMrn',$request->np_newmrn);
+
+                if($pat_mast->exists()){
+                    throw new \Exception("HUKM MRN already exists");
+                }
+
+                $mrn_ = $this->recno('HIS','MRN');
+                $newmrn_ = strtoupper($request->np_newmrn);
+                DB::table('hisdb.pat_mast')
+                    ->insert([
+                        'CompCode' => session('compcode'),
+                        'MRN' => $mrn_,
+                        'Name' => strtoupper($request->np_name),
+                        'Address1' => $request->np_address1,
+                        'Address2' => $request->np_address2,
+                        'Address3' => $request->np_address3,
+                        'Postcode' => $request->np_postcode,
+                        'Reg_Date' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'Active' => 1,
+                        'AddUser' => session('username'),
+                        'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'LastUser' => session('username'),
+                        'NewMrn' => strtoupper($request->np_newmrn),
+                        'PatClass' => 'HIS',
+                        'computerid' => session('computerid'),
+                    ]);
+            }else if($request->oper_ == 'edit'){
+                $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('idno','!=',$request->np_idno)
+                            ->where('compcode',session('compcode'))
+                            ->where('NewMrn',$request->np_newmrn);
+
+                if($pat_mast->exists()){
+                    throw new \Exception("HUKM MRN already exists");
+                }
+
+                $newmrn_ = 'none';
+                DB::table('hisdb.pat_mast')
+                    ->where('idno',$request->np_idno)
+                    ->update([
+                        'Name' => strtoupper($request->np_name),
+                        'Address1' => $request->np_address1,
+                        'Address2' => $request->np_address2,
+                        'Address3' => $request->np_address3,
+                        'Postcode' => $request->np_postcode,
+                        'Active' => 1,
+                        'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'LastUser' => session('username'),
+                        'NewMrn' => strtoupper($request->np_newmrn),
+                        'PatClass' => 'HIS',
+                        'computerid' => session('computerid'),
+                    ]);
+            }
 
             DB::commit();
 
             $responce = new stdClass();
-            $responce->mrn = $mrn_;
+            $responce->mrn = $newmrn_;
             $responce->name = $request->np_name;
             echo json_encode($responce);
 
@@ -2750,9 +2711,96 @@ class SalesOrderController extends defaultController
             
             return response($e->getMessage(), 500);
         }
+    }
 
+    public function new_customer(Request $request){
+
+        DB::beginTransaction();
         
+        try{
 
+            if($request->oper_ == 'add'){
+
+                $debtormast = DB::table('debtor.debtormast')
+                            ->where('compcode',session('compcode'))
+                            ->where('debtorcode',$request->nc_debtorcode);
+
+                if($debtormast->exists()){
+                    throw new \Exception("Debtorcode already exists");
+                }
+                $debtorcode_ = strtoupper($request->nc_debtorcode);
+
+                $debtortype = DB::table('debtor.debtortype')
+                            ->where('compcode',session('compcode'))
+                            ->where('debtortycode','PT')
+                            ->first();
+
+                DB::table('debtor.debtormast')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'debtortype' => 'PT',
+                        'debtorcode' => strtoupper($request->nc_debtorcode),
+                        'name' => strtoupper($request->nc_name),
+                        'address1' => $request->nc_address1,
+                        'address2' => $request->nc_address2,
+                        'address3' => $request->nc_address3,
+                        'address4' => $request->nc_address4,
+                        'postcode' => $request->nc_postcode,
+                        'billtype' => 'OP' ,
+                        'billtypeop' => 'OP' ,
+                        'recstatus' => 'ACTIVE' ,
+                        'actdebccode' => $debtortype->actdebccode,
+                        'actdebglacc' => $debtortype->actdebglacc,
+                        'depccode' => $debtortype->depccode,
+                        'depglacc' => $debtortype->depglacc,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'coverageip' => 9999999.99,
+                        'coverageop' => 9999999.99,
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid')
+                    ]);
+            }else if($request->oper_ == 'edit'){
+
+                $debtormast = DB::table('debtor.debtormast')
+                            ->where('idno','!=',$request->nc_idno)
+                            ->where('compcode',session('compcode'))
+                            ->where('debtorcode',$request->nc_debtorcode);
+
+                if($debtormast->exists()){
+                    throw new \Exception("Debtorcode already exists");
+                }
+                $debtorcode_ = 'none';
+                DB::table('debtor.debtormast')
+                    ->where('idno',$request->nc_idno)
+                    ->update([
+                        'debtorcode' => strtoupper($request->nc_debtorcode),
+                        'name' => strtoupper($request->nc_name),
+                        'address1' => $request->nc_address1,
+                        'address2' => $request->nc_address2,
+                        'address3' => $request->nc_address3,
+                        'address4' => $request->nc_address4,
+                        'postcode' => $request->nc_postcode,
+                        'recstatus' => 'ACTIVE' ,
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid')
+                    ]);
+            }
+
+            DB::commit();
+
+            $responce = new stdClass();
+            $responce->debtorcode = $debtorcode_;
+            $responce->name = $request->np_name;
+            echo json_encode($responce);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+        }
     }
 
     

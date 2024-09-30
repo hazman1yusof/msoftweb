@@ -80,6 +80,7 @@ $(document).ready(function () {
 					dialog_deptcode.check(errorField);
 					dialog_billtypeSO.check(errorField);
 					dialog_mrn.check('errorField');
+					dialog_doctor.check('errorField');
 					dialog_CustomerSO.check(errorField);
 					dialog_quoteno.urlParam.deptcode = $('#db_deptcode').val();
 					dialog_quoteno.check(errorField);
@@ -88,6 +89,7 @@ $(document).ready(function () {
 					dialog_deptcode.on();
 					dialog_billtypeSO.on();
 					dialog_mrn.on();
+					dialog_doctor.on();
 					dialog_CustomerSO.on();
 					dialog_quoteno.on();
 					// dialog_approvedbySO.on();
@@ -117,6 +119,7 @@ $(document).ready(function () {
 				dialog_deptcode.off();
 				dialog_billtypeSO.off();
 				dialog_mrn.off();
+				dialog_doctor.off();
 				dialog_CustomerSO.off();
 				// dialog_approvedbySO.off();
 				$(".noti").empty();
@@ -245,6 +248,7 @@ $(document).ready(function () {
 			{ label: 'billdebtor', name: 'db_billdebtor', hidden: true },
 			{ label: 'approvedby', name: 'db_approvedby', hidden: true },
 			{ label: 'mrn', name: 'db_mrn', width: 10, hidden: true },
+			{ label: 'doctor', name: 'db_doctorcode', width: 10, hidden: true },
 			{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'termdays', name: 'db_termdays', width: 10, hidden: true },
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
@@ -1069,6 +1073,7 @@ $(document).ready(function () {
 			dialog_deptcode.check(errorField);
 			dialog_billtypeSO.check(errorField);
 			dialog_mrn.check('errorField');
+			dialog_doctor.check('errorField');
 			dialog_CustomerSO.check(errorField);
 			dialog_quoteno.check(errorField);
 			// dialog_approvedbySO.check(errorField);
@@ -1575,6 +1580,7 @@ $(document).ready(function () {
 		dialog_deptcode.off();
 		dialog_billtypeSO.off();
 		dialog_mrn.off();
+		dialog_doctor.off();
 		dialog_CustomerSO.off();
 		dialog_quoteno.off();
 		// dialog_approvedbySO.off();
@@ -1592,6 +1598,7 @@ $(document).ready(function () {
 			dialog_quoteno.on();
 			// dialog_approvedbySO.on();
 			dialog_mrn.on();
+			dialog_doctor.on();
 		}
 	});
 
@@ -1605,6 +1612,7 @@ $(document).ready(function () {
 		dialog_quoteno.on();
 		// dialog_approvedbySO.on();
 		dialog_mrn.on();
+		dialog_doctor.on();
 
 		enableForm('#formdata');
 		rdonly('#formdata');
@@ -1857,6 +1865,13 @@ $(document).ready(function () {
 				{ label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
 				{ label: 'Bill Type', name: 'billtypeop', width: 100, classes: 'pointer'},
+				{ label: 'idno', name: 'idno',hidden:true},
+				{ label: 'name', name: 'name',hidden:true},
+				{ label: 'debtortype', name: 'debtortype',hidden:true},
+				{ label: 'address1', name: 'address1',hidden:true},
+				{ label: 'address2', name: 'address2',hidden:true},
+				{ label: 'address3', name: 'address3',hidden:true},
+				{ label: 'postcode', name: 'postcode',hidden:true},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -1864,7 +1879,7 @@ $(document).ready(function () {
 			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_CustomerSO.gridname);
-				$('#db_hdrtype').val(data['billtype']);
+				$('#db_hdrtype').val(data['billtypeop']);
 				dialog_billtypeSO.check(errorField);
 			},
 			gridComplete: function(obj){
@@ -1888,6 +1903,7 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_CustomerSO.makedialog();
+	$('#otherdialog_customer').append(`<p><button type='button' class='btn btn-default btn-sm' id='new_customer' style='float:right'>New Customer</button> <button type='button' class='btn btn-default btn-sm' id='edit_customer' style='float:right;margin-right: 10px'>Edit Customer</button></p>`);
 
 	var dialog_billtypeSO = new ordialog(
 		'billtype', 'hisdb.billtymst', '#db_hdrtype', errorField,
@@ -2053,16 +2069,22 @@ $(document).ready(function () {
 		'dialog_mrn', 'hisdb.pat_mast', '#db_mrn', 'errorField',
 		{
 			colModel: [
-				{ label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
 				{ label: 'HUKM MRN', name: 'NewMrn', width: 200, classes: 'pointer', canSearch: true},
 				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				{ label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
+				{ label: 'idno', name: 'idno', hidden:true},
+				{ label: 'newmrn', name: 'newmrn', hidden:true},
+				{ label: 'address1', name: 'address1', hidden:true},
+				{ label: 'address2', name: 'address2', hidden:true},
+				{ label: 'address3', name: 'address3', hidden:true},
+				{ label: 'postcode', name: 'postcode', hidden:true},
 			],
 			urlParam: {
 				filterCol:['compcode','ACTIVE'],
 				filterVal:['session.compcode','1']
 			},
 			ondblClickRow: function () {
-				$('#db_termdays').focus();
+				$('#db_doctorcode').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -2083,29 +2105,85 @@ $(document).ready(function () {
 		},'none','radio','tab'
 	);
 	dialog_mrn.makedialog();
-	$('#otherdialog_dialog_mrn').append(`<p><button type='button' class='btn btn-default btn-sm' id='new_patient' style='float:right'>New Patient</button></p>`);
+	$('#otherdialog_dialog_mrn').append(`<p><button type='button' class='btn btn-default btn-sm' id='new_patient' style='float:right'>New Patient</button> <button type='button' class='btn btn-default btn-sm' id='edit_patient' style='float:right;margin-right: 10px;'>Edit Patient</button></p>`);
+
+	var dialog_doctor = new ordialog(
+		'dialog_doctor', 'hisdb.doctor', '#db_doctorcode', 'errorField',
+		{
+			colModel: [
+				{ label: 'Doctor Code', name: 'doctorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Doctor Name', name: 'doctorname', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
+				$('#db_termdays').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#db_termdays').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		}, {
+			title: "Select Doctor",
+			open: function(){
+				dialog_doctor.urlParam.filterCol=['compcode', 'recstatus'];
+				dialog_doctor.urlParam.filterVal=['session.compcode', 'ACTIVE'];
+			}
+		},'none','radio','tab'
+	);
+	dialog_doctor.makedialog();
 
 	$("#dialog_new_patient").dialog({
 		autoOpen: false,
 		width: 7/10 * $(window).width(),
 		modal: true,
 		open: function( event, ui ) {
+			if($("#dialog_new_patient").data('oper') == 'edit'){
+				if($('#'+dialog_mrn.gridname).jqGrid ('getGridParam', 'selrow') == null){
+					alert('select patient to edit!');
+					$("#dialog_new_patient").dialog('close');
+				}else{
+					let rowdata = selrowData('#'+dialog_mrn.gridname);
+					$('#np_idno').val(rowdata.idno);
+					$('#np_newmrn').val(rowdata.newmrn);
+					$('#np_name').val(rowdata.name);
+					$('#np_address1').val(rowdata.address1);
+					$('#np_address2').val(rowdata.address2);
+					$('#np_address3').val(rowdata.address3);
+					$('#np_postcode').val(rowdata.postcode);
+				}
+			}
 		},
 		close: function( event, ui ) {
+			emptyFormdata_div('#formdata_new_patient');
 		},
 		buttons : [{
 			text: "Submit",click: function() {
 					if($('#formdata_new_patient').isValid({requiredFields:''},conf,true)){
-						$.post( "./SalesOrder/form?oper=new_patient", $('#formdata_new_patient').serialize(), function( data ) {
+						let oper_ = $("#dialog_new_patient").data('oper');
+						$.post( "./SalesOrder/form?oper=new_patient&oper_="+oper_, $('#formdata_new_patient').serialize(), function( data ) {
 							},'json')
 						.fail(function (data) {
 							alert(data.responseText);
 						}).done(function (data) {
-							emptyFormdata('#formdata_new_patient');
-							$('#db_mrn').val(data.mrn);
-							$('#db_mrn').parent().next('span.help-block').text(data.name);
-							$("#dialog_new_patient").dialog('close');
-							$('#'+dialog_mrn.dialogname).dialog('close');
+							if(data.mrn == 'none'){
+								$("#dialog_new_patient").dialog('close');
+								refreshGrid("#"+dialog_mrn.gridname,dialog_mrn.urlParam);
+							}else{
+								emptyFormdata_div('#formdata_new_patient');
+								$('#db_mrn').val(data.mrn);
+								dialog_mrn.check('errorField');
+								$("#dialog_new_patient").dialog('close');
+								$('#'+dialog_mrn.dialogname).dialog('close');
+							}
 						})
 					}
 				}
@@ -2117,7 +2195,79 @@ $(document).ready(function () {
 	});
 
 	$('#new_patient').click(function(){
+		$("#dialog_new_patient").data('oper','add');
 		$("#dialog_new_patient").dialog('open');
+	});
+
+	$('#edit_patient').click(function(){
+		$("#dialog_new_patient").data('oper','edit');
+		$("#dialog_new_patient").dialog('open');
+	});
+
+	$("#dialog_new_customer").dialog({
+		autoOpen: false,
+		width: 7/10 * $(window).width(),
+		modal: true,
+		open: function( event, ui ) {
+			if($("#dialog_new_customer").data('oper') == 'edit'){
+				if($('#'+dialog_CustomerSO.gridname).jqGrid ('getGridParam', 'selrow') == null){
+					alert('select customer to edit!');
+					$('#dialog_new_customer').dialog('close');
+				}else{
+					let rowdata = selrowData('#'+dialog_CustomerSO.gridname);
+					$('#nc_idno').val(rowdata.idno);
+					$('#nc_name').val(rowdata.name);
+					$('#nc_debtortype').val(rowdata.debtortype);
+					$('#nc_debtorcode').val(rowdata.debtorcode);
+					$('#nc_address1').val(rowdata.address1);
+					$('#nc_address2').val(rowdata.address2);
+					$('#nc_address3').val(rowdata.address3);
+					$('#nc_postcode').val(rowdata.postcode);
+				}
+			}
+		},
+		close: function( event, ui ) {
+			emptyFormdata_div('#formdata_new_customer');
+		},
+		buttons : [{
+			text: "Submit",click: function() {
+					if($('#formdata_new_customer').isValid({requiredFields:''},conf,true)){
+						let oper_ = $("#dialog_new_customer").data('oper');
+						$.post( "./SalesOrder/form?oper=new_customer&oper_="+oper_, $('#formdata_new_customer').serialize(), function( data ) {
+							},'json')
+						.fail(function (data) {
+							alert(data.responseText);
+						}).done(function (data) {
+							if(data.debtorcode == 'none'){
+								$("#dialog_new_customer").dialog('close');
+								refreshGrid("#"+dialog_CustomerSO.gridname,dialog_CustomerSO.urlParam);
+							}else{
+								emptyFormdata_div('#formdata_new_customer');
+								$('#db_debtorcode').val(data.debtorcode);
+								dialog_CustomerSO.check(errorField);
+								$('#db_hdrtype').val('OP');
+								dialog_billtypeSO.check(errorField);
+								$("#dialog_new_customer").dialog('close');
+								$('#'+dialog_CustomerSO.dialogname).dialog('close');
+							}
+						})
+					}
+				}
+			},{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}]
+	});
+
+	$('#new_customer').click(function(){
+		$("#dialog_new_customer").data('oper','add');
+		$("#dialog_new_customer").dialog('open');
+	});
+
+	$('#edit_customer').click(function(){
+		$("#dialog_new_customer").data('oper','edit');
+		$("#dialog_new_customer").dialog('open');
 	});
 
 
