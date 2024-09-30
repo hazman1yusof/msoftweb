@@ -230,7 +230,7 @@ $(document).ready(function (){
             { label: 'PO No', name: 'SL_pono', width: 10, align: 'right', formatter: padzero5, unformat: unpadzero, hidden: true },
             { label: 'Amount', name: 'SL_amount', width: 10, align: 'right', formatter: 'currency' },
             { label: 'O/S<br>Amount', name: 'SL_outamount', width: 10, align: 'right', formatter: 'currency' },
-            { label: 'Trantype', name: 'SL_trantype', width: 10 },
+            { label: 'Trantype', name: 'SL_trantype', width: 10 , hidden: true },
             { label: 'PO Date', name: 'SL_podate', width: 12, formatter: dateFormatter, unformat: dateUNFormatter, hidden: true },
             { label: 'Department Code', name: 'SL_deptcode', width: 18, canSearch: true, classes: 'wrap', formatter: showdetail, unformat: un_showdetail },
             { label: 'Status', name: 'SL_recstatus', width: 10 },

@@ -1972,6 +1972,8 @@ $(document).ready(function () {
 				{ label: 'remark', name: 'remark', hidden: true },
 				// { label: 'amount', name: 'amount', hidden: true },
 				{ label: 'auditno', name: 'auditno', hidden: true },
+				{ label: 'mrn', name: 'mrn', hidden: true },
+				{ label: 'doctorcode', name: 'doctorcode', hidden: true },
 			],
 			urlParam: {
 				url:"./SalesOrder/table",
@@ -1990,9 +1992,13 @@ $(document).ready(function () {
 				$("#db_termmode").val(data['termcode']);
 				$("#db_remark").val(data['remark']);
 				$("#db_amount").val(data['amount']);
+				$("#db_mrn").val(data['mrn']);
+				$("#db_doctorcode").val(data['doctorcode']);
 
 				dialog_CustomerSO.check(errorField);
 				dialog_billtypeSO.check(errorField);
+				dialog_mrn.check(errorField);
+				dialog_doctor.check(errorField);
 				mycurrency.formatOn();
 
 				var urlParam2 = {

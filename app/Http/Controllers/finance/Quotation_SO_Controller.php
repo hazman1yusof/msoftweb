@@ -265,6 +265,7 @@ class Quotation_SO_Controller extends defaultController
                 'remark' => strtoupper($request->SL_remark),
                 // 'mrn' => '0',
                 'mrn' => strtoupper($request->SL_mrn),
+                'doctorcode' => strtoupper($request->SL_doctorcode),
                 // 'episno' => (!empty($request->SL_mrn))?$pat_mast->Episno:null,
                 'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),

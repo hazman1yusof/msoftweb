@@ -334,10 +334,10 @@ div#fail_msg{
 					</div>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="SL_mrn">HUKM MRN</label>	 
+						<label class="col-md-2 control-label" for="db_mrn">HUKM MRN</label>	 
 						<div class="col-md-4">
 							<div class='input-group'>
-								<input id="SL_mrn" name="SL_mrn" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+								<input id="db_mrn" name="db_mrn" type="text" maxlength="100" class="form-control input-sm text-uppercase">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
