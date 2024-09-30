@@ -129,10 +129,10 @@ class DischargeController extends defaultController
         try {
             
             DB::table('hisdb.episode')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    // 'mrn' => $request->mrn_discharge,
-                    // 'episno' => $request->episno_discharge,
+                ->where('mrn','=',$request->mrn_discharge)
+                ->where('episno','=',$request->mrn_discharge)
+                ->where('compcode','=',session('compcode'))
+                ->update([
                     'reg_date' => $request->reg_date,
                     //'regby_discharge' => $request->regby_discharge,
                     'reg_time' => $request->reg_time,
