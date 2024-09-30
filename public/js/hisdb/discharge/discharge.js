@@ -54,7 +54,7 @@ $(document).ready(function () {
 		},'json').fail(function (data){
 			alert('there is an error');
 		}).success(function (data){
-			if(!$.isEmptyObject(data.discharge)){
+			if(!$.isEmptyObject(data.episode)){
 				// autoinsert_rowdata("#form_discharge",data.discharge);
 				autoinsert_rowdata("#form_discharge",data.episode);
 				button_state_discharge('edit');
