@@ -47,9 +47,9 @@
 											padding: 0 0 0 0;
 											right: 40px;
 											top: 5px;">
-									<button type="button" class="btn btn-default" id="new_discharge">
+									<!-- <button type="button" class="btn btn-default" id="new_discharge">
 										<span class="fa fa-plus-square-o"></span> New
-									</button>
+									</button> -->
 									<button type="button" class="btn btn-default" id="edit_discharge">
 										<span class="fa fa-edit fa-lg"></span> Edit
 									</button>
@@ -99,7 +99,7 @@
 													<input id="bedtype" name="bedtype" type="text" class="form-control input-sm" rdonly>
 												</div>
 												<div class="col-md-4">
-													<input id="bedtype_text_discharge" name="bedtype_text_discharge" type="text" class="form-control input-sm" rdonly>
+													<input id="description" name="description" type="text" class="form-control input-sm" rdonly>
 												</div>
 											</div>
 
@@ -123,9 +123,9 @@
 														<input id="reg_date" name="reg_date" type="date" class="form-control input-sm" rdonly>
 													</div>
 
-													<label class="col-md-1 control-label" for="regby_discharge">Register By</label>  
+													<label class="col-md-1 control-label" for="adduser">Register By</label>  
 													<div class="col-md-5">
-														<input id="regby_discharge" name="regby_discharge" type="text" class="form-control input-sm" rdonly>
+														<input id="adduser" name="adduser" type="text" class="form-control input-sm" rdonly>
 													</div>
 
 													<label class="col-md-1 control-label" for="reg_time">Register Time</label>  
@@ -142,7 +142,7 @@
 
 													<label class="col-md-1 control-label" for="dischargeuser">Discharge By</label>  
 													<div class="col-md-5">
-														<input id="dischargeuser" name="dischargeuser" type="text" class="form-control input-sm" readonly>
+														<input id="dischargeuser" name="dischargeuser" type="text" class="form-control input-sm" rdonly value="{{Session::get('username')}}">
 													</div>
 
 													<label class="col-md-1 control-label" for="dischargetime">Discharge Time</label>  
