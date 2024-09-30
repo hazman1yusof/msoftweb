@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/','HomeController@index')->name('home');
 Route::get('/util','HomeController@util');
 Route::get('/ptcare','HomeController@ptcare');
+Route::get('/primary_care','HomeController@primary_care');
 Route::get('/home','HomeController@dialysis');
 Route::get('/warehouse','HomeController@warehouse');
 Route::post('/sessionUnit','HomeController@changeSessionUnit');
