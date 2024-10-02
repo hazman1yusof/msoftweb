@@ -138,14 +138,14 @@ $(document).ready(function (){
 	$("#new_radClinic").click(function (){
 		get_default_radClinic();
 		$('#cancel_radClinic').data('oper','add');
-		button_state_rad('wait');
+		button_state_radClinic('wait');
 		enableForm('#formRadClinic');
 		rdonly('#formRadClinic');
 		emptyFormdata_div("#formRadClinic",['#mrn_doctorNote','#episno_doctorNote']);
 	});
 	
 	$("#edit_radClinic").click(function (){
-		button_state_rad('wait');
+		button_state_radClinic('wait');
 		enableForm('#formRadClinic');
 		rdonly('#formRadClinic');
 	});
@@ -169,7 +169,7 @@ $(document).ready(function (){
 	$("#cancel_radClinic").click(function (){
 		// emptyFormdata_div("#formRadClinic",['#mrn_doctorNote','#episno_doctorNote']);
 		disableForm('#formRadClinic');
-		button_state_rad($(this).data('oper'));
+		button_state_radClinic($(this).data('oper'));
 	});
 	////////////////////////////////////////////radClinic ends////////////////////////////////////////////
 
@@ -219,14 +219,14 @@ $(document).ready(function (){
 	
 	$("#new_physio").click(function (){
 		$('#cancel_physio').data('oper','add');
-		button_state_phy('wait');
+		button_state_physio('wait');
 		enableForm('#formPhysio');
 		rdonly('#formPhysio');
 		emptyFormdata_div("#formPhysio",['#mrn_doctorNote','#episno_doctorNote']);
 	});
 	
 	$("#edit_physio").click(function (){
-		button_state_phy('wait');
+		button_state_physio('wait');
 		enableForm('#formPhysio');
 		rdonly('#formPhysio');
 	});
@@ -250,9 +250,51 @@ $(document).ready(function (){
 	$("#cancel_physio").click(function (){
 		// emptyFormdata_div("#formPhysio",['#mrn_doctorNote','#episno_doctorNote']);
 		disableForm('#formPhysio');
-		button_state_phy($(this).data('oper'));
+		button_state_physio($(this).data('oper'));
 	});
 	/////////////////////////////////////////////physio ends/////////////////////////////////////////////
+	
+	///////////////////////////////////////////dressing starts///////////////////////////////////////////
+	disableForm('#formDressing');
+	
+	$("#new_dressing").click(function (){
+		get_default_dressing();
+		$('#cancel_dressing').data('oper','add');
+		button_state_dressing('wait');
+		enableForm('#formDressing');
+		rdonly('#formDressing');
+		emptyFormdata_div("#formDressing",['#mrn_doctorNote','#episno_doctorNote']);
+	});
+	
+	$("#edit_dressing").click(function (){
+		button_state_dressing('wait');
+		enableForm('#formDressing');
+		rdonly('#formDressing');
+	});
+	
+	$("#save_dressing").click(function (){
+		disableForm('#formDressing');
+		if($('#formDressing').isValid({requiredFields: ''}, conf, true)){
+			saveForm_dressing(function (data){
+				// emptyFormdata_div("#formDressing",['#mrn_doctorNote','#episno_doctorNote']);
+				// disableForm('#formDressing');
+				$('#cancel_dressing').data('oper','edit');
+				$("#cancel_dressing").click();
+				// populate_dressing_getdata();
+			});
+		}else{
+			enableForm('#formDressing');
+			rdonly('#formDressing');
+		}
+	});
+	
+	$("#cancel_dressing").click(function (){
+		// emptyFormdata_div("#formDressing",['#mrn_doctorNote','#episno_doctorNote']);
+		disableForm('#formDressing');
+		button_state_dressing($(this).data('oper'));
+	});
+	
+	////////////////////////////////////////////dressing ends////////////////////////////////////////////
 	
 	// to format number input to two decimal places (0.00)
 	$(".floatNumberField").change(function (){
@@ -805,8 +847,8 @@ function button_state_otbook(state){
 	}
 }
 
-button_state_rad('empty');
-function button_state_rad(state){
+button_state_radClinic('empty');
+function button_state_radClinic(state){
 	switch(state){
 		case 'empty':
 			$("#toggle_doctorNote").removeAttr('data-toggle');
@@ -861,8 +903,8 @@ function button_state_mri(state){
 	}
 }
 
-button_state_phy('empty');
-function button_state_phy(state){
+button_state_physio('empty');
+function button_state_physio(state){
 	switch(state){
 		case 'empty':
 			$("#toggle_doctorNote").removeAttr('data-toggle');
@@ -885,6 +927,34 @@ function button_state_phy(state){
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$("#save_physio,#cancel_physio").attr('disabled',false);
 			$('#edit_physio,#new_physio').attr('disabled',true);
+			break;
+	}
+}
+
+button_state_dressing('empty');
+function button_state_dressing(state){
+	switch(state){
+		case 'empty':
+			$("#toggle_doctorNote").removeAttr('data-toggle');
+			$('#cancel_dressing').data('oper','add');
+			$('#new_dressing,#save_dressing,#cancel_dressing,#edit_dressing').attr('disabled',true);
+			break;
+		case 'add':
+			$("#toggle_doctorNote").attr('data-toggle','collapse');
+			$('#cancel_dressing').data('oper','add');
+			$("#new_dressing").attr('disabled',false);
+			$('#save_dressing,#cancel_dressing,#edit_dressing').attr('disabled',true);
+			break;
+		case 'edit':
+			$("#toggle_doctorNote").attr('data-toggle','collapse');
+			$('#cancel_dressing').data('oper','edit');
+			$("#edit_dressing").attr('disabled',false);
+			$('#save_dressing,#cancel_dressing,#new_dressing').attr('disabled',true);
+			break;
+		case 'wait':
+			$("#toggle_doctorNote").attr('data-toggle','collapse');
+			$("#save_dressing,#cancel_dressing").attr('disabled',false);
+			$('#edit_dressing,#new_dressing').attr('disabled',true);
 			break;
 	}
 }
@@ -951,6 +1021,7 @@ function populate_doctorNote_currpt(obj){
 	$("#episno_doctorNote").val(obj.Episno);
 	$('#ptname_doctorNote').val(obj.Name);
 	$('#preg_doctorNote').val(obj.pregnant);
+	$('#ic_doctorNote').val(obj.Newic);
 	
 	on_toggling_curr_past(obj);
 	
@@ -1124,9 +1195,9 @@ function populate_radClinic_getdata(){
 	}).success(function (data){
 		if(!$.isEmptyObject(data.pat_radiology)){
 			autoinsert_rowdata("#formRadClinic",data.pat_radiology);
-			$("#rad_weight").val(data.rad_weight);
+			if(!emptyobj_(data.rad_weight))$("#rad_weight").val(data.rad_weight);
 			// $("#rad_pregnant").val($('#preg_doctorNote').val());
-			$("#rad_allergy").val(data.rad_allergy);
+			if(!emptyobj_(data.rad_allergy))$("#rad_allergy").val(data.rad_allergy);
 			
 			pregnant = document.getElementById("pregnant");
 			not_pregnant = document.getElementById("not_pregnant");
@@ -1136,12 +1207,12 @@ function populate_radClinic_getdata(){
 				not_pregnant.checked = true;
 			}
 			
-			button_state_rad('edit');
+			button_state_radClinic('edit');
 			textarea_init_radClinic();
 		}else{
-			$("#rad_weight").val(data.rad_weight);
+			if(!emptyobj_(data.rad_weight))$("#rad_weight").val(data.rad_weight);
 			// $("#rad_pregnant").val($('#preg_doctorNote').val());
-			$("#rad_allergy").val(data.rad_allergy);
+			if(!emptyobj_(data.rad_allergy))$("#rad_allergy").val(data.rad_allergy);
 			
 			pregnant = document.getElementById("pregnant");
 			not_pregnant = document.getElementById("not_pregnant");
@@ -1151,7 +1222,7 @@ function populate_radClinic_getdata(){
 				not_pregnant.checked = true;
 			}
 			
-			button_state_rad('add');
+			button_state_radClinic('add');
 			textarea_init_radClinic();
 		}
 	});
@@ -1179,9 +1250,9 @@ function get_default_radClinic(){
 	}).success(function (data){
 		if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formRadClinic",data.pat_radiology);
-			$("#rad_weight").val(data.rad_weight);
+			if(!emptyobj_(data.rad_weight))$("#rad_weight").val(data.rad_weight);
 			// $("#rad_pregnant").val($('#preg_doctorNote').val());
-			$("#rad_allergy").val(data.rad_allergy);
+			if(!emptyobj_(data.rad_allergy))$("#rad_allergy").val(data.rad_allergy);
 			
 			pregnant = document.getElementById("pregnant");
 			not_pregnant = document.getElementById("not_pregnant");
@@ -1193,9 +1264,9 @@ function get_default_radClinic(){
 			
 			textarea_init_radClinic();
 		}else{
-			$("#rad_weight").val(data.rad_weight);
+			if(!emptyobj_(data.rad_weight))$("#rad_weight").val(data.rad_weight);
 			// $("#rad_pregnant").val($('#preg_doctorNote').val());
-			$("#rad_allergy").val(data.rad_allergy);
+			if(!emptyobj_(data.rad_allergy))$("#rad_allergy").val(data.rad_allergy);
 			
 			pregnant = document.getElementById("pregnant");
 			not_pregnant = document.getElementById("not_pregnant");
@@ -1232,13 +1303,13 @@ function populate_mri_getdata(){
 	}).success(function (data){
 		if(!$.isEmptyObject(data.pat_mri)){
 			autoinsert_rowdata("#formMRI",data.pat_mri);
-			$("#mri_weight").val(data.mri_weight);
+			if(!emptyobj_(data.mri_weight))$("#mri_weight").val(data.mri_weight);
 			$("#pat_name").val($('#ptname_doctorNote').val());
 			
 			button_state_mri('edit');
 			textarea_init_mri();
 		}else{
-			$("#mri_weight").val(data.mri_weight);
+			if(!emptyobj_(data.mri_weight))$("#mri_weight").val(data.mri_weight);
 			$("#pat_name").val($('#ptname_doctorNote').val());
 			
 			button_state_mri('add');
@@ -1269,12 +1340,12 @@ function get_default_mri(){
 	}).success(function (data){
 		if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formMRI",data.pat_mri);
-			$("#mri_weight").val(data.mri_weight);
+			if(!emptyobj_(data.mri_weight))$("#mri_weight").val(data.mri_weight);
 			$("#pat_name").val($('#ptname_doctorNote').val());
 			
 			textarea_init_mri();
 		}else{
-			$("#mri_weight").val(data.mri_weight);
+			if(!emptyobj_(data.mri_weight))$("#mri_weight").val(data.mri_weight);
 			$("#pat_name").val($('#ptname_doctorNote').val());
 			
 			textarea_init_mri();
@@ -1304,11 +1375,81 @@ function populate_physio_getdata(){
 		if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formPhysio",data.pat_physio);
 			
-			button_state_phy('edit');
+			button_state_physio('edit');
 			textarea_init_physio();
 		}else{
-			button_state_phy('add');
+			button_state_physio('add');
 			textarea_init_physio();
+		}
+	});
+}
+
+function populate_dressing_getdata(){
+	emptyFormdata(errorField,"#formDressing",["#mrn_doctorNote","#episno_doctorNote"]);
+	
+	var saveParam = {
+		action: 'get_table_dressing',
+	}
+	
+	var postobj = {
+		_token: $('#csrf_token').val(),
+		// idno: $("#idno_dressing").val(),
+		mrn: $("#mrn_doctorNote").val(),
+		episno: $("#episno_doctorNote").val()
+	};
+	
+	$.get("./doctornote/table?"+$.param(saveParam), $.param(postobj), function (data){
+		
+	},'json').fail(function (data){
+		alert('there is an error');
+	}).success(function (data){
+		if(!$.isEmptyObject(data)){
+			autoinsert_rowdata("#formDressing",data.pat_dressing);
+			$("#patientname").val($('#ptname_doctorNote').val());
+			$("#patientnric").val($('#ic_doctorNote').val());
+			
+			button_state_dressing('edit');
+			textarea_init_dressing();
+		}else{
+			$("#patientname").val($('#ptname_doctorNote').val());
+			$("#patientnric").val($('#ic_doctorNote').val());
+			
+			button_state_dressing('add');
+			textarea_init_dressing();
+		}
+	});
+}
+
+function get_default_dressing(){
+	emptyFormdata(errorField,"#formDressing",["#mrn_doctorNote","#episno_doctorNote"]);
+	
+	var saveParam = {
+		action: 'get_table_dressing',
+	}
+	
+	var postobj = {
+		_token: $('#csrf_token').val(),
+		// idno: $("#idno_dressing").val(),
+		mrn: $("#mrn_doctorNote").val(),
+		episno: $("#episno_doctorNote").val()
+	};
+	
+	$.get("./doctornote/table?"+$.param(saveParam), $.param(postobj), function (data){
+		
+	},'json').fail(function (data){
+		alert('there is an error');
+	}).success(function (data){
+		if(!$.isEmptyObject(data)){
+			autoinsert_rowdata("#formDressing",data.pat_dressing);
+			$("#patientname").val($('#ptname_doctorNote').val());
+			$("#patientnric").val($('#ic_doctorNote').val());
+			
+			textarea_init_dressing();
+		}else{
+			$("#patientname").val($('#ptname_doctorNote').val());
+			$("#patientnric").val($('#ic_doctorNote').val());
+			
+			textarea_init_dressing();
 		}
 	});
 }
@@ -1629,6 +1770,59 @@ function saveForm_physio(callback){
 	});
 }
 
+function saveForm_dressing(callback){
+	var saveParam = {
+		action: 'save_dressing',
+		oper: $("#cancel_dressing").data('oper'),
+		mrn: $('#mrn_doctorNote').val(),
+		episno: $("#episno_doctorNote").val(),
+	}
+	
+	var postobj = {
+		_token: $('#csrf_token').val(),
+		// sex_edit: $('#sex_edit').val(),
+		// idtype_edit: $('#idtype_edit').val()
+	};
+	
+	values = $("#formDressing").serializeArray();
+	
+	values = values.concat(
+		$('#formDressing input[type=checkbox]:not(:checked)').map(
+		function (){
+			return {"name": this.name, "value": 0}
+		}).get()
+	);
+	
+	values = values.concat(
+		$('#formDressing input[type=checkbox]:checked').map(
+		function (){
+			return {"name": this.name, "value": 1}
+		}).get()
+	);
+	
+	values = values.concat(
+		$('#formDressing input[type=radio]:checked').map(
+		function (){
+			return {"name": this.name, "value": this.value}
+		}).get()
+	);
+	
+	values = values.concat(
+		$('#formDressing select').map(
+		function (){
+			return {"name": this.name, "value": this.value}
+		}).get()
+	);
+	
+	$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function (data){
+		
+	},'json').fail(function (data){
+		callback(data);
+	}).success(function (data){
+		callback(data);
+	});
+}
+
 function saveForm_refLetter(callback){
 	var saveParam = {
 		action: 'save_refLetter',
@@ -1762,6 +1956,9 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function (){
 	
 	let curtype = $(this).data('curtype');
 	$('#jqGridDoctorNote_panel_tabs.nav-tabs a#'+curtype).tab('show');
+	
+	populate_otbook_getdata();
+	populate_radClinic_getdata();
 });
 
 $('#jqGridDoctorNote_panel_tabs.nav-tabs a').on('shown.bs.tab', function (e){
@@ -1778,6 +1975,10 @@ $('#jqGridDoctorNote_panel_tabs.nav-tabs a').on('shown.bs.tab', function (e){
 		case 'PHYSIO':
 			populate_physio_getdata();
 			// textarea_init_physio();
+			break;
+		case 'DRESSING':
+			populate_dressing_getdata();
+			// textarea_init_dressing();
 			break;
 	}
 });
@@ -2051,6 +2252,23 @@ function textarea_init_mri(){
 
 function textarea_init_physio(){
 	$('textarea#clinic_diag,textarea#findings,textarea#phy_treatment').each(function (){
+		if(this.value.trim() == ''){
+			this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+		}else{
+			this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+		}
+	}).off().on('input', function (){
+		if(this.scrollHeight > 40){
+			this.style.height = 'auto';
+			this.style.height = (this.scrollHeight) + 'px';
+		}else{
+			this.style.height = (40) + 'px';
+		}
+	});
+}
+
+function textarea_init_dressing(){
+	$('textarea#solution').each(function (){
 		if(this.value.trim() == ''){
 			this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
 		}else{

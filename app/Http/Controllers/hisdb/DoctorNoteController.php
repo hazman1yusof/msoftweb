@@ -53,6 +53,8 @@ class DoctorNoteController extends defaultController
                 return $this->get_table_mri($request);
             case 'get_table_physio':
                 return $this->get_table_physio($request);
+            case 'get_table_dressing':
+                return $this->get_table_dressing($request);
             case 'dialog_icd':
                 return $this->dialog_icd($request);
             case 'get_bp_graph':
@@ -147,6 +149,16 @@ class DoctorNoteController extends defaultController
                         return $this->add_physio($request);
                     case 'edit':
                         return $this->edit_physio($request);
+                    default:
+                        return 'error happen..';
+                }
+            
+            case 'save_dressing':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add_dressing($request);
+                    case 'edit':
+                        return $this->edit_dressing($request);
                     default:
                         return 'error happen..';
                 }
@@ -1546,13 +1558,15 @@ class DoctorNoteController extends defaultController
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
         
-        $pathealth_obj = DB::table('hisdb.pathealth')
-                        ->select('weight')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote)->format('Y-m-d'))
-                        ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote)->format('H:i:s'))
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno);
+        if(!empty($request->recorddate_doctorNote) && $request->recorddate_doctorNote != '-'){
+            $pathealth_obj = DB::table('hisdb.pathealth')
+                            ->select('weight')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote)->format('Y-m-d'))
+                            ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote)->format('H:i:s'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
+        }
         
         $pathistory_obj = DB::table('hisdb.pathistory')
                         ->select('allergyh')
@@ -1578,11 +1592,13 @@ class DoctorNoteController extends defaultController
             }
         }
         
-        if($pathealth_obj->exists()){
-            $pathealth_obj = $pathealth_obj->first();
-            
-            $rad_weight = $pathealth_obj->weight;
-            $responce->rad_weight = $rad_weight;
+        if(!empty($request->recorddate_doctorNote) && $request->recorddate_doctorNote != '-'){
+            if($pathealth_obj->exists()){
+                $pathealth_obj = $pathealth_obj->first();
+                
+                $rad_weight = $pathealth_obj->weight;
+                $responce->rad_weight = $rad_weight;
+            }
         }
         
         if($pathistory_obj->exists()){
@@ -1783,13 +1799,15 @@ class DoctorNoteController extends defaultController
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);
         
-        $pathealth_obj = DB::table('hisdb.pathealth')
-                        ->select('weight')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote)->format('Y-m-d'))
-                        ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote)->format('H:i:s'))
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno);
+        if(!empty($request->recorddate_doctorNote) && $request->recorddate_doctorNote != '-'){
+            $pathealth_obj = DB::table('hisdb.pathealth')
+                            ->select('weight')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote)->format('Y-m-d'))
+                            ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote)->format('H:i:s'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
+        }
         
         $responce = new stdClass();
         
@@ -1798,11 +1816,13 @@ class DoctorNoteController extends defaultController
             $responce->pat_mri = $pat_mri_obj;
         }
         
-        if($pathealth_obj->exists()){
-            $pathealth_obj = $pathealth_obj->first();
-            
-            $mri_weight = $pathealth_obj->weight;
-            $responce->mri_weight = $mri_weight;
+        if(!empty($request->recorddate_doctorNote) && $request->recorddate_doctorNote != '-'){
+            if($pathealth_obj->exists()){
+                $pathealth_obj = $pathealth_obj->first();
+                
+                $mri_weight = $pathealth_obj->weight;
+                $responce->mri_weight = $mri_weight;
+            }
         }
         
         return json_encode($responce);
@@ -1909,6 +1929,118 @@ class DoctorNoteController extends defaultController
         if($pat_physio_obj->exists()){
             $pat_physio_obj = $pat_physio_obj->first();
             $responce->pat_physio = $pat_physio_obj;
+        }
+        
+        return json_encode($responce);
+        
+    }
+    
+    public function add_dressing(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.pat_dressing')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'od_dressing' => $request->od_dressing,
+                    'bd_dressing' => $request->bd_dressing,
+                    'eod_dressing' => $request->eod_dressing,
+                    'others_dressing' => $request->others_dressing,
+                    'others_name' => $request->others_name,
+                    'solution' => $request->solution,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit_dressing(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            $pat_dressing = DB::table('hisdb.pat_dressing')
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno)
+                            ->where('compcode','=',session('compcode'));
+            
+            if($pat_dressing->exists()){
+                $pat_dressing
+                    ->update([
+                        'od_dressing' => $request->od_dressing,
+                        'bd_dressing' => $request->bd_dressing,
+                        'eod_dressing' => $request->eod_dressing,
+                        'others_dressing' => $request->others_dressing,
+                        'others_name' => $request->others_name,
+                        'solution' => $request->solution,
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+            }else{
+                DB::table('hisdb.pat_dressing')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'od_dressing' => $request->od_dressing,
+                        'bd_dressing' => $request->bd_dressing,
+                        'eod_dressing' => $request->eod_dressing,
+                        'others_dressing' => $request->others_dressing,
+                        'others_name' => $request->others_name,
+                        'solution' => $request->solution,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            }
+            
+            $queries = DB::getQueryLog();
+            // dump($queries);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function get_table_dressing(Request $request){
+        
+        $pat_dressing_obj = DB::table('hisdb.pat_dressing')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
+        
+        $responce = new stdClass();
+        
+        if($pat_dressing_obj->exists()){
+            $pat_dressing_obj = $pat_dressing_obj->first();
+            $responce->pat_dressing = $pat_dressing_obj;
         }
         
         return json_encode($responce);
