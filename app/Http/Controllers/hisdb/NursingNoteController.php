@@ -110,6 +110,15 @@ class NursingNoteController extends defaultController
             case 'FitChart_del':
                 return $this->del_FitChart($request);
             
+            case 'Circulation_save':
+                return $this->add_Circulation($request);
+            
+            case 'Circulation_edit':
+                return $this->edit_Circulation($request);
+            
+            case 'Circulation_del':
+                return $this->del_Circulation($request);
+            
             case 'get_table_progress':
                 return $this->get_table_progress($request);
             
@@ -1243,8 +1252,8 @@ class NursingNoteController extends defaultController
             
             DB::table('nursing.nurs_fitchart')
                 ->where('idno','=',$request->idno)
-                ->where('mrn','=',$request->mrn)
-                ->where('episno','=',$request->episno)
+                // ->where('mrn','=',$request->mrn)
+                // ->where('episno','=',$request->episno)
                 ->update([
                     'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
                     'enteredtime' => $request->enteredtime,
@@ -1278,6 +1287,108 @@ class NursingNoteController extends defaultController
         try {
             
             DB::table('nursing.nurs_fitchart')
+                ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->delete();
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+    
+    public function add_Circulation(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurs_circulation')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
+                    'capillary' => $request->capillary,
+                    'skintemp' => $request->skintemp,
+                    'pulse' => $request->pulse,
+                    'movement' => $request->movement,
+                    'sensation' => $request->sensation,
+                    'oedema' => $request->oedema,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'addtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastupdtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit_Circulation(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurs_circulation')
+                ->where('idno','=',$request->idno)
+                // ->where('mrn','=',$request->mrn)
+                // ->where('episno','=',$request->episno)
+                ->update([
+                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
+                    'enteredtime' => $request->enteredtime,
+                    'capillary' => $request->capillary,
+                    'skintemp' => $request->skintemp,
+                    'pulse' => $request->pulse,
+                    'movement' => $request->movement,
+                    'sensation' => $request->sensation,
+                    'oedema' => $request->oedema,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastupdtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function del_Circulation(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurs_circulation')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->delete();
@@ -1428,7 +1539,7 @@ class NursingNoteController extends defaultController
     public function get_table_formFitChart(Request $request){
         
         $nursassessment_obj = DB::table('nursing.nursassessment')
-                            ->select('diagnosis as fitchart_diag')
+                            ->select('diagnosis')
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno);
@@ -1437,7 +1548,9 @@ class NursingNoteController extends defaultController
         
         if($nursassessment_obj->exists()){
             $nursassessment_obj = $nursassessment_obj->first();
-            $responce->nursassessment = $nursassessment_obj;
+            
+            $diagnosis_obj = $nursassessment_obj->diagnosis;
+            $responce->diagnosis = $diagnosis_obj;
         }
         
         return json_encode($responce);

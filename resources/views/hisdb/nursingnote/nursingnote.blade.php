@@ -2037,7 +2037,30 @@
                                 </div>
                                 <div class="panel-body" style="padding-right: 0px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formCirculation'>
-                                    
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info">
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label class="col-md-1 control-label" for="circulation_diag">Diagnosis</label>
+                                                        <div class="col-md-4">
+                                                            <textarea id="circulation_diag" name="circulation_diag" type="text" class="form-control input-sm" readonly></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info" id="jqGridCirculation_c">
+                                                <!-- <div class="panel-heading text-center">CIRCULATION CHART</div> -->
+                                                <div class="panel-body">
+                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <table id="jqGridCirculation" class="table table-striped"></table>
+                                                        <div id="jqGridPagerCirculation"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </form>
                                 </div>
                             </div>

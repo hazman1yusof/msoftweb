@@ -26,6 +26,17 @@ var urlParam_FitChart = {
     filterVal: ['',''],
 }
 
+///////////////////////parameter for jqGridCirculation url///////////////////////
+var urlParam_Circulation = {
+    action: 'get_table_default',
+    url: 'util/get_table_default',
+    field: '',
+    table_name: 'nursing.nurs_circulation',
+    table_id: 'idno',
+    filterCol: ['mrn','episno'],
+    filterVal: ['',''],
+}
+
 $(document).ready(function (){
     
     var fdl = new faster_detail_load();
@@ -278,6 +289,7 @@ $(document).ready(function (){
         disableForm('#formCarePlan');
         refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'kosongkan');
         refreshGrid('#jqGridFitChart',urlParam_FitChart,'kosongkan');
+        refreshGrid('#jqGridCirculation',urlParam_Circulation,'kosongkan');
         $("#jqGridNursNote_panel > div").scrollTop(0);
         $("#jqGridNursNote_panel #jqGridNursNote_panel_tabs li").removeClass('active');
     });
@@ -386,6 +398,14 @@ $(document).ready(function (){
                 
                 $("#jqGridFitChart").jqGrid('setGridWidth', Math.floor($("#jqGridFitChart_c")[0].offsetWidth-$("#jqGridFitChart_c")[0].offsetLeft-30));
                 populate_fitchart_getdata();
+                break;
+            case 'circulation':
+                urlParam_Circulation.filterVal[0] = $("#mrn_nursNote").val();
+                urlParam_Circulation.filterVal[1] = $("#episno_nursNote").val();
+                refreshGrid('#jqGridCirculation',urlParam_Circulation,'add');
+                
+                $("#jqGridCirculation").jqGrid('setGridWidth', Math.floor($("#jqGridCirculation_c")[0].offsetWidth-$("#jqGridCirculation_c")[0].offsetLeft-30));
+                populate_circulation_getdata();
                 break;
         }
     });
@@ -959,10 +979,15 @@ $(document).ready(function (){
                     custom_value: galGridCustomValue_nurs
                 }
             },
-            { label: 'Fit', name: 'fit', classes: 'wrap', width: 70, editable: true, edittype: "textarea",
+            // { label: 'Fit', name: 'fit', classes: 'wrap', width: 70, editable: true, edittype: "textarea",
+            //     editoptions: {
+            //         style: "width: -webkit-fill-available;",
+            //         rows: 5
+            //     }
+            // },
+            { label: 'Fit', name: 'fit', width: 30, editable: true,
                 editoptions: {
-                    style: "width: -webkit-fill-available;",
-                    rows: 5
+                    style: "text-transform: none;",
                 }
             },
             { label: 'Duration', name: 'duration', width: 30, editable: true },
@@ -1161,7 +1186,256 @@ $(document).ready(function (){
     $("#jqGridFitChart_ilcancel").click(function (){
         refreshGrid("#jqGridFitChart", urlParam_FitChart);
     });
+    ////////////////////////////////////////////end grid////////////////////////////////////////////
     //////////////////////////////////////////fitchart ends//////////////////////////////////////////
+    
+    ///////////////////////////////////////circulation starts///////////////////////////////////////
+    ///////////////////////////////////////jqGridCirculation///////////////////////////////////////
+    var addmore_jqgrid3 = { more:false,state:false,edit:false }
+    
+    $("#jqGridCirculation").jqGrid({
+        datatype: "local",
+        editurl: "./nursingnote/form",
+        colModel: [
+            { label: 'Date', name: 'entereddate', width: 50, classes: 'wrap', editable: true,
+                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                editoptions: {
+                    dataInit: function (element){
+                        $(element).datepicker({
+                            id: 'entereddate_datePicker',
+                            dateFormat: 'yy-mm-dd',
+                            minDate: "dateToday",
+                            showOn: 'focus',
+                            changeMonth: true,
+                            changeYear: true,
+                            onSelect : function (){
+                                $(this).focus();
+                            }
+                        });
+                    }
+                }
+            },
+            { label: 'Time', name: 'enteredtime', width: 50, classes: 'wrap', editable: true,
+                editrules: { required: false, custom: true, custom_func: cust_rules_nurs },
+                formatter: showdetail_nurs, edittype: 'custom',
+                editoptions: {
+                    custom_element: enteredtimeCustomEdit_circulation,
+                    custom_value: galGridCustomValue_nurs
+                }
+            },
+            { label: 'Capillary Refill', name: 'capillary', width: 50, editable: true,
+                editoptions: {
+                    style: "text-transform: none;",
+                }
+            },
+            { label: 'Skin Temp', name: 'skintemp', width: 40, editable: true },
+            { label: 'Pulse', name: 'pulse', width: 40, editable: true },
+            { label: 'Movement', name: 'movement', width: 50, editable: true,
+                editoptions: {
+                    style: "text-transform: none;",
+                }
+            },
+            { label: 'Sensation', name: 'sensation', width: 50, editable: true,
+                editoptions: {
+                    style: "text-transform: none;",
+                }
+            },
+            { label: 'Oedema', name: 'oedema', width: 50, editable: true,
+                editoptions: {
+                    style: "text-transform: none;",
+                }
+            },
+            { label: 'Entered By', name: 'adduser', width: 35, editable: false },
+            { label: 'idno', name: 'idno', width: 10, hidden: true, key: true },
+            { label: 'compcode', name: 'compcode', hidden: true },
+            { label: 'mrn', name: 'mrn', hidden: true },
+            { label: 'episno', name: 'episno', hidden: true },
+            // { label: 'adduser', name: 'adduser', hidden: true },
+            { label: 'adddate', name: 'adddate', hidden: true },
+        ],
+        autowidth: true,
+        multiSort: true,
+        sortname: 'idno',
+        sortorder: 'desc',
+        viewrecords: true,
+        loadonce: false,
+        width: 900,
+        height: 200,
+        rowNum: 30,
+        pager: "#jqGridPagerCirculation",
+        loadComplete: function (){
+            if(addmore_jqgrid3.more == true){$('#jqGridCirculation_iladd').click();}
+            else{
+                $('#jqGridCirculation').jqGrid ('setSelection', "1");
+            }
+            $('.ui-pg-button').prop('disabled',true);
+            addmore_jqgrid3.edit = addmore_jqgrid3.more = false; // reset
+            
+            // calc_jq_height_onchange("jqGridCirculation");
+        },
+        ondblClickRow: function (rowid, iRow, iCol, e){
+            $("#jqGridCirculation_iledit").click();
+        },
+        gridComplete: function (){
+            fdl.set_array().reset();
+            if($('#jqGridPagerCirculation').jqGrid('getGridParam', 'reccount') > 0){
+                $("#jqGridPagerCirculation").setSelection($("#jqGridPagerCirculation").getDataIDs()[0]);
+            }
+        },
+    });
+    
+    /////////////////////////////////myEditOptions_add_Circulation/////////////////////////////////
+    var myEditOptions_add_Circulation = {
+        keys: true,
+        extraparam: {
+            "_token": $("#csrf_token").val()
+        },
+        oneditfunc: function (rowid){
+            $("#jqGridPagerDelete_Circulation,#jqGridPagerRefresh_Circulation").hide();
+            
+            $("#jqGridCirculation input[name='oedema']").keydown(function (e){ // when click tab at last column in header, auto save
+                var code = e.keyCode || e.which;
+                if (code == '9')$('#jqGridCirculation_ilsave').click();
+                // addmore_jqgrid3.state = true;
+                // $('#jqGridCirculation_ilsave').click();
+            });
+        },
+        aftersavefunc: function (rowid, response, options){
+            // if(addmore_jqgrid3.state == true)addmore_jqgrid3.more = true; // only addmore after save inline
+            addmore_jqgrid3.more = true; // state true maksudnyer ada isi, tak kosong
+            refreshGrid('#jqGridCirculation',urlParam_Circulation,'add');
+            errorField.length = 0;
+            $("#jqGridPagerDelete_Circulation,#jqGridPagerRefresh_Circulation").show();
+        },
+        errorfunc: function (rowid,response){
+            $('#p_error').text(response.responseText);
+            refreshGrid('#jqGridCirculation',urlParam_Circulation,'add');
+        },
+        beforeSaveRow: function (options, rowid){
+            $('#p_error').text('');
+            
+            let data = $('#jqGridCirculation').jqGrid ('getRowData', rowid);
+            
+            let editurl = "./nursingnote/form?"+
+                $.param({
+                    mrn: $('#mrn_nursNote').val(),
+                    episno: $('#episno_nursNote').val(),
+                    action: 'Circulation_save',
+                });
+            $("#jqGridCirculation").jqGrid('setGridParam', { editurl: editurl });
+        },
+        afterrestorefunc : function (response){
+            $("#jqGridPagerDelete_Circulation,#jqGridPagerRefresh_Circulation").show();
+        },
+        errorTextFormat: function (data){
+            alert(data);
+        }
+    };
+    
+    ////////////////////////////////myEditOptions_edit_Circulation////////////////////////////////
+    var myEditOptions_edit_Circulation = {
+        keys: true,
+        extraparam: {
+            "_token": $("#csrf_token").val()
+        },
+        oneditfunc: function (rowid){
+            $("#jqGridPagerDelete_Circulation,#jqGridPagerRefresh_Circulation").hide();
+            
+            $("#jqGridCirculation input[name='oedema']").keydown(function (e){ // when click tab at last column in header, auto save
+                var code = e.keyCode || e.which;
+                if (code == '9')$('#jqGridCirculation_ilsave').click();
+                // addmore_jqgrid3.state = true;
+                // $('#jqGridCirculation_ilsave').click();
+            });
+        },
+        aftersavefunc: function (rowid, response, options){
+            if(addmore_jqgrid3.state == true)addmore_jqgrid3.more = true; // only addmore after save inline
+            // state true maksudnyer ada isi, tak kosong
+            refreshGrid('#jqGridCirculation',urlParam_Circulation,'edit');
+            errorField.length = 0;
+            $("#jqGridPagerDelete_Circulation,#jqGridPagerRefresh_Circulation").show();
+        },
+        errorfunc: function (rowid,response){
+            $('#p_error').text(response.responseText);
+            refreshGrid('#jqGridCirculation',urlParam_Circulation,'edit');
+        },
+        beforeSaveRow: function (options, rowid){
+            $('#p_error').text('');
+            // if(errorField.length > 0){console.log(errorField);return false;}
+            
+            let data = $('#jqGridCirculation').jqGrid ('getRowData', rowid);
+            // console.log(data);
+            
+            let editurl = "./nursingnote/form?"+
+                $.param({
+                    mrn: $('#mrn_nursNote').val(),
+                    episno: $('#episno_nursNote').val(),
+                    action: 'Circulation_edit',
+                    _token: $("#csrf_token").val()
+                });
+            $("#jqGridCirculation").jqGrid('setGridParam', { editurl: editurl });
+        },
+        afterrestorefunc : function (response){
+            $("#jqGridPagerDelete_Circulation,#jqGridPagerRefresh_Circulation").show();
+        },
+        errorTextFormat: function (data){
+            alert(data);
+        }
+    };
+    
+    ////////////////////////////////////jqGridPagerCirculation////////////////////////////////////
+    $("#jqGridCirculation").inlineNav('#jqGridPagerCirculation', {
+        add: true, edit: true, cancel: true,
+        // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+        restoreAfterSelect: false,
+        addParams: {
+            addRowParams: myEditOptions_add_Circulation
+        },
+        editParams: myEditOptions_edit_Circulation
+    }).jqGrid('navButtonAdd', "#jqGridPagerCirculation", {
+        id: "jqGridPagerDelete_Circulation",
+        caption: "", cursor: "pointer", position: "last",
+        buttonicon: "glyphicon glyphicon-trash",
+        title: "Delete Selected Row",
+        onClickButton: function (){
+            selRowId = $("#jqGridCirculation").jqGrid('getGridParam', 'selrow');
+            if(!selRowId){
+                alert('Please select row');
+            }else{
+                var result = confirm("Are you sure you want to delete this row?");
+                if(result == true){
+                    param = {
+                        _token: $("#csrf_token").val(),
+                        idno: selrowData('#jqGridCirculation').idno,
+                        action: 'Circulation_del',
+                    }
+                    $.post("./nursingnote/form?"+$.param(param), {oper:'del'}, function (data){
+                        
+                    }).fail(function (data){
+                        //////////////////errorText(dialog,data.responseText);
+                    }).done(function (data){
+                        refreshGrid("#jqGridCirculation", urlParam_Circulation);
+                    });
+                }else{
+                    $("#jqGridPagerDelete_Circulation,#jqGridPagerRefresh_Circulation").show();
+                }
+            }
+        },
+    }).jqGrid('navButtonAdd', "#jqGridPagerCirculation", {
+        id: "jqGridPagerRefresh_Circulation",
+        caption: "", cursor: "pointer", position: "last",
+        buttonicon: "glyphicon glyphicon-refresh",
+        title: "Refresh Table",
+        onClickButton: function (){
+            refreshGrid("#jqGridCirculation", urlParam_Circulation);
+        },
+    });
+    
+    $("#jqGridCirculation_ilcancel").click(function (){
+        refreshGrid("#jqGridCirculation", urlParam_Circulation);
+    });
+    ///////////////////////////////////////////end grid///////////////////////////////////////////
+    ////////////////////////////////////////circulation ends////////////////////////////////////////
     
 });
 
@@ -1670,7 +1944,8 @@ function populate_fitchart_getdata(){
         alert('there is an error');
     }).success(function (data){
         if(!$.isEmptyObject(data)){
-            autoinsert_rowdata("#formFitChart",data.nursassessment);
+            // autoinsert_rowdata("#formFitChart",data.diagnosis);
+            $("#fitchart_diag").val(data.diagnosis);
             $("#fitchart_ward").val($('#ward_nursNote').val());
             $("#fitchart_bednum").val($('#bednum_nursNote').val());
             
@@ -1681,6 +1956,43 @@ function populate_fitchart_getdata(){
             $("#fitchart_bednum").val($('#bednum_nursNote').val());
             
             // button_state_fitchart('add');
+            textarea_init_nursingnote();
+        }
+    });
+}
+
+function populate_circulation_getdata(){
+    emptyFormdata(errorField,"#formCirculation",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar"]);
+    
+    var saveParam = {
+        action: 'get_table_formFitChart',
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        // idno: $("#idno_circulation").val(),
+        mrn: $("#mrn_nursNote").val(),
+        episno: $("#episno_nursNote").val()
+    };
+    
+    $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').fail(function (data){
+        alert('there is an error');
+    }).success(function (data){
+        if(!$.isEmptyObject(data)){
+            // autoinsert_rowdata("#formCirculation",data.diagnosis);
+            $("#circulation_diag").val(data.diagnosis);
+            // $("#circulation_ward").val($('#ward_nursNote').val());
+            // $("#circulation_bednum").val($('#bednum_nursNote').val());
+            
+            // button_state_circulation('edit');
+            textarea_init_nursingnote();
+        }else{
+            // $("#circulation_ward").val($('#ward_nursNote').val());
+            // $("#circulation_bednum").val($('#bednum_nursNote').val());
+            
+            // button_state_circulation('add');
             textarea_init_nursingnote();
         }
     });
@@ -2059,7 +2371,7 @@ function saveForm_careplan(callback){
 }
 
 function textarea_init_nursingnote(){
-    $('textarea#airwayfreetext,textarea#frfreetext,textarea#drainfreetext,textarea#ivfreetext,textarea#assesothers,textarea#plannotes,textarea#oraltype1,textarea#oraltype2,textarea#oraltype3,textarea#oraltype4,textarea#oraltype5,textarea#oraltype6,textarea#oraltype7,textarea#oraltype8,textarea#oraltype9,textarea#oraltype10,textarea#oraltype11,textarea#oraltype12,textarea#oraltype13,textarea#oraltype14,textarea#oraltype15,textarea#oraltype16,textarea#oraltype17,textarea#oraltype18,textarea#oraltype19,textarea#oraltype20,textarea#oraltype21,textarea#oraltype22,textarea#oraltype23,textarea#oraltype24,textarea#intratype1,textarea#intratype2,textarea#intratype3,textarea#intratype4,textarea#intratype5,textarea#intratype6,textarea#intratype7,textarea#intratype8,textarea#intratype9,textarea#intratype10,textarea#intratype11,textarea#intratype12,textarea#intratype13,textarea#intratype14,textarea#intratype15,textarea#intratype16,textarea#intratype17,textarea#intratype18,textarea#intratype19,textarea#intratype20,textarea#intratype21,textarea#intratype22,textarea#intratype23,textarea#intratype24,textarea#othertype1,textarea#othertype2,textarea#othertype3,textarea#othertype4,textarea#othertype5,textarea#othertype6,textarea#othertype7,textarea#othertype8,textarea#othertype9,textarea#othertype10,textarea#othertype11,textarea#othertype12,textarea#othertype13,textarea#othertype14,textarea#othertype15,textarea#othertype16,textarea#othertype17,textarea#othertype18,textarea#othertype19,textarea#othertype20,textarea#othertype21,textarea#othertype22,textarea#othertype23,textarea#othertype24,textarea#ftxtdosage,textarea#treatment_remarks,textarea#investigation_remarks,textarea#injection_remarks,textarea#problem,textarea#problemdata,textarea#problemintincome,textarea#nursintervention,textarea#nursevaluation,textarea#fitchart_diag').each(function () {
+    $('textarea#airwayfreetext,textarea#frfreetext,textarea#drainfreetext,textarea#ivfreetext,textarea#assesothers,textarea#plannotes,textarea#oraltype1,textarea#oraltype2,textarea#oraltype3,textarea#oraltype4,textarea#oraltype5,textarea#oraltype6,textarea#oraltype7,textarea#oraltype8,textarea#oraltype9,textarea#oraltype10,textarea#oraltype11,textarea#oraltype12,textarea#oraltype13,textarea#oraltype14,textarea#oraltype15,textarea#oraltype16,textarea#oraltype17,textarea#oraltype18,textarea#oraltype19,textarea#oraltype20,textarea#oraltype21,textarea#oraltype22,textarea#oraltype23,textarea#oraltype24,textarea#intratype1,textarea#intratype2,textarea#intratype3,textarea#intratype4,textarea#intratype5,textarea#intratype6,textarea#intratype7,textarea#intratype8,textarea#intratype9,textarea#intratype10,textarea#intratype11,textarea#intratype12,textarea#intratype13,textarea#intratype14,textarea#intratype15,textarea#intratype16,textarea#intratype17,textarea#intratype18,textarea#intratype19,textarea#intratype20,textarea#intratype21,textarea#intratype22,textarea#intratype23,textarea#intratype24,textarea#othertype1,textarea#othertype2,textarea#othertype3,textarea#othertype4,textarea#othertype5,textarea#othertype6,textarea#othertype7,textarea#othertype8,textarea#othertype9,textarea#othertype10,textarea#othertype11,textarea#othertype12,textarea#othertype13,textarea#othertype14,textarea#othertype15,textarea#othertype16,textarea#othertype17,textarea#othertype18,textarea#othertype19,textarea#othertype20,textarea#othertype21,textarea#othertype22,textarea#othertype23,textarea#othertype24,textarea#ftxtdosage,textarea#treatment_remarks,textarea#investigation_remarks,textarea#injection_remarks,textarea#problem,textarea#problemdata,textarea#problemintincome,textarea#nursintervention,textarea#nursevaluation,textarea#fitchart_diag,textarea#circulation_diag').each(function () {
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
@@ -2080,6 +2392,7 @@ function cust_rules_nurs(value, name){
     switch(name){
         case 'Time': temp = $("#jqGridPatMedic input[name='enteredtime']"); break;
         case 'enteredtime': temp = $("#jqGridFitChart input[name='enteredtime']"); break;
+        case 'time': temp = $("#jqGridCirculation input[name='enteredtime']"); break;
     }
     if(temp == null) return [true,''];
     return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
@@ -2112,9 +2425,13 @@ function enteredtimeCustomEdit_fitchart(val,opt,rowObject){
     return $(`<div class="input-group"><input autocomplete="off" name="enteredtime" type="time" class="form-control input-sm" style="text-transform: uppercase;" value="`+val+`" style="z-index: 0"></div>`);
 }
 
+function enteredtimeCustomEdit_circulation(val,opt,rowObject){
+    return $(`<div class="input-group"><input autocomplete="off" name="enteredtime" type="time" class="form-control input-sm" style="text-transform: uppercase;" value="`+val+`" style="z-index: 0"></div>`);
+}
+
 function galGridCustomValue_nurs(elem, operation, value){
     if(operation == 'get') {
-        console.log($(elem).find("input").val());
+        // console.log($(elem).find("input").val());
         return $(elem).find("input").val();
     }
     else if(operation == 'set') {
