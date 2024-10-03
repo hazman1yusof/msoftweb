@@ -123,9 +123,9 @@
 														<input id="reg_date" name="reg_date" type="date" class="form-control input-sm" rdonly>
 													</div>
 
-													<label class="col-md-1 control-label" for="adduser">Register By</label>  
+													<label class="col-md-1 control-label" for="reg_by">Register By</label>  
 													<div class="col-md-5">
-														<input id="adduser" name="adduser" type="text" class="form-control input-sm" rdonly>
+														<input id="reg_by" name="reg_by" type="text" class="form-control input-sm" rdonly>
 													</div>
 
 													<label class="col-md-1 control-label" for="reg_time">Register Time</label>  
