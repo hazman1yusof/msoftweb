@@ -1,69 +1,76 @@
 
 <div class="panel panel-default" style="position: relative;" id="jqGridNursNote_c">
-	
-	<div class="panel-heading clearfix collapsed position" id="toggle_nursNote" style="position: sticky;top: 0px;z-index: 3;">
-		<b>NAME: <span id="name_show_nursNote"></span></b><br>
-		MRN: <span id="mrn_show_nursNote"></span>
-		SEX: <span id="sex_show_nursNote"></span>
-		DOB: <span id="dob_show_nursNote"></span>
-		AGE: <span id="age_show_nursNote"></span>
-		RACE: <span id="race_show_nursNote"></span>
-		RELIGION: <span id="religion_show_nursNote"></span><br>
-		OCCUPATION: <span id="occupation_show_nursNote"></span>
-		CITIZENSHIP: <span id="citizenship_show_nursNote"></span>
-		AREA: <span id="area_show_nursNote"></span>
-		
-		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridNursNote_panel"></i>
-		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridNursNote_panel"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 25px;">
-			<h5>Nursing Note</h5>
-		</div>
-	</div>
+    <div class="panel-heading clearfix collapsed position" id="toggle_nursNote" style="position: sticky; top: 0px; z-index: 3;">
+        <b>NAME: <span id="name_show_nursNote"></span></b><br>
+        MRN: <span id="mrn_show_nursNote"></span>
+        SEX: <span id="sex_show_nursNote"></span>
+        DOB: <span id="dob_show_nursNote"></span>
+        AGE: <span id="age_show_nursNote"></span>
+        RACE: <span id="race_show_nursNote"></span>
+        RELIGION: <span id="religion_show_nursNote"></span><br>
+        OCCUPATION: <span id="occupation_show_nursNote"></span>
+        CITIZENSHIP: <span id="citizenship_show_nursNote"></span>
+        AREA: <span id="area_show_nursNote"></span>
+        
+        <i class="arrow fa fa-angle-double-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#jqGridNursNote_panel"></i>
+        <i class="arrow fa fa-angle-double-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#jqGridNursNote_panel"></i>
+        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 25px;">
+            <h5>Nursing Note</h5>
+        </div>
+    </div>
     
-	<div id="jqGridNursNote_panel" class="panel-collapse collapse" data-curtype='navtab_progress'>
-		<div class="panel-body paneldiv" style="overflow-y: auto;">
-            <div class='col-md-12' style="padding:0 0 15px 0">
+    <div id="jqGridNursNote_panel" class="panel-collapse collapse" data-curtype='navtab_progress'>
+        <div class="panel-body paneldiv" style="overflow-y: auto;">
+            <div class='col-md-12' style="padding: 0 0 15px 0;">
                 <ul class="nav nav-tabs" id="jqGridNursNote_panel_tabs">
                     <li><a data-toggle="tab" id="navtab_progress" href="#tab-progress" data-type='progress'>Progress Note</a></li>
                     <li><a data-toggle="tab" id="navtab_intake" href="#tab-intake" data-type='intake'>Intake Output</a></li>
                     <li><a data-toggle="tab" id="navtab_drug" href="#tab-drug" data-type='drug'>Drug Administration</a></li>
                     <li><a data-toggle="tab" id="navtab_treatment" href="#tab-treatment" data-type='treatment'>Treatment</a></li>
                     <li><a data-toggle="tab" id="navtab_careplan" href="#tab-careplan" data-type='careplan'>Care Plan</a></li>
+                    <li><a data-toggle="tab" id="navtab_fitchart" href="#tab-fitchart" data-type='fitchart'>Fit Chart</a></li>
+                    <li><a data-toggle="tab" id="navtab_circulation" href="#tab-circulation" data-type='circulation'>Circulation Chart</a></li>
+                    <li><a data-toggle="tab" id="navtab_slidScale" href="#tab-slidScale" data-type='slidScale'>Sliding Scale Chart</a></li>
+                    <li><a data-toggle="tab" id="navtab_othChart1" href="#tab-othChart1" data-type='othChart1'>Others Chart 1</a></li>
+                    <li><a data-toggle="tab" id="navtab_othChart2" href="#tab-othChart2" data-type='othChart2'>Others Chart 2</a></li>
                 </ul>
                 <div class="tab-content" style="padding: 10px 5px;">
                     <input id="mrn_nursNote" name="mrn_nursNote" type="hidden">
                     <input id="episno_nursNote" name="episno_nursNote" type="hidden">
                     <input id="doctor_nursNote" name="doctor_nursNote" type="hidden">
+                    <input id="ward_nursNote" name="ward_nursNote" type="hidden">
+                    <input id="bednum_nursNote" name="bednum_nursNote" type="hidden">
                     <input type="hidden" id="ordcomtt_phar" value="{{$ordcomtt_phar ?? ''}}">
                     <div id="tab-progress" class="active in tab-pane fade">
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
-                                <div class="panel-heading text-center" style="height:40px">
+                                <div class="panel-heading text-center" style="height: 40px;">
                                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-                                        id="btn_grp_edit_progress"
+                                        id="btn_grp_edit_progress" 
                                         style="position: absolute;
                                                 padding: 0 0 0 0;
                                                 right: 40px;
                                                 top: 5px;">
                                         <button type="button" class="btn btn-default" id="new_progress">
-                                            <span class="fa fa-plus-square-o"></span> New
+                                            <span class="fa fa-plus-square-o"></span> New 
                                         </button>
                                         <button type="button" class="btn btn-default" id="edit_progress">
-                                            <span class="fa fa-edit fa-lg"></span> Edit
+                                            <span class="fa fa-edit fa-lg"></span> Edit 
                                         </button>
                                         <button type="button" class="btn btn-default" data-oper='add' id="save_progress">
-                                            <span class="fa fa-save fa-lg"></span> Save
+                                            <span class="fa fa-save fa-lg"></span> Save 
                                         </button>
                                         <button type="button" class="btn btn-default" id="cancel_progress">
-                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                         </button>
                                     </div>
                                 </div>
+                                
                                 <div class="panel-body">
-                                    <form class='form-horizontal' style='width:99%' id='formProgress'>
+                                    <form class='form-horizontal' style='width: 99%;' id='formProgress'>
                                         <input id="idno_progress" name="idno_progress" type="hidden">
                                         
-                                        <div class="col-md-4" style="padding:0 0 0 0">
+                                        <div class="col-md-4" style="padding: 0 0 0 0;">
                                             <div class="panel panel-info">
                                                 <div class="panel-body">
                                                     <table id="datetime_tbl" class="ui celled table" style="width: 100%;">
@@ -89,7 +96,7 @@
                                                         <label class="control-label" for="datetaken" style="padding-right: 5px;">Date</label>
                                                         <input id="datetaken" name="datetaken" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
                                                         
-                                                        <label class="control-label" for="timetaken" style="padding-left: 15px;padding-right: 5px;">Time</label>
+                                                        <label class="control-label" for="timetaken" style="padding-left: 15px; padding-right: 5px;">Time</label>
                                                         <input id="timetaken" name="timetaken" type="time" class="form-control input-sm">
                                                         
                                                         <button class="btn btn-default btn-sm" type="button" id="doctornote_bpgraph" style="float: right; margin-right: 20px;">Chart</button>
@@ -100,7 +107,7 @@
                                                             <div class="panel-heading text-center">PATIENT STATUS</div>
                                                             <div class="panel-body">
                                                                 <div class="form-group col-md-12">
-                                                                    <label class="control-label" for="temp_" style="padding-bottom:5px">Temperature</label>
+                                                                    <label class="control-label" for="temp_" style="padding-bottom: 5px;">Temperature</label>
                                                                     <div class="input-group">
                                                                         <input id="temp_" name="temp_" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                                         <span class="input-group-addon">°C</span>
@@ -108,7 +115,7 @@
                                                                 </div>
                                                                 
                                                                 <div class="form-group col-md-12">
-                                                                    <label class="control-label" for="hr" style="padding-bottom:5px">HR</label>
+                                                                    <label class="control-label" for="hr" style="padding-bottom: 5px;">HR</label>
                                                                     <div class="input-group">
                                                                         <input id="hr" name="hr" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                                         <span class="input-group-addon">bpm</span>
@@ -116,7 +123,7 @@
                                                                 </div>
                                                                 
                                                                 <div class="form-group col-md-12">
-                                                                    <label class="control-label" for="spo2" style="padding-bottom:5px">SPO2</label>
+                                                                    <label class="control-label" for="spo2" style="padding-bottom: 5px;">SPO2</label>
                                                                     <div class="input-group">
                                                                         <input id="spo2" name="spo2" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                                         <span class="input-group-addon">%</span>
@@ -124,7 +131,7 @@
                                                                 </div>
                                                                 
                                                                 <div class="form-group col-md-12">
-                                                                    <label class="control-label" for="ncase_bp" style="padding-bottom:5px">BP</label>
+                                                                    <label class="control-label" for="ncase_bp" style="padding-bottom: 5px;">BP</label>
                                                                     <div class="input-group">
                                                                         <input id="bphistolic" name="bphistolic" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                                         <input id="bpdiastolic" name="bpdiastolic" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
@@ -133,7 +140,7 @@
                                                                 </div>
                                                                 
                                                                 <div class="form-group col-md-12">
-                                                                    <label class="control-label" for="dxt" style="padding-bottom:5px">DXT</label>
+                                                                    <label class="control-label" for="dxt" style="padding-bottom: 5px;">DXT</label>
                                                                     <div class="input-group">
                                                                         <input id="dxt" name="dxt" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                                         <span class="input-group-addon">mmol/L</span>
@@ -150,20 +157,20 @@
                                                                 <div class='col-md-6' style="padding: 0px 0px;">
                                                                     <div class="form-group">
                                                                         <label class="col-md-4 control-label" for="airway">Airway</label>  
-                                                                        <div class="col-md-8" style="padding-top:6px;">
+                                                                        <div class="col-md-8" style="padding-top: 6px;">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">
-                                                                                    <input class="form-check-input" type="checkbox" name="roomair" value="1" style="margin-right:18px;">Room Air
+                                                                                    <input class="form-check-input" type="checkbox" name="roomair" value="1" style="margin-right: 18px;">Room Air
                                                                                 </label>
                                                                             </div>
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">
-                                                                                    <input class="form-check-input" type="checkbox" name="oxygen" value="1" style="margin-right:18px;">Oxygen
+                                                                                    <input class="form-check-input" type="checkbox" name="oxygen" value="1" style="margin-right: 18px;">Oxygen
                                                                                 </label>
                                                                             </div>
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">Others</label>
-                                                                                <div class="form-check col-md-12" style="padding-left:0px;">
+                                                                                <div class="form-check col-md-12" style="padding-left: 0px;">
                                                                                     <textarea id="airwayfreetext" name="airwayfreetext" type="text" class="form-control input-sm"></textarea>
                                                                                 </div>
                                                                             </div>
@@ -172,15 +179,15 @@
                                                                     
                                                                     <div class="form-group">
                                                                         <label class="col-md-4 control-label" for="breathing">Breathing</label>  
-                                                                        <div class="col-md-8" style="padding-top:6px;">
+                                                                        <div class="col-md-8" style="padding-top: 6px;">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">
-                                                                                    <input class="form-check-input" type="checkbox" name="breathnormal" value="1" style="margin-right:18px;">Normal
+                                                                                    <input class="form-check-input" type="checkbox" name="breathnormal" value="1" style="margin-right: 18px;">Normal
                                                                                 </label>
                                                                             </div>
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">
-                                                                                    <input class="form-check-input" type="checkbox" name="breathdifficult" value="1" style="margin-right:18px;">Difficult
+                                                                                    <input class="form-check-input" type="checkbox" name="breathdifficult" value="1" style="margin-right: 18px;">Difficult
                                                                                 </label>
                                                                             </div>
                                                                         </div>
@@ -188,25 +195,25 @@
                                                                     
                                                                     <div class="form-group">
                                                                         <label class="col-md-4 control-label" for="circulation">Circulation</label>  
-                                                                        <div class="col-md-8" style="padding-top:6px;">
+                                                                        <div class="col-md-8" style="padding-top: 6px;">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">
-                                                                                    <input class="form-check-input" type="checkbox" name="circarrythmias" value="1" style="margin-right:18px;">Arrhythmias
+                                                                                    <input class="form-check-input" type="checkbox" name="circarrythmias" value="1" style="margin-right: 18px;">Arrhythmias
                                                                                 </label>
                                                                             </div>
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">
-                                                                                    <input class="form-check-input" type="checkbox" name="circlbp" value="1" style="margin-right:18px;">Low BP
+                                                                                    <input class="form-check-input" type="checkbox" name="circlbp" value="1" style="margin-right: 18px;">Low BP
                                                                                 </label>
                                                                             </div>
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">
-                                                                                    <input class="form-check-input" type="checkbox" name="circhbp" value="1" style="margin-right:18px;">High BP
+                                                                                    <input class="form-check-input" type="checkbox" name="circhbp" value="1" style="margin-right: 18px;">High BP
                                                                                 </label>
                                                                             </div>
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">
-                                                                                    <input class="form-check-input" type="checkbox" name="circirregular" value="1" style="margin-right:18px;">Irregular HR
+                                                                                    <input class="form-check-input" type="checkbox" name="circirregular" value="1" style="margin-right: 18px;">Irregular HR
                                                                                 </label>
                                                                             </div>
                                                                         </div>
@@ -214,20 +221,20 @@
                                                                     
                                                                     <div class="form-group">
                                                                         <label class="col-md-4 control-label" for="fallrisk">Disability Fall Risk</label>  
-                                                                        <div class="col-md-8" style="padding-top:6px;">
+                                                                        <div class="col-md-8" style="padding-top: 6px;">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">
-                                                                                    <input class="form-check-input" type="checkbox" name="frhigh" value="1" style="margin-right:18px;">High
+                                                                                    <input class="form-check-input" type="checkbox" name="frhigh" value="1" style="margin-right: 18px;">High
                                                                                 </label>
                                                                             </div>
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">
-                                                                                    <input class="form-check-input" type="checkbox" name="frlow" value="1" style="margin-right:18px;">Low
+                                                                                    <input class="form-check-input" type="checkbox" name="frlow" value="1" style="margin-right: 18px;">Low
                                                                                 </label>
                                                                             </div>
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">Others</label>
-                                                                                <div class="form-check col-md-12" style="padding-left:0px;">
+                                                                                <div class="form-check col-md-12" style="padding-left: 0px;">
                                                                                     <textarea id="frfreetext" name="frfreetext" type="text" class="form-control input-sm"></textarea>
                                                                                 </div>
                                                                             </div>
@@ -238,20 +245,20 @@
                                                                 <div class='col-md-6' style="padding: 0px 0px;">
                                                                     <div class="form-group">
                                                                         <label class="col-md-4 control-label" for="exposuredrain">Exposure Drain</label>  
-                                                                        <div class="col-md-8" style="padding-top:6px;">
+                                                                        <div class="col-md-8" style="padding-top: 6px;">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">
-                                                                                    <input class="form-check-input" type="checkbox" name="drainnone" value="1" style="margin-right:18px;">None
+                                                                                    <input class="form-check-input" type="checkbox" name="drainnone" value="1" style="margin-right: 18px;">None
                                                                                 </label>
                                                                             </div>
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">
-                                                                                    <input class="form-check-input" type="checkbox" name="draindrainage" value="1" style="margin-right:18px;">Drainage
+                                                                                    <input class="form-check-input" type="checkbox" name="draindrainage" value="1" style="margin-right: 18px;">Drainage
                                                                                 </label>
                                                                             </div>
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">Others</label>
-                                                                                <div class="form-check col-md-12" style="padding-left:0px;">
+                                                                                <div class="form-check col-md-12" style="padding-left: 0px;">
                                                                                     <textarea id="drainfreetext" name="drainfreetext" type="text" class="form-control input-sm"></textarea>
                                                                                 </div>
                                                                             </div>
@@ -260,20 +267,20 @@
                                                                     
                                                                     <div class="form-group">
                                                                         <label class="col-md-4 control-label" for="ivline">IV Line</label>  
-                                                                        <div class="col-md-8" style="padding-top:6px;">
+                                                                        <div class="col-md-8" style="padding-top: 6px;">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">
-                                                                                    <input class="form-check-input" type="checkbox" name="ivlnone" value="1" style="margin-right:18px;">None
+                                                                                    <input class="form-check-input" type="checkbox" name="ivlnone" value="1" style="margin-right: 18px;">None
                                                                                 </label>
                                                                             </div>
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">
-                                                                                    <input class="form-check-input" type="checkbox" name="ivlsite" value="1" style="margin-right:18px;">Site
+                                                                                    <input class="form-check-input" type="checkbox" name="ivlsite" value="1" style="margin-right: 18px;">Site
                                                                                 </label>
                                                                             </div>
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">Others</label>
-                                                                                <div class="form-check col-md-12" style="padding-left:0px;">
+                                                                                <div class="form-check col-md-12" style="padding-left: 0px;">
                                                                                     <textarea id="ivfreetext" name="ivfreetext" type="text" class="form-control input-sm"></textarea>
                                                                                 </div>
                                                                             </div>
@@ -282,20 +289,20 @@
                                                                     
                                                                     <div class="form-group">
                                                                         <label class="col-md-4 control-label" for="gu">GU</label>  
-                                                                        <div class="col-md-8" style="padding-top:6px;">
+                                                                        <div class="col-md-8" style="padding-top: 6px;">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">
-                                                                                    <input class="form-check-input" type="checkbox" name="gucontinent" value="1" style="margin-right:18px;">Continent
+                                                                                    <input class="form-check-input" type="checkbox" name="gucontinent" value="1" style="margin-right: 18px;">Continent
                                                                                 </label>
                                                                             </div>
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">
-                                                                                    <input class="form-check-input" type="checkbox" name="gufoley" value="1" style="margin-right:18px;">Foley
+                                                                                    <input class="form-check-input" type="checkbox" name="gufoley" value="1" style="margin-right: 18px;">Foley
                                                                                 </label>
                                                                             </div>
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label">Others</label>
-                                                                                <div class="form-check col-md-12" style="padding-left:0px;">
+                                                                                <div class="form-check col-md-12" style="padding-left: 0px;">
                                                                                     <textarea id="assesothers" name="assesothers" type="text" class="form-control input-sm"></textarea>
                                                                                 </div>
                                                                             </div>
@@ -325,7 +332,7 @@
                     <div id="tab-intake" class="tab-pane fade">
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
-                                <div class="panel-heading text-center" style="height:40px">
+                                <div class="panel-heading text-center" style="height: 40px;">
                                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                         id="btn_grp_edit_intake"
                                         style="position: absolute;
@@ -333,21 +340,22 @@
                                                 right: 40px;
                                                 top: 5px;">
                                         <button type="button" class="btn btn-default" id="new_intake">
-                                            <span class="fa fa-plus-square-o"></span> New
+                                            <span class="fa fa-plus-square-o"></span> New 
                                         </button>
                                         <button type="button" class="btn btn-default" id="edit_intake">
-                                            <span class="fa fa-edit fa-lg"></span> Edit
+                                            <span class="fa fa-edit fa-lg"></span> Edit 
                                         </button>
                                         <button type="button" class="btn btn-default" data-oper='add' id="save_intake">
-                                            <span class="fa fa-save fa-lg"></span> Save
+                                            <span class="fa fa-save fa-lg"></span> Save 
                                         </button>
                                         <button type="button" class="btn btn-default" id="cancel_intake">
-                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                         </button>
                                     </div>
                                 </div>
+                                
                                 <div class="panel-body">
-                                    <form class='form-horizontal' style='width:99%' id='formIntake'>
+                                    <form class='form-horizontal' style='width: 99%;' id='formIntake'>
                                         <button class="btn btn-default btn-sm" type="button" id="doctornote_iograph" style="float: right; margin-right: 20px;">Preview</button>
                                         <ul class="nav nav-tabs">
                                             <li class="active"><a data-toggle="tab" id="navtab_first" href="#tab-first" aria-expanded="true" data-shift='first'>First Shift</a></li>
@@ -1544,7 +1552,7 @@
                         </div>
                     </div>
                     <div id="tab-drug" class="tab-pane fade">
-                        <form class='form-horizontal' style='width:99%' id='formDrug'>
+                        <form class='form-horizontal' style='width: 99%;' id='formDrug'>
                             <div class='col-md-4' style="padding-left: 0px; padding-right: 2px;">
                                 <div class="panel panel-info">
                                     <div class="panel-heading text-center">PRESCRIPTION</div>
@@ -1570,12 +1578,14 @@
                                                 </tr>
                                             </thead>
                                         </table>
+                                        
                                         <button class="btn btn-default btn-sm" type="button" id="tbl_prescription_refresh" style="float: right;">
                                             <span class="icon glyphicon glyphicon-refresh"></span>
                                         </button>
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class='col-md-8' style="padding-left: 0px; padding-right: 2px;">
                                 <div class="panel panel-info">
                                     <div class="panel-body">
@@ -1594,7 +1604,7 @@
                                         <div class="form-group col-md-9">
                                             <label class="oe_phar_label">Dose</label>
                                             <div class="input-group oe_phar_div">
-                                                <input autocomplete="off" name="dosage" id="dosage_nursNote" type="text" class="form-control input-sm" style="text-transform:uppercase" rdonly>
+                                                <input autocomplete="off" name="dosage" id="dosage_nursNote" type="text" class="form-control input-sm" style="text-transform: uppercase;" rdonly>
                                                 <a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
                                             </div>
                                             <input type="hidden" id="dosage_nursNote_code">
@@ -1603,7 +1613,7 @@
                                         <div class="form-group col-md-9">
                                             <label class="oe_phar_label">Frequency</label>
                                             <div class="input-group oe_phar_div">
-                                                <input autocomplete="off" name="frequency" id="frequency_nursNote" type="text" class="form-control input-sm" style="text-transform:uppercase" rdonly>
+                                                <input autocomplete="off" name="frequency" id="frequency_nursNote" type="text" class="form-control input-sm" style="text-transform: uppercase;" rdonly>
                                                 <a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
                                             </div>
                                             <input type="hidden" id="frequency_nursNote_code">
@@ -1612,7 +1622,7 @@
                                         <div class="form-group col-md-9">
                                             <label class="oe_phar_label">Instruction</label>
                                             <div class="input-group oe_phar_div">
-                                                <input autocomplete="off" name="instruction" id="instruction_nursNote" type="text" class="form-control input-sm" style="text-transform:uppercase" rdonly>
+                                                <input autocomplete="off" name="instruction" id="instruction_nursNote" type="text" class="form-control input-sm" style="text-transform: uppercase;" rdonly>
                                                 <a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
                                             </div>
                                             <input type="hidden" id="instruction_nursNote_code">
@@ -1637,7 +1647,7 @@
                                                         </div>
                                                     </div>
                                                     
-                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                         <table id="jqGridPatMedic" class="table table-striped"></table>
                                                         <div id="jqGridPagerPatMedic"></div>
                                                     </div>
@@ -1652,7 +1662,7 @@
                     <div id="tab-treatment" class="tab-pane fade">
                         <div class='col-md-4' style="padding-left: 0px; padding-right: 3px;">
                             <div class="panel panel-info">
-                                <div class="panel-heading text-center" style="height:40px">
+                                <div class="panel-heading text-center" style="height: 40px;">
                                     <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 215px; top: 5px;">
                                         <h6>TREATMENT AND PROCEDURE</h6>
                                     </div>
@@ -1663,21 +1673,22 @@
                                                 right: 10px;
                                                 top: 5px;">
                                         <button type="button" class="btn btn-default" id="new_treatment">
-                                            <span class="fa fa-plus-square-o"></span> New
+                                            <span class="fa fa-plus-square-o"></span> New 
                                         </button>
                                         <button type="button" class="btn btn-default" data-oper='add' id="save_treatment">
-                                            <span class="fa fa-save fa-lg"></span> Save
+                                            <span class="fa fa-save fa-lg"></span> Save 
                                         </button>
                                         <button type="button" class="btn btn-default" id="cancel_treatment">
-                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                         </button>
                                     </div>
                                 </div>
+                                
                                 <div class="panel-body" style="padding: 15px 5px;">
-                                    <form class='form-horizontal' style='width:99%' id='formTreatment'>
-                                        <div class="col-md-3" style="padding:0 0 0 0">
+                                    <form class='form-horizontal' style='width: 99%;' id='formTreatment'>
+                                        <div class="col-md-3" style="padding: 0 0 0 0;">
                                             <div class="panel panel-info">
-                                                <div class="panel-body" style="padding:0 0 0 0">
+                                                <div class="panel-body" style="padding: 0 0 0 0;">
                                                     <table id="tbl_treatment" class="ui celled table" style="width: 100%;">
                                                         <thead>
                                                             <tr>
@@ -1714,7 +1725,7 @@
                         </div>
                         <div class='col-md-4' style="padding-left: 3px; padding-right: 3px;">
                             <div class="panel panel-info">
-                                <div class="panel-heading text-center" style="height:40px">
+                                <div class="panel-heading text-center" style="height: 40px;">
                                     <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 215px; top: 5px;">
                                         <h6>INVESTIGATION</h6>
                                     </div>
@@ -1725,21 +1736,22 @@
                                                 right: 10px;
                                                 top: 5px;">
                                         <button type="button" class="btn btn-default" id="new_investigation">
-                                            <span class="fa fa-plus-square-o"></span> New
+                                            <span class="fa fa-plus-square-o"></span> New 
                                         </button>
                                         <button type="button" class="btn btn-default" data-oper='add' id="save_investigation">
-                                            <span class="fa fa-save fa-lg"></span> Save
+                                            <span class="fa fa-save fa-lg"></span> Save 
                                         </button>
                                         <button type="button" class="btn btn-default" id="cancel_investigation">
-                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                         </button>
                                     </div>
                                 </div>
+                                
                                 <div class="panel-body" style="padding: 15px 5px;">
-                                    <form class='form-horizontal' style='width:99%' id='formInvestigation'>
-                                        <div class="col-md-3" style="padding:0 0 0 0">
+                                    <form class='form-horizontal' style='width: 99%;' id='formInvestigation'>
+                                        <div class="col-md-3" style="padding: 0 0 0 0;">
                                             <div class="panel panel-info">
-                                                <div class="panel-body" style="padding:0 0 0 0">
+                                                <div class="panel-body" style="padding: 0 0 0 0;">
                                                     <table id="tbl_investigation" class="ui celled table" style="width: 100%;">
                                                         <thead>
                                                             <tr>
@@ -1776,7 +1788,7 @@
                         </div>
                         <div class='col-md-4' style="padding-left: 3px; padding-right: 0px;">
                             <div class="panel panel-info">
-                                <div class="panel-heading text-center" style="height:40px">
+                                <div class="panel-heading text-center" style="height: 40px;">
                                     <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 215px; top: 5px;">
                                         <h6>INJECTION</h6>
                                     </div>
@@ -1787,21 +1799,22 @@
                                                 right: 10px;
                                                 top: 5px;">
                                         <button type="button" class="btn btn-default" id="new_injection">
-                                            <span class="fa fa-plus-square-o"></span> New
+                                            <span class="fa fa-plus-square-o"></span> New 
                                         </button>
                                         <button type="button" class="btn btn-default" data-oper='add' id="save_injection">
-                                            <span class="fa fa-save fa-lg"></span> Save
+                                            <span class="fa fa-save fa-lg"></span> Save 
                                         </button>
                                         <button type="button" class="btn btn-default" id="cancel_injection">
-                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                         </button>
                                     </div>
                                 </div>
+                                
                                 <div class="panel-body" style="padding: 15px 5px;">
-                                    <form class='form-horizontal' style='width:99%' id='formInjection'>
-                                        <div class="col-md-3" style="padding:0 0 0 0">
+                                    <form class='form-horizontal' style='width: 99%;' id='formInjection'>
+                                        <div class="col-md-3" style="padding: 0 0 0 0;">
                                             <div class="panel panel-info">
-                                                <div class="panel-body" style="padding:0 0 0 0">
+                                                <div class="panel-body" style="padding: 0 0 0 0;">
                                                     <table id="tbl_injection" class="ui celled table" style="width: 100%;">
                                                         <thead>
                                                             <tr>
@@ -1840,7 +1853,7 @@
                     <div id="tab-careplan" class="tab-pane fade">
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
-                                <div class="panel-heading text-center" style="height:40px">
+                                <div class="panel-heading text-center" style="height: 40px;">
                                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                         id="btn_grp_edit_careplan"
                                         style="position: absolute;
@@ -1848,19 +1861,20 @@
                                                 right: 40px;
                                                 top: 5px;">
                                         <button type="button" class="btn btn-default" id="new_careplan">
-                                            <span class="fa fa-plus-square-o"></span> New
+                                            <span class="fa fa-plus-square-o"></span> New 
                                         </button>
                                         <button type="button" class="btn btn-default" data-oper='add' id="save_careplan">
-                                            <span class="fa fa-save fa-lg"></span> Save
+                                            <span class="fa fa-save fa-lg"></span> Save 
                                         </button>
                                         <button type="button" class="btn btn-default" id="cancel_careplan">
-                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                         </button>
                                     </div>
                                 </div>
+                                
                                 <div class="panel-body" style="padding-right: 0px;">
-                                    <form class='form-horizontal' style='width:99%' id='formCarePlan'>
-                                        <div class="col-md-2" style="padding:0 0 0 0">
+                                    <form class='form-horizontal' style='width: 99%;' id='formCarePlan'>
+                                        <div class="col-md-2" style="padding: 0 0 0 0;">
                                             <div class="panel panel-info">
                                                 <div class="panel-body">
                                                     <table id="tbl_careplan_date" class="ui celled table" style="width: 100%;">
@@ -1935,10 +1949,190 @@
                             </div>
                         </div>
                     </div>
+                    <div id="tab-fitchart" class="tab-pane fade">
+                        <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
+                            <div class="panel panel-info">
+                                <div class="panel-heading text-center" style="height: 40px;">
+                                    <!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                        id="btn_grp_edit_fitchart"
+                                        style="position: absolute;
+                                                padding: 0 0 0 0;
+                                                right: 40px;
+                                                top: 5px;">
+                                        <button type="button" class="btn btn-default" id="new_fitchart">
+                                            <span class="fa fa-plus-square-o"></span> New 
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="edit_fitchart">
+                                            <span class="fa fa-edit fa-lg"></span> Edit 
+                                        </button>
+                                        <button type="button" class="btn btn-default" data-oper='add' id="save_fitchart">
+                                            <span class="fa fa-save fa-lg"></span> Save 
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="cancel_fitchart">
+                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+                                        </button>
+                                    </div> -->
+                                </div>
+                                <div class="panel-body" style="padding-right: 0px;">
+                                    <form class='form-horizontal' style='width: 99%;' id='formFitChart'>
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info">
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label class="col-md-1 control-label" for="fitchart_ward">Ward</label>
+                                                        <div class="col-md-2">
+                                                            <input id="fitchart_ward" name="fitchart_ward" type="text" class="form-control input-sm" readonly>
+                                                        </div>
+                                                        
+                                                        <label class="col-md-1 control-label" for="fitchart_bednum">Bed No.</label>
+                                                        <div class="col-md-2">
+                                                            <input id="fitchart_bednum" name="fitchart_bednum" type="text" class="form-control input-sm" readonly>
+                                                        </div>
+                                                        
+                                                        <label class="col-md-1 control-label" for="fitchart_diag">Diagnosis</label>
+                                                        <div class="col-md-4">
+                                                            <textarea id="fitchart_diag" name="fitchart_diag" type="text" class="form-control input-sm" readonly></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info" id="jqGridFitChart_c">
+                                                <!-- <div class="panel-heading text-center">FIT CHART</div> -->
+                                                <div class="panel-body">
+                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <table id="jqGridFitChart" class="table table-striped"></table>
+                                                        <div id="jqGridPagerFitChart"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-circulation" class="tab-pane fade">
+                        <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
+                            <div class="panel panel-info">
+                                <div class="panel-heading text-center" style="height: 40px;">
+                                    <!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                        id="btn_grp_edit_circulation"
+                                        style="position: absolute;
+                                                padding: 0 0 0 0;
+                                                right: 40px;
+                                                top: 5px;">
+                                        <button type="button" class="btn btn-default" id="new_circulation">
+                                            <span class="fa fa-plus-square-o"></span> New 
+                                        </button>
+                                        <button type="button" class="btn btn-default" data-oper='add' id="save_circulation">
+                                            <span class="fa fa-save fa-lg"></span> Save 
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="cancel_circulation">
+                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+                                        </button>
+                                    </div> -->
+                                </div>
+                                <div class="panel-body" style="padding-right: 0px;">
+                                    <form class='form-horizontal' style='width: 99%;' id='formCirculation'>
+                                    
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-slidScale" class="tab-pane fade">
+                        <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
+                            <div class="panel panel-info">
+                                <div class="panel-heading text-center" style="height: 40px;">
+                                    <!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                        id="btn_grp_edit_slidScale"
+                                        style="position: absolute;
+                                                padding: 0 0 0 0;
+                                                right: 40px;
+                                                top: 5px;">
+                                        <button type="button" class="btn btn-default" id="new_slidScale">
+                                            <span class="fa fa-plus-square-o"></span> New 
+                                        </button>
+                                        <button type="button" class="btn btn-default" data-oper='add' id="save_slidScale">
+                                            <span class="fa fa-save fa-lg"></span> Save 
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="cancel_slidScale">
+                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+                                        </button>
+                                    </div> -->
+                                </div>
+                                <div class="panel-body" style="padding-right: 0px;">
+                                    <form class='form-horizontal' style='width: 99%;' id='formSlidScale'>
+                                    
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-othChart1" class="tab-pane fade">
+                        <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
+                            <div class="panel panel-info">
+                                <div class="panel-heading text-center" style="height: 40px;">
+                                    <!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                        id="btn_grp_edit_othChart1"
+                                        style="position: absolute;
+                                                padding: 0 0 0 0;
+                                                right: 40px;
+                                                top: 5px;">
+                                        <button type="button" class="btn btn-default" id="new_othChart1">
+                                            <span class="fa fa-plus-square-o"></span> New 
+                                        </button>
+                                        <button type="button" class="btn btn-default" data-oper='add' id="save_othChart1">
+                                            <span class="fa fa-save fa-lg"></span> Save 
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="cancel_othChart1">
+                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+                                        </button>
+                                    </div> -->
+                                </div>
+                                <div class="panel-body" style="padding-right: 0px;">
+                                    <form class='form-horizontal' style='width: 99%;' id='formOthChart1'>
+                                    
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-othChart2" class="tab-pane fade">
+                        <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
+                            <div class="panel panel-info">
+                                <div class="panel-heading text-center" style="height: 40px;">
+                                    <!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                        id="btn_grp_edit_othChart2"
+                                        style="position: absolute;
+                                                padding: 0 0 0 0;
+                                                right: 40px;
+                                                top: 5px;">
+                                        <button type="button" class="btn btn-default" id="new_othChart2">
+                                            <span class="fa fa-plus-square-o"></span> New 
+                                        </button>
+                                        <button type="button" class="btn btn-default" data-oper='add' id="save_othChart2">
+                                            <span class="fa fa-save fa-lg"></span> Save 
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="cancel_othChart2">
+                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+                                        </button>
+                                    </div> -->
+                                </div>
+                                <div class="panel-body" style="padding-right: 0px;">
+                                    <form class='form-horizontal' style='width: 99%;' id='formOthChart2'>
+                                    
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 		</div>
 	</div>
-	
 </div>
 

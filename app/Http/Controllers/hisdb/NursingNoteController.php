@@ -101,6 +101,15 @@ class NursingNoteController extends defaultController
                         return 'error happen..';
                 }
             
+            case 'FitChart_save':
+                return $this->add_FitChart($request);
+            
+            case 'FitChart_edit':
+                return $this->edit_FitChart($request);
+            
+            case 'FitChart_del':
+                return $this->del_FitChart($request);
+            
             case 'get_table_progress':
                 return $this->get_table_progress($request);
             
@@ -115,6 +124,9 @@ class NursingNoteController extends defaultController
             
             case 'get_table_careplan':
                 return $this->get_table_careplan($request);
+            
+            case 'get_table_formFitChart':
+                return $this->get_table_formFitChart($request);
             
             default:
                 return 'error happen..';
@@ -1186,6 +1198,102 @@ class NursingNoteController extends defaultController
         
     }
     
+    public function add_FitChart(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurs_fitchart')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
+                    'fit' => $request->fit,
+                    'duration' => $request->duration,
+                    'remarks' => $request->remarks,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'addtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastupdtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit_FitChart(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurs_fitchart')
+                ->where('idno','=',$request->idno)
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->update([
+                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
+                    'enteredtime' => $request->enteredtime,
+                    'fit' => $request->fit,
+                    'duration' => $request->duration,
+                    'remarks' => $request->remarks,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastupdtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function del_FitChart(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurs_fitchart')
+                ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->delete();
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+    
     public function get_table_progress(Request $request){
         
         $nurshandover_obj = DB::table('nursing.nurshandover')
@@ -1311,6 +1419,25 @@ class NursingNoteController extends defaultController
         if($nurscareplan_obj->exists()){
             $nurscareplan_obj = $nurscareplan_obj->first();
             $responce->nurscareplan = $nurscareplan_obj;
+        }
+        
+        return json_encode($responce);
+        
+    }
+    
+    public function get_table_formFitChart(Request $request){
+        
+        $nursassessment_obj = DB::table('nursing.nursassessment')
+                            ->select('diagnosis as fitchart_diag')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
+        
+        $responce = new stdClass();
+        
+        if($nursassessment_obj->exists()){
+            $nursassessment_obj = $nursassessment_obj->first();
+            $responce->nursassessment = $nursassessment_obj;
         }
         
         return json_encode($responce);
