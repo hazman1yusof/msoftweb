@@ -968,6 +968,7 @@ var dialog_tri_col = new ordialog(
 		],
 		urlParam: {
 			url:'./sysparam_triage_color',
+			url_chk: './sysparam_triage_color_chk',
 			filterCol:['recstatus','compcode'],
 			filterVal:['ACTIVE', 'session.compcode']
 			},
@@ -1014,10 +1015,28 @@ var dialog_tri_col = new ordialog(
 			$( "table#othergrid_tri_col tr:nth-child(4)" ).addClass('green')
 		}
 	},{
-		title:"Select Bed Status",
+		title:"Select Triage",
 		open: function(){
 			dialog_tri_col.urlParam.filterCol = ['recstatus','compcode'];
 			dialog_tri_col.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
+		},
+		after_check:function(data,self,id,fail){
+			if(!fail){
+				let desc = data.rows[0].description;
+				$(self.textfield).val(desc);
+				$(self.textfield)
+								.removeClass( "red" )
+								.removeClass( "yellow" )
+								.removeClass( "green" )
+								.addClass(desc);
+				
+				$(self.textfield).next()
+								.removeClass( "red" )
+								.removeClass( "yellow" )
+								.removeClass( "green" )
+								.addClass(desc);
+				$(self.textfield).parent().next('span.help-block').text('');
+			}
 		},
 		width:5/10 * $(window).width()
 	},'urlParam','radio','tab','table'

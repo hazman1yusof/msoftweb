@@ -1235,7 +1235,7 @@ var dialog_tri_col = new ordialog(
 			$( "table#othergrid_tri_col tr:nth-child(4)" ).addClass('green')
 		}
 	},{
-		title:"Select Bed Status",
+		title:"Select Triage",
 		open: function(){
 			dialog_tri_col.urlParam.filterCol = ['recstatus','compcode'];
 			dialog_tri_col.urlParam.filterVal = ['ACTIVE', 'session.compcode'];

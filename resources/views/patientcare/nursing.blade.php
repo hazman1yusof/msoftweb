@@ -765,7 +765,7 @@
 
                                 <div class="eight wide column">
                                     <div class="ui segments">
-                                        <div class="ui secondary segment">PAIN SCORE</div>
+                                        <div class="ui secondary segment" for="painscore">PAIN SCORE</div>
                                         <div class="ui segment">
                                         <table class="table table-bordered">
                                             <tbody>
@@ -775,7 +775,7 @@
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="ps_nopain" value="0">0
+                                                            <input type="radio" name="painscore" value="0">0
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -786,21 +786,21 @@
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="ps_mildpain" value="1">1
+                                                            <input type="radio" name="painscore" value="1">1
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="ps_mildpain" value="2">2
+                                                            <input type="radio" name="painscore" value="2">2
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                                <input type="radio" name="ps_mildpain" value="3">3
+                                                                <input type="radio" name="painscore" value="3">3
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -811,21 +811,21 @@
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="ps_moderatepain" value="4">4
+                                                            <input type="radio" name="painscore" value="4">4
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="ps_moderatepain" value="5">5
+                                                            <input type="radio" name="painscore" value="5">5
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                                <input type="radio" name="ps_moderatepain" value="6">6
+                                                                <input type="radio" name="painscore" value="6">6
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -836,21 +836,21 @@
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="ps_severepain" value="7">7
+                                                            <input type="radio" name="painscore" value="7">7
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="ps_severepain" value="8">8
+                                                            <input type="radio" name="painscore" value="8">8
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                                <input type="radio" name="ps_severepain" value="9">9
+                                                                <input type="radio" name="painscore" value="9">9
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -861,7 +861,7 @@
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="ps_worstpain" value="10">10
+                                                            <input type="radio" name="painscore" value="10">10
                                                         </label>
                                                     </td>
                                                 </tr>
