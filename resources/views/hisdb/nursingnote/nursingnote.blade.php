@@ -2089,7 +2089,17 @@
                                 </div>
                                 <div class="panel-body" style="padding-right: 0px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formSlidScale'>
-                                    
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info" id="jqGridSlidScale_c">
+                                                <!-- <div class="panel-heading text-center">SLIDING SCALE CHART</div> -->
+                                                <div class="panel-body">
+                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <table id="jqGridSlidScale" class="table table-striped"></table>
+                                                        <div id="jqGridPagerSlidScale"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </form>
                                 </div>
                             </div>

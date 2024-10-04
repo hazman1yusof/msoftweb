@@ -119,6 +119,15 @@ class NursingNoteController extends defaultController
             case 'Circulation_del':
                 return $this->del_Circulation($request);
             
+            case 'SlidScale_save':
+                return $this->add_SlidScale($request);
+            
+            case 'SlidScale_edit':
+                return $this->edit_SlidScale($request);
+            
+            case 'SlidScale_del':
+                return $this->del_SlidScale($request);
+            
             case 'get_table_progress':
                 return $this->get_table_progress($request);
             
@@ -1389,6 +1398,100 @@ class NursingNoteController extends defaultController
         try {
             
             DB::table('nursing.nurs_circulation')
+                ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->delete();
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+    
+    public function add_SlidScale(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurs_slidscale')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
+                    'dextrostix' => $request->dextrostix,
+                    'remarks' => $request->remarks,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'addtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastupdtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit_SlidScale(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurs_slidscale')
+                ->where('idno','=',$request->idno)
+                // ->where('mrn','=',$request->mrn)
+                // ->where('episno','=',$request->episno)
+                ->update([
+                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
+                    'enteredtime' => $request->enteredtime,
+                    'dextrostix' => $request->dextrostix,
+                    'remarks' => $request->remarks,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastupdtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function del_SlidScale(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurs_slidscale')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->delete();
