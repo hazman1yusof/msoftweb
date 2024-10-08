@@ -1631,7 +1631,7 @@
                                         <div class="form-group col-md-9">
                                             <label class="oe_phar_label">Indicator</label>
                                             <div class="input-group oe_phar_div">
-                                                <input autocomplete="off" name="drugindicator" id="drugindicator_nursNote" type="text" class="form-control input-sm" style="text-transform:uppercase" rdonly>
+                                                <input autocomplete="off" name="drugindicator" id="drugindicator_nursNote" type="text" class="form-control input-sm" style="text-transform: uppercase;" rdonly>
                                                 <a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
                                             </div>
                                             <input type="hidden" id="drugindicator_nursNote_code">
@@ -2109,7 +2109,7 @@
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
                                 <div class="panel-heading text-center" style="height: 40px;">
-                                    <!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                    <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                         id="btn_grp_edit_othChart1"
                                         style="position: absolute;
                                                 padding: 0 0 0 0;
@@ -2118,18 +2118,71 @@
                                         <button type="button" class="btn btn-default" id="new_othChart1">
                                             <span class="fa fa-plus-square-o"></span> New 
                                         </button>
+                                        <button type="button" class="btn btn-default" id="edit_othChart1">
+                                            <span class="fa fa-edit fa-lg"></span> Edit 
+                                        </button>
                                         <button type="button" class="btn btn-default" data-oper='add' id="save_othChart1">
                                             <span class="fa fa-save fa-lg"></span> Save 
                                         </button>
                                         <button type="button" class="btn btn-default" id="cancel_othChart1">
                                             <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                         </button>
-                                    </div> -->
+                                    </div>
                                 </div>
                                 <div class="panel-body" style="padding-right: 0px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formOthChart1'>
-                                    
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info">
+                                                <div class="panel-body">
+                                                    <div class="form-group" style="padding-bottom: 5px;">
+                                                        <input id="othChart1_tabtitle" name="othChart1_tabtitle" value="othChart1" type="hidden">
+                                                        
+                                                        <div class="col-md-4"></div>
+                                                        
+                                                        <div class="col-md-2" style="padding-left: 0px; padding-right: 0px;">
+                                                            <input id="othChart1_title" name="othChart1_title" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                        </div>
+                                                        <label class="col-md-1 control-label" for="othChart1_title">Chart</label>
+                                                        
+                                                        <div class="col-md-4"></div>
+                                                    </div>
+                                                    
+                                                    <div class="form-group">
+                                                        <label class="col-md-1 control-label" for="othChart1_ward">Ward</label>
+                                                        <div class="col-md-2">
+                                                            <input id="othChart1_ward" name="othChart1_ward" type="text" class="form-control input-sm" rdonly>
+                                                        </div>
+                                                        
+                                                        <label class="col-md-1 control-label" for="othChart1_bednum">Bed No.</label>
+                                                        <div class="col-md-2">
+                                                            <input id="othChart1_bednum" name="othChart1_bednum" type="text" class="form-control input-sm" rdonly>
+                                                        </div>
+                                                        
+                                                        <label class="col-md-1 control-label" for="othChart1_diag">Diagnosis</label>
+                                                        <div class="col-md-4">
+                                                            <textarea id="othChart1_diag" name="othChart1_diag" type="text" class="form-control input-sm" rdonly></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
+                            <div class="panel panel-info" id="jqGridOthChart1_c">
+                                <!-- <div class="panel-heading text-center">OTHERS CHART 1</div> -->
+                                <div class="panel-body">
+                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                        <table id="jqGridOthChart1" class="table table-striped"></table>
+                                        <div id="jqGridPagerOthChart1"></div>
+                                    </div>
+                                    
+                                    <div class="col-md-5" style="padding-top: 20px; text-align: left; color: red;">
+                                        <p id="p_error"></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
