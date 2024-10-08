@@ -674,6 +674,7 @@ $(document).ready(function () {
 
 	$('#Scol').on('change', whenchangetodate);
 	$('#Status').on('change', searchChange);
+    $('#storedept').on('change', searchChange);
 	$('#docuDate_search').on('click', searchDate);
 
 	function whenchangetodate() {
@@ -709,16 +710,16 @@ $(document).ready(function () {
 
 	searchChange(true);
 	function searchChange(once=false){
-		var arrtemp = [$('#Status option:selected').val()];
+		var arrtemp = [$('#Status option:selected').val(),$('#storedept option:selected').val()];
 		var filter = arrtemp.reduce(function(a,b,c){
-			if(b=='All'){
+			if(b.toUpperCase() == 'ALL'){
 				return a;
 			}else{
 				a.fc = a.fc.concat(a.fct[c]);
 				a.fv = a.fv.concat(b);
 				return a;
 			}
-		},{fct:['db.recstatus'],fv:[],fc:[]});
+		},{fct:['db.recstatus','db.deptcode'],fv:[],fc:[]});
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
@@ -2752,6 +2753,8 @@ function populate_form(obj){
 	//panel header
 	$('#AutoNo_show').text(obj.db_auditno);
 	$('#CustName_show').text(obj.dm_name);
+	$('#AutoNo_alloc_show').text(obj.db_auditno);
+	$('#CustName_alloc_show').text(obj.dm_name);
 	$('#AutoNo_r_show').text(obj.db_auditno);
 	$('#CustName_r_show').text(obj.dm_name);
 
@@ -3185,5 +3188,4 @@ function receipt_class(){
 	$("#g_paymodecard").jqGrid('filterToolbar',{stringResult: true,searchOnEnter : false});
 	addParamField('#g_paymodecard',false,urlParam_card);
 	///////////////////////////////////end card////////////////////////////////////////////
-	
 }

@@ -19,7 +19,15 @@ class SalesOrderController extends defaultController
     }
 
     public function show(Request $request){   
-        return view('finance.SalesOrder.SalesOrder');
+        $storedept = DB::table('sysdb.department')
+                        ->select('deptcode')
+                        ->where('compcode',session('compcode'))
+                        ->where('recstatus','ACTIVE')
+                        ->where('storedept',1)
+                        ->where('chgdept',1)
+                        ->get();
+
+        return view('finance.SalesOrder.SalesOrder',compact('storedept'));
     }
 
     public function show_mobile(Request $request){
@@ -89,6 +97,8 @@ class SalesOrderController extends defaultController
                 return $this->get_hdrtype_check($request);
             case 'get_quoteno_check':
                 return $this->get_quoteno_check($request);
+            case 'get_debtor_dtl':
+                return $this->get_debtor_dtl($request);
             default:
                 return 'error happen..';
         }
@@ -125,6 +135,8 @@ class SalesOrderController extends defaultController
                 return $this->new_patient($request);
             case 'new_customer':
                 return $this->new_customer($request);
+            case 'pos_receipt_save':
+                return $this->pos_receipt_save($request);
             default:
                 return 'Errors happen';
         }
@@ -177,7 +189,7 @@ class SalesOrderController extends defaultController
                     ->where('db.compcode',session('compcode'))
                     ->where('db.source','PB')
                     ->where('db.trantype','IN')
-                    ->where('db.deptcode',session('deptcode'))
+                    ->whereNotNull('db.deptcode')
                     ->where('db.pointofsales','0');
         
         $table = $table->join('debtor.debtormast as dm', function($join) use ($request){
@@ -1480,10 +1492,9 @@ class SalesOrderController extends defaultController
             ->leftJoin('debtor.debtortype as dt', 'dt.debtortycode', '=', 'm.debtortype')
             ->leftJoin('hisdb.billtymst as bt', 'bt.billtype', '=', 'm.billtype')
             ->where('h.idno','=',$idno)
-            ->where('h.mrn','=','0')
+            // ->where('h.mrn','=','0')
             ->where('h.compcode','=',session('compcode'))
             ->first();
-        // dd($dbacthdr);
 
         $billsum = DB::table('debtor.billsum AS b')
             ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
@@ -1707,7 +1718,7 @@ class SalesOrderController extends defaultController
     public function get_quoteno(Request $request){
 
         $table = DB::table('finance.salehdr as sh')
-                        ->select('sh.quoteno','sh.debtorcode','dm.name','sh.entrydate','sh.idno','sh.compcode','sh.source','sh.trantype','sh.auditno','sh.lineno_','sh.amount','sh.outamount','sh.hdrsts','sh.posteddate','sh.entrytime','sh.entryuser','sh.reference','sh.recptno','sh.paymode','sh.tillcode','sh.tillno','sh.debtortype','sh.payercode','sh.billdebtor','sh.remark','sh.mrn','sh.episno','sh.authno','sh.expdate','sh.adddate','sh.adduser','sh.upddate','sh.upduser','sh.epistype','sh.cbflag','sh.conversion','sh.payername','sh.hdrtype','sh.currency','sh.rate','sh.startdate','sh.termvalue','sh.termcode','sh.frequency','sh.pono','sh.podate','sh.saleid','sh.billtype','sh.docdate','sh.unit','sh.recstatus','sh.deptcode')
+                        ->select('sh.quoteno','sh.debtorcode','dm.name','sh.entrydate','sh.idno','sh.compcode','sh.source','sh.trantype','sh.auditno','sh.lineno_','sh.amount','sh.outamount','sh.hdrsts','sh.posteddate','sh.entrytime','sh.entryuser','sh.reference','sh.recptno','sh.paymode','sh.tillcode','sh.tillno','sh.debtortype','sh.payercode','sh.billdebtor','sh.remark','sh.mrn','sh.episno','sh.authno','sh.expdate','sh.adddate','sh.adduser','sh.upddate','sh.upduser','sh.epistype','sh.cbflag','sh.conversion','sh.payername','sh.hdrtype','sh.currency','sh.rate','sh.startdate','sh.termvalue','sh.termcode','sh.frequency','sh.pono','sh.podate','sh.saleid','sh.billtype','sh.docdate','sh.unit','sh.recstatus','sh.deptcode','sh.doctorcode')
                         ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
                             $join = $join->where('dm.compcode',session('compcode'));
                             $join = $join->on('dm.debtorcode', '=', 'sh.debtorcode');
@@ -2164,7 +2175,7 @@ class SalesOrderController extends defaultController
                         ->where('recno','=',$billsum_obj->auditno)
                         ->first();
 
-        $this->sysdb_log('update',$ivdspdt_lama,'sysdb.ivdspdtlog');
+        // $this->sysdb_log('update',$ivdspdt_lama,'sysdb.ivdspdtlog');
 
         DB::table('material.ivdspdt')
             ->where('compcode','=',session('compcode'))
@@ -2345,7 +2356,7 @@ class SalesOrderController extends defaultController
                         ->where('recno','=',$billsum_obj->auditno)
                         ->first();
 
-        $this->sysdb_log('delete',$ivdspdt_lama,'sysdb.ivdspdtlog');
+        // $this->sysdb_log('delete',$ivdspdt_lama,'sysdb.ivdspdtlog');
 
         DB::table('material.ivdspdt')
             ->where('compcode','=',session('compcode'))
@@ -2803,6 +2814,440 @@ class SalesOrderController extends defaultController
             
             return response($e->getMessage(), 500);
         }
+    }
+
+    public function pos_receipt_save(Request $request){
+        DB::beginTransaction();
+        
+        try {
+            $this->validate_receipt($request);
+            if(empty($request->dbacthdr_entrydate)){
+                $request->dbacthdr_entrydate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
+            }
+
+            $auditno = $this->defaultSysparam('PB','RC');
+
+            $till = DB::table('debtor.till')
+                            ->where('compcode',session('compcode'))
+                            ->where('tillstatus','O')
+                            ->where('lastuser',session('username'));
+
+            if($till->exists()){
+
+                $till_obj = $till->first();
+
+                $tilldetl = DB::table('debtor.tilldetl')
+                            ->where('compcode',session('compcode'))
+                            ->where('cashier',$till_obj->lastuser)
+                            ->where('opendate','=',$till_obj->upddate);
+
+                $lastrcnumber = $this->defaultTill($till_obj->tillcode,'lastrcnumber');
+
+                $tillcode = $till_obj->tillcode;
+                $tilldeptcode = $till_obj->dept;
+               // dd($tilldeptcode);
+                $tillno = $tilldetl->first()->tillno;
+                $recptno = $till_obj->tillcode.'-'.str_pad($lastrcnumber, 9, "0", STR_PAD_LEFT);
+
+            }else{
+                throw new \Exception("User dont have till");
+            }
+
+            $paymode_ = $this->paymode_chg($request->tabform,$request->dbacthdr_paymode);
+
+            // if(strtolower($paymode_) == 'cash' && $request->dbacthdr_trantype == "RC"){
+            //     if(empty($request->dbacthdr_RCFinalbalance) && floatval($request->dbacthdr_amount) > floatval($request->dbacthdr_outamount)){
+            //         $dbacthdr_amount = $request->dbacthdr_outamount;
+            //     }
+            // }
+
+            $payercode = DB::table('debtor.dbacthdr as db')
+                            ->select('db.auditno','db.amount','db.lineno_','dm.debtortype','dm.debtorcode','dm.name','db.outamount')
+                            ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
+                                $join = $join->on('dm.debtorcode', '=', 'db.debtorcode');
+                                $join = $join->where('dm.compcode', '=', session('compcode'));
+                            })
+                            ->where('db.idno',$request->idno);
+            if(!$payercode->exists()){
+                throw new \Exception("Debtorcode doesnt exists, error");
+            }
+            $payercode = $payercode->first();
+
+            $dbacthdr_amount = $request->dbacthdr_amount;
+            $amount_paid = floatval($dbacthdr_amount);
+            $amount_bal = floatval($payercode->outamount) - floatval($dbacthdr_amount);
+
+            $array_insert = [
+                'compcode' => session('compcode'),
+                'unit' => session('unit'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'entrydate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
+                'posteddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'reference' => strtoupper($request->dbacthdr_reference),
+                'authno' => $request->dbacthdr_authno,
+                'expdate' => Carbon::parse($request->dbacthdr_expdate)->endOfMonth()->toDateString(),
+                'entryuser' => session('username'),
+                'recstatus' => 'POSTED',
+                'source' => 'PB',
+                'trantype' => 'RC',
+                'auditno' => $auditno,
+                'lineno_' => 1,
+                // 'currency' => $request->dbacthdr_currency,
+                'debtortype' => $payercode->debtortype,
+                'PymtDescription' => 'Sales Order',
+                'payercode' => $payercode->debtorcode,
+                'debtorcode' => $payercode->debtorcode,
+                'payername' => $payercode->name,
+                'paytype' => $request->tabform,
+                'paymode' => $paymode_,
+                'amount' => $dbacthdr_amount,  
+                'outamount' => $dbacthdr_amount,  
+                'remark' => 'Sales Order',  
+                'tillcode' => $tillcode,  
+                'tillno' => $tillno,  
+                'recptno' => $recptno,     
+                'deptcode' => $tilldeptcode, 
+                'hdrtype' => 'RC',
+            ];
+
+            DB::table('debtor.dbacthdr')
+                        ->insert($array_insert);
+
+            //cbtran if paymode by bank
+            if(strtolower($request->tabform) == '#f_tab-debit'){
+                $yearperiod = $this->getyearperiod(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+                $paymode_db = DB::table('debtor.paymode')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','AR')
+                            ->where('paytype','Bank')
+                            ->where('paymode',$request->dbacthdr_paymode)
+                            ->first();
+                $bankcode = $paymode_db->cardcent;
+                
+                DB::table('finance.cbtran')
+                    ->insert([  
+                        'compcode' => session('compcode'), 
+                        'bankcode' => $bankcode, 
+                        'source' => 'PB', 
+                        'trantype' => 'RC', 
+                        'auditno' => $auditno, 
+                        'postdate' => $request->dbacthdr_entrydate, 
+                        'year' => $yearperiod->year, 
+                        'period' => $yearperiod->period, 
+                        // 'cheqno' => $request->cheqno, 
+                        'amount' => $dbacthdr_amount, 
+                        'remarks' => strtoupper($payercode->name), 
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'reference' => 'Pay by POS :'. ' ' .$payercode->name, 
+                        'recstatus' => 'ACTIVE' 
+                    ]);
+
+                //1st step, 2nd phase, update bank detaild
+                if($this->isCBtranExist($bankcode,$yearperiod->year,$yearperiod->period)){
+
+                    $totamt = $this->getCbtranTotamt($bankcode,$yearperiod->year,$yearperiod->period);
+
+                    DB::table('finance.bankdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('year','=',$yearperiod->year)
+                        ->where('bankcode','=',$bankcode)
+                        ->update([
+                            "actamount".$yearperiod->period => $totamt->amount
+                        ]);
+
+                }else{
+
+                    $totamt = $this->getCbtranTotamt($bankcode,$yearperiod->year,$yearperiod->period);
+
+                    DB::table('finance.bankdtl')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'bankcode' => $bankcode,
+                                'year' => $yearperiod->year,
+                                'actamount'.$yearperiod->period => $totamt->amount,
+                                'upduser' => session('username'),
+                                'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+
+                            ]);
+                }
+            }
+
+            $this->gltran_receipt($auditno,'RC');
+
+            //allocation
+            // $auditno_al = $this->defaultSysparam('AR','AL');                
+            // DB::table('debtor.dballoc')
+            //     ->insert([
+            //         'compcode' => session('compcode'),
+            //         'source' => 'AR',
+            //         'trantype' => 'AL',
+            //         'auditno' => $auditno_al,
+            //         'lineno_' => 1,
+            //         'docsource' => 'PB',
+            //         'doctrantype' => 'RC',
+            //         'docauditno' => $auditno,
+            //         'refsource' => 'PB',
+            //         'reftrantype' => 'IN',
+            //         'refauditno' => $payercode->auditno,
+            //         'refamount' => $payercode->amount,
+            //         'reflineno' => $payercode->lineno_,
+            //         'recptno' => $recptno,
+            //         // 'mrn' => $receipt_first->mrn,
+            //         // 'episno' => $receipt_first->episno,
+            //         'allocsts' => 'ACTIVE',
+            //         'amount' => $amount_paid,
+            //         'tillcode' => $tillcode,
+            //         'debtortype' => $payercode->debtortype,
+            //         'debtorcode' => $payercode->debtorcode,
+            //         'payercode' => $payercode->debtorcode,
+            //         'paymode' => $paymode_,
+            //         'allocdate' => Carbon::now("Asia/Kuala_Lumpur"),
+            //         'remark' => 'Allocation POS',
+            //         'balance' => $amount_bal,
+            //         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            //         'adduser' => session('username'),
+            //         'recstatus' => 'POSTED'
+            //     ]);
+
+            // DB::table('debtor.dbacthdr')
+            //     ->where('idno',$request->idno)
+            //     ->update([
+            //         'outamount' => $amount_bal
+            //     ]);
+
+
+            DB::commit();
+
+            $responce = new stdClass();
+            $responce->auditno = $auditno;
+            $responce->recptno = $recptno;
+            $responce->payercode = $payercode->debtorcode;
+            $responce->payername = $payercode->name;
+            $responce->amount = $dbacthdr_amount;
+            $responce->payername = $payercode->name;
+            echo json_encode($responce);
+
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }  
+    }
+
+    public function validate_receipt(Request $request){
+            if(empty($request->dbacthdr_amount) || $request->dbacthdr_amount == 0.00){
+                throw new \Exception("Payment amount needed");
+            }
+
+            if($request->tabform == '#f_tab-cash'){
+
+            }else if($request->tabform == '#f_tab-card'){
+                if(empty($request->dbacthdr_paymode)){
+                    throw new \Exception("Please select card");
+                }
+                if(empty($request->dbacthdr_reference)){
+                    throw new \Exception("Please enter reference");
+                }
+            }else if($request->tabform == '#f_tab-cheque'){
+                if(empty($request->dbacthdr_entrydate)){
+                    throw new \Exception("Please enter Entry Date");
+                }
+                if(empty($request->dbacthdr_reference)){
+                    throw new \Exception("Please enter reference");
+                }
+            }else if($request->tabform == '#f_tab-debit'){
+                if(empty($request->dbacthdr_entrydate)){
+                    throw new \Exception("Please enter Entry Date");
+                }
+                if(empty($request->dbacthdr_reference)){
+                    throw new \Exception("Please enter reference");
+                }
+                if(empty($request->dbacthdr_paymode)){
+                    throw new \Exception("Please select bank");
+                }
+            }else if($request->tabform == '#f_tab-forex'){
+                throw new \Exception("Forex are disabed");
+            }else{
+                throw new \Exception("Error request data");
+            }
+    }
+
+    public function paymode_chg($paytype,$paymode){
+        $paytype_ = '';
+        $mode = false;
+        switch (strtolower($paytype)) {
+            case '#f_tab-cash':
+                $paytype_ = 'Cash';
+                break;
+            case '#f_tab-card':
+                $paytype_ = 'Card';
+                $mode = true;
+                break;
+            case '#f_tab-cheque':
+                $paytype_ = 'Cheque';
+                break;
+            case '#f_tab-debit':
+                $paytype_ = 'Bank';
+                $mode = true;
+                break;
+            case '#f_tab-forex':
+                $paytype_ = 'Forex';
+                break;
+        }
+
+        if($paytype_ != ''){
+
+            $paymode_db = DB::table('debtor.paymode')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','AR')
+                            ->where('paytype',$paytype_);
+
+            if($mode == true){
+                $paymode_db = $paymode_db->where('paymode',$paymode);
+            }
+
+            if(!$paymode_db->exists()){
+                throw new \Exception("No Paymode");
+            }
+
+            $paymode_first  = $paymode_db->first();
+
+            return $paymode_first->paymode;
+
+        }else{
+            throw new \Exception("Error paytype");
+        }
+    }
+
+    public function gltran_receipt($auditno,$trantype){//PB,RC
+        $dbacthdr = DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','PB')
+                            ->where('trantype',$trantype)
+                            ->where('auditno',$auditno);
+
+        if($dbacthdr->exists()){
+            $dbacthdr_obj = $dbacthdr->first();
+            $yearperiod = defaultController::getyearperiod_($dbacthdr_obj->entrydate);
+            $paymode_obj = $this->gltran_frompaymode($dbacthdr_obj->paymode);
+            $dept_obj = $this->gltran_fromdept($dbacthdr_obj->deptcode);
+            $debtormast_obj = $this->gltran_fromdebtormast($dbacthdr_obj->payercode);
+
+            if(strtoupper($trantype) == 'RD'){
+                $crcostcode = $debtormast_obj->depccode;
+                $cracc = $debtormast_obj->depglacc;
+            }else{
+                $crcostcode = $debtormast_obj->actdebccode;
+                $cracc = $debtormast_obj->actdebglacc;
+            }
+
+            $gltran = DB::table('finance.gltran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=','PB')
+                        ->where('trantype','=',$dbacthdr_obj->trantype)
+                        ->where('auditno','=',$dbacthdr_obj->auditno)
+                        ->where('lineno_','=',1);
+
+            if($gltran->exists()){
+                throw new \Exception("gltran already exists",500);
+            }
+
+            //1. buat gltran
+            DB::table('finance.gltran')
+                ->insert([
+                    'compcode' => $dbacthdr_obj->compcode,
+                    'auditno' => $dbacthdr_obj->auditno,
+                    'lineno_' => 1,
+                    'source' => 'PB',
+                    'trantype' => $dbacthdr_obj->trantype,
+                    'reference' => $dbacthdr_obj->recptno,
+                    'description' => $dbacthdr_obj->remark,
+                    'year' => $yearperiod->year,
+                    'period' => $yearperiod->period,
+                    'drcostcode' => $dept_obj->costcode,
+                    'dracc' => $paymode_obj->glaccno,
+                    'crcostcode' => $crcostcode,
+                    'cracc' => $cracc,
+                    'amount' => $dbacthdr_obj->amount,
+                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'adduser' => $dbacthdr_obj->adduser,
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'idno' => null
+                ]);
+
+            //2. check glmastdtl utk debit, kalu ada update kalu xde create
+            $this->init_glmastdtl(
+                        $dept_obj->costcode,//drcostcode
+                        $paymode_obj->glaccno,//dracc
+                        $crcostcode,//crcostcode
+                        $cracc,//cracc
+                        $yearperiod,
+                        $dbacthdr_obj->amount
+                );
+        }else{
+            throw new \Exception("Dbacthdr doesnt exists",500);
+        }
+    }
+
+    public function gltran_fromdept($deptcode){
+        $obj = DB::table('sysdb.department')
+                ->select('costcode')
+                ->where('compcode','=',session('compcode'))
+                ->where('deptcode','=',$deptcode)
+                ->first();
+
+        return $obj;
+    }
+
+    public function gltran_frompaymode($paymode){
+        $obj = DB::table('debtor.paymode')
+                ->select('glaccno')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=','AR')
+                ->where('paymode','=',$paymode)
+                ->first();
+
+        return $obj;
+    }
+
+    public function gltran_fromdebtormast($payercode){
+        $obj = DB::table('debtor.debtormast')
+                ->select('actdebglacc','actdebccode','depccode','depglacc')
+                ->where('compcode','=',session('compcode'))
+                ->where('debtorcode','=',$payercode)
+                ->first();
+
+        return $obj;
+    }
+
+    public function get_debtor_dtl(Request $request){
+        $dbacthdr = DB::table('debtor.dbacthdr')
+                        ->where('compcode',session('compcode'))
+                        ->where('payercode',$request->payercode)
+                        ->where('source','PB')
+                        ->where('recstatus','POSTED')
+                        ->where('outamount','>',0)
+                        ->whereIn('trantype',['DN','IN']);
+
+
+
+        $responce = new stdClass();
+
+
+        if($dbacthdr->exists()){
+            $responce->result = 'true';
+            $responce->outamount = $dbacthdr->sum('dbacthdr.outamount');
+        }else{
+            $responce->result = 'false';
+            $responce->outamount = 0.00;
+        }
+
+        return json_encode($responce);
     }
 
     

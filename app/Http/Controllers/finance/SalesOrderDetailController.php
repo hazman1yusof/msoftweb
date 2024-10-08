@@ -16,8 +16,7 @@ class SalesOrderDetailController extends defaultController
         $this->middleware('auth');
     }
 
-    public function form(Request $request)
-    {   
+    public function form(Request $request){   
         switch($request->oper){
             case 'add':
                 return $this->add($request);
@@ -36,8 +35,7 @@ class SalesOrderDetailController extends defaultController
         }
     }
 
-    public function table(Request $request)
-    {   
+    public function table(Request $request){   
         switch($request->action){
             case 'get_table_dtl':
                 return $this->get_table_dtl($request);
@@ -645,7 +643,6 @@ class SalesOrderDetailController extends defaultController
 
             return json_encode($responce);
         }
-
     }
 
     public function get_itemcode_price_check(Request $request){

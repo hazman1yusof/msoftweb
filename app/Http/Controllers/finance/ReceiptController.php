@@ -378,6 +378,7 @@ class ReceiptController extends defaultController
             $responce->outamount = $dbacthdr->sum('dbacthdr.outamount');
         }else{
             $responce->result = 'false';
+            $responce->outamount = 0.00;
         }
 
 

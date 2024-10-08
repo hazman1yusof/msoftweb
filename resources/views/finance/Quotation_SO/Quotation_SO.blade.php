@@ -113,6 +113,20 @@
                         <option value="Cancelled">CANCELLED</option>
                     </select>
                 </div>
+
+                <div class="col-md-2" id="trandeptSearch">
+                    <label class="control-label" for="trandept">Store Dept</label> 
+                    <select id='storedept' class="form-control input-sm">
+                        <option value="All">ALL</option>
+                        @foreach($storedept as $dept_)
+                            @if($dept_->deptcode == Session::get('deptcode'))
+                            <option value="{{$dept_->deptcode}}" selected>{{$dept_->deptcode}}</option>
+                            @else
+                            <option value="{{$dept_->deptcode}}">{{$dept_->deptcode}}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
                 
                 <!-- <div class="col-md-2">
                     <label class="control-label" for="Status">Status</label>

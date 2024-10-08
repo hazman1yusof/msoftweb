@@ -128,9 +128,9 @@ div#fail_msg{
 								<option value="OPEN">OPEN</option>
 							@endif
 				    </select>
-            </div>
+        </div>
 
-	    		<div class="col-md-2" id="trandeptSearch">
+	    	<div class="col-md-2" id="trandeptSearch">
 					<label class="control-label" for="trandept">Request Dept</label> 
 						<select id='trandept' class="form-control input-sm">
 							<option value="All">ALL</option>

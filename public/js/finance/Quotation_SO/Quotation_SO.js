@@ -561,6 +561,7 @@ $(document).ready(function (){
     
     $('#Scol').on('change', whenchangetodate);
     $('#Status').on('change', searchChange);
+    $('#storedept').on('change', searchChange);
     $('#docuDate_search').on('click', searchDate);
     
     function whenchangetodate(){
@@ -596,16 +597,16 @@ $(document).ready(function (){
     
     searchChange(true);
     function searchChange(once=false){
-        var arrtemp = [$('#Status option:selected').val()];
+        var arrtemp = [$('#Status option:selected').val(), $('#storedept option:selected').val()];
         var filter = arrtemp.reduce(function (a,b,c){
-            if(b == 'All'){
+            if(b.toUpperCase() == 'ALL'){
                 return a;
             }else{
                 a.fc = a.fc.concat(a.fct[c]);
                 a.fv = a.fv.concat(b);
                 return a;
             }
-        },{fct:['SL.recstatus'],fv:[],fc:[]});
+        },{fct:['SL.recstatus', 'SL.deptcode'],fv:[],fc:[]});
         
         urlParam.filterCol = filter.fc;
         urlParam.filterVal = filter.fv;
@@ -977,7 +978,6 @@ $(document).ready(function (){
         if(options.gid != "jqGrid"){
             return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
         }
-		console.log(rowObject.SL_recstatus);
 		if(rowObject.SL_recstatus == "OPEN"){
             return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
         }

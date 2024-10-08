@@ -19,7 +19,15 @@ class PointOfSalesController extends defaultController
     }
     
     public function show(Request $request){   
-        return view('finance.PointOfSales.PointOfSales');
+        $storedept = DB::table('sysdb.department')
+                        ->select('deptcode')
+                        ->where('compcode',session('compcode'))
+                        ->where('recstatus','ACTIVE')
+                        ->where('storedept',1)
+                        ->where('chgdept',1)
+                        ->get();
+
+        return view('finance.PointOfSales.PointOfSales',compact('storedept'));
     }
     
     public function show_mobile(Request $request){
@@ -947,7 +955,7 @@ class PointOfSalesController extends defaultController
             // }
 
             $payercode = DB::table('debtor.dbacthdr as db')
-                            ->select('db.auditno','db.amount','db.lineno_','dm.debtortype','dm.debtorcode','dm.name')
+                            ->select('db.auditno','db.amount','db.lineno_','dm.debtortype','dm.debtorcode','dm.name','db.outamount')
                             ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
                                 $join = $join->on('dm.debtorcode', '=', 'db.debtorcode');
                                 $join = $join->where('dm.compcode', '=', session('compcode'));
@@ -960,7 +968,7 @@ class PointOfSalesController extends defaultController
 
             $dbacthdr_amount = $request->dbacthdr_amount;
             $amount_paid = floatval($dbacthdr_amount);
-            $amount_bal = floatval($payercode->amount) - floatval($dbacthdr_amount);
+            $amount_bal = floatval($payercode->outamount) - floatval($dbacthdr_amount);
 
             $array_insert = [
                 'compcode' => session('compcode'),
@@ -2046,7 +2054,7 @@ class PointOfSalesController extends defaultController
             ->leftJoin('debtor.debtortype as dt', 'dt.debtortycode', '=', 'm.debtortype')
             ->leftJoin('hisdb.billtymst as bt', 'bt.billtype', '=', 'm.billtype')
             ->where('h.idno','=',$idno)
-            ->where('h.mrn','=','0')
+            // ->where('h.mrn','=','0')
             ->where('h.compcode','=',session('compcode'))
             ->first();
 // dd($dbacthdr);

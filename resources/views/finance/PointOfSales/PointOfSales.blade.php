@@ -126,6 +126,20 @@ div#fail_msg,div#fail_msg_r{
 							@endif
 						</select>
 					</div>
+	      
+	        <div class="col-md-2" id="trandeptSearch">
+            <label class="control-label" for="trandept">Store Dept</label> 
+            <select id='storedept' class="form-control input-sm">
+              <option value="All">ALL</option>
+              @foreach($storedept as $dept_)
+                  @if($dept_->deptcode == Session::get('deptcode'))
+                  <option value="{{$dept_->deptcode}}" selected>{{$dept_->deptcode}}</option>
+                  @else
+                  <option value="{{$dept_->deptcode}}">{{$dept_->deptcode}}</option>
+                  @endif
+              @endforeach
+            </select>
+	        </div>
 
 					<!-- <div class="col-md-2">
 					  	<label class="control-label" for="Status">Status</label>
@@ -826,7 +840,7 @@ div#fail_msg,div#fail_msg_r{
 		</script>
 
 		<script src="js/myjs/till_part.js"></script>
-		<script src="js/finance/PointOfSales/PointOfSales.js"></script>
+		<script src="js/finance/PointOfSales/PointOfSales.js?v=1.1"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

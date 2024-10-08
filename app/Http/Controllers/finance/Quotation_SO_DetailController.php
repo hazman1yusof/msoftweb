@@ -986,17 +986,34 @@ class Quotation_SO_DetailController extends defaultController
         $uom = $request->uom;
         $entrydate = $request->entrydate;
 
-        $table = DB::table('material.stockloc as st')
-                            ->select('st.idno','st.idno','uom.uomcode','uom.description','uom.convfactor')
-                            ->where('st.compcode', '=', session('compcode'))
-                            ->where('st.unit', '=', session('unit'))
-                            ->where('st.deptcode', '=', $deptcode)
-                            ->where('st.itemcode', '=', $chgcode)
-                            ->where('st.uomcode', '=', $uom)
-                            ->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+        // $table = DB::table('material.stockloc as st')
+        //                     ->select('st.idno','st.idno','uom.uomcode','uom.description','uom.convfactor')
+        //                     ->where('st.compcode', '=', session('compcode'))
+        //                     ->where('st.unit', '=', session('unit'))
+        //                     ->where('st.deptcode', '=', $deptcode)
+        //                     ->where('st.itemcode', '=', $chgcode)
+        //                     ->where('st.uomcode', '=', $uom)
+        //                     ->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
 
+        // $table = $table->join('material.uom as uom', function($join) use ($chgcode){
+        //                     $join = $join->on('uom.uomcode', '=', 'st.uomcode')
+        //                                 ->where('uom.compcode', '=', session('compcode'))
+        //                                 ->where('uom.recstatus','=','ACTIVE');
+        //             });
+
+        
+        $table = DB::table('hisdb.chgmast as cm')
+                        ->select('cm.chgcode','uom.description','cm.uom as uomcode','uom.convfactor')
+                            ->where('cm.compcode','=',session('compcode'))
+                            ->where('cm.chgcode','=',$chgcode)
+                            ->where('cm.uom','=',$uom)
+                            ->where('cm.recstatus','<>','DELETE');
+                            // ->where(function ($query) {
+                            //    $query->whereNotNull('st.idno')
+                            //          ->orWhere('cm.invflag', '=', 0);
+                            // });
         $table = $table->join('material.uom as uom', function($join) use ($chgcode){
-                            $join = $join->on('uom.uomcode', '=', 'st.uomcode')
+                            $join = $join->on('uom.uomcode', '=', 'cm.uom')
                                         ->where('uom.compcode', '=', session('compcode'))
                                         ->where('uom.recstatus','=','ACTIVE');
                     });

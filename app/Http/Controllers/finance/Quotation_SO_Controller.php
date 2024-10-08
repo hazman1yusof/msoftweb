@@ -21,7 +21,15 @@ class Quotation_SO_Controller extends defaultController
     
     public function show(Request $request)
     {
-        return view('finance.Quotation_SO.Quotation_SO');
+        $storedept = DB::table('sysdb.department')
+                        ->select('deptcode')
+                        ->where('compcode',session('compcode'))
+                        ->where('recstatus','ACTIVE')
+                        ->where('storedept',1)
+                        ->where('chgdept',1)
+                        ->get();
+
+        return view('finance.Quotation_SO.Quotation_SO',compact('storedept'));
     }
     
     public function table(Request $request)
@@ -128,7 +136,7 @@ class Quotation_SO_Controller extends defaultController
                     'dm.name AS dm_name',
                 )
                 ->where('SL.compcode',session('compcode'))
-                ->where('SL.deptcode',session('deptcode'))
+                // ->where('SL.deptcode',session('deptcode'))
                 ->where('SL.source','SL')
                 ->where('SL.trantype','RECNO');
         
