@@ -81,8 +81,8 @@ $(document).ready(function () {
 				}if (oper != 'add') {
 					dialog_deptcode.check(errorField);
 					dialog_billtypeSO.check(errorField);
-					dialog_mrn.check('errorField');
-					dialog_doctor.check('errorField');
+					dialog_mrn.check(errorField);
+					dialog_doctor.check(errorField);
 					dialog_CustomerSO.check(errorField);
 					dialog_quoteno.urlParam.deptcode = $('#db_deptcode').val();
 					dialog_quoteno.check(errorField);
