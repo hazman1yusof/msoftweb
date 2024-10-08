@@ -1609,6 +1609,14 @@ $(document).ready(function () {
 		// dialog_approvedbySO.off();
 
 		// errorField.length = 0;
+		if($.inArray('db_mrn',errorField)!==-1){
+			errorField.splice($.inArray('db_mrn',errorField), 1);
+		}
+
+		if($.inArray('db_doctorcode',errorField)!==-1){
+			errorField.splice($.inArray('db_doctorcode',errorField), 1);
+		}
+
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
 			mycurrency.formatOn();
