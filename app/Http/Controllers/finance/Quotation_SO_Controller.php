@@ -802,7 +802,7 @@ class Quotation_SO_Controller extends defaultController
         }
 
         $salehdr = DB::table('finance.salehdr as sh')
-            ->select('sh.idno','sh.compcode','sh.source','sh.trantype','sh.auditno','sh.quoteno','sh.lineno_','sh.amount','sh.outamount','sh.hdrsts','sh.posteddate','sh.entrydate','sh.entrytime','sh.entryuser','sh.reference','sh.recptno','sh.paymode','sh.tillcode','sh.tillno','sh.debtortype','sh.debtorcode','sh.payercode','sh.billdebtor','sh.remark','sh.mrn','sh.episno','sh.authno','sh.expdate','sh.adddate','sh.adduser','sh.upddate','sh.upduser','sh.epistype','sh.cbflag','sh.conversion','sh.payername','sh.hdrtype','sh.currency','sh.rate','sh.startdate','sh.termvalue','sh.termcode','sh.frequency','sh.pono','sh.podate','sh.saleid','sh.billtype','sh.docdate','sh.unit','sh.recstatus','sh.deptcode','m.name as debtorcode_desc','m.address1','m.address2','m.address3','m.address4','bt.description as billtype_desc')
+            ->select('sh.idno','sh.compcode','sh.source','sh.trantype','sh.auditno','sh.quoteno','sh.lineno_','sh.amount','sh.outamount','sh.hdrsts','sh.posteddate','sh.entrydate','sh.entrytime','sh.entryuser','sh.reference','sh.recptno','sh.paymode','sh.tillcode','sh.tillno','sh.debtortype','sh.debtorcode','sh.payercode','sh.billdebtor','sh.remark','sh.mrn','sh.episno','sh.authno','sh.expdate','sh.adddate','sh.adduser','sh.upddate','sh.upduser','sh.epistype','sh.cbflag','sh.conversion','sh.payername','sh.hdrtype','sh.currency','sh.rate','sh.startdate','sh.termvalue','sh.termcode','sh.frequency','sh.pono','sh.podate','sh.saleid','sh.billtype','sh.docdate','sh.unit','sh.recstatus','sh.deptcode','m.name as debtorcode_desc','m.address1','m.address2','m.address3','m.address4','bt.description as billtype_desc','pm.Name as  pm_name','pm.address1 as pm_address1','pm.address2 as pm_address2','pm.address3 as pm_address3','pm.postcode as pm_postcode','sh.doctorcode','dc.doctorname')
             ->leftJoin('debtor.debtormast as m', function($join) use ($request){
                 $join = $join->on("m.debtorcode", '=', 'sh.debtorcode');    
                 $join = $join->where("m.compcode", '=', session('compcode'));
@@ -811,11 +811,19 @@ class Quotation_SO_Controller extends defaultController
                 $join = $join->on("bt.billtype", '=', 'sh.hdrtype');    
                 $join = $join->where("bt.compcode", '=', session('compcode'));
             })
+            ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
+                $join = $join->on("pm.newmrn", '=', 'sh.mrn');    
+                $join = $join->where("pm.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('hisdb.doctor as dc', function($join) use ($request){
+                $join = $join->on("dc.doctorcode", '=', 'sh.doctorcode');    
+                $join = $join->where("dc.compcode", '=', session('compcode'));
+            })
             ->where('sh.idno','=',$idno)
             // ->where('h.mrn','=','0')
             ->where('sh.compcode','=',session('compcode'))
             ->first();
-        // dd($salehdr);
+
         $salesum = DB::table('finance.salesum as ss')
             ->select('ss.idno','ss.compcode','ss.source','ss.trantype','ss.auditno','ss.lineno_','ss.description','ss.quantity','ss.amount','ss.outamt','ss.totamount','ss.taxcode','ss.taxamt','ss.mrn','ss.episno','ss.paymode','ss.cardno','ss.debtortype','ss.debtorcode','ss.billno','ss.rowno','ss.billtype','ss.chgclass','ss.classlevel','ss.chggroup','ss.lastuser','ss.lastupdate','ss.invcode','ss.seqno','ss.discamt','ss.docref','ss.uprice','ss.remarks','ss.invdate','ss.percentdisc','ss.amtdisc','ss.adduser','ss.adddate','ss.upduser','ss.upddate','ss.saleid','ss.uom','ss.uom_recv','ss.pouom','ss.reference','ss.balance','ss.qtyonhand','ss.qtydelivered','ss.ucost','ss.qtydel','ss.unitprice','ss.billtypeperct','ss.billtypeamt','ss.recstatus','cm.description as chgmast_desc','u.description as uom_desc')
             ->leftJoin('hisdb.chgmast as cm', function($join) use ($request){

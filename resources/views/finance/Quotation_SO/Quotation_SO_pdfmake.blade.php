@@ -71,38 +71,38 @@
 						widths: [60, 3, '*', 60, 3, '*'], //panjang standard dia 515
 						body: [
 							[
-								{text: 'GST ID NO', alignment: 'right'},
+								{text: 'BILL DATE', alignment: 'right'},
 								{text: ':'},
-								{text: ''},
-								{},
-								{},
-								{},
+								{text: '{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$salehdr->entrydate)->format('d-m-Y')}}'},
+								{text: 'QUOTE NO', alignment: 'right'},
+								{text: ':'},
+								{text: 'QUOTE-{{str_pad($salehdr->quoteno, 6, "0", STR_PAD_LEFT)}}'},
 								
 							],
 							[
 								{text: 'DEBTOR', alignment: 'right'},
 								{text: ':'},
 								{text: '{{$salehdr->debtorcode}}'},
-								{text: 'QUOTE NO', alignment: 'right'},
+								{text: 'DOCTOR', alignment: 'right'},
 								{text: ':'},
-								{text: 'QUOTE-{{str_pad($salehdr->quoteno, 6, "0", STR_PAD_LEFT)}}'},
+								{text: `{!!$salehdr->doctorname!!}`},
 							],
 							[
 								{text: 'NAME', alignment: 'right'},
 								{text: ':'},
 								{text: '{{$salehdr->debtorcode_desc}}'},
-								{text: 'BILL DATE', alignment: 'right'},
+								{text: 'PATIENT', alignment: 'right'},
 								{text: ':'},
-								{text: '{{\Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$salehdr->entrydate)->format('d-m-Y')}}'},
+								{text: `({{$salehdr->mrn}}) {!!$salehdr->pm_name!!}`},
 								
 							],
 							[
 								{text: 'ADDRESS', alignment: 'right'},
 								{text: ':'},
-								{text: '{{$salehdr->address1}}\n{{$salehdr->address2}}\n{{$salehdr->address3}}\n{{$salehdr->address4}}'},
-								{text: ''},
-								{text: ''},
-								{text: ''},
+								{text: `{!!strtoupper($salehdr->address1)!!}\n{!!strtoupper($salehdr->address2)!!}\n{!!strtoupper($salehdr->address3)!!}\n{{strtoupper($salehdr->address4)}}`},
+								{text: 'ADDRESS', alignment: 'right'},
+								{text: ':'},
+								{text: `{!!strtoupper($salehdr->pm_address1)!!}\n{!!strtoupper($salehdr->pm_address2)!!}\n{!!strtoupper($salehdr->pm_address3)!!}\n{{strtoupper($salehdr->pm_postcode)}}`},
 							],
 							[
 								{text: 'CREDIT TERM', alignment: 'right'},
