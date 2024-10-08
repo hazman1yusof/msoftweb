@@ -47,6 +47,7 @@ $(document).ready(function () {
 			episno: $("#episno_discharge").val(),
 			mrn: $("#mrn_dischargeForm").val(),
 			episno: $("#episno_dischargeForm").val(),
+			adduser: $("#reg_by").val(),
 			dischargeuser: $("#dischargeuser").val(),
 
 		};
@@ -57,7 +58,6 @@ $(document).ready(function () {
 			alert('there is an error');
 		}).success(function (data){
 			if(!$.isEmptyObject(data.episode)){
-				// autoinsert_rowdata("#form_discharge",data.discharge);
 				autoinsert_rowdata("#form_discharge",data.episode);
 				button_state_discharge('edit');
 				textarea_init_discharge();
@@ -276,8 +276,6 @@ button_state_discharge('empty');
 		$("#episno_discharge").val(obj.episno);
 		$("#mrn_dischargeForm").val(obj.mrn);
 		$("#episno_dischargeForm").val(obj.episno);
-		$("#adduser").val(obj.adduser);
-		$("#dischargeuser").val(obj.dischargeuser);
 		
 		var saveParam = {
 			action: 'get_table_discharge',
@@ -288,8 +286,6 @@ button_state_discharge('empty');
 			episno: obj.episno,
 			mrn_dischargeForm: obj.mrn_dischargeForm,
 			episno_dischargeForm: obj.episno_dischargeForm,
-			adduser: obj.adduser,
-			dischargeuser: obj.dischargeuser,
 
 		};
 		
@@ -329,8 +325,10 @@ button_state_discharge('empty');
 		$("#episno_discharge").val(obj.Episno);
 		$('#mrn_dischargeForm').val(obj.MRN);
 		$("#episno_dischargeForm").val(obj.Episno);
-		$("#adduser").val(obj.adduser);
+
+		$("#reg_by").val(obj.adduser);
 		$("#dischargeuser").val(obj.dischargeuser);
+
 
 	}
 
@@ -356,7 +354,7 @@ button_state_discharge('empty');
 		}
 		var postobj = {
 			_token: $('#csrf_token').val(),
-			dischargeuser: $('#dischargeuser').val(),
+			// dischargeuser: $('#dischargeuser').val(),
 			// idtype_edit: $('#idtype_edit').val()
 		};
 		

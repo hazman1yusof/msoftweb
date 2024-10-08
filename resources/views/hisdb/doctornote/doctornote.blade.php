@@ -96,6 +96,7 @@
                         <input id="recorddate_doctorNote" name="recorddate_doctorNote" type="hidden">
                         <input id="ptname_doctorNote" name="ptname_doctorNote" type="hidden">
                         <input id="preg_doctorNote" name="preg_doctorNote" type="hidden">
+                        <input id="ic_doctorNote" name="ic_doctorNote" type="hidden">
                         
                         <div class="panel panel-info">
                             <div class="panel-body">
@@ -455,6 +456,7 @@
                             <li class="active"><a data-toggle="tab" id="navtab_otbook" href="#tab-otbook" aria-expanded="true" data-type='OTBOOK'>Ward / OT</a></li>
                             <li><a data-toggle="tab" id="navtab_rad" href="#tab-rad" data-type='RAD'>Radiology</a></li>
                             <li><a data-toggle="tab" id="navtab_physio" href="#tab-physio" data-type='PHYSIO'>Physiotherapy</a></li>
+                            <li><a data-toggle="tab" id="navtab_dressing" href="#tab-dressing" data-type='DRESSING'>Dressing</a></li>
                         </ul>
                         <div class="tab-content" style="padding: 10px 5px;">
                             <div id="tab-otbook" class="active in tab-pane fade">
@@ -482,7 +484,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-
+                                            
                                             <div class="panel-body">
                                                 <div class='col-md-12'>
                                                     <div class="panel panel-info">
@@ -563,7 +565,7 @@
                                                             </button>
                                                         </div>
                                                     </div>
-
+                                                    
                                                     <div class="panel-body">
                                                         <div class='col-md-12'>
                                                             <div class="panel panel-info">
@@ -695,7 +697,7 @@
                                                             </button>
                                                         </div>
                                                     </div>
-
+                                                    
                                                     <div class="panel-body">
                                                         <div class='col-md-12'>
                                                             <div class="panel panel-info">
@@ -1011,7 +1013,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-
+                                            
                                             <div class="panel-body">
                                                 <div class='col-md-12'>
                                                     <div class="panel panel-info">
@@ -1041,6 +1043,102 @@
                                                                 <label class="col-md-3 control-label" for="req_doc">Name of Requesting Doctor</label>
                                                                 <div class="col-md-6">
                                                                     <input id="req_doc" name="req_doc" type="text" class="form-control input-sm" rdonly>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div id="tab-dressing" class="tab-pane fade">
+                                <form class='form-horizontal' style='width: 99%;' id='formDressing'>
+                                    <div class='col-md-12'>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading text-center" style="height: 40px;">
+                                                <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                                    id="btn_grp_edit_dressing" 
+                                                    style="position: absolute; 
+                                                            padding: 0 0 0 0; 
+                                                            right: 40px; 
+                                                            top: 5px;">
+                                                    <button type="button" class="btn btn-default" id="new_dressing">
+                                                        <span class="fa fa-plus-square-o"></span> New 
+                                                    </button>
+                                                    <button type="button" class="btn btn-default" id="edit_dressing">
+                                                        <span class="fa fa-edit fa-lg"></span> Edit 
+                                                    </button>
+                                                    <button type="button" class="btn btn-default" data-oper='add' id="save_dressing">
+                                                        <span class="fa fa-save fa-lg"></span> Save 
+                                                    </button>
+                                                    <button type="button" class="btn btn-default" id="cancel_dressing">
+                                                        <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="panel-body">
+                                                <div class='col-md-12'>
+                                                    <div class="panel panel-info">
+                                                        <div class="panel-body">
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label" for="patientname">Name</label>
+                                                                <div class="col-md-6">
+                                                                    <input id="patientname" name="patientname" type="text" class="form-control input-sm" rdonly>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label" for="patientnric">NRIC</label>
+                                                                <div class="col-md-6">
+                                                                    <input id="patientnric" name="patientnric" type="text" class="form-control input-sm" rdonly>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class='col-md-5' style="margin-left: 320px; margin-right: 320px; padding-top: 15px;">
+                                                                <div class="panel panel-info">
+                                                                    <div class="panel-heading text-center">FREQUENCY</div>
+                                                                    <div class="panel-body">
+                                                                        <div class="form-group">
+                                                                            <div class="col-md-2">
+                                                                                <input id="od_dressing" name="od_dressing" type="number" class="form-control input-sm">
+                                                                            </div>
+                                                                            <label class="col-md-3 control-label" for="od_dressing">OD Dressing</label>
+                                                                        </div>
+                                                                        
+                                                                        <div class="form-group">
+                                                                            <div class="col-md-2">
+                                                                                <input id="bd_dressing" name="bd_dressing" type="number" class="form-control input-sm">
+                                                                            </div>
+                                                                            <label class="col-md-3 control-label" for="bd_dressing">BD Dressing</label>
+                                                                        </div>
+                                                                        
+                                                                        <div class="form-group">
+                                                                            <div class="col-md-2">
+                                                                                <input id="eod_dressing" name="eod_dressing" type="number" class="form-control input-sm">
+                                                                            </div>
+                                                                            <label class="col-md-3 control-label" for="eod_dressing">EOD Dressing</label>
+                                                                        </div>
+                                                                        
+                                                                        <div class="form-group">
+                                                                            <div class="col-md-2">
+                                                                                <input id="others_dressing" name="others_dressing" type="number" class="form-control input-sm">
+                                                                            </div>
+                                                                            <label class="col-md-3 control-label" for="others_dressing">Others:</label>
+                                                                            <div class="col-md-6">
+                                                                                <input id="others_name" name="others_name" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label" for="solution">Solution/Method</label>
+                                                                <div class="col-md-6">
+                                                                    <textarea id="solution" name="solution" type="text" class="form-control input-sm"></textarea>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1096,7 +1194,7 @@
                     </button>
                 </div>
             </div>
-
+            
             <div class="panel-body">
                 <form class='form-horizontal' style='width: 99%;' id='form_refLetter'>
                     <!-- <input id="idno_refLetter" name="idno_refLetter" type="hidden"> -->
@@ -1493,19 +1591,19 @@
                 <textarea id="letter" name="letter" rows="30" cols="90" class="form-control input-sm">
                 
                 Dear Dr. 
-
+                
                 Diagnosis: 
-
+                
                 Plan: 
-
+                
                 Prescription: 
-
+                
                 If I may be of any further assistance in the care of your patient, please let me know. Thank you for providing me the opportunity to participate in the care of your patients.
-
+                
                 Sincerely,
-
+                
                 Dr. 
-
+                
                 </textarea>
             </div>
         </div>

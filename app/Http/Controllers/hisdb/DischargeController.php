@@ -134,7 +134,7 @@ class DischargeController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'reg_date' => $request->reg_date,
-                    'regby_discharge' => $request->regby_discharge,
+                    'reg_by' => $request->reg_by,
                     'reg_time' => $request->reg_time,
                     'dischargedate' => $request->dischargedate,
                     'dischargeuser' => session('username'),
@@ -191,7 +191,7 @@ class DischargeController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->update([
                         'reg_date' => $request->reg_date,
-                        'adduser' => $request->adduser,
+                        'reg_by' => $request->reg_by,
                         'reg_time' => $request->reg_time,
                         'dischargedate' => $request->dischargedate,
                         'dischargeuser' => session('username'),
@@ -212,8 +212,8 @@ class DischargeController extends defaultController
                         'status_discTransferred' => $request->status_discTransferred,
                         'medondischg' => $request->medondischg,
                         'medcert' => $request->medcert,
-                        // 'adduser'  => session('username'),
-                        // 'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
@@ -224,7 +224,7 @@ class DischargeController extends defaultController
                         'mrn' => $request->mrn_discharge,
                         'episno' => $request->episno_discharge,
                         'reg_date' => $request->reg_date,
-                        'adduser' => $request->adduser,
+                        'reg_by' => $request->reg_by,
                         'reg_time' => $request->reg_time,
                         'dischargedate' => $request->dischargedate,
                         'dischargeuser' => session('username'),
@@ -270,36 +270,19 @@ class DischargeController extends defaultController
     public function get_table_discharge(Request $request){
         
         $episode_obj = DB::table('hisdb.episode as e')
+                    ->select('e.reg_date','e.reg_by','e.reg_time','e.dischargedate','e.dischargeuser','e.dischargetime','e.diagfinal','e.patologist','e.clinicalnote','e.phyexam','e.diagprov','e.treatment','e.summary','e.followup','e.status_discWell','e.status_discImproved','e.status_discAOR','e.status_discExpired','e.status_discAbsconded','e.status_discTransferred','e.medondischg','e.medcert','e.adduser as reg_by','e.lastuser','e.lastupdate','e.bedtype','bt.bedtype')
                     ->where('e.compcode','=',session('compcode'))
                     ->where('e.mrn','=',$request->mrn)
                     ->where('e.episno','=',$request->episno)
                     ->leftJoin('hisdb.bedtype as bt','bt.bedtype','=','e.bedtype');
     
-        $nurshistory_obj = DB::table('nursing.nurshistory')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$request->mrn);
-
-        $nursassessment_obj = DB::table('nursing.nursassessment')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$request->mrn)
-                    ->where('episno','=',$request->episno);
-        
         $responce = new stdClass();
         
         if($episode_obj->exists()){
             $episode_obj = $episode_obj->first();
             $responce->episode = $episode_obj;
-        }
+            $responce->reg_by = $episode_obj;
 
-        if($nurshistory_obj->exists()){
-            $nurshistory_obj = $nurshistory_obj->first();
-            $responce->nurshistory = $nurshistory_obj;
-        }
-
-        if($nursassessment_obj->exists()){
-            $nursassessment_obj = $nursassessment_obj->first();
-            // dd($nursassessment_obj);
-            $responce->nursassessment = $nursassessment_obj;
         }
         
         return json_encode($responce);
