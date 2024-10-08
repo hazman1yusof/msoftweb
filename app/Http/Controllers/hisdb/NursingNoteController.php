@@ -101,6 +101,16 @@ class NursingNoteController extends defaultController
                         return 'error happen..';
                 }
             
+            case 'save_table_othChart':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add_formOthChart($request);
+                    case 'edit':
+                        return $this->edit_formOthChart($request);
+                    default:
+                        return 'error happen..';
+                }
+            
             case 'FitChart_save':
                 return $this->add_FitChart($request);
             
@@ -128,6 +138,15 @@ class NursingNoteController extends defaultController
             case 'SlidScale_del':
                 return $this->del_SlidScale($request);
             
+            case 'OthChart_save':
+                return $this->add_OthChart($request);
+            
+            case 'OthChart_edit':
+                return $this->edit_OthChart($request);
+            
+            case 'OthChart_del':
+                return $this->del_OthChart($request);
+            
             case 'get_table_progress':
                 return $this->get_table_progress($request);
             
@@ -145,6 +164,12 @@ class NursingNoteController extends defaultController
             
             case 'get_table_formFitChart':
                 return $this->get_table_formFitChart($request);
+            
+            case 'get_table_formOthChart':
+                return $this->get_table_formOthChart($request);
+            
+            case 'get_table_othChart':
+                return $this->get_table_othChart($request);
             
             default:
                 return 'error happen..';
@@ -1216,6 +1241,96 @@ class NursingNoteController extends defaultController
         
     }
     
+    public function add_formOthChart(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            if(!empty($request->othChart1_tabtitle)){
+                $tabtitle = $request->othChart1_tabtitle;
+            }else if(!empty($request->othChart2_tabtitle)){
+                $tabtitle = $request->othChart2_tabtitle;
+            }
+            
+            if(!empty($request->othChart1_title)){
+                $title = $request->othChart1_title;
+            }else if(!empty($request->othChart2_title)){
+                $title = $request->othChart2_title;
+            }
+            
+            DB::table('nursing.nurs_othChart')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_nursNote,
+                    'episno' => $request->episno_nursNote,
+                    'tabtitle' => $tabtitle,
+                    'title' => $title,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'addtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastupdtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit_formOthChart(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            if(!empty($request->othChart1_tabtitle)){
+                $tabtitle = $request->othChart1_tabtitle;
+            }else if(!empty($request->othChart2_tabtitle)){
+                $tabtitle = $request->othChart2_tabtitle;
+            }
+            
+            if(!empty($request->othChart1_title)){
+                $title = $request->othChart1_title;
+            }else if(!empty($request->othChart2_title)){
+                $title = $request->othChart2_title;
+            }
+            
+            DB::table('nursing.nurs_othChart')
+                ->where('mrn','=',$request->mrn_nursNote)
+                ->where('episno','=',$request->episno_nursNote)
+                ->where('tabtitle','=',$tabtitle)
+                ->update([
+                    'title' => $title,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastupdtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
     public function add_FitChart(Request $request){
         
         DB::beginTransaction();
@@ -1508,6 +1623,111 @@ class NursingNoteController extends defaultController
         
     }
     
+    public function add_OthChart(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            $nurs_othChart = DB::table('nursing.nurs_othChart')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno)
+                            ->where('tabtitle','=',$request->tabtitle);
+            
+            if($nurs_othChart->exists()){
+                DB::table('nursing.nurs_othChart')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'tabtitle' => $request->tabtitle,
+                        'title' => $request->title,
+                        'entereddate' => $request->entereddate,
+                        'enteredtime' => $request->enteredtime,
+                        'remarks' => $request->remarks,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'addtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastupdtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid'),
+                    ]);
+            }else{
+                throw new \Exception('Please enter chart title first.', 500);
+            }
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+    
+    public function edit_OthChart(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurs_othChart')
+                ->where('idno','=',$request->idno)
+                // ->where('mrn','=',$request->mrn)
+                // ->where('episno','=',$request->episno)
+                // ->where('title','=',$request->title)
+                ->update([
+                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
+                    'enteredtime' => $request->enteredtime,
+                    'remarks' => $request->remarks,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastupdtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function del_OthChart(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurs_othChart')
+                ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->delete();
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+    
     public function get_table_progress(Request $request){
         
         $nurshandover_obj = DB::table('nursing.nurshandover')
@@ -1655,6 +1875,72 @@ class NursingNoteController extends defaultController
             $diagnosis_obj = $nursassessment_obj->diagnosis;
             $responce->diagnosis = $diagnosis_obj;
         }
+        
+        return json_encode($responce);
+        
+    }
+    
+    public function get_table_formOthChart(Request $request){
+        
+        $nurs_othChart_obj = DB::table('nursing.nurs_othChart')
+                            ->select('title')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno)
+                            ->where('tabtitle','=',$request->tabtitle);
+        
+        $nursassessment_obj = DB::table('nursing.nursassessment')
+                            ->select('diagnosis')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
+        
+        $responce = new stdClass();
+        
+        if($nurs_othChart_obj->exists()){
+            $nurs_othChart_obj = $nurs_othChart_obj->first();
+            
+            $title_obj = $nurs_othChart_obj->title;
+            $responce->title = $title_obj;
+            // $responce->nurs_othChart = $nurs_othChart_obj;
+        }
+        
+        if($nursassessment_obj->exists()){
+            $nursassessment_obj = $nursassessment_obj->first();
+            
+            $diagnosis_obj = $nursassessment_obj->diagnosis;
+            $responce->diagnosis = $diagnosis_obj;
+        }
+        
+        return json_encode($responce);
+        
+    }
+    
+    public function get_table_othChart(Request $request){
+        
+        $table = DB::table('nursing.nurs_othChart')
+                ->where('compcode','=',session('compcode'))
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('tabtitle','=',$request->tabtitle)
+                ->orderBy('idno','desc');
+        
+        //////////paginate//////////
+        $paginate = $table->paginate($request->rows);
+        
+        foreach($paginate->items() as $key => $value){
+            if($value->entereddate !== null && $value->enteredtime !== null && $value->remarks !== null){
+                
+            }
+        }
+        
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
         
         return json_encode($responce);
         

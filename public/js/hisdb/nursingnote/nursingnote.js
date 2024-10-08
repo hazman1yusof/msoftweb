@@ -48,6 +48,25 @@ var urlParam_SlidScale = {
     filterVal: ['',''],
 }
 
+////////////////////////parameter for jqGridOthChart1 url////////////////////////
+var urlParam_OthChart = {
+    action: 'get_table_default',
+    url: 'util/get_table_default',
+    field: '',
+    table_name: 'nursing.nurs_othChart',
+    table_id: 'idno',
+    filterCol: ['mrn','episno','tabtitle'],
+    filterVal: ['','',''],
+}
+
+// var urlParam_OthChart = {
+//     action: 'get_table_othChart',
+//     url: 'nursingnote/form',
+//     mrn: '',
+//     episno: '',
+//     tabtitle: '',
+// };
+
 $(document).ready(function (){
     
     var fdl = new faster_detail_load();
@@ -274,6 +293,45 @@ $(document).ready(function (){
     });
     ///////////////////////////////////////careplan ends///////////////////////////////////////
     
+    /////////////////////////////////////othChart1 starts/////////////////////////////////////
+    disableForm('#formOthChart1');
+    
+    $("#new_othChart1").click(function (){
+        get_default_othChart1();
+        button_state_othChart1('wait');
+        enableForm('#formOthChart1');
+        rdonly('#formOthChart1');
+        emptyFormdata_div("#formOthChart1",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar','#othChart1_tabtitle']);
+        $('#othChart1_diag').prop('disabled',true);
+    });
+    
+    $("#edit_othChart1").click(function (){
+        button_state_othChart1('wait');
+        enableForm('#formOthChart1');
+        rdonly('#formOthChart1');
+        $('#othChart1_diag').prop('disabled',true);
+    });
+    
+    $("#save_othChart1").click(function (){
+        disableForm('#formOthChart1');
+        if($('#formOthChart1').isValid({requiredFields: ''}, conf, true)){
+            saveForm_othChart1(function (){
+                $("#cancel_othChart1").data('oper','edit');
+                $("#cancel_othChart1").click();
+                $("#jqGridPagerRefresh_OthChart1").click();
+            });
+        }else{
+            enableForm('#formOthChart1');
+            rdonly('#formOthChart1');
+        }
+    });
+    
+    $("#cancel_othChart1").click(function (){
+        disableForm('#formOthChart1');
+        button_state_othChart1($(this).data('oper'));
+    });
+    //////////////////////////////////////othChart1 ends//////////////////////////////////////
+    
     // to format number input to two decimal places (0.00)
     $(".floatNumberField").change(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
@@ -292,16 +350,19 @@ $(document).ready(function (){
         button_state_investigation('empty');
         button_state_injection('empty');
         button_state_careplan('empty');
+        button_state_othChart1('empty');
         disableForm('#formProgress');
         disableForm('#formIntake');
         disableForm('#formTreatment');
         disableForm('#formInvestigation');
         disableForm('#formInjection');
         disableForm('#formCarePlan');
+        disableForm('#formOthChart1');
         refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'kosongkan');
         refreshGrid('#jqGridFitChart',urlParam_FitChart,'kosongkan');
         refreshGrid('#jqGridCirculation',urlParam_Circulation,'kosongkan');
         refreshGrid('#jqGridSlidScale',urlParam_SlidScale,'kosongkan');
+        refreshGrid('#jqGridOthChart1',urlParam_OthChart,'kosongkan');
         $("#jqGridNursNote_panel > div").scrollTop(0);
         $("#jqGridNursNote_panel #jqGridNursNote_panel_tabs li").removeClass('active');
     });
@@ -426,6 +487,19 @@ $(document).ready(function (){
                 
                 $("#jqGridSlidScale").jqGrid('setGridWidth', Math.floor($("#jqGridSlidScale_c")[0].offsetWidth-$("#jqGridSlidScale_c")[0].offsetLeft-30));
                 // populate_slidScale_getdata();
+                break;
+            case 'othChart1':
+                urlParam_OthChart.filterVal[0] = $("#mrn_nursNote").val();
+                urlParam_OthChart.filterVal[1] = $("#episno_nursNote").val();
+                urlParam_OthChart.filterVal[2] = $("#othChart1_tabtitle").val();
+                
+                // urlParam_OthChart.mrn = $("#mrn_nursNote").val();
+                // urlParam_OthChart.episno = $("#episno_nursNote").val();
+                // urlParam_OthChart.tabtitle = $("#othChart1_tabtitle").val();
+                refreshGrid('#jqGridOthChart1',urlParam_OthChart,'add');
+                
+                $("#jqGridOthChart1").jqGrid('setGridWidth', Math.floor($("#jqGridOthChart1_c")[0].offsetWidth-$("#jqGridOthChart1_c")[0].offsetLeft-30));
+                populate_othChart1_getdata();
                 break;
         }
     });
@@ -1690,6 +1764,241 @@ $(document).ready(function (){
     ///////////////////////////////////////////end grid///////////////////////////////////////////
     /////////////////////////////////////////slidScale ends/////////////////////////////////////////
     
+    ////////////////////////////////////////othChart1 starts////////////////////////////////////////
+    ////////////////////////////////////////jqGridOthChart1////////////////////////////////////////
+    var addmore_jqgrid5 = { more:false,state:false,edit:false }
+    
+    $("#jqGridOthChart1").jqGrid({
+        datatype: "local",
+        editurl: "./nursingnote/form",
+        colModel: [
+            { label: 'Date', name: 'entereddate', width: 50, classes: 'wrap', editable: true,
+                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                editoptions: {
+                    dataInit: function (element){
+                        $(element).datepicker({
+                            id: 'entereddate_datePicker',
+                            dateFormat: 'yy-mm-dd',
+                            minDate: "dateToday",
+                            showOn: 'focus',
+                            changeMonth: true,
+                            changeYear: true,
+                            onSelect : function (){
+                                $(this).focus();
+                            }
+                        });
+                    }
+                }
+            },
+            { label: 'Time', name: 'enteredtime', width: 50, classes: 'wrap', editable: true,
+                editrules: { required: false, custom: true, custom_func: cust_rules_nurs },
+                formatter: showdetail_nurs, edittype: 'custom',
+                editoptions: {
+                    custom_element: enteredtimeCustomEdit_othChart1,
+                    custom_value: galGridCustomValue_nurs
+                }
+            },
+            { label: 'Remarks', name: 'remarks', classes: 'wrap', width: 70, editable: true, edittype: "textarea",
+                editoptions: {
+                    style: "width: -webkit-fill-available;",
+                    rows: 5
+                }
+            },
+            { label: 'Entered By', name: 'adduser', width: 35, editable: false },
+            { label: 'idno', name: 'idno', width: 10, hidden: true, key: true },
+            { label: 'compcode', name: 'compcode', hidden: true },
+            { label: 'mrn', name: 'mrn', hidden: true },
+            { label: 'episno', name: 'episno', hidden: true },
+            { label: 'title', name: 'title', hidden: true },
+            // { label: 'adduser', name: 'adduser', hidden: true },
+            { label: 'adddate', name: 'adddate', hidden: true },
+        ],
+        autowidth: true,
+        multiSort: true,
+        sortname: 'idno',
+        sortorder: 'desc',
+        viewrecords: true,
+        loadonce: false,
+        width: 900,
+        height: 200,
+        rowNum: 30,
+        pager: "#jqGridPagerOthChart1",
+        loadComplete: function (){
+            if(addmore_jqgrid5.more == true){$('#jqGridOthChart1_iladd').click();}
+            else{
+                $('#jqGridOthChart1').jqGrid ('setSelection', "1");
+            }
+            $('.ui-pg-button').prop('disabled',true);
+            addmore_jqgrid5.edit = addmore_jqgrid5.more = false; // reset
+            
+            // calc_jq_height_onchange("jqGridOthChart1");
+        },
+        ondblClickRow: function (rowid, iRow, iCol, e){
+            $("#jqGridOthChart1_iledit").click();
+        },
+        gridComplete: function (){
+            fdl.set_array().reset();
+            if($('#jqGridPagerOthChart1').jqGrid('getGridParam', 'reccount') > 0){
+                $("#jqGridPagerOthChart1").setSelection($("#jqGridPagerOthChart1").getDataIDs()[0]);
+            }
+        },
+    });
+    
+    //////////////////////////////////myEditOptions_add_OthChart1//////////////////////////////////
+    var myEditOptions_add_OthChart1 = {
+        keys: true,
+        extraparam: {
+            "_token": $("#csrf_token").val()
+        },
+        oneditfunc: function (rowid){
+            $("#jqGridPagerDelete_OthChart1,#jqGridPagerRefresh_OthChart1").hide();
+            
+            $("#jqGridOthChart1 textarea[name='remarks']").keydown(function (e){ // when click tab at last column in header, auto save
+                var code = e.keyCode || e.which;
+                if (code == '9')$('#jqGridOthChart1_ilsave').click();
+                // addmore_jqgrid5.state = true;
+                // $('#jqGridOthChart1_ilsave').click();
+            });
+        },
+        aftersavefunc: function (rowid, response, options){
+            // if(addmore_jqgrid5.state == true)addmore_jqgrid5.more = true; // only addmore after save inline
+            addmore_jqgrid5.more = true; // state true maksudnyer ada isi, tak kosong
+            refreshGrid('#jqGridOthChart1',urlParam_OthChart,'add');
+            errorField.length = 0;
+            $("#jqGridPagerDelete_OthChart1,#jqGridPagerRefresh_OthChart1").show();
+        },
+        errorfunc: function (rowid,response){
+            $('#p_error').text(response.responseText);
+            refreshGrid('#jqGridOthChart1',urlParam_OthChart,'add');
+        },
+        beforeSaveRow: function (options, rowid){
+            $('#p_error').text('');
+            
+            let data = $('#jqGridOthChart1').jqGrid ('getRowData', rowid);
+            
+            let editurl = "./nursingnote/form?"+
+                $.param({
+                    mrn: $('#mrn_nursNote').val(),
+                    episno: $('#episno_nursNote').val(),
+                    tabtitle: $('#othChart1_tabtitle').val(),
+                    title: $('#othChart1_title').val(),
+                    action: 'OthChart_save',
+                });
+            $("#jqGridOthChart1").jqGrid('setGridParam', { editurl: editurl });
+        },
+        afterrestorefunc : function (response){
+            $("#jqGridPagerDelete_OthChart1,#jqGridPagerRefresh_OthChart1").show();
+        },
+        errorTextFormat: function (data){
+            alert(data);
+        }
+    };
+    
+    /////////////////////////////////myEditOptions_edit_OthChart1/////////////////////////////////
+    var myEditOptions_edit_OthChart1 = {
+        keys: true,
+        extraparam: {
+            "_token": $("#csrf_token").val()
+        },
+        oneditfunc: function (rowid){
+            $("#jqGridPagerDelete_OthChart1,#jqGridPagerRefresh_OthChart1").hide();
+            
+            $("#jqGridOthChart1 textarea[name='remarks']").keydown(function (e){ // when click tab at last column in header, auto save
+                var code = e.keyCode || e.which;
+                if (code == '9')$('#jqGridOthChart1_ilsave').click();
+                // addmore_jqgrid5.state = true;
+                // $('#jqGridOthChart1_ilsave').click();
+            });
+        },
+        aftersavefunc: function (rowid, response, options){
+            if(addmore_jqgrid5.state == true)addmore_jqgrid5.more = true; // only addmore after save inline
+            // state true maksudnyer ada isi, tak kosong
+            refreshGrid('#jqGridOthChart1',urlParam_OthChart,'edit');
+            errorField.length = 0;
+            $("#jqGridPagerDelete_OthChart1,#jqGridPagerRefresh_OthChart1").show();
+        },
+        errorfunc: function (rowid,response){
+            $('#p_error').text(response.responseText);
+            refreshGrid('#jqGridOthChart1',urlParam_OthChart,'edit');
+        },
+        beforeSaveRow: function (options, rowid){
+            $('#p_error').text('');
+            // if(errorField.length > 0){console.log(errorField);return false;}
+            
+            let data = $('#jqGridOthChart1').jqGrid ('getRowData', rowid);
+            // console.log(data);
+            
+            let editurl = "./nursingnote/form?"+
+                $.param({
+                    mrn: $('#mrn_nursNote').val(),
+                    episno: $('#episno_nursNote').val(),
+                    action: 'OthChart_edit',
+                    _token: $("#csrf_token").val()
+                });
+            $("#jqGridOthChart1").jqGrid('setGridParam', { editurl: editurl });
+        },
+        afterrestorefunc : function (response){
+            $("#jqGridPagerDelete_OthChart1,#jqGridPagerRefresh_OthChart1").show();
+        },
+        errorTextFormat: function (data){
+            alert(data);
+        }
+    };
+    
+    /////////////////////////////////////jqGridPagerOthChart1/////////////////////////////////////
+    $("#jqGridOthChart1").inlineNav('#jqGridPagerOthChart1', {
+        add: true, edit: true, cancel: true,
+        // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+        restoreAfterSelect: false,
+        addParams: {
+            addRowParams: myEditOptions_add_OthChart1
+        },
+        editParams: myEditOptions_edit_OthChart1
+    }).jqGrid('navButtonAdd', "#jqGridPagerOthChart1", {
+        id: "jqGridPagerDelete_OthChart1",
+        caption: "", cursor: "pointer", position: "last",
+        buttonicon: "glyphicon glyphicon-trash",
+        title: "Delete Selected Row",
+        onClickButton: function (){
+            selRowId = $("#jqGridOthChart1").jqGrid('getGridParam', 'selrow');
+            if(!selRowId){
+                alert('Please select row');
+            }else{
+                var result = confirm("Are you sure you want to delete this row?");
+                if(result == true){
+                    param = {
+                        _token: $("#csrf_token").val(),
+                        idno: selrowData('#jqGridOthChart1').idno,
+                        action: 'OthChart_del',
+                    }
+                    $.post("./nursingnote/form?"+$.param(param), {oper:'del'}, function (data){
+                        
+                    }).fail(function (data){
+                        //////////////////errorText(dialog,data.responseText);
+                    }).done(function (data){
+                        refreshGrid("#jqGridOthChart1", urlParam_OthChart);
+                    });
+                }else{
+                    $("#jqGridPagerDelete_OthChart1,#jqGridPagerRefresh_OthChart1").show();
+                }
+            }
+        },
+    }).jqGrid('navButtonAdd', "#jqGridPagerOthChart1", {
+        id: "jqGridPagerRefresh_OthChart1",
+        caption: "", cursor: "pointer", position: "last",
+        buttonicon: "glyphicon glyphicon-refresh",
+        title: "Refresh Table",
+        onClickButton: function (){
+            refreshGrid("#jqGridOthChart1", urlParam_OthChart);
+        },
+    });
+    
+    $("#jqGridOthChart1_ilcancel").click(function (){
+        refreshGrid("#jqGridOthChart1", urlParam_OthChart);
+    });
+    ///////////////////////////////////////////end grid///////////////////////////////////////////
+    /////////////////////////////////////////othChart1 ends/////////////////////////////////////////
+    
 });
 
 /////////////////////progressnote starts/////////////////////
@@ -1990,6 +2299,34 @@ function button_state_careplan(state){
     }
 }
 
+button_state_othChart1('empty');
+function button_state_othChart1(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_nursNote").removeAttr('data-toggle');
+            $('#cancel_othChart1').data('oper','add');
+            $('#new_othChart1,#save_othChart1,#cancel_othChart1,#edit_othChart1').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_nursNote").attr('data-toggle','collapse');
+            $('#cancel_othChart1').data('oper','add');
+            $("#new_othChart1").attr('disabled',false);
+            $('#save_othChart1,#cancel_othChart1,#edit_othChart1').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_nursNote").attr('data-toggle','collapse');
+            $('#cancel_othChart1').data('oper','edit');
+            $("#edit_othChart1").attr('disabled',false);
+            $('#save_othChart1,#cancel_othChart1').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_nursNote").attr('data-toggle','collapse');
+            $("#save_othChart1,#cancel_othChart1").attr('disabled',false);
+            $('#edit_othChart1,#new_othChart1').attr('disabled',true);
+            break;
+    }
+}
+
 // screen current patient //
 function populate_nursingnote(obj){
     $("#jqGridNursNote_panel").collapse('hide');
@@ -2246,6 +2583,86 @@ function populate_circulation_getdata(){
             // $("#circulation_bednum").val($('#bednum_nursNote').val());
             
             // button_state_circulation('add');
+            textarea_init_nursingnote();
+        }
+    });
+}
+
+function populate_othChart1_getdata(){
+    emptyFormdata(errorField,"#formOthChart1",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar","#othChart1_tabtitle"]);
+    
+    var saveParam = {
+        action: 'get_table_formOthChart',
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        // idno: $("#idno_othChart1").val(),
+        mrn: $("#mrn_nursNote").val(),
+        episno: $("#episno_nursNote").val(),
+        tabtitle: $("#othChart1_tabtitle").val()
+    };
+    
+    $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').fail(function (data){
+        alert('there is an error');
+    }).success(function (data){
+        if(!$.isEmptyObject(data.title)){
+            // autoinsert_rowdata("#formOthChart1",data.diagnosis);
+            $("#othChart1_title").val(data.title);
+            $("#othChart1_diag").val(data.diagnosis);
+            $("#othChart1_ward").val($('#ward_nursNote').val());
+            $("#othChart1_bednum").val($('#bednum_nursNote').val());
+            
+            button_state_othChart1('edit');
+            textarea_init_nursingnote();
+        }else{
+            $("#othChart1_diag").val(data.diagnosis);
+            $("#othChart1_ward").val($('#ward_nursNote').val());
+            $("#othChart1_bednum").val($('#bednum_nursNote').val());
+            
+            button_state_othChart1('add');
+            textarea_init_nursingnote();
+        }
+    });
+}
+
+function get_default_othChart1(){
+    emptyFormdata(errorField,"#formOthChart1",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar","#othChart1_tabtitle"]);
+    
+    var saveParam = {
+        action: 'get_table_formOthChart',
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        // idno: $("#idno_othChart1").val(),
+        mrn: $("#mrn_nursNote").val(),
+        episno: $("#episno_nursNote").val(),
+        tabtitle: $("#othChart1_tabtitle").val()
+    };
+    
+    $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').fail(function (data){
+        alert('there is an error');
+    }).success(function (data){
+        if(!$.isEmptyObject(data.title)){
+            // autoinsert_rowdata("#formOthChart1",data.diagnosis);
+            // $("#othChart1_title").val(data.title);
+            $("#othChart1_diag").val(data.diagnosis);
+            $("#othChart1_ward").val($('#ward_nursNote').val());
+            $("#othChart1_bednum").val($('#bednum_nursNote').val());
+            
+            // button_state_othChart1('edit');
+            textarea_init_nursingnote();
+        }else{
+            $("#othChart1_diag").val(data.diagnosis);
+            $("#othChart1_ward").val($('#ward_nursNote').val());
+            $("#othChart1_bednum").val($('#bednum_nursNote').val());
+            
+            // button_state_othChart1('add');
             textarea_init_nursingnote();
         }
     });
@@ -2623,8 +3040,67 @@ function saveForm_careplan(callback){
     });
 }
 
+function saveForm_othChart1(callback){
+    var saveParam = {
+        action: 'save_table_othChart',
+        oper: $("#cancel_othChart1").data('oper')
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        mrn_nursNote: $('#mrn_nursNote').val(),
+        episno_nursNote: $('#episno_nursNote').val()
+    };
+    
+    values = $("#formOthChart1").serializeArray();
+    
+    values = values.concat(
+        $('#formOthChart1 input[type=checkbox]:not(:checked)').map(
+            function (){
+                return {"name": this.name, "value": 0}
+            }).get()
+    );
+    
+    values = values.concat(
+        $('#formOthChart1 input[type=checkbox]:checked').map(
+            function (){
+                return {"name": this.name, "value": 1}
+            }).get()
+    );
+    
+    values = values.concat(
+        $('#formOthChart1 input[type=radio]:checked').map(
+            function (){
+                return {"name": this.name, "value": this.value}
+            }).get()
+    );
+    
+    values = values.concat(
+        $('#formOthChart1 select').map(
+            function (){
+                return {"name": this.name, "value": this.value}
+            }).get()
+    );
+    
+    // values = values.concat(
+    //     $('#formOthChart1 input[type=radio]:checked').map(
+    //         function (){
+    //             return {"name": this.name, "value": this.value}
+    //         }).get()
+    // );
+    
+    $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').fail(function (data){
+        // alert('there is an error');
+        callback();
+    }).success(function (data){
+        callback();
+    });
+}
+
 function textarea_init_nursingnote(){
-    $('textarea#airwayfreetext,textarea#frfreetext,textarea#drainfreetext,textarea#ivfreetext,textarea#assesothers,textarea#plannotes,textarea#oraltype1,textarea#oraltype2,textarea#oraltype3,textarea#oraltype4,textarea#oraltype5,textarea#oraltype6,textarea#oraltype7,textarea#oraltype8,textarea#oraltype9,textarea#oraltype10,textarea#oraltype11,textarea#oraltype12,textarea#oraltype13,textarea#oraltype14,textarea#oraltype15,textarea#oraltype16,textarea#oraltype17,textarea#oraltype18,textarea#oraltype19,textarea#oraltype20,textarea#oraltype21,textarea#oraltype22,textarea#oraltype23,textarea#oraltype24,textarea#intratype1,textarea#intratype2,textarea#intratype3,textarea#intratype4,textarea#intratype5,textarea#intratype6,textarea#intratype7,textarea#intratype8,textarea#intratype9,textarea#intratype10,textarea#intratype11,textarea#intratype12,textarea#intratype13,textarea#intratype14,textarea#intratype15,textarea#intratype16,textarea#intratype17,textarea#intratype18,textarea#intratype19,textarea#intratype20,textarea#intratype21,textarea#intratype22,textarea#intratype23,textarea#intratype24,textarea#othertype1,textarea#othertype2,textarea#othertype3,textarea#othertype4,textarea#othertype5,textarea#othertype6,textarea#othertype7,textarea#othertype8,textarea#othertype9,textarea#othertype10,textarea#othertype11,textarea#othertype12,textarea#othertype13,textarea#othertype14,textarea#othertype15,textarea#othertype16,textarea#othertype17,textarea#othertype18,textarea#othertype19,textarea#othertype20,textarea#othertype21,textarea#othertype22,textarea#othertype23,textarea#othertype24,textarea#ftxtdosage,textarea#treatment_remarks,textarea#investigation_remarks,textarea#injection_remarks,textarea#problem,textarea#problemdata,textarea#problemintincome,textarea#nursintervention,textarea#nursevaluation,textarea#fitchart_diag,textarea#circulation_diag').each(function () {
+    $('textarea#airwayfreetext,textarea#frfreetext,textarea#drainfreetext,textarea#ivfreetext,textarea#assesothers,textarea#plannotes,textarea#oraltype1,textarea#oraltype2,textarea#oraltype3,textarea#oraltype4,textarea#oraltype5,textarea#oraltype6,textarea#oraltype7,textarea#oraltype8,textarea#oraltype9,textarea#oraltype10,textarea#oraltype11,textarea#oraltype12,textarea#oraltype13,textarea#oraltype14,textarea#oraltype15,textarea#oraltype16,textarea#oraltype17,textarea#oraltype18,textarea#oraltype19,textarea#oraltype20,textarea#oraltype21,textarea#oraltype22,textarea#oraltype23,textarea#oraltype24,textarea#intratype1,textarea#intratype2,textarea#intratype3,textarea#intratype4,textarea#intratype5,textarea#intratype6,textarea#intratype7,textarea#intratype8,textarea#intratype9,textarea#intratype10,textarea#intratype11,textarea#intratype12,textarea#intratype13,textarea#intratype14,textarea#intratype15,textarea#intratype16,textarea#intratype17,textarea#intratype18,textarea#intratype19,textarea#intratype20,textarea#intratype21,textarea#intratype22,textarea#intratype23,textarea#intratype24,textarea#othertype1,textarea#othertype2,textarea#othertype3,textarea#othertype4,textarea#othertype5,textarea#othertype6,textarea#othertype7,textarea#othertype8,textarea#othertype9,textarea#othertype10,textarea#othertype11,textarea#othertype12,textarea#othertype13,textarea#othertype14,textarea#othertype15,textarea#othertype16,textarea#othertype17,textarea#othertype18,textarea#othertype19,textarea#othertype20,textarea#othertype21,textarea#othertype22,textarea#othertype23,textarea#othertype24,textarea#ftxtdosage,textarea#treatment_remarks,textarea#investigation_remarks,textarea#injection_remarks,textarea#problem,textarea#problemdata,textarea#problemintincome,textarea#nursintervention,textarea#nursevaluation,textarea#fitchart_diag,textarea#circulation_diag,textarea#othChart1_diag').each(function () {
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
@@ -2647,6 +3123,7 @@ function cust_rules_nurs(value, name){
         case 'fitchart_time': temp = $("#jqGridFitChart input[name='enteredtime']"); break;
         case 'circulation_time': temp = $("#jqGridCirculation input[name='enteredtime']"); break;
         case 'slidScale_time': temp = $("#jqGridSlidScale input[name='enteredtime']"); break;
+        case 'othChart1_time': temp = $("#jqGridOthChart1 input[name='enteredtime']"); break;
     }
     if(temp == null) return [true,''];
     return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
@@ -2685,6 +3162,10 @@ function enteredtimeCustomEdit_circulation(val,opt,rowObject){
 
 function enteredtimeCustomEdit_slidScale(val,opt,rowObject){
     return $(`<div class="input-group"><input autocomplete="off" name="slidScale_time" type="time" class="form-control input-sm" style="text-transform: uppercase;" value="`+val+`" style="z-index: 0"></div>`);
+}
+
+function enteredtimeCustomEdit_othChart1(val,opt,rowObject){
+    return $(`<div class="input-group"><input autocomplete="off" name="othChart1_time" type="time" class="form-control input-sm" style="text-transform: uppercase;" value="`+val+`" style="z-index: 0"></div>`);
 }
 
 function galGridCustomValue_nurs(elem, operation, value){
