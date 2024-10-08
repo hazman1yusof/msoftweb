@@ -184,7 +184,7 @@ class SalesOrderController extends defaultController
                         'db.cancelled_remark AS db_cancelled_remark',
                         'db.approved_remark AS db_approved_remark',
                         'db.upddate AS db_upddate',
-                        'db.pointofsales AS db_pointofsales'
+                        'db.pointofsales AS db_pointofsales',
                         'db.doctorcode AS db_doctorcode'
                     )
                     ->where('db.compcode',session('compcode'))
