@@ -285,8 +285,8 @@ class PurchaseRequestController extends defaultController
 
             $obj_ = $table->first();
 
-            if(!in_array($obj_->recstatus, ['OPEN','INCOMPLETED','SUPPORT'])){
-                throw new \Exception("Cant Edit this document, status is not OPEN!");
+            if(!in_array($obj_->recstatus, ['OPEN','INCOMPLETED','SUPPORT','PREPARED'])){
+                throw new \Exception("Cant Edit this document, status ERROR!");
             }
 
             $table->update($array_update);

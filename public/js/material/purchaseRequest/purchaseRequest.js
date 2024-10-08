@@ -364,7 +364,7 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			let stat = selrowData("#jqGrid").purreqhd_recstatus;
-			if(stat=='OPEN' || stat=='INCOMPLETED'){
+			if(stat=='OPEN' || stat=='INCOMPLETED' || stat=='SUPPORT' || stat=='PREPARED'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 			}else{
 				if($('#scope').val()=='VERIFIED' && stat=='SUPPORT'){
