@@ -67,45 +67,45 @@
 					style: 'tableExample',
 					table: {
 						headerRows: 1,
-						widths: [50, 10, '*', 50, 10, '*'], //panjang standard dia 515
+						widths: [60, 3, '*', 60, 3, '*'], //panjang standard dia 515
 						body: [
 							[
-								{text: 'GST ID NO', alignment: 'right'},
+								{text: 'BILL DATE', alignment: 'right'},
 								{text: ':'},
-								{text: ''},
-								{},
-								{},
-								{},
+								{text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->entrydate)->format('d-m-Y')}}'},
+								{text: 'BILL NO', alignment: 'right'},
+								{text: ':'},
+								{text: 'INV-{{str_pad($dbacthdr->invno, 6, "0", STR_PAD_LEFT)}}, DO-{{str_pad($dbacthdr->invno, 6, "0", STR_PAD_LEFT)}}'},
 								
 							],
 							[
 								{text: 'DEBTOR', alignment: 'right'},
 								{text: ':'},
 								{text: '{{$dbacthdr->debt_debtcode}}'},
-								{text: 'BILL NO', alignment: 'right'},
+								{text: 'DOCTOR', alignment: 'right'},
 								{text: ':'},
-								{text: 'INV-{{str_pad($dbacthdr->invno, 6, "0", STR_PAD_LEFT)}}, DO-{{str_pad($dbacthdr->invno, 6, "0", STR_PAD_LEFT)}}'},
+								{text: `{!!$dbacthdr->doctorname!!}`},
 							],
 							[
 								{text: 'NAME', alignment: 'right'},
 								{text: ':'},
 								{text: '{{$dbacthdr->debt_name}}'},
-								{text: 'BILL DATE', alignment: 'right'},
+								{text: 'PATIENT', alignment: 'right'},
 								{text: ':'},
-								{text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->entrydate)->format('d-m-Y')}}'},
+								@if(!empty($dbacthdr->mrn))
+									{text: `({{$dbacthdr->mrn}}) {!!$dbacthdr->pm_name!!}`},
+								@else
+									{text: ''},
+								@endif
 								
 							],
 							[
 								{text: 'ADDRESS', alignment: 'right'},
 								{text: ':'},
 								{text: '{{$dbacthdr->cust_address1}}\n{{$dbacthdr->cust_address2}}\n{{$dbacthdr->cust_address3}}\n{{$dbacthdr->cust_address4}}'},
-								{text: 'FIN CLASS', alignment: 'right'},
+								{text: 'ADDRESS', alignment: 'right'},
 								{text: ':'},
-								@if(!empty($dbacthdr->dt_debtortycode) && !empty($dbacthdr->dt_description))
-									{text: '{{$dbacthdr->dt_debtortycode}} ({{$dbacthdr->dt_description}})'},
-								@else
-									{text: ''},
-								@endif
+								{text: `{!!strtoupper($dbacthdr->pm_address1)!!}\n{!!strtoupper($dbacthdr->pm_address2)!!}\n{!!strtoupper($dbacthdr->pm_address3)!!}\n{{strtoupper($dbacthdr->pm_postcode)}}`},
 							],
 							[
 								{text: 'CREDIT TERM', alignment: 'right'},

@@ -93,7 +93,11 @@
 								{text: '{{$salehdr->debtorcode_desc}}'},
 								{text: 'PATIENT', alignment: 'right'},
 								{text: ':'},
-								{text: `({{$salehdr->mrn}}) {!!$salehdr->pm_name!!}`},
+								@if(!empty($salehdr->mrn))
+									{text: `({{$salehdr->mrn}}) {!!$salehdr->pm_name!!}`},
+								@else
+									{text: ''},
+								@endif
 								
 							],
 							[

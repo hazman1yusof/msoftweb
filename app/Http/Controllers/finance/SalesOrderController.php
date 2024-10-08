@@ -324,8 +324,8 @@ class SalesOrderController extends defaultController
                 'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
                 'hdrtype' => strtoupper($request->db_hdrtype),
                 // 'mrn' => strtoupper($request->db_mrn),
-                'mrn' => strtoupper($request->SL_mrn),
-                'doctorcode' => strtoupper($request->SL_doctorcode),
+                'mrn' => strtoupper($request->db_mrn),
+                'doctorcode' => strtoupper($request->db_doctorcode),
                 // 'billno' => $invno,
                 // 'episno' => (!empty($request->db_mrn))?$pat_mast->Episno:null,
                 'termdays' => strtoupper($request->db_termdays),
@@ -499,13 +499,14 @@ class SalesOrderController extends defaultController
             'entrydate' => strtoupper($request->db_entrydate),
             'hdrtype' => strtoupper($request->db_hdrtype),
             // 'mrn' => strtoupper($request->db_mrn),
-            'mrn' => '0',
             'termdays' => strtoupper($request->db_termdays),
             'termmode' => strtoupper($request->db_termmode),
             'orderno' => strtoupper($request->db_orderno),
             'ponum' => strtoupper($request->db_ponum),
             'podate' => (!empty($request->db_podate))?$request->db_podate:null,
             'remark' => strtoupper($request->db_remark),
+            'mrn' => strtoupper($request->db_mrn),
+            'doctorcode' => strtoupper($request->db_doctorcode),
             // 'approvedby' => strtoupper($request->db_approvedby)
         ];
         
@@ -1487,10 +1488,27 @@ class SalesOrderController extends defaultController
 
         $dbacthdr = DB::table('debtor.dbacthdr as h', 'debtor.debtormast as m', 'debtor.debtortype as dt', 'hisdb.billtymst as bt')
             ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate',
-            'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4', 'm.creditterm as crterm','m.billtype as billtype','dt.debtortycode as dt_debtortycode', 'dt.description as dt_description', 'bt.billtype as billtype', 'bt.description as bt_desc')
-            ->leftJoin('debtor.debtormast as m', 'h.debtorcode', '=', 'm.debtorcode')
-            ->leftJoin('debtor.debtortype as dt', 'dt.debtortycode', '=', 'm.debtortype')
-            ->leftJoin('hisdb.billtymst as bt', 'bt.billtype', '=', 'm.billtype')
+            'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4', 'm.creditterm as crterm','m.billtype as billtype','dt.debtortycode as dt_debtortycode', 'dt.description as dt_description', 'bt.billtype as billtype', 'bt.description as bt_desc','pm.Name as pm_name','pm.address1 as pm_address1','pm.address2 as pm_address2','pm.address3 as pm_address3','pm.postcode as pm_postcode','h.doctorcode','dc.doctorname')
+            ->leftJoin('debtor.debtormast as m', function($join) use ($request){
+                $join = $join->on("m.debtorcode", '=', 'h.debtorcode');    
+                $join = $join->where("m.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('debtor.debtortype as dt', function($join) use ($request){
+                $join = $join->on("dt.debtortycode", '=', 'm.debtortype');    
+                $join = $join->where("dt.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('hisdb.billtymst as bt', function($join) use ($request){
+                $join = $join->on("bt.billtype", '=', 'm.billtype');    
+                $join = $join->where("bt.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
+                $join = $join->on("pm.newmrn", '=', 'h.mrn');    
+                $join = $join->where("pm.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('hisdb.doctor as dc', function($join) use ($request){
+                $join = $join->on("dc.doctorcode", '=', 'h.doctorcode');    
+                $join = $join->where("dc.compcode", '=', session('compcode'));
+            })
             ->where('h.idno','=',$idno)
             // ->where('h.mrn','=','0')
             ->where('h.compcode','=',session('compcode'))
