@@ -42,26 +42,26 @@ class TestController extends defaultController
 
     public function table(Request $request){  
         switch($request->action){
-            case 'chgmast_invflag_tukar_dari_product':
-                return $this->chgmast_invflag_tukar_dari_product($request);
-            case 'load_discipline':
-                return $this->load_discipline($request);
-            case 'insert_phst':
-                return $this->insert_phst($request);
-            case 'debtortype_xde':
-                return $this->debtortype_xde($request);
-            case 'set_class':
-                return $this->set_class($request);
-            case 'set_stockloc_unit':
-                return $this->set_stockloc_unit($request);
-            case 'test_alert_auth': //dah xperlu
-                return $this->test_alert_auth($request);
-            case 'test_glmasdtl':
-                return $this->test_glmasdtl($request);
-            case 'get_merge_pdf':
-                return $this->get_merge_pdf($request);
-            case 'update_stockloc_uomcode':
-                return $this->update_stockloc_uomcode($request);
+            // case 'chgmast_invflag_tukar_dari_product':
+            //     return $this->chgmast_invflag_tukar_dari_product($request);
+            // case 'load_discipline':
+            //     return $this->load_discipline($request);
+            // case 'insert_phst':
+            //     return $this->insert_phst($request);
+            // case 'debtortype_xde':
+            //     return $this->debtortype_xde($request);
+            // case 'set_class':
+            //     return $this->set_class($request);
+            // case 'set_stockloc_unit':
+            //     return $this->set_stockloc_unit($request);
+            // case 'test_alert_auth': //dah xperlu
+            //     return $this->test_alert_auth($request);
+            // case 'test_glmasdtl':
+            //     return $this->test_glmasdtl($request);
+            // case 'get_merge_pdf':
+            //     return $this->get_merge_pdf($request);
+            // case 'update_stockloc_uomcode':
+            //     return $this->update_stockloc_uomcode($request);
             // case 'update_productmaster':
                 // return $this->update_productmaster($request);
             // case 'update_stockexp':
@@ -72,8 +72,10 @@ class TestController extends defaultController
             //     return $this->test_email($request);
             // case 'update_supplier':
             //     return $this->update_supplier($request);
-            case 'update_chgmast':
-                return $this->update_chgmast($request);
+            // case 'update_chgmast':
+            //     return $this->update_chgmast($request);
+            case 'update_chgprice':
+                return $this->update_chgprice($request);
             default:
                 return 'error happen..';
         }
@@ -890,6 +892,89 @@ class TestController extends defaultController
                         ]);
 
                     echo nl2br("$i. update chgprice: $obj->chgcode \n");
+                    $i++;
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function update_chgprice(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $chgprice_copy = DB::table('temp.chgprice_copy')
+                            ->where('unit','IMP')
+                            ->get();
+
+            $i = 1;
+            foreach ($chgprice_copy as $obj) {
+                $chgprice = DB::table('temp.chgprice')
+                                    ->where('compcode',$obj->compcode)
+                                    ->where('unit',$obj->unit)
+                                    ->whereDate('effdate',$obj->effdate)
+                                    ->where('chgcode',$obj->chgcode)
+                                    ->where('uom',$obj->uom);
+
+                if($chgprice->exists()){
+                    DB::table('temp.chgprice')
+                        ->where('compcode',$obj->compcode)
+                        ->where('unit',$obj->unit)
+                        ->whereDate('effdate',$obj->effdate)
+                        ->where('chgcode',$obj->chgcode)
+                        ->where('uom',$obj->uom)
+                        ->update([
+                            'amt1' => $obj->amt1,
+                            'amt2' => $obj->amt2,
+                            'amt3' => $obj->amt3,
+                            'iptax' => $obj->iptax,
+                            'optax' => $obj->optax,
+                            'maxamt' => $obj->maxamt,
+                            'costprice' => $obj->costprice,
+                        ]);
+
+                    echo nl2br("$i. update chgprice: $obj->chgcode \n");
+                    $i++;
+                }else{
+                    DB::table('temp.chgprice')
+                        ->insert([
+                            'lineno_' => $obj->lineno_,
+                            'compcode' => $obj->compcode,
+                            'chgcode' => $obj->chgcode,
+                            'uom' => $obj->uom,
+                            'effdate' => $obj->effdate,
+                            'minamt' => $obj->minamt,
+                            'amt1' => $obj->amt1,
+                            'amt2' => $obj->amt2,
+                            'amt3' => $obj->amt3,
+                            'iptax' => $obj->iptax,
+                            'optax' => $obj->optax,
+                            'maxamt' => $obj->maxamt,
+                            'costprice' => $obj->costprice,
+                            'lastuser' => $obj->lastuser,
+                            'lastupdate' => $obj->lastupdate,
+                            'lastfield' => $obj->lastfield,
+                            'unit' => $obj->unit,
+                            'adduser' => $obj->adduser,
+                            'adddate' => $obj->adddate,
+                            'autopull' => $obj->autopull,
+                            'addchg' => $obj->addchg,
+                            'pkgstatus' => $obj->pkgstatus,
+                            'recstatus' => $obj->recstatus,
+                            'deluser' => $obj->deluser,
+                            'deldate' => $obj->deldate,
+                            'lastcomputerid' => $obj->lastcomputerid,
+                            'lastipaddress' => $obj->lastipaddress
+                        ]);
+
+                    echo nl2br("$i. insert chgprice: $obj->chgcode \n");
                     $i++;
                 }
             }
