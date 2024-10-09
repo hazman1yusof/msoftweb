@@ -910,71 +910,28 @@ class TestController extends defaultController
         DB::beginTransaction();
         try {
             
-            $chgprice_copy = DB::table('temp.chgprice_copy')
-                            ->where('unit','IMP')
+            $chgmast = DB::table('temp.chgmast')
                             ->get();
 
             $i = 1;
-            foreach ($chgprice_copy as $obj) {
+            foreach ($chgmast as $obj) {
                 $chgprice = DB::table('temp.chgprice')
                                     ->where('compcode',$obj->compcode)
-                                    ->where('unit',$obj->unit)
-                                    ->whereDate('effdate',$obj->effdate)
+                                    ->whereNull('unit')
                                     ->where('chgcode',$obj->chgcode)
                                     ->where('uom',$obj->uom);
 
                 if($chgprice->exists()){
                     DB::table('temp.chgprice')
                         ->where('compcode',$obj->compcode)
-                        ->where('unit',$obj->unit)
-                        ->whereDate('effdate',$obj->effdate)
+                        ->whereNull('unit')
                         ->where('chgcode',$obj->chgcode)
                         ->where('uom',$obj->uom)
                         ->update([
-                            'amt1' => $obj->amt1,
-                            'amt2' => $obj->amt2,
-                            'amt3' => $obj->amt3,
-                            'iptax' => $obj->iptax,
-                            'optax' => $obj->optax,
-                            'maxamt' => $obj->maxamt,
-                            'costprice' => $obj->costprice,
+                            'unit' => $obj->unit,
                         ]);
 
                     echo nl2br("$i. update chgprice: $obj->chgcode \n");
-                    $i++;
-                }else{
-                    DB::table('temp.chgprice')
-                        ->insert([
-                            'lineno_' => $obj->lineno_,
-                            'compcode' => $obj->compcode,
-                            'chgcode' => $obj->chgcode,
-                            'uom' => $obj->uom,
-                            'effdate' => $obj->effdate,
-                            'minamt' => $obj->minamt,
-                            'amt1' => $obj->amt1,
-                            'amt2' => $obj->amt2,
-                            'amt3' => $obj->amt3,
-                            'iptax' => $obj->iptax,
-                            'optax' => $obj->optax,
-                            'maxamt' => $obj->maxamt,
-                            'costprice' => $obj->costprice,
-                            'lastuser' => $obj->lastuser,
-                            'lastupdate' => $obj->lastupdate,
-                            'lastfield' => $obj->lastfield,
-                            'unit' => $obj->unit,
-                            'adduser' => $obj->adduser,
-                            'adddate' => $obj->adddate,
-                            'autopull' => $obj->autopull,
-                            'addchg' => $obj->addchg,
-                            'pkgstatus' => $obj->pkgstatus,
-                            'recstatus' => $obj->recstatus,
-                            'deluser' => $obj->deluser,
-                            'deldate' => $obj->deldate,
-                            'lastcomputerid' => $obj->lastcomputerid,
-                            'lastipaddress' => $obj->lastipaddress
-                        ]);
-
-                    echo nl2br("$i. insert chgprice: $obj->chgcode \n");
                     $i++;
                 }
             }

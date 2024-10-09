@@ -131,36 +131,36 @@
 				{
 					style: 'tableExample',
 					table: {
-						widths: [90,38,40,40,48,40,40,40,40], //515
+						widths: [143,38,40,40,48,40,40,40], //515
 						body: [
 							[
 								{text:'Description',colSpan: 3, style:'totalbold'},{},{},
 								{text:'UOM', style:'totalbold'},
 								{text:'Quantity', style:'totalbold', alignment: 'right'},
 								{text:'Qty Deliver', style:'totalbold',alignment: 'right'},
-								{text:'Qty On Hand', style:'totalbold',alignment: 'right'},
+								// {text:'Qty On Hand', style:'totalbold',alignment: 'right'},
 								{text:'Unit Price', style:'totalbold', alignment: 'right'},
 								// {text:'Tax Amt', style:'totalbold', alignment: 'right'},
 								{text:'Amount', style:'totalbold', alignment: 'right'},
 							],
 							@foreach ($salesum as $obj)
 							[
-								{text:`{!!$obj->chgmast_desc!!}`,colSpan: 3},{},{},
+								{text:`{!!$obj->chggroup!!} - {!!$obj->chgmast_desc!!}`,colSpan: 3},{},{},
 								{text:`{!!$obj->uom_desc!!}`},
 								{text:'{{$obj->quantity}}', alignment: 'right'},
 								{text:'{{$obj->qtydelivered}}', alignment: 'right'},
-								{text:'{{$obj->qtyonhand}}', alignment: 'right'},
+								// {text:'{{$obj->qtyonhand}}', alignment: 'right'},
 								{text:'{{number_format($obj->unitprice,2)}}', alignment: 'right'},
 								// {text:'{{number_format($obj->taxamt,2)}}', alignment: 'right'},
 								{text:'{{number_format($obj->totamount,2)}}', alignment: 'right'},
 							],
 							@endforeach
 							[
-								{text:'TOTAL', style: 'totalbold', colSpan: 8},{},{},{},{},{},{},{},
+								{text:'TOTAL', style: 'totalbold', colSpan: 7},{},{},{},{},{},{},
 								{text:'{{number_format($salehdr->amount,2)}}', alignment: 'right'}
 							],
 							[
-								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 9}
+								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 8}
 							],
 							[
 								{text:
@@ -169,7 +169,7 @@
 									2. EFT/CDM/ATM payment: ACCOUNT NO: 5641 3753 6420 and fax/email/sms/whatsapp bank slip/transfer note to:\n
 									\u200B\t\u200B\t\u200B\t\u200B\tCREDIT CONTROL DEPT: 03-9173 7346/creditcontrol@ukmsc.com.my/012-914 5906.\n
 									3. Please ensure to receive/request correct receipt after payment is made.`,
-									colSpan: 9},{},{},{},{},{},{},{},{},
+									colSpan: 8},{},{},{},{},{},{},{},
 							],
 						]
 					},
