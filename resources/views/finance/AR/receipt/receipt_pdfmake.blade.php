@@ -61,7 +61,7 @@
                 pageSize: 'A4',
                 content: [
                     {
-                        image: 'letterhead',width:400, height:80, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead',width:275, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
                         text: '\n{{$title}}\n',
@@ -77,36 +77,53 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*', '*'], //panjang standard dia 515
+                            widths: [70,1,'*',70,1,'*'], //panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'RECEIVED FROM : {{$dbacthdr->payername}}' },
+                                    { text: 'RECEIVED FROM' },
+                                    { text: ':'},
+                                    { text: '{{$dbacthdr->payername}}'},
+                                    { text: 'DATE' },
+                                    { text: ':'},
                                     @if(!empty($dbacthdr->posteddate))
-                                        { text: 'DATE : {{\Carbon\Carbon::parse($dbacthdr->posteddate)->format('d/m/Y')}}' },
+                                        { text: '{{\Carbon\Carbon::parse($dbacthdr->posteddate)->format('d/m/Y')}}' },
                                     @else
-                                        { text: 'DATE : ' },
+                                        { text: '' },
                                     @endif
                                 ],
                                 [
-                                    { text: 'RECEIPT NO : {{$dbacthdr->recptno}}' },
-                                    { text: 'CASHIER : {{strtoupper($tilldetl->cashier)}}' },
+                                    { text: 'RECEIPT NO' },
+                                    { text: ':'},
+                                    { text: '{{$dbacthdr->recptno}}' },
+                                    { text: 'CASHIER' },
+                                    { text: ':'},
+                                    { text: '{{strtoupper($tilldetl->cashier)}}' },
                                 ],
                                 [
-                                    { text: 'IC NO : {{$dbacthdr->Newic}}' },
-                                    { text: 'PAY BY : {{$dbacthdr->paymode}}' },
+                                    { text: 'IC NO' },
+                                    { text: ':'},
+                                    { text: '{{$dbacthdr->Newic}}' },
+                                    { text: 'PAY BY' },
+                                    { text: ':'},
+                                    { text: '{{$dbacthdr->paymode}}' },
                                 ],
                                 [
-                                    @if($dbacthdr->mrn == '0')
-                                        { text: 'MRN : ' },
+                                    { text: 'MRN' },
+                                    { text: ':'},
+                                    @if(empty($dbacthdr->mrn))
+                                        { text: '-' },
                                     @else
-                                        { text: 'MRN : {{$dbacthdr->mrn}}' },
+                                        { text: `({{str_pad($dbacthdr->mrn, 7, "0", STR_PAD_LEFT)}}) {!!$dbacthdr->Name!!}` },
                                     @endif
-                                    { text: 'AUTHORISED NO : {{$dbacthdr->authno}}' },
+                                    { text: 'AUTHORISED NO' },
+                                    { text: ':'},
+                                    { text: '{{$dbacthdr->authno}}' },
                                 ],
                             ]
                         },
                         layout: 'noBorders',
                     },
+                    @if(count($dballoc) > 0 )
                     {
                         style: 'tableExample',
                         table: {
@@ -145,6 +162,7 @@
                         },
                         layout: 'lightHorizontalLines',
                     },
+                    @endif
                     {
                         style: 'tableExample',
                         table: {
@@ -224,7 +242,7 @@
                 },
                  images: {
                     letterhead: {
-                        url: '{{asset('/img/MSLetterHead.jpg')}}',
+                        url: "{{asset('/img/letterheadukm.png')}}",
                         headers: {
                             myheader: '123',
                             myotherheader: 'abc',
