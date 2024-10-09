@@ -82,7 +82,7 @@
                                 [
                                     { text: 'RECEIVED FROM' },
                                     { text: ':'},
-                                    { text: '({{str_pad($dbacthdr->mrn, 7, "0", STR_PAD_LEFT)}}) {{$dbacthdr->payername}}'},
+                                    { text: '({{str_pad($dbacthdr->payercode, 7, "0", STR_PAD_LEFT)}}) {{$dbacthdr->payername}}'},
                                     { text: 'DATE' },
                                     { text: ':'},
                                     @if(!empty($dbacthdr->posteddate))
@@ -211,7 +211,7 @@
                         text: '\nTHIS IS COMPUTER GENERATED DOCUMENT. NO SIGNATURE IS REQUIRED.', fontSize: 10, alignment: 'center'
                     },
                     {
-                        text: '\nDate printed: {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d/m/Y')}} {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i')}} by {{session('username')}}', fontSize: 7, alignment: 'center'
+                        text: 'Date printed: {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d/m/Y')}} {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i')}} by {{session('username')}}', fontSize: 7, alignment: 'center'
                     },
                 ],
                 styles: {
