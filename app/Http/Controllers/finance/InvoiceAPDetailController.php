@@ -155,6 +155,9 @@ class InvoiceAPDetailController extends defaultController
             }
 
             if(empty($auditno)){
+                $apacthdr = DB::table("finance.apacthdr")
+                            ->where('idno','=',$request->idno);
+
                 $auditno = $this->recno($apacthdr->first()->source, $apacthdr->first()->trantype);
 
                 DB::table("finance.apacthdr")
