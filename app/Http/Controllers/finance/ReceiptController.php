@@ -764,7 +764,7 @@ class ReceiptController extends defaultController
         // }
         
         $dbacthdr = DB::table('debtor.dbacthdr as d', 'hisdb.pat_mast as p')
-                    ->select('d.idno', 'd.compcode', 'd.source', 'd.trantype', 'd.auditno', 'd.lineno_', 'd.amount', 'd.outamount', 'd.recstatus', 'd.entrydate', 'd.entrytime', 'd.entryuser', 'd.reference', 'd.recptno', 'd.paymode', 'd.tillcode', 'd.tillno', 'd.debtortype', 'd.payercode', 'd.billdebtor', 'd.remark', 'd.mrn', 'd.episno', 'd.authno', 'd.expdate', 'd.adddate', 'd.epistype', 'd.cbflag', 'd.conversion', 'd.payername', 'd.hdrtype', 'd.currency', 'd.rate', 'd.unit', 'd.invno', 'd.paytype', 'd.bankcharges', 'd.RCCASHbalance', 'd.RCOSbalance', 'd.RCFinalbalance', 'd.PymtDescription', 'd.posteddate', 'p.Name', 'p.Newic')
+                    ->select('d.idno', 'd.compcode', 'd.source', 'd.trantype', 'd.auditno', 'd.lineno_', 'd.amount', 'd.outamount', 'd.recstatus', 'd.entrydate', 'd.entrytime', 'd.entryuser', 'd.reference', 'd.recptno', 'd.paymode', 'd.tillcode', 'd.tillno', 'd.debtortype', 'd.payercode', 'd.billdebtor', 'd.remark', 'd.mrn', 'd.episno', 'd.authno', 'd.expdate', 'd.adddate', 'd.epistype', 'd.cbflag', 'd.conversion', 'd.payername', 'd.hdrtype', 'd.currency', 'd.rate', 'd.unit', 'd.invno', 'd.paytype', 'd.bankcharges', 'd.RCCASHbalance', 'd.RCOSbalance', 'd.RCFinalbalance', 'd.PymtDescription', 'd.posteddate', 'p.Name', 'p.Newic', 'p.Newmrn')
                     ->leftjoin('hisdb.pat_mast as p', function($join) use ($request){
                         $join = $join->on('p.MRN', '=', 'd.mrn')
                                     ->where('p.compcode','=',session('compcode'));

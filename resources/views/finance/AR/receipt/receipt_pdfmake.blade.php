@@ -77,12 +77,12 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [70,1,'*',70,1,'*'], //panjang standard dia 515
+                            widths: [70,1,'*',70,1,70], //panjang standard dia 515
                             body: [
                                 [
                                     { text: 'RECEIVED FROM' },
                                     { text: ':'},
-                                    { text: '{{$dbacthdr->payername}}'},
+                                    { text: '({{str_pad($dbacthdr->mrn, 7, "0", STR_PAD_LEFT)}}) {{$dbacthdr->payername}}'},
                                     { text: 'DATE' },
                                     { text: ':'},
                                     @if(!empty($dbacthdr->posteddate))
@@ -205,10 +205,13 @@
                         text: '- Item listed are considered sold and neither returnable nor refundable.', fontSize: 9,
                     },
                     {
-                        text: 'Date printed: {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d/m/Y')}} {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i')}} by {{session('username')}}', fontSize: 9,
+                        text: '\nNote: \nValidity of receipt subject to clearing of cheques. Any refund below RM2000.00 will be on the same day, otherwise within 2 weeks by cheque. Please bring official receipt upon collection of refund', fontSize: 9,
                     },
                     {
                         text: '\nTHIS IS COMPUTER GENERATED DOCUMENT. NO SIGNATURE IS REQUIRED.', fontSize: 10, alignment: 'center'
+                    },
+                    {
+                        text: '\nDate printed: {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d/m/Y')}} {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i')}} by {{session('username')}}', fontSize: 7, alignment: 'center'
                     },
                 ],
                 styles: {
