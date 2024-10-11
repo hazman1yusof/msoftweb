@@ -948,15 +948,15 @@ class TestController extends defaultController
         }
     }
 
-    public function betulkandb(Request $request){
+    public function betulkandb_dbacthdr(Request $request){
         DB::beginTransaction();
         try {
             
-            $dbactdtl = DB::table('debtor.dbactdtl')
+            $billsum = DB::table('debtor.billsum')
                             ->get();
 
             $i = 1;
-            foreach ($dbactdtl as $obj) {
+            foreach ($billsum as $obj) {
                 // $dbactdtl = DB::table('debtor.dbactdtl')
                 //                     ->where('source','PB')
                 //                     ->where('trantype','IN');
@@ -968,7 +968,7 @@ class TestController extends defaultController
 
                 if(!$dbacthdr->exists()){
 
-                    $amount = DB::table('debtor.dbactdtl')
+                    $amount = DB::table('debtor.billsum')
                                 ->where('source','PB')
                                 ->where('trantype','IN')
                                 ->where('billno',$obj->billno)
@@ -993,7 +993,7 @@ class TestController extends defaultController
                             'paymode' => 'CASH',
                             // 'tillcode' => ,
                             // 'tillno' => ,
-                            'debtortype' => ,
+                            // 'debtortype' => ,
                             'debtorcode' => $obj->mrn,
                             'payercode' => $obj->mrn,
                             // 'billdebtor' => ,
@@ -1015,7 +1015,7 @@ class TestController extends defaultController
                             'hdrtype' => 'OP',
                             // 'currency' => ,
                             // 'rate' => ,
-                            'unit' => $obj->unit,
+                            'unit' => 'IMP',
                             // 'invno' => ,
                             'paytype' => '#F_TAB-CASH',
                             // 'bankcharges' => ,
@@ -1045,9 +1045,540 @@ class TestController extends defaultController
                             'doctorcode' => 'GP',
                         ]);
 
-                    echo nl2br("$i. update dbacthdr: $obj->chgcode \n");
+                    echo nl2br("$i. update dbacthdr: $obj->billno \n");
                     $i++;
                 }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function betulkandb_purreqhd(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $purreqdt = DB::table('material.purreqdt')
+                            ->get();
+
+            $i = 1;
+            foreach ($purreqdt as $obj) {
+                // $dbactdtl = DB::table('debtor.dbactdtl')
+                //                     ->where('source','PB')
+                //                     ->where('trantype','IN');
+
+                $purreqhd = DB::table('material.purreqhd')
+                                    ->where('recno',$obj->recno);
+
+                if(!$purreqhd->exists()){
+
+                    $amount = DB::table('material.purreqdt')
+                                    ->where('recno',$obj->recno)
+                                    ->sum('totamount');
+
+                    if($obj->unit != 'MRS'){
+                        $prdept = $obj->unit;
+                    }else{
+                        $prdept = 'PCS';
+                    }
+
+                    DB::table('material.purreqhd')
+                        ->insert([
+                            'compcode' => '9B',
+                            'reqdept' => $obj->reqdept,
+                            'purreqno' => $obj->purreqno,
+                            'purreqdt' => Carbon::parse($obj->adddate)->format('Y-m-d'),
+                            'recno' => $obj->recno,
+                            // 'reqpersonid' => $obj->,
+                            'prdept' => $prdept,
+                            // 'authpersonid' => $obj->,
+                            // 'authdate' => $obj->,
+                            'remarks' => $obj->remarks,
+                            'recstatus' => $obj->recstatus,
+                            'subamount' => $obj->amount,
+                            // 'amtdisc' => $obj->,
+                            // 'perdisc' => $obj->,
+                            'totamount' => $obj->amount,
+                            'adduser' => 'system',
+                            // 'adddate' => $obj->,
+                            'upduser' => 'system',
+                            // 'upddate' => $obj->,
+                            // 'cancelby' => $obj->,
+                            // 'canceldate' => $obj->,
+                            // 'reopenby' => $obj->,
+                            // 'reopendate' => $obj->,
+                            // 'suppcode' => $obj->suppcode,
+                            'purordno' => $obj->purordno,
+                            // 'prortdisc' => $obj->,
+                            'unit' => $obj->unit,
+                            'trantype' => 'PR',
+                            // 'TaxAmt' => $obj->,
+                            'requestby' => $obj->adduser,
+                            'requestdate' => $obj->adddate,
+                            'supportby' => 'system',
+                            'supportdate' => $obj->adddate,
+                            'verifiedby' => 'system',
+                            'verifieddate' => $obj->adddate,
+                            'approvedby' => 'system',
+                            'approveddate' => $obj->adddate,
+                            'prtype' => 'OTHERS',
+                            // 'assetno' => $obj->,
+                        ]);
+
+                    echo nl2br("$i. update purreqhd: $obj->recno \n");
+                    $i++;
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function betulkandb_purordhd(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $purorddt = DB::table('material.purorddt')
+                            ->get();
+
+            $i = 1;
+            foreach ($purorddt as $obj) {
+
+                $purordhd = DB::table('material.purordhd')
+                                    ->where('recno',$obj->recno);
+
+                if(!$purordhd->exists()){
+
+                    $amount = DB::table('material.purorddt')
+                                    ->where('recno',$obj->recno)
+                                    ->sum('totamount');
+
+                    if($obj->unit != "W'HOUSE"){
+                        $prtype = 'STOCK';
+                    }else{
+                        $prtype = 'OTHERS';
+                    }
+
+                    DB::table('material.purordhd')
+                        ->insert([
+                             'recno' => $obj->recno,
+                             'prdept' => $obj->prdept,
+                             'purordno' => $obj->purordno,
+                             'compcode' => '9B',
+                             'reqdept' => $obj->reqdept,
+                             'purreqno' => $obj->purreqno,
+                             'deldept' => $obj->prdept,
+                             'purdate' => Carbon::parse($obj->adddate)->format('Y-m-d'),
+                             // 'expecteddate' => $obj->,
+                             // 'expirydate' => $obj->,
+                             'suppcode' => $obj->suppcode,
+                             // 'credcode' => $obj->,
+                             // 'termdays' => $obj->,
+                             'subamount' => $amount,
+                             // 'amtdisc' => $obj->,
+                             // 'perdisc' => $obj->,
+                             'totamount' => $amount,
+                             // 'taxclaimable' => $obj->,
+                             // 'isspersonid' => $obj->,
+                             // 'issdate' => $obj->,
+                             // 'authpersonid' => $obj->,
+                             // 'authdate' => $obj->,
+                             'remarks' => $obj->remarks,
+                             'recstatus' => $obj->recstatus,
+                             'adduser' => 'SYSTEM',
+                             'adddate' => $obj->adddate,
+                             // 'upduser' => $obj->,
+                             // 'upddate' => $obj->,
+                             // 'assflg' => $obj->,
+                             // 'potype' => $obj->,
+                             // 'delordno' => $obj->,
+                             // 'expflg' => $obj->,
+                             // 'prortdisc' => $obj->,
+                             // 'cancelby' => $obj->,
+                             // 'canceldate' => $obj->,
+                             // 'reopenby' => $obj->,
+                             // 'reopendate' => $obj->,
+                             // 'TaxAmt' => $obj->,
+                             // 'postedby' => $obj->,
+                             // 'postdate' => $obj->,
+                             'unit' => $obj->unit,
+                             'trantype' => 'PO',
+                             'requestby' => $obj->adduser,
+                             'requestdate' => $obj->adddate,
+                             'supportby' => 'SYSTEM',
+                             'supportdate' => $obj->adddate,
+                             'verifiedby' => 'SYSTEM',
+                             'verifieddate' => $obj->adddate,
+                             'approvedby' => 'SYSTEM',
+                             'approveddate' => $obj->adddate,
+                             // 'support_remark' => $obj->,
+                             // 'verified_remark' => $obj->,
+                             // 'approved_remark' => $obj->,
+                             // 'cancelled_remark' => $obj->,
+                             'prtype' => $prtype,
+                             // 'assetno' => $obj->,
+                        ]);
+
+                    echo nl2br("$i. update purordhd: $obj->recno \n");
+                    $i++;
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function betulkandb_delorddt(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $ivtxndt = DB::table('material.ivtxndt')
+                            ->get();
+
+            $i = 1;
+            foreach ($ivtxndt as $obj) {
+                DB::table('material.delorddt')
+                    ->insert([
+                        'compcode' => $obj->compcode,
+                        'recno' => $obj->recno,
+                        'lineno_' => $obj->lineno_,
+                        'pricecode' => 'IV',
+                        'itemcode' => $obj->itemcode,
+                        'uomcode' => $obj->uomcode,
+                        'pouom' => $obj->uomcode,
+                        // 'suppcode' => $obj->,
+                        'trandate' => $obj->adddate,
+                        // 'deldept' => $obj->,
+                        // 'deliverydate' => $obj->,
+                        // 'qtytag' => $obj->,
+                        'unitprice' => $obj->netprice,
+                        // 'amtdisc' => $obj->,
+                        // 'perdisc' => $obj->,
+                        // 'prortdisc' => $obj->,
+                        // 'amtslstax' => $obj->,
+                        // 'perslstax' => $obj->,
+                        'netunitprice' => $obj->netprice,
+                        'remarks' => $obj->remarks,
+                        'expdate' => $obj->expdate,
+                        'batchno' => $obj->batchno,
+                        // 'sitemcode' => $obj->,
+                        'adduser' => $obj->adduser,
+                        'adddate' => $obj->adddate,
+                        // 'upduser' => $obj->,
+                        // 'upddate' => $obj->,
+                        // 'discflg' => $obj->,
+                        // 'discval' => $obj->,
+                        'qtyorder' => $obj->txnqty,
+                        'qtydelivered' => $obj->txnqty,
+                        // 'qtyoutstand' => $obj->,
+                        // 'productcat' => $obj->,
+                        // 'draccno' => $obj->,
+                        // 'drccode' => $obj->,
+                        // 'craccno' => $obj->,
+                        // 'crccode' => $obj->,
+                        // 'source' => $obj->,
+                        // 'updtime' => $obj->,
+                        'polineno' => $obj->lineno_,
+                        // 'itemmargin' => $obj->,
+                        'amount' => $obj->amount,
+                        // 'deluser' => $obj->,
+                        // 'deldate' => $obj->,
+                        'recstatus' => 'POSTED',
+                        // 'taxcode' => $obj->,
+                        'totamount' => $obj->amount,
+                        // 'qtyreturned' => $obj->,
+                        // 'rem_but' => $obj->,
+                        'unit' => $obj->unit,
+                        // 'prdept' => $obj->,
+                        // 'srcdocno' => $obj->,
+                        // 'kkmappno' => $obj->,
+                    ]);
+
+                echo nl2br("$i. update delorddt: $obj->recno \n");
+                $i++;
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function betulkandb_apacthdr(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $apalloc = DB::table('finance.apalloc')
+                            ->get();
+
+            $i = 1;
+            foreach ($apalloc as $obj) {
+
+                // $apacthdr_al = DB::table('finance.apacthdr')
+                //             ->where('source','AP')
+                //             ->where('trantype','AL')
+                //             ->where('auditno',$obj->refauditno);
+
+                $apacthdr_pv = DB::table('finance.apacthdr')
+                            ->where('source','AP')
+                            ->where('trantype','PV')
+                            ->where('auditno',$obj->docauditno);
+
+                if(!$apacthdr_pv->exists()){
+
+                    $amount = DB::table('finance.apactdtl')
+                            ->where('source','AP')
+                            ->where('trantype','PV')
+                            ->where('auditno',$obj->docauditno)
+                            ->sum('amount');
+
+                    DB::table('finance.apacthdr')
+                        ->insert([
+                            'compcode' => '9B',
+                            'source' => 'AP',
+                            'trantype' => 'PV',
+                            // 'doctype' => 'Others',
+                            'auditno' => $obj->docauditno,
+                            'document' => $obj->reference,
+                            'suppcode' => $obj->suppcode,
+                            'payto' => $obj->suppcode,
+                            'suppgroup' => 'TR',
+                            // 'bankcode' => $obj->,
+                            // 'paymode' => $obj->,
+                            // 'cheqno' => $obj->,
+                            // 'cheqdate' => $obj->,
+                            'actdate' => $obj->lastupdate,
+                            'recdate' => $obj->lastupdate,
+                            // 'category' => $apactdtl->category,
+                            'amount' => $amount,
+                            'outamount' => 0,
+                            'remarks' => $obj->remarks,
+                            // 'postflag' => $obj->,
+                            // 'doctorflag' => $obj->,
+                            // 'stat' => $obj->,
+                            // 'entryuser' => $obj->,
+                            // 'entrytime' => $obj->,
+                            // 'upduser' => $obj->,
+                            // 'upddate' => $obj->,
+                            // 'conversion' => $obj->,
+                            // 'srcfrom' => $obj->,
+                            // 'srcto' => $obj->,
+                            // 'deptcode' => $apactdtl->deptcode,
+                            // 'reconflg' => $obj->,
+                            // 'effectdatefr' => $obj->,
+                            // 'effectdateto' => $obj->,
+                            // 'frequency' => $obj->,
+                            // 'refsource' => $obj->,
+                            // 'reftrantype' => $obj->,
+                            // 'refauditno' => $obj->,
+                            // 'pvno' => $obj->,
+                            // 'entrydate' => $obj->,
+                            'recstatus' => $obj->recstatus,
+                            // 'adduser' => $obj->,
+                            // 'adddate' => $obj->,
+                            // 'reference' => $obj->,
+                            // 'TaxClaimable' => $obj->,
+                            'unit' => $obj->unit,
+                            // 'allocdate' => $obj->,
+                            // 'postuser' => $obj->,
+                            // 'postdate' => $obj->,
+                            // 'unallocated' => $obj->,
+                            'requestby' => 'SYSTEM',
+                            'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            // 'request_remark' => $obj->,
+                            // 'supportby' => $obj->,
+                            // 'supportdate' => $obj->,
+                            // 'support_remark' => $obj->,
+                            // 'verifiedby' => $obj->,
+                            // 'verifieddate' => $obj->,
+                            // 'verified_remark' => $obj->,
+                            // 'approvedby' => $obj->,
+                            // 'approveddate' => $obj->,
+                            // 'approved_remark' => $obj->,
+                            // 'cancelby' => $obj->,
+                            // 'canceldate' => $obj->,
+                            // 'cancelled_remark' => $obj->,
+                            // 'bankaccno' => $obj->,
+                        ]);
+
+                }
+
+                echo nl2br("$i. update apacthdr: $obj->docauditno \n");
+                $i++;
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function betulkandb_glmasdtl(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $glmasdtl = DB::table('finance.glmasdtl')
+                            ->where('compcode','9B')
+                            ->get();
+
+            $i = 1;
+            foreach ($glmasdtl as $obj) {
+                $db = DB::table('finance.gltran')
+                            ->where('compcode','9B')
+                            ->where('year','2024')
+                            ->where('period','10')
+                            ->where('drcostcode',$obj->costcode)
+                            ->where('dracc',$obj->glaccount)
+                            ->sum('amount');
+
+                $cr = DB::table('finance.gltran')
+                            ->where('compcode','9B')
+                            ->where('year','2024')
+                            ->where('period','10')
+                            ->where('crcostcode',$obj->costcode)
+                            ->where('cracc',$obj->glaccount)
+                            ->sum('amount');
+
+                $tot = $db-$cr;
+
+
+                DB::table('finance.glmasdtl')
+                            ->where('compcode','9B')
+                            ->where('costcode',$obj->costcode)
+                            ->where('glaccount',$obj->glaccount)
+                            ->where('year','2024')
+                            ->update([
+                                'actamount10' => $tot
+                            ]);
+
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function betulkandb_purreqhd(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $purordhd = DB::table('material.purreqhd')
+                            ->where('recstatus','PREPARED')
+                            ->orWhere('recstatus','SUPPORT')
+                            ->orWhere('recstatus','VERIFIED')
+                            ->get();
+
+            $i = 1;
+            foreach ($purordhd as $obj) {
+
+                if($obj->recstatus == 'PREPARED'){
+                    $trantype = 'SUPPORT';
+                }else if($obj->recstatus == 'SUPPORT'){
+                    $trantype = 'VERIFIED';
+                }else{
+                    $trantype = 'APPROVED';
+                }
+
+                DB::table('material.queuepr')
+                    ->insert([
+                        'compcode' => '9A',
+                        // 'idno' => $obj->,
+                        'recno' => $obj->recno,
+                        'AuthorisedID' => 'SYSTEM',
+                        'deptcode' => $obj->reqdept,
+                        'recstatus' => $obj->recstatus,
+                        'trantype' => $trantype,
+                        // 'adduser' => $obj->,
+                        // 'adddate' => $obj->,
+                        // 'upduser' => $obj->,
+                        // 'upddate' => $obj->,
+                        'prtype' => $obj->prtype,
+                    ]);
+
+                echo nl2br("$i. update queuepr: $obj->recno \n");
+                $i++;
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function betulkandb(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $purordhd = DB::table('material.purreqhd')
+                            ->where('recstatus','PREPARED')
+                            ->orWhere('recstatus','SUPPORT')
+                            ->orWhere('recstatus','VERIFIED')
+                            ->get();
+
+            $i = 1;
+            foreach ($purordhd as $obj) {
+
+                if($obj->recstatus == 'PREPARED'){
+                    $trantype = 'SUPPORT';
+                }else if($obj->recstatus == 'SUPPORT'){
+                    $trantype = 'VERIFIED';
+                }else{
+                    $trantype = 'APPROVED';
+                }
+
+                DB::table('material.queuepr')
+                    ->insert([
+                        'compcode' => '9A',
+                        // 'idno' => $obj->,
+                        'recno' => $obj->recno,
+                        'AuthorisedID' => 'SYSTEM',
+                        'deptcode' => $obj->reqdept,
+                        'recstatus' => $obj->recstatus,
+                        'trantype' => $trantype,
+                        // 'adduser' => $obj->,
+                        // 'adddate' => $obj->,
+                        // 'upduser' => $obj->,
+                        // 'upddate' => $obj->,
+                        'prtype' => $obj->prtype,
+                    ]);
+
+                echo nl2br("$i. update queuepr: $obj->recno \n");
+                $i++;
             }
 
             DB::commit();
