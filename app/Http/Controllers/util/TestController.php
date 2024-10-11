@@ -76,6 +76,8 @@ class TestController extends defaultController
             //     return $this->update_chgmast($request);
             case 'update_chgprice':
                 return $this->update_chgprice($request);
+            case 'betulkandb':
+                return $this->betulkandb($request);
             default:
                 return 'error happen..';
         }
@@ -932,6 +934,118 @@ class TestController extends defaultController
                         ]);
 
                     echo nl2br("$i. update chgprice: $obj->chgcode \n");
+                    $i++;
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function betulkandb(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $dbactdtl = DB::table('debtor.dbactdtl')
+                            ->get();
+
+            $i = 1;
+            foreach ($dbactdtl as $obj) {
+                // $dbactdtl = DB::table('debtor.dbactdtl')
+                //                     ->where('source','PB')
+                //                     ->where('trantype','IN');
+
+                $dbacthdr = DB::table('debtor.dbacthdr')
+                                    ->where('source','PB')
+                                    ->where('trantype','IN')
+                                    ->where('auditno',$obj->billno);
+
+                if(!$dbacthdr->exists()){
+
+                    $amount = DB::table('debtor.dbactdtl')
+                                ->where('source','PB')
+                                ->where('trantype','IN')
+                                ->where('billno',$obj->billno)
+                                ->sum('amount');
+
+
+                    DB::table('debtor.dbacthdr')
+                        ->insert([
+                            'compcode' => '9B',
+                            'source' => 'PB',
+                            'trantype' => 'IN',
+                            'auditno' => $obj->billno,
+                            'lineno_' => 1,
+                            'amount' => $amount,
+                            'outamount' => $amount,
+                            'recstatus' => $obj->recstatus,
+                            'entrydate' => Carbon::parse($obj->lastupdate)->format('Y-m-d'),
+                            // 'entrytime' => ,
+                            // 'entryuser' => ,
+                            // 'reference' => ,
+                            // 'recptno' => ,
+                            'paymode' => 'CASH',
+                            // 'tillcode' => ,
+                            // 'tillno' => ,
+                            'debtortype' => ,
+                            'debtorcode' => $obj->mrn,
+                            'payercode' => $obj->mrn,
+                            // 'billdebtor' => ,
+                            // 'remark' => ,
+                            'mrn' => $obj->mrn,
+                            // 'episno' => ,
+                            // 'authno' => ,
+                            // 'expdate' => ,
+                            // 'adddate' => ,
+                            // 'adduser' => ,
+                            // 'upddate' => ,
+                            // 'upduser' => ,
+                            // 'deldate' => ,
+                            // 'deluser' => ,
+                            // 'epistype' => ,
+                            // 'cbflag' => ,
+                            // 'conversion' => ,
+                            // 'payername' => ,
+                            'hdrtype' => 'OP',
+                            // 'currency' => ,
+                            // 'rate' => ,
+                            'unit' => $obj->unit,
+                            // 'invno' => ,
+                            'paytype' => '#F_TAB-CASH',
+                            // 'bankcharges' => ,
+                            // 'RCCASHbalance' => ,
+                            // 'RCOSbalance' => ,
+                            // 'RCFinalbalance' => ,
+                            // 'PymtDescription' => ,
+                            // 'orderno' => ,
+                            // 'ponum' => ,
+                            // 'podate' => ,
+                            'termdays' => '30',
+                            'termmode' => 'DAYS',
+                            'deptcode' => 'IMP',
+                            // 'posteddate' => ,
+                            // 'approvedby' => ,
+                            // 'approveddate' => ,
+                            // 'approved_remark' => ,
+                            // 'unallocated' => ,
+                            // 'datesend' => ,
+                            // 'quoteno' => ,
+                            // 'preparedby' => ,
+                            // 'prepareddate' => ,
+                            // 'cancelby' => ,
+                            // 'canceldate' => ,
+                            // 'cancelled_remark' => ,
+                            'pointofsales' => 0,
+                            'doctorcode' => 'GP',
+                        ]);
+
+                    echo nl2br("$i. update dbacthdr: $obj->chgcode \n");
                     $i++;
                 }
             }
