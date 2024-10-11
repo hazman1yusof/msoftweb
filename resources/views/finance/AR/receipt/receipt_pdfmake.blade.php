@@ -77,14 +77,14 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [70,1,'*',70,1,70], //panjang standard dia 515
+                            widths: [70,1,'*',70,1,70], // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'RECEIVED FROM' },
-                                    { text: ':'},
-                                    { text: '({{str_pad($dbacthdr->payercode, 7, "0", STR_PAD_LEFT)}}) {{$dbacthdr->payername}}'},
+                                    { text: ':' },
+                                    { text: '({{str_pad($dbacthdr->payercode, 7, "0", STR_PAD_LEFT)}}) {{$dbacthdr->payername}}' },
                                     { text: 'DATE' },
-                                    { text: ':'},
+                                    { text: ':' },
                                     @if(!empty($dbacthdr->posteddate))
                                         { text: '{{\Carbon\Carbon::parse($dbacthdr->posteddate)->format('d/m/Y')}}' },
                                     @else
@@ -93,30 +93,30 @@
                                 ],
                                 [
                                     { text: 'RECEIPT NO' },
-                                    { text: ':'},
+                                    { text: ':' },
                                     { text: '{{$dbacthdr->recptno}}' },
                                     { text: 'CASHIER' },
-                                    { text: ':'},
+                                    { text: ':' },
                                     { text: '{{strtoupper($tilldetl->cashier)}}' },
                                 ],
                                 [
                                     { text: 'IC NO' },
-                                    { text: ':'},
+                                    { text: ':' },
                                     { text: '{{$dbacthdr->Newic}}' },
                                     { text: 'PAY BY' },
-                                    { text: ':'},
+                                    { text: ':' },
                                     { text: '{{$dbacthdr->paymode}}' },
                                 ],
                                 [
                                     { text: 'MRN' },
-                                    { text: ':'},
+                                    { text: ':' },
                                     @if(empty($dbacthdr->mrn))
                                         { text: '-' },
                                     @else
                                         { text: `({{str_pad($dbacthdr->mrn, 7, "0", STR_PAD_LEFT)}}) {!!$dbacthdr->Name!!}` },
                                     @endif
                                     { text: 'AUTHORISED NO' },
-                                    { text: ':'},
+                                    { text: ':' },
                                     { text: '{{$dbacthdr->authno}}' },
                                 ],
                             ]
@@ -128,7 +128,7 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [160,160,40,40,47],  //panjang standard dia 515
+                            widths: [160,160,40,40,47], // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'Description', style: 'tableHeader' },
@@ -167,7 +167,7 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*'], //panjang standard dia 515
+                            widths: ['*'], // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'REFERENCE NO : {{$dbacthdr->reference}}' },
@@ -184,7 +184,7 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*', '*'], //panjang standard dia 515
+                            widths: ['*', '*'], // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'Ringgit Malaysia', style: 'tableHeader' },
@@ -198,6 +198,49 @@
                         },
                         layout: 'noBorders',
                     },
+                    @if($dbacthdr->trantype == 'RD')
+                        {
+                            style: 'tableExample',
+                            table: {
+                                headerRows: 1,
+                                widths: [65,1,80], // panjang standard dia 515
+                                body: [
+                                    [
+                                        { text: 'REFUND INFORMATION', alignment: 'center', bold: true, colSpan: 3, border: [true, true, true, false] },{},{},
+                                    ],
+                                    [
+                                        { text: 'PAYABLE TO', border: [true, false, false, false] },
+                                        { text: ':', border: [false, false, false, false] },
+                                        { text: '___________________', border: [false, false, true, false] },
+                                    ],
+                                    [
+                                        { text: 'IC NO', border: [true, false, false, false] },
+                                        { text: ':', border: [false, false, false, false] },
+                                        { text: '___________________', border: [false, false, true, false] },
+                                    ],
+                                    [
+                                        { text: 'BANK NAME', border: [true, false, false, false] },
+                                        { text: ':', border: [false, false, false, false] },
+                                        { text: '___________________', border: [false, false, true, false] },
+                                    ],
+                                    [
+                                        { text: 'BANK ACCT NO', border: [true, false, false, false] },
+                                        { text: ':', border: [false, false, false, false] },
+                                        { text: '___________________', border: [false, false, true, false] },
+                                    ],
+                                    [
+                                        { text: 'CONTACT NO', border: [true, false, false, false] },
+                                        { text: ':', border: [false, false, false, false] },
+                                        { text: '___________________', border: [false, false, true, false] },
+                                    ],
+                                    [
+                                        { text: 'PATIENT / NEXT OF KIN', colSpan: 3, border: [true, false, true, true] },{},{},
+                                    ],
+                                ]
+                            },
+                            // layout: 'noBorders',
+                        },
+                    @endif
                     {
                         text: 'Terms and Condition:', fontSize: 9,
                     },
