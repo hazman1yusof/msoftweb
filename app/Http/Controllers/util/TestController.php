@@ -1489,7 +1489,7 @@ class TestController extends defaultController
         }
     }
 
-    public function betulkandb_purreqhd(Request $request){
+    public function betulkandb_queuepr(Request $request){
         DB::beginTransaction();
         try {
             
@@ -1544,41 +1544,66 @@ class TestController extends defaultController
         DB::beginTransaction();
         try {
             
-            $purordhd = DB::table('material.purreqhd')
-                            ->where('recstatus','PREPARED')
-                            ->orWhere('recstatus','SUPPORT')
-                            ->orWhere('recstatus','VERIFIED')
+            $stockloc = DB::table('temp.stockloc')
                             ->get();
 
             $i = 1;
-            foreach ($purordhd as $obj) {
+            foreach ($stockloc as $obj) {
 
-                if($obj->recstatus == 'PREPARED'){
-                    $trantype = 'SUPPORT';
-                }else if($obj->recstatus == 'SUPPORT'){
-                    $trantype = 'VERIFIED';
-                }else{
-                    $trantype = 'APPROVED';
+                $product = DB::table('temp.product')
+                                ->where('compcode','9B')
+                                ->where('unit',"W'HOUSE")
+                                ->where('itemcode',$obj->itemcode)
+                                ->where('uomcode','!=',$obj->uomcode);
+
+                if($product->exists()){
+                    DB::table('temp.product')
+                                ->where('compcode','9B')
+                                ->where('unit',"W'HOUSE")
+                                ->where('itemcode',$obj->itemcode)
+                                ->update([
+                                    'uomcode' => $obj->uomcode
+                                ]);
                 }
 
-                DB::table('material.queuepr')
-                    ->insert([
-                        'compcode' => '9A',
-                        // 'idno' => $obj->,
-                        'recno' => $obj->recno,
-                        'AuthorisedID' => 'SYSTEM',
-                        'deptcode' => $obj->reqdept,
-                        'recstatus' => $obj->recstatus,
-                        'trantype' => $trantype,
-                        // 'adduser' => $obj->,
-                        // 'adddate' => $obj->,
-                        // 'upduser' => $obj->,
-                        // 'upddate' => $obj->,
-                        'prtype' => $obj->prtype,
-                    ]);
+                $chgmast = DB::table('temp.chgmast')
+                                ->where('compcode','9B')
+                                ->where('unit',"W'HOUSE")
+                                ->where('itemcode',$obj->itemcode)
+                                ->where('uomcode','!=',$obj->uomcode);
 
-                echo nl2br("$i. update queuepr: $obj->recno \n");
-                $i++;
+                if($product->exists()){
+                    DB::table('temp.product')
+                                ->where('compcode','9B')
+                                ->where('unit',"W'HOUSE")
+                                ->where('itemcode',$obj->itemcode)
+                                ->update([
+                                    'uomcode' => $obj->uomcode
+                                ]);
+                }
+
+                // if(!$product->exists()){
+                //     dump('Product doesnt exists: '.$obj->itemcode.' , '.$obj->uomcode);
+                // }
+
+                // $qtyonhand = DB::table('temp.stockloc')
+                //                 ->where('compcode','9B')
+                //                 ->where('unit',"W'HOUSE")
+                //                 ->where('itemcode',$obj->itemcode)
+                //                 ->where('uomcode',$obj->uomcode)
+                //                 ->sum('qtyonhand');
+
+                // DB::table('temp.product')
+                //                 ->where('compcode','9B')
+                //                 ->where('unit',"W'HOUSE")
+                //                 ->where('itemcode',$obj->itemcode)
+                //                 ->where('uomcode',$obj->uomcode)
+                //                 ->update([
+                //                     'qtyonhand' => $qtyonhand
+                //                 ]);
+
+                // echo nl2br("$i. update product: $obj->qtyonhand \n");
+                // $i++;
             }
 
             DB::commit();
