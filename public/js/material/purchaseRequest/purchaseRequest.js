@@ -314,6 +314,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected) {
+            $("#gridAttch_panel").collapse('hide');
 			$('#error_infront').text('');
 			let stat = selrowData("#jqGrid").purreqhd_recstatus;
 			let scope = $("#recstatus_use").val();

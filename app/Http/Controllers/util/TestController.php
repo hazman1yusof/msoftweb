@@ -1540,7 +1540,7 @@ class TestController extends defaultController
         }
     }
 
-    public function betulkandb(Request $request){
+    public function betulkandb_stockloc(Request $request){
         DB::beginTransaction();
         try {
             
@@ -1642,6 +1642,80 @@ class TestController extends defaultController
                 }
 
                 echo nl2br("$i. update stockexp: $obj->qtyonhand \n");
+                $i++;
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function betulkandb(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $purordhd = DB::table('material.purreqhd')
+                            ->get();
+
+            $i = 1;
+            foreach ($purordhd as $obj) {
+
+                // $purreqdt = DB::table('material.purreqdt')
+                //         ->where('recno',$obj->recno);
+
+                // if(!$purreqdt->exists()){
+                //     dump('continue, '.$obj->recno);
+                //     continue;
+                // }
+
+                if($obj->recstatus == 'PREPARED'){
+                    $updarr = [
+                        'supportby' => null,
+                        'supportdate' => null,
+                        'verifiedby' => null,
+                        'verifieddate' => null,
+                        'approvedby' => null,
+                        'approveddate' => null
+                    ];
+                }else if($obj->recstatus=='SUPPORT'){
+                    $updarr = [
+                        'supportby' => 'NASUHANI',
+                        'verifiedby' => null,
+                        'verifieddate' => null,
+                        'approvedby' => null,
+                        'approveddate' => null
+                    ];
+                }else if($obj->recstatus=='VERIFIED'){
+                    $updarr = [
+                        'supportby' => 'NASUHANI',
+                        'verifiedby' => 'AZO',
+                        'approvedby' => null,
+                        'approveddate' => null
+                    ];
+                }else if($obj->recstatus=='APPROVED'){
+                    $updarr = [
+                        'supportby' => 'NASUHANI',
+                        'verifiedby' => 'AZO',
+                        'approvedby' => 'NORLIDA'
+                    ];
+                }else if($obj->recstatus=='COMPLETED'){
+                    $updarr = [
+                        'supportby' => 'NASUHANI',
+                        'verifiedby' => 'AZO',
+                        'approvedby' => 'NORLIDA'
+                    ];
+                }
+
+                DB::table('material.purreqhd')
+                    ->where('idno',$obj->idno)
+                    ->update($updarr);
+
+                echo nl2br("$i. update purreqhd: $obj->recstatus \n");
                 $i++;
             }
 
