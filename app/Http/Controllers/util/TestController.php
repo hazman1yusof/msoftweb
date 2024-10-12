@@ -1550,60 +1550,99 @@ class TestController extends defaultController
             $i = 1;
             foreach ($stockloc as $obj) {
 
-                $product = DB::table('temp.product')
-                                ->where('compcode','9B')
-                                ->where('unit',"W'HOUSE")
-                                ->where('itemcode',$obj->itemcode)
-                                ->where('uomcode','!=',$obj->uomcode);
-
-                if($product->exists()){
-                    DB::table('temp.product')
-                                ->where('compcode','9B')
-                                ->where('unit',"W'HOUSE")
-                                ->where('itemcode',$obj->itemcode)
-                                ->update([
-                                    'uomcode' => $obj->uomcode
-                                ]);
-                }
-
-                $chgmast = DB::table('temp.chgmast')
-                                ->where('compcode','9B')
-                                ->where('unit',"W'HOUSE")
-                                ->where('itemcode',$obj->itemcode)
-                                ->where('uomcode','!=',$obj->uomcode);
-
-                if($product->exists()){
-                    DB::table('temp.product')
-                                ->where('compcode','9B')
-                                ->where('unit',"W'HOUSE")
-                                ->where('itemcode',$obj->itemcode)
-                                ->update([
-                                    'uomcode' => $obj->uomcode
-                                ]);
-                }
-
                 // if(!$product->exists()){
                 //     dump('Product doesnt exists: '.$obj->itemcode.' , '.$obj->uomcode);
                 // }
 
-                // $qtyonhand = DB::table('temp.stockloc')
-                //                 ->where('compcode','9B')
-                //                 ->where('unit',"W'HOUSE")
-                //                 ->where('itemcode',$obj->itemcode)
-                //                 ->where('uomcode',$obj->uomcode)
-                //                 ->sum('qtyonhand');
+                $stockloc = DB::table('material.stockloc')
+                                ->where('compcode','9B')
+                                ->where('deptcode','FKWSTR')
+                                ->where('unit',"W'HOUSE")
+                                ->where('itemcode',$obj->itemcode);
+                                // ->where('uomcode',$obj->uomcode);
 
-                // DB::table('temp.product')
-                //                 ->where('compcode','9B')
-                //                 ->where('unit',"W'HOUSE")
-                //                 ->where('itemcode',$obj->itemcode)
-                //                 ->where('uomcode',$obj->uomcode)
-                //                 ->update([
-                //                     'qtyonhand' => $qtyonhand
-                //                 ]);
+                if($stockloc->exists()){
+                    DB::table('material.stockloc')
+                                ->where('compcode','9B')
+                                ->where('deptcode','FKWSTR')
+                                ->where('unit',"W'HOUSE")
+                                ->where('itemcode',$obj->itemcode)
+                                // ->where('uomcode',$obj->uomcode)
+                                ->update([
+                                    'uomcode' => $obj->uomcode,
+                                    'netmvqty1' => 0,
+                                    'netmvqty2' => 0,
+                                    'netmvqty3' => 0,
+                                    'netmvqty4' => 0,
+                                    'netmvqty5' => 0,
+                                    'netmvqty6' => 0,
+                                    'netmvqty7' => 0,
+                                    'netmvqty8' => 0,
+                                    'netmvqty9' => $obj->netmvqty9,
+                                    'netmvval1' => 0,
+                                    'netmvval2' => 0,
+                                    'netmvval3' => 0,
+                                    'netmvval4' => 0,
+                                    'netmvval5' => 0,
+                                    'netmvval6' => 0,
+                                    'netmvval7' => 0,
+                                    'netmvval8' => 0,
+                                    'netmvval9' => $obj->netmvval9,
+                                    'qtyonhand' => $obj->qtyonhand,
+                                ]);
 
-                // echo nl2br("$i. update product: $obj->qtyonhand \n");
-                // $i++;
+                }else{
+                    DB::table('material.stockloc')
+                                ->insert([
+                                    'compcode' => '9B',
+                                    'deptcode' => 'FKWSTR',
+                                    'itemcode' => $obj->itemcode,
+                                    'uomcode' => $obj->uomcode,
+                                    'bincode' => $obj->bincode,
+                                    'rackno' => $obj->rackno,
+                                    'year' => $obj->year,
+                                    'openbalqty' => 0,
+                                    'openbalval' => 0,
+                                    'netmvqty1' => 0,
+                                    'netmvqty2' => 0,
+                                    'netmvqty3' => 0,
+                                    'netmvqty4' => 0,
+                                    'netmvqty5' => 0,
+                                    'netmvqty6' => 0,
+                                    'netmvqty7' => 0,
+                                    'netmvqty8' => 0,
+                                    'netmvqty9' => $obj->netmvqty9,
+                                    'netmvqty10' => 0,
+                                    'netmvqty11' => 0,
+                                    'netmvqty12' => 0,
+                                    'netmvval1' => 0,
+                                    'netmvval2' => 0,
+                                    'netmvval3' => 0,
+                                    'netmvval4' => 0,
+                                    'netmvval5' => 0,
+                                    'netmvval6' => 0,
+                                    'netmvval7' => 0,
+                                    'netmvval8' => 0,
+                                    'netmvval9' => $obj->netmvval9,
+                                    'netmvval10' => 0,
+                                    'netmvval11' => 0,
+                                    'netmvval12' => 0,
+                                    'stocktxntype' => $obj->stocktxntype,
+                                    'disptype' => $obj->disptype,
+                                    'qtyonhand' => $obj->qtyonhand,
+                                    'minqty' => $obj->minqty,
+                                    'maxqty' => $obj->maxqty,
+                                    'reordlevel' => $obj->reordlevel,
+                                    'reordqty' => $obj->reordqty,
+                                    'lastissdate' => $obj->lastissdate,
+                                    'recstatus' => 'ACTIVE',
+                                    'unit' => "W'HOUSE",
+                                ]);
+
+                }
+
+                echo nl2br("$i. update stockexp: $obj->qtyonhand \n");
+                $i++;
             }
 
             DB::commit();
