@@ -250,6 +250,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
+            $("#pdfgen_excel_each").attr('href','./inventoryRequest/table?action=showpdf_each&idno='+selrowData("#jqGrid").idno);
 			$('#error_infront').text('');
 			let stat = selrowData("#jqGrid").recstatus;
 			let scope = $("#recstatus_use").val();
