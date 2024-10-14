@@ -995,6 +995,7 @@ class InventoryTransactionController extends defaultController
                     })
             ->where('ivdt.compcode','=',session('compcode'))
             ->where('ivdt.recno','=',$recno)
+            ->orderBy('ivdt.lineno_', 'ASC')
             ->get();
         
         $company = DB::table('sysdb.company')
