@@ -545,6 +545,14 @@ div#fail_msg{
 			  </div>
 			</div>
 
+			<div id="dialog_remarks_status" title="Remarks for - {{Request::get('scope')}}">
+			  <div class="panel panel-default">
+			    <div class="panel-body">
+			    	<textarea id='remarks_status' name='remarks_status' rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
+			    </div>
+			  </div>
+			</div>
+
 			<div id="dialog_remarks_view" title="Remarks">
 			  <div class="panel panel-default">
 			    <div class="panel-body">
@@ -592,7 +600,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/purchaseRequest/purchaseRequest.js?v=1.9"></script>
+	<script src="js/material/purchaseRequest/purchaseRequest.js?v=1.10"></script>
 	<!-- <script src="js/material/purchaseRequest/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

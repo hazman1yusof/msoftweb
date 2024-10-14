@@ -47,13 +47,13 @@ $(document).ready(function () {
 				unsaved = false;
 				errorField.length=0;
 				parent_close_disabled(true);
-				my_remark_button.remark_btn_init(selrowData("#jqGrid"));
 				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth - $("#jqGrid2_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
 				mycurrency.formatOn();
 				$('#dialogForm #purreqhd_reqdept,#dialogForm input:radio[name=purreqhd_prtype]').attr('disabled',false);
 				switch (oper) {
 					case state = 'add':
+						my_remark_button.remark_btn_off();
 						$("#jqGrid2").jqGrid("clearGridData", true);
 						$("#pg_jqGridPager2 table").show();
 						hideatdialogForm(true);
@@ -77,6 +77,7 @@ $(document).ready(function () {
 						$("#pg_jqGridPager2 table").hide();
 						break;
 				}if (oper != 'add') {
+					my_remark_button.remark_btn_init(selrowData("#jqGrid"));
 					dialog_reqdept.check(errorField);
 					dialog_prdept.check(errorField);
 					dialog_suppcode.check(errorField);
@@ -597,17 +598,69 @@ $(document).ready(function () {
 		// 		return false
 		// 	}
 		// }
+
+		var scope = $('#scope').val().toUpperCase();
+		var need_remark_array = ["SUPPORT", "VERIFIED", "APPROVED", "RECOMMENDED1", "RECOMMENDED2"];
+
+		var need_remark = need_remark_array.includes(scope);
+
+		if(need_remark){
+			$("#dialog_remarks_status").dialog( "open" );
+		}else{
+			$.post( './purchaseRequest/form', obj , function( data ) {
+				refreshGrid('#jqGrid', urlParam);
+				$(self_).attr('disabled',false);
+				cbselect.empty_sel_tbl();
+			}).fail(function(data) {
+				$('#error_infront').text(data.responseText);
+				$(self_).attr('disabled',false);
+			}).success(function(data){
+				$(self_).attr('disabled',false);
+			});	
+		}
 		
-		$.post( './purchaseRequest/form', obj , function( data ) {
-			refreshGrid('#jqGrid', urlParam);
-			$(self_).attr('disabled',false);
-			cbselect.empty_sel_tbl();
-		}).fail(function(data) {
-			$('#error_infront').text(data.responseText);
-			$(self_).attr('disabled',false);
-		}).success(function(data){
-			$(self_).attr('disabled',false);
-		});
+	});
+
+	$("#dialog_remarks_status").dialog({
+		autoOpen: false,
+		width: 4/10 * $(window).width(),
+		modal: true,
+		open: function( event, ui ) {
+			$('#remarks_status').val('');
+		},
+		close: function( event, ui ) {
+			$("#but_post_jq").attr('disabled',false);
+		},
+		buttons : [{
+			text: "Submit",click: function() {
+					$("#but_post_jq").attr('disabled',true);
+					$(this).attr('disabled',true);
+					var idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
+					var obj={};
+					
+					obj.idno_array = idno_array;
+					obj.oper = $("#but_post_jq").data('oper');
+					obj.remarks = $("#remarks_status").val();
+					obj._token = $('#_token').val();
+					oper=null;
+			
+					$.post( './purchaseRequest/form', obj , function( data ) {
+						refreshGrid('#jqGrid', urlParam);
+						$(self_).attr('disabled',false);
+						cbselect.empty_sel_tbl();
+					}).fail(function(data) {
+						$('#error_infront').text(data.responseText);
+						$(self_).attr('disabled',false);
+					}).success(function(data){
+						$(self_).attr('disabled',false);
+					});
+					$(this).dialog('close');
+				}
+			},{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}]
 	});
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
@@ -2713,5 +2766,10 @@ function remark_button_class(grid){
 			$('#remarks_view').val($(this).data('remark'));
 			$("#dialog_remarks_view").dialog( "open" );
 		});
+	}
+
+	this.remark_btn_off = function(){
+		$('i.my_remark').hide();
+		$('i.my_remark').off('click');
 	}
 }

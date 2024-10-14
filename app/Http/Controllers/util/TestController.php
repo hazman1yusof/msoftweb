@@ -948,104 +948,37 @@ class TestController extends defaultController
         }
     }
 
-    public function betulkandb_dbacthdr(Request $request){
+    public function betulkandb(Request $request){
         DB::beginTransaction();
         try {
             
-            $billsum = DB::table('debtor.billsum')
+            $purreqhd = DB::table('temp.purreqhd')
                             ->get();
 
             $i = 1;
-            foreach ($billsum as $obj) {
+            foreach ($purreqhd as $obj) {
                 // $dbactdtl = DB::table('debtor.dbactdtl')
                 //                     ->where('source','PB')
                 //                     ->where('trantype','IN');
 
-                $dbacthdr = DB::table('debtor.dbacthdr')
-                                    ->where('source','PB')
-                                    ->where('trantype','IN')
-                                    ->where('auditno',$obj->billno);
+                $purreqdt = DB::table('temp.purreqdt')
+                                    ->where('compcode','9B')
+                                    ->where('recno',$obj->recno);
 
-                if(!$dbacthdr->exists()){
+                if($purreqdt->exists()){
+                    $totamount = DB::table('temp.purreqdt')
+                                    ->where('compcode','9B')
+                                    ->where('recno',$obj->recno)
+                                    ->sum('totamount');
 
-                    $amount = DB::table('debtor.billsum')
-                                ->where('source','PB')
-                                ->where('trantype','IN')
-                                ->where('billno',$obj->billno)
-                                ->sum('amount');
+                    DB::table('temp.purreqhd')
+                                    ->where('compcode','9B')
+                                    ->where('idno',$obj->idno)
+                                    ->update([
+                                        'totamount' => $totamount
+                                    ]);                
 
-
-                    DB::table('debtor.dbacthdr')
-                        ->insert([
-                            'compcode' => '9B',
-                            'source' => 'PB',
-                            'trantype' => 'IN',
-                            'auditno' => $obj->billno,
-                            'lineno_' => 1,
-                            'amount' => $amount,
-                            'outamount' => $amount,
-                            'recstatus' => $obj->recstatus,
-                            'entrydate' => Carbon::parse($obj->lastupdate)->format('Y-m-d'),
-                            // 'entrytime' => ,
-                            // 'entryuser' => ,
-                            // 'reference' => ,
-                            // 'recptno' => ,
-                            'paymode' => 'CASH',
-                            // 'tillcode' => ,
-                            // 'tillno' => ,
-                            // 'debtortype' => ,
-                            'debtorcode' => $obj->mrn,
-                            'payercode' => $obj->mrn,
-                            // 'billdebtor' => ,
-                            // 'remark' => ,
-                            'mrn' => $obj->mrn,
-                            // 'episno' => ,
-                            // 'authno' => ,
-                            // 'expdate' => ,
-                            // 'adddate' => ,
-                            // 'adduser' => ,
-                            // 'upddate' => ,
-                            // 'upduser' => ,
-                            // 'deldate' => ,
-                            // 'deluser' => ,
-                            // 'epistype' => ,
-                            // 'cbflag' => ,
-                            // 'conversion' => ,
-                            // 'payername' => ,
-                            'hdrtype' => 'OP',
-                            // 'currency' => ,
-                            // 'rate' => ,
-                            'unit' => 'IMP',
-                            // 'invno' => ,
-                            'paytype' => '#F_TAB-CASH',
-                            // 'bankcharges' => ,
-                            // 'RCCASHbalance' => ,
-                            // 'RCOSbalance' => ,
-                            // 'RCFinalbalance' => ,
-                            // 'PymtDescription' => ,
-                            // 'orderno' => ,
-                            // 'ponum' => ,
-                            // 'podate' => ,
-                            'termdays' => '30',
-                            'termmode' => 'DAYS',
-                            'deptcode' => 'IMP',
-                            // 'posteddate' => ,
-                            // 'approvedby' => ,
-                            // 'approveddate' => ,
-                            // 'approved_remark' => ,
-                            // 'unallocated' => ,
-                            // 'datesend' => ,
-                            // 'quoteno' => ,
-                            // 'preparedby' => ,
-                            // 'prepareddate' => ,
-                            // 'cancelby' => ,
-                            // 'canceldate' => ,
-                            // 'cancelled_remark' => ,
-                            'pointofsales' => 0,
-                            'doctorcode' => 'GP',
-                        ]);
-
-                    echo nl2br("$i. update dbacthdr: $obj->billno \n");
+                    echo nl2br("$i. update purreqhd: $totamount \n");
                     $i++;
                 }
             }
@@ -1655,7 +1588,7 @@ class TestController extends defaultController
         }
     }
 
-    public function betulkandb(Request $request){
+    public function betulkandb_recstatus(Request $request){
         DB::beginTransaction();
         try {
             

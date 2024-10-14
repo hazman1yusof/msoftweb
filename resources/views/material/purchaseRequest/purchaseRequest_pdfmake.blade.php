@@ -95,7 +95,7 @@
 				{
 					style: 'tableExample',
 					table: {
-						widths: ['*','*','*','*','*','*','*','*','*','*','*'],
+						widths: [41,41,41,41,41,40,40,41,41,41,41],
 						// headerRows: 5,
 						// keepWithHeaderRows: 5,
 						body: [
@@ -178,7 +178,7 @@
 				{
 					style: 'tableExample',
 					table: {
-						widths: ['*','*','*','*','*','*','*','*','*','*','*'],
+						widths: [41,41,41,41,41,40,40,41,41,41,41],
 						// headerRows: 5,
 						// keepWithHeaderRows: 5,
 						body: [
@@ -200,66 +200,65 @@
 								{ text: '{{number_format($obj->totamount,2)}}', alignment: 'right', colSpan: 2 },{}
 							],
 							@endforeach
-							[
-								{
-									text: [
-										'1)	New Asset [	] / Replacement [	] / Additional [	]: ',
-										{ text: 'Please tick (√)', fontSize: 7 },
-										'\n2)	Budget : Yes [	] / No [	]',
-										'\n3)	Justification: \n____________________________________________________\n____________________________________________________',
-										'\n\n4)	Charge to patient per use: _____________________',
-									], colSpan: 6
-								},{},{},{},{},{},{},{},{},
-								{ text: ' ', colSpan: 2 },{}
-							],
+							// [
+							// 	{
+							// 		text: [
+							// 			'1)	New Asset [	] / Replacement [	] / Additional [	]: ',
+							// 			{ text: 'Please tick (√)', fontSize: 7 },
+							// 			'\n2)	Budget : Yes [	] / No [	]',
+							// 			'\n3)	Justification: \n____________________________________________________\n____________________________________________________',
+							// 			'\n\n4)	Charge to patient per use: _____________________',
+							// 		], colSpan: 6
+							// 	},{},{},{},{},{},{},{},{},
+							// 	{ text: ' ', colSpan: 2 },{}
+							// ],
 							[
 								{ text: 'Total', style: 'totalbold', colSpan: 8, alignment: 'right' },{},{},{},{},{},{},{},
 								{ text: '{{number_format($total_tax,2)}}', alignment: 'right' },
 								{ text: '{{number_format($purreqhd->totamount,2)}}', alignment: 'right', colSpan: 2 },{}
 							],
 							[
-								{ text: 'Requested By: \n\n{{$purreqhd->requestby_name}}\n{{$purreqhd->requestby_dsg}}\n', style: 'totalbold', colSpan: 3, rowSpan: 3 },{},{},
-								{ text: 'Supported By: \n\n{{$purreqhd->supportby_name}}\n{{$purreqhd->supportby_dsg}}\n', style: 'totalbold', colSpan: 3 ,rowSpan: 3 },{},{},
-								{
-									text: [
-										{ text: 'Verified By: ', bold: true },
-										'(finance) \n\n',
-										{ text: '{{$purreqhd->verifiedby_name}}\n{{$purreqhd->verifiedby_dsg}}\n', bold: true },
-									], colSpan: 5, rowSpan: 3
-								},{},{},{},{}
+								{ text: 'Requested By:', style: 'totalbold', colSpan: 3 , border: [true, false, true, false]},{},{},
+								{ text: 'Supported By:', style: 'totalbold', colSpan: 3 , border: [true, false, true, false]},{},{},
+								{ text: 'Verified By:', style: 'totalbold', colSpan: 5 , border: [true, false, true, false]},{},{},{},{}
 							],
 							[
-								{},{},{},{},{},{},
-								{},{},{},
-								{},{}
+								{ text: '', colSpan: 3 , border: [true, false, true, false]},{},{},
+								{ text: '{{$purreqhd->support_remark}}', colSpan: 3 , border: [true, false, true, false]},{},{},
+								{ text: '{{$purreqhd->verified_remark}}', colSpan: 5 , border: [true, false, true, false]},{},{},{},{}
 							],
 							[
-								{},{},{},{},{},{},
-								{},{},{},
-								{},{}
+								{ text: '{{$purreqhd->requestby_name}}', style: 'totalbold', colSpan: 3 , border: [true, false, true, false]},{},{},
+								{ text: '{{$purreqhd->supportby_name}}', style: 'totalbold', colSpan: 3 , border: [true, false, true, false]},{},{},
+								{ text: '{{$purreqhd->verifiedby_name}}', style: 'totalbold', colSpan: 5 , border: [true, false, true, false]},{},{},{},{}
 							],
 							[
-								{ text: 'Joint Recommended By: \n\n{{$purreqhd->recommended1by_name}}\n{{$purreqhd->recommended1by_dsg}}\n', style: 'totalbold', colSpan: 3, rowSpan: 3 },{},{},
-								{ text: 'Joint Recommended By: \n\n{{$purreqhd->recommended2by_name}}\n{{$purreqhd->recommended2by_dsg}}\n', style: 'totalbold', colSpan: 3 ,rowSpan: 3 },{},{},
-								{
-									text: [
-										{ text: 'Approved By ', bold: true },
-										{ text: 'Manager/Director\n', italics: true },
-										{ text: '[	] Approved [	] NOT Approved\n\n', bold: true },
-										{ text: '{{$purreqhd->approvedby_name}}\n{{$purreqhd->approvedby_dsg}}\n', bold: true },
-									], colSpan: 5, rowSpan: 3
-								},{},{},{},{}
+								{ text: '{{$purreqhd->requestby_dsg}}', style: 'totalbold', italics: true,margin: [0,-5,0,0], colSpan: 3 , border: [true, false, true, false]},{},{},
+								{ text: '{{$purreqhd->supportby_dsg}}', style: 'totalbold', italics: true,margin: [0,-5,0,0], colSpan: 3 , border: [true, false, true, false]},{},{},
+								{ text: '{{$purreqhd->verifiedby_dsg}}', style: 'totalbold', italics: true,margin: [0,-5,0,0], colSpan: 5 , border: [true, false, true, false]},{},{},{},{}
+							],
+
+							[
+								{ text: 'Joint Recommended By:', style: 'totalbold', colSpan: 3 , border: [true, true, true, false]},{},{},
+								{ text: 'Joint Recommended By:', style: 'totalbold', colSpan: 3 , border: [true, true, true, false]},{},{},
+								{ text: 'Approved By:', style: 'totalbold', colSpan: 5 , border: [true, true, true, false]},{},{},{},{}
 							],
 							[
-								{},{},{},{},{},{},
-								{},{},{},
-								{},{}
+								{ text: '{{$purreqhd->recommended1_remark}}', colSpan: 3 , border: [true, false, true, false]},{},{},
+								{ text: '{{$purreqhd->recommended2_remark}}', colSpan: 3 , border: [true, false, true, false]},{},{},
+								{ text: '{{$purreqhd->approved_remark}}', colSpan: 5 , border: [true, false, true, false]},{},{},{},{}
 							],
 							[
-								{},{},{},{},{},{},
-								{},{},{},
-								{},{}
+								{ text: '{{$purreqhd->recommended1by_name}}', style: 'totalbold', colSpan: 3 , border: [true, false, true, false]},{},{},
+								{ text: '{{$purreqhd->recommended2by_name}}', style: 'totalbold', colSpan: 3 , border: [true, false, true, false]},{},{},
+								{ text: '{{$purreqhd->approvedby_name}}', style: 'totalbold', colSpan: 5 , border: [true, false, true, false]},{},{},{},{}
 							],
+							[
+								{ text: '{{$purreqhd->recommended1by_dsg}}', style: 'totalbold', italics: true,margin: [0,-5,0,0], colSpan: 3 , border: [true, false, true, true]},{},{},
+								{ text: '{{$purreqhd->recommended2by_dsg}}', style: 'totalbold', italics: true,margin: [0,-5,0,0], colSpan: 3 , border: [true, false, true, true]},{},{},
+								{ text: '{{$purreqhd->approvedby_dsg}}', style: 'totalbold', italics: true,margin: [0,-5,0,0], colSpan: 5 , border: [true, false, true, true]},{},{},{},{}
+							],
+							
 						]
 					}
 				},
@@ -290,7 +289,7 @@
 				},
 				totalbold: {
 					bold: true,
-					fontSize: 10,
+					fontSize: 9,
 				}
 			},
 			images: {
