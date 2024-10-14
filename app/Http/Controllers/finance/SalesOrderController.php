@@ -1737,10 +1737,14 @@ class SalesOrderController extends defaultController
     public function get_quoteno(Request $request){
 
         $table = DB::table('finance.salehdr as sh')
-                        ->select('sh.quoteno','sh.debtorcode','dm.name','sh.entrydate','sh.idno','sh.compcode','sh.source','sh.trantype','sh.auditno','sh.lineno_','sh.amount','sh.outamount','sh.hdrsts','sh.posteddate','sh.entrytime','sh.entryuser','sh.reference','sh.recptno','sh.paymode','sh.tillcode','sh.tillno','sh.debtortype','sh.payercode','sh.billdebtor','sh.remark','sh.mrn','sh.episno','sh.authno','sh.expdate','sh.adddate','sh.adduser','sh.upddate','sh.upduser','sh.epistype','sh.cbflag','sh.conversion','sh.payername','sh.hdrtype','sh.currency','sh.rate','sh.startdate','sh.termvalue','sh.termcode','sh.frequency','sh.pono','sh.podate','sh.saleid','sh.billtype','sh.docdate','sh.unit','sh.recstatus','sh.deptcode','sh.doctorcode')
+                        ->select('sh.quoteno','sh.debtorcode','dm.name','sh.entrydate','sh.idno','sh.compcode','sh.source','sh.trantype','sh.auditno','sh.lineno_','sh.amount','sh.outamount','sh.hdrsts','sh.posteddate','sh.entrytime','sh.entryuser','sh.reference','sh.recptno','sh.paymode','sh.tillcode','sh.tillno','sh.debtortype','sh.payercode','sh.billdebtor','sh.remark','sh.mrn','sh.episno','sh.authno','sh.expdate','sh.adddate','sh.adduser','sh.upddate','sh.upduser','sh.epistype','sh.cbflag','sh.conversion','sh.payername','sh.hdrtype','sh.currency','sh.rate','sh.startdate','sh.termvalue','sh.termcode','sh.frequency','sh.pono','sh.podate','sh.saleid','sh.billtype','sh.docdate','sh.unit','sh.recstatus','sh.deptcode','sh.doctorcode','pm.Name as pm_Name')
                         ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
                             $join = $join->where('dm.compcode',session('compcode'));
                             $join = $join->on('dm.debtorcode', '=', 'sh.debtorcode');
+                        })
+                        ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
+                            $join = $join->where('pm.CompCode',session('compcode'));
+                            $join = $join->on('pm.NewMrn', '=', 'sh.mrn');
                         })
                         ->where('sh.compcode',session('compcode'))
                         ->where('sh.deptcode',$request->deptcode)

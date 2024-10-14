@@ -249,7 +249,7 @@ $(document).ready(function () {
 			{ label: 'debtortype', name: 'db_debtortype', hidden: true },
 			{ label: 'billdebtor', name: 'db_billdebtor', hidden: true },
 			{ label: 'approvedby', name: 'db_approvedby', hidden: true },
-			{ label: 'mrn', name: 'db_mrn', width: 10, hidden: true },
+			{ label: 'HUKM MRN', name: 'db_mrn', width: 20, classes: 'wrap', formatter: showdetail, unformat: un_showdetail },
 			{ label: 'doctor', name: 'db_doctorcode', width: 10, hidden: true },
 			{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'termdays', name: 'db_termdays', width: 10, hidden: true },
@@ -258,8 +258,8 @@ $(document).ready(function () {
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
 			{ label: 'PO Date', name: 'db_podate', width: 12, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true, formatter: dateFormatter },
-			{ label: 'Department Code', name: 'db_deptcode', width: 18, canSearch: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Status', name: 'db_recstatus', width: 10 , formatter: recstatus_formatter, unformat:recstatus_unformatter},
+			{ label: 'Department Code', name: 'db_deptcode', width: 18, canSearch: true, classes: 'wrap', formatter: showdetail, unformat: un_showdetail },
+			{ label: 'Status', name: 'db_recstatus', width: 10 , formatter: recstatus_formatter, unformat: recstatus_unformatter},
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
@@ -378,6 +378,13 @@ $(document).ready(function () {
 			});
 		},
 		loadComplete:function(data){
+			// console.log($('#deptcode').val());
+			// if($('#deptcode').val() !== 'IMP'){
+			// 	$("#jqGrid").jqGrid('hideCol', 'db_mrn');
+			// 	$("#jqGrid").jqGrid('setGridWidth', 1480);
+			// }else{
+			// 	$("#jqGrid").jqGrid('showCol', 'db_mrn');
+			// }
 		},
 		beforeRequest: function(){
 			refreshGrid("#jqGrid2", urlParam, 'kosongkan')
@@ -972,16 +979,16 @@ $(document).ready(function () {
 				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
 			{
-				label: 'Quantity', name: 'quantity', width: 100, align: 'right', classes: 'wrap txnum',
-				editable: true,
-				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-				editrules: { required: true },
-			},
-			{
 				label: 'Quantity Order', name: 'qtyorder', width: 100, align: 'right', classes: 'wrap txnum',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
+			},
+			{
+				label: 'Quantity', name: 'quantity', width: 100, align: 'right', classes: 'wrap txnum',
+				editable: true,
+				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
+				editrules: { required: true },
 			},
 			{
 				label: 'Quantity on Hand', name: 'qtyonhand', width: 100, align: 'right', classes: 'wrap txnum',
@@ -1526,7 +1533,9 @@ $(document).ready(function () {
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 			case 'db_deptcode':field=['deptcode','description'];table="sysdb.department";case_='db_deptcode';break;
 			case 'db_payercode':field=['debtorcode','name'];table="debtor.debtormast";case_='db_payercode';break;
-
+			// case 'db_mrn':field=['debtorcode','name'];table="debtor.debtormast";case_='db_mrn';break;
+			case 'db_mrn':field=['NewMrn','Name'];table="hisdb.pat_mast";case_='db_mrn';break;
+			
 			// jqGridAlloc
 			case 'debtorcode': field = ['debtorcode','name'];table = "debtor.debtormast";case_ = 'debtorcode';break;
 			case 'payercode': field = ['debtorcode','name'];table = "debtor.debtormast";case_ = 'payercode';break;
@@ -2044,6 +2053,8 @@ $(document).ready(function () {
 				{ label: 'Recstatus', name: 'recstatus', width: 150, classes: 'pointer' },
 				{ label: 'Debtor Code', name: 'debtorcode', width: 150, classes: 'pointer', canSearch: true, or_search: true, checked: true },
 				{ label: 'Debtor Name', name: 'name', width: 400, classes: 'pointer' },
+				{ label: 'MRN', name: 'mrn', width: 150, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Name', name: 'pm_Name', width: 400, classes: 'pointer' },
 				{ label: 'Document Date', name: 'entrydate', formatter: dateFormatter, unformat: dateUNFormatter, width: 150, classes: 'pointer' },
 				{ label: 'Amount', name: 'amount', width: 150, classes: 'pointer' },
 				{ label: 'hdrtype', name: 'hdrtype', hidden: true },
@@ -2052,7 +2063,7 @@ $(document).ready(function () {
 				{ label: 'remark', name: 'remark', hidden: true },
 				// { label: 'amount', name: 'amount', hidden: true },
 				{ label: 'auditno', name: 'auditno', hidden: true },
-				{ label: 'mrn', name: 'mrn', hidden: true },
+				// { label: 'mrn', name: 'mrn', hidden: true },
 				{ label: 'doctorcode', name: 'doctorcode', hidden: true },
 			],
 			urlParam: {
@@ -2134,7 +2145,7 @@ $(document).ready(function () {
 				}
 			}
 		}, {
-			title: "Select Billtype",
+			title: "Select Quote No.",
 			open: function(){
 				dialog_quoteno.urlParam.url = "./SalesOrder/table";
 				dialog_quoteno.urlParam.action = 'get_quoteno';

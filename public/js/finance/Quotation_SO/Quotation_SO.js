@@ -212,138 +212,145 @@ $(document).ready(function (){
         // returnVal: true,
     }
     
-    $("#jqGrid").jqGrid({
-        datatype: "local",
-        colModel: [
-            { label: 'idno', name: 'SL_idno', width: 10, hidden: true, key: true },
-            { label: 'compcode', name: 'SL_compcode', hidden: true },
-            { label: 'source', name: 'SL_source', width: 10, hidden: true },
-            { label: 'lineno_', name: 'SL_lineno_', width: 20, hidden: true },
-            { label: 'hdrsts', name: 'SL_hdrsts', width: 20, hidden: true },
-            { label: 'Debtor Code', name: 'SL_debtorcode', width: 35, canSearch: true, formatter: showdetail, unformat: un_showdetail },
-            { label: 'Payber Code', name: 'SL_payercode', hidden: true },
-            { label: 'Customer', name: 'dm_name', width: 40, canSearch: false, classes: 'wrap', hidden: true },
-            { label: 'Document Date', name: 'SL_entrydate', width: 12, classes: 'wrap text-uppercase', formatter: dateFormatter, unformat: dateUNFormatter },
-            { label: 'Posted Date', name: 'SL_posteddate', width: 12, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
-            { label: 'Audit No', name: 'SL_auditno', width: 12, align: 'right', formatter: padzero, unformat: unpadzero },
-            { label: 'Quotation No', name: 'SL_quoteno', width: 10, align: 'right', canSearch: true, formatter: padzero, unformat: unpadzero },
-            { label: 'PO No', name: 'SL_pono', width: 10, align: 'right', formatter: padzero5, unformat: unpadzero, hidden: true },
-            { label: 'Amount', name: 'SL_amount', width: 10, align: 'right', formatter: 'currency' },
-            { label: 'O/S<br>Amount', name: 'SL_outamount', width: 10, align: 'right', formatter: 'currency' },
-            { label: 'Trantype', name: 'SL_trantype', width: 10 , hidden: true },
-            { label: 'PO Date', name: 'SL_podate', width: 12, formatter: dateFormatter, unformat: dateUNFormatter, hidden: true },
-            { label: 'Department Code', name: 'SL_deptcode', width: 18, canSearch: true, classes: 'wrap', formatter: showdetail, unformat: un_showdetail },
-            { label: 'Status', name: 'SL_recstatus', width: 10 },
-            { label: ' ', name: 'Checkbox', sortable: false, width: 8, align: "center", formatter: formatterCheckbox },
-            // { label: 'SL_posteddate', name: 'SL_posteddate', hidden: true, formatter: dateFormatter },
-            { label: 'recptno', name: 'SL_recptno', width: 20, hidden: true },
-            { label: 'paymode', name: 'SL_paymode', width: 20, hidden: true },
-            { label: 'debtortype', name: 'SL_debtortype', hidden: true },
-            { label: 'billdebtor', name: 'SL_billdebtor', hidden: true },
-            { label: 'Remark', name: 'SL_remark', width: 10, hidden: true },
-            { label: 'mrn', name: 'SL_mrn', width: 10, hidden: true },
-            { label: 'mrn', name: 'SL_doctorcode', width: 10, hidden: true },
-            { label: 'adduser', name: 'SL_adduser', width: 10, hidden: true },
-            { label: 'adddate', name: 'SL_adddate', width: 10, hidden: true },
-            { label: 'upduser', name: 'SL_upduser', width: 10, hidden: true },
-            { label: 'upddate', name: 'SL_upddate', width: 10, hidden: true },
-            { label: 'paytype', name: 'SL_hdrtype', width: 10, hidden: true },
-            { label: 'termvalue', name: 'SL_termvalue', width: 10, hidden: true },
-            { label: 'termcode', name: 'SL_termcode', width: 10, hidden: true },
-            // { label: 'Sector', name: 'SL_unit', width: 15, canSearch: true, classes: 'wrap', hidden: true },
-        ],
-        autowidth: true,
-        multiSort: true,
-        viewrecords: true,
-        loadonce: false,
-        // sortname: 'SL_idno',
-        // sortorder: 'desc',
-        width: 900,
-        height: 300,
-        rowNum: 30,
-        pager: "#jqGridPager",
-        onSelectRow: function (rowid, selected){
-            $('#save').hide();
-            $('#error_infront').text('');
-            let stat = selrowData("#jqGrid").SL_recstatus;
-            let scope = $("#recstatus_use").val();
-            
-            urlParam2.source = selrowData("#jqGrid").SL_source;
-            urlParam2.trantype = selrowData("#jqGrid").SL_trantype;
-            urlParam2.auditno = selrowData("#jqGrid").SL_auditno;
-            urlParam2.deptcode = selrowData("#jqGrid").SL_deptcode;
-            
-            $('#reqnodepan').text(selrowData("#jqGrid").purreqhd_purreqno); // tukar kat depan
-            $('#reqdeptdepan').text(selrowData("#jqGrid").purreqhd_reqdept);
-            refreshGrid("#jqGrid3", urlParam2);
-            populate_form(selrowData("#jqGrid"));
-            
-            $("#pdfgen1").attr('href','./Quotation_SO/showpdf?idno='+selrowData("#jqGrid").SL_idno);
-            $("#pdfgen2").attr('href','./Quotation_SO/showpdf?idno='+selrowData("#jqGrid").SL_idno);
-            if_cancel_hide();
-        },
-        ondblClickRow: function (rowid, iRow, iCol, e){
-            let stat = selrowData("#jqGrid").SL_recstatus;
-            
-            if(stat == 'POSTED' || stat == 'PARTIAL' || stat == 'COMPLETED'){
-                $("#jqGridPager td[title='View Selected Row']").click();
-            }else if (stat == 'OPEN'){
-                $("#jqGridPager td[title='Edit Selected Row']").click();
-                
-                if(rowid != null){
-                    rowData = $('#jqGrid').jqGrid('getRowData', rowid);
-                }
-            }
-            
-            let SL_quoteno = selrowData("#jqGrid").SL_quoteno;
-            let quoteno = SL_quoteno.toString().padStart(8, '0');
-            
-            let SL_auditno = selrowData("#jqGrid").SL_auditno;
-            let auditno = SL_auditno.toString().padStart(8, '0');
-            
-            $('#SL_quoteno').val(quoteno);
-            $('#SL_auditno').val(auditno);
-        },
-        gridComplete: function (){
-            cbselect.show_hide_table();
-            if(oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null){ // highlight 1st record
-                $("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-            }
-            $('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus().click();
-            $("#searchForm input[name=Stext]").focus();
-            populate_form(selrowData("#jqGrid"));
-            fdl.set_array().reset();
-            
-            cbselect.checkbox_function_on();
-            cbselect.refresh_seltbl();
-            
-            // if($('#jqGrid').jqGrid('getGridParam', 'reccount') < 1){
-            // 	$('#reqnodepan').text(''); // tukar kat depan tu
-            // 	$('#reqdeptdepan').text('');
-            // }else 
-            if($('#jqGrid').data('inputfocus') == 'customer_search'){
-                $("#customer_search").focus();
-                $('#jqGrid').data('inputfocus','');
-                $('#customer_search_hb').text('');
-                removeValidationClass(['#customer_search']);
-            }else if($('#jqGrid').data('inputfocus') == 'department_search'){
-                $("#department_search").focus();
-                $('#jqGrid').data('inputfocus','');
-                $('#department_search_hb').text('');
-                removeValidationClass(['#department_search']);
-            }else{
-                $("#searchForm input[name=Stext]").focus();
-            }
-            page_to_view_only($('#viewonly').val(),function (){
-                $('#customer_text').hide();
-            });
-        },
-        loadComplete: function (data){
-        },
-        beforeRequest: function (){
-            refreshGrid("#jqGrid2", urlParam, 'kosongkan')
-        }
-    });
+	$("#jqGrid").jqGrid({
+		datatype: "local",
+		colModel: [
+			{ label: 'idno', name: 'SL_idno', width: 10, hidden: true, key: true },
+			{ label: 'compcode', name: 'SL_compcode', hidden: true },
+			{ label: 'source', name: 'SL_source', width: 10, hidden: true },
+			{ label: 'lineno_', name: 'SL_lineno_', width: 20, hidden: true },
+			{ label: 'hdrsts', name: 'SL_hdrsts', width: 20, hidden: true },
+			{ label: 'Debtor Code', name: 'SL_debtorcode', width: 30, canSearch: true, formatter: showdetail, unformat: un_showdetail },
+			{ label: 'Payber Code', name: 'SL_payercode', hidden: true },
+			{ label: 'Customer', name: 'dm_name', width: 40, canSearch: false, classes: 'wrap', hidden: true },
+			{ label: 'Document Date', name: 'SL_entrydate', width: 12, classes: 'wrap text-uppercase', formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'Posted Date', name: 'SL_posteddate', width: 12, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'Audit No', name: 'SL_auditno', width: 12, align: 'right', formatter: padzero, unformat: unpadzero },
+			{ label: 'Quotation No', name: 'SL_quoteno', width: 10, align: 'right', canSearch: true, formatter: padzero, unformat: unpadzero },
+			{ label: 'PO No', name: 'SL_pono', width: 10, align: 'right', formatter: padzero5, unformat: unpadzero, hidden: true },
+			{ label: 'Amount', name: 'SL_amount', width: 10, align: 'right', formatter: 'currency' },
+			{ label: 'O/S<br>Amount', name: 'SL_outamount', width: 10, align: 'right', formatter: 'currency' },
+			{ label: 'Trantype', name: 'SL_trantype', width: 10 , hidden: true },
+			{ label: 'PO Date', name: 'SL_podate', width: 12, formatter: dateFormatter, unformat: dateUNFormatter, hidden: true },
+			{ label: 'Department Code', name: 'SL_deptcode', width: 18, canSearch: true, classes: 'wrap', formatter: showdetail, unformat: un_showdetail },
+			{ label: 'HUKM MRN', name: 'SL_mrn', width: 25, formatter: showdetail, unformat: un_showdetail },
+			{ label: 'Status', name: 'SL_recstatus', width: 10 },
+			{ label: ' ', name: 'Checkbox', sortable: false, width: 8, align: "center", formatter: formatterCheckbox },
+			// { label: 'SL_posteddate', name: 'SL_posteddate', hidden: true, formatter: dateFormatter },
+			{ label: 'recptno', name: 'SL_recptno', width: 20, hidden: true },
+			{ label: 'paymode', name: 'SL_paymode', width: 20, hidden: true },
+			{ label: 'debtortype', name: 'SL_debtortype', hidden: true },
+			{ label: 'billdebtor', name: 'SL_billdebtor', hidden: true },
+			{ label: 'Remark', name: 'SL_remark', width: 10, hidden: true },
+			{ label: 'mrn', name: 'SL_doctorcode', width: 10, hidden: true },
+			{ label: 'adduser', name: 'SL_adduser', width: 10, hidden: true },
+			{ label: 'adddate', name: 'SL_adddate', width: 10, hidden: true },
+			{ label: 'upduser', name: 'SL_upduser', width: 10, hidden: true },
+			{ label: 'upddate', name: 'SL_upddate', width: 10, hidden: true },
+			{ label: 'paytype', name: 'SL_hdrtype', width: 10, hidden: true },
+			{ label: 'termvalue', name: 'SL_termvalue', width: 10, hidden: true },
+			{ label: 'termcode', name: 'SL_termcode', width: 10, hidden: true },
+			// { label: 'Sector', name: 'SL_unit', width: 15, canSearch: true, classes: 'wrap', hidden: true },
+		],
+		autowidth: true,
+		multiSort: true,
+		viewrecords: true,
+		loadonce: false,
+		// sortname: 'SL_idno',
+		// sortorder: 'desc',
+		width: 900,
+		height: 300,
+		rowNum: 30,
+		pager: "#jqGridPager",
+		onSelectRow: function (rowid, selected){
+			$('#save').hide();
+			$('#error_infront').text('');
+			let stat = selrowData("#jqGrid").SL_recstatus;
+			let scope = $("#recstatus_use").val();
+			
+			urlParam2.source = selrowData("#jqGrid").SL_source;
+			urlParam2.trantype = selrowData("#jqGrid").SL_trantype;
+			urlParam2.auditno = selrowData("#jqGrid").SL_auditno;
+			urlParam2.deptcode = selrowData("#jqGrid").SL_deptcode;
+			
+			$('#reqnodepan').text(selrowData("#jqGrid").purreqhd_purreqno); // tukar kat depan
+			$('#reqdeptdepan').text(selrowData("#jqGrid").purreqhd_reqdept);
+			refreshGrid("#jqGrid3", urlParam2);
+			populate_form(selrowData("#jqGrid"));
+			
+			$("#pdfgen1").attr('href','./Quotation_SO/showpdf?idno='+selrowData("#jqGrid").SL_idno);
+			$("#pdfgen2").attr('href','./Quotation_SO/showpdf?idno='+selrowData("#jqGrid").SL_idno);
+			if_cancel_hide();
+		},
+		ondblClickRow: function (rowid, iRow, iCol, e){
+			let stat = selrowData("#jqGrid").SL_recstatus;
+			
+			if(stat == 'POSTED' || stat == 'PARTIAL' || stat == 'COMPLETED'){
+				$("#jqGridPager td[title='View Selected Row']").click();
+			}else if (stat == 'OPEN'){
+				$("#jqGridPager td[title='Edit Selected Row']").click();
+				
+				if(rowid != null){
+					rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+				}
+			}
+			
+			let SL_quoteno = selrowData("#jqGrid").SL_quoteno;
+			let quoteno = SL_quoteno.toString().padStart(8, '0');
+			
+			let SL_auditno = selrowData("#jqGrid").SL_auditno;
+			let auditno = SL_auditno.toString().padStart(8, '0');
+			
+			$('#SL_quoteno').val(quoteno);
+			$('#SL_auditno').val(auditno);
+		},
+		gridComplete: function (){
+			cbselect.show_hide_table();
+			if(oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null){ // highlight 1st record
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}
+			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus().click();
+			$("#searchForm input[name=Stext]").focus();
+			populate_form(selrowData("#jqGrid"));
+			fdl.set_array().reset();
+			
+			cbselect.checkbox_function_on();
+			cbselect.refresh_seltbl();
+			
+			// if($('#jqGrid').jqGrid('getGridParam', 'reccount') < 1){
+			// 	$('#reqnodepan').text(''); // tukar kat depan tu
+			// 	$('#reqdeptdepan').text('');
+			// }else 
+			if($('#jqGrid').data('inputfocus') == 'customer_search'){
+				$("#customer_search").focus();
+				$('#jqGrid').data('inputfocus','');
+				$('#customer_search_hb').text('');
+				removeValidationClass(['#customer_search']);
+			}else if($('#jqGrid').data('inputfocus') == 'department_search'){
+				$("#department_search").focus();
+				$('#jqGrid').data('inputfocus','');
+				$('#department_search_hb').text('');
+				removeValidationClass(['#department_search']);
+			}else{
+				$("#searchForm input[name=Stext]").focus();
+			}
+			page_to_view_only($('#viewonly').val(),function (){
+				$('#customer_text').hide();
+			});
+		},
+		loadComplete: function (data){
+			// console.log($('#deptcode').val());
+			// if($('#deptcode').val() !== 'IMP'){
+			// 	$("#jqGrid").jqGrid('hideCol', 'SL_mrn');
+			// 	$("#jqGrid").jqGrid('setGridWidth', 1480);
+			// }else{
+			// 	$("#jqGrid").jqGrid('showCol', 'SL_mrn');
+			// }
+		},
+		beforeRequest: function (){
+			refreshGrid("#jqGrid2", urlParam, 'kosongkan')
+		}
+	});
     
     /////////////////////////////////set label jqGrid right/////////////////////////////////
     jqgrid_label_align_right("#jqGrid2");
@@ -1342,6 +1349,8 @@ $(document).ready(function (){
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 			case 'SL_deptcode':field=['deptcode','description'];table="sysdb.department";case_='SL_deptcode';break;
 			case 'SL_debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='SL_debtorcode';break;
+			// case 'SL_mrn':field=['debtorcode','name'];table="debtor.debtormast";case_='SL_mrn';break;
+			case 'SL_mrn':field=['NewMrn','Name'];table="hisdb.pat_mast";case_='SL_mrn';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
