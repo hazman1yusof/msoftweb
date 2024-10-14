@@ -600,7 +600,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/purchaseRequest/purchaseRequest.js?v=1.10"></script>
+	<script src="js/material/purchaseRequest/purchaseRequest.js?v=1.11"></script>
 	<!-- <script src="js/material/purchaseRequest/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
