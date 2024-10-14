@@ -101,12 +101,12 @@ class NursingNoteController extends defaultController
                         return 'error happen..';
                 }
             
-            case 'save_table_othChart':
+            case 'save_table_othersChart':
                 switch($request->oper){
                     case 'add':
-                        return $this->add_formOthChart($request);
+                        return $this->add_formOthersChart($request);
                     case 'edit':
-                        return $this->edit_formOthChart($request);
+                        return $this->edit_formOthersChart($request);
                     default:
                         return 'error happen..';
                 }
@@ -129,23 +129,23 @@ class NursingNoteController extends defaultController
             case 'Circulation_del':
                 return $this->del_Circulation($request);
             
-            case 'SlidScale_save':
-                return $this->add_SlidScale($request);
+            case 'SlidingScale_save':
+                return $this->add_SlidingScale($request);
             
-            case 'SlidScale_edit':
-                return $this->edit_SlidScale($request);
+            case 'SlidingScale_edit':
+                return $this->edit_SlidingScale($request);
             
-            case 'SlidScale_del':
-                return $this->del_SlidScale($request);
+            case 'SlidingScale_del':
+                return $this->del_SlidingScale($request);
             
-            case 'OthChart_save':
-                return $this->add_OthChart($request);
+            case 'OthersChart_save':
+                return $this->add_OthersChart($request);
             
-            case 'OthChart_edit':
-                return $this->edit_OthChart($request);
+            case 'OthersChart_edit':
+                return $this->edit_OthersChart($request);
             
-            case 'OthChart_del':
-                return $this->del_OthChart($request);
+            case 'OthersChart_del':
+                return $this->del_OthersChart($request);
             
             case 'get_table_progress':
                 return $this->get_table_progress($request);
@@ -165,11 +165,8 @@ class NursingNoteController extends defaultController
             case 'get_table_formFitChart':
                 return $this->get_table_formFitChart($request);
             
-            case 'get_table_formOthChart':
-                return $this->get_table_formOthChart($request);
-            
-            case 'get_table_othChart':
-                return $this->get_table_othChart($request);
+            case 'get_table_formOthersChart':
+                return $this->get_table_formOthersChart($request);
             
             default:
                 return 'error happen..';
@@ -1241,25 +1238,21 @@ class NursingNoteController extends defaultController
         
     }
     
-    public function add_formOthChart(Request $request){
+    public function add_formOthersChart(Request $request){
         
         DB::beginTransaction();
         
         try {
             
-            if(!empty($request->othChart1_tabtitle)){
-                $tabtitle = $request->othChart1_tabtitle;
-            }else if(!empty($request->othChart2_tabtitle)){
-                $tabtitle = $request->othChart2_tabtitle;
+            if(!empty($request->othersChart1_tabtitle)){ // to check either tab othersChart1 or othersChart2
+                $tabtitle = $request->othersChart1_tabtitle;
+                $title = $request->othersChart1_title;
+            }else if(!empty($request->othersChart2_tabtitle)){
+                $tabtitle = $request->othersChart2_tabtitle;
+                $title = $request->othersChart2_title;
             }
             
-            if(!empty($request->othChart1_title)){
-                $title = $request->othChart1_title;
-            }else if(!empty($request->othChart2_title)){
-                $title = $request->othChart2_title;
-            }
-            
-            DB::table('nursing.nurs_othChart')
+            DB::table('nursing.nurs_othershdr')
                 ->insert([
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn_nursNote,
@@ -1287,25 +1280,21 @@ class NursingNoteController extends defaultController
         
     }
     
-    public function edit_formOthChart(Request $request){
+    public function edit_formOthersChart(Request $request){
         
         DB::beginTransaction();
         
         try {
             
-            if(!empty($request->othChart1_tabtitle)){
-                $tabtitle = $request->othChart1_tabtitle;
-            }else if(!empty($request->othChart2_tabtitle)){
-                $tabtitle = $request->othChart2_tabtitle;
+            if(!empty($request->othersChart1_tabtitle)){ // to check either tab othersChart1 or othersChart2
+                $tabtitle = $request->othersChart1_tabtitle;
+                $title = $request->othersChart1_title;
+            }else if(!empty($request->othersChart2_tabtitle)){
+                $tabtitle = $request->othersChart2_tabtitle;
+                $title = $request->othersChart2_title;
             }
             
-            if(!empty($request->othChart1_title)){
-                $title = $request->othChart1_title;
-            }else if(!empty($request->othChart2_title)){
-                $title = $request->othChart2_title;
-            }
-            
-            DB::table('nursing.nurs_othChart')
+            DB::table('nursing.nurs_othershdr')
                 ->where('mrn','=',$request->mrn_nursNote)
                 ->where('episno','=',$request->episno_nursNote)
                 ->where('tabtitle','=',$tabtitle)
@@ -1529,13 +1518,13 @@ class NursingNoteController extends defaultController
         
     }
     
-    public function add_SlidScale(Request $request){
+    public function add_SlidingScale(Request $request){
         
         DB::beginTransaction();
         
         try {
             
-            DB::table('nursing.nurs_slidscale')
+            DB::table('nursing.nurs_slidingscale')
                 ->insert([
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
@@ -1565,13 +1554,13 @@ class NursingNoteController extends defaultController
         
     }
     
-    public function edit_SlidScale(Request $request){
+    public function edit_SlidingScale(Request $request){
         
         DB::beginTransaction();
         
         try {
             
-            DB::table('nursing.nurs_slidscale')
+            DB::table('nursing.nurs_slidingscale')
                 ->where('idno','=',$request->idno)
                 // ->where('mrn','=',$request->mrn)
                 // ->where('episno','=',$request->episno)
@@ -1600,13 +1589,13 @@ class NursingNoteController extends defaultController
         
     }
     
-    public function del_SlidScale(Request $request){
+    public function del_SlidingScale(Request $request){
         
         DB::beginTransaction();
         
         try {
             
-            DB::table('nursing.nurs_slidscale')
+            DB::table('nursing.nurs_slidingscale')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->delete();
@@ -1623,26 +1612,25 @@ class NursingNoteController extends defaultController
         
     }
     
-    public function add_OthChart(Request $request){
+    public function add_OthersChart(Request $request){
         
         DB::beginTransaction();
         
         try {
             
-            $nurs_othChart = DB::table('nursing.nurs_othChart')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno)
-                            ->where('tabtitle','=',$request->tabtitle);
+            // $nurs_othersdtl = DB::table('nursing.nurs_othersdtl')
+            //                 ->where('compcode','=',session('compcode'))
+            //                 ->where('mrn','=',$request->mrn)
+            //                 ->where('episno','=',$request->episno)
+            //                 ->where('tabtitle','=',$request->tabtitle);
             
-            if($nurs_othChart->exists()){
-                DB::table('nursing.nurs_othChart')
+            // if($nurs_othersdtl->exists()){
+                DB::table('nursing.nurs_othersdtl')
                     ->insert([
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'tabtitle' => $request->tabtitle,
-                        'title' => $request->title,
                         'entereddate' => $request->entereddate,
                         'enteredtime' => $request->enteredtime,
                         'remarks' => $request->remarks,
@@ -1654,9 +1642,9 @@ class NursingNoteController extends defaultController
                         'lastupdtime'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'computerid' => session('computerid'),
                     ]);
-            }else{
-                throw new \Exception('Please enter chart title first.', 500);
-            }
+            // }else{
+            //     throw new \Exception('Please enter chart title first.', 500);
+            // }
             
             DB::commit();
             
@@ -1670,17 +1658,17 @@ class NursingNoteController extends defaultController
         
     }
     
-    public function edit_OthChart(Request $request){
+    public function edit_OthersChart(Request $request){
         
         DB::beginTransaction();
         
         try {
             
-            DB::table('nursing.nurs_othChart')
+            DB::table('nursing.nurs_othersdtl')
                 ->where('idno','=',$request->idno)
                 // ->where('mrn','=',$request->mrn)
                 // ->where('episno','=',$request->episno)
-                // ->where('title','=',$request->title)
+                // ->where('tabtitle','=',$request->tabtitle)
                 ->update([
                     'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
                     'enteredtime' => $request->enteredtime,
@@ -1705,13 +1693,13 @@ class NursingNoteController extends defaultController
         
     }
     
-    public function del_OthChart(Request $request){
+    public function del_OthersChart(Request $request){
         
         DB::beginTransaction();
         
         try {
             
-            DB::table('nursing.nurs_othChart')
+            DB::table('nursing.nurs_othersdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->delete();
@@ -1880,9 +1868,9 @@ class NursingNoteController extends defaultController
         
     }
     
-    public function get_table_formOthChart(Request $request){
+    public function get_table_formOthersChart(Request $request){
         
-        $nurs_othChart_obj = DB::table('nursing.nurs_othChart')
+        $nurs_othershdr_obj = DB::table('nursing.nurs_othershdr')
                             ->select('title')
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
@@ -1897,12 +1885,12 @@ class NursingNoteController extends defaultController
         
         $responce = new stdClass();
         
-        if($nurs_othChart_obj->exists()){
-            $nurs_othChart_obj = $nurs_othChart_obj->first();
+        if($nurs_othershdr_obj->exists()){
+            $nurs_othershdr_obj = $nurs_othershdr_obj->first();
             
-            $title_obj = $nurs_othChart_obj->title;
+            $title_obj = $nurs_othershdr_obj->title;
             $responce->title = $title_obj;
-            // $responce->nurs_othChart = $nurs_othChart_obj;
+            // $responce->nurs_othershdr = $nurs_othershdr_obj;
         }
         
         if($nursassessment_obj->exists()){
@@ -1911,36 +1899,6 @@ class NursingNoteController extends defaultController
             $diagnosis_obj = $nursassessment_obj->diagnosis;
             $responce->diagnosis = $diagnosis_obj;
         }
-        
-        return json_encode($responce);
-        
-    }
-    
-    public function get_table_othChart(Request $request){
-        
-        $table = DB::table('nursing.nurs_othChart')
-                ->where('compcode','=',session('compcode'))
-                ->where('mrn','=',$request->mrn)
-                ->where('episno','=',$request->episno)
-                ->where('tabtitle','=',$request->tabtitle)
-                ->orderBy('idno','desc');
-        
-        //////////paginate//////////
-        $paginate = $table->paginate($request->rows);
-        
-        foreach($paginate->items() as $key => $value){
-            if($value->entereddate !== null && $value->enteredtime !== null && $value->remarks !== null){
-                
-            }
-        }
-        
-        $responce = new stdClass();
-        $responce->page = $paginate->currentPage();
-        $responce->total = $paginate->lastPage();
-        $responce->records = $paginate->total();
-        $responce->rows = $paginate->items();
-        $responce->sql = $table->toSql();
-        $responce->sql_bind = $table->getBindings();
         
         return json_encode($responce);
         

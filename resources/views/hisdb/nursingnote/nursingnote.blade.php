@@ -30,9 +30,9 @@
                     <li><a data-toggle="tab" id="navtab_careplan" href="#tab-careplan" data-type='careplan'>Care Plan</a></li>
                     <li><a data-toggle="tab" id="navtab_fitchart" href="#tab-fitchart" data-type='fitchart'>Fit Chart</a></li>
                     <li><a data-toggle="tab" id="navtab_circulation" href="#tab-circulation" data-type='circulation'>Circulation Chart</a></li>
-                    <li><a data-toggle="tab" id="navtab_slidScale" href="#tab-slidScale" data-type='slidScale'>Sliding Scale Chart</a></li>
-                    <li><a data-toggle="tab" id="navtab_othChart1" href="#tab-othChart1" data-type='othChart1'>Others Chart 1</a></li>
-                    <li><a data-toggle="tab" id="navtab_othChart2" href="#tab-othChart2" data-type='othChart2'>Others Chart 2</a></li>
+                    <li><a data-toggle="tab" id="navtab_slidingScale" href="#tab-slidingScale" data-type='slidingScale'>Sliding Scale Chart</a></li>
+                    <li><a data-toggle="tab" id="navtab_othersChart1" href="#tab-othersChart1" data-type='othersChart1'>Others Chart 1</a></li>
+                    <li><a data-toggle="tab" id="navtab_othersChart2" href="#tab-othersChart2" data-type='othersChart2'>Others Chart 2</a></li>
                 </ul>
                 <div class="tab-content" style="padding: 10px 5px;">
                     <input id="mrn_nursNote" name="mrn_nursNote" type="hidden">
@@ -2066,36 +2066,36 @@
                             </div>
                         </div>
                     </div>
-                    <div id="tab-slidScale" class="tab-pane fade">
+                    <div id="tab-slidingScale" class="tab-pane fade">
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
                                 <div class="panel-heading text-center" style="height: 40px;">
                                     <!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-                                        id="btn_grp_edit_slidScale"
+                                        id="btn_grp_edit_slidingScale"
                                         style="position: absolute;
                                                 padding: 0 0 0 0;
                                                 right: 40px;
                                                 top: 5px;">
-                                        <button type="button" class="btn btn-default" id="new_slidScale">
+                                        <button type="button" class="btn btn-default" id="new_slidingScale">
                                             <span class="fa fa-plus-square-o"></span> New 
                                         </button>
-                                        <button type="button" class="btn btn-default" data-oper='add' id="save_slidScale">
+                                        <button type="button" class="btn btn-default" data-oper='add' id="save_slidingScale">
                                             <span class="fa fa-save fa-lg"></span> Save 
                                         </button>
-                                        <button type="button" class="btn btn-default" id="cancel_slidScale">
+                                        <button type="button" class="btn btn-default" id="cancel_slidingScale">
                                             <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                         </button>
                                     </div> -->
                                 </div>
                                 <div class="panel-body" style="padding-right: 0px;">
-                                    <form class='form-horizontal' style='width: 99%;' id='formSlidScale'>
+                                    <form class='form-horizontal' style='width: 99%;' id='formSlidingScale'>
                                         <div class='col-md-12'>
-                                            <div class="panel panel-info" id="jqGridSlidScale_c">
+                                            <div class="panel panel-info" id="jqGridSlidingScale_c">
                                                 <!-- <div class="panel-heading text-center">SLIDING SCALE CHART</div> -->
                                                 <div class="panel-body">
                                                     <div class='col-md-12' style="padding:0 0 15px 0">
-                                                        <table id="jqGridSlidScale" class="table table-striped"></table>
-                                                        <div id="jqGridPagerSlidScale"></div>
+                                                        <table id="jqGridSlidingScale" class="table table-striped"></table>
+                                                        <div id="jqGridPagerSlidingScale"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2105,62 +2105,62 @@
                             </div>
                         </div>
                     </div>
-                    <div id="tab-othChart1" class="tab-pane fade">
+                    <div id="tab-othersChart1" class="tab-pane fade">
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
                                 <div class="panel-heading text-center" style="height: 40px;">
                                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-                                        id="btn_grp_edit_othChart1"
+                                        id="btn_grp_edit_othersChart1"
                                         style="position: absolute;
                                                 padding: 0 0 0 0;
                                                 right: 40px;
                                                 top: 5px;">
-                                        <button type="button" class="btn btn-default" id="new_othChart1">
+                                        <button type="button" class="btn btn-default" id="new_othersChart1">
                                             <span class="fa fa-plus-square-o"></span> New 
                                         </button>
-                                        <button type="button" class="btn btn-default" id="edit_othChart1">
+                                        <button type="button" class="btn btn-default" id="edit_othersChart1">
                                             <span class="fa fa-edit fa-lg"></span> Edit 
                                         </button>
-                                        <button type="button" class="btn btn-default" data-oper='add' id="save_othChart1">
+                                        <button type="button" class="btn btn-default" data-oper='add' id="save_othersChart1">
                                             <span class="fa fa-save fa-lg"></span> Save 
                                         </button>
-                                        <button type="button" class="btn btn-default" id="cancel_othChart1">
+                                        <button type="button" class="btn btn-default" id="cancel_othersChart1">
                                             <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                         </button>
                                     </div>
                                 </div>
                                 <div class="panel-body" style="padding-right: 0px;">
-                                    <form class='form-horizontal' style='width: 99%;' id='formOthChart1'>
+                                    <form class='form-horizontal' style='width: 99%;' id='formOthersChart1'>
                                         <div class='col-md-12'>
                                             <div class="panel panel-info">
                                                 <div class="panel-body">
                                                     <div class="form-group" style="padding-bottom: 5px;">
-                                                        <input id="othChart1_tabtitle" name="othChart1_tabtitle" value="othChart1" type="hidden">
+                                                        <input id="othersChart1_tabtitle" name="othersChart1_tabtitle" value="othersChart1" type="hidden">
                                                         
                                                         <div class="col-md-4"></div>
                                                         
                                                         <div class="col-md-2" style="padding-left: 0px; padding-right: 0px;">
-                                                            <input id="othChart1_title" name="othChart1_title" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                            <input id="othersChart1_title" name="othersChart1_title" type="text" class="form-control input-sm" style="text-transform: none;">
                                                         </div>
-                                                        <label class="col-md-1 control-label" for="othChart1_title">Chart</label>
+                                                        <label class="col-md-1 control-label" for="othersChart1_title">Chart</label>
                                                         
                                                         <div class="col-md-4"></div>
                                                     </div>
                                                     
                                                     <div class="form-group">
-                                                        <label class="col-md-1 control-label" for="othChart1_ward">Ward</label>
+                                                        <label class="col-md-1 control-label" for="othersChart1_ward">Ward</label>
                                                         <div class="col-md-2">
-                                                            <input id="othChart1_ward" name="othChart1_ward" type="text" class="form-control input-sm" rdonly>
+                                                            <input id="othersChart1_ward" name="othersChart1_ward" type="text" class="form-control input-sm" rdonly>
                                                         </div>
                                                         
-                                                        <label class="col-md-1 control-label" for="othChart1_bednum">Bed No.</label>
+                                                        <label class="col-md-1 control-label" for="othersChart1_bednum">Bed No.</label>
                                                         <div class="col-md-2">
-                                                            <input id="othChart1_bednum" name="othChart1_bednum" type="text" class="form-control input-sm" rdonly>
+                                                            <input id="othersChart1_bednum" name="othersChart1_bednum" type="text" class="form-control input-sm" rdonly>
                                                         </div>
                                                         
-                                                        <label class="col-md-1 control-label" for="othChart1_diag">Diagnosis</label>
+                                                        <label class="col-md-1 control-label" for="othersChart1_diag">Diagnosis</label>
                                                         <div class="col-md-4">
-                                                            <textarea id="othChart1_diag" name="othChart1_diag" type="text" class="form-control input-sm" rdonly></textarea>
+                                                            <textarea id="othersChart1_diag" name="othersChart1_diag" type="text" class="form-control input-sm" rdonly></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2172,12 +2172,12 @@
                         </div>
                         
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
-                            <div class="panel panel-info" id="jqGridOthChart1_c">
+                            <div class="panel panel-info" id="jqGridOthersChart1_c">
                                 <!-- <div class="panel-heading text-center">OTHERS CHART 1</div> -->
                                 <div class="panel-body">
                                     <div class='col-md-12' style="padding:0 0 15px 0">
-                                        <table id="jqGridOthChart1" class="table table-striped"></table>
-                                        <div id="jqGridPagerOthChart1"></div>
+                                        <table id="jqGridOthersChart1" class="table table-striped"></table>
+                                        <div id="jqGridPagerOthersChart1"></div>
                                     </div>
                                     
                                     <div class="col-md-5" style="padding-top: 20px; text-align: left; color: red;">
@@ -2187,31 +2187,84 @@
                             </div>
                         </div>
                     </div>
-                    <div id="tab-othChart2" class="tab-pane fade">
+                    <div id="tab-othersChart2" class="tab-pane fade">
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
                                 <div class="panel-heading text-center" style="height: 40px;">
-                                    <!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-                                        id="btn_grp_edit_othChart2"
+                                    <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                        id="btn_grp_edit_othersChart2"
                                         style="position: absolute;
                                                 padding: 0 0 0 0;
                                                 right: 40px;
                                                 top: 5px;">
-                                        <button type="button" class="btn btn-default" id="new_othChart2">
+                                        <button type="button" class="btn btn-default" id="new_othersChart2">
                                             <span class="fa fa-plus-square-o"></span> New 
                                         </button>
-                                        <button type="button" class="btn btn-default" data-oper='add' id="save_othChart2">
+                                        <button type="button" class="btn btn-default" id="edit_othersChart2">
+                                            <span class="fa fa-edit fa-lg"></span> Edit 
+                                        </button>
+                                        <button type="button" class="btn btn-default" data-oper='add' id="save_othersChart2">
                                             <span class="fa fa-save fa-lg"></span> Save 
                                         </button>
-                                        <button type="button" class="btn btn-default" id="cancel_othChart2">
+                                        <button type="button" class="btn btn-default" id="cancel_othersChart2">
                                             <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                         </button>
-                                    </div> -->
+                                    </div>
                                 </div>
                                 <div class="panel-body" style="padding-right: 0px;">
-                                    <form class='form-horizontal' style='width: 99%;' id='formOthChart2'>
-                                    
+                                    <form class='form-horizontal' style='width: 99%;' id='formOthersChart2'>
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info">
+                                                <div class="panel-body">
+                                                    <div class="form-group" style="padding-bottom: 5px;">
+                                                        <input id="othersChart2_tabtitle" name="othersChart2_tabtitle" value="othersChart2" type="hidden">
+                                                        
+                                                        <div class="col-md-4"></div>
+                                                        
+                                                        <div class="col-md-2" style="padding-left: 0px; padding-right: 0px;">
+                                                            <input id="othersChart2_title" name="othersChart2_title" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                        </div>
+                                                        <label class="col-md-1 control-label" for="othersChart2_title">Chart</label>
+                                                        
+                                                        <div class="col-md-4"></div>
+                                                    </div>
+                                                    
+                                                    <div class="form-group">
+                                                        <label class="col-md-1 control-label" for="othersChart2_ward">Ward</label>
+                                                        <div class="col-md-2">
+                                                            <input id="othersChart2_ward" name="othersChart2_ward" type="text" class="form-control input-sm" rdonly>
+                                                        </div>
+                                                        
+                                                        <label class="col-md-1 control-label" for="othersChart2_bednum">Bed No.</label>
+                                                        <div class="col-md-2">
+                                                            <input id="othersChart2_bednum" name="othersChart2_bednum" type="text" class="form-control input-sm" rdonly>
+                                                        </div>
+                                                        
+                                                        <label class="col-md-1 control-label" for="othersChart2_diag">Diagnosis</label>
+                                                        <div class="col-md-4">
+                                                            <textarea id="othersChart2_diag" name="othersChart2_diag" type="text" class="form-control input-sm" rdonly></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
+                            <div class="panel panel-info" id="jqGridOthersChart2_c">
+                                <!-- <div class="panel-heading text-center">OTHERS CHART 2</div> -->
+                                <div class="panel-body">
+                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                        <table id="jqGridOthersChart2" class="table table-striped"></table>
+                                        <div id="jqGridPagerOthersChart2"></div>
+                                    </div>
+                                    
+                                    <div class="col-md-5" style="padding-top: 20px; text-align: left; color: red;">
+                                        <p id="p_error2"></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
