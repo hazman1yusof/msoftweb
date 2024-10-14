@@ -1000,6 +1000,11 @@ class InventoryTransactionController extends defaultController
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
+        
+        $sndrcv = DB::table('sysdb.department')
+            ->where('compcode','=',session('compcode'))
+            ->where('deptcode','=',$ivtmphd->sndrcv)
+            ->first();
 
         $total_amt = DB::table('material.ivtmpdt')
             ->where('compcode','=',session('compcode'))
@@ -1101,7 +1106,7 @@ class InventoryTransactionController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
-        return view('material.inventoryTransaction.inventoryTransaction_pdfmake',compact('ivtmphd','ivtmpdt', 'company','total_amt','cr_acc','db_acc'));
+        return view('material.inventoryTransaction.inventoryTransaction_pdfmake',compact('ivtmphd','ivtmpdt', 'company','total_amt','cr_acc','db_acc','sndrcv'));
         
     }
 }

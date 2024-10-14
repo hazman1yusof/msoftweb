@@ -67,42 +67,55 @@
                     style: 'tableExample',
                     table: {
                         headerRows: 1,
-                        widths: ['*', '*'],//panjang standard dia 515
+                        widths: [85,220,80,120],//panjang standard dia 515
 
                         body: [
                             [
-								{text: 'Department : {{$ivtmphd->txndept}}'}, 
-								{text: 'Document  No. : MS-{{$ivtmphd->trantype}}-{{str_pad($ivtmphd->docno, 6, "0", STR_PAD_LEFT)}}'},
+								{text: 'Department ', bold: true}, 
+								{text: ': {{$ivtmphd->txndept}}'},
+								{text: 'Document  No. ', bold: true},
+								{text: ': MS-{{$ivtmphd->trantype}}-{{str_pad($ivtmphd->docno, 6, "0", STR_PAD_LEFT)}}'},
 							],
                             [
-								{text: 'Type : {{$ivtmphd->sndrcvtype}}'}, 
-								{text: 'TranType : {{$ivtmphd->trantype}}'},
+								{text: 'Type', bold: true}, 
+								{text: ': {{$ivtmphd->sndrcvtype}}'},
+								{text: 'TranType', bold: true},
+								{text: ': {{$ivtmphd->trantype}}'},
 							],
                             [
-								{text: 'Sender/Receiver Name : {{$ivtmphd->sndrcv}}'}, 
-								{text: 'Sender/Receiver Code : '},
+								{text: 'Sender/Receiver Name ', bold: true}, 
+								{text: ': {{$sndrcv->description}}'},
+								{text: 'Sender/Receiver Code ', bold: true},
+								{text: ': {{$ivtmphd->sndrcv}}'},
 							],
                             [
 								@if(!empty($ivtmphd->trandate))
-									{text: 'Date : {{\Carbon\Carbon::createFromFormat('Y-m-d',$ivtmphd->trandate)->format('d-m-Y')}}'},
+									{text: 'Date ', bold: true},
+									{text: ': {{\Carbon\Carbon::createFromFormat('Y-m-d',$ivtmphd->trandate)->format('d-m-Y')}}'},
 								@else
+									{text: ''},
 									{text: ''},
 								@endif 
 
 
 								@if(!empty($ivtmphd->trantime))
-									{text: 'Time : {{\Carbon\Carbon::createFromFormat('H:i:s',$ivtmphd->trantime)->format('H:i')}}'},
+									{text: 'Time ', bold: true},
+									{text: ': {{\Carbon\Carbon::createFromFormat('H:i:s',$ivtmphd->trantime)->format('H:i')}}'},
 								@else
+									{text: ''},
 									{text: ''},
 								@endif 
 							],
                             [
-								{text: 'Status : {{$ivtmphd->recstatus}}'}, 
-								{text: 'Request No. : {{$ivtmphd->srcdocno}}'},
+								{text: 'Status ', bold: true}, 
+								{text: ': {{$ivtmphd->recstatus}}'},
+								{text: 'Request No. ', bold: true},
+								{text: ': {{$ivtmphd->srcdocno}}'},
 							],
                             [
-								{text: 'Remarks: {{$ivtmphd->remarks}}'}, 
-                                {}, 
+								{text: 'Remarks', bold: true}, 
+								{text: ': {{$ivtmphd->remarks}}',colSpan:3},
+                                {},{}
 							],
                         ]
                     },
@@ -115,18 +128,17 @@
                     style: 'tableDetail',
                     table: {
                         headerRows: 1,
-                        widths: ['*','*','*','*','*','*','*','*','*'],//panjang standard dia 515
+                        widths: [13,200,30,40,45,45,46,45],//panjang standard dia 515
 
                         body: [
                             [
-								{text: 'Line No', style: 'tableHeader'}, 
+								{text: 'No', style: 'tableHeader'}, 
 								{text: 'Itemcode', style: 'tableHeader'}, 
 								{text: 'UOM', style: 'tableHeader'}, 
 								{text: 'Qty', style: 'tableHeader', alignment: 'right'},
 								{text: 'Net Price', style: 'tableHeader', alignment: 'right'},
 								{text: 'Amount', style: 'tableHeader', alignment: 'right'}, 
-                                {text: 'Expiry\nDate', style: 'tableHeader'}, 
-                                {text: 'Tran\nDate', style: 'tableHeader'}, 
+                                {text: 'Expiry Date', style: 'tableHeader'}, 
 								{text: 'QOH', style: 'tableHeader', alignment: 'right'}, 
 							
 							],
@@ -146,26 +158,19 @@
                                 @else
 									{text: ''},
 								@endif
-
-								@if(!empty($obj->trandate))
-                                	{text:'@if(!empty($obj->trandate)){{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->trandate)->format('d-m-Y')}}@endif'},
-                                @else
-									{text: ''},
-								@endif
                                 {text:'{{$obj->qtyonhand}}', alignment: 'right'},
 								
 							],
 							[
 								
 								{},
-								{text:`{!!$obj->description!!}`,colSpan: 8},
+								{text:`{!!$obj->description!!}`,colSpan: 7},
 								{},
                                 {},
 								{},
 								{},
 								{},
 								{},
-                                {},
 							],
 							@endforeach
                         ]
@@ -173,21 +178,28 @@
 			        layout: 'noBorders',
 		        },
                 {
-                    style: 'tableExample',
+                    style: 'tableDetail',
                     table: {
                         headerRows: 1,
-                        widths: ['*'],//panjang standard dia 515
+                        widths: [13,200,30,40,45,45,46,45],//panjang standard dia 515
 
                         body: [
                             [
-								{text: 'Total Amount: {{number_format($total_amt,2)}}', fontSize: 9}, 
+								{},
+								{text: 'Total Amount',bold:true,fontSize:9}, 
+                                {},
+								{},
+								{},
+								{text: '{{number_format($total_amt,2)}}', alignment: 'right',bold:true}, 
+								{},
+								{},
 							],
                         ]
                     },
 			        layout: 'noBorders',
 		        },
                 {
-                    text: 'SUMMARY ACCOUNTING ENTRIES\n', fontSize: 14,
+                    text: 'SUMMARY ACCOUNTING ENTRIES\n', fontSize: 14, margin:[0,15,0,0]
 		        },
                 {
                     style: 'tableDetail',
