@@ -167,9 +167,12 @@ div#fail_msg{
 
         <div class="panel panel-default">
 		    	<div class="panel-heading">Inventory Request DataEntry Header
-					<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #000033;" id='pdfgen_excel'>
+					<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #000033;" id='pdfgen_excel_each'  href="" target="_blank">
 						<span class='fa fa-print'></span> Print 
 					</a>		    	
+					<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #000033;" id='pdfgen_excel'>
+						<span class='fa fa-paper-plane'></span> Inquiry
+					</a>		   
 				</div>
 		    		<div class="panel-body">
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
@@ -416,7 +419,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/inventoryRequest/inventoryRequest.js?v=1.7"></script>
+	<script src="js/material/inventoryRequest/inventoryRequest.js?v=1.8"></script>
 	<!-- <script src="js/material/inventoryRequest/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

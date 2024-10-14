@@ -28,8 +28,7 @@ class InventoryRequestController extends defaultController
         return view('material.inventoryRequest.inventoryRequest');
     }
 
-    public function form(Request $request)
-    {   
+    public function form(Request $request){   
         DB::enableQueryLog();
         switch($request->oper){
             case 'add':
@@ -44,6 +43,15 @@ class InventoryRequestController extends defaultController
                 return $this->reopen($request);
             case 'cancel':
                 return $this->cancel($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function table(Request $request){
+        switch($request->action){
+            case 'showpdf_each':
+                return $this->showpdf_each($request);
             default:
                 return 'error happen..';
         }
@@ -215,7 +223,6 @@ class InventoryRequestController extends defaultController
             DB::rollback();            
             return response($e->getMessage(), 500);
         }
-
     }
 
     public function cancel(Request $request){
@@ -303,7 +310,6 @@ class InventoryRequestController extends defaultController
         if($diff > intval($sequence->backday)){
             throw new \Exception("backdated sequence exceed ".$sequence->backday.' days', 500);
         }
-
     }
 
     public function showExcel(Request $request){
@@ -359,79 +365,52 @@ class InventoryRequestController extends defaultController
             ->first();
         
         return view('material.inventoryRequest.inventoryRequest_pdfmake',compact('ivrequest'));
-        
     }
 
-    // public function showpdf(Request $request){
-    //     $idno = $request->idno;
-    //     if(!$idno){
-    //         abort(404);
-    //     }
+    public function showpdf_each(Request $request){
+        $idno = $request->idno;
+        if(!$idno){
+            abort(404);
+        }
         
-    //     $ivreqhd = DB::table('material.ivreqhd as ivhd')
-    //                 ->select('ivhd.compcode','ivhd.source','ivhd.trantype','ivhd.reqdept','ivhd.reqtodept','ivhd.recno','ivhd.ivreqno','ivhd.reqdt','ivhd.reqtype','ivhd.reqpersonid','ivhd.amount','ivhd.remarks','ivhd.recstatus','ivhd.adduser','ivhd.adddate','ivhd.upduser','ivhd.upddate','ivhd.cancelby','ivhd.canceldate','ivhd.reopenby','ivhd.reopendate','ivhd.authpersonid','ivhd.authdate','ivhd.unit','ivhd.postedby','ivhd.postdate')
-    //                 ->where('ivhd.compcode','=',session('compcode'))
-    //                 ->where('ivhd.idno','=',$idno)
-    //                 ->first();
+        $ivreqhd = DB::table('material.ivreqhd as ivhd')
+                    ->select('ivhd.compcode','ivhd.source','ivhd.trantype','ivhd.reqdept','ivhd.reqtodept','ivhd.recno','ivhd.ivreqno','ivhd.reqdt','ivhd.reqtype','ivhd.reqpersonid','ivhd.amount','ivhd.remarks','ivhd.recstatus','ivhd.adduser','ivhd.adddate','ivhd.upduser','ivhd.upddate','ivhd.cancelby','ivhd.canceldate','ivhd.reopenby','ivhd.reopendate','ivhd.authpersonid','ivhd.authdate','ivhd.unit','ivhd.postedby','ivhd.postdate')
+                    ->where('ivhd.compcode','=',session('compcode'))
+                    ->where('ivhd.idno','=',$idno)
+                    ->first();
         
-    //     $ivreqdt = DB::table('material.ivreqdt AS ivdt', 'material.productmaster AS p', 'material.uom as u')
-    //                 ->select('podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.pricecode', 'podt.itemcode', 'p.description', 'podt.uomcode', 'podt.pouom', 'podt.qtyorder', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc', 'podt.amtslstax as tot_gst','podt.netunitprice', 'podt.totamount','podt.amount', 'podt.rem_but AS remarks_button', 'podt.remarks', 'podt.recstatus', 'podt.unit', 'u.description as uom_desc')
-    //                 ->leftJoin('material.uom as u', function ($join){
-    //                     $join = $join->on('u.uomcode', '=', 'podt.pouom')
-    //                                 ->where('u.compcode','=',session('compcode'));
-    //                 })
-    //                 ->leftJoin('material.productmaster as p', function ($join){
-    //                     $join = $join->on('p.itemcode', '=', 'podt.itemcode')
-    //                                 ->where('p.compcode','=',session('compcode'));
-    //                                 // ->where('p.unit','=',session('unit'));
-    //                 })
-    //                 ->where('podt.compcode','=',session('compcode'))
-    //                 ->where('recno','=',$recno)
-    //                 ->get();
+        $ivreqdt = DB::table('material.ivreqdt AS ivdt')
+                    ->select('ivdt.lineno_','ivdt.itemcode','ivdt.uomcode','ivdt.pouom','ivdt.qtyrequest','ivdt.qtybalance','ivdt.qtytxn','ivdt.qohconfirm','p.qtyonhand','ivdt.netprice','ivdt.adduser','ivdt.adddate','ivdt.upduser','ivdt.upddate','ivdt.stocktt','ivdt.remarks','ivdt.authorid','ivdt.recstatus','ivdt.deluser','ivdt.deldate','ivdt.unit','ivdt.maxqty','ivdt.ivtxnhddept','ivdt.ivtxnhddocno','ivdt.batchno','ivdt.expdate','p.description', 'u.description as uom_desc')
+                    ->leftJoin('material.uom as u', function ($join){
+                        $join = $join->on('u.uomcode', '=', 'ivdt.uomcode')
+                                    ->where('u.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('material.product as p', function ($join){
+                        $join = $join->on('p.itemcode', '=', 'ivdt.itemcode')
+                                    ->on('p.uomcode','=','ivdt.uomcode')
+                                    ->where('p.compcode','=',session('compcode'))
+                                    ->where('p.unit','=',session('unit'));
+                    })
+                    ->where('ivdt.compcode','=',session('compcode'))
+                    ->where('recno','=',$ivreqhd->recno)
+                    ->orderBy('ivdt.lineno_', 'ASC')
+                    ->get();
                     
-    //     $company = DB::table('sysdb.company')
-    //                 ->where('compcode','=',session('compcode'))
-    //                 ->first();
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
         
-    //     $supplier = DB::table('material.supplier')
-    //                 ->where('compcode','=',session('compcode'))
-    //                 ->where('SuppCode','=',$purordhd->suppcode)
-    //                 ->first();
+        $reqdept = DB::table('sysdb.department')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('deptcode','=',$ivreqhd->reqdept)
+                    ->first();
         
-    //     $deldept = DB::table('material.deldept')
-    //                 ->where('compcode','=',session('compcode'))
-    //                 ->where('deptcode','=',$purordhd->deldept)
-    //                 ->first();
+        $reqtodept = DB::table('sysdb.department')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('deptcode','=',$ivreqhd->reqtodept)
+                    ->first();
         
-    //     $total_tax = DB::table('material.purorddt')
-    //                 ->where('compcode','=',session('compcode'))
-    //                 ->where('recno','=',$recno)
-    //                 ->sum('amtslstax');
-        
-    //     $total_discamt = DB::table('material.purorddt')
-    //                     ->where('compcode','=',session('compcode'))
-    //                     ->where('recno','=',$recno)
-    //                     ->sum('amtdisc');
-        
-    //     $totamount_expld = explode(".", (float)$purordhd->totamount);
-        
-    //     // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
-    //     // $totamt_bm = $totamt_bm_rm." SAHAJA";
-        
-    //     // if(count($totamount_expld) > 1){
-    //     //     $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
-    //     //     $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
-    //     // }
-        
-    //     $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
-    //     $totamt_eng = $totamt_eng_rm." ONLY";
-        
-    //     if(count($totamount_expld) > 1){
-    //         $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1]). "CENT";
-    //         $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
-    //     }
-        
-    //     return view('material.inventoryRequest.inventoryRequest_pdfmake',compact('purordhd','purorddt','totamt_eng', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
-    // }
+        return view('material.inventoryRequest.inventoryRequest_pdfmake2',compact('ivreqhd','ivreqdt', 'company','reqdept','reqtodept'));
+    }
 }
 
