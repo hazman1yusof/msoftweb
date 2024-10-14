@@ -78,7 +78,7 @@ class do_util extends defaultController{
 
         }else{
         //3.kalu xde stockloc, create stockloc baru
-            throw new \Exception("Prodcut doesnt have stockloc: ".$value->itemcode." UOM: ".$value->uomcode." Dept: ".$value->deldept." Year: ".defaultController::toYear($value->trandate));
+            throw new \Exception("Product doesnt have stockloc: ".$value->itemcode." UOM: ".$value->uomcode." Dept: ".$value->deldept." Year: ".defaultController::toYear($value->trandate));
         }
 	}
 

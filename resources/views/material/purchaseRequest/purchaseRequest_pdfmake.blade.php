@@ -76,11 +76,11 @@
 			},
 			pageSize: 'A4',
 			// pageOrientation: 'landscape',
+			pageMargins: [30,20,30,30],
 			content: [
 				{
-					image: 'letterhead', width: 250, style: 'tableHeader', colSpan: 5, alignment: 'center'
+					image: 'letterhead', width: 175, style: 'tableHeader', colSpan: 5, alignment: 'center'
 				},
-				{ text: ' ' },
 				{
 					text: 'PURCHASE REQUEST (PR)',
 					style: 'header',
@@ -128,7 +128,7 @@
 								},{},{},{},
 								{
 									text: 'Department/Unit: {{$purreqhd->reqdept_name}}',
-									colSpan: 5, rowSpan: 2, alignment: 'left'
+									colSpan: 5, alignment: 'left'
 								},{},{},{},{}
 							],
 							[
@@ -139,7 +139,15 @@
 								{
 									text: '@if(!empty($supplier)){{$supplier->Name}}@endif',
 									colSpan: 4, alignment: 'left'
-								},{},{},{},{},{},{},{},{}
+								},{},{},{},
+								{
+									text: 'Record no: {{str_pad($purreqhd->recno, 5, '0', STR_PAD_LEFT)}}',
+									colSpan: 2, alignment: 'left'
+								},{},
+								{
+									text: 'Request No: {{$purreqhd->prdept}}-{{str_pad($purreqhd->purreqno, 5, '0', STR_PAD_LEFT)}}',
+									colSpan: 3, alignment: 'left'
+								},{},
 							],
 							[
 								{
@@ -263,7 +271,7 @@
 				header: {
 					fontSize: 16,
 					bold: true,
-					margin: [0, 0, 0, 10]
+					margin: [0, 2, 0, 10]
 				},
 				subheader: {
 					fontSize: 10,
@@ -277,7 +285,8 @@
 				tableHeader: {
 					bold: true,
 					fontSize: 13,
-					color: 'black'
+					color: 'black',
+					margin: [0, 0, 0, 0]
 				},
 				totalbold: {
 					bold: true,
