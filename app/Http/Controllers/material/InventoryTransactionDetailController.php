@@ -379,9 +379,9 @@ class InventoryTransactionDetailController extends defaultController
                         throw new \Exception("Quantity not enough at Stock location, ".$ivtmphd->txndept." - ".$value['itemcode']." - ".$value['uomcode']);
                     }
 
-                    if($value['qtyrequest'] < $value['txnqty']){
-                        throw new \Exception("Quantity transaction geater than qtyrequest, ".$ivtmphd->txndept." - ".$value['itemcode']." - ".$value['uomcode']);
-                    }
+                    // if($value['qtyrequest'] < $value['txnqty']){
+                    //     throw new \Exception("Quantity transaction greater than qtyrequest, ".$ivtmphd->txndept." - ".$value['itemcode']." - ".$value['uomcode']);
+                    // }
                 }else{
                     $issuetype = DB::table('material.ivtxntype')->select('isstype')
                                     ->where('compcode','=',session('compcode'))

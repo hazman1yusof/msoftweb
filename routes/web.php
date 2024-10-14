@@ -611,6 +611,7 @@ Route::get('/attachment_upload','util\attachment_uploadController@page');
 Route::get('/attachment_upload/table','util\attachment_uploadController@table');
 Route::post('/attachment_upload/form','util\attachment_uploadController@form');
 Route::get('/attachment_upload/thumbnail/{folder}/{image_path}','util\attachment_uploadController@thumbnail');
+Route::get('/attachment_download/{folder}/{image_path}','util\attachment_uploadController@download');
 
 //// Finance - Quotation page ///
 Route::get('/Quotation_SO','finance\Quotation_SO_Controller@show');

@@ -56,6 +56,8 @@ class attachment_uploadController extends defaultController
     public function form(Request $request)
     {   
         switch($request->page){
+            case 'delete':
+                return $this->attachment_delete($request);
             case 'invoiceap':
                 return $this->default_form($request);
             case 'purchaseorder':
@@ -156,6 +158,24 @@ class attachment_uploadController extends defaultController
         $file = $attachment_path."\\uploads\\".$folder."\\".$image_path;
         // dump($file);
         return Response::download($file,$request->filename);
+    }
+
+    public function attachment_delete(Request $request){
+        DB::beginTransaction();
+
+        try {
+            DB::table('finance.attachment')
+                ->where('idno',$request->idno)
+                ->update([
+                    'page' => $request->page_delete.'_delete',
+                ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
 
     public function merge_pdf(Request $request){
