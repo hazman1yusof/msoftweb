@@ -1434,19 +1434,19 @@ $(document).ready(function () {
 			mycurrency2.formatOff();
 			mycurrency_np.formatOff();
 			
-			if(errorField.length>0){
-				console.log(errorField)
-				return false;
-			}
+			// if(errorField.length>0){
+			// 	console.log(errorField)
+			// 	return false;
+			// }
 			
 			for (var i = 0; i < ids.length; i++) {
-				if(parseInt($('#'+ids[i]+"_quantity").val()) <= 0)return false;
+				// if(parseInt($('#'+ids[i]+"_quantity").val()) <= 0)return false;
 				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
-				let retval = check_cust_rules("#jqGrid2",data);
-				if(retval[0]!= true){
-					alert(retval[1]);
-					return false;
-				}
+				// let retval = check_cust_rules("#jqGrid2",data);
+				// if(retval[0]!= true){
+				// 	alert(retval[1]);
+				// 	return false;
+				// }
 
 				let rowid = ids[i];
 				var st_idno = $("#jqGrid2 #"+rowid+"_chggroup").data('st_idno');

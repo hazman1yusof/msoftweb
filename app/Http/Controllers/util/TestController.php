@@ -948,7 +948,7 @@ class TestController extends defaultController
         }
     }
 
-    public function betulkandb(Request $request){
+    public function betulkandb_purreqhd_2(Request $request){
         DB::beginTransaction();
         try {
             
@@ -1588,68 +1588,35 @@ class TestController extends defaultController
         }
     }
 
-    public function betulkandb_recstatus(Request $request){
+    public function betulkandb(Request $request){
         DB::beginTransaction();
         try {
             
-            $purordhd = DB::table('material.purreqhd')
+            $salesum = DB::table('finance.salesum')
                             ->get();
 
             $i = 1;
-            foreach ($purordhd as $obj) {
+            foreach ($salesum as $obj) {
 
-                // $purreqdt = DB::table('material.purreqdt')
-                //         ->where('recno',$obj->recno);
+                $product = DB::table('material.product')
+                                ->where('uomcode','!=',$obj->uom)
+                                ->where('compcode','9B')
+                                ->where('unit',"W'HOUSE")
+                                ->where('itemcode',$obj->chggroup);
 
-                // if(!$purreqdt->exists()){
-                //     dump('continue, '.$obj->recno);
-                //     continue;
-                // }
+                if($product->exists()){
+                    $product = $product->first();
 
-                if($obj->recstatus == 'PREPARED'){
-                    $updarr = [
-                        'supportby' => null,
-                        'supportdate' => null,
-                        'verifiedby' => null,
-                        'verifieddate' => null,
-                        'approvedby' => null,
-                        'approveddate' => null
-                    ];
-                }else if($obj->recstatus=='SUPPORT'){
-                    $updarr = [
-                        'supportby' => 'NASUHANI',
-                        'verifiedby' => null,
-                        'verifieddate' => null,
-                        'approvedby' => null,
-                        'approveddate' => null
-                    ];
-                }else if($obj->recstatus=='VERIFIED'){
-                    $updarr = [
-                        'supportby' => 'NASUHANI',
-                        'verifiedby' => 'AZO',
-                        'approvedby' => null,
-                        'approveddate' => null
-                    ];
-                }else if($obj->recstatus=='APPROVED'){
-                    $updarr = [
-                        'supportby' => 'NASUHANI',
-                        'verifiedby' => 'AZO',
-                        'approvedby' => 'NORLIDA'
-                    ];
-                }else if($obj->recstatus=='COMPLETED'){
-                    $updarr = [
-                        'supportby' => 'NASUHANI',
-                        'verifiedby' => 'AZO',
-                        'approvedby' => 'NORLIDA'
-                    ];
+                    DB::table('finance.salesum')
+                            ->where('idno',$obj->idno)
+                            ->update([
+                                'uom' => $product->uomcode,
+                                'uom_recv' => $product->uomcode,
+                            ]);
+
+                    echo nl2br("$i. update salesum: $product->itemcode , $product->uomcode \n");
+                    $i++;
                 }
-
-                DB::table('material.purreqhd')
-                    ->where('idno',$obj->idno)
-                    ->update($updarr);
-
-                echo nl2br("$i. update purreqhd: $obj->recstatus \n");
-                $i++;
             }
 
             DB::commit();
