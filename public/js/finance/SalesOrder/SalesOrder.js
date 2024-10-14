@@ -379,12 +379,12 @@ $(document).ready(function () {
 		},
 		loadComplete:function(data){
 			// console.log($('#deptcode').val());
-			// if($('#deptcode').val() !== 'IMP'){
-			// 	$("#jqGrid").jqGrid('hideCol', 'db_mrn');
-			// 	$("#jqGrid").jqGrid('setGridWidth', 1480);
-			// }else{
-			// 	$("#jqGrid").jqGrid('showCol', 'db_mrn');
-			// }
+			if($('#deptcode').val() !== 'IMP'){
+				$("#jqGrid").jqGrid('hideCol', 'db_mrn');
+				$("#jqGrid").jqGrid('setGridWidth', 1480);
+			}else{
+				$("#jqGrid").jqGrid('showCol', 'db_mrn');
+			}
 		},
 		beforeRequest: function(){
 			refreshGrid("#jqGrid2", urlParam, 'kosongkan')
