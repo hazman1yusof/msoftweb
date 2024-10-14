@@ -943,7 +943,7 @@ class InventoryTransactionController extends defaultController
                             if($newbalance > 0){
                                 $status = 'PARTIAL';
                             }else if($newbalance < 0){
-                                throw new \Exception("Inventory Request document RECNO: ".$ivtmphd->srcdocno." on lineno: ".$value->lineno_." exceed Qty balance: ".$qtybalance, 500);
+                                // throw new \Exception("Inventory Request document RECNO: ".$ivtmphd->srcdocno." on lineno: ".$value->lineno_." exceed Qty balance: ".$qtybalance, 500);
                             }
 
                             DB::table('material.ivreqdt')
