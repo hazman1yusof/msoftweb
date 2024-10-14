@@ -163,26 +163,38 @@
 								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 8}
 							],
 							[
+								@if(($salehdr->deptcode) == 'IMP')
+								{text:
+									`ATTENTION:\n\n1. All bank draft/cheques should be crossed and payable to: {{$company->name}}/COMPANY ACCOUNT NO: MAYBANK 564137536420.\n
+									2. Please ensure to receive/request correct receipt after payment is made.\n
+									3. For further enquiries: please do not hesitate to contact: MILA/ARIF, Office Telephone No./Fax: 03-91735642, HP No. 019-2304606.\n
+									KINDLY ENSURE THAT ALL PAYMENT IS DONE AT:\n
+									\u200B\tKedai K-Health UKM Kesihatan
+									\u200B\tAras Lobi
+									\u200B\tPusat Perubatan UKM\n
+									
+									PLEASE ASK FOR RECEIPT\n`,
+									colSpan: 8},{},{},{},{},{},{},{},
+								@else
 								{text:
 									`ATTENTION:\n\n1. All bank draft/cheques should be crossed and payable to: \n
-										\u200B\t\u200B\t\u200B\t\u200B\t{{$company->name}}/COMPANY ACCOUNT NO: MAYBANK 5641 3753 6420.\n
-									2. EFT/CDM/ATM payment: ACCOUNT NO: 5641 3753 6420 and fax/email/sms/whatsapp bank slip/transfer note to:\n
-									\u200B\t\u200B\t\u200B\t\u200B\tCREDIT CONTROL DEPT: 03-9173 7346/creditcontrol@ukmsc.com.my/012-914 5906.\n
+										\u200B\t\u200B\t\u200B\t\u200B\t{{$company->name}}/COMPANY ACCOUNT NO: MAYBANK 564137536420.\n
+									2. EFT/CDM/ATM payment: ACCOUNT NO: 564137536420 and fax/email/sms/whatsapp bank slip/transfer note to:\n
+									\u200B\t\u200B\t\u200B\t\u200B\tCREDIT CONTROL DEPT: 03-91737346/creditcontrol@ukmsc.com.my/012-9145906.\n
 									3. Please ensure to receive/request correct receipt after payment is made.`,
 									colSpan: 8},{},{},{},{},{},{},{},
+								@endif
+								
 							],
 						]
 					},
 					layout: 'lightHorizontalLines',
 				},
 				{
-					text: '\nPrinted Date: {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')}}', fontSize: 8, italics: true,
-				},
+                    text: '\nTHIS IS COMPUTER GENERATED DOCUMENT. NO SIGNATURE IS REQUIRED.', fontSize: 10, alignment: 'center'
+                },
 				{
-					text: 'Printed Time: {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i')}}', fontSize: 8, italics: true,
-				},
-				{
-					text: 'Printed By: {{session('username')}}', fontSize: 8, italics: true,
+					text: 'Date printed: {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d/m/Y')}} {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i')}} by {{session('username')}}', fontSize: 7, alignment: 'center'
 				},
 			],
 			styles: {
