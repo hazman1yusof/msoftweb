@@ -2165,7 +2165,7 @@ class SalesOrderController extends defaultController
             }else{
                 $BalQty = floatval($prev_quan) - floatval($curr_quan);
 
-                DB::table('material.stockexp')
+                $stockexp_getid = DB::table('material.stockexp')
                     ->insert([
                         'compcode' => session('compcode'), 
                         'unit' => session('unit'), 
@@ -2180,6 +2180,8 @@ class SalesOrderController extends defaultController
                        // 'lasttt' => 'GRN', 
                         'year' => Carbon::now("Asia/Kuala_Lumpur")->year
                     ]);
+
+                $stockexp_use = $expdate_obj->where('idno',$stockexp_getid)->first();
             }
 
         }
