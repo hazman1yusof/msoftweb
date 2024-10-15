@@ -1553,9 +1553,9 @@ class Quotation_SO_DetailController extends defaultController
                         ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
                         ->first();
 
-                if($value['quantity'] > $stockloc->qtyonhand){
-                    throw new \Exception("Qty request (".$value['quantity'].") cant be bigger than qty on hand! (".$stockloc->qtyonhand.") on itemcode: ".$value['chggroup'],500);
-                }
+                // if($value['quantity'] > $stockloc->qtyonhand){
+                //     throw new \Exception("Qty request (".$value['quantity'].") cant be bigger than qty on hand! (".$stockloc->qtyonhand.") on itemcode: ".$value['chggroup'],500);
+                // }
 
                 ///2. update detail
                 DB::table('finance.salesum')
