@@ -152,7 +152,7 @@ class InventoryTransactionDetailController extends defaultController
                     ->where('UomCode','=',$request->uomcode);
 
             if(!$product->exists()){
-                throw new \Exception('product doesnt exists');
+                throw new \Exception('product doesnt exists $request->itemcode , $request->uomcode');
             }
 
             if(strtoupper($ivtmphd->trantype) == 'TUI'){
@@ -165,7 +165,7 @@ class InventoryTransactionDetailController extends defaultController
                         ->where('StockLoc.UomCode','=',$request->uomcode);
 
                 if(!$stockloc_obj->exists()){
-                    throw new \Exception('stockloc doesnt exists');
+                    throw new \Exception('stockloc doesnt exists $request->itemcode , $request->uomcode');
                 }
             }else if(strtoupper($ivtmphd->trantype) == 'TUO'){
                 $stockloc_obj = DB::table('material.StockLoc')
@@ -177,7 +177,7 @@ class InventoryTransactionDetailController extends defaultController
                         ->where('StockLoc.UomCode','=',$request->uomcode);
 
                 if(!$stockloc_obj->exists()){
-                    throw new \Exception('stockloc doesnt exists');
+                    throw new \Exception('stockloc doesnt exists $request->itemcode , $request->uomcode');
                 }
                 $stockloc_first = $stockloc_obj->first();
 
