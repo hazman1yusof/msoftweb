@@ -659,10 +659,10 @@ class SalesOrderController extends defaultController
                         $qo_dt_qtydelivered = $qo_dt->qtydelivered;
                         $qo_dt_quantity = $qo_dt->quantity;
                         $new_qtydelivered = $billsum_obj->quantity + $qo_dt_qtydelivered;
-                        if($new_qtydelivered > $qo_dt_quantity){
-                            $cant_exceed = $qo_dt->quantity - $qo_dt->qtydelivered;
-                            throw new \Exception("Quotation Quantity Delivered Exceed for item: ".$billsum_obj->chggroup." uom: ".$billsum_obj->uom." Quantity delivered cant exceed: ".$cant_exceed,500);
-                        }
+                        // if($new_qtydelivered > $qo_dt_quantity){
+                        //     $cant_exceed = $qo_dt->quantity - $qo_dt->qtydelivered;
+                        //     throw new \Exception("Quotation Quantity Delivered Exceed for item: ".$billsum_obj->chggroup." uom: ".$billsum_obj->uom." Quantity delivered cant exceed: ".$cant_exceed,500);
+                        // }
 
                         DB::table('finance.salesum')
                                     ->where('compcode',session('compcode'))

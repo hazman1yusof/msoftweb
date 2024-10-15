@@ -1588,7 +1588,7 @@ class TestController extends defaultController
         }
     }
 
-    public function betulkandb(Request $request){
+    public function betulkandb_salesum(Request $request){
         DB::beginTransaction();
         try {
             
@@ -1617,6 +1617,42 @@ class TestController extends defaultController
                     echo nl2br("$i. update salesum: $product->itemcode , $product->uomcode \n");
                     $i++;
                 }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function betulkandb(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $queuepr = DB::table('material.queuepr')
+                            ->where('AuthorisedID','SYSTEM')
+                            ->get();
+
+            $i = 1;
+            foreach ($queuepr as $obj) {
+
+                $purreqhd = DB::table('material.purreqhd')
+                                ->where('compcode','9B')
+                                ->where('recno',$obj->recno);
+
+                if($purreqhd->exists()){
+                    $purreqhd = $purreqhd->first();
+                    DB::table('material.queuepr')
+                        ->where('idno',$obj->idno)
+                        ->update([
+                            'recstatus' => $purreqhd->recstatus
+                        ]);
+                }
+                echo nl2br("$i. update queuepr: $purreqhd->recstatus\n");
             }
 
             DB::commit();

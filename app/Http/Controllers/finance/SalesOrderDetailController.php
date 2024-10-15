@@ -1440,9 +1440,9 @@ class SalesOrderDetailController extends defaultController
             $taxamt = $amount * $rate / 100;
             $totamount = $amount - $discamt + $taxamt;
 
-            if($quantity > $qtyonhand){
-                throw new \Exception("Quantity exceed quantity on hand for item: ".$request->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$request->uom,500);
-            }
+            // if($quantity > $qtyonhand){
+            //     throw new \Exception("Quantity exceed quantity on hand for item: ".$request->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$request->uom,500);
+            // }
             
             ///2. insert detail
             $insertGetId = DB::table('debtor.billsum')

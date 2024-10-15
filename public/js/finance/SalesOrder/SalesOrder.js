@@ -1743,38 +1743,38 @@ $(document).ready(function () {
 			});
 		}
 
-		let qtyonhand = parseFloat($("#"+id_optid+"_qtyonhand").val());
-		let st_idno = $("#jqGrid2 #"+id_optid+"_chggroup").data('st_idno');
+		// let qtyonhand = parseFloat($("#"+id_optid+"_qtyonhand").val());
+		// let st_idno = $("#jqGrid2 #"+id_optid+"_chggroup").data('st_idno');
 
-		if(qtyonhand<quantity && st_idno!=''){
-			myfail_msg.add_fail({
-				id:'qtyonhand',
-				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request cant be greater than quantity on hand",
-			});
-		}else{
-			myfail_msg.del_fail({
-				id:'qtyonhand',
-				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request cant be greater than quantity on hand",
-			});
-		}
+		// if(qtyonhand<quantity && st_idno!=''){
+		// 	myfail_msg.add_fail({
+		// 		id:'qtyonhand',
+		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
+		// 		msg:"Quantity Request cant be greater than quantity on hand",
+		// 	});
+		// }else{
+		// 	myfail_msg.del_fail({
+		// 		id:'qtyonhand',
+		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
+		// 		msg:"Quantity Request cant be greater than quantity on hand",
+		// 	});
+		// }
 
-		let qtyorder = parseFloat($("#"+id_optid+"_qtyorder").val());
+		// let qtyorder = parseFloat($("#"+id_optid+"_qtyorder").val());
 
-		if(quantity>qtyorder && qtyorder!=''){
-			myfail_msg.add_fail({
-				id:'qtyorder',
-				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request cant be greater than quantity Order",
-			});
-		}else{
-			myfail_msg.del_fail({
-				id:'qtyorder',
-				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request cant be greater than quantity Order",
-			});
-		}
+		// if(quantity>qtyorder && qtyorder!=''){
+		// 	myfail_msg.add_fail({
+		// 		id:'qtyorder',
+		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
+		// 		msg:"Quantity Request cant be greater than quantity Order",
+		// 	});
+		// }else{
+		// 	myfail_msg.del_fail({
+		// 		id:'qtyorder',
+		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
+		// 		msg:"Quantity Request cant be greater than quantity Order",
+		// 	});
+		// }
 
 		let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
 		let billtypeperct = 100 - parseFloat($("#"+id_optid+"_billtypeperct").val());
