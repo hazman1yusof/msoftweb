@@ -346,7 +346,7 @@ class InventoryTransactionDetailController extends defaultController
                         ->where('UomCode','=',$value['uomcode']);
 
                 if(!$product->exists()){
-                    throw new \Exception('product doesnt exists');
+                    throw new \Exception('product doesnt exists '.$value['itemcode'].' , '.$value['uomcode']);
                 }
 
                 if(strtoupper($ivtmphd->trantype) == 'TUI'){
@@ -359,7 +359,7 @@ class InventoryTransactionDetailController extends defaultController
                             ->where('StockLoc.UomCode','=',$value['uomcode']);
 
                     if(!$stockloc_obj->exists()){
-                        throw new \Exception('stockloc doesnt exists');
+                        throw new \Exception('stockloc doesnt exists'.$value['itemcode'].' , '.$value['uomcode']);
                     }
                 }else if(strtoupper($ivtmphd->trantype) == 'TUO'){
                     $stockloc_obj = DB::table('material.StockLoc')
@@ -371,7 +371,7 @@ class InventoryTransactionDetailController extends defaultController
                             ->where('StockLoc.UomCode','=',$value['uomcode']);
 
                     if(!$stockloc_obj->exists()){
-                        throw new \Exception('stockloc doesnt exists');
+                        throw new \Exception('stockloc doesnt exists'.$value['itemcode'].' , '.$value['uomcode']);
                     }
                     $stockloc_first = $stockloc_obj->first();
 
