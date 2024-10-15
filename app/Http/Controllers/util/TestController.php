@@ -1588,71 +1588,35 @@ class TestController extends defaultController
         }
     }
 
-    public function betulkandb_salesum(Request $request){
-        DB::beginTransaction();
-        try {
-            
-            $salesum = DB::table('finance.salesum')
-                            ->get();
-
-            $i = 1;
-            foreach ($salesum as $obj) {
-
-                $product = DB::table('material.product')
-                                ->where('uomcode','!=',$obj->uom)
-                                ->where('compcode','9B')
-                                ->where('unit',"W'HOUSE")
-                                ->where('itemcode',$obj->chggroup);
-
-                if($product->exists()){
-                    $product = $product->first();
-
-                    DB::table('finance.salesum')
-                            ->where('idno',$obj->idno)
-                            ->update([
-                                'uom' => $product->uomcode,
-                                'uom_recv' => $product->uomcode,
-                            ]);
-
-                    echo nl2br("$i. update salesum: $product->itemcode , $product->uomcode \n");
-                    $i++;
-                }
-            }
-
-            DB::commit();
-
-        } catch (Exception $e) {
-            DB::rollback();
-            report($e);
-
-            dd('Error'.$e);
-        }
-    }
-
     public function betulkandb(Request $request){
         DB::beginTransaction();
         try {
             
-            $queuepr = DB::table('material.queuepr')
-                            ->where('AuthorisedID','SYSTEM')
+            $ivtmpdt = DB::table('material.ivtmpdt')
                             ->get();
 
             $i = 1;
-            foreach ($queuepr as $obj) {
+            foreach ($ivtmpdt as $obj) {
 
-                $purreqhd = DB::table('material.purreqhd')
+                $product = DB::table('material.product')
+                                ->where('uomcode','!=',$obj->uomcode)
                                 ->where('compcode','9B')
-                                ->where('recno',$obj->recno);
+                                ->where('unit',"W'HOUSE")
+                                ->where('itemcode',$obj->itemcode);
 
-                if($purreqhd->exists()){
-                    $purreqhd = $purreqhd->first();
-                    DB::table('material.queuepr')
-                        ->where('idno',$obj->idno)
-                        ->update([
-                            'recstatus' => $purreqhd->recstatus
-                        ]);
+                if($product->exists()){
+                    $product = $product->first();
+
+                    DB::table('material.ivtmpdt')
+                            ->where('idno',$obj->idno)
+                            ->update([
+                                'uomcode' => $product->uomcode,
+                                'uomcoderecv' => $product->uomcode,
+                            ]);
+
+                    echo nl2br("$i. update ivtmpdt: $product->itemcode , $product->uomcode \n");
+                    $i++;
                 }
-                echo nl2br("$i. update queuepr: $purreqhd->recstatus\n");
             }
 
             DB::commit();
