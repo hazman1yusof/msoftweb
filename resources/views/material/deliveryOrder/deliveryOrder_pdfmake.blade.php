@@ -47,11 +47,12 @@
 		var docDefinition = {
 			footer: function(currentPage, pageCount) {
 				return [
-			      { text: currentPage.toString() + ' of ' + pageCount, alignment: 'center' }
+			      { text: 'This is computer-generated document. No signature is required.',italics: true, alignment: 'center',fontSize: 9 },
+			      { text: currentPage.toString() + ' of ' + pageCount, alignment: 'center',fontSize: 9 }
 			    ]
 			},
 			pageSize: 'A4',
-			pageMargins: [10, 20, 20, 20],
+			pageMargins: [10, 20, 20, 30],
 		  	content: [
                 {
                     image: 'letterhead',width:175, style: 'tableHeader', colSpan: 5, alignment: 'center'
@@ -288,16 +289,12 @@
 
                         body: [
                             [
-								{text: 'Certified By: \n\n\n\n'}, 
-                                {text: 'Received/Accepted By:\n\n\n\n'}, 
+								{text: 'Certified By: \n\n'}, 
+                                {text: 'Received/Accepted By:\n\n'}, 
 							],
                             [
-                                {text: '___________________'},
-								{text: '___________________'}, 
-							],
-                            [
-								{text: 'Name: {{$delordhd->respersonid}}', fontSize: 8},
-								{text: 'Name: {{$delordhd->postedby_name}}', fontSize: 8},
+								{text: '{{$delordhd->respersonid}}', fontSize: 8, bold:true},
+								{text: '{{$delordhd->postedby_name}}', fontSize: 8, bold:true},
 								
 							],
                         ]
