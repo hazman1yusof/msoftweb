@@ -1592,29 +1592,31 @@ class TestController extends defaultController
         DB::beginTransaction();
         try {
             
-            $ivtmpdt = DB::table('material.ivtmpdt')
+            $chgmast = DB::table('hisdb.chgmast')
+                            ->where('unit',"W'HOUSE")
                             ->get();
 
             $i = 1;
-            foreach ($ivtmpdt as $obj) {
+            foreach ($chgmast as $obj) {
 
-                $product = DB::table('material.product')
-                                ->where('uomcode','!=',$obj->uomcode)
+                $chgprice = DB::table('hisdb.chgprice')
+                                // ->where('uomcode','=',$obj->uom)
                                 ->where('compcode','9B')
-                                ->where('unit',"W'HOUSE")
-                                ->where('itemcode',$obj->itemcode);
+                                ->where('unit','!=',"W'HOUSE")
+                                ->where('chgcode',$obj->chgcode);
 
                 if($product->exists()){
-                    $product = $product->first();
 
-                    DB::table('material.ivtmpdt')
-                            ->where('idno',$obj->idno)
+                    DB::table('hisdb.chgprice')
+                            ->where('compcode','9B')
+                            ->where('unit','!=',"W'HOUSE")
+                            ->where('chgcode',$obj->chgcode)
                             ->update([
-                                'uomcode' => $product->uomcode,
-                                'uomcoderecv' => $product->uomcode,
+                                'unit' => "W'HOUSE",
+                                'uom' => $obj->uom,
                             ]);
 
-                    echo nl2br("$i. update ivtmpdt: $product->itemcode , $product->uomcode \n");
+                    echo nl2br("$i. update chgprice: $obj->chgcode , $obj->uom \n");
                     $i++;
                 }
             }
