@@ -317,7 +317,9 @@ class HomeController extends Controller
         $menu.="<li><a style='padding-left:9px' title='Till Enquiry' class='clickable' programid='tillenquiry' targeturl='./tillenquiry'>Till Enquiry</a></li>";
         $menu.="<li><a style='padding-left:9px' title='Close Till' class='clickable' programid='till_close' targeturl='./till_close'>Close Till</a></li>";
         $menu.="<li><a style='padding-left:9px' title='Charge Master' class='clickable' programid='chgmaster' targeturl='./chargemaster'>Charge Master</a></li>";
+
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Inv Transaction' class=''><b>Inventory Transaction</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Inventory Request' class='clickable' programid='InvReqDataEntry' targeturl='./inventoryRequest?scope=ALL'>Inventory Request</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Inventory Transaction' class='clickable' programid='invtran' targeturl='./inventoryTransaction?scope=ALL'>Inventory Transaction</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Transafer(TUI/TUO)' class='clickable' programid='transfer_TUI_TUO' targeturl='./inventoryTransaction?scope=ALL&ttype=TUO'>Transafer(TUI/TUO)</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Good Return In' class='clickable' programid='goodReturnIn' targeturl='./inventoryTransaction?scope=ALL&ttype=GRI'>Good Return In</a></li>";

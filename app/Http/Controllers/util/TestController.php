@@ -1592,32 +1592,27 @@ class TestController extends defaultController
         DB::beginTransaction();
         try {
             
-            $chgmast = DB::table('temp.chgmast')
+            $ivtmphd = DB::table('temp.ivtmphd')
+                            ->where('compcode','9B')
                             ->where('unit',"W'HOUSE")
+                            ->where('recstatus',"OPEN")
                             ->get();
 
             $i = 1;
-            foreach ($chgmast as $obj) {
+            foreach ($ivtmphd as $obj) {
 
-                $chgprice = DB::table('temp.chgprice')
-                                // ->where('uomcode','=',$obj->uom)
+                $sum = DB::table('temp.ivtmpdt')
+                                ->where('recno','=',$obj->recno)
                                 ->where('compcode','9B')
-                                ->whereNull('unit')
-                                ->where('chgcode',$obj->chgcode);
+                                ->where('recstatus','!=','DELETE')
+                                ->sum('amount');
 
-                if($chgprice->exists()){
+                DB::table('temp.ivtmphd')
+                        ->where('idno',$obj->idno)
+                        ->where('amount',$sum);
 
-                    DB::table('temp.chgprice')
-                            ->where('compcode','9B')
-                            ->whereNull('unit')
-                            ->where('chgcode',$obj->chgcode)
-                            ->update([
-                                'unit' => "W'HOUSE"
-                            ]);
-
-                    echo nl2br("$i. update chgprice: $obj->chgcode , $obj->uom \n");
-                    $i++;
-                }
+                echo nl2br("$i. update ivtmphd recno: $obj->recno \n");
+                $i++;
             }
 
             DB::commit();
