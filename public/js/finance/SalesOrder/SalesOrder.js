@@ -2105,7 +2105,9 @@ $(document).ready(function () {
 							$("#jqGrid2").jqGrid('addRowData', elem['lineno_'] ,
 								{
 									chggroup:elem['chggroup'],
+									chggroup_ori:elem['chggroup'],
 									uom:elem['uom'],
+									uom_ori:elem['uom'],
 									uom_recv:elem['uom'],
 									taxcode:elem['pricecode'],
 									unitprice:elem['unitprice'],
