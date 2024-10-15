@@ -2019,21 +2019,24 @@ class SalesOrderController extends defaultController
                 //3.kalu xde Stock Expiry, buat baru
                 $BalQty = -$curr_quan;
 
-                DB::table('material.stockexp')
-                    ->insert([
-                        'compcode' => session('compcode'), 
-                        'unit' => session('unit'), 
-                        'deptcode' => $dbacthdr->deptcode, 
-                        'itemcode' => $my_chggroup, 
-                        'uomcode' => $my_uom, 
-                        'balqty' => $BalQty, 
-                        'adduser' => session('username'), 
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                        'upduser' => session('username'), 
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                       // 'lasttt' => 'GRN', 
-                        'year' => Carbon::now("Asia/Kuala_Lumpur")->year
-                    ]);
+                $stockexp_getid = DB::table('material.stockexp')
+                            ->insertGetId([
+                                'compcode' => session('compcode'), 
+                                'unit' => session('unit'), 
+                                'deptcode' => $dbacthdr->deptcode, 
+                                'itemcode' => $my_chggroup, 
+                                'uomcode' => $my_uom, 
+                                'balqty' => $BalQty, 
+                                'adduser' => session('username'), 
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                                'upduser' => session('username'), 
+                                'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                               // 'lasttt' => 'GRN', 
+                                'year' => Carbon::now("Asia/Kuala_Lumpur")->year
+                            ]);
+
+
+                $stockexp_use = $expdate_obj->where('idno',$stockexp_getid)->first();
             }
         }
 
