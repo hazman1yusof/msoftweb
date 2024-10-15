@@ -1592,28 +1592,27 @@ class TestController extends defaultController
         DB::beginTransaction();
         try {
             
-            $chgmast = DB::table('hisdb.chgmast')
+            $chgmast = DB::table('temp.chgmast')
                             ->where('unit',"W'HOUSE")
                             ->get();
 
             $i = 1;
             foreach ($chgmast as $obj) {
 
-                $chgprice = DB::table('hisdb.chgprice')
+                $chgprice = DB::table('temp.chgprice')
                                 // ->where('uomcode','=',$obj->uom)
                                 ->where('compcode','9B')
-                                ->where('unit','!=',"W'HOUSE")
+                                ->whereNull('unit')
                                 ->where('chgcode',$obj->chgcode);
 
                 if($chgprice->exists()){
 
-                    DB::table('hisdb.chgprice')
+                    DB::table('temp.chgprice')
                             ->where('compcode','9B')
-                            ->where('unit','!=',"W'HOUSE")
+                            ->whereNull('unit')
                             ->where('chgcode',$obj->chgcode)
                             ->update([
-                                'unit' => "W'HOUSE",
-                                'uom' => $obj->uom,
+                                'unit' => "W'HOUSE"
                             ]);
 
                     echo nl2br("$i. update chgprice: $obj->chgcode , $obj->uom \n");
