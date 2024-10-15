@@ -993,6 +993,7 @@ class InventoryTransactionController extends defaultController
                         $join = $join->on('ivh.recno', '=', 'ivdt.recno')
                                 ->where('ivh.compcode','=',session('compcode'));
                     })
+            ->where('ivdt.recstatus','!=','DELETE')
             ->where('ivdt.compcode','=',session('compcode'))
             ->where('ivdt.recno','=',$recno)
             ->orderBy('ivdt.lineno_', 'ASC')
