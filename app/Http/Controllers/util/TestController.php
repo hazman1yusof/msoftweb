@@ -1605,7 +1605,7 @@ class TestController extends defaultController
                                 ->where('unit','!=',"W'HOUSE")
                                 ->where('chgcode',$obj->chgcode);
 
-                if($product->exists()){
+                if($chgprice->exists()){
 
                     DB::table('hisdb.chgprice')
                             ->where('compcode','9B')
