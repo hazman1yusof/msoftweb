@@ -1541,8 +1541,6 @@ class SalesOrderDetailController extends defaultController
                     ->where('auditno','=',$auditno);
             
             $dbacthdr = $dbacthdr->first();
-
-            $billtype_obj = $this->billtype_obj_get($dbacthdr);
             
             foreach ($request->dataobj as $key => $value) {
                 $stockloc = DB::table('material.stockloc')
