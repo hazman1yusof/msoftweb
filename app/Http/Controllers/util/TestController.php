@@ -1625,6 +1625,44 @@ class TestController extends defaultController
         }
     }
 
+    public function betulkandb_ivtmpdt(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $ivtmpdt = DB::table('temp.ivtmpdt')
+                            ->where('compcode','9B')
+                            ->where('recstatus','OPEN')
+                            ->orWhere('recstatus','ACTIVE')
+                            ->get();
+
+            $i = 1;
+            foreach ($ivtmpdt as $obj) {
+                $costprice___ = DB::table('temp.costprice___')
+                                ->where('itemcode',$obj->itemcode);
+
+                if($costprice___->exists()){
+                    $costprice___ = $costprice___->first();
+                    DB::table('temp.ivtmpdt')
+                        ->where('idno',$obj->idno)
+                        ->update([
+                            'netprice' => $costprice___->costprice,
+                            'amount' => $costprice___->costprice * $obj->txnqty
+                        ]);
+
+                    echo nl2br("$i. update ivtmpdt netprice: $costprice___->costprice \n");
+                    $i++;
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
 
     public function betulkandb(Request $request){
         DB::beginTransaction();
@@ -1653,6 +1691,46 @@ class TestController extends defaultController
                     echo nl2br("$i. update ivtmphd amount: $sum \n");
                     $i++;
                 // }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function betulkandb_product_chgflg(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $product = DB::table('temp.product')
+                            ->where('compcode','9B')
+                            ->where('recstatus','OPEN')
+                            ->where('unit',"W'HOUSE")
+                            ->orWhere('unit',"IMP")
+                            ->get();
+
+            $i = 1;
+            foreach ($product as $obj) {
+                $chgmast = DB::table('temp.chgmast')
+                                ->where('compcode','9B')
+                                ->where('unit',$obj->unit)
+                                ->where('chgcode',$obj->itemcode);
+
+                if($chgmast->exists()){
+                    DB::table('temp.product')
+                        ->where('idno',$obj->idno)
+                        ->update([
+                            'chgflag' => 1
+                        ]);
+
+                    echo nl2br("$i. chgflg: $obj->itemcode \n");
+                    $i++;
+                }
             }
 
             DB::commit();
