@@ -829,6 +829,20 @@ class InventoryTransactionController extends defaultController
                 $qtyonhand_sndrcv = $stockloc_sndrcv->qtyonhand;
             }
 
+            $chgprice_obj = DB::table('hisdb.chgprice as cp')
+                ->where('cp.compcode', '=', session('compcode'))
+                ->where('cp.chgcode', '=', $value->itemcode)
+                ->where('cp.uom', '=', $value->uomcode)
+                ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
+                ->orderBy('cp.effdate','desc');
+
+            if($chgprice_obj->exists()){
+                $chgprice_obj = $chgprice_obj->first();
+                $netprice = $chgprice_obj->costprice;
+            }else{
+                $netprice = $value->netprice;
+            }
+
             $table = DB::table("material.ivtmpdt");
             $table->insert([
                 'compcode' => session('compcode'), 
@@ -843,9 +857,9 @@ class InventoryTransactionController extends defaultController
                 'uomcoderecv' => $value->pouom, 
                 'txnqty' => 0, 
                 'qtyrequest' => $value->qtybalance,
-                'netprice' => $value->netprice, 
+                'netprice' => $netprice, 
                 'amount' => 0,
-                'recstatus' => 'ACTIVE',
+                'recstatus' => 'OPEN',
                 'unit' => session('unit'),
                 'expdate' => $value->expdate,
                 'batchno' => $value->batchno,

@@ -1588,31 +1588,71 @@ class TestController extends defaultController
         }
     }
 
+    public function betulkandb_costprice___(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $costprice = DB::table('temp.costprice___')
+                            ->get();
+
+            $i = 1;
+            foreach ($costprice as $obj) {
+                $chgprice = DB::table('temp.chgprice')
+                                ->where('compcode','9B')
+                                ->where('chgcode',$obj->itemcode)
+                                ->orderBy('effdate','desc');
+
+                if($chgprice->exists()){
+                    $chgprice = $chgprice->first();
+                    DB::table('temp.chgprice')
+                        ->where('idno',$chgprice->idno)
+                        ->update([
+                            'costprice' => $obj->costprice
+                        ]);
+
+                    echo nl2br("$i. update chgprice costprice: $obj->costprice \n");
+                    $i++;
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+
     public function betulkandb(Request $request){
         DB::beginTransaction();
         try {
             
             $ivtmphd = DB::table('temp.ivtmphd')
                             ->where('compcode','9B')
-                            ->where('unit',"W'HOUSE")
-                            ->where('recstatus',"OPEN")
+                            ->where('recstatus','OPEN')
                             ->get();
 
             $i = 1;
             foreach ($ivtmphd as $obj) {
-
                 $sum = DB::table('temp.ivtmpdt')
-                                ->where('recno','=',$obj->recno)
-                                ->where('compcode','9B')
+                                ->where('recno',$obj->recno)
                                 ->where('recstatus','!=','DELETE')
                                 ->sum('amount');
 
-                DB::table('temp.ivtmphd')
+                // if($chgprice->exists()){
+                    // $chgprice = $chgprice->first();
+                    DB::table('temp.ivtmphd')
                         ->where('idno',$obj->idno)
-                        ->where('amount',$sum);
+                        ->update([
+                            'amount' => $sum
+                        ]);
 
-                echo nl2br("$i. update ivtmphd recno: $obj->recno \n");
-                $i++;
+                    echo nl2br("$i. update ivtmphd amount: $sum \n");
+                    $i++;
+                // }
             }
 
             DB::commit();
