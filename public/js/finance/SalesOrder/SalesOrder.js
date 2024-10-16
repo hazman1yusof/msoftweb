@@ -1370,6 +1370,7 @@ $(document).ready(function () {
 
 		        dialog_chggroup.id_optid = ids[i];
 
+				dialog_chggroup.skipfdl = true;
 		        dialog_chggroup.check(errorField,ids[i]+"_chggroup","jqGrid2",null,
 		        	function(self){
 						self.urlParam.entrydate = $("#db_entrydate").val();
