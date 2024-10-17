@@ -356,7 +356,7 @@ $(document).ready(function () {
 			{ label: 'approved_remark', name: 'purordhd_approved_remark', width: 40, hidden:true},
 			{ label: 'cancelled_remark', name: 'purordhd_cancelled_remark', width: 40, hidden:true},
 			{ label: 'purordhd_prtype', name: 'purordhd_prtype', width: 40, hidden:true},
-			{ label: 'idno', name: 'purordhd_idno', width: 90, hidden: true },
+			{ label: 'idno', name: 'purordhd_idno', width: 90, hidden: true, key:true },
 			{ label: 'unit', name: 'purordhd_unit', width: 40, hidden:true},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox ,hidden:false},
 
@@ -434,7 +434,7 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			$('#but_post_jq,#but_cancel_jq').hide();
-			if (oper == 'add' || oper == null || $("#jqGrid").data('lastselrow') == undefined) { 
+			if ($("#jqGrid").data('lastselrow') == '-1' || $("#jqGrid").data('lastselrow') == undefined) { 
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}else{
 				$("#jqGrid").setSelection($("#jqGrid").data('lastselrow'));
@@ -525,6 +525,7 @@ $(document).ready(function () {
 		id: 'glyphicon-plus',
 		title: "Add New Row",
 		onClickButton: function () {
+			$("#jqGrid").data('lastselrow','-1');
 			oper = 'add';
 			$("#dialogForm").dialog("open");
 		},

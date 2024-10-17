@@ -224,8 +224,8 @@
 							],
 							[
 								{ text: '', colSpan: 3 , border: [true, false, true, false]},{},{},
-								{ text: '{{$purreqhd->support_remark}}', colSpan: 3 , border: [true, false, true, false]},{},{},
-								{ text: '{{$purreqhd->verified_remark}}', colSpan: 5 , border: [true, false, true, false]},{},{},{},{}
+								{ text: `{!!$purreqhd->support_remark!!}`, colSpan: 3 , border: [true, false, true, false]},{},{},
+								{ text: `{!!$purreqhd->verified_remark!!}`, colSpan: 5 , border: [true, false, true, false]},{},{},{},{}
 							],
 							[
 								{ text: '{{$purreqhd->requestby_name}}', style: 'totalbold', colSpan: 3 , border: [true, false, true, false]},{},{},
@@ -244,9 +244,9 @@
 								{ text: 'Approved By:', style: 'totalbold', colSpan: 5 , border: [true, true, true, false]},{},{},{},{}
 							],
 							[
-								{ text: '{{$purreqhd->recommended1_remark}}', colSpan: 3 , border: [true, false, true, false]},{},{},
-								{ text: '{{$purreqhd->recommended2_remark}}', colSpan: 3 , border: [true, false, true, false]},{},{},
-								{ text: '{{$purreqhd->approved_remark}}', colSpan: 5 , border: [true, false, true, false]},{},{},{},{}
+								{ text: `{!!$purreqhd->recommended1_remark!!}`, colSpan: 3 , border: [true, false, true, false]},{},{},
+								{ text: `{!!$purreqhd->recommended2_remark!!}`, colSpan: 3 , border: [true, false, true, false]},{},{},
+								{ text: `{!!$purreqhd->approved_remark!!}`, colSpan: 5 , border: [true, false, true, false]},{},{},{},{}
 							],
 							[
 								{ text: '{{$purreqhd->recommended1by_name}}', style: 'totalbold', colSpan: 3 , border: [true, false, true, false]},{},{},

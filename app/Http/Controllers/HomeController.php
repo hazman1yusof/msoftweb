@@ -317,7 +317,9 @@ class HomeController extends Controller
         $menu.="<li><a style='padding-left:9px' title='Till Enquiry' class='clickable' programid='tillenquiry' targeturl='./tillenquiry'>Till Enquiry</a></li>";
         $menu.="<li><a style='padding-left:9px' title='Close Till' class='clickable' programid='till_close' targeturl='./till_close'>Close Till</a></li>";
         $menu.="<li><a style='padding-left:9px' title='Charge Master' class='clickable' programid='chgmaster' targeturl='./chargemaster'>Charge Master</a></li>";
+
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Inv Transaction' class=''><b>Inventory Transaction</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Inventory Request' class='clickable' programid='InvReqDataEntry' targeturl='./inventoryRequest?scope=ALL'>Inventory Request</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Inventory Transaction' class='clickable' programid='invtran' targeturl='./inventoryTransaction?scope=ALL'>Inventory Transaction</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Transafer(TUI/TUO)' class='clickable' programid='transfer_TUI_TUO' targeturl='./inventoryTransaction?scope=ALL&ttype=TUO'>Transafer(TUI/TUO)</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Good Return In' class='clickable' programid='goodReturnIn' targeturl='./inventoryTransaction?scope=ALL&ttype=GRI'>Good Return In</a></li>";
@@ -380,7 +382,6 @@ class HomeController extends Controller
 
         //header
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Product</b></a></li>";
-        $menu.="<li><a style='padding-left:21px' title='Pharmacy' class='clickable' programid='stockPharmacy' targeturl='product?groupcode=Stock&amp;&amp;Class=Pharmacy'>Pharmacy</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Pharmacy' class='clickable' programid='stockNon-Pharmacy' targeturl='product?groupcode=Stock&&Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Pharmacy' class='clickable' programid='stockConsignment' targeturl='product?groupcode=Consignment&&Class=Consignment'>Consignment</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Other' class='clickable' programid='productFin' targeturl='product?groupcode=Others&&Class=Others'>Others</a></li>";
@@ -391,6 +392,11 @@ class HomeController extends Controller
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Item Enquiry</b></a></li>";
         $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemPhar' targeturl='./itemEnquiry?Class=Pharmacy'>Pharmacy</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemNonPhar' targeturl='./itemEnquiry?Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
+
+        //header
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Stock Take</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Stock Freeze' class='clickable' programid='stockFreeze' targeturl='./stockFreeze'>Stock Freeze</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Stock Count' class='clickable' programid='stockCount' targeturl='./stockCount'>Stock Count</a></li>";
 
         //header
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Dashboard</b></a></li>";

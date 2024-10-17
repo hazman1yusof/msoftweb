@@ -819,6 +819,8 @@ $(document).ready(function (){
 					custom_value: galGridCustomValue
 				}
 			},
+            { label: 'chggroup_ori', name: 'chggroup_ori', hidden:true },
+            { label: 'uom_ori', name: 'uom_ori', hidden:true },
 			{ label: 'Item Description', name: 'description', width: 180, classes: 'wrap', editable: false, editoptions: { readonly: "readonly" }, hidden: true },
 			{ label: 'UOM Code', name: 'uom', width: 150, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
@@ -1186,6 +1188,8 @@ $(document).ready(function (){
 			mycurrency_np.array.length = 0;
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
 			for(var i = 0; i < ids.length; i++){
+                
+                let rowdata = $("#jqGrid2").jqGrid ('getRowData', ids[i]);
 				$("#jqGrid2").jqGrid('editRow',ids[i]);
 				
 				Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount"]);
@@ -1196,6 +1200,8 @@ $(document).ready(function (){
 				dialog_chggroup.check(errorField,ids[i]+"_chggroup","jqGrid2",null,
 					function (self){
 						if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+                        self.urlParam.chgcode = rowdata.chggroup_ori;
+                        self.urlParam.uom = rowdata.uom_ori;
 					},function (self){
 						// fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 					}
@@ -1205,6 +1211,8 @@ $(document).ready(function (){
 				dialog_uomcode.check(errorField,ids[i]+"_uom","jqGrid2",null,
 					function (self){
 						if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+                        self.urlParam.chgcode = rowdata.chggroup_ori;
+                        self.urlParam.uom = rowdata.uom_ori;
 					},function (self){
 						// fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 					}

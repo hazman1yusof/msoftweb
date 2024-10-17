@@ -377,6 +377,48 @@ class ProductController extends defaultController
                 DB::table('material.product')->insert($array_insert);
 
 
+                $stockloc = DB::table('material.stockloc')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('deptcode','=',session('deptcode'))
+                            ->where('itemcode','=',$request->itemcode)
+                            ->where('uomcode','=',$request->uomcode)
+                            ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->format('Y'))
+                            ->where('unit','=',session('unit'));
+
+                if(!$stockloc->exists()){
+
+                    if(strtoupper($request->groupcode) == 'CONSIGNMENT'){
+                        $stocktxntype = 'IS';
+                        $disptype = 'DS1';
+                    }else{
+                        $stocktxntype = 'TR';
+                        $disptype = 'DS';
+                    }
+
+                    DB::table('material.stockloc')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'unit' => session('unit'),
+                            'deptcode' => session('deptcode'),
+                            'itemcode' => $request->itemcode,
+                            'uomcode' => $request->uomcode,
+                            'year' => Carbon::now("Asia/Kuala_Lumpur")->format('Y'),
+                            'stocktxntype' => $stocktxntype,
+                            'disptype' => $disptype,
+                            // 'frozen' => $request->frozen,
+                            // 'disptype' => $request->disptype,
+                            // 'minqty' => $request->minqty,
+                            // 'maxqty' => $request->maxqty,
+                            // 'reordlevel' => $request->reordlevel,
+                            // 'reordqty' => $request->reordqty,
+                            'recstatus' => 'ACTIVE',
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'computerid' => session('computerid'),
+                        ]);
+                }
+
+
                 if($request->chgflag == 1){
                     $chgmast = DB::table('hisdb.chgmast')
                                 ->where('compcode','=',session('compcode'))

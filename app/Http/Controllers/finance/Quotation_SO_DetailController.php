@@ -72,7 +72,7 @@ class Quotation_SO_DetailController extends defaultController
 
     public function get_table_dtl(Request $request){
         $table = DB::table('finance.salesum as ss')
-                    ->select('ss.idno','ss.compcode','ss.lineno_','ss.rowno','ss.chggroup','ss.description','ss.uom','ss.uom_recv','ss.taxcode','ss.unitprice','ss.quantity','ss.billtypeperct','ss.billtypeamt','ss.taxamt','ss.discamt','ss.amount','ss.totamount','ss.recstatus','ss.qtyonhand','ss.qtydelivered')
+                    ->select('ss.idno','ss.compcode','ss.lineno_','ss.rowno','ss.chggroup','ss.chggroup as chggroup_ori','ss.description','ss.uom','ss.uom as uom_ori','ss.uom_recv','ss.taxcode','ss.unitprice','ss.quantity','ss.billtypeperct','ss.billtypeamt','ss.taxamt','ss.discamt','ss.amount','ss.totamount','ss.recstatus','ss.qtyonhand','ss.qtydelivered')
                     // ->leftjoin('material.stockloc as st', function($join) use ($request){
                     //         $join = $join->where('st.compcode', '=', session('compcode'));
                     //         $join = $join->where('st.unit', '=', session('unit'));
@@ -1553,9 +1553,9 @@ class Quotation_SO_DetailController extends defaultController
                         ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
                         ->first();
 
-                if($value['quantity'] > $stockloc->qtyonhand){
-                    throw new \Exception("Qty request (".$value['quantity'].") cant be bigger than qty on hand! (".$stockloc->qtyonhand.") on itemcode: ".$value['chggroup'],500);
-                }
+                // if($value['quantity'] > $stockloc->qtyonhand){
+                //     throw new \Exception("Qty request (".$value['quantity'].") cant be bigger than qty on hand! (".$stockloc->qtyonhand.") on itemcode: ".$value['chggroup'],500);
+                // }
 
                 ///2. update detail
                 DB::table('finance.salesum')

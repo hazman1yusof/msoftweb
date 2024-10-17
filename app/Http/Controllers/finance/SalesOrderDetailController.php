@@ -1440,9 +1440,9 @@ class SalesOrderDetailController extends defaultController
             $taxamt = $amount * $rate / 100;
             $totamount = $amount - $discamt + $taxamt;
 
-            if($quantity > $qtyonhand){
-                throw new \Exception("Quantity exceed quantity on hand for item: ".$request->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$request->uom,500);
-            }
+            // if($quantity > $qtyonhand){
+            //     throw new \Exception("Quantity exceed quantity on hand for item: ".$request->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$request->uom,500);
+            // }
             
             ///2. insert detail
             $insertGetId = DB::table('debtor.billsum')
@@ -1556,6 +1556,16 @@ class SalesOrderDetailController extends defaultController
                     throw new \Exception("Stockloc not exists for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
                 }
 
+                // $chgmast = DB::table('hisdb.chgmast as cm')
+                //             ->where('cm.compcode','=',session('compcode'))
+                //             ->where('cm.recstatus','<>','DELETE');
+                //             ->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
+                //                 $join = $join->where('cp.compcode', '=', session('compcode'));
+                //                 $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
+                //                 $join = $join->on('cp.uom', '=', 'cm.uom');
+                //                 $join = $join->where('cp.effdate', '<=', $entrydate);
+                //             });
+
                 $qtyonhand = $stockloc->qtyonhand;
                 $quantity = floatval($value['quantity']);
                 $amount = $value['unitprice'] * $quantity;
@@ -1564,9 +1574,9 @@ class SalesOrderDetailController extends defaultController
                 $taxamt = $amount * $rate / 100;
                 $totamount = $amount - $discamt + $taxamt;
 
-                if($quantity > $qtyonhand){
-                    throw new \Exception("Quantity exceed quantity on hand for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
-                }
+                // if($quantity > $qtyonhand){
+                //     throw new \Exception("Quantity exceed quantity on hand for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
+                // }
 
                 DB::table('debtor.billsum')
                         ->where('compcode','=',session('compcode'))

@@ -127,13 +127,27 @@ class InventoryRequestDetailController extends defaultController
                 throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' doesnt have stock location!');
             }
 
+            $chgprice_obj = DB::table('hisdb.chgprice as cp')
+                ->where('cp.compcode', '=', session('compcode'))
+                ->where('cp.chgcode', '=', $request->itemcode)
+                ->where('cp.uom', '=', $request->uomcode)
+                ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
+                ->orderBy('cp.effdate','desc');
+
+            if($chgprice_obj->exists()){
+                $chgprice_obj = $chgprice_obj->first();
+                $netprice = $chgprice_obj->costprice;
+            }else{
+                $netprice = $request->netprice;
+            }
+
 
             //$request->expdate = $this->null_date($request->expdate);
             ////1. calculate lineno_ by recno
             $sqlln = DB::table('material.ivreqdt')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$recno)
-                        ->count('lineno_');
+                        ->max('lineno_');
 
             $li=intval($sqlln)+1;
 
@@ -151,7 +165,7 @@ class InventoryRequestDetailController extends defaultController
                     'maxqty' => $request->maxqty,
                     'qohconfirm' => $request->qohconfirm,
                     'qtyonhand' => $request->qtyonhand,
-                    'netprice' => $request->netprice,
+                    'netprice' => $netprice,
                     // 'qtytxn'=> $request->qtytxn,
                     'qtybalance'=> $request->qtyrequest,
                     'qtyrequest'=> $request->qtyrequest,
@@ -239,6 +253,20 @@ class InventoryRequestDetailController extends defaultController
 
             foreach ($request->dataobj as $key => $value) {
 
+                $chgprice_obj = DB::table('hisdb.chgprice as cp')
+                    ->where('cp.compcode', '=', session('compcode'))
+                    ->where('cp.chgcode', '=', $value['itemcode'])
+                    ->where('cp.uom', '=', $value['uomcode'])
+                    ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
+                    ->orderBy('cp.effdate','desc');
+
+                if($chgprice_obj->exists()){
+                    $chgprice_obj = $chgprice_obj->first();
+                    $netprice = $chgprice_obj->costprice;
+                }else{
+                    $netprice = $value['netprice'];
+                }
+
                 ///1. update detail
                 DB::table('material.ivreqdt')
                     ->where('compcode','=',session('compcode'))
@@ -250,6 +278,7 @@ class InventoryRequestDetailController extends defaultController
                         'pouom' => strtoupper($value['pouom']),
                         'expdate'=> $this->turn_date($value['expdate']), 
                         'batchno'=> $value['batchno'], 
+                        'netprice' => $netprice,
                         'pouom' => strtoupper($value['pouom']),
                         'qtyrequest'=> $value['qtyrequest'],
                         'upduser' => session('username'), 

@@ -948,7 +948,7 @@ class TestController extends defaultController
         }
     }
 
-    public function betulkandb(Request $request){
+    public function betulkandb_purreqhd_2(Request $request){
         DB::beginTransaction();
         try {
             
@@ -1588,68 +1588,149 @@ class TestController extends defaultController
         }
     }
 
-    public function betulkandb_recstatus(Request $request){
+    public function betulkandb_costprice___(Request $request){
         DB::beginTransaction();
         try {
             
-            $purordhd = DB::table('material.purreqhd')
+            $costprice = DB::table('temp.costprice___')
                             ->get();
 
             $i = 1;
-            foreach ($purordhd as $obj) {
+            foreach ($costprice as $obj) {
+                $chgprice = DB::table('temp.chgprice')
+                                ->where('compcode','9B')
+                                ->where('chgcode',$obj->itemcode)
+                                ->orderBy('effdate','desc');
 
-                // $purreqdt = DB::table('material.purreqdt')
-                //         ->where('recno',$obj->recno);
+                if($chgprice->exists()){
+                    $chgprice = $chgprice->first();
+                    DB::table('temp.chgprice')
+                        ->where('idno',$chgprice->idno)
+                        ->update([
+                            'costprice' => $obj->costprice
+                        ]);
 
-                // if(!$purreqdt->exists()){
-                //     dump('continue, '.$obj->recno);
-                //     continue;
-                // }
-
-                if($obj->recstatus == 'PREPARED'){
-                    $updarr = [
-                        'supportby' => null,
-                        'supportdate' => null,
-                        'verifiedby' => null,
-                        'verifieddate' => null,
-                        'approvedby' => null,
-                        'approveddate' => null
-                    ];
-                }else if($obj->recstatus=='SUPPORT'){
-                    $updarr = [
-                        'supportby' => 'NASUHANI',
-                        'verifiedby' => null,
-                        'verifieddate' => null,
-                        'approvedby' => null,
-                        'approveddate' => null
-                    ];
-                }else if($obj->recstatus=='VERIFIED'){
-                    $updarr = [
-                        'supportby' => 'NASUHANI',
-                        'verifiedby' => 'AZO',
-                        'approvedby' => null,
-                        'approveddate' => null
-                    ];
-                }else if($obj->recstatus=='APPROVED'){
-                    $updarr = [
-                        'supportby' => 'NASUHANI',
-                        'verifiedby' => 'AZO',
-                        'approvedby' => 'NORLIDA'
-                    ];
-                }else if($obj->recstatus=='COMPLETED'){
-                    $updarr = [
-                        'supportby' => 'NASUHANI',
-                        'verifiedby' => 'AZO',
-                        'approvedby' => 'NORLIDA'
-                    ];
+                    echo nl2br("$i. update chgprice costprice: $obj->costprice \n");
+                    $i++;
                 }
+            }
 
-                DB::table('material.purreqhd')
-                    ->where('idno',$obj->idno)
-                    ->update($updarr);
+            DB::commit();
 
-                echo nl2br("$i. update purreqhd: $obj->recstatus \n");
-                $i++;
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function betulkandb_ivtmpdt(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $ivtmpdt = DB::table('temp.ivtmpdt')
+                            ->where('compcode','9B')
+                            ->where('recstatus','OPEN')
+                            ->orWhere('recstatus','ACTIVE')
+                            ->get();
+
+            $i = 1;
+            foreach ($ivtmpdt as $obj) {
+                $costprice___ = DB::table('temp.costprice___')
+                                ->where('itemcode',$obj->itemcode);
+
+                if($costprice___->exists()){
+                    $costprice___ = $costprice___->first();
+                    DB::table('temp.ivtmpdt')
+                        ->where('idno',$obj->idno)
+                        ->update([
+                            'netprice' => $costprice___->costprice,
+                            'amount' => $costprice___->costprice * $obj->txnqty
+                        ]);
+
+                    echo nl2br("$i. update ivtmpdt netprice: $costprice___->costprice \n");
+                    $i++;
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function betulkandb(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $ivtmphd = DB::table('temp.ivtmphd')
+                            ->where('compcode','9B')
+                            ->where('recstatus','OPEN')
+                            ->get();
+
+            $i = 1;
+            foreach ($ivtmphd as $obj) {
+                $sum = DB::table('temp.ivtmpdt')
+                                ->where('recno',$obj->recno)
+                                ->where('recstatus','!=','DELETE')
+                                ->sum('amount');
+
+                // if($chgprice->exists()){
+                    // $chgprice = $chgprice->first();
+                    DB::table('temp.ivtmphd')
+                        ->where('idno',$obj->idno)
+                        ->update([
+                            'amount' => $sum
+                        ]);
+
+                    echo nl2br("$i. update ivtmphd amount: $sum \n");
+                    $i++;
+                // }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function betulkandb_product_chgflg(Request $request){
+        DB::beginTransaction();
+        try {
+            
+            $product = DB::table('temp.product')
+                            ->where('compcode','9B')
+                            ->where('recstatus','OPEN')
+                            ->where('unit',"W'HOUSE")
+                            ->orWhere('unit',"IMP")
+                            ->get();
+
+            $i = 1;
+            foreach ($product as $obj) {
+                $chgmast = DB::table('temp.chgmast')
+                                ->where('compcode','9B')
+                                ->where('unit',$obj->unit)
+                                ->where('chgcode',$obj->itemcode);
+
+                if($chgmast->exists()){
+                    DB::table('temp.product')
+                        ->where('idno',$obj->idno)
+                        ->update([
+                            'chgflag' => 1
+                        ]);
+
+                    echo nl2br("$i. chgflg: $obj->itemcode \n");
+                    $i++;
+                }
             }
 
             DB::commit();

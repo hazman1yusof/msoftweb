@@ -1370,6 +1370,7 @@ $(document).ready(function () {
 
 		        dialog_chggroup.id_optid = ids[i];
 
+				dialog_chggroup.skipfdl = true;
 		        dialog_chggroup.check(errorField,ids[i]+"_chggroup","jqGrid2",null,
 		        	function(self){
 						self.urlParam.entrydate = $("#db_entrydate").val();
@@ -1434,19 +1435,19 @@ $(document).ready(function () {
 			mycurrency2.formatOff();
 			mycurrency_np.formatOff();
 			
-			if(errorField.length>0){
-				console.log(errorField)
-				return false;
-			}
+			// if(errorField.length>0){
+			// 	console.log(errorField)
+			// 	return false;
+			// }
 			
 			for (var i = 0; i < ids.length; i++) {
-				if(parseInt($('#'+ids[i]+"_quantity").val()) <= 0)return false;
+				// if(parseInt($('#'+ids[i]+"_quantity").val()) <= 0)return false;
 				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
-				let retval = check_cust_rules("#jqGrid2",data);
-				if(retval[0]!= true){
-					alert(retval[1]);
-					return false;
-				}
+				// let retval = check_cust_rules("#jqGrid2",data);
+				// if(retval[0]!= true){
+				// 	alert(retval[1]);
+				// 	return false;
+				// }
 
 				let rowid = ids[i];
 				var st_idno = $("#jqGrid2 #"+rowid+"_chggroup").data('st_idno');
@@ -1743,38 +1744,38 @@ $(document).ready(function () {
 			});
 		}
 
-		let qtyonhand = parseFloat($("#"+id_optid+"_qtyonhand").val());
-		let st_idno = $("#jqGrid2 #"+id_optid+"_chggroup").data('st_idno');
+		// let qtyonhand = parseFloat($("#"+id_optid+"_qtyonhand").val());
+		// let st_idno = $("#jqGrid2 #"+id_optid+"_chggroup").data('st_idno');
 
-		if(qtyonhand<quantity && st_idno!=''){
-			myfail_msg.add_fail({
-				id:'qtyonhand',
-				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request cant be greater than quantity on hand",
-			});
-		}else{
-			myfail_msg.del_fail({
-				id:'qtyonhand',
-				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request cant be greater than quantity on hand",
-			});
-		}
+		// if(qtyonhand<quantity && st_idno!=''){
+		// 	myfail_msg.add_fail({
+		// 		id:'qtyonhand',
+		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
+		// 		msg:"Quantity Request cant be greater than quantity on hand",
+		// 	});
+		// }else{
+		// 	myfail_msg.del_fail({
+		// 		id:'qtyonhand',
+		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
+		// 		msg:"Quantity Request cant be greater than quantity on hand",
+		// 	});
+		// }
 
-		let qtyorder = parseFloat($("#"+id_optid+"_qtyorder").val());
+		// let qtyorder = parseFloat($("#"+id_optid+"_qtyorder").val());
 
-		if(quantity>qtyorder && qtyorder!=''){
-			myfail_msg.add_fail({
-				id:'qtyorder',
-				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request cant be greater than quantity Order",
-			});
-		}else{
-			myfail_msg.del_fail({
-				id:'qtyorder',
-				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request cant be greater than quantity Order",
-			});
-		}
+		// if(quantity>qtyorder && qtyorder!=''){
+		// 	myfail_msg.add_fail({
+		// 		id:'qtyorder',
+		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
+		// 		msg:"Quantity Request cant be greater than quantity Order",
+		// 	});
+		// }else{
+		// 	myfail_msg.del_fail({
+		// 		id:'qtyorder',
+		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
+		// 		msg:"Quantity Request cant be greater than quantity Order",
+		// 	});
+		// }
 
 		let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
 		let billtypeperct = 100 - parseFloat($("#"+id_optid+"_billtypeperct").val());
@@ -2105,7 +2106,9 @@ $(document).ready(function () {
 							$("#jqGrid2").jqGrid('addRowData', elem['lineno_'] ,
 								{
 									chggroup:elem['chggroup'],
+									chggroup_ori:elem['chggroup'],
 									uom:elem['uom'],
+									uom_ori:elem['uom'],
 									uom_recv:elem['uom'],
 									taxcode:elem['pricecode'],
 									unitprice:elem['unitprice'],

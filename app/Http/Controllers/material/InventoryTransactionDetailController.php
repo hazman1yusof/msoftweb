@@ -152,7 +152,7 @@ class InventoryTransactionDetailController extends defaultController
                     ->where('UomCode','=',$request->uomcode);
 
             if(!$product->exists()){
-                throw new \Exception('product doesnt exists');
+                throw new \Exception('product doesnt exists $request->itemcode , $request->uomcode');
             }
 
             if(strtoupper($ivtmphd->trantype) == 'TUI'){
@@ -165,7 +165,7 @@ class InventoryTransactionDetailController extends defaultController
                         ->where('StockLoc.UomCode','=',$request->uomcode);
 
                 if(!$stockloc_obj->exists()){
-                    throw new \Exception('stockloc doesnt exists');
+                    throw new \Exception('stockloc doesnt exists $request->itemcode , $request->uomcode');
                 }
             }else if(strtoupper($ivtmphd->trantype) == 'TUO'){
                 $stockloc_obj = DB::table('material.StockLoc')
@@ -177,13 +177,28 @@ class InventoryTransactionDetailController extends defaultController
                         ->where('StockLoc.UomCode','=',$request->uomcode);
 
                 if(!$stockloc_obj->exists()){
-                    throw new \Exception('stockloc doesnt exists');
+                    throw new \Exception('stockloc doesnt exists $request->itemcode , $request->uomcode');
                 }
                 $stockloc_first = $stockloc_obj->first();
 
                 if($request->txnqty > $stockloc_first->qtyonhand){
                     throw new \Exception('Quantity not enough at Stock location, $ivtmphd->txndept - $request->itemcode - $request->uomcode');
                 }
+                    
+                $chgprice_obj = DB::table('hisdb.chgprice as cp')
+                    ->where('cp.compcode', '=', session('compcode'))
+                    ->where('cp.chgcode', '=', $request->itemcode)
+                    ->where('cp.uom', '=', $request->uomcode)
+                    ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
+                    ->orderBy('cp.effdate','desc');
+
+                if($chgprice_obj->exists()){
+                    $chgprice_obj = $chgprice_obj->first();
+                    $netprice_tuo = $chgprice_obj->costprice;
+                }else{
+                    $netprice_tuo = $request->netprice;
+                }
+
             }else{
                 $issuetype = DB::table('material.ivtxntype')->select('isstype')
                                 ->where('compcode','=',session('compcode'))
@@ -205,9 +220,7 @@ class InventoryTransactionDetailController extends defaultController
                 }
             }
 
-            ///2. insert detailF
-            DB::table('material.ivtmpdt')
-                ->insert([
+            $add_array = [
                     'compcode' => session('compcode'),
                     'recno' => $recno,
                     'lineno_' => $li,
@@ -227,7 +240,16 @@ class InventoryTransactionDetailController extends defaultController
                     'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
                     'remarks' => $request->remarks
-                ]);
+                ];
+
+            if(strtoupper($ivtmphd->trantype) == 'TUO'){
+                $add_array['netprice'] = $netprice_tuo;
+                $add_array['amount'] = $netprice_tuo * $request->txnqty;
+            }
+
+            ///2. insert detailF
+            DB::table('material.ivtmpdt')
+                ->insert($add_array);
 
             ///3. calculate total amount from detail
             $totalAmount = DB::table('material.ivtmpdt')
@@ -236,7 +258,6 @@ class InventoryTransactionDetailController extends defaultController
                     ->where('recstatus','!=','DELETE')
                     ->sum('amount');
 
-       
             ///4. then update to header
             DB::table('material.ivtmphd')
                 ->where('compcode','=',session('compcode'))
@@ -346,7 +367,7 @@ class InventoryTransactionDetailController extends defaultController
                         ->where('UomCode','=',$value['uomcode']);
 
                 if(!$product->exists()){
-                    throw new \Exception('product doesnt exists');
+                    throw new \Exception('product doesnt exists '.$value['itemcode'].' , '.$value['uomcode']);
                 }
 
                 if(strtoupper($ivtmphd->trantype) == 'TUI'){
@@ -359,7 +380,7 @@ class InventoryTransactionDetailController extends defaultController
                             ->where('StockLoc.UomCode','=',$value['uomcode']);
 
                     if(!$stockloc_obj->exists()){
-                        throw new \Exception('stockloc doesnt exists');
+                        throw new \Exception('stockloc doesnt exists'.$value['itemcode'].' , '.$value['uomcode']);
                     }
                 }else if(strtoupper($ivtmphd->trantype) == 'TUO'){
                     $stockloc_obj = DB::table('material.StockLoc')
@@ -371,12 +392,26 @@ class InventoryTransactionDetailController extends defaultController
                             ->where('StockLoc.UomCode','=',$value['uomcode']);
 
                     if(!$stockloc_obj->exists()){
-                        throw new \Exception('stockloc doesnt exists');
+                        throw new \Exception('stockloc doesnt exists'.$value['itemcode'].' , '.$value['uomcode']);
                     }
                     $stockloc_first = $stockloc_obj->first();
 
                     if($stockloc_first->qtyonhand >= 0 && $value['txnqty'] > $stockloc_first->qtyonhand){
                         throw new \Exception("Quantity not enough at Stock location, ".$ivtmphd->txndept." - ".$value['itemcode']." - ".$value['uomcode']);
+                    }
+                    
+                    $chgprice_obj = DB::table('hisdb.chgprice as cp')
+                        ->where('cp.compcode', '=', session('compcode'))
+                        ->where('cp.chgcode', '=', $value['itemcode'])
+                        ->where('cp.uom', '=', $value['uomcode'])
+                        ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
+                        ->orderBy('cp.effdate','desc');
+
+                    if($chgprice_obj->exists()){
+                        $chgprice_obj = $chgprice_obj->first();
+                        $netprice_tuo = $chgprice_obj->costprice;
+                    }else{
+                        $netprice_tuo = $value['netprice'];
                     }
 
                     // if($value['qtyrequest'] < $value['txnqty']){
@@ -403,12 +438,7 @@ class InventoryTransactionDetailController extends defaultController
                     }
                 }
 
-                ///1. update detail
-                DB::table('material.ivtmpdt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$request->recno)
-                    ->where('lineno_','=',$value['lineno_'])
-                    ->update([
+                $upd_array = [
                         'itemcode' => strtoupper($value['itemcode']),
                         'uomcode' => strtoupper($value['uomcode']),
                         'txnqty' => $value['txnqty'],
@@ -426,7 +456,19 @@ class InventoryTransactionDetailController extends defaultController
                         'expdate'=> $this->turn_date($value['expdate']),  
                         'batchno' => strtoupper($value['batchno']), 
                         'recstatus' => 'OPEN'
-                    ]);
+                    ];
+
+                if(strtoupper($ivtmphd->trantype) == 'TUO'){
+                    $upd_array['netprice'] = $netprice_tuo;
+                    $upd_array['amount'] = $netprice_tuo * $value['txnqty'];
+                }
+
+                ///1. update detail
+                DB::table('material.ivtmpdt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$request->recno)
+                    ->where('lineno_','=',$value['lineno_'])
+                    ->update($upd_array);
 
                 ///2. recalculate total amount
                 $totalAmount = DB::table('material.ivtmpdt')

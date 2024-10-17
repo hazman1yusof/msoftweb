@@ -43,7 +43,7 @@
 
 							<div  id="show_product_infront_asset" style="display:none">
 								<div class='input-group'>
-									<input id="product_infront_asset" name="product_infront_asset" type="text" maxlength="12" class="form-control input-sm">
+									<input id="product_infront_asset" name="product_infront_asset" type="text" maxlength="222" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -51,7 +51,7 @@
 
 							<div  id="show_product_infront_stock" style="display:none">
 								<div class='input-group'>
-									<input id="product_infront_stock" name="product_infront_stock" type="text" maxlength="12" class="form-control input-sm">
+									<input id="product_infront_stock" name="product_infront_stock" type="text" maxlength="222" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -59,7 +59,7 @@
 
 							<div  id="show_product_infront_others" style="display:none">
 								<div class='input-group'>
-									<input id="product_infront_others" name="product_infront_others" type="text" maxlength="12" class="form-control input-sm">
+									<input id="product_infront_others" name="product_infront_others" type="text" maxlength="222" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -161,24 +161,24 @@
 						<div class="form-group">
 						  	<label class="col-md-2 control-label" for="itemcode">Item Code</label>  
 						  		<div class="col-md-2" id="itemcode_parent">
-									<input id="itemcode" name="itemcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+									<input id="itemcode" name="itemcode" type="text" maxlength="222" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 						 		 </div>
 
 						 	<label class="col-md-3 control-label" for="description">Item Description</label>  
 						  		<div class="col-md-5" id="description_parent">
-						  			<input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
+						  			<input id="description" name="description" type="text" maxlength="222" class="form-control input-sm text-uppercase" data-validation="required">
 						  		</div>
 					    </div>
 
 						<div class="form-group">                   
                   			<label class="col-md-2 control-label" for="generic">Generic Name</label>  
 				 				<div class="col-md-3">
-				  					<input id="generic" name="generic" type="text" maxlength="40" class="form-control input-sm text-uppercase" rdonly>
+				  					<input id="generic" name="generic" type="text" maxlength="222" class="form-control input-sm text-uppercase" rdonly>
 				  				</div>
 
 				  			<label class="col-md-2 control-label" for="uomcode">UOM Code</label>  
 						  		<div class="col-md-2" id="uomcode_parent">
-									<input id="uomcode" name="uomcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+									<input id="uomcode" name="uomcode" type="text" maxlength="222" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 						 		 </div>
 						</div>
 
@@ -194,7 +194,7 @@
 
                   			<label class="col-md-1 control-label" for="productcat">Product Category</label>  
 				  				<div class="col-md-3" id="uomcode_parent">
-									<input id="productcat" name="productcat" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit rdonly>
+									<input id="productcat" name="productcat" type="text" maxlength="222" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit rdonly>
 						 		 </div>
 						</div>
                 
@@ -202,7 +202,7 @@
 				 			<label class="col-md-2 control-label" for="subcatcode">Sub Category</label>  
 				  				<div class="col-md-3">
 				  					<div class='input-group'>
-				  						<input id="subcatcode" name="subcatcode" type="text" maxlength="15" class="form-control input-sm text-uppercase" rdonly>
+				  						<input id="subcatcode" name="subcatcode" type="text" maxlength="222" class="form-control input-sm text-uppercase" rdonly>
 				  						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  				</div>
 					  					<span class="help-block"></span>
@@ -274,24 +274,24 @@
             			<div class="form-group">
 				  			<label class="col-md-3 control-label" for="minqty">Min Stock Qty</label>  
 				  				<div class="col-md-2">
-				  					<input id="minqty" name="minqty" type="text" maxlength="11" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" value="0" rdonly>
+				  					<input id="minqty" name="minqty" type="text" maxlength="222" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" value="0" rdonly>
 				  				</div>
                   
                   			<label class="col-md-3 control-label" for="maxqty">Max Stock Qty</label>  
 				  				<div class="col-md-2">
-				  					<input id="maxqty" name="maxqty" type="text" maxlength="11" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" value="0" rdonly>
+				  					<input id="maxqty" name="maxqty" type="text" maxlength="222" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" value="0" rdonly>
 				  				</div>
 						</div>
                 
 		                <div class="form-group">
 						  	<label class="col-md-3 control-label" for="reordlevel">Record Level</label>  
 						  		<div class="col-md-2">
-						  			<input id="reordlevel" name="reordlevel" type="text" maxlength="11" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" value="0" rdonly>
+						  			<input id="reordlevel" name="reordlevel" type="text" maxlength="222" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" value="0" rdonly>
 						  		</div>
 		                  
 		                  	<label class="col-md-3 control-label" for="reordqty">Reoder Qty</label>  
 						  		<div class="col-md-2">
-						  			<input id="reordqty" name="reordqty" type="text" maxlength="11" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" value="0" rdonly>
+						  			<input id="reordqty" name="reordqty" type="text" maxlength="222" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0" value="0" rdonly>
 						  		</div>
 						</div>
 
@@ -393,7 +393,7 @@
 								<label class="col-md-2 control-label" for="cm_chgclass">Class Code</label>
 								<div class="col-md-3">
 									<div class="input-group">
-										<input id="cm_chgclass" name="cm_chgclass" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<input id="cm_chgclass" name="cm_chgclass" type="text" maxlength="222" class="form-control input-sm uppercase" data-validation="required">
 										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -402,7 +402,7 @@
 								<label class="col-md-2 control-label" for="cm_dosecode">Dosage</label>
 								<div class="col-md-3">
 									<div class="input-group">
-										<input id="cm_dosecode" name="cm_dosecode" type="text" maxlength="12" class="form-control input-sm uppercase">
+										<input id="cm_dosecode" name="cm_dosecode" type="text" maxlength="222" class="form-control input-sm uppercase">
 										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -414,7 +414,7 @@
 								<label class="col-md-2 control-label" for="cm_chggroup">Charge Group</label>  
 								<div class="col-md-3">
 									<div class="input-group">
-										<input id="cm_chggroup" name="cm_chggroup" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<input id="cm_chggroup" name="cm_chggroup" type="text" maxlength="222" class="form-control input-sm uppercase" data-validation="required">
 										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -423,7 +423,7 @@
 								<label class="col-md-2 control-label" for="cm_freqcode">Frequency</label>
 								<div class="col-md-3">
 									<div class="input-group">
-										<input id="cm_freqcode" name="cm_freqcode" type="text" maxlength="12" class="form-control input-sm uppercase" >
+										<input id="cm_freqcode" name="cm_freqcode" type="text" maxlength="222" class="form-control input-sm uppercase" >
 										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -435,7 +435,7 @@
 								<label class="col-md-2 control-label" for="cm_chgtype">Charge Type</label>
 								<div class="col-md-3">
 									<div class="input-group">
-										<input id="cm_chgtype" name="cm_chgtype" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<input id="cm_chgtype" name="cm_chgtype" type="text" maxlength="222" class="form-control input-sm uppercase" data-validation="required">
 										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -444,7 +444,7 @@
 								<label class="col-md-2 control-label" for="cm_instruction">Instruction</label>
 								<div class="col-md-3">
 									<div class="input-group">
-										<input id="cm_instruction" name="cm_instruction" type="text" maxlength="12" class="form-control input-sm uppercase" >
+										<input id="cm_instruction" name="cm_instruction" type="text" maxlength="222" class="form-control input-sm uppercase" >
 										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -481,7 +481,7 @@
 
 							<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
 								<div class="col-md-3">
-									<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm"  frozeOnEdit>
+									<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="222" class="form-control input-sm"  frozeOnEdit>
 								  	</div>
 						</div>
 					</form>
@@ -500,7 +500,7 @@
 				<div class="form-group">
                 	<label class="col-md-2 control-label" for="itemcode">Item Code</label>  
                     	<div class="col-md-3">
-                      		<input id="itemcodeAddNew" name="itemcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+                      		<input id="itemcodeAddNew" name="itemcode" type="text" maxlength="222" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
                       	</div>
 
 
@@ -520,7 +520,7 @@
                 <div class="form-group">
                 	<label class="col-md-2 control-label" for="description">Description</label>  
                       <div class="col-md-8">
-                      <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
+                      <input id="description" name="description" type="text" maxlength="222" class="form-control input-sm text-uppercase" data-validation="required">
                       </div>
 				</div>
 
@@ -637,6 +637,6 @@
 			
 		});
 	</script>
-	<script src="js/material/product/product.js?v=1.3"></script>
+	<script src="js/material/product/product.js?v=1.4"></script>
 
 @endsection

@@ -130,30 +130,41 @@
 				{
 					style: 'tableExample',
 					table: {
-						widths: [50,30,30,25,48,40,38,40,46,40], //515
+						widths: [50,30,30,25,50,50,50,50,50,50], //515
 						body: [
 							[
-								{text:'Description',colSpan: 3, style:'totalbold'},{},{},
-								{text:'UOM', style:'totalbold'},
-								{text:'Expiry', style:'totalbold'},
-								{text:'Batchno', style:'totalbold'},
-								{text:'Quantity', style:'totalbold', alignment: 'right'},
-								{text:'Unit Price', style:'totalbold', alignment: 'right'},
-								{text:'Tax Amt', style:'totalbold', alignment: 'right'},
-								{text:'Amount', style:'totalbold', alignment: 'right'},
+								{text:'Description',colSpan: 3, style:'totalbold',border: [false, true, false, true]},{},{},
+								{text:'UOM', style:'totalbold',border: [false, true, false, true]},
+								{text:'Expiry', style:'totalbold',border: [false, true, false, true]},
+								{text:'Batchno', style:'totalbold',border: [false, true, false, true]},
+								{text:'Quantity', style:'totalbold', alignment: 'right',border: [false, true, false, true]},
+								{text:'Unit Price', style:'totalbold', alignment: 'right',border: [false, true, false, true]},
+								{text:'Tax Amt', style:'totalbold', alignment: 'right',border: [false, true, false, true]},
+								{text:'Amount', style:'totalbold', alignment: 'right',border: [false, true, false, true]},
 							],
 							@foreach ($billsum as $obj)
 							[
-								{text:`{!!$obj->chgmast_desc!!}`,colSpan: 3},{},{},
-								{text:`{!!$obj->uom!!}`},
-								{text:'{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}'},
-								{text:`{!!$obj->batchno!!}`},
-								{text:'{{$obj->quantity}}', alignment: 'right'},
-								{text:'{{number_format($obj->unitprice,2)}}', alignment: 'right'},
-								{text:'{{number_format($obj->taxamt,2)}}', alignment: 'right'},
-								{text:'{{number_format($obj->amount,2)}}', alignment: 'right'},
+								{text:`{!!$obj->chggroup!!}`,colSpan: 3,border: [false, false, false, false]},{},{},
+								{text:`{!!$obj->uom!!}`,border: [false, false, false, false]},
+								{text:'{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}',border: [false, false, false, false]},
+								{text:`{!!$obj->batchno!!}`,border: [false, false, false, false]},
+								{text:'{{$obj->quantity}}', alignment: 'right',border: [false, false, false, false]},
+								{text:'{{number_format($obj->unitprice,2)}}', alignment: 'right',border: [false, false, false, false]},
+								{text:'{{number_format($obj->taxamt,2)}}', alignment: 'right',border: [false, false, false, false]},
+								{text:'{{number_format($obj->amount,2)}}', alignment: 'right',border: [false, false, false, false]},
+							],
+							[
+								{text:`{!!$obj->chgmast_desc!!}`,colSpan: 10, margin: [0, -5, 0, 0],border: [false, false, false, false]},{},{},{},{},{},{},{},{},{}
 							],
 							@endforeach
+						]
+					}
+				},
+				{
+					style: 'tableExample',
+					table: {
+						widths: [50,30,30,25,48,40,38,40,46,40], //515
+						body: [
 							[
 								{text:'TOTAL', style: 'totalbold', colSpan: 9},{},{},{},{},{},{},{},{},
 								{text:'{{number_format($dbacthdr->amount,2)}}', alignment: 'right'}

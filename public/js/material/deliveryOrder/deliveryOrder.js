@@ -392,7 +392,7 @@ $(document).ready(function () {
 		gridComplete: function () {
 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 
-			if (oper == 'add' || oper == null || $("#jqGrid").data('lastselrow') == undefined) { 
+			if ($("#jqGrid").data('lastselrow') == '-1' || $("#jqGrid").data('lastselrow') == undefined) { 
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}else{
 				$("#jqGrid").setSelection($("#jqGrid").data('lastselrow'));
@@ -477,6 +477,7 @@ $(document).ready(function () {
 		id: 'glyphicon-plus',
 		title:"Add New Row", 
 		onClickButton: function(){
+			$("#jqGrid").data('lastselrow','-1');
 			oper='add';
 			$( "#dialogForm" ).dialog( "open" );
 		},

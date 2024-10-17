@@ -659,10 +659,10 @@ class SalesOrderController extends defaultController
                         $qo_dt_qtydelivered = $qo_dt->qtydelivered;
                         $qo_dt_quantity = $qo_dt->quantity;
                         $new_qtydelivered = $billsum_obj->quantity + $qo_dt_qtydelivered;
-                        if($new_qtydelivered > $qo_dt_quantity){
-                            $cant_exceed = $qo_dt->quantity - $qo_dt->qtydelivered;
-                            throw new \Exception("Quotation Quantity Delivered Exceed for item: ".$billsum_obj->chggroup." uom: ".$billsum_obj->uom." Quantity delivered cant exceed: ".$cant_exceed,500);
-                        }
+                        // if($new_qtydelivered > $qo_dt_quantity){
+                        //     $cant_exceed = $qo_dt->quantity - $qo_dt->qtydelivered;
+                        //     throw new \Exception("Quotation Quantity Delivered Exceed for item: ".$billsum_obj->chggroup." uom: ".$billsum_obj->uom." Quantity delivered cant exceed: ".$cant_exceed,500);
+                        // }
 
                         DB::table('finance.salesum')
                                     ->where('compcode',session('compcode'))
@@ -2019,21 +2019,24 @@ class SalesOrderController extends defaultController
                 //3.kalu xde Stock Expiry, buat baru
                 $BalQty = -$curr_quan;
 
-                DB::table('material.stockexp')
-                    ->insert([
-                        'compcode' => session('compcode'), 
-                        'unit' => session('unit'), 
-                        'deptcode' => $dbacthdr->deptcode, 
-                        'itemcode' => $my_chggroup, 
-                        'uomcode' => $my_uom, 
-                        'balqty' => $BalQty, 
-                        'adduser' => session('username'), 
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                        'upduser' => session('username'), 
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                       // 'lasttt' => 'GRN', 
-                        'year' => Carbon::now("Asia/Kuala_Lumpur")->year
-                    ]);
+                $stockexp_getid = DB::table('material.stockexp')
+                            ->insertGetId([
+                                'compcode' => session('compcode'), 
+                                'unit' => session('unit'), 
+                                'deptcode' => $dbacthdr->deptcode, 
+                                'itemcode' => $my_chggroup, 
+                                'uomcode' => $my_uom, 
+                                'balqty' => $BalQty, 
+                                'adduser' => session('username'), 
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                                'upduser' => session('username'), 
+                                'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                               // 'lasttt' => 'GRN', 
+                                'year' => Carbon::now("Asia/Kuala_Lumpur")->year
+                            ]);
+
+
+                $stockexp_use = $expdate_obj->where('idno',$stockexp_getid)->first();
             }
         }
 
@@ -2162,7 +2165,7 @@ class SalesOrderController extends defaultController
             }else{
                 $BalQty = floatval($prev_quan) - floatval($curr_quan);
 
-                DB::table('material.stockexp')
+                $stockexp_getid = DB::table('material.stockexp')
                     ->insert([
                         'compcode' => session('compcode'), 
                         'unit' => session('unit'), 
@@ -2177,6 +2180,8 @@ class SalesOrderController extends defaultController
                        // 'lasttt' => 'GRN', 
                         'year' => Carbon::now("Asia/Kuala_Lumpur")->year
                     ]);
+
+                $stockexp_use = $expdate_obj->where('idno',$stockexp_getid)->first();
             }
 
         }
