@@ -36,6 +36,8 @@ $(document).ready(function () {
 	});
 
 	$('#tab_triage').on('shown.bs.collapse', function () {
+		// glasgow_coma_scale();
+
 		SmoothScrollTo('#tab_triage', 300);
 		// $("#jqGridExamTriage").jqGrid ('setGridWidth', Math.floor($("#jqGridExamTriage_c")[0].offsetWidth-$("#jqGridExamTriage_c")[0].offsetLeft-14));
 		// $("#jqGridAddNotesTriage").jqGrid ('setGridWidth', Math.floor($("#jqGridAddNotesTriage_c")[0].offsetWidth-$("#jqGridAddNotesTriage_c")[0].offsetLeft-14));
@@ -109,6 +111,7 @@ $(document).ready(function () {
 				$("#cancel_ti").data('oper','edit');
 				$("#cancel_ti").click();
 			});
+			// glasgow_coma_scale();
 
 		}
 
@@ -700,6 +703,16 @@ $(document).ready(function () {
 
 	});
 
+	// function glasgow_coma_scale(){
+	
+	// 	let gsc_eye = $("#formTriageInfo input[name='gsc_eye']").val();
+	// 	let gsc_verbal = $("#formTriageInfo input[name='gsc_verbal']").val();
+	// 	let gsc_motor = $("#formTriageInfo input[name='gsc_motor']").val();
+	
+	// 	var totGlasgow = gsc_eye+gsc_verbal+gsc_motor;
+	
+	// 	$("#formTriageInfo input[name='totgsc']").val(totGlasgow);
+	// }
 
 });
 
@@ -1185,4 +1198,6 @@ function tri_color_set(empty){
 
 // 	}
 // }
+
+
 
