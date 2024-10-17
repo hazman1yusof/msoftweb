@@ -56,9 +56,9 @@
 
 <div class="ui segment">
 	<form id="formphys_ncase">
-
 		<input id="referdiet_ncase" name="referdiet" type="hidden" value="no">
 		<input id="category_phys_ncase" name="category" type="hidden">
+		
 		<div class="ui segments">
 			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_mcond">
 				<i class="angle down icon large"></i>
@@ -689,6 +689,7 @@
 				</div>
 			</div>
 		</div>
+		
 		<div class="ui segments">
 			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_hist">
 				<i class="angle down icon large"></i>
@@ -701,14 +702,14 @@
 				</div>
 			</div>
 		</div>
-
+		
 		<div class="ui segments">
-			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_post">
+			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_post_rehab">
 				<i class="angle down icon large"></i>
 				<i class="angle up icon large"></i>
-				<h4 style="text-align:center;margin-top:3px">POSTURAL ASSESSMENT</h4>
+				<h4 style="text-align:center;margin-top:3px">POSTURAL ASSESSMENT (REHAB)</h4>
 			</div>
-			<div class="ui segment collapse" id="phys_post">
+			<div class="ui segment collapse" id="phys_post_rehab">
 				<div class="ui grid">
 					<div class="thirteen wide column">
 						<div class="ui four cards" >
@@ -734,7 +735,7 @@
 							</a>
 						</div>
 					</div>
-
+					
 					<div class="three wide column">
 						<div class="ui form">
 							<div class="field">
@@ -770,7 +771,452 @@
 				</div>
 			</div>
 		</div>
-
+		
+		<div class="ui segments">
+			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_post_physio">
+				<i class="angle down icon large"></i>
+				<i class="angle up icon large"></i>
+				<h4 style="text-align:center;margin-top:3px">POSTURAL ASSESSMENT (PHYSIO)</h4>
+			</div>
+			<div class="ui segment collapse" id="phys_post_physio">
+				<div class="ui grid">
+					<div class="eight wide column">
+						<div class="ui segments">
+							<div class="ui secondary segment">Anterior & Posterior View</div>
+							<div class="ui segment">
+								<table class="table;border border-white">
+									<thead>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;" colspan="2">
+												<i>Tick where seen & refer to Movement Management Plan</i>
+											</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+										</tr>
+										<tr>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;">Lower Body</th>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;"></th>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;">L</th>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;">R</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px; font-weight: bold;">Foot & ankle complex</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Toe - Out</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="FAC_toeOut_L" name="FAC_toeOut_L" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="FAC_toeOut_R" name="FAC_toeOut_R" value="1"></td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Toe - In</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="FAC_toeIn_L" name="FAC_toeIn_L" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="FAC_toeIn_R" name="FAC_toeIn_R" value="1"></td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Pronation</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="FAC_pronation_L" name="FAC_pronation_L" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="FAC_pronation_R" name="FAC_pronation_R" value="1"></td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Flat Feet</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="FAC_flatfeet_L" name="FAC_flatfeet_L" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="FAC_flatfeet_R" name="FAC_flatfeet_R" value="1"></td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">High Arch</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="FAC_higharch_L" name="FAC_higharch_L" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="FAC_higharch_R" name="FAC_higharch_R" value="1"></td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px; font-weight: bold;">Knee/Hip</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Knock Knees</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="KH_knockknees_L" name="KH_knockknees_L" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="KH_knockknees_R" name="KH_knockknees_R" value="1"></td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Bow Legs</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="KH_bowlegs_L" name="KH_bowlegs_L" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="KH_bowlegs_R" name="KH_bowlegs_R" value="1"></td>
+										</tr>
+									</tbody>
+									<thead>
+										<tr>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;">Upper Body</th>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;"></th>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;">L</th>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;">R</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px; font-weight: bold;">Spine</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Scoliosis</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="SP_scoliosis_L" name="SP_scoliosis_L" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="SP_scoliosis_R" name="SP_scoliosis_R" value="1"></td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px; font-weight: bold;">Scapula</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Deviation</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="scapula_dev_L" name="scapula_dev_L" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="scapula_dev_R" name="scapula_dev_R" value="1"></td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px; font-weight: bold;">Shoulder</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Deviation</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="shoulder_dev_L" name="shoulder_dev_L" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="shoulder_dev_R" name="shoulder_dev_R" value="1"></td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px; font-weight: bold;">Head</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Tilt</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="head_tilt_L" name="head_tilt_L" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="head_tilt_R" name="head_tilt_R" value="1"></td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Rotation</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="head_rotate_L" name="head_rotate_L" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="head_rotate_R" name="head_rotate_R" value="1"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					
+					<div class="eight wide column">
+						<div class="ui two cards">
+							<a class="ui card bodydia_ncase" data-type='BF' style="height: 500px;">
+								<div class="image">
+									<img src="{{ asset('patientcare/img/bodydia1.png') }}" style="height: 500px;">
+								</div>
+							</a>
+							<!-- <a class="ui card bodydia_ncase" data-type='BR'>
+								<div class="image">
+									<img src="{{ asset('patientcare/img/bodydia2.png') }}">
+								</div>
+							</a>
+							<a class="ui card bodydia_ncase" data-type='BL'>
+								<div class="image">
+									<img src="{{ asset('patientcare/img/bodydia3.png') }}">
+								</div>
+							</a> -->
+							<a class="ui card bodydia_ncase" data-type='BB' style="height: 500px;">
+								<div class="image">
+									<img src="{{ asset('patientcare/img/bodydia4.png') }}" style="height: 500px;">
+								</div>
+							</a>
+						</div>
+						
+						<div class="ui form" style="padding-top: 10px;">
+							<div class="field">
+								<label>Comments</label>
+								<textarea rows="6" cols="50" id="anteriorPosterior_rmk" name="anteriorPosterior_rmk"></textarea>
+							</div>
+						</div>
+					</div>
+					
+					<div class="eight wide column">
+						<div class="ui segments">
+							<div class="ui secondary segment">Lateral View</div>
+							<div class="ui segment">
+								<table class="table;border border-white">
+									<thead>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;" colspan="2">
+												<i>Tick where seen & refer to Movement Management Plan</i>
+											</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+										</tr>
+										<tr>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;">Lower Body</th>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;"></th>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;">L</th>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;">R</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px; font-weight: bold;">Ankle</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Dorsiflexion</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="ankle_dorsif_L" name="ankle_dorsif_L" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="ankle_dorsif_R" name="ankle_dorsif_R" value="1"></td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Plantarflexion</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="ankle_plantarf_L" name="ankle_plantarf_L" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="ankle_plantarf_R" name="ankle_plantarf_R" value="1"></td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px; font-weight: bold;">Knee</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Flexed</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="knee_flexed_L" name="knee_flexed_L" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="knee_flexed_R" name="knee_flexed_R" value="1"></td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Hyperextended</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="knee_extended_L" name="knee_extended_L" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="knee_extended_R" name="knee_extended_R" value="1"></td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px; font-weight: bold;">Pelvis</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Anterior translation</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="pelvis_translation_L" name="pelvis_translation_L" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="pelvis_translation_R" name="pelvis_translation_R" value="1"></td>
+										</tr>
+									</tbody>
+									<thead>
+										<tr>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;"></th>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;"></th>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;">Y</th>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;">N</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Is the deviation symmetrical?</td>
+											<!-- <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="dev_symmetry_Y" name="dev_symmetry_Y" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="dev_symmetry_N" name="dev_symmetry_N" value="1"></td> -->
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="dev_symmetry" value="1">
+												<!-- </label> -->
+											</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="dev_symmetry" value="0">
+												<!-- </label> -->
+											</td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Tilt: Anterior</td>
+											<!-- <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="tilt_anter_Y" name="tilt_anter_Y" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="tilt_anter_N" name="tilt_anter_N" value="1"></td> -->
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="tilt_anterior" value="1">
+												<!-- </label> -->
+											</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="tilt_anterior" value="0">
+												<!-- </label> -->
+											</td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Posterior</td>
+											<!-- <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="tilt_poster_Y" name="tilt_poster_Y" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="tilt_poster_N" name="tilt_poster_N" value="1"></td> -->
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="tilt_posterior" value="1">
+												<!-- </label> -->
+											</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="tilt_posterior" value="0">
+												<!-- </label> -->
+											</td>
+										</tr>
+									</tbody>
+									<thead>
+										<tr>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;">Upper Body</th>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;"></th>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;">Y</th>
+											<th style="margin: 0px; padding: 3px 14px 14px 14px;">N</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px; font-weight: bold;">Lumbar spine</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Lordosis</td>
+											<!-- <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="LS_lordosis_Y" name="LS_lordosis_Y" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="LS_lordosis_N" name="LS_lordosis_N" value="1"></td> -->
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="LS_lordosis" value="1">
+												<!-- </label> -->
+											</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="LS_lordosis" value="0">
+												<!-- </label> -->
+											</td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Flat</td>
+											<!-- <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="LS_flat_Y" name="LS_flat_Y" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="LS_flat_N" name="LS_flat_N" value="1"></td> -->
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="LS_flat" value="1">
+												<!-- </label> -->
+											</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="LS_flat" value="0">
+												<!-- </label> -->
+											</td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px; font-weight: bold;">Thorac spine</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Kyphosis</td>
+											<!-- <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="TS_kyphosis_Y" name="TS_kyphosis_Y" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="TS_kyphosis_N" name="TS_kyphosis_N" value="1"></td> -->
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="TS_kyphosis" value="1">
+												<!-- </label> -->
+											</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="TS_kyphosis" value="0">
+												<!-- </label> -->
+											</td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Flat</td>
+											<!-- <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="TS_flat_Y" name="TS_flat_Y" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="TS_flat_N" name="TS_flat_N" value="1"></td> -->
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="TS_flat" value="1">
+												<!-- </label> -->
+											</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="TS_flat" value="0">
+												<!-- </label> -->
+											</td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px; font-weight: bold;">Trunk</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Rotation (Symmetry)</td>
+											<!-- <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="TR_rotation_Y" name="TR_rotation_Y" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="TR_rotation_N" name="TR_rotation_N" value="1"></td> -->
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="TR_rotation" value="1">
+												<!-- </label> -->
+											</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="TR_rotation" value="0">
+												<!-- </label> -->
+											</td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px; font-weight: bold;">Shoulders</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Forward</td>
+											<!-- <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="SH_forward_Y" name="SH_forward_Y" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="SH_forward_N" name="SH_forward_N" value="1"></td> -->
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="SH_forward" value="1">
+												<!-- </label> -->
+											</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="SH_forward" value="0">
+												<!-- </label> -->
+											</td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px; font-weight: bold;">Head position</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Forward</td>
+											<!-- <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="HP_forward_Y" name="HP_forward_Y" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="HP_forward_N" name="HP_forward_N" value="1"></td> -->
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="HP_forward" value="1">
+												<!-- </label> -->
+											</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="HP_forward" value="0">
+												<!-- </label> -->
+											</td>
+										</tr>
+										<tr>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">Back</td>
+											<!-- <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="HP_back_Y" name="HP_back_Y" value="1"></td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="HP_back_N" name="HP_back_N" value="1"></td> -->
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="HP_back" value="1">
+												<!-- </label> -->
+											</td>
+											<td style="margin: 0px; padding: 3px 14px 14px 14px;">
+												<!-- <label class="radio-inline"> -->
+													<input type="radio" name="HP_back" value="0">
+												<!-- </label> -->
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					
+					<div class="eight wide column">
+						<div class="ui two cards">
+							<!-- <a class="ui card bodydia_ncase" data-type='BF'>
+								<div class="image">
+									<img src="{{ asset('patientcare/img/bodydia1.png') }}">
+								</div>
+							</a> -->
+							<a class="ui card bodydia_ncase" data-type='BR'>
+								<div class="image">
+									<img src="{{ asset('patientcare/img/bodydia2.png') }}">
+								</div>
+							</a>
+							<a class="ui card bodydia_ncase" data-type='BL'>
+								<div class="image">
+									<img src="{{ asset('patientcare/img/bodydia3.png') }}">
+								</div>
+							</a>
+							<!-- <a class="ui card bodydia_ncase" data-type='BB'>
+								<div class="image">
+									<img src="{{ asset('patientcare/img/bodydia4.png') }}">
+								</div>
+							</a> -->
+						</div>
+						
+						<div class="ui form" style="padding-top: 10px;">
+							<div class="field">
+								<label>Comments</label>
+								<textarea rows="6" cols="50" id="lateral_rmk" name="lateral_rmk"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 		<div class="ui segments">
 			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_elec">
 				<i class="angle down icon large"></i>
@@ -783,7 +1229,7 @@
 						<label>ECG Interpretation</label>
 						<textarea rows="6" cols="50" name="electrodg" ></textarea>
 					</div>
-
+					
 					<p>Stress Test Interpretation</p>
 					<div class="inline field">
 						<label>Protocol</label>
@@ -791,7 +1237,7 @@
 						<label style="padding-left:20px">Equipment</label>
 						<input type="text" name="equipment" placeholder="Equipment">
 					</div>
-
+					
 					<div class="field">
 						<label>Recommendation</label>
 						<textarea rows="6" cols="50" name="recommendation" ></textarea>
