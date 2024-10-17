@@ -381,7 +381,7 @@ $(document).ready(function () {
 			// console.log($('#deptcode').val());
 			if($('#deptcode').val() !== 'IMP'){
 				$("#jqGrid").jqGrid('hideCol', 'db_mrn');
-				$("#jqGrid").jqGrid('setGridWidth', 1480);
+				$("#jqGrid").jqGrid('setGridWidth', 1320);
 			}else{
 				$("#jqGrid").jqGrid('showCol', 'db_mrn');
 			}
