@@ -997,7 +997,6 @@ class PurchaseOrderController extends defaultController
             ->update(['seqno' => intval($seqno->seqno) + 1]);
         
         return $seqno->seqno;
-
     }
     
     public function showpdf(Request $request){
@@ -1504,8 +1503,7 @@ class PurchaseOrderController extends defaultController
             return true;
         }
         
-        return false;   
-        
+        return false;          
     }
 
     function add_from_pr($request){

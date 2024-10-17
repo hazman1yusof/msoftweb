@@ -10,6 +10,8 @@ use DateTime;
 use Carbon\Carbon;
 use App\Http\Controllers\util\invtran_util;
 use PDF;
+use App\Exports\tui_tuo_report_Export;
+use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryTransactionController extends defaultController
 {   
@@ -30,8 +32,12 @@ class InventoryTransactionController extends defaultController
         return view('material.inventoryTransaction.inventoryTransaction',compact('storedept'));
     }
 
-    public function form(Request $request)
-    {   
+    public function tui_tuo_report_show(Request $request){
+   
+        return view('material.inventoryTransaction.tui_tuo_report');
+    }
+
+    public function form(Request $request){   
         DB::enableQueryLog();
         switch($request->oper){
             case 'add':
@@ -56,6 +62,15 @@ class InventoryTransactionController extends defaultController
                 return $this->reopen($request);
             case 'cancel':
                 return $this->cancel($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function table(Request $request){
+        switch($request->action){
+            case 'tui_tuo_report':
+                return $this->tui_tuo_report($request);
             default:
                 return 'error happen..';
         }
@@ -1122,8 +1137,11 @@ class InventoryTransactionController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
-        return view('material.inventoryTransaction.inventoryTransaction_pdfmake',compact('ivtmphd','ivtmpdt', 'company','total_amt','cr_acc','db_acc','sndrcv'));
-        
+        return view('material.inventoryTransaction.inventoryTransaction_pdfmake',compact('ivtmphd','ivtmpdt', 'company','total_amt','cr_acc','db_acc','sndrcv'));        
+    }
+
+    public function tui_tuo_report(Request $request){
+        return Excel::download(new tui_tuo_report_Export(), 'Posted_tui_tuo.xlsx');
     }
 }
 

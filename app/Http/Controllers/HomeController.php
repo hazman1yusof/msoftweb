@@ -311,6 +311,7 @@ class HomeController extends Controller
         $menu.="<li><a style='padding-left:9px;' title='Purchase Order' class='clickable' programid='purOrd_prepared' targetURL='purchaseOrder?scope=ALL' >Purchase Order</a></li>";
         $menu.="<li><a style='padding-left:9px' title='Delivery Order' class='clickable' programid='DeliveryOrd_dataentr' targeturl='deliveryOrder?scope=ALL'>Delivery Order</a></li>";
         $menu.="<li><a style='padding-left:9px' title='Invoice' class='clickable' programid='invap_dataentry' targeturl='invoiceAP?source=AP&amp;trantype=IN&amp;scope=ALL'>Invoice</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Quotation' class='clickable' programid='fin_sales_quotation_SO' targeturl='./Quotation_SO'>Quotation</a></li>";
         $menu.="<li><a style='padding-left:9px' title='Sales Order' class='clickable' programid='SalesOrder_scope_ALL' targeturl='./SalesOrder?scope=ALL'>Sales Order</a></li>";
         $menu.="<li><a style='padding-left:9px' title='Receipt' class='clickable' programid='ARreceipt' targeturl='./receipt'>Receipt</a></li>";
         $menu.="<li><a style='padding-left:9px' title='AR Enquiry' class='clickable' programid='arenquiry' targeturl='./arenquiry'>AR Enquiry</a></li>";
@@ -330,9 +331,14 @@ class HomeController extends Controller
         $menu.="<li><a style='padding-left:21px' title='Pharmacy' class='clickable' programid='stockConsignment' targeturl='product?groupcode=Consignment&&Class=Consignment'>Consignment</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Other' class='clickable' programid='productFin' targeturl='product?groupcode=Others&&Class=Others'>Others</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='asset' targeturl='./product?groupcode=Asset&&Class=Asset'>Asset</a></li>";
+
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Enquiry</b></a></li>";
         $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemPhar' targeturl='./itemEnquiry?Class=Pharmacy'>Pharmacy</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemNonPhar' targeturl='./itemEnquiry?Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
+
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Report</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='DO_posted_report' targeturl='./DO_posted_report'>DO Posted List</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='tui_tuo_report' targeturl='./tui_tuo_report'>TUI/TUO Posted List</a></li>";
         //GRI
         //IV
         //stock freeze

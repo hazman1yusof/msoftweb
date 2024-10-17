@@ -418,6 +418,7 @@ Route::post('/inventoryTransaction/form','material\InventoryTransactionControlle
 Route::get('/inventoryTransaction/form','material\InventoryTransactionController@form');
 Route::post('/inventoryTransactionDetail/form','material\InventoryTransactionDetailController@form');
 Route::get('/inventoryTransaction/showpdf','material\InventoryTransactionController@showpdf');
+Route::get('/tui_tuo_report','material\InventoryTransactionController@tui_tuo_report_show');
 
 //// repack setup page ///
 Route::get('/repack','material\RepackController@show');
@@ -476,6 +477,7 @@ Route::get('/deliveryOrder/form','material\DeliveryOrderController@form');
 Route::get('/deliveryOrder/showpdf','material\DeliveryOrderController@showpdf');
 Route::post('/deliveryOrderDetail/form','material\DeliveryOrderDetailController@form');
 Route::get('/deliveryOrderDetail/table','material\DeliveryOrderDetailController@table');
+Route::get('/DO_posted_report','material\DeliveryOrderController@DO_posted_report_show');
 
 //// good Return setup page ///
 Route::get('/goodReturn','material\GoodReturnController@show');
