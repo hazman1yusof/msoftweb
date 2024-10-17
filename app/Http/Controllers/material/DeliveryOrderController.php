@@ -10,6 +10,8 @@ use DateTime;
 use Carbon\Carbon;
 use App\Http\Controllers\util\do_util;
 use PDF;
+use App\Exports\do_posted_report_Export;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DeliveryOrderController extends defaultController
 {   
@@ -20,8 +22,7 @@ class DeliveryOrderController extends defaultController
         $this->middleware('auth');
     }
 
-    public function show(Request $request)
-    {   
+    public function show(Request $request){   
         $purdept = DB::table('sysdb.department')
                         ->select('deptcode')
                         ->where('compcode',session('compcode'))
@@ -31,8 +32,7 @@ class DeliveryOrderController extends defaultController
         return view('material.deliveryOrder.deliveryOrder',compact('purdept'));
     }
 
-    public function form(Request $request)
-    {   
+    public function form(Request $request){   
         DB::enableQueryLog();
         // return $this->request_no('GRN','2FL');
         switch($request->oper){
@@ -52,6 +52,19 @@ class DeliveryOrderController extends defaultController
                 return $this->cancel($request);
             case 'refresh_do':
                 return $this->refresh_do($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function DO_posted_report_show(Request $request){
+        return view('material.deliveryOrder.DO_posted_report');
+    }
+
+    public function table(Request $request){
+        switch($request->action){
+            case 'do_posted_report':
+                return $this->do_posted_report($request);
             default:
                 return 'error happen..';
         }
@@ -152,7 +165,6 @@ class DeliveryOrderController extends defaultController
 
             return response($e->getMessage(), 500);
         }
-
     }
 
     public function edit(Request $request){
@@ -272,11 +284,9 @@ class DeliveryOrderController extends defaultController
                 return response($e->getMessage(), 500);
             }
         }
-
     }
 
     public function del(Request $request){
-
     }
 
     public function posted(Request $request){
@@ -1195,7 +1205,6 @@ class DeliveryOrderController extends defaultController
             case 'PARTIAL':
                 break;
         }
-
     }
 
     public function refresh_do(Request $request){
@@ -1441,8 +1450,11 @@ class DeliveryOrderController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
-        return view('material.deliveryOrder.deliveryOrder_pdfmake',compact('delordhd','delorddt','totamt_eng', 'company', 'total_tax', 'total_discamt', 'total_amt','cr_acc','db_acc'));
-        
+        return view('material.deliveryOrder.deliveryOrder_pdfmake',compact('delordhd','delorddt','totamt_eng', 'company', 'total_tax', 'total_discamt', 'total_amt','cr_acc','db_acc'));        
+    }
+
+    public function do_posted_report(Request $request){
+        return Excel::download(new do_posted_report_Export(), 'Posted_DO.xlsx');
     }
 }
 

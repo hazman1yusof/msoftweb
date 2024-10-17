@@ -1588,15 +1588,15 @@ class TestController extends defaultController
         }
     }
 
-    public function betulkandb_costprice___(Request $request){
+    public function betulkandb_rakanniaga(Request $request){
         DB::beginTransaction();
         try {
             
-            $costprice = DB::table('temp.costprice___')
+            $rakanniaga = DB::table('temp.rakanniaga')
                             ->get();
 
             $i = 1;
-            foreach ($costprice as $obj) {
+            foreach ($rakanniaga as $obj) {
                 $chgprice = DB::table('temp.chgprice')
                                 ->where('compcode','9B')
                                 ->where('chgcode',$obj->itemcode)
@@ -1607,10 +1607,11 @@ class TestController extends defaultController
                     DB::table('temp.chgprice')
                         ->where('idno',$chgprice->idno)
                         ->update([
-                            'costprice' => $obj->costprice
+                            'amt1' => $obj->price,
+                            'amt2' => $obj->price
                         ]);
 
-                    echo nl2br("$i. update chgprice costprice: $obj->costprice \n");
+                    echo nl2br("$i. update chgprice price: $obj->price \n");
                     $i++;
                 }
             }
@@ -1625,31 +1626,32 @@ class TestController extends defaultController
         }
     }
 
-    public function betulkandb_ivtmpdt(Request $request){
+    public function betulkandb_billsum(Request $request){
         DB::beginTransaction();
         try {
             
-            $ivtmpdt = DB::table('temp.ivtmpdt')
+            $billsum = DB::table('temp.billsum')
                             ->where('compcode','9B')
                             ->where('recstatus','OPEN')
-                            ->orWhere('recstatus','ACTIVE')
                             ->get();
 
             $i = 1;
-            foreach ($ivtmpdt as $obj) {
-                $costprice___ = DB::table('temp.costprice___')
-                                ->where('itemcode',$obj->itemcode);
+            foreach ($billsum as $obj) {
+                $rakanniaga = DB::table('temp.rakanniaga')
+                                ->where('itemcode',$obj->chggroup);
 
-                if($costprice___->exists()){
-                    $costprice___ = $costprice___->first();
-                    DB::table('temp.ivtmpdt')
+                if($rakanniaga->exists()){
+                    $rakanniaga = $rakanniaga->first();
+                    DB::table('temp.billsum')
                         ->where('idno',$obj->idno)
                         ->update([
-                            'netprice' => $costprice___->costprice,
-                            'amount' => $costprice___->costprice * $obj->txnqty
+                            'unitprice' => $rakanniaga->price,
+                            'amount' => $rakanniaga->price * $obj->quantity,
+                            'outamt' => $rakanniaga->price * $obj->quantity,
+                            'totamount' => $rakanniaga->price * $obj->quantity
                         ]);
 
-                    echo nl2br("$i. update ivtmpdt netprice: $costprice___->costprice \n");
+                    echo nl2br("$i. update billsum netprice: $rakanniaga->price \n");
                     $i++;
                 }
             }
@@ -1668,27 +1670,29 @@ class TestController extends defaultController
         DB::beginTransaction();
         try {
             
-            $ivtmphd = DB::table('temp.ivtmphd')
+            $salehdr = DB::table('temp.salehdr')
                             ->where('compcode','9B')
-                            ->where('recstatus','OPEN')
+                            ->where('unit',"W'HOUSE")
+                            ->where('recstatus','!=','COMPLETED')
                             ->get();
 
             $i = 1;
-            foreach ($ivtmphd as $obj) {
-                $sum = DB::table('temp.ivtmpdt')
-                                ->where('recno',$obj->recno)
+            foreach ($salehdr as $obj) {
+                $sum = DB::table('temp.salesum')
+                                ->where('auditno',$obj->auditno)
                                 ->where('recstatus','!=','DELETE')
-                                ->sum('amount');
+                                ->sum('totamount');
 
                 // if($chgprice->exists()){
                     // $chgprice = $chgprice->first();
-                    DB::table('temp.ivtmphd')
+                    DB::table('temp.salehdr')
                         ->where('idno',$obj->idno)
                         ->update([
-                            'amount' => $sum
+                            'amount' => $sum,
+                            'outamount' => $sum
                         ]);
 
-                    echo nl2br("$i. update ivtmphd amount: $sum \n");
+                    echo nl2br("$i. update salehdr amount: $sum \n");
                     $i++;
                 // }
             }
