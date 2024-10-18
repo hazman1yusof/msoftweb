@@ -637,7 +637,11 @@
 
                                 <div class="eight wide column">
                                     <div class="ui segments">
-                                        <div class="ui secondary segment">GLASGOW SCOMA SCALE</div>
+                                        <div class="ui secondary segment">GLASGOW COMA SCALE
+                                        <!-- <label for="totgsc" style="float:right;">
+                                            Total: <input type="input" name="totgsc" id="totgsc" readonly>
+                                        </label>  -->
+                                        </div>
                                         <div class="ui segment">
                                         <table class="table table-bordered">
                                             <tbody>
@@ -707,7 +711,7 @@
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="gsc_verbal" value="2">NIL (1)
+                                                            <input type="radio" name="gsc_verbal" value="1">NIL (1)
                                                         </label>
                                                     </td>
                                                 </tr>
