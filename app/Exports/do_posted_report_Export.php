@@ -30,9 +30,11 @@ class do_posted_report_Export implements FromView, WithEvents, WithColumnWidths
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct()
+    public function __construct($datefr,$dateto)
     {
 
+        $this->datefr = $datefr;
+        $this->dateto = $dateto;
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
@@ -51,9 +53,13 @@ class do_posted_report_Export implements FromView, WithEvents, WithColumnWidths
     }
     
     public function view(): View{
+        
+        $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
+        $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
 
         $delordhd = DB::table('material.delordhd as do_hd')
                     ->select('do_hd.idno','do_hd.compcode','do_hd.recno','do_hd.prdept','do_hd.trantype','do_hd.docno','do_hd.delordno','do_hd.invoiceno','do_hd.suppcode','do_hd.srcdocno','do_hd.deldept','do_hd.subamount','do_hd.amtdisc','do_hd.perdisc','do_hd.totamount','do_hd.deliverydate','do_hd.trandate','do_hd.trantime','do_hd.respersonid','do_hd.checkpersonid','do_hd.checkdate','do_hd.postedby','do_hd.recstatus','do_hd.remarks','do_hd.adduser','do_hd.adddate','do_hd.upduser','do_hd.upddate','do_hd.reason','do_hd.rtnflg','do_hd.reqdept','do_hd.credcode','do_hd.impflg','do_hd.allocdate','do_hd.postdate','do_hd.deluser','do_hd.taxclaimable','do_hd.TaxAmt','do_hd.prortdisc','do_hd.cancelby','do_hd.canceldate','do_hd.reopenby','do_hd.reopendate','do_hd.unit','do_hd.postflag','su.Name as suppcode_desc','dp.description as prdept_desc','do_dt.lineno_','do_dt.pricecode','do_dt.itemcode','pr.description as itemcode_desc','do_dt.uomcode','do_dt.amount','do_dt.pouom','do_dt.unitprice','do_dt.remarks','do_dt.expdate','do_dt.batchno','do_dt.qtydelivered')
+                    ->whereBetween('do_hd.trandate', [$datefr, $dateto])
                     ->leftjoin('material.delorddt as do_dt', function($join) {
                         $join = $join->on('do_dt.recno', '=', 'do_hd.recno');
                         $join = $join->where('do_dt.recstatus', '!=', 'DELETE');

@@ -653,33 +653,36 @@ class SalesOrderController extends defaultController
                                     ->where('source','SL')
                                     ->where('trantype','RECNO')
                                     ->where('lineno_',$billsum_obj->rowno)
-                                    ->where('auditno',$qo_hd->auditno)
-                                    ->first();
+                                    ->where('auditno',$qo_hd->auditno);
 
-                        $qo_dt_qtydelivered = $qo_dt->qtydelivered;
-                        $qo_dt_quantity = $qo_dt->quantity;
-                        $new_qtydelivered = $billsum_obj->quantity + $qo_dt_qtydelivered;
-                        // if($new_qtydelivered > $qo_dt_quantity){
-                        //     $cant_exceed = $qo_dt->quantity - $qo_dt->qtydelivered;
-                        //     throw new \Exception("Quotation Quantity Delivered Exceed for item: ".$billsum_obj->chggroup." uom: ".$billsum_obj->uom." Quantity delivered cant exceed: ".$cant_exceed,500);
-                        // }
+                        if($qo_dt->exists()){
+                            $qo_dt = $qo_dt->first();
 
-                        DB::table('finance.salesum')
-                                    ->where('compcode',session('compcode'))
-                                    ->where('source','SL')
-                                    ->where('trantype','RECNO')
-                                    ->where('lineno_',$billsum_obj->rowno)
-                                    ->where('auditno',$qo_hd->auditno)
-                                    ->update([
-                                        'qtydelivered' => $new_qtydelivered
-                                    ]);
+                            $qo_dt_qtydelivered = $qo_dt->qtydelivered;
+                            $qo_dt_quantity = $qo_dt->quantity;
+                            $new_qtydelivered = $billsum_obj->quantity + $qo_dt_qtydelivered;
+                            // if($new_qtydelivered > $qo_dt_quantity){
+                            //     $cant_exceed = $qo_dt->quantity - $qo_dt->qtydelivered;
+                            //     throw new \Exception("Quotation Quantity Delivered Exceed for item: ".$billsum_obj->chggroup." uom: ".$billsum_obj->uom." Quantity delivered cant exceed: ".$cant_exceed,500);
+                            // }
 
-                        if($qo_dt_recstatus == 'PARTIAL'){
-                            $qo_dt_recstatus = 'PARTIAL';
-                        }else{
-                           if($qo_dt_quantity - $new_qtydelivered > 0){
+                            DB::table('finance.salesum')
+                                        ->where('compcode',session('compcode'))
+                                        ->where('source','SL')
+                                        ->where('trantype','RECNO')
+                                        ->where('lineno_',$billsum_obj->rowno)
+                                        ->where('auditno',$qo_hd->auditno)
+                                        ->update([
+                                            'qtydelivered' => $new_qtydelivered
+                                        ]);
+
+                            if($qo_dt_recstatus == 'PARTIAL'){
                                 $qo_dt_recstatus = 'PARTIAL';
-                            } 
+                            }else{
+                               if($qo_dt_quantity - $new_qtydelivered > 0){
+                                    $qo_dt_recstatus = 'PARTIAL';
+                                } 
+                            }
                         }
                     }
                     

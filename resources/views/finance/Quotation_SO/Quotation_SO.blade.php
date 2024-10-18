@@ -218,7 +218,7 @@
 			</div>
 			
 			<div class="panel-body">
-				<div class='col-md-12' style="padding:0 0 15px 0">
+				<div class='col-md-12' style="padding:0 0 15px 0" id="jqGrid_c">
 					<table id="jqGrid" class="table table-striped"></table>
 						<div id="jqGridPager"></div>
 				</div>
@@ -595,7 +595,7 @@
 			});
 		</script>
 
-		<script src="js/finance/Quotation_SO/Quotation_SO.js?v=1.5"></script>
+		<script src="js/finance/Quotation_SO/Quotation_SO.js?v=1.6"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 @endsection

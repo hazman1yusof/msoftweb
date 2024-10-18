@@ -65,29 +65,7 @@
                 <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7>
                 
                 <div style="width: 900px;margin: 0 auto;">
-                   <!--  <div class="col-md-7">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <div class="col-md-6">
-                                    <label class="control-label" for="Scol">Debtor From</label>
-                                    <div class='input-group'>
-                                        <input id="debtorcode_from" name="debtorcode_from" type="text" class="form-control input-sm" autocomplete="off" value="">
-                                        <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-                                    </div>
-                                    <span class="help-block"></span>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <label class="control-label" for="Scol">Debtor To</label>
-                                    <div class='input-group'>
-                                        <input id="debtorcode_to" name="debtorcode_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
-                                        <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-                                    </div>
-                                    <span class="help-block"></span>
-                                </div>
-                            </div>
-                        </div>
-                        
+                     <div class="col-md-7">
                         <div class="col-md-12" style="padding-top: 30px;padding-bottom: 30px;">
                             <div class="form-group">
                                 <div class="col-md-6">
@@ -101,9 +79,9 @@
                                 </div>
                             </div>
                         </div> 
-                    </div>-->
+                    </div>
                     
-                    <div style="width: 280px;margin: 0 auto;">
+                    <div class="col-md-4" style="margin-left: 50px;">
                         <div class="panel panel-default" style="height: 110px;">
                             <div class="panel-body">
                                 <div class='col-md-12 btnform' style="padding: 20px 0px">
@@ -129,7 +107,7 @@
 @section('scripts')
     <script>
         $("#excelgen1").click(function() {
-            window.location='./inventoryTransaction/table?action=tui_tuo_report';
+            window.location='./inventoryTransaction/table?action=tui_tuo_report'+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
         });
     </script>
 @endsection

@@ -909,9 +909,9 @@ class invtran_util extends defaultController{
             $newqtyonhand = $OldQtyOnHand - $txnqty;
             // $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
 
-            if($newqtyonhand < 0){
-                throw new \Exception("Product itemcode: ".$value->itemcode." uomcode: ".$value->uomcode." will become -ve value : ".$newqtyonhand);
-            }
+            // if($newqtyonhand < 0){
+            //     throw new \Exception("Product itemcode: ".$value->itemcode." uomcode: ".$value->uomcode." will become -ve value : ".$newqtyonhand);
+            // }
 
             // if(strtoupper($isstype) == "ADJUSTMENT"){
             //     $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);

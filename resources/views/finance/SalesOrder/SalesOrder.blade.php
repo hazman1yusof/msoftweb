@@ -256,7 +256,7 @@ div#fail_msg{
 			</div>
 			
 			<div class="panel-body">
-				<div class='col-md-12' style="padding:0 0 15px 0">
+				<div class='col-md-12' style="padding:0 0 15px 0" id="jqGrid_c">
 					<table id="jqGrid" class="table table-striped"></table>
 						<div id="jqGridPager"></div>
 				</div>
@@ -1050,7 +1050,7 @@ div#fail_msg{
 			});
 		</script>
 
-		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.11"></script>
+		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.12"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

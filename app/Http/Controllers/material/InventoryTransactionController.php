@@ -1141,7 +1141,7 @@ class InventoryTransactionController extends defaultController
     }
 
     public function tui_tuo_report(Request $request){
-        return Excel::download(new tui_tuo_report_Export(), 'Posted_tui_tuo.xlsx');
+        return Excel::download(new tui_tuo_report_Export($request->datefr,$request->dateto), 'Posted_tui_tuo.xlsx');
     }
 }
 

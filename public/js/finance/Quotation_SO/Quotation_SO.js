@@ -346,6 +346,8 @@ $(document).ready(function (){
 			}else{
 				$("#jqGrid").jqGrid('showCol', 'SL_mrn');
 			}
+
+            $("#jqGrid").jqGrid('setGridWidth', Math.floor($("#jqGrid_c")[0].offsetWidth) - 2);
 		},
 		beforeRequest: function (){
 			refreshGrid("#jqGrid2", urlParam, 'kosongkan')
