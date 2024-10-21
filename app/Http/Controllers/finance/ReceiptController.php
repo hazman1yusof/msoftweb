@@ -735,7 +735,7 @@ class ReceiptController extends defaultController
     
     public function showpdf(Request $request){
         
-        $idno = $request->idno;
+        $idno = $request->auditno;
         if(!$idno){
             abort(404);
         }
