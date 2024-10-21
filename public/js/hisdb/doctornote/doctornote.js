@@ -296,7 +296,7 @@ $(document).ready(function (){
 	
 	////////////////////////////////////////////dressing ends////////////////////////////////////////////
 	
-	/////////////////////////////////////////chart button starts/////////////////////////////////////////
+	/////////////////////////////////////////print button starts/////////////////////////////////////////
 	$("#otbook_chart").click(function (){
 		window.open('./doctornote/otbook_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
 	});
@@ -316,7 +316,7 @@ $(document).ready(function (){
 	$("#dressing_chart").click(function (){
 		window.open('./doctornote/dressing_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
 	});
-	//////////////////////////////////////////chart button ends//////////////////////////////////////////
+	//////////////////////////////////////////print button ends//////////////////////////////////////////
 	
 	// to format number input to two decimal places (0.00)
 	$(".floatNumberField").change(function (){

@@ -365,6 +365,28 @@ $(document).ready(function (){
     });
     /////////////////////////////////////othersChart2 ends/////////////////////////////////////
     
+    ////////////////////////////////////print button starts////////////////////////////////////
+    $("#fitchart_chart").click(function (){
+        window.open('./nursingnote/fitchart_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+    });
+    
+    $("#circulation_chart").click(function (){
+        window.open('./nursingnote/circulation_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+    });
+    
+    $("#slidingScale_chart").click(function (){
+        window.open('./nursingnote/slidingScale_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+    });
+    
+    $("#othersChart1_chart").click(function (){
+        window.open('./nursingnote/othersChart1_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+    });
+    
+    $("#othersChart2_chart").click(function (){
+        window.open('./nursingnote/othersChart2_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+    });
+    /////////////////////////////////////print button ends/////////////////////////////////////
+    
     // to format number input to two decimal places (0.00)
     $(".floatNumberField").change(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
