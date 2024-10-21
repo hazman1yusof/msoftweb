@@ -81,8 +81,10 @@ $(document).ready(function () {
 				}if (oper != 'add') {
 					dialog_deptcode.check(errorField);
 					dialog_billtypeSO.check(errorField);
-					dialog_mrn.check(errorField);
-					dialog_doctor.check(errorField);
+					if($('#deptcode').val() != 'FKWSTR'){
+						dialog_mrn.check(errorField);
+						dialog_doctor.check(errorField);
+					}
 					dialog_CustomerSO.check(errorField);
 					dialog_quoteno.urlParam.deptcode = $('#db_deptcode').val();
 					dialog_quoteno.check(errorField);
@@ -90,8 +92,10 @@ $(document).ready(function () {
 				} if (oper != 'view') {
 					dialog_deptcode.on();
 					dialog_billtypeSO.on();
-					dialog_mrn.on();
-					dialog_doctor.on();
+					if($('#deptcode').val() != 'FKWSTR'){
+						dialog_mrn.on();
+						dialog_doctor.on();
+					}
 					dialog_CustomerSO.on();
 					dialog_quoteno.on();
 					// dialog_approvedbySO.on();
@@ -1096,8 +1100,10 @@ $(document).ready(function () {
 		beforeSubmit: function (postdata, rowid) {
 			dialog_deptcode.check(errorField);
 			dialog_billtypeSO.check(errorField);
-			dialog_mrn.check('errorField');
-			dialog_doctor.check('errorField');
+			if($('#deptcode').val() != 'FKWSTR'){
+				dialog_mrn.check('errorField');
+				dialog_doctor.check('errorField');
+			}
 			dialog_CustomerSO.check(errorField);
 			dialog_quoteno.check(errorField);
 			// dialog_approvedbySO.check(errorField);
@@ -1638,8 +1644,10 @@ $(document).ready(function () {
 			dialog_CustomerSO.on();
 			dialog_quoteno.on();
 			// dialog_approvedbySO.on();
-			dialog_mrn.on();
-			dialog_doctor.on();
+			if($('#deptcode').val() != 'FKWSTR'){
+				dialog_mrn.on();
+				dialog_doctor.on();
+			}
 		}
 	});
 
@@ -1652,8 +1660,10 @@ $(document).ready(function () {
 		dialog_CustomerSO.on();
 		dialog_quoteno.on();
 		// dialog_approvedbySO.on();
-		dialog_mrn.on();
-		dialog_doctor.on();
+		if($('#deptcode').val() != 'FKWSTR'){
+			dialog_mrn.on();
+			dialog_doctor.on();
+		}
 
 		enableForm('#formdata');
 		rdonly('#formdata');
@@ -2089,8 +2099,10 @@ $(document).ready(function () {
 
 				dialog_CustomerSO.check(errorField);
 				dialog_billtypeSO.check(errorField);
-				dialog_mrn.check(errorField);
-				dialog_doctor.check(errorField);
+				if($('#deptcode').val() != 'FKWSTR'){
+					dialog_mrn.check(errorField);
+					dialog_doctor.check(errorField);
+				}
 				mycurrency.formatOn();
 
 				var urlParam2 = {
