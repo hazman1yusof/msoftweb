@@ -74,6 +74,8 @@ class TestController extends defaultController
             //     return $this->update_supplier($request);
             // case 'update_chgmast':
             //     return $this->update_chgmast($request);
+            case 'tukar_uom':
+                return $this->tukar_uom($request);
             case 'update_chgprice':
                 return $this->update_chgprice($request);
             case 'betulkandb':
@@ -1736,6 +1738,98 @@ class TestController extends defaultController
                     $i++;
                 }
             }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function tukar_uom(Request $request){
+        DB::beginTransaction();
+        try {
+
+            $itemcode = $request->itemcode;
+            $uomcode = $request->uomcode;
+
+            if(empty($itemcode) || empty($uomcode)){
+                dd('try again');
+            }
+            
+            DB::table('material.product')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$itemcode)
+                            ->update([
+                                'uomcode' => $uomcode
+                            ]);
+            
+            DB::table('hisdb.chgmast')
+                            ->where('compcode','9B')
+                            ->where('chgcode',$itemcode)
+                            ->update([
+                                'uom' => $uomcode
+                            ]);
+            
+            DB::table('hisdb.chgprice')
+                            ->where('compcode','9B')
+                            ->where('chgcode',$itemcode)
+                            ->update([
+                                'uom' => $uomcode
+                            ]);
+            
+            DB::table('material.stockloc')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$itemcode)
+                            ->update([
+                                'uomcode' => $uomcode
+                            ]);
+            
+            DB::table('material.stockexp')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$itemcode)
+                            ->update([
+                                'uomcode' => $uomcode
+                            ]);
+            
+            DB::table('finance.salesum')
+                            ->where('compcode','9B')
+                            ->where('chggroup',$itemcode)
+                            ->update([
+                                'uom' => $uomcode,
+                                'uom_recv' => $uomcode
+                            ]);
+            
+            DB::table('material.ivtmpdt')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$itemcode)
+                            ->update([
+                                'uomcode' => $uomcode
+                            ]);
+            
+            DB::table('material.delorddt')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$itemcode)
+                            ->update([
+                                'uomcode' => $uomcode
+                            ]);
+            
+            DB::table('material.purorddt')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$itemcode)
+                            ->update([
+                                'uomcode' => $uomcode
+                            ]);
+            
+            DB::table('material.ivtxndt')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$itemcode)
+                            ->update([
+                                'uomcode' => $uomcode
+                            ]);
 
             DB::commit();
 
