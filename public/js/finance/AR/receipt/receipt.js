@@ -952,7 +952,7 @@ $(document).ready(function () {
 			{ label: 'RCcashbalance', name: 'dbacthdr_RCCASHbalance', hidden: true },
 			{ label: 'RCFinalbalance', name: 'dbacthdr_RCFinalbalance', hidden: true },
 			{ label: 'RCOSbalance', name: 'dbacthdr_RCOSbalance', hidden: true },
-			{ label: 'idno', name: 'dbacthdr_idno', hidden: true },
+			{ label: 'idno', name: 'dbacthdr_idno', key:true, hidden: true },
 			{ label: 'paycard_description', name: 'paycard_description', hidden: true },
 			{ label: 'paybank_description', name: 'paybank_description', hidden: true },
 		],
@@ -972,7 +972,7 @@ $(document).ready(function () {
 		onSelectRow: function(rowid){
 			// allocate("#jqGrid");
 			
-			$("#pdfgen1").attr('href','./receipt/showpdf?auditno='+selrowData("#jqGrid").dbacthdr_auditno);
+			$("#pdfgen1").attr('href','./receipt/showpdf?auditno='+selrowData("#jqGrid").dbacthdr_idno);
 		},
 		gridComplete: function(){
 			// $('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();

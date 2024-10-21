@@ -735,8 +735,8 @@ class ReceiptController extends defaultController
     
     public function showpdf(Request $request){
         
-        $auditno = $request->auditno;
-        if(!$auditno){
+        $idno = $request->idno;
+        if(!$idno){
             abort(404);
         }
         
@@ -769,8 +769,10 @@ class ReceiptController extends defaultController
                         $join = $join->on('p.MRN', '=', 'd.mrn')
                                     ->where('p.compcode','=',session('compcode'));
                     })
-                    ->where('auditno','=',$auditno)
+                    ->where('idno','=',$idno)
                     ->first();
+
+        $auditno = $dbacthdr->auditno;
         
         // if ($dbacthdr->recstatus == "ACTIVE") {
         //     $title = "DRAFT";
