@@ -527,6 +527,10 @@ class InventoryTransactionController extends defaultController
                     continue;
                 }
 
+                if($ivtmphd->amount <= 0){
+                    throw new \Exception("Header Amount is 0.00", 500);
+                }
+
                 DB::table('material.queueiv')
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$ivtmphd->recno)
@@ -676,8 +680,6 @@ class InventoryTransactionController extends defaultController
                         }
                     }
 
-                    
-
                     //--- 7. posting GL ---//
 
                     //amik yearperiod
@@ -791,7 +793,6 @@ class InventoryTransactionController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            
             return response($e->getMessage(), 500);
         }
     }
@@ -942,9 +943,9 @@ class InventoryTransactionController extends defaultController
             if($ivreqhd->exists()){
                 $ivreqhd = $ivreqhd->first();
 
-                if($ivreqhd->recstatus == 'COMPLETED'){
-                    throw new \Exception("Inventory Request document RECNO: ".$ivtmphd->srcdocno." already COMPLETED", 500);
-                }
+                // if($ivreqhd->recstatus == 'COMPLETED'){
+                //     throw new \Exception("Inventory Request document RECNO: ".$ivtmphd->srcdocno." already COMPLETED", 500);
+                // }
 
                 $ivreqdt = DB::table('material.ivreqdt')
                             ->where('recno','=',$ivtmphd->srcdocno)
