@@ -371,7 +371,7 @@ $(document).ready(function (){
     });
     
     $("#circulation_chart").click(function (){
-        window.open('./nursingnote/circulation_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+        window.open('./nursingnote/circulation_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&age='+$("#age_nursNote").val(), '_blank');
     });
     
     $("#slidingScale_chart").click(function (){
@@ -2721,6 +2721,7 @@ function populate_nursingnote(obj){
     $("#doctor_nursNote").val(obj.q_doctorname);
     $("#ward_nursNote").val(obj.ward);
     $("#bednum_nursNote").val(obj.bednum);
+    $("#age_nursNote").val(dob_age(obj.DOB));
     
     // var urlparam_datetime_tbl = {
     //     action: 'get_table_datetime',

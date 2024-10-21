@@ -1953,7 +1953,49 @@ class NursingNoteController extends defaultController
                         ->get();
         // dd($nurs_fitchart);
         
-        return view('hisdb.nursingnote.fitchart_pdfmake', compact('pat_mast','nurs_fitchart'));
+        return view('hisdb.nursingnote.fitchart_chart_pdfmake', compact('pat_mast','nurs_fitchart'));
+        
+    }
+    
+    public function circulation_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        if(!$mrn || !$episno){
+            abort(404);
+        }
+        $age = $request->age;
+        
+        $pat_mast = DB::table('hisdb.pat_mast as pm')
+                    ->select('pm.MRN','pm.Name','b.ward','b.bednum','n.diagnosis')
+                    ->leftJoin('hisdb.bedalloc as b', function ($join){
+                        $join = $join->on('b.mrn', '=', 'pm.MRN')
+                                    ->on('b.episno', '=', 'pm.Episno')
+                                    ->where('b.compcode', '=', session('compcode'));
+                    })
+                    ->leftJoin('nursing.nursassessment as n', function ($join){
+                        $join = $join->on('n.mrn', '=', 'pm.MRN')
+                                    ->on('n.episno', '=', 'pm.Episno')
+                                    ->where('n.compcode', '=', session('compcode'));
+                    })
+                    ->where('pm.CompCode','=',session('compcode'))
+                    ->where('pm.MRN','=',$request->mrn)
+                    ->where('pm.Episno','=',$request->episno)
+                    ->first();
+        
+        $nurs_circulation = DB::table('nursing.nurs_circulation as cr')
+                            ->select('cr.compcode','cr.mrn','cr.episno','cr.entereddate','cr.enteredtime','cr.capillary','cr.skintemp','cr.pulse','cr.movement','cr.sensation','cr.oedema','cr.adduser','cr.adddate','cr.addtime','cr.upduser','cr.upddate','cr.lastuser','cr.lastupdate','cr.lastupdtime','cr.computerid')
+                            // ->leftJoin('hisdb.pat_mast as pm', function ($join){
+                            //     $join = $join->on('pm.MRN', '=', 'cr.mrn')
+                            //                 ->where('pm.compcode', '=', session('compcode'));
+                            // })
+                            ->where('cr.compcode','=',session('compcode'))
+                            ->where('cr.mrn','=',$request->mrn)
+                            ->where('cr.episno','=',$request->episno)
+                            ->get();
+        // dd($nurs_circulation);
+        
+        return view('hisdb.nursingnote.circulation_chart_pdfmake', compact('age','pat_mast','nurs_circulation'));
         
     }
     

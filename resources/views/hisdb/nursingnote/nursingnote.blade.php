@@ -40,6 +40,7 @@
                     <input id="doctor_nursNote" name="doctor_nursNote" type="hidden">
                     <input id="ward_nursNote" name="ward_nursNote" type="hidden">
                     <input id="bednum_nursNote" name="bednum_nursNote" type="hidden">
+                    <input id="age_nursNote" name="age_nursNote" type="hidden">
                     <input type="hidden" id="ordcomtt_phar" value="{{$ordcomtt_phar ?? ''}}">
                     <div id="tab-progress" class="active in tab-pane fade">
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
