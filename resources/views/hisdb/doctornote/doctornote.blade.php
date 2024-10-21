@@ -482,10 +482,13 @@
                                                     <button type="button" class="btn btn-default" id="cancel_otbook">
                                                         <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                                     </button>
+                                                    <button type="button" class="btn btn-default" id="otbook_chart">
+                                                        <span class="fa fa-print fa-lg"></span> Print 
+                                                    </button>
                                                 </div>
                                             </div>
                                             
-                                            <button class="btn btn-default btn-sm" type="button" id="otbook_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button>
+                                            <!-- <button class="btn btn-default btn-sm" type="button" id="otbook_chart" style="float: right; margin: 10px 40px 10px 0px;">Print</button> -->
                                             
                                             <div class="panel-body">
                                                 <div class='col-md-12'>
@@ -565,10 +568,13 @@
                                                             <button type="button" class="btn btn-default" id="cancel_radClinic">
                                                                 <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                                             </button>
+                                                            <!-- <button type="button" class="btn btn-default" id="radClinic_chart">
+                                                                <span class="fa fa-print fa-lg"></span> Print 
+                                                            </button> -->
                                                         </div>
                                                     </div>
                                                     
-                                                    <!-- <button class="btn btn-default btn-sm" type="button" id="radClinic_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button> -->
+                                                    <!-- <button class="btn btn-default btn-sm" type="button" id="radClinic_chart" style="float: right; margin: 10px 40px 10px 0px;">Print</button> -->
                                                     
                                                     <div class="panel-body">
                                                         <div class='col-md-12'>
@@ -699,10 +705,13 @@
                                                             <button type="button" class="btn btn-default" id="cancel_mri">
                                                                 <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                                             </button>
+                                                            <button type="button" class="btn btn-default" id="mri_chart">
+                                                                <span class="fa fa-print fa-lg"></span> Print 
+                                                            </button>
                                                         </div>
                                                     </div>
                                                     
-                                                    <button class="btn btn-default btn-sm" type="button" id="mri_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button>
+                                                    <!-- <button class="btn btn-default btn-sm" type="button" id="mri_chart" style="float: right; margin: 10px 40px 10px 0px;">Print</button> -->
                                                     
                                                     <div class="panel-body">
                                                         <div class='col-md-12'>
@@ -1017,10 +1026,13 @@
                                                     <button type="button" class="btn btn-default" id="cancel_physio">
                                                         <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                                     </button>
+                                                    <!-- <button type="button" class="btn btn-default" id="physio_chart">
+                                                        <span class="fa fa-print fa-lg"></span> Print 
+                                                    </button> -->
                                                 </div>
                                             </div>
                                             
-                                            <!-- <button class="btn btn-default btn-sm" type="button" id="physio_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button> -->
+                                            <!-- <button class="btn btn-default btn-sm" type="button" id="physio_chart" style="float: right; margin: 10px 40px 10px 0px;">Print</button> -->
                                             
                                             <div class="panel-body">
                                                 <div class='col-md-12'>
@@ -1084,10 +1096,13 @@
                                                     <button type="button" class="btn btn-default" id="cancel_dressing">
                                                         <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                                     </button>
+                                                    <button type="button" class="btn btn-default" id="dressing_chart">
+                                                        <span class="fa fa-print fa-lg"></span> Print 
+                                                    </button>
                                                 </div>
                                             </div>
                                             
-                                            <button class="btn btn-default btn-sm" type="button" id="dressing_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button>
+                                            <!-- <button class="btn btn-default btn-sm" type="button" id="dressing_chart" style="float: right; margin: 10px 40px 10px 0px;">Print</button> -->
                                             
                                             <div class="panel-body">
                                                 <div class='col-md-12'>

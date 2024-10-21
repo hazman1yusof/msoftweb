@@ -47,9 +47,6 @@
 											padding: 0 0 0 0;
 											right: 40px;
 											top: 5px;">
-									<!-- <button type="button" class="btn btn-default" id="new_discharge">
-										<span class="fa fa-plus-square-o"></span> New
-									</button> -->
 									<button type="button" class="btn btn-default" id="edit_discharge">
 										<span class="fa fa-edit fa-lg"></span> Edit
 									</button>
@@ -58,6 +55,9 @@
 									</button>
 									<button type="button" class="btn btn-default" id="cancel_discharge">
 										<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+									</button>
+									<button type="button" class="btn btn-default" id="print_discharge">
+										<span class="fa fa-print"></span> Print
 									</button>
 								</div>
 

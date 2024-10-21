@@ -92,7 +92,9 @@ $(document).ready(function (){
 		
 	// 	window.open('./admhandover/table?action=admhandover_preview&epistycode='+$('#epistycode').val(), '_blank');
 	// });
-	
+	$("#admhandover_report").click(function() {
+		window.open('./admhandover/showpdf?mrn_admHandover='+$('#mrn_admHandover').val()+'&episno_admHandover='+$('#episno_admHandover').val(), '_blank');
+	});
 });
 
 var errorField = [];
@@ -110,6 +112,10 @@ conf = {
 		}
 	},
 };
+
+// $("#admhandover_report").click(function() {
+// 	window.open('./admhandover/showpdf?mrn_admHandover='+$('#mrn_admHandover').val()+'&episno_admHandover='+$('#episno_admHandover').val(), '_blank');
+// });
 
 button_state_admHandover('empty');
 function button_state_admHandover(state){

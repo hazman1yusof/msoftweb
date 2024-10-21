@@ -7,6 +7,7 @@ use App\Http\Controllers\defaultController;
 use stdClass;
 use DB;
 use Carbon\Carbon;
+use PDF;
 
 class AdmHandoverController extends defaultController
 {
@@ -333,53 +334,46 @@ class AdmHandoverController extends defaultController
         
     }
     
-    // public function dietorder_preview(Request $request){
+    public function showpdf(Request $request){
 
-    //     $sel_epistycode = $request->epistycode;
-    //     if(empty($sel_epistycode)){
-    //         abort('404','No Epistycode');
-    //     }
+        $mrn = $request->mrn_admHandover;
+        $episno = $request->episno_admHandover;
 
-    //     $dietorder = DB::table('nursing.dietorder as do')
-    //                 ->select('do.idno','do.compcode','do.mrn','do.episno','do.lodgerflag','do.lodgervalue','do.nbm','do.rtf','do.rof','do.tpn','do.oral','do.regular_a','do.regular_b','do.soft','do.vegetarian_c','do.western_d','do.highprotein','do.highcalorie','do.highfiber','do.diabetic','do.lowprotein','do.lowfat','do.soft_lodger','do.red1200kcal','do.red1500kcal','do.paed6to12mth','do.paed1to3yr','do.paed4to9yr','do.paedgt10yr','do.disposable','do.remark','do.lastuser','do.lastupdate','do.regular_a_lodger','do.regular_b_lodger','do.vegetarian_c_lodger','do.western_d_lodger','do.highprotein_lodger','do.highcalorie_lodger','do.highfiber_lodger','do.diabetic_lodger','do.lowprotein_lodger','do.lowfat_lodger','do.red1200kcal_lodger','do.red1500kcal_lodger','do.paed6to12mth_lodger','do.paed1to3yr_lodger','do.paed4to9yr_lodger','do.paedgt10yr_lodger','do.remarkkitchen','do.adduser','do.adddate','pm.dob','pm.Name','ep.diagfinal','ep.ward','ep.bed')
-    //                 ->leftJoin('hisdb.pat_mast as pm', function ($join){
-    //                     $join = $join->where('pm.compcode', '=', session('compcode'));
-    //                     $join = $join->on('pm.mrn', '=', 'do.mrn');
-    //                 })->leftJoin('hisdb.episode as ep', function ($join){
-    //                     $join = $join->where('ep.compcode', '=', session('compcode'));
-    //                     $join = $join->on('ep.mrn', '=', 'do.mrn');
-    //                     $join = $join->on('ep.episno', '=', 'do.episno');
-    //                 })->join('hisdb.queue', function($join) use ($request,$sel_epistycode){
-    //                             $join = $join->on('queue.mrn', '=', 'do.mrn')
-    //                                         ->where('queue.billflag','=',0)
-    //                                         ->where('queue.compcode','=',session('compcode'))
-    //                                         ->where('queue.deptcode','=',"ALL");
-
-    //                             if($sel_epistycode == 'OP'){
-    //                                 $join = $join->whereIn('queue.epistycode', ['OP','OTC']);
-    //                             }else{
-    //                                 $join = $join->whereIn('queue.epistycode', ['IP','DP']);
-    //                             }
-    //                         })
-    //                 ->where('do.compcode',session('compcode'))
-    //                 ->get();
+        $admhandover = DB::table('nursing.admhandover as adm')
+                    ->select('adm.mrn','adm.episno','adm.dateofadm','adm.reasonadm','adm.type','adm.rtkpcr','adm.rtkpcr_remark','adm.bloodinv','adm.bloodinv_remark','adm.branula','adm.branula_remark','adm.scan','adm.scan_remark','adm.insurance','adm.insurance_remark','adm.medication','adm.medication_remark','adm.consent','adm.consent_remark','adm.smoking','adm.smoking_remark','adm.nbm','adm.nbm_remark','adm.report','adm.adduser','adm.adddate','nh.medicalhistory','nh.surgicalhistory','nh.familymedicalhist','nh.allergydrugs','nh.drugs_remarks','nh.allergyplaster','nh.plaster_remarks','nh.allergyfood','nh.food_remarks','nh.allergyenvironment','nh.environment_remarks','nh.allergyothers','nh.others_remarks','nh.allergyunknown','nh.unknown_remarks','nh.allergynone','nh.none_remarks','na.vs_weight','na.diagnosis','pm.Name','pm.Newic','e.admdoctor','d.doctorname')
+                    ->leftjoin('nursing.nurshistory as nh', function($join) {
+                        $join = $join->on('nh.mrn', '=', 'adm.mrn');
+                        $join = $join->where('nh.compcode', '=', session('compcode'));
+                    })
+                    ->leftjoin('nursing.nursassessment as na', function($join) {
+                        $join = $join->on('na.mrn', '=', 'adm.mrn');
+                        $join = $join->on('na.episno', '=', 'adm.episno');
+                        $join = $join->where('na.compcode', '=', session('compcode'));
+                    })
+                    ->leftjoin('hisdb.pat_mast as pm', function($join) {
+                        $join = $join->on('pm.MRN', '=', 'adm.mrn');
+                        $join = $join->on('pm.Episno', '=', 'adm.episno');
+                        $join = $join->where('pm.compcode', '=', session('compcode'));
+                    })
+                    ->leftjoin('hisdb.episode as e', function($join) {
+                        $join = $join->on('e.mrn', '=', 'adm.mrn');
+                        $join = $join->on('e.episno', '=', 'adm.episno');
+                        $join = $join->where('e.compcode', '=', session('compcode'));
+                    })
+                    ->leftjoin('hisdb.doctor as d', function($join) {
+                        $join = $join->on('d.doctorcode', '=', 'e.admdoctor');
+                        $join = $join->where('d.compcode', '=', session('compcode'));
+                    })
+                    ->where('adm.compcode','=',session('compcode'))
+                    ->where('adm.mrn','=',$mrn)
+                    ->where('adm.episno','=',$episno)
+                    ->first();
         
-    //     foreach($dietorder as $diet){
-    //         $DOB = $diet->dob;
-            
-    //         if(!empty($DOB)){
-    //             $age = Carbon::createFromFormat("Y-m-d", $DOB)->age;
-    //         }else{
-    //             $age = '';
-    //         }
-            
-    //         $diet->age = $age;
-    //     }
+        $company = DB::table('sysdb.company')
+            ->where('compcode','=',session('compcode'))
+            ->first();
 
-    //     // dd($dietorder);
+        return view('hisdb.admhandover.admhandover_pdfmake',compact('admhandover'));
         
-    //     return view('hisdb.dietorder.dietorder_preview',compact('dietorder'));
-        
-    // }
-    
+    }
 }

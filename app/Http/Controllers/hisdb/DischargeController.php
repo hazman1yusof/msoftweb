@@ -7,6 +7,7 @@ use App\Http\Controllers\defaultController;
 use stdClass;
 use DB;
 use Carbon\Carbon;
+use PDF;
 
 class DischargeController extends defaultController
 {   
@@ -292,5 +293,34 @@ class DischargeController extends defaultController
     public function diagnose(Request $request)
     {   
         dd('diagnose');
+    }
+
+    public function showpdf(Request $request){
+
+        $mrn = $request->mrn_discharge;
+        $episno = $request->episno_discharge;
+
+        $discharge = DB::table('hisdb.episode as e')
+                    ->select('e.mrn','e.episno','e.reg_date','e.reg_by','e.reg_time','e.dischargedate','e.dischargeuser','e.dischargetime','e.diagfinal','e.patologist','e.clinicalnote','e.phyexam','e.diagprov','e.treatment','e.summary','e.followup','e.adduser','e.adddate','pm.Name','e.admdoctor','d.doctorname')
+                    ->leftjoin('hisdb.pat_mast as pm', function($join) {
+                        $join = $join->on('pm.MRN', '=', 'e.mrn');
+                        $join = $join->on('pm.Episno', '=', 'e.episno');
+                        $join = $join->where('pm.compcode', '=', session('compcode'));
+                    })
+                    ->leftjoin('hisdb.doctor as d', function($join) {
+                        $join = $join->on('d.doctorcode', '=', 'e.admdoctor');
+                        $join = $join->where('d.compcode', '=', session('compcode'));
+                    })
+                    ->where('e.compcode','=',session('compcode'))
+                    ->where('e.mrn','=',$mrn)
+                    ->where('e.episno','=',$episno)
+                    ->first();
+        
+        $company = DB::table('sysdb.company')
+            ->where('compcode','=',session('compcode'))
+            ->first();
+
+        return view('hisdb.discharge.discharge_pdfmake',compact('discharge'));
+        
     }
 }

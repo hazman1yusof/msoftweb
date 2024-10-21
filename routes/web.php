@@ -1293,11 +1293,10 @@ Route::post('/wardpanel/form','hisdb\WardPanelController@form');
 Route::get('/nursingnote','hisdb\NursingNoteController@show');
 Route::get('/nursingnote/table','hisdb\NursingNoteController@table');
 Route::post('/nursingnote/form','hisdb\NursingNoteController@form');
-Route::post('/nursingnote/fitchart_chart','hisdb\NursingNoteController@fitchart_chart');
-Route::post('/nursingnote/circulation_chart','hisdb\NursingNoteController@circulation_chart');
-Route::post('/nursingnote/slidingScale_chart','hisdb\NursingNoteController@slidingScale_chart');
-Route::post('/nursingnote/othersChart1_chart','hisdb\NursingNoteController@othersChart1_chart');
-Route::post('/nursingnote/othersChart2_chart','hisdb\NursingNoteController@othersChart2_chart');
+Route::get('/nursingnote/fitchart_chart','hisdb\NursingNoteController@fitchart_chart');
+Route::get('/nursingnote/circulation_chart','hisdb\NursingNoteController@circulation_chart');
+Route::get('/nursingnote/slidingScale_chart','hisdb\NursingNoteController@slidingScale_chart');
+Route::get('/nursingnote/othersChart_chart','hisdb\NursingNoteController@othersChart_chart');
 
 //// Doctor Note page ///
 Route::get('/doctornote','hisdb\DoctorNoteController@show');
@@ -1342,6 +1341,7 @@ Route::post('/ordcom/form','hisdb\OrdcomController@form');
 Route::get('/discharge','hisdb\DischargeController@show');
 Route::get('/discharge/table','hisdb\DischargeController@table');
 Route::post('/discharge/form','hisdb\DischargeController@form');
+Route::get('/discharge/showpdf','hisdb\DischargeController@showpdf');
 
 //// Discharge page OP///
 Route::get('/endConsult','hisdb\EndConsultController@show');
@@ -1489,8 +1489,6 @@ Route::post('/ptcare_phys/form','patientcare\physioController@form');
 Route::get('/ptcare_nursing','patientcare\NursingController@show');
 Route::get('/ptcare_nursing/table','patientcare\NursingController@table');
 Route::post('/ptcare_nursing/form','patientcare\NursingController@form');
-Route::get('/ptcare_nursing/showpdf','patientcare\NursingController@showpdf');
-
 
 Route::get('/ptcare_preview','patientcare\PreviewController@preview');
 Route::get('/ptcare_preview/data','patientcare\PreviewController@previewdata');
