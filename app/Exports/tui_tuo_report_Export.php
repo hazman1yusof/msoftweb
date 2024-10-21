@@ -81,11 +81,16 @@ class tui_tuo_report_Export implements FromView, WithEvents, WithColumnWidths
                     ->where('iv_hd.compcode','=',session('compcode'))
                     // ->where('ap.unit',session('unit'))
                     ->where('iv_hd.recstatus', '=', 'POSTED')
-                    ->where('iv_hd.trantype', '=', 'TUI')
-                    ->orWhere('iv_hd.trantype', '=', 'TUO')
+                    ->orWhere(function ($ivtmphd){
+                        $ivtmphd
+                            ->where('iv_hd.trantype', '=', 'TUI')
+                            ->where('iv_hd.trantype', '=', 'TUO');
+                    })
                     ->orderBy('iv_hd.idno', 'DESC')
                     ->orderBy('iv_dt.idno', 'DESC')
                     ->get();
+
+        // dd($this->getQueries($ivtmphd));
 
         $iv_hd = $ivtmphd->unique('recno');
 
@@ -113,6 +118,11 @@ class tui_tuo_report_Export implements FromView, WithEvents, WithColumnWidths
                 $event->sheet->getPageSetup()->setFitToHeight(0);
             },
         ];
+    }
+
+    public static function getQueries($builder){
+        $addSlashes = str_replace('?', "'?'", $builder->toSql());
+        return vsprintf(str_replace('?', '%s', $addSlashes), $builder->getBindings());
     }
 
     public function calc_bal($obj){
