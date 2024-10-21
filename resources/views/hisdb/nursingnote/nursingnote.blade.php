@@ -2006,6 +2006,9 @@
                                         </button>
                                     </div> -->
                                 </div>
+                                
+                                <button class="btn btn-default btn-sm" type="button" id="fitchart_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button>
+                                
                                 <div class="panel-body" style="padding-right: 0px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formFitChart'>
                                         <div class='col-md-12'>
@@ -2068,6 +2071,9 @@
                                         </button>
                                     </div> -->
                                 </div>
+                                
+                                <button class="btn btn-default btn-sm" type="button" id="circulation_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button>
+                                
                                 <div class="panel-body" style="padding-right: 0px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formCirculation'>
                                         <div class='col-md-12'>
@@ -2120,6 +2126,9 @@
                                         </button>
                                     </div> -->
                                 </div>
+                                
+                                <button class="btn btn-default btn-sm" type="button" id="slidingScale_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button>
+                                
                                 <div class="panel-body" style="padding-right: 0px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formSlidingScale'>
                                         <div class='col-md-12'>
@@ -2162,6 +2171,9 @@
                                         </button>
                                     </div>
                                 </div>
+                                
+                                <button class="btn btn-default btn-sm" type="button" id="othersChart1_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button>
+                                
                                 <div class="panel-body" style="padding-right: 0px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formOthersChart1'>
                                         <div class='col-md-12'>
@@ -2244,6 +2256,9 @@
                                         </button>
                                     </div>
                                 </div>
+                                
+                                <button class="btn btn-default btn-sm" type="button" id="othersChart2_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button>
+                                
                                 <div class="panel-body" style="padding-right: 0px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formOthersChart2'>
                                         <div class='col-md-12'>
