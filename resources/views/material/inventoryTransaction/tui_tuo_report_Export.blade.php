@@ -8,7 +8,7 @@
         <td style="font-weight:bold; text-align: left">Transaction Type : {{$hd_obj->trantype}}</td>
         <td style="font-weight:bold; text-align: left">Receiver Dept : {{$hd_obj->sndrcv_desc}}</td>
         <td style="font-weight:bold; text-align: left">Total Amount</td>
-        <td style="font-weight:bold; text-align: left">{{$hd_obj->amount}}</td>
+        <td style="font-weight:bold; text-align: left">{{$hd_obj->header_amt}}</td>
     </tr>
         <tr>
             <td style="font-weight:bold; text-align: left">Date</td>
