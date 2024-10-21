@@ -1306,6 +1306,7 @@ Route::get('/doctornote/showpdf','hisdb\DoctorNoteController@showpdf');
 Route::get('/admhandover','hisdb\AdmHandoverController@show');
 Route::get('/admhandover/table','hisdb\AdmHandoverController@table');
 Route::post('/admhandover/form','hisdb\AdmHandoverController@form');
+Route::get('/admhandover/showpdf','hisdb\AdmHandoverController@showpdf');
 
 //// Dietetic Care Notes page ///
 Route::get('/dieteticCareNotes','hisdb\DieteticCareNotesController@show');
@@ -1478,6 +1479,7 @@ Route::post('/ptcare_phys/form','patientcare\physioController@form');
 Route::get('/ptcare_nursing','patientcare\NursingController@show');
 Route::get('/ptcare_nursing/table','patientcare\NursingController@table');
 Route::post('/ptcare_nursing/form','patientcare\NursingController@form');
+Route::get('/ptcare_nursing/showpdf','patientcare\NursingController@showpdf');
 
 
 Route::get('/ptcare_preview','patientcare\PreviewController@preview');
