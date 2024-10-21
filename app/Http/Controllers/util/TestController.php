@@ -1835,7 +1835,8 @@ class TestController extends defaultController
                             ->where('compcode','9B')
                             ->where('itemcode',$itemcode)
                             ->update([
-                                'uomcode' => $uomcode
+                                'uomcode' => $uomcode,
+                                'pouom' => $uomcode
                             ]);
 
             DB::commit();
