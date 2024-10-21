@@ -43,10 +43,10 @@ class do_posted_report_Export implements FromView, WithEvents, WithColumnWidths
     public function columnWidths(): array
     {
         return [
-            'A' => 40,
+            'A' => 60,
             'B' => 20,
             'C' => 40,
-            'D' => 40,
+            'D' => 50,
             'E' => 15,
             'F' => 15,
         ];
