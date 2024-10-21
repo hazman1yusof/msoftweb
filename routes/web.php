@@ -1296,8 +1296,7 @@ Route::post('/nursingnote/form','hisdb\NursingNoteController@form');
 Route::get('/nursingnote/fitchart_chart','hisdb\NursingNoteController@fitchart_chart');
 Route::get('/nursingnote/circulation_chart','hisdb\NursingNoteController@circulation_chart');
 Route::get('/nursingnote/slidingScale_chart','hisdb\NursingNoteController@slidingScale_chart');
-Route::get('/nursingnote/othersChart1_chart','hisdb\NursingNoteController@othersChart1_chart');
-Route::get('/nursingnote/othersChart2_chart','hisdb\NursingNoteController@othersChart2_chart');
+Route::get('/nursingnote/othersChart_chart','hisdb\NursingNoteController@othersChart_chart');
 
 //// Doctor Note page ///
 Route::get('/doctornote','hisdb\DoctorNoteController@show');
