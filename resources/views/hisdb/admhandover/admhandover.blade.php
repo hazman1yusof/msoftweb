@@ -14,7 +14,7 @@
 		
 		<i class="arrow fa fa-angle-double-up" style="font-size: 24px;margin: 0 0 0 12px;" data-toggle="collapse" data-target="#jqGridAdmHandover_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size: 24px;margin: 0 0 0 12px;" data-toggle="collapse" data-target="#jqGridAdmHandover_panel"></i>
-		<div class="pull-right" style="position: absolute;padding: 0 0 0 0;right: 310px;top: 25px;">
+		<div class="pull-right" style="position: absolute;padding: 0 0 0 0;right: 380px;top: 25px;">
 			<h5>Admission Handover</h5>
 		</div>
 		<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
@@ -35,6 +35,9 @@
 			<button type="button" class="btn btn-default" id="cancel_admHandover">
 				<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
 			</button>
+			<button type="button" class="btn btn-default" id="admhandover_report">
+				<span class="fa fa-print"></span> Print
+			</button>
 		</div>
 	</div>
 	
@@ -42,6 +45,7 @@
 		<div class="panel-body paneldiv" style="overflow-y: auto;">
 			<div class='col-md-12' style="padding: 0 0 15px 0;">
 				<form class='form-horizontal' style='width: 99%;' id='formAdmHandover'>
+
 					<div class='col-md-6'>
 						<div class="panel panel-info">
 							<div class="panel-body" style="height: 240px;margin-left: 50px">
@@ -57,10 +61,10 @@
 									<label class="col-md-2 control-label" for="type">Type</label>
 									<div class="col-md-4">
 										<label class="radio-inline">
-											<input type="radio" name="type" value="IP">Inpatient
+											<input type="radio" name="type" value="INPATIENT">Inpatient
 										</label>
 										<label class="radio-inline">
-											<input type="radio" name="type" value="DC">Daycare
+											<input type="radio" name="type" value="DAYCARE">Daycare
 										</label>									
 									</div>
 								</div>
@@ -104,7 +108,7 @@
 					<div class='col-md-6'>
 						<div class="panel panel-info">
 							<div class="panel-heading text-center">ALLERGIES</div>
-							<div class="panel-body" style="height: 460px;margin-left: 50px">
+							<div class="panel-body" style="height: 460px;margin-left: 50px;padding-top:20px">
 								
 								<table class="table table-sm table-hover">
 									<tbody>

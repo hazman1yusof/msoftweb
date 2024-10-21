@@ -37,6 +37,10 @@ $(document).ready(function () {
 		// dialog_mrn_edit.off();
 	});
 
+	$("#print_discharge").click(function() {
+		window.open('./discharge/showpdf?mrn_discharge='+$('#mrn_discharge').val()+'&episno_discharge='+$('#episno_discharge').val(), '_blank');
+	});
+
 	$("#jqGrid_discharge_panel").on("shown.bs.collapse", function (){
 		var saveParam = {
 			action: 'get_table_discharge',
