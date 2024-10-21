@@ -769,7 +769,7 @@ class ReceiptController extends defaultController
                         $join = $join->on('p.MRN', '=', 'd.mrn')
                                     ->where('p.compcode','=',session('compcode'));
                     })
-                    ->where('idno','=',$idno)
+                    ->where('d.idno','=',$idno)
                     ->first();
 
         $auditno = $dbacthdr->auditno;
