@@ -749,6 +749,7 @@ $(document).ready(function () {
 			dialog_trantype.on();
 			dialog_sndrcv.on();
 			dialog_requestRecNo.on();
+			$("#saveDetailLabel").show();
 		}).done(function (data) {
 			hideatdialogForm(false);
 			
@@ -774,7 +775,6 @@ $(document).ready(function () {
 			}
 			refreshGrid('#jqGrid2', urlParam2);
 			disableForm('#formdata');
-			
 		});
 	}
 	
@@ -1638,6 +1638,7 @@ $(document).ready(function () {
 
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function(){
+		$("#saveDetailLabel").hide();
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
@@ -1649,6 +1650,7 @@ $(document).ready(function () {
 			saveHeader("#formdata",oper,saveParam);
 			unsaved = false;
 		}else{
+			$("#saveDetailLabel").show();
 			mycurrency.formatOn();
 		}
 	});
