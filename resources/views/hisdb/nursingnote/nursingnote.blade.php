@@ -1987,13 +1987,13 @@
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
                                 <div class="panel-heading text-center" style="height: 40px;">
-                                    <!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                    <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                         id="btn_grp_edit_fitchart"
                                         style="position: absolute;
                                                 padding: 0 0 0 0;
                                                 right: 40px;
                                                 top: 5px;">
-                                        <button type="button" class="btn btn-default" id="new_fitchart">
+                                        <!-- <button type="button" class="btn btn-default" id="new_fitchart">
                                             <span class="fa fa-plus-square-o"></span> New 
                                         </button>
                                         <button type="button" class="btn btn-default" id="edit_fitchart">
@@ -2004,11 +2004,14 @@
                                         </button>
                                         <button type="button" class="btn btn-default" id="cancel_fitchart">
                                             <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+                                        </button> -->
+                                        <button type="button" class="btn btn-default" id="fitchart_chart">
+                                            <span class="fa fa-print fa-lg"></span> Chart 
                                         </button>
-                                    </div> -->
+                                    </div>
                                 </div>
                                 
-                                <button class="btn btn-default btn-sm" type="button" id="fitchart_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button>
+                                <!-- <button class="btn btn-default btn-sm" type="button" id="fitchart_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button> -->
                                 
                                 <div class="panel-body" style="padding-right: 0px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formFitChart'>
@@ -2055,13 +2058,13 @@
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
                                 <div class="panel-heading text-center" style="height: 40px;">
-                                    <!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                    <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                         id="btn_grp_edit_circulation"
                                         style="position: absolute;
                                                 padding: 0 0 0 0;
                                                 right: 40px;
                                                 top: 5px;">
-                                        <button type="button" class="btn btn-default" id="new_circulation">
+                                        <!-- <button type="button" class="btn btn-default" id="new_circulation">
                                             <span class="fa fa-plus-square-o"></span> New 
                                         </button>
                                         <button type="button" class="btn btn-default" data-oper='add' id="save_circulation">
@@ -2069,11 +2072,14 @@
                                         </button>
                                         <button type="button" class="btn btn-default" id="cancel_circulation">
                                             <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+                                        </button> -->
+                                        <button type="button" class="btn btn-default" id="circulation_chart">
+                                            <span class="fa fa-print fa-lg"></span> Chart 
                                         </button>
-                                    </div> -->
+                                    </div>
                                 </div>
                                 
-                                <button class="btn btn-default btn-sm" type="button" id="circulation_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button>
+                                <!-- <button class="btn btn-default btn-sm" type="button" id="circulation_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button> -->
                                 
                                 <div class="panel-body" style="padding-right: 0px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formCirculation'>
@@ -2110,13 +2116,13 @@
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
                                 <div class="panel-heading text-center" style="height: 40px;">
-                                    <!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                    <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                         id="btn_grp_edit_slidingScale"
                                         style="position: absolute;
                                                 padding: 0 0 0 0;
                                                 right: 40px;
                                                 top: 5px;">
-                                        <button type="button" class="btn btn-default" id="new_slidingScale">
+                                        <!-- <button type="button" class="btn btn-default" id="new_slidingScale">
                                             <span class="fa fa-plus-square-o"></span> New 
                                         </button>
                                         <button type="button" class="btn btn-default" data-oper='add' id="save_slidingScale">
@@ -2124,11 +2130,14 @@
                                         </button>
                                         <button type="button" class="btn btn-default" id="cancel_slidingScale">
                                             <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+                                        </button> -->
+                                        <button type="button" class="btn btn-default" id="slidingScale_chart">
+                                            <span class="fa fa-print fa-lg"></span> Chart 
                                         </button>
-                                    </div> -->
+                                    </div>
                                 </div>
                                 
-                                <button class="btn btn-default btn-sm" type="button" id="slidingScale_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button>
+                                <!-- <button class="btn btn-default btn-sm" type="button" id="slidingScale_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button> -->
                                 
                                 <div class="panel-body" style="padding-right: 0px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formSlidingScale'>
@@ -2170,10 +2179,13 @@
                                         <button type="button" class="btn btn-default" id="cancel_othersChart1">
                                             <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                         </button>
+                                        <button type="button" class="btn btn-default" id="othersChart1_chart">
+                                            <span class="fa fa-print fa-lg"></span> Chart 
+                                        </button>
                                     </div>
                                 </div>
                                 
-                                <button class="btn btn-default btn-sm" type="button" id="othersChart1_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button>
+                                <!-- <button class="btn btn-default btn-sm" type="button" id="othersChart1_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button> -->
                                 
                                 <div class="panel-body" style="padding-right: 0px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formOthersChart1'>
@@ -2255,10 +2267,13 @@
                                         <button type="button" class="btn btn-default" id="cancel_othersChart2">
                                             <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                         </button>
+                                        <button type="button" class="btn btn-default" id="othersChart2_chart">
+                                            <span class="fa fa-print fa-lg"></span> Chart 
+                                        </button>
                                     </div>
                                 </div>
                                 
-                                <button class="btn btn-default btn-sm" type="button" id="othersChart2_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button>
+                                <!-- <button class="btn btn-default btn-sm" type="button" id="othersChart2_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button> -->
                                 
                                 <div class="panel-body" style="padding-right: 0px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formOthersChart2'>

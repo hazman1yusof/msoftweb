@@ -379,11 +379,11 @@ $(document).ready(function (){
     });
     
     $("#othersChart1_chart").click(function (){
-        window.open('./nursingnote/othersChart1_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+        window.open('./nursingnote/othersChart_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&tabtitle='+$("#othersChart1_tabtitle").val(), '_blank');
     });
     
     $("#othersChart2_chart").click(function (){
-        window.open('./nursingnote/othersChart2_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+        window.open('./nursingnote/othersChart_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&tabtitle='+$("#othersChart2_tabtitle").val(), '_blank');
     });
     /////////////////////////////////////print button ends/////////////////////////////////////
     

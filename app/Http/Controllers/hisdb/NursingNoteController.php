@@ -2040,4 +2040,49 @@ class NursingNoteController extends defaultController
         
     }
     
+    public function othersChart_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        if(!$mrn || !$episno){
+            abort(404);
+        }
+        $tabtitle = $request->tabtitle;
+        
+        $pat_mast = DB::table('hisdb.pat_mast as pm')
+                    ->select('pm.MRN','pm.Name','b.ward','b.bednum','n.diagnosis')
+                    ->leftJoin('hisdb.bedalloc as b', function ($join){
+                        $join = $join->on('b.mrn', '=', 'pm.MRN')
+                                    ->on('b.episno', '=', 'pm.Episno')
+                                    ->where('b.compcode', '=', session('compcode'));
+                    })
+                    ->leftJoin('nursing.nursassessment as n', function ($join){
+                        $join = $join->on('n.mrn', '=', 'pm.MRN')
+                                    ->on('n.episno', '=', 'pm.Episno')
+                                    ->where('n.compcode', '=', session('compcode'));
+                    })
+                    ->where('pm.CompCode','=',session('compcode'))
+                    ->where('pm.MRN','=',$request->mrn)
+                    ->where('pm.Episno','=',$request->episno)
+                    ->first();
+        
+        $nurs_othershdr = DB::table('nursing.nurs_othershdr')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->where('tabtitle','=',$tabtitle)
+                        ->first();
+        
+        $nurs_othersdtl = DB::table('nursing.nurs_othersdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->where('tabtitle','=',$tabtitle)
+                        ->get();
+        // dd($nurs_othersdtl);
+        
+        return view('hisdb.nursingnote.othersChart_chart_pdfmake', compact('pat_mast','nurs_othershdr','nurs_othersdtl'));
+        
+    }
+    
 }
