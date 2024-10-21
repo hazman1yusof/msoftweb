@@ -26,7 +26,7 @@
                     <li><a data-toggle="tab" id="navtab_progress" href="#tab-progress" data-type='progress'>Progress Note</a></li>
                     <li><a data-toggle="tab" id="navtab_intake" href="#tab-intake" data-type='intake'>Intake Output</a></li>
                     <li><a data-toggle="tab" id="navtab_drug" href="#tab-drug" data-type='drug'>Drug Administration</a></li>
-                    <li><a data-toggle="tab" id="navtab_treatment" href="#tab-treatment" data-type='treatment'>Treatment</a></li>
+                    <li><a data-toggle="tab" id="navtab_treatment" href="#tab-treatment" data-type='treatment'>Nursing Report</a></li>
                     <li><a data-toggle="tab" id="navtab_careplan" href="#tab-careplan" data-type='careplan'>Care Plan</a></li>
                     <li><a data-toggle="tab" id="navtab_fitchart" href="#tab-fitchart" data-type='fitchart'>Fit Chart</a></li>
                     <li><a data-toggle="tab" id="navtab_circulation" href="#tab-circulation" data-type='circulation'>Circulation Chart</a></li>
@@ -131,10 +131,19 @@
                                                                 </div>
                                                                 
                                                                 <div class="form-group col-md-12">
-                                                                    <label class="control-label" for="ncase_bp" style="padding-bottom: 5px;">BP</label>
+                                                                    <label class="control-label" for="ncase_bp_stand" style="padding-bottom: 5px;">BP (standing)</label>
                                                                     <div class="input-group">
-                                                                        <input id="bphistolic" name="bphistolic" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
-                                                                        <input id="bpdiastolic" name="bpdiastolic" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                                        <input id="bphistolic_stand" name="bphistolic_stand" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                                        <input id="bpdiastolic_stand" name="bpdiastolic_stand" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                                        <span class="input-group-addon">mmHg</span>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div class="form-group col-md-12">
+                                                                    <label class="control-label" for="ncase_bp_lieDown" style="padding-bottom: 5px;">BP (lying down)</label>
+                                                                    <div class="input-group">
+                                                                        <input id="bphistolic_lieDown" name="bphistolic_lieDown" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                                        <input id="bpdiastolic_lieDown" name="bpdiastolic_lieDown" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                                         <span class="input-group-addon">mmHg</span>
                                                                     </div>
                                                                 </div>
@@ -1707,6 +1716,14 @@
                                             <div class="panel panel-info">
                                                 <!-- <div class="panel-heading text-center">NOTES</div> -->
                                                 <div class="panel-body" style="padding: 2px;">
+                                                    <div class="form-inline col-md-12" style="padding: 10px 15px 10px 0px;">
+                                                        <label class="control-label" for="tr_entereddate">Date</label>
+                                                        <input id="tr_entereddate" name="tr_entereddate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
+                                                        
+                                                        <label class="control-label" for="tr_enteredtime" style="padding-left: 10px;">Time</label>
+                                                        <input id="tr_enteredtime" name="tr_enteredtime" type="time" class="form-control input-sm">
+                                                    </div>
+
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
 														<label for="treatment_remarks">Notes</label>
 														<textarea id="treatment_remarks" name="treatment_remarks" type="text" class="form-control input-sm"></textarea>
@@ -1770,6 +1787,14 @@
                                             <div class="panel panel-info">
                                                 <!-- <div class="panel-heading text-center">NOTES</div> -->
                                                 <div class="panel-body" style="padding: 2px;">
+                                                    <div class="form-inline col-md-12" style="padding: 10px 15px 10px 0px;">
+                                                        <label class="control-label" for="inv_entereddate">Date</label>
+                                                        <input id="inv_entereddate" name="inv_entereddate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
+                                                        
+                                                        <label class="control-label" for="inv_enteredtime" style="padding-left: 10px;">Time</label>
+                                                        <input id="inv_enteredtime" name="inv_enteredtime" type="time" class="form-control input-sm">
+                                                    </div>
+
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
 														<label for="investigation_remarks">Notes</label>
 														<textarea id="investigation_remarks" name="investigation_remarks" type="text" class="form-control input-sm"></textarea>
@@ -1833,6 +1858,14 @@
                                             <div class="panel panel-info">
                                                 <!-- <div class="panel-heading text-center">NOTES</div> -->
                                                 <div class="panel-body" style="padding: 2px;">
+                                                    <div class="form-inline col-md-12" style="padding: 10px 15px 10px 0px;">
+                                                        <label class="control-label" for="inj_entereddate">Date</label>
+                                                        <input id="inj_entereddate" name="inj_entereddate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
+                                                        
+                                                        <label class="control-label" for="inj_enteredtime" style="padding-left: 10px;">Time</label>
+                                                        <input id="inj_enteredtime" name="inj_enteredtime" type="time" class="form-control input-sm">
+                                                    </div>
+
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
 														<label for="injection_remarks">Notes</label>
 														<textarea id="injection_remarks" name="injection_remarks" type="text" class="form-control input-sm"></textarea>

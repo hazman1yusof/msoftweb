@@ -391,8 +391,10 @@ class NursingNoteController extends defaultController
                     'temp_' => $request->temp_,
                     'hr' => $request->hr,
                     'spo2' => $request->spo2,
-                    'bphistolic' => $request->bphistolic,
-                    'bpdiastolic' => $request->bpdiastolic,
+                    'bphistolic_stand' => $request->bphistolic_stand,
+                    'bpdiastolic_stand' => $request->bpdiastolic_stand,
+                    'bphistolic_lieDown' => $request->bphistolic_lieDown,
+                    'bpdiastolic_lieDown' => $request->bpdiastolic_lieDown,
                     'dxt' => $request->dxt,
                     'roomair' => $request->roomair,
                     'oxygen' => $request->oxygen,
@@ -448,8 +450,10 @@ class NursingNoteController extends defaultController
                         'temp_' => $request->temp_,
                         'hr' => $request->hr,
                         'spo2' => $request->spo2,
-                        'bphistolic' => $request->bphistolic,
-                        'bpdiastolic' => $request->bpdiastolic,
+                        'bphistolic_stand' => $request->bphistolic_stand,
+                        'bpdiastolic_stand' => $request->bpdiastolic_stand,
+                        'bphistolic_lieDown' => $request->bphistolic_lieDown,
+                        'bpdiastolic_lieDown' => $request->bpdiastolic_lieDown,
                         'dxt' => $request->dxt,
                         'roomair' => $request->roomair,
                         'oxygen' => $request->oxygen,
@@ -486,8 +490,10 @@ class NursingNoteController extends defaultController
                         'temp_' => $request->temp_,
                         'hr' => $request->hr,
                         'spo2' => $request->spo2,
-                        'bphistolic' => $request->bphistolic,
-                        'bpdiastolic' => $request->bpdiastolic,
+                        'bphistolic_stand' => $request->bphistolic_stand,
+                        'bpdiastolic_stand' => $request->bpdiastolic_stand,
+                        'bphistolic_lieDown' => $request->bphistolic_lieDown,
+                        'bpdiastolic_lieDown' => $request->bpdiastolic_lieDown,
                         'dxt' => $request->dxt,
                         'roomair' => $request->roomair,
                         'oxygen' => $request->oxygen,
@@ -1120,8 +1126,10 @@ class NursingNoteController extends defaultController
                     'episno' => $request->episno_nursNote,
                     'type' => 'TREATMENT',
                     'remarks' => $request->treatment_remarks,
-                    'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'entereddate'  => $request->tr_entereddate,
+                    'enteredtime'  => $request->tr_enteredtime,
+                    // 'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    // 'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                 ]);
@@ -1151,8 +1159,10 @@ class NursingNoteController extends defaultController
                     'episno' => $request->episno_nursNote,
                     'type' => 'INVESTIGATION',
                     'remarks' => $request->investigation_remarks,
-                    'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'entereddate'  => $request->inv_entereddate,
+                    'enteredtime'  => $request->inv_enteredtime,
+                    // 'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    // 'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                 ]);
@@ -1182,8 +1192,10 @@ class NursingNoteController extends defaultController
                     'episno' => $request->episno_nursNote,
                     'type' => 'INJECTION',
                     'remarks' => $request->injection_remarks,
-                    'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'entereddate'  => $request->inj_entereddate,
+                    'enteredtime'  => $request->inj_enteredtime,
+                    // 'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    // 'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                 ]);
@@ -1784,7 +1796,7 @@ class NursingNoteController extends defaultController
     public function get_table_treatment(Request $request){
         
         $treatment_obj = DB::table('nursing.pattreatment')
-                        ->select('mrn', 'episno', 'type', 'remarks as treatment_remarks', 'adduser as treatment_adduser')
+                        ->select('mrn','episno','type','entereddate as tr_entereddate','enteredtime as tr_enteredtime','remarks as treatment_remarks','adduser as treatment_adduser')
                         ->where('compcode','=',session('compcode'))
                         ->where('idno','=',$request->idno);
                         // ->where('mrn','=',$request->mrn)
@@ -1792,7 +1804,7 @@ class NursingNoteController extends defaultController
                         // ->where('type','=','TREATMENT');
         
         $investigation_obj = DB::table('nursing.pattreatment')
-                        ->select('mrn', 'episno', 'type', 'remarks as investigation_remarks', 'adduser as investigation_adduser')
+                        ->select('mrn','episno','type','entereddate as inv_entereddate','enteredtime as inv_enteredtime','remarks as investigation_remarks','adduser as investigation_adduser')
                         ->where('compcode','=',session('compcode'))
                         ->where('idno','=',$request->idno);
                         // ->where('mrn','=',$request->mrn)
@@ -1800,7 +1812,7 @@ class NursingNoteController extends defaultController
                         // ->where('type','=','INVESTIGATION');
         
         $injection_obj = DB::table('nursing.pattreatment')
-                        ->select('mrn', 'episno', 'type', 'remarks as injection_remarks', 'adduser as injection_adduser')
+                        ->select('mrn','episno','type','entereddate as inj_entereddate','enteredtime as inj_enteredtime','remarks as injection_remarks','adduser as injection_adduser')
                         ->where('compcode','=',session('compcode'))
                         ->where('idno','=',$request->idno);
                         // ->where('mrn','=',$request->mrn)
