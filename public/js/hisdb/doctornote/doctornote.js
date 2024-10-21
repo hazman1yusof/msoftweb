@@ -296,6 +296,28 @@ $(document).ready(function (){
 	
 	////////////////////////////////////////////dressing ends////////////////////////////////////////////
 	
+	/////////////////////////////////////////chart button starts/////////////////////////////////////////
+	$("#otbook_chart").click(function (){
+		window.open('./doctornote/otbook_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+	});
+	
+	// $("#radClinic_chart").click(function (){
+	// 	window.open('./doctornote/radClinic_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+	// });
+	
+	$("#mri_chart").click(function (){
+		window.open('./doctornote/mri_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+	});
+	
+	// $("#physio_chart").click(function (){
+	// 	window.open('./doctornote/physio_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+	// });
+	
+	$("#dressing_chart").click(function (){
+		window.open('./doctornote/dressing_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+	});
+	//////////////////////////////////////////chart button ends//////////////////////////////////////////
+	
 	// to format number input to two decimal places (0.00)
 	$(".floatNumberField").change(function (){
 		$(this).val(parseFloat($(this).val()).toFixed(2));

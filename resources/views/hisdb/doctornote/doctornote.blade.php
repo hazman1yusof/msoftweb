@@ -485,6 +485,8 @@
                                                 </div>
                                             </div>
                                             
+                                            <button class="btn btn-default btn-sm" type="button" id="otbook_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button>
+                                            
                                             <div class="panel-body">
                                                 <div class='col-md-12'>
                                                     <div class="panel panel-info">
@@ -565,6 +567,8 @@
                                                             </button>
                                                         </div>
                                                     </div>
+                                                    
+                                                    <!-- <button class="btn btn-default btn-sm" type="button" id="radClinic_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button> -->
                                                     
                                                     <div class="panel-body">
                                                         <div class='col-md-12'>
@@ -697,6 +701,8 @@
                                                             </button>
                                                         </div>
                                                     </div>
+                                                    
+                                                    <button class="btn btn-default btn-sm" type="button" id="mri_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button>
                                                     
                                                     <div class="panel-body">
                                                         <div class='col-md-12'>
@@ -1014,6 +1020,8 @@
                                                 </div>
                                             </div>
                                             
+                                            <!-- <button class="btn btn-default btn-sm" type="button" id="physio_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button> -->
+                                            
                                             <div class="panel-body">
                                                 <div class='col-md-12'>
                                                     <div class="panel panel-info">
@@ -1078,6 +1086,8 @@
                                                     </button>
                                                 </div>
                                             </div>
+                                            
+                                            <button class="btn btn-default btn-sm" type="button" id="dressing_chart" style="float: right; margin: 10px 40px 10px 0px;">Chart</button>
                                             
                                             <div class="panel-body">
                                                 <div class='col-md-12'>
