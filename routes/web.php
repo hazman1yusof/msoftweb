@@ -1293,11 +1293,11 @@ Route::post('/wardpanel/form','hisdb\WardPanelController@form');
 Route::get('/nursingnote','hisdb\NursingNoteController@show');
 Route::get('/nursingnote/table','hisdb\NursingNoteController@table');
 Route::post('/nursingnote/form','hisdb\NursingNoteController@form');
-Route::post('/nursingnote/fitchart_chart','hisdb\NursingNoteController@fitchart_chart');
-Route::post('/nursingnote/circulation_chart','hisdb\NursingNoteController@circulation_chart');
-Route::post('/nursingnote/slidingScale_chart','hisdb\NursingNoteController@slidingScale_chart');
-Route::post('/nursingnote/othersChart1_chart','hisdb\NursingNoteController@othersChart1_chart');
-Route::post('/nursingnote/othersChart2_chart','hisdb\NursingNoteController@othersChart2_chart');
+Route::get('/nursingnote/fitchart_chart','hisdb\NursingNoteController@fitchart_chart');
+Route::get('/nursingnote/circulation_chart','hisdb\NursingNoteController@circulation_chart');
+Route::get('/nursingnote/slidingScale_chart','hisdb\NursingNoteController@slidingScale_chart');
+Route::get('/nursingnote/othersChart1_chart','hisdb\NursingNoteController@othersChart1_chart');
+Route::get('/nursingnote/othersChart2_chart','hisdb\NursingNoteController@othersChart2_chart');
 
 //// Doctor Note page ///
 Route::get('/doctornote','hisdb\DoctorNoteController@show');

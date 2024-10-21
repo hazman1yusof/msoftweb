@@ -1916,4 +1916,45 @@ class NursingNoteController extends defaultController
         
     }
     
+    public function fitchart_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        if(!$mrn || !$episno){
+            abort(404);
+        }
+        
+        $pat_mast = DB::table('hisdb.pat_mast as pm')
+                    ->select('pm.MRN','pm.Name','b.ward','b.bednum','n.diagnosis')
+                    ->leftJoin('hisdb.bedalloc as b', function ($join){
+                        $join = $join->on('b.mrn', '=', 'pm.MRN')
+                                    ->on('b.episno', '=', 'pm.Episno')
+                                    ->where('b.compcode', '=', session('compcode'));
+                    })
+                    ->leftJoin('nursing.nursassessment as n', function ($join){
+                        $join = $join->on('n.mrn', '=', 'pm.MRN')
+                                    ->on('n.episno', '=', 'pm.Episno')
+                                    ->where('n.compcode', '=', session('compcode'));
+                    })
+                    ->where('pm.CompCode','=',session('compcode'))
+                    ->where('pm.MRN','=',$request->mrn)
+                    ->where('pm.Episno','=',$request->episno)
+                    ->first();
+        
+        $nurs_fitchart = DB::table('nursing.nurs_fitchart as fc')
+                        ->select('fc.compcode','fc.mrn','fc.episno','fc.entereddate','fc.enteredtime','fc.fit','fc.duration','fc.remarks','fc.adduser','fc.adddate','fc.addtime','fc.upduser','fc.upddate','fc.lastuser','fc.lastupdate','fc.lastupdtime','fc.computerid')
+                        // ->leftJoin('hisdb.pat_mast as pm', function ($join){
+                        //     $join = $join->on('pm.MRN', '=', 'fc.mrn')
+                        //                 ->where('pm.compcode', '=', session('compcode'));
+                        // })
+                        ->where('fc.compcode','=',session('compcode'))
+                        ->where('fc.mrn','=',$request->mrn)
+                        ->where('fc.episno','=',$request->episno)
+                        ->get();
+        // dd($nurs_fitchart);
+        
+        return view('hisdb.nursingnote.fitchart_pdfmake', compact('pat_mast','nurs_fitchart'));
+        
+    }
+    
 }
