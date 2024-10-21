@@ -1999,4 +1999,45 @@ class NursingNoteController extends defaultController
         
     }
     
+    public function slidingScale_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        if(!$mrn || !$episno){
+            abort(404);
+        }
+        
+        $pat_mast = DB::table('hisdb.pat_mast as pm')
+                    ->select('pm.MRN','pm.Name','b.ward','b.bednum','n.diagnosis')
+                    ->leftJoin('hisdb.bedalloc as b', function ($join){
+                        $join = $join->on('b.mrn', '=', 'pm.MRN')
+                                    ->on('b.episno', '=', 'pm.Episno')
+                                    ->where('b.compcode', '=', session('compcode'));
+                    })
+                    ->leftJoin('nursing.nursassessment as n', function ($join){
+                        $join = $join->on('n.mrn', '=', 'pm.MRN')
+                                    ->on('n.episno', '=', 'pm.Episno')
+                                    ->where('n.compcode', '=', session('compcode'));
+                    })
+                    ->where('pm.CompCode','=',session('compcode'))
+                    ->where('pm.MRN','=',$request->mrn)
+                    ->where('pm.Episno','=',$request->episno)
+                    ->first();
+        
+        $nurs_slidingscale = DB::table('nursing.nurs_slidingscale as ss')
+                            ->select('ss.compcode','ss.mrn','ss.episno','ss.entereddate','ss.enteredtime','ss.dextrostix','ss.remarks','ss.adduser','ss.adddate','ss.addtime','ss.upduser','ss.upddate','ss.lastuser','ss.lastupdate','ss.lastupdtime','ss.computerid')
+                            // ->leftJoin('hisdb.pat_mast as pm', function ($join){
+                            //     $join = $join->on('pm.MRN', '=', 'ss.mrn')
+                            //                 ->where('pm.compcode', '=', session('compcode'));
+                            // })
+                            ->where('ss.compcode','=',session('compcode'))
+                            ->where('ss.mrn','=',$request->mrn)
+                            ->where('ss.episno','=',$request->episno)
+                            ->get();
+        // dd($nurs_slidingscale);
+        
+        return view('hisdb.nursingnote.slidingScale_chart_pdfmake', compact('pat_mast','nurs_slidingscale'));
+        
+    }
+    
 }

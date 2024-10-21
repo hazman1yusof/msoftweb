@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Fit Chart</title>
+        <title>Sliding Scale Chart</title>
     </head>
     
     <!-- <script src="https://unpkg.com/@jsreport/browser-client/dist/jsreport.umd.js"></script>
@@ -29,59 +29,57 @@
                         image: 'letterhead', width: 175, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: '\nFIT CHART\n\n',
+                        text: '\nSLIDING SCALE CHART\n\n',
                         style: 'header',
                         alignment: 'center'
                     },
-                    {
-                        style: 'tableExample',
-                        table: {
-                            headerRows: 1,
-                            widths: [50,1,'*',80,1,'*'], // panjang standard dia 515
-                            body: [
-                                [
-                                    { text: 'Name' },
-                                    { text: ':' },
-                                    { text: '{{$pat_mast->Name}}' },
-                                    { text: 'Ward / Bed No.' },
-                                    { text: ':' },
-                                    { text: '{{$pat_mast->ward}} / {{$pat_mast->bednum}}' }
-                                ],
-                                [
-                                    { text: 'MRN' },
-                                    { text: ':' },
-                                    { text: '{{str_pad($pat_mast->MRN, 7, "0", STR_PAD_LEFT)}}' },
-                                    { text: 'Diagnosis' },
-                                    { text: ':' },
-                                    { text: `{!!$pat_mast->diagnosis!!}` }
-                                ],
-                            ]
-                        },
-                        layout: 'noBorders',
-                    },
+                    // {
+                    //     style: 'tableExample',
+                    //     table: {
+                    //         headerRows: 1,
+                    //         widths: [50,1,'*',80,1,'*'], // panjang standard dia 515
+                    //         body: [
+                    //             [
+                    //                 { text: 'Name' },
+                    //                 { text: ':' },
+                    //                 { text: '{{$pat_mast->Name}}' },
+                    //                 { text: 'Ward / Bed No.' },
+                    //                 { text: ':' },
+                    //                 { text: '{{$pat_mast->ward}} / {{$pat_mast->bednum}}' }
+                    //             ],
+                    //             [
+                    //                 { text: 'MRN' },
+                    //                 { text: ':' },
+                    //                 { text: '{{str_pad($pat_mast->MRN, 7, "0", STR_PAD_LEFT)}}' },
+                    //                 { text: 'Diagnosis' },
+                    //                 { text: ':' },
+                    //                 { text: '' }
+                    //             ],
+                    //         ]
+                    //     },
+                    //     layout: 'noBorders',
+                    // },
                     // { canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 }] },
                     {
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [60,60,70,70,120,60], // panjang standard dia 515
+                            widths: [80,80,70,70,170], // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'DATE', style: 'tableHeader' },
                                     { text: 'TIME', style: 'tableHeader' },
-                                    { text: 'FIT', style: 'tableHeader' },
-                                    { text: 'DURATION', style: 'tableHeader' },
+                                    { text: 'DEXTROSTIX', style: 'tableHeader' },
+                                    { text: 'ADDED\nBY', style: 'tableHeader' },
                                     { text: 'REMARKS', style: 'tableHeader' },
-                                    { text: 'STAFF', style: 'tableHeader' },
                                 ],
-                                @foreach ($nurs_fitchart as $obj)
+                                @foreach ($nurs_slidingscale as $obj)
                                 [
                                     { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->entereddate)->format('d-m-Y')}}' },
                                     { text: '{{$obj->enteredtime}}' },
-                                    { text: '{{$obj->fit}}' },
-                                    { text: '{{$obj->duration}}' },
-                                    { text: `{!!$obj->remarks!!}` },
+                                    { text: '{{$obj->dextrostix}}' },
                                     { text: '{{$obj->adduser}}' },
+                                    { text: `{!!$obj->remarks!!}` },
                                 ],
                                 @endforeach
                             ]

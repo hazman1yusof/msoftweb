@@ -29,7 +29,7 @@
                         image: 'letterhead', width: 175, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: 'CIRCULATION CHART',
+                        text: '\nCIRCULATION CHART\n\n',
                         style: 'header',
                         alignment: 'center'
                     },
@@ -52,7 +52,7 @@
                                     { text: ':' },
                                     { text: '{{str_pad($pat_mast->MRN, 7, "0", STR_PAD_LEFT)}}' },
                                     { text: 'Diagnosis' },
-                                    { text: `:` },
+                                    { text: ':' },
                                     { text: `{!!$pat_mast->diagnosis!!}` }
                                 ],
                             ]
@@ -74,7 +74,7 @@
                                     { text: 'MOVEMENT', style: 'tableHeader' },
                                     { text: 'SENSATION', style: 'tableHeader' },
                                     { text: 'OEDEMA', style: 'tableHeader' },
-                                    { text: 'NAME', style: 'tableHeader' },
+                                    { text: 'ADDED\nBY', style: 'tableHeader' },
                                 ],
                                 @foreach ($nurs_circulation as $obj)
                                 [
@@ -95,7 +95,7 @@
                 ],
                 styles: {
                     header: {
-                        fontSize: 12,
+                        fontSize: 14,
                         bold: true,
                         margin: [0, 10, 0, 0]
                     },
