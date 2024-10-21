@@ -219,10 +219,10 @@ class PurchaseOrderController extends defaultController
 
         $purreqno = $purordhd_obj->purreqno;
 
-        if(!in_array($purordhd_obj->recstatus, ['OPEN','INCOMPLETED'])){
+        if(!in_array($purordhd_obj->recstatus, ['OPEN','INCOMPLETED','PREPARED'])){
             throw new \Exception("Cant Edit this document, status is not OPEN or INCOMPLETED");
         }
-
+        
         if($purreqno == $request->purordhd_purreqno){
             // ni edit macam biasa, nothing special
             DB::beginTransaction();
@@ -297,31 +297,56 @@ class PurchaseOrderController extends defaultController
                 $array_update = [
                     'compcode' => session('compcode'),
                     'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'upddate' => Carbon::now(),
+                    // 'delordno' => $request->purordhd_delordno, 
+                    // 'prtype' => $request->purordhd_prtype, 
+                    // 'prdept' => $request->purordhd_prdept, 
+                    // 'purordno' => $request->purordhd_purordno, 
+                    // 'recno' => $request->purordhd_recno, 
+                    // 'deldept' => $request->purordhd_deldept, 
+                    // 'reqdept' => $request->purordhd_reqdept, 
+                    // 'purreqno' => $request->purordhd_purreqno, 
+                    'suppcode' => $request->purordhd_suppcode, 
+                    'credcode' => $request->purordhd_credcode, 
+                    'purdate' => $request->purordhd_purdate, 
+                    'expecteddate' => $request->purordhd_expecteddate, 
+                    'termdays' => $request->purordhd_termdays, 
+                    'perdisc' => $request->purordhd_perdisc, 
+                    'amtdisc' => $request->purordhd_amtdisc, 
+                    // 'recstatus' => $request->purordhd_recstatus, 
+                    // 'subamount' => $request->purordhd_subamount, 
+                    // 'totamount' => $request->purordhd_totamount, 
+                    'taxclaimable' => $request->purordhd_taxclaimable, 
                 ];
 
-                foreach ($field as $key => $value) {
-                    $array_update[$value] = $request[$request->field[$key]];
-                }
+                // $array_update = [
+                //     'compcode' => session('compcode'),
+                //     'upduser' => session('username'),
+                //     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                // ];
+
+                // foreach ($field as $key => $value) {
+                //     $array_update[$value] = $request[$request->field[$key]];
+                // }
 
                 $table = $table->where('idno','=',$request->purordhd_idno);
                 $table->update($array_update);
 
                 $totalAmount = $request->purordhd_totamount;
                 //4. Update delorddt
-                if(!empty($request->referral)){
-                    $totalAmount = $this->save_dt_from_othr_pr($request->referral,$purordhd_obj->recno,$purordhd_obj->purordno,session('compcode'),$request->purordhd_deldept);
+                // if(!empty($request->referral)){
+                //     $totalAmount = $this->save_dt_from_othr_pr($request->referral,$purordhd_obj->recno,$purordhd_obj->purordno,session('compcode'),$request->purordhd_deldept);
 
-                    // $purreqno = $request->purordhd_purreqno;
-                    // $purordno = $request->purordhd_purordno;
+                //     // $purreqno = $request->purordhd_purreqno;
+                //     // $purordno = $request->purordhd_purordno;
 
-                    ////dekat pr header sana, save balik purordno dkt situ
-                    DB::table('material.purreqhd')
-                        ->where('purreqno','=',$purreqno)
-                        ->where('reqdept','=',$request->purordhd_reqdept)
-                        ->where('compcode','=',session('compcode'))
-                        ->update(['purordno' => $purordhd_obj->purordno]);  
-                }
+                //     ////dekat pr header sana, save balik purordno dkt situ
+                //     DB::table('material.purreqhd')
+                //         ->where('purreqno','=',$purreqno)
+                //         ->where('reqdept','=',$request->purordhd_reqdept)
+                //         ->where('compcode','=',session('compcode'))
+                //         ->update(['purordno' => $purordhd_obj->purordno]);  
+                // }
 
                 $responce = new stdClass();
                 $responce->totalAmount = $totalAmount;

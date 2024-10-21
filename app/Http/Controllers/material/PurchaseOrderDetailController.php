@@ -515,7 +515,7 @@ class PurchaseOrderDetailController extends defaultController
                     'TaxAmt' => $tot_gst
                 ]);
 
-            $this->check_incompleted($request->recno);
+            // $this->check_incompleted($request->recno);
             
             echo $totalAmount;
 
