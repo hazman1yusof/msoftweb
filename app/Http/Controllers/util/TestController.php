@@ -1830,6 +1830,13 @@ class TestController extends defaultController
                             ->update([
                                 'uomcode' => $uomcode
                             ]);
+            
+            DB::table('material.ivreqdt')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$itemcode)
+                            ->update([
+                                'uomcode' => $uomcode
+                            ]);
 
             DB::commit();
 
