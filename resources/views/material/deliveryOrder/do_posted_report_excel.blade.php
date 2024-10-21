@@ -8,7 +8,7 @@
         <td style="font-weight:bold; text-align: left">GRN No : {{$hd_obj->docno}}</td>
         <td style="font-weight:bold; text-align: left">Supplier : {{$hd_obj->suppcode_desc}}</td>
         <td style="font-weight:bold; text-align: left">Total Amount</td>
-        <td style="font-weight:bold; text-align: left">{{$hd_obj->totamount}}</td>
+        <td style="font-weight:bold; text-align: right" data-format="0.00">{{$hd_obj->totamount}}</td>
     </tr>
         <tr>
             <td style="font-weight:bold; text-align: left">Date</td>
@@ -26,7 +26,7 @@
                     <td>{{$dt_obj->itemcode_desc}}</td>
                     <td>{{$dt_obj->uomcode}}</td>
                     <td>{{$dt_obj->qtydelivered}}</td>
-                    <td>{{$dt_obj->amount}}</td>
+                    <td data-format="0.00">{{$dt_obj->amount}}</td>
                 </tr>
             @endif
         @endforeach

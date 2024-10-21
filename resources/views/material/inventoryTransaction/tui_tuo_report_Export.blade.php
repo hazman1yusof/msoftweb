@@ -8,7 +8,7 @@
         <td style="font-weight:bold; text-align: left">Transaction Type : {{$hd_obj->trantype}}</td>
         <td style="font-weight:bold; text-align: left">Receiver Dept : {{$hd_obj->sndrcv_desc}}</td>
         <td style="font-weight:bold; text-align: left">Total Amount</td>
-        <td style="font-weight:bold; text-align: left">{{$hd_obj->header_amt}}</td>
+        <td style="font-weight:bold; text-align: right" data-format="0.00">{{$hd_obj->header_amt}}</td>
     </tr>
         <tr>
             <td style="font-weight:bold; text-align: left">Date</td>
@@ -26,7 +26,7 @@
                     <td>{{$dt_obj->itemcode_desc}}</td>
                     <td>{{$dt_obj->uomcode}}</td>
                     <td>{{$dt_obj->txnqty}}</td>
-                    <td>{{$dt_obj->amount}}</td>
+                    <td data-format="0.00">{{$dt_obj->amount}}</td>
                 </tr>
             @endif
         @endforeach
