@@ -1342,6 +1342,7 @@ Route::post('/ordcom/form','hisdb\OrdcomController@form');
 Route::get('/discharge','hisdb\DischargeController@show');
 Route::get('/discharge/table','hisdb\DischargeController@table');
 Route::post('/discharge/form','hisdb\DischargeController@form');
+Route::get('/discharge/showpdf','hisdb\DischargeController@showpdf');
 
 //// Discharge page OP///
 Route::get('/endConsult','hisdb\EndConsultController@show');
@@ -1489,8 +1490,6 @@ Route::post('/ptcare_phys/form','patientcare\physioController@form');
 Route::get('/ptcare_nursing','patientcare\NursingController@show');
 Route::get('/ptcare_nursing/table','patientcare\NursingController@table');
 Route::post('/ptcare_nursing/form','patientcare\NursingController@form');
-Route::get('/ptcare_nursing/showpdf','patientcare\NursingController@showpdf');
-
 
 Route::get('/ptcare_preview','patientcare\PreviewController@preview');
 Route::get('/ptcare_preview/data','patientcare\PreviewController@previewdata');
