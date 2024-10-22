@@ -58,7 +58,7 @@
         <div class="ui segment">
             <div class="three wide column" style="position: absolute;
                         left: 10px;
-                        top: 60px;">
+                        top: 30px;">
                 <table id="docnote_date_tbl" class="ui celled table" style="min-width: 200px;">
                     <thead>
                         <tr>
