@@ -54,9 +54,13 @@
                                 ],
                                 [
                                     {text: 'Ward/Clinic ' },
-                                    {text: `: `},{},
+                                    {text: ': {{$mri->EpWard}}'},{},
                                     {text: 'No. Phone ' },
+                                    @if(!empty($mri->telh))
+                                    {text: ': {{$mri->telh}}/{{$mri->telhp}}'},
+                                    @else
                                     {text: ': {{$mri->telhp}}'},
+                                    @endif
                                 ],
                                 [
                                     {text: 'Date ' },
@@ -74,13 +78,23 @@
                             widths: [15,'*',20,20], //panjang standard dia 515
                             body: [
                                 [
-                                    {text: 'Please indicate in appropriate column, whether or not the patient has the items indicated.\nSila tandakan pada kotak yang berkenaan jika pesakit mempunyai item tersebut.', style: 'tableHeader', colSpan: 2}, {}, 
+                                    {
+                                        text: [
+                                            'Please indicate in appropriate column, whether or not the patient has the items indicated.\n',
+                                            {text: 'Sila tandakan pada kotak yang berkenaan jika pesakit mempunyai item tersebut.', italics: true}
+                                        ], colSpan: 2, style: 'tableHeader',
+                                    },{},
                                     {text: 'YES', style: 'tableHeader', alignment:'center'},
                                     {text: 'NO', style: 'tableHeader', alignment:'center'}
                                 ],
                                 [
                                     {text: '1.'}, 
-                                    {text: 'Cardiac pacemaker (Penyelaras denyutan jantung)'},
+                                    {
+                                        text: [
+                                            'Cardiac pacemaker.\n',
+                                            {text: 'Penyelaras denyutan jantung', italics: true}
+                                        ], 
+                                    },
                                     @if($mri->pacemaker == '1')
                                         { text: '√', alignment:'center'},
                                     @else
@@ -94,7 +108,13 @@
                                 ],
                                 [
                                     {text: '2.'}, 
-                                    {text: 'Prosthetics valve, if yes, please specify.\nInjap jantung palsu, jika ada nyatakan.'}, 
+                                    {
+                                        text: [
+                                            'Prosthetics valve, if yes, please specify.\n',
+                                            {text: 'Injap jantung palsu, jika ada nyatakan:\n', italics: true},
+                                            '- {{$mri->pros_remark}}'
+                                        ], 
+                                    },
                                     @if($mri->pros_valve == '1')
                                         { text: '√', alignment:'center'},
                                     @else
@@ -108,7 +128,12 @@
                                 ],
                                 [
                                     {text: '3.'}, 
-                                    {text: 'Known intraocular foreign body or history of eye injury.\n Intraocular bendasing atau sejarah cedera pada mata.'}, 
+                                    {
+                                        text: [
+                                            'Known intraocular foreign body or history of eye injury.\n',
+                                            {text: 'Intraocular bendasing atau sejarah cedera pada mata.\n', italics: true},
+                                        ], 
+                                    },
                                     @if($mri->intraocular == '1')
                                         { text: '√', alignment:'center'},
                                     @else
@@ -122,7 +147,12 @@
                                 ],
                                 [
                                     {text: '4.'}, 
-                                    {text: 'Cochlear implants (ENT.)\n Implant koklea (ENT).'}, 
+                                    {
+                                        text: [
+                                            'Cochlear implants (ENT.).\n',
+                                            {text: 'Implant koklea (ENT).\n', italics: true},
+                                        ], 
+                                    },
                                     @if($mri->cochlear == '1')
                                         { text: '√', alignment:'center'},
                                     @else
@@ -136,7 +166,12 @@
                                 ],
                                 [
                                     {text: '5.'}, 
-                                    {text: 'Neurotransmitter (brain/spinal cord pacemaker).\n Neurotransmitter (otak/perentak saraf tunjang).'}, 
+                                    {
+                                        text: [
+                                            'Neurotransmitter (brain/spinal cord pacemaker).\n',
+                                            {text: 'Neurotransmitter (otak/perentak saraf tunjang).\n', italics: true},
+                                        ], 
+                                    },
                                     @if($mri->neurotransm == '1')
                                         { text: '√', alignment:'center'},
                                     @else
@@ -150,7 +185,12 @@
                                 ],
                                 [
                                     {text: '6.'}, 
-                                    {text: 'Bone growth stimulators.\n Perangsang tumbesaran tulang.'}, 
+                                    {
+                                        text: [
+                                            'Bone growth stimulators.\n',
+                                            {text: 'Perangsang tumbesaran tulang.\n', italics: true},
+                                        ], 
+                                    },
                                     @if($mri->bonegrowth == '1')
                                         { text: '√', alignment:'center'},
                                     @else
@@ -164,7 +204,12 @@
                                 ],
                                 [
                                     {text: '7.'}, 
-                                    {text: 'Implantable drug infusion pumps.\n Implant pam infuse ubat.'}, 
+                                    {
+                                        text: [
+                                            'Implantable drug infusion pumps.\n',
+                                            {text: 'Implant pam infuse ubat.\n', italics: true},
+                                        ], 
+                                    },
                                     @if($mri->druginfuse == '1')
                                         { text: '√', alignment:'center'},
                                     @else
@@ -178,7 +223,12 @@
                                 ],
                                 [
                                     {text: '8.'}, 
-                                    {text: 'Cerebral surgical clips/wire.\n Klip serebral.'}, 
+                                    {
+                                        text: [
+                                            'Cerebral surgical clips/wire.\n',
+                                            {text: 'Klip serebral.\n', italics: true},
+                                        ], 
+                                    },
                                     @if($mri->surg_clips == '1')
                                         { text: '√', alignment:'center'},
                                     @else
@@ -192,7 +242,12 @@
                                 ],
                                 [
                                     {text: '9.'}, 
-                                    {text: 'Joint/limb prosthesis of metallic ferromagnetic materials.\n Anggota badan palsu dari bahan feromagnetic.'}, 
+                                    {
+                                        text: [
+                                            'Joint/limb prosthesis of metallic ferromagnetic materials.\n',
+                                            {text: 'Anggota badan palsu dari bahan feromagnetic.\n', italics: true},
+                                        ], 
+                                    },
                                     @if($mri->limb_prosth == '1')
                                         { text: '√', alignment:'center'},
                                     @else
@@ -206,7 +261,12 @@
                                 ],
                                 [
                                     {text: '10.'}, 
-                                    {text: 'Shrapnel or bullet fragment (any of the body).\n  Serpihan atau peluru.'}, 
+                                    {
+                                        text: [
+                                            'Shrapnel or bullet fragment (any of the body).\n',
+                                            {text: 'Serpihan atau peluru.\n', italics: true},
+                                        ], 
+                                    },
                                     @if($mri->shrapnel == '1')
                                         { text: '√', alignment:'center'},
                                     @else
@@ -220,7 +280,13 @@
                                 ],
                                 [
                                     {text: '11.'}, 
-                                    {text: 'Any operation in the last 3 month? If yes please specify.\n  Pembedahan dalam masa 3 bulan, jika ada nyatakan.'}, 
+                                    {
+                                        text: [
+                                            'Any operation in the last 3 month? If yes please specify.\n',
+                                            {text: 'Pembedahan dalam masa 3 bulan, jika ada nyatakan:\n', italics: true},
+                                            '- {{$mri->oper3mth_remark}}'
+                                        ], 
+                                    },
                                     @if($mri->oper_3mth == '1')
                                         { text: '√', alignment:'center'},
                                     @else
@@ -234,7 +300,12 @@
                                 ],
                                 [
                                     {text: '12.'}, 
-                                    {text: 'Any previous MRI examination?\n  Pemeriksaan MRI sebelum ini?'}, 
+                                    {
+                                        text: [
+                                            'Any previous MRI examination?\n',
+                                            {text: 'Pemeriksaan MRI sebelum ini?\n', italics: true},
+                                        ], 
+                                    },
                                     @if($mri->prev_mri == '1')
                                         { text: '√', alignment:'center'},
                                     @else
@@ -248,7 +319,12 @@
                                 ],
                                 [
                                     {text: '13.'}, 
-                                    {text: 'Have you ever experienced claustrophobia?\n Anda mempunyai klaustrofobia?'}, 
+                                    {
+                                        text: [
+                                            'Have you ever experienced claustrophobia?\n',
+                                            {text: 'Anda mempunyai klaustrofobia?\n', italics: true},
+                                        ], 
+                                    },
                                     @if($mri->claustrophobia == '1')
                                         { text: '√', alignment:'center'},
                                     @else
@@ -262,7 +338,12 @@
                                 ],
                                 [
                                     {text: '14.'}, 
-                                    {text: 'Dental implant (held in place by magnet).\n Implant dental, mempunyai magnet.'}, 
+                                    {
+                                        text: [
+                                            'Dental implant (held in place by magnet).\n',
+                                            {text: 'Implant dental, mempunyai magnet.\n', italics: true},
+                                        ], 
+                                    },
                                     @if($mri->dental_imp == '1')
                                         { text: '√', alignment:'center'},
                                     @else
@@ -276,7 +357,12 @@
                                 ],
                                 [
                                     {text: '15.'}, 
-                                    {text: 'Any implanted ferromagnetic materials (susuk or etc).\n Mempunyai bahan-bahan ferromagnetic seperti susuk.'}, 
+                                    {
+                                        text: [
+                                            'Any implanted ferromagnetic materials (susuk or etc).\n',
+                                            {text: 'Mempunyai bahan-bahan ferromagnetic seperti susuk.\n', italics: true},
+                                        ], 
+                                    },
                                     @if($mri->frmgnetic_imp == '1')
                                         { text: '√', alignment:'center'},
                                     @else
@@ -290,7 +376,12 @@
                                 ],
                                 [
                                     {text: '16.'}, 
-                                    {text: 'Pregnancy (1st trimester).\n Mengandung trimester pertama.'}, 
+                                    {
+                                        text: [
+                                            'Pregnancy (1st trimester).\n',
+                                            {text: 'Mengandung trimester pertama.\n', italics: true},
+                                        ], 
+                                    },
                                     @if($mri->pregnancy == '1')
                                         { text: '√', alignment:'center'},
                                     @else
@@ -304,7 +395,12 @@
                                 ],
                                 [
                                     {text: '17.'}, 
-                                    {text: 'Allergic to drug or contrast media?\n Mempunyai alahan terhadap ubat atau media kontras.'}, 
+                                    {
+                                        text: [
+                                            'Allergic to drug or contrast media?\n',
+                                            {text: 'Mempunyai alahan terhadap ubat atau media kontras.\n', italics: true},
+                                        ], 
+                                    },
                                     @if($mri->allergy_drug == '1')
                                         { text: '√', alignment:'center'},
                                     @else
@@ -334,17 +430,22 @@
                             widths: ['*','*','*','*'], //panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'Name & Sign of Doctor:\n\n{{$mri->doc_name}}', colSpan:2},{},
-                                    { text: 'Name & Sign of patient/parents/guardian:\n\n{{$mri->pat_name}}', colSpan:2},{},
+                                    { text: 'Name & Sign of Doctor: {{$mri->doc_name}}', colSpan:2},{},
+                                    { text: 'Name & Sign of patient/parents/guardian: {{$mri->pat_name}}', colSpan:2},{},
                                 ],
                                 [
-                                    { text: 'RADIOLOGY USE ONLY\n\n'},
-                                    { text: 'Doctor/Radiologist\n\n'},
-                                    { text: 'Radiographer\n\n'},
-                                    { text: 'Staff Nurse\n\n'},
+                                    { text: 'RADIOLOGY USE ONLY:\n{{$mri->rad_use}}', bold:true},
+                                    { text: 'Doctor/Radiologist:\n{{$mri->radiologist}}'},
+                                    { text: 'Radiographer:\n{{$mri->radiographer}}'},
+                                    { text: 'Staff Nurse:\n{{$mri->staffnurse}}'},
                                 ],
                                 [
-                                    { text: 'Relatives accompanying must comply with items listed above. Prohibited items; watches, magnetic cards (credit/ATM cards) and any ferromagnetic and metallic materials.\n\nPenjaga yang menemani pesakit hendaklah mematuhi peraturan di atas. Barang larangan seperti jam tangan, kad magnetic (kad kredit/ATM) termasuk apa-apa bahan ferromagnetic dan bahan-bahan besi', colSpan:4},{},{},{}
+                                    {
+                                        text: [
+                                            'Relatives accompanying must comply with items listed above. Prohibited items; watches, magnetic cards (credit/ATM cards) and any ferromagnetic and metallic materials.\n\n',
+                                            {text: 'Penjaga yang menemani pesakit hendaklah mematuhi peraturan di atas. Barang larangan seperti jam tangan, kad magnetic (kad kredit/ATM) termasuk apa-apa bahan ferromagnetic dan bahan-bahan besi', italics: true}
+                                        ], colSpan: 4,
+                                    },{},{},{}
                                 ],
                             ]
                         },

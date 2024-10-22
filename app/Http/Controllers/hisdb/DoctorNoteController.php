@@ -2404,7 +2404,7 @@ class DoctorNoteController extends defaultController
         $episno = $request->episno_doctorNote;
 
         $mri = DB::table('hisdb.pat_mri as ptm')
-                    ->select('ptm.mrn','ptm.episno','ptm.mri_date','ptm.pacemaker','ptm.pros_valve','ptm.pros_remark','ptm.intraocular','ptm.cochlear','ptm.neurotransm','ptm.bonegrowth','ptm.druginfuse','ptm.surg_clips','ptm.limb_prosth','ptm.shrapnel','ptm.oper_3mth','ptm.oper3mth_remark','ptm.prev_mri','ptm.claustrophobia','ptm.dental_imp','ptm.frmgnetic_imp','ptm.pregnancy','ptm.allergy_drug','ptm.bloodurea','ptm.serum_creat','ptm.doc_name','ptm.pat_name','pm.Name','pm.Newic','pm.telhp','ph.weight','e.ward')
+                    ->select('ptm.mrn','ptm.episno','ptm.mri_date','ptm.pacemaker','ptm.pros_valve','ptm.pros_remark','ptm.intraocular','ptm.cochlear','ptm.neurotransm','ptm.bonegrowth','ptm.druginfuse','ptm.surg_clips','ptm.limb_prosth','ptm.shrapnel','ptm.oper_3mth','ptm.oper3mth_remark','ptm.prev_mri','ptm.claustrophobia','ptm.dental_imp','ptm.frmgnetic_imp','ptm.pregnancy','ptm.allergy_drug','ptm.bloodurea','ptm.serum_creat','ptm.doc_name','ptm.pat_name','ptm.rad_use','ptm.radiologist','ptm.radiographer','ptm.staffnurse','pm.Name','pm.Newic','pm.telhp','pm.telh','ph.weight','e.bed as ward', 'b.ward as EpWard')
                     ->leftjoin('hisdb.pat_mast as pm', function($join) {
                         $join = $join->on('pm.MRN', '=', 'ptm.mrn');
                         $join = $join->on('pm.Episno', '=', 'ptm.episno');
@@ -2416,9 +2416,13 @@ class DoctorNoteController extends defaultController
                         $join = $join->where('ph.compcode', '=', session('compcode'));
                     })
                     ->leftjoin('hisdb.episode as e', function($join) {
-                        $join = $join->on('e.mrn', '=', 'pm.mrn');
-                        $join = $join->on('e.episno', '=', 'pm.episno');
+                        $join = $join->on('e.mrn', '=', 'ptm.mrn');
+                        $join = $join->on('e.episno', '=', 'ptm.episno');
                         $join = $join->where('e.compcode', '=', session('compcode'));
+                    })
+                    ->leftjoin('hisdb.bed as b', function($join) {
+                        $join = $join->on('b.bednum', '=', 'e.bed');
+                        $join = $join->where('b.compcode', '=', session('compcode'));
                     })
                     ->where('ptm.compcode','=',session('compcode'))
                     ->where('ptm.mrn','=',$request->mrn)

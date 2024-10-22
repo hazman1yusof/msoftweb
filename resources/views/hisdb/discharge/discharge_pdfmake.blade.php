@@ -66,7 +66,7 @@
                                     {text: `{!!$discharge->diagfinal!!}`},
                                 ],
                                 [
-                                    {text: 'PATOLOGIST (if related)',bold: true,},
+                                    {text: 'PATOLOGIST\n(if related)',bold: true,},
                                     {text: `{!!$discharge->patologist!!}`},
                                 ],
                                 [

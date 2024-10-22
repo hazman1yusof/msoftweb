@@ -43,8 +43,18 @@
                                     {text: 'TO INCHARGES: ', bold: true},{},
                                 ],
                                 [
-                                    {text: 'Kindly To Do Dressing For This Patient:\n'},{},
+                                    {text: 'Kindly To Do Dressing For This Patient:'},{},
                                 ],
+                            ]
+                        },
+                        layout: 'noBorders',
+                    },
+                    {
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            widths: [100,100], //panjang standard dia 515
+                            body: [
                                 [
                                     {text: 'Name '},
                                     {text: ': {{$dressing->Name}}'}
@@ -63,9 +73,7 @@
                             headerRows: 1,
                             widths: [50,'*'], //panjang standard dia 515
                             body: [
-                                [
-                                    {text: 'Frequency: ', bold: true},{},
-                                ],
+                                [{text: 'Frequency', style: 'tableHeader', colSpan:2}, {}],
                                 [
                                     {text: '{{$dressing->od_dressing}}'},
                                     {text: 'OD Dressing'},
@@ -84,7 +92,6 @@
                                 ],
                             ]
                         },
-                        layout: 'lightHorizontalLines',
                     },
                     {
                         style: 'tableExample',
