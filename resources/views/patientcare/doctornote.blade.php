@@ -16,7 +16,7 @@
         </div>
 
         <div class="eleven wide tablet eleven wide computer right floated column" style="margin:0px;"  id="jqgrid_div">
-            <div class="ui teal segment jqgridsegment" style="padding-bottom: 40px;">
+            <div class="ui teal segment jqgridsegment" style="padding-bottom: 40px;" id="jqgrid_c">
                 
                 <div class="if_tablet left floated" style="display:none;">
                     <div class="ui calendar" id="button_calendar">
