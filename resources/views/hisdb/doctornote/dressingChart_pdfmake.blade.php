@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Discharge Summary</title>
+        <title>Dressing</title>
     </head>
     
     <!-- <script src="https://unpkg.com/@jsreport/browser-client/dist/jsreport.umd.js"></script>
@@ -29,7 +29,7 @@
                         image: 'letterhead', width: 175, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: '\nDISCHARGE SUMMARY\n',
+                        text: '\nDRESSING\n',
                         style: 'header',
                         alignment: 'center',
                     },
@@ -37,19 +37,13 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [80, '*',80,94,'*'], //panjang standard dia 515
+                            widths: ['*','*'], //panjang standard dia 515
                             body: [
                                 [
-                                    {text: 'NAME ' },
-                                    {text: ': {{$discharge->Name}}'},{},
-                                    {text: 'MRN ' },
-                                    {text: ': {{str_pad($discharge->mrn, 7, "0", STR_PAD_LEFT)}}'},
+                                    {text: 'TO INCHARGES: ', bold: true},{},
                                 ],
                                 [
-                                    {text: 'DATE OF ADMISSION '},
-                                    {text: ': {{\Carbon\Carbon::createFromFormat('Y-m-d',$discharge->reg_date)->format('d-m-Y')}}'},{},
-                                    {text: 'DATE OF DISCHARGE '},
-                                    {text: ': {{\Carbon\Carbon::createFromFormat('Y-m-d',$discharge->dischargedate)->format('d-m-Y')}}'},
+                                    {text: 'Kindly To Do Dressing For This Patient:'},{},
                                 ],
                             ]
                         },
@@ -59,47 +53,79 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [80,'*'], //panjang standard dia 515
+                            widths: [100,100], //panjang standard dia 515
                             body: [
                                 [
-                                    {text: 'FINAL DIAGNOSIS',bold: true,},
-                                    {text: `{!!$discharge->diagfinal!!}`},
+                                    {text: 'Name '},
+                                    {text: ': {{$dressing->Name}}'}
                                 ],
                                 [
-                                    {text: 'PATOLOGIST\n(if related)',bold: true,},
-                                    {text: `{!!$discharge->patologist!!}`},
-                                ],
-                                [
-                                    {text: 'HISTORY OF ILLNESS',bold: true,},
-                                    {text: `{!!$discharge->clinicalnote!!}`},
-                                ],
-                                [
-                                    {text: 'PHYSICAL EXAMINATION',bold: true,},
-                                    {text: `{!!$discharge->phyexam!!}`},
-                                ],
-                                [
-                                    {text: 'INVESTIGATION',bold: true,},
-                                    {text: `{!!$discharge->diagprov!!}`},
-                                ],
-                                [
-                                    {text: 'TREATMENT & MEDICATION',bold: true,},
-                                    {text: `{!!$discharge->treatment!!}`},
-                                ],
-                                [
-                                    {text: 'SUMMARY',bold: true,},
-                                    {text: `{!!$discharge->summary!!}`},
-                                ],
-                                [
-                                    {text: 'FOLLOW UP',bold: true,},
-                                    {text: `{!!$discharge->followup!!}`},
-                                ],
-                                [
-                                    {text: 'DR. INCHARGE',bold: true,},
-                                    {text: `{!!$discharge->doctorname!!}`},
+                                    {text: 'NRIC '},
+                                    {text: ': {{$dressing->Newic}}'}
                                 ],
                             ]
                         },
-                        // layout: 'lightHorizontalLines',
+                        layout: 'noBorders',
+                    },
+                    {
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            widths: [50,'*'], //panjang standard dia 515
+                            body: [
+                                [{text: 'Frequency', style: 'tableHeader', colSpan:2}, {}],
+                                [
+                                    {text: '{{$dressing->od_dressing}}'},
+                                    {text: 'OD Dressing'},
+                                ],
+                                [
+                                    {text: '{{$dressing->bd_dressing}}'},
+                                    {text: 'BD Dressing'},
+                                ],
+                                [
+                                    {text: '{{$dressing->eod_dressing}}'},
+                                    {text: 'EOD Dressing'},
+                                ],
+                                [
+                                    {text: '{{$dressing->others_dressing}}'},
+                                    {text: 'Others: {{$dressing->others_name}}'},
+                                ],
+                            ]
+                        },
+                    },
+                    {
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            widths: ['*'], //panjang standard dia 515
+                            body: [
+                                [
+                                    {text: 'Solution/Method:\n\n', bold: true}
+                                ],
+                                [
+                                    {text: '{{$dressing->solution}}'}
+                                ],
+                            ]
+                        },
+                        layout: 'noBorders',
+                    },
+                    {
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            widths: ['*', '*'],//panjang standard dia 515
+
+                            body: [
+                                [
+                                    {text: 'Thank You For Your Cooperation \n\n'},  
+                                ],
+                                [
+                                    {text: '{{$dressing->adduser}}', fontSize: 8, bold:true},
+                                    
+                                ],
+                            ]
+                        },
+                        layout: 'noBorders',
                     },
                 ],
                 styles: {

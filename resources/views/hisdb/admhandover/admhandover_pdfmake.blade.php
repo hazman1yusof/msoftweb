@@ -148,7 +148,6 @@
                                     @endif
                                 ],
                                 [
-                                    
                                     @if(!empty(($admhandover->allergynone && $admhandover->none_remarks)))
                                     {text: 'NONE ' },
                                     {text: `: {!!$admhandover->none_remarks!!}`},
