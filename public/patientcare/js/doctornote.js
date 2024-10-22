@@ -16,6 +16,7 @@ var urlParam_AddNotes = {
 }
 
 $(document).ready(function () {
+	$('.menu .item').tab();
 
 	var fdl = new faster_detail_load();
 
@@ -245,6 +246,27 @@ $(document).ready(function () {
 	});
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
+	
+	$('.menu .item').on('shown.bs.tab', function (e){
+		let tab = $(this).data('tab');
+		switch(tab){
+			case 'tab-otbook':
+				console.log("test");
+				populate_otbook_getdata();
+				// textarea_init_otbook();
+				break;
+			// case 'RAD':
+			// 	break;
+			// case 'PHYSIO':
+			// 	populate_physio_getdata();
+			// 	// textarea_init_physio();
+			// 	break;
+			// case 'DRESSING':
+			// 	populate_dressing_getdata();
+			// 	// textarea_init_dressing();
+			// 	break;
+		}
+	});
 	
 });
 
@@ -682,4 +704,35 @@ function check_same_usr_edit(data){
     }
 
     return same;
+}
+
+function populate_otbook_getdata(){
+	emptyFormdata(errorField,"#formOTBook",["#mrn_doctorNote","#episno_doctorNote"]);
+	
+	var saveParam = {
+		action: 'get_table_otbook',
+	}
+	
+	var postobj = {
+		_token: $('#csrf_token').val(),
+		// idno: $("#idno_otbook").val(),
+		mrn: $("#mrn_doctorNote").val(),
+		episno: $("#episno_doctorNote").val()
+	};
+	
+	$.get("./doctornote/table?"+$.param(saveParam), $.param(postobj), function (data){
+		
+	},'json').fail(function (data){
+		alert('there is an error');
+	}).success(function (data){
+		if(!$.isEmptyObject(data)){
+			autoinsert_rowdata("#formOTBook",data.pat_otbook);
+			
+			button_state_otbook('edit');
+			textarea_init_otbook();
+		}else{
+			button_state_otbook('add');
+			textarea_init_otbook();
+		}
+	});
 }

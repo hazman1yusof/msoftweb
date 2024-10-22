@@ -262,5 +262,107 @@
                 </form>
             </div>
         </div>
+        
+        <div class="ui segments">
+            <div class="ui secondary segment">REQUEST FOR</div>
+            <div class="ui segment">
+                <div class="ui top attached tabular menu">
+                    <a class="item active" data-tab="tab-otbook">Ward / OT</a>
+                    <!-- <a class="item" data-tab="tab-rad">Radiology</a>
+                    <a class="item" data-tab="tab-physio">Physiotherapy</a>
+                    <a class="item" data-tab="tab-dressing">Dressing</a> -->
+                </div>
+                <div class="ui bottom attached tab segment active" data-tab="tab-otbook">
+                    <div class="ui segments" style="position: relative;">
+                        <div class="ui secondary segment bluecloudsegment">
+                            <div class="ui small blue icon buttons" id="btn_grp_edit_doctorNote" style="position: absolute;
+                                padding: 0 0 0 0;
+                                right: 40px;
+                                top: 9px;
+                                z-index: 2;">
+                                <button class="ui button" id="new_doctorNote"><span class="fa fa-plus-square-o"></span> New</button>
+                                <button class="ui button" id="edit_doctorNote"><span class="fa fa-edit fa-lg"></span> Edit</button>
+                                <button class="ui button" id="save_doctorNote"><span class="fa fa-save fa-lg"></span> Save</button>
+                                <button class="ui button" id="cancel_doctorNote"><span class="fa fa-ban fa-lg"></span> Cancel</button>
+                            </div>
+                        </div>
+                        <div class="ui segment">
+                            <div class="ui grid">
+                                <form id="formOTBook" class="floated ui form sixteen wide column">
+                                    <div class='ui grid'>
+                                        <div class="ui form">
+                                            <div class="six wide column">
+                                                <div class="inline field">
+                                                    <label>Date for OP</label>
+                                                    <input id="op_date" name="op_date" type="date">
+                                                </div>
+                                                
+                                                <div class="inline fields">
+                                                    <label for="adm_type">Type of Admission</label>
+                                                    <div class="field">
+                                                        <div class="ui radio checkbox">
+                                                            <input type="radio" name="adm_type" checked="" tabindex="0" class="hidden" value="DC">
+                                                            <label>Day Case</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="field">
+                                                        <div class="ui radio checkbox">
+                                                            <input type="radio" name="adm_type" tabindex="0" class="hidden" value="IP">
+                                                            <label>In Patient</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="inline fields">
+                                                    <label for="anaesthetist">Anaesthetist</label>
+                                                    <div class="field">
+                                                        <div class="ui radio checkbox">
+                                                            <input type="radio" name="anaesthetist" checked="" tabindex="0" class="hidden" value="1">
+                                                            <label>Required</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="field">
+                                                        <div class="ui radio checkbox">
+                                                            <input type="radio" name="anaesthetist" tabindex="0" class="hidden" value="0">
+                                                            <label>Not Required</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="inline field">
+                                                    <label>Company representative number for medication (if any)</label>
+                                                    <input id="comp_rep_no" name="comp_rep_no" type="text">
+                                                </div>
+                                                
+                                                <div class="inline field">
+                                                    <label>Special remarks / instructions for medication or any related to case</label>
+                                                    <textarea id="ot_remarks" name="ot_remarks" type="text" rows="5"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="ui bottom attached tab segment" data-tab="tab-rad">
+                    <div class="ui top attached tabular menu">
+                        <a class="item active" data-tab="tab-radClinic">Clinical Data</a>
+                        <a class="item" data-tab="tab-mri">Checklist MRI</a>
+                    </div>
+                    <div class="ui bottom attached tab segment active" data-tab="tab-radClinic">
+                    
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="tab-mri">
+                    
+                    </div>
+                </div>
+                <div class="ui bottom attached tab segment" data-tab="tab-physio">
+                </div>
+                <div class="ui bottom attached tab segment" data-tab="tab-dressing">
+                </div> -->
+            </div>
+        </div>
     </div>
 </div>
