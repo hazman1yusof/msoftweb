@@ -109,6 +109,7 @@ $(document).ready(function () {
 				{ label: 'Physio', name: 'reff_physio', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'Diet', name: 'reff_diet', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'ED', name: 'reff_ed', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
+				{ label: 'RAD', name: 'reff_rad', width: 50 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'HP', name: 'telhp', width: 15 , hidden:true},
 				{ label: 'Sex', name: 'Sex', width: 9 ,classes: 'wrap' },
 				{ label: 'Mode', name: 'pyrmode', width: 8 ,classes: 'wrap'},
@@ -212,6 +213,7 @@ $(document).ready(function () {
 				{ label: 'Physio', name: 'reff_physio', width: 50 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'Diet', name: 'reff_diet', width: 50 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'ED', name: 'reff_ed', width: 50 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
+				{ label: 'RAD', name: 'reff_rad', width: 50 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'HP', name: 'telhp', width: 90 ,classes: 'wrap' },
 				{ label: 'Sex', name: 'Sex', width: 40 ,classes: 'wrap' },
 				{ label: 'Mode', name: 'pyrmode', width: 60 ,classes: 'wrap'},
@@ -329,6 +331,8 @@ $(document).ready(function () {
 			return '<span class="fa fa-check" ></span>';
 		}else if (cellvalue != null && cellvalue.toUpperCase() == 'YES') {
 			return '<span class="fa fa-check" ></span>';
+		}else if (cellvalue != null && cellvalue.toUpperCase() == '1') {
+			return '<span class="fa fa-check" ></span>';
 		}else{
 			return "";
 		}
@@ -336,9 +340,9 @@ $(document).ready(function () {
 
 	function UNformatterstatus_tick2(cellvalue, option, rowObject) {
 		if ($(rowObject).children().length) {
-			return 'YES';
+			return '1';
 		}else{
-			return "NO";
+			return "0";
 		}
 	}
 
