@@ -280,10 +280,10 @@
                                 right: 40px;
                                 top: 9px;
                                 z-index: 2;">
-                                <button class="ui button" id="new_doctorNote"><span class="fa fa-plus-square-o"></span> New</button>
-                                <button class="ui button" id="edit_doctorNote"><span class="fa fa-edit fa-lg"></span> Edit</button>
-                                <button class="ui button" id="save_doctorNote"><span class="fa fa-save fa-lg"></span> Save</button>
-                                <button class="ui button" id="cancel_doctorNote"><span class="fa fa-ban fa-lg"></span> Cancel</button>
+                                <button class="ui button" id="new_otbook"><span class="fa fa-plus-square-o"></span>New</button>
+                                <button class="ui button" id="edit_otbook"><span class="fa fa-edit fa-lg"></span>Edit</button>
+                                <button class="ui button" id="save_otbook"><span class="fa fa-save fa-lg"></span>Save</button>
+                                <button class="ui button" id="cancel_otbook"><span class="fa fa-ban fa-lg"></span>Cancel</button>
                             </div>
                         </div>
                         <div class="ui segment">
