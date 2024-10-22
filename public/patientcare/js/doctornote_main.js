@@ -201,13 +201,13 @@ $(document).ready(function () {
 		$("#jqGrid").jqGrid({
 			datatype: "local",
 			colModel: [
-				{ label: 'MRN', name: 'MRN', width: 80, classes: 'wrap', formatter: padzero, unformat: unpadzero, checked: true,  },
+				{ label: 'MRN', name: 'MRN', width: 60, classes: 'wrap', formatter: padzero, unformat: unpadzero, checked: true,  },
 				{ label: 'Epis. No', name: 'Episno',align: 'right',classes: 'wrap' , hidden:true},
-				{ label: 'Time', name: 'reg_time', width: 80 ,classes: 'wrap', formatter: timeFormatter, unformat: timeUNFormatter},
+				{ label: 'Time', name: 'reg_time', width: 70 ,classes: 'wrap', formatter: timeFormatter, unformat: timeUNFormatter},
 				{ label: 'Name', name: 'Name', width: 180 ,classes: 'wrap' },
 				{ label: 'Payer', name: 'payer', width: 90 },
-				{ label: 'Dept', name: 'regdept', width: 90  },
-				{ label: 'I/C', name: 'Newic', width: 100 ,classes: 'wrap' },
+				{ label: 'Dept', name: 'regdept', width: 60  },
+				{ label: 'I/C', name: 'Newic', width: 95 ,classes: 'wrap' },
 				{ label: 'Rehab', name: 'reff_rehab', width: 50 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'Physio', name: 'reff_physio', width: 50 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'Diet', name: 'reff_diet', width: 50 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
