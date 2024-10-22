@@ -94,7 +94,6 @@ $(document).ready(function () {
 			}
 
 		});
-		
 
 		$("#jqGrid").jqGrid({
 			datatype: "local",
@@ -109,6 +108,7 @@ $(document).ready(function () {
 				{ label: 'Rehab', name: 'reff_rehab', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'Physio', name: 'reff_physio', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'Diet', name: 'reff_diet', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
+				{ label: 'ED', name: 'reff_ed', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'HP', name: 'telhp', width: 13 ,classes: 'wrap' , hidden:true},
 				{ label: 'Sex', name: 'Sex', width: 6 ,classes: 'wrap' },
 				{ label: 'Mode', name: 'pyrmode', width: 8 ,classes: 'wrap'},
@@ -211,6 +211,7 @@ $(document).ready(function () {
 				{ label: 'Rehab', name: 'reff_rehab', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'Physio', name: 'reff_physio', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'Diet', name: 'reff_diet', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
+				{ label: 'ED', name: 'reff_ed', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'HP', name: 'telhp', width: 10 ,classes: 'wrap' },
 				{ label: 'Sex', name: 'Sex', width: 5 ,classes: 'wrap' },
 				{ label: 'Mode', name: 'pyrmode', width: 10 ,classes: 'wrap'},
@@ -301,7 +302,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid('setGroupHeaders', {
 		useColSpanStyle: true, 
 		groupHeaders:[
-			{startColumnName: 'reff_rehab', numberOfColumns: 3, titleText: '<em>Referral</em>'},
+			{startColumnName: 'reff_rehab', numberOfColumns: 4, titleText: '<em>Referral</em>'},
 		]
 	});
 	addParamField('#jqGrid',true,urlParam,['action']);
