@@ -274,7 +274,7 @@
                 </div>
                 <div class="ui bottom attached tab segment active" data-tab="tab-otbook">
                     <div class="ui segments" style="position: relative;">
-                        <div class="ui secondary segment bluecloudsegment">
+                        <div class="ui secondary segment bluecloudsegment" style="height: 50px;">
                             <div class="ui small blue icon buttons" id="btn_grp_edit_doctorNote" style="position: absolute;
                                 padding: 0 0 0 0;
                                 right: 40px;

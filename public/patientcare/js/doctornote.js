@@ -17,6 +17,7 @@ var urlParam_AddNotes = {
 
 $(document).ready(function () {
 	$('.menu .item').tab();
+	populate_otbook_getdata();
 
 	var fdl = new faster_detail_load();
 
@@ -68,6 +69,45 @@ $(document).ready(function () {
 		// dialog_mrn_edit.off();
 		// $('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
 	});
+	
+	////////////////////////////////////////////otbook starts////////////////////////////////////////////
+	disableForm('#formOTBook');
+	
+	// $("#new_otbook").click(function (){
+	// 	$('#cancel_otbook').data('oper','add');
+	// 	button_state_otbook('wait');
+	// 	enableForm('#formOTBook');
+	// 	rdonly('#formOTBook');
+	// 	emptyFormdata_div("#formOTBook",['#mrn_doctorNote','#episno_doctorNote']);
+	// });
+	
+	// $("#edit_otbook").click(function (){
+	// 	button_state_otbook('wait');
+	// 	enableForm('#formOTBook');
+	// 	rdonly('#formOTBook');
+	// });
+	
+	// $("#save_otbook").click(function (){
+	// 	disableForm('#formOTBook');
+	// 	if($('#formOTBook').isValid({requiredFields: ''}, conf, true)){
+	// 		saveForm_otbook(function (data){
+	// 			// emptyFormdata_div("#formOTBook",['#mrn_doctorNote','#episno_doctorNote']);
+	// 			// disableForm('#formOTBook');
+	// 			$('#cancel_otbook').data('oper','edit');
+	// 			$("#cancel_otbook").click();
+	// 		});
+	// 	}else{
+	// 		enableForm('#formOTBook');
+	// 		rdonly('#formOTBook');
+	// 	}
+	// });
+	
+	// $("#cancel_otbook").click(function (){
+	// 	// emptyFormdata_div("#formOTBook",['#mrn_doctorNote','#episno_doctorNote']);
+	// 	disableForm('#formOTBook');
+	// 	button_state_otbook($(this).data('oper'));
+	// });
+	//////////////////////////////////////////////otbook ends//////////////////////////////////////////////
 
 	// to format number input to two decimal places (0.00)
 	$(".floatNumberField").change(function() {
@@ -407,6 +447,34 @@ function button_state_doctorNote(state){
 
 }
 
+button_state_otbook('empty');
+function button_state_otbook(state){
+	switch(state){
+		case 'empty':
+			$("#toggle_doctorNote").removeAttr('data-toggle');
+			$('#cancel_otbook').data('oper','add');
+			$('#new_otbook,#save_otbook,#cancel_otbook,#edit_otbook').attr('disabled',true);
+			break;
+		case 'add':
+			$("#toggle_doctorNote").attr('data-toggle','collapse');
+			$('#cancel_otbook').data('oper','add');
+			$("#new_otbook").attr('disabled',false);
+			$('#save_otbook,#cancel_otbook,#edit_otbook').attr('disabled',true);
+			break;
+		case 'edit':
+			$("#toggle_doctorNote").attr('data-toggle','collapse');
+			$('#cancel_otbook').data('oper','edit');
+			$("#edit_otbook").attr('disabled',false);
+			$('#save_otbook,#cancel_otbook,#new_otbook').attr('disabled',true);
+			break;
+		case 'wait':
+			$("#toggle_doctorNote").attr('data-toggle','collapse');
+			$("#save_otbook,#cancel_otbook").attr('disabled',false);
+			$('#edit_otbook,#new_otbook').attr('disabled',true);
+			break;
+	}
+}
+
 function empty_currDoctorNote(){
 	emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
 	button_state_doctorNote('empty');
@@ -706,7 +774,25 @@ function check_same_usr_edit(data){
     return same;
 }
 
+function textarea_init_otbook(){
+	$('textarea#ot_remarks').each(function (){
+		if(this.value.trim() == ''){
+			this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+		}else{
+			this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+		}
+	}).off().on('input', function (){
+		if(this.scrollHeight > 40){
+			this.style.height = 'auto';
+			this.style.height = (this.scrollHeight) + 'px';
+		}else{
+			this.style.height = (40) + 'px';
+		}
+	});
+}
+
 function populate_otbook_getdata(){
+	// console.log("otbook");
 	emptyFormdata(errorField,"#formOTBook",["#mrn_doctorNote","#episno_doctorNote"]);
 	
 	var saveParam = {
@@ -714,7 +800,7 @@ function populate_otbook_getdata(){
 	}
 	
 	var postobj = {
-		_token: $('#csrf_token').val(),
+		_token: $('#_token').val(),
 		// idno: $("#idno_otbook").val(),
 		mrn: $("#mrn_doctorNote").val(),
 		episno: $("#episno_doctorNote").val()
@@ -722,17 +808,17 @@ function populate_otbook_getdata(){
 	
 	$.get("./doctornote/table?"+$.param(saveParam), $.param(postobj), function (data){
 		
-	},'json').fail(function (data){
-		alert('there is an error');
-	}).success(function (data){
+	},'json').done(function (data){
 		if(!$.isEmptyObject(data)){
-			autoinsert_rowdata("#formOTBook",data.pat_otbook);
-			
-			button_state_otbook('edit');
-			textarea_init_otbook();
-		}else{
-			button_state_otbook('add');
-			textarea_init_otbook();
+			if(!$.isEmptyObject(data)){
+				autoinsert_rowdata_doctorNote("#formOTBook",data.pat_otbook);
+				
+				button_state_otbook('edit');
+				textarea_init_otbook();
+			}else{
+				button_state_otbook('add');
+				textarea_init_otbook();
+			}
 		}
 	});
 }
