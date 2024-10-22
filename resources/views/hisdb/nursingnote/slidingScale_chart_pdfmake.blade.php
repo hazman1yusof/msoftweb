@@ -70,7 +70,7 @@
                                     { text: 'DATE', style: 'tableHeader' },
                                     { text: 'TIME', style: 'tableHeader' },
                                     { text: 'DEXTROSTIX', style: 'tableHeader' },
-                                    { text: 'ADDED\nBY', style: 'tableHeader' },
+                                    { text: 'ADDED BY', style: 'tableHeader' },
                                     { text: 'REMARKS', style: 'tableHeader' },
                                 ],
                                 @foreach ($nurs_slidingscale as $obj)

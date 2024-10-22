@@ -1927,29 +1927,29 @@ class NursingNoteController extends defaultController
         $pat_mast = DB::table('hisdb.pat_mast as pm')
                     ->select('pm.MRN','pm.Name','b.ward','b.bednum','n.diagnosis')
                     ->leftJoin('hisdb.bedalloc as b', function ($join){
-                        $join = $join->on('b.mrn', '=', 'pm.MRN')
-                                    ->on('b.episno', '=', 'pm.Episno')
-                                    ->where('b.compcode', '=', session('compcode'));
+                        $join = $join->on('b.mrn','=','pm.MRN')
+                                    ->on('b.episno','=','pm.Episno')
+                                    ->where('b.compcode','=',session('compcode'));
                     })
                     ->leftJoin('nursing.nursassessment as n', function ($join){
-                        $join = $join->on('n.mrn', '=', 'pm.MRN')
-                                    ->on('n.episno', '=', 'pm.Episno')
-                                    ->where('n.compcode', '=', session('compcode'));
+                        $join = $join->on('n.mrn','=','pm.MRN')
+                                    ->on('n.episno','=','pm.Episno')
+                                    ->where('n.compcode','=',session('compcode'));
                     })
                     ->where('pm.CompCode','=',session('compcode'))
-                    ->where('pm.MRN','=',$request->mrn)
-                    ->where('pm.Episno','=',$request->episno)
+                    ->where('pm.MRN','=',$mrn)
+                    ->where('pm.Episno','=',$episno)
                     ->first();
         
         $nurs_fitchart = DB::table('nursing.nurs_fitchart as fc')
                         ->select('fc.compcode','fc.mrn','fc.episno','fc.entereddate','fc.enteredtime','fc.fit','fc.duration','fc.remarks','fc.adduser','fc.adddate','fc.addtime','fc.upduser','fc.upddate','fc.lastuser','fc.lastupdate','fc.lastupdtime','fc.computerid')
                         // ->leftJoin('hisdb.pat_mast as pm', function ($join){
-                        //     $join = $join->on('pm.MRN', '=', 'fc.mrn')
-                        //                 ->where('pm.compcode', '=', session('compcode'));
+                        //     $join = $join->on('pm.MRN','=','fc.mrn')
+                        //                 ->where('pm.compcode','=',session('compcode'));
                         // })
                         ->where('fc.compcode','=',session('compcode'))
-                        ->where('fc.mrn','=',$request->mrn)
-                        ->where('fc.episno','=',$request->episno)
+                        ->where('fc.mrn','=',$mrn)
+                        ->where('fc.episno','=',$episno)
                         ->get();
         // dd($nurs_fitchart);
         
@@ -1969,29 +1969,29 @@ class NursingNoteController extends defaultController
         $pat_mast = DB::table('hisdb.pat_mast as pm')
                     ->select('pm.MRN','pm.Name','b.ward','b.bednum','n.diagnosis')
                     ->leftJoin('hisdb.bedalloc as b', function ($join){
-                        $join = $join->on('b.mrn', '=', 'pm.MRN')
-                                    ->on('b.episno', '=', 'pm.Episno')
-                                    ->where('b.compcode', '=', session('compcode'));
+                        $join = $join->on('b.mrn','=','pm.MRN')
+                                    ->on('b.episno','=','pm.Episno')
+                                    ->where('b.compcode','=',session('compcode'));
                     })
                     ->leftJoin('nursing.nursassessment as n', function ($join){
-                        $join = $join->on('n.mrn', '=', 'pm.MRN')
-                                    ->on('n.episno', '=', 'pm.Episno')
-                                    ->where('n.compcode', '=', session('compcode'));
+                        $join = $join->on('n.mrn','=','pm.MRN')
+                                    ->on('n.episno','=','pm.Episno')
+                                    ->where('n.compcode','=',session('compcode'));
                     })
                     ->where('pm.CompCode','=',session('compcode'))
-                    ->where('pm.MRN','=',$request->mrn)
-                    ->where('pm.Episno','=',$request->episno)
+                    ->where('pm.MRN','=',$mrn)
+                    ->where('pm.Episno','=',$episno)
                     ->first();
         
         $nurs_circulation = DB::table('nursing.nurs_circulation as cr')
                             ->select('cr.compcode','cr.mrn','cr.episno','cr.entereddate','cr.enteredtime','cr.capillary','cr.skintemp','cr.pulse','cr.movement','cr.sensation','cr.oedema','cr.adduser','cr.adddate','cr.addtime','cr.upduser','cr.upddate','cr.lastuser','cr.lastupdate','cr.lastupdtime','cr.computerid')
                             // ->leftJoin('hisdb.pat_mast as pm', function ($join){
-                            //     $join = $join->on('pm.MRN', '=', 'cr.mrn')
-                            //                 ->where('pm.compcode', '=', session('compcode'));
+                            //     $join = $join->on('pm.MRN','=','cr.mrn')
+                            //                 ->where('pm.compcode','=',session('compcode'));
                             // })
                             ->where('cr.compcode','=',session('compcode'))
-                            ->where('cr.mrn','=',$request->mrn)
-                            ->where('cr.episno','=',$request->episno)
+                            ->where('cr.mrn','=',$mrn)
+                            ->where('cr.episno','=',$episno)
                             ->get();
         // dd($nurs_circulation);
         
@@ -2010,29 +2010,29 @@ class NursingNoteController extends defaultController
         $pat_mast = DB::table('hisdb.pat_mast as pm')
                     ->select('pm.MRN','pm.Name','b.ward','b.bednum','n.diagnosis')
                     ->leftJoin('hisdb.bedalloc as b', function ($join){
-                        $join = $join->on('b.mrn', '=', 'pm.MRN')
-                                    ->on('b.episno', '=', 'pm.Episno')
-                                    ->where('b.compcode', '=', session('compcode'));
+                        $join = $join->on('b.mrn','=','pm.MRN')
+                                    ->on('b.episno','=','pm.Episno')
+                                    ->where('b.compcode','=',session('compcode'));
                     })
                     ->leftJoin('nursing.nursassessment as n', function ($join){
-                        $join = $join->on('n.mrn', '=', 'pm.MRN')
-                                    ->on('n.episno', '=', 'pm.Episno')
-                                    ->where('n.compcode', '=', session('compcode'));
+                        $join = $join->on('n.mrn','=','pm.MRN')
+                                    ->on('n.episno','=','pm.Episno')
+                                    ->where('n.compcode','=',session('compcode'));
                     })
                     ->where('pm.CompCode','=',session('compcode'))
-                    ->where('pm.MRN','=',$request->mrn)
-                    ->where('pm.Episno','=',$request->episno)
+                    ->where('pm.MRN','=',$mrn)
+                    ->where('pm.Episno','=',$episno)
                     ->first();
         
         $nurs_slidingscale = DB::table('nursing.nurs_slidingscale as ss')
                             ->select('ss.compcode','ss.mrn','ss.episno','ss.entereddate','ss.enteredtime','ss.dextrostix','ss.remarks','ss.adduser','ss.adddate','ss.addtime','ss.upduser','ss.upddate','ss.lastuser','ss.lastupdate','ss.lastupdtime','ss.computerid')
                             // ->leftJoin('hisdb.pat_mast as pm', function ($join){
-                            //     $join = $join->on('pm.MRN', '=', 'ss.mrn')
-                            //                 ->where('pm.compcode', '=', session('compcode'));
+                            //     $join = $join->on('pm.MRN','=','ss.mrn')
+                            //                 ->where('pm.compcode','=',session('compcode'));
                             // })
                             ->where('ss.compcode','=',session('compcode'))
-                            ->where('ss.mrn','=',$request->mrn)
-                            ->where('ss.episno','=',$request->episno)
+                            ->where('ss.mrn','=',$mrn)
+                            ->where('ss.episno','=',$episno)
                             ->get();
         // dd($nurs_slidingscale);
         
@@ -2052,31 +2052,31 @@ class NursingNoteController extends defaultController
         $pat_mast = DB::table('hisdb.pat_mast as pm')
                     ->select('pm.MRN','pm.Name','b.ward','b.bednum','n.diagnosis')
                     ->leftJoin('hisdb.bedalloc as b', function ($join){
-                        $join = $join->on('b.mrn', '=', 'pm.MRN')
-                                    ->on('b.episno', '=', 'pm.Episno')
-                                    ->where('b.compcode', '=', session('compcode'));
+                        $join = $join->on('b.mrn','=','pm.MRN')
+                                    ->on('b.episno','=','pm.Episno')
+                                    ->where('b.compcode','=',session('compcode'));
                     })
                     ->leftJoin('nursing.nursassessment as n', function ($join){
-                        $join = $join->on('n.mrn', '=', 'pm.MRN')
-                                    ->on('n.episno', '=', 'pm.Episno')
-                                    ->where('n.compcode', '=', session('compcode'));
+                        $join = $join->on('n.mrn','=','pm.MRN')
+                                    ->on('n.episno','=','pm.Episno')
+                                    ->where('n.compcode','=',session('compcode'));
                     })
                     ->where('pm.CompCode','=',session('compcode'))
-                    ->where('pm.MRN','=',$request->mrn)
-                    ->where('pm.Episno','=',$request->episno)
+                    ->where('pm.MRN','=',$mrn)
+                    ->where('pm.Episno','=',$episno)
                     ->first();
         
         $nurs_othershdr = DB::table('nursing.nurs_othershdr')
                         ->where('compcode','=',session('compcode'))
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno)
+                        ->where('mrn','=',$mrn)
+                        ->where('episno','=',$episno)
                         ->where('tabtitle','=',$tabtitle)
                         ->first();
         
         $nurs_othersdtl = DB::table('nursing.nurs_othersdtl')
                         ->where('compcode','=',session('compcode'))
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno)
+                        ->where('mrn','=',$mrn)
+                        ->where('episno','=',$episno)
                         ->where('tabtitle','=',$tabtitle)
                         ->get();
         // dd($nurs_othersdtl);
