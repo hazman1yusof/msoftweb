@@ -109,7 +109,7 @@ $(document).ready(function () {
 				{ label: 'Physio', name: 'reff_physio', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'Diet', name: 'reff_diet', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'ED', name: 'reff_ed', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
-				{ label: 'RAD', name: 'reff_rad', width: 50 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
+				{ label: 'RAD', name: 'reff_rad', width: 8 ,classes: 'wrap',formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'HP', name: 'telhp', width: 15 , hidden:true},
 				{ label: 'Sex', name: 'Sex', width: 9 ,classes: 'wrap' },
 				{ label: 'Mode', name: 'pyrmode', width: 8 ,classes: 'wrap'},
@@ -306,7 +306,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid('setGroupHeaders', {
 		useColSpanStyle: true, 
 		groupHeaders:[
-			{startColumnName: 'reff_rehab', numberOfColumns: 4, titleText: '<em>Referral</em>'},
+			{startColumnName: 'reff_rehab', numberOfColumns: 5, titleText: '<em>Referral</em>'},
 		]
 	});
 	addParamField('#jqGrid',true,urlParam,['action']);
