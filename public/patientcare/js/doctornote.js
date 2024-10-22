@@ -17,7 +17,6 @@ var urlParam_AddNotes = {
 
 $(document).ready(function () {
 	$('.menu .item').tab();
-	populate_otbook_getdata();
 
 	var fdl = new faster_detail_load();
 
@@ -534,7 +533,7 @@ function populate_currDoctorNote(obj){
 
     $("#tab_doctornote").collapse('hide');
     button_state_doctorNote('disableAll');
-
+	populate_otbook_getdata();
 }
 
 function on_toggling_curr_past(obj = curr_obj){
@@ -792,7 +791,7 @@ function textarea_init_otbook(){
 }
 
 function populate_otbook_getdata(){
-	// console.log("otbook");
+	// console.log($("#mrn_doctorNote").val());
 	emptyFormdata(errorField,"#formOTBook",["#mrn_doctorNote","#episno_doctorNote"]);
 	
 	var saveParam = {
@@ -813,11 +812,11 @@ function populate_otbook_getdata(){
 			if(!$.isEmptyObject(data)){
 				autoinsert_rowdata_doctorNote("#formOTBook",data.pat_otbook);
 				
-				button_state_otbook('edit');
-				textarea_init_otbook();
+				// button_state_otbook('edit');
+				// textarea_init_otbook();
 			}else{
-				button_state_otbook('add');
-				textarea_init_otbook();
+				// button_state_otbook('add');
+				// textarea_init_otbook();
 			}
 		}
 	});

@@ -291,7 +291,7 @@
                                 <form id="formOTBook" class="floated ui form sixteen wide column">
                                     <div class='ui grid'>
                                         <div class="ui form">
-                                            <div class="six wide column">
+                                            <div class="six wide column" style="padding-top: 10px; padding-bottom: 10px;">
                                                 <div class="inline field">
                                                     <label>Date for OP</label>
                                                     <input id="op_date" name="op_date" type="date">
