@@ -80,6 +80,8 @@ class TestController extends defaultController
                 return $this->update_chgprice($request);
             case 'betulkandb':
                 return $this->betulkandb($request);
+            case 'betulkan_ivtxndt':
+                return $this->betulkan_ivtxndt($request);
             default:
                 return 'error happen..';
         }
@@ -1840,6 +1842,122 @@ class TestController extends defaultController
                             ]);
 
             DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function betulkan_ivtxndt(Request $request){
+        DB::beginTransaction();
+        try {
+
+            $ivtxndt = DB::table('material.ivtxndt')
+                            ->where('compcode','9B')
+                            ->whereDate('adddate','>','2024-10-01')
+                            ->get();
+
+            foreach ($ivtxndt as $obj) {
+                $itemcode=$obj->itemcode;
+                $deptcode=$obj->deptcode;
+
+                $stockloc = DB::table('material.stockloc')
+                            ->where('compcode','9B')
+                            ->where('deptcode',$deptcode)
+                            ->where('itemcode',$itemcode);
+
+                $sumqty = DB::table('material.ivtxndt')
+                                ->where('compcode','9B')
+                                ->whereDate('adddate','>','2024-10-01')
+                                ->where('itemcode',$itemcode)
+                                ->sum('txnqty');
+
+                if($stockloc->exists()){
+                    DB::table('material.stockloc')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$itemcode)
+                            ->where('deptcode',$deptcode)
+                            ->update([
+                                'netmvqty10' => $txnqty
+                            ]);
+
+                    $stockloc = DB::table('material.stockloc')
+                            ->where('compcode','9B')
+                            ->where('deptcode',$deptcode)
+                            ->where('itemcode',$itemcode)
+                            ->first();
+
+                    $qtyonhand = floatval($stockloc) + floatval($var)
+
+                    DB::product
+                }
+
+                dump($itemcode.'-'.$itemcode.' qty10 = '.$txnqty);
+
+            }
+
+            // DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function betulkan_tick(Request $request){
+        DB::beginTransaction();
+        try {
+
+            $ivtxndt = DB::table('material.ivtxndt')
+                            ->where('compcode','9B')
+                            ->whereDate('adddate','>','2024-10-01')
+                            ->get();
+
+            foreach ($ivtxndt as $obj) {
+                $itemcode=$obj->itemcode;
+                $deptcode=$obj->deptcode;
+
+                $stockloc = DB::table('material.stockloc')
+                            ->where('compcode','9B')
+                            ->where('deptcode',$deptcode)
+                            ->where('itemcode',$itemcode);
+
+                $sumqty = DB::table('material.ivtxndt')
+                                ->where('compcode','9B')
+                                ->whereDate('adddate','>','2024-10-01')
+                                ->where('itemcode',$itemcode)
+                                ->sum('txnqty');
+
+                if($stockloc->exists()){
+                    DB::table('material.stockloc')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$itemcode)
+                            ->where('deptcode',$deptcode)
+                            ->update([
+                                'netmvqty10' => $txnqty
+                            ]);
+
+                    $stockloc = DB::table('material.stockloc')
+                            ->where('compcode','9B')
+                            ->where('deptcode',$deptcode)
+                            ->where('itemcode',$itemcode)
+                            ->first();
+
+                    $qtyonhand = floatval($stockloc) + floatval($var)
+
+                    DB::product
+                }
+
+                dump($itemcode.'-'.$itemcode.' qty10 = '.$txnqty);
+
+            }
+
+            // DB::commit();
 
         } catch (Exception $e) {
             DB::rollback();

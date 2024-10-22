@@ -159,15 +159,19 @@ $(document).ready(function () {
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","idno","delordhd_recstatus");
 
 	var urlParam={
-		action:'get_table_default',
-		url:'util/get_table_default',
-		field: ['ivt.recno','ivt.txndept','ivt.trantype','ivt.docno','ivt.trandate','ivt.trantime','ivt.sndrcv','ivt.sndrcvtype','ivt.amount','ivt.recstatus','ivt.srcdocno','ivt.remarks','ivt.adduser','ivt.adddate','ivt.upduser','ivt.upddate','ivt.source','ivt.idno','itt.isstype','itt.crdbfl'],
-		table_name:['material.ivtmphd as ivt','material.ivtxntype as itt'],
-		join_type:['LEFT JOIN'],
-		join_onCol:['ivt.trantype'],
-		join_onVal:['itt.trantype'],
-		filterCol:['ivt.compcode'],
-		filterVal:['session.compcode']
+		// action:'get_table_default',
+		// url:'util/get_table_default',
+		// field: ['ivt.recno','ivt.txndept','ivt.trantype','ivt.docno','ivt.trandate','ivt.trantime','ivt.sndrcv','ivt.sndrcvtype','ivt.amount','ivt.recstatus','ivt.srcdocno','ivt.remarks','ivt.adduser','ivt.adddate','ivt.upduser','ivt.upddate','ivt.source','ivt.idno','itt.isstype','itt.crdbfl'],
+		// table_name:['material.ivtmphd as ivt','material.ivtxntype as itt'],
+		// join_type:['LEFT JOIN'],
+		// join_onCol:['ivt.trantype'],
+		// join_onVal:['itt.trantype'],
+		// filterCol:['ivt.compcode'],
+		// filterVal:['session.compcode']
+		action:'maintable',
+		url:'./inventoryTransaction/table',
+		// source:$('#db_source').val(),
+		// trantype:$('#db_trantype').val(),
 		
 	}
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
@@ -894,7 +898,7 @@ $(document).ready(function () {
 	
 	searchChange(true);
 	function searchChange(once=false){
-		var arrtemp = ['session.compcode',  $('#Status option:selected').val(), $('#trandept option:selected').val()];
+		var arrtemp = [$('#Status option:selected').val(), $('#trandept option:selected').val()];
 		var filter = arrtemp.reduce(function(a,b,c){
 			if(b=='All'){
 				return a;
@@ -903,7 +907,7 @@ $(document).ready(function () {
 				a.fv = a.fv.concat(b);
 				return a;
 			}
-		},{fct:['ivt.compcode','ivt.recstatus','ivt.txndept'],fv:[],fc:[]});//tukar kat sini utk searching purreqhd.compcode','purreqhd.recstatus','purreqhd.prdept'
+		},{fct:['ivt.recstatus','ivt.txndept'],fv:[],fc:[]});//tukar kat sini utk searching purreqhd.compcode','purreqhd.recstatus','purreqhd.prdept'
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
