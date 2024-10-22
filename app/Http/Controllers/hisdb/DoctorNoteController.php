@@ -1201,10 +1201,21 @@ class DoctorNoteController extends defaultController
                     'op_date' => $request->op_date,
                     'adm_type' => $request->adm_type,
                     'anaesthetist' => $request->anaesthetist,
+                    'comp_rep_no' => $request->comp_rep_no,
                     'ot_remarks' => $request->ot_remarks,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                ]);
+            
+            DB::table('hisdb.episode')
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'reff_ed' => '1',
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
             
             DB::commit();
@@ -1236,6 +1247,7 @@ class DoctorNoteController extends defaultController
                         'op_date' => $request->op_date,
                         'adm_type' => $request->adm_type,
                         'anaesthetist' => $request->anaesthetist,
+                        'comp_rep_no' => $request->comp_rep_no,
                         'ot_remarks' => $request->ot_remarks,
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -1249,6 +1261,7 @@ class DoctorNoteController extends defaultController
                         'op_date' => $request->op_date,
                         'adm_type' => $request->adm_type,
                         'anaesthetist' => $request->anaesthetist,
+                        'comp_rep_no' => $request->comp_rep_no,
                         'ot_remarks' => $request->ot_remarks,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -1314,6 +1327,7 @@ class DoctorNoteController extends defaultController
                             ->update([
                                 'newcaseP' => 1,
                                 'newcaseNP' => null,
+                                'reff_rad' => '1',
                                 'lastuser'  => session('username'),
                                 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                             ]);
@@ -1322,6 +1336,7 @@ class DoctorNoteController extends defaultController
                             ->update([
                                 'newcaseP' => null,
                                 'newcaseNP' => 1,
+                                'reff_rad' => '1',
                                 'lastuser'  => session('username'),
                                 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                             ]);
@@ -1332,6 +1347,7 @@ class DoctorNoteController extends defaultController
                             ->update([
                                 'followupP' => 1,
                                 'followupNP' => null,
+                                'reff_rad' => '1',
                                 'lastuser'  => session('username'),
                                 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                             ]);
@@ -1340,6 +1356,7 @@ class DoctorNoteController extends defaultController
                             ->update([
                                 'followupP' => null,
                                 'followupNP' => 1,
+                                'reff_rad' => '1',
                                 'lastuser'  => session('username'),
                                 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                             ]);
@@ -1393,6 +1410,16 @@ class DoctorNoteController extends defaultController
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
                 ]);
+            
+            // DB::table('hisdb.episode')
+            //     ->where('mrn','=',$request->mrn)
+            //     ->where('episno','=',$request->episno)
+            //     ->where('compcode','=',session('compcode'))
+            //     ->update([
+            //         'reff_rad' => '1',
+            //         'lastuser'  => session('username'),
+            //         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //     ]);
             
             DB::commit();
             
@@ -1663,9 +1690,23 @@ class DoctorNoteController extends defaultController
                     'serum_creat' => $request->serum_creat,
                     'doc_name' => session('username'),
                     'pat_name' => $request->pat_name,
+                    'rad_use' => $request->rad_use,
+                    'radiologist' => $request->radiologist,
+                    'radiographer' => $request->radiographer,
+                    'staffnurse' => $request->staffnurse,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                ]);
+            
+            DB::table('hisdb.episode')
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'reff_rad' => '1',
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
             
             DB::commit();
@@ -1734,6 +1775,10 @@ class DoctorNoteController extends defaultController
                         'serum_creat' => $request->serum_creat,
                         'doc_name' => session('username'),
                         'pat_name' => $request->pat_name,
+                        'rad_use' => $request->rad_use,
+                        'radiologist' => $request->radiologist,
+                        'radiographer' => $request->radiographer,
+                        'staffnurse' => $request->staffnurse,
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
@@ -1767,6 +1812,10 @@ class DoctorNoteController extends defaultController
                         'serum_creat' => $request->serum_creat,
                         'doc_name' => session('username'),
                         'pat_name' => $request->pat_name,
+                        'rad_use' => $request->rad_use,
+                        'radiologist' => $request->radiologist,
+                        'radiographer' => $request->radiographer,
+                        'staffnurse' => $request->staffnurse,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'computerid' => session('computerid'),
@@ -1847,6 +1896,16 @@ class DoctorNoteController extends defaultController
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                ]);
+            
+            DB::table('hisdb.episode')
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'reff_physio' => '1',
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
             
             DB::commit();
@@ -1955,6 +2014,16 @@ class DoctorNoteController extends defaultController
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                ]);
+            
+            DB::table('hisdb.episode')
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'reff_ed' => '1',
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
             
             DB::commit();
@@ -2363,6 +2432,35 @@ class DoctorNoteController extends defaultController
             ->first();
 
         return view('hisdb.doctornote.mriChart_pdfmake',compact('mri'));
+        
+    }
+    
+    public function otbook_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        if(!$mrn || !$episno){
+            abort(404);
+        }
+        
+        $pat_otbook = DB::table('hisdb.pat_otbook as ot')
+                    ->select('ot.compcode','ot.mrn','ot.episno','ot.op_date','ot.adm_type','ot.anaesthetist','ot.comp_rep_no','ot.ot_remarks','ot.adduser','ot.adddate','ot.upduser','ot.upddate','ot.computerid','pm.Name','pm.Newic','ap.oper_type','ap.procedure')
+                    ->leftJoin('hisdb.pat_mast as pm', function ($join) use ($request){
+                        $join = $join->on('pm.MRN','=','ot.mrn')
+                                    ->on('pm.Episno','=','ot.episno')
+                                    ->where('pm.CompCode','=',session('compcode'));
+                    })
+                    ->leftJoin('hisdb.apptbook as ap', function ($join) use ($request){
+                        $join = $join->on('ap.mrn','=','ot.mrn')
+                                    ->where('ap.compcode','=',session('compcode'));
+                    })
+                    ->where('ot.compcode','=',session('compcode'))
+                    ->where('ot.mrn','=',$mrn)
+                    ->where('ot.episno','=',$episno)
+                    ->first();
+        // dd($pat_otbook);
+        
+        return view('hisdb.doctornote.otbook_chart_pdfmake', compact('pat_otbook'));
         
     }
     

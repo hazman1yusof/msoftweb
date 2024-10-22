@@ -482,9 +482,9 @@
                                                     <button type="button" class="btn btn-default" id="cancel_otbook">
                                                         <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                                     </button>
-                                                    <button type="button" class="btn btn-default" id="otbook_chart">
+                                                    <!-- <button type="button" class="btn btn-default" id="otbook_chart">
                                                         <span class="fa fa-print fa-lg"></span> Print 
-                                                    </button>
+                                                    </button> -->
                                                 </div>
                                             </div>
                                             
@@ -522,6 +522,13 @@
                                                                     <label class="radio-inline">
                                                                         <input type="radio" name="anaesthetist" value="0">Not Required
                                                                     </label>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label" for="comp_rep_no">Company representative number for medication <br> (if any)</label>
+                                                                <div class="col-md-6">
+                                                                    <input id="comp_rep_no" name="comp_rep_no" type="text" class="form-control input-sm" style="text-transform: none;">
                                                                 </div>
                                                             </div>
                                                             
@@ -923,7 +930,7 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <th scope="row">15</th>
-                                                                                <td>Any implanted ferromagnetic materials (susuk or etc).<br><i>Mempunyai bahan-bahan ferromagnetic seperti sususk.</i></td>
+                                                                                <td>Any implanted ferromagnetic materials (susuk or etc).<br><i>Mempunyai bahan-bahan ferromagnetic seperti susuk.</i></td>
                                                                                 <td>
                                                                                     <label class="radio-inline" style="padding-left: 30px;">
                                                                                         <input type="radio" name="frmgnetic_imp" value="1">Yes
@@ -989,6 +996,32 @@
                                                                                 <label class="col-md-3 control-label" for="pat_name">Name of patient/parents/guardian</label>
                                                                                 <div class="col-md-3">
                                                                                     <input id="pat_name" name="pat_name" type="text" class="form-control input-sm" rdonly>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div class="panel panel-info">
+                                                                        <div class="panel-body">
+                                                                            <div class="form-group">
+                                                                                <div class="col-md-3">
+                                                                                    <label class="control-label" for="rad_use" style="padding-bottom: 5px;">Radiology use only</label>
+                                                                                    <input id="rad_use" name="rad_use" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                                </div>
+                                                                                
+                                                                                <div class="col-md-3">
+                                                                                    <label class="control-label" for="radiologist" style="padding-bottom: 5px;">Doctor / Radiologist</label>
+                                                                                    <input id="radiologist" name="radiologist" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                                </div>
+                                                                                
+                                                                                <div class="col-md-3">
+                                                                                    <label class="control-label" for="radiographer" style="padding-bottom: 5px;">Radiographer</label>
+                                                                                    <input id="radiographer" name="radiographer" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                                </div>
+                                                                                
+                                                                                <div class="col-md-3">
+                                                                                    <label class="control-label" for="staffnurse" style="padding-bottom: 5px;">Staff Nurse</label>
+                                                                                    <input id="staffnurse" name="staffnurse" type="text" class="form-control input-sm" style="text-transform: none;">
                                                                                 </div>
                                                                             </div>
                                                                         </div>
