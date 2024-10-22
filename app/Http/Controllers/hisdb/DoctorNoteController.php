@@ -2303,5 +2303,60 @@ class DoctorNoteController extends defaultController
         return view('hisdb.doctornote.refLetter_pdfmake',compact('ini_array'));
         
     }
+
+    public function dressing_chart(Request $request){
+
+        $mrn = $request->mrn_doctorNote;
+        $episno = $request->episno_doctorNote;
+
+        $dressing = DB::table('hisdb.pat_dressing as d')
+                    ->select('d.mrn','d.episno','d.od_dressing','d.bd_dressing','d.eod_dressing','d.others_dressing','d.others_name','d.solution','d.adduser','pm.Name','pm.Newic')
+                    ->leftjoin('hisdb.pat_mast as pm', function($join) {
+                        $join = $join->on('pm.MRN', '=', 'd.mrn');
+                        $join = $join->on('pm.Episno', '=', 'd.episno');
+                        $join = $join->where('pm.compcode', '=', session('compcode'));
+                    })
+                    ->where('d.compcode','=',session('compcode'))
+                    ->where('d.mrn','=',$request->mrn)
+                    ->where('d.episno','=',$request->episno)
+                    ->first(); //dd($dressing);
+        
+        $company = DB::table('sysdb.company')
+            ->where('compcode','=',session('compcode'))
+            ->first();
+
+        return view('hisdb.doctornote.dressingChart_pdfmake',compact('dressing'));
+        
+    }
+    
+    public function mri_chart(Request $request){
+
+        $mrn = $request->mrn_doctorNote;
+        $episno = $request->episno_doctorNote;
+
+        $mri = DB::table('hisdb.pat_mri as ptm')
+                    ->select('ptm.mrn','ptm.episno','ptm.mri_date','ptm.pacemaker','ptm.pros_valve','ptm.pros_remark','ptm.intraocular','ptm.cochlear','ptm.neurotransm','ptm.bonegrowth','ptm.druginfuse','ptm.surg_clips','ptm.limb_prosth','ptm.shrapnel','ptm.oper_3mth','ptm.oper3mth_remark','ptm.prev_mri','ptm.claustrophobia','ptm.dental_imp','ptm.frmgnetic_imp','ptm.pregnancy','ptm.allergy_drug','ptm.bloodurea','ptm.serum_creat','ptm.doc_name','ptm.pat_name','pm.Name','pm.Newic','pm.telhp','ph.weight')
+                    ->leftjoin('hisdb.pat_mast as pm', function($join) {
+                        $join = $join->on('pm.MRN', '=', 'ptm.mrn');
+                        $join = $join->on('pm.Episno', '=', 'ptm.episno');
+                        $join = $join->where('pm.compcode', '=', session('compcode'));
+                    })
+                    ->leftjoin('hisdb.pathealth as ph', function($join) {
+                        $join = $join->on('ph.mrn', '=', 'ptm.mrn');
+                        $join = $join->on('ph.episno', '=', 'ptm.episno');
+                        $join = $join->where('ph.compcode', '=', session('compcode'));
+                    })
+                    ->where('ptm.compcode','=',session('compcode'))
+                    ->where('ptm.mrn','=',$request->mrn)
+                    ->where('ptm.episno','=',$request->episno)
+                    ->first();
+        
+        $company = DB::table('sysdb.company')
+            ->where('compcode','=',session('compcode'))
+            ->first();
+
+        return view('hisdb.doctornote.mriChart_pdfmake',compact('mri'));
+        
+    }
     
 }
