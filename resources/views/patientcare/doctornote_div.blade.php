@@ -54,7 +54,8 @@
               <button class="ui button" id="save_doctorNote"><span class="fa fa-save fa-lg"></span> Save</button>
               <button class="ui button" id="cancel_doctorNote"><span class="fa fa-ban fa-lg"></span> Cancel</button>
             </div>
-
+        </div>
+        <div class="ui segment">
             <div class="three wide column" style="position: absolute;
                         left: 10px;
                         top: 60px;">
@@ -72,8 +73,6 @@
                     </thead>
                 </table>
             </div>
-        </div>
-        <div class="ui segment">
             <div class="ui grid">
                 <form id="formDoctorNote" class="right floated ui form thirteen wide column">
                     <input id="mrn_doctorNote" name="mrn_doctorNote" type="hidden">
