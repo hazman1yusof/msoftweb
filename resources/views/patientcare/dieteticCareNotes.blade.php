@@ -1,4 +1,4 @@
-<div class='ui column'>
+<div class='col-md-12' style="padding:0 0 15px 0">
 	<div class="ui segments" style="position: relative;">
 		<div class="ui secondary segment bluecloudsegment">
 			DIETETIC CARE NOTES	

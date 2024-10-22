@@ -678,7 +678,7 @@ $('#tab_doctornote').on('show.bs.collapse', function () {
 });
 
 $('#tab_doctornote').on('shown.bs.collapse', function () {
-	SmoothScrollTo('#tab_doctornote', 300);
+	SmoothScrollTo('#tab_doctornote', 200);
 	// datable_medication.columns.adjust();
 	$('div#docnote_date_tbl_sticky').show();
 	$("#jqGrid_trans").jqGrid ('setGridWidth', Math.floor($("#jqGrid_trans_c")[0].offsetWidth-$("#jqGrid_trans_c")[0].offsetLeft-14));
