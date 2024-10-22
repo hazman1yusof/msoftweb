@@ -1039,6 +1039,7 @@ class InventoryTransactionController extends defaultController
             ->first();
 
         $total_amt = DB::table('material.ivtmpdt')
+            ->where('recstatus','!=','DELETE')
             ->where('compcode','=',session('compcode'))
             ->where('recno','=',$recno)
             ->sum('amount');
