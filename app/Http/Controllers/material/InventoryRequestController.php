@@ -388,8 +388,8 @@ class InventoryRequestController extends defaultController
                     ->leftJoin('material.product as p', function ($join){
                         $join = $join->on('p.itemcode', '=', 'ivdt.itemcode')
                                     ->on('p.uomcode','=','ivdt.uomcode')
-                                    ->where('p.compcode','=',session('compcode'))
-                                    ->where('p.unit','=',session('unit'));
+                                    ->where('p.compcode','=',session('compcode'));
+                                    // ->where('p.unit','=',session('unit'));
                     })
                     ->where('ivdt.compcode','=',session('compcode'))
                     ->where('recno','=',$ivreqhd->recno)

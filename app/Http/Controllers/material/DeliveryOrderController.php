@@ -497,9 +497,9 @@ class DeliveryOrderController extends defaultController
                             $status = 'PARTIAL';
                         }
 
-                        if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
-                            throw new \Exception("Quantity delivered exceed quantity order");
-                        }
+                        // if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
+                        //     throw new \Exception("Quantity delivered exceed quantity order");
+                        // }
 
                         DB::table('material.purorddt')
                             ->where('compcode','=',session('compcode'))
