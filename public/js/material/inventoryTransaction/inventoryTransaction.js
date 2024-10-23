@@ -1851,16 +1851,16 @@ $(document).ready(function () {
 		if(event.target.name=='txnqty'){
 			switch(crdbfl.toUpperCase()){
 				case "OUT":
-					if(event.target.value >= qtyonhand && isstype=='Others'){
-						fail_msg = "Transaction Quantity Cannot be greater than Quantity On Hand";
-						event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
-					}else if(qtyonhand<event.target.value){
-						fail_msg = "Transaction quantity exceed quantity on hand";
-						event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
-					}else if(qtyonhand<event.target.value && isstype=='Transfer'){
-						fail_msg = "Transaction quantity exceed quantity on hand";
-						event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
-					}
+					// if(event.target.value >= qtyonhand && isstype=='Others'){
+					// 	fail_msg = "Transaction Quantity Cannot be greater than Quantity On Hand";
+					// 	event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
+					// }else if(qtyonhand<event.target.value){
+					// 	fail_msg = "Transaction quantity exceed quantity on hand";
+					// 	event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
+					// }else if(qtyonhand<event.target.value && isstype=='Transfer'){
+					// 	fail_msg = "Transaction quantity exceed quantity on hand";
+					// 	event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
+					// }
 					break;
 				case "IN":
 					// if(event.target.name == 0 && isstype=='Others'){
