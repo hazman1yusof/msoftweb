@@ -117,8 +117,8 @@
 								@endif
 								{text: 'BILL TYPE', alignment: 'right'},
 								{text: ':'},
-								@if(!empty($dbacthdr->billtype) && !empty($dbacthdr->bt_desc))
-									{text: '{{$dbacthdr->billtype}} ({{$dbacthdr->bt_desc}})'},
+								@if(!empty($dbacthdr->hdrtype) && !empty($dbacthdr->bt_desc))
+									{text: '{{$dbacthdr->hdrtype}} ({{$dbacthdr->bt_desc}})'},
 								@else
 									{text: ''},
 								@endif	

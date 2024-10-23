@@ -1490,8 +1490,8 @@ class SalesOrderController extends defaultController
             abort(404);
         }
 
-        $dbacthdr = DB::table('debtor.dbacthdr as h', 'debtor.debtormast as m', 'debtor.debtortype as dt', 'hisdb.billtymst as bt')
-            ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate',
+        $dbacthdr = DB::table('debtor.dbacthdr as h')
+            ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate','h.hdrtype',
             'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4', 'm.creditterm as crterm','m.billtype as billtype','dt.debtortycode as dt_debtortycode', 'dt.description as dt_description','bt.description as bt_desc','pm.Name as pm_name','pm.address1 as pm_address1','pm.address2 as pm_address2','pm.address3 as pm_address3','pm.postcode as pm_postcode','h.doctorcode','dc.doctorname')
             ->leftJoin('debtor.debtormast as m', function($join) use ($request){
                 $join = $join->on("m.debtorcode", '=', 'h.debtorcode');    
@@ -1502,7 +1502,7 @@ class SalesOrderController extends defaultController
                 $join = $join->where("dt.compcode", '=', session('compcode'));
             })
             ->leftJoin('hisdb.billtymst as bt', function($join) use ($request){
-                $join = $join->on("bt.billtype", '=', 'm.billtype');    
+                $join = $join->on("bt.billtype", '=', 'h.hdrtype');    
                 $join = $join->where("bt.compcode", '=', session('compcode'));
             })
             ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
