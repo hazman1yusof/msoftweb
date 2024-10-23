@@ -181,9 +181,9 @@ class InventoryTransactionDetailController extends defaultController
                 }
                 $stockloc_first = $stockloc_obj->first();
 
-                if($request->txnqty > $stockloc_first->qtyonhand){
-                    throw new \Exception('Quantity not enough at Stock location, $ivtmphd->txndept - $request->itemcode - $request->uomcode');
-                }
+                // if($request->txnqty > $stockloc_first->qtyonhand){
+                //     throw new \Exception('Quantity not enough at Stock location, $ivtmphd->txndept - $request->itemcode - $request->uomcode');
+                // }
                     
                 $chgprice_obj = DB::table('hisdb.chgprice as cp')
                     ->where('cp.compcode', '=', session('compcode'))
@@ -396,9 +396,9 @@ class InventoryTransactionDetailController extends defaultController
                     }
                     $stockloc_first = $stockloc_obj->first();
 
-                    if($stockloc_first->qtyonhand >= 0 && $value['txnqty'] > $stockloc_first->qtyonhand){
-                        throw new \Exception("Quantity not enough at Stock location, ".$ivtmphd->txndept." - ".$value['itemcode']." - ".$value['uomcode']);
-                    }
+                    // if($stockloc_first->qtyonhand >= 0 && $value['txnqty'] > $stockloc_first->qtyonhand){
+                    //     throw new \Exception("Quantity not enough at Stock location, ".$ivtmphd->txndept." - ".$value['itemcode']." - ".$value['uomcode']);
+                    // }
                     
                     $chgprice_obj = DB::table('hisdb.chgprice as cp')
                         ->where('cp.compcode', '=', session('compcode'))
