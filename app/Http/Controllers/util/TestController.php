@@ -72,8 +72,8 @@ class TestController extends defaultController
             //     return $this->test_email($request);
             // case 'update_supplier':
             //     return $this->update_supplier($request);
-            // case 'update_chgmast':
-            //     return $this->update_chgmast($request);
+            case 'betulkandb_product_chgflg':
+                return $this->betulkandb_product_chgflg($request);
             case 'tukar_uom':
                 return $this->tukar_uom($request);
             case 'update_chgprice':
@@ -1868,19 +1868,34 @@ class TestController extends defaultController
                             ->where('deptcode',$deptcode)
                             ->where('itemcode',$itemcode);
 
-                $sumqty_plus = DB::table('temp.ivtxndt')
+                $sumqty_plus_1 = DB::table('temp.ivtxndt')
                                 ->where('compcode','9B')
+                                ->where('trantype','GRN')
                                 ->whereDate('adddate','>','2024-10-01')
                                 ->where('itemcode',$itemcode)
                                 ->sum('txnqty');
 
-                $sumqty_minus = DB::table('temp.ivdspdt')
+                $sumqty_plus_2 = DB::table('temp.ivtxndt')
+                                ->where('compcode','9B')
+                                ->where('trantype','TUI')
+                                ->whereDate('adddate','>','2024-10-01')
+                                ->where('itemcode',$itemcode)
+                                ->sum('txnqty');
+
+                $sumqty_minus_1 = DB::table('temp.ivtxndt')
+                                ->where('compcode','9B')
+                                ->where('trantype','TUO')
+                                ->whereDate('adddate','>','2024-10-01')
+                                ->where('itemcode',$itemcode)
+                                ->sum('txnqty');
+
+                $sumqty_minus_2 = DB::table('temp.ivdspdt')
                     ->where('compcode','9B')
                     ->whereDate('adddate','>','2024-10-01')
                     ->where('itemcode',$itemcode)
                     ->sum('txnqty');
 
-                $sumqty = $sumqty_plus - $sumqty_minus;
+                $sumqty = $sumqty_plus_1 + $sumqty_plus_2 - $sumqty_minus_1 - $sumqty_minus_2;
 
                 if($stockloc->exists()){
                     DB::table('temp.stockloc')
@@ -1940,6 +1955,8 @@ class TestController extends defaultController
                             'unit' => "W'HOUSE",
                         ]);
 
+                    dump($itemcode.'-'.$deptcode.' qty10 = '.$sumqty);
+
                     // if($stockexp)
 
                     // DB::table('material.stockexp')
@@ -1951,11 +1968,9 @@ class TestController extends defaultController
                     //         ]);
                 }
 
-                dump($itemcode.'-'.$deptcode.' qty10 = '.$sumqty);
-
             }
 
-            // DB::commit();
+            DB::commit();
 
         } catch (Exception $e) {
             DB::rollback();

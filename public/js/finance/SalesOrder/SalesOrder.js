@@ -1795,11 +1795,12 @@ $(document).ready(function () {
 			rate = 0;
 		}
 
-
 		var amount = (unitprice*quantity);
-		var discamt = ((unitprice*quantity) * billtypeperct / 100) + billtypeamt;
+		// var discamt = ((unitprice*quantity) * billtypeperct / 100) + billtypeamt;
+		var discamt = 0;
 
-		let taxamt = amount * rate / 100;
+		// let taxamt = amount * rate / 100;
+		var taxamt = 0;
 
 		var totamount = amount - discamt + taxamt;
 
