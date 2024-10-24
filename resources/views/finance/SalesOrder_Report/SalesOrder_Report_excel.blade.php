@@ -5,6 +5,7 @@
         <td style="font-weight:bold;text-align: left">Store Dept</td>
         <td style="font-weight:bold;text-align: left">Debtor Code</td>
         <td style="font-weight:bold;text-align: left">Debtor Name</td>
+        <td style="font-weight:bold;text-align: left">Patient Name</td>
         <td style="font-weight:bold;text-align: right">Amount</td>
     </tr>
     @foreach ($dbacthdr as $obj)
@@ -14,10 +15,12 @@
             <td>{{$obj->deptcode}}</td>
             <td style="text-align: left">{{$obj->dm_debtorcode}}</td>
             <td>{{$obj->debtorname}}</td>
+            <td>{{$obj->pm_name}}</td>
             <td data-format="0.00" style="text-align: right">{{number_format($obj->amount, 2, '.', ',')}}</td>
         </tr>
     @endforeach
     <tr>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>

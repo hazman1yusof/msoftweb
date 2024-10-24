@@ -21,6 +21,7 @@
 <script>
 	var merge_key = makeid(20);
 	var base64_pr = null;
+	var session_deptcode = "{{Session::get('deptcode')}}";
 
 	var attachmentfiles = [
 		@foreach($attachment_files as $file)
@@ -254,11 +255,19 @@
 						widths: ['*','*','*'],//panjang standard dia 515
 						dontBreakRows: true,
 						body: [
+							@if($purordhd->prdept == 'IMP')
+							[
+								{text: 'Verified By\n\n\n{{$purordhd->requestby_name}}',bold: true,alignment: 'center'},
+								{text: 'Verified By\n\n\n{{$purordhd->verifiedby_name}}',bold: true,alignment: 'center'},
+								{text: 'Approved By\n\n\n{{$purordhd->approvedby_name}}',bold: true,alignment: 'center'},
+							],
+							@else
 							[
 								{text: 'Prepared By\n\n\n{{$purordhd->requestby_name}}',bold: true,alignment: 'center'},
 								{text: 'Verified By\n\n\n{{$purordhd->verifiedby_name}}',bold: true,alignment: 'center'},
 								{text: 'Approved By\n\n\n{{$purordhd->approvedby_name}}',bold: true,alignment: 'center'},
 							],
+							@endif
 							// [
 							// 	{text: 'Request By\n\n\n\n______________________\n({{$purordhd->requestby_name}})',bold: true,alignment: 'center'},
 							// 	{text: 'Support By\n\n\n\n______________________\n({{$purordhd->supportby_name}})',bold: true,alignment: 'center'},

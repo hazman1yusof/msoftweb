@@ -17,7 +17,7 @@
             @if($invno == $obj->invno)
                 @if($amt == 0)
                 <tr>
-                    <td style="font-weight:bold" colspan="3">{{$obj->debtorcode}} {{$obj->dm_desc}} ({{str_pad($obj->invno, 7, "0", STR_PAD_LEFT)}})</td>
+                    <td style="font-weight:bold" colspan="7">{{$obj->debtorcode}} {{$obj->dm_desc}} ({{str_pad($obj->invno, 7, "0", STR_PAD_LEFT)}}) {{$obj->pm_name}}</td>
                 </tr>
                 @endif
                 <tr>

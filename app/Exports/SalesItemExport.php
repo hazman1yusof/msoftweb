@@ -83,7 +83,7 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths
         // dd($billdet);
         
         $dbacthdr = DB::table('debtor.dbacthdr as d')
-                    ->select('d.debtorcode', 'dm.name AS dm_desc', 'd.invno','b.idno', 'b.compcode', 'b.trxdate', 'b.chgcode', 'b.quantity', 'b.amount', 'b.invno', 'b.taxamount', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode')
+                    ->select('d.debtorcode', 'dm.name AS dm_desc', 'd.invno','d.mrn','b.idno', 'b.compcode', 'b.trxdate', 'b.chgcode', 'b.quantity', 'b.amount', 'b.invno', 'b.taxamount', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode','pm.Name as pm_name')
                     ->leftJoin('debtor.debtormast as dm', function($join){
                         $join = $join->on('dm.debtorcode', '=', 'd.debtorcode')
                                     ->where('dm.compcode', '=', session('compcode'));
@@ -97,6 +97,10 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths
                                     ->on('c.uom', '=', 'b.uom')
                                     ->where('c.unit', '=', session('unit'))
                                     ->where('c.compcode', '=', session('compcode'));
+                    })
+                    ->leftJoin('hisdb.pat_mast as pm', function($join){
+                        $join = $join->on("pm.newmrn", '=', 'd.mrn');    
+                        $join = $join->where("pm.compcode", '=', session('compcode'));
                     })
                     ->where('d.compcode','=',session('compcode'))
                     ->where('d.source', '=', 'PB')

@@ -47,8 +47,9 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
             'B' => 15,    
             'C' => 15,
             'D' => 15,   
-            'E' => 40,
-            'F' => 15,   
+            'E' => 40,  
+            'F' => 40,
+            'G' => 15,   
                  
         ];
     }
@@ -60,10 +61,14 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
         $deptcode = $this->deptcode;
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
-                    ->select('dh.invno', 'dh.posteddate', 'dh.deptcode', 'dh.amount', 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname')
+                    ->select('dh.invno', 'dh.posteddate','dh.mrn', 'dh.deptcode', 'dh.amount', 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname','pm.Name as pm_name')
                     ->leftJoin('debtor.debtormast as dm', function($join){
                         $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
                                     ->where('dm.compcode', '=', session('compcode'));
+                    })
+                    ->leftJoin('hisdb.pat_mast as pm', function($join){
+                        $join = $join->on("pm.newmrn", '=', 'dh.mrn');    
+                        $join = $join->where("pm.compcode", '=', session('compcode'));
                     })
                     ->where('dh.compcode','=',session('compcode'))
                     ->where('dh.source','=','PB');
@@ -72,6 +77,7 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
                                     ->where('dh.deptcode', '=', $deptcode);
                     }
                     $dbacthdr = $dbacthdr->where('dh.recstatus','=', 'POSTED')
+                    ->where('dh.amount','!=','0')
                     ->whereIn('dh.trantype',['IN'])
                     ->whereBetween('dh.posteddate', [$datefr, $dateto])
                     ->get();
