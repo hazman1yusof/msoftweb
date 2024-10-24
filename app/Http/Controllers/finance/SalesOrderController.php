@@ -554,11 +554,21 @@ class SalesOrderController extends defaultController
                 if($dbacthdr->recstatus != 'OPEN'){
                     continue;
                 }
+
+                $totalAmount = DB::table('debtor.billsum')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=','PB')
+                        ->where('trantype','=','IN')
+                        ->where('billno','=',$dbacthdr->auditno)
+                        ->where('recstatus','!=','DELETE')
+                        ->sum('totamount');
                 
                 DB::table("debtor.dbacthdr")
                     ->where('compcode',session('compcode'))
                     ->where('idno','=',$value)
                     ->update([
+                        'amount' => $totalAmount,
+                        'outamount' => $totalAmount,
                         'recstatus' => 'PREPARED',
                         'preparedby' => session('username'),
                         'prepareddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -608,6 +618,22 @@ class SalesOrderController extends defaultController
                             ->where('compcode',session('compcode'))
                             ->where('idno','=',$value)
                             ->first();
+
+                $totalAmount = DB::table('debtor.billsum')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=','PB')
+                        ->where('trantype','=','IN')
+                        ->where('billno','=',$dbacthdr->auditno)
+                        ->where('recstatus','!=','DELETE')
+                        ->sum('totamount');
+                
+                DB::table("debtor.dbacthdr")
+                    ->where('compcode',session('compcode'))
+                    ->where('idno','=',$value)
+                    ->update([
+                        'amount' => $totalAmount,
+                        'outamount' => $totalAmount
+                    ]);
 
                 $authorise = DB::table('finance.permissiondtl')
                     ->where('compcode','=',session('compcode'))
