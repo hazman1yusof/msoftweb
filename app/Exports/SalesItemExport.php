@@ -29,10 +29,11 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($datefr,$dateto)
+    public function __construct($datefr,$dateto,$deptcode)
     {
         $this->datefr = $datefr;
         $this->dateto = $dateto;
+        $this->deptcode = $deptcode;
         $this->dbacthdr_len=0;
         
         $this->comp = DB::table('sysdb.company')
@@ -58,6 +59,7 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths
     {
         $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
+        $deptcode = $this->deptcode;
         
         // $billdet = DB::table('hisdb.billdet as b', 'hisdb.chgmast as c', 'debtor.dbacthdr as d')
         //             ->select('b.idno', 'b.compcode', 'b.trxdate', 'b.chgcode', 'b.quantity', 'b.amount', 'b.invno', 'b.taxamount', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode' )
@@ -99,8 +101,12 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths
                     ->where('d.compcode','=',session('compcode'))
                     ->where('d.source', '=', 'PB')
                     ->where('d.trantype', '=', 'IN')
-                    ->where('d.recstatus', '=', 'POSTED')
-                    ->where('d.amount','!=','0')
+                    ->where('d.recstatus', '=', 'POSTED');
+                    if(!empty($deptcode)){
+                        $dbacthdr = $dbacthdr
+                                    ->where('d.deptcode', '=', $deptcode);
+                    }
+                    $dbacthdr = $dbacthdr->where('d.amount','!=','0')
                     ->orderBy('d.debtorcode','DESC')
                     ->orderBy('d.invno','DESC')
                     ->whereBetween('b.trxdate', [$datefr, $dateto])

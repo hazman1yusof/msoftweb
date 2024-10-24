@@ -53,6 +53,19 @@
 				<div style="width: 800px;margin: 0 auto;">
 					<div class="col-md-4" style="margin-left: 120px;">
 						<div class="col-md-12">
+							<!-- <input id="deptcode" name="deptcode" type="text" class="form-control input-sm" value=""> -->
+
+						
+							<label class="control-label" for="deptcode">Department</label> 
+							<div class="col-md-12" style="padding: 0px 0px 15px 0px;">
+								<div class='input-group'>
+									<input id="deptcode" name="deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" value="{{Session::get('deptcode')}}" data-validation-error-msg="Please Enter Value">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>
+						</div>
+						<div class="col-md-12">
 							<label class="control-label" for="Scol">Date From</label>
 							<input id="datefr" name="datefr" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 						</div>
@@ -87,5 +100,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/finance/SalesOrder_Report/SalesOrder_Report.js"></script>
+	<script src="js/finance/SalesOrder_Report/SalesOrder_Report.js?v=1.1"></script>
 @endsection

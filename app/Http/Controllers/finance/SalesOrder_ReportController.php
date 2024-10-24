@@ -46,13 +46,14 @@ class SalesOrder_ReportController extends defaultController
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new SalesOrderExport($request->datefr,$request->dateto), 'SalesOrderReport.xlsx');
+        return Excel::download(new SalesOrderExport($request->datefr,$request->dateto,$request->deptcode), 'SalesOrderReport.xlsx');
     }
 
     public function showpdf(Request $request)
     {
         $datefr = Carbon::parse($request->datefr)->format('Y-m-d H:i:s');
         $dateto = Carbon::parse($request->dateto)->format('Y-m-d H:i:s');
+        $deptcode = $request->deptcode;
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
                     ->select('dh.invno', 'dh.posteddate', 'dh.deptcode', 'dh.amount', 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname')
@@ -63,8 +64,12 @@ class SalesOrder_ReportController extends defaultController
                     ->where('dh.compcode','=',session('compcode'))
                     ->where('dh.source','=','PB')
                     ->where('dh.recstatus','=', 'POSTED')
-                    ->where('dh.trantype', '=', 'IN')
-                    ->whereBetween('dh.posteddate', [$datefr, $dateto])
+                    ->where('dh.trantype', '=', 'IN');
+                    if(!empty($deptcode)){
+                        $dbacthdr = $dbacthdr
+                                    ->where('dh.deptcode', '=', $deptcode);
+                    }
+                    $dbacthdr = $dbacthdr->whereBetween('dh.posteddate', [$datefr, $dateto])
                     ->get();
         
         $totalAmount = $dbacthdr->sum('amount');

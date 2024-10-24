@@ -11,10 +11,44 @@ $(document).ready(function () {
     });
     
     $("#pdfgen1").click(function() {
-		window.open('./SalesOrder_Report/showpdf?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
+		window.open('./SalesOrder_Report/showpdf?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&deptcode='+$("#deptcode").val(), '_blank');
 	});
 	
 	$("#excelgen1").click(function() {
-		window.location='./SalesOrder_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
+		window.location='./SalesOrder_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&deptcode='+$("#deptcode").val();
 	});
+
+	var dialog_deptcode = new ordialog(
+		'deptcode','sysdb.department','#deptcode','errorField',
+		{	colModel:[
+				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Unit',name:'sector'},
+			],
+			urlParam: {
+						filterCol:['chgdept', 'recstatus','compcode'],
+						filterVal:['1', 'ACTIVE','session.compcode']
+					},
+			ondblClickRow: function () {
+				let data = selrowData('#'+dialog_deptcode.gridname);
+			},
+			gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#delordhd_srcdocno').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
+		},{
+			title:"Select Department",
+			open: function(){
+				dialog_deptcode.urlParam.filterCol=['chgdept', 'recstatus','compcode'];
+				dialog_deptcode.urlParam.filterVal=['1', 'ACTIVE','session.compcode'];
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_deptcode.makedialog(true);
 });

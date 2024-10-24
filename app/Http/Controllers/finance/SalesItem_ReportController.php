@@ -48,13 +48,14 @@ class SalesItem_ReportController extends defaultController
     }
     
     public function showExcel(Request $request){
-        return Excel::download(new SalesItemExport($request->datefr,$request->dateto), 'SalesItemExport.xlsx');
+        return Excel::download(new SalesItemExport($request->datefr,$request->dateto,$request->deptcode), 'SalesItemExport.xlsx');
     }
     
     public function showpdf(Request $request){
         
         $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
+        $deptcode = $request->deptcode;
         
         $dbacthdr = DB::table('debtor.dbacthdr as d')
                     ->select('d.debtorcode', 'dm.name AS dm_desc', 'd.invno','b.idno', 'b.compcode', 'b.trxdate', 'b.chgcode', 'b.quantity', 'b.amount', 'b.invno', 'b.taxamount', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode')
@@ -75,8 +76,12 @@ class SalesItem_ReportController extends defaultController
                     ->where('d.compcode','=',session('compcode'))
                     ->where('d.source', '=', 'PB')
                     ->where('d.trantype', '=', 'IN')
-                    ->where('d.recstatus', '=', 'POSTED')
-                    ->where('d.amount','!=','0')
+                    ->where('d.recstatus', '=', 'POSTED');
+                    if(!empty($deptcode)){
+                        $dbacthdr = $dbacthdr
+                                    ->where('d.deptcode', '=', $deptcode);
+                    }
+                    $dbacthdr = $dbacthdr->where('d.amount','!=','0')
                     ->orderBy('d.debtorcode','DESC')
                     ->orderBy('d.invno','DESC')
                     ->whereBetween('b.trxdate', [$datefr, $dateto])

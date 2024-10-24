@@ -28,10 +28,11 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
     * @return \Illuminate\Support\Collection
     */
 
-    public function __construct($datefr,$dateto)
+    public function __construct($datefr,$dateto,$deptcode)
     {
         $this->datefr = $datefr;
         $this->dateto = $dateto;
+        $this->deptcode = $deptcode;
         $this->dbacthdr_len=0;
 
         $this->comp = DB::table('sysdb.company')
@@ -56,6 +57,7 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
     {
         $datefr = Carbon::parse($this->datefr)->format('Y-m-d H:i:s');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d H:i:s');
+        $deptcode = $this->deptcode;
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
                     ->select('dh.invno', 'dh.posteddate', 'dh.deptcode', 'dh.amount', 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname')
@@ -64,8 +66,12 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
                                     ->where('dm.compcode', '=', session('compcode'));
                     })
                     ->where('dh.compcode','=',session('compcode'))
-                    ->where('dh.source','=','PB')
-                    ->where('dh.recstatus','=', 'POSTED')
+                    ->where('dh.source','=','PB');
+                    if(!empty($deptcode)){
+                        $dbacthdr = $dbacthdr
+                                    ->where('dh.deptcode', '=', $deptcode);
+                    }
+                    $dbacthdr = $dbacthdr->where('dh.recstatus','=', 'POSTED')
                     ->whereIn('dh.trantype',['IN'])
                     ->whereBetween('dh.posteddate', [$datefr, $dateto])
                     ->get();
