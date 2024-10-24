@@ -1697,7 +1697,7 @@ class SalesOrderDetailController extends defaultController
                     ->where('trantype','=',$trantype)
                     ->where('billno','=',$auditno)
                     ->where('recstatus','!=','DELETE')
-                    ->sum('amount');
+                    ->sum('totamount');
 
             ///4. then update to header
             DB::table('debtor.dbacthdr')
