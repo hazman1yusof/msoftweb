@@ -142,9 +142,9 @@
 								{text:'Tax Amt', style:'totalbold', alignment: 'right',border: [false, true, false, true]},
 								{text:'Amount', style:'totalbold', alignment: 'right',border: [false, true, false, true]},
 							],
-							@foreach ($billsum as $obj)
+							@foreach ($billsum as $key => $obj)
 							[
-								{text:`{!!$obj->chggroup!!}`,colSpan: 3,border: [false, false, false, false]},{},{},
+								{text:`{{$key}}. {!!$obj->chggroup!!}`,colSpan: 3,border: [false, false, false, false]},{},{},
 								{text:`{!!$obj->uom!!}`,border: [false, false, false, false]},
 								{text:'{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}',border: [false, false, false, false]},
 								{text:`{!!$obj->batchno!!}`,border: [false, false, false, false]},
