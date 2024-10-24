@@ -357,6 +357,8 @@ $(document).ready(function () {
 			{ label: 'GSTID', name: 'GSTID', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'TINNo', name: 'TINNo', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'CompRegNo', name: 'CompRegNo', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'indvNewic', name: 'indvNewic', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'indvOtherno', name: 'indvOtherno', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'idno', name: 'idno', hidden: true},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true, classes: 'wrap'},

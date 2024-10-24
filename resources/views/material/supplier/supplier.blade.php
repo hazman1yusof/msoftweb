@@ -301,6 +301,24 @@ i.fa {
 					<label class="radio-inline"><input type="radio" name="SuppFlg" value='No' data-validation="">No</label>
 				</div> -->
 			</div>
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="indvNewic">Individual I/C No.</label>  
+					<div class="col-md-3">
+						<input id="indvNewic" name="indvNewic" type="text" class="form-control input-sm text-uppercase">
+					</div>
+
+				<label class="col-md-2 control-label" for="indvOtherno">Individual Other No.</label>  
+					<div class="col-md-3">
+						<input id="indvOtherno" name="indvOtherno" type="text" class="form-control input-sm text-uppercase">
+					</div>
+						
+				<!-- <label class="col-md-2 control-label" for="SuppFlg">Supply Goods</label>  
+				<div class="col-md-2">
+					<label class="radio-inline"><input type="radio" name="SuppFlg" value='Yes' data-validation="">Yes</label>
+					<label class="radio-inline"><input type="radio" name="SuppFlg" value='No' data-validation="">No</label>
+				</div> -->
+			</div>
 			
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
@@ -616,6 +634,6 @@ i.fa {
 		});
 	</script>
 
-	<script src="js/material/supplier/supplier.js?v=1.1"></script>
+	<script src="js/material/supplier/supplier.js?v=1.2"></script>
 
 @endsection

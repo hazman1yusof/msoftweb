@@ -89,6 +89,8 @@ class SupplierController extends defaultController
                 'GSTID' => $request->GSTID,
                 'CompRegNo' => $request->CompRegNo,
                 'TermDays' => $request->TermDays,
+                'indvNewic' => $request->indvNewic,
+                'indvOtherno' => $request->indvOtherno,
                 'TINNo' => $request->TINNo
             ];
 
