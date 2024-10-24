@@ -72,8 +72,8 @@ class TestController extends defaultController
             //     return $this->test_email($request);
             // case 'update_supplier':
             //     return $this->update_supplier($request);
-            case 'betulkandb_product_chgflg':
-                return $this->betulkandb_product_chgflg($request);
+            case 'tambah_apacthdr':
+                return $this->tambah_apacthdr($request);
             case 'tukar_uom':
                 return $this->tukar_uom($request);
             case 'update_chgprice':
@@ -1992,6 +1992,116 @@ class TestController extends defaultController
            
 
             // DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function tambah_apacthdr(){
+        DB::beginTransaction();
+        try {
+                $apactdtl = DB::table('finance.apactdtl')
+                                ->where('compcode','9B')
+                                ->whereNotNull('document')
+                                ->whereDate('addDate','<=','2024-10-14')
+                                ->get();
+                $x=1;
+                foreach ($apactdtl as $obj) {
+                    $apacthdr = DB::table('finance.apacthdr')
+                                ->where('compcode','9B')
+                                // ->where('document',$obj->document)
+                                ->where('auditno',$obj->auditno);
+
+                    if(!$apacthdr->exists()){
+                        $gltran = DB::table('finance.gltran')
+                                ->where('compcode','9B')
+                                ->where('auditno',$obj->auditno);
+
+                        if($gltran->exists()){
+                            $x++;
+                            $gltran = $gltran->first();
+
+                            $pos = strpos($gltran->description, '</br>');
+                            $suppcode = substr($gltran->description,0,$pos);
+                            dump($x.'-'.$obj->auditno.' deptcode '.$obj->deptcode.' suppcode '.$suppcode);
+
+                            DB::table('finance.apacthdr')
+                                ->insert([
+                                    'compcode' => '9B',
+                                    'source' => 'AP',
+                                    'trantype' => 'IN',
+                                    'doctype' => 'Supplier',
+                                    'auditno' => $obj->auditno,
+                                    'document' => $obj->document,
+                                    'suppcode' => $suppcode,
+                                    'payto' => $suppcode,
+                                    'suppgroup' => 'TR',
+                                    // 'bankcode' => $obj->,
+                                    // 'paymode' => $obj->,
+                                    // 'cheqno' => $obj->,
+                                    // 'cheqdate' => $obj->,
+                                    'actdate' => $obj->adddate,
+                                    'recdate' => $obj->adddate,
+                                    'category' => '50030519',
+                                    'amount' => $gltran->amount,
+                                    'outamount' => $gltran->amount,
+                                    // 'remarks' => $obj->remarks,
+                                    // 'postflag' => $obj->,
+                                    // 'doctorflag' => $obj->,
+                                    // 'stat' => $obj->,
+                                    // 'entryuser' => $obj->,
+                                    // 'entrytime' => $obj->,
+                                    'upduser' => $obj->adduser,
+                                    'upddate' => $obj->adddate,
+                                    // 'conversion' => $obj->,
+                                    // 'srcfrom' => $obj->,
+                                    // 'srcto' => $obj->,
+                                    'deptcode' => $obj->deptcode,
+                                    // 'reconflg' => $obj->,
+                                    // 'effectdatefr' => $obj->,
+                                    // 'effectdateto' => $obj->,
+                                    // 'frequency' => $obj->,
+                                    // 'refsource' => $obj->,
+                                    // 'reftrantype' => $obj->,
+                                    // 'refauditno' => $obj->,
+                                    // 'pvno' => $obj->,
+                                    // 'entrydate' => $obj->,
+                                    'recstatus' => 'POSTED',
+                                    'adduser' => $obj->adduser,
+                                    'adddate' => $obj->adddate,
+                                    // 'reference' => $obj->,
+                                    // 'TaxClaimable' => $obj->,
+                                    'unit' => $obj->unit,
+                                    // 'allocdate' => $obj->,
+                                    'postuser' => $obj->adduser,
+                                    'postdate' => $obj->adddate,
+                                    'unallocated' => 1,
+                                    'requestby' => 'SYSTEM',
+                                    'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                    // 'request_remark' => $obj->,
+                                    // 'supportby' => $obj->,
+                                    // 'supportdate' => $obj->,
+                                    // 'support_remark' => $obj->,
+                                    // 'verifiedby' => $obj->,
+                                    // 'verifieddate' => $obj->,
+                                    // 'verified_remark' => $obj->,
+                                    // 'approvedby' => $obj->,
+                                    // 'approveddate' => $obj->,
+                                    // 'approved_remark' => $obj->,
+                                    // 'cancelby' => $obj->,
+                                    // 'canceldate' => $obj->,
+                                    // 'cancelled_remark' => $obj->,
+                                    // 'bankaccno' => $obj->,
+                                ]);
+                        }
+                    }
+                }   
+        
+            DB::commit();
 
         } catch (Exception $e) {
             DB::rollback();
