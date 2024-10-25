@@ -18,7 +18,7 @@
 	
 	var ivtmphd = {
 		@foreach($ivtmphd as $key => $val) 
-			'{{$key}}' : '{{$val}}',
+			'{{$key}}' : `{!!str_replace('`', '', $val)!!}`,
 		@endforeach 
 	};
 
@@ -26,7 +26,7 @@
 		@foreach($ivtmpdt as $key => $ivdt)
 		[
 			@foreach($ivdt as $key2 => $val)
-				{'{{$key2}}' : `{{$val}}`},
+				{'{{$key2}}' : `{!!str_replace('`', '', $val)!!}`},
 			@endforeach
 		],
 		@endforeach 
@@ -34,7 +34,7 @@
 
 	var company = {
 		@foreach($company as $key => $val) 
-			'{{$key}}' : '{{$val}}',
+			'{{$key}}' : `{!!str_replace('`', '', $val)!!}`,
 		@endforeach 
 	};
 
@@ -114,7 +114,7 @@
 							],
                             [
 								{text: 'Remarks', bold: true}, 
-								{text: ': {{$ivtmphd->remarks}}',colSpan:3},
+								{text: `: {!!str_replace('`', '', $ivtmphd->remarks)!!}`,colSpan:3},
                                 {},{}
 							],
                         ]
