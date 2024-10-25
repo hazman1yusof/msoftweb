@@ -354,7 +354,7 @@ class PurchaseOrderController extends defaultController
                 $responce->upddate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d H:i:s');
                 echo json_encode($responce);
 
-                // DB::commit();
+                DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();
 

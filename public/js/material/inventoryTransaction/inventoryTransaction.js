@@ -1484,6 +1484,9 @@ $(document).ready(function () {
 				
     		}
 
+    		$('#jqGridPager2SaveAll,#jqGridPager2CancelAll').hide();
+    		
+
     		$.post( "./inventoryTransactionDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				myfail_msg.add_fail({
@@ -1491,6 +1494,7 @@ $(document).ready(function () {
 					textfld:"",
 					msg:data.responseText,
 				});
+    			$('#jqGridPager2SaveAll,#jqGridPager2CancelAll').show();
 			}).done(function(data){
 				myfail_msg.clear_fail();
 				// $('#totamount').val(data);
@@ -1498,6 +1502,7 @@ $(document).ready(function () {
 				mycurrency.formatOn();
 				hideatdialogForm(false);
 				refreshGrid("#jqGrid2",urlParam2);
+    			$('#jqGridPager2SaveAll,#jqGridPager2CancelAll').show();
 			});
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
