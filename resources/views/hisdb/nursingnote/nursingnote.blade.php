@@ -31,8 +31,8 @@
                     <li><a data-toggle="tab" id="navtab_fitchart" href="#tab-fitchart" data-type='fitchart'>Fit Chart</a></li>
                     <li><a data-toggle="tab" id="navtab_circulation" href="#tab-circulation" data-type='circulation'>Circulation Chart</a></li>
                     <li><a data-toggle="tab" id="navtab_slidingScale" href="#tab-slidingScale" data-type='slidingScale'>Sliding Scale Chart</a></li>
-                    <li><a data-toggle="tab" id="navtab_othersChart1" href="#tab-othersChart1" data-type='othersChart1'>Others Chart 1</a></li>
-                    <li><a data-toggle="tab" id="navtab_othersChart2" href="#tab-othersChart2" data-type='othersChart2'>Others Chart 2</a></li>
+                    <li><a data-toggle="tab" id="navtab_othersChart1" href="#tab-othersChart1" data-type='othersChart1'>PAD Chart</a></li>
+                    <li><a data-toggle="tab" id="navtab_othersChart2" href="#tab-othersChart2" data-type='othersChart2'>Drain Chart</a></li>
                 </ul>
                 <div class="tab-content" style="padding: 10px 5px;">
                     <input id="mrn_nursNote" name="mrn_nursNote" type="hidden">
@@ -323,14 +323,14 @@
                                                         </div>
                                                     </div>
                                                     
-                                                    <div class='col-md-12'>
+                                                    <!-- <div class='col-md-12'>
                                                         <div class="panel panel-info">
                                                             <div class="panel-heading text-center">PLAN AND PROGRESS NOTE</div>
                                                             <div class="panel-body">
                                                                 <textarea id="plannotes" name="plannotes" type="text" class="form-control input-sm"></textarea>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -2167,7 +2167,7 @@
                                                 padding: 0 0 0 0;
                                                 right: 40px;
                                                 top: 5px;">
-                                        <button type="button" class="btn btn-default" id="new_othersChart1">
+                                        <!-- <button type="button" class="btn btn-default" id="new_othersChart1">
                                             <span class="fa fa-plus-square-o"></span> New 
                                         </button>
                                         <button type="button" class="btn btn-default" id="edit_othersChart1">
@@ -2178,7 +2178,7 @@
                                         </button>
                                         <button type="button" class="btn btn-default" id="cancel_othersChart1">
                                             <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
-                                        </button>
+                                        </button> -->
                                         <button type="button" class="btn btn-default" id="othersChart1_chart">
                                             <span class="fa fa-print fa-lg"></span> Chart 
                                         </button>
@@ -2193,14 +2193,14 @@
                                             <div class="panel panel-info">
                                                 <div class="panel-body">
                                                     <div class="form-group" style="padding-bottom: 5px;">
-                                                        <input id="othersChart1_tabtitle" name="othersChart1_tabtitle" value="othersChart1" type="hidden">
+                                                        <input id="othersChart1_tabtitle" name="othersChart1_tabtitle" value="PADChart" type="hidden">
                                                         
                                                         <div class="col-md-4"></div>
                                                         
-                                                        <div class="col-md-2" style="padding-left: 0px; padding-right: 0px;">
+                                                        <!-- <div class="col-md-2" style="padding-left: 0px; padding-right: 0px;">
                                                             <input id="othersChart1_title" name="othersChart1_title" type="text" class="form-control input-sm" style="text-transform: none;">
                                                         </div>
-                                                        <label class="col-md-1 control-label" for="othersChart1_title">Chart</label>
+                                                        <label class="col-md-1 control-label" for="othersChart1_title">Chart</label> -->
                                                         
                                                         <div class="col-md-4"></div>
                                                     </div>
@@ -2255,7 +2255,7 @@
                                                 padding: 0 0 0 0;
                                                 right: 40px;
                                                 top: 5px;">
-                                        <button type="button" class="btn btn-default" id="new_othersChart2">
+                                        <!-- <button type="button" class="btn btn-default" id="new_othersChart2">
                                             <span class="fa fa-plus-square-o"></span> New 
                                         </button>
                                         <button type="button" class="btn btn-default" id="edit_othersChart2">
@@ -2266,7 +2266,7 @@
                                         </button>
                                         <button type="button" class="btn btn-default" id="cancel_othersChart2">
                                             <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
-                                        </button>
+                                        </button> -->
                                         <button type="button" class="btn btn-default" id="othersChart2_chart">
                                             <span class="fa fa-print fa-lg"></span> Chart 
                                         </button>
@@ -2281,14 +2281,14 @@
                                             <div class="panel panel-info">
                                                 <div class="panel-body">
                                                     <div class="form-group" style="padding-bottom: 5px;">
-                                                        <input id="othersChart2_tabtitle" name="othersChart2_tabtitle" value="othersChart2" type="hidden">
+                                                        <input id="othersChart2_tabtitle" name="othersChart2_tabtitle" value="DrainChart" type="hidden">
                                                         
                                                         <div class="col-md-4"></div>
                                                         
-                                                        <div class="col-md-2" style="padding-left: 0px; padding-right: 0px;">
+                                                        <!-- <div class="col-md-2" style="padding-left: 0px; padding-right: 0px;">
                                                             <input id="othersChart2_title" name="othersChart2_title" type="text" class="form-control input-sm" style="text-transform: none;">
                                                         </div>
-                                                        <label class="col-md-1 control-label" for="othersChart2_title">Chart</label>
+                                                        <label class="col-md-1 control-label" for="othersChart2_title">Chart</label> -->
                                                         
                                                         <div class="col-md-4"></div>
                                                     </div>
