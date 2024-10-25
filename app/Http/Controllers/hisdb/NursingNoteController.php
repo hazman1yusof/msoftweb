@@ -2079,9 +2079,9 @@ class NursingNoteController extends defaultController
                         ->where('episno','=',$episno)
                         ->where('tabtitle','=',$tabtitle)
                         ->get();
-        // dd($nurs_othersdtl);
+        // dd($tabtitle);
         
-        return view('hisdb.nursingnote.othersChart_chart_pdfmake', compact('pat_mast','nurs_othershdr','nurs_othersdtl'));
+        return view('hisdb.nursingnote.othersChart_chart_pdfmake', compact('tabtitle','pat_mast','nurs_othershdr','nurs_othersdtl'));
         
     }
     

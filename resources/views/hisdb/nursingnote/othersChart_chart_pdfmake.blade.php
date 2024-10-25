@@ -28,11 +28,19 @@
                     {
                         image: 'letterhead', width: 175, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
+                    @if($tabtitle == 'PADChart')
                     {
-                        text: '\n{{strtoupper($nurs_othershdr->title)}} CHART\n\n',
+                        text: '\nPAD CHART\n\n',
                         style: 'header',
                         alignment: 'center'
                     },
+                    @else
+                    {
+                        text: '\nDRAIN CHART\n\n',
+                        style: 'header',
+                        alignment: 'center'
+                    },
+                    @endif
                     {
                         style: 'tableExample',
                         table: {
