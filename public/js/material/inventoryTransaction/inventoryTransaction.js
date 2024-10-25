@@ -1502,7 +1502,6 @@ $(document).ready(function () {
 				mycurrency.formatOn();
 				hideatdialogForm(false);
 				refreshGrid("#jqGrid2",urlParam2);
-    			$('#jqGridPager2SaveAll,#jqGridPager2CancelAll').show();
 			});
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
