@@ -212,7 +212,6 @@ class PurchaseOrderDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('itemcode','=',strtoupper($request->itemcode))
                 ->exists();
-
             
             if(!$has_prodmaster){
                 throw new \Exception("Itemcode ".strtoupper($request->itemcode)." doesnt have productmaster");
@@ -246,18 +245,12 @@ class PurchaseOrderDetailController extends defaultController
                     throw new \Exception("Itemcode $request->itemcode - $request->uomcode - $purordhd->deldept , doesnt have stockloc or product");
                 }
 
-            }else if($prtype == 'Asset'){
-                $product = DB::table('material.product AS p')
-                            ->where('p.compcode','=',session('compcode'))
-                            ->where('p.itemcode','=',$request->itemcode)
-                            ->where('p.uomcode','=',$request->uomcode)
-                            ->whereIn('p.groupcode',['ASSET']);
             }else{
                 $product = DB::table('material.product AS p')
                             ->where('p.compcode','=',session('compcode'))
                             ->where('p.itemcode','=',$request->itemcode)
                             ->where('p.uomcode','=',$request->uomcode)
-                            ->whereIn('p.groupcode',['OTHERS']);
+                            ->whereIn('p.groupcode',['ASSET','OTHERS']);
             }
 
             if(!$product->exists()){
