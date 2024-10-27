@@ -117,6 +117,8 @@ class SalesOrderController extends defaultController
                 return $this->posted($request);
             case 'delivered':
                 return $this->delivered($request);
+            case 'reopen_posted':
+                return $this->reopen_posted($request);
             case 'reject':
                 return $this->reject($request);
             case 'reopen':
@@ -2546,7 +2548,7 @@ class SalesOrderController extends defaultController
 
             if($expdate_obj->exists()){
                 $expdate_first = $expdate_obj->first();
-                $txnqty_ = $curr_quan;
+                // $txnqty_ = $curr_quan;
                 $balqty = floatval($expdate_first->balqty) + floatval($prev_quan);
                 $expdate_obj
                         ->update([
@@ -2554,7 +2556,7 @@ class SalesOrderController extends defaultController
                         ]);
 
             }else{
-                $BalQty = $curr_quan;
+                $BalQty = $prev_quan;
 
                 DB::table('material.stockexp')
                     ->insert([
