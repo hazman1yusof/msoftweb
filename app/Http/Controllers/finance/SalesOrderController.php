@@ -1098,7 +1098,6 @@ class SalesOrderController extends defaultController
             if($dbacthdr->recstatus != 'POSTED'){
                 throw new \Exception("Dbacthdr recstatus is not POSTED",500);
             }
-            
 
             $invno = $dbacthdr->invno;
 
@@ -1127,7 +1126,7 @@ class SalesOrderController extends defaultController
                         ->where('uom','=',$billsum_obj->uom)
                         ->first();
                 
-                $updinv = ($chgmast->invflag == '1')? 1 : 0;
+                // $updinv = ($chgmast->invflag == '1')? 1 : 0;
 
                 $product = DB::table('material.product')
                                 ->where('compcode','=',session('compcode'))
