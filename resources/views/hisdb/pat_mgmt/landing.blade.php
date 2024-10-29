@@ -255,10 +255,14 @@
 						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
 					</div>
 					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					<!-- <div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.wardpanel.wardpanel')
-					</div>
+					</div> -->
 					
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.nursingActionPlan.nursingActionPlan')
+					</div>
+
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.nursingnote.nursingnote')
 					</div>
