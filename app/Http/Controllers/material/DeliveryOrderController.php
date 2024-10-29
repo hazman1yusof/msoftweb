@@ -488,40 +488,43 @@ class DeliveryOrderController extends defaultController
                             ->where('purordno','=',$value->srcdocno)
                             ->where('lineno_','=',$value->polineno);
 
-                        $podt_obj_lama = $podt_obj->first();
+                        if($podt_obj->exists()){
+                            $podt_obj_lama = $podt_obj->first();
 
-                        $jumlah_qtydelivered = Floatval($podt_obj_lama->qtydelivered) + Floatval($value->qtydelivered);
-                        $qtyoutstand = Floatval($podt_obj_lama->qtyorder) - Floatval($jumlah_qtydelivered);
 
-                        if($qtyoutstand > 0){
-                            $status = 'PARTIAL';
+                            $jumlah_qtydelivered = Floatval($podt_obj_lama->qtydelivered) + Floatval($value->qtydelivered);
+                            $qtyoutstand = Floatval($podt_obj_lama->qtyorder) - Floatval($jumlah_qtydelivered);
+
+                            if($qtyoutstand > 0){
+                                $status = 'PARTIAL';
+                            }
+
+                            // if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
+                            //     throw new \Exception("Quantity delivered exceed quantity order");
+                            // }
+
+                            DB::table('material.purorddt')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('itemcode','=',$value->itemcode)
+                                ->where('prdept','=',$value->prdept)
+                                ->where('purordno','=',$value->srcdocno)
+                                ->where('lineno_','=',$value->polineno)
+                                ->update([
+                                    'qtydelivered' => $jumlah_qtydelivered,
+                                    'qtyoutstand' => $qtyoutstand,
+                                    'recstatus' => $status
+                                ]);
+
+                            //update qtyoutstand utk suma DO pulak 
+                            DB::table('material.delorddt')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('itemcode','=',$value->itemcode)
+                                ->where('prdept','=',$delordhd_obj->prdept)
+                                ->where('srcdocno','=',$delordhd_obj->srcdocno)
+                                ->update([
+                                    'qtyoutstand' => $qtyoutstand
+                                ]);
                         }
-
-                        // if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
-                        //     throw new \Exception("Quantity delivered exceed quantity order");
-                        // }
-
-                        DB::table('material.purorddt')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('itemcode','=',$value->itemcode)
-                            ->where('prdept','=',$value->prdept)
-                            ->where('purordno','=',$value->srcdocno)
-                            ->where('lineno_','=',$value->polineno)
-                            ->update([
-                                'qtydelivered' => $jumlah_qtydelivered,
-                                'qtyoutstand' => $qtyoutstand,
-                                'recstatus' => $status
-                            ]);
-
-                        //update qtyoutstand utk suma DO pulak 
-                        DB::table('material.delorddt')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('itemcode','=',$value->itemcode)
-                            ->where('prdept','=',$delordhd_obj->prdept)
-                            ->where('srcdocno','=',$delordhd_obj->srcdocno)
-                            ->update([
-                                'qtyoutstand' => $qtyoutstand
-                            ]);
 
                     }
 
