@@ -1289,6 +1289,11 @@ Route::get('/wardpanel','hisdb\WardPanelController@show');
 Route::get('/wardpanel/table','hisdb\WardPanelController@table');
 Route::post('/wardpanel/form','hisdb\WardPanelController@form');
 
+//// Nursing Action Planpage ///
+Route::get('/nursingActionPlan','hisdb\NursingActionPlanController@show');
+Route::get('/nursingActionPlan/table','hisdb\NursingActionPlanController@table');
+Route::post('/nursingActionPlan/form','hisdb\NursingActionPlanController@form');
+
 //// Nursing Note page ///
 Route::get('/nursingnote','hisdb\NursingNoteController@show');
 Route::get('/nursingnote/table','hisdb\NursingNoteController@table');

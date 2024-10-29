@@ -764,159 +764,7 @@
                                             </tbody>
                                         </table>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <div class="eight wide column">
-                                    <div class="ui segments">
-                                        <div class="ui secondary segment" for="painscore">PAIN SCORE</div>
-                                        <div class="ui segment">
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                                <tr>
-                                                    <td colspan="2" rowspan="2" class="align-middle">No Pain</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="painscore" value="0">0
-                                                        </label>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td colspan="2" rowspan="4" class="align-middle">Mild Pain</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="painscore" value="1">1
-                                                        </label>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="painscore" value="2">2
-                                                        </label>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class="radio-inline">
-                                                                <input type="radio" name="painscore" value="3">3
-                                                        </label>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td colspan="2" rowspan="4" class="align-middle">Moderate Pain</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="painscore" value="4">4
-                                                        </label>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="painscore" value="5">5
-                                                        </label>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class="radio-inline">
-                                                                <input type="radio" name="painscore" value="6">6
-                                                        </label>
-                                                    </td>
-                                                </tr>
-                                                
-                                                <tr>
-                                                    <td colspan="2" rowspan="4" class="align-middle">Severe Pain</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="painscore" value="7">7
-                                                        </label>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="painscore" value="8">8
-                                                        </label>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class="radio-inline">
-                                                                <input type="radio" name="painscore" value="9">9
-                                                        </label>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td colspan="2" rowspan="2" class="align-middle">Worst Pain</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="painscore" value="10">10
-                                                        </label>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        </div>
                                         <div class="four wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
-                                        <div class="ui segments">
-                                            <div class="ui secondary segment">DESCRIPTION OF PAIN</div>
-                                            <div class="ui segment">
-                                                <div class="field">
-                                                    <label>
-                                                        <input type="checkbox" id="dop_arching" name="dop_arching" value="1">
-                                                        Arching 
-                                                    </label>
-                                                </div>
-                                                <div class="field">
-                                                    <label>
-                                                        <input type="checkbox" id="dop_throbbing" name="dop_throbbing" value="1">
-                                                        Throbbing 
-                                                    </label>
-                                                </div>
-                                                <div class="field">
-                                                    <label>
-                                                        <input type="checkbox" id="dop_stabbing" name="dop_stabbing" value="1">
-                                                        Stabbing 
-                                                    </label>
-                                                </div>
-                                                <div class="field">
-                                                    <label>
-                                                        <input type="checkbox" id="dop_sharp" name="dop_sharp" value="1">
-                                                        Sharp 
-                                                    </label>
-                                                </div>
-                                                <div class="field">
-                                                    <label>
-                                                        <input type="checkbox" id="dop_burning" name="dop_burning" value="1">
-                                                        Burning 
-                                                    </label>
-                                                </div>
-                                                <div class="field">
-                                                    <label>
-                                                        <input type="checkbox" id="dop_numb" name="dop_numb" value="1">
-                                                        Numb 
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                    <div class="four wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
                                         <div class="ui segments">
                                             <div class="ui secondary segment">MENTAL STATUS</div>
                                             <div class="ui segment">
@@ -948,8 +796,185 @@
                                         </div>
                                     </div>
                                     </div>
+
+                                   
                                 </div>
 
+                                <div class="eight wide column">
+                                    <div class="ui segments">
+                                        <div class="ui secondary segment" for="painscore">PAIN SCORE</div>
+                                        <div class="ui segment">
+                                            <table class="table table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="2" rowspan="2" class="align-middle">No Pain</td>
+                                                        <td colspan="2" rowspan="2" class="align-middle">
+                                                            <img class="ui tiny circular image" src="/img/painscore/no-pain.png">                                                    
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="painscore" value="0">0
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td colspan="2" rowspan="4" class="align-middle">Mild Pain</td>
+                                                        <td colspan="2" rowspan="4" class="align-middle">
+                                                            <img class="ui tiny circular image" src="/img/painscore/mild-pain.png">                                                    
+                                                        </td>                                                
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="painscore" value="1">1
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="painscore" value="2">2
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="radio-inline">
+                                                                    <input type="radio" name="painscore" value="3">3
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td colspan="2" rowspan="4" class="align-middle">Moderate Pain</td>
+                                                        <td colspan="2" rowspan="4">
+                                                            <img class="ui tiny circular image" src="/img/painscore/moderate-pain.png">                                                    
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="painscore" value="4">4
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="painscore" value="5">5
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="radio-inline">
+                                                                    <input type="radio" name="painscore" value="6">6
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                    <tr>
+                                                        <td colspan="2" rowspan="4" class="align-middle">Severe Pain</td>
+                                                        <td colspan="2" rowspan="4">
+                                                            <img class="ui tiny circular image" src="/img/painscore/severe-pain.png">                                                    
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="painscore" value="7">7
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="painscore" value="8">8
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="radio-inline">
+                                                                    <input type="radio" name="painscore" value="9">9
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td colspan="2" rowspan="2" class="align-middle">Worst Pain</td>
+                                                        <td colspan="2" rowspan="2">
+                                                            <img class="ui tiny circular image" src="/img/painscore/worst-pain.png">                                                    
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="painscore" value="10">10
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="four wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
+                                            <div class="ui segments">
+                                                <div class="ui secondary segment">DESCRIPTION OF PAIN</div>
+                                                <div class="ui segment">
+                                                    <div class="field">
+                                                        <label>
+                                                            <input type="checkbox" id="dop_arching" name="dop_arching" value="1">
+                                                            Arching 
+                                                        </label>
+                                                    </div>
+                                                    <div class="field">
+                                                        <label>
+                                                            <input type="checkbox" id="dop_throbbing" name="dop_throbbing" value="1">
+                                                            Throbbing 
+                                                        </label>
+                                                    </div>
+                                                    <div class="field">
+                                                        <label>
+                                                            <input type="checkbox" id="dop_stabbing" name="dop_stabbing" value="1">
+                                                            Stabbing 
+                                                        </label>
+                                                    </div>
+                                                    <div class="field">
+                                                        <label>
+                                                            <input type="checkbox" id="dop_sharp" name="dop_sharp" value="1">
+                                                            Sharp 
+                                                        </label>
+                                                    </div>
+                                                    <div class="field">
+                                                        <label>
+                                                            <input type="checkbox" id="dop_burning" name="dop_burning" value="1">
+                                                            Burning 
+                                                        </label>
+                                                    </div>
+                                                    <div class="field">
+                                                        <label>
+                                                            <input type="checkbox" id="dop_numb" name="dop_numb" value="1">
+                                                            Numb 
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="four wide column" style="left: 1070px;">
+                                    <div class="ui form">
+                                        <div class="inline field">
+                                            <label>Nurse's Signature: </label>
+                                            <input type="text" name="adduser" id="adduser" rdonly>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1171,6 +1196,27 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="four wide column">
+                                </div>
+                                <div class="four wide column">
+                                    <div class="ui form">
+                                        <div class="inline field">
+                                            <label>A&E Staff: </label>
+                                            <input type="text" name="lastuser" id="lastuser" rdonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="four wide column">
+                                    <div class="ui form">
+                                        <div class="inline field">
+                                            <label>Ward Staff: </label>
+                                            <input type="text" name="warduser" id="warduser" rdonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="four wide column">
                                 </div>
                             </div>
                         </div>
