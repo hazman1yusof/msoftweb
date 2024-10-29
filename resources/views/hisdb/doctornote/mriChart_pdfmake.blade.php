@@ -50,7 +50,7 @@
                                     {text: 'NRIC/Passport No. ' },
                                     {text: ': {{$mri->Newic}}'},{},
                                     {text: 'Weight ' },
-                                    {text: ': {{$mri->weight}} kg'},
+                                    {text: ': {{$mri->vs_weight}} kg'},
                                 ],
                                 [
                                     {text: 'Ward/Clinic ' },
@@ -64,7 +64,7 @@
                                 ],
                                 [
                                     {text: 'Date ' },
-                                    {text: ': {{\Carbon\Carbon::createFromFormat('Y-m-d',$mri->mri_date)->format('d-m-Y')}}'},{},{},{},
+                                    {text: ': {{\Carbon\Carbon::createFromFormat('Y-m-d',$mri->entereddate)->format('d-m-Y')}}'},{},{},{},
                                 ],
     
                             ]
@@ -95,12 +95,12 @@
                                             {text: 'Penyelaras denyutan jantung', italics: true}
                                         ], 
                                     },
-                                    @if($mri->pacemaker == '1')
+                                    @if($mri->cardiacpacemaker == '1')
                                         { text: '√', alignment:'center'},
                                     @else
                                         { text: '', alignment:'center'},
                                     @endif
-                                    @if($mri->pacemaker == '0')
+                                    @if($mri->cardiacpacemaker == '0')
                                         { text: '√', alignment:'center'},
                                     @else
                                         { text: '', alignment:'center'},
@@ -112,7 +112,7 @@
                                         text: [
                                             'Prosthetics valve, if yes, please specify.\n',
                                             {text: 'Injap jantung palsu, jika ada nyatakan:\n', italics: true},
-                                            '- {{$mri->pros_remark}}'
+                                            '- {{$mri->prosvalve_rmk}}'
                                         ], 
                                     },
                                     @if($mri->pros_valve == '1')
@@ -153,12 +153,12 @@
                                             {text: 'Implant koklea (ENT).\n', italics: true},
                                         ], 
                                     },
-                                    @if($mri->cochlear == '1')
+                                    @if($mri->cochlear_imp == '1')
                                         { text: '√', alignment:'center'},
                                     @else
                                         { text: '', alignment:'center'},
                                     @endif
-                                    @if($mri->cochlear == '0')
+                                    @if($mri->cochlear_imp == '0')
                                         { text: '√', alignment:'center'},
                                     @else
                                         { text: '', alignment:'center'},
@@ -248,12 +248,12 @@
                                             {text: 'Anggota badan palsu dari bahan feromagnetic.\n', italics: true},
                                         ], 
                                     },
-                                    @if($mri->limb_prosth == '1')
+                                    @if($mri->jointlimb_pros == '1')
                                         { text: '√', alignment:'center'},
                                     @else
                                         { text: '', alignment:'center'},
                                     @endif
-                                    @if($mri->limb_prosth == '0')
+                                    @if($mri->jointlimb_pros == '0')
                                         { text: '√', alignment:'center'},
                                     @else
                                         { text: '', alignment:'center'},
@@ -418,7 +418,7 @@
                                 ],
                                 [
                                     {text: '19.'}, 
-                                    {text: 'Serum creatinine: {{$mri->serum_creat}}', colSpan: 3},{},{},
+                                    {text: 'Serum creatinine: {{$mri->serum_creatinine}}', colSpan: 3},{},{},
                                 ],
                             ],
                     
@@ -430,14 +430,14 @@
                             widths: ['*','*','*','*'], //panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'Name & Sign of Doctor: {{$mri->doc_name}}', colSpan:2},{},
-                                    { text: 'Name & Sign of patient/parents/guardian: {{$mri->pat_name}}', colSpan:2},{},
+                                    { text: 'Name & Sign of Doctor: {{strtoupper($mri->mri_doctorname)}}', colSpan:2},{},
+                                    { text: 'Name & Sign of patient/parents/guardian: {{strtoupper($mri->Name)}}', colSpan:2},{},
                                 ],
                                 [
-                                    { text: 'RADIOLOGY USE ONLY:\n{{$mri->rad_use}}', bold:true},
-                                    { text: 'Doctor/Radiologist:\n{{$mri->radiologist}}'},
-                                    { text: 'Radiographer:\n{{$mri->radiographer}}'},
-                                    { text: 'Staff Nurse:\n{{$mri->staffnurse}}'},
+                                    { text: 'RADIOLOGY USE ONLY:', bold: true},
+                                    { text: 'Doctor/Radiologist:\n{{strtoupper($mri->radiologist)}}'},
+                                    { text: 'Radiographer:\n{{strtoupper($mri->radiographer)}}'},
+                                    { text: 'Entered By:\n{{strtoupper($mri->mri_lastuser)}}'},
                                 ],
                                 [
                                     {

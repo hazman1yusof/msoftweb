@@ -97,6 +97,7 @@
                         <input id="ptname_doctorNote" name="ptname_doctorNote" type="hidden">
                         <input id="preg_doctorNote" name="preg_doctorNote" type="hidden">
                         <input id="ic_doctorNote" name="ic_doctorNote" type="hidden">
+                        <input id="doctorname_doctorNote" name="doctorname_doctorNote" type="hidden">
                         
                         <div class="panel panel-info">
                             <div class="panel-body">
@@ -502,6 +503,13 @@
                                                             </div>
                                                             
                                                             <div class="form-group">
+                                                                <label class="col-md-3 control-label" for="oper_type">Type of Operation / Procedure</label>
+                                                                <div class="col-md-6">
+                                                                    <input id="oper_type" name="oper_type" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
                                                                 <label class="col-md-3 control-label" for="adm_type">Type of Admission</label>
                                                                 <div class="col-md-6">
                                                                     <label class="radio-inline">
@@ -526,16 +534,23 @@
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="comp_rep_no">Company representative number for medication <br> (if any)</label>
+                                                                <label class="col-md-3 control-label" for="ot_remarks">Special remarks / instructions for medication or any related to case</label>
                                                                 <div class="col-md-6">
-                                                                    <input id="comp_rep_no" name="comp_rep_no" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                    <textarea id="ot_remarks" name="ot_remarks" type="text" class="form-control input-sm"></textarea>
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="ot_remarks">Special remarks / instructions for medication or any related to case</label>
+                                                                <label class="col-md-3 control-label" for="ot_doctorname">Doctor's Name</label>
                                                                 <div class="col-md-6">
-                                                                    <textarea id="ot_remarks" name="ot_remarks" type="text" class="form-control input-sm"></textarea>
+                                                                    <input id="ot_doctorname" name="ot_doctorname" type="text" class="form-control input-sm" rdonly>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label" for="ot_lastuser">Entered By</label>
+                                                                <div class="col-md-6">
+                                                                    <input id="ot_lastuser" name="ot_lastuser" type="text" class="form-control input-sm" rdonly>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -634,7 +649,60 @@
                                                                     <div class="form-group">
                                                                         <label class="col-md-2 control-label" for="rad_exam">Examination</label>
                                                                         <div class="col-md-8">
-                                                                            <label class="radio-inline">
+                                                                            <table class="table table-striped">
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td><input class="form-check-input" type="checkbox" id="xray" name="xray" value="1"></td>
+                                                                                        <td><label class="form-check-label" for="xray">X-ray</label></td>
+                                                                                        <td><input id="xray_date" name="xray_date" type="date" class="form-control input-sm"></td>
+                                                                                        <td><textarea id="xray_remark" name="xray_remark" type="text" class="form-control input-sm"></textarea></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td><input class="form-check-input" type="checkbox" id="mri" name="mri" value="1"></td>
+                                                                                        <td><label class="form-check-label" for="mri">M.R.I</label></td>
+                                                                                        <td><input id="mri_date" name="mri_date" type="date" class="form-control input-sm"></td>
+                                                                                        <td><textarea id="mri_remark" name="mri_remark" type="text" class="form-control input-sm"></textarea></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td><input class="form-check-input" type="checkbox" id="angio" name="angio" value="1"></td>
+                                                                                        <td><label class="form-check-label" for="angio">Angio</label></td>
+                                                                                        <td><input id="angio_date" name="angio_date" type="date" class="form-control input-sm"></td>
+                                                                                        <td><textarea id="angio_remark" name="angio_remark" type="text" class="form-control input-sm"></textarea></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td><input class="form-check-input" type="checkbox" id="ultrasound" name="ultrasound" value="1"></td>
+                                                                                        <td><label class="form-check-label" for="ultrasound">Ultrasound</label></td>
+                                                                                        <td><input id="ultrasound_date" name="ultrasound_date" type="date" class="form-control input-sm"></td>
+                                                                                        <td><textarea id="ultrasound_remark" name="ultrasound_remark" type="text" class="form-control input-sm"></textarea></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td><input class="form-check-input" type="checkbox" id="ct" name="ct" value="1"></td>
+                                                                                        <td><label class="form-check-label" for="ct">C.T</label></td>
+                                                                                        <td><input id="ct_date" name="ct_date" type="date" class="form-control input-sm"></td>
+                                                                                        <td><textarea id="ct_remark" name="ct_remark" type="text" class="form-control input-sm"></textarea></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td><input class="form-check-input" type="checkbox" id="fluroscopy" name="fluroscopy" value="1"></td>
+                                                                                        <td><label class="form-check-label" for="fluroscopy">Fluroscopy</label></td>
+                                                                                        <td><input id="fluroscopy_date" name="fluroscopy_date" type="date" class="form-control input-sm"></td>
+                                                                                        <td><textarea id="fluroscopy_remark" name="fluroscopy_remark" type="text" class="form-control input-sm"></textarea></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td><input class="form-check-input" type="checkbox" id="mammogram" name="mammogram" value="1"></td>
+                                                                                        <td><label class="form-check-label" for="mammogram">Mammogram</label></td>
+                                                                                        <td><input id="mammogram_date" name="mammogram_date" type="date" class="form-control input-sm"></td>
+                                                                                        <td><textarea id="mammogram_remark" name="mammogram_remark" type="text" class="form-control input-sm"></textarea></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td><input class="form-check-input" type="checkbox" id="bmd" name="bmd" value="1"></td>
+                                                                                        <td><label class="form-check-label" for="bmd">Bone Densitometry (BMD)</label></td>
+                                                                                        <td><input id="bmd_date" name="bmd_date" type="date" class="form-control input-sm"></td>
+                                                                                        <td><textarea id="bmd_remark" name="bmd_remark" type="text" class="form-control input-sm"></textarea></td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                            
+                                                                            <!-- <label class="radio-inline">
                                                                                 <input type="radio" name="rad_exam" value="xray">X-ray
                                                                             </label>
                                                                             <label class="radio-inline">
@@ -654,30 +722,30 @@
                                                                             </label>
                                                                             <div class="col-md-5" style="float: right; padding-left: 0px;">
                                                                                 <textarea id="others_remark" name="others_remark" type="text" class="form-control input-sm"></textarea>
+                                                                            </div> -->
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-2 control-label" for="clinicaldata">Clinical Data</label>
+                                                                        <div class="col-md-6">
+                                                                            <textarea id="clinicaldata" name="clinicaldata" type="text" class="form-control input-sm"></textarea>
+                                                                            
+                                                                            <label class="col-md-4 control-label" for="radClinic_doctorname" style="padding-top: 12px;">Doctor's Name</label>
+                                                                            <div class="col-md-6" style="padding-top: 5px;">
+                                                                                <input id="radClinic_doctorname" name="radClinic_doctorname" type="text" class="form-control input-sm" rdonly>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     
                                                                     <div class="form-group">
-                                                                        <label class="col-md-2 control-label" for="consult_remark">Consultant/Physician</label>
+                                                                        <label class="col-md-2 control-label" for="rad_note">Radiology Note</label>
                                                                         <div class="col-md-6">
-                                                                            <textarea id="consult_remark" name="consult_remark" type="text" class="form-control input-sm"></textarea>
+                                                                            <textarea id="rad_note" name="rad_note" type="text" class="form-control input-sm"></textarea>
                                                                             
-                                                                            <label class="col-md-1 control-label" for="consultant" style="padding-top: 12px;">Name</label>
+                                                                            <label class="col-md-4 control-label" for="radClinic_radiologist" style="padding-top: 12px;">Radiologist's Name</label>
                                                                             <div class="col-md-6" style="padding-top: 5px;">
-                                                                                <input id="consultant" name="consultant" type="text" class="form-control input-sm" rdonly>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                    <div class="form-group">
-                                                                        <label class="col-md-2 control-label" for="rad_remark">Radiologist</label>
-                                                                        <div class="col-md-6">
-                                                                            <textarea id="rad_remark" name="rad_remark" type="text" class="form-control input-sm"></textarea>
-                                                                            
-                                                                            <label class="col-md-1 control-label" for="radiologist" style="padding-top: 12px;">Name</label>
-                                                                            <div class="col-md-6" style="padding-top: 5px;">
-                                                                                <input id="radiologist" name="radiologist" type="text" class="form-control input-sm" rdonly>
+                                                                                <input id="radClinic_radiologist" name="radClinic_radiologist" type="text" class="form-control input-sm" rdonly>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -735,9 +803,9 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 
-                                                                                <label class="col-md-1 control-label" for="mri_date">Date</label>
+                                                                                <label class="col-md-1 control-label" for="mri_entereddate">Date</label>
                                                                                 <div class="col-md-2">
-                                                                                    <input id="mri_date" name="mri_date" type="date" class="form-control input-sm">
+                                                                                    <input id="mri_entereddate" name="mri_entereddate" type="date" class="form-control input-sm">
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -759,10 +827,10 @@
                                                                                 <td>Cardiac pacemaker (<i>Penyelaras denyutan jantung</i>)</td>
                                                                                 <td width="30%">
                                                                                     <label class="radio-inline" style="padding-left: 30px;">
-                                                                                        <input type="radio" name="pacemaker" value="1">Yes
+                                                                                        <input type="radio" name="cardiacpacemaker" value="1">Yes
                                                                                     </label>
                                                                                     <label class="radio-inline">
-                                                                                        <input type="radio" name="pacemaker" value="0">No &nbsp; &nbsp;
+                                                                                        <input type="radio" name="cardiacpacemaker" value="0">No &nbsp; &nbsp;
                                                                                     </label>
                                                                                 </td>
                                                                             </tr>
@@ -777,7 +845,7 @@
                                                                                         <input type="radio" name="pros_valve" value="0">No &nbsp; &nbsp;
                                                                                     </label>
                                                                                     <div class="col-md-7" style="float: right; padding-left: 0px;">
-                                                                                        <textarea class="form-control input-sm" id="pros_remark" name="pros_remark"></textarea>
+                                                                                        <textarea class="form-control input-sm" id="prosvalve_rmk" name="prosvalve_rmk"></textarea>
                                                                                     </div>
                                                                                 </td>
                                                                             </tr>
@@ -798,10 +866,10 @@
                                                                                 <td>Cochlear implants (ENT.)<br><i>Implant koklea (ENT).</i></td>
                                                                                 <td>
                                                                                     <label class="radio-inline" style="padding-left: 30px;">
-                                                                                        <input type="radio" name="cochlear" value="1">Yes
+                                                                                        <input type="radio" name="cochlear_imp" value="1">Yes
                                                                                     </label>
                                                                                     <label class="radio-inline">
-                                                                                        <input type="radio" name="cochlear" value="0">No &nbsp; &nbsp;
+                                                                                        <input type="radio" name="cochlear_imp" value="0">No &nbsp; &nbsp;
                                                                                     </label>
                                                                                 </td>
                                                                             </tr>
@@ -858,10 +926,10 @@
                                                                                 <td>Joint/limb prosthesis of metallic ferromagnetic materials.<br><i>Anggota badan palsu dari bahan feromagnetic.</i></td>
                                                                                 <td>
                                                                                     <label class="radio-inline" style="padding-left: 30px;">
-                                                                                        <input type="radio" name="limb_prosth" value="1">Yes
+                                                                                        <input type="radio" name="jointlimb_pros" value="1">Yes
                                                                                     </label>
                                                                                     <label class="radio-inline">
-                                                                                        <input type="radio" name="limb_prosth" value="0">No &nbsp; &nbsp;
+                                                                                        <input type="radio" name="jointlimb_pros" value="0">No &nbsp; &nbsp;
                                                                                     </label>
                                                                                 </td>
                                                                             </tr>
@@ -978,7 +1046,7 @@
                                                                                 <td colspan="2">
                                                                                     Serum creatinine: 
                                                                                     <div class="col-md-10" style="float: right; padding-left: 0px;">
-                                                                                        <input name="serum_creat" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                                        <input name="serum_creatinine" type="text" class="form-control input-sm" style="text-transform: none;">
                                                                                     </div>
                                                                                 </td>
                                                                             </tr>
@@ -988,14 +1056,14 @@
                                                                     <div class="panel panel-info">
                                                                         <div class="panel-body">
                                                                             <div class="form-group">
-                                                                                <label class="col-md-2 control-label" for="doc_name">Name of Doctor</label>
+                                                                                <label class="col-md-2 control-label" for="mri_doctorname">Name of Doctor</label>
                                                                                 <div class="col-md-3">
-                                                                                    <input id="doc_name" name="doc_name" type="text" class="form-control input-sm" rdonly>
+                                                                                    <input id="mri_doctorname" name="mri_doctorname" type="text" class="form-control input-sm" rdonly>
                                                                                 </div>
                                                                                 
-                                                                                <label class="col-md-3 control-label" for="pat_name">Name of patient/parents/guardian</label>
+                                                                                <label class="col-md-3 control-label" for="mri_patientname">Name of patient/parents/guardian</label>
                                                                                 <div class="col-md-3">
-                                                                                    <input id="pat_name" name="pat_name" type="text" class="form-control input-sm" rdonly>
+                                                                                    <input id="mri_patientname" name="mri_patientname" type="text" class="form-control input-sm" rdonly>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -1004,24 +1072,19 @@
                                                                     <div class="panel panel-info">
                                                                         <div class="panel-body">
                                                                             <div class="form-group">
-                                                                                <div class="col-md-3">
-                                                                                    <label class="control-label" for="rad_use" style="padding-bottom: 5px;">Radiology use only</label>
-                                                                                    <input id="rad_use" name="rad_use" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="control-label" for="mri_radiologist" style="padding-bottom: 5px;">Doctor / Radiologist</label>
+                                                                                    <input id="mri_radiologist" name="mri_radiologist" type="text" class="form-control input-sm" rdonly>
                                                                                 </div>
                                                                                 
-                                                                                <div class="col-md-3">
-                                                                                    <label class="control-label" for="radiologist" style="padding-bottom: 5px;">Doctor / Radiologist</label>
-                                                                                    <input id="radiologist" name="radiologist" type="text" class="form-control input-sm" style="text-transform: none;">
-                                                                                </div>
-                                                                                
-                                                                                <div class="col-md-3">
+                                                                                <div class="col-md-4">
                                                                                     <label class="control-label" for="radiographer" style="padding-bottom: 5px;">Radiographer</label>
-                                                                                    <input id="radiographer" name="radiographer" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                                    <input id="radiographer" name="radiographer" type="text" class="form-control input-sm" rdonly>
                                                                                 </div>
                                                                                 
-                                                                                <div class="col-md-3">
-                                                                                    <label class="control-label" for="staffnurse" style="padding-bottom: 5px;">Staff Nurse</label>
-                                                                                    <input id="staffnurse" name="staffnurse" type="text" class="form-control input-sm" style="text-transform: none;">
+                                                                                <div class="col-md-4">
+                                                                                    <label class="control-label" for="mri_lastuser" style="padding-bottom: 5px;">Entered By</label>
+                                                                                    <input id="mri_lastuser" name="mri_lastuser" type="text" class="form-control input-sm" rdonly>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -1093,9 +1156,16 @@
                                                             </div>
                                                             
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="req_doc">Name of Requesting Doctor</label>
+                                                                <label class="col-md-3 control-label" for="phy_doctorname">Name of Requesting Doctor</label>
                                                                 <div class="col-md-6">
-                                                                    <input id="req_doc" name="req_doc" type="text" class="form-control input-sm" rdonly>
+                                                                    <input id="phy_doctorname" name="phy_doctorname" type="text" class="form-control input-sm" rdonly>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label" for="phy_lastuser">Entered By</label>
+                                                                <div class="col-md-6">
+                                                                    <input id="phy_lastuser" name="phy_lastuser" type="text" class="form-control input-sm" rdonly>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1142,9 +1212,9 @@
                                                     <div class="panel panel-info">
                                                         <div class="panel-body">
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label" for="patientname">Name</label>
+                                                                <label class="col-md-3 control-label" for="dressing_patientname">Name</label>
                                                                 <div class="col-md-6">
-                                                                    <input id="patientname" name="patientname" type="text" class="form-control input-sm" rdonly>
+                                                                    <input id="dressing_patientname" name="dressing_patientname" type="text" class="form-control input-sm" rdonly>
                                                                 </div>
                                                             </div>
                                                             
@@ -1197,6 +1267,20 @@
                                                                 <label class="col-md-3 control-label" for="solution">Solution/Method</label>
                                                                 <div class="col-md-6">
                                                                     <textarea id="solution" name="solution" type="text" class="form-control input-sm"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label" for="dressing_doctorname">Doctor's Name</label>
+                                                                <div class="col-md-6">
+                                                                    <input id="dressing_doctorname" name="dressing_doctorname" type="text" class="form-control input-sm" rdonly>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label" for="dressing_lastuser">Entered By</label>
+                                                                <div class="col-md-6">
+                                                                    <input id="dressing_lastuser" name="dressing_lastuser" type="text" class="form-control input-sm" rdonly>
                                                                 </div>
                                                             </div>
                                                         </div>

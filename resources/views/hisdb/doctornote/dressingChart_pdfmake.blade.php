@@ -120,7 +120,7 @@
                                     {text: 'Thank You For Your Cooperation \n\n'},  
                                 ],
                                 [
-                                    {text: '{{$dressing->adduser}}', fontSize: 8, bold:true},
+                                    {text: '{{strtoupper($dressing->adduser)}}', fontSize: 8, bold:true},
                                     
                                 ],
                             ]
