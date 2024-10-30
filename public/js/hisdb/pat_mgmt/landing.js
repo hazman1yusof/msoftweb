@@ -301,26 +301,25 @@ $(document).ready(function() {
                 if($('#user_billing').val() == '1'){
                     populate_ordcom_currpt(lastrowdata);
                 }
-
+                
                 if(lastrowdata.PatStatus == 1 ){
                     populate_endConsult_currpt(lastrowdata);
                 }
-
             }else if($('#epistycode').val() == 'IP'){
                 if($('#user_doctor').val() == '1'){
                     populate_triage_currpt(lastrowdata);
+                    populate_nursAssessment_currpt(lastrowdata);
+                    // populate_nursingActionPlan(lastrowdata);
+                    populate_nursingnote(lastrowdata);
                     populate_antenatal(lastrowdata);
                     populate_doctorNote_currpt(lastrowdata);
                     populate_requestFor_currpt(lastrowdata);
-                    populate_nursAssessment_currpt(lastrowdata);
-                    populate_nursingActionPlan(lastrowdata);
-                    populate_nursingnote(lastrowdata);
                     populate_dieteticCareNotes_currpt(lastrowdata);
                     populate_dietOrder_currpt(lastrowdata);
                 }else if($('#user_nurse').val() == '1'){
                     populate_triage_currpt(lastrowdata);
                     populate_nursAssessment_currpt(lastrowdata);
-                    populate_nursingActionPlan(lastrowdata);
+                    // populate_nursingActionPlan(lastrowdata);
                     populate_nursingnote(lastrowdata);
                     populate_doctorNote_currpt(lastrowdata);
                     populate_requestFor_currpt(lastrowdata);
@@ -331,7 +330,7 @@ $(document).ready(function() {
                 if($('#user_billing').val() == '1'){
                     populate_ordcom_currpt(lastrowdata);
                 }
-
+                
                 if(lastrowdata.PatStatus == 1 ){
                     populate_discharge_currpt(lastrowdata);
                 }
