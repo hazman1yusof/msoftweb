@@ -1316,6 +1316,12 @@ Route::get('/doctornote/mri_chart','hisdb\DoctorNoteController@mri_chart');
 // Route::get('/doctornote/physio_chart','hisdb\DoctorNoteController@physio_chart');
 Route::get('/doctornote/dressing_chart','hisdb\DoctorNoteController@dressing_chart');
 
+//// Request For page ///
+Route::get('/requestfor','hisdb\RequestForController@show');
+Route::get('/requestfor/table','hisdb\RequestForController@table');
+Route::post('/requestfor/form','hisdb\RequestForController@form');
+Route::get('/requestfor/showpdf','hisdb\RequestForController@showpdf');
+
 //// Admission Handover page ///
 Route::get('/admhandover','hisdb\AdmHandoverController@show');
 Route::get('/admhandover/table','hisdb\AdmHandoverController@table');
