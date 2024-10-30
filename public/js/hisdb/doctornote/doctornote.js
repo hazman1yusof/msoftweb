@@ -295,7 +295,6 @@ $(document).ready(function (){
 		disableForm('#formDressing');
 		button_state_dressing($(this).data('oper'));
 	});
-	
 	////////////////////////////////////////////dressing ends////////////////////////////////////////////
 	
 	/////////////////////////////////////////print button starts/////////////////////////////////////////
@@ -1582,7 +1581,7 @@ function saveForm_radClinic(callback){
 		oper: $("#cancel_radClinic").data('oper'),
 		mrn: $('#mrn_doctorNote').val(),
 		episno: $("#episno_doctorNote").val(),
-		recorddate_doctorNote: $("#recorddate_doctorNote").val(),
+		recorddate: $("#recorddate_doctorNote").val(),
 	}
 	
 	var postobj = {
@@ -2201,7 +2200,7 @@ function textarea_init_radClinic(){
 }
 
 function textarea_init_mri(){
-	$('textarea#pros_remark,textarea#oper3mth_remark').each(function (){
+	$('textarea#prosvalve_rmk,textarea#oper3mth_remark').each(function (){
 		if(this.value.trim() == ''){
 			this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
 		}else{
