@@ -230,6 +230,10 @@
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.wardpanel.wardpanel')
 					</div>
+
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.nursingActionPlan.nursingActionPlan')
+					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.nursingnote.nursingnote')
@@ -255,9 +259,9 @@
 						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
 					</div>
 					
-					<!-- <div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.wardpanel.wardpanel')
-					</div> -->
+					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.nursingActionPlan.nursingActionPlan')
@@ -402,6 +406,8 @@
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script>
+				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js"></script>
+
 			@elseif (Auth::user()->nurse == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
 				<script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script>
@@ -412,6 +418,7 @@
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script>
+				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js"></script>
 			@endif
 
 			@if (Auth::user()->billing == 1)

@@ -95,8 +95,8 @@ class AdmHandoverController extends defaultController
                     'report' => $request->report,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'lastuser'  => session('username'),
-                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    // 'lastuser'  => session('username'),
+                    // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
 
             DB::table('nursing.nurshistory')
@@ -177,8 +177,8 @@ class AdmHandoverController extends defaultController
                         'nbm' => $request->nbm,
                         'nbm_remark' => $request->nbm_remark,
                         'report' => $request->report,
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        // 'lastuser'  => session('username'),
+                        // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
             }else{
                 DB::table('nursing.admhandover')
@@ -210,8 +210,8 @@ class AdmHandoverController extends defaultController
                         'report' => $request->report,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        // 'lastuser'  => session('username'),
+                        // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
             }
 
@@ -307,6 +307,11 @@ class AdmHandoverController extends defaultController
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
         
+        $pathealth_obj = DB::table('hisdb.pathealth')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno);
+
         $responce = new stdClass();
         
         if($admhandover_obj->exists()){
@@ -326,8 +331,12 @@ class AdmHandoverController extends defaultController
 
         if($nursassessment_obj->exists()){
             $nursassessment_obj = $nursassessment_obj->first();
-            // dd($nursassessment_obj);
             $responce->nursassessment = $nursassessment_obj;
+        }
+
+        if($pathealth_obj->exists()){
+            $pathealth_obj = $pathealth_obj->first();
+            $responce->pathealth = $pathealth_obj;
         }
         
         return json_encode($responce);

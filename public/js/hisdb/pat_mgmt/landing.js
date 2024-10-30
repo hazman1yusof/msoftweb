@@ -310,14 +310,14 @@ $(document).ready(function() {
                     populate_antenatal(lastrowdata);
                     populate_doctorNote_currpt(lastrowdata);
                     populate_nursAssessment_currpt(lastrowdata);
-                    populate_nursActionPlan_currpt(lastrowdata);
+                    populate_nursingActionPlan(lastrowdata);
                     populate_nursingnote(lastrowdata);
                     populate_dieteticCareNotes_currpt(lastrowdata);
                     populate_dietOrder_currpt(lastrowdata);
                 }else if($('#user_nurse').val() == '1'){
                     populate_triage_currpt(lastrowdata);
                     populate_nursAssessment_currpt(lastrowdata);
-                    populate_nursActionPlan_currpt(lastrowdata);
+                    populate_nursingActionPlan(lastrowdata);
                     populate_nursingnote(lastrowdata);
                     populate_doctorNote_currpt(lastrowdata);
                     populate_dieteticCareNotes_currpt(lastrowdata);
