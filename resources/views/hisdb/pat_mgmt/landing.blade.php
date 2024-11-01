@@ -147,18 +147,15 @@
 
 
 		</div>
-
-
+		
 		@include('hisdb.pat_mgmt.mdl_patient')
 		@include('hisdb.pat_mgmt.mdl_episode')
 		@include('hisdb.pat_mgmt.itemselector')
 		@include('hisdb.pat_mgmt.patlabel')
-
-
+		
 		@if (request()->get('curpat') == 'true')
-
+			
 			@if (request()->get('epistycode') == 'OP')
-				
 				@if (Auth::user()->doctor == 1)
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursing_row">
 						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
@@ -174,6 +171,10 @@
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.doctornote.doctornote')
+					</div>
+					
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.requestfor.requestfor')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
@@ -194,6 +195,10 @@
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.doctornote.doctornote')
+					</div>
+					
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.requestfor.requestfor')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
@@ -218,7 +223,6 @@
 				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 					@include('hisdb.endConsult.endConsult',['type' => "OP",'type_desc' => "Out Patient"])
 				</div>
-				
 			@endif
 			
 			@if (request()->get('epistycode') == 'IP')
@@ -244,6 +248,10 @@
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.requestfor.requestfor')
+					</div>
+					
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.dieteticCareNotes.dieteticCareNotes')
 					</div>
 					
@@ -268,6 +276,10 @@
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.requestfor.requestfor')
+					</div>
+					
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.dieteticCareNotes.dieteticCareNotes')
 					</div>
 					
@@ -285,17 +297,15 @@
 				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 					@include('hisdb.discharge.discharge',['type' => "IP",'type_desc' => "In Patient"])
 				</div>
-				
 			@endif
-
-
+			
 		@endif
-
+		
 	<script type="text/javascript">
 	    let mql = window.matchMedia("(max-width: 768px)");
 	    document.getElementById("ismobile").value = mql.matches;
 	</script>
-
+	
 	<script type="text/ecmascript" src="plugins/jquery-3.2.1.min.js"></script> 
 	<script type="text/ecmascript" src="plugins/jquery-migrate-3.0.0.js"></script>
     <script type="text/ecmascript" src="plugins/trirand/i18n/grid.locale-en.js"></script>
@@ -304,7 +314,7 @@
     <script type="text/javascript">$.fn.modal.Constructor.prototype.enforceFocus = function() {};</script>
     <script type="text/ecmascript" src="plugins/jquery-ui-1.12.1/jquery-ui.min.js"></script>
 	<script type="text/ecmascript" src="plugins/form-validator/jquery.form-validator.min.js"></script>
-
+	
 	<script language="javascript" type="text/javascript" src="plugins/flot/jquery.flot.js"></script>
 	<script language="javascript" type="text/javascript" src="plugins/flot/jquery.flot.errorbars.js"></script>
 	<script language="javascript" type="text/javascript" src="plugins/flot/jquery.flot.navigate.js"></script>
@@ -314,27 +324,27 @@
     <script type="text/ecmascript" src="plugins/numeral.min.js"></script>
 	<script type="text/ecmascript" src="plugins/moment.js"></script>
 	<script type="text/javascript" src="js/myjs/utility.js"></script>
-
+	
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/rowgroup/1.1.2/js/dataTables.rowGroup.min.js"></script>
 	<script type="text/javascript" src="plugins/jquery-validator/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="plugins/jquery-validator/additional-methods.min.js"></script>
-
+	
 	<script type="text/javascript" src="plugins/bootgrid/js/jquery.bootgrid.js"></script>
 	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/biodata.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/episode.js"></script>
-
+	
 	<input type="hidden" id="user_billing" value="{{Auth::user()->billing}}">
 	<input type="hidden" id="user_nurse" value="{{Auth::user()->nurse}}">
 	<input type="hidden" id="user_doctor" value="{{Auth::user()->doctor}}">
-
+	
 	@if (request()->get('curpat') == 'true')
+		
 		<!-- <script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script> -->
-
-
+		
 		@if (request()->get('epistycode') == 'OP')
 			@if (Auth::user()->doctor == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
@@ -344,6 +354,7 @@
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
+				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js"></script>
 				<script type="text/javascript" src="js/hisdb/admhandover/admhandover.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 				<!-- <script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script> -->
@@ -353,11 +364,12 @@
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
+				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js"></script>
 				<script type="text/javascript" src="js/hisdb/admhandover/admhandover.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 				<!-- <script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script> -->
 			@endif
-
+			
 			@if (Auth::user()->billing == 1)
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_main.js"></script>
 					<!-- <script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar_doc.js"></script>
@@ -380,65 +392,68 @@
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_pkg.js"></script>
 			@endif
-
+			
 			<script type="text/javascript" src="js/hisdb/endConsult/endConsult.js"></script>
-
 		@endif
-
+		
 		@if (request()->get('epistycode') == 'IP')
 			<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script>
+			
 			@if (Auth::user()->doctor == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
 				<script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js"></script> -->
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js"></script>
 				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
+				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script>
 			@elseif (Auth::user()->nurse == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
 				<script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js"></script> -->
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
+				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script>
 			@endif
-
+			
 			@if (Auth::user()->billing == 1)
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_main.js"></script>
-					<!-- <script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet_doc.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth_doc.js"></script> -->
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
-					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_pkg.js"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar_doc.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp_doc.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab_doc.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad_doc.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee_doc.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys_doc.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab_doc.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet_doc.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth_doc.js"></script> -->
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_pkg.js"></script>
 			@endif
-
+			
 			<script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script>
-
 		@endif
+		
 	@endif
-
-
+	
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/patlabel.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js"></script>
@@ -449,7 +464,7 @@
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/textfield_modal.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js"></script>
-
+	
 	</div>
 
 </body>

@@ -1289,6 +1289,11 @@ Route::get('/wardpanel','hisdb\WardPanelController@show');
 Route::get('/wardpanel/table','hisdb\WardPanelController@table');
 Route::post('/wardpanel/form','hisdb\WardPanelController@form');
 
+//// Nursing Action Planpage ///
+Route::get('/nursingActionPlan','hisdb\NursingActionPlanController@show');
+Route::get('/nursingActionPlan/table','hisdb\NursingActionPlanController@table');
+Route::post('/nursingActionPlan/form','hisdb\NursingActionPlanController@form');
+
 //// Nursing Note page ///
 Route::get('/nursingnote','hisdb\NursingNoteController@show');
 Route::get('/nursingnote/table','hisdb\NursingNoteController@table');
@@ -1310,6 +1315,12 @@ Route::get('/doctornote/otbook_chart','hisdb\DoctorNoteController@otbook_chart')
 Route::get('/doctornote/mri_chart','hisdb\DoctorNoteController@mri_chart');
 // Route::get('/doctornote/physio_chart','hisdb\DoctorNoteController@physio_chart');
 Route::get('/doctornote/dressing_chart','hisdb\DoctorNoteController@dressing_chart');
+
+//// Request For page ///
+Route::get('/requestfor','hisdb\RequestForController@show');
+Route::get('/requestfor/table','hisdb\RequestForController@table');
+Route::post('/requestfor/form','hisdb\RequestForController@form');
+Route::get('/requestfor/showpdf','hisdb\RequestForController@showpdf');
 
 //// Admission Handover page ///
 Route::get('/admhandover','hisdb\AdmHandoverController@show');
