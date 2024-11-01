@@ -456,13 +456,13 @@ class DeliveryOrderController extends defaultController
                         do_util::ivtxndt_ins($value,$txnqty,$netprice,$delordhd_obj,$productcat);
 
                         //--- 3. posting stockloc ---///
-                        do_util::stockloc_ins($value,$txnqty,$netprice,$unit_);
+                        do_util::stockloc_ins($value,$txnqty,$netprice,$unit_,$delordhd_obj);
 
                         //--- 4. posting stock Exp ---//
-                        do_util::stockExp_ins($value,$txnqty,$netprice,$unit_);
+                        do_util::stockExp_ins($value,$txnqty,$netprice,$unit_,$delordhd_obj);
 
                         //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
-                        do_util::product_ins($value,$txnqty,$netprice,$unit_);
+                        do_util::product_ins($value,$txnqty,$netprice,$unit_,$delordhd_obj);
 
                         //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
                         do_util::update_po($value,$txnqty,$netprice);

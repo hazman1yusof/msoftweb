@@ -58,6 +58,8 @@ class InventoryTransactionController extends defaultController
                 return $this->posted($request);
             case 'posted':
                 return $this->posted($request);
+            case 'un_posted_tuo':
+                return $this->un_posted_tuo($request);
             case 'reopen':
                 return $this->reopen($request);
             case 'cancel':
@@ -902,6 +904,152 @@ class InventoryTransactionController extends defaultController
         }
     }
 
+    public function un_posted_tuo(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            $idno = $request->idno;
+
+            //-- 1. transfer from ivtmphd to ivtxnhd --//
+            $ivtmphd = DB::table('material.ivtmphd')
+                        ->where('idno','=',$idno)
+                        ->first();
+
+            if($ivtmphd->recstatus != 'POSTED'){
+                throw new \Exception("ivtmphd not posted", 500);
+            }
+
+            if($ivtmphd->trantype != 'TUO'){
+                throw new \Exception("TUO only", 500);
+            }
+
+            DB::table("material.IvTxnHd")
+                ->where('compcode',$ivtmphd->compcode)
+                ->where('RecNo',$ivtmphd->recno)
+                ->update([
+                    'CompCode' => 'XX',
+                    'RecStatus' => 'CANCELLED',
+                ]);
+
+            //-- 2. transfer from ivtmpdt to ivtxndt --//
+            $ivtmpdt_obj = DB::table('material.ivtmpdt')
+                    ->where('ivtmpdt.compcode','=',session('compcode'))
+                    ->where('ivtmpdt.recno','=',$ivtmphd->recno)
+                    ->where('ivtmpdt.recstatus','!=','DELETE')
+                    ->get();
+
+            foreach ($ivtmpdt_obj as $value) {
+                if($value->txnqty == 0){
+                    continue;
+                }
+
+                $obj_acc = invtran_util::get_acc($value,$ivtmphd);
+
+                $craccno = $obj_acc->craccno;
+                $crccode = $obj_acc->crccode;
+                $draccno = $obj_acc->draccno;
+                $drccode = $obj_acc->drccode;
+
+
+                DB::table("material.ivtxndt")
+                    ->where('compcode',session('compcode'))
+                    ->where('recno',$value->recno)
+                    ->update([
+                        'CompCode' => 'XX',
+                        'RecStatus' => 'CANCELLED',
+                    ]);
+
+                //-- 4. posting stockloc OUT --//
+
+                if($ivtmphd->trantype == 'TUO'){
+                    invtran_util::un_posting_TUO($value,$ivtmphd);
+                }else if($ivtmphd->trantype == 'TUI'){
+                    // invtran_util::posting_TUI($value,$ivtmphd);
+                }else{
+                    // $trantype_obj = DB::table('material.ivtxntype')
+                    //     ->where('ivtxntype.compcode','=',session('compcode'))
+                    //     ->where('ivtxntype.trantype','=',$ivtmphd->trantype)
+                    //     ->first();
+
+                    // if(strtoupper($trantype_obj->isstype) == 'TRANSFER'){
+                    //     $retval = invtran_util::posting_for_transfer($value,$ivtmphd);
+                    
+                    // }else if(strtoupper($trantype_obj->isstype) == 'ADJUSTMENT' || strtoupper($trantype_obj->isstype) == 'LOAN' || strtoupper($trantype_obj->isstype) == 'ISSUE'|| strtoupper($trantype_obj->isstype) == 'WRITE-OFF'){
+                    //     switch (strtoupper($trantype_obj->crdbfl)) {
+                    //         case 'IN':
+                    //             invtran_util::posting_for_adjustment_in($value,$ivtmphd,$trantype_obj->isstype);
+                    //             break;
+                    //         case 'OUT':
+                    //             invtran_util::posting_for_adjustment_out($value,$ivtmphd,$trantype_obj->isstype);
+                    //             break;
+                    //         default:
+                    //             # code...
+                    //             break;
+                    //     }
+                    // }
+                }
+
+                //--- 7. posting GL ---//
+
+                //amik yearperiod
+                $yearperiod = $this->getyearperiod($ivtmphd->trandate);
+ 
+                //1. buat gltran
+
+                
+                DB::table('finance.gltran')
+                    ->where('compcode',session('compcode'))
+                    ->where('auditno',$value->recno)
+                    ->where('lineno_',$value->lineno_)
+                    ->update([
+                        'compcode' => 'XX'
+                    ]);
+
+                $this->init_glmastdtl_del(
+                        $drccode,//drcostcode
+                        $draccno,//dracc
+                        $crccode,//crcostcode
+                        $craccno,//cracc
+                        $yearperiod,
+                        $value->amount
+                );
+
+            }
+
+            //--- 8. change recstatus to posted ---//
+
+            DB::table('material.ivtmphd')
+                ->where('recno','=',$ivtmphd->recno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'postedby' => session('username'),
+                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'OPEN' 
+                ]);
+
+            DB::table('material.ivtmpdt')
+                ->where('recno','=',$ivtmphd->recno)
+                ->where('compcode','=',session('compcode'))
+                ->where('recstatus','!=','DELETE')
+                ->update([
+                    'recstatus' => 'OPEN' 
+                ]);
+            
+
+            $queries = DB::getQueryLog();
+            dump($queries);
+
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
     public function cancel(Request $request){       
     }
 
@@ -1104,6 +1252,66 @@ class InventoryTransactionController extends defaultController
             }else{
                 return;
             }
+        }
+    }
+
+    public function init_glmastdtl_del($dbcc,$dbacc,$crcc,$cracc,$yearperiod,$amount){
+        //2. check glmastdtl utk debit, kalu ada update kalu xde create
+        $gltranAmount =  $this->isGltranExist($dbcc,$dbacc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$dbcc)
+                ->where('glaccount','=',$dbacc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => floatval($amount) - $gltranAmount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $dbcc,
+                    'glaccount' => $dbacc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => - floatval($amount),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+        $gltranAmount = defaultController::isGltranExist_($crcc,$cracc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$crcc)
+                ->where('glaccount','=',$cracc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $gltranAmount + floatval($amount),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $crcc,
+                    'glaccount' => $cracc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => +floatval($amount),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
         }
     }
 

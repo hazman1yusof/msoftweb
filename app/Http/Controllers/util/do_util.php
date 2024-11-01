@@ -35,7 +35,7 @@ class do_util extends defaultController{
                 'qtyonhand' => 0, 
                 'batchno' => $value->batchno, 
                 'amount' => $value->amount, 
-                'trandate' => $value->trandate, 
+                'trandate' => $delordhd_obj->trandate, 
                 'trantype' => $delordhd_obj->trantype,
                 'deptcode' => $value->deldept, 
                 'gstamount' => $value->amtslstax, 
@@ -43,14 +43,14 @@ class do_util extends defaultController{
             ]);
 	}
 
-	public static function stockloc_ins($value,$txnqty,$netprice,$deldept_unit){
+	public static function stockloc_ins($value,$txnqty,$netprice,$deldept_unit,$delordhd_obj){
 		//1. amik stockloc
         $stockloc_obj = DB::table('material.StockLoc')
             ->where('StockLoc.CompCode','=',session('compcode'))
             ->where('StockLoc.unit','=',$deldept_unit)
             ->where('StockLoc.DeptCode','=',$value->deldept)
             ->where('StockLoc.ItemCode','=',$value->itemcode)
-            ->where('StockLoc.Year','=', defaultController::toYear($value->trandate))
+            ->where('StockLoc.Year','=', defaultController::toYear($delordhd_obj->trandate))
             ->where('StockLoc.UomCode','=',$value->uomcode);
 
         //2.kalu ada stockloc, update 
@@ -58,7 +58,7 @@ class do_util extends defaultController{
 
         //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
             $stockloc_arr = (array)$stockloc_obj->first();
-            $month = defaultController::toMonth($value->trandate);
+            $month = defaultController::toMonth($delordhd_obj->trandate);
             $QtyOnHand = $stockloc_obj->first()->qtyonhand + $txnqty; 
             $NetMvQty = $stockloc_arr['netmvqty'.$month] + $txnqty;
             $NetMvVal = $stockloc_arr['netmvval'.$month] + ($netprice * $txnqty);
@@ -68,7 +68,7 @@ class do_util extends defaultController{
                 ->where('StockLoc.unit','=',$deldept_unit)
                 ->where('StockLoc.DeptCode','=',$value->deldept)
                 ->where('StockLoc.ItemCode','=',$value->itemcode)
-                ->where('StockLoc.Year','=', defaultController::toYear($value->trandate))
+                ->where('StockLoc.Year','=', defaultController::toYear($delordhd_obj->trandate))
                 ->where('StockLoc.UomCode','=',$value->uomcode)
                 ->update([
                     'QtyOnHand' => $QtyOnHand,
@@ -78,11 +78,11 @@ class do_util extends defaultController{
 
         }else{
         //3.kalu xde stockloc, create stockloc baru
-            throw new \Exception("Product doesnt have stockloc: ".$value->itemcode." UOM: ".$value->uomcode." Dept: ".$value->deldept." Year: ".defaultController::toYear($value->trandate));
+            throw new \Exception("Product doesnt have stockloc: ".$value->itemcode." UOM: ".$value->uomcode." Dept: ".$value->deldept." Year: ".defaultController::toYear($delordhd_obj->trandate));
         }
 	}
 
-	public static function stockExp_ins($value,$txnqty,$netprice,$deldept_unit){
+	public static function stockExp_ins($value,$txnqty,$netprice,$deldept_unit,$delordhd_obj){
 		//1. amik Stock Expiry
         $stockexp_obj = DB::table('material.stockexp')
             ->where('stockexp.compcode','=',$value->compcode)
@@ -90,7 +90,7 @@ class do_util extends defaultController{
             ->where('stockexp.deptcode','=',$value->deldept)
             ->where('stockexp.itemcode','=',$value->itemcode)
             ->where('stockexp.expdate','=',$value->expdate)
-            ->where('stockexp.year','=', defaultController::toYear($value->trandate))
+            ->where('stockexp.year','=', defaultController::toYear($delordhd_obj->trandate))
             ->where('stockexp.uomcode','=',$value->uomcode)
             ->where('stockexp.batchno','=',$value->batchno);
 
@@ -104,7 +104,7 @@ class do_util extends defaultController{
                 ->where('stockexp.deptcode','=',$value->deldept)
                 ->where('stockexp.itemcode','=',$value->itemcode)
                 ->where('stockexp.expdate','=',$value->expdate)
-                ->where('stockexp.year','=', defaultController::toYear($value->trandate))
+                ->where('stockexp.year','=', defaultController::toYear($delordhd_obj->trandate))
                 ->where('stockexp.uomcode','=',$value->uomcode)
                 ->where('stockexp.batchno','=',$value->batchno)
                 ->update([
@@ -130,12 +130,12 @@ class do_util extends defaultController{
                     'upduser' => $value->upduser, 
                     'upddate' => $value->upddate, 
                    // 'lasttt' => 'GRN', 
-                    'year' => defaultController::toYear($value->trandate)
+                    'year' => defaultController::toYear($delordhd_obj->trandate)
                 ]);
         }
 	}
 
-	public static function product_ins($value,$txnqty,$netprice,$deldept_unit){
+	public static function product_ins($value,$txnqty,$netprice,$deldept_unit,$delordhd_obj){
 		$product_obj = DB::table('material.product')
 	        ->where('product.compcode','=',session('compcode'))
             ->where('product.unit','=',$deldept_unit)
@@ -143,7 +143,7 @@ class do_util extends defaultController{
 	        ->where('product.uomcode','=',$value->uomcode);
 
 	    if($product_obj->exists()){ // kalu jumpa
-	        $month = defaultController::toMonth($value->trandate);
+	        $month = defaultController::toMonth($delordhd_obj->trandate);
 	        $OldQtyOnHand = $product_obj->first()->qtyonhand;
 	        $currprice = $netprice;
 	        $Oldavgcost = $product_obj->first()->avgcost;
