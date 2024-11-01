@@ -72,8 +72,8 @@ class TestController extends defaultController
             //     return $this->test_email($request);
             // case 'update_supplier':
             //     return $this->update_supplier($request);
-            case 'tambah_apacthdr':
-                return $this->tambah_apacthdr($request);
+            case 'betulkandb_apacthdr':
+                return $this->betulkandb_apacthdr($request);
             case 'tukar_uom':
                 return $this->tukar_uom($request);
             case 'update_chgprice':
@@ -1283,87 +1283,27 @@ class TestController extends defaultController
                             ->where('trantype','PV')
                             ->where('auditno',$obj->docauditno);
 
-                if(!$apacthdr_pv->exists()){
+                if($apacthdr_pv->exists()){
 
-                    $amount = DB::table('finance.apactdtl')
-                            ->where('source','AP')
-                            ->where('trantype','PV')
-                            ->where('auditno',$obj->docauditno)
-                            ->sum('amount');
+                    $amount = DB::table('finance.apalloc')
+                            ->where('docsource','AP')
+                            ->where('doctrantype','PV')
+                            ->where('docauditno',$obj->docauditno)
+                            ->sum('allocamount');
 
                     DB::table('finance.apacthdr')
-                        ->insert([
-                            'compcode' => '9B',
-                            'source' => 'AP',
-                            'trantype' => 'PV',
-                            // 'doctype' => 'Others',
-                            'auditno' => $obj->docauditno,
-                            'document' => $obj->reference,
-                            'suppcode' => $obj->suppcode,
-                            'payto' => $obj->suppcode,
-                            'suppgroup' => 'TR',
-                            // 'bankcode' => $obj->,
-                            // 'paymode' => $obj->,
-                            // 'cheqno' => $obj->,
-                            // 'cheqdate' => $obj->,
-                            'actdate' => $obj->lastupdate,
-                            'recdate' => $obj->lastupdate,
-                            // 'category' => $apactdtl->category,
+                        ->where('source','AP')
+                        ->where('trantype','PV')
+                        ->where('auditno',$obj->docauditno)
+                        ->update([
                             'amount' => $amount,
                             'outamount' => 0,
-                            'remarks' => $obj->remarks,
-                            // 'postflag' => $obj->,
-                            // 'doctorflag' => $obj->,
-                            // 'stat' => $obj->,
-                            // 'entryuser' => $obj->,
-                            // 'entrytime' => $obj->,
-                            // 'upduser' => $obj->,
-                            // 'upddate' => $obj->,
-                            // 'conversion' => $obj->,
-                            // 'srcfrom' => $obj->,
-                            // 'srcto' => $obj->,
-                            // 'deptcode' => $apactdtl->deptcode,
-                            // 'reconflg' => $obj->,
-                            // 'effectdatefr' => $obj->,
-                            // 'effectdateto' => $obj->,
-                            // 'frequency' => $obj->,
-                            // 'refsource' => $obj->,
-                            // 'reftrantype' => $obj->,
-                            // 'refauditno' => $obj->,
-                            // 'pvno' => $obj->,
-                            // 'entrydate' => $obj->,
-                            'recstatus' => $obj->recstatus,
-                            // 'adduser' => $obj->,
-                            // 'adddate' => $obj->,
-                            // 'reference' => $obj->,
-                            // 'TaxClaimable' => $obj->,
-                            'unit' => $obj->unit,
-                            // 'allocdate' => $obj->,
-                            // 'postuser' => $obj->,
-                            // 'postdate' => $obj->,
-                            // 'unallocated' => $obj->,
-                            'requestby' => 'SYSTEM',
-                            'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            // 'request_remark' => $obj->,
-                            // 'supportby' => $obj->,
-                            // 'supportdate' => $obj->,
-                            // 'support_remark' => $obj->,
-                            // 'verifiedby' => $obj->,
-                            // 'verifieddate' => $obj->,
-                            // 'verified_remark' => $obj->,
-                            // 'approvedby' => $obj->,
-                            // 'approveddate' => $obj->,
-                            // 'approved_remark' => $obj->,
-                            // 'cancelby' => $obj->,
-                            // 'canceldate' => $obj->,
-                            // 'cancelled_remark' => $obj->,
-                            // 'bankaccno' => $obj->,
                         ]);
 
-                }
+                    echo nl2br("$i. update apacthdr: $obj->docauditno \n");
+                    $i++;
 
-                echo nl2br("$i. update apacthdr: $obj->docauditno \n");
-                $i++;
+                }
             }
 
             DB::commit();
