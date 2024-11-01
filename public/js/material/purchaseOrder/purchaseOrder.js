@@ -3171,7 +3171,7 @@ $(document).ready(function () {
 			[
 				{label: 'Item Code',name:'p_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label: 'Generic',name:'p_generic',width:400,classes:'pointer',canSearch:true},
+				{label: 'Generic',name:'p_generic',width:200,classes:'pointer',canSearch:true},
 				{label: 'Quantity On Hand',name:'p_qtyonhand',width:100,classes:'pointer',},
 				{label: 'UOM Code',name:'p_uomcode',width:100,classes:'pointer'},
 				{label: 'Tax Code', name: 'p_TaxCode', width: 100, classes: 'pointer' },
