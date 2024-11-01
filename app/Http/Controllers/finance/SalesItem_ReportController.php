@@ -93,6 +93,24 @@ class SalesItem_ReportController extends defaultController
                 array_push($invno_array, $obj->invno);
             }
         }
+
+        foreach ($dbacthdr as $obj) {
+            $chgprice_obj = DB::table('hisdb.chgprice as cp')
+                ->where('cp.compcode', '=', session('compcode'))
+                ->where('cp.chgcode', '=', $obj->chgcode)
+                // ->where('cp.uom', '=', $value->uom)
+                ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur"))
+                ->orderBy('cp.effdate','desc');
+
+            if($chgprice_obj->exists()){
+                $chgprice_obj = $chgprice_obj->first();
+                $obj->costprice = $chgprice_obj->costprice * $obj->quantity;
+            }else{
+                $obj->costprice = 0.00;
+            }
+        }
+
+        // dd($dbacthdr);
        
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))

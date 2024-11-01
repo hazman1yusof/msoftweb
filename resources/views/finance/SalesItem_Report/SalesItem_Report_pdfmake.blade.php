@@ -85,7 +85,7 @@
                     table: {
                         headerRows: 1,
                         dontBreakRows: true,
-                        widths: [50,50,180,'*','*','*','*'],//panjang standard dia 515
+                        widths: [50,50,180,'*','*','*','*','*'],//panjang standard dia 515
                         body: make_body()
                     }
                 },
@@ -130,7 +130,8 @@
                 {text:'Charge Code',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
                 {text:'Description',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
                 {text:'Quantity',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
-                {text:'Amount',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
+                {text:'Tot Amount',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
+                {text:'Tot Cost',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
                 {text:'Tax',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
                 {text:'Total',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
             ]
@@ -139,6 +140,7 @@
         var totalAmount = 0;
         invno_array.forEach(function(e_inv,i_inv){
             var amt = 0;
+            var cpr = 0;
             var tax = 0;
             var tot = 0;
             dbacthdr.forEach(function(e,i){
@@ -146,7 +148,8 @@
                     if(amt == 0){
                         let arr_hdr = [
                             {text:e.debtorcode+' '+e.dm_desc+' '+
-                                ('0000000' + e.invno).slice(-7), style: 'body_hdr',colSpan: 7, border: [false, false, false, false]},
+                                ('0000000' + e.invno).slice(-7), style: 'body_hdr',colSpan: 8, border: [false, false, false, false]},
+                            {},
                             {},
                             {},
                             {},
@@ -163,11 +166,13 @@
                         {text:e.cm_desc, style: 'body_row', border: [false, false, false, false]},
                         {text:myparseFloat(e.quantity),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
                         {text:myparseFloat(e.amount),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+                        {text:myparseFloat(e.costprice),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
                         {text:myparseFloat(e.taxamount),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
                         {text:myparseFloat(parseFloat(e.amount) + parseFloat(e.taxamount)),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
                     ];
                     retval.push(arr1);
                     amt = amt + parseFloat(e.amount);
+                    cpr = cpr + parseFloat(e.costprice);
                     tax = tax + parseFloat(e.taxamount);
                     tot = tot + parseFloat(e.amount) + parseFloat(e.taxamount);
                 }
@@ -180,6 +185,7 @@
                 {text:'', style: 'body_hdr', border: [false, false, false, false]},
                 {text:'TOTAL',alignment: 'right', style: 'body_hdr', border: [false, false, false, false]},
                 {text:myparseFloat(amt),alignment: 'right', style: 'body_hdr', border: [false, false, false, false]},
+                {text:myparseFloat(cpr),alignment: 'right', style: 'body_hdr', border: [false, false, false, false]},
                 {text:myparseFloat(tax),alignment: 'right', style: 'body_hdr', border: [false, false, false, false]},
                 {text:myparseFloat(tot),alignment: 'right', style: 'body_hdr', border: [false, false, false, false]},
             ];
@@ -191,7 +197,8 @@
             {text:'', style: 'body_hdr', border: [false, true, false, true]},
             {text:'', style: 'body_hdr', border: [false, true, false, true]},
             {text:'', style: 'body_hdr', border: [false, true, false, true]},
-            {text:'GRAND TOTAL',colSpan: 3,alignment: 'right', style: 'body_hdr', border: [false, true, false, true]},
+            {text:'GRAND TOTAL',colSpan: 4,alignment: 'right', style: 'body_hdr', border: [false, true, false, true]},
+            {},
             {},
             {},
             {text:myparseFloat(totalAmount),alignment: 'right', style: 'body_hdr', border: [false, true, false, true]},

@@ -51,6 +51,7 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths
             'E' => 12,
             'F' => 12,
             'G' => 12,
+            'H' => 12,
            
         ];
     }
@@ -120,6 +121,22 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths
         foreach ($dbacthdr as $obj) {
             if(!in_array($obj->invno, $invno_array)){
                 array_push($invno_array, $obj->invno);
+            }
+        }
+
+        foreach ($dbacthdr as $obj) {
+            $chgprice_obj = DB::table('hisdb.chgprice as cp')
+                ->where('cp.compcode', '=', session('compcode'))
+                ->where('cp.chgcode', '=', $obj->chgcode)
+                // ->where('cp.uom', '=', $value->uom)
+                ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur"))
+                ->orderBy('cp.effdate','desc');
+
+            if($chgprice_obj->exists()){
+                $chgprice_obj = $chgprice_obj->first();
+                $obj->costprice = $chgprice_obj->costprice * $obj->quantity;
+            }else{
+                $obj->costprice = 0.00;
             }
         }
         
