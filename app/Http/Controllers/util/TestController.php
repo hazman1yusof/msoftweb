@@ -1791,9 +1791,9 @@ class TestController extends defaultController
         DB::beginTransaction();
         try {
 
-            $ivtxndt = DB::table('temp.ivtxndt')
+            $ivtxndt = DB::table('material.ivtxndt')
                             ->where('compcode','9B')
-                            ->whereDate('adddate','>','2024-10-01')
+                            ->whereDate('adddate','<=','2024-09-30')
                             ->get();
 
             $ivtxndt_ = $ivtxndt->unique('itemcode');
@@ -1803,58 +1803,58 @@ class TestController extends defaultController
                 $deptcode=$obj->deptcode;
                 $uomcode=$obj->uomcode;
 
-                $stockloc = DB::table('temp.stockloc')
+                $stockloc = DB::table('material.stockloc')
                             ->where('compcode','9B')
                             ->where('deptcode',$deptcode)
                             ->where('itemcode',$itemcode);
 
-                $sumqty_plus_1 = DB::table('temp.ivtxndt')
+                $sumqty_plus_1 = DB::table('material.ivtxndt')
                                 ->where('compcode','9B')
                                 ->where('trantype','GRN')
-                                ->whereDate('adddate','>','2024-10-01')
+                                ->whereDate('adddate','<=','2024-09-30')
                                 ->where('itemcode',$itemcode)
                                 ->sum('txnqty');
 
-                $sumqty_plus_2 = DB::table('temp.ivtxndt')
+                $sumqty_plus_2 = DB::table('material.ivtxndt')
                                 ->where('compcode','9B')
                                 ->where('trantype','TUI')
-                                ->whereDate('adddate','>','2024-10-01')
+                                ->whereDate('adddate','<=','2024-09-30')
                                 ->where('itemcode',$itemcode)
                                 ->sum('txnqty');
 
-                $sumqty_minus_1 = DB::table('temp.ivtxndt')
+                $sumqty_minus_1 = DB::table('material.ivtxndt')
                                 ->where('compcode','9B')
                                 ->where('trantype','TUO')
-                                ->whereDate('adddate','>','2024-10-01')
+                                ->whereDate('adddate','<=','2024-09-30')
                                 ->where('itemcode',$itemcode)
                                 ->sum('txnqty');
 
-                $sumqty_minus_2 = DB::table('temp.ivdspdt')
-                    ->where('compcode','9B')
-                    ->whereDate('adddate','>','2024-10-01')
-                    ->where('itemcode',$itemcode)
-                    ->sum('txnqty');
+                $sumqty_minus_2 = DB::table('material.ivdspdt')
+                            ->where('compcode','9B')
+                            ->whereDate('adddate','<=','2024-09-30')
+                            ->where('itemcode',$itemcode)
+                            ->sum('txnqty');
 
                 $sumqty = $sumqty_plus_1 + $sumqty_plus_2 - $sumqty_minus_1 - $sumqty_minus_2;
 
                 if($stockloc->exists()){
-                    DB::table('temp.stockloc')
+                    DB::table('material.stockloc')
                             ->where('compcode','9B')
                             ->where('itemcode',$itemcode)
                             ->where('deptcode',$deptcode)
                             ->update([
-                                'netmvqty10' => $sumqty
+                                'netmvqty9' => $sumqty
                             ]);
 
-                    $stockloc = DB::table('temp.stockloc')
+                    $stockloc = DB::table('material.stockloc')
                             ->where('compcode','9B')
                             ->where('deptcode',$deptcode)
                             ->where('itemcode',$itemcode)
                             ->first();
 
-                    $qtyonhand = floatval($stockloc->netmvqty9) + floatval($stockloc->netmvqty10);
+                    $qtyonhand = floatval($stockloc->netmvqty9) + floatval($stockloc->netmvqty10) + floatval($stockloc->netmvqty11);
 
-                    DB::table('temp.stockloc')
+                    DB::table('material.stockloc')
                             ->where('compcode','9B')
                             ->where('itemcode',$itemcode)
                             ->where('deptcode',$deptcode)
@@ -1862,50 +1862,75 @@ class TestController extends defaultController
                                 'qtyonhand' => $qtyonhand
                             ]);
 
-                    DB::table('temp.product')
+                    DB::table('material.product')
                             ->where('compcode','9B')
                             ->where('itemcode',$itemcode)
                             ->update([
                                 'qtyonhand' => $qtyonhand
                             ]);
 
-
-                    DB::table('temp.stockexp')
+                    $sum_stockexp = DB::table('material.stockexp')
                             ->where('compcode','9B')
                             ->where('itemcode',$itemcode)
-                            ->update(['compcode' => 'XX']);
+                            ->sum('balqty');
 
-                    DB::table('temp.stockexp')
-                        ->insert([
-                            'compcode' => '9B',
-                            'deptcode' => $deptcode,
-                            'itemcode' => $itemcode,
-                            'uomcode' => $uomcode,
-                            'expdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'batchno' => 'OB',
-                            'balqty' => $qtyonhand,
-                            'adduser' => 'SYSTEM',
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            // 'addtime' => $obj->compcode,
-                            // 'upduser' => $obj->compcode,
-                            // 'upddate' => $obj->compcode,
-                            // 'updtime' => $obj->compcode,
-                            // 'lasttt' => $obj->compcode,
-                            'year' => Carbon::now("Asia/Kuala_Lumpur")->year,
-                            'unit' => "W'HOUSE",
-                        ]);
+                    $baki = $qtyonhand - $sum_stockexp;
+                    if($baki == 0){
+                        continue;
+                    }else if($baki > 0){
+                        $stockexp_f = DB::table('material.stockexp')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$itemcode)
+                            ->first();
 
-                    dump($itemcode.'-'.$deptcode.' qty10 = '.$sumqty);
+                        DB::table('material.stockexp')
+                                ->where('compcode','9B')
+                                ->where('itemcode',$itemcode)
+                                ->where('idno',$stockexp_f->idno)
+                                ->update([
+                                    'balqty' => $baki + $stockexp_f->balqty,
+                                ]);
 
-                    // if($stockexp)
+                    }else if($baki < 0){
+                        $baki = $baki * -1;
 
-                    // DB::table('material.stockexp')
-                    //         ->where('compcode','9B')
-                    //         ->where('batchno','OB')
-                    //         ->where('itemcode',$itemcode)
-                    //         ->update([
-                    //             'balqty' => $qtyonhand
-                    //         ]);
+                        $stockexp = DB::table('material.stockexp')
+                                ->where('compcode','9B')
+                                ->where('itemcode',$itemcode)
+                                ->get();
+
+                        foreach ($stockexp as $obj) {
+                            $baki = $baki - $obj->balqty;
+                            if($baki = 0){
+                                DB::table('material.stockexp')
+                                    ->where('idno',$obj->idno)
+                                    ->where('compcode','9B')
+                                    ->where('itemcode',$itemcode)
+                                    ->update([
+                                        'balqty' => 0
+                                    ]);
+
+                                continue;
+                            }else if($baki > 0){
+                                DB::table('material.stockexp')
+                                    ->where('idno',$obj->idno)
+                                    ->where('compcode','9B')
+                                    ->where('itemcode',$itemcode)
+                                    ->update([
+                                        'balqty' => 0
+                                    ]);
+                            }else if($baki < 0){
+                                DB::table('material.stockexp')
+                                    ->where('idno',$obj->idno)
+                                    ->where('compcode','9B')
+                                    ->where('itemcode',$itemcode)
+                                    ->update([
+                                        'balqty' => $baki*-1
+                                    ]);
+                                continue;
+                            }
+                        }
+                    }
                 }
 
             }
