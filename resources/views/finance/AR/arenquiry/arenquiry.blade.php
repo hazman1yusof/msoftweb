@@ -146,7 +146,7 @@
 		
 		<div class="panel panel-default">
 			<div class="panel-heading">Enquiry (AR) Header
-				<a class='pull-right pointer text-primary' style="padding-left: 30px;" id='reprint_receipt'>
+				<a class='pull-right pointer text-primary' style="padding-left: 30px;" id='reprint_receipt' href="" target="_blank">
 					Reprint Receipt
 				</a>
 				<a class='pull-right pointer text-primary' style="padding-left: 30px;" id='allocate'>
@@ -1522,5 +1522,5 @@
 			}
 		});
 	</script>
-	<script src="js/finance/AR/arenquiry/arenquiryScript.js"></script>
+	<script src="js/finance/AR/arenquiry/arenquiryScript.js?v=1.1"></script>
 @endsection
