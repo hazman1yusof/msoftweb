@@ -1720,11 +1720,13 @@
                                                     <div class="form-inline col-md-12" style="padding: 10px 15px 10px 0px;">
                                                         <label class="control-label" for="tr_entereddate">Date</label>
                                                         <input id="tr_entereddate" name="tr_entereddate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
-                                                        
-                                                        <label class="control-label" for="tr_enteredtime" style="padding-left: 10px;">Time</label>
+                                                    </div>
+                                                    
+                                                    <div class="form-inline col-md-12" style="padding: 0px 15px 10px 0px;">
+                                                        <label class="control-label" for="tr_enteredtime">Time</label>
                                                         <input id="tr_enteredtime" name="tr_enteredtime" type="time" class="form-control input-sm">
                                                     </div>
-
+                                                    
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
 														<label for="treatment_remarks">Notes</label>
 														<textarea id="treatment_remarks" name="treatment_remarks" type="text" class="form-control input-sm"></textarea>
@@ -1791,11 +1793,13 @@
                                                     <div class="form-inline col-md-12" style="padding: 10px 15px 10px 0px;">
                                                         <label class="control-label" for="inv_entereddate">Date</label>
                                                         <input id="inv_entereddate" name="inv_entereddate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
-                                                        
-                                                        <label class="control-label" for="inv_enteredtime" style="padding-left: 10px;">Time</label>
+                                                    </div>
+                                                    
+                                                    <div class="form-inline col-md-12" style="padding: 0px 15px 10px 0px;">
+                                                        <label class="control-label" for="inv_enteredtime">Time</label>
                                                         <input id="inv_enteredtime" name="inv_enteredtime" type="time" class="form-control input-sm">
                                                     </div>
-
+                                                    
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
 														<label for="investigation_remarks">Notes</label>
 														<textarea id="investigation_remarks" name="investigation_remarks" type="text" class="form-control input-sm"></textarea>
@@ -1862,11 +1866,13 @@
                                                     <div class="form-inline col-md-12" style="padding: 10px 15px 10px 0px;">
                                                         <label class="control-label" for="inj_entereddate">Date</label>
                                                         <input id="inj_entereddate" name="inj_entereddate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
-                                                        
-                                                        <label class="control-label" for="inj_enteredtime" style="padding-left: 10px;">Time</label>
+                                                    </div>
+                                                    
+                                                    <div class="form-inline col-md-12" style="padding: 0px 15px 10px 0px;">
+                                                        <label class="control-label" for="inj_enteredtime">Time</label>
                                                         <input id="inj_enteredtime" name="inj_enteredtime" type="time" class="form-control input-sm">
                                                     </div>
-
+                                                    
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
 														<label for="injection_remarks">Notes</label>
 														<textarea id="injection_remarks" name="injection_remarks" type="text" class="form-control input-sm"></textarea>

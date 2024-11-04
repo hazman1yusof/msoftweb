@@ -215,6 +215,10 @@ $(document).ready(function (){
 		disableForm('#formMRI');
 		button_state_mri($(this).data('oper'));
 	});
+	
+	$("#accept_mri").click(function (){
+		radiographer_accept();
+	});
 	///////////////////////////////////////////////mri ends///////////////////////////////////////////////
 	
 	////////////////////////////////////////////physio starts////////////////////////////////////////////
@@ -904,24 +908,24 @@ function button_state_mri(state){
 		case 'empty':
 			$("#toggle_doctorNote").removeAttr('data-toggle');
 			$('#cancel_mri').data('oper','add');
-			$('#new_mri,#save_mri,#cancel_mri,#edit_mri').attr('disabled',true);
+			$('#new_mri,#save_mri,#cancel_mri,#edit_mri,#accept_mri').attr('disabled',true);
 			break;
 		case 'add':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$('#cancel_mri').data('oper','add');
 			$("#new_mri").attr('disabled',false);
-			$('#save_mri,#cancel_mri,#edit_mri').attr('disabled',true);
+			$('#save_mri,#cancel_mri,#edit_mri,#accept_mri').attr('disabled',true);
 			break;
 		case 'edit':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$('#cancel_mri').data('oper','edit');
-			$("#edit_mri").attr('disabled',false);
+			$("#edit_mri,#accept_mri").attr('disabled',false);
 			$('#save_mri,#cancel_mri,#new_mri').attr('disabled',true);
 			break;
 		case 'wait':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$("#save_mri,#cancel_mri").attr('disabled',false);
-			$('#edit_mri,#new_mri').attr('disabled',true);
+			$('#edit_mri,#new_mri,#accept_mri').attr('disabled',true);
 			break;
 	}
 }
@@ -1226,7 +1230,7 @@ function populate_radClinic_getdata(){
 			button_state_radClinic('add');
 		}
 		
-		if(!emptyobj_(data.rad_weight))$("#rad_weight").val(data.rad_weight);
+		// if(!emptyobj_(data.rad_weight))$("#rad_weight").val(data.rad_weight);
 		// $("#rad_pregnant").val($('#preg_doctorNote').val());
 		if(!emptyobj_(data.rad_allergy))$("#rad_allergy").val(data.rad_allergy);
 		$("#radClinic_doctorname").val($('#doctorname_doctorNote').val());
@@ -1269,7 +1273,7 @@ function get_default_radClinic(){
 			
 		}
 		
-		if(!emptyobj_(data.rad_weight))$("#rad_weight").val(data.rad_weight);
+		// if(!emptyobj_(data.rad_weight))$("#rad_weight").val(data.rad_weight);
 		// $("#rad_pregnant").val($('#preg_doctorNote').val());
 		if(!emptyobj_(data.rad_allergy))$("#rad_allergy").val(data.rad_allergy);
 		$("#radClinic_doctorname").val($('#doctorname_doctorNote').val());
@@ -1309,12 +1313,16 @@ function populate_mri_getdata(){
 		if(!$.isEmptyObject(data.pat_mri)){
 			autoinsert_rowdata("#formMRI",data.pat_mri);
 			
-			button_state_mri('edit');
+			if(!emptyobj_(data.pat_mri.radiographer)){
+				button_state_mri('empty');
+			}else{
+				button_state_mri('edit');
+			}
 		}else{
 			button_state_mri('add');
 		}
 		
-		if(!emptyobj_(data.mri_weight))$("#mri_weight").val(data.mri_weight);
+		// if(!emptyobj_(data.mri_weight))$("#mri_weight").val(data.mri_weight);
 		$("#mri_doctorname").val($('#doctorname_doctorNote').val());
 		$("#mri_patientname").val($('#ptname_doctorNote').val());
 		textarea_init_mri();
@@ -1347,11 +1355,66 @@ function get_default_mri(){
 			
 		}
 		
-		if(!emptyobj_(data.mri_weight))$("#mri_weight").val(data.mri_weight);
+		// if(!emptyobj_(data.mri_weight))$("#mri_weight").val(data.mri_weight);
 		$("#mri_doctorname").val($('#doctorname_doctorNote').val());
 		$("#mri_patientname").val($('#ptname_doctorNote').val());
 		textarea_init_mri();
 	});
+}
+
+function radiographer_accept(){
+	// bootbox.confirm({
+	// 	message: "Are you sure you want to accept?",
+	// 	buttons: { confirm: { label: 'Yes', className: 'btn-success' }, cancel: { label: 'No', className: 'btn-danger' } },
+	// 	callback: function (result){
+	// 		if(result == true){
+	// 			var saveParam = {
+	// 				action: 'accept_mri',
+	// 				mrn: $('#mrn_doctorNote').val(),
+	// 				episno: $("#episno_doctorNote").val(),
+	// 			}
+				
+	// 			var postobj = {
+	// 				_token: $('#csrf_token').val(),
+	// 			};
+				
+	// 			$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj), function (data){
+					
+	// 			},'json').fail(function (data){
+	// 				callback(data);
+	// 			}).success(function (data){
+	// 				callback(data);
+	// 			});
+	// 		}else{
+				
+	// 		}
+	// 	}
+	// });
+	
+	var result = confirm("Are you sure you want to accept?");
+	if(result == true){
+		var saveParam = {
+			action: 'accept_mri',
+			mrn: $('#mrn_doctorNote').val(),
+			episno: $("#episno_doctorNote").val(),
+		}
+		
+		var postobj = {
+			_token: $('#csrf_token').val(),
+		};
+		
+		$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj), function (data){
+			
+		},'json').fail(function (data){
+			// callback(data);
+		}).success(function (data){
+			// callback(data);
+			button_state_mri('empty');
+			get_default_mri();
+		});
+	}else{
+		
+	}
 }
 
 function populate_physio_getdata(){
@@ -1513,7 +1576,7 @@ function saveForm_doctorNote(callback){
 		}).get()
 	);
 	
-	$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function (data){
+	$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
 		
 	},'json').fail(function (data){
 		callback(data);
@@ -1566,7 +1629,7 @@ function saveForm_otbook(callback){
 		}).get()
 	);
 	
-	$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function (data){
+	$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
 		
 	},'json').fail(function (data){
 		callback(data);
@@ -1620,7 +1683,7 @@ function saveForm_radClinic(callback){
 		}).get()
 	);
 	
-	$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function (data){
+	$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
 		
 	},'json').fail(function (data){
 		callback(data);
@@ -1674,7 +1737,7 @@ function saveForm_mri(callback){
 		}).get()
 	);
 	
-	$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function (data){
+	$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
 		
 	},'json').fail(function (data){
 		callback(data);
@@ -1727,7 +1790,7 @@ function saveForm_physio(callback){
 		}).get()
 	);
 	
-	$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function (data){
+	$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
 		
 	},'json').fail(function (data){
 		callback(data);
@@ -1780,7 +1843,7 @@ function saveForm_dressing(callback){
 		}).get()
 	);
 	
-	$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function (data){
+	$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
 		
 	},'json').fail(function (data){
 		callback(data);
@@ -1833,7 +1896,7 @@ function saveForm_refLetter(callback){
 		}).get()
 	);
 	
-	$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function (data){
+	$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
 		
 	},'json').fail(function (data){
 		callback(data);
@@ -1917,6 +1980,7 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function (){
 	SmoothScrollTo("#jqGridDoctorNote_panel", 500);
 	$("#jqGrid_trans_doctornote").jqGrid('setGridWidth', Math.floor($("#jqGrid_trans_doctornote_c")[0].offsetWidth-$("#jqGrid_trans_doctornote_c")[0].offsetLeft));
 	textarea_init_doctornote();
+	get_default_patdata();
 	urlParam_trans.mrn = $('#mrn_doctorNote').val();
 	urlParam_trans.episno = $('#episno_doctorNote').val();
 	
@@ -2037,6 +2101,13 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function (){
 		
 	},'json').done(function (data){
 		if(!$.isEmptyObject(data)){
+			// bila first time jumpa doctor, ambil vital sign from triage
+			if($("#recorddate_doctorNote").val() == ''){
+				if(!emptyobj_(data.vitalsign_triage))autoinsert_rowdata("#formDoctorNote",data.vitalsign_triage);
+			}else{
+				if(!emptyobj_(data.vitalsign_doc))autoinsert_rowdata("#formDoctorNote",data.vitalsign_doc);
+			}
+			
 			if(!emptyobj_(data.episode))autoinsert_rowdata("#formDoctorNote",data.episode);
 			if(!emptyobj_(data.pathealth))autoinsert_rowdata("#formDoctorNote",data.pathealth);
 			if(!emptyobj_(data.pathealth))$('#formDoctorNote span#doctorcode').text(data.pathealth.doctorcode);
@@ -2068,6 +2139,13 @@ function get_default_patdata(){
 		
 	},'json').done(function (data){
 		if(!$.isEmptyObject(data)){
+			// bila first time jumpa doctor, ambil vital sign from triage
+			if($("#recorddate_doctorNote").val() == ''){
+				if(!emptyobj_(data.vitalsign_triage))autoinsert_rowdata("#formDoctorNote",data.vitalsign_triage);
+			}else{
+				if(!emptyobj_(data.vitalsign_doc))autoinsert_rowdata("#formDoctorNote",data.vitalsign_doc);
+			}
+			
 			if(!emptyobj_(data.episode))autoinsert_rowdata("#formDoctorNote",data.episode);
 			if(!emptyobj_(data.pathealth))autoinsert_rowdata("#formDoctorNote",data.pathealth);
 			if(!emptyobj_(data.pathealth))$('#formDoctorNote span#doctorcode').text(data.pathealth.doctorcode);

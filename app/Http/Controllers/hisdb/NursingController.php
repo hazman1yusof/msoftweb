@@ -1059,6 +1059,32 @@ class NursingController extends defaultController
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
             
+            DB::table('hisdb.pat_radiology')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_ti,
+                    'episno' => $request->episno_ti,
+                    'weight' => $request->vs_weight,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser' => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::table('hisdb.pat_mri')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_ti,
+                    'episno' => $request->episno_ti,
+                    'weight' => $request->vs_weight,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser' => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
             DB::commit();
             
         } catch (\Exception $e) {
@@ -1375,7 +1401,33 @@ class NursingController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
-           
+            
+            DB::table('hisdb.pat_radiology')
+                ->where('mrn','=',$request->mrn_ti)
+                ->where('episno','=',$request->episno_ti)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'weight' => $request->vs_weight,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser' => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::table('hisdb.pat_mri')
+                ->where('mrn','=',$request->mrn_ti)
+                ->where('episno','=',$request->episno_ti)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'weight' => $request->vs_weight,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser' => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
             $examidno = [];
             $examsel = [];
             $examnote = [];

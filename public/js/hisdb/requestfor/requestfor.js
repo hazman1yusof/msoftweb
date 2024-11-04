@@ -132,6 +132,10 @@ $(document).ready(function (){
         disableForm('#formMRIReqFor');
         button_state_mriReqFor($(this).data('oper'));
     });
+    
+    $("#accept_mriReqFor").click(function (){
+        radiographer_acceptReqFor();
+    });
     ///////////////////////////////////////////////mri ends///////////////////////////////////////////////
     
     ////////////////////////////////////////////physio starts////////////////////////////////////////////
@@ -316,24 +320,24 @@ function button_state_mriReqFor(state){
         case 'empty':
             $("#toggle_requestFor").removeAttr('data-toggle');
             $('#cancel_mriReqFor').data('oper','add');
-            $('#new_mriReqFor,#save_mriReqFor,#cancel_mriReqFor,#edit_mriReqFor').attr('disabled',true);
+            $('#new_mriReqFor,#save_mriReqFor,#cancel_mriReqFor,#edit_mriReqFor,#accept_mriReqFor').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $('#cancel_mriReqFor').data('oper','add');
             $("#new_mriReqFor").attr('disabled',false);
-            $('#save_mriReqFor,#cancel_mriReqFor,#edit_mriReqFor').attr('disabled',true);
+            $('#save_mriReqFor,#cancel_mriReqFor,#edit_mriReqFor,#accept_mriReqFor').attr('disabled',true);
             break;
         case 'edit':
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $('#cancel_mriReqFor').data('oper','edit');
-            $("#edit_mriReqFor").attr('disabled',false);
+            $("#edit_mriReqFor,#accept_mriReqFor").attr('disabled',false);
             $('#save_mriReqFor,#cancel_mriReqFor,#new_mriReqFor').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $("#save_mriReqFor,#cancel_mriReqFor").attr('disabled',false);
-            $('#edit_mriReqFor,#new_mriReqFor').attr('disabled',true);
+            $('#edit_mriReqFor,#new_mriReqFor,#accept_mriReqFor').attr('disabled',true);
             break;
     }
 }
@@ -562,7 +566,11 @@ function populate_mriReqFor_getdata(){
         if(!$.isEmptyObject(data.pat_mri)){
             autoinsert_rowdata("#formMRIReqFor",data.pat_mri);
             
-            button_state_mriReqFor('edit');
+            if(!emptyobj_(data.pat_mri.radiographer)){
+                button_state_mriReqFor('empty');
+            }else{
+                button_state_mriReqFor('edit');
+            }
         }else{
             button_state_mriReqFor('add');
         }
@@ -605,6 +613,61 @@ function get_default_mriReqFor(){
         $("#mriReqFor_patientname").val($('#ptname_requestFor').val());
         textarea_init_mriReqFor();
     });
+}
+
+function radiographer_acceptReqFor(){
+    // bootbox.confirm({
+    //     message: "Are you sure you want to accept?",
+    //     buttons: { confirm: { label: 'Yes', className: 'btn-success' }, cancel: { label: 'No', className: 'btn-danger' } },
+    //     callback: function (result){
+    //         if(result == true){
+    //             var saveParam = {
+    //                 action: 'accept_mri',
+    //                 mrn: $('#mrn_requestFor').val(),
+    //                 episno: $("#episno_requestFor").val(),
+    //             }
+                
+    //             var postobj = {
+    //                 _token: $('#csrf_token').val(),
+    //             };
+                
+    //             $.post("./doctornote/form?"+$.param(saveParam), $.param(postobj), function (data){
+                    
+    //             },'json').fail(function (data){
+    //                 callback(data);
+    //             }).success(function (data){
+    //                 callback(data);
+    //             });
+    //         }else{
+                
+    //         }
+    //     }
+    // });
+    
+    var result = confirm("Are you sure you want to accept?");
+    if(result == true){
+        var saveParam = {
+            action: 'accept_mri',
+            mrn: $('#mrn_requestFor').val(),
+            episno: $("#episno_requestFor").val(),
+        }
+        
+        var postobj = {
+            _token: $('#csrf_token').val(),
+        };
+        
+        $.post("./doctornote/form?"+$.param(saveParam), $.param(postobj), function (data){
+            
+        },'json').fail(function (data){
+            // callback(data);
+        }).success(function (data){
+            // callback(data);
+            button_state_mriReqFor('empty');
+            get_default_mriReqFor();
+        });
+    }else{
+        
+    }
 }
 
 function populate_physioReqFor_getdata(){
@@ -737,7 +800,7 @@ function saveForm_otbookReqFor(callback){
         }).get()
     );
     
-    $.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function (data){
+    $.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').fail(function (data){
         callback(data);
@@ -791,7 +854,7 @@ function saveForm_radClinicReqFor(callback){
         }).get()
     );
     
-    $.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function (data){
+    $.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').fail(function (data){
         callback(data);
@@ -845,7 +908,7 @@ function saveForm_mriReqFor(callback){
         }).get()
     );
     
-    $.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function (data){
+    $.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').fail(function (data){
         callback(data);
@@ -898,7 +961,7 @@ function saveForm_physioReqFor(callback){
         }).get()
     );
     
-    $.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function (data){
+    $.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').fail(function (data){
         callback(data);
@@ -951,7 +1014,7 @@ function saveForm_dressingReqFor(callback){
         }).get()
     );
     
-    $.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function (data){
+    $.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').fail(function (data){
         callback(data);

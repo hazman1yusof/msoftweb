@@ -50,7 +50,7 @@
                                     {text: 'NRIC/Passport No. ' },
                                     {text: ': {{$mri->Newic}}'},{},
                                     {text: 'Weight ' },
-                                    {text: ': {{$mri->vs_weight}} kg'},
+                                    {text: ': {{$mri->mri_weight}} kg'},
                                 ],
                                 [
                                     {text: 'Ward/Clinic ' },
@@ -112,7 +112,7 @@
                                         text: [
                                             'Prosthetics valve, if yes, please specify.\n',
                                             {text: 'Injap jantung palsu, jika ada nyatakan:\n', italics: true},
-                                            '- {{$mri->prosvalve_rmk}}'
+                                            `- {!!$mri->prosvalve_rmk!!}`
                                         ], 
                                     },
                                     @if($mri->pros_valve == '1')
@@ -284,7 +284,7 @@
                                         text: [
                                             'Any operation in the last 3 month? If yes please specify.\n',
                                             {text: 'Pembedahan dalam masa 3 bulan, jika ada nyatakan:\n', italics: true},
-                                            '- {{$mri->oper3mth_remark}}'
+                                            `- {!!$mri->oper3mth_remark!!}`
                                         ], 
                                     },
                                     @if($mri->oper_3mth == '1')
