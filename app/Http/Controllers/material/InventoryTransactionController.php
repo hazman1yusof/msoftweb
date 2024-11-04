@@ -75,6 +75,8 @@ class InventoryTransactionController extends defaultController
                 return $this->tui_tuo_report($request);
             case 'maintable':
                 return $this->maintable($request);
+            case 'get_table_dtl':
+                return $this->get_table_dtl($request);
             default:
                 return 'error happen..';
         }
@@ -170,6 +172,68 @@ class InventoryTransactionController extends defaultController
         // }
         
         //////////paginate/////////
+        
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);       
+    }
+
+    public function get_table_dtl(Request $request){
+        if(empty($request->filterVal[0])){
+            $responce = new stdClass();
+            $responce->page = 0;
+            $responce->total = 0;
+            $responce->records = 0;
+            $responce->rows = [];
+            $responce->sql = 0;
+            $responce->sql_bind = 0;
+
+            return json_encode($responce);
+        }
+        
+        $ivtmphd = DB::table('material.ivtmphd AS ivhd')
+                    ->where('ivhd.compcode',session('compcode'))
+                    ->where("ivhd.recno", $request->filterVal[0])
+                    ->first();
+
+        $table = DB::table('material.ivtmpdt AS ivdt')
+                ->select('ivdt.idno','ivdt.compcode','ivdt.recno','ivdt.lineno_','ivdt.ivreqno','ivdt.reqlineno','ivdt.reqdept','ivdt.itemcode','ivdt.uomcode','ivdt.uomcoderecv','ivdt.txnqty','ivdt.qtyonhandrecv','ivdt.netprice','ivdt.adduser','ivdt.adddate','ivdt.upduser','ivdt.upddate','ivdt.productcat','ivdt.draccno','ivdt.drccode','ivdt.craccno','ivdt.crccode','ivdt.updtime','ivdt.expdate','ivdt.remarks','ivdt.qtyonhand','ivdt.batchno','ivdt.amount','ivdt.recstatus','ivdt.deluser','ivdt.deldate','ivdt.unit','ivdt.qtyrequest','ivdt.remark')
+                ->leftJoin('material.stockloc AS s', function($join) use ($ivtmphd){
+                    $join = $join->on("s.itemcode", '=', 'ivdt.itemcode');    
+                    $join = $join->on("s.uomcode", '=', 'ivdt.uomcode');  
+                    $join = $join->where("s.compcode", session('compcode'));    
+                    $join = $join->where("s.deptcode", $ivtmphd->txndept);    
+                    // $join = $join->where("s.unit", session('unit'));       
+                    $join = $join->where("s.year", Carbon::now("Asia/Kuala_Lumpur")->year);
+                })
+                ->where('ivdt.recno','=',$request->filterVal[0])
+                ->where('ivdt.compcode','=',session('compcode'))
+                ->where('ivdt.recstatus','<>','DELETE')
+                ->orderBy('ivdt.idno','desc');
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {//ini baru
+            $value->remarks_show = $value->remarks;
+            if(mb_strlen($value->remarks)>120){
+
+                $time = time() + $key;
+
+                $value->remarks_show = mb_substr($value->remarks_show,0,120).'<span id="dots_'.$time.'" style="display: inline;">...</span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->remarks_show,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
+
+                $value->callback_param = [
+                    'dots_'.$time,'more_'.$time,'moreBtn_'.$time
+                ];
+            }
+        }
         
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();

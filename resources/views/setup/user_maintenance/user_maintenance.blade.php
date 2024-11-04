@@ -195,5 +195,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/setup/user_maintenance/user_maintenance.js"></script>
+	<script src="js/setup/user_maintenance/user_maintenance.js?v=1.1"></script>
 @endsection

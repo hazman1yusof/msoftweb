@@ -451,6 +451,7 @@ class InventoryTransactionDetailController extends defaultController
                         'uomcoderecv'=> strtoupper($value['uomcoderecv']),
                         'qtyonhandrecv'=> $value['qtyonhandrecv'],
                         'amount' => $value['amount'],
+                        'remarks'=> $value['remarks'],
                         'adduser' => session('username'), 
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                         'expdate'=> $this->turn_date($value['expdate']),  

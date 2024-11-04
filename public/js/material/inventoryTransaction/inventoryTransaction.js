@@ -56,7 +56,6 @@ $(document).ready(function () {
 			mycurrency.formatOnBlur();
 			switch(oper) {
 				case state = 'add':
-					urlParam2.field=['ivt.compcode','ivt.recno','ivt.lineno_','ivt.itemcode','p.description', 's.qtyonhand','ivt.uomcode', 'ivt.qtyonhandrecv','ivt.uomcoderecv','s.maxqty','ivt.txnqty','ivt.qtyrequest','ivt.netprice','ivt.amount','ivt.expdate','ivt.batchno'];
 					$("#jqGrid2").jqGrid("clearGridData", true);
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
@@ -67,7 +66,6 @@ $(document).ready(function () {
 					dialog_txndept.check(errorField);
 					break;
 				case state = 'edit':
-					urlParam2.field=['ivt.compcode','ivt.recno','ivt.lineno_','ivt.itemcode','p.description', 's.qtyonhand','ivt.uomcode', 'ivt.qtyonhandrecv','ivt.uomcoderecv','s.maxqty','ivt.txnqty','ivt.qtyrequest','ivt.netprice','ivt.amount','ivt.expdate','ivt.batchno'];
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
 					enableForm('#formdata');
@@ -75,7 +73,6 @@ $(document).ready(function () {
 					inputTrantypeValue(selrowData('#jqGrid').isstype,selrowData('#jqGrid').crdbfl);
 					break;
 				case state = 'view':
-					urlParam2.field=['ivt.compcode','ivt.recno','ivt.lineno_','ivt.itemcode','p.description', 'ivt.qtyonhand','ivt.uomcode', 'ivt.qtyonhandrecv','ivt.uomcoderecv','s.maxqty','ivt.txnqty','ivt.qtyrequest','ivt.netprice','ivt.amount','ivt.expdate','ivt.batchno'];
 					disableForm('#formdata');
 					$("#pg_jqGridPager2 table").hide();
 					inputTrantypeValue(selrowData('#jqGrid').isstype,selrowData('#jqGrid').crdbfl);
@@ -946,8 +943,8 @@ $(document).ready(function () {
 
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
-		action:'get_table_default',
-		url:'util/get_table_default',
+		action:'get_table_dtl',
+		url:'./inventoryTransaction/table',
 		field:['ivt.compcode','ivt.recno','ivt.lineno_','ivt.itemcode','p.description', 'ivt.qtyonhand','ivt.uomcode', 'ivt.qtyonhandrecv','ivt.uomcoderecv','s.maxqty',
 		'ivt.txnqty','ivt.qtyrequest','ivt.netprice','ivt.amount','ivt.expdate','ivt.batchno'],
 		table_name:['material.ivtmpdt AS ivt', 'material.stockloc AS s', 'material.productmaster AS p'],
@@ -1073,6 +1070,9 @@ $(document).ready(function () {
 			{ label: 'Batch No', name: 'batchno', width: 110, classes: 'wrap', editable:true,
 					maxlength: 30,
 			},
+			{ label: 'Remarks', name: 'remarks_button', width: 100, formatter: formatterRemarks,unformat: unformatRemarks},
+			{ label: 'Remarks', name: 'remarks', hidden:true},
+			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'wrap', hidden: false },
 		],
 		autowidth: false,
 		shrinkToFit: false,
@@ -1104,6 +1104,11 @@ $(document).ready(function () {
 			//calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
+			$("#jqGrid2").find(".remarks_button").on("click", function(e){
+				$("#remarks2").data('rowid',$(this).data('rowid'));
+				$("#remarks2").data('grid',$(this).data('grid'));
+				$("#dialog_remarks").dialog( "open" );
+			});
 			fdl.set_array().reset();
 			// $( "#jqGrid2_ilcancel" ).off();
 			// $( "#jqGrid2_ilcancel" ).on( "click", function(event) {
@@ -1299,6 +1304,7 @@ $(document).ready(function () {
 					txndept:$('#txndept').val(),
 					trandate:$('#trandate').val(),
 					trantype:$('#trantype').val(),
+					remarks:data.remarks,
 					lineno_:data.lineno_,
 					amount:data.amount,
 				});
@@ -1466,6 +1472,7 @@ $(document).ready(function () {
                     'unit' : $("#"+ids[i]+"_unit").val(),
 		    		'amount' : $('#'+ids[i]+"_amount").val(),
 		    		'batchno' : $('#'+ids[i]+"_batchno").val(),
+		    		'remarks' : data.remarks,
 		    		'expdate' : $('#jqGrid2 input#'+ids[i]+"_expdate").val(),
 
 		    	}
@@ -1925,6 +1932,50 @@ $(document).ready(function () {
 		// $("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='uomcoderecv'],#jqGrid2 input[name='itemcode']").on('focus',remove_noti);
 	}
 
+	var butt1_rem = 
+		[{
+			text: "Save",click: function() {
+				let newval = $("#remarks2").val();
+				let rowid = $('#remarks2').data('rowid');
+				$("#jqGrid2").jqGrid('setRowData', rowid ,{remarks:newval});
+				$("#jqGrid2").jqGrid('setRowData', rowid ,{remarks_show:newval});
+				$(this).dialog('close');
+			}
+		},{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}];
+
+	var butt2_rem = 
+		[{
+			text: "Close",click: function() {
+				$(this).dialog('close');
+			}
+		}];
+
+	$("#dialog_remarks").dialog({
+		autoOpen: false,
+		width: 4/10 * $(window).width(),
+		modal: true,
+		open: function( event, ui ) {
+			let rowid = $('#remarks2').data('rowid');
+			let grid = $('#remarks2').data('grid');
+			$('#remarks2').val($(grid).jqGrid('getRowData', rowid).remarks);
+			let exist = $("#jqGrid2 #"+rowid+"_txnqty").length;
+			if(grid == '#jqGrid3' || exist==0){ // lepas ni letak or not edit mode
+				$("#remarks2").prop('disabled',true);
+				$( "#dialog_remarks" ).dialog( "option", "buttons", butt2_rem);
+			}else{
+				$("#remarks2").prop('disabled',false);
+				$( "#dialog_remarks" ).dialog( "option", "buttons", butt1_rem);
+			}
+		},
+		close: function(){
+		},
+		buttons : butt2_rem
+	});
+
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
 	var mycurrency2 =new currencymode([]);
 	var mycurrency_np =new currencymode([],true);
@@ -1947,6 +1998,11 @@ $(document).ready(function () {
 		},
 
 		gridComplete:function(){
+			$("#jqGrid3").find(".remarks_button").on("click", function(e){
+				$("#remarks2").data('rowid',$(this).data('rowid'))
+				$("#remarks2").data('grid',$(this).data('grid'))
+				$("#dialog_remarks").dialog( "open" );
+			});
 			fdl.set_array().reset();
 		},
 		loadComplete: function(){
@@ -2626,6 +2682,14 @@ $(document).ready(function () {
 	}
 
 });
+
+function formatterRemarks(cellvalue, options, rowObject){
+	return "<button class='remarks_button btn btn-success btn-xs' type='button' data-rowid='"+options.rowId+"' data-lineno_='"+rowObject.lineno_+"' data-grid='#"+options.gid+"' data-remarks='"+rowObject.remarks+"'><i class='fa fa-file-text-o'></i> remark</button>";
+}
+
+function unformatRemarks(cellvalue, options, rowObject){
+	return null;
+}
 
 function populate_form(obj){
 	//panel header

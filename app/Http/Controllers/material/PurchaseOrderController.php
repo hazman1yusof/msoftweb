@@ -184,6 +184,7 @@ class PurchaseOrderController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->update(['purordno' => $purordno]);
 
+                $this->move_attachment($request->referral,$idno);
             }
 
             $responce = new stdClass();
@@ -1259,6 +1260,38 @@ class PurchaseOrderController extends defaultController
         $this->check_incompleted($recno);
 
         return $amount;
+    }
+
+    public function move_attachment($refer_recno,$idno){
+        $pr_hd = DB::table('material.purreqhd')
+                ->where('recno', '=', $refer_recno)
+                ->where('compcode', '=', session('compcode'))
+                // ->where('unit', '=', session('unit'))
+                ->first();
+
+        $attachment = DB::table('finance.attachment')
+                        ->where('compcode', '=', session('compcode'))
+                        ->where('page','=','purchaserequest')
+                        ->where('auditno', '=', $pr_hd->idno);
+
+        if($attachment->exists()){
+            $attachment = $attachment->get();
+
+            foreach ($attachment as $obj) {
+                DB::table('finance.attachment')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'resulttext' => $obj->resulttext,
+                        'attachmentfile' => $obj->attachmentfile,
+                        'adduser' => 'system',
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'page' => 'purchaseorder',
+                        'auditno' => $idno,
+                        'type' => $obj->type,
+                        'trxdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }
+        }
     }
 
     function check_incompleted($recno){

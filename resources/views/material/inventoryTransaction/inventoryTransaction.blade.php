@@ -378,6 +378,14 @@ div#fail_msg{
 					</div>
 			</div>
 			
+		<div id="dialog_remarks" title="Remarks">
+			<div class="panel panel-default">
+			<div class="panel-body">
+				<textarea id='remarks2' name='remarks2' rows='6' class="form-control input-sm" style="width:100%;"></textarea>
+			</div>
+			</div>
+		</div>
+			
 			<div id="dialog_remarks_oper" title="Remarks">
 			  <div class="panel panel-default">
 			    <div class="panel-body">
@@ -433,7 +441,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/inventoryTransaction/inventoryTransaction.js?v=1.14"></script>
+	<script src="js/material/inventoryTransaction/inventoryTransaction.js?v=1.15"></script>
 	<!-- <script src="js/material/inventoryTransaction/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

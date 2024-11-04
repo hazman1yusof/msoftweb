@@ -146,6 +146,9 @@
 		
 		<div class="panel panel-default">
 			<div class="panel-heading">Enquiry (AR) Header
+				<a class='pull-right pointer text-primary' style="padding-left: 30px;" id='reprint_receipt'>
+					Reprint Receipt
+				</a>
 				<a class='pull-right pointer text-primary' style="padding-left: 30px;" id='allocate'>
 					Allocate
 				</a>
