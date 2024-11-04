@@ -61,8 +61,13 @@
 			
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="designation">Designation</label>
-				<div class="col-md-5">
+				<div class="col-md-4">
 					<input id="designation" name="designation" type="text" class="form-control input-sm" data-validation="required">
+				</div>
+
+				<label class="col-md-2 control-label" for="email">Email</label>
+				<div class="col-md-4">
+					<input type="email" id="email" name="email" class="form-control input-sm">
 				</div>
 			</div>
 			

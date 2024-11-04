@@ -121,6 +121,7 @@ $(document).ready(function (){
 			{ label: 'programmenu', name: 'programmenu', width: 50, hidden: true },
 			{ label: 'password', name: 'password', width: 50, hidden: true },
 			{ label: 'doctorcode', name: 'doctorcode', width: 50, hidden: true },
+			{ label: 'email', name: 'email', width: 50, hidden: true },
 			{ label: 'id', name: 'id', width: 50, hidden: true },
 			{ label: 'ALcolor', name: 'ALcolor', hidden: true },
 			{ label: 'DiscPTcolor', name: 'DiscPTcolor', hidden: true },

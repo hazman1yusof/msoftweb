@@ -78,6 +78,29 @@ class UserMaintenanceController extends defaultController
         }
     }
     
+    public function duplicate_email($email,$mode,$idno){
+        if(empty($email)){
+            return false;
+        }
+        
+        if($mode == 'add'){
+            $users = DB::table('users')
+                    ->where('compcode',session('compcode'))
+                    ->where('email',$email)
+                    ->exists();
+            
+            return $users;
+        }else if($mode == 'edit'){
+            $users = DB::table('users')
+                    ->where('compcode',session('compcode'))
+                    ->where('email',$email)
+                    ->where('id','!=',$idno)
+                    ->exists();
+            
+            return $users;
+        }
+    }
+    
     public function show(Request $request){
         return view('setup.user_maintenance.user_maintenance');
     }
@@ -180,6 +203,10 @@ class UserMaintenanceController extends defaultController
             return response('duplicate doctor code', 500);
         }
         
+        if($this->duplicate_email($request->email,'add',null)){
+            return response('duplicate Email', 500);
+        }
+        
         try {
             
             DB::table('sysdb.users')->insert([
@@ -200,6 +227,7 @@ class UserMaintenanceController extends defaultController
                 'DiscPTcolor' => $request->DiscPTcolor,
                 'CancelPTcolor' => $request->CancelPTcolor,
                 'CurrentPTcolor' => $request->CurrentPTcolor,
+                'email' => $request->email,
                 'doctorcode' => $request->doctorcode,
                 'compcode' => session('compcode'),
                 'adduser' => session('username'),
@@ -231,6 +259,10 @@ class UserMaintenanceController extends defaultController
             if($this->duplicate_doctorcode($request->doctorcode,'edit',$request->id)){
                 return response('duplicate doctor code', 500);
             }
+
+            if($this->duplicate_email($request->email,'edit',$request->id)){
+                return response('duplicate Email', 500);
+            }
             
             $table = DB::table('sysdb.users')->where('id','=',$request->id)->where('compcode',session('compcode'));
             $table->update([
@@ -251,6 +283,7 @@ class UserMaintenanceController extends defaultController
                 'DiscPTcolor' => $request->DiscPTcolor,
                 'CancelPTcolor' => $request->CancelPTcolor,
                 'CurrentPTcolor' => $request->CurrentPTcolor,
+                'email' => $request->email,
                 'doctorcode' => $request->doctorcode,
                 'compcode' => session('compcode'),
                 'upduser' => session('username'),
