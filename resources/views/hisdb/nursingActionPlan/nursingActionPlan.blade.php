@@ -75,7 +75,7 @@
             <div class="panel-body paneldiv" style="overflow-y: auto;">
                 <div class='col-md-12' style="padding: 0 0 15px 0;">
                     <ul class="nav nav-tabs" id="jqGridNursActionPlan_panel_tabs">
-                        <li><a data-toggle="tab" id="navtab_treatment" href="#tab-treatment" data-type='treatment'>Treatment</a></li>
+                        <li><a data-toggle="tab" id="navtab_treatment" href="#tab-treatments" data-type='treatment'>Treatment</a></li>
                         <li><a data-toggle="tab" id="navtab_observation" href="#tab-observation" data-type='observation'>Observation</a></li>
                         <li><a data-toggle="tab" id="navtab_feeding" href="#tab-feeding" data-type='feeding'>Feeding</a></li>
                         <li><a data-toggle="tab" id="navtab_imgDiag" href="#tab-imgDiag" data-type='imgDiag'>Imaging & Diagnostic</a></li>
@@ -94,7 +94,7 @@
                         <input type="hidden" id="ordcomtt_phar" value="{{$ordcomtt_phar ?? ''}}">
 
                         <!-- TREATMENT -->
-                        <div id="tab-treatment" class="tab-pane fade">
+                        <div id="tab-treatments" class="tab-pane fade">
                             <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                                 <div class="panel panel-info">
                                     <div class="panel-heading text-center" style="height: 40px;">
