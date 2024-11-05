@@ -713,22 +713,22 @@
 				<div class="ui grid">
 					<div class="thirteen wide column">
 						<div class="ui four cards" >
-							<a class="ui card bodydia_ncase" data-type='BF'>
+							<a class="ui card bodydia_ncase" data-type='BF_REHAB'>
 								<div class="image">
 							      <img src="{{ asset('patientcare/img/bodydia1.png') }}" >
 							    </div>
 							</a>
-							<a class="ui card bodydia_ncase" data-type='BR'>
+							<a class="ui card bodydia_ncase" data-type='BR_REHAB'>
 								<div class="image">
 							      <img src="{{ asset('patientcare/img/bodydia2.png') }}">
 							    </div>
 							</a>
-							<a class="ui card bodydia_ncase" data-type='BL'>
+							<a class="ui card bodydia_ncase" data-type='BL_REHAB'>
 								<div class="image">
 							      <img src="{{ asset('patientcare/img/bodydia3.png') }}">
 							    </div>
 							</a>
-							<a class="ui card bodydia_ncase" data-type='BB'>
+							<a class="ui card bodydia_ncase" data-type='BB_REHAB'>
 								<div class="image">
 							      <img src="{{ asset('patientcare/img/bodydia4.png') }}">
 							    </div>
@@ -892,24 +892,24 @@
 					
 					<div class="eight wide column">
 						<div class="ui two cards">
-							<a class="ui card bodydia_ncase" data-type='BF' style="height: 500px;">
+							<a class="ui card bodydia_ncase" data-type='BF_PHYSIO' style="height: 500px;">
 								<div class="image">
-									<img src="{{ asset('patientcare/img/bodydia1.png') }}" style="height: 500px;">
+									<img src="{{ asset('patientcare/img/bodydia5.png') }}" style="height: 500px;">
 								</div>
 							</a>
-							<!-- <a class="ui card bodydia_ncase" data-type='BR'>
+							<!-- <a class="ui card bodydia_ncase" data-type='BR_PHYSIO'>
 								<div class="image">
-									<img src="{{ asset('patientcare/img/bodydia2.png') }}">
+									<img src="{{ asset('patientcare/img/bodydia6.png') }}">
 								</div>
 							</a>
-							<a class="ui card bodydia_ncase" data-type='BL'>
+							<a class="ui card bodydia_ncase" data-type='BL_PHYSIO'>
 								<div class="image">
-									<img src="{{ asset('patientcare/img/bodydia3.png') }}">
+									<img src="{{ asset('patientcare/img/bodydia7.png') }}">
 								</div>
 							</a> -->
-							<a class="ui card bodydia_ncase" data-type='BB' style="height: 500px;">
+							<a class="ui card bodydia_ncase" data-type='BB_PHYSIO' style="height: 500px;">
 								<div class="image">
-									<img src="{{ asset('patientcare/img/bodydia4.png') }}" style="height: 500px;">
+									<img src="{{ asset('patientcare/img/bodydia8.png') }}" style="height: 500px;">
 								</div>
 							</a>
 						</div>
@@ -1184,24 +1184,24 @@
 					
 					<div class="eight wide column">
 						<div class="ui two cards">
-							<!-- <a class="ui card bodydia_ncase" data-type='BF'>
+							<!-- <a class="ui card bodydia_ncase" data-type='BF_PHYSIO'>
 								<div class="image">
-									<img src="{{ asset('patientcare/img/bodydia1.png') }}">
+									<img src="{{ asset('patientcare/img/bodydia5.png') }}">
 								</div>
 							</a> -->
-							<a class="ui card bodydia_ncase" data-type='BR'>
+							<a class="ui card bodydia_ncase" data-type='BR_PHYSIO'>
 								<div class="image">
-									<img src="{{ asset('patientcare/img/bodydia2.png') }}">
+									<img src="{{ asset('patientcare/img/bodydia6.png') }}">
 								</div>
 							</a>
-							<a class="ui card bodydia_ncase" data-type='BL'>
+							<a class="ui card bodydia_ncase" data-type='BL_PHYSIO'>
 								<div class="image">
-									<img src="{{ asset('patientcare/img/bodydia3.png') }}">
+									<img src="{{ asset('patientcare/img/bodydia7.png') }}">
 								</div>
 							</a>
-							<!-- <a class="ui card bodydia_ncase" data-type='BB'>
+							<!-- <a class="ui card bodydia_ncase" data-type='BB_PHYSIO'>
 								<div class="image">
-									<img src="{{ asset('patientcare/img/bodydia4.png') }}">
+									<img src="{{ asset('patientcare/img/bodydia8.png') }}">
 								</div>
 							</a> -->
 						</div>
