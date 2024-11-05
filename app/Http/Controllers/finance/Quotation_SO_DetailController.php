@@ -147,7 +147,7 @@ class Quotation_SO_DetailController extends defaultController
                             $join = $join->where('cp.effdate', '<=', $entrydate);
                         });
 
-        $table = $table->join('material.stockloc as st', function($join) use ($deptcode,$entrydate){
+        $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
                             $join = $join->on('st.itemcode', '=', 'cm.chgcode');
                             $join = $join->on('st.uomcode', '=', 'cm.uom');
                             $join = $join->where('st.compcode', '=', session('compcode'));
@@ -156,7 +156,7 @@ class Quotation_SO_DetailController extends defaultController
                             $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
                         });
 
-        $table = $table->join('material.product as pt', function($join) use ($deptcode,$entrydate){
+        $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
                             $join = $join->where('pt.compcode', '=', session('compcode'));
                             $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
                             $join = $join->on('pt.uomcode', '=', 'cm.uom');
