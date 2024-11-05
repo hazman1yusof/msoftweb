@@ -308,7 +308,7 @@ $(document).ready(function() {
             }else if($('#epistycode').val() == 'IP'){
                 if($('#user_doctor').val() == '1'){
                     populate_triage_currpt(lastrowdata);
-                    populate_nursAssessment_currpt(lastrowdata);
+                    // populate_nursAssessment_currpt(lastrowdata);
                     populate_nursingActionPlan(lastrowdata);
                     populate_header_getdata(lastrowdata);
                     populate_nursingnote(lastrowdata);
@@ -319,7 +319,7 @@ $(document).ready(function() {
                     populate_dietOrder_currpt(lastrowdata);
                 }else if($('#user_nurse').val() == '1'){
                     populate_triage_currpt(lastrowdata);
-                    populate_nursAssessment_currpt(lastrowdata);
+                    // populate_nursAssessment_currpt(lastrowdata);
                     populate_nursingActionPlan(lastrowdata);
                     populate_header_getdata(lastrowdata);
                     populate_nursingnote(lastrowdata);
