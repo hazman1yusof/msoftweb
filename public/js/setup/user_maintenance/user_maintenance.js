@@ -110,7 +110,7 @@ $(document).ready(function (){
 		colModel: [
 			{ label: 'Username', name: 'username', width: 90, canSearch: true, checked: true },
 			{ label: 'Name', name: 'name', width: 300, canSearch: true },
-			{ label: 'email', name: 'email', width: 200 },
+			{ label: 'Email', name: 'email', width: 200 },
 			{ label: 'Group', name: 'groupid', width: 90 },
 			{ label: 'Department', name: 'dept', width: 100 },
 			{ label: 'Cashier', name: 'cashier', width: 60, formatter: formatter, unformat: unformat, formatter: formatterstatus_tick2, unformat: unformatstatus_tick2, classes: 'center_td' },
