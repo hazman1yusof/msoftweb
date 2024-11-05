@@ -232,10 +232,6 @@
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.wardpanel.wardpanel')
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.nursingActionPlan.nursingActionPlan')
 					</div>
 					
@@ -265,10 +261,6 @@
 				@elseif (Auth::user()->nurse == 1)
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
-					</div>
-					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.wardpanel.wardpanel')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
@@ -409,7 +401,7 @@
 			
 			@if (Auth::user()->doctor == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
-				<script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
 				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js"></script>
 				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
@@ -422,7 +414,7 @@
 				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script>
 			@elseif (Auth::user()->nurse == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
-				<script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
 				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
