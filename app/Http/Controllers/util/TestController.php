@@ -72,8 +72,8 @@ class TestController extends defaultController
             //     return $this->test_email($request);
             // case 'update_supplier':
             //     return $this->update_supplier($request);
-            case 'betulkandb_apacthdr':
-                return $this->betulkandb_apacthdr($request);
+            case 'betulkan_apacthdr':
+                return $this->betulkan_apacthdr($request);
             case 'tukar_uom':
                 return $this->tukar_uom($request);
             case 'update_chgprice':
@@ -2073,6 +2073,249 @@ class TestController extends defaultController
             report($e);
 
             dd('Error'.$e);
+        }
+    }
+
+    public function betulkan_apacthdr(){
+        DB::beginTransaction();
+        try {
+                $apactdtl = DB::table('finance.apactdtl')
+                                ->where('compcode','9B')
+                                ->whereIn('document',['9800456682','9800457549'])
+                                // ->whereDate('addDate','<=','2024-10-14')
+                                ->get();
+                $x=1;
+                foreach ($apactdtl as $obj) {
+                    $apacthdr = DB::table('finance.apacthdr')
+                                ->where('compcode','9B')
+                                // ->where('document',$obj->document)
+                                ->where('auditno',$obj->auditno);
+
+                    if(!$apacthdr->exists()){
+                        $gltran = DB::table('finance.gltran')
+                                ->where('compcode','9B')
+                                ->where('auditno',$obj->auditno);
+
+                        if(!$gltran->exists()){
+                            $x++;
+                            $dohd = DB::table('material.delordhd')
+                                ->where('compcode','9B')
+                                ->where('invoiceno',$obj->document)
+                                ->first();
+
+                            $suppcode = $dohd->suppcode;
+
+                            DB::table('finance.apacthdr')
+                                ->insert([
+                                    'compcode' => '9B',
+                                    'source' => 'AP',
+                                    'trantype' => 'IN',
+                                    'doctype' => 'Supplier',
+                                    'auditno' => $obj->auditno,
+                                    'document' => $obj->document,
+                                    'suppcode' => $suppcode,
+                                    'payto' => $suppcode,
+                                    'suppgroup' => 'TR',
+                                    // 'bankcode' => $obj->,
+                                    // 'paymode' => $obj->,
+                                    // 'cheqno' => $obj->,
+                                    // 'cheqdate' => $obj->,
+                                    'actdate' => $obj->adddate,
+                                    'recdate' => $obj->adddate,
+                                    'category' => '50030519',
+                                    'amount' => $obj->amount,
+                                    'outamount' => $obj->amount,
+                                    // 'remarks' => $obj->remarks,
+                                    // 'postflag' => $obj->,
+                                    // 'doctorflag' => $obj->,
+                                    // 'stat' => $obj->,
+                                    // 'entryuser' => $obj->,
+                                    // 'entrytime' => $obj->,
+                                    'upduser' => $obj->adduser,
+                                    'upddate' => $obj->adddate,
+                                    // 'conversion' => $obj->,
+                                    // 'srcfrom' => $obj->,
+                                    // 'srcto' => $obj->,
+                                    'deptcode' => $obj->deptcode,
+                                    // 'reconflg' => $obj->,
+                                    // 'effectdatefr' => $obj->,
+                                    // 'effectdateto' => $obj->,
+                                    // 'frequency' => $obj->,
+                                    // 'refsource' => $obj->,
+                                    // 'reftrantype' => $obj->,
+                                    // 'refauditno' => $obj->,
+                                    // 'pvno' => $obj->,
+                                    // 'entrydate' => $obj->,
+                                    'recstatus' => 'POSTED',
+                                    'adduser' => $obj->adduser,
+                                    'adddate' => $obj->adddate,
+                                    // 'reference' => $obj->,
+                                    // 'TaxClaimable' => $obj->,
+                                    'unit' => $obj->unit,
+                                    // 'allocdate' => $obj->,
+                                    'postuser' => $obj->adduser,
+                                    'postdate' => $obj->adddate,
+                                    'unallocated' => 1,
+                                    'requestby' => 'SYSTEM',
+                                    'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                    // 'request_remark' => $obj->,
+                                    // 'supportby' => $obj->,
+                                    // 'supportdate' => $obj->,
+                                    // 'support_remark' => $obj->,
+                                    // 'verifiedby' => $obj->,
+                                    // 'verifieddate' => $obj->,
+                                    // 'verified_remark' => $obj->,
+                                    // 'approvedby' => $obj->,
+                                    // 'approveddate' => $obj->,
+                                    // 'approved_remark' => $obj->,
+                                    // 'cancelby' => $obj->,
+                                    // 'canceldate' => $obj->,
+                                    // 'cancelled_remark' => $obj->,
+                                    // 'bankaccno' => $obj->,
+                                ]);
+
+                            $debit_obj = $this->gltran_fromdept($obj->deptcode,'50030519');
+                            $credit_obj = $this->gltran_fromsupp($suppcode);
+                            $yearperiod = $this->getyearperiod(Carbon::parse($obj->adddate)->format('Y-m-d'));
+                            
+                            DB::table('finance.gltran')
+                                ->insert([
+                                    'compcode' => '9B',
+                                    'adduser' => $obj->adduser,
+                                    'adddate' => $obj->adddate,
+                                    'auditno' => $obj->auditno,
+                                    'lineno_' => 1,
+                                    'source' => 'AP',
+                                    'trantype' => 'IN',
+                                    'reference' => $obj->document,
+                                    'postdate' => $obj->adddate,
+                                    'description' => $suppcode, //suppliercode + suppliername
+                                    'postdate' => $obj->adddate,
+                                    'year' => $yearperiod->year,
+                                    'period' => $yearperiod->period,
+                                    'drcostcode' => $debit_obj->drcostcode,
+                                    'dracc' => $debit_obj->draccno,
+                                    'crcostcode' => $credit_obj->costcode,
+                                    'cracc' => $credit_obj->glaccno,
+                                    'amount' => $obj->amount,
+                                    'idno' => null
+                                ]);
+
+                                $this->init_glmastdtl(
+                                    $debit_obj->drcostcode,//drcostcode
+                                    $debit_obj->draccno,//dracc
+                                    $credit_obj->costcode,//crcostcode
+                                    $credit_obj->glaccno,//cracc
+                                    $yearperiod,
+                                    $obj->amount
+                                );
+                        }
+                    }
+                }   
+        
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function gltran_fromdept($deptcode,$catcode){
+
+        // $ccode_obj = DB::table("sysdb.department")
+        //             ->where('compcode','=',session('compcode'))
+        //             ->where('deptcode','=',$deptcode)
+        //             ->first();
+
+        $ccode_obj = DB::table("sysdb.sysparam")
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=','AP')
+                    ->where('trantype','=','ACC')
+                    ->first();
+
+        // $draccno_obj = DB::table("material.category")
+        //                 ->where('compcode','=',session('compcode'))
+        //                 ->where('catcode','=',$catcode)
+        //                 ->where('source','=','CR')
+        //                 ->first();
+        
+        $responce = new stdClass();
+        $responce->drcostcode = $ccode_obj->pvalue1;
+        $responce->draccno = $ccode_obj->pvalue2;
+        return $responce;
+    }
+
+    public function gltran_fromsupp($suppcode){
+
+        $obj = DB::table("material.supplier")
+                ->select('costcode','glaccno')
+                ->where('compcode','=',session('compcode'))
+                ->where('suppcode','=',$suppcode)
+                ->first();
+
+        return $obj;
+    }
+
+    public function init_glmastdtl($dbcc,$dbacc,$crcc,$cracc,$yearperiod,$amount){
+        //2. check glmastdtl utk debit, kalu ada update kalu xde create
+        $gltranAmount =  $this->isGltranExist($dbcc,$dbacc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$dbcc)
+                ->where('glaccount','=',$dbacc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => floatval($amount) + $gltranAmount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $dbcc,
+                    'glaccount' => $dbacc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => floatval($amount),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+        $gltranAmount = defaultController::isGltranExist_($crcc,$cracc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$crcc)
+                ->where('glaccount','=',$cracc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $gltranAmount - floatval($amount),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $crcc,
+                    'glaccount' => $cracc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => -floatval($amount),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
         }
     }
     
