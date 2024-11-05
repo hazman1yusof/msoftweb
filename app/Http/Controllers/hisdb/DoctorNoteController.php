@@ -937,7 +937,7 @@ class DoctorNoteController extends defaultController
         }
         
         $pathistory_obj = DB::table('hisdb.pathistory')
-                        ->select('idno','compcode','mrn','recorddate','recordtime','adduser','lastuser','lastupdate','recstatus','pathname','filename','drugh','pmh','fmh','allergyh','socialh','pgh_myomectomy','pgh_laparoscopy','pgh_endometriosis','lastpapsmear','pgh_others','pmh_renaldisease','pmh_hypertension','pmh_diabetes','pmh_heartdisease','pmh_others','psh_appendicectomy','psh_hypertension','psh_laparotomy','psh_thyroidsurgery','psh_others','fh_hypertension','fh_diabetes','fh_epilepsy','fh_multipregnancy','fh_congenital','anr_bloodgroup','anr_attInject_1st','anr_attInject_2nd','anr_attInject_boost','psychiatryh','personalh')
+                        ->select('idno','compcode','mrn','recorddate','adduser','lastuser','lastupdate','recstatus','pathname','filename','drugh','pmh','fmh','allergyh','socialh','pgh_myomectomy','pgh_laparoscopy','pgh_endometriosis','lastpapsmear','pgh_others','pmh_renaldisease','pmh_hypertension','pmh_diabetes','pmh_heartdisease','pmh_others','psh_appendicectomy','psh_hypertension','psh_laparotomy','psh_thyroidsurgery','psh_others','fh_hypertension','fh_diabetes','fh_epilepsy','fh_multipregnancy','fh_congenital','anr_bloodgroup','anr_attInject_1st','anr_attInject_2nd','anr_attInject_boost','psychiatryh','personalh')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn);
         
