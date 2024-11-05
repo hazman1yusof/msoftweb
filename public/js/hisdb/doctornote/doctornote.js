@@ -611,6 +611,60 @@ $(document).ready(function (){
 	});
 	//////////////////////////////////////////////end grid//////////////////////////////////////////////
 	
+	/////////////////////////////////////////body diagram starts/////////////////////////////////////////
+	/////////////////////////////////////////////doctornote/////////////////////////////////////////////
+	$('div.card.bodydia_doctornote').click(function (){
+		let mrn = $('#mrn_doctorNote').val();
+		let type = $(this).data('type');
+		let istablet = $(window).width() <= 1024;
+		
+		if(mrn.trim() == '' || type.trim() == ''){
+			alert('Please choose Patient First');
+		}else if($('#save_doctorNote').prop('disabled')){
+			alert('Edit this patient first');
+		}else{
+			if(istablet){
+				let filename = type+'_'+mrn+'_.pdf';
+				let url = $('#urltodiagram').val() + filename;
+				var win = window.open(url, '_blank');
+			}else{
+				var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno=&type='+type+'&from=doctornote', '_blank');
+			}
+			
+			if(win){
+				win.focus();
+			}else{
+				alert('Please allow popups for this website');
+			}
+		}
+	});
+	
+	///////////////////////////////////////////referral letter///////////////////////////////////////////
+	$('div.card.bodydia_doctornote_ref').click(function (){
+		let mrn = $('#mrn_doctorNote').val();
+		let type = $(this).data('type');
+		let istablet = $(window).width() <= 1024;
+		
+		if(mrn.trim() == '' || type.trim() == ''){
+			alert('Please choose Patient First');
+		}else{
+			if(istablet){
+				let filename = type+'_'+mrn+'_.pdf';
+				let url = $('#urltodiagram').val() + filename;
+				var win = window.open(url, '_blank');
+			}else{
+				var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno=&type='+type+'&from=doctornote', '_blank');
+			}
+			
+			if(win){
+				win.focus();
+			}else{
+				alert('Please allow popups for this website');
+			}
+		}
+	});
+	//////////////////////////////////////////body diagram ends//////////////////////////////////////////
+	
 });
 
 // bmi calculator
@@ -1121,7 +1175,7 @@ function populate_refLetter(obj){
 		if(!emptyobj_(data.episode))autoinsert_rowdata("#form_docNoteRef",data.episode);
 		if(!emptyobj_(data.pathealth))autoinsert_rowdata("#form_docNoteRef",data.pathealth);
 		if(!emptyobj_(data.pathistory))autoinsert_rowdata("#form_docNoteRef",data.pathistory);
-		if(!emptyobj_(data.patexam))autoinsert_rowdata("#form_docNoteRef",data.patexam);
+		// if(!emptyobj_(data.patexam))autoinsert_rowdata("#form_docNoteRef",data.patexam);
 		if(!emptyobj_(data.episdiag))autoinsert_rowdata("#form_docNoteRef",data.episdiag);
 		// if(!emptyobj_(data.pathealth))$('#form_docNoteRef span#doctorcode').text(data.pathealth.doctorcode);
 		textarea_init_doctornote_ref();
@@ -2113,7 +2167,7 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function (){
 			if(!emptyobj_(data.pathealth))$('#formDoctorNote span#doctorcode').text(data.pathealth.doctorcode);
 			// if(!emptyobj_(data.adddate))$('#formDoctorNote input#adddate').text(data.adddate);
 			if(!emptyobj_(data.pathistory))autoinsert_rowdata("#formDoctorNote",data.pathistory);
-			if(!emptyobj_(data.patexam))autoinsert_rowdata("#formDoctorNote",data.patexam);
+			// if(!emptyobj_(data.patexam))autoinsert_rowdata("#formDoctorNote",data.patexam);
 			if(!emptyobj_(data.episdiag))autoinsert_rowdata("#formDoctorNote",data.episdiag);
 			if(!emptyobj_(data.pathealthadd))autoinsert_rowdata("#formDoctorNote",data.pathealthadd);
 			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add');
@@ -2151,7 +2205,7 @@ function get_default_patdata(){
 			if(!emptyobj_(data.pathealth))$('#formDoctorNote span#doctorcode').text(data.pathealth.doctorcode);
 			// if(!emptyobj_(data.adddate))$('#formDoctorNote input#adddate').text(data.adddate);
 			if(!emptyobj_(data.pathistory))autoinsert_rowdata("#formDoctorNote",data.pathistory);
-			if(!emptyobj_(data.patexam))autoinsert_rowdata("#formDoctorNote",data.patexam);
+			// if(!emptyobj_(data.patexam))autoinsert_rowdata("#formDoctorNote",data.patexam);
 			if(!emptyobj_(data.episdiag))autoinsert_rowdata("#formDoctorNote",data.episdiag);
 			if(!emptyobj_(data.pathealthadd))autoinsert_rowdata("#formDoctorNote",data.pathealthadd);
 			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add');

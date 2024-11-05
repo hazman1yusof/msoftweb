@@ -249,7 +249,21 @@
                                                 <div class="form-group">
                                                     <!-- <label class="col-md-3 control-label" for="examination">Physical Examination</label> -->
                                                     <div class="col-md-12">
-                                                        <textarea id="examination" name="examination" type="text" class="form-control input-sm"></textarea>
+                                                        <!-- <textarea id="examination" name="examination" type="text" class="form-control input-sm"></textarea> -->
+                                                        <div class="card-group">
+                                                            <div class="col-md-3 card bodydia_doctornote" data-type='BF'>
+                                                                <img class="card-img-top" src="{{ asset('img/bodydia1.png') }}" width="200" height="400">
+                                                            </div>
+                                                            <div class="col-md-3 card bodydia_doctornote" data-type='BR'>
+                                                                <img class="card-img-top" src="{{ asset('img/bodydia2.png') }}" width="200" height="400">
+                                                            </div>
+                                                            <div class="col-md-3 card bodydia_doctornote" data-type='BL'>
+                                                                <img class="card-img-top" src="{{ asset('img/bodydia3.png') }}" width="200" height="400">
+                                                            </div>
+                                                            <div class="col-md-3 card bodydia_doctornote" data-type='BB'>
+                                                                <img class="card-img-top" src="{{ asset('img/bodydia4.png') }}" width="200" height="400">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1549,7 +1563,21 @@
                                     <div class="form-group">
                                         <!-- <label class="col-md-3 control-label" for="examination_ref">Physical Examination</label> -->
                                         <div class="col-md-12">
-                                            <textarea id="examination_ref" name="examination_ref" type="text" class="form-control input-sm"></textarea>
+                                            <!-- <textarea id="examination_ref" name="examination_ref" type="text" class="form-control input-sm"></textarea> -->
+                                            <div class="card-group">
+                                                <div class="col-md-3 card bodydia_doctornote_ref" data-type='BF_REF'>
+                                                    <img class="card-img-top" src="{{ asset('img/bodydia1.png') }}" width="90" height="200">
+                                                </div>
+                                                <div class="col-md-3 card bodydia_doctornote_ref" data-type='BR_REF'>
+                                                    <img class="card-img-top" src="{{ asset('img/bodydia2.png') }}" width="90" height="200">
+                                                </div>
+                                                <div class="col-md-3 card bodydia_doctornote_ref" data-type='BL_REF'>
+                                                    <img class="card-img-top" src="{{ asset('img/bodydia3.png') }}" width="90" height="200">
+                                                </div>
+                                                <div class="col-md-3 card bodydia_doctornote_ref" data-type='BB_REF'>
+                                                    <img class="card-img-top" src="{{ asset('img/bodydia4.png') }}" width="90" height="200">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
