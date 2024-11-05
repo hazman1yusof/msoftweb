@@ -109,7 +109,7 @@ $(document).ready(function (){
 		datatype: "local",
 		colModel: [
 			{ label: 'Username', name: 'username', width: 90, canSearch: true, checked: true },
-			{ label: 'Name', name: 'name', width: 300, canSearch: true },
+			{ label: 'Name', name: 'name', width: 300, canSearch: true, classes: 'wrap'},
 			{ label: 'Email', name: 'email', width: 200 },
 			{ label: 'Group', name: 'groupid', width: 90 },
 			{ label: 'Department', name: 'dept', width: 100 },
