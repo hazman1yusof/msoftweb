@@ -375,7 +375,10 @@
                                                 
                                                 <div class="form-group col-md-12">
                                                     <label class="control-label" for="pulse" style="padding-bottom: 5px;">Pulse Rate</label>
-                                                    <input id="pulse" name="pulse" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                    <div class="input-group">
+                                                        <input id="pulse" name="pulse" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                        <span class="input-group-addon">/min</span>
+                                                    </div>
                                                 </div>
                                                 
                                                 <div class="form-group col-md-12">
@@ -388,7 +391,10 @@
                                                 
                                                 <div class="form-group col-md-12">
                                                     <label class="control-label" for="respiration" style="padding-bottom: 5px;">Respiration</label>
-                                                    <input id="respiration" name="respiration" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                    <div class="input-group">
+                                                        <input id="respiration" name="respiration" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                        <span class="input-group-addon">/min</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -775,7 +781,10 @@
                                                                 <span class="fa fa-edit fa-lg"></span> Edit 
                                                             </button>
                                                             <button type="button" class="btn btn-default" data-oper='add' id="save_mri">
-                                                                <span class="fa fa-save fa-lg"></span> Save 
+                                                                <span class="fa fa-save fa-lg"></span> Doctor / Nurse 
+                                                            </button>
+                                                            <button type="button" class="btn btn-default" id="accept_mri">
+                                                                <span class="fa fa-check fa-lg"></span> Radiographer 
                                                             </button>
                                                             <button type="button" class="btn btn-default" id="cancel_mri">
                                                                 <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 

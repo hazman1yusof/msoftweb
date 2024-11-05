@@ -75,6 +75,13 @@
 										<textarea id="reasonadm" name="reasonadm" type="text" class="form-control input-sm" rdonly></textarea>
 									</div>
 								</div>
+
+								<div class="form-group">
+									<label class="col-md-2 control-label" for="diagfinal">Diagnosis</label>
+									<div class="col-md-8">
+										<textarea id="diagfinal" name="diagfinal" type="text" class="form-control input-sm" rdonly></textarea>
+									</div>
+								</div>
 							</div>
 						</div>
 
@@ -82,10 +89,10 @@
 							<div class="panel-body" style="height: 240px;margin-left: 50px">
 								
 								<div class="form-group">
-									<label class="col-md-2 control-label" for="vs_weight">Weight</label>
+									<label class="col-md-2 control-label" for="weight">Weight</label>
 									<div class="col-md-8">
 										<div class="input-group">
-											<input id="vs_weight" name="vs_weight" type="text" class="form-control input-sm" data-sanitize="numberFormat" rdonly>
+											<input id="weight" name="weight" type="text" class="form-control input-sm" data-sanitize="numberFormat" rdonly>
 											<span class="input-group-addon">kg</span>
 										</div>									
 									</div>
@@ -308,6 +315,20 @@
 										</div>
 									</div>
 								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class='col-md-12'>
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="adduser">Pass Over By</label>
+							<div class="col-md-2">
+								<input name="adduser" type="text" class="form-control input-sm" readonly>
+							</div>
+
+							<label class="col-md-2 control-label" for="lastuser">Take Over By</label>
+							<div class="col-md-2">
+								<input name="lastuser" type="text" class="form-control input-sm" readonly>
 							</div>
 						</div>
 					</div>

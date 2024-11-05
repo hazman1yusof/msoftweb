@@ -158,8 +158,8 @@ class NursingController extends defaultController
                         'location' => 'TRIAGE',
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => $request->lastuser,
+                        'lastupdate'  => $request->lastupdate
                         // 'diagnosis' => $request->diagnosis,
                         // 'vs_painscore' => $request->vs_painscore,
                         // 'moa_others' => $request->moa_others,

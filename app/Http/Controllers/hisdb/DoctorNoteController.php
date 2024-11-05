@@ -143,6 +143,9 @@ class DoctorNoteController extends defaultController
                         return 'error happen..';
                 }
             
+            case 'accept_mri':
+                return $this->accept_mri($request);
+            
             case 'save_physio':
                 switch($request->oper){
                     case 'add':
@@ -317,6 +320,32 @@ class DoctorNoteController extends defaultController
                     'icdcode' => $request->icdcode,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
+            
+            DB::table('hisdb.pat_radiology')
+                ->where('mrn','=',$request->mrn_doctorNote)
+                ->where('episno','=',$request->episno_doctorNote)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'weight' => $request->weight,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser' => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::table('hisdb.pat_mri')
+                ->where('mrn','=',$request->mrn_doctorNote)
+                ->where('episno','=',$request->episno_doctorNote)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'weight' => $request->weight,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser' => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
                 ]);
             
             DB::commit();
@@ -536,6 +565,32 @@ class DoctorNoteController extends defaultController
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }
+            
+            DB::table('hisdb.pat_radiology')
+                ->where('mrn','=',$request->mrn_doctorNote)
+                ->where('episno','=',$request->episno_doctorNote)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'weight' => $request->weight,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser' => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::table('hisdb.pat_mri')
+                ->where('mrn','=',$request->mrn_doctorNote)
+                ->where('episno','=',$request->episno_doctorNote)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'weight' => $request->weight,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser' => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
             
             $queries = DB::getQueryLog();
             // dump($queries);
@@ -854,7 +909,17 @@ class DoctorNoteController extends defaultController
         
         if(!empty($request->recorddate) && $request->recorddate != '-'){
             $pathealth_obj = DB::table('hisdb.pathealth')
-                            ->select('idno','compcode','mrn','episno','height','weight','temperature','pulse','bp_sys1','bp_dias2','respiration','gxt','pain_score','clinicnote','adduser','adddate','upduser','upddate','complain','recorddate','recordtime','visionl','visionr','colorblind','recstatus','plan_','allergyh','fmh','pmh','socialh','drugh','vas','aggr','easing','pain','behaviour','irritability','severity','lastuser','lastupdate','followupdate','followuptime','anr_rhesus','anr_rubella','anr_vdrl','anr_hiv','anr_hepaB_Ag','anr_hepaB_AB','anr_bloodTrans','anr_drugAllergies','doctorcode','newic','arrival_date','nursing_complete','doctor_complete','computerid','genappear','speech','moodaffect','perception','thinking','cognitivefunc','aetiology','investigate','treatment','prognosis')
+                            // ->select('idno','compcode','mrn','episno','height','weight','temperature','pulse','bp_sys1','bp_dias2','respiration','gxt','pain_score','clinicnote','adduser','adddate','upduser','upddate','complain','recorddate','recordtime','visionl','visionr','colorblind','recstatus','plan_','allergyh','fmh','pmh','socialh','drugh','vas','aggr','easing','pain','behaviour','irritability','severity','lastuser','lastupdate','followupdate','followuptime','anr_rhesus','anr_rubella','anr_vdrl','anr_hiv','anr_hepaB_Ag','anr_hepaB_AB','anr_bloodTrans','anr_drugAllergies','doctorcode','newic','arrival_date','nursing_complete','doctor_complete','computerid','genappear','speech','moodaffect','perception','thinking','cognitivefunc','aetiology','investigate','treatment','prognosis')
+                            ->select('idno','compcode','mrn','episno','clinicnote','adduser','adddate','upduser','upddate','complain','recorddate','recordtime','visionl','visionr','colorblind','recstatus','plan_','allergyh','fmh','pmh','socialh','drugh','vas','aggr','easing','pain','behaviour','irritability','severity','lastuser','lastupdate','followupdate','followuptime','anr_rhesus','anr_rubella','anr_vdrl','anr_hiv','anr_hepaB_Ag','anr_hepaB_AB','anr_bloodTrans','anr_drugAllergies','doctorcode','newic','arrival_date','nursing_complete','doctor_complete','computerid','genappear','speech','moodaffect','perception','thinking','cognitivefunc','aetiology','investigate','treatment','prognosis')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno)
+                            ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('Y-m-d'))
+                            ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('H:i:s'));
+                            // ->orderBy('recordtime','desc');
+            
+            $vitalsign_doc = DB::table('hisdb.pathealth')
+                            ->select('height','weight','temperature','pulse','bp_sys1','bp_dias2','respiration','gxt','pain_score')
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno)
@@ -887,6 +952,12 @@ class DoctorNoteController extends defaultController
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno);
         
+        $vitalsign_triage = DB::table('nursing.nursassessment')
+                            ->select('vs_temperature as temperature','vs_pulse as pulse','vs_respiration as respiration','vs_bp_sys1 as bp_sys1','vs_bp_dias2 as bp_dias2','vs_weight as weight','vs_gxt as gxt','vs_painscore as pain_score','vs_height as height')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
+        
         if($episode_obj->exists()){
             $episode_obj = $episode_obj->first();
             $responce->episode = $episode_obj;
@@ -899,6 +970,11 @@ class DoctorNoteController extends defaultController
                 
                 // $adddate =  Carbon::createFromFormat('Y-m-d', $pathealth_obj->adddate)->format('d-m-Y');
                 // $responce->adddate = $adddate;
+            }
+            
+            if($vitalsign_doc->exists()){
+                $vitalsign_doc = $vitalsign_doc->first();
+                $responce->vitalsign_doc = $vitalsign_doc;
             }
             
             if($patexam_obj->exists()){
@@ -920,6 +996,11 @@ class DoctorNoteController extends defaultController
         if($pathealthadd_obj->exists()){
             $pathealthadd_obj = $pathealthadd_obj->first();
             $responce->pathealthadd = $pathealthadd_obj;
+        }
+        
+        if($vitalsign_triage->exists()){
+            $vitalsign_triage = $vitalsign_triage->first();
+            $responce->vitalsign_triage = $vitalsign_triage;
         }
         
         // $responce->transaction = json_decode($this->get_transaction_table($request));
@@ -1375,19 +1456,19 @@ class DoctorNoteController extends defaultController
                 }
             }
             
-            $nursassessment = DB::table('nursing.nursassessment')
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno)
-                            ->where('compcode','=',session('compcode'));
+            // $nursassessment = DB::table('nursing.nursassessment')
+            //                 ->where('mrn','=',$request->mrn)
+            //                 ->where('episno','=',$request->episno)
+            //                 ->where('compcode','=',session('compcode'));
             
-            if($nursassessment->exists()){
-                $nursassessment
-                    ->update([
-                        'vs_weight' => $request->rad_weight,
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    ]);
-            }
+            // if($nursassessment->exists()){
+            //     $nursassessment
+            //         ->update([
+            //             'vs_weight' => $request->rad_weight,
+            //             'lastuser'  => session('username'),
+            //             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //         ]);
+            // }
             
             // $pathealth = DB::table('hisdb.pathealth')
             //             ->where('mrn','=',$request->mrn)
@@ -1419,46 +1500,93 @@ class DoctorNoteController extends defaultController
                     ]);
             }
             
-            DB::table('hisdb.pat_radiology')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno,
-                    'pt_condition' => $request->pt_condition,
-                    'xray' => $request->xray,
-                    'xray_date' => $request->xray_date,
-                    'xray_remark' => $request->xray_remark,
-                    'mri' => $request->mri,
-                    'mri_date' => $request->mri_date,
-                    'mri_remark' => $request->mri_remark,
-                    'angio' => $request->angio,
-                    'angio_date' => $request->angio_date,
-                    'angio_remark' => $request->angio_remark,
-                    'ultrasound' => $request->ultrasound,
-                    'ultrasound_date' => $request->ultrasound_date,
-                    'ultrasound_remark' => $request->ultrasound_remark,
-                    'ct' => $request->ct,
-                    'ct_date' => $request->ct_date,
-                    'ct_remark' => $request->ct_remark,
-                    'fluroscopy' => $request->fluroscopy,
-                    'fluroscopy_date' => $request->fluroscopy_date,
-                    'fluroscopy_remark' => $request->fluroscopy_remark,
-                    'mammogram' => $request->mammogram,
-                    'mammogram_date' => $request->mammogram_date,
-                    'mammogram_remark' => $request->mammogram_remark,
-                    'bmd' => $request->bmd,
-                    'bmd_date' => $request->bmd_date,
-                    'bmd_remark' => $request->bmd_remark,
-                    'clinicaldata' => $request->clinicaldata,
-                    'doctorname'  => $request->radClinic_doctorname,
-                    // 'rad_note' => $request->rad_note,
-                    // 'radiologist'  => $request->radClinic_radiologist,
-                    'adduser'  => session('username'),
-                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'lastuser' => session('username'),
-                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'computerid' => session('computerid'),
-                ]);
+            $pat_radiology = DB::table('hisdb.pat_radiology')
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno)
+                            ->where('compcode','=',session('compcode'));
+            
+            if($pat_radiology->exists()){
+                $pat_radiology
+                    ->update([
+                        'weight' => $request->rad_weight,
+                        'pt_condition' => $request->pt_condition,
+                        'xray' => $request->xray,
+                        'xray_date' => $request->xray_date,
+                        'xray_remark' => $request->xray_remark,
+                        'mri' => $request->mri,
+                        'mri_date' => $request->mri_date,
+                        'mri_remark' => $request->mri_remark,
+                        'angio' => $request->angio,
+                        'angio_date' => $request->angio_date,
+                        'angio_remark' => $request->angio_remark,
+                        'ultrasound' => $request->ultrasound,
+                        'ultrasound_date' => $request->ultrasound_date,
+                        'ultrasound_remark' => $request->ultrasound_remark,
+                        'ct' => $request->ct,
+                        'ct_date' => $request->ct_date,
+                        'ct_remark' => $request->ct_remark,
+                        'fluroscopy' => $request->fluroscopy,
+                        'fluroscopy_date' => $request->fluroscopy_date,
+                        'fluroscopy_remark' => $request->fluroscopy_remark,
+                        'mammogram' => $request->mammogram,
+                        'mammogram_date' => $request->mammogram_date,
+                        'mammogram_remark' => $request->mammogram_remark,
+                        'bmd' => $request->bmd,
+                        'bmd_date' => $request->bmd_date,
+                        'bmd_remark' => $request->bmd_remark,
+                        'clinicaldata' => $request->clinicaldata,
+                        'doctorname'  => $request->radClinic_doctorname,
+                        // 'rad_note' => $request->rad_note,
+                        // 'radiologist'  => $request->radClinic_radiologist,
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser' => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            }else{
+                DB::table('hisdb.pat_radiology')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'weight' => $request->rad_weight,
+                        'pt_condition' => $request->pt_condition,
+                        'xray' => $request->xray,
+                        'xray_date' => $request->xray_date,
+                        'xray_remark' => $request->xray_remark,
+                        'mri' => $request->mri,
+                        'mri_date' => $request->mri_date,
+                        'mri_remark' => $request->mri_remark,
+                        'angio' => $request->angio,
+                        'angio_date' => $request->angio_date,
+                        'angio_remark' => $request->angio_remark,
+                        'ultrasound' => $request->ultrasound,
+                        'ultrasound_date' => $request->ultrasound_date,
+                        'ultrasound_remark' => $request->ultrasound_remark,
+                        'ct' => $request->ct,
+                        'ct_date' => $request->ct_date,
+                        'ct_remark' => $request->ct_remark,
+                        'fluroscopy' => $request->fluroscopy,
+                        'fluroscopy_date' => $request->fluroscopy_date,
+                        'fluroscopy_remark' => $request->fluroscopy_remark,
+                        'mammogram' => $request->mammogram,
+                        'mammogram_date' => $request->mammogram_date,
+                        'mammogram_remark' => $request->mammogram_remark,
+                        'bmd' => $request->bmd,
+                        'bmd_date' => $request->bmd_date,
+                        'bmd_remark' => $request->bmd_remark,
+                        'clinicaldata' => $request->clinicaldata,
+                        'doctorname'  => $request->radClinic_doctorname,
+                        // 'rad_note' => $request->rad_note,
+                        // 'radiologist'  => $request->radClinic_radiologist,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser' => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            }
             
             // DB::table('hisdb.episode')
             //     ->where('mrn','=',$request->mrn)
@@ -1536,19 +1664,19 @@ class DoctorNoteController extends defaultController
                 }
             }
             
-            $nursassessment = DB::table('nursing.nursassessment')
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno)
-                            ->where('compcode','=',session('compcode'));
+            // $nursassessment = DB::table('nursing.nursassessment')
+            //                 ->where('mrn','=',$request->mrn)
+            //                 ->where('episno','=',$request->episno)
+            //                 ->where('compcode','=',session('compcode'));
             
-            if($nursassessment->exists()){
-                $nursassessment
-                    ->update([
-                        'vs_weight' => $request->rad_weight,
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    ]);
-            }
+            // if($nursassessment->exists()){
+            //     $nursassessment
+            //         ->update([
+            //             'vs_weight' => $request->rad_weight,
+            //             'lastuser'  => session('username'),
+            //             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //         ]);
+            // }
             
             // $pathealth = DB::table('hisdb.pathealth')
             //             ->where('mrn','=',$request->mrn)
@@ -1588,6 +1716,7 @@ class DoctorNoteController extends defaultController
             if($pat_radiology->exists()){
                 $pat_radiology
                     ->update([
+                        'weight' => $request->rad_weight,
                         'pt_condition' => $request->pt_condition,
                         'xray' => $request->xray,
                         'xray_date' => $request->xray_date,
@@ -1629,6 +1758,7 @@ class DoctorNoteController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
+                        'weight' => $request->rad_weight,
                         'pt_condition' => $request->pt_condition,
                         'xray' => $request->xray,
                         'xray_date' => $request->xray_date,
@@ -1688,7 +1818,7 @@ class DoctorNoteController extends defaultController
     public function get_table_radClinic(Request $request){
         
         $pat_radiology_obj = DB::table('hisdb.pat_radiology as pr')
-                            ->select('pr.compcode','pr.mrn','pr.episno','pr.pt_condition','pr.xray','pr.xray_date','pr.xray_remark','pr.mri','pr.mri_date','pr.mri_remark','pr.angio','pr.angio_date','pr.angio_remark','pr.ultrasound','pr.ultrasound_date','pr.ultrasound_remark','pr.ct','pr.ct_date','pr.ct_remark','pr.fluroscopy','pr.fluroscopy_date','pr.fluroscopy_remark','pr.mammogram','pr.mammogram_date','pr.mammogram_remark','pr.bmd','pr.bmd_date','pr.bmd_remark','pr.clinicaldata','pr.doctorname as radClinic_doctorname','pr.rad_note','pr.radiologist as radClinic_radiologist','pr.adduser','pr.adddate','pr.upduser','pr.upddate','pr.lastuser as radClinic_lastuser','pr.lastupdate','pr.computerid')
+                            ->select('pr.compcode','pr.mrn','pr.episno','pr.weight as rad_weight','pr.pt_condition','pr.xray','pr.xray_date','pr.xray_remark','pr.mri','pr.mri_date','pr.mri_remark','pr.angio','pr.angio_date','pr.angio_remark','pr.ultrasound','pr.ultrasound_date','pr.ultrasound_remark','pr.ct','pr.ct_date','pr.ct_remark','pr.fluroscopy','pr.fluroscopy_date','pr.fluroscopy_remark','pr.mammogram','pr.mammogram_date','pr.mammogram_remark','pr.bmd','pr.bmd_date','pr.bmd_remark','pr.clinicaldata','pr.doctorname as radClinic_doctorname','pr.rad_note','pr.radiologist as radClinic_radiologist','pr.adduser','pr.adddate','pr.upduser','pr.upddate','pr.lastuser as radClinic_lastuser','pr.lastupdate','pr.computerid')
                             // ->leftJoin('nursing.nursassessment as na', function ($join) use ($request){
                             //     $join = $join->on('na.mrn', '=', 'pr.mrn')
                             //                 ->on('na.episno', '=', 'pr.episno')
@@ -1723,11 +1853,11 @@ class DoctorNoteController extends defaultController
                         // ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate))
                         ->where('mrn','=',$request->mrn);
         
-        $nursassessment_obj = DB::table('nursing.nursassessment')
-                            ->select('vs_weight')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno);
+        // $nursassessment_obj = DB::table('nursing.nursassessment')
+        //                     ->select('vs_weight')
+        //                     ->where('compcode','=',session('compcode'))
+        //                     ->where('mrn','=',$request->mrn)
+        //                     ->where('episno','=',$request->episno);
         
         $responce = new stdClass();
         
@@ -1763,12 +1893,12 @@ class DoctorNoteController extends defaultController
             $responce->rad_allergy = $rad_allergy;
         }
         
-        if($nursassessment_obj->exists()){
-            $nursassessment_obj = $nursassessment_obj->first();
+        // if($nursassessment_obj->exists()){
+        //     $nursassessment_obj = $nursassessment_obj->first();
             
-            $rad_weight = $nursassessment_obj->vs_weight;
-            $responce->rad_weight = $rad_weight;
-        }
+        //     $rad_weight = $nursassessment_obj->vs_weight;
+        //     $responce->rad_weight = $rad_weight;
+        // }
         
         return json_encode($responce);
         
@@ -1810,43 +1940,87 @@ class DoctorNoteController extends defaultController
                     ]);
             }
             
-            DB::table('hisdb.pat_mri')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno,
-                    'entereddate' => $request->mri_entereddate,
-                    'cardiacpacemaker' => $request->cardiacpacemaker,
-                    'pros_valve' => $request->pros_valve,
-                    'prosvalve_rmk' => $request->prosvalve_rmk,
-                    'intraocular' => $request->intraocular,
-                    'cochlear_imp' => $request->cochlear_imp,
-                    'neurotransm' => $request->neurotransm,
-                    'bonegrowth' => $request->bonegrowth,
-                    'druginfuse' => $request->druginfuse,
-                    'surg_clips' => $request->surg_clips,
-                    'jointlimb_pros' => $request->jointlimb_pros,
-                    'shrapnel' => $request->shrapnel,
-                    'oper_3mth' => $request->oper_3mth,
-                    'oper3mth_remark' => $request->oper3mth_remark,
-                    'prev_mri' => $request->prev_mri,
-                    'claustrophobia' => $request->claustrophobia,
-                    'dental_imp' => $request->dental_imp,
-                    'frmgnetic_imp' => $request->frmgnetic_imp,
-                    'pregnancy' => $request->pregnancy,
-                    'allergy_drug' => $request->allergy_drug,
-                    'bloodurea' => $request->bloodurea,
-                    'serum_creatinine' => $request->serum_creatinine,
-                    'doctorname' => $request->mri_doctorname,
-                    // 'radiologist' => $request->mri_radiologist,
-                    // 'radiographer' => $request->radiographer,
-                    // 'staffnurse' => $request->staffnurse,
-                    'adduser'  => session('username'),
-                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'lastuser' => session('username'),
-                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'computerid' => session('computerid'),
-                ]);
+            $pat_mri = DB::table('hisdb.pat_mri')
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->where('compcode','=',session('compcode'));
+            
+            if($pat_mri->exists()){
+                $pat_mri
+                    ->update([
+                        'weight' => $request->mri_weight,
+                        'entereddate' => $request->mri_entereddate,
+                        'cardiacpacemaker' => $request->cardiacpacemaker,
+                        'pros_valve' => $request->pros_valve,
+                        'prosvalve_rmk' => $request->prosvalve_rmk,
+                        'intraocular' => $request->intraocular,
+                        'cochlear_imp' => $request->cochlear_imp,
+                        'neurotransm' => $request->neurotransm,
+                        'bonegrowth' => $request->bonegrowth,
+                        'druginfuse' => $request->druginfuse,
+                        'surg_clips' => $request->surg_clips,
+                        'jointlimb_pros' => $request->jointlimb_pros,
+                        'shrapnel' => $request->shrapnel,
+                        'oper_3mth' => $request->oper_3mth,
+                        'oper3mth_remark' => $request->oper3mth_remark,
+                        'prev_mri' => $request->prev_mri,
+                        'claustrophobia' => $request->claustrophobia,
+                        'dental_imp' => $request->dental_imp,
+                        'frmgnetic_imp' => $request->frmgnetic_imp,
+                        'pregnancy' => $request->pregnancy,
+                        'allergy_drug' => $request->allergy_drug,
+                        'bloodurea' => $request->bloodurea,
+                        'serum_creatinine' => $request->serum_creatinine,
+                        'doctorname' => $request->mri_doctorname,
+                        // 'radiologist' => $request->mri_radiologist,
+                        // 'radiographer' => $request->radiographer,
+                        // 'staffnurse' => $request->staffnurse,
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser' => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            }else{
+                DB::table('hisdb.pat_mri')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'weight' => $request->mri_weight,
+                        'entereddate' => $request->mri_entereddate,
+                        'cardiacpacemaker' => $request->cardiacpacemaker,
+                        'pros_valve' => $request->pros_valve,
+                        'prosvalve_rmk' => $request->prosvalve_rmk,
+                        'intraocular' => $request->intraocular,
+                        'cochlear_imp' => $request->cochlear_imp,
+                        'neurotransm' => $request->neurotransm,
+                        'bonegrowth' => $request->bonegrowth,
+                        'druginfuse' => $request->druginfuse,
+                        'surg_clips' => $request->surg_clips,
+                        'jointlimb_pros' => $request->jointlimb_pros,
+                        'shrapnel' => $request->shrapnel,
+                        'oper_3mth' => $request->oper_3mth,
+                        'oper3mth_remark' => $request->oper3mth_remark,
+                        'prev_mri' => $request->prev_mri,
+                        'claustrophobia' => $request->claustrophobia,
+                        'dental_imp' => $request->dental_imp,
+                        'frmgnetic_imp' => $request->frmgnetic_imp,
+                        'pregnancy' => $request->pregnancy,
+                        'allergy_drug' => $request->allergy_drug,
+                        'bloodurea' => $request->bloodurea,
+                        'serum_creatinine' => $request->serum_creatinine,
+                        'doctorname' => $request->mri_doctorname,
+                        // 'radiologist' => $request->mri_radiologist,
+                        // 'radiographer' => $request->radiographer,
+                        // 'staffnurse' => $request->staffnurse,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser' => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            }
             
             DB::table('hisdb.episode')
                 ->where('mrn','=',$request->mrn)
@@ -1914,6 +2088,7 @@ class DoctorNoteController extends defaultController
             if($pat_mri->exists()){
                 $pat_mri
                     ->update([
+                        'weight' => $request->mri_weight,
                         'entereddate' => $request->mri_entereddate,
                         'cardiacpacemaker' => $request->cardiacpacemaker,
                         'pros_valve' => $request->pros_valve,
@@ -1952,6 +2127,7 @@ class DoctorNoteController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
+                        'weight' => $request->mri_weight,
                         'entereddate' => $request->mri_entereddate,
                         'cardiacpacemaker' => $request->cardiacpacemaker,
                         'pros_valve' => $request->pros_valve,
@@ -2005,10 +2181,52 @@ class DoctorNoteController extends defaultController
         
     }
     
+    public function accept_mri(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            $pat_mri = DB::table('hisdb.pat_mri')
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->where('compcode','=',session('compcode'));
+            
+            if($pat_mri->exists()){
+                $pat_mri
+                    ->update([
+                        'radiographer' => session('username'),
+                        // 'upduser'  => session('username'),
+                        // 'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        // 'lastuser' => session('username'),
+                        // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            }
+            
+            $queries = DB::getQueryLog();
+            // dump($queries);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
     public function get_table_mri(Request $request){
         
         $pat_mri_obj = DB::table('hisdb.pat_mri')
-                        ->select('compcode','mrn','episno','entereddate as mri_entereddate','cardiacpacemaker','pros_valve','prosvalve_rmk','intraocular','cochlear_imp','neurotransm','bonegrowth','druginfuse','surg_clips','jointlimb_pros','shrapnel','oper_3mth','oper3mth_remark','prev_mri','claustrophobia','dental_imp','frmgnetic_imp','pregnancy','allergy_drug','bloodurea','serum_creatinine','doctorname as mri_doctorname','radiologist as mri_radiologist','radiographer','staffnurse','adduser','adddate','upduser','upddate','lastuser as mri_lastuser','lastupdate','computerid')
+                        ->select('compcode','mrn','episno','weight as mri_weight','entereddate as mri_entereddate','cardiacpacemaker','pros_valve','prosvalve_rmk','intraocular','cochlear_imp','neurotransm','bonegrowth','druginfuse','surg_clips','jointlimb_pros','shrapnel','oper_3mth','oper3mth_remark','prev_mri','claustrophobia','dental_imp','frmgnetic_imp','pregnancy','allergy_drug','bloodurea','serum_creatinine','doctorname as mri_doctorname','radiologist as mri_radiologist','radiographer','staffnurse','adduser','adddate','upduser','upddate','lastuser as mri_lastuser','lastupdate','computerid')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);
@@ -2023,11 +2241,11 @@ class DoctorNoteController extends defaultController
         //                     ->where('episno','=',$request->episno);
         // }
         
-        $nursassessment_obj = DB::table('nursing.nursassessment')
-                            ->select('vs_weight')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno);
+        // $nursassessment_obj = DB::table('nursing.nursassessment')
+        //                     ->select('vs_weight')
+        //                     ->where('compcode','=',session('compcode'))
+        //                     ->where('mrn','=',$request->mrn)
+        //                     ->where('episno','=',$request->episno);
         
         $responce = new stdClass();
         
@@ -2045,12 +2263,12 @@ class DoctorNoteController extends defaultController
         //     }
         // }
         
-        if($nursassessment_obj->exists()){
-            $nursassessment_obj = $nursassessment_obj->first();
+        // if($nursassessment_obj->exists()){
+        //     $nursassessment_obj = $nursassessment_obj->first();
             
-            $mri_weight = $nursassessment_obj->vs_weight;
-            $responce->mri_weight = $mri_weight;
-        }
+        //     $mri_weight = $nursassessment_obj->vs_weight;
+        //     $responce->mri_weight = $mri_weight;
+        // }
         
         return json_encode($responce);
         
@@ -2570,77 +2788,6 @@ class DoctorNoteController extends defaultController
         
     }
     
-    public function dressing_chart(Request $request){
-        
-        $mrn = $request->mrn_doctorNote;
-        $episno = $request->episno_doctorNote;
-        
-        $dressing = DB::table('hisdb.pat_dressing as d')
-                    ->select('d.mrn','d.episno','d.od_dressing','d.bd_dressing','d.eod_dressing','d.others_dressing','d.others_name','d.solution','d.doctorname','d.adduser','d.adddate','d.upduser','d.upddate','d.lastuser','d.lastupdate','d.computerid','pm.Name','pm.Newic')
-                    ->leftjoin('hisdb.pat_mast as pm', function ($join){
-                        $join = $join->on('pm.MRN','=','d.mrn');
-                        $join = $join->on('pm.Episno','=','d.episno');
-                        $join = $join->where('pm.compcode','=',session('compcode'));
-                    })
-                    ->where('d.compcode','=',session('compcode'))
-                    ->where('d.mrn','=',$request->mrn)
-                    ->where('d.episno','=',$request->episno)
-                    ->first();
-        // dd($dressing);
-        
-        $company = DB::table('sysdb.company')
-                    ->where('compcode','=',session('compcode'))
-                    ->first();
-        
-        return view('hisdb.doctornote.dressingChart_pdfmake',compact('dressing'));
-        
-    }
-    
-    public function mri_chart(Request $request){
-        
-        $mrn = $request->mrn_doctorNote;
-        $episno = $request->episno_doctorNote;
-        
-        $mri = DB::table('hisdb.pat_mri as ptm')
-                ->select('ptm.mrn','ptm.episno','ptm.entereddate','ptm.cardiacpacemaker','ptm.pros_valve','ptm.prosvalve_rmk','ptm.intraocular','ptm.cochlear_imp','ptm.neurotransm','ptm.bonegrowth','ptm.druginfuse','ptm.surg_clips','ptm.jointlimb_pros','ptm.shrapnel','ptm.oper_3mth','ptm.oper3mth_remark','ptm.prev_mri','ptm.claustrophobia','ptm.dental_imp','ptm.frmgnetic_imp','ptm.pregnancy','ptm.allergy_drug','ptm.bloodurea','ptm.serum_creatinine','ptm.doctorname as mri_doctorname','ptm.radiologist','ptm.radiographer','ptm.staffnurse','ptm.adduser','ptm.adddate','ptm.upduser','ptm.upddate','ptm.lastuser as mri_lastuser','ptm.lastupdate','pm.Name','pm.Newic','pm.telhp','pm.telh','ph.weight','n.vs_weight','e.bed as ward','b.ward as EpWard')
-                ->leftjoin('hisdb.pat_mast as pm', function ($join){
-                    $join = $join->on('pm.MRN','=','ptm.mrn');
-                    $join = $join->on('pm.Episno','=','ptm.episno');
-                    $join = $join->where('pm.compcode','=',session('compcode'));
-                })
-                ->leftjoin('hisdb.pathealth as ph', function ($join){
-                    $join = $join->on('ph.mrn','=','ptm.mrn');
-                    $join = $join->on('ph.episno','=','ptm.episno');
-                    $join = $join->where('ph.compcode','=',session('compcode'));
-                })
-                ->leftjoin('nursing.nursassessment as n', function ($join){
-                    $join = $join->on('n.mrn','=','ptm.mrn');
-                    $join = $join->on('n.episno','=','ptm.episno');
-                    $join = $join->where('n.compcode','=',session('compcode'));
-                })
-                ->leftjoin('hisdb.episode as e', function ($join){
-                    $join = $join->on('e.mrn','=','ptm.mrn');
-                    $join = $join->on('e.episno','=','ptm.episno');
-                    $join = $join->where('e.compcode','=',session('compcode'));
-                })
-                ->leftjoin('hisdb.bed as b', function ($join){
-                    $join = $join->on('b.bednum','=','e.bed');
-                    $join = $join->where('b.compcode','=',session('compcode'));
-                })
-                ->where('ptm.compcode','=',session('compcode'))
-                ->where('ptm.mrn','=',$request->mrn)
-                ->where('ptm.episno','=',$request->episno)
-                ->first();
-        // dd($mri);
-        
-        $company = DB::table('sysdb.company')
-                    ->where('compcode','=',session('compcode'))
-                    ->first();
-        
-        return view('hisdb.doctornote.mriChart_pdfmake',compact('mri'));
-        
-    }
-    
     public function otbook_chart(Request $request){
         
         $mrn = $request->mrn;
@@ -2667,6 +2814,77 @@ class DoctorNoteController extends defaultController
         // dd($pat_otbook);
         
         return view('hisdb.doctornote.otbook_chart_pdfmake', compact('pat_otbook'));
+        
+    }
+    
+    public function mri_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        
+        $mri = DB::table('hisdb.pat_mri as ptm')
+                ->select('ptm.mrn','ptm.episno','ptm.weight as mri_weight','ptm.entereddate','ptm.cardiacpacemaker','ptm.pros_valve','ptm.prosvalve_rmk','ptm.intraocular','ptm.cochlear_imp','ptm.neurotransm','ptm.bonegrowth','ptm.druginfuse','ptm.surg_clips','ptm.jointlimb_pros','ptm.shrapnel','ptm.oper_3mth','ptm.oper3mth_remark','ptm.prev_mri','ptm.claustrophobia','ptm.dental_imp','ptm.frmgnetic_imp','ptm.pregnancy','ptm.allergy_drug','ptm.bloodurea','ptm.serum_creatinine','ptm.doctorname as mri_doctorname','ptm.radiologist','ptm.radiographer','ptm.staffnurse','ptm.adduser','ptm.adddate','ptm.upduser','ptm.upddate','ptm.lastuser as mri_lastuser','ptm.lastupdate','pm.Name','pm.Newic','pm.telhp','pm.telh','ph.weight','n.vs_weight','e.bed as ward','b.ward as EpWard')
+                ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                    $join = $join->on('pm.MRN','=','ptm.mrn');
+                    $join = $join->on('pm.Episno','=','ptm.episno');
+                    $join = $join->where('pm.compcode','=',session('compcode'));
+                })
+                ->leftjoin('hisdb.pathealth as ph', function ($join){
+                    $join = $join->on('ph.mrn','=','ptm.mrn');
+                    $join = $join->on('ph.episno','=','ptm.episno');
+                    $join = $join->where('ph.compcode','=',session('compcode'));
+                })
+                ->leftjoin('nursing.nursassessment as n', function ($join){
+                    $join = $join->on('n.mrn','=','ptm.mrn');
+                    $join = $join->on('n.episno','=','ptm.episno');
+                    $join = $join->where('n.compcode','=',session('compcode'));
+                })
+                ->leftjoin('hisdb.episode as e', function ($join){
+                    $join = $join->on('e.mrn','=','ptm.mrn');
+                    $join = $join->on('e.episno','=','ptm.episno');
+                    $join = $join->where('e.compcode','=',session('compcode'));
+                })
+                ->leftjoin('hisdb.bed as b', function ($join){
+                    $join = $join->on('b.bednum','=','e.bed');
+                    $join = $join->where('b.compcode','=',session('compcode'));
+                })
+                ->where('ptm.compcode','=',session('compcode'))
+                ->where('ptm.mrn','=',$mrn)
+                ->where('ptm.episno','=',$episno)
+                ->first();
+        // dd($mri);
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        return view('hisdb.doctornote.mriChart_pdfmake',compact('mri'));
+        
+    }
+    
+    public function dressing_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        
+        $dressing = DB::table('hisdb.pat_dressing as d')
+                    ->select('d.mrn','d.episno','d.od_dressing','d.bd_dressing','d.eod_dressing','d.others_dressing','d.others_name','d.solution','d.doctorname','d.adduser','d.adddate','d.upduser','d.upddate','d.lastuser','d.lastupdate','d.computerid','pm.Name','pm.Newic')
+                    ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                        $join = $join->on('pm.MRN','=','d.mrn');
+                        $join = $join->on('pm.Episno','=','d.episno');
+                        $join = $join->where('pm.compcode','=',session('compcode'));
+                    })
+                    ->where('d.compcode','=',session('compcode'))
+                    ->where('d.mrn','=',$mrn)
+                    ->where('d.episno','=',$episno)
+                    ->first();
+        // dd($dressing);
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        return view('hisdb.doctornote.dressingChart_pdfmake',compact('dressing'));
         
     }
     

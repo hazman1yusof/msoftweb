@@ -14,14 +14,12 @@ $(document).ready(function (){
 		button_state_admHandover('wait');
 		enableForm('#formAdmHandover');
 		rdonly('#formAdmHandover');
-		// dialog_mrn_edit.on();
 	});
 	
 	$("#edit_admHandover").click(function (){
 		button_state_admHandover('wait');
 		enableForm('#formAdmHandover');
 		rdonly('#formAdmHandover');
-		// dialog_mrn_edit.on();
 	});
 	
 	$("#save_admHandover").click(function (){
@@ -41,7 +39,6 @@ $(document).ready(function (){
 	$("#cancel_admHandover").click(function (){
 		disableForm('#formAdmHandover');
 		button_state_admHandover($(this).data('oper'));
-		// dialog_mrn_edit.off();
 	});
 	
 	$("#jqGridAdmHandover_panel").on("shown.bs.collapse", function (){
@@ -52,9 +49,6 @@ $(document).ready(function (){
 			_token: $('#csrf_token').val(),
 			mrn: $("#mrn_admHandover").val(),
 			episno: $("#episno_admHandover").val(),
-			vs_weight: $("#vs_weight").val(),
-			medicalhistory: $("#medicalhistory").val(),
-			surgicalhistory: $("#surgicalhistory").val(),
 		};
 		
 		$.post("admhandover/form?"+$.param(saveParam), $.param(postobj), function (data){
@@ -65,12 +59,14 @@ $(document).ready(function (){
 			if(!$.isEmptyObject(data.admhandover)){
 				autoinsert_rowdata("#formAdmHandover",data.admhandover);
 				autoinsert_rowdata("#formAdmHandover",data.episode);
+				autoinsert_rowdata("#formAdmHandover",data.pathealth);
 				autoinsert_rowdata("#formAdmHandover",data.nurshistory);
 				autoinsert_rowdata("#formAdmHandover",data.nursassessment);
 				button_state_admHandover('edit');
 				textarea_init_admhandover();
 			}else{
 				autoinsert_rowdata("#formAdmHandover",data.episode);
+				autoinsert_rowdata("#formAdmHandover",data.pathealth);
 				autoinsert_rowdata("#formAdmHandover",data.nurshistory);
 				autoinsert_rowdata("#formAdmHandover",data.nursassessment);
 				button_state_admHandover('add');
@@ -86,12 +82,7 @@ $(document).ready(function (){
 		disableForm('#formAdmHandover');
 		// $("#jqGridAdmHandover_panel > div").scrollTop(0);
 	});
-	
-	// $("#preview").click(function (){
-	// 	// window.location='./dietorder/table?action=dietorder_preview&mrn='+$('#mrn_admHandover').val()+'&episno='+$("#episno_admHandover").val();
-		
-	// 	window.open('./admhandover/table?action=admhandover_preview&epistycode='+$('#epistycode').val(), '_blank');
-	// });
+
 	$("#admhandover_report").click(function() {
 		window.open('./admhandover/showpdf?mrn_admHandover='+$('#mrn_admHandover').val()+'&episno_admHandover='+$('#episno_admHandover').val(), '_blank');
 	});
@@ -112,10 +103,6 @@ conf = {
 		}
 	},
 };
-
-// $("#admhandover_report").click(function() {
-// 	window.open('./admhandover/showpdf?mrn_admHandover='+$('#mrn_admHandover').val()+'&episno_admHandover='+$('#episno_admHandover').val(), '_blank');
-// });
 
 button_state_admHandover('empty');
 function button_state_admHandover(state){
@@ -167,10 +154,6 @@ function populate_admHandover(obj,rowdata){
 	// formAdmHandover
 	$('#mrn_admHandover').val(obj.mrn);
 	$("#episno_admHandover").val(obj.episno);
-	$("#vs_weight").val(obj.vs_weight);
-	$("#medicalhistory").val(obj.medicalhistory);
-	$("#surgicalhistory").val(obj.surgicalhistory);
-
 	
 	var saveParam = {
 		action: 'get_table_admhandover',
@@ -179,10 +162,6 @@ function populate_admHandover(obj,rowdata){
 		_token: $('#csrf_token').val(),
 		mrn: obj.mrn,
 		episno: obj.episno,
-		vs_weight: obj.vs_weight,
-		medicalhistory: obj.medicalhistory,
-		surgicalhistory: obj.surgicalhistory,
-
 	};
 	
 	$.post("admhandover/form?"+$.param(saveParam), $.param(postobj), function (data){
@@ -193,6 +172,7 @@ function populate_admHandover(obj,rowdata){
 		if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formAdmHandover",data.admhandover);
 			autoinsert_rowdata("#formAdmHandover",data.episode);
+			autoinsert_rowdata("#formAdmHandover",data.pathealth);
 			autoinsert_rowdata("#formAdmHandover",data.nurshistory);
 			autoinsert_rowdata("#formAdmHandover",data.nursassessment);
 			button_state_admHandover('edit');
@@ -221,9 +201,6 @@ function populate_admHandover_currpt(obj){
 	// formAdmHandover
 	$('#mrn_admHandover').val(obj.MRN);
 	$("#episno_admHandover").val(obj.Episno);
-	$("#vs_weight").val(obj.vs_weight);
-	$("#medicalhistory").val(obj.medicalhistory);
-	$("#surgicalhistory").val(obj.surgicalhistory);
 }
 
 function autoinsert_rowdata(form,rowData){
@@ -248,8 +225,6 @@ function saveForm_admHandover(callback){
 	}
 	var postobj = {
 		_token: $('#csrf_token').val(),
-		// sex_edit: $('#sex_edit').val(),
-		// idtype_edit: $('#idtype_edit').val()
 	};
 	
 	values = $("#formAdmHandover").serializeArray();
@@ -293,7 +268,7 @@ function saveForm_admHandover(callback){
 }
 
 function textarea_init_admhandover(){
-	$('textarea#reasonadm,textarea#allergy,textarea#medHis,textarea#surgHis,textarea#rtkpcr_remark,textarea#bloodinv_remark,textarea#branula_remark,textarea#scan_remark,textarea#insurance_remark,textarea#medication_remark,textarea#consent_remark,textarea#smoking_remark,textarea#nbm_remark,textarea#report,textarea#medHis').each(function (){
+	$('textarea#reasonadm,textarea#diagfinal,textarea#allergy,textarea#medHis,textarea#surgHis,textarea#rtkpcr_remark,textarea#bloodinv_remark,textarea#branula_remark,textarea#scan_remark,textarea#insurance_remark,textarea#medication_remark,textarea#consent_remark,textarea#smoking_remark,textarea#nbm_remark,textarea#report,textarea#medHis').each(function (){
 		if(this.value.trim() == ''){
 			this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
 		}else{
