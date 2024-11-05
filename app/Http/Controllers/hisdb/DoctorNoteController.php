@@ -191,20 +191,20 @@ class DoctorNoteController extends defaultController
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
             
-            DB::table('hisdb.patexam')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_doctorNote,
-                    'episno' => $request->episno_doctorNote,
-                    'examination' => $request->examination,
-                    'adduser'  => session('username'),
-                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'lastuser'  => session('username'),
-                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'recorddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    // 'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recordtime' => $request->recordtime,
-                ]);
+            // DB::table('hisdb.patexam')
+            //     ->insert([
+            //         'compcode' => session('compcode'),
+            //         'mrn' => $request->mrn_doctorNote,
+            //         'episno' => $request->episno_doctorNote,
+            //         'examination' => $request->examination,
+            //         'adduser'  => session('username'),
+            //         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //         'lastuser'  => session('username'),
+            //         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //         'recorddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            //         // 'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
+            //         'recordtime' => $request->recordtime,
+            //     ]);
             
             $pathistory = DB::table('hisdb.pathistory')
                         ->where('mrn','=',$request->mrn_doctorNote)
@@ -385,12 +385,12 @@ class DoctorNoteController extends defaultController
             //         'additionalnote' => $request->additionalnote,
             //     ]);
             
-            $patexam = DB::table('hisdb.patexam')
-                        ->where('mrn','=',$request->mrn_doctorNote)
-                        ->where('episno','=',$request->episno_doctorNote)
-                        ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote)->format('Y-m-d'))
-                        ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote)->format('H:i:s'))
-                        ->where('compcode','=',session('compcode'));
+            // $patexam = DB::table('hisdb.patexam')
+            //             ->where('mrn','=',$request->mrn_doctorNote)
+            //             ->where('episno','=',$request->episno_doctorNote)
+            //             ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote)->format('Y-m-d'))
+            //             ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote)->format('H:i:s'))
+            //             ->where('compcode','=',session('compcode'));
             
             $pathealth = DB::table('hisdb.pathealth')
                         ->where('mrn','=',$request->mrn_doctorNote)
@@ -409,28 +409,28 @@ class DoctorNoteController extends defaultController
                         ->where('episno','=',$request->episno_doctorNote)
                         ->where('compcode','=',session('compcode'));
             
-            if($patexam->exists()){
-                $patexam->update([
-                        'examination' => $request->examination,
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                ]);
-            }else{
-                DB::table('hisdb.patexam')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_doctorNote,
-                        'episno' => $request->episno_doctorNote,
-                        'examination' => $request->examination,
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'recorddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        // 'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'recordtime' => $request->recordtime,
-                    ]);
-            }
+            // if($patexam->exists()){
+            //     $patexam->update([
+            //             'examination' => $request->examination,
+            //             'lastuser'  => session('username'),
+            //             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //     ]);
+            // }else{
+            //     DB::table('hisdb.patexam')
+            //         ->insert([
+            //             'compcode' => session('compcode'),
+            //             'mrn' => $request->mrn_doctorNote,
+            //             'episno' => $request->episno_doctorNote,
+            //             'examination' => $request->examination,
+            //             'adduser'  => session('username'),
+            //             'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //             'lastuser'  => session('username'),
+            //             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //             'recorddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            //             // 'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
+            //             'recordtime' => $request->recordtime,
+            //         ]);
+            // }
             
             $doctorcode_obj = DB::table('hisdb.doctor')
                             ->select('doctorcode')
@@ -927,13 +927,13 @@ class DoctorNoteController extends defaultController
                             ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('H:i:s'));
                             // ->orderBy('recordtime','desc');
             
-            $patexam_obj = DB::table('hisdb.patexam')
-                            ->select('idno','compcode','mrn','episno','recorddate','recordtime','examination','adduser','lastuser','lastupdate','recstatus')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno)
-                            ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('Y-m-d'))
-                            ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('H:i:s'));
+            // $patexam_obj = DB::table('hisdb.patexam')
+            //                 ->select('idno','compcode','mrn','episno','recorddate','recordtime','examination','adduser','lastuser','lastupdate','recstatus')
+            //                 ->where('compcode','=',session('compcode'))
+            //                 ->where('mrn','=',$request->mrn)
+            //                 ->where('episno','=',$request->episno)
+            //                 ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('Y-m-d'))
+            //                 ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('H:i:s'));
         }
         
         $pathistory_obj = DB::table('hisdb.pathistory')
@@ -977,10 +977,10 @@ class DoctorNoteController extends defaultController
                 $responce->vitalsign_doc = $vitalsign_doc;
             }
             
-            if($patexam_obj->exists()){
-                $patexam_obj = $patexam_obj->first();
-                $responce->patexam = $patexam_obj;
-            }
+            // if($patexam_obj->exists()){
+            //     $patexam_obj = $patexam_obj->first();
+            //     $responce->patexam = $patexam_obj;
+            // }
         }
         
         if($pathistory_obj->exists()){
@@ -1173,18 +1173,18 @@ class DoctorNoteController extends defaultController
                                 'socialh as socialh_ref',
                             )
                             ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
+                            ->where('mrn','=',$request->mrn);
                             // ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
-                            ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('Y-m-d'))
-                            ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('H:i:s'));
+                            // ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('Y-m-d'))
+                            // ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('H:i:s'));
             
-            $patexam_obj = DB::table('hisdb.patexam')
-                            ->select('examination as examination_ref')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno)
-                            ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('Y-m-d'))
-                            ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('H:i:s'));
+            // $patexam_obj = DB::table('hisdb.patexam')
+            //                 ->select('examination as examination_ref')
+            //                 ->where('compcode','=',session('compcode'))
+            //                 ->where('mrn','=',$request->mrn)
+            //                 ->where('episno','=',$request->episno)
+            //                 ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('Y-m-d'))
+            //                 ->where('recordtime','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate)->format('H:i:s'));
         }
         
         $episdiag_obj = DB::table('hisdb.episdiag')
@@ -1240,10 +1240,10 @@ class DoctorNoteController extends defaultController
                 $responce->pathistory = $pathistory_obj;
             }
             
-            if($patexam_obj->exists()){
-                $patexam_obj = $patexam_obj->first();
-                $responce->patexam = $patexam_obj;
-            }
+            // if($patexam_obj->exists()){
+            //     $patexam_obj = $patexam_obj->first();
+            //     $responce->patexam = $patexam_obj;
+            // }
         }
         
         if($episdiag_obj->exists()){
