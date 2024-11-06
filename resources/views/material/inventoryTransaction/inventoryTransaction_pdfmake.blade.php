@@ -84,7 +84,7 @@
 							],
                             [
 								{text: 'Sender/Receiver Name ', bold: true}, 
-								{text: ': {{$sndrcv->description}}'},
+								{text: ': @if(!empty($sndrcv->description)){{$sndrcv->description}}@endif'},
 								{text: 'Sender/Receiver Code ', bold: true},
 								{text: ': {{$ivtmphd->sndrcv}}'},
 							],
