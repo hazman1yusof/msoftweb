@@ -401,6 +401,8 @@ $(document).ready(function () {
 				break;
 		}
 
+		case_tui_tuo($('#trantype').val());
+
 		function caseTransfer(){
 			$("#jqGrid2").jqGrid('showCol', 'qtyonhandrecv');
 			$("#jqGrid2").jqGrid('showCol', 'uomcoderecv');

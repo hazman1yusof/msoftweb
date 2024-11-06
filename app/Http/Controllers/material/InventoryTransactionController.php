@@ -204,7 +204,7 @@ class InventoryTransactionController extends defaultController
                     ->first();
 
         $table = DB::table('material.ivtmpdt AS ivdt')
-                ->select('ivdt.idno','ivdt.compcode','ivdt.recno','ivdt.lineno_','ivdt.ivreqno','ivdt.reqlineno','ivdt.reqdept','ivdt.itemcode','ivdt.uomcode','ivdt.uomcoderecv','ivdt.txnqty','ivdt.qtyonhandrecv','ivdt.netprice','ivdt.adduser','ivdt.adddate','ivdt.upduser','ivdt.upddate','ivdt.productcat','ivdt.draccno','ivdt.drccode','ivdt.craccno','ivdt.crccode','ivdt.updtime','ivdt.expdate','ivdt.remarks','ivdt.qtyonhand','ivdt.batchno','ivdt.amount','ivdt.recstatus','ivdt.deluser','ivdt.deldate','ivdt.unit','ivdt.qtyrequest','ivdt.remark')
+                ->select('ivdt.idno','ivdt.compcode','ivdt.recno','ivdt.lineno_','ivdt.ivreqno','ivdt.reqlineno','ivdt.reqdept','ivdt.itemcode','ivdt.uomcode','ivdt.uomcoderecv','ivdt.txnqty','ivdt.qtyonhandrecv','ivdt.netprice','ivdt.adduser','ivdt.adddate','ivdt.upduser','ivdt.upddate','ivdt.productcat','ivdt.draccno','ivdt.drccode','ivdt.craccno','ivdt.crccode','ivdt.updtime','ivdt.expdate','ivdt.remarks','ivdt.qtyonhand','ivdt.batchno','ivdt.amount','ivdt.recstatus','ivdt.deluser','ivdt.deldate','ivdt.unit','ivdt.qtyrequest','ivdt.remarks')
                 ->leftJoin('material.stockloc AS s', function($join) use ($ivtmphd){
                     $join = $join->on("s.itemcode", '=', 'ivdt.itemcode');    
                     $join = $join->on("s.uomcode", '=', 'ivdt.uomcode');  
