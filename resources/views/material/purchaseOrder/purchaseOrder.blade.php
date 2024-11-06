@@ -682,7 +682,7 @@ div.data_info div.col-md-2{
 			
 		});
 	</script>
-	<script src="js/material/purchaseOrder/purchaseOrder.js?v=1.10"></script>
+	<script src="js/material/purchaseOrder/purchaseOrder.js?v=1.11"></script>
 	<!-- <script src="js/material/purchaseOrder/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

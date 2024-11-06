@@ -425,7 +425,7 @@ $(document).ready(function () {
 
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
-			if(stat=='OPEN' || stat=='INCOMPLETED' || stat=='PREPARED' ){
+			if(stat=='OPEN' || stat=='INCOMPLETED' || stat=='PREPARED' || stat=='APPROVED' ){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 			}else{
 				$("#jqGridPager td[title='View Selected Row']").click();
@@ -502,7 +502,7 @@ $(document).ready(function () {
 		title: "Edit Selected Row",
 		onClickButton: function () {
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
-			if(stat=='OPEN' || stat=='INCOMPLETED' || stat=='PREPARED' ){
+			if(stat=='OPEN' || stat=='INCOMPLETED' || stat=='PREPARED' || stat=='APPROVED' ){
 				oper = 'edit';
 				selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 				$("#jqGrid").data('lastselrow',selRowId);

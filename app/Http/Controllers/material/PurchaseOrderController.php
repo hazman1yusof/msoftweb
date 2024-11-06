@@ -220,7 +220,7 @@ class PurchaseOrderController extends defaultController
 
         $purreqno = $purordhd_obj->purreqno;
 
-        if(!in_array($purordhd_obj->recstatus, ['OPEN','INCOMPLETED','PREPARED'])){
+        if(!in_array($purordhd_obj->recstatus, ['OPEN','INCOMPLETED','PREPARED','APPROVED'])){
             throw new \Exception("Cant Edit this document, status is not OPEN or INCOMPLETED");
         }
         
