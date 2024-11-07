@@ -1489,6 +1489,10 @@ Route::get('/ptcare_doctornote/table','patientcare\DoctornoteController@table');
 Route::post('/ptcare_doctornote/form','patientcare\DoctornoteController@form');
 Route::post('/ptcare_doctornote_transaction_save', "patientcare\DoctornoteController@transaction_save");
 
+Route::get('/ptcare_requestfor','patientcare\RequestForController@show');
+Route::get('/ptcare_requestfor/table','patientcare\RequestForController@table');
+Route::post('/ptcare_requestfor/form','patientcare\RequestForController@form');
+
 Route::get('/ptcare_dieteticCareNotes','patientcare\DieteticCareNotesController@show');
 Route::get('/ptcare_dieteticCareNotes/table','patientcare\DieteticCareNotesController@table');
 Route::post('/ptcare_dieteticCareNotes/form','patientcare\DieteticCareNotesController@form');
