@@ -17,7 +17,7 @@
             <td>{{$obj->debtorname}}</td>
             <td>{{$obj->pm_name}}</td>
             <!-- <td data-format="0.00" style="text-align: right">{{number_format($obj->amount, 2, '.', ',')}}</td> -->
-            <td data-format="0.00" style="text-align: right">{{($obj->amount}}</td>
+            <td data-format="0.00" style="text-align: right">{{$obj->amount}}</td>
         </tr>
     @endforeach
     <tr>
