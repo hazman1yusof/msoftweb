@@ -744,8 +744,8 @@ $(document).ready(function () {
 					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
 				}
 			}
-			searchClick2('#jqGrid', '#searchForm', urlParam);
 		});
+		searchClick2('#jqGrid', '#searchForm', urlParam);
 	}
 	///////////////////////////////////utk dropdown tran dept/////////////////////////////////////////
 	// trandept();

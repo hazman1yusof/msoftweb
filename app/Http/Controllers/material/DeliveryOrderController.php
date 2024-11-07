@@ -1162,23 +1162,47 @@ class DeliveryOrderController extends defaultController
             }
         }
        
-        ///2. calculate total amount from detail earlier
-        $amount = DB::table('material.delorddt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$recno)
-                    ->where('recstatus','<>','DELETE')
-                    ->sum('amount');
+        // ///2. calculate total amount from detail earlier
+        // $amount = DB::table('material.delorddt')
+        //             ->where('compcode','=',session('compcode'))
+        //             ->where('recno','=',$recno)
+        //             ->where('recstatus','<>','DELETE')
+        //             ->sum('amount');
 
-        ///3. then update to header
-        $table = DB::table('material.delorddt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$recno);
-        $table->update([
-                'totamount' => $amount, 
-                //'subamount' => $amount
+        // ///3. then update to header
+        // $table = DB::table('material.delorddt')
+        //             ->where('compcode','=',session('compcode'))
+        //             ->where('recno','=',$recno);
+        // $table->update([
+        //         'totamount' => $amount, 
+        //         //'subamount' => $amount
+        //     ]);
+
+        ///2. recalculate total amount
+        $totalAmount = DB::table('material.delorddt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$recno)
+            ->where('recstatus','!=','DELETE')
+            ->sum('totamount');
+
+        //calculate tot gst from detail
+        $tot_gst = DB::table('material.delorddt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$recno)
+            ->where('recstatus','!=','DELETE')
+            ->sum('amtslstax');
+
+        ///3. update total amount to header
+        DB::table('material.delordhd')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$recno)
+            ->update([
+                'totamount' => $totalAmount, 
+                'subamount'=> $totalAmount, 
+                'TaxAmt' => $tot_gst
             ]);
 
-        return $amount;
+        return $totalAmount;
     }
 
     public function checkIfPOposted($delordhd){

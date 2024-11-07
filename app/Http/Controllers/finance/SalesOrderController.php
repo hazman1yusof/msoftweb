@@ -557,7 +557,7 @@ class SalesOrderController extends defaultController
                             ->where('idno','=',$value)
                             ->first();
 
-                if($dbacthdr->recstatus != 'OPEN'){
+                if($dbacthdr->recstatus != 'OPEN' || $dbacthdr->recstatus != 'RECOMPUTED'){
                     continue;
                 }
 
@@ -667,7 +667,11 @@ class SalesOrderController extends defaultController
                                 ->first();
                 }
                 
-                $invno = $this->recno('PB','INV');
+                if(!empty($dbacthdr->invno)){
+                    $invno = $dbacthdr->invno;
+                }else{
+                    $invno = $this->recno('PB','INV');
+                }
                 
                 $billsum = DB::table("debtor.billsum")
                             ->where('compcode',session('compcode'))
@@ -1213,7 +1217,7 @@ class SalesOrderController extends defaultController
                 ->where('trantype','=',$dbacthdr->trantype)
                 ->where('billno','=',$dbacthdr->auditno)
                 ->update([
-                    'invno' => null,
+                    // 'invno' => null,
                     'recstatus' => 'OPEN',
                 ]);
             
@@ -1221,8 +1225,8 @@ class SalesOrderController extends defaultController
                 ->where('compcode',session('compcode'))
                 ->where('idno','=',$value)
                 ->update([
-                    'invno' => null,
-                    'recstatus' => 'OPEN',
+                    // 'invno' => null,
+                    'recstatus' => 'RECOMPUTED',
                     'posteddate' => null,
                     'approvedby' => null,
                     'approveddate' => null,
