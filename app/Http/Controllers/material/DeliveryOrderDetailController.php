@@ -515,7 +515,7 @@ class DeliveryOrderDetailController extends defaultController
 
                     $product = $product->first();
 
-                    if($product->expdtflg == 1 && empty($value['expdate'])) {
+                    if($product->expdtflg == 1 && empty($value['expdate']) && $value['qtydelivered'] > 0) {
                         throw new \Exception("The item: ".$value['itemcode'].' UOM '.$value['uomcode'].' need to supply Expiry Date!');
                     }
 
