@@ -16,7 +16,8 @@
             <td style="text-align: left">{{$obj->dm_debtorcode}}</td>
             <td>{{$obj->debtorname}}</td>
             <td>{{$obj->pm_name}}</td>
-            <td data-format="0.00" style="text-align: right">{{number_format($obj->amount, 2, '.', ',')}}</td>
+            <!-- <td data-format="0.00" style="text-align: right">{{number_format($obj->amount, 2, '.', ',')}}</td> -->
+            <td data-format="0.00" style="text-align: right">{{($obj->amount}}</td>
         </tr>
     @endforeach
     <tr>
@@ -26,7 +27,8 @@
         <td></td>
         <td></td>
         <td style="font-weight:bold">Total Amount</td>
-        <td data-format="0.00" style="text-align: right">{{number_format($totalAmount, 2, '.', ',')}}</td>
+        <td data-format="0.00" style="text-align: right">{{$totalAmount}}</td>
+        <!-- <td data-format="0.00" style="text-align: right">{{number_format($totalAmount, 2, '.', ',')}}</td> -->
     </tr>
     <tr></tr>
     <tr></tr>
