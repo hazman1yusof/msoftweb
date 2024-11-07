@@ -557,8 +557,8 @@ class SalesOrderController extends defaultController
                             ->where('idno','=',$value)
                             ->first();
 
-                if($dbacthdr->recstatus != 'OPEN' || $dbacthdr->recstatus != 'RECOMPUTED'){
-                    continue;
+                if(!in_array($dbacthdr->recstatus, ['OPEN','RECOMPUTED'])){
+                    throw new \Exception("Cant Edit this document, status is not OPEN or RECOMPUTED");
                 }
 
                 $totalAmount = DB::table('debtor.billsum')
