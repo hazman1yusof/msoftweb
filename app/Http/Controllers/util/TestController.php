@@ -2321,10 +2321,10 @@ class TestController extends defaultController
         }
     }
 
-    public msdemo_chgprice function(){
+    public function msdemo_chgprice(){
         $chgmast = DB::table('hisdb.chgmast')
                 ->where('compcode','9A')
-                ->where('chggroup','00')
+                ->whereIn('chggroup',['30','39','38'])
                 ->get();
 
         foreach ($chgmast as $obj) {
