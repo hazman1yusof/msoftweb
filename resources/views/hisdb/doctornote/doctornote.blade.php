@@ -475,7 +475,7 @@
                     <div class="panel-body">
                         <ul class="nav nav-tabs" id="jqGridDoctorNote_panel_tabs">
                             <li class="active"><a data-toggle="tab" id="navtab_otbook" href="#tab-otbook" aria-expanded="true" data-type='OTBOOK'>Ward / OT</a></li>
-                            <li><a data-toggle="tab" id="navtab_rad" href="#tab-rad" data-type='RAD'>Radiology</a></li>
+                            <li><a data-toggle="tab" id="navtab_rad" href="#tab-rad_dn" data-type='RAD'>Radiology</a></li>
                             <li><a data-toggle="tab" id="navtab_physio" href="#tab-physio" data-type='PHYSIO'>Physiotherapy</a></li>
                             <li><a data-toggle="tab" id="navtab_dressing" href="#tab-dressing" data-type='DRESSING'>Dressing</a></li>
                         </ul>
@@ -581,7 +581,7 @@
                                     </div>
                                 </form>
                             </div>
-                            <div id="tab-rad" class="tab-pane fade">
+                            <div id="tab-rad_dn" class="tab-pane fade">
                                 <ul class="nav nav-tabs" id="jqGridDoctorNote_rad_tabs">
                                     <li class="active"><a data-toggle="tab" id="navtab_radClinic" href="#tab-radClinic" aria-expanded="true" data-type='RADCLINIC'>Clinical Data</a></li>
                                     <li><a data-toggle="tab" id="navtab_mri" href="#tab-mri" data-type='MRI'>Checklist MRI</a></li>
