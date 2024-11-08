@@ -30,7 +30,7 @@ class PatmastController extends defaultController
         }
     }
 
-    public function show(Request $request){       
+    public function show(Request $request){
         $user = DB::table('sysdb.users')->where('username','=',session('username'))->where('compcode',session('compcode'))->first();
         $dept = DB::table('sysdb.department')->where('deptcode','=',$user->dept)->where('compcode',session('compcode'))->first();
         $btype = DB::table('sysdb.sysparam')->where('source','=','OP')->where('trantype','=','BILLTYPE')->where('compcode',session('compcode'))->first();
@@ -177,7 +177,7 @@ class PatmastController extends defaultController
                             })
                             ->leftJoin('debtor.debtormast', function($join) use ($request){
                                 $join = $join->on('epispayer.payercode', '=', 'debtormast.debtorcode')
-                                                ->where('epispayer.compcode','=',session('compcode'));
+                                                ->where('debtormast.compcode','=',session('compcode'));
                             })
                             ->leftJoin('hisdb.racecode', function($join) use ($request){
                                 $join = $join->on('racecode.Code', '=', 'pat_mast.RaceCode')
@@ -1156,7 +1156,6 @@ class PatmastController extends defaultController
 
             return response('Error'.$e, 500);
         }
-
     }
 
     public function _delete(Request $request){

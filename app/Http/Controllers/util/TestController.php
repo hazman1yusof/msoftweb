@@ -82,6 +82,8 @@ class TestController extends defaultController
                 return $this->betulkandb($request);
             case 'betulkan_ivtxndt':
                 return $this->betulkan_ivtxndt($request);
+            case 'msdemo_chgprice':
+                return $this->msdemo_chgprice($request);
             default:
                 return 'error happen..';
         }
@@ -2316,6 +2318,53 @@ class TestController extends defaultController
                     'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
                     'recstatus' => 'ACTIVE'
                 ]);
+        }
+    }
+
+    public msdemo_chgprice function(){
+        $chgmast = DB::table('hisdb.chgmast')
+                ->where('compcode','9A')
+                ->where('chggroup','00')
+                ->get();
+
+        foreach ($chgmast as $obj) {
+            $chgprice = DB::table('test.chgprice')
+                ->where('compcode','9A')
+                ->where('chgcode',$obj->chgcode);
+                ->get();
+
+            foreach ($chgprice as $obj2) {
+                DB::table('hisdb.chgprice')
+                    ->insert([
+                        'lineno_' => $obj2->lineno_,
+                        'compcode' => $obj2->compcode,
+                        'chgcode' => $obj2->chgcode,
+                        'uom' => $obj2->uom,
+                        'effdate' => $obj2->effdate,
+                        'minamt' => $obj2->minamt,
+                        'amt1' => $obj2->amt1,
+                        'amt2' => $obj2->amt2,
+                        'amt3' => $obj2->amt3,
+                        'iptax' => $obj2->iptax,
+                        'optax' => $obj2->optax,
+                        'maxamt' => $obj2->maxamt,
+                        'costprice' => $obj2->costprice,
+                        'lastuser' => $obj2->lastuser,
+                        'lastupdate' => $obj2->lastupdate,
+                        'lastfield' => $obj2->lastfield,
+                        'unit' => $obj2->unit,
+                        'adduser' => $obj2->adduser,
+                        'adddate' => $obj2->adddate,
+                        'autopull' => $obj2->autopull,
+                        'addchg' => $obj2->addchg,
+                        'pkgstatus' => $obj2->pkgstatus,
+                        'recstatus' => $obj2->recstatus,
+                        'deluser' => $obj2->deluser,
+                        'deldate' => $obj2->deldate,
+                        'lastcomputerid' => $obj2->lastcomputerid,
+                        'lastipaddress' => $obj2->lastipaddress,
+                    ]);
+            }
         }
     }
     
