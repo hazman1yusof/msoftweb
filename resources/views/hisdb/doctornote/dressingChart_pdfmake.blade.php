@@ -103,7 +103,7 @@
                                     {text: 'Solution/Method:\n\n', bold: true}
                                 ],
                                 [
-                                    {text: '{{$dressing->solution}}'}
+                                    {text: `{!!$dressing->solution!!}`}
                                 ],
                             ]
                         },

@@ -379,7 +379,7 @@
                                                 </div>
                                                 
                                                 <div class="form-group col-md-12">
-                                                    <label class="control-label" for="bp" style="padding-bottom: 5px;">BP</label>
+                                                    <label class="control-label" for="bp" style="padding-bottom: 5px;">Blood Pressure</label>
                                                     <div class="input-group">
                                                         <input id="bp_sys1" name="bp_sys1" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                         <input id="bp_dias2" name="bp_dias2" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">

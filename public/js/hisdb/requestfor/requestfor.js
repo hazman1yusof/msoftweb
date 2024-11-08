@@ -1059,7 +1059,7 @@ $('#jqGridRequestFor_panel_tabs.nav-tabs a').on('shown.bs.tab', function (e){
 $('#jqGridRequestFor_rad_tabs.nav-tabs a').on('shown.bs.tab', function (e){
     let type = $(this).data('type');
     switch(type){
-            case 'RADCLINIC_REQFOR':
+        case 'RADCLINIC_REQFOR':
             populate_radClinicReqFor_getdata();
             // textarea_init_radClinicReqFor();
             break;

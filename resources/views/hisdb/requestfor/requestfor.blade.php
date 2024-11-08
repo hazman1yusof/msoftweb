@@ -41,7 +41,7 @@
         </div> -->
     </div>
     
-    <div id="jqGridRequestFor_panel" class="panel-collapse collapse" data-curtype='navtab_otbook'>
+    <div id="jqGridRequestFor_panel" class="panel-collapse collapse" data-curtype='navtab_otbookReqFor'>
         <div class="panel-body paneldiv" style="overflow-y: auto;">
             <div class='col-md-12' style="padding: 0 0 15px 0;">
                 <div class="col-md-10" style="padding: 0 0 0 5px; float: right;">
