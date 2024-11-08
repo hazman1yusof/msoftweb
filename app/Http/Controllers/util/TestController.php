@@ -2324,23 +2324,24 @@ class TestController extends defaultController
     public function msdemo_chgprice(){
         $chgmast = DB::table('hisdb.chgmast')
                 ->where('compcode','9A')
-                ->whereIn('chggroup',['30','39','38'])
+                ->whereIn('chggroup',['30','39','38','35'])
                 ->get();
 
         foreach ($chgmast as $obj) {
-            $chgprice = DB::table('test.chgprice')
+            $obj2 = DB::table('test.chgprice')
                 ->where('compcode','9A')
                 ->where('chgcode',$obj->chgcode);
-                ->get();
 
-            foreach ($chgprice as $obj2) {
+            if($obj2->exists()){
+                $obj2 = $obj2->first();
+
                 DB::table('hisdb.chgprice')
                     ->insert([
                         'lineno_' => $obj2->lineno_,
-                        'compcode' => $obj2->compcode,
+                        'compcode' => '9B',
                         'chgcode' => $obj2->chgcode,
                         'uom' => $obj2->uom,
-                        'effdate' => $obj2->effdate,
+                        'effdate' => '2022-07-01',
                         'minamt' => $obj2->minamt,
                         'amt1' => $obj2->amt1,
                         'amt2' => $obj2->amt2,
