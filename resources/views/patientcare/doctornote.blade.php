@@ -187,6 +187,50 @@
         </div>
     </div>
 
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="requestFor_panel">
+        <div class="panel-heading clearfix collapsed" id="toggle_requestFor">
+
+            <b>NAME: <span id="name_show_requestFor"></span></b><br>
+            MRN: <span id="mrn_show_requestFor"></span>
+            SEX: <span id="sex_show_requestFor"></span>
+            DOB: <span id="dob_show_requestFor"></span>
+            AGE: <span id="age_show_requestFor"></span>
+            RACE: <span id="race_show_requestFor"></span>
+            RELIGION: <span id="religion_show_requestFor"></span><br>
+            OCCUPATION: <span id="occupation_show_requestFor"></span>
+            CITIZENSHIP: <span id="citizenship_show_requestFor"></span>
+            AREA: <span id="area_show_requestFor"></span> 
+
+            <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_requestFor"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_requestFor" ></i >
+        
+            <div style="position: absolute;
+                            padding: 0 0 0 0;
+                            right: 0px;
+                            top: 0px;
+                            z-index: 1000;">
+                <button class="ui icon tertiary button refreshbtn_requestFor">
+                <i class="sync alternate icon"></i>
+                </button>
+            </div> 
+
+            <div id='requestFor_title' style="position: absolute;
+                            padding: 0 0 0 0;
+                            right: 50px;
+                            top: 48px;">
+                <h5><strong>Request For</strong>&nbsp;&nbsp;
+                    <span class="metal"></span></h5>
+            </div>
+            
+        </div>
+
+        <div id="tab_requestFor" class="panel-collapse collapse" data-curtype='navtab_otbookReqFor'>
+            <div class="panel-body paneldiv" id="tab_requestFor_sticky">
+                @include('patientcare.requestfor')
+            </div>
+        </div>
+    </div>
+
     <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="diet_panel">
         <div class="panel-heading clearfix collapsed" role="tab" id="toggle_diet">
 
@@ -312,6 +356,7 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy_ncase.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/doctornote_main.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/requestfor.js') }}"></script>
 @endsection
 
 
