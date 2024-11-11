@@ -180,7 +180,6 @@ $(document).ready(function (){
     });
     
     $('#jqGridNursActionPlan_panel_tabs.nav-tabs a').on('shown.bs.tab', function (e){
-        // populate_header_getdata();
 
         let type = $(this).data('type');
         let id = $(this).attr('id');

@@ -404,6 +404,8 @@
 				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
 				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote/inv_fbc.js"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/nursingnote/inv_coag.js"></script> -->
 				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
@@ -417,6 +419,8 @@
 				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
 				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote/inv_fbc.js"></script>
+				<!-- <script type="text/javascript" src="js/hisdb/nursingnote/inv_coag.js"></script> -->
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>

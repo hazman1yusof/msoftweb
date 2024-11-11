@@ -312,6 +312,7 @@ $(document).ready(function() {
                     populate_nursingActionPlan(lastrowdata);
                     populate_header_getdata(lastrowdata);
                     populate_nursingnote(lastrowdata);
+                    populate_invHeader_getdata(lastrowdata);
                     populate_antenatal(lastrowdata);
                     populate_doctorNote_currpt(lastrowdata);
                     populate_requestFor_currpt(lastrowdata);
@@ -323,6 +324,7 @@ $(document).ready(function() {
                     populate_nursingActionPlan(lastrowdata);
                     populate_header_getdata(lastrowdata);
                     populate_nursingnote(lastrowdata);
+                    populate_invHeader_getdata(lastrowdata);
                     populate_doctorNote_currpt(lastrowdata);
                     populate_requestFor_currpt(lastrowdata);
                     populate_dieteticCareNotes_currpt(lastrowdata);
