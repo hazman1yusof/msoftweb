@@ -1778,14 +1778,22 @@ class PaymentVoucherController extends defaultController
         }
 
         $apacthdr = DB::table('finance.apacthdr as h')
-            ->select('h.compcode', 'h.auditno', 'h.trantype', 'h.source','h.doctype', 'h.pvno', 'h.suppcode', 'm.Name as suppname', 'm.Addr1 as addr1', 'm.Addr2 as addr2', 'm.Addr3 as addr3', 'm.TelNo as telno', 'm.TINNo', 'm.CompRegNo', 'm.AccNo', 'h.actdate', 'h.document', 'h.deptcode', 'h.amount', 'h.outamount', 'h.recstatus', 'h.payto', 'h.category', 'h.remarks', 'h.paymode', 'h.bankcode', 'h.cheqno','h.bankaccno as h_bankaccno','b.bankname', 'b.bankaccount as bankaccno', 'h.requestby', 'h.supportby','h.verifiedby', 'h.approvedby','u.name as requestby_name','u.designation as requestby_dsg','s.name as supportby_name','s.designation as supportby_dsg','e.name as verifiedby_name','e.designation as verifiedby_dsg','ur.name as approvedby_name','ur.designation as approvedby_dsg',)
+            ->select('h.compcode', 'h.auditno', 'h.trantype', 'h.source','h.doctype', 'h.pvno', 'h.suppcode', 'm.Name as suppname', 'm.Addr1 as addr1', 'm.Addr2 as addr2', 'm.Addr3 as addr3', 'm.TelNo as telno', 'm.TINNo', 'm.CompRegNo', 'm.AccNo', 'h.actdate', 'h.document', 'h.deptcode', 'h.amount', 'h.outamount', 'h.recstatus', 'h.payto', 'h.category', 'h.remarks', 'h.paymode', 'h.bankcode', 'h.cheqno','h.bankaccno as h_bankaccno','b.bankname', 'b.bankaccount as bankaccno', 'h.requestby', 'h.supportby','h.verifiedby', 'h.approvedby','u.name as requestby_name','u.designation as requestby_dsg','s.name as supportby_name','s.designation as supportby_dsg','e.name as verifiedby_name','e.designation as verifiedby_dsg','ur.name as approvedby_name','ur.designation as approvedby_dsg','gl_dr.description as gl_dr_desc','gl_cr.description as gl_cr_desc')
             ->leftJoin('material.supplier as m', function($join) use ($request){
                 $join = $join->on('m.suppcode', '=', 'h.payto');
                 $join = $join->where('m.compcode', '=', session('compcode'));
             })
+            ->leftJoin('finance.glmasref as gl_dr', function($join) use ($request){
+                $join = $join->on('gl_dr.glaccno', '=', 'm.AccNo');
+                $join = $join->where('gl_dr.compcode', '=', session('compcode'));
+            })
             ->leftJoin('finance.bank as b', function($join) use ($request){
                 $join = $join->on('b.bankcode', '=', 'h.bankcode');
                 $join = $join->where('b.compcode', '=', session('compcode'));
+            })
+            ->leftJoin('finance.glmasref as gl_cr', function($join) use ($request){
+                $join = $join->on('gl_cr.glaccno', '=', 'b.glaccno');
+                $join = $join->where('gl_cr.compcode', '=', session('compcode'));
             })
             ->leftJoin('sysdb.users as u', function ($join) use ($request){
                 $join = $join->on('u.username', '=', 'h.requestby')
@@ -1813,9 +1821,9 @@ class PaymentVoucherController extends defaultController
         }else if ($apacthdr->recstatus == "APPROVED" && $apacthdr->trantype == "PD") {
             $title = " PAYMENT DEPOSIT";
         }else if ($apacthdr->recstatus != "APPROVED" && $apacthdr->trantype == "PV") {
-            $title = " DRAFT PAYMENT VOUCHER";
+            $title = " PAYMENT VOUCHER";
         }else if ($apacthdr->recstatus != "APPROVED" && $apacthdr->trantype == "PD") {
-            $title = " DRAFT PAYMENT DEPOSIT";
+            $title = " PAYMENT DEPOSIT";
         }
 
         $apalloc = DB::table('finance.apalloc')

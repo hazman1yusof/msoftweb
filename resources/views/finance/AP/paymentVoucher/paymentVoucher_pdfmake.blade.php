@@ -29,7 +29,11 @@
 		@endforeach
 	]
 	var ini_header={
+		@if(!empty($apacthdr->pvno))
 		pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_LEFT)}}`,
+		@else
+		pvno:`{{str_pad($apacthdr->auditno, 7, '0', STR_PAD_LEFT)}}`,
+		@endif
 		pvdate:`{{\Carbon\Carbon::parse($apacthdr->actdate)->format('d/m/Y')}}`,
 		cred_code:`{{$apacthdr->payto}}`,
 		pname:`{{strtoupper($apacthdr->suppname)}}`,
@@ -38,7 +42,7 @@
 		padd3:`{{strtoupper($apacthdr->addr3)}}`,
 		ptelno:`{{$apacthdr->telno}}`,
 		desc:``,
-		remarks:`{{strtoupper($apacthdr->remarks)}}`,
+		remarks:`{!!strtoupper($apacthdr->remarks)!!}`,
 		requestby:`{{$apacthdr->requestby}}`,
 		supportby:`{{$apacthdr->supportby}}`,
 		verifiedby:`{{$apacthdr->verifiedby}}`,
@@ -65,14 +69,16 @@
 		totamt:`{{$apacthdr->amount}}`,
 		totamt_str:`{{$totamt_eng}}`,
 		bankaccno:`{{$apacthdr->h_bankaccno}}`,
+		gl_dr_desc:`{{$apacthdr->gl_dr_desc}}`,
+		gl_cr_desc:`{{$apacthdr->gl_cr_desc}}`,
 	};	
 
 	var ini_body=[
 		@foreach ($apalloc as $obj)
 		{
 			date:`{{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}`,
-			docno:`{{strtoupper($obj->reference)}}`,
-			desc:`{{strtoupper($obj->remarks)}}`,
+			docno:`{!!strtoupper($obj->reference)!!}`,
+			desc:`{!!strtoupper($obj->remarks)!!}`,
 			amt:`{{$obj->allocamount}}`,
 		},
 		@endforeach
@@ -105,17 +111,26 @@
 			        }
 
 				if(currentPage == 1){
-					var logohdr = {image: 'letterhead',style:'header_img',width:220, alignment: 'center'};
+					var header_tbl_bangi ={
+						columns: [
+						    {image: 'letterhead',style:'header_img',width:200,alignment: 'left'},
+						    {
+								width: '*',alignment: 'right',
+								text: `UKM Medicare Sdn Bhd (No Pendaftaran : 1524978V) \n Tingkat 7, Pusat Pakar UKM, \n Blok Klinikal, HCTM, \n Jln Yaacob Latif, Bdr Tun Razak, \n 56000 Cheras, Kuala Lumpur. \n 03-91457752 (Kewangan)`,
+								fontSize:8,margin: [0, 10, 30, 0]
+							},
+						]
+					}
 					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true};
-					var compbankdet = {text: 'COMP A/C NO: '+ini_compbankdet.bankname+ ' ' +ini_compbankdet.bankaccno,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};
+					var compbankdet = {text: 'COMP A/C NO: '+ini_header.bankname+ ' ' +ini_header.bankaccno,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};
 					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
-					retval.push(logohdr);
+					retval.push(header_tbl_bangi);
 					retval.push(title);
 					retval.push(compbankdet);
 					retval.push(pageno);
 				}else{
 					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true, margin: [0, 71, 0, 0]};
-					var compbankdet = {text: 'COMP A/C NO: '+ini_compbankdet.bankname+ ' ' +ini_compbankdet.bankaccno,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};					
+					var compbankdet = {text: 'COMP A/C NO: '+ini_header.bankname+ ' ' +ini_header.bankaccno,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};					
 					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
 					retval.push(title);
 					retval.push(compbankdet);
@@ -245,7 +260,8 @@
 						],
 						[{},{},{},{}],
 						[{text:'PAYEE TEL NO',bold: true},{text: ': '+ini_header.ptelno},{text:'BANK A/C NO',bold: true},{text: ': '+ini_header.bankaccno}],
-						[{text:'REG NO',bold: true},{text: ': '+ini_header.CompRegNo},{text:'TIN NO',bold: true},{text: ': '+ini_header.TINNo}]
+						[{text:'REG NO',bold: true},{text: ': '+ini_header.CompRegNo},{text:'TIN NO',bold: true},{text: ': '+ini_header.TINNo}],
+						[{text:'REMARK',bold: true},{text: ': '+ini_header.remarks,colSpan:3},{},{}]
 					],
 	            },
 		        layout: 'noBorders',
@@ -261,7 +277,6 @@
 	                body: make_body()
 	            }
 	        },
-	        {text:'REMARK: '+ini_header.remarks,alignment: 'left',fontSize:9,style: 'body_remark'},
 	        {
 	            style: 'body_totamt_str',
 	            table: {
@@ -294,16 +309,18 @@
 	        {
 	            style: 'body_drcr',
 	            table: {
-	                widths: [45,90,80],//panjang standard dia 515
+	                widths: [10,45,100,100],//panjang standard dia 515
 	                body: [
 	                	[
+							{text: 'DR',alignment: 'left',bold: true}, 
 							{text: ini_header.drcode,alignment: 'left'}, 
-							{text: ini_header.suppname,alignment: 'left'}, 
+							{text: ini_header.gl_dr_desc,alignment: 'left'}, 
 							{text: numeral(ini_header.totamt).format('0,0.00'),alignment: 'left'},
 	                	],
 	                	[
+							{text: 'CR',alignment: 'left',bold: true}, 
 							{text: ini_header.crcode,alignment: 'left'}, 
-							{text: ini_header.bankname,alignment: 'left'}, 
+							{text: ini_header.gl_cr_desc,alignment: 'left'}, 
 							{text: numeral(ini_header.totamt).format('0,0.00'),alignment: 'left'},
 	                	],
 	                ]
@@ -325,7 +342,6 @@
 		                body: make_body()
 		            }
 		        },
-		        {text:'REMARK: '+ini_header.remarks,alignment: 'left',fontSize:9,style: 'body_remark'},
 		        {
 		            style: 'body_totamt_str',
 		            table: {
@@ -383,10 +399,10 @@
 		}
 		make_body_loop = make_body_loop + 1;
 
-		if(retval.length<5){
-	    	let loop_btm = 5-retval.length;
+		// if(retval.length<5){
+	    	// let loop_btm = 5-retval.length;
 
-	    	for (var i = (loop_btm+loop_btm); i >= 0; i--) {
+	    	for (var i = (15-retval.length); i >= 0; i--) {
 	    		retval.push([
 					{text:' ', style: 'body_row', border: [false, false, false, false]},
 					{text:' ', style: 'body_row', border: [false, false, false, false]},
@@ -394,7 +410,7 @@
 					{text:' ', style: 'body_row', border: [false, false, false, false]},
 		    	]);
 	    	}
-	    }
+	    // }
 
 	    return retval;
 	}

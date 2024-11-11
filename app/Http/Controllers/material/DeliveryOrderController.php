@@ -1083,7 +1083,7 @@ class DeliveryOrderController extends defaultController
             $delordhd->update([
                     'postedby' => session('username'),
                     'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'CANCELLED' 
+                    'recstatus' => 'OPEN' 
                 ]);
 
             DB::table('material.delorddt')
@@ -1091,7 +1091,7 @@ class DeliveryOrderController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('recstatus','!=','DELETE')
                 ->update([
-                    'recstatus' => 'CANCELLED' 
+                    'recstatus' => 'OPEN' 
                 ]);
 
             dump(DB::getQueryLog());
