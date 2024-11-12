@@ -72,6 +72,8 @@
 		bankaccno_desc:`{{$apacthdr->bankaccno_desc}}`,
 		gl_dr_desc:`{{$apacthdr->gl_dr_desc}}`,
 		gl_cr_desc:`{{$apacthdr->gl_cr_desc}}`,
+		gl_dr_acc:`{{$apacthdr->gl_dr_acc}}`,
+		gl_cr_acc:`{{$apacthdr->gl_cr_acc}}`,
 	};	
 
 	var ini_body=[
@@ -314,13 +316,13 @@
 	                body: [
 	                	[
 							{text: 'DR',alignment: 'left',bold: true}, 
-							{text: ini_header.drcode,alignment: 'left'}, 
+							{text: ini_header.gl_dr_acc,alignment: 'left'}, 
 							{text: ini_header.gl_dr_desc,alignment: 'left'}, 
 							{text: numeral(ini_header.totamt).format('0,0.00'),alignment: 'left'},
 	                	],
 	                	[
 							{text: 'CR',alignment: 'left',bold: true}, 
-							{text: ini_header.crcode,alignment: 'left'}, 
+							{text: ini_header.gl_cr_acc,alignment: 'left'}, 
 							{text: ini_header.gl_cr_desc,alignment: 'left'}, 
 							{text: numeral(ini_header.totamt).format('0,0.00'),alignment: 'left'},
 	                	],
@@ -377,15 +379,33 @@
 	    ];
 
 		var pad_loop = 18;
-		if(ini_body.length > 5 && make_body_loop == 0){
-			pad_loop = pad_loop;
-	    	let arr = [
-				{text:'', style: 'body_row', border: [false, false, false, false]},
-				{text:'', style: 'body_row', border: [false, false, false, false]},
-				{text:'PLEASE REFER TO ATTACHMENT', style: 'body_row', border: [false, false, false, false]},
-				{text:'', style: 'body_row',alignment: 'right', border: [false, false, false, false]},
-	    	];
-	    	retval.push(arr);
+		if(ini_body.length > 18 && make_body_loop == 0){
+
+		    ini_body.forEach(function(e,i){
+		    	if(i<pad_loop){
+			    	let arr = [
+						{text:e.date, style: 'body_row', border: [false, false, false, false]},
+						{text:e.docno, style: 'body_row', border: [false, false, false, false]},
+						{text:e.desc, style: 'body_row', border: [false, false, false, false]},
+						{text:numeral(e.amt).format('0,0.00'), style: 'body_row',alignment: 'right', border: [false, false, false, false]},
+			    	];
+			    	retval.push(arr);
+		    	}
+		    });
+
+		}else if(ini_body.length > 18 && make_body_loop == 1){
+
+		    ini_body.forEach(function(e,i){
+		    	if(i>pad_loop){
+			    	let arr = [
+						{text:e.date, style: 'body_row', border: [false, false, false, false]},
+						{text:e.docno, style: 'body_row', border: [false, false, false, false]},
+						{text:e.desc, style: 'body_row', border: [false, false, false, false]},
+						{text:numeral(e.amt).format('0,0.00'), style: 'body_row',alignment: 'right', border: [false, false, false, false]},
+			    	];
+			    	retval.push(arr);
+		    	}
+		    });
 
 		}else{
 
