@@ -333,7 +333,7 @@
 
 		];
 
-		if(ini_body.length > 5){
+		if(ini_body.length > 18){
 	    	var next_pdf = [
 		  		{
 		  			pageBreak: 'before',
