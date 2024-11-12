@@ -123,7 +123,7 @@
 						]
 					}
 					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true};
-					var compbankdet = {text: 'COMP A/C NO: '+ini_header.bankname+ ' ' +ini_header.bankaccno_desc,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};
+					var compbankdet = {text: 'COMP A/C NO: '+ini_header.bankaccno_desc,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};
 					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
 					retval.push(header_tbl_bangi);
 					retval.push(title);
@@ -131,7 +131,7 @@
 					retval.push(pageno);
 				}else{
 					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true, margin: [0, 71, 0, 0]};
-					var compbankdet = {text: 'COMP A/C NO: '+ini_header.bankname+ ' ' +ini_header.bankaccno_desc,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};					
+					var compbankdet = {text: 'COMP A/C NO: '+ini_header.bankaccno_desc,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};					
 					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
 					retval.push(title);
 					retval.push(compbankdet);

@@ -423,9 +423,6 @@ $(document).ready(function () {
 			if($('#scope').val() != 'ALL'){
 				$("#jqGridPager td[title='Edit Selected Row'],#jqGridPager td[title='Add New Row']").hide();
 			}
-			if($('#scope').val() == 'CANCEL'){
-				$('#trandeptSearch').hide();
-			}
 		},
 		
 	});
@@ -1117,13 +1114,26 @@ $(document).ready(function () {
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
 		
-		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
+		if(options.gid != "jqGrid"){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
-		}else{
-			return ' ';
 		}
+		if($('#recstatus_use').val() == 'ALL'){
+			if(rowObject.delordhd_recstatus == "OPEN"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'CANCEL'){
+			if(rowObject.delordhd_recstatus == "OPEN"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}else if(rowObject.delordhd_recstatus == "POSTED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'REOPEN'){
+			if(rowObject.delordhd_recstatus == "CANCELLED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}
+
+		return ' ';
 	}
 
 	function unformatRemarks(cellvalue, options, rowObject){
@@ -1450,10 +1460,10 @@ $(document).ready(function () {
 			var is_error = false;
 		    for (var i = 0; i < ids.length; i++) {
 
-		    	if(check_qtydlr_qtyout(ids[i]) == false){
-		    		is_error = true;
-		    		break;
-		    	}
+		    	// if(check_qtydlr_qtyout(ids[i]) == false){
+		    	// 	is_error = true;
+		    	// 	break;
+		    	// }
 
 				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
 
@@ -1741,7 +1751,7 @@ $(document).ready(function () {
 				errorField.push( id );
 			}
 		}
-		check_qtydlr_qtyout(id_optid);
+		// check_qtydlr_qtyout(id_optid);
 	}
 
 	function remove_noti(event){
@@ -2000,21 +2010,21 @@ $(document).ready(function () {
 			}
 		}
 
-		if(event.target.name=='qtydelivered'){
+		// if(event.target.name=='qtydelivered'){
 
-			var id3="#jqGrid2 #"+id_optid+"_qtydelivered";
-			var fail_msg3 = "Quantity Ordered cant exceed Quantity Balanced";
-			var name3 = "qtyoutstand";
+		// 	var id3="#jqGrid2 #"+id_optid+"_qtydelivered";
+		// 	var fail_msg3 = "Quantity Ordered cant exceed Quantity Balanced";
+		// 	var name3 = "qtyoutstand";
 
-			var qtybalance = parseFloat($("#"+id_optid+"_qtyoutstand").val());
+		// 	var qtybalance = parseFloat($("#"+id_optid+"_qtyoutstand").val());
 
-			if(qtydelivered > qtybalance){
-				if(!$('.noti').find("li[data-errorid='"+name3+"']").length)$('.noti').prepend("<li data-errorid='"+name3+"'>"+fail_msg3+"</li>");
-				$( id3 ).val('');
-			}else{
-				$('.noti').find("li[data-errorid='"+name3+"']").detach();
-			}
-		}
+		// 	if(qtydelivered > qtybalance){
+		// 		if(!$('.noti').find("li[data-errorid='"+name3+"']").length)$('.noti').prepend("<li data-errorid='"+name3+"'>"+fail_msg3+"</li>");
+		// 		$( id3 ).val('');
+		// 	}else{
+		// 		$('.noti').find("li[data-errorid='"+name3+"']").detach();
+		// 	}
+		// }
 
 		// event.data.currency.formatOn();//change format to currency on each calculation
 		mycurrency_np.formatOn();

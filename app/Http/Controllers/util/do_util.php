@@ -330,6 +330,138 @@ class do_util extends defaultController{
         }
 	}
 
+    public static function postingGL_cancel($value,$delordhd_obj,$productcat,$deldept_unit){
+
+        //amik yearperiod dari delordhd
+        $yearperiod = defaultController::getyearperiod_($delordhd_obj->trandate);
+
+        //tengok product category
+        $product_obj = DB::table('material.product')
+            ->where('compcode','=', $value->compcode)
+            ->where('unit','=', $deldept_unit)
+            ->where('itemcode','=', $value->itemcode)
+            ->first();
+
+        //amik department,category dgn sysparam pvalue1 dgn pvalue2
+        //utk debit costcode
+        if(strtoupper($product_obj->groupcode) == "STOCK" || strtoupper($product_obj->groupcode) == "OTHERS" || strtoupper($product_obj->groupcode) == "CONSIGNMENT" ){
+            $row_dept = DB::table('sysdb.department')
+                ->select('costcode')
+                ->where('compcode','=',session('compcode'))
+                ->where('deptcode','=',$delordhd_obj->deldept)
+                ->first();
+            //utk debit accountcode
+            $row_cat = DB::table('material.category')
+                ->select('stockacct')
+                ->where('compcode','=',session('compcode'))
+                ->where('catcode','=',$productcat)
+                ->first();
+
+            $drcostcode = $row_dept->costcode;
+            $dracc = $row_cat->stockacct;
+
+            //utk credit costcode dgn accountocde
+            $row_sysparam = DB::table('sysdb.sysparam')
+                ->select('pvalue1','pvalue2')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=','AP')
+                ->where('trantype','=','ACC')
+                ->first();
+
+        }else if(strtoupper($product_obj->groupcode) == "ASSET"){
+            $facode = DB::table('finance.facode')
+                ->where('compcode','=', $value->compcode)
+                ->where('assetcode','=', $product_obj->productcat)
+                ->first();
+
+            $drcostcode = $facode->glassetccode;
+            $dracc = $facode->glasset;
+            
+            //utk credit costcode dgn accountocde
+            $row_sysparam = DB::table('sysdb.sysparam')
+                ->select('pvalue1','pvalue2')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=','AP')
+                ->where('trantype','=','ACC')
+                ->first();
+
+        }else{
+            throw new \Exception("Item at delorddt doesn't have groupcode at table product");
+        }
+
+        if(strtoupper($product_obj->groupcode) == "STOCK"){
+            $source_ = 'IV';
+        }else{
+            $source_ = 'DO';
+        }
+
+        //1. buat gltran
+        DB::table('finance.gltran')
+            ->where('compcode',session('compcode'))
+            ->where('lineno_',$value->lineno_)
+            ->where('source',$source_)
+            ->where('trantype',$delordhd_obj->trantype)
+            ->delete();
+
+        //2. check glmastdtl utk debit, kalu ada update kalu xde create
+        $gltranAmount =  defaultController::isGltranExist_($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$drcostcode)
+                ->where('glaccount','=',$dracc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $gltranAmount - $value->amount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $drcostcode,
+                    'glaccount' => $dracc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => -$value->amount,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+        $gltranAmount = defaultController::isGltranExist_($row_sysparam->pvalue1,$row_sysparam->pvalue2,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$row_sysparam->pvalue1)
+                ->where('glaccount','=',$row_sysparam->pvalue2)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $gltranAmount + $value->amount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $row_sysparam->pvalue1,
+                    'glaccount' => $row_sysparam->pvalue2,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => $value->amount,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+    }
+
 	public static function postingGL_GST($value,$delordhd_obj){
 
 		if($value->amtslstax > 0){

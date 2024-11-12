@@ -104,10 +104,18 @@ div#fail_msg{
 				  	<label class="control-label" for="Status">Status</label>  
 					  	<select id="Status" name="Status" class="form-control input-sm">
 					      <option value="All" selected>ALL</option>
+			      		@if(Request::get('scope') == 'CANCEL')
+					      <option value="Open" selected>OPEN</option>
+					      @else
 					      <option value="Open">OPEN</option>
-					      <option value="Confirmed">CONFIRMED</option>
+					      @endif
+					      <!-- <option value="Confirmed">CONFIRMED</option> -->
 					      <option value="Posted">POSTED</option>
+			      		@if(Request::get('scope') == 'REOPEN')
+					      <option value="Cancelled" selected>CANCELLED</option>
+					      @else
 					      <option value="Cancelled">CANCELLED</option>
+					      @endif
 					    </select>
 	            </div>
 
@@ -116,7 +124,7 @@ div#fail_msg{
 						<select id='trandept' class="form-control input-sm">
 				      	<option value="All" selected>ALL</option>
 			      		@foreach($purdept as $dept_)
-			      			@if(Request::get('viewonly') != 'viewonly' && Request::get('scope') == 'ALL' && $dept_->deptcode == Session::get('deptcode'))
+			      			@if(Request::get('viewonly') != 'viewonly' && $dept_->deptcode == Session::get('deptcode'))
 			      			<option value="{{$dept_->deptcode}}" selected>{{$dept_->deptcode}}</option>
 			      			@else
 			      			<option value="{{$dept_->deptcode}}">{{$dept_->deptcode}}</option>
@@ -135,7 +143,7 @@ div#fail_msg{
 						if(strtoupper(Request::get('scope')) == 'ALL'){
 							$data_oper='posted';
 						}else if(strtoupper(Request::get('scope')) == 'CANCEL'){
-							$data_oper='soft_cancel';
+							$data_oper='cancel';
 						}else if(strtoupper(Request::get('scope')) == 'REOPEN'){
 							$data_oper='reopen';
 						}
@@ -205,14 +213,14 @@ div#fail_msg{
 			<div id="jqGrid3_panel" class="panel-collapse collapse">
 				<div class="panel-body">
 				@if (Request::get('scope') == 'CANCEL')
-					<button 
+					<!-- <button 
 							type="button" 
 							class="btn btn-danger btn-sm" 
 							id="but_post2_jq"
 							data-oper="cancel"
 							style="float: right;margin: 0px 20px 10px 20px;">
 							Cancel DO
-					</button>
+					</button> -->
 				@endif
 					<div class='col-md-12' style="padding:0 0 15px 0">
 						<table id="jqGrid3" class="table table-striped"></table>
@@ -506,7 +514,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/deliveryOrder/deliveryOrder.js?v=1.4"></script>
+	<script src="js/material/deliveryOrder/deliveryOrder.js?v=1.6"></script>
 	<!-- <script src="js/material/deliveryOrder/pdfgen.js"></script> -->
 	<script src="js/myjs/barcode.js"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
