@@ -69,6 +69,7 @@
 		totamt:`{{$apacthdr->amount}}`,
 		totamt_str:`{{$totamt_eng}}`,
 		bankaccno:`{{$apacthdr->h_bankaccno}}`,
+		bankaccno_desc:`{{$apacthdr->bankaccno_desc}}`,
 		gl_dr_desc:`{{$apacthdr->gl_dr_desc}}`,
 		gl_cr_desc:`{{$apacthdr->gl_cr_desc}}`,
 	};	
@@ -122,7 +123,7 @@
 						]
 					}
 					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true};
-					var compbankdet = {text: 'COMP A/C NO: '+ini_header.bankname+ ' ' +ini_header.bankaccno,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};
+					var compbankdet = {text: 'COMP A/C NO: '+ini_header.bankname+ ' ' +ini_header.bankaccno_desc,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};
 					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
 					retval.push(header_tbl_bangi);
 					retval.push(title);
@@ -130,7 +131,7 @@
 					retval.push(pageno);
 				}else{
 					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true, margin: [0, 71, 0, 0]};
-					var compbankdet = {text: 'COMP A/C NO: '+ini_header.bankname+ ' ' +ini_header.bankaccno,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};					
+					var compbankdet = {text: 'COMP A/C NO: '+ini_header.bankname+ ' ' +ini_header.bankaccno_desc,fontSize:9,alignment: 'left', margin: [30, 0, 50, -8]};					
 					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
 					retval.push(title);
 					retval.push(compbankdet);
@@ -149,7 +150,7 @@
 			// 	}
 			// },
 			pageSize: 'A4',
-			pageMargins: [30, 150, 40, 70],
+			pageMargins: [30, 150, 40, 10],
 		  	content: make_pdf(),
 			styles: {
 				header_img: {
@@ -161,11 +162,11 @@
 				},
 				header_tbl: {
 					fontSize: 9,
-					margin: [5, 0, 0, 0]
+					margin: [5, -10, 0, 0]
 				},
 				body_tbl: {
 					fontSize: 9,
-					margin: [0, 8, 0, 5]
+					margin: [0, 0, 0, 5]
 				},
 				body_ttl: {
 					margin: [0, 2, 0, 2]
@@ -261,13 +262,13 @@
 						[{},{},{},{}],
 						[{text:'PAYEE TEL NO',bold: true},{text: ': '+ini_header.ptelno},{text:'BANK A/C NO',bold: true},{text: ': '+ini_header.bankaccno}],
 						[{text:'REG NO',bold: true},{text: ': '+ini_header.CompRegNo},{text:'TIN NO',bold: true},{text: ': '+ini_header.TINNo}],
-						[{text:'REMARK',bold: true},{text: ': '+ini_header.remarks,colSpan:3},{},{}]
+						[{text:'REMARK',bold: true, margin: [0, 10, 0, 0]},{text: ': '+ini_header.remarks,colSpan:3, margin: [0, 10, 0, 0]},{},{}]
 					],
 	            },
 		        layout: 'noBorders',
 	        },
 			// {text:'MR/MRS,',alignment: 'left', fontSize: 9, margin: [5, 8, 0, 0]},
-			{text:ini_header.desc,alignment: 'justify', fontSize: 9, margin: [5, 5, 0, 3]},
+			{text:ini_header.desc,alignment: 'justify', fontSize: 9, margin: [0, 0, 0, 3]},
 	  		{
 	            style: 'body_tbl',
 	            table: {
@@ -292,14 +293,14 @@
 	        {
 	            style: 'body_sign',
 	            table: {
-	                widths: ['*','*','*','*','*'],//panjang standard dia 515
+	                widths: [103,103,103,103,103],//panjang standard dia 515
 	                body: [
 	                	[
-							{text: 'Prepared by\n\n\n\n\n__________________\n\n'+ini_header.requestby_name+ ' \n\n ' +ini_header.requestby_dsg,bold: true,alignment: 'left'}, 
-							{text: 'Verified by\n\n\n\n\n__________________\n\n'+ini_header.verifiedby_name+ ' \n\n ' +ini_header.verifiedby_dsg,bold: true,alignment: 'left'},
-							{text: 'Approved By\n\n\n\n\n__________________\n\n'+ini_header.approvedby_name+ ' \n\n ' +ini_header.approvedby_dsg,bold: true,alignment: 'left'}, 
-							{text: 'Signatures\n\n\n\n\n__________________\n\nName:',bold: true,alignment: 'left'},
-							{text: 'Signatures\n\n\n\n\n__________________\n\nName:',bold: true,alignment: 'left'},
+							{text: 'Prepared by\n\n\n\n\n______________________\n\n'+ini_header.requestby_name+ ' \n\n ' +ini_header.requestby_dsg,bold: true,alignment: 'left'}, 
+							{text: 'Verified by\n\n\n\n\n______________________\n\n'+ini_header.verifiedby_name+ ' \n\n ' +ini_header.verifiedby_dsg,bold: true,alignment: 'left'},
+							{text: 'Approved By\n\n\n\n\n______________________\n\n'+ini_header.approvedby_name+ ' \n\n ' +ini_header.approvedby_dsg,bold: true,alignment: 'left'}, 
+							{text: 'Signatures\n\n\n\n\n______________________\n\nName:',bold: true,alignment: 'left'},
+							{text: 'Signatures\n\n\n\n\n______________________\n\nName:',bold: true,alignment: 'left'},
 
 	                	]
 	                ]
@@ -375,8 +376,9 @@
 			],
 	    ];
 
+		var pad_loop = 18;
 		if(ini_body.length > 5 && make_body_loop == 0){
-
+			pad_loop = pad_loop;
 	    	let arr = [
 				{text:'', style: 'body_row', border: [false, false, false, false]},
 				{text:'', style: 'body_row', border: [false, false, false, false]},
@@ -402,14 +404,14 @@
 		// if(retval.length<5){
 	    	// let loop_btm = 5-retval.length;
 
-	    	for (var i = (15-retval.length); i >= 0; i--) {
-	    		retval.push([
-					{text:' ', style: 'body_row', border: [false, false, false, false]},
-					{text:' ', style: 'body_row', border: [false, false, false, false]},
-					{text:' ', style: 'body_row', border: [false, false, false, false]},
-					{text:' ', style: 'body_row', border: [false, false, false, false]},
-		    	]);
-	    	}
+    	for (var i = (pad_loop-retval.length); i >= 0; i--) {
+    		retval.push([
+				{text:' ', style: 'body_row', border: [false, false, false, false]},
+				{text:' ', style: 'body_row', border: [false, false, false, false]},
+				{text:' ', style: 'body_row', border: [false, false, false, false]},
+				{text:' ', style: 'body_row', border: [false, false, false, false]},
+	    	]);
+    	}
 	    // }
 
 	    return retval;
