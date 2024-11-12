@@ -743,25 +743,27 @@ class ReceiptController extends defaultController
         $tilldetl = DB::table('debtor.tilldetl')
                     ->where('compcode',session('compcode'))
                     ->where('cashier',session('username'))
-                    ->whereNull('closedate')
-                    ->first();
+                    ->whereNull('closedate');
+                    // ->first();
         
         // dd($tilldetl);
         
-        // if($tilldetl->exists()){
-        //     $tilldetl = $tilldetl->first();
+        if($tilldetl->exists()){
+            $tilldetl = $tilldetl->first();
             
-        //     $dbacthdr = DB::table('debtor.dbacthdr')
-        //                 ->select($this->fixPost($request->field,"_"))
-        //                 ->leftjoin('hisdb.pat_mast', function($join) use ($request){
-        //                     $join = $join->on('pat_mast.MRN', '=', 'dbacthdr.mrn')
-        //                                 ->where('pat_mast.compcode','=',session('compcode'));
-        //                 })
-        //                 ->where('dbacthdr.tillcode',$tilldetl->tillcode)
-        //                 ->where('dbacthdr.tillno',$tilldetl->tillno)
-        //                 ->where('dbacthdr.compcode',session('compcode'))
-        //                 ->whereIn('dbacthdr.trantype',['RC','RD']);
-        // }
+            // $dbacthdr = DB::table('debtor.dbacthdr')
+            //             ->select($this->fixPost($request->field,"_"))
+            //             ->leftjoin('hisdb.pat_mast', function($join) use ($request){
+            //                 $join = $join->on('pat_mast.MRN', '=', 'dbacthdr.mrn')
+            //                             ->where('pat_mast.compcode','=',session('compcode'));
+            //             })
+            //             ->where('dbacthdr.tillcode',$tilldetl->tillcode)
+            //             ->where('dbacthdr.tillno',$tilldetl->tillno)
+            //             ->where('dbacthdr.compcode',session('compcode'))
+            //             ->whereIn('dbacthdr.trantype',['RC','RD']);
+        }else{
+            $tilldetl->cashier = '-';
+        }
         
         $dbacthdr = DB::table('debtor.dbacthdr as d', 'hisdb.pat_mast as p')
                     ->select('d.idno', 'd.compcode', 'd.source', 'd.trantype', 'd.auditno', 'd.lineno_', 'd.amount', 'd.outamount', 'd.recstatus', 'd.entrydate', 'd.entrytime', 'd.entryuser', 'd.reference', 'd.recptno', 'd.paymode', 'd.tillcode', 'd.tillno', 'd.debtortype', 'd.payercode', 'd.billdebtor', 'd.remark', 'd.mrn', 'd.episno', 'd.authno', 'd.expdate', 'd.adddate', 'd.epistype', 'd.cbflag', 'd.conversion', 'd.payername', 'd.hdrtype', 'd.currency', 'd.rate', 'd.unit', 'd.invno', 'd.paytype', 'd.bankcharges', 'd.RCCASHbalance', 'd.RCOSbalance', 'd.RCFinalbalance', 'd.PymtDescription', 'd.posteddate', 'p.Name', 'p.Newic', 'p.Newmrn')

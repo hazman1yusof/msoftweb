@@ -15,12 +15,6 @@
     
     <script>
         
-        var tilldetl = {
-            @foreach($tilldetl as $key => $val)
-                '{{$key}}' : '{{$val}}',
-            @endforeach
-        };
-        
         var dbacthdr = {
             @foreach($dbacthdr as $key => $val)
                 '{{$key}}' : '{{$val}}',
@@ -144,7 +138,7 @@
                                     @else
                                         { text: 'Bill No {{str_pad($obj->refauditno, 8, "0", STR_PAD_LEFT)}}' },
                                     @endif
-                                    { text: '{{$obj->name}}' },
+                                    { text: `{{$obj->name}}` },
                                     @if($obj->mrn == '0')
                                         { text: ' ' },
                                     @else
@@ -173,7 +167,7 @@
                                     { text: 'REFERENCE NO : {{$dbacthdr->reference}}' },
                                 ],
                                 [
-                                    { text: 'REMARK : {{$dbacthdr->remark}}' },
+                                    { text: `REMARK : {{$dbacthdr->remark}}` },
                                 ],
                             ]
                         },
