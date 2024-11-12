@@ -287,27 +287,27 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
 
                     // 
 
-        $queueso_reject = DB::table('finance.queueso as qso')
-                    ->select('qso.trantype','dbact.adduser','dbact.auditno','dbact.payercode','dbm.name','dbact.adddate','dbact.recstatus','dbact.amount','dbact.adduser','dbact.cancelby','dbact.canceldate')
-                    ->join('debtor.dbacthdr as dbact', function($join) use ($request){
-                        $join = $join
-                            ->where('dbact.compcode',session('compcode'))
-                            ->where('dbact.source','PB')
-                            ->where('dbact.trantype','IN')
-                            ->on('dbact.auditno','qso.recno')
-                            ->on('dbact.recstatus','qso.recstatus');
-                    })
-                    ->join('debtor.debtormast as dbm', function($join) use ($request){
-                        $join = $join
-                            ->where('dbm.compcode',session('compcode'))
-                            ->on('dbm.debtorcode','dbact.payercode');
-                    })
-                    ->where('qso.AuthorisedID',session('username'))
-                    ->where('qso.compcode',session('compcode'))
-                    ->where('qso.trantype','REOPEN')
-                    ->get();
+        // $queueso_reject = DB::table('finance.queueso as qso')
+        //             ->select('qso.trantype','dbact.adduser','dbact.auditno','dbact.payercode','dbm.name','dbact.adddate','dbact.recstatus','dbact.amount','dbact.adduser','dbact.cancelby','dbact.canceldate')
+        //             ->join('debtor.dbacthdr as dbact', function($join) use ($request){
+        //                 $join = $join
+        //                     ->where('dbact.compcode',session('compcode'))
+        //                     ->where('dbact.source','PB')
+        //                     ->where('dbact.trantype','IN')
+        //                     ->on('dbact.auditno','qso.recno')
+        //                     ->on('dbact.recstatus','qso.recstatus');
+        //             })
+        //             ->join('debtor.debtormast as dbm', function($join) use ($request){
+        //                 $join = $join
+        //                     ->where('dbm.compcode',session('compcode'))
+        //                     ->on('dbm.debtorcode','dbact.payercode');
+        //             })
+        //             ->where('qso.AuthorisedID',session('username'))
+        //             ->where('qso.compcode',session('compcode'))
+        //             ->where('qso.trantype','REOPEN')
+        //             ->get();
 
-        $queueso = $queueso->merge($queueso_reject);
+        // $queueso = $queueso->merge($queueso_reject);
 
         $queueiv = DB::table('material.queueiv as qiv')
                     ->select('qiv.trantype','adtl.authorid','ivhd.recno','ivhd.txndept as deptcode','dept.description as deptcode_desc','ivhd.adddate','ivhd.recstatus','ivhd.amount','ivhd.adduser')
