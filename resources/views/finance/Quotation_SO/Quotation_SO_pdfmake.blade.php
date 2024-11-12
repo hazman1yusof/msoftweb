@@ -18,7 +18,7 @@
 	
 	var salehdr = {
 		@foreach($salehdr as $key => $val) 
-			'{{$key}}' : '{{$val}}',
+			'{{$key}}' : `{!!$val!!}`,
 		@endforeach 
 	};
 
@@ -34,13 +34,13 @@
 
 	var company = {
 		@foreach($company as $key => $val) 
-			'{{$key}}' : '{{$val}}',
+			'{{$key}}' : `{{$val}}`,
 		@endforeach 
 	};
 
 	var title = {
 		@foreach($company as $key => $val) 
-			'{{$key}}' : '{{$val}}',
+			'{{$key}}' : `{{$val}}`,
 		@endforeach 
 	};
 

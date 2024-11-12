@@ -552,7 +552,7 @@ use Carbon\Carbon;
                             'recstatus' => 'CANCELLED'
                         ]);
 
-                    if($apacthdr->doctype == 'Supplier'){ 
+                    if(strtoupper($apacthdr->doctype) == 'SUPPLIER'){ 
                         $this->gltran_cancel($auditno);
                     }else{
                         $this->gltran_cancel_others($auditno);
