@@ -187,7 +187,11 @@ class Quotation_SO_DetailController extends defaultController
                         $found = array_search($key,$occur_ar);
                         if($found !== false && trim($request->searchVal[$key]) != '%%'){
                             $search_ = $this->begins_search_if(['itemcode','chgcode'],$searchCol_array[$key],$request->searchVal[$key]);
-                            $table->Where('cm.'.$searchCol_array[$key],'like',$search_);
+                            if($searchCol_array[$key] == 'generic'){
+                                $table->Where('pt.'.$searchCol_array[$key],'like',$search_);
+                            }else{
+                                $table->Where('cm.'.$searchCol_array[$key],'like',$search_);
+                            }
                             // $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
                             // $table->Where('cm.'.$searchCol_array[$key],'like',$request->searchVal[$key]);
                         }
