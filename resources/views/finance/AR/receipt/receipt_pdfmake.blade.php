@@ -235,6 +235,23 @@
                             // layout: 'noBorders',
                         },
                     @endif
+                    @if($dbacthdr->trantype == 'RF')
+                        {
+                            style: 'body_sign',
+                            table: {
+                                widths: [250,100,200],//panjang standard dia 515
+                                dontBreakRows: true,
+                                body: [
+                                    [
+                                        {text: 'Verified By\n\n\n\n_____________________________',bold: true,alignment: 'left',margin: [0, 0, 0, 0]},
+                                        {text: 'Received By\n\nName\n\nI/C No.',bold: true,alignment: 'right'},
+                                        {text: ': ________________________\n\n: ________________________\n\n: ________________________',bold: true,alignment: 'left'},
+                                    ],
+                                ]
+                            },
+                            layout: 'noBorders',
+                        },
+                    @endif
                     {
                         text: 'Terms and Condition:', fontSize: 9,
                     },
@@ -278,7 +295,11 @@
                     comp_header: {
                         bold: true,
                         fontSize: 8,
-                    }
+                    },
+                    body_sign: {
+                        fontSize: 9,
+                        margin: [0, 0, 0, 20]
+                    },
                 },
                  images: {
                     letterhead: {

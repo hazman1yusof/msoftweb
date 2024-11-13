@@ -782,8 +782,11 @@ class ReceiptController extends defaultController
         // } elseif ($dbacthdr->recstatus == "POSTED"){
         //     $title = "RECEIPT";
         // }
-        
-        $title = "OFFICIAL RECEIPT";
+        if($dbacthdr->trantype == 'RF'){
+            $title = "OFFICIAL REFUND";
+        }else{
+            $title = "OFFICIAL RECEIPT";
+        }
         
         $dballoc = DB::table('debtor.dballoc as a', 'debtor.debtormast as m')
                     ->select('a.compcode', 'a.source', 'a.trantype', 'a.auditno', 'a.lineno_', 'a.docsource', 'a.doctrantype', 'a.docauditno', 'a.refsource', 'a.reftrantype', 'a.refauditno', 'a.refamount', 'a.reflineno', 'a.recptno', 'a.mrn', 'a.episno', 'a.allocsts', 'a.amount', 'a.tillcode', 'a.debtortype', 'a.debtorcode', 'a.payercode', 'a.paymode', 'a.allocdate', 'a.remark', 'a.balance', 'a.recstatus', 'm.debtorcode', 'm.name')
