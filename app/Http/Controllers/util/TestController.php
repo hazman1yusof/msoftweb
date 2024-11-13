@@ -2083,7 +2083,7 @@ class TestController extends defaultController
         try {
                 $apactdtl = DB::table('finance.apactdtl')
                                 ->where('compcode','9B')
-                                ->whereIn('document',['9800456682','9800457549'])
+                                ->whereIn('document',['1186010455'])
                                 // ->whereDate('addDate','<=','2024-10-14')
                                 ->get();
                 $x=1;
