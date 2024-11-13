@@ -785,7 +785,7 @@ $(document).ready(function (){
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected){
-			if(selrowData("#jqGrid").db_trantype == 'RC' || selrowData("#jqGrid").db_trantype == 'RD'){
+			if(selrowData("#jqGrid").db_trantype == 'RC' || selrowData("#jqGrid").db_trantype == 'RD' || selrowData("#jqGrid").db_trantype == 'RF'){
 				$("#reprint_receipt").attr('href','./receipt/showpdf?auditno='+selrowData("#jqGrid").db_idno);
 				$('#reprint_receipt').show();
 			}else{

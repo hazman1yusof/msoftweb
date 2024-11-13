@@ -248,6 +248,7 @@ Route::get('/ReceiptAR_Report/showExcel','finance\ReceiptAR_ReportController@sho
 Route::get('/refund','finance\RefundController@show');
 Route::get('/refund/table','finance\RefundController@table');
 Route::post('/refund/form','finance\RefundController@form');
+Route::get('/refund/showpdf','finance\RefundController@showpdf');
 
 //// doctor_maintenance setup page ///
 Route::get('/doctor_maintenance','hisdb\DoctorMaintenanceController@show');

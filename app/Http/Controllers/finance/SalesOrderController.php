@@ -222,6 +222,10 @@ class SalesOrderController extends defaultController
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where('db.payercode','like',$request->searchVal[0]);
                 });
+            }else if($request->searchCol[0] == 'db_mrn'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('db.mrn','like',$request->searchVal[0]);
+                });
             }else{
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where($request->searchCol[0],'like',$request->searchVal[0]);

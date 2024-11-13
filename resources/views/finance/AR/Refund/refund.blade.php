@@ -83,7 +83,9 @@
     </div>
         
     <div class="panel panel-default">
-        <div class="panel-heading">Refund Header</div>
+        <div class="panel-heading">Refund Header
+         <a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
+        </div>
         <div class="panel-body">
             <div class='col-md-12' style="padding:0 0 15px 0">
                 <table id="jqGrid" class="table table-striped"></table>
@@ -435,6 +437,6 @@
 @section('scripts')
 	
     <script src="js/myjs/till_part.js"></script>
-	<script src="js/finance/AR/refund/refund.js"></script>
+	<script src="js/finance/AR/refund/refund.js?v=1.1"></script>
 	
 @endsection

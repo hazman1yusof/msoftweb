@@ -551,6 +551,7 @@ $(document).ready(function () {
 			// urlParamAllo.payercode = selrowData("#jqGrid").dbacthdr_payercode;
 			// refreshGrid("#gridAllo",urlParamAllo);
 			// $("#gridAllo input[name='tick']").hide();
+			$("#pdfgen1").attr('href','./refund/showpdf?auditno='+selrowData("#jqGrid").dbacthdr_idno);
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
