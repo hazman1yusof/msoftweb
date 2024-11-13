@@ -2059,7 +2059,6 @@ $(document).ready(function (){
 			[
 				{label: 'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label: 'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-                {label: 'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label: 'Inventory',name:'invflag',width:100,formatter:formatterstatus_tick2, unformat:unformatstatus_tick2},
 				{label: 'UOM',name:'uom',width:100,classes:'pointer',},
 				{label: 'Quantity On Hand',name:'qtyonhand',width:100,classes:'pointer',},
