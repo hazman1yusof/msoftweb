@@ -34,11 +34,11 @@
             <td>{{number_format($obj->open_balval, 2, '.', ',')}}</td>
             <td>{{number_format($obj->open_balqty, 2, '.', ',')}}</td>
             <td>{{number_format($obj->grn_qty, 2, '.', ',')}}</td>
-            <td>{{number_format($obj->tr_qty, 2, '.', ',')}}</td>
-            <td>{{number_format($obj->ds_qty, 2, '.', ',')}}</td>
+            <td>{{number_format($obj->tr_qty * -1, 2, '.', ',')}}</td>
+            <td>{{number_format($obj->ds_qty * -1, 2, '.', ',')}}</td>
             <td>{{number_format($obj->wof_qty, 2, '.', ',')}}</td>
             <td>{{number_format($obj->ai_qty, 2, '.', ',')}}</td>
-            <td>{{number_format($obj->ao_qty, 2, '.', ',')}}</td>
+            <td>{{number_format($obj->ao_qty * -1, 2, '.', ',')}}</td>
             <td>{{number_format($obj->phy_qty, 2, '.', ',')}}</td>
             <td>{{number_format($obj->oth_qty, 2, '.', ',')}}</td>
             <td>{{number_format($obj->close_balqty, 2, '.', ',')}}</td>
