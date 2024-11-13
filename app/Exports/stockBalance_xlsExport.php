@@ -140,7 +140,7 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
                 $get_ivdspdt = $this->get_ivdspdt($obj,$period,$year);
                 $obj->ds_qty = $get_ivdspdt->ds_qty;
 
-                $totmv = floatval($get_ivtxndt->grn_qty)-floatval($get_ivdspdt->ds_qty)+floatval($get_ivtxndt->tr_qty)+floatval($get_ivtxndt->wof_qty)-floatval($get_ivtxndt->ai_qty)+floatval($get_ivtxndt->ao_qty)+floatval($get_ivtxndt->phy_qty);
+                $totmv = floatval($get_ivtxndt->grn_qty)-floatval($get_ivdspdt->ds_qty)-floatval($get_ivtxndt->tr_qty)+floatval($get_ivtxndt->wof_qty)-floatval($get_ivtxndt->ai_qty)+floatval($get_ivtxndt->ao_qty)+floatval($get_ivtxndt->phy_qty);
                 $oth_qty = floatval($get_bal->close_balqty) - floatval($get_bal->open_balqty) - floatval($totmv);
                 $obj->oth_qty = $oth_qty;
 

@@ -121,7 +121,7 @@ class stockBalanceController extends defaultController
             $get_ivdspdt = $this->get_ivdspdt($obj,$period,$year);
             $obj->ds_qty = $get_ivdspdt->ds_qty;
 
-            $totmv = floatval($get_ivtxndt->grn_qty)-floatval($get_ivdspdt->ds_qty)+floatval($get_ivtxndt->tr_qty)+floatval($get_ivtxndt->wof_qty)-floatval($get_ivtxndt->ai_qty)+floatval($get_ivtxndt->ao_qty)+floatval($get_ivtxndt->phy_qty);
+            $totmv = floatval($get_ivtxndt->grn_qty)-floatval($get_ivdspdt->ds_qty)-floatval($get_ivtxndt->tr_qty)+floatval($get_ivtxndt->wof_qty)-floatval($get_ivtxndt->ai_qty)+floatval($get_ivtxndt->ao_qty)+floatval($get_ivtxndt->phy_qty);
             $oth_qty = floatval($get_bal->close_balqty) - floatval($get_bal->open_balqty) - floatval($totmv);
             $obj->oth_qty = $oth_qty;
 
@@ -345,7 +345,7 @@ class stockBalanceController extends defaultController
                             ->whereMonth('trandate', '=', $period)
                             ->whereYear('trandate', '=', $year);
 
-        if($ivtxndt->exists()){
+        if($ivtxndt_sndrcv->exists()){
             foreach ($ivtxndt->get() as $obj) {
                 switch ($obj->trantype) {
                     case 'TR':
