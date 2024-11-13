@@ -253,7 +253,7 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
                             ->whereMonth('trandate', '=', $period)
                             ->whereYear('trandate', '=', $year);
 
-        if($ivtxndt->exists()){
+        if($ivtxndt_sndrcv->exists()){
             foreach ($ivtxndt->get() as $obj) {
                 switch ($obj->trantype) {
                     case 'TR':
