@@ -238,7 +238,7 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
                     case 'AO':
                         $ao_qty = $ao_qty + $obj->txnqty;
                         break;
-                    case 'PHY':
+                    case 'PHYCNT':
                         $phy_qty = $phy_qty + $obj->txnqty;
                         break;
                 }

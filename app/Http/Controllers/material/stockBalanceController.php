@@ -330,7 +330,7 @@ class stockBalanceController extends defaultController
                     case 'AO':
                         $ao_qty = $ao_qty + $obj->txnqty;
                         break;
-                    case 'PHY':
+                    case 'PHYCNT':
                         $phy_qty = $phy_qty + $obj->txnqty;
                         break;
                 }
