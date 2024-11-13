@@ -117,8 +117,8 @@ class SalesOrderController extends defaultController
                 return $this->posted($request);
             case 'delivered':
                 return $this->delivered($request);
-            case 'reopen_posted':
-                return $this->reopen_posted($request);
+            case 'recomputed':
+                return $this->recomputed($request);
             case 'reject':
                 return $this->reject($request);
             case 'reopen':
@@ -1081,183 +1081,191 @@ class SalesOrderController extends defaultController
         }
     }
 
-    public function reopen_posted(Request $request){
+    public function recomputed(Request $request){
         
         DB::beginTransaction();
         
         try{
-            $value = $request->idno;
-            
-            $dbacthdr = DB::table("debtor.dbacthdr")
+
+            foreach ($request->idno_array as $value){
+
+                $dbacthdr = DB::table("debtor.dbacthdr")
                         ->where('compcode',session('compcode'))
                         ->where('idno','=',$value)
                         ->first();
 
-            $totalAmount = DB::table('debtor.billsum')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('source','=','PB')
-                    ->where('trantype','=','IN')
-                    ->where('billno','=',$dbacthdr->auditno)
-                    ->where('recstatus','!=','DELETE')
-                    ->sum('totamount');
-            
-            DB::table("debtor.dbacthdr")
-                ->where('compcode',session('compcode'))
-                ->where('idno','=',$value)
-                ->update([
-                    'amount' => $totalAmount,
-                    'outamount' => $totalAmount
-                ]);
-
-            if($dbacthdr->recstatus != 'POSTED'){
-                throw new \Exception("Dbacthdr recstatus is not POSTED",500);
-            }
-
-            $invno = $dbacthdr->invno;
-
-            DB::table("hisdb.chargetrx")
-                    ->where('compcode',session('compcode'))
-                    ->where('invno',$invno)
-                    ->delete();
-
-            DB::table("hisdb.billdet")
-                    ->where('compcode',session('compcode'))
-                    ->where('invno',$invno)
-                    ->delete();
-            
-            $billsum = DB::table("debtor.billsum")
-                        ->where('compcode',session('compcode'))
-                        ->where('source','=',$dbacthdr->source)
-                        ->where('trantype','=',$dbacthdr->trantype)
-                        ->where('billno','=',$dbacthdr->auditno)
-                        ->get();
-            
-            foreach ($billsum as $billsum_obj){
-
-                $chgmast = DB::table("hisdb.chgmast")
+                $totalAmount = DB::table('debtor.billsum')
                         ->where('compcode','=',session('compcode'))
-                        ->where('chgcode','=',$billsum_obj->chggroup)
-                        ->where('uom','=',$billsum_obj->uom)
-                        ->first();
+                        ->where('source','=','PB')
+                        ->where('trantype','=','IN')
+                        ->where('billno','=',$dbacthdr->auditno)
+                        ->where('recstatus','!=','DELETE')
+                        ->sum('totamount');
                 
-                // $updinv = ($chgmast->invflag == '1')? 1 : 0;
+                DB::table("debtor.dbacthdr")
+                    ->where('compcode',session('compcode'))
+                    ->where('idno','=',$value)
+                    ->update([
+                        'amount' => $totalAmount,
+                        'outamount' => $totalAmount
+                    ]);
 
-                $product = DB::table('material.product')
-                                ->where('compcode','=',session('compcode'))
-                                ->where('uomcode','=',$billsum_obj->uom)
-                                ->where('itemcode','=',$billsum_obj->chggroup);
-                
-                if($product->exists()){
-                    // $stockloc = DB::table('material.stockloc')
-                    //         ->where('compcode','=',session('compcode'))
-                    //         ->where('uomcode','=',$billsum_obj->uom)
-                    //         ->where('itemcode','=',$billsum_obj->chggroup)
-                    //         ->where('deptcode','=',$dbacthdr->deptcode)
-                    //         ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
-                    
-                    // if($stockloc->exists()){
-                    //     $stockloc = $stockloc->first();
-                    // }else{
-                    //     throw new \Exception("Stockloc not exists for item: ".$billsum_obj->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$billsum_obj->uom,500);
-                    // }
-                    
-                    // $ivdspdt = DB::table('material.ivdspdt')
-                    //     ->where('compcode','=',session('compcode'))
-                    //     ->where('recno','=',$billsum_obj->auditno);
-                    
-                    // if($ivdspdt->exists()){
-                    //     $this->updivdspdt($billsum_obj,$dbacthdr);
-                    //     $this->updgltran($ivdspdt->first()->idno,$dbacthdr);
-                    // }else{
-                    //     $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$dbacthdr);
-                    //     $this->crtgltran($ivdspdt_idno,$dbacthdr);
-                    // }
-                    $this->delivdspdt($billsum_obj,$dbacthdr);
+                if($dbacthdr->recstatus != 'POSTED'){
+                    throw new \Exception("Dbacthdr recstatus is not POSTED",500);
                 }
-                
-                //gltran
-                $yearperiod = $this->getyearperiod($dbacthdr->posteddate);
-                $chgmast = DB::table('hisdb.chgmast')
-                            ->where('compcode',session('compcode'))
-                            ->where('chgcode',$billsum_obj->chggroup)
-                            ->first();
 
-                $chgtype = DB::table('hisdb.chgtype')
-                            ->where('compcode',session('compcode'))
-                            ->where('chgtype',$chgmast->chgtype)
-                            ->first();
+                $balance_ = floatval($dbacthdr->amount) - floatval($dbacthdr->outamount);
 
-                $dept = DB::table('sysdb.department')
-                            ->where('compcode',session('compcode'))
-                            ->where('deptcode',$dbacthdr->deptcode)
-                            ->first();
+                if($balance_ != 0){
+                    throw new \Exception("Amount and outamount need to be same",500);
+                }
 
-                $sysparam = DB::table('sysdb.sysparam')
-                            ->where('compcode',session('compcode'))
-                            ->where('source','AR')
-                            ->where('trantype','AD')
-                            ->first();
+                $invno = $dbacthdr->invno;
 
-                $this->init_glmastdtl_del(
-                        $sysparam->pvalue1,//drcostcode
-                        $sysparam->pvalue2,//dracc
-                        $dept->costcode,//crcostcode
-                        $chgtype->opacccode,//cracc
-                        $yearperiod,
-                        $billsum_obj->amount
-                );
-
-                DB::table('finance.gltran')
+                DB::table("hisdb.chargetrx")
                         ->where('compcode',session('compcode'))
-                        ->where('source','OE')
-                        ->where('trantype','IN')
-                        ->where('auditno',$billsum_obj->auditno)
+                        ->where('invno',$invno)
                         ->delete();
-            }
-            
-            DB::table("debtor.billsum")
-                ->where('compcode',session('compcode'))
-                ->where('source','=',$dbacthdr->source)
-                ->where('trantype','=',$dbacthdr->trantype)
-                ->where('billno','=',$dbacthdr->auditno)
-                ->update([
-                    // 'invno' => null,
-                    'recstatus' => 'OPEN',
-                ]);
-            
-            DB::table("debtor.dbacthdr")
-                ->where('compcode',session('compcode'))
-                ->where('idno','=',$value)
-                ->update([
-                    // 'invno' => null,
-                    'recstatus' => 'RECOMPUTED',
-                    'posteddate' => null,
-                    'approvedby' => null,
-                    'approveddate' => null,
-                    // 'amount' => accumalated amount (billsum.amt-billsum.discamt+billsum.taxamt)
-                    // 'outamount' => accumalated amount (billsum.amt-billsum.discamt+billsum.taxamt)
-                ]);
 
-            $debtormast = DB::table("debtor.debtormast")
+                DB::table("hisdb.billdet")
+                        ->where('compcode',session('compcode'))
+                        ->where('invno',$invno)
+                        ->delete();
+                
+                $billsum = DB::table("debtor.billsum")
                             ->where('compcode',session('compcode'))
-                            ->where('debtorcode',$dbacthdr->payercode)
-                            ->first();
+                            ->where('source','=',$dbacthdr->source)
+                            ->where('trantype','=',$dbacthdr->trantype)
+                            ->where('billno','=',$dbacthdr->auditno)
+                            ->get();
+                
+                foreach ($billsum as $billsum_obj){
 
-            $this->init_glmastdtl_del(
-                        $debtormast->actdebccode,//drcostcode
-                        $debtormast->actdebglacc,//dracc
-                        $sysparam->pvalue1,//crcostcode
-                        $sysparam->pvalue2,//cracc
-                        $yearperiod,
-                        $dbacthdr->amount
+                    $chgmast = DB::table("hisdb.chgmast")
+                            ->where('compcode','=',session('compcode'))
+                            ->where('chgcode','=',$billsum_obj->chggroup)
+                            ->where('uom','=',$billsum_obj->uom)
+                            ->first();
+                    
+                    // $updinv = ($chgmast->invflag == '1')? 1 : 0;
+
+                    $product = DB::table('material.product')
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('uomcode','=',$billsum_obj->uom)
+                                    ->where('itemcode','=',$billsum_obj->chggroup);
+                    
+                    if($product->exists()){
+                        // $stockloc = DB::table('material.stockloc')
+                        //         ->where('compcode','=',session('compcode'))
+                        //         ->where('uomcode','=',$billsum_obj->uom)
+                        //         ->where('itemcode','=',$billsum_obj->chggroup)
+                        //         ->where('deptcode','=',$dbacthdr->deptcode)
+                        //         ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+                        
+                        // if($stockloc->exists()){
+                        //     $stockloc = $stockloc->first();
+                        // }else{
+                        //     throw new \Exception("Stockloc not exists for item: ".$billsum_obj->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$billsum_obj->uom,500);
+                        // }
+                        
+                        // $ivdspdt = DB::table('material.ivdspdt')
+                        //     ->where('compcode','=',session('compcode'))
+                        //     ->where('recno','=',$billsum_obj->auditno);
+                        
+                        // if($ivdspdt->exists()){
+                        //     $this->updivdspdt($billsum_obj,$dbacthdr);
+                        //     $this->updgltran($ivdspdt->first()->idno,$dbacthdr);
+                        // }else{
+                        //     $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$dbacthdr);
+                        //     $this->crtgltran($ivdspdt_idno,$dbacthdr);
+                        // }
+                        $this->delivdspdt($billsum_obj,$dbacthdr);
+                    }
+                    
+                    //gltran
+                    $yearperiod = $this->getyearperiod($dbacthdr->posteddate);
+                    $chgmast = DB::table('hisdb.chgmast')
+                                ->where('compcode',session('compcode'))
+                                ->where('chgcode',$billsum_obj->chggroup)
+                                ->first();
+
+                    $chgtype = DB::table('hisdb.chgtype')
+                                ->where('compcode',session('compcode'))
+                                ->where('chgtype',$chgmast->chgtype)
+                                ->first();
+
+                    $dept = DB::table('sysdb.department')
+                                ->where('compcode',session('compcode'))
+                                ->where('deptcode',$dbacthdr->deptcode)
+                                ->first();
+
+                    $sysparam = DB::table('sysdb.sysparam')
+                                ->where('compcode',session('compcode'))
+                                ->where('source','AR')
+                                ->where('trantype','AD')
+                                ->first();
+
+                    $this->init_glmastdtl_del(
+                            $sysparam->pvalue1,//drcostcode
+                            $sysparam->pvalue2,//dracc
+                            $dept->costcode,//crcostcode
+                            $chgtype->opacccode,//cracc
+                            $yearperiod,
+                            $billsum_obj->amount
                     );
 
-            DB::table('finance.gltran')
-                ->where('compcode',session('compcode'))
-                ->where('source','PB')
-                ->where('trantype','IN')
-                ->where('auditno',$invno)
-                ->delete();
+                    DB::table('finance.gltran')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','OE')
+                            ->where('trantype','IN')
+                            ->where('auditno',$billsum_obj->auditno)
+                            ->delete();
+                }
+                
+                DB::table("debtor.billsum")
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=',$dbacthdr->source)
+                    ->where('trantype','=',$dbacthdr->trantype)
+                    ->where('billno','=',$dbacthdr->auditno)
+                    ->update([
+                        // 'invno' => null,
+                        'recstatus' => 'OPEN',
+                    ]);
+                
+                DB::table("debtor.dbacthdr")
+                    ->where('compcode',session('compcode'))
+                    ->where('idno','=',$value)
+                    ->update([
+                        // 'invno' => null,
+                        'recstatus' => 'RECOMPUTED',
+                        'posteddate' => null,
+                        'approvedby' => null,
+                        'approveddate' => null,
+                        // 'amount' => accumalated amount (billsum.amt-billsum.discamt+billsum.taxamt)
+                        // 'outamount' => accumalated amount (billsum.amt-billsum.discamt+billsum.taxamt)
+                    ]);
+
+                $debtormast = DB::table("debtor.debtormast")
+                                ->where('compcode',session('compcode'))
+                                ->where('debtorcode',$dbacthdr->payercode)
+                                ->first();
+
+                $this->init_glmastdtl_del(
+                            $debtormast->actdebccode,//drcostcode
+                            $debtormast->actdebglacc,//dracc
+                            $sysparam->pvalue1,//crcostcode
+                            $sysparam->pvalue2,//cracc
+                            $yearperiod,
+                            $dbacthdr->amount
+                        );
+
+                DB::table('finance.gltran')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','PB')
+                    ->where('trantype','IN')
+                    ->where('auditno',$invno)
+                    ->delete();
+            }
             
             DB::commit();
         } catch (\Exception $e) {
@@ -2591,6 +2599,8 @@ class SalesOrderController extends defaultController
 
         $gltran = DB::table('finance.gltran')
                     ->where('compcode','=',session('compcode'))
+                    ->where('source','=','IV')
+                    ->where('trantype','=','DS')
                     ->where('auditno','=',$billsum_obj->auditno);
 
         if($gltran->exists()){
@@ -2663,16 +2673,18 @@ class SalesOrderController extends defaultController
 
             DB::table('finance.gltran')
                 ->where('compcode','=',session('compcode'))
+                ->where('source','=','IV')
+                ->where('trantype','=','DS')
                 ->where('auditno','=',$billsum_obj->auditno)
                 ->delete();
         }
 
         // pindah ke ivdspdtlog
         // recstatus->delete
-        $ivdspdt_lama = DB::table('material.ivdspdt')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('recno','=',$billsum_obj->auditno)
-                        ->first();
+        // $ivdspdt_lama = DB::table('material.ivdspdt')
+        //                 ->where('compcode','=',session('compcode'))
+        //                 ->where('recno','=',$billsum_obj->auditno)
+        //                 ->first();
 
         // $this->sysdb_log('delete',$ivdspdt_lama,'sysdb.ivdspdtlog');
 

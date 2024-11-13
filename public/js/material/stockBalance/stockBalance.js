@@ -185,7 +185,7 @@ $(document).ready(function () {
 	dialog_itemcodefrom.makedialog(true);
 	
 	var dialog_itemcodeto = new ordialog(
-		'item_to',['material.stockloc AS s','material.product AS p'],"#item_to",errorField,
+		'item_to',['material.stockloc AS s','material.product AS p'],"#item_to",'errorField',
 		{	
 			colModel:[
 				{label: 'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},

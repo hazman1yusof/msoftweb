@@ -157,6 +157,6 @@
 
 @section('scripts')
 
-	<script src="js/material/stockBalance/stockBalance.js"></script>
+	<script src="js/material/stockBalance/stockBalance.js?v=1.1"></script>
 
 @endsection

@@ -1381,6 +1381,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				});
 				event.data.data.urlParam.searchCol2=searchCol2;
 				event.data.data.urlParam.searchVal2=searchVal2;
+				event.data.data.urlParam.wholeword=text;
 			}
 			refreshGrid("#"+event.data.data.gridname,event.data.data.urlParam);
 			$("#Dtext_"+unique).val(text);
@@ -1408,11 +1409,13 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			delay(function(){
 				obj.urlParam.searchCol=searchCol;
 				obj.urlParam.searchVal=searchVal;
+				obj.urlParam.wholeword=Dtext;
 				refreshGrid("#"+obj.gridname,obj.urlParam);
 			},500);
 		}else if(event.type=="change" && Dtext != ''){
 			obj.urlParam.searchCol=searchCol;
 			obj.urlParam.searchVal=searchVal;
+			obj.urlParam.wholeword=Dtext;
 			refreshGrid("#"+obj.gridname,obj.urlParam);
 		}else{
 			refreshGrid("#"+obj.gridname,obj.urlParam);
