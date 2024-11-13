@@ -129,7 +129,7 @@ class Quotation_SO_DetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.generic','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE');
                         // ->where(function ($query) {
@@ -317,7 +317,7 @@ class Quotation_SO_DetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.generic','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                         ->Where('cm.chgcode','like',$serch_chgcode)
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE')
@@ -810,7 +810,7 @@ class Quotation_SO_DetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description as chgdesc','uom.description','cm.uom as uomcode','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description as chgdesc','cm.generic','uom.description','cm.uom as uomcode','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                             ->where('cm.compcode','=',session('compcode'))
                             ->where('cm.chgcode','=',$chgcode)
                             ->where('cm.recstatus','<>','DELETE');
