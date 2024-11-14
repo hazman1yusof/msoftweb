@@ -86,8 +86,8 @@ $(document).ready(function () {
 						dialog_doctor.check(errorField);
 					}
 					dialog_CustomerSO.check(errorField);
-					dialog_quoteno.urlParam.deptcode = $('#db_deptcode').val();
-					dialog_quoteno.check(errorField);
+					// dialog_quoteno.urlParam.deptcode = $('#db_deptcode').val();
+					// dialog_quoteno.check(errorField);
 					// dialog_approvedbySO.check(errorField);
 				} if (oper != 'view') {
 					dialog_deptcode.on();
@@ -97,7 +97,12 @@ $(document).ready(function () {
 						dialog_doctor.on();
 					}
 					dialog_CustomerSO.on();
-					dialog_quoteno.on();
+					if(oper == 'add'){
+						$("#db_quoteno").prop('readonly',false);
+						dialog_quoteno.on();
+					}else if(oper == 'edit'){
+						$("#db_quoteno").prop('readonly',true);
+					}
 					// dialog_approvedbySO.on();
 				}
 			},
@@ -326,7 +331,7 @@ $(document).ready(function () {
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			let stat = selrowData("#jqGrid").db_recstatus;
 
-			if (stat == 'OPEN'){
+			if (stat == 'OPEN' || stat == 'RECOMPUTED'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 				
 				if (rowid != null) {
@@ -424,7 +429,7 @@ $(document).ready(function () {
 		title: "Edit Selected Row",
 		onClickButton: function () {
 			oper = 'edit';
-			if(selrowData("#jqGrid").db_recstatus != 'OPEN'){
+			if(!['OPEN','RECOMPUTED'].includes(selrowData("#jqGrid").db_recstatus)){ 
 				return false;
 			}
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
@@ -1143,6 +1148,8 @@ $(document).ready(function () {
 		if($('#recstatus_use').val() == 'ALL'){
 			if(rowObject.db_recstatus == "OPEN"){
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}else if(rowObject.db_recstatus == "RECOMPUTED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 			}
 		}else if($('#recstatus_use').val() == 'DELIVERED'){
 			if(rowObject.db_recstatus == "PREPARED"){
@@ -1150,6 +1157,10 @@ $(document).ready(function () {
 			}
 		}else if($('#recstatus_use').val() == 'REOPEN'){
 			if(rowObject.db_recstatus == "CANCELLED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'RECOMPUTED'){
+			if(rowObject.db_recstatus == "POSTED"){
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 			}
 		}else if($('#recstatus_use').val() == 'CANCEL'){

@@ -264,7 +264,6 @@ class Quotation_SO_DetailController extends defaultController
         }
 
         $paginate = $table->paginate($request->rows);
-        // dd($paginate);
         $rows = $paginate->items();
 
         foreach ($rows as $key => $value) {
