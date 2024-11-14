@@ -10,7 +10,6 @@ $(document).ready(function (){
     disableForm('#formRequestFor');
     
     ////////////////////////////////////////////otbook starts////////////////////////////////////////////
-    
     disableForm('#formOTBookReqFor');
     
     $("#new_otbookReqFor").click(function (){
@@ -1072,7 +1071,12 @@ $('#jqGridRequestFor_rad_tabs.nav-tabs a').on('shown.bs.tab', function (e){
 
 $("#jqGridRequestFor_panel").on("hide.bs.collapse", function (){
     // button_state_requestFor('empty');
-    // disableForm('#formRequestFor');
+    disableForm('#formRequestFor');
+    disableForm('#formOTBookReqFor');
+    disableForm('#formRadClinicReqFor');
+    disableForm('#formMRIReqFor');
+    disableForm('#formPhysioReqFor');
+    disableForm('#formDressingReqFor');
 });
 
 function textarea_init_otbookReqFor(){

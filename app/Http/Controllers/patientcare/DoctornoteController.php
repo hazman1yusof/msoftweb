@@ -105,7 +105,7 @@ class DoctornoteController extends defaultController
     
     public function get_table_doctornote($request){
         $table_patm = DB::table('hisdb.pat_mast') // ambil dari patmast balik
-                    ->select(['episode.idno','pat_mast.CompCode','episode.MRN','episode.Episno','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.Reg_Date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','episode.doctorstatus','episode.reg_time','episode.payer','episode.pyrmode','episode.regdept','episode.reff_rehab','episode.reff_physio','episode.reff_diet','episode.reff_ed','episode.reff_rad','episode.stats_rehab','episode.stats_physio','episode.stats_diet','episode.episactive','episode.episstatus']);
+                    ->select(['episode.idno','pat_mast.CompCode','episode.MRN','episode.Episno','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.Reg_Date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','episode.doctorstatus','episode.reg_time','episode.payer','episode.pyrmode','episode.regdept','episode.reff_rehab','episode.reff_physio','episode.reff_diet','episode.reff_ed','episode.reff_rad','episode.stats_rehab','episode.stats_physio','episode.stats_diet','episode.episactive','episode.episstatus','episode.admdoctor','doctor.doctorname']);
         
         $table_patm = $table_patm->leftJoin('hisdb.episode', function ($join) use ($request){
                     $join = $join->on('episode.mrn','=','pat_mast.MRN');
@@ -117,6 +117,11 @@ class DoctornoteController extends defaultController
                     //                     ->orWhere('episode.episstatus','!=','C');
                     //         }
                     // );
+        });
+        
+        $table_patm = $table_patm->leftJoin('hisdb.doctor', function ($join) use ($request){
+                    $join = $join->on('doctor.doctorcode','=','episode.admdoctor');
+                    $join = $join->where('doctor.compcode','=',session('compcode'));
         });
         
         $table_patm = $table_patm->where('pat_mast.compcode','=',session('compcode'))
@@ -805,27 +810,30 @@ class DoctornoteController extends defaultController
         $responce = new stdClass();
         
         $episode_obj = DB::table('hisdb.episode')
-                        ->select('remarks','diagfinal')
+                        ->select('diagfinal')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);
         
         $pathealth_obj = DB::table('hisdb.pathealth')
+                        ->select('idno','compcode','mrn','episno','height','weight','temperature','pulse','bp_sys1','bp_dias2','respiration','gxt','pain_score','clinicnote','adduser','adddate','upduser','upddate','complain','recorddate','recordtime','visionl','visionr','colorblind','recstatus','plan_','allergyh','fmh','pmh','socialh','drugh','vas','aggr','easing','pain','behaviour','irritability','severity','lastuser','lastupdate','followupdate','followuptime','anr_rhesus','anr_rubella','anr_vdrl','anr_hiv','anr_hepaB_Ag','anr_hepaB_AB','anr_bloodTrans','anr_drugAllergies','doctorcode','newic','arrival_date','nursing_complete','doctor_complete','computerid','genappear','speech','moodaffect','perception','thinking','cognitivefunc','aetiology','investigate','treatment','prognosis')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno)
                         ->where('recordtime','=',$request->recordtime);
         
         $pathistory_obj = DB::table('hisdb.pathistory')
+                        ->select('idno','compcode','mrn','recorddate','adduser','lastuser','lastupdate','recstatus','pathname','filename','drugh','pmh','fmh','allergyh','socialh','pgh_myomectomy','pgh_laparoscopy','pgh_endometriosis','lastpapsmear','pgh_others','pmh_renaldisease','pmh_hypertension','pmh_diabetes','pmh_heartdisease','pmh_others','psh_appendicectomy','psh_hypertension','psh_laparotomy','psh_thyroidsurgery','psh_others','fh_hypertension','fh_diabetes','fh_epilepsy','fh_multipregnancy','fh_congenital','anr_bloodgroup','anr_attInject_1st','anr_attInject_2nd','anr_attInject_boost','psychiatryh','personalh')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn);
         
-        $patexam_obj = DB::table('hisdb.patexam')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno);
+        // $patexam_obj = DB::table('hisdb.patexam')
+        //                 ->where('compcode','=',session('compcode'))
+        //                 ->where('mrn','=',$request->mrn)
+        //                 ->where('episno','=',$request->episno);
         
         $episdiag_obj = DB::table('hisdb.episdiag')
+                        ->select('compcode','mrn','episno','seq','icdcode','diagstatus','lastuser','lastupdate','icdcodeno','adduser','type','suppcode','ripdate','f1','f2','f3','f4','f5')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);
@@ -850,10 +858,10 @@ class DoctornoteController extends defaultController
             $responce->pathistory = $pathistory_obj;
         }
         
-        if($patexam_obj->exists()){
-            $patexam_obj = $patexam_obj->first();
-            $responce->patexam = $patexam_obj;
-        }
+        // if($patexam_obj->exists()){
+        //     $patexam_obj = $patexam_obj->first();
+        //     $responce->patexam = $patexam_obj;
+        // }
         
         if($episdiag_obj->exists()){
             $episdiag_obj = $episdiag_obj->first();

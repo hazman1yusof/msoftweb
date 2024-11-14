@@ -53,7 +53,7 @@
                                                 <label for="adm_type">Type of Admission</label>
                                                 <div class="field">
                                                     <div class="ui radio checkbox">
-                                                        <input type="radio" name="adm_type" checked="" value="DC" id="req_adm_dc">
+                                                        <input type="radio" name="adm_type" value="DC" id="req_adm_dc">
                                                         <label for="req_adm_dc">Day Case</label>
                                                     </div>
                                                 </div>
@@ -69,7 +69,7 @@
                                                 <label for="anaesthetist">Anaesthetist</label>
                                                 <div class="field">
                                                     <div class="ui radio checkbox">
-                                                        <input type="radio" name="anaesthetist" checked="" value="1" id="req_anas_req">
+                                                        <input type="radio" name="anaesthetist" value="1" id="req_anas_req">
                                                         <label for="req_anas_req">Required</label>
                                                     </div>
                                                 </div>
@@ -150,7 +150,7 @@
                                                     <label for="pt_condition">Patient Condition</label>
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="pt_condition" checked="" value="walking" id="req_ptcon_walking">
+                                                            <input type="radio" name="pt_condition" value="walking" id="req_ptcon_walking">
                                                             <label for="req_ptcon_walking">Walking</label>
                                                         </div>
                                                     </div>
@@ -172,7 +172,7 @@
                                                     <label for="radReqFor_pregnant">Pregnant</label>
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" id="pregnantReqFor" name="rad_pregnant" checked="" value="1">
+                                                            <input type="radio" id="pregnantReqFor" name="rad_pregnant" value="1">
                                                             <label for="pregnantReqFor">Yes</label>
                                                         </div>
                                                     </div>
@@ -308,7 +308,8 @@
                                     z-index: 2;">
                                     <button class="ui button" id="new_mriReqFor"><span class="fa fa-plus-square-o"></span>New</button>
                                     <button class="ui button" id="edit_mriReqFor"><span class="fa fa-edit fa-lg"></span>Edit</button>
-                                    <button class="ui button" id="save_mriReqFor"><span class="fa fa-save fa-lg"></span>Save</button>
+                                    <button class="ui button" id="save_mriReqFor"><span class="fa fa-save fa-lg"></span>Doctor / Nurse</button>
+                                    <button class="ui button" id="accept_mriReqFor"><span class="fa fa-check fa-lg"></span>Radiographer</button>
                                     <button class="ui button" id="cancel_mriReqFor"><span class="fa fa-ban fa-lg"></span>Cancel</button>
                                     <button class="ui button" id="mriReqFor_chart"><span class="fa fa-print fa-lg"></span>Print</button>
                                 </div>
@@ -321,7 +322,10 @@
                                                 <div class="inline fields">
                                                     <label>Weight</label>
                                                     <div class="field">
-                                                        <input type="text" onKeyPress="if(this.value.length==6) return false;" id="mriReqFor_weight" name="mri_weight">
+                                                        <div class="ui right labeled input">
+                                                            <input type="text" onKeyPress="if(this.value.length==6) return false;" id="mriReqFor_weight" name="mri_weight">
+                                                            <div class="ui basic label">KG</div>
+                                                        </div>
                                                     </div>
                                                     
                                                     <label>Date</label>
@@ -352,7 +356,7 @@
                                                             <div class="inline fields">
                                                                 <div class="field">
                                                                     <div class="ui radio checkbox">
-                                                                        <input type="radio" name="cardiacpacemaker" checked="" value="1" id="req_cp_yes">
+                                                                        <input type="radio" name="cardiacpacemaker" value="1" id="req_cp_yes">
                                                                         <label for="req_cp_yes">Yes</label>
                                                                     </div>
                                                                 </div>
@@ -375,7 +379,7 @@
                                                             <div class="inline fields">
                                                                 <div class="field">
                                                                     <div class="ui radio checkbox">
-                                                                        <input type="radio" name="pros_valve" checked="" value="1" id="req_pv_yes">
+                                                                        <input type="radio" name="pros_valve" value="1" id="req_pv_yes">
                                                                         <label for="req_pv_yes">Yes</label>
                                                                     </div>
                                                                 </div>
@@ -398,7 +402,7 @@
                                                             <div class="inline fields">
                                                                 <div class="field">
                                                                     <div class="ui radio checkbox">
-                                                                        <input type="radio" name="intraocular" checked="" value="1" id="req_io_yes">
+                                                                        <input type="radio" name="intraocular" value="1" id="req_io_yes">
                                                                         <label for="req_io_yes">Yes</label>
                                                                     </div>
                                                                 </div>
@@ -421,7 +425,7 @@
                                                             <div class="inline fields">
                                                                 <div class="field">
                                                                     <div class="ui radio checkbox">
-                                                                        <input type="radio" name="cochlear_imp" checked="" value="1" id="req_ci_yes">
+                                                                        <input type="radio" name="cochlear_imp" value="1" id="req_ci_yes">
                                                                         <label for="req_ci_yes">Yes</label>
                                                                     </div>
                                                                 </div>
@@ -444,7 +448,7 @@
                                                             <div class="inline fields">
                                                                 <div class="field">
                                                                     <div class="ui radio checkbox">
-                                                                        <input type="radio" name="neurotransm" checked="" value="1" id="req_nt_yes">
+                                                                        <input type="radio" name="neurotransm" value="1" id="req_nt_yes">
                                                                         <label for="req_nt_yes">Yes</label>
                                                                     </div>
                                                                 </div>
@@ -467,7 +471,7 @@
                                                             <div class="inline fields">
                                                                 <div class="field">
                                                                     <div class="ui radio checkbox">
-                                                                        <input type="radio" name="bonegrowth" checked="" value="1" id="req_bg_yes">
+                                                                        <input type="radio" name="bonegrowth" value="1" id="req_bg_yes">
                                                                         <label for="req_bg_yes">Yes</label>
                                                                     </div>
                                                                 </div>
@@ -490,7 +494,7 @@
                                                             <div class="inline fields">
                                                                 <div class="field">
                                                                     <div class="ui radio checkbox">
-                                                                        <input type="radio" name="druginfuse" checked="" value="1" id="req_di_yes">
+                                                                        <input type="radio" name="druginfuse" value="1" id="req_di_yes">
                                                                         <label for="req_di_yes">Yes</label>
                                                                     </div>
                                                                 </div>
@@ -513,7 +517,7 @@
                                                             <div class="inline fields">
                                                                 <div class="field">
                                                                     <div class="ui radio checkbox">
-                                                                        <input type="radio" name="surg_clips" checked="" value="1" id="req_sc_yes">
+                                                                        <input type="radio" name="surg_clips" value="1" id="req_sc_yes">
                                                                         <label for="req_sc_yes">Yes</label>
                                                                     </div>
                                                                 </div>
@@ -536,7 +540,7 @@
                                                             <div class="inline fields">
                                                                 <div class="field">
                                                                     <div class="ui radio checkbox">
-                                                                        <input type="radio" name="jointlimb_pros" checked="" value="1" id="req_jl_yes">
+                                                                        <input type="radio" name="jointlimb_pros" value="1" id="req_jl_yes">
                                                                         <label for="req_jl_yes">Yes</label>
                                                                     </div>
                                                                 </div>
@@ -559,7 +563,7 @@
                                                             <div class="inline fields">
                                                                 <div class="field">
                                                                     <div class="ui radio checkbox">
-                                                                        <input type="radio" name="shrapnel" checked="" value="1" id="req_shr_yes">
+                                                                        <input type="radio" name="shrapnel" value="1" id="req_shr_yes">
                                                                         <label for="req_shr_yes">Yes</label>
                                                                     </div>
                                                                 </div>
@@ -582,7 +586,7 @@
                                                             <div class="inline fields">
                                                                 <div class="field">
                                                                     <div class="ui radio checkbox">
-                                                                        <input type="radio" name="oper_3mth" checked="" value="1" id="req_oper_yes">
+                                                                        <input type="radio" name="oper_3mth" value="1" id="req_oper_yes">
                                                                         <label for="req_oper_yes">Yes</label>
                                                                     </div>
                                                                 </div>
@@ -605,7 +609,7 @@
                                                             <div class="inline fields">
                                                                 <div class="field">
                                                                     <div class="ui radio checkbox">
-                                                                        <input type="radio" name="prev_mri" checked="" value="1" id="req_mri_yes">
+                                                                        <input type="radio" name="prev_mri" value="1" id="req_mri_yes">
                                                                         <label for="req_mri_yes">Yes</label>
                                                                     </div>
                                                                 </div>
@@ -628,7 +632,7 @@
                                                             <div class="inline fields">
                                                                 <div class="field">
                                                                     <div class="ui radio checkbox">
-                                                                        <input type="radio" name="claustrophobia" checked="" value="1" id="req_claus_yes">
+                                                                        <input type="radio" name="claustrophobia" value="1" id="req_claus_yes">
                                                                         <label for="req_claus_yes">Yes</label>
                                                                     </div>
                                                                 </div>
@@ -651,7 +655,7 @@
                                                             <div class="inline fields">
                                                                 <div class="field">
                                                                     <div class="ui radio checkbox">
-                                                                        <input type="radio" name="dental_imp" checked="" value="1" id="req_dental_yes">
+                                                                        <input type="radio" name="dental_imp" value="1" id="req_dental_yes">
                                                                         <label for="req_dental_yes">Yes</label>
                                                                     </div>
                                                                 </div>
@@ -674,7 +678,7 @@
                                                             <div class="inline fields">
                                                                 <div class="field">
                                                                     <div class="ui radio checkbox">
-                                                                        <input type="radio" name="frmgnetic_imp" checked="" value="1" id="req_fmg_yes">
+                                                                        <input type="radio" name="frmgnetic_imp" value="1" id="req_fmg_yes">
                                                                         <label for="req_fmg_yes">Yes</label>
                                                                     </div>
                                                                 </div>
@@ -697,7 +701,7 @@
                                                             <div class="inline fields">
                                                                 <div class="field">
                                                                     <div class="ui radio checkbox">
-                                                                        <input type="radio" name="pregnancy" checked="" value="1" id="req_preg_yes">
+                                                                        <input type="radio" name="pregnancy" value="1" id="req_preg_yes">
                                                                         <label for="req_preg_yes">Yes</label>
                                                                     </div>
                                                                 </div>
@@ -720,7 +724,7 @@
                                                             <div class="inline fields">
                                                                 <div class="field">
                                                                     <div class="ui radio checkbox">
-                                                                        <input type="radio" name="allergy_drug" checked="" value="1" id="req_allergy_yes">
+                                                                        <input type="radio" name="allergy_drug" value="1" id="req_allergy_yes">
                                                                         <label for="req_allergy_yes">Yes</label>
                                                                     </div>
                                                                 </div>
@@ -761,12 +765,12 @@
                                                 <div class="inline fields">
                                                     <label>Name of Doctor</label>
                                                     <div class="field">
-                                                        <input id="mriReqFor_doctorname" name="mri_doctorname" type="text" style="width: 320px;">
+                                                        <input id="mriReqFor_doctorname" name="mri_doctorname" type="text" style="width: 320px;" rdonly>
                                                     </div>
                                                     
                                                     <label>Name of patient/parents/guardian</label>
                                                     <div class="field">
-                                                        <input id="mriReqFor_patientname" name="mri_patientname" type="text" style="width: 320px;">
+                                                        <input id="mriReqFor_patientname" name="mri_patientname" type="text" style="width: 320px;" rdonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -774,21 +778,21 @@
                                             <div class="five wide column">
                                                 <div class="field">
                                                     <label>Doctor / Radiologist</label>
-                                                    <input id="mriReqFor_radiologist" name="mri_radiologist" type="text" style="width: 320px;">
+                                                    <input id="mriReqFor_radiologist" name="mri_radiologist" type="text" style="width: 320px;" rdonly>
                                                 </div>
                                             </div>
                                             
                                             <div class="five wide column">
                                                 <div class="field">
                                                     <label>Radiographer</label>
-                                                    <input id="ReqFor_radiographer" name="radiographer" type="text" style="width: 320px;">
+                                                    <input id="ReqFor_radiographer" name="radiographer" type="text" style="width: 320px;" rdonly>
                                                 </div>
                                             </div>
                                             
                                             <div class="five wide column">
                                                 <div class="field">
                                                     <label>Entered By</label>
-                                                    <input id="mriReqFor_lastuser" name="mri_lastuser" type="text" style="width: 320px;">
+                                                    <input id="mriReqFor_lastuser" name="mri_lastuser" type="text" style="width: 320px;" rdonly>
                                                 </div>
                                             </div>
                                         </div>
