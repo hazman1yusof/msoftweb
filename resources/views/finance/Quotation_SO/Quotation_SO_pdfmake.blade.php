@@ -169,9 +169,11 @@
 									2. Please ensure to receive/request correct receipt after payment is made.\n
 									3. For further enquiries: please do not hesitate to contact: MILA/ARIF, Office Telephone No./Fax: 03-91735642, HP No. 019-2304606.\n
 									KINDLY ENSURE THAT ALL PAYMENT IS DONE AT:\n
-									\u200B\tKedai K-Health UKM Kesihatan
-									\u200B\tAras Lobi
-									\u200B\tPusat Perubatan UKM\n
+									\u200B\tMED-UKM
+									\u200B\t(Dimiliki oleh UKM MEDICARE SDN. BHD.)
+									\u200B\tAras Bawah (G) Lobi Pelawat, Pusat Perubatan UKM
+									\u200B\tJalan Yaacob Latiff, 56000 Cheras Kuala Lumpur
+									\u200B\tTel / Fax 03-9173 9357    Mobile 019-228 9357\n
 									
 									PLEASE ASK FOR RECEIPT\n`,
 									colSpan: 8},{},{},{},{},{},{},{},

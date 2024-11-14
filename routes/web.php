@@ -21,6 +21,7 @@ Route::get('/primary_care','HomeController@primary_care');
 Route::get('/ptcare','HomeController@ptcare');
 Route::get('/dialysis','HomeController@dialysis');
 Route::get('/implant','HomeController@implant');
+Route::get('/khealth','HomeController@khealth');
 Route::get('/warehouse','HomeController@warehouse');
 Route::post('/sessionUnit','HomeController@changeSessionUnit');
 Route::get('/login','SessionController@create')->name('login');

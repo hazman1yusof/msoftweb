@@ -127,6 +127,29 @@ class HomeController extends Controller
         return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut','logo1'));
     }
 
+    public function khealth(){
+        $user = Auth::user();
+        $menu = $this->create_khealth_menu();
+        $units = DB::table('sysdb.sector')
+                ->where('compcode','=',$user->compcode)
+                ->get();
+        $unit_user = '';
+        $company = DB::table('sysdb.company')->where('compcode',session('compcode'))->first();
+        $logo1 = $company->logo1;
+        $title="K HEALTH";
+        if($user->dept != ''){
+            $unit_user_ = DB::table('sysdb.department')
+                ->where('compcode','=',$user->compcode)
+                ->where('deptcode','=',$user->dept)
+                ->first();
+            $unit_user = $unit_user_->sector;
+        }
+        $dept_desc = $unit_user_->description;
+        $shortcut=true;
+
+        return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut','logo1'));
+    }
+
     public function warehouse(){
         $user = Auth::user();
         $menu = $this->create_warehouse_menu();
@@ -359,6 +382,81 @@ class HomeController extends Controller
         $menu.="<li><a style='padding-left:21px' title='Quotation' class='clickable' programid='fin_sales_quotation_SO' targeturl='./Quotation_SO'>Quotation</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Sales Order' class='clickable' programid='fin_salesOrder_prepared' targeturl='./SalesOrder?scope=ALL'>Sales Order</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Sales Order' class='clickable' programid='fin_salesOrder_delivered' targeturl='./SalesOrder?scope=DELIVERED'>Deliver SO</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Recomputed' class='clickable' programid='fin_salesOrder_recomputed' targeturl='./SalesOrder?scope=RECOMPUTED'>Recomputed</a></li>";
+
+
+        //header
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Account</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Receipt' class='clickable' programid='ARreceipt' targeturl='./receipt'>Receipt</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Refund' class='clickable' programid='refund' targeturl='./refund'>Refund</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Payment / Deposit' class='clickable' programid='dataentryPV' targeturl='./paymentVoucher?source=AP&scope=ALL'>Payment / Deposit</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Debit Note' class='clickable' programid='dataentryDN_AR' targeturl='./DebitNote?source=AR&trantype=DN&scope=ALL'>Debit Note</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Credit Note' class='clickable' programid='dataentryCN_AR' targeturl='./CreditNoteAR?source=AR&trantype=CN&scope=ALL'>Credit Note</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Cancellation' class='clickable' programid='cancellationAR' targeturl='./cancellation'>Cancellation</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Close Till' class='clickable' programid='till_close' targeturl='./till_close'>Close Till</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='AR Enquiry' class='clickable' programid='arenquiry' targeturl='./arenquiry'>AR Enquiry</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Till Enquiry' class='clickable' programid='tillenquiry' targeturl='./tillenquiry'>Till Enquiry</a></li>";
+
+        //header
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Inv Transaction' class=''><b>Procument</b></a></li>";
+        $menu.="<li><a style='padding-left:21px;' title='Purchase Request' class='clickable' programid='PurReq_dataentry' targetURL='purchaseRequest?scope=ALL' >Purchase Request</a></li>";
+        $menu.="<li><a style='padding-left:21px;' title='Purchase Order' class='clickable' programid='purOrd_prepared' targetURL='purchaseOrder?scope=ALL' >Purchase Order</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Delivery Order' class='clickable' programid='DeliveryOrd_dataentr' targeturl='deliveryOrder?scope=ALL'>Delivery Order</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Invoice' class='clickable' programid='invap_dataentry' targeturl='invoiceAP?source=AP&amp;trantype=IN&amp;scope=ALL'>Invoice</a></li>";
+
+        //header
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Inv Transaction' class=''><b>Inventory Transaction</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Inventory Request' class='clickable' programid='InvReqDataEntry' targeturl='./inventoryRequest?scope=ALL'>Inventory Request</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Inventory Transaction' class='clickable' programid='invtran' targeturl='./inventoryTransaction?scope=ALL'>Inventory Transaction</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Transafer(TUI/TUO)' class='clickable' programid='transfer_TUI_TUO' targeturl='./inventoryTransaction?scope=ALL&ttype=TUO'>Transafer(TUI/TUO)</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Good Return In' class='clickable' programid='goodReturnIn' targeturl='./inventoryTransaction?scope=ALL&ttype=GRI'>Good Return In</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Adjusment(AI/AO)' class='clickable' programid='adjustmenAIAO' targeturl='./inventoryTransaction?scope=ALL&ttype=AI'>Adjusment(AI/AO)</a></li>";
+
+        //header
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Product</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Pharmacy' class='clickable' programid='stockNon-Pharmacy' targeturl='product?groupcode=Stock&&Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Pharmacy' class='clickable' programid='stockConsignment' targeturl='product?groupcode=Consignment&&Class=Consignment'>Consignment</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Other' class='clickable' programid='productFin' targeturl='product?groupcode=Others&&Class=Others'>Others</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='asset' targeturl='./product?groupcode=Asset&&Class=Asset'>Asset</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Charge Master' class='clickable' programid='chgmaster' targeturl='./chargemaster'>Charge Master</a></li>";
+
+        //header
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Item Enquiry</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemPhar' targeturl='./itemEnquiry?Class=Pharmacy'>Pharmacy</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemNonPhar' targeturl='./itemEnquiry?Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
+
+        //header
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Stock Take</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Stock Freeze' class='clickable' programid='stockFreeze' targeturl='./stockFreeze'>Stock Freeze</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Stock Count' class='clickable' programid='stockCount' targeturl='./stockCount'>Stock Count</a></li>";
+
+        //header
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Dashboard</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ptcare_dashboard' targeturl='./ptcare_dashboard'>Business Intelligence</a></li>";
+
+        //header
+        $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Report</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Sales' class='clickable' programid='SalesOrder_Report' targeturl='./SalesOrder_Report'>Sales</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Sales by Item' class='clickable' programid='SalesItem_Report' targeturl='./SalesItem_Report'>Sales by Item</a></li>";
+        //GRI
+        //IV
+        //stock freeze
+        //stock count
+
+        return $menu;
+    }
+
+    public function create_khealth_menu(){
+        $user = Auth::user();
+        $groupid = $user->groupid;
+        $company = $user->compcode;
+
+        //header
+        $menu="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Point Of Sales</b></a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Quotation' class='clickable' programid='fin_sales_quotation_SO' targeturl='./Quotation_SO'>Quotation</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Sales Order' class='clickable' programid='fin_salesOrder_prepared' targeturl='./SalesOrder?scope=ALL'>Sales Order</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Sales Order' class='clickable' programid='fin_salesOrder_delivered' targeturl='./SalesOrder?scope=DELIVERED'>Deliver SO</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Recomputed' class='clickable' programid='fin_salesOrder_recomputed' targeturl='./SalesOrder?scope=RECOMPUTED'>Recomputed</a></li>";
 
 
         //header
