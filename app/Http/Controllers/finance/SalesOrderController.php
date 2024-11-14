@@ -201,7 +201,33 @@ class SalesOrderController extends defaultController
         });
         
         if(!empty($request->filterCol)){
-            $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+            // $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+            foreach ($request->filterCol as $key => $value) {
+                $pieces = explode(".", $request->filterVal[$key], 2);
+                if($pieces[0] == 'session'){
+                    $table = $table->where($request->filterCol[$key],'=',session($pieces[1]));
+                }else if($pieces[0] == '<>'){
+                    $table = $table->where($request->filterCol[$key],'<>',$pieces[1]);
+                }else if($pieces[0] == '>'){
+                    $table = $table->where($request->filterCol[$key],'>',$pieces[1]);
+                }else if($pieces[0] == '>='){
+                    $table = $table->where($request->filterCol[$key],'>=',$pieces[1]);
+                }else if($pieces[0] == '<'){
+                    $table = $table->where($request->filterCol[$key],'<',$pieces[1]);
+                }else if($pieces[0] == '<='){
+                    $table = $table->where($request->filterCol[$key],'<=',$pieces[1]);
+                }else if($pieces[0] == 'on'){
+                    $table = $table->whereColumn($request->filterCol[$key],$pieces[1]);
+                }else if($pieces[0] == 'null'){
+                    $table = $table->whereNull($request->filterCol[$key]);
+                }else if($pieces[0] == 'notnull'){
+                    $table = $table->whereNotNull($request->filterCol[$key]);
+                }else if($pieces[0] == 'raw'){
+                    $table = $table->where($request->filterCol[$key],'=',DB::raw($pieces[1]));
+                }else{
+                    $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+                }
+            }
         }
         
         if(!empty($request->filterdate)){
