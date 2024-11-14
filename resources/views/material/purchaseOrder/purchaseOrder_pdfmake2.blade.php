@@ -257,7 +257,7 @@
 						body: [
 							@if($purordhd->prdept == 'IMP')
 							[
-								{text: 'Verified By\n\n\n{{$purordhd->requestby_name}}',bold: true,alignment: 'center'},
+								{text: 'Prepared By\n\n\n{{$purordhd->requestby_name}}',bold: true,alignment: 'center'},
 								{text: 'Verified By\n\n\n{{$purordhd->verifiedby_name}}',bold: true,alignment: 'center'},
 								{text: 'Approved By\n\n\n{{$purordhd->approvedby_name}}',bold: true,alignment: 'center'},
 							],
