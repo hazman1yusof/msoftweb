@@ -385,9 +385,9 @@
                                                             <button type="button" class="btn btn-default" data-oper='add' id="save_mriReqFor">
                                                                 <span class="fa fa-save fa-lg"></span> Doctor / Nurse 
                                                             </button>
-                                                            <button type="button" class="btn btn-default" id="accept_mriReqFor">
+                                                            <!-- <button type="button" class="btn btn-default" id="accept_mriReqFor">
                                                                 <span class="fa fa-check fa-lg"></span> Radiographer 
-                                                            </button>
+                                                            </button> -->
                                                             <button type="button" class="btn btn-default" id="cancel_mriReqFor">
                                                                 <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                                             </button>

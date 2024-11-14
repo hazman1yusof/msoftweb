@@ -171,7 +171,7 @@ class RequestForController extends defaultController
                         'adm_type' => $request->adm_type,
                         'anaesthetist' => $request->anaesthetist,
                         'remarks' => $request->ot_remarks,
-                        'doctorname'  => $request->ot_doctorname,
+                        // 'doctorname'  => $request->ot_doctorname,
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser' => session('username'),
@@ -372,10 +372,10 @@ class RequestForController extends defaultController
                         'bmd' => $request->bmd,
                         'bmd_date' => $request->bmd_date,
                         'bmd_remark' => $request->bmd_remark,
-                        'clinicaldata' => $request->clinicaldata,
-                        'doctorname'  => $request->radClinic_doctorname,
-                        // 'rad_note' => $request->rad_note,
-                        // 'radiologist'  => $request->radClinic_radiologist,
+                        // 'clinicaldata' => $request->clinicaldata,
+                        // 'doctorname'  => $request->radClinic_doctorname,
+                        'rad_note' => $request->rad_note,
+                        'radiologist'  => session('username'),
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser' => session('username'),
@@ -414,10 +414,10 @@ class RequestForController extends defaultController
                         'bmd' => $request->bmd,
                         'bmd_date' => $request->bmd_date,
                         'bmd_remark' => $request->bmd_remark,
-                        'clinicaldata' => $request->clinicaldata,
-                        'doctorname'  => $request->radClinic_doctorname,
-                        // 'rad_note' => $request->rad_note,
-                        // 'radiologist'  => $request->radClinic_radiologist,
+                        // 'clinicaldata' => $request->clinicaldata,
+                        // 'doctorname'  => $request->radClinic_doctorname,
+                        'rad_note' => $request->rad_note,
+                        'radiologist'  => session('username'),
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser' => session('username'),
@@ -435,6 +435,18 @@ class RequestForController extends defaultController
             //         'lastuser'  => session('username'),
             //         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
             //     ]);
+            
+            $pat_mri = DB::table('hisdb.pat_mri')
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->where('compcode','=',session('compcode'));
+            
+            if($pat_mri->exists()){
+                $pat_mri
+                    ->update([
+                        'radiologist' => session('username'),
+                    ]);
+            }
             
             DB::commit();
             
@@ -580,10 +592,10 @@ class RequestForController extends defaultController
                         'bmd' => $request->bmd,
                         'bmd_date' => $request->bmd_date,
                         'bmd_remark' => $request->bmd_remark,
-                        'clinicaldata' => $request->clinicaldata,
-                        'doctorname'  => $request->radClinic_doctorname,
-                        // 'rad_note' => $request->rad_note,
-                        // 'radiologist'  => $request->radClinic_radiologist,
+                        // 'clinicaldata' => $request->clinicaldata,
+                        // 'doctorname'  => $request->radClinic_doctorname,
+                        'rad_note' => $request->rad_note,
+                        'radiologist'  => session('username'),
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser' => session('username'),
@@ -622,15 +634,27 @@ class RequestForController extends defaultController
                         'bmd' => $request->bmd,
                         'bmd_date' => $request->bmd_date,
                         'bmd_remark' => $request->bmd_remark,
-                        'clinicaldata' => $request->clinicaldata,
-                        'doctorname'  => $request->radClinic_doctorname,
-                        // 'rad_note' => $request->rad_note,
-                        // 'radiologist'  => $request->radClinic_radiologist,
+                        // 'clinicaldata' => $request->clinicaldata,
+                        // 'doctorname'  => $request->radClinic_doctorname,
+                        'rad_note' => $request->rad_note,
+                        'radiologist'  => session('username'),
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser' => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'computerid' => session('computerid'),
+                    ]);
+            }
+            
+            $pat_mri = DB::table('hisdb.pat_mri')
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->where('compcode','=',session('compcode'));
+            
+            if($pat_mri->exists()){
+                $pat_mri
+                    ->update([
+                        'radiologist' => session('username'),
                     ]);
             }
             
@@ -949,7 +973,7 @@ class RequestForController extends defaultController
                         'allergy_drug' => $request->allergy_drug,
                         'bloodurea' => $request->bloodurea,
                         'serum_creatinine' => $request->serum_creatinine,
-                        'doctorname' => $request->mri_doctorname,
+                        // 'doctorname' => $request->mri_doctorname,
                         // 'radiologist' => $request->mri_radiologist,
                         // 'radiographer' => $request->radiographer,
                         // 'staffnurse' => $request->staffnurse,
@@ -1038,7 +1062,7 @@ class RequestForController extends defaultController
                         // 'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         // 'lastuser' => session('username'),
                         // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'computerid' => session('computerid'),
+                        // 'computerid' => session('computerid'),
                     ]);
             }
             
@@ -1173,7 +1197,7 @@ class RequestForController extends defaultController
                         'clinic_diag' => $request->clinic_diag,
                         'findings' => $request->findings,
                         'treatment' => $request->phy_treatment,
-                        'doctorname' => $request->phy_doctorname,
+                        // 'doctorname' => $request->phy_doctorname,
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser' => session('username'),
@@ -1303,7 +1327,7 @@ class RequestForController extends defaultController
                         'others_dressing' => $request->others_dressing,
                         'others_name' => $request->others_name,
                         'solution' => $request->solution,
-                        'doctorname' => $request->dressing_doctorname,
+                        // 'doctorname' => $request->dressing_doctorname,
                         'upduser'  => session('username'),
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser' => session('username'),

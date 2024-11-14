@@ -117,14 +117,14 @@ $(document).ready(function (){
 		enableForm('#formRadClinic');
 		rdonly('#formRadClinic');
 		emptyFormdata_div("#formRadClinic",['#mrn_doctorNote','#episno_doctorNote']);
-		$('#rad_note').prop('disabled',true);
+		$('#clinicaldata').prop('disabled',true);
 	});
 	
 	$("#edit_radClinic").click(function (){
 		button_state_radClinic('wait');
 		enableForm('#formRadClinic');
 		rdonly('#formRadClinic');
-		$('#rad_note').prop('disabled',true);
+		$('#clinicaldata').prop('disabled',true);
 	});
 	
 	$("#save_radClinic").click(function (){
@@ -503,39 +503,39 @@ $(document).ready(function (){
 	});
 	///////////////////////////////////////////body diagram ends///////////////////////////////////////////
 	
-	$('#doctor_requestFor .menu .item').on('shown.bs.tab', function (e){
-		let tab = $(this).data('tab');
-		switch(tab){
-			case 'otbook':
-				populate_otbook_getdata();
-				// textarea_init_otbook();
-				break;
-			case 'rad':
-				break;
-			case 'physio':
-				populate_physio_getdata();
-				// textarea_init_physio();
-				break;
-			case 'dressing':
-				populate_dressing_getdata();
-				// textarea_init_dressing();
-				break;
-		}
-	});
+	// $('#doctor_requestFor .menu .item').on('shown.bs.tab', function (e){
+	// 	let tab = $(this).data('tab');
+	// 	switch(tab){
+	// 		case 'otbook':
+	// 			populate_otbook_getdata();
+	// 			// textarea_init_otbook();
+	// 			break;
+	// 		case 'rad':
+	// 			break;
+	// 		case 'physio':
+	// 			populate_physio_getdata();
+	// 			// textarea_init_physio();
+	// 			break;
+	// 		case 'dressing':
+	// 			populate_dressing_getdata();
+	// 			// textarea_init_dressing();
+	// 			break;
+	// 	}
+	// });
 	
-	$('#doctor_radiology .menu .item').on('shown.bs.tab', function (e){
-		let tab = $(this).data('tab');
-		switch(tab){
-			case 'radClinic':
-				populate_radClinic_getdata();
-				// textarea_init_radClinic();
-				break;
-			case 'mri':
-				populate_mri_getdata();
-				// textarea_init_mri();
-				break;
-		}
-	});
+	// $('#doctor_radiology .menu .item').on('shown.bs.tab', function (e){
+	// 	let tab = $(this).data('tab');
+	// 	switch(tab){
+	// 		case 'radClinic':
+	// 			populate_radClinic_getdata();
+	// 			// textarea_init_radClinic();
+	// 			break;
+	// 		case 'mri':
+	// 			populate_mri_getdata();
+	// 			// textarea_init_mri();
+	// 			break;
+	// 	}
+	// });
 	
 });
 
@@ -863,7 +863,7 @@ function populate_currDoctorNote(obj){
 	$('#ptname_doctorNote').val(obj.Name);
 	// $('#preg_doctorNote').val(obj.pregnant);
 	$('#ic_doctorNote').val(obj.Newic);
-	// $('#doctorname_doctorNote').val(obj.q_doctorname);
+	$('#doctorname_doctorNote').val(obj.doctorname);
 	
 	on_toggling_curr_past(obj);
 	
@@ -1602,6 +1602,11 @@ $('#tab_doctornote').on('shown.bs.collapse', function (){
 
 $('#tab_doctornote').on('hide.bs.collapse', function (){
 	$('div#docnote_date_tbl_sticky').hide();
+	disableForm('#formOTBook');
+	disableForm('#formRadClinic');
+	disableForm('#formMRI');
+	disableForm('#formPhysio');
+	disableForm('#formDressing');
 });
 
 // to reload date table on radio btn click
@@ -1632,6 +1637,7 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function (){
 	
 	$('#mrn_doctorNote_past').val(data.mrn);
 	$('#episno_doctorNote_past').val(data.episno);
+	$('#recorddate_doctorNote').val(data.date);
 	
 	$.get("./ptcare_doctornote/table?"+$.param(doctornote_docnote), function (data){
 		

@@ -2084,6 +2084,11 @@ $('#jqGridDoctorNote_rad_tabs.nav-tabs a').on('shown.bs.tab', function (e){
 $("#jqGridDoctorNote_panel").on("hide.bs.collapse", function (){
 	button_state_doctorNote('empty');
 	disableForm('#formDoctorNote');
+	disableForm('#formOTBook');
+	disableForm('#formRadClinic');
+	disableForm('#formMRI');
+	disableForm('#formPhysio');
+	disableForm('#formDressing');
 });
 
 // to reload date table on radio btn click

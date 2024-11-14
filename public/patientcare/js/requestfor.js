@@ -12,7 +12,6 @@ $(document).ready(function (){
     disableForm('#formRequestFor');
     
     ////////////////////////////////////////////otbook starts////////////////////////////////////////////
-    
     disableForm('#formOTBookReqFor');
     
     $("#new_otbookReqFor").click(function (){
@@ -62,14 +61,14 @@ $(document).ready(function (){
         enableForm('#formRadClinicReqFor');
         rdonly('#formRadClinicReqFor');
         emptyFormdata_div("#formRadClinicReqFor",['#mrn_requestFor','#episno_requestFor']);
-        $('#ReqFor_rad_note').prop('disabled',true);
+        $('#ReqFor_clinicaldata').prop('disabled',true);
     });
     
     $("#edit_radClinicReqFor").click(function (){
         button_state_radClinicReqFor('wait');
         enableForm('#formRadClinicReqFor');
         rdonly('#formRadClinicReqFor');
-        $('#ReqFor_rad_note').prop('disabled',true);
+        $('#ReqFor_clinicaldata').prop('disabled',true);
     });
     
     $("#save_radClinicReqFor").click(function (){
@@ -445,7 +444,7 @@ function populate_requestFor_ptcare(obj){
     $('#ptname_requestFor').val(obj.Name);
     $('#preg_requestFor').val(obj.pregnant);
     $('#ic_requestFor').val(obj.Newic);
-    $('#doctorname_requestFor').val(obj.q_doctorname);
+    $('#doctorname_requestFor').val(obj.doctorname);
 }
 
 function populate_otbookReqFor_getdata(){
@@ -1045,45 +1044,50 @@ $('#tab_requestFor').on('shown.bs.collapse', function (){
     populate_dressingReqFor_getdata();
 });
 
-$('#requestFor .menu .item').on('shown.bs.tab', function (e){
-    let tab = $(this).data('tab');
-    let id = $(this).attr('id');
-    $("#tab_requestFor").data('curtype',id);
-    switch(tab){
-        case 'otbookReqFor':
-            populate_otbookReqFor_getdata();
-            // textarea_init_otbookReqFor();
-            break;
-        case 'radReqFor':
-            break;
-        case 'physioReqFor':
-            populate_physioReqFor_getdata();
-            // textarea_init_physioReqFor();
-            break;
-        case 'dressingReqFor':
-            populate_dressingReqFor_getdata();
-            // textarea_init_dressingReqFor();
-            break;
-    }
-});
+// $('#requestFor .menu .item').on('shown.bs.tab', function (e){
+//     let tab = $(this).data('tab');
+//     let id = $(this).attr('id');
+//     $("#tab_requestFor").data('curtype',id);
+//     switch(tab){
+//         case 'otbookReqFor':
+//             populate_otbookReqFor_getdata();
+//             // textarea_init_otbookReqFor();
+//             break;
+//         case 'radReqFor':
+//             break;
+//         case 'physioReqFor':
+//             populate_physioReqFor_getdata();
+//             // textarea_init_physioReqFor();
+//             break;
+//         case 'dressingReqFor':
+//             populate_dressingReqFor_getdata();
+//             // textarea_init_dressingReqFor();
+//             break;
+//     }
+// });
 
-$('#radiology .menu .item').on('shown.bs.tab', function (e){
-    let tab = $(this).data('tab');
-    switch(tab){
-        case 'radClinicReqFor':
-            populate_radClinicReqFor_getdata();
-            // textarea_init_radClinicReqFor();
-            break;
-        case 'mriReqFor':
-            populate_mriReqFor_getdata();
-            // textarea_init_mriReqFor();
-            break;
-    }
-});
+// $('#radiology .menu .item').on('shown.bs.tab', function (e){
+//     let tab = $(this).data('tab');
+//     switch(tab){
+//         case 'radClinicReqFor':
+//             populate_radClinicReqFor_getdata();
+//             // textarea_init_radClinicReqFor();
+//             break;
+//         case 'mriReqFor':
+//             populate_mriReqFor_getdata();
+//             // textarea_init_mriReqFor();
+//             break;
+//     }
+// });
 
 $("#tab_requestFor").on("hide.bs.collapse", function (){
     // button_state_requestFor('empty');
-    // disableForm('#formRequestFor');
+    disableForm('#formRequestFor');
+    disableForm('#formOTBookReqFor');
+    disableForm('#formRadClinicReqFor');
+    disableForm('#formMRIReqFor');
+    disableForm('#formPhysioReqFor');
+    disableForm('#formDressingReqFor');
 });
 
 function textarea_init_otbookReqFor(){

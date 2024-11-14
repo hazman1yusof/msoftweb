@@ -2199,7 +2199,7 @@ class DoctorNoteController extends defaultController
                         // 'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         // 'lastuser' => session('username'),
                         // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'computerid' => session('computerid'),
+                        // 'computerid' => session('computerid'),
                     ]);
             }
             
