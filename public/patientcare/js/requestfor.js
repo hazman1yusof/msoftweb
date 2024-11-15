@@ -818,6 +818,19 @@ function saveForm_otbookReqFor(callback){
         }).get()
     );
     
+    values.push({
+        name:'op_date',
+        value:$('#formOTBookReqFor input[name=op_date]').val()
+    })
+    values.push({
+        name:'oper_type',
+        value:$('#formOTBookReqFor input[name=oper_type]').val()
+    })
+    values.push({
+        name:'ot_remarks',
+        value:$('#formOTBookReqFor textarea[name=ot_remarks]').val()
+    })
+    
     $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').done(function (data){
