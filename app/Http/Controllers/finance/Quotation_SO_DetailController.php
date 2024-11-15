@@ -177,59 +177,18 @@ class Quotation_SO_DetailController extends defaultController
 
         if(!empty($request->searchCol)){
             $searchCol_array = $request->searchCol;
-
-            $count = array_count_values($searchCol_array);
-
-            foreach ($count as $key => $value) {
-                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
-
-                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
-                    foreach ($searchCol_array as $key => $value) {
-                        $found = array_search($key,$occur_ar);
-                        if($found !== false && trim($request->searchVal[$key]) != '%%'){
-                            $search_ = $this->begins_search_if(['itemcode','chgcode'],$searchCol_array[$key],$request->searchVal[$key]);
-                            if($searchCol_array[$key] == 'generic'){
-                                $table->Where('pt.'.$searchCol_array[$key],'like',$request->wholeword);
-                            }else{
-                                $table->Where('cm.'.$searchCol_array[$key],'like',$request->wholeword);
-                            }
-                            // $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
-                            // $table->Where('cm.'.$searchCol_array[$key],'like',$request->searchVal[$key]);
-                        }
-                    }
-                });
+            if($searchCol_array[0] == 'generic'){
+                $table->Where('pt.'.$searchCol_array[0],'like','%'.$request->wholeword.'%');
+            }else{
+                $table->Where('cm.'.$searchCol_array[0],'like','%'.$request->wholeword.'%');
             }
         }
 
         if(!empty($request->searchCol2)){
-            $searchCol_array = $request->searchCol2;
-            $table = $table->where(function($table) use ($searchCol_array, $request){
-                foreach ($searchCol_array as $key => $value) {
-                    if($key>1) break;
-                    // $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
-                    // $table->orwhere('cm.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
-                    if($searchCol_array[$key] == 'generic'){
-                        $table->orwhere('pt.'.$searchCol_array[$key],'like', $request->wholeword);
-                    }else{
-                        $table->orwhere('cm.'.$searchCol_array[$key],'like', $request->wholeword);
-                    }
-                }
+            $table = $table->where(function($table) use ($request){
+                $table->orwhere('cm.chgcode','like', '%'.$request->wholeword.'%');
+                $table->orwhere('cm.description','like', '%'.$request->wholeword.'%');
             });
-
-            if(count($searchCol_array)>2){
-                $table = $table->where(function($table) use ($searchCol_array, $request){
-                    foreach ($searchCol_array as $key => $value) {
-                        if($key<=1) continue;
-                        // $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
-                        // $table->orwhere('cm.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
-                        if($searchCol_array[$key] == 'generic'){
-                            $table->orwhere('pt.'.$searchCol_array[$key],'like', $request->wholeword);
-                        }else{
-                            $table->orwhere('cm.'.$searchCol_array[$key],'like', $request->wholeword);
-                        }
-                    }
-                });
-            }
         }
 
         if(!empty($request->filterCol)){
