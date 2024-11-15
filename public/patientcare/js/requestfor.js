@@ -241,6 +241,16 @@ $(document).ready(function (){
     });
     //////////////////////////////////////////print button ends//////////////////////////////////////////
     
+    // $tabs = $('#requestFor .menu .item');
+    
+    // $tabs.tab({
+    //     onVisible: function (tabPath){
+    //         console.log("test");
+    //     }
+    // });
+    
+    // $tabs.first().tab('change tab', 'otbookReqFor');
+    
 });
 
 var errorField = [];
@@ -1079,6 +1089,19 @@ $('#tab_requestFor').on('shown.bs.collapse', function (){
 //             break;
 //     }
 // });
+
+// $('#requestFor .menu .item').tab({'onVisible': function (){
+//     console.log("requestFor");
+//     populate_otbookReqFor_getdata();
+//     populate_physioReqFor_getdata();
+//     populate_dressingReqFor_getdata();
+// }});
+
+// $('#radiology .menu .item').tab({'onVisible': function (){
+//     console.log("radiology");
+//     populate_radClinicReqFor_getdata();
+//     populate_mriReqFor_getdata();
+// }});
 
 $("#tab_requestFor").on("hide.bs.collapse", function (){
     // button_state_requestFor('empty');

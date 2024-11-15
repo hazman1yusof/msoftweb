@@ -942,6 +942,12 @@ function populate_triage_currpt_getdata(){
 			textare_init_triage();
 			dialog_tri_col.check('errorField');
 			tri_color_set();
+			
+			// if($('#epistycode').val() == 'OP'){
+			// 	button_state_ti('edit');
+			// }else if($('#epistycode').val() == 'IP'){
+			// 	button_state_ti('empty');
+			// }
 		}else{
 			button_state_ti('add');
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
@@ -950,6 +956,12 @@ function populate_triage_currpt_getdata(){
 			examination_nursing.empty();
 			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 			textare_init_triage();
+			
+			// if($('#epistycode').val() == 'OP'){
+			// 	button_state_ti('add');
+			// }else if($('#epistycode').val() == 'IP'){
+			// 	button_state_ti('empty');
+			// }
 		}
 	});
 }
