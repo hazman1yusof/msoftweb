@@ -42,11 +42,11 @@ class PointOfSalesDetailController extends defaultController
             case 'get_table_dtl':
                 return $this->get_table_dtl($request);
             case 'get_itemcode_price':
-                if(!empty($request->searchCol2)){
-                    return $this->get_itemcode_price_2($request);
-                }else{
+                // if(!empty($request->searchCol2)){
+                //     return $this->get_itemcode_price_2($request);
+                // }else{
                     return $this->get_itemcode_price($request);
-                }
+                // }
             case 'get_itemcode_price_check':
                 return $this->get_itemcode_price_check($request);
             case 'get_itemcode_uom':
@@ -125,7 +125,8 @@ class PointOfSalesDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
+                        // ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','pt.generic','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','pt.generic','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE');
                         // ->where(function ($query) {
@@ -133,15 +134,15 @@ class PointOfSalesDetailController extends defaultController
                         //          ->orWhere('cm.invflag', '=', 0);
                         // });
 
-        $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
-                            $join = $join->where('cp.compcode', '=', session('compcode'));
-                            $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
-                            $join = $join->on('cp.uom', '=', 'cm.uom');
-                            if($request->from != 'chgcode_dfee'){
-                                $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
-                            }
-                            $join = $join->where('cp.effdate', '<=', $entrydate);
-                        });
+        // $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
+        //                     $join = $join->where('cp.compcode', '=', session('compcode'));
+        //                     $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
+        //                     $join = $join->on('cp.uom', '=', 'cm.uom');
+        //                     if($request->from != 'chgcode_dfee'){
+        //                         $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+        //                     }
+        //                     $join = $join->where('cp.effdate', '<=', $entrydate);
+        //                 });
 
         $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
                             $join = $join->on('st.itemcode', '=', 'cm.chgcode');
@@ -159,59 +160,75 @@ class PointOfSalesDetailController extends defaultController
                             $join = $join->where('pt.unit', '=', session('unit'));
                         });
 
-        $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
-                            $join = $join->where('cp.compcode', '=', session('compcode'));
-                            $join = $join->on('cp.optax', '=', 'tm.taxcode');
-                        });
+        // $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
+        //                     $join = $join->where('cp.compcode', '=', session('compcode'));
+        //                     $join = $join->on('cp.optax', '=', 'tm.taxcode');
+        //                 });
 
         $table = $table->join('material.uom as uom', function($join){
-                            $join = $join->on('uom.uomcode', '=', 'cm.uom')
-                                        ->where('uom.compcode', '=', session('compcode'))
-                                        ->where('uom.recstatus','=','ACTIVE');
-                    });
+                $join = $join->on('uom.uomcode', '=', 'cm.uom')
+                            ->where('uom.compcode', '=', session('compcode'))
+                            ->where('uom.recstatus','=','ACTIVE');
+        });
 
         if(!empty($request->searchCol)){
             $searchCol_array = $request->searchCol;
-
-            $count = array_count_values($searchCol_array);
-
-            foreach ($count as $key => $value) {
-                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
-
-                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
-                    foreach ($searchCol_array as $key => $value) {
-                        $found = array_search($key,$occur_ar);
-                        if($found !== false && trim($request->searchVal[$key]) != '%%'){
-                            $search_ = $this->begins_search_if(['itemcode','chgcode'],$searchCol_array[$key],$request->searchVal[$key]);
-                            $table->Where('cm.'.$searchCol_array[$key],'like',$search_);
-                            // $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
-                            // $table->Where('cm.'.$searchCol_array[$key],'like',$request->searchVal[$key]);
-                        }
-                    }
-                });
+            if($searchCol_array[0] == 'generic'){
+                $table->Where('pt.'.$searchCol_array[0],'like','%'.$request->wholeword.'%');
+            }else{
+                $table->Where('cm.'.$searchCol_array[0],'like','%'.$request->wholeword.'%');
             }
         }
 
         if(!empty($request->searchCol2)){
-            $searchCol_array = $request->searchCol2;
-            $table = $table->where(function($table) use ($searchCol_array, $request){
-                foreach ($searchCol_array as $key => $value) {
-                    if($key>1) break;
-                    // $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
-                    $table->orwhere('cm.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
-                }
+            $table = $table->where(function($table) use ($request){
+                $table->orwhere('cm.chgcode','like', '%'.$request->wholeword.'%');
+                $table->orwhere('cm.description','like', '%'.$request->wholeword.'%');
             });
-
-            if(count($searchCol_array)>2){
-                $table = $table->where(function($table) use ($searchCol_array, $request){
-                    foreach ($searchCol_array as $key => $value) {
-                        if($key<=1) continue;
-                        // $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
-                        $table->orwhere('cm.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
-                    }
-                });
-            }
         }
+
+        // if(!empty($request->searchCol)){
+        //     $searchCol_array = $request->searchCol;
+
+        //     $count = array_count_values($searchCol_array);
+
+        //     foreach ($count as $key => $value) {
+        //         $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+        //         $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+        //             foreach ($searchCol_array as $key => $value) {
+        //                 $found = array_search($key,$occur_ar);
+        //                 if($found !== false && trim($request->searchVal[$key]) != '%%'){
+        //                     $search_ = $this->begins_search_if(['itemcode','chgcode'],$searchCol_array[$key],$request->searchVal[$key]);
+        //                     $table->Where('cm.'.$searchCol_array[$key],'like',$search_);
+        //                     // $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+        //                     // $table->Where('cm.'.$searchCol_array[$key],'like',$request->searchVal[$key]);
+        //                 }
+        //             }
+        //         });
+        //     }
+        // }
+
+        // if(!empty($request->searchCol2)){
+        //     $searchCol_array = $request->searchCol2;
+        //     $table = $table->where(function($table) use ($searchCol_array, $request){
+        //         foreach ($searchCol_array as $key => $value) {
+        //             if($key>1) break;
+        //             // $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+        //             $table->orwhere('cm.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
+        //         }
+        //     });
+
+        //     if(count($searchCol_array)>2){
+        //         $table = $table->where(function($table) use ($searchCol_array, $request){
+        //             foreach ($searchCol_array as $key => $value) {
+        //                 if($key<=1) continue;
+        //                 // $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+        //                 $table->orwhere('cm.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
+        //             }
+        //         });
+        //     }
+        // }
 
         if(!empty($request->filterCol)){
             foreach ($request->filterCol as $key => $value) {
@@ -254,21 +271,25 @@ class PointOfSalesDetailController extends defaultController
             $value->billty_percent = $billtype_amt_percent->percent_;
 
             $chgprice_obj = DB::table('hisdb.chgprice as cp')
-                ->select('cp.idno',$cp_fld,'cp.optax','tm.rate','cp.chgcode')
+                ->select('cp.idno','cp.'.$cp_fld.' as price','cp.optax as taxcode','tm.rate','cp.chgcode')
                 ->leftJoin('hisdb.taxmast as tm', 'cp.optax', '=', 'tm.taxcode')
                 ->where('cp.compcode', '=', session('compcode'))
                 ->where('cp.chgcode', '=', $value->chgcode)
                 ->where('cp.uom', '=', $value->uom)
                 ->whereDate('cp.effdate', '<=', $entrydate)
                 ->orderBy('cp.effdate','desc');
-
+                
             if($chgprice_obj->exists()){
                 $chgprice_obj = $chgprice_obj->first();
 
-                if($value->chgcode == $chgprice_obj->chgcode && $value->idno != $chgprice_obj->idno){
-                    unset($rows[$key]);
-                    continue;
-                }
+                $value->price = $chgprice_obj->price;
+                $value->taxcode = $chgprice_obj->taxcode;
+                $value->rate = $chgprice_obj->rate;
+
+                // if($value->chgcode == $chgprice_obj->chgcode && $value->idno != $chgprice_obj->idno){
+                //     unset($rows[$key]);
+                //     continue;
+                // }
             }
         }
 

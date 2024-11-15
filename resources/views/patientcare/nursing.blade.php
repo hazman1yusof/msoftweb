@@ -809,7 +809,7 @@
                                                     <tr>
                                                         <td colspan="2" rowspan="2" class="align-middle">No Pain</td>
                                                         <td colspan="2" rowspan="2" class="align-middle">
-                                                            <img class="ui tiny circular image" src="/img/painscore/no-pain.png">                                                    
+                                                            <img class="ui tiny circular image" src="{{ asset('patientcare/img/painscore/no-pain.png') }}">                                                    
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -823,7 +823,7 @@
                                                     <tr>
                                                         <td colspan="2" rowspan="4" class="align-middle">Mild Pain</td>
                                                         <td colspan="2" rowspan="4" class="align-middle">
-                                                            <img class="ui tiny circular image" src="/img/painscore/mild-pain.png">                                                    
+                                                            <img class="ui tiny circular image" src="{{ asset('patientcare/img/painscore/mild-pain.png) }}">                                                    
                                                         </td>                                                
                                                     </tr>
                                                     <tr>
@@ -851,7 +851,7 @@
                                                     <tr>
                                                         <td colspan="2" rowspan="4" class="align-middle">Moderate Pain</td>
                                                         <td colspan="2" rowspan="4">
-                                                            <img class="ui tiny circular image" src="/img/painscore/moderate-pain.png">                                                    
+                                                            <img class="ui tiny circular image" src="{{ asset('patientcare/img/painscore/moderate-pain.png) }}">                                                    
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -879,7 +879,7 @@
                                                     <tr>
                                                         <td colspan="2" rowspan="4" class="align-middle">Severe Pain</td>
                                                         <td colspan="2" rowspan="4">
-                                                            <img class="ui tiny circular image" src="/img/painscore/severe-pain.png">                                                    
+                                                            <img class="ui tiny circular image" src="{{ asset('patientcare/img/painscore/severe-pain.png) }}">                                                    
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -907,7 +907,7 @@
                                                     <tr>
                                                         <td colspan="2" rowspan="2" class="align-middle">Worst Pain</td>
                                                         <td colspan="2" rowspan="2">
-                                                            <img class="ui tiny circular image" src="/img/painscore/worst-pain.png">                                                    
+                                                            <img class="ui tiny circular image" src="{{ asset('patientcare/img/painscore/worst-pain.png) }}">                                                    
                                                         </td>
                                                     </tr>
                                                     <tr>

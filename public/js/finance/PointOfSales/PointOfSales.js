@@ -65,8 +65,13 @@ $(document).ready(function () {
 						hideatdialogForm(true);
 						enableForm('#formdata');
 						rdonly('#formdata');
-						//$("#purreqhd_reqdept").val($("#x").val());
-						$('#save').hide();
+						$("#db_deptcode").val($("#deptcode").val());
+						dialog_deptcode.check(errorField);
+						$("#db_debtorcode").val('9600002');
+						dialog_CustomerSO.check(errorField);
+						$("#db_hdrtype").val('OP');
+						dialog_billtypeSO.check(errorField);
+						// $('#save').hide();
 						break;
 					case state = 'edit':
 						$("#pg_jqGridPager2 table").show();
@@ -284,7 +289,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected) {
-			$('#save').hide();
+			// $('#save').hide();
 			$('#error_infront').text('');
 			let stat = selrowData("#jqGrid").db_recstatus;
 			let scope = $("#recstatus_use").val();
@@ -414,15 +419,15 @@ $(document).ready(function () {
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', ['db_termmode']);
 			refreshGrid("#jqGrid2", urlParam2);
 			
-			if(selrowData("#jqGrid").db_recstatus == 'POSTED'){
-				disableForm('#formdata');
-				// $('#db_orderno').prop('readonly',false);
-				// $('#db_podate').prop('readonly',false);
-				// $('#db_ponum').prop('readonly',false);
-				$("#pg_jqGridPager2 table").hide();
-				$('#save').show();
-				refreshGrid("#jqGrid2", urlParam2);
-			}
+			// if(selrowData("#jqGrid").db_recstatus == 'POSTED'){
+			// 	disableForm('#formdata');
+			// 	// $('#db_orderno').prop('readonly',false);
+			// 	// $('#db_podate').prop('readonly',false);
+			// 	// $('#db_ponum').prop('readonly',false);
+			// 	$("#pg_jqGridPager2 table").hide();
+			// 	$('#save').show();
+			// 	refreshGrid("#jqGrid2", urlParam2);
+			// }
 			
 			let db_invno = selrowData("#jqGrid").db_invno;
 			let invno = db_invno.toString().padStart(8, '0');
@@ -1630,18 +1635,18 @@ $(document).ready(function () {
 		refreshGrid("#jqGrid2", urlParam2);
 	});
 
-	$("#save").click(function(){
-		unsaved = false;
-		mycurrency.formatOff();
-		mycurrency.check0value(errorField);
-		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-			saveHeader("#formdata", oper,saveParam,{idno:$('#db_idno').val()},'refreshGrid');
-			unsaved = false;
-			$("#dialogForm").dialog('close');
-		}else{
-			mycurrency.formatOn();
-		}
-	});
+	// $("#save").click(function(){
+	// 	unsaved = false;
+	// 	mycurrency.formatOff();
+	// 	mycurrency.check0value(errorField);
+	// 	if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+	// 		saveHeader("#formdata", oper,saveParam,{idno:$('#db_idno').val()},'refreshGrid');
+	// 		unsaved = false;
+	// 		$("#dialogForm").dialog('close');
+	// 	}else{
+	// 		mycurrency.formatOn();
+	// 	}
+	// });
 	/////////////calculate conv fac//////////////////////////////////
 
 	function remove_noti(event){
