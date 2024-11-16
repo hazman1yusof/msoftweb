@@ -305,7 +305,7 @@ $(document).ready(function () {
 			populate_form(selrowData("#jqGrid"));
 
 			// $("#pdfgen1").attr('href','./PointOfSales/showpdf?idno='+selrowData("#jqGrid").db_idno);
-			// $("#pdfgen2").attr('href','./PointOfSales/showpdf?idno='+selrowData("#jqGrid").db_idno);
+			$("#pdfgen2").attr('href','./PointOfSales/showpdf?idno='+selrowData("#jqGrid").db_idno);
 			if_cancel_hide();
 			$('#receipt_panel').collapse('hide');
 			if(selrowData("#jqGrid").db_outamount == 0){

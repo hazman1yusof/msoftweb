@@ -577,7 +577,7 @@ div#fail_msg,div#fail_msg_r{
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">Point of Sales Header
-				<!-- <a class='pull-right pointer text-primary' id='pdfgen2' href="" target="_blank"><span class='fa fa-print'></span> Print Sales Invoice</a> -->
+				<a class='pull-right pointer text-primary' id='pdfgen2' href="" target="_blank"><span class='fa fa-print'></span> Print Sales Invoice</a>
 			</div>
 
 			<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
