@@ -469,6 +469,7 @@ function search(grid,Stext,Scol,urlParam){
 		});
 		urlParam.searchCol=searchCol;
 		urlParam.searchVal=searchVal;
+		urlParam.wholeword=Stext;
 	}
 	refreshGrid(grid,urlParam);
 }
@@ -486,6 +487,7 @@ function search2(grid,Stext,Scol,urlParam,extra){
 		});
 		urlParam.searchCol=searchCol;
 		urlParam.searchVal=searchVal;
+		urlParam.wholeword=Stext;
 	}
 	refreshGrid(grid,urlParam);
 }

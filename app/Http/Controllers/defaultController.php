@@ -168,21 +168,24 @@ abstract class defaultController extends Controller{
             }else{
                 $searchCol_array = $request->searchCol;
             }
-            $count = array_count_values($searchCol_array);
 
-            foreach ($count as $key => $value) {
-                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+            $table->Where($searchCol_array[0],'like','%'.$request->wholeword.'%');
 
-                $table = $table->orWhere(function ($table) use ($request,$searchCol_array,$occur_ar) {
-                    foreach ($searchCol_array as $key => $value) {
-                        $found = array_search($key,$occur_ar);
-                        if($found !== false && trim($request->searchVal[$key]) != '%%'){//trim whitespace
-                            $search_ = $this->begins_search_if(['itemcode','chgcode'],$searchCol_array[$key],$request->searchVal[$key]);
-                            $table->Where($searchCol_array[$key],'like',$search_);
-                        }
-                    }
-                });
-            }
+            // $count = array_count_values($searchCol_array);
+
+            // foreach ($count as $key => $value) {
+            //     $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+            //     $table = $table->orWhere(function ($table) use ($request,$searchCol_array,$occur_ar) {
+            //         foreach ($searchCol_array as $key => $value) {
+            //             $found = array_search($key,$occur_ar);
+            //             if($found !== false && trim($request->searchVal[$key]) != '%%'){//trim whitespace
+            //                 $search_ = $this->begins_search_if(['itemcode','chgcode'],$searchCol_array[$key],$request->searchVal[$key]);
+            //                 $table->Where($searchCol_array[$key],'like',$search_);
+            //             }
+            //         }
+            //     });
+            // }
             
         }
 
