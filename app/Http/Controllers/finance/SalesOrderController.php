@@ -1299,7 +1299,6 @@ class SalesOrderController extends defaultController
             
             return response($e->getMessage(), 500);
         }
-
     }
 
     public function init_glmastdtl($dbcc,$dbacc,$crcc,$cracc,$yearperiod,$amount){

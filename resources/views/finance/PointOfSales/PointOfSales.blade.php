@@ -116,7 +116,10 @@ div#fail_msg,div#fail_msg_r{
 								<option value="OPEN">OPEN</option>
 								<!-- <option value="PREPARED">PREPARED</option> -->
 								<option value="POSTED">POSTED</option>
+								<option value="RECOMPUTED">RECOMPUTED</option>
 								<!-- <option value="Cancelled">CANCELLED</option> -->
+						  @elseif (Request::get('scope') == 'RECOMPUTED')
+								<option value="POSTED">POSTED</option>
 							@elseif (Request::get('scope') == 'DELIVERED')
 								<option value="PREPARED">PREPARED</option>
 							@elseif (Request::get('scope') == 'REOPEN')
@@ -178,6 +181,8 @@ div#fail_msg,div#fail_msg_r{
 							$scope_use = 'delivered';
 						}else if(Request::get('scope') == 'REOPEN'){
 							$scope_use = 'reopen';
+						}else if(Request::get('scope') == 'RECOMPUTED'){
+							$scope_use = 'recomputed';
 						}else if(Request::get('scope') == 'CANCEL'){
 							$scope_use = 'cancel';
 						}

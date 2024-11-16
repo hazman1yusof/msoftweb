@@ -323,7 +323,7 @@ $(document).ready(function () {
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			let stat = selrowData("#jqGrid").db_recstatus;
 
-			if (stat == 'OPEN'){
+			if (stat == 'OPEN'|| stat == 'RECOMPUTED'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 				
 				if (rowid != null) {
@@ -412,7 +412,7 @@ $(document).ready(function () {
 		title: "Edit Selected Row",
 		onClickButton: function () {
 			oper = 'edit';
-			if(selrowData("#jqGrid").db_recstatus != 'OPEN'){
+			if(!['OPEN','RECOMPUTED'].includes(selrowData("#jqGrid").db_recstatus)){ 
 				return false;
 			}
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
@@ -1128,6 +1128,8 @@ $(document).ready(function () {
 		if($('#recstatus_use').val() == 'ALL'){
 			if(rowObject.db_recstatus == "OPEN"){
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}else if(rowObject.db_recstatus == "RECOMPUTED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 			}
 		}else if($('#recstatus_use').val() == 'DELIVERED'){
 			if(rowObject.db_recstatus == "PREPARED"){
@@ -1135,6 +1137,10 @@ $(document).ready(function () {
 			}
 		}else if($('#recstatus_use').val() == 'REOPEN'){
 			if(rowObject.db_recstatus == "CANCELLED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#recstatus_use').val() == 'RECOMPUTED'){
+			if(rowObject.db_recstatus == "POSTED"){
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 			}
 		}else if($('#recstatus_use').val() == 'CANCEL'){
@@ -1704,81 +1710,80 @@ $(document).ready(function () {
        
 		let quantity = parseFloat($("#"+id_optid+"_quantity").val());
 
-		if(quantity<=0 || quantity==''){
+		if(quantity==0 || quantity==''){
 			myfail_msg.add_fail({
 				id:'quantity',
 				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request must be greater than 0",
+				msg:"Quantity Request cant be 0",
 			});
 		}else{
 			myfail_msg.del_fail({
 				id:'quantity',
 				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request must be greater than 0",
+				msg:"Quantity Request cant be 0",
 			});
 		}
 
-		let qtyonhand = parseFloat($("#"+id_optid+"_qtyonhand").val());
-		let st_idno = $("#jqGrid2 #"+id_optid+"_chggroup").data('st_idno');
+		// let qtyonhand = parseFloat($("#"+id_optid+"_qtyonhand").val());
+		// let st_idno = $("#jqGrid2 #"+id_optid+"_chggroup").data('st_idno');
 
-		if(qtyonhand<quantity && st_idno!=''){
-			myfail_msg.add_fail({
-				id:'qtyonhand',
-				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request cant be greater than quantity on hand",
-			});
-		}else{
-			myfail_msg.del_fail({
-				id:'qtyonhand',
-				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request cant be greater than quantity on hand",
-			});
-		}
+		// if(qtyonhand<quantity && st_idno!=''){
+		// 	myfail_msg.add_fail({
+		// 		id:'qtyonhand',
+		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
+		// 		msg:"Quantity Request cant be greater than quantity on hand",
+		// 	});
+		// }else{
+		// 	myfail_msg.del_fail({
+		// 		id:'qtyonhand',
+		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
+		// 		msg:"Quantity Request cant be greater than quantity on hand",
+		// 	});
+		// }
 
-		let qtyorder = parseFloat($("#"+id_optid+"_qtyorder").val());
+		// let qtyorder = parseFloat($("#"+id_optid+"_qtyorder").val());
 
-		if(quantity>qtyorder && qtyorder!=''){
-			myfail_msg.add_fail({
-				id:'qtyorder',
-				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request cant be greater than quantity Order",
-			});
-		}else{
-			myfail_msg.del_fail({
-				id:'qtyorder',
-				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request cant be greater than quantity Order",
-			});
-		}
+		// if(quantity>qtyorder && qtyorder!=''){
+		// 	myfail_msg.add_fail({
+		// 		id:'qtyorder',
+		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
+		// 		msg:"Quantity Request cant be greater than quantity Order",
+		// 	});
+		// }else{
+		// 	myfail_msg.del_fail({
+		// 		id:'qtyorder',
+		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
+		// 		msg:"Quantity Request cant be greater than quantity Order",
+		// 	});
+		// }
 
-		let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
-		let billtypeperct = 100 - parseFloat($("#"+id_optid+"_billtypeperct").val());
-		let billtypeamt = parseFloat($("#"+id_optid+"_billtypeamt").val());
-		let rate =  parseFloat($("#"+id_optid+"_uom_rate").val());
-		if(isNaN(rate)){
-			rate = 0;
-		}
+		// let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
+		// let billtypeperct = 100 - parseFloat($("#"+id_optid+"_billtypeperct").val());
+		// let billtypeamt = parseFloat($("#"+id_optid+"_billtypeamt").val());
+		// let rate =  parseFloat($("#"+id_optid+"_uom_rate").val());
+		// if(isNaN(rate)){
+		// 	rate = 0;
+		// }
 
+		// var amount = (unitprice*quantity);
+		// var discamt = ((unitprice*quantity) * billtypeperct / 100) + billtypeamt;
 
-		var amount = (unitprice*quantity);
-		var discamt = ((unitprice*quantity) * billtypeperct / 100) + billtypeamt;
+		// let taxamt = amount * rate / 100;
 
-		let taxamt = amount * rate / 100;
+		// var totamount = amount - discamt + taxamt;
 
-		var totamount = amount - discamt + taxamt;
-
-		$("#"+id_optid+"_taxamt").val(taxamt);
-		$("#"+id_optid+"_discamt").val(discamt);
-		$("#"+id_optid+"_totamount").val(totamount);
-		$("#"+id_optid+"_amount").val(amount);
+		// $("#"+id_optid+"_taxamt").val(taxamt);
+		// $("#"+id_optid+"_discamt").val(discamt);
+		// $("#"+id_optid+"_totamount").val(totamount);
+		// $("#"+id_optid+"_amount").val(amount);
 		
-		var id="#jqGrid2 #"+id_optid+"_quantity";
-		var name = "quantityrequest";
-		var fail_msg = "Quantity Request must be greater than 0";
+		// var id="#jqGrid2 #"+id_optid+"_quantity";
+		// var name = "quantityrequest";
+		// var fail_msg = "Quantity Request must be greater than 0";
 
-		event.data.currency.forEach(function(element){
-			element.formatOn();
-		});
+		// event.data.currency.forEach(function(element){
+		// 	element.formatOn();
+		// });
 		// event.data.currency.formatOn();//change format to currency on each calculation
 		// mycurrency.formatOn();
 		// mycurrency_np.formatOn();

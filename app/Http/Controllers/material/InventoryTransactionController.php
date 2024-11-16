@@ -1114,7 +1114,49 @@ class InventoryTransactionController extends defaultController
         }
     }
 
-    public function cancel(Request $request){       
+    public function cancel(Request $request){ 
+
+        DB::beginTransaction();
+
+        try {
+
+            foreach ($request->idno_array as $idno){
+                $ivtmphd = DB::table('material.ivtmphd')
+                            ->where('idno','=',$idno)
+                            ->first();
+
+                if(!in_array($ivtmphd->recstatus, ['OPEN'])){
+                    continue;
+                }
+
+                DB::table('material.ivtmphd')
+                    ->where('idno','=',$idno)
+                    ->where('compcode','=',session('compcode'))
+                    ->update([
+                        'cancelby' => session('username'),
+                        'canceldate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'recstatus' => 'CANCELLED' 
+                    ]);
+
+                DB::table('material.ivtmpdt')
+                    ->where('recno','=',$ivtmphd->recno)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recstatus','!=','DELETE')
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'recstatus' => 'CANCELLED' 
+                    ]);
+
+
+            }
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
 
     public function save_dt_from_othr_ivreq($refer_recno,$recno,$request_no){
