@@ -304,7 +304,7 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3", urlParam2);
 			populate_form(selrowData("#jqGrid"));
 
-			// $("#pdfgen1").attr('href','./PointOfSales/showpdf?idno='+selrowData("#jqGrid").db_idno);
+			$("#pdfgen1").attr('href','./PointOfSales/showpdf?idno='+selrowData("#jqGrid").db_idno);
 			$("#pdfgen2").attr('href','./PointOfSales/showpdf?idno='+selrowData("#jqGrid").db_idno);
 			if_cancel_hide();
 			$('#receipt_panel').collapse('hide');

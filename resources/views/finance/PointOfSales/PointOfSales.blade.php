@@ -237,7 +237,9 @@ div#fail_msg,div#fail_msg_r{
 		</div>
 
     <div class="panel panel-default">
-			<div class="panel-heading">Point of Sales Data Entry Header</div>
+			<div class="panel-heading">Point of Sales Data Entry Header
+				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print Sales Invoice</a>
+			</div>
 			
 			<div class="panel-body">
 				<div class='col-md-12' style="padding:0 0 15px 0">

@@ -2253,7 +2253,7 @@ class PointOfSalesController extends defaultController
             // ->where('h.mrn','=','0')
             ->where('h.compcode','=',session('compcode'))
             ->first();
-dd($dbacthdr);
+// dd($dbacthdr);
         $billsum = DB::table('debtor.billsum AS b', 'material.productmaster AS p', 'material.uom as u', 'debtor.debtormast as d', 'hisdb.chgmast as m')
             ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
             'u.description as uom_desc', 
