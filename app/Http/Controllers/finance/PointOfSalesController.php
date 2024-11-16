@@ -2243,42 +2243,94 @@ class PointOfSalesController extends defaultController
             abort(404);
         }
 
-        $dbacthdr = DB::table('debtor.dbacthdr as h', 'debtor.debtormast as m', 'debtor.debtortype as dt', 'hisdb.billtymst as bt')
-            ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate',
-            'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4', 'm.creditterm as crterm','m.billtype as billtype','dt.debtortycode as dt_debtortycode', 'dt.description as dt_description', 'bt.billtype as billtype', 'bt.description as bt_desc')
-            ->leftJoin('debtor.debtormast as m', 'h.debtorcode', '=', 'm.debtorcode')
-            ->leftJoin('debtor.debtortype as dt', 'dt.debtortycode', '=', 'm.debtortype')
-            ->leftJoin('hisdb.billtymst as bt', 'bt.billtype', '=', 'm.billtype')
+        $tilldetl = DB::table('debtor.tilldetl')
+                    ->where('compcode',session('compcode'))
+                    ->where('cashier',session('username'))
+                    ->whereNull('closedate');
+        
+        if($tilldetl->exists()){
+            $tilldetl = $tilldetl->first();
+        }else{
+            $tilldetl->cashier = '-';
+        }
+
+        $dbacthdr = DB::table('debtor.dbacthdr as h')
+            ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate','h.hdrtype','h.recptno',
+            'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4', 'm.creditterm as crterm','m.billtype as billtype','dt.debtortycode as dt_debtortycode', 'dt.description as dt_description','bt.description as bt_desc','pm.Name as pm_name','pm.address1 as pm_address1','pm.address2 as pm_address2','pm.address3 as pm_address3','pm.postcode as pm_postcode','h.doctorcode','dc.doctorname')
+            ->leftJoin('debtor.debtormast as m', function($join) use ($request){
+                $join = $join->on("m.debtorcode", '=', 'h.debtorcode');    
+                $join = $join->where("m.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('debtor.debtortype as dt', function($join) use ($request){
+                $join = $join->on("dt.debtortycode", '=', 'm.debtortype');    
+                $join = $join->where("dt.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('hisdb.billtymst as bt', function($join) use ($request){
+                $join = $join->on("bt.billtype", '=', 'h.hdrtype');    
+                $join = $join->where("bt.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
+                $join = $join->on("pm.newmrn", '=', 'h.mrn');    
+                $join = $join->where("pm.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('hisdb.doctor as dc', function($join) use ($request){
+                $join = $join->on("dc.doctorcode", '=', 'h.doctorcode');    
+                $join = $join->where("dc.compcode", '=', session('compcode'));
+            })
             ->where('h.idno','=',$idno)
             // ->where('h.mrn','=','0')
             ->where('h.compcode','=',session('compcode'))
             ->first();
-// dd($dbacthdr);
-        $billsum = DB::table('debtor.billsum AS b', 'material.productmaster AS p', 'material.uom as u', 'debtor.debtormast as d', 'hisdb.chgmast as m')
+
+        $receipt = DB::table('debtor.dballoc as a')
+            ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate','h.hdrtype','h.recptno','h.doctorcode','h.reference','h.paymode','h.payername','h.doctorcode')
+            ->join('debtor.dbacthdr as h', function($join) use ($request,$dbacthdr){
+                $join = $join->where("h.source", '=', 'PB');
+                $join = $join->where("h.trantype", '=', 'RC');
+                $join = $join->on("h.auditno", '=', 'a.docauditno');
+            })
+            ->where("a.compcode", '=', session('compcode'))
+            ->where("a.refsource", '=', 'PB')
+            ->where("a.reftrantype", '=', 'IN')
+            ->where("a.refauditno", '=', $dbacthdr->auditno)
+            ->first();
+
+        $billsum = DB::table('debtor.billsum AS b')
             ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
             'u.description as uom_desc', 
             'd.debtorcode as debt_debtcode','d.name as debt_name', 
-            'm.description as chgmast_desc')
+            'm.description as chgmast_desc','iv.expdate','iv.batchno')
             ->leftJoin('hisdb.chgmast as m', function($join) use ($request){
                 $join = $join->on('b.chggroup', '=', 'm.chgcode');
                 $join = $join->on('b.uom', '=', 'm.uom');
+                // $join = $join->where('m.compcode', '=', session('compcode'));
+                // $join = $join->where('m.unit', '=', session('unit'));
+            })
+            ->leftJoin('material.uom as u', function($join) use ($request){
+                $join = $join->on('b.uom', '=', 'u.uomcode');
+                $join = $join->where('u.compcode', '=', session('compcode'));
             })
             //->leftJoin('material.productmaster as p', 'b.description', '=', 'p.description')
-            ->leftJoin('material.uom as u', 'b.uom', '=', 'u.uomcode')
-            ->leftJoin('debtor.debtormast as d', 'b.debtorcode', '=', 'd.debtorcode')
+            // ->leftJoin('material.uom as u', 'b.uom', '=', 'u.uomcode')
+            // ->leftJoin('debtor.debtormast as d', 'b.debtorcode', '=', 'd.debtorcode')
+            ->leftJoin('debtor.debtormast as d', function($join) use ($request){
+                $join = $join->on('b.debtorcode', '=', 'd.debtorcode');
+                $join = $join->where('d.compcode', '=', session('compcode'));
+            })
+            ->leftJoin('material.ivdspdt as iv', function($join) use ($request){
+                $join = $join->on('iv.recno', '=', 'b.auditno');
+                $join = $join->where('iv.lineno_', '=', '1');
+                $join = $join->on('iv.itemcode', '=', 'b.chggroup');
+                $join = $join->on('iv.uomcode', '=', 'b.uom');
+                $join = $join->where('iv.compcode', '=', session('compcode'));
+            })
             ->where('b.source','=',$dbacthdr->source)
             ->where('b.trantype','=',$dbacthdr->trantype)
             ->where('b.billno','=',$dbacthdr->auditno)
             ->where('b.compcode','=',session('compcode'))
             ->get();
 
-        // $chgmast = DB::table('debtor.billsum AS b', 'hisdb.chgmast as m')
-        //     ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus', 'm.description as chgmast_desc')
-        //     ->leftJoin('hisdb.chgmast as m', 'b.description', '=', 'm.description')
-        //     ->where('b.source','=',$dbacthdr->source)
-        //     ->where('b.trantrype','=',$dbacthdr->trantrype)
-        //     ->where('b.billno','=',$dbacthdr->auditno)
-        //     ->get();
+        // dd($billsum);
         
         if ( $dbacthdr->recstatus == "OPEN") {
             $title = "DELIVERY ORDER";
@@ -2304,7 +2356,7 @@ class PointOfSalesController extends defaultController
     
         // return $pdf->stream();
         
-        return view('finance.SalesOrder.SalesOrder_pdfmake',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
+        return view('finance.PointOfSales.PointOfSales_pdfmake',compact('tilldetl','dbacthdr','receipt','billsum','totamt_bm','company', 'title'));
     }
 
     //function sendmeail($data) -- nak kena ada atau tak
