@@ -2292,8 +2292,13 @@ class PointOfSalesController extends defaultController
             ->where("a.compcode", '=', session('compcode'))
             ->where("a.refsource", '=', 'PB')
             ->where("a.reftrantype", '=', 'IN')
-            ->where("a.refauditno", '=', $dbacthdr->auditno)
-            ->first();
+            ->where("a.refauditno", '=', $dbacthdr->auditno);
+
+        if(!$receipt->exists()){
+            abort(403, 'No Payment');
+        }else{
+            $receipt = $receipt->first();
+        }
 
         $billsum = DB::table('debtor.billsum AS b')
             ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
