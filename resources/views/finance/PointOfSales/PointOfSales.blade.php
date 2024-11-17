@@ -238,7 +238,7 @@ div#fail_msg,div#fail_msg_r{
 
     <div class="panel panel-default">
 			<div class="panel-heading">Point of Sales Data Entry Header
-				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print Sales Invoice</a>
+				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print POS</a>
 			</div>
 			
 			<div class="panel-body">
@@ -579,7 +579,7 @@ div#fail_msg,div#fail_msg_r{
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">Point of Sales Header
-				<a class='pull-right pointer text-primary' id='pdfgen2' href="" target="_blank"><span class='fa fa-print'></span> Print Sales Invoice</a>
+				<a class='pull-right pointer text-primary' id='pdfgen2' href="" target="_blank"><span class='fa fa-print'></span> Print POS</a>
 			</div>
 
 			<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
@@ -847,7 +847,7 @@ div#fail_msg,div#fail_msg_r{
 		</script>
 
 		<script src="js/myjs/till_part.js"></script>
-		<script src="js/finance/PointOfSales/PointOfSales.js?v=1.1"></script>
+		<script src="js/finance/PointOfSales/PointOfSales.js?v=1.2"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

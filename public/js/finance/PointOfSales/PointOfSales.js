@@ -978,7 +978,7 @@ $(document).ready(function () {
 			},
 			{
 				label: 'Quantity Order', name: 'qtyorder', width: 100, align: 'right', classes: 'wrap txnum',
-				editable: true,
+				editable: false,hidden: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
@@ -1757,38 +1757,38 @@ $(document).ready(function () {
 		// 	});
 		// }
 
-		// let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
-		// let billtypeperct = 100 - parseFloat($("#"+id_optid+"_billtypeperct").val());
-		// let billtypeamt = parseFloat($("#"+id_optid+"_billtypeamt").val());
-		// let rate =  parseFloat($("#"+id_optid+"_uom_rate").val());
-		// if(isNaN(rate)){
-		// 	rate = 0;
-		// }
+		let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
+		let billtypeperct = 100 - parseFloat($("#"+id_optid+"_billtypeperct").val());
+		let billtypeamt = parseFloat($("#"+id_optid+"_billtypeamt").val());
+		let rate =  parseFloat($("#"+id_optid+"_uom_rate").val());
+		if(isNaN(rate)){
+			rate = 0;
+		}
 
-		// var amount = (unitprice*quantity);
-		// var discamt = ((unitprice*quantity) * billtypeperct / 100) + billtypeamt;
+		var amount = (unitprice*quantity);
+		var discamt = ((unitprice*quantity) * billtypeperct / 100) + billtypeamt;
 
-		// let taxamt = amount * rate / 100;
+		let taxamt = amount * rate / 100;
 
-		// var totamount = amount - discamt + taxamt;
+		var totamount = amount - discamt + taxamt;
 
-		// $("#"+id_optid+"_taxamt").val(taxamt);
-		// $("#"+id_optid+"_discamt").val(discamt);
-		// $("#"+id_optid+"_totamount").val(totamount);
-		// $("#"+id_optid+"_amount").val(amount);
+		$("#"+id_optid+"_taxamt").val(taxamt);
+		$("#"+id_optid+"_discamt").val(discamt);
+		$("#"+id_optid+"_totamount").val(totamount);
+		$("#"+id_optid+"_amount").val(amount);
 		
-		// var id="#jqGrid2 #"+id_optid+"_quantity";
-		// var name = "quantityrequest";
-		// var fail_msg = "Quantity Request must be greater than 0";
+		var id="#jqGrid2 #"+id_optid+"_quantity";
+		var name = "quantityrequest";
+		var fail_msg = "Quantity Request must be greater than 0";
 
-		// event.data.currency.forEach(function(element){
-		// 	element.formatOn();
-		// });
-		// event.data.currency.formatOn();//change format to currency on each calculation
-		// mycurrency.formatOn();
-		// mycurrency_np.formatOn();
+		event.data.currency.forEach(function(element){
+			element.formatOn();
+		});
+		event.data.currency.formatOn();//change format to currency on each calculation
+		mycurrency.formatOn();
+		mycurrency_np.formatOn();
 
-		// fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+		fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
 	}
 

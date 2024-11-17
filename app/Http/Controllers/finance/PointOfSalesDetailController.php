@@ -1489,13 +1489,13 @@ class PointOfSalesDetailController extends defaultController
                     'uom_recv' => $request->uom_recv,
                     'taxcode' => $request->taxcode,
                     'unitprice' => $request->unitprice,
-                    'quantity' => $request->quantity,
+                    'quantity' => $quantity,
                     'qtyonhand' => $request->qtyonhand,
-                    'amount' => $request->amount, //unitprice * quantity, xde tax
-                    'outamt' => $request->amount,
-                    'totamount' => $request->totamount,
-                    'discamt' => floatval($request->discamt),
-                    'taxamt' => floatval($request->taxamt),
+                    'amount' => $amount, //unitprice * quantity, xde tax
+                    'outamt' => $amount,
+                    'totamount' => $totamount,
+                    'discamt' => floatval($discamt),
+                    'taxamt' => floatval($taxamt),
                     'lastuser' => session('username'), 
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
@@ -1503,7 +1503,6 @@ class PointOfSalesDetailController extends defaultController
                     'billtypeperct' => $request->billtypeperct,
                     'billtypeamt' => $request->billtypeamt,
                 ]);
-            
             $billsum_obj = db::table('debtor.billsum')
                             ->where('compcode',session('compcode'))
                             ->where('idno', '=', $insertGetId)
