@@ -70,7 +70,7 @@
 											],
 											[
 												{text:'DEPOSIT/PAYMENT',margin: [0, -2, 0, 0]},
-												{text:`{{$dbacthdr->amount - $dbacthdr->outamount}}`, alignment: 'right',margin: [0, -2, 0, 0]}
+												{text:`{{number_format($dbacthdr->amount - $dbacthdr->outamount,2)}}`, alignment: 'right',margin: [0, -2, 0, 0]}
 											],
 											[
 												{text:'BALANCE',margin: [0, -2, 0, 0]},
