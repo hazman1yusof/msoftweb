@@ -647,7 +647,7 @@ function currencymode(arraycurrency,nopoint=false){
 	function currencyChg(event){
 		value = event.data.value;
 		var val = $(value).val();
-		if(val.match(/^-?[0-9]\d*(\.\d+)?$/){
+		if(val.match(/[^-?0-9\.\-]/)){
 			event.preventDefault();
 			$(this).val(val.slice(0,val.length-1));
 		}
