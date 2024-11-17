@@ -20,7 +20,7 @@
 		@foreach($billsum as $key => $bilsm)
 		{
 			@foreach($bilsm as $key2 => $val)
-				'{{$key2}}' : `{{$val}}`,
+				'{{$key2}}' : `{!!$val!!}`,
 			@endforeach
 		},
 		@endforeach 
@@ -70,7 +70,7 @@
 											],
 											[
 												{text:'DEPOSIT/PAYMENT',margin: [0, -2, 0, 0]},
-												{text:`{{$dbacthdr->amount}}`, alignment: 'right',margin: [0, -2, 0, 0]}
+												{text:`{{$dbacthdr->amount - $dbacthdr->outamount}}`, alignment: 'right',margin: [0, -2, 0, 0]}
 											],
 											[
 												{text:'BALANCE',margin: [0, -2, 0, 0]},
