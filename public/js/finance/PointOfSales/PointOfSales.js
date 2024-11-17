@@ -261,7 +261,7 @@ $(document).ready(function () {
 			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true, formatter: dateFormatter },
 			{ label: 'Department Code', name: 'db_deptcode', width: 18, canSearch: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
 			// { label: 'Status', name: 'db_recstatus', width: 10, formatter: recstatus_formatter, unformat: recstatus_unformatter },
-			{ label: 'Status', name: 'db_recstatus', width: 10 },
+			{ label: 'Status', name: 'db_recstatus', width: 10 ,formatter: recstatus_formatter, unformat: recstatus_unformatter},
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key: true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
@@ -2832,16 +2832,16 @@ function unformatstatus_tick2(cellvalue, option, rowObject) {
 }
 
 function recstatus_formatter(cellvalue, option, rowObject){
-	if (cellvalue == 'POSTED') {
-		return 'DELIVERED';
+	if (cellvalue == 'RECOMPUTED') {
+		return 'RECOMPUTE';
 	}else{
 		return cellvalue;
 	}
 }
 
 function recstatus_unformatter(cellvalue, option, rowObject){
-	if (cellvalue == 'DELIVERED') {
-		return 'POSTED';
+	if (cellvalue == 'RECOMPUTE') {
+		return 'RECOMPUTED';
 	}else{
 		return cellvalue;
 	}
