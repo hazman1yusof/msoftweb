@@ -1267,7 +1267,7 @@ $(document).ready(function () {
 			mycurrency2.formatOff();
 			mycurrency_np.formatOff();
 
-			if(parseInt($('#jqGrid2 input[name="quantity"]').val()) <= 0)return false;
+			// if(parseInt($('#jqGrid2 input[name="quantity"]').val()) <= 0)return false;
 
 			let editurl = "./PointOfSalesDetail/form?"+
 				$.param({
@@ -1757,10 +1757,10 @@ $(document).ready(function () {
 		// 	});
 		// }
 
-		let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
-		let billtypeperct = 100 - parseFloat($("#"+id_optid+"_billtypeperct").val());
-		let billtypeamt = parseFloat($("#"+id_optid+"_billtypeamt").val());
-		let rate =  parseFloat($("#"+id_optid+"_uom_rate").val());
+		let unitprice = Number($("#"+id_optid+"_unitprice").val());
+		let billtypeperct = 100 - Number($("#"+id_optid+"_billtypeperct").val());
+		let billtypeamt = Number($("#"+id_optid+"_billtypeamt").val());
+		let rate =  Number($("#"+id_optid+"_uom_rate").val());
 		if(isNaN(rate)){
 			rate = 0;
 		}
@@ -1777,9 +1777,9 @@ $(document).ready(function () {
 		$("#"+id_optid+"_totamount").val(totamount);
 		$("#"+id_optid+"_amount").val(amount);
 		
-		var id="#jqGrid2 #"+id_optid+"_quantity";
-		var name = "quantityrequest";
-		var fail_msg = "Quantity Request must be greater than 0";
+		// var id="#jqGrid2 #"+id_optid+"_quantity";
+		// var name = "quantityrequest";
+		// var fail_msg = "Quantity Request must be greater than 0";
 
 		event.data.currency.forEach(function(element){
 			element.formatOn();
