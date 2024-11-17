@@ -610,7 +610,7 @@ function currencymode(arraycurrency,nopoint=false){
 		var self = this;
 		$.each(this.array, function( index, value ) {
 			$(value).on("blur",{value:value,np:self.nopoint},currencyBlur);
-			$(value).on("keyup",{value:value,np:self.nopoint},currencyChg);
+			// $(value).on("keyup",{value:value,np:self.nopoint},currencyChg);
 			// currencyBlur(value);currencyChg(value)
 		});
 	}
