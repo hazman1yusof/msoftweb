@@ -206,6 +206,8 @@ div#fail_msg,div#fail_msg_r{
 							style="display: none;">
 							@if (strtoupper(Request::get('scope')) == 'ALL')
 								{{'POSTED'}}
+							@else if(strtoupper(Request::get('scope')) == 'RECOMPUTED')
+								{{'RECOMPUTE'}}
 							@else
 								{{Request::get('scope')}}
 							@endif
