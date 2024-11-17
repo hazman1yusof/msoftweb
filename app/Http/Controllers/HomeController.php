@@ -454,7 +454,7 @@ class HomeController extends Controller
         //header
         $menu="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Point Of Sales</b></a></li>";
         $menu.="<li><a style='padding-left:21px' title='Point Of Sales' class='clickable' programid='fin_POS_prepared' targeturl='./PointOfSales?scope=ALL'>Point Of Sales</a></li>";
-        $menu.="<li><a style='padding-left:21px' title='Recomputed' class='clickable' programid='fin_salesOrder_recomputed' targeturl='./SalesOrder?scope=RECOMPUTED'>Recomputed</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Recomputed' class='clickable' programid='fin_salesOrder_recomputed' targeturl='./PointOfSales?scope=RECOMPUTED'>Recomputed</a></li>";
 
 
         //header
