@@ -364,7 +364,7 @@ $(document).ready(function (){
         button_state_othersChart2($(this).data('oper'));
     });
     /////////////////////////////////////othersChart2 ends/////////////////////////////////////
-    
+
     ////////////////////////////////////print button starts////////////////////////////////////
     $("#fitchart_chart").click(function (){
         window.open('./nursingnote/fitchart_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
@@ -415,6 +415,7 @@ $(document).ready(function (){
         disableForm('#formCarePlan');
         disableForm('#formOthersChart1');
         disableForm('#formOthersChart2');
+
         refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'kosongkan');
         refreshGrid('#jqGridFitChart',urlParam_FitChart,'kosongkan');
         refreshGrid('#jqGridCirculation',urlParam_Circulation,'kosongkan');
@@ -430,6 +431,11 @@ $(document).ready(function (){
         let id = $(this).attr('id');
         $("#jqGridNursNote_panel").data('curtype',id);
         switch(type){
+            case 'investigation':
+                populate_invHeader_getdata();
+                $("#jqGridInvestigation_fbc").jqGrid ('setGridWidth', Math.floor($("#jqGridInvestigation_c_fbc")[0].offsetWidth-$("#jqGridInvestigation_c_fbc")[0].offsetLeft-58));
+                // $('#tbl_invcat_fbc').DataTable().ajax.reload();
+                break;
             case 'progress':
                 var urlparam_datetime_tbl = {
                     action: 'get_table_datetime',
@@ -566,6 +572,35 @@ $(document).ready(function (){
                 $("#jqGridOthersChart2").jqGrid('setGridWidth', Math.floor($("#jqGridOthersChart2_c")[0].offsetWidth-$("#jqGridOthersChart2_c")[0].offsetLeft-30));
                 populate_othersChart2_getdata();
                 break;
+            
+        }
+    });
+
+    $('#jqGridNursNote_inv_tabs.nav-tabs a').on('shown.bs.tab', function (e){
+        let invtype = $(this).data('inv_type');
+        switch(invtype){
+            case 'FBC':
+                $('#tbl_invcat_fbc').DataTable().ajax.reload();
+
+                $("#jqGridInvestigation_fbc").jqGrid ('setGridWidth', Math.floor($("#jqGridInvestigation_c_fbc")[0].offsetWidth-$("#jqGridInvestigation_c_fbc")[0].offsetLeft-58));
+				refreshGrid('#jqGridInvestigation_fbc',urlParam_fbc,'add');
+
+                var urlparam_tbl_invcat_fbc = {
+                    action: 'get_invcat_fbc',
+                    // mrn: $("#mrn_nursNote").val(),
+                    // episno: $("#episno_nursNote").val(),
+                    inv_code: "FBC",
+                }
+
+                tbl_invcat_fbc.ajax.url("./nursingnote/table?"+$.param(urlparam_tbl_invcat_fbc)).load(function (data){
+                    emptyFormdata_div("#formInvestigations",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+                    $('#tbl_invcat_fbc tbody tr:eq(0)').click();  // to select first row
+                });
+				break;
+            // case 'COAG':
+            //     $("#jqGridInvestigation_coag").jqGrid ('setGridWidth', Math.floor($("#jqGridInvestigation_c_coag")[0].offsetWidth-$("#jqGridInvestigation_c_coag")[0].offsetLeft-58));
+			// 	refreshGrid('#jqGridInvestigation_coag',urlParam_coag,'add');
+			// 	break;
         }
     });
     
@@ -1103,7 +1138,52 @@ $(document).ready(function (){
         });
     });
     //////////////////////////////////////////careplan ends//////////////////////////////////////////
-    
+
+     /////////////////////////////////////////invest fbc starts/////////////////////////////////////////
+     $('#tbl_invcat_fbc tbody').on('click', 'tr', function (){
+        var data = tbl_invcat_fbc.row( this ).data();
+        
+        if(data == undefined){
+            return;
+        }
+        
+        // to highlight selected row
+        if($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        }else {
+            tbl_invcat_fbc.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+        
+        emptyFormdata_div("#formInvestigations",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        $('#tbl_invcat_fbc tbody tr').removeClass('active');
+        $(this).addClass('active');
+                
+        var saveParam={
+            action: 'get_table_invfbc',
+        }
+        
+        var postobj={
+            _token: $('#csrf_token').val(),
+            idno: data.idno,
+            inv_code: data.inv_code,
+            // mrn: data.mrn,
+            // episno: data.episno
+        };
+        
+        $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){
+            
+        },'json').fail(function (data){
+            alert('there is an error');
+        }).success(function (data){
+            if(!$.isEmptyObject(data)){
+                autoinsert_rowdata("#formInvestigations",data.nurs_invest_cat);
+            }else{
+            }
+        });
+    });
+    //////////////////////////////////////////invest fbc ends//////////////////////////////////////////
+
     /////////////////////////////////////////fitchart starts/////////////////////////////////////////
     /////////////////////////////////////////jqGridFitChart/////////////////////////////////////////
     var addmore_jqgrid2 = { more:false,state:false,edit:false }
@@ -2480,6 +2560,27 @@ var tbl_careplan_date = $('#tbl_careplan_date').DataTable({
 });
 ///////////////////////careplan ends///////////////////////
 
+//////////////////////invest fbc starts//////////////////////
+var tbl_invcat_fbc = $('#tbl_invcat_fbc').DataTable({
+    "ajax": "",
+    "sDom": "",
+    "paging": false,
+    "columns": [
+        { 'data': 'idno' },
+        // { 'data': 'mrn' },
+        // { 'data': 'episno' },
+        { 'data': 'inv_cat', 'width': '25%' },
+    ],
+    columnDefs: [
+        { targets: [0, 1, 2], visible: false },
+    ],
+    order: [[0, 'desc']],
+    "drawCallback": function (settings){
+        $(this).find('tbody tr')[0].click();
+    }
+});
+///////////////////////invest fbc ends///////////////////////
+
 var errorField = [];
 conf = {
     modules : 'logic',
@@ -2722,6 +2823,12 @@ function populate_nursingnote(obj){
     $("#ward_nursNote").val(obj.ward);
     $("#bednum_nursNote").val(obj.bednum);
     $("#age_nursNote").val(dob_age(obj.DOB));
+
+    ///////////investigation chart//////////
+    urlParam_fbc.mrn = obj.MRN;
+	urlParam_fbc.episno = obj.Episno;
+	// urlParam_coag.mrn = obj.MRN;
+	// urlParam_coag.episno = obj.Episno;
     
     // var urlparam_datetime_tbl = {
     //     action: 'get_table_datetime',
@@ -3095,6 +3202,32 @@ function get_default_othersChart2(){
         $("#othersChart2_bednum").val($('#bednum_nursNote').val());
         $("#othersChart2_diag").val(data.diagnosis);
         textarea_init_nursingnote();
+    });
+}
+
+function populate_invHeader_getdata(){
+    emptyFormdata(errorField,"#formInvHeader");
+    
+    var saveParam = {
+        action: 'get_table_formInvHeader',
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        mrn: $("#mrn_nursNote").val(),
+        episno: $("#episno_nursNote").val()
+    };
+    
+    $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').fail(function (data){
+        alert('there is an error');
+    }).success(function (data){
+        if(!$.isEmptyObject(data)){
+            autoinsert_rowdata("#formInvHeader",data.episode);
+        }else{
+        }
+        // $("#reg_date").val(data.episode);
     });
 }
 
@@ -3587,6 +3720,8 @@ function saveForm_othersChart2(callback){
         callback();
     });
 }
+
+////////////////////////////////////////////////////investigationHdr ends////////////////////////////////////////////////////
 
 function textarea_init_nursingnote(){
     $('textarea#airwayfreetext,textarea#frfreetext,textarea#drainfreetext,textarea#ivfreetext,textarea#assesothers,textarea#plannotes,textarea#oraltype1,textarea#oraltype2,textarea#oraltype3,textarea#oraltype4,textarea#oraltype5,textarea#oraltype6,textarea#oraltype7,textarea#oraltype8,textarea#oraltype9,textarea#oraltype10,textarea#oraltype11,textarea#oraltype12,textarea#oraltype13,textarea#oraltype14,textarea#oraltype15,textarea#oraltype16,textarea#oraltype17,textarea#oraltype18,textarea#oraltype19,textarea#oraltype20,textarea#oraltype21,textarea#oraltype22,textarea#oraltype23,textarea#oraltype24,textarea#intratype1,textarea#intratype2,textarea#intratype3,textarea#intratype4,textarea#intratype5,textarea#intratype6,textarea#intratype7,textarea#intratype8,textarea#intratype9,textarea#intratype10,textarea#intratype11,textarea#intratype12,textarea#intratype13,textarea#intratype14,textarea#intratype15,textarea#intratype16,textarea#intratype17,textarea#intratype18,textarea#intratype19,textarea#intratype20,textarea#intratype21,textarea#intratype22,textarea#intratype23,textarea#intratype24,textarea#othertype1,textarea#othertype2,textarea#othertype3,textarea#othertype4,textarea#othertype5,textarea#othertype6,textarea#othertype7,textarea#othertype8,textarea#othertype9,textarea#othertype10,textarea#othertype11,textarea#othertype12,textarea#othertype13,textarea#othertype14,textarea#othertype15,textarea#othertype16,textarea#othertype17,textarea#othertype18,textarea#othertype19,textarea#othertype20,textarea#othertype21,textarea#othertype22,textarea#othertype23,textarea#othertype24,textarea#ftxtdosage,textarea#treatment_remarks,textarea#investigation_remarks,textarea#injection_remarks,textarea#problem,textarea#problemdata,textarea#problemintincome,textarea#nursintervention,textarea#nursevaluation,textarea#fitchart_diag,textarea#circulation_diag,textarea#othersChart1_diag,textarea#othersChart2_diag').each(function () {
