@@ -19,7 +19,13 @@ class NursingActionPlanController extends defaultController
     }
     
     public function show(Request $request){
-        return view('hisdb.nursingActionPlan.nursingActionPlan');
+        
+        $invest_type = DB::table('nursing.nurs_invest_type')
+                        ->where('compcode','=',session('compcode'))
+                        ->get();
+        
+        return view('hisdb.nursingActionPlan.nursingActionPlan',compact('invest_type'));
+        
     }
     
     public function table(Request $request)
