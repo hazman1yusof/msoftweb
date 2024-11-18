@@ -594,49 +594,49 @@
                                                     <tbody>
                                                         <tr>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="xray" name="xray" value="1"></td>
-                                                            <td style="margin: 0px; padding: 3px 14px 14px 14px;">X-ray</td>
+                                                            <td style="margin: 0px; padding: 3px 14px 14px 14px;"><label for="xray">X-ray</label></td>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input id="xray_date" name="xray_date" type="date"></td>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><textarea id="xray_remark" name="xray_remark" type="text" rows="5"></textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="mri" name="mri" value="1"></td>
-                                                            <td style="margin: 0px; padding: 3px 14px 14px 14px;">M.R.I</td>
+                                                            <td style="margin: 0px; padding: 3px 14px 14px 14px;"><label for="mri">M.R.I</label></td>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input id="mri_date" name="mri_date" type="date"></td>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><textarea id="mri_remark" name="mri_remark" type="text" rows="5"></textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="angio" name="angio" value="1"></td>
-                                                            <td style="margin: 0px; padding: 3px 14px 14px 14px;">Angio</td>
+                                                            <td style="margin: 0px; padding: 3px 14px 14px 14px;"><label for="angio">Angio</label></td>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input id="angio_date" name="angio_date" type="date"></td>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><textarea id="angio_remark" name="angio_remark" type="text" rows="5"></textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="ultrasound" name="ultrasound" value="1"></td>
-                                                            <td style="margin: 0px; padding: 3px 14px 14px 14px;">Ultrasound</td>
+                                                            <td style="margin: 0px; padding: 3px 14px 14px 14px;"><label for="ultrasound">Ultrasound</label></td>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input id="ultrasound_date" name="ultrasound_date" type="date"></td>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><textarea id="ultrasound_remark" name="ultrasound_remark" type="text" rows="5"></textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="ct" name="ct" value="1"></td>
-                                                            <td style="margin: 0px; padding: 3px 14px 14px 14px;">C.T</td>
+                                                            <td style="margin: 0px; padding: 3px 14px 14px 14px;"><label for="ct">C.T</label></td>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input id="ct_date" name="ct_date" type="date"></td>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><textarea id="ct_remark" name="ct_remark" type="text" rows="5"></textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="fluroscopy" name="fluroscopy" value="1"></td>
-                                                            <td style="margin: 0px; padding: 3px 14px 14px 14px;">Fluroscopy</td>
+                                                            <td style="margin: 0px; padding: 3px 14px 14px 14px;"><label for="fluroscopy">Fluroscopy</label></td>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input id="fluroscopy_date" name="fluroscopy_date" type="date"></td>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><textarea id="fluroscopy_remark" name="fluroscopy_remark" type="text" rows="5"></textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="mammogram" name="mammogram" value="1"></td>
-                                                            <td style="margin: 0px; padding: 3px 14px 14px 14px;">Mammogram</td>
+                                                            <td style="margin: 0px; padding: 3px 14px 14px 14px;"><label for="mammogram">Mammogram</label></td>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input id="mammogram_date" name="mammogram_date" type="date"></td>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><textarea id="mammogram_remark" name="mammogram_remark" type="text" rows="5"></textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input type="checkbox" id="bmd" name="bmd" value="1"></td>
-                                                            <td style="margin: 0px; padding: 3px 14px 14px 14px;">Bone Densitometry (BMD)</td>
+                                                            <td style="margin: 0px; padding: 3px 14px 14px 14px;"><label for="bmd">Bone Densitometry (BMD)</label></td>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><input id="bmd_date" name="bmd_date" type="date"></td>
                                                             <td style="margin: 0px; padding: 3px 14px 14px 14px;"><textarea id="bmd_remark" name="bmd_remark" type="text" rows="5"></textarea></td>
                                                         </tr>
