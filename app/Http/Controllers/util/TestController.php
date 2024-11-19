@@ -68,10 +68,14 @@ class TestController extends defaultController
             //     return $this->update_stockexp($request);
             // case 'del_stockexp':
             //     return $this->del_stockexp($request);
-            case 'test_email':
-                return $this->test_email($request);
-            // case 'update_supplier':
-            //     return $this->update_supplier($request);
+            // case 'test_email':
+            //     return $this->test_email($request);
+            case 'betulkan_uom_kh_stockloc':
+                return $this->betulkan_uom_kh_stockloc($request);
+            case 'betulkan_uom_kh_product':
+                return $this->betulkan_uom_kh_product($request);
+            case 'betulkan_uom_kh_stockexp':
+                return $this->betulkan_uom_kh_stockexp($request);
             case 'betulkan_apacthdr':
                 return $this->betulkan_apacthdr($request);
             case 'tukar_uom':
@@ -2364,6 +2368,85 @@ class TestController extends defaultController
                         'deldate' => $obj2->deldate,
                         'lastcomputerid' => $obj2->lastcomputerid,
                         'lastipaddress' => $obj2->lastipaddress,
+                    ]);
+            }
+        }
+    }
+
+
+    public function betulkan_uom_kh_product(){
+        $chgmast = DB::table('hisdb.chgmast')
+                    ->where('compcode','9B')
+                    ->where('unit','KHEALTH')
+                    ->get();
+
+        foreach ($chgmast as $obj_cm) {
+            $product = DB::table('material.product')
+                            // ->where('unit','KHEALTH')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$obj_cm->chgcode)
+                            ->where('uomcode','!=',$obj_cm->uom);
+
+            if($product->exists()){
+                $product = $product->first();
+                dump($product->itemcode);
+                DB::table('material.product')
+                    ->where('idno',$product->idno)
+                    ->update([
+                        'unit' => 'KHEALTH',
+                        'uomcode' => $obj_cm->uom
+                    ]);
+            }
+        }
+    }
+    
+    public function betulkan_uom_kh_stockloc(){
+        $chgmast = DB::table('hisdb.chgmast')
+                    ->where('compcode','9B')
+                    ->where('unit','KHEALTH')
+                    ->get();
+
+        foreach ($chgmast as $obj_cm) {
+            $stockloc = DB::table('material.stockloc')
+                            // ->where('unit','KHEALTH')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$obj_cm->chgcode)
+                            ->where('uomcode','!=',$obj_cm->uom);
+
+            if($stockloc->exists()){
+                $stockloc = $stockloc->first();
+                dump($stockloc->itemcode);
+                DB::table('material.stockloc')
+                    ->where('idno',$stockloc->idno)
+                    ->update([
+                        'unit' => 'KHEALTH',
+                        'uomcode' => $obj_cm->uom
+                    ]);
+            }
+        }
+    }
+
+    public function betulkan_uom_kh_stockexp(){
+        $stockloc = DB::table('material.stockloc')
+                    ->where('compcode','9B')
+                    ->where('unit','KHEALTH')
+                    ->get();
+
+        foreach ($stockloc as $obj_cm) {
+            $stockexp = DB::table('material.stockexp')
+                            // ->where('unit','KHEALTH')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$obj_cm->itemcode)
+                            ->where('uomcode','!=',$obj_cm->uomcode);
+                            
+            if($stockexp->exists()){
+                $stockexp = $stockexp->first();
+                dump($stockexp->itemcode);
+                DB::table('material.stockexp')
+                    ->where('idno',$stockexp->idno)
+                    ->update([
+                        'unit' => 'KHEALTH',
+                        'uomcode' => $obj_cm->uomcode
                     ]);
             }
         }
