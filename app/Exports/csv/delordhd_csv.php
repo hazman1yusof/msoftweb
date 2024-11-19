@@ -46,7 +46,6 @@ class delordhd_csv implements FromView
         }
                     
         $table = $table->get();
-                    ->get();
 
         return view('other.csv.delordhd',compact('table'));
     }
