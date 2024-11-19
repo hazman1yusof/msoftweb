@@ -2390,11 +2390,6 @@ class TestController extends defaultController
             if($product->exists()){
                 $product = $product->first();
                 dump($product->itemcode);
-                DB::table('material.productmaster')
-                    ->where('itemcode',$obj_cm->chgcode)
-                    ->update([
-                        'uomcode' => $obj_cm->uom
-                    ]);
 
                 DB::table('material.product')
                     ->where('idno',$product->idno)
