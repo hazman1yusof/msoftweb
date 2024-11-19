@@ -819,16 +819,20 @@ function saveForm_otbookReqFor(callback){
     );
     
     values.push({
-        name:'op_date',
-        value:$('#formOTBookReqFor input[name=op_date]').val()
+        name: 'op_date',
+        value: $('#formOTBookReqFor input[name=op_date]').val()
     })
     values.push({
-        name:'oper_type',
-        value:$('#formOTBookReqFor input[name=oper_type]').val()
+        name: 'oper_type',
+        value: $('#formOTBookReqFor input[name=oper_type]').val()
     })
     values.push({
-        name:'ot_remarks',
-        value:$('#formOTBookReqFor textarea[name=ot_remarks]').val()
+        name: 'ot_remarks',
+        value: $('#formOTBookReqFor textarea[name=ot_remarks]').val()
+    })
+    values.push({
+        name: 'ot_doctorname',
+        value: $('#formOTBookReqFor input[name=ot_doctorname]').val()
     })
     
     $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
@@ -885,6 +889,91 @@ function saveForm_radClinicReqFor(callback){
         }).get()
     );
     
+    values.push({
+        name: 'rad_weight',
+        value: $('#formRadClinicReqFor input[name=rad_weight]').val()
+    })
+    values.push({
+        name: 'rad_allergy',
+        value: $('#formRadClinicReqFor textarea[name=rad_allergy]').val()
+    })
+    values.push({
+        name: 'xray_date',
+        value: $('#formRadClinicReqFor input[name=xray_date]').val()
+    })
+    values.push({
+        name: 'xray_remark',
+        value: $('#formRadClinicReqFor textarea[name=xray_remark]').val()
+    })
+    values.push({
+        name: 'mri_date',
+        value: $('#formRadClinicReqFor input[name=mri_date]').val()
+    })
+    values.push({
+        name: 'mri_remark',
+        value: $('#formRadClinicReqFor textarea[name=mri_remark]').val()
+    })
+    values.push({
+        name: 'angio_date',
+        value: $('#formRadClinicReqFor input[name=angio_date]').val()
+    })
+    values.push({
+        name: 'angio_remark',
+        value: $('#formRadClinicReqFor textarea[name=angio_remark]').val()
+    })
+    values.push({
+        name: 'ultrasound_date',
+        value: $('#formRadClinicReqFor input[name=ultrasound_date]').val()
+    })
+    values.push({
+        name: 'ultrasound_remark',
+        value: $('#formRadClinicReqFor textarea[name=ultrasound_remark]').val()
+    })
+    values.push({
+        name: 'ct_date',
+        value: $('#formRadClinicReqFor input[name=ct_date]').val()
+    })
+    values.push({
+        name: 'ct_remark',
+        value: $('#formRadClinicReqFor textarea[name=ct_remark]').val()
+    })
+    values.push({
+        name: 'fluroscopy_date',
+        value: $('#formRadClinicReqFor input[name=fluroscopy_date]').val()
+    })
+    values.push({
+        name: 'fluroscopy_remark',
+        value: $('#formRadClinicReqFor textarea[name=fluroscopy_remark]').val()
+    })
+    values.push({
+        name: 'mammogram_date',
+        value: $('#formRadClinicReqFor input[name=mammogram_date]').val()
+    })
+    values.push({
+        name: 'mammogram_remark',
+        value: $('#formRadClinicReqFor textarea[name=mammogram_remark]').val()
+    })
+    values.push({
+        name: 'bmd_date',
+        value: $('#formRadClinicReqFor input[name=bmd_date]').val()
+    })
+    values.push({
+        name: 'bmd_remark',
+        value: $('#formRadClinicReqFor textarea[name=bmd_remark]').val()
+    })
+    values.push({
+        name: 'clinicaldata',
+        value: $('#formRadClinicReqFor textarea[name=clinicaldata]').val()
+    })
+    values.push({
+        name: 'radClinic_doctorname',
+        value: $('#formRadClinicReqFor input[name=radClinic_doctorname]').val()
+    })
+    values.push({
+        name: 'rad_note',
+        value: $('#formRadClinicReqFor textarea[name=rad_note]').val()
+    })
+    
     $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').done(function (data){
@@ -939,6 +1028,35 @@ function saveForm_mriReqFor(callback){
         }).get()
     );
     
+    values.push({
+        name: 'mri_weight',
+        value: $('#formMRIReqFor input[name=mri_weight]').val()
+    })
+    values.push({
+        name: 'mri_entereddate',
+        value: $('#formMRIReqFor input[name=mri_entereddate]').val()
+    })
+    values.push({
+        name: 'prosvalve_rmk',
+        value: $('#formMRIReqFor textarea[name=prosvalve_rmk]').val()
+    })
+    values.push({
+        name: 'oper3mth_remark',
+        value: $('#formMRIReqFor textarea[name=oper3mth_remark]').val()
+    })
+    values.push({
+        name: 'bloodurea',
+        value: $('#formMRIReqFor input[name=bloodurea]').val()
+    })
+    values.push({
+        name: 'serum_creatinine',
+        value: $('#formMRIReqFor input[name=serum_creatinine]').val()
+    })
+    values.push({
+        name: 'mri_doctorname',
+        value: $('#formMRIReqFor input[name=mri_doctorname]').val()
+    })
+    
     $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').done(function (data){
@@ -992,6 +1110,23 @@ function saveForm_physioReqFor(callback){
         }).get()
     );
     
+    values.push({
+        name: 'clinic_diag',
+        value: $('#formPhysioReqFor textarea[name=clinic_diag]').val()
+    })
+    values.push({
+        name: 'findings',
+        value: $('#formPhysioReqFor textarea[name=findings]').val()
+    })
+    values.push({
+        name: 'phy_treatment',
+        value: $('#formPhysioReqFor textarea[name=phy_treatment]').val()
+    })
+    values.push({
+        name: 'phy_doctorname',
+        value: $('#formPhysioReqFor input[name=phy_doctorname]').val()
+    })
+    
     $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').done(function (data){
@@ -1044,6 +1179,35 @@ function saveForm_dressingReqFor(callback){
             return {"name": this.name, "value": this.value}
         }).get()
     );
+    
+    values.push({
+        name: 'od_dressing',
+        value: $('#formDressingReqFor input[name=od_dressing]').val()
+    })
+    values.push({
+        name: 'bd_dressing',
+        value: $('#formDressingReqFor input[name=bd_dressing]').val()
+    })
+    values.push({
+        name: 'eod_dressing',
+        value: $('#formDressingReqFor input[name=eod_dressing]').val()
+    })
+    values.push({
+        name: 'others_dressing',
+        value: $('#formDressingReqFor input[name=others_dressing]').val()
+    })
+    values.push({
+        name: 'others_name',
+        value: $('#formDressingReqFor input[name=others_name]').val()
+    })
+    values.push({
+        name: 'solution',
+        value: $('#formDressingReqFor textarea[name=solution]').val()
+    })
+    values.push({
+        name: 'dressing_doctorname',
+        value: $('#formDressingReqFor input[name=dressing_doctorname]').val()
+    })
     
     $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         

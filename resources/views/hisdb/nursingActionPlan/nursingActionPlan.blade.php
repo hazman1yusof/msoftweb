@@ -403,6 +403,24 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- <div class='col-md-12' style="padding: 0 0 15px 0;">
+                    <ul class="nav nav-tabs" role="tablist">
+                        @foreach($invest_type as $count => $types)
+                            <li role="presentation" @if($count == 0) class="active" @endif>
+                                <a href="#tab-{{ $types->idno }}" aria-controls="#tab-{{ $types->idno }}" role="tab" data-toggle="tab">{{ $types->inv_code }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                    
+                    <div class="tab-content" style="padding: 10px 5px;">
+                        @foreach($invest_type as $count => $types)
+                            <div role="tabpanel" @if($count == 0) class="tab-pane active" @else class="tab-pane" @endif id="tab-{{ $types->idno }}">
+                                <h2>{{ $types->inv_code }}</h2>
+                            </div>
+                        @endforeach
+                    </div>
+                </div> -->
             </div>
         </div>
 	</div>
