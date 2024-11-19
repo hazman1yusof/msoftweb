@@ -30,14 +30,22 @@ class ivtxnhd_csv implements FromView
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct(){
+    public function __construct($request){
+        $this->from = $request->from;
+        $this->to = $request->to;
     }
     
     public function view(): View{
 
         $table = DB::table('material.ivtxnhd')
-                    ->where('compcode','9B')
-                    ->get();
+                    ->where('compcode','9B');
+
+        if(!empty($this->from)){
+                $table = $table->whereDate('lastupdate','>=',$this->from)
+                                ->whereDate('lastupdate','<=',$this->to);
+        }
+                    
+        $table = $table->get();
 
         return view('other.csv.ivtxnhd',compact('table'));
     }

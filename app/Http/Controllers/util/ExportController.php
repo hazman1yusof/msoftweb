@@ -51,35 +51,35 @@ class ExportController extends defaultController
         }
     }
 
-    public function export_dbacthdr(){
-        return Excel::download(new dbacthdr_csv(), 'dbacthdr_csv.csv');
+    public function export_dbacthdr(Request $request){
+        return Excel::download(new dbacthdr_csv($request), 'dbacthdr_csv.csv');
     }
 
-    public function export_billdet(){
-        return Excel::download(new billdet_csv(), 'billdet_csv.csv');
+    public function export_billdet(Request $request){
+        return Excel::download(new billdet_csv($request), 'billdet_csv.csv');
     }
 
-    public function export_billsum(){
-        return Excel::download(new billsum_csv(), 'billsum_csv.csv');
+    public function export_billsum(Request $request){
+        return Excel::download(new billsum_csv($request), 'billsum_csv.csv');
     }
 
-    public function export_ivtxnhd(){
-        return Excel::download(new ivtxnhd_csv(), 'ivtxnhd_csv.csv');
+    public function export_ivtxnhd(Request $request){
+        return Excel::download(new ivtxnhd_csv($request), 'ivtxnhd_csv.csv');
     }
 
-    public function export_ivtxndt(){
-        return Excel::download(new ivtxndt_csv(), 'ivtxndt_csv.csv');
+    public function export_ivtxndt(Request $request){
+        return Excel::download(new ivtxndt_csv($request), 'ivtxndt_csv.csv');
     }
 
-    public function export_delordhd(){
-        return Excel::download(new delordhd_csv(), 'delordhd_csv.csv');
+    public function export_delordhd(Request $request){
+        return Excel::download(new delordhd_csv($request), 'delordhd_csv.csv');
     }
 
-    public function export_delorddt(){
-        return Excel::download(new delorddt_csv(), 'delorddt_csv.csv');
+    public function export_delorddt(Request $request){
+        return Excel::download(new delorddt_csv($request), 'delorddt_csv.csv');
     }
 
-    public function export_apacthdr(){
-        return Excel::download(new apacthdr_csv(), 'apacthdr_csv.csv');
+    public function export_apacthdr(Request $request){
+        return Excel::download(new apacthdr_csv($request), 'apacthdr_csv.csv');
     }
 }

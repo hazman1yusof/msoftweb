@@ -30,14 +30,22 @@ class apacthdr_csv implements FromView
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct(){
+    public function __construct($request){
+        $this->from = $request->from;
+        $this->to = $request->to;
     }
     
     public function view(): View{
 
         $table = DB::table('finance.apacthdr')
-                    ->where('compcode','9B')
-                    ->get();
+                    ->where('compcode','9B');
+
+        if(!empty($this->from)){
+                $table = $table->whereDate('adddate','>=',$this->from)
+                                ->whereDate('adddate','<=',$this->to);
+        }
+                    
+        $table = $table->get();
 
         return view('other.csv.apacthdr',compact('table'));
     }
