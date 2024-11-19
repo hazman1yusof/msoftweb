@@ -39,6 +39,6 @@ class apacthdr_csv implements FromView
                     ->where('compcode','9B')
                     ->get();
 
-        return view('other.csv.dbacthdr',compact('table'));
+        return view('other.csv.apacthdr',compact('table'));
     }
 }

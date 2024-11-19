@@ -35,7 +35,7 @@ class billdet_csv implements FromView
     
     public function view(): View{
 
-        $table = DB::table('debtor.billdet')
+        $table = DB::table('hisdb.billdet')
                     ->where('compcode','9B')
                     ->get();
 

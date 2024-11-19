@@ -54,7 +54,7 @@
             <td>{{Carbon\Carbon::parse($obj->upddate)->format('d/m/Y')}}</td>
             <td>{{$obj->updtime}}</td>
             <td>{{$obj->unit}}</td>
-            <td>{{$obj->DateInt}}</td>
+            <td></td>
         </tr>
     @endforeach
 </table>
