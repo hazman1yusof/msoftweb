@@ -45,7 +45,7 @@
         <td>LabCost</td>
         <td>XrayCost</td>
     </tr>
-    @foreach ($table as $obj)
+    @foreach ($collection as $obj)
         <tr>
             <td>{{$obj->compcode}}</td>
             <td>{{$obj->mrn}}</td>

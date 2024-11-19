@@ -37,16 +37,30 @@ class billdet_csv implements FromView
     
     public function view(): View{
 
-        $table = DB::table('hisdb.billdet')
-                    ->where('compcode','9B');
+        $table = DB::table('debtor.dbacthdr')
+                    ->where('compcode','9B')
+                    ->where('source','PB')
+                    ->where('trantype','IN')
+                    ->where('recstatus','POSTED');
 
         if(!empty($this->from)){
-                $table = $table->whereDate('adddate','>=',$this->from)
-                                ->whereDate('adddate','<=',$this->to);
+                $table = $table->whereDate('posteddate','>=',$this->from)
+                                ->whereDate('posteddate','<=',$this->to);
         }
                     
         $table = $table->get();
 
-        return view('other.csv.billdet',compact('table'));
+        $collection = collect([]);
+
+        foreach ($table as $key => $value) {
+            $billdet = DB::table('hisdb.billdet')
+                        ->where('compcode','9B')
+                        ->where('invno',$value->invno)
+                        ->get();
+
+            $collection = $collection->concat($billdet);
+        }
+
+        return view('other.csv.billdet',compact('collection'));
     }
 }

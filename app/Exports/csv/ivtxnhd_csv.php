@@ -41,8 +41,8 @@ class ivtxnhd_csv implements FromView
                     ->where('compcode','9B');
 
         if(!empty($this->from)){
-                $table = $table->whereDate('lastupdate','>=',$this->from)
-                                ->whereDate('lastupdate','<=',$this->to);
+                $table = $table->whereDate('trandate','>=',$this->from)
+                                ->whereDate('trandate','<=',$this->to);
         }
                     
         $table = $table->get();

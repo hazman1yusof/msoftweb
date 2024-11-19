@@ -37,16 +37,27 @@ class delorddt_csv implements FromView
     
     public function view(): View{
 
-        $table = DB::table('material.delorddt')
+        $table = DB::table('material.delordhd')
                     ->where('compcode','9B');
 
         if(!empty($this->from)){
-                $table = $table->whereDate('adddate','>=',$this->from)
-                                ->whereDate('adddate','<=',$this->to);
+                $table = $table->whereDate('trandate','>=',$this->from)
+                                ->whereDate('trandate','<=',$this->to);
         }
                     
         $table = $table->get();
 
-        return view('other.csv.delorddt',compact('table'));
+        $collection = collect([]);
+
+        foreach ($table as $key => $value) {
+            $delorddt = DB::table('hisdb.delorddt')
+                        ->where('compcode','9B')
+                        ->where('recno',$value->recno)
+                        ->get();
+
+            $collection = $collection->concat($delorddt);
+        }
+
+        return view('other.csv.delorddt',compact('collection'));
     }
 }

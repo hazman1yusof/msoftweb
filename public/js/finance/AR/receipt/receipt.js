@@ -245,6 +245,53 @@ $(document).ready(function () {
 	);
 	dialog_mrn.makedialog(true);
 
+	var dbacthdr_quoteno = new ordialog(
+		'mrn','finance.salehdr','#dbacthdr_quoteno',errorField,
+		{	colModel:[
+				{label:'Quoteno',name:'quoteno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'MRN',name:'mrn',width:100,classes:'pointer',canSearch:true},
+				{label:'Remark',name:'remark',width:400},
+				{label:'Amount',name:'amount',width:400},
+				{label:'Auditno',name:'auditno',width:50,classes:'pointer'},
+			],
+			urlParam: {
+				dbacthdr_quoteno.urlParam.url = "./receipt/table";
+				dbacthdr_quoteno.urlParam.action = 'get_quoteno';
+				dbacthdr_quoteno.urlParam.url_chk = "./receipt/table";
+				dbacthdr_quoteno.urlParam.action_chk = "get_quoteno_check";
+				dbacthdr_quoteno.urlParam.filterCol=[];
+				dbacthdr_quoteno.urlParam.filterVal=[];
+			},
+			ondblClickRow:function(){
+				let data=selrowData('#'+dbacthdr_quoteno.gridname);
+				// $('#apacthdr_actdate').focus();
+				// $('#dbacthdr_mrn').val(data.MRN);
+				// $('#dbacthdr_episno').val(data.Episno);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					//$('#apacthdr_actdate').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select MRN",
+			open: function(){
+				dbacthdr_quoteno.urlParam.url = "./receipt/table";
+				dbacthdr_quoteno.urlParam.action = 'get_quoteno';
+				dbacthdr_quoteno.urlParam.url_chk = "./receipt/table";
+				dbacthdr_quoteno.urlParam.action_chk = "get_quoteno_check";
+				dbacthdr_quoteno.urlParam.filterCol=[];
+				dbacthdr_quoteno.urlParam.filterVal=[];
+			}
+		},'urlParam','radio','tab'
+	);
+	dbacthdr_quoteno.makedialog(true);
+
 	var dialog_logindeptcode = new ordialog(
 		'till_dept', 'sysdb.department', '#till_dept', errorField,
 		{

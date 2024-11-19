@@ -37,16 +37,30 @@ class billsum_csv implements FromView
     
     public function view(): View{
 
-        $table = DB::table('debtor.billsum')
-                    ->where('compcode','9B');
+        $table = DB::table('debtor.dbacthdr')
+                    ->where('compcode','9B')
+                    ->where('source','PB')
+                    ->where('trantype','IN')
+                    ->where('recstatus','POSTED');
 
         if(!empty($this->from)){
-                $table = $table->whereDate('lastupdate','>=',$this->from)
-                                ->whereDate('lastupdate','<=',$this->to);
+                $table = $table->whereDate('posteddate','>=',$this->from)
+                                ->whereDate('posteddate','<=',$this->to);
         }
                     
         $table = $table->get();
 
-        return view('other.csv.billsum',compact('table'));
+        $collection = collect([]);
+
+        foreach ($table as $key => $value) {
+            $billsum = DB::table('debtor.billsum')
+                        ->where('compcode','9B')
+                        ->where('invno',$value->invno)
+                        ->get();
+
+            $collection = $collection->concat($billsum);
+        }
+
+        return view('other.csv.billsum',compact('collection'));
     }
 }

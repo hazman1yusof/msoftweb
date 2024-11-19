@@ -285,7 +285,19 @@
 								</div>
 					  			<span class="help-block"></span>
 				  			</div>
-				  		</div>
+				  	</div>
+
+				  	<div class="col-md-8 minuspad-15">
+							<label class="control-label" for="dbacthdr_quoteno">Quote No.</label>  
+				  			<div class="">
+					  			<div class='input-group'>
+									<input id="dbacthdr_quoteno" name="dbacthdr_quoteno" type="text" class="form-control input-sm text-uppercase" >
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					  			</div>
+					  			<span class="help-block"></span>
+				  			</div>
+				  	</div>
+
 					</div>
 				</div>
 			</div>

@@ -43,7 +43,7 @@
         <td>taxcode</td>
         <td>TaxClaim</td>
     </tr>
-    @foreach ($table as $obj)
+    @foreach ($collection as $obj)
         <tr>
             <td>{{$obj->compcode}}</td>
             <td>{{$obj->recno}}</td>

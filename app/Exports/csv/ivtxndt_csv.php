@@ -37,16 +37,28 @@ class ivtxndt_csv implements FromView
     
     public function view(): View{
 
-        $table = DB::table('material.ivtxndt')
+        $table = DB::table('material.ivtxnhd')
                     ->where('compcode','9B');
 
         if(!empty($this->from)){
-                $table = $table->whereDate('adddate','>=',$this->from)
-                                ->whereDate('adddate','<=',$this->to);
+                $table = $table->whereDate('trandate','>=',$this->from)
+                                ->whereDate('trandate','<=',$this->to);
         }
                     
         $table = $table->get();
 
-        return view('other.csv.ivtxndt',compact('table'));
+        $collection = collect([]);
+
+        foreach ($table as $key => $value) {
+            $ivtxndt = DB::table('material.ivtxndt')
+                        ->where('compcode','9B')
+                        ->where('trantype',$value->trantype)
+                        ->where('recno',$value->recno)
+                        ->get();
+
+            $collection = $collection->concat($ivtxndt);
+        }
+
+        return view('other.csv.ivtxndt',compact('collection'));
     }
 }

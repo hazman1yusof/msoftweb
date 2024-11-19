@@ -41,8 +41,8 @@ class apacthdr_csv implements FromView
                     ->where('compcode','9B');
 
         if(!empty($this->from)){
-                $table = $table->whereDate('adddate','>=',$this->from)
-                                ->whereDate('adddate','<=',$this->to);
+                $table = $table->whereDate('postdate','>=',$this->from)
+                                ->whereDate('postdate','<=',$this->to);
         }
                     
         $table = $table->get();

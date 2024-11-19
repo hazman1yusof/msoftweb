@@ -33,6 +33,10 @@ class ReceiptController extends defaultController
                 return $this->get_debtorcode_outamount($request);
             case 'maintable':
                 return $this->maintable($request);
+            case 'get_quoteno':
+                return $this->get_quoteno($request);
+            case 'get_quoteno_check':
+                return $this->get_quoteno_check($request);
             default:
                 return 'error happen..';
         }
@@ -357,6 +361,30 @@ class ReceiptController extends defaultController
         }
 
         return json_encode($responce);  
+    }
+
+    public function get_quoteno(Request $request){
+
+    }
+
+    public function get_quoteno_check(Request $request){
+        $quoteno = $request->filterVal[0];
+        $mrn = $request->filterVal[1];
+
+        $table = DB::table('finance.salehdr')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recstatus','<>','DELETE')
+                        ->where('cm.chgcode','=',$chgcode)
+                        ->where('cm.uom','=',$uom);
+
+        $result = $table->get()->toArray();
+        
+
+        $responce = new stdClass();
+        $responce->rows = $result;
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
     }
 
     public function get_debtorcode_outamount(Request $request){
