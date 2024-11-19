@@ -28,6 +28,11 @@ class ExportController extends defaultController
 	public function __construct(){
 
     }
+
+    public function show(Request $request){   
+        return view('setup.export_csv.export_csv');
+    }
+
     public function table(Request $request){  
         switch($request->action){
             case 'export_dbacthdr':
