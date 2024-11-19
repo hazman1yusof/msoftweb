@@ -50,7 +50,7 @@ class delorddt_csv implements FromView
         $collection = collect([]);
 
         foreach ($table as $key => $value) {
-            $delorddt = DB::table('hisdb.delorddt')
+            $delorddt = DB::table('material.delorddt')
                         ->where('compcode','9B')
                         ->where('recno',$value->recno)
                         ->get();

@@ -23,7 +23,7 @@
         <td>batchno</td>
         <td>amount</td>
     </tr>
-    @foreach ($table as $obj)
+    @foreach ($collection as $obj)
         <tr>
             <td>compcode</td>
             <td>recno</td>
