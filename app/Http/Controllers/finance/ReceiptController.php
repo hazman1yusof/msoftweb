@@ -149,8 +149,10 @@ class ReceiptController extends defaultController
 
                 $array_insert_RD = [
                     'hdrtype' => $request->dbacthdr_hdrtype,
-                    'mrn' => $request->dbacthdr_mrn
+                    'mrn' => $request->dbacthdr_mrn,
+                    'quoteno' => $request->dbacthdr_quoteno
                 ];
+                $this->upd_quoteno_outamount($request->dbacthdr_quoteno,$dbacthdr_amount);
 
                 if($hdrtypmst->updepisode == '1'){
                     $array_insert_RD['episno'] = $request->dbacthdr_episno;
@@ -234,6 +236,24 @@ class ReceiptController extends defaultController
             DB::rollback();
 
             return response($e->getMessage().$e, 500);
+        }
+    }
+
+    public function upd_quoteno_outamount($quoteno,$amount){
+        $salehdr = DB::table('finance.salehdr')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('quoteno','=',$quoteno);
+
+        if($salehdr->exists()){
+            $salehdr = $salehdr->first();
+            $outamount = $salehdr->outamount - $amount;
+
+            DB::table('finance.salehdr')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('quoteno','=',$quoteno)
+                        ->update([
+                            'outamount' => $outamount
+                        ]);
         }
     }
 
@@ -364,21 +384,77 @@ class ReceiptController extends defaultController
     }
 
     public function get_quoteno(Request $request){
+        $mrn = $request->mrn;
 
+        $table = DB::table('finance.salehdr')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recstatus','=','POSTED');
+
+        if(!empty($mrn)){
+            $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn',$mrn);
+
+            if($pat_mast->exists()){
+                $newmrn = $pat_mast->first()->NewMrn;
+
+                $table = $table->Where('mrn',$newmrn);
+            }
+        }
+
+        if(!empty($request->searchCol)){
+            $searchCol_array = $request->searchCol;
+            $table->Where($searchCol_array[0],'like','%'.$request->wholeword.'%');
+        }
+
+        if(!empty($request->filterCol)){
+            foreach ($request->filterCol as $key => $value) {
+                $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+            }
+        }
+
+        if(!empty($request->sidx)){
+
+            if(!empty($request->fixPost)){
+                $request->sidx = substr_replace($request->sidx, ".", strpos($request->sidx, "_"), strlen("."));
+            }
+            
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                    $pieces_inside = explode(" ", $pieces[$i]);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('idno','desc');
+        }
+
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        // $responce->rows = $rows;
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
     }
 
     public function get_quoteno_check(Request $request){
         $quoteno = $request->filterVal[0];
-        $mrn = $request->filterVal[1];
 
         $table = DB::table('finance.salehdr')
                         ->where('compcode','=',session('compcode'))
-                        ->where('recstatus','<>','DELETE')
-                        ->where('cm.chgcode','=',$chgcode)
-                        ->where('cm.uom','=',$uom);
+                        ->where('quoteno','=',$quoteno);
 
         $result = $table->get()->toArray();
-        
 
         $responce = new stdClass();
         $responce->rows = $result;

@@ -169,9 +169,9 @@ $(document).ready(function () {
 				{label:'actdebglacc',name:'actdebglacc',hidden:true},
 			],
 			urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','ACTIVE']
-					},
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_payercode.gridname);
 				//$('#apacthdr_actdate').focus();
@@ -246,24 +246,28 @@ $(document).ready(function () {
 	dialog_mrn.makedialog(true);
 
 	var dbacthdr_quoteno = new ordialog(
-		'mrn','finance.salehdr','#dbacthdr_quoteno',errorField,
+		'quoteno','finance.salehdr','#dbacthdr_quoteno',errorField,
 		{	colModel:[
 				{label:'Quoteno',name:'quoteno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				// {label:'Auditno',name:'auditno',width:100,classes:'pointer',canSearch:true},
 				{label:'MRN',name:'mrn',width:100,classes:'pointer',canSearch:true},
 				{label:'Remark',name:'remark',width:400},
-				{label:'Amount',name:'amount',width:400},
-				{label:'Auditno',name:'auditno',width:50,classes:'pointer'},
+				{label:'Amount',name:'amount',width:200},
+				{label:'Outstanding',name:'outamount',width:200},
 			],
 			urlParam: {
-				dbacthdr_quoteno.urlParam.url = "./receipt/table";
-				dbacthdr_quoteno.urlParam.action = 'get_quoteno';
-				dbacthdr_quoteno.urlParam.url_chk = "./receipt/table";
-				dbacthdr_quoteno.urlParam.action_chk = "get_quoteno_check";
-				dbacthdr_quoteno.urlParam.filterCol=[];
-				dbacthdr_quoteno.urlParam.filterVal=[];
+				url : "./receipt/table",
+				action : 'get_quoteno',
+				url_chk : "./receipt/table",
+				action_chk : "get_quoteno_check",
+				mrn : $('#dbacthdr_mrn').val(),
+				filterCol:[],
+				filterVal:[],
 			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dbacthdr_quoteno.gridname);
+
+				$('input[name="dbacthdr_outamount"]').val(data.outamount);
 				// $('#apacthdr_actdate').focus();
 				// $('#dbacthdr_mrn').val(data.MRN);
 				// $('#dbacthdr_episno').val(data.Episno);
@@ -285,6 +289,7 @@ $(document).ready(function () {
 				dbacthdr_quoteno.urlParam.action = 'get_quoteno';
 				dbacthdr_quoteno.urlParam.url_chk = "./receipt/table";
 				dbacthdr_quoteno.urlParam.action_chk = "get_quoteno_check";
+				dbacthdr_quoteno.urlParam.mrn = $('#dbacthdr_mrn').val();
 				dbacthdr_quoteno.urlParam.filterCol=[];
 				dbacthdr_quoteno.urlParam.filterVal=[];
 			}
@@ -484,6 +489,7 @@ $(document).ready(function () {
 					$("#formdata input[name='dbacthdr_cracc']").val(rowData['depglacc']);
 					if(oper!='view'){
 						dialog_mrn.on();
+						dbacthdr_quoteno.on();
 						// dialog_episode.handler(errorField);
 					}
 					if(rowData['updpayername'] == 1){
@@ -502,6 +508,7 @@ $(document).ready(function () {
 					$("input:hidden[name='dbacthdr_hdrtype']").val('RC');
 					$("input:hidden[name='updpayername'],input:hidden[name='updepisode']").val('');
 					dialog_mrn.off();
+					dbacthdr_quoteno.off();
 				}
 			}
 		},
@@ -995,6 +1002,7 @@ $(document).ready(function () {
 			{ label: 'rate', name: 'dbacthdr_rate', hidden: true },
 			{ label: 'units', name: 'dbacthdr_unit', hidden: true },
 			{ label: 'invno', name: 'dbacthdr_invno', hidden: true },
+			{ label: 'quoteno', name: 'dbacthdr_quoteno', hidden: true },
 			{ label: 'paytype', name: 'dbacthdr_paytype', hidden: true },
 			{ label: 'RCcashbalance', name: 'dbacthdr_RCCASHbalance', hidden: true },
 			{ label: 'RCFinalbalance', name: 'dbacthdr_RCFinalbalance', hidden: true },
