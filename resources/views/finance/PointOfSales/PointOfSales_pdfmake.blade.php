@@ -41,7 +41,7 @@
 								{text: 'K-HEALTH - PPUKM\nARAS BAWAH (G) LOBI PELAWAT,\nPUSAT PERUBATAN UKM,\nJALAN YAACOB LATIFF,\n56000 CHERAS, KUALA LUMPUR.\nTel: 019-2289357\nFax: 03-91739357', alignment: 'center'},
 							],
 							[
-								{text: `Cashier : {{strtoupper($tilldetl->cashier)}}\nReceipt : {{$receipt->recptno}}\nDate      : {{\Carbon\Carbon::parse($receipt->entrydate)->format('d/m/Y')}}`, alignment: 'left'},
+								{text: `Cashier : {{strtoupper($tilldetl->cashier)}}\nReceipt : {{$receipt[0]->recptno}}\nDate      : {{\Carbon\Carbon::parse($receipt[0]->entrydate)->format('d/m/Y')}} {{$receipt[0]->entrytime}}`, alignment: 'left'},
 							],
 							[
 								{text: `------------------------------------------------------------`, alignment: 'center'},
@@ -84,6 +84,7 @@
 							[
 								{text: `------------------------------------------------------------`, alignment: 'center'},
 							],
+							@foreach($receipt as $key => $receipt_obj)
 							[
 								{
 									style: 'tableDetail',
@@ -92,11 +93,11 @@
 										body: [
 											[
 												{text:'Card No.',margin: [0, 0, 0, 0]},
-												{text:`:  {{$receipt->reference}}`, alignment: 'left',margin: [0, 0, 0, 0]}
+												{text:`:  {{$receipt_obj->reference}}`, alignment: 'left',margin: [0, 0, 0, 0]}
 											],
 											[
 												{text:'Pay Mode',margin: [0, -2, 0, 0]},
-												{text:`:  {{$receipt->paymode}}`, alignment: 'left',margin: [0, -2, 0, 0]}
+												{text:`:  {{$receipt_obj->paymode}}`, alignment: 'left',margin: [0, -2, 0, 0]}
 											],
 											[
 												{text:'App.Code',margin: [0, -2, 0, 0]},
@@ -107,6 +108,7 @@
 									layout: 'noBorders',
 								}
 							],
+							@endforeach
 							[
 								{text: `------------------------------------------------------------`, alignment: 'center'},
 							],
@@ -118,11 +120,11 @@
 										body: [
 											[
 												{text:'Name',margin: [0, 0, 0, 0]},
-												{text:`:  {{$receipt->payername}}`, alignment: 'left',margin: [0, 0, 0, 0]}
+												{text:`:  {{$receipt[0]->payername}}`, alignment: 'left',margin: [0, 0, 0, 0]}
 											],
 											[
 												{text:'Doctor',margin: [0, -2, 0, 0]},
-												{text:`:  @if(empty($receipt->doctorcode)){{'NONE'}}@else{{$receipt->doctorcode}}@endif`, alignment: 'left',margin: [0, -2, 0, 0]}
+												{text:`:  @if(empty($receipt[0]->doctorcode)){{'NONE'}}@else{{$receipt[0]->doctorcode}}@endif`, alignment: 'left',margin: [0, -2, 0, 0]}
 											],
 											[
 												{text:'IC No',margin: [0, -2, 0, 0]},
@@ -188,7 +190,7 @@
 
 		billsum.forEach(function(e,i){
 			body.push([{text:e.chggroup+'-'+e.chgmast_desc,colSpan:2},{}]);
-			body.push([{text:e.quantity+' X '+e.unitprice,margin: [0, -4, 0, 0]},{text:e.amount, alignment: 'right',margin: [0, -4, 0, 0]}]);
+			body.push([{text:Math.round(e.quantity)+' X '+e.unitprice,margin: [0, -4, 0, 0]},{text:e.amount, alignment: 'right',margin: [0, -4, 0, 0]}]);
 		});
 
 		var retval = {

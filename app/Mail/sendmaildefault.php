@@ -28,6 +28,6 @@ class sendmaildefault extends Mailable
      */
     public function build()
     {
-        return $this->view('email.mail');
+        return $this->markdown('email.mail');
     }
 }

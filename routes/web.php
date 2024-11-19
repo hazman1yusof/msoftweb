@@ -1461,6 +1461,7 @@ Route::get('/download/{folder}/{image_path}','hisdb\ReviewController@download');
 Route::get('/test','util\TestController@show');
 Route::get('/test/table','util\TestController@table');
 Route::post('/test/form','util\TestController@form');
+Route::get('/export/table','util\ExportController@table');
 
 Route::get('/barcode','util\BarcodeController@show');
 Route::post('/barcode/form','util\BarcodeController@form');

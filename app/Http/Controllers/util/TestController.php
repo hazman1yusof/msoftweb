@@ -68,8 +68,8 @@ class TestController extends defaultController
             //     return $this->update_stockexp($request);
             // case 'del_stockexp':
             //     return $this->del_stockexp($request);
-            // case 'test_email':
-            //     return $this->test_email($request);
+            case 'test_email':
+                return $this->test_email($request);
             // case 'update_supplier':
             //     return $this->update_supplier($request);
             case 'betulkan_apacthdr':

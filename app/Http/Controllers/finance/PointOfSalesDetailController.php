@@ -129,7 +129,7 @@ class PointOfSalesDetailController extends defaultController
                         ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','pt.generic','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                         ->where('cm.unit','=',session('unit'))
                         ->where('cm.compcode','=',session('compcode'))
-                        ->where('cm.recstatus','<>','DELETE');
+                        ->where('cm.recstatus','=','ACTIVE');
                         // ->where(function ($query) {
                         //    $query->whereNotNull('st.idno')
                         //          ->orWhere('cm.invflag', '=', 0);
@@ -147,9 +147,9 @@ class PointOfSalesDetailController extends defaultController
 
         $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
                             $join = $join->on('st.itemcode', '=', 'cm.chgcode');
-                            $join = $join->on('st.uomcode', '=', 'cm.uom');
+                            // $join = $join->on('st.uomcode', '=', 'cm.uom');
                             $join = $join->where('st.compcode', '=', session('compcode'));
-                            $join = $join->where('st.unit', '=', session('unit'));
+                            // $join = $join->where('st.unit', '=', session('unit'));
                             $join = $join->where('st.deptcode', '=', $deptcode);
                             $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
                         });
@@ -157,7 +157,7 @@ class PointOfSalesDetailController extends defaultController
         $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
                             $join = $join->where('pt.compcode', '=', session('compcode'));
                             $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
-                            $join = $join->on('pt.uomcode', '=', 'cm.uom');
+                            // $join = $join->on('pt.uomcode', '=', 'cm.uom');
                             $join = $join->where('pt.unit', '=', session('unit'));
                         });
 

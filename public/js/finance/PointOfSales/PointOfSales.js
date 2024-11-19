@@ -1118,36 +1118,36 @@ $(document).ready(function () {
 	}
 
 	function formatterCheckbox(cellvalue, options, rowObject){
-		let idno = cbselect.idno;
-		let recstatus = cbselect.recstatus;
+		// let idno = cbselect.idno;
+		// let recstatus = cbselect.recstatus;
 
-		if(options.gid != "jqGrid"){
-			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
-		}
+		// if(options.gid != "jqGrid"){
+		// 	return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+		// }
 
-		if($('#recstatus_use').val() == 'ALL'){
-			if(rowObject.db_recstatus == "OPEN"){
-				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-			}else if(rowObject.db_recstatus == "RECOMPUTED"){
-				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-			}
-		}else if($('#recstatus_use').val() == 'DELIVERED'){
-			if(rowObject.db_recstatus == "PREPARED"){
-				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-			}
-		}else if($('#recstatus_use').val() == 'REOPEN'){
-			if(rowObject.db_recstatus == "CANCELLED"){
-				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-			}
-		}else if($('#recstatus_use').val() == 'RECOMPUTED'){
-			if(rowObject.db_recstatus == "POSTED"){
-				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-			}
-		}else if($('#recstatus_use').val() == 'CANCEL'){
-			if(rowObject.db_recstatus == "OPEN"){
-				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
-			}
-		}
+		// if($('#recstatus_use').val() == 'ALL'){
+		// 	if(rowObject.db_recstatus == "OPEN"){
+		// 		return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		// 	}else if(rowObject.db_recstatus == "RECOMPUTED"){
+		// 		return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		// 	}
+		// }else if($('#recstatus_use').val() == 'DELIVERED'){
+		// 	if(rowObject.db_recstatus == "PREPARED"){
+		// 		return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		// 	}
+		// }else if($('#recstatus_use').val() == 'REOPEN'){
+		// 	if(rowObject.db_recstatus == "CANCELLED"){
+		// 		return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		// 	}
+		// }else if($('#recstatus_use').val() == 'RECOMPUTED'){
+		// 	if(rowObject.db_recstatus == "POSTED"){
+		// 		return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		// 	}
+		// }else if($('#recstatus_use').val() == 'CANCEL'){
+		// 	if(rowObject.db_recstatus == "OPEN"){
+		// 		return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		// 	}
+		// }
 
 		return ' ';
 	}
@@ -2201,8 +2201,10 @@ $(document).ready(function () {
 				{label: 'Quantity On Hand',name:'qtyonhand',width:100,classes:'pointer',},
 				{label: 'Price',name:'price',width:100,classes:'pointer'},
 				{label: 'Tax',name:'taxcode',width:100,classes:'pointer'},
+				{label: 'overwrite',name:'overwrite',hidden:true},
 				{label: 'rate',name:'rate',hidden:true},
 				{label: 'st_idno',name:'st_idno',hidden:true},
+				{label: 'UOM',name:'uom',width:100,classes:'pointer',},
 				{label: 'pt_idno',name:'pt_idno',hidden:true},
 				{label: 'billty_amount',name:'billty_amount',hidden:true},
 				{label: 'billty_percent',name:'billty_percent',hidden:true},
@@ -2240,6 +2242,10 @@ $(document).ready(function () {
 				$("#jqGrid2 #"+id_optid+"_chggroup").data('pt_idno',data['pt_idno']);
 				$("#jqGrid2 #"+id_optid+"_chggroup").data('convfactor',data['convfactor']);
 				$('#'+dialog_chggroup.gridname).data('fail_msg','');
+
+				if(data.overwrite == '1'){
+					$("#jqGrid2 #"+id_optid+"_unitprice").prop('readonly',false);
+				}
 
 				if(data.invflag == '1' && data.pt_idno == ''){
 					myerrorIt_only2('input#'+id_optid+'_chggroup',true);
