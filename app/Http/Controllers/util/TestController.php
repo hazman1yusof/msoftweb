@@ -2390,6 +2390,12 @@ class TestController extends defaultController
             if($product->exists()){
                 $product = $product->first();
                 dump($product->itemcode);
+                DB::table('material.productmaster')
+                    ->where('itemcode',$obj_cm->chgcode)
+                    ->update([
+                        'uomcode' => $obj_cm->uom
+                    ]);
+
                 DB::table('material.product')
                     ->where('idno',$product->idno)
                     ->update([
@@ -2399,7 +2405,7 @@ class TestController extends defaultController
             }
         }
     }
-    
+
     public function betulkan_uom_kh_stockloc(){
         $chgmast = DB::table('hisdb.chgmast')
                     ->where('compcode','9B')
