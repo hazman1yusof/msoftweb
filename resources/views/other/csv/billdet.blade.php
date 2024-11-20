@@ -13,7 +13,7 @@
         <td>costcd</td>
         <td>revcd</td>
         <td>mmacode</td>
-        <td>billdate</td>
+        <td>postdate</td>
         <td>billtype</td>
         <td>doctorcode</td>
         <td>chg_class</td>
