@@ -918,7 +918,7 @@ class PointOfSalesController extends defaultController
                         ->first();
             
             if(!in_array($dbacthdr->recstatus, ['OPEN','RECOMPUTED'])){
-                return 0
+                return 0;
             }
             
             DB::table("debtor.dbacthdr")
