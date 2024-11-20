@@ -72,7 +72,7 @@
 	</div>
 
 	<div class="col-md-3">
-		<div class="panel panel-default" style="height: 410px;">
+		<div class="panel panel-default" style="height: 460px;">
 			<div class="panel-body">
 				<div class='col-md-12 btnform' style="padding:0px">
 				 <fieldset>
@@ -106,6 +106,10 @@
 					
 					<button name="export_apacthdr" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_apacthdr'>
 						<span class="fa fa-file-excel-o fa-lg"></span> Download Apacthdr
+					</button>
+					
+					<button name="export_apacthdr" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_product'>
+						<span class="fa fa-file-excel-o fa-lg"></span> Download Product
 					</button>
 				  </fieldset>
 				</div>
