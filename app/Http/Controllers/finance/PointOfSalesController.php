@@ -917,8 +917,8 @@ class PointOfSalesController extends defaultController
                         ->where('idno','=',$value)
                         ->first();
             
-            if(!in_array($dbacthdr->recstatus, ['OPEN','POSTED'])){
-                throw new \Exception("Cant Edit this document, status is not OPEN or RECOMPUTED");
+            if(!in_array($dbacthdr->recstatus, ['OPEN','RECOMPUTED'])){
+                return 0
             }
             
             DB::table("debtor.dbacthdr")
