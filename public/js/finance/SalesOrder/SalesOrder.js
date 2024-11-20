@@ -1166,6 +1166,8 @@ $(document).ready(function () {
 		}else if($('#recstatus_use').val() == 'CANCEL'){
 			if(rowObject.db_recstatus == "OPEN"){
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}else if(rowObject.db_recstatus == "PREPARED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 			}
 		}
 
