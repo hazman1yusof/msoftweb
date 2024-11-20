@@ -25,28 +25,28 @@
     </tr>
     @foreach ($collection as $obj)
         <tr>
-            <td>compcode</td>
-            <td>recno</td>
-            <td>lineno_</td>
-            <td>itemcode</td>
-            <td>uomcode</td>
-            <td>txnqty</td>
-            <td>netprice</td>
-            <td>adduser</td>
+            <td>{{$obj->compcode}}</td>
+            <td>{{$obj->recno}}</td>
+            <td>{{$obj->lineno_}}</td>
+            <td>{{$obj->itemcode}}</td>
+            <td>{{$obj->uomcode}}</td>
+            <td>{{$obj->txnqty}}</td>
+            <td>{{$obj->netprice}}</td>
+            <td>{{$obj->adduser}}</td>
             <td>{{Carbon\Carbon::parse($obj->adddate)->format('d/m/Y')}}</td>
-            <td>upduser</td>
+            <td>{{$obj->upduser}}</td>
             <td>{{Carbon\Carbon::parse($obj->upddate)->format('d/m/Y')}}</td>
-            <td>productcat</td>
-            <td>draccno</td>
-            <td>drccode</td>
-            <td>craccno</td>
-            <td>crccode</td>
-            <td>updtime</td>
+            <td>{{$obj->productcat}}</td>
+            <td>{{$obj->draccno}}</td>
+            <td>{{$obj->drccode}}</td>
+            <td>{{$obj->craccno}}</td>
+            <td>{{$obj->crccode}}</td>
+            <td>{{$obj->updtime}}</td>
             <td>{{Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}</td>
-            <td>remarks</td>
-            <td>qtyonhand</td>
-            <td>batchno</td>
-            <td>amount</td>
+            <td>{{$obj->remarks}}</td>
+            <td>{{$obj->qtyonhand}}</td>
+            <td>{{$obj->batchno}}</td>
+            <td>{{$obj->amount}}</td>
         </tr>
     @endforeach
 </table>
