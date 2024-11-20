@@ -1545,8 +1545,8 @@ class SalesOrderController extends defaultController
                             ->where('idno','=',$value)
                             ->first();
 
-                if($dbacthdr->recstatus != 'OPEN'){
-                    continue;
+                if(!in_array($dbacthdr->recstatus, ['OPEN','PREPARED'])){
+                    throw new \Exception("Cant cancel this document, status is not OPEN or PREPARED");
                 }
 
                 $dbacthdr_update = [
