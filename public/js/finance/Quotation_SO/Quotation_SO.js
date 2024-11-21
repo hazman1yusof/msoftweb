@@ -1067,8 +1067,8 @@ $(document).ready(function (){
 			mycurrency2.formatOnBlur(); // make field to currency on leave cursor
 			mycurrency_np.formatOnBlur(); // make field to currency on leave cursor
 			
-			$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='quantity']").on('keyup',{currency: [mycurrency2,mycurrency_np]},calculate_line_totgst_and_totamt);
-			$("#jqGrid2 input[name='unitprice']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+			// $("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='quantity']").on('keyup',{currency: [mycurrency2,mycurrency_np]},calculate_line_totgst_and_totamt);
+			$("#jqGrid2 input[name='quantity']").on('blur',{currency: [mycurrency2]},calculate_line_totgst_and_totamt);
 			
 			// $("#jqGrid2 input[name='quantity']").on('blur',calculate_conversion_factor);
 			$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='billtypeamt'],#jqGrid2 input[name='quantity'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
@@ -2065,6 +2065,7 @@ $(document).ready(function (){
 				{label: 'Quantity On Hand',name:'qtyonhand',width:100,classes:'pointer',},
 				{label: 'Price',name:'price',width:100,classes:'pointer'},
 				{label: 'Tax',name:'taxcode',width:100,classes:'pointer'},
+                {label: 'overwrite',name:'overwrite',hidden:true},
 				{label: 'rate',name:'rate',hidden:true},
 				{label: 'st_idno',name:'st_idno',hidden:true},
 				{label: 'pt_idno',name:'pt_idno',hidden:true},
@@ -2104,6 +2105,10 @@ $(document).ready(function (){
 				$("#jqGrid2 #"+id_optid+"_chggroup").data('pt_idno',data['pt_idno']);
 				$("#jqGrid2 #"+id_optid+"_chggroup").data('convfactor',data['convfactor']);
 				$('#'+dialog_chggroup.gridname).data('fail_msg','');
+
+                if(data.overwrite == '1'){
+                    $("#jqGrid2 #"+id_optid+"_unitprice").prop('readonly',false);
+                }
 
 				if(data.invflag == '1' && data.pt_idno == ''){
 					myerrorIt_only2('input#'+id_optid+'_chggroup',true);

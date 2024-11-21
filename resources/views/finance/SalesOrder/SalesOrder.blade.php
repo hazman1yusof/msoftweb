@@ -1056,7 +1056,7 @@ div#fail_msg{
 			});
 		</script>
 
-		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.18"></script>
+		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.19"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

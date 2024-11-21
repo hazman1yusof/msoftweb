@@ -131,6 +131,7 @@ class Quotation_SO_DetailController extends defaultController
         $table = DB::table('hisdb.chgmast as cm')
                         // ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','pt.generic','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                         ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','pt.generic','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
+                        ->where('cm.unit','=',session('unit'))
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE');
                         // ->where(function ($query) {
@@ -1418,6 +1419,27 @@ class Quotation_SO_DetailController extends defaultController
             // if($request->quantity > $request->qtyonhand){
             //     throw new \Exception("Qty request cant be bigger than qty on hand!",500);
             // }
+
+            $stockloc = DB::table('material.stockloc')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('uomcode','=',$request->uom)
+                    ->where('itemcode','=',$request->chggroup)
+                    ->where('deptcode','=',$dbacthdr->deptcode)
+                    ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+
+            if($stockloc->exists()){
+                $stockloc = $stockloc->first();
+            }else{
+                throw new \Exception("Stockloc not exists for item: ".$request->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$request->uom,500);
+            }
+            
+            $qtyonhand = $stockloc->qtyonhand;
+            $quantity = floatval($request->quantity);
+            $amount = $request->unitprice * $quantity;
+            $discamt = ($amount * (100-$request->billtypeperct) / 100) + $request->billtypeamt;
+            $rate = $this->taxrate($request->taxcode);
+            $taxamt = $amount * $rate / 100;
+            $totamount = $amount - $discamt + $taxamt;
             
             ///2. insert detail
             DB::table('finance.salesum')

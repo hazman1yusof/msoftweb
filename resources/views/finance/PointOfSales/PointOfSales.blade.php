@@ -849,7 +849,7 @@ div#fail_msg,div#fail_msg_r{
 		</script>
 
 		<script src="js/myjs/till_part.js"></script>
-		<script src="js/finance/PointOfSales/PointOfSales.js?v=1.2"></script>
+		<script src="js/finance/PointOfSales/PointOfSales.js?v=1.3"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	
