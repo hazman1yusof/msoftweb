@@ -1424,13 +1424,13 @@ class Quotation_SO_DetailController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('uomcode','=',$request->uom)
                     ->where('itemcode','=',$request->chggroup)
-                    ->where('deptcode','=',$dbacthdr->deptcode)
+                    ->where('deptcode','=',$salehdr->deptcode)
                     ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
 
             if($stockloc->exists()){
                 $stockloc = $stockloc->first();
             }else{
-                throw new \Exception("Stockloc not exists for item: ".$request->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$request->uom,500);
+                throw new \Exception("Stockloc not exists for item: ".$request->chggroup." dept: ".$salehdr->deptcode." uom: ".$request->uom,500);
             }
             
             $qtyonhand = $stockloc->qtyonhand;
