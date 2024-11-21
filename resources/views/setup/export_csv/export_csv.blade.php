@@ -72,7 +72,7 @@
 	</div>
 
 	<div class="col-md-3">
-		<div class="panel panel-default" style="height: 480px;">
+		<div class="panel panel-default" style="height: 510px;">
 			<div class="panel-body">
 				<div class='col-md-12 btnform' style="padding:0px">
 				 <fieldset>
