@@ -31,18 +31,18 @@
             <td>{{$obj->itemcode}}</td>
             <td>{{$obj->description}}</td>
             <td>{{$obj->uomcode}}</td>
-            <td>{{number_format($obj->open_balval, 2, '.', ',')}}</td>
-            <td>{{number_format($obj->open_balqty, 2, '.', ',')}}</td>
-            <td>{{number_format($obj->grn_qty, 2, '.', ',')}}</td>
-            <td>{{number_format($obj->tr_qty * -1, 2, '.', ',')}}</td>
-            <td>{{number_format($obj->ds_qty * -1, 2, '.', ',')}}</td>
-            <td>{{number_format($obj->wof_qty, 2, '.', ',')}}</td>
-            <td>{{number_format($obj->ai_qty, 2, '.', ',')}}</td>
-            <td>{{number_format($obj->ao_qty * -1, 2, '.', ',')}}</td>
-            <td>{{number_format($obj->phy_qty, 2, '.', ',')}}</td>
-            <td>{{number_format($obj->oth_qty, 2, '.', ',')}}</td>
-            <td>{{number_format($obj->close_balqty, 2, '.', ',')}}</td>
-            <td>{{number_format($obj->close_balval, 2, '.', ',')}}</td>
+            <td>{{$obj->open_balval}}</td>
+            <td>{{$obj->open_balqty}}</td>
+            <td>{{$obj->grn_qty}}</td>
+            <td>{{$obj->tr_qty * -1}}</td>
+            <td>{{$obj->ds_qty * -1}}</td>
+            <td>{{$obj->wof_qty}}</td>
+            <td>{{$obj->ai_qty}}</td>
+            <td>{{$obj->ao_qty * -1}}</td>
+            <td>{{$obj->phy_qty}}</td>
+            <td>{{$obj->oth_qty}}</td>
+            <td>{{$obj->close_balqty}}</td>
+            <td>{{$obj->close_balval}}</td>
         </tr>
         @endif
     @endforeach

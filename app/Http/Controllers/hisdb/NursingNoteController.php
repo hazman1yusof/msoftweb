@@ -26,25 +26,21 @@ class NursingNoteController extends defaultController
     public function table(Request $request)
     {
         switch($request->action){
-            case 'get_table_datetime':  // Progress Note
+            case 'get_table_datetime': // Progress Note
                 return $this->get_table_datetime($request);
             
-            case 'get_prescription':    // Drug Administration
+            case 'get_prescription': // Drug Administration
                 return $this->get_prescription($request);
             
-            case 'get_datetime_treatment':  // Treatment
+            case 'get_datetime_treatment': // Treatment
                 return $this->get_datetime_treatment($request);
             
-            case 'get_datetime_careplan':   // Care Plan
+            case 'get_datetime_careplan': // Care Plan
                 return $this->get_datetime_careplan($request);
-
-            case 'get_invcat_fbc':   // Investigation-FBC
-                return $this->get_invcat_fbc($request);
-
-            case 'inv_table':
-                return $this->inv_table($request);
-                break;
-
+            
+            case 'get_invcat': // Investigation - DataTable
+                return $this->get_invcat($request);
+            
             default:
                 return 'error happen..';
         }
@@ -117,16 +113,15 @@ class NursingNoteController extends defaultController
                     default:
                         return 'error happen..';
                 }
-
-            case 'inv_fbc':
-
+            
+            case 'save_grid_invChart':
                 switch($request->oper){
                     case 'add':
-                        return $this->inv_fbc_add($request);
+                        return $this->add_invChart($request);
                     case 'edit':
-                        return $this->inv_fbc_edit($request);
+                        return $this->edit_invChart($request);
                     case 'del':
-                        return $this->inv_fbc_del($request);
+                        return $this->del_invChart($request);
                     default:
                         return 'error happen..';
                 }
@@ -187,7 +182,7 @@ class NursingNoteController extends defaultController
             
             case 'get_table_formOthersChart':
                 return $this->get_table_formOthersChart($request);
-
+            
             case 'get_table_formInvHeader':
                 return $this->get_table_formInvHeader($request);
             
@@ -397,29 +392,24 @@ class NursingNoteController extends defaultController
         
     }
     
-    public function get_invcat_fbc(Request $request){
+    public function get_invcat(Request $request){
         
         $responce = new stdClass();
         
         $nurs_invest_cat_obj = DB::table('nursing.nurs_invest_cat')
-                            ->where('compcode','=',session('compcode'))
-                            // ->where('mrn','=',$request->mrn)
-                            // ->where('episno','=',$request->episno)
-                            ->where('inv_code','=','FBC');
-                            
+                                ->where('compcode','=',session('compcode'))
+                                ->where('inv_code','=',$request->inv_code);
+        
         if($nurs_invest_cat_obj->exists()){
             $nurs_invest_cat_obj = $nurs_invest_cat_obj->get();
             // dd($nurs_invest_cat_obj);
-      
+            
             $data = [];
             
-            foreach ($nurs_invest_cat_obj as $key => $value) {
+            foreach($nurs_invest_cat_obj as $key => $value){
                 $date['idno'] = $value->idno;
+                $date['inv_code'] = $value->inv_code;
                 $date['inv_cat'] = $value->inv_cat;
-
-                // $date['mrn'] = $value->mrn;
-                // $date['episno'] = $value->episno;
-                
                 
                 array_push($data,$date);
             }
@@ -432,7 +422,7 @@ class NursingNoteController extends defaultController
         return json_encode($responce);
         
     }
-
+    
     public function add_progress(Request $request){
         
         DB::beginTransaction();
@@ -1391,6 +1381,95 @@ class NursingNoteController extends defaultController
         
     }
     
+    public function add_invChart(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurs_investigation')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'inv_code' => $request->inv_code,
+                    'inv_cat' => $request->inv_cat,
+                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
+                    'enteredtime' => $request->enteredtime,
+                    'values' => $request->values,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'enteredby'  => session('username'),
+                    // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit_invChart(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurs_investigation')
+                ->where('idno','=',$request->idno)
+                ->update([
+                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
+                    'enteredtime' => $request->enteredtime,
+                    'values' => $request->values,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function del_invChart(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurs_investigation')
+                ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->delete();
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+    
     public function add_FitChart(Request $request){
         
         DB::beginTransaction();
@@ -1786,148 +1865,6 @@ class NursingNoteController extends defaultController
         }
         
     }
-
-    public function inv_fbc_add(Request $request){
-        
-        DB::beginTransaction();
-        
-        try {
-
-            if($request->inv_cat == 'HB'){
-
-                DB::table('nursing.nurs_investigation')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno,
-                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
-                    'enteredtime' => $request->enteredtime,
-                    'fbc_hb' => $request->value_fbc,
-                    'adduser'  => session('username'),
-                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'enteredby'  => session('username'),
-                    // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'computerid' => session('computerid'),
-                ]);
-
-            } else if ($request->inv_cat == 'HCT') {
-
-                DB::table('nursing.nurs_investigation')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno,
-                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
-                    'enteredtime' => $request->enteredtime,
-                    'fbc_hct' => $request->value_fbc,
-                    'adduser'  => session('username'),
-                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'enteredby'  => session('username'),
-                    // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'computerid' => session('computerid'),
-                ]);
-            } else if ($request->inv_cat == 'TWC') {
-
-                DB::table('nursing.nurs_investigation')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno,
-                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
-                    'enteredtime' => $request->enteredtime,
-                    'fbc_twc' => $request->value_fbc,
-                    'adduser'  => session('username'),
-                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'enteredby'  => session('username'),
-                    // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'computerid' => session('computerid'),
-                ]);
-
-            } else {
-
-                DB::table('nursing.nurs_investigation')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno,
-                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
-                    'enteredtime' => $request->enteredtime,
-                    'fbc_plt' => $request->value_fbc,
-                    'adduser'  => session('username'),
-                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'enteredby'  => session('username'),
-                    // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'computerid' => session('computerid'),
-                ]);
-            }
-
-            
-            
-            DB::commit();
-            
-        } catch (\Exception $e) {
-            
-            DB::rollback();
-            
-            return response('Error DB rollback!'.$e, 500);
-            
-        }
-        
-    }
-    
-    public function inv_fbc_edit(Request $request){
-        
-        DB::beginTransaction();
-        
-        try {
-            
-            DB::table('nursing.nursactplan_treatment')
-                ->where('idno','=',$request->idno)
-                ->update([
-                    'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
-                    'enddate' => Carbon::parse($request->enddate)->format('Y-m-d'),
-                    'treatment' => $request->treatment,
-                    'upduser'  => session('username'),
-                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    // 'lastuser'  => session('username'),
-                    // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'computerid' => session('computerid'),
-                ]);
-            
-            DB::commit();
-            
-        } catch (\Exception $e) {
-            
-            DB::rollback();
-            
-            return response('Error DB rollback!'.$e, 500);
-            
-        }
-        
-    }
-    
-    public function inv_fbc_del(Request $request){
-        
-        DB::beginTransaction();
-        
-        try {
-            
-            DB::table('nursing.nursactplan_treatment')
-                ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
-                ->delete();
-            
-            DB::commit();
-            
-        } catch (\Exception $e) {
-            
-            DB::rollback();
-            
-            return response($e->getMessage(), 500);
-            
-        }
-        
-    }
     
     public function get_table_progress(Request $request){
         
@@ -2116,15 +2053,15 @@ class NursingNoteController extends defaultController
         return json_encode($responce);
         
     }
-
+    
     public function get_table_formInvHeader(Request $request){
         
         $episode_obj = DB::table('hisdb.episode')
-                            ->select('reg_date')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno);
-                            
+                        ->select('reg_date')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno);
+        
         $responce = new stdClass();
         
         if($episode_obj->exists()){
