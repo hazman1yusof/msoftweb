@@ -19,10 +19,11 @@
         </div>
     </div>
     
-    <div id="jqGridNursNote_panel" class="panel-collapse collapse" data-curtype='navtab_progress'>
+    <div id="jqGridNursNote_panel" class="panel-collapse collapse" data-curtype='navtab_invChart'>
         <div class="panel-body paneldiv" style="overflow-y: auto;">
             <div class='col-md-12' style="padding: 0 0 15px 0;">
                 <ul class="nav nav-tabs" id="jqGridNursNote_panel_tabs">
+                    <li><a data-toggle="tab" id="navtab_invChart" href="#tab-invChart" data-type='invChart'>Investigation Chart</a></li>
                     <li><a data-toggle="tab" id="navtab_progress" href="#tab-progress" data-type='progress'>Progress Note</a></li>
                     <li><a data-toggle="tab" id="navtab_intake" href="#tab-intake" data-type='intake'>Intake Output</a></li>
                     <li><a data-toggle="tab" id="navtab_drug" href="#tab-drug" data-type='drug'>Drug Administration</a></li>
@@ -33,7 +34,7 @@
                     <li><a data-toggle="tab" id="navtab_slidingScale" href="#tab-slidingScale" data-type='slidingScale'>Sliding Scale Chart</a></li>
                     <li><a data-toggle="tab" id="navtab_othersChart1" href="#tab-othersChart1" data-type='othersChart1'>PAD Chart</a></li>
                     <li><a data-toggle="tab" id="navtab_othersChart2" href="#tab-othersChart2" data-type='othersChart2'>Drain Chart</a></li>
-                    <li><a data-toggle="tab" id="navtab_investigation" href="#tab-investigation" data-type='investigation'>Investigation Chart</a></li>
+                    <li><a data-toggle="tab" id="navtab_bladder" href="#tab-bladder" data-type='bladder'>Bladder</a></li>
                 </ul>
                 <div class="tab-content" style="padding: 10px 5px;">
                     <input id="mrn_nursNote" name="mrn_nursNote" type="hidden">
@@ -42,7 +43,11 @@
                     <input id="ward_nursNote" name="ward_nursNote" type="hidden">
                     <input id="bednum_nursNote" name="bednum_nursNote" type="hidden">
                     <input id="age_nursNote" name="age_nursNote" type="hidden">
+                    <input type="hidden" id="ordcomtt_phar" value="{{$ordcomtt_phar ?? ''}}">
                     <!-- <input type="hidden" id="invtt_fbc" value="{{$invtt_fbc ?? ''}}"> -->
+                    <div id="tab-invChart" class="tab-pane fade">
+                        @include('hisdb.nursingnote.nursingnote_invChart')
+                    </div>
                     <div id="tab-progress" class="active in tab-pane fade">
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
@@ -2340,595 +2345,47 @@
                             </div>
                         </div>
                     </div>
-                    <div id="tab-investigation" class="tab-pane fade">
+                    <div id="tab-bladder" class="tab-pane fade">
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
                                 <div class="panel-heading text-center" style="height: 40px;">
                                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-                                        id="btn_grp_edit_header"
+                                        id="btn_grp_edit_bladder"
                                         style="position: absolute;
                                                 padding: 0 0 0 0;
                                                 right: 40px;
                                                 top: 5px;">
+                                        <!-- <button type="button" class="btn btn-default" id="new_bladder">
+                                            <span class="fa fa-plus-square-o"></span> New 
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="edit_bladder">
+                                            <span class="fa fa-edit fa-lg"></span> Edit 
+                                        </button>
+                                        <button type="button" class="btn btn-default" data-oper='add' id="save_bladder">
+                                            <span class="fa fa-save fa-lg"></span> Save 
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="cancel_bladder">
+                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+                                        </button> -->
                                     </div>
                                 </div>
-
-                                <div class="panel-body" style="padding-right: 0px;">
-                                    <form class='form-horizontal' style='width: 99%;' id='formInvHeader'>
-                                            <div class="form-group">
-                                                <label class="col-md-4 control-label" for="reg_date">Date of Admission</label>
-                                                <div class="col-md-3">
-                                                    <input id="reg_date" name="reg_date" type="date" class="form-control input-sm" readonly>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                                                
-                                <div class="panel-body" style="padding-right: 0px;">
-                                    <form class='form-horizontal' style='width: 99%;' id='formInvestigations'>
-                                        <ul class="nav nav-tabs" id="jqGridNursNote_inv_tabs" role="tablist">
-                                        @foreach($invest_type as $count => $types)
-                                            <li role="presentation" @if($count == 0) class="active" @endif>
-                                                <a href="#tab-{{ $types->idno }}" aria-controls="#tab-{{ $types->idno }}" role="tab" data-toggle="tab">{{ $types->inv_code }}</a>
-                                            </li>
-                                        @endforeach
+                                
+                                <div class="panel-body">
+                                    <form class='form-horizontal' style='width: 99%;' id='formBladder'>
+                                        <ul class="nav nav-tabs">
+                                            <li class="active"><a data-toggle="tab" id="navtab_firstShift" href="#tab-firstShift" aria-expanded="true" data-shift='firstShift'>First Shift</a></li>
+                                            <li><a data-toggle="tab" id="navtab_secondShift" href="#tab-secondShift" data-shift='secondShift'>Second Shift</a></li>
+                                            <li><a data-toggle="tab" id="navtab_thirdShift" href="#tab-thirdShift" data-shift='thirdShift'>Third Shift</a></li>
                                         </ul>
                                         <div class="tab-content" style="padding: 10px 5px;">
-                                            @foreach($invest_type as $count => $types)
-                                                <div role="tabpanel" @if($count == 0) class="tab-pane active" @else class="tab-pane" @endif id="tab-{{ $types->idno }}">
-                                                    <h2>{{ $types->inv_code }}</h2>
-                                                </div>
-                                            @endforeach
-                                            <!-- FBC -->
-                                            <div id="tab-fbc" class="active in tab-pane fade">
-                                                <div class='col-md-4'>
-                                                <!-- toggle radio button -->
-                                                    <div class="panel panel-info" style="margin-bottom: 0px;">
-                                                        <div class="panel-body" style="padding-right: 20px; padding-left: 20px;">
-                                                            <table id="tbl_invcat_fbc" class="ui celled table" style="width: 100%;">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th class="scope">idno</th>
-                                                                        <!-- <th class="scope">mrn</th>-->
-                                                                        <th class="scope">inv_cat</th>
-                                                                    </tr>
-                                                                </thead>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class='col-md-8'>
-                                                    <div class="panel panel-info" id="jqGridInvestigation_c_fbc">
-                                                        <div class="panel-body">
-                                                            <div class='col-md-12' style="padding:0 0 15px 0">
-                                                                <table id="jqGridInvestigation_fbc" class="table table-striped"></table>
-                                                                <div id="jqGridPagerInvestigation_fbc"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div id="tab-firstShift" class="active in tab-pane fade">
+                                            
                                             </div>
-
-                                            <!-- COAG -->
-                                            <div id="tab-coag" class="tab-pane fade">
-                                                <div class='col-md-4'>
-                                                <!-- toggle radio button -->
-                                                    <div class="panel panel-info" style="margin-bottom: 0px;">
-                                                        <div class="panel-body" style="padding-right: 20px; padding-left: 20px;">
-                                                        <input id="coag_type" name="coag_type" value="COAG" type="hidden">    
-                                                        <table>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="coag_pt" value="PT">
-                                                                            <label class="form-check-label" for="coag_pt" style="padding-right: 10px;">PT</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="coag_inr" value="INR">
-                                                                            <label class="form-check-label" for="coag_inr">INR</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="coag_aptt" value="APTT">
-                                                                            <label class="form-check-label" for="coag_aptt">APTT</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="coag_fibrinogen" value="FIBRI">
-                                                                            <label class="form-check-label" for="coag_fibrinogen">Fibrinogen</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="coag_ddimer" value="DDIMER">
-                                                                            <label class="form-check-label" for="coag_ddimer">D-dimer</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class='col-md-8'>
-                                                    <div class="panel panel-info" id="jqGridInvestigation_c_coag">
-                                                        <div class="panel-body">
-                                                            <div class='col-md-12' style="padding:0 0 15px 0">
-                                                                <table id="jqGridInvestigation_coag" class="table table-striped"></table>
-                                                                <div id="jqGridPagerInvestigation_coag"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div id="tab-secondShift" class="tab-pane fade">
+                                            
                                             </div>
-
-                                            <!-- RP -->
-                                            <div id="tab-rp" class="tab-pane fade">
-                                                <div class='col-md-4'>
-                                                <!-- toggle radio button -->
-                                                    <div class="panel panel-info" style="margin-bottom: 0px;">
-                                                        <div class="panel-body" style="padding-right: 20px; padding-left: 20px;">
-                                                        <input id="rp_type" name="rp_type" value="RP" type="hidden">    
-                                                            <table>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="rp_urea" value="Urea">
-                                                                            <label class="form-check-label" for="rp_urea" style="padding-right: 10px;">Urea</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="rp_na" value="Na">
-                                                                            <label class="form-check-label" for="rp_na">Na<sup>+</sup></label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="rp_k" value="K">
-                                                                            <label class="form-check-label" for="rp_k">K<sup>+</sup></label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="rp_cl" value="Cl">
-                                                                            <label class="form-check-label" for="rp_cl">Cl<sup>-</sup></label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="rp_creatinine" value="Creatinine">
-                                                                            <label class="form-check-label" for="rp_creatinine">Creatinine</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class='col-md-8'>
-                                                    <div class="panel panel-info" id="jqGridInvestigation_c_rp">
-                                                        <div class="panel-body">
-                                                            <div class='col-md-12' style="padding:0 0 15px 0">
-                                                                <table id="jqGridInvestigation_rp" class="table table-striped"></table>
-                                                                <div id="jqGridPagerInvestigation_rp"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- LFT -->
-                                            <div id="tab-lft" class="tab-pane fade">
-                                                <div class='col-md-4'>
-                                                <!-- toggle radio button -->
-                                                    <div class="panel panel-info" style="margin-bottom: 0px;">
-                                                        <div class="panel-body" style="padding-right: 20px; padding-left: 20px;">
-                                                        <input id="lft_type" name="lft_type" value="LFT" type="hidden">    
-                                                            <table>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="lft_tprotein" value="TProtein">
-                                                                            <label class="form-check-label" for="lft_tprotein" style="padding-right: 10px;">T-Protein</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="lft_albumin" value="Albumin">
-                                                                            <label class="form-check-label" for="lft_albumin">Albumin</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="lft_globulin" value="Globulin">
-                                                                            <label class="form-check-label" for="lft_globulin">Globulin</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="lft_ag" value="AG">
-                                                                            <label class="form-check-label" for="lft_ag">A:G</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="lft_alp" value="ALP">
-                                                                            <label class="form-check-label" for="lft_alp">ALP</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="lft_alt" value="ALT">
-                                                                            <label class="form-check-label" for="lft_alt">ALT</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="lft_tbilirubin" value="TBilirubin">
-                                                                            <label class="form-check-label" for="lft_tbilirubin">T.Bilirubin</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class='col-md-8'>
-                                                    <div class="panel panel-info" id="jqGridInvestigation_c_rp">
-                                                        <div class="panel-body">
-                                                            <div class='col-md-12' style="padding:0 0 15px 0">
-                                                                <table id="jqGridInvestigation_rp" class="table table-striped"></table>
-                                                                <div id="jqGridPagerInvestigation_rp"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- ELECT -->
-                                            <div id="tab-elect" class="tab-pane fade">
-                                                <div class='col-md-4'>
-                                                <!-- toggle radio button -->
-                                                    <div class="panel panel-info" style="margin-bottom: 0px;">
-                                                        <div class="panel-body" style="padding-right: 20px; padding-left: 20px;">
-                                                        <input id="elect_type" name="elect_type" value="ELECT" type="hidden">    
-                                                            <table>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="elect_ca" value="Ca">
-                                                                            <label class="form-check-label" for="elect_ca" style="padding-right: 10px;">Ca<sup>2+</sup></label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="elect_po" value="PO">
-                                                                            <label class="form-check-label" for="elect_po">PO<sup>-</sup><sub>4</sub></label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="elect_mg" value="Mg">
-                                                                            <label class="form-check-label" for="elect_mg">Mg<sup>2+</sup></label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class='col-md-8'>
-                                                    <div class="panel panel-info" id="jqGridInvestigation_c_elect">
-                                                        <div class="panel-body">
-                                                            <div class='col-md-12' style="padding:0 0 15px 0">
-                                                                <table id="jqGridInvestigation_elect" class="table table-striped"></table>
-                                                                <div id="jqGridPagerInvestigation_elect"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- ABG/VBG -->
-                                            <div id="tab-abgvbg" class="tab-pane fade">
-                                                <div class='col-md-4'>
-                                                <!-- toggle radio button -->
-                                                    <div class="panel panel-info" style="margin-bottom: 0px;">
-                                                        <div class="panel-body" style="padding-right: 20px; padding-left: 20px;">
-                                                        <input id="abgvbg_type" name="abgvbg_type" value="ABGVBG" type="hidden">    
-                                                            <table>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="abgvbg_ph" value="pH">
-                                                                            <label class="form-check-label" for="abgvbg_ph" style="padding-right: 10px;">pH</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="abgvbg_pco" value="pCO">
-                                                                            <label class="form-check-label" for="abgvbg_pco">pCO<sub>2</sub></label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="abgvbg_po" value="pO">
-                                                                            <label class="form-check-label" for="abgvbg_po">pO<sub>2</sub></label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="abgvbg_hco" value="pO">
-                                                                            <label class="form-check-label" for="abgvbg_hco">HCO<sub>3</sub></label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="abgvbg_be" value="BE">
-                                                                            <label class="form-check-label" for="abgvbg_be">BE</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class='col-md-8'>
-                                                    <div class="panel panel-info" id="jqGridInvestigation_c_abgvbg">
-                                                        <div class="panel-body">
-                                                            <div class='col-md-12' style="padding:0 0 15px 0">
-                                                                <table id="jqGridInvestigation_abgvbg" class="table table-striped"></table>
-                                                                <div id="jqGridPagerInvestigation_abgvbg"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- UFEME -->
-                                            <div id="tab-ufeme" class="tab-pane fade">
-                                                <div class='col-md-4'>
-                                                <!-- toggle radio button -->
-                                                    <div class="panel panel-info" style="margin-bottom: 0px;">
-                                                        <div class="panel-body" style="padding-right: 20px; padding-left: 20px;">
-                                                        <input id="ufeme_type" name="ufeme_type" value="UFEME" type="hidden">    
-                                                            <table>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="ufeme_ph" value="u_pH">
-                                                                            <label class="form-check-label" for="ufeme_ph" style="padding-right: 10px;">pH</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="ufeme_leucocyte" value="Leucocyte">
-                                                                            <label class="form-check-label" for="ufeme_leucocyte">Leucocyte</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="ufeme_nitrite" value="Nitrite">
-                                                                            <label class="form-check-label" for="ufeme_nitrite">Nitrite</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="ufeme_glucose" value="Glucose">
-                                                                            <label class="form-check-label" for="ufeme_glucose">Glucose</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="ufeme_blood" value="U_Blood">
-                                                                            <label class="form-check-label" for="ufeme_blood">Blood</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="ufeme_ketone" value="Ketone">
-                                                                            <label class="form-check-label" for="ufeme_ketone">Ketone</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class='col-md-8'>
-                                                    <div class="panel panel-info" id="jqGridInvestigation_c_ufeme">
-                                                        <div class="panel-body">
-                                                            <div class='col-md-12' style="padding:0 0 15px 0">
-                                                                <table id="jqGridInvestigation_ufeme" class="table table-striped"></table>
-                                                                <div id="jqGridPagerInvestigation_ufeme"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- CE -->
-                                            <div id="tab-ce" class="tab-pane fade">
-                                                <div class='col-md-4'>
-                                                <!-- toggle radio button -->
-                                                    <div class="panel panel-info" style="margin-bottom: 0px;">
-                                                        <div class="panel-body" style="padding-right: 20px; padding-left: 20px;">
-                                                        <input id="ce_type" name="ce_type" value="CE" type="hidden">    
-                                                            <table>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="ce_ast" value="AST">
-                                                                            <label class="form-check-label" for="ce_ast" style="padding-right: 10px;">AST</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="ce_ckckmb" value="CKCKMB">
-                                                                            <label class="form-check-label" for="ce_ckckmb">CK/CKMB</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="ce_ldh" value="LDH">
-                                                                            <label class="form-check-label" for="ce_ldh">LDH</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="ce_tropt" value="TropT">
-                                                                            <label class="form-check-label" for="ce_tropt">Trop-T</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="ce_lactate" value="Lactate">
-                                                                            <label class="form-check-label" for="ce_lactate">Lactate</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class='col-md-8'>
-                                                    <div class="panel panel-info" id="jqGridInvestigation_c_ce">
-                                                        <div class="panel-body">
-                                                            <div class='col-md-12' style="padding:0 0 15px 0">
-                                                                <table id="jqGridInvestigation_ce" class="table table-striped"></table>
-                                                                <div id="jqGridPagerInvestigation_ce"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- C&S -->
-                                            <div id="tab-cs" class="tab-pane fade">
-                                                <div class='col-md-4'>
-                                                <!-- toggle radio button -->
-                                                    <div class="panel panel-info" style="margin-bottom: 0px;">
-                                                        <div class="panel-body" style="padding-right: 20px; padding-left: 20px;">
-                                                        <input id="cs_type" name="cs_type" value="CS" type="hidden">    
-                                                            <table>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="cs_urine" value="Urine">
-                                                                            <label class="form-check-label" for="cs_urine" style="padding-right: 10px;">Urine</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="cs_blood" value="Blood">
-                                                                            <label class="form-check-label" for="cs_blood">Blood</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="cs_stool" value="Stool">
-                                                                            <label class="form-check-label" for="cs_stool">Stool</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label class="radio-inline" style="margin-left: 30px;">
-                                                                            <input class="form-check-input" type="radio" name="inv_type" id="cs_sputum" value="Sputum">
-                                                                            <label class="form-check-label" for="cs_sputum">Sputum</label>
-                                                                        </label>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class='col-md-8'>
-                                                    <div class="panel panel-info" id="jqGridInvestigation_c_cs">
-                                                        <div class="panel-body">
-                                                            <div class='col-md-12' style="padding:0 0 15px 0">
-                                                                <table id="jqGridInvestigation_cs" class="table table-striped"></table>
-                                                                <div id="jqGridPagerInvestigation_cs"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div id="tab-thirdShift" class="tab-pane fade">
+                                            
                                             </div>
                                         </div>
                                     </form>
