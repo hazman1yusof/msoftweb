@@ -47,7 +47,7 @@
             <td>{{$obj->amount}}</td>
             <td>{{$obj->respersonid}}</td>
             <td>{{$obj->remarks}}</td>
-            <td>{{$obj->recstatus}}</td>
+            <td>POSTED</td>
             <td>{{$obj->adduser}}</td>
             <td>{{Carbon\Carbon::parse($obj->adddate)->format('d/m/Y')}}</td>
             <td>{{$obj->upduser}}</td>
