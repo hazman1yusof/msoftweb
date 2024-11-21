@@ -79,7 +79,7 @@ class stockSheet_xlsExport implements FromView, WithEvents, WithColumnWidths
                             $join = $join->where('d.compcode', '=', session('compcode'));
                         })
                         ->where('s.compcode',session('compcode'))
-                        ->where('s.unit',session('unit'))
+                        // ->where('s.unit',session('unit'))
                         ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
                         ->where('s.year', '=', $year)
                         ->distinct('s.deptcode')
@@ -95,10 +95,10 @@ class stockSheet_xlsExport implements FromView, WithEvents, WithColumnWidths
                                 $join = $join->on('p.itemcode', '=', 's.itemcode');
                                 $join = $join->on('p.uomcode', '=', 's.uomcode');
                                 $join = $join->where('p.compcode', '=', session('compcode'));
-                                $join = $join->where('p.unit', '=', session('unit'));
+                                // $join = $join->where('p.unit', '=', session('unit'));
                             })
                         ->where('s.compcode',session('compcode'))
-                        ->where('s.unit',session('unit'))
+                        // ->where('s.unit',session('unit'))
                         ->where('s.deptcode',$dept->deptcode)
                         ->whereBetween('s.itemcode',[$item_from,$item_to.'%'])
                         ->where('s.year', '=', $year)
