@@ -2377,13 +2377,13 @@
                                                 <div class="panel-body">
                                                     
                                                     <div class="form-group">
-                                                        <label class="col-md-1 control-label" for="bladder_ward">Ward</label>
-                                                        <div class="col-md-2">
+                                                        <label class="col-md-2 control-label" for="bladder_ward">Ward</label>
+                                                        <div class="col-md-3">
                                                             <input id="bladder_ward" name="bladder_ward" type="text" class="form-control input-sm" readonly>
                                                         </div>
                                                         
-                                                        <label class="col-md-1 control-label" for="bladder_bednum">Bed No.</label>
-                                                        <div class="col-md-2">
+                                                        <label class="col-md-2 control-label" for="bladder_bednum">Bed No.</label>
+                                                        <div class="col-md-3">
                                                             <input id="bladder_bednum" name="bladder_bednum" type="text" class="form-control input-sm" readonly>
                                                         </div>
                                                     </div>
