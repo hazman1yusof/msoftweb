@@ -78,7 +78,27 @@ class do_util extends defaultController{
 
         }else{
         //3.kalu xde stockloc, create stockloc baru
-            throw new \Exception("Product doesnt have stockloc: ".$value->itemcode." UOM: ".$value->uomcode." Dept: ".$value->deldept." Year: ".defaultController::toYear($delordhd_obj->trandate));
+            // throw new \Exception("Product doesnt have stockloc: ".$value->itemcode." UOM: ".$value->uomcode." Dept: ".$value->deldept." Year: ".defaultController::toYear($delordhd_obj->trandate));
+            DB::table('material.stockloc')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'unit' => session('unit'),
+                    'deptcode' => $value->deldept,
+                    'itemcode' => $request->itemcode,
+                    'uomcode' => $value->uomcode,
+                    'year' => defaultController::toYear($delordhd_obj->trandate),
+                    'stocktxntype' => 'TR',
+                    // 'frozen' => $request->frozen,
+                    // 'disptype' => $request->disptype,
+                    // 'minqty' => $request->minqty,
+                    // 'maxqty' => $request->maxqty,
+                    // 'reordlevel' => $request->reordlevel,
+                    // 'reordqty' => $request->reordqty,
+                    'recstatus' => 'ACTIVE',
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
         }
 	}
 

@@ -152,7 +152,10 @@ class ReceiptController extends defaultController
                     'mrn' => $request->dbacthdr_mrn,
                     'quoteno' => $request->dbacthdr_quoteno
                 ];
-                $this->upd_quoteno_outamount($request->dbacthdr_quoteno,$dbacthdr_amount);
+
+                if(!empty($request->dbacthdr_quoteno)){
+                    $this->upd_quoteno_outamount($request->dbacthdr_quoteno,$dbacthdr_amount);
+                }
 
                 if($hdrtypmst->updepisode == '1'){
                     $array_insert_RD['episno'] = $request->dbacthdr_episno;

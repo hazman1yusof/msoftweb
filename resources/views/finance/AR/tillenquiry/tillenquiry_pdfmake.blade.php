@@ -67,7 +67,7 @@
                 pageSize: 'A4',
                 content: [
                     {
-                        image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead', width:175, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     // {
                     //     text: '{{$title}}\n',
@@ -125,12 +125,12 @@
                                 [
                                     { text: '{{$obj->payercode}}' },
                                     { text: '{{$obj->dt_description}}' },
-                                    { text: '{{$obj->payername}}' },
+                                    { text: '{{$obj->dm_name}}' },
                                     { text: '{{$obj->paymode}}' },
                                     { text: '{{$obj->reference}}' },
                                     { text: '{{$obj->recptno}}' },
                                     { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}' },
-                                    { text: '{{number_format($obj->amount,2)}}', alignment: 'right' },
+                                    { text: "@if($obj->trantype == 'RF')({{number_format($obj->amount,2)}})@else{{number_format($obj->amount,2)}}@endif", alignment: 'right' },
                                 ],
                                 @endforeach
                             ]
@@ -165,32 +165,37 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*', '*', '*'],    // panjang standard dia 515
+                            widths: ['*', '*', '*', '*'],    // panjang standard dia 515
                             body: [
                                 [
                                     { text: ' ', style: 'tableHeader' },
                                     { text: 'Amount Collected', style: 'tableHeader' },
                                     { text: 'Amount Refund', style: 'tableHeader' },
+                                    { text: 'Total', style: 'tableHeader' },
                                 ],
                                 [
                                     { text: 'Cash' },
-                                    { text: '{{$sum_cash}}' },
-                                    { text: '{{$sum_cash_ref}}' },
+                                    { text: '{{number_format($sum_cash,2)}}' },
+                                    { text: '{{number_format($sum_cash_ref,2)}}' },
+                                    { text: '{{number_format($sum_cash - $sum_cash_ref,2)}}' },
                                 ],
                                 [
                                     { text: 'Cheque' },
-                                    { text: '{{$sum_chq}}' },
-                                    { text: '{{$sum_chq_ref}}' },
+                                    { text: '{{number_format($sum_chq,2)}}' },
+                                    { text: '{{number_format($sum_chq_ref,2)}}' },
+                                    { text: '{{number_format($sum_chq - $sum_chq_ref,2)}}' },
                                 ],
                                 [
                                     { text: 'Card' },
-                                    { text: '{{$sum_card}}' },
-                                    { text: '{{$sum_card_ref}}' },
+                                    { text: '{{number_format($sum_card,2)}}' },
+                                    { text: '{{number_format($sum_card_ref,2)}}' },
+                                    { text: '{{number_format($sum_card - $sum_card_ref,2)}}' },
                                 ],
                                 [
                                     { text: 'Auto Debit' },
-                                    { text: '{{$sum_bank}}' },
-                                    { text: '{{$sum_bank_ref}}' },
+                                    { text: '{{number_format($sum_bank,2)}}' },
+                                    { text: '{{number_format($sum_bank_ref,2)}}' },
+                                    { text: '{{number_format($sum_bank - $sum_bank_ref,2)}}' },
                                 ],
                             ]
                         },
@@ -201,12 +206,13 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*', '*', '*'],    // panjang standard dia 515
+                            widths: ['*', '*', '*', '*'],    // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'Total', style: 'tableHeader' },
-                                    { text: '{{$sum_all}}' },
-                                    { text: '{{$sum_all_ref}}' },
+                                    { text: '{{number_format($sum_all,2)}}' },
+                                    { text: '{{number_format($sum_all_ref,2)}}' },
+                                    { text: '{{number_format($sum_all - $sum_all_ref,2)}}' },
                                 ],
                             ]
                         },
@@ -249,7 +255,7 @@
                 },
                 images: {
                     letterhead: {
-                        url: "{{asset('/img/MSLetterHead.jpg')}}",
+                        url: '{{asset('/img/letterheadukm.png')}}',
                         headers: {
                             myheader: '123',
                             myotherheader: 'abc',

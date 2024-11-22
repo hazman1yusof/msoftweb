@@ -283,7 +283,7 @@ class TillEnquiryController extends defaultController
                     ->first();
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
-                ->select('dh.idno', 'dh.compcode', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.posteddate', 'dm.debtortype as dm_debtortype', 'dt.description as dt_description')
+                ->select('dh.idno', 'dh.compcode', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.posteddate', 'dm.debtortype as dm_debtortype', 'dt.description as dt_description', 'dm.name as dm_name')
                 ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
                     $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
                                 ->where('dm.compcode', '=', session('compcode'));
@@ -297,7 +297,7 @@ class TillEnquiryController extends defaultController
                 ->where('dh.tillno','=',$request->tillno)
                 ->get();
         
-        $totalAmount = $dbacthdr->sum('amount');
+        // $totalAmount = $dbacthdr->sum('amount');
         
         $db_dbacthdr = DB::table('debtor.dbacthdr as db')
                     ->where('db.compcode',session('compcode'))
@@ -441,7 +441,7 @@ class TillEnquiryController extends defaultController
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
-        
+        $totalAmount = $sum_all - $sum_all_ref;
         $totamount_expld = explode(".", (float)$totalAmount);
         
         // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
