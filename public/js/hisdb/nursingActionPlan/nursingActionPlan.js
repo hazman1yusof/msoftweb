@@ -77,7 +77,7 @@ var urlParam_Procedure = {
     field: '',
     table_name: 'nursing.nursactplan_procedure',
     table_id: 'idno',
-    filterCol: ['mrn','episno','type'],
+    filterCol: ['mrn','episno','prodType'],
     filterVal: ['','',''],
 }
 
@@ -174,13 +174,11 @@ $(document).ready(function (){
         refreshGrid('#jqGridExams',urlParam_Exams,'kosongkan');
         refreshGrid('#jqGridProcedure',urlParam_Procedure,'kosongkan');
 
-
         $("#jqGridNursActionPlan_panel > div").scrollTop(0);
         $("#jqGridNursActionPlan_panel #jqGridNursActionPlan_panel_tabs li").removeClass('active');
     });
     
     $('#jqGridNursActionPlan_panel_tabs.nav-tabs a').on('shown.bs.tab', function (e){
-
         let type = $(this).data('type');
         let id = $(this).attr('id');
         $("#jqGridNursActionPlan_panel").data('curtype',id);
@@ -225,10 +223,77 @@ $(document).ready(function (){
             case 'procedure':
                 urlParam_Procedure.filterVal[0] = $("#mrn_nursActionPlan").val();
                 urlParam_Procedure.filterVal[1] = $("#episno_nursActionPlan").val();
-                urlParam_Procedure.filterVal[2] = $("#toggle_type").val();
+                urlParam_Procedure.filterVal[2] = 'artLine';
                 refreshGrid('#jqGridProcedure',urlParam_Procedure,'add');
+                $('#prod').text('ARTERIAL LINE');
+
+                $('input[name="ptype"]:radio').on('change', function() {
+                    let ptype  = $("#formProcedure input[type=radio]:checked").val();
+                    // console.log(type);
+
+                    switch(ptype){
+                        case 'artLine':
+                            urlParam_Procedure.filterVal[0] = $("#mrn_nursActionPlan").val();
+                            urlParam_Procedure.filterVal[1] = $("#episno_nursActionPlan").val();
+                            urlParam_Procedure.filterVal[2] = 'artLine';
+                            refreshGrid('#jqGridProcedure',urlParam_Procedure,'add');
+                            $('#prod').text('ARTERIAL LINE');
+                            break;
+                        
+                        case 'CVP':
+                            urlParam_Procedure.filterVal[0] = $("#mrn_nursActionPlan").val();
+                            urlParam_Procedure.filterVal[1] = $("#episno_nursActionPlan").val();
+                            urlParam_Procedure.filterVal[2] = 'CVP';
+                            refreshGrid('#jqGridProcedure',urlParam_Procedure,'add');
+                            $('#prod').text('CVP');
+                            break;
+
+                        case 'venLine':
+                            urlParam_Procedure.filterVal[0] = $("#mrn_nursActionPlan").val();
+                            urlParam_Procedure.filterVal[1] = $("#episno_nursActionPlan").val();
+                            urlParam_Procedure.filterVal[2] = 'venLine';
+                            refreshGrid('#jqGridProcedure',urlParam_Procedure,'add');
+                            $('#prod').text('VENOUS LINE');
+                            break;
+
+                        case 'ETT':
+                            urlParam_Procedure.filterVal[0] = $("#mrn_nursActionPlan").val();
+                            urlParam_Procedure.filterVal[1] = $("#episno_nursActionPlan").val();
+                            urlParam_Procedure.filterVal[2] = 'ETT';
+                            refreshGrid('#jqGridProcedure',urlParam_Procedure,'add');
+                            $('#prod').text('ETT');
+                            break;
+
+                        case 'CBD':
+                            urlParam_Procedure.filterVal[0] = $("#mrn_nursActionPlan").val();
+                            urlParam_Procedure.filterVal[1] = $("#episno_nursActionPlan").val();
+                            urlParam_Procedure.filterVal[2] = 'CBD';
+                            refreshGrid('#jqGridProcedure',urlParam_Procedure,'add');
+                            $('#prod').text('CBD');
+                            break;
+
+                        case 'STO':
+                            urlParam_Procedure.filterVal[0] = $("#mrn_nursActionPlan").val();
+                            urlParam_Procedure.filterVal[1] = $("#episno_nursActionPlan").val();
+                            urlParam_Procedure.filterVal[2] = 'STO';
+                            refreshGrid('#jqGridProcedure',urlParam_Procedure,'add');
+                            $('#prod').text('STO');
+                            break;
+
+                        case 'woundIns':
+                            urlParam_Procedure.filterVal[0] = $("#mrn_nursActionPlan").val();
+                            urlParam_Procedure.filterVal[1] = $("#episno_nursActionPlan").val();
+                            urlParam_Procedure.filterVal[2] = 'woundIns';
+                            refreshGrid('#jqGridProcedure',urlParam_Procedure,'add');
+                            $('#prod').text('WOUND INSPECTION');
+                            break;
+                    }
+
+                });
+
                 $("#jqGridProcedure").jqGrid('setGridWidth', Math.floor($("#jqGridProcedure_c")[0].offsetWidth-$("#jqGridProcedure_c")[0].offsetLeft-30));
                 break;
+                
         }
     });
     
@@ -1784,6 +1849,7 @@ $(document).ready(function (){
             { label: 'compcode', name: 'compcode', hidden: true },
             { label: 'mrn', name: 'mrn', hidden: true },
             { label: 'episno', name: 'episno', hidden: true },
+            { label: 'prodType', name: 'prodType', hidden: true },
             { label: 'adddate', name: 'adddate', hidden: true },
             { label: 'upduser', name: 'upduser', hidden: true },
             { label: 'upddate', name: 'upddate', hidden: true },
@@ -1839,7 +1905,7 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             $("#jqGridPagerDelete_Procedure,#jqGridPagerRefresh_Procedure").hide();
             
-            $("#jqGridProcedure textarea[name='Procedure']").keydown(function (e){ // when click tab at last column in header, auto save
+            $("#jqGridProcedure input[name='enddate']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridProcedure_ilsave').click();
                 // addmore_jqgrid8.state = true;
@@ -1864,10 +1930,12 @@ $(document).ready(function (){
             
             let editurl = "./nursingActionPlan/form?"+
                 $.param({
-                    mrn: $('#mrn_nursActionPlan').val(),
-                    episno: $('#episno_nursActionPlan').val(),
+                    mrn_nursActionPlan: $('#mrn_nursActionPlan').val(),
+                    episno_nursActionPlan: $('#episno_nursActionPlan').val(),
+                    prodType: $("#formProcedure input[type=radio]:checked").val(),
                     action: 'Procedure_save',
-                });
+                });                    
+
             $("#jqGridProcedure").jqGrid('setGridParam', { editurl: editurl });
         },
         afterrestorefunc : function (response){
@@ -1887,7 +1955,7 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             $("#jqGridPagerDelete_Procedure,#jqGridPagerRefresh_Procedure").hide();
             
-            $("#jqGridProcedure textarea[name='Procedure']").keydown(function (e){ // when click tab at last column in header, auto save
+            $("#jqGridProcedure input[name='enddate']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridProcedure_ilsave').click();
                 // addmore_jqgrid8.state = true;
@@ -1916,6 +1984,7 @@ $(document).ready(function (){
                 $.param({
                     mrn: $('#mrn_nursActionPlan').val(),
                     episno: $('#episno_nursActionPlan').val(),
+                    prodType: $('#prodType').val(),
                     action: 'Procedure_edit',
                     _token: $("#csrf_token").val()
                 });
@@ -1982,7 +2051,7 @@ $(document).ready(function (){
     });
     ////////////////////////////////////////////end grid////////////////////////////////////////////
     //////////////////////////////////////////Procedure ends//////////////////////////////////////////
-    
+
 });
 
 var errorField = [];
@@ -2000,6 +2069,7 @@ conf = {
         }
     },
 };
+
 
 button_state_header('empty');
 function button_state_header(state){
@@ -2051,7 +2121,6 @@ function populate_nursingActionPlan(obj){
     $("#ward_nursActionPlan").val(obj.ward);
     $("#bednum_nursActionPlan").val(obj.bednum);
     $("#age_nursActionPlan").val(dob_age(obj.DOB));
-
 }
 
 function populate_header_getdata(){
