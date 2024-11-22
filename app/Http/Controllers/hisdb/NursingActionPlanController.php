@@ -112,24 +112,6 @@ class NursingActionPlanController extends defaultController
             case 'get_table_formHeader':
                 return $this->get_table_formHeader($request);
 
-            case 'Bladder_save':
-                return $this->add_Bladder($request);
-            
-            case 'Bladder_edit':
-                return $this->edit_Bladder($request);
-            
-            case 'Bladder_del':
-                return $this->del_Bladder($request);
-
-            case 'get_table_bladder1':
-                return $this->get_table_bladder1($request);
-
-            case 'get_table_bladder2':
-                return $this->get_table_bladder2($request);
-
-            case 'get_table_bladder3':
-                return $this->get_table_bladder3($request);
-
             default:
                 return 'error happen..';
         }
