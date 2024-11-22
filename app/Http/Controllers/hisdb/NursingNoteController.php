@@ -161,6 +161,16 @@ class NursingNoteController extends defaultController
             
             case 'OthersChart_del':
                 return $this->del_OthersChart($request);
+
+            case 'Bladder_save':
+                return $this->add_Bladder($request);
+            
+            case 'Bladder_edit':
+                return $this->edit_Bladder($request);
+            
+            case 'Bladder_del':
+                    return $this->del_Bladder($request);
+    
             
             case 'get_table_progress':
                 return $this->get_table_progress($request);
@@ -185,6 +195,15 @@ class NursingNoteController extends defaultController
             
             case 'get_table_formInvHeader':
                 return $this->get_table_formInvHeader($request);
+
+            case 'get_table_bladder1':
+                return $this->get_table_bladder1($request);
+
+            case 'get_table_bladder2':
+                return $this->get_table_bladder2($request);
+
+            case 'get_table_bladder3':
+                return $this->get_table_bladder3($request);
             
             default:
                 return 'error happen..';
@@ -1865,6 +1884,111 @@ class NursingNoteController extends defaultController
         }
         
     }
+
+    public function add_Bladder(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+
+            if(!empty($request->firstShift)){ // to check either tab 1/2/3
+                $shift = $request->firstShift;
+            }else if(!empty($request->secondShift)){
+                $shift = $request->secondShift;
+            }else{
+                $shift = $request->thirdShift;
+            }
+
+            // dd($shift);
+            DB::table('nursing.nurs_bladder')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_nursNote,
+                    'episno' => $request->episno_nursNote,
+                    'shift' => $shift,
+                    'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
+                    'input' => $request->input,
+                    'output' => $request->output,
+                    'positive' => $request->positive,
+                    'negative' => $request->negative,
+                    'remarks' => $request->remarks,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    // 'lastuser'  => session('username'),
+                    // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+    
+    public function edit_Bladder(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurs_bladder')
+                ->where('idno','=',$request->idno)
+                ->update([
+                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
+                    'enteredtime' => $request->enteredtime,
+                    'input' => $request->input,
+                    'output' => $request->output,
+                    'positive' => $request->positive,
+                    'negative' => $request->negative,
+                    'remarks' => $request->remarks,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    // 'lastuser'  => session('username'),
+                    // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function del_Bladder(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurs_bladder')
+                ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->delete();
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
     
     public function get_table_progress(Request $request){
         
@@ -2068,6 +2192,84 @@ class NursingNoteController extends defaultController
             $episode_obj = $episode_obj->first();
             // dd($episode_obj);
             $responce->episode = $episode_obj;
+        }
+        
+        return json_encode($responce);
+        
+    }
+
+    public function get_table_bladder1(Request $request){
+        
+        $bladder_obj = DB::table('nursing.nurs_bladder')
+                            ->where('compcode','=',session('compcode'))
+                            // ->where('idno','=',$request->idno);
+                            ->where('mrn','=',$request->mrn_nursNote)
+                            ->where('episno','=',$request->episno_nursNote)
+                            ->where('shift','=',$request->firstShift);
+        
+        $responce = new stdClass();
+        
+        if($bladder_obj->exists()){
+            $total_input1 = $bladder_obj->sum('input');
+            $responce->total_input1 = $total_input1;
+
+            $total_output1 = $bladder_obj->sum('output');
+            $responce->total_output1 = $total_output1;
+            
+            $bladder_obj = $bladder_obj->first();
+            $responce->bladder = $bladder_obj;
+        }
+        
+        return json_encode($responce);
+        
+    }
+
+    public function get_table_bladder2(Request $request){
+        
+        $bladder_obj = DB::table('nursing.nurs_bladder')
+                            ->where('compcode','=',session('compcode'))
+                            // ->where('idno','=',$request->idno);
+                            ->where('mrn','=',$request->mrn_nursNote)
+                            ->where('episno','=',$request->episno_nursNote)
+                            ->where('shift','=',$request->secondShift);
+        
+        $responce = new stdClass();
+        
+        if($bladder_obj->exists()){
+            $total_input2 = $bladder_obj->sum('input');
+            $responce->total_input2 = $total_input2;
+
+            $total_output2 = $bladder_obj->sum('output');
+            $responce->total_output2 = $total_output2;
+            
+            $bladder_obj = $bladder_obj->first();
+            $responce->bladder = $bladder_obj;
+        }
+        
+        return json_encode($responce);
+        
+    }
+
+    public function get_table_bladder3(Request $request){
+        
+        $bladder_obj = DB::table('nursing.nurs_bladder')
+                            ->where('compcode','=',session('compcode'))
+                            // ->where('idno','=',$request->idno);
+                            ->where('mrn','=',$request->mrn_nursNote)
+                            ->where('episno','=',$request->episno_nursNote)
+                            ->where('shift','=',$request->thirdShift);
+        
+        $responce = new stdClass();
+        
+        if($bladder_obj->exists()){
+            $total_input3 = $bladder_obj->sum('input');
+            $responce->total_input3 = $total_input3;
+
+            $total_output3 = $bladder_obj->sum('output');
+            $responce->total_output3 = $total_output3;
+            
+            $bladder_obj = $bladder_obj->first();
+            $responce->bladder = $bladder_obj;
         }
         
         return json_encode($responce);

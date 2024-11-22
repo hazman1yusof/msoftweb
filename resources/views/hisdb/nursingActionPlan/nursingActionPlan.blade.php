@@ -304,17 +304,17 @@
                         <div id="tab-procedure" class="tab-pane fade">
                             <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                                 <div class="panel panel-info">
-                                    <div class="panel-heading text-center" style="height: 40px;">
-                                        <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                    <div class="panel-heading text-center" style="height: 40px;" id="prod">
+                                        <!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                             id="btn_grp_edit_procedure"
                                             style="position: absolute;
                                                     padding: 0 0 0 0;
                                                     right: 40px;
                                                     top: 5px;">
-                                            <!--<button type="button" class="btn btn-default" id="treatment_chart">
+                                        <button type="button" class="btn btn-default" id="treatment_chart">
                                                 <span class="fa fa-print fa-lg"></span> Chart 
-                                            </button>-->
-                                        </div>
+                                            </button>
+                                        </div> -->
                                     </div>
                                                                     
                                     <div class="panel-body" style="padding-right: 0px;">
@@ -328,7 +328,8 @@
                                                             <tr>
                                                                 <td>
                                                                     <label class="radio-inline" style="margin-left: 30px;">
-                                                                        <input class="form-check-input" type="radio" name="toggle_type" id="artLine" value="artLine">
+                                                                    <input id="art" name="prodType" value="artLine" type="hidden">
+                                                                        <input class="form-check-input" type="radio" name="ptype" id="artLine" value="artLine" checked>
                                                                         <label class="form-check-label" for="artLine" style="padding-right: 10px;">Arterial Line</label>
                                                                     </label>
                                                                 </td>
@@ -336,7 +337,8 @@
                                                             <tr>
                                                                 <td>
                                                                     <label class="radio-inline" style="margin-left: 30px;">
-                                                                        <input class="form-check-input" type="radio" name="toggle_type" id="cvp" value="CVP">
+                                                                    <input id="pcvp" name="prodType" value="CVP" type="hidden">
+                                                                        <input class="form-check-input" type="radio" name="ptype" id="cvp" value="CVP">
                                                                         <label class="form-check-label" for="cvp">CVP</label>
                                                                     </label>
                                                                 </td>
@@ -344,7 +346,8 @@
                                                             <tr>
                                                                 <td>
                                                                     <label class="radio-inline" style="margin-left: 30px;">
-                                                                        <input class="form-check-input" type="radio" name="toggle_type" id="venLine" value="venLine">
+                                                                    <input id="ven" name="prodType" value="venLine" type="hidden">
+                                                                        <input class="form-check-input" type="radio" name="ptype" id="venLine" value="venLine">
                                                                         <label class="form-check-label" for="venLine">Venous Line</label>
                                                                     </label>
                                                                 </td>
@@ -352,7 +355,8 @@
                                                             <tr>
                                                                 <td>
                                                                     <label class="radio-inline" style="margin-left: 30px;">
-                                                                        <input class="form-check-input" type="radio" name="toggle_type" id="ett" value="ETT">
+                                                                    <input id="pett" name="prodType" value="ETT" type="hidden">
+                                                                        <input class="form-check-input" type="radio" name="ptype" id="ett" value="ETT">
                                                                         <label class="form-check-label" for="ett">ETT</label>
                                                                     </label>
                                                                 </td>
@@ -360,7 +364,8 @@
                                                             <tr>
                                                                 <td>
                                                                     <label class="radio-inline" style="margin-left: 30px;">
-                                                                        <input class="form-check-input" type="radio" name="toggle_type" id="cbd" value="CBD">
+                                                                    <input id="pcbd" name="prodType" value="CBD" type="hidden">
+                                                                        <input class="form-check-input" type="radio" name="ptype" id="cbd" value="CBD">
                                                                         <label class="form-check-label" for="cbd">CBD</label>
                                                                     </label>
                                                                 </td>
@@ -368,7 +373,8 @@
                                                             <tr>
                                                                 <td>
                                                                     <label class="radio-inline" style="margin-left: 30px;">
-                                                                        <input class="form-check-input" type="radio" name="toggle_type" id="sto" value="STO">
+                                                                    <input id="psto" name="prodType" value="STO" type="hidden">
+                                                                        <input class="form-check-input" type="radio" name="ptype" id="sto" value="STO">
                                                                         <label class="form-check-label" for="sto">STO</label>
                                                                     </label>
                                                                 </td>
@@ -376,7 +382,8 @@
                                                             <tr>
                                                                 <td>
                                                                     <label class="radio-inline" style="margin-left: 30px;">
-                                                                        <input class="form-check-input" type="radio" name="toggle_type" id="woundIns" value="woundIns">
+                                                                    <input id="wound" name="prodType" value="woundIns" type="hidden">
+                                                                        <input class="form-check-input" type="radio" name="ptype" id="woundIns" value="woundIns">
                                                                         <label class="form-check-label" for="woundIns">Wound Inspection</label>
                                                                     </label>
                                                                 </td>
@@ -403,24 +410,6 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- <div class='col-md-12' style="padding: 0 0 15px 0;">
-                    <ul class="nav nav-tabs" role="tablist">
-                        @foreach($invest_type as $count => $types)
-                            <li role="presentation" @if($count == 0) class="active" @endif>
-                                <a href="#tab-{{ $types->idno }}" aria-controls="#tab-{{ $types->idno }}" role="tab" data-toggle="tab">{{ $types->inv_code }}</a>
-                            </li>
-                        @endforeach
-                    </ul>
-                    
-                    <div class="tab-content" style="padding: 10px 5px;">
-                        @foreach($invest_type as $count => $types)
-                            <div role="tabpanel" @if($count == 0) class="tab-pane active" @else class="tab-pane" @endif id="tab-{{ $types->idno }}">
-                                <h2>{{ $types->inv_code }}</h2>
-                            </div>
-                        @endforeach
-                    </div>
-                </div> -->
             </div>
         </div>
 	</div>
