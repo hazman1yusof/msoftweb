@@ -20,6 +20,7 @@ use App\Exports\csv\delordhd_csv;
 use App\Exports\csv\delorddt_csv;
 use App\Exports\csv\apacthdr_csv;
 use App\Exports\csv\product_csv;
+use App\Exports\csv\ivdspdt_csv;
 
 use App\Jobs\SendEmailPR;
 use App\Mail\sendmaildefault;
@@ -54,6 +55,8 @@ class ExportController extends defaultController
                 return $this->export_apacthdr($request);
             case 'export_product':
                 return $this->export_product($request);
+            case 'export_ivdspdt':
+                return $this->export_ivdspdt($request);
             default:
                 return 'error happen..';
         }
@@ -93,5 +96,9 @@ class ExportController extends defaultController
 
     public function export_product(Request $request){
         return Excel::download(new product_csv($request), 'product_csv.csv');
+    }
+
+    public function export_ivdspdt(Request $request){
+        return Excel::download(new ivdspdt_csv($request), 'ivdspdt_csv.csv');
     }
 }

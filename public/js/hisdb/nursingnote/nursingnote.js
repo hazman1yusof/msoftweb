@@ -59,6 +59,17 @@ var urlParam_OthersChart = {
     filterVal: ['','',''],
 }
 
+//////////////////////parameter for bladder shift url//////////////////////
+var urlParam_Bladder = {
+    action: 'get_table_default',
+    url: 'util/get_table_default',
+    field: '',
+    table_name: 'nursing.nurs_bladder',
+    table_id: 'idno',
+    filterCol: ['mrn','episno','shift'],
+    filterVal: ['','',''],
+}
+
 $(document).ready(function (){
     
     var fdl = new faster_detail_load();
@@ -423,6 +434,9 @@ $(document).ready(function (){
         refreshGrid('#jqGridSlidingScale',urlParam_SlidingScale,'kosongkan');
         refreshGrid('#jqGridOthersChart1',urlParam_OthersChart,'kosongkan');
         refreshGrid('#jqGridOthersChart2',urlParam_OthersChart,'kosongkan');
+        refreshGrid('#jqGridBladder1',urlParam_Bladder,'kosongkan');
+        refreshGrid('#jqGridBladder2',urlParam_Bladder,'kosongkan');
+        refreshGrid('#jqGridBladder3',urlParam_Bladder,'kosongkan');
         
         $("#jqGridNursNote_panel > div").scrollTop(0);
         $("#jqGridNursNote_panel #jqGridNursNote_panel_tabs li").removeClass('active');
@@ -585,6 +599,49 @@ $(document).ready(function (){
                 $("#jqGridOthersChart2").jqGrid('setGridWidth', Math.floor($("#jqGridOthersChart2_c")[0].offsetWidth-$("#jqGridOthersChart2_c")[0].offsetLeft-30));
                 populate_othersChart2_getdata();
                 break;
+            case 'bladder':
+                
+                get_total_IO1();  
+
+                $("#jqGridBladder1").jqGrid('setGridWidth', Math.floor($("#jqGridBladder_c_1")[0].offsetWidth-$("#jqGridBladder_c_1")[0].offsetLeft-30));
+                urlParam_Bladder.filterVal[0] = $("#mrn_nursNote").val();
+                urlParam_Bladder.filterVal[1] = $("#episno_nursNote").val();
+                urlParam_Bladder.filterVal[2] = $("#firstShift").val();
+                refreshGrid('#jqGridBladder1',urlParam_Bladder,'add');
+
+                $('#jqGridNursNote_bladder_tabs.nav-tabs a').on('shown.bs.tab', function (e){
+                    let type = $(this).data('type');console.log(type);
+                    switch(type){
+                        case 'firstShift':
+                            get_total_IO1();  
+                            urlParam_Bladder.filterVal[0] = $("#mrn_nursNote").val();
+                            urlParam_Bladder.filterVal[1] = $("#episno_nursNote").val();
+                            urlParam_Bladder.filterVal[2] = $("#firstShift").val();
+                            refreshGrid('#jqGridBladder1',urlParam_Bladder,'add');  
+                            $("#jqGridBladder1").jqGrid('setGridWidth', Math.floor($("#jqGridBladder_c_1")[0].offsetWidth-$("#jqGridBladder_c_1")[0].offsetLeft-30));
+                            break;
+
+                        case 'secondShift':
+                            get_total_IO2();  
+                            urlParam_Bladder.filterVal[0] = $("#mrn_nursNote").val();
+                            urlParam_Bladder.filterVal[1] = $("#episno_nursNote").val();
+                            urlParam_Bladder.filterVal[2] = $("#secondShift").val();
+                            refreshGrid('#jqGridBladder2',urlParam_Bladder,'add');  
+                            $("#jqGridBladder2").jqGrid('setGridWidth', Math.floor($("#jqGridBladder_c_2")[0].offsetWidth-$("#jqGridBladder_c_2")[0].offsetLeft-30));
+                            break;
+
+                        case 'thirdShift':
+                            get_total_IO3();  
+                            urlParam_Bladder.filterVal[0] = $("#mrn_nursNote").val();
+                            urlParam_Bladder.filterVal[1] = $("#episno_nursNote").val();
+                            urlParam_Bladder.filterVal[2] = $("#thirdShift").val();
+                            refreshGrid('#jqGridBladder3',urlParam_Bladder,'add');  
+                            $("#jqGridBladder3").jqGrid('setGridWidth', Math.floor($("#jqGridBladder_c_3")[0].offsetWidth-$("#jqGridBladder_c_3")[0].offsetLeft-30));
+                            break;
+                    }
+                });
+            break;
+                
         }
     });
     
@@ -2795,6 +2852,1033 @@ $(document).ready(function (){
     ///////////////////////////////////////////end grid///////////////////////////////////////////
     ///////////////////////////////////////othersChart2 ends///////////////////////////////////////
     
+    //////////////////////////////////////bladder 1 starts//////////////////////////////////////
+    //////////////////////////////////////jqGridBladder1//////////////////////////////////////
+    var addmore_jqgrid7 = { more:false,state:false,edit:false }
+    
+    $("#jqGridBladder1").jqGrid({
+        datatype: "local",
+        editurl: "./nursingnote/form",
+        colModel: [
+            { label: 'Date', name: 'entereddate', width: 50, classes: 'wrap', editable: true,
+                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                editoptions: {
+                    dataInit: function (element){
+                        $(element).datepicker({
+                            id: 'entereddate_datePicker',
+                            dateFormat: 'yy-mm-dd',
+                            minDate: "dateToday",
+                            showOn: 'focus',
+                            changeMonth: true,
+                            changeYear: true,
+                            onSelect : function (){
+                                $(this).focus();
+                            }
+                        });
+                    }
+                }
+            },
+            { label: 'Time', name: 'enteredtime', width: 50, classes: 'wrap', editable: true,
+                editrules: { required: false, custom: true, custom_func: cust_rules_nurs },
+                formatter: showdetail_nurs, edittype: 'custom',
+                editoptions: {
+                    custom_element: enteredtimeCustomEdit_bladder1,
+                    custom_value: galGridCustomValue_nurs
+                }
+            },
+            { label: 'Input', name: 'input', width: 50, align: 'right', classes: 'wrap', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},
+			},
+            { label: 'Output', name: 'output', width: 50, align: 'right', classes: 'wrap', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},
+			},
+            { label: '+ve', name: 'positive', width: 50, align: 'right', classes: 'wrap', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},
+			},
+            { label: '-ve', name: 'negative', width: 50, align: 'right', classes: 'wrap', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},
+			},
+            { label: 'Remarks', name: 'remarks', classes: 'wrap', width: 70, editable: true, edittype: "textarea",
+                editoptions: {
+                    style: "width: -webkit-fill-available;",
+                    rows: 5
+                }
+            },
+            { label: 'Entered By', name: 'adduser', width: 35, editable: false },
+            { label: 'idno', name: 'idno', width: 10, hidden: true, key: true },
+            { label: 'compcode', name: 'compcode', hidden: true },
+            { label: 'mrn', name: 'mrn', hidden: true },
+            { label: 'episno', name: 'episno', hidden: true },
+            { label: 'adddate', name: 'adddate', hidden: true },
+            { label: 'shift', name: 'shift', hidden: true },
+
+        ],
+        autowidth: true,
+        multiSort: true,
+        sortname: 'idno',
+        sortorder: 'desc',
+        viewrecords: true,
+        loadonce: false,
+        width: 900,
+        height: 200,
+        rowNum: 30,
+        pager: "#jqGridPagerBladder1",
+        loadComplete: function (){
+            if(addmore_jqgrid7.more == true){$('#jqGridBladder1_iladd').click();}
+            else{
+                $('#jqGridBladder1').jqGrid ('setSelection', "1");
+            }
+            $('.ui-pg-button').prop('disabled',true);
+            addmore_jqgrid7.edit = addmore_jqgrid7.more = false; // reset
+            
+            // calc_jq_height_onchange("jqGridBladder1");
+            
+            if($("#jqGridBladder1").data('lastselrow') == undefined){
+                $("#jqGridBladder1").setSelection($("#jqGridBladder1").getDataIDs()[0]);
+            }else{
+                $("#jqGridBladder1").setSelection($("#jqGridBladder1").data('lastselrow'));
+                delay(function (){
+                    $('#jqGridBladder1 tr#'+$("#jqGridBladder1").data('lastselrow')).focus();
+                }, 300);
+            }
+        },
+        ondblClickRow: function (rowid, iRow, iCol, e){
+            $("#jqGridBladder1_iledit").click();
+        },
+        gridComplete: function (){
+            fdl.set_array().reset();
+            if($('#jqGridPagerBladder1').jqGrid('getGridParam', 'reccount') > 0){
+                $("#jqGridPagerBladder1").setSelection($("#jqGridPagerBladder1").getDataIDs()[0]);
+            }
+        },
+    });
+    
+    ////////////////////////////////myEditOptions_add_Bladder1////////////////////////////////
+    var myEditOptions_add_Bladder1 = {
+        keys: true,
+        extraparam: {
+            "_token": $("#csrf_token").val()
+        },
+        oneditfunc: function (rowid){
+            $("#jqGridPagerDelete_Bladder1,#jqGridPagerRefresh_Bladder1").hide();
+
+            $("#jqGridBladder1 input[name='input']").on('blur',calculate_total_input1);
+            $("#jqGridBladder1 input[name='output']").on('blur',calculate_total_output1);
+            
+            $("#jqGridBladder1 textarea[name='remarks']").keydown(function (e){ // when click tab at last column in header, auto save
+                var code = e.keyCode || e.which;
+                if (code == '9')$('#jqGridBladder1_ilsave').click();
+                // addmore_jqgrid7.state = true;
+                // $('#jqGridBladder1_ilsave').click();
+            });
+        },
+        aftersavefunc: function (rowid, response, options){
+            // if(addmore_jqgrid7.state == true)addmore_jqgrid7.more = true; // only addmore after save inline
+            addmore_jqgrid7.more = true; // state true maksudnyer ada isi, tak kosong
+            refreshGrid('#jqGridBladder1',urlParam_Bladder,'add');
+            errorField.length = 0;
+            $("#jqGridPagerDelete_Bladder1,#jqGridPagerRefresh_Bladder1").show();
+            get_total_IO1();
+        },
+        errorfunc: function (rowid,response){
+            $('#p_error2').text(response.responseText);
+            refreshGrid('#jqGridBladder1',urlParam_Bladder,'add');
+        },
+        beforeSaveRow: function (options, rowid){
+            $('#p_error2').text('');
+            
+            let data = $('#jqGridBladder1').jqGrid ('getRowData', rowid);
+            // console.log(data);
+
+            let editurl = "./nursingnote/form?"+
+                $.param({
+                    mrn_nursNote: $('#mrn_nursNote').val(),
+                    episno_nursNote: $('#episno_nursNote').val(),
+                    firstShift: $('#firstShift').val(),
+                    action: 'Bladder_save',
+                });
+            $("#jqGridBladder1").jqGrid('setGridParam', { editurl: editurl });
+        },
+        afterrestorefunc : function (response){
+            $("#jqGridPagerDelete_Bladder1,#jqGridPagerRefresh_Bladder1").show();
+        },
+        errorTextFormat: function (data){
+            alert(data);
+        }
+    };
+    
+    ////////////////////////////////myEditOptions_edit_Bladder1////////////////////////////////
+    var myEditOptions_edit_Bladder1 = {
+        keys: true,
+        extraparam: {
+            "_token": $("#csrf_token").val()
+        },
+        oneditfunc: function (rowid){
+            $("#jqGridPagerDelete_Bladder1,#jqGridPagerRefresh_Bladder1").hide();
+            
+            $("#jqGridBladder1 textarea[name='remarks']").keydown(function (e){ // when click tab at last column in header, auto save
+                var code = e.keyCode || e.which;
+                if (code == '9')$('#jqGridBladder1_ilsave').click();
+                // addmore_jqgrid7.state = true;
+                // $('#jqGridBladder1_ilsave').click();
+            });
+        },
+        aftersavefunc: function (rowid, response, options){
+            if(addmore_jqgrid7.state == true)addmore_jqgrid7.more = true; // only addmore after save inline
+            // state true maksudnyer ada isi, tak kosong
+            refreshGrid('#jqGridBladder1',urlParam_Bladder,'edit');
+            errorField.length = 0;
+            $("#jqGridPagerDelete_Bladder1,#jqGridPagerRefresh_Bladder1").show();
+        },
+        errorfunc: function (rowid,response){
+            $('#p_error2').text(response.responseText);
+            refreshGrid('#jqGridBladder1',urlParam_Bladder,'edit');
+        },
+        beforeSaveRow: function (options, rowid){
+            $('#p_error2').text('');
+            // if(errorField.length > 0){console.log(errorField);return false;}
+            
+            let data = $('#jqGridBladder1').jqGrid ('getRowData', rowid);
+            // console.log(data);
+            
+            let editurl = "./nursingnote/form?"+
+                $.param({
+                    mrn_nursNote: $('#mrn_nursNote').val(),
+                    episno_nursNote: $('#episno_nursNote').val(),
+                    firstShift: $('#firstShift').val(),
+                    action: 'Bladder_edit',
+                    _token: $("#csrf_token").val()
+                });
+            $("#jqGridBladder1").jqGrid('setGridParam', { editurl: editurl });
+        },
+        afterrestorefunc : function (response){
+            $("#jqGridPagerDelete_Bladder1,#jqGridPagerRefresh_Bladder1").show();
+        },
+        errorTextFormat: function (data){
+            alert(data);
+        }
+    };
+    
+    ////////////////////////////////////jqGridPagerBladder1////////////////////////////////////
+    $("#jqGridBladder1").inlineNav('#jqGridPagerBladder1', {
+        add: true, edit: true, cancel: true,
+        // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+        restoreAfterSelect: false,
+        addParams: {
+            addRowParams: myEditOptions_add_Bladder1
+        },
+        editParams: myEditOptions_edit_Bladder1
+    }).jqGrid('navButtonAdd', "#jqGridPagerBladder1", {
+        id: "jqGridPagerDelete_Bladder1",
+        caption: "", cursor: "pointer", position: "last",
+        buttonicon: "glyphicon glyphicon-trash",
+        title: "Delete Selected Row",
+        onClickButton: function (){
+            selRowId = $("#jqGridBladder1").jqGrid('getGridParam', 'selrow');
+            if(!selRowId){
+                alert('Please select row');
+            }else{
+                var result = confirm("Are you sure you want to delete this row?");
+                if(result == true){
+                    param = {
+                        _token: $("#csrf_token").val(),
+                        idno: selrowData('#jqGridBladder1').idno,
+                        action: 'Bladder_del',
+                    }
+                    $.post("./nursingnote/form?"+$.param(param), {oper:'del'}, function (data){
+                        
+                    }).fail(function (data){
+                        //////////////////errorText(dialog,data.responseText);
+                    }).done(function (data){
+                        refreshGrid("#jqGridBladder1", urlParam_Bladder);
+                    });
+                }else{
+                    $("#jqGridPagerDelete_Bladder1,#jqGridPagerRefresh_Bladder1").show();
+                }
+            }
+        },
+    }).jqGrid('navButtonAdd', "#jqGridPagerBladder1", {
+        id: "jqGridPagerRefresh_Bladder1",
+        caption: "", cursor: "pointer", position: "last",
+        buttonicon: "glyphicon glyphicon-refresh",
+        title: "Refresh Table",
+        onClickButton: function (){
+            refreshGrid("#jqGridBladder1", urlParam_Bladder);
+        },
+    });
+    
+    $("#jqGridPagerBladder1_ilcancel").click(function (){
+        // refreshGrid("#jqGridBladder1", urlParam_Bladder);
+        get_total_IO1();
+    });
+
+    function calculate_total_input1(){
+        var rowids = $('#jqGridBladder1').jqGrid('getDataIDs');
+        var total_input1 = 0;
+        
+        rowids.forEach(function (e,i){
+            let input1 = $('#jqGridBladder1 input#'+e+'_input').val();
+            if(input1 != undefined){
+                total_input1 = parseFloat(total_input1)+parseFloat(input1);
+            }else{
+                let rowdata = $('#jqGridBladder1').jqGrid ('getRowData',e);
+                total_input1 = parseFloat(total_input1)+parseFloat(rowdata.input);
+            }
+        });
+        
+        if(!isNaN(total_input1)){
+            $('#tot_input1').val(numeral(total_input1).format('0,0.00'));
+        }
+    }
+
+    function calculate_total_output1(){
+        var rowids = $('#jqGridBladder1').jqGrid('getDataIDs');
+        var total_output1 = 0;
+        
+        rowids.forEach(function (e,i){
+            let output1 = $('#jqGridBladder1 input#'+e+'_output').val();
+            if(output1 != undefined){
+                total_output1 = parseFloat(total_output1)+parseFloat(output1);
+            }else{
+                let rowdata = $('#jqGridBladder1').jqGrid ('getRowData',e);
+                total_output1 = parseFloat(total_output1)+parseFloat(rowdata.output);
+            }
+        });
+        
+        if(!isNaN(total_output1)){
+            $('#tot_output1').val(numeral(total_output1).format('0,0.00'));
+        }
+    }
+
+
+    function get_total_IO1(){
+        var saveParam={
+            action: 'get_table_bladder1',
+        }
+        
+        var postobj={
+            _token: $('#csrf_token').val(),
+            mrn_nursNote: $("#mrn_nursNote").val(),
+            episno_nursNote: $("#episno_nursNote").val(),
+            firstShift: $("#firstShift").val()
+        };
+        
+        $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){
+            
+        },'json').fail(function (data){
+            alert('there is an error');
+        }).success(function (data){
+            if(!$.isEmptyObject(data)){
+                $("#tot_input1").val(data.total_input1);
+                $("#tot_output1").val(data.total_output1);
+            }else{
+                
+            }
+        });
+    }
+    ///////////////////////////////////////////end grid///////////////////////////////////////////
+    ///////////////////////////////////////bladder 1 ends///////////////////////////////////////
+
+    //////////////////////////////////////bladder 2 starts//////////////////////////////////////
+    //////////////////////////////////////jqGridBladder2//////////////////////////////////////
+    var addmore_jqgrid8 = { more:false,state:false,edit:false }
+    
+    $("#jqGridBladder2").jqGrid({
+        datatype: "local",
+        editurl: "./nursingnote/form",
+        colModel: [
+            { label: 'Date', name: 'entereddate', width: 50, classes: 'wrap', editable: true,
+                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                editoptions: {
+                    dataInit: function (element){
+                        $(element).datepicker({
+                            id: 'entereddate_datePicker',
+                            dateFormat: 'yy-mm-dd',
+                            minDate: "dateToday",
+                            showOn: 'focus',
+                            changeMonth: true,
+                            changeYear: true,
+                            onSelect : function (){
+                                $(this).focus();
+                            }
+                        });
+                    }
+                }
+            },
+            { label: 'Time', name: 'enteredtime', width: 50, classes: 'wrap', editable: true,
+                editrules: { required: false, custom: true, custom_func: cust_rules_nurs },
+                formatter: showdetail_nurs, edittype: 'custom',
+                editoptions: {
+                    custom_element: enteredtimeCustomEdit_bladder2,
+                    custom_value: galGridCustomValue_nurs
+                }
+            },
+            { label: 'Input', name: 'input', width: 50, align: 'right', classes: 'wrap', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},
+			},
+            { label: 'Output', name: 'output', width: 50, align: 'right', classes: 'wrap', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},
+			},
+            { label: '+ve', name: 'positive', width: 50, align: 'right', classes: 'wrap', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},
+			},
+            { label: '-ve', name: 'negative', width: 50, align: 'right', classes: 'wrap', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},
+			},
+            { label: 'Remarks', name: 'remarks', classes: 'wrap', width: 70, editable: true, edittype: "textarea",
+                editoptions: {
+                    style: "width: -webkit-fill-available;",
+                    rows: 5
+                }
+            },
+            { label: 'Entered By', name: 'adduser', width: 35, editable: false },
+            { label: 'idno', name: 'idno', width: 10, hidden: true, key: true },
+            { label: 'compcode', name: 'compcode', hidden: true },
+            { label: 'mrn', name: 'mrn', hidden: true },
+            { label: 'episno', name: 'episno', hidden: true },
+            { label: 'adddate', name: 'adddate', hidden: true },
+            { label: 'shift', name: 'shift', hidden: true },
+
+        ],
+        autowidth: true,
+        multiSort: true,
+        sortname: 'idno',
+        sortorder: 'desc',
+        viewrecords: true,
+        loadonce: false,
+        width: 900,
+        height: 200,
+        rowNum: 30,
+        pager: "#jqGridPagerBladder2",
+        loadComplete: function (){
+            if(addmore_jqgrid8.more == true){$('#jqGridBladder2_iladd').click();}
+            else{
+                $('#jqGridBladder2').jqGrid ('setSelection', "1");
+            }
+            $('.ui-pg-button').prop('disabled',true);
+            addmore_jqgrid8.edit = addmore_jqgrid8.more = false; // reset
+            
+            // calc_jq_height_onchange("jqGridBladder2");
+            
+            if($("#jqGridBladder2").data('lastselrow') == undefined){
+                $("#jqGridBladder2").setSelection($("#jqGridBladder2").getDataIDs()[0]);
+            }else{
+                $("#jqGridBladder2").setSelection($("#jqGridBladder2").data('lastselrow'));
+                delay(function (){
+                    $('#jqGridBladder2 tr#'+$("#jqGridBladder2").data('lastselrow')).focus();
+                }, 300);
+            }
+        },
+        ondblClickRow: function (rowid, iRow, iCol, e){
+            $("#jqGridBladder2_iledit").click();
+        },
+        gridComplete: function (){
+            fdl.set_array().reset();
+            if($('#jqGridPagerBladder2').jqGrid('getGridParam', 'reccount') > 0){
+                $("#jqGridPagerBladder2").setSelection($("#jqGridPagerBladder2").getDataIDs()[0]);
+            }
+        },
+    });
+    
+    ////////////////////////////////myEditOptions_add_Bladder1////////////////////////////////
+    var myEditOptions_add_Bladder2 = {
+        keys: true,
+        extraparam: {
+            "_token": $("#csrf_token").val()
+        },
+        oneditfunc: function (rowid){
+            $("#jqGridPagerDelete_Bladder2,#jqGridPagerRefresh_Bladder2").hide();
+
+            $("#jqGridBladder2 input[name='input']").on('blur',calculate_total_input2);
+            $("#jqGridBladder2 input[name='output']").on('blur',calculate_total_output2);
+            
+            $("#jqGridBladder2 textarea[name='remarks']").keydown(function (e){ // when click tab at last column in header, auto save
+                var code = e.keyCode || e.which;
+                if (code == '9')$('#jqGridBladder2_ilsave').click();
+                // addmore_jqgrid8.state = true;
+                // $('#jqGridBladder2_ilsave').click();
+            });
+        },
+        aftersavefunc: function (rowid, response, options){
+            // if(addmore_jqgrid8.state == true)addmore_jqgrid8.more = true; // only addmore after save inline
+            addmore_jqgrid8.more = true; // state true maksudnyer ada isi, tak kosong
+            refreshGrid('#jqGridBladder2',urlParam_Bladder,'add');
+            errorField.length = 0;
+            $("#jqGridPagerDelete_Bladder2,#jqGridPagerRefresh_Bladder2").show();
+            get_total_IO2();
+        },
+        errorfunc: function (rowid,response){
+            $('#p_error2').text(response.responseText);
+            refreshGrid('#jqGridBladder2',urlParam_Bladder,'add');
+        },
+        beforeSaveRow: function (options, rowid){
+            $('#p_error2').text('');
+            
+            let data = $('#jqGridBladder2').jqGrid ('getRowData', rowid);
+            // console.log(data);
+
+            let editurl = "./nursingnote/form?"+
+                $.param({
+                    mrn_nursNote: $('#mrn_nursNote').val(),
+                    episno_nursNote: $('#episno_nursNote').val(),
+                    secondShift: $('#secondShift').val(),
+                    action: 'Bladder_save',
+                });
+            $("#jqGridBladder2").jqGrid('setGridParam', { editurl: editurl });
+        },
+        afterrestorefunc : function (response){
+            $("#jqGridPagerDelete_Bladder2,#jqGridPagerRefresh_Bladder2").show();
+        },
+        errorTextFormat: function (data){
+            alert(data);
+        }
+    };
+    
+    ////////////////////////////////myEditOptions_edit_Bladder2////////////////////////////////
+    var myEditOptions_edit_Bladder2 = {
+        keys: true,
+        extraparam: {
+            "_token": $("#csrf_token").val()
+        },
+        oneditfunc: function (rowid){
+            $("#jqGridPagerDelete_Bladder2,#jqGridPagerRefresh_Bladder2").hide();
+            
+            $("#jqGridBladder2 textarea[name='remarks']").keydown(function (e){ // when click tab at last column in header, auto save
+                var code = e.keyCode || e.which;
+                if (code == '9')$('#jqGridBladder2_ilsave').click();
+                // addmore_jqgrid8.state = true;
+                // $('#jqGridBladder2_ilsave').click();
+            });
+        },
+        aftersavefunc: function (rowid, response, options){
+            if(addmore_jqgrid8.state == true)addmore_jqgrid8.more = true; // only addmore after save inline
+            // state true maksudnyer ada isi, tak kosong
+            refreshGrid('#jqGridBladder2',urlParam_Bladder,'edit');
+            errorField.length = 0;
+            $("#jqGridPagerDelete_Bladder2,#jqGridPagerRefresh_Bladder2").show();
+        },
+        errorfunc: function (rowid,response){
+            $('#p_error2').text(response.responseText);
+            refreshGrid('#jqGridBladder2',urlParam_Bladder,'edit');
+        },
+        beforeSaveRow: function (options, rowid){
+            $('#p_error2').text('');
+            // if(errorField.length > 0){console.log(errorField);return false;}
+            
+            let data = $('#jqGridBladder2').jqGrid ('getRowData', rowid);
+            // console.log(data);
+            
+            let editurl = "./nursingnote/form?"+
+                $.param({
+                    mrn_nursNote: $('#mrn_nursNote').val(),
+                    episno_nursNote: $('#episno_nursNote').val(),
+                    secondShift: $('#secondShift').val(),
+                    action: 'Bladder_edit',
+                    _token: $("#csrf_token").val()
+                });
+            $("#jqGridBladder2").jqGrid('setGridParam', { editurl: editurl });
+        },
+        afterrestorefunc : function (response){
+            $("#jqGridPagerDelete_Bladder2,#jqGridPagerRefresh_Bladder2").show();
+        },
+        errorTextFormat: function (data){
+            alert(data);
+        }
+    };
+    
+    ////////////////////////////////////jqGridPagerBladder2////////////////////////////////////
+    $("#jqGridBladder2").inlineNav('#jqGridPagerBladder2', {
+        add: true, edit: true, cancel: true,
+        // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+        restoreAfterSelect: false,
+        addParams: {
+            addRowParams: myEditOptions_add_Bladder2
+        },
+        editParams: myEditOptions_edit_Bladder2
+    }).jqGrid('navButtonAdd', "#jqGridPagerBladder2", {
+        id: "jqGridPagerDelete_Bladder2",
+        caption: "", cursor: "pointer", position: "last",
+        buttonicon: "glyphicon glyphicon-trash",
+        title: "Delete Selected Row",
+        onClickButton: function (){
+            selRowId = $("#jqGridBladder2").jqGrid('getGridParam', 'selrow');
+            if(!selRowId){
+                alert('Please select row');
+            }else{
+                var result = confirm("Are you sure you want to delete this row?");
+                if(result == true){
+                    param = {
+                        _token: $("#csrf_token").val(),
+                        idno: selrowData('#jqGridBladder2').idno,
+                        action: 'Bladder_del',
+                    }
+                    $.post("./nursingnote/form?"+$.param(param), {oper:'del'}, function (data){
+                        
+                    }).fail(function (data){
+                        //////////////////errorText(dialog,data.responseText);
+                    }).done(function (data){
+                        refreshGrid("#jqGridBladder2", urlParam_Bladder);
+                    });
+                }else{
+                    $("#jqGridPagerDelete_Bladder2,#jqGridPagerRefresh_Bladder2").show();
+                }
+            }
+        },
+    }).jqGrid('navButtonAdd', "#jqGridPagerBladder2", {
+        id: "jqGridPagerRefresh_Bladder2",
+        caption: "", cursor: "pointer", position: "last",
+        buttonicon: "glyphicon glyphicon-refresh",
+        title: "Refresh Table",
+        onClickButton: function (){
+            refreshGrid("#jqGridBladder2", urlParam_Bladder);
+        },
+    });
+    
+    $("#jqGridPagerBladder2_ilcancel").click(function (){
+        //refreshGrid("#jqGridBladder2", urlParam_Bladder);
+        get_total_IO2();
+    });
+
+    function calculate_total_input2(){
+        var rowids = $('#jqGridBladder2').jqGrid('getDataIDs');
+        var total_input2 = 0;
+        
+        rowids.forEach(function (e,i){
+            let input2 = $('#jqGridBladder2 input#'+e+'_input').val();
+            if(input2 != undefined){
+                total_input2 = parseFloat(total_input2)+parseFloat(input2);
+            }else{
+                let rowdata = $('#jqGridBladder2').jqGrid ('getRowData',e);
+                total_input2 = parseFloat(total_input2)+parseFloat(rowdata.input);
+            }
+        });
+        
+        if(!isNaN(total_input2)){
+            $('#tot_input2').val(numeral(total_input2).format('0,0.00'));
+        }
+    }
+
+    function calculate_total_output2(){
+        var rowids = $('#jqGridBladder2').jqGrid('getDataIDs');
+        var total_output2 = 0;
+        
+        rowids.forEach(function (e,i){
+            let output2 = $('#jqGridBladder2 input#'+e+'_output').val();
+            if(output2 != undefined){
+                total_output2 = parseFloat(total_output2)+parseFloat(output2);
+            }else{
+                let rowdata = $('#jqGridBladder2').jqGrid ('getRowData',e);
+                total_output2 = parseFloat(total_output2)+parseFloat(rowdata.output);
+            }
+        });
+        
+        if(!isNaN(total_output2)){
+            $('#tot_output2').val(numeral(total_output2).format('0,0.00'));
+        }
+    }
+
+
+    function get_total_IO2(){
+        var saveParam={
+            action: 'get_table_bladder2',
+        }
+        
+        var postobj={
+            _token: $('#csrf_token').val(),
+            mrn_nursNote: $("#mrn_nursNote").val(),
+            episno_nursNote: $("#episno_nursNote").val(),
+            secondShift: $("#secondShift").val()
+        };
+        
+        $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){
+            
+        },'json').fail(function (data){
+            alert('there is an error');
+        }).success(function (data){
+            if(!$.isEmptyObject(data)){
+                $("#tot_input2").val(data.total_input2);
+                $("#tot_output2").val(data.total_output2);
+            }else{
+                
+            }
+        });
+    }
+    ///////////////////////////////////////////end grid///////////////////////////////////////////
+    ///////////////////////////////////////bladder 2 ends///////////////////////////////////////
+    
+    //////////////////////////////////////bladder 3 starts//////////////////////////////////////
+    //////////////////////////////////////jqGridBladder3//////////////////////////////////////
+    var addmore_jqgrid9 = { more:false,state:false,edit:false }
+    
+    $("#jqGridBladder3").jqGrid({
+        datatype: "local",
+        editurl: "./nursingnote/form",
+        colModel: [
+            { label: 'Date', name: 'entereddate', width: 50, classes: 'wrap', editable: true,
+                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                editoptions: {
+                    dataInit: function (element){
+                        $(element).datepicker({
+                            id: 'entereddate_datePicker',
+                            dateFormat: 'yy-mm-dd',
+                            minDate: "dateToday",
+                            showOn: 'focus',
+                            changeMonth: true,
+                            changeYear: true,
+                            onSelect : function (){
+                                $(this).focus();
+                            }
+                        });
+                    }
+                }
+            },
+            { label: 'Time', name: 'enteredtime', width: 50, classes: 'wrap', editable: true,
+                editrules: { required: false, custom: true, custom_func: cust_rules_nurs },
+                formatter: showdetail_nurs, edittype: 'custom',
+                editoptions: {
+                    custom_element: enteredtimeCustomEdit_bladder3,
+                    custom_value: galGridCustomValue_nurs
+                }
+            },
+            { label: 'Input', name: 'input', width: 50, align: 'right', classes: 'wrap', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},
+			},
+            { label: 'Output', name: 'output', width: 50, align: 'right', classes: 'wrap', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},
+			},
+            { label: '+ve', name: 'positive', width: 50, align: 'right', classes: 'wrap', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},
+			},
+            { label: '-ve', name: 'negative', width: 50, align: 'right', classes: 'wrap', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},
+			},
+            { label: 'Remarks', name: 'remarks', classes: 'wrap', width: 70, editable: true, edittype: "textarea",
+                editoptions: {
+                    style: "width: -webkit-fill-available;",
+                    rows: 5
+                }
+            },
+            { label: 'Entered By', name: 'adduser', width: 35, editable: false },
+            { label: 'idno', name: 'idno', width: 10, hidden: true, key: true },
+            { label: 'compcode', name: 'compcode', hidden: true },
+            { label: 'mrn', name: 'mrn', hidden: true },
+            { label: 'episno', name: 'episno', hidden: true },
+            { label: 'adddate', name: 'adddate', hidden: true },
+            { label: 'shift', name: 'shift', hidden: true },
+
+        ],
+        autowidth: true,
+        multiSort: true,
+        sortname: 'idno',
+        sortorder: 'desc',
+        viewrecords: true,
+        loadonce: false,
+        width: 900,
+        height: 200,
+        rowNum: 30,
+        pager: "#jqGridPagerBladder3",
+        loadComplete: function (){
+            if(addmore_jqgrid9.more == true){$('#jqGridBladder3_iladd').click();}
+            else{
+                $('#jqGridBladder3').jqGrid ('setSelection', "1");
+            }
+            $('.ui-pg-button').prop('disabled',true);
+            addmore_jqgrid9.edit = addmore_jqgrid9.more = false; // reset
+            
+            // calc_jq_height_onchange("jqGridBladder3");
+            
+            if($("#jqGridBladder3").data('lastselrow') == undefined){
+                $("#jqGridBladder3").setSelection($("#jqGridBladder3").getDataIDs()[0]);
+            }else{
+                $("#jqGridBladder3").setSelection($("#jqGridBladder3").data('lastselrow'));
+                delay(function (){
+                    $('#jqGridBladder3 tr#'+$("#jqGridBladder3").data('lastselrow')).focus();
+                }, 300);
+            }
+        },
+        ondblClickRow: function (rowid, iRow, iCol, e){
+            $("#jqGridBladder3_iledit").click();
+        },
+        gridComplete: function (){
+            fdl.set_array().reset();
+            if($('#jqGridPagerBladder3').jqGrid('getGridParam', 'reccount') > 0){
+                $("#jqGridPagerBladder3").setSelection($("#jqGridPagerBladder3").getDataIDs()[0]);
+            }
+        },
+    });
+    
+    ////////////////////////////////myEditOptions_add_Bladder3////////////////////////////////
+    var myEditOptions_add_Bladder3 = {
+        keys: true,
+        extraparam: {
+            "_token": $("#csrf_token").val()
+        },
+        oneditfunc: function (rowid){
+            $("#jqGridPagerDelete_Bladder3,#jqGridPagerRefresh_Bladder3").hide();
+
+            $("#jqGridBladder3 input[name='input']").on('blur',calculate_total_input3);
+            $("#jqGridBladder3 input[name='output']").on('blur',calculate_total_output3);
+            
+            $("#jqGridBladder3 textarea[name='remarks']").keydown(function (e){ // when click tab at last column in header, auto save
+                var code = e.keyCode || e.which;
+                if (code == '9')$('#jqGridBladder3_ilsave').click();
+                // addmore_jqgrid9.state = true;
+                // $('#jqGridBladder3_ilsave').click();
+            });
+        },
+        aftersavefunc: function (rowid, response, options){
+            // if(addmore_jqgrid9.state == true)addmore_jqgrid9.more = true; // only addmore after save inline
+            addmore_jqgrid9.more = true; // state true maksudnyer ada isi, tak kosong
+            refreshGrid('#jqGridBladder3',urlParam_Bladder,'add');
+            errorField.length = 0;
+            $("#jqGridPagerDelete_Bladder3,#jqGridPagerRefresh_Bladder3").show();
+            get_total_IO3();
+        },
+        errorfunc: function (rowid,response){
+            $('#p_error2').text(response.responseText);
+            refreshGrid('#jqGridBladder3',urlParam_Bladder,'add');
+        },
+        beforeSaveRow: function (options, rowid){
+            $('#p_error2').text('');
+            
+            let data = $('#jqGridBladder3').jqGrid ('getRowData', rowid);
+            // console.log(data);
+
+            let editurl = "./nursingnote/form?"+
+                $.param({
+                    mrn_nursNote: $('#mrn_nursNote').val(),
+                    episno_nursNote: $('#episno_nursNote').val(),
+                    thirdShift: $('#thirdShift').val(),
+                    action: 'Bladder_save',
+                });
+            $("#jqGridBladder3").jqGrid('setGridParam', { editurl: editurl });
+        },
+        afterrestorefunc : function (response){
+            $("#jqGridPagerDelete_Bladder3,#jqGridPagerRefresh_Bladder3").show();
+        },
+        errorTextFormat: function (data){
+            alert(data);
+        }
+    };
+    
+    ////////////////////////////////myEditOptions_edit_Bladder3////////////////////////////////
+    var myEditOptions_edit_Bladder3 = {
+        keys: true,
+        extraparam: {
+            "_token": $("#csrf_token").val()
+        },
+        oneditfunc: function (rowid){
+            $("#jqGridPagerDelete_Bladder3,#jqGridPagerRefresh_Bladder3").hide();
+            
+            $("#jqGridBladder3 textarea[name='remarks']").keydown(function (e){ // when click tab at last column in header, auto save
+                var code = e.keyCode || e.which;
+                if (code == '9')$('#jqGridBladder3_ilsave').click();
+                // addmore_jqgrid9.state = true;
+                // $('#jqGridBladder3_ilsave').click();
+            });
+        },
+        aftersavefunc: function (rowid, response, options){
+            if(addmore_jqgrid9.state == true)addmore_jqgrid9.more = true; // only addmore after save inline
+            // state true maksudnyer ada isi, tak kosong
+            refreshGrid('#jqGridBladder3',urlParam_Bladder,'edit');
+            errorField.length = 0;
+            $("#jqGridPagerDelete_Bladder3,#jqGridPagerRefresh_Bladder3").show();
+        },
+        errorfunc: function (rowid,response){
+            $('#p_error2').text(response.responseText);
+            refreshGrid('#jqGridBladder3',urlParam_Bladder,'edit');
+        },
+        beforeSaveRow: function (options, rowid){
+            $('#p_error2').text('');
+            // if(errorField.length > 0){console.log(errorField);return false;}
+            
+            let data = $('#jqGridBladder3').jqGrid ('getRowData', rowid);
+            // console.log(data);
+            
+            let editurl = "./nursingnote/form?"+
+                $.param({
+                    mrn_nursNote: $('#mrn_nursNote').val(),
+                    episno_nursNote: $('#episno_nursNote').val(),
+                    thirdShift: $('#thirdShift').val(),
+                    action: 'Bladder_edit',
+                    _token: $("#csrf_token").val()
+                });
+            $("#jqGridBladder3").jqGrid('setGridParam', { editurl: editurl });
+        },
+        afterrestorefunc : function (response){
+            $("#jqGridPagerDelete_Bladder3,#jqGridPagerRefresh_Bladder3").show();
+        },
+        errorTextFormat: function (data){
+            alert(data);
+        }
+    };
+    
+    ////////////////////////////////////jqGridPagerBladder3////////////////////////////////////
+    $("#jqGridBladder3").inlineNav('#jqGridPagerBladder3', {
+        add: true, edit: true, cancel: true,
+        // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+        restoreAfterSelect: false,
+        addParams: {
+            addRowParams: myEditOptions_add_Bladder3
+        },
+        editParams: myEditOptions_edit_Bladder3
+    }).jqGrid('navButtonAdd', "#jqGridPagerBladder3", {
+        id: "jqGridPagerDelete_Bladder3",
+        caption: "", cursor: "pointer", position: "last",
+        buttonicon: "glyphicon glyphicon-trash",
+        title: "Delete Selected Row",
+        onClickButton: function (){
+            selRowId = $("#jqGridBladder3").jqGrid('getGridParam', 'selrow');
+            if(!selRowId){
+                alert('Please select row');
+            }else{
+                var result = confirm("Are you sure you want to delete this row?");
+                if(result == true){
+                    param = {
+                        _token: $("#csrf_token").val(),
+                        idno: selrowData('#jqGridBladder3').idno,
+                        action: 'Bladder_del',
+                    }
+                    $.post("./nursingnote/form?"+$.param(param), {oper:'del'}, function (data){
+                        
+                    }).fail(function (data){
+                        //////////////////errorText(dialog,data.responseText);
+                    }).done(function (data){
+                        refreshGrid("#jqGridBladder3", urlParam_Bladder);
+                    });
+                }else{
+                    $("#jqGridPagerDelete_Bladder3,#jqGridPagerRefresh_Bladder3").show();
+                }
+            }
+        },
+    }).jqGrid('navButtonAdd', "#jqGridPagerBladder3", {
+        id: "jqGridPagerRefresh_Bladder3",
+        caption: "", cursor: "pointer", position: "last",
+        buttonicon: "glyphicon glyphicon-refresh",
+        title: "Refresh Table",
+        onClickButton: function (){
+            refreshGrid("#jqGridBladder3", urlParam_Bladder);
+        },
+    });
+    
+    $("#jqGridPagerBladder3_ilcancel").click(function (){
+        // refreshGrid("#jqGridBladder3", urlParam_Bladder);
+        get_total_IO3();
+    });
+
+    function calculate_total_input3(){
+        var rowids = $('#jqGridBladder3').jqGrid('getDataIDs');
+        var total_input3 = 0;
+        
+        rowids.forEach(function (e,i){
+            let input3 = $('#jqGridBladder3 input#'+e+'_input').val();
+            if(input3 != undefined){
+                total_input3 = parseFloat(total_input3)+parseFloat(input3);
+            }else{
+                let rowdata = $('#jqGridBladder3').jqGrid ('getRowData',e);
+                total_input3 = parseFloat(total_input3)+parseFloat(rowdata.input);
+            }
+        });
+        
+        if(!isNaN(total_input3)){
+            $('#tot_input3').val(numeral(total_input3).format('0,0.00'));
+        }
+    }
+
+    function calculate_total_output3(){
+        var rowids = $('#jqGridBladder3').jqGrid('getDataIDs');
+        var total_output3 = 0;
+        
+        rowids.forEach(function (e,i){
+            let output3 = $('#jqGridBladder3 input#'+e+'_output').val();
+            if(output3 != undefined){
+                total_output3 = parseFloat(total_output3)+parseFloat(output3);
+            }else{
+                let rowdata = $('#jqGridBladder3').jqGrid ('getRowData',e);
+                total_output3 = parseFloat(total_output3)+parseFloat(rowdata.output);
+            }
+        });
+        
+        if(!isNaN(total_output3)){
+            $('#tot_output3').val(numeral(total_output3).format('0,0.00'));
+        }
+    }
+
+
+    function get_total_IO3(){
+        var saveParam={
+            action: 'get_table_bladder3',
+        }
+        
+        var postobj={
+            _token: $('#csrf_token').val(),
+            mrn_nursNote: $("#mrn_nursNote").val(),
+            episno_nursNote: $("#episno_nursNote").val(),
+            thirdShift: $("#thirdShift").val()
+        };
+        
+        $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){
+            
+        },'json').fail(function (data){
+            alert('there is an error');
+        }).success(function (data){
+            if(!$.isEmptyObject(data)){
+                $("#tot_input3").val(data.total_input3);
+                $("#tot_output3").val(data.total_output3);
+            }else{
+                
+            }
+        });
+    }
+    ///////////////////////////////////////////end grid///////////////////////////////////////////
+    ///////////////////////////////////////bladder 3 ends///////////////////////////////////////
+
+    ///calculate balance
+    // function calc_balance(){
+    //     var rowids = $('#jqGridBladder1,#jqGridBladder2,#jqGridBladder3').jqGrid('getDataIDs');
+
+    //     var total_i = 0;
+    //     var total_o = 0;
+    //     var balance = 0;
+
+    //     rowids.forEach(function (e,i){
+
+    //      });
+
+    //     var total_input1 = $('#jqGridBladder1 input#'+e+'_tot_input1').val();
+    //     var total_input2 = $('#jqGridBladder2 input#'+e+'_tot_input2').val();
+    //     var total_input3 = $('#jqGridBladder3 input#'+e+'_tot_input3').val();
+
+    //     var total_output1 = $('#jqGridBladder1 input#'+e+'_tot_output1').val();
+    //     var total_output2 = $('#jqGridBladder2 input#'+e+'_tot_output2').val();
+    //     var total_output3 = $('#jqGridBladder3 input#'+e+'_tot_output3').val();
+
+    //     total_i = parseFloat(total_input1)+parseFloat(total_input2)+parseFloat(total_input3);
+    //     total_o = parseFloat(total_output1)+parseFloat(total_output2)+parseFloat(total_output3);
+    //     balance = parseFloat(total_i)-parseFloat(total_o);
+
+    //     if(!isNaN(total_i)){
+    //         $('#tot_input').val(numeral(total_i).format('0,0.00'));
+    //     }
+    //     if(!isNaN(total_o)){
+    //         $('#tot_output').val(numeral(total_o).format('0,0.00'));
+    //     }
+    //     if(!isNaN(balance)){
+    //         $('#balance').val(numeral(balance).format('0,0.00'));
+    //     }
+    // }
 });
 
 /////////////////////progressnote starts/////////////////////
@@ -3339,6 +4423,9 @@ function populate_nursingnote(obj){
     $("#ward_nursNote").val(obj.ward);
     $("#bednum_nursNote").val(obj.bednum);
     $("#age_nursNote").val(dob_age(obj.DOB));
+
+    $("#bladder_ward").val($('#ward_nursNote').val());
+    $("#bladder_bednum").val($('#bednum_nursNote').val());
     
     // var urlparam_datetime_tbl = {
     //     action: 'get_table_datetime',
@@ -4257,6 +5344,9 @@ function cust_rules_nurs(value, name){
         case 'slidingScale_time': temp = $("#jqGridSlidingScale input[name='enteredtime']"); break;
         case 'othersChart1_time': temp = $("#jqGridOthersChart1 input[name='enteredtime']"); break;
         case 'othersChart2_time': temp = $("#jqGridOthersChart2 input[name='enteredtime']"); break;
+        case 'bladder1_time': temp = $("#jqGridBladder1 input[name='enteredtime']"); break;
+        case 'bladder2_time': temp = $("#jqGridBladder2 input[name='enteredtime']"); break;
+        case 'bladder3_time': temp = $("#jqGridBladder3 input[name='enteredtime']"); break;
     }
     if(temp == null) return [true,''];
     return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
@@ -4303,6 +5393,18 @@ function enteredtimeCustomEdit_othersChart1(val,opt,rowObject){
 
 function enteredtimeCustomEdit_othersChart2(val,opt,rowObject){
     return $(`<div class="input-group"><input autocomplete="off" name="othersChart2_time" type="time" class="form-control input-sm" style="text-transform: uppercase;" value="`+val+`" style="z-index: 0"></div>`);
+}
+
+function enteredtimeCustomEdit_bladder1(val,opt,rowObject){
+    return $(`<div class="input-group"><input autocomplete="off" name="bladder1_time" type="time" class="form-control input-sm" style="text-transform: uppercase;" value="`+val+`" style="z-index: 0"></div>`);
+}
+
+function enteredtimeCustomEdit_bladder2(val,opt,rowObject){
+    return $(`<div class="input-group"><input autocomplete="off" name="bladder2_time" type="time" class="form-control input-sm" style="text-transform: uppercase;" value="`+val+`" style="z-index: 0"></div>`);
+}
+
+function enteredtimeCustomEdit_bladder3(val,opt,rowObject){
+    return $(`<div class="input-group"><input autocomplete="off" name="bladder3_time" type="time" class="form-control input-sm" style="text-transform: uppercase;" value="`+val+`" style="z-index: 0"></div>`);
 }
 
 function galGridCustomValue_nurs(elem, operation, value){

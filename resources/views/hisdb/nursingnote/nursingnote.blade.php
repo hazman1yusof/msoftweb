@@ -34,7 +34,7 @@
                     <li><a data-toggle="tab" id="navtab_slidingScale" href="#tab-slidingScale" data-type='slidingScale'>Sliding Scale Chart</a></li>
                     <li><a data-toggle="tab" id="navtab_othersChart1" href="#tab-othersChart1" data-type='othersChart1'>PAD Chart</a></li>
                     <li><a data-toggle="tab" id="navtab_othersChart2" href="#tab-othersChart2" data-type='othersChart2'>Drain Chart</a></li>
-                    <li><a data-toggle="tab" id="navtab_bladder" href="#tab-bladder" data-type='bladder'>Bladder</a></li>
+                    <li><a data-toggle="tab" id="navtab_bladder" href="#tab-bladder" data-type='bladder'>Bladder Irrigation</a></li>
                 </ul>
                 <div class="tab-content" style="padding: 10px 5px;">
                     <input id="mrn_nursNote" name="mrn_nursNote" type="hidden">
@@ -2369,23 +2369,134 @@
                                         </button> -->
                                     </div>
                                 </div>
+
+                                <div class="panel-body" style="padding-right: 0px;">
+                                    <form class='form-horizontal' style='width: 99%;' id='formBladderHdr'>
+                                        <div class='col-md-12'>
+                                            <div class="panel panel-info">
+                                                <div class="panel-body">
+                                                    
+                                                    <div class="form-group">
+                                                        <label class="col-md-2 control-label" for="bladder_ward">Ward</label>
+                                                        <div class="col-md-3">
+                                                            <input id="bladder_ward" name="bladder_ward" type="text" class="form-control input-sm" readonly>
+                                                        </div>
+                                                        
+                                                        <label class="col-md-2 control-label" for="bladder_bednum">Bed No.</label>
+                                                        <div class="col-md-3">
+                                                            <input id="bladder_bednum" name="bladder_bednum" type="text" class="form-control input-sm" readonly>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- <div class="form-group">
+                                                        <label class="col-md-1 control-label" for="tot_input">Total Input</label>
+                                                        <div class="col-md-2">
+                                                            <input id="tot_input" name="tot_input" type="text" class="form-control input-sm" readonly>
+                                                        </div>
+                                                        
+                                                        <label class="col-md-1 control-label" for="tot_output">Total Output</label>
+                                                        <div class="col-md-2">
+                                                            <input id="tot_output" name="tot_output" type="text" class="form-control input-sm" readonly>
+                                                        </div>
+
+                                                        <label class="col-md-1 control-label" for="balance">Balance</label>
+                                                        <div class="col-md-2">
+                                                            <input id="balance" name="balance" type="text" class="form-control input-sm" readonly>
+                                                        </div>
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                                 
                                 <div class="panel-body">
                                     <form class='form-horizontal' style='width: 99%;' id='formBladder'>
-                                        <ul class="nav nav-tabs">
-                                            <li class="active"><a data-toggle="tab" id="navtab_firstShift" href="#tab-firstShift" aria-expanded="true" data-shift='firstShift'>First Shift</a></li>
-                                            <li><a data-toggle="tab" id="navtab_secondShift" href="#tab-secondShift" data-shift='secondShift'>Second Shift</a></li>
-                                            <li><a data-toggle="tab" id="navtab_thirdShift" href="#tab-thirdShift" data-shift='thirdShift'>Third Shift</a></li>
+                                        <ul class="nav nav-tabs" id="jqGridNursNote_bladder_tabs">
+                                            <li class="active"><a data-toggle="tab" id="navtab_firstShift" href="#tab-firstShift" aria-expanded="true" data-type='firstShift'>8AM - 2PM</a></li>
+                                            <li><a data-toggle="tab" id="navtab_secondShift" href="#tab-secondShift" data-type='secondShift'>3PM - 2PM</a></li>
+                                            <li><a data-toggle="tab" id="navtab_thirdShift" href="#tab-thirdShift" data-type='thirdShift'>10PM - 7AM</a></li>
                                         </ul>
                                         <div class="tab-content" style="padding: 10px 5px;">
+                                            <!-- 1st shift (8am-2pm) -->
                                             <div id="tab-firstShift" class="active in tab-pane fade">
-                                            
+                                                <div class='col-md-12'>
+                                                    <div class="panel panel-info" id="jqGridBladder_c_1">
+                                                        <div class="panel-body">
+                                                            <div style="float: right; padding-right: 60px; padding-bottom: 15px;">
+                                                                <label class="col-md-1 control-label">Input:</label>
+                                                                <div class="col-md-5">
+                                                                    <input id="tot_input1" name="tot_input1" type="text" class="form-control input-sm" readonly>
+                                                                </div>
+
+                                                                <label class="col-md-1 control-label">Output:</label>
+                                                                <div class="col-md-5">
+                                                                    <input id="tot_output1" name="tot_output1" type="text" class="form-control input-sm" readonly>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class='col-md-12' style="padding:0 0 15px 0">
+                                                                <input id="firstShift" name="firstShift" value="1" type="hidden">
+                                                                <table id="jqGridBladder1" class="table table-striped"></table>
+                                                                <div id="jqGridPagerBladder1"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
+
+                                            <!-- 2nd shift (3pm-9pm) -->
                                             <div id="tab-secondShift" class="tab-pane fade">
-                                            
+                                                <div class='col-md-12'>
+                                                    <div class="panel panel-info" id="jqGridBladder_c_2">
+                                                        <div class="panel-body">
+                                                            <div style="float: right; padding-right: 60px; padding-bottom: 15px;">
+                                                                <label class="col-md-1 control-label">Input:</label>
+                                                                <div class="col-md-5">
+                                                                    <input id="tot_input2" name="tot_input2" type="text" class="form-control input-sm" readonly>
+                                                                </div>
+
+                                                                <label class="col-md-1 control-label">Output:</label>
+                                                                <div class="col-md-5">
+                                                                    <input id="tot_output2" name="tot_output2" type="text" class="form-control input-sm" readonly>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class='col-md-12' style="padding:0 0 15px 0">
+                                                                <input id="secondShift" name="secondShift" value="2" type="hidden">
+                                                                <table id="jqGridBladder2" class="table table-striped"></table>
+                                                                <div id="jqGridPagerBladder2"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
+
+                                            <!-- 3rd shift (10pm-7am) -->
                                             <div id="tab-thirdShift" class="tab-pane fade">
-                                            
+                                                <div class='col-md-12'>
+                                                    <div class="panel panel-info" id="jqGridBladder_c_3">
+                                                        <div class="panel-body">
+                                                            <div style="float: right; padding-right: 60px; padding-bottom: 15px;">
+                                                                <label class="col-md-1 control-label">Input:</label>
+                                                                <div class="col-md-5">
+                                                                    <input id="tot_input3" name="tot_input3" type="text" class="form-control input-sm" readonly>
+                                                                </div>
+
+                                                                <label class="col-md-1 control-label">Output:</label>
+                                                                <div class="col-md-5">
+                                                                    <input id="tot_output3" name="tot_output3" type="text" class="form-control input-sm" readonly>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class='col-md-12' style="padding:0 0 15px 0">
+                                                                <input id="thirdShift" name="thirdShift" value="3" type="hidden">
+                                                                <table id="jqGridBladder3" class="table table-striped"></table>
+                                                                <div id="jqGridPagerBladder3"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </form>

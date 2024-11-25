@@ -20,11 +20,7 @@ class NursingActionPlanController extends defaultController
     
     public function show(Request $request){
         
-        $invest_type = DB::table('nursing.nurs_invest_type')
-                        ->where('compcode','=',session('compcode'))
-                        ->get();
-        
-        return view('hisdb.nursingActionPlan.nursingActionPlan',compact('invest_type'));
+        return view('hisdb.nursingActionPlan.nursingActionPlan');
         
     }
     
@@ -103,10 +99,19 @@ class NursingActionPlanController extends defaultController
             
             case 'Exams_del':
                 return $this->del_Exams($request);
+
+            case 'Procedure_save':
+                return $this->add_Procedure($request);
             
+            case 'Procedure_edit':
+                return $this->edit_Procedure($request);
+            
+            case 'Procedure_del':
+                return $this->del_Procedure($request);
+        
             case 'get_table_formHeader':
                 return $this->get_table_formHeader($request);
-            
+
             default:
                 return 'error happen..';
         }
@@ -709,6 +714,110 @@ class NursingActionPlanController extends defaultController
         try {
             
             DB::table('nursing.nursactplan_exam')
+                ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->delete();
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+
+    public function add_Procedure(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+
+            if(($request->prodType)=='artLine'){
+                $ptype = 'artLine';
+            }else if(($request->prodType)=='CVP'){
+                $ptype = 'CVP';
+            }else if(($request->prodType)=='venLine'){
+                $ptype = 'venLine';
+            }else if(($request->prodType)=='ETT'){
+                $ptype = 'ETT';
+            }else if(($request->prodType)=='CBD'){
+                $ptype = 'CBD';
+            }else if(($request->prodType)=='STO'){
+                $ptype = 'STO';
+            }else{
+                $ptype = 'woundIns';
+            }
+
+            // dd($ptype);
+            
+            DB::table('nursing.nursactplan_procedure')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_nursActionPlan,
+                    'episno' => $request->episno_nursActionPlan,
+                    'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
+                    'enddate' => Carbon::parse($request->enddate)->format('Y-m-d'),
+                    'prodType' => $ptype,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    // 'lastuser'  => session('username'),
+                    // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+    
+    public function edit_Procedure(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nursactplan_procedure')
+                ->where('idno','=',$request->idno)
+                ->update([
+                    'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
+                    'enddate' => Carbon::parse($request->enddate)->format('Y-m-d'),
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    // 'lastuser'  => session('username'),
+                    // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function del_Procedure(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nursactplan_procedure')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->delete();
