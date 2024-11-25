@@ -1188,7 +1188,8 @@ class DeliveryOrderController extends defaultController
             $podt_obj = DB::table('material.purorddt')
                             ->where('compcode','=',session('compcode'))
                             ->where('recno',$po_hd->recno)
-                            ->where('recstatus','=','PARTIAL');
+                            ->where('recstatus','!=','COMPLETED')
+                            ->where('recstatus','!=','DELETE');
                             // ->where('purordno','=',$do_hd->srcdocno)
                             // ->where('prdept','=',$do_hd->prdept);
 
