@@ -505,7 +505,7 @@ class DeliveryOrderDetailController extends defaultController
                 if($value['pricecode'] == 'IV' || $value['pricecode'] == 'BO'){
                     $product = DB::table('material.product')
                                 ->where('compcode',session('compcode'))
-                                ->where('unit',session('unit'))
+                                // ->where('unit',session('unit'))
                                 ->where('itemcode',$value['itemcode'])
                                 ->where('uomcode',$value['uomcode']);
 
@@ -521,7 +521,7 @@ class DeliveryOrderDetailController extends defaultController
 
                     $stockloc = DB::table('material.stockloc')
                                 ->where('compcode',session('compcode'))
-                                ->where('unit',session('unit'))
+                                // ->where('unit',session('unit'))
                                 ->where('itemcode',$value['itemcode'])
                                 ->where('uomcode',$value['uomcode'])
                                 ->where('deptcode',$do_hd->deldept)

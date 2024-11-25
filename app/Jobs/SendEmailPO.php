@@ -12,7 +12,7 @@ use Carbon\Carbon;
 use App\Mail\sendmaildefault;
 use DB;
 
-class SendEmailPR implements ShouldQueue
+class SendEmailPO implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -40,12 +40,12 @@ class SendEmailPR implements ShouldQueue
 
         foreach ($data as $key => $value) {
             $email = $value->email;
-            $subject = 'Purchase Request to be '.$value->trantype;
-            $type = 'Purchase Request';
+            $subject = 'Purchase Order to be '.$value->trantype;
+            $type = 'Purchase Order';
             $recno = $value->recno;
             $curr_stats = $value->recstatus;
-            $reqdept = $value->reqdept.' - '.$value->purreqno;
-            $prepredon = Carbon::parse($value->purreqdt)->format('d-m-Y').' by '.$value->adduser;
+            $reqdept = $value->prdept.' - '.$value->purordno;
+            $prepredon = Carbon::parse($value->purdate)->format('d-m-Y').' by '.$value->adduser;
 
             DB::table('sysdb.sendemail')
                     ->insert([

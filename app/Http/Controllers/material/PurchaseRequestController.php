@@ -10,8 +10,6 @@ use DateTime;
 use Carbon\Carbon;
 use PDF;
 use Mail;
-
-
 use App\Jobs\SendEmailPR;
 // use App\Http\Controllers\util\do_util;
 
@@ -397,8 +395,7 @@ class PurchaseRequestController extends defaultController
                 $data->email_to = 'hazman.yusof@gmail.com';
                 $data->whatsapp = '01123090948';
 
-                    //$this->sendemail($data);
-                // }
+                $this->sendemail('SUPPORT',$purreqhd_get->recno);
             }
 
             DB::commit();
@@ -727,7 +724,7 @@ class PurchaseRequestController extends defaultController
                 $data->email_to = 'hazman.yusof@gmail.com';
                 $data->whatsapp = '01123090948';
             
-                //$this->sendemail($data);
+                $this->sendemail('VERIFIED',$purreqhd_get->recno);
 
             }
 
@@ -866,7 +863,7 @@ class PurchaseRequestController extends defaultController
                 $data->email_to = 'hazman.yusof@gmail.com';
                 $data->whatsapp = '01123090948';
 
-                //$this->sendemail($data);
+                $this->sendemail('APPROVED',$purreqhd_get->recno);
 
             }
 
@@ -1371,16 +1368,47 @@ class PurchaseRequestController extends defaultController
         return view('material.purchaseRequest.purchaseRequest_pdfmake',compact('purreqhd','purreqdt','totamt_eng','company','supplier','reqdept','total_tax','total_discamt','attachment_files'));
     }
 
-    function sendemail($data){
-        SendEmailPR::dispatch($data);
-        // ProcessPodcast::dispatch();
-
-        // $data_ = ['data' => $data];
-
-        // Mail::send('email.mail', $data_, function($message) use ($data) {
-        //     $message->from('me@gmail.com', 'medicsoft');
-        //     $message->to($data->email_to);
-        // });
+    function sendemail($trantype,$recno){
+        // $trantype = 'SUPPORT';
+        // $recno = '64';
+        $qpr = DB::table('material.queuepr as qpr')
+                    ->select('qpr.trantype','adtl.authorid','prhd.recno','prhd.reqdept','prhd.purreqno','prhd.purreqdt','prhd.recstatus','prhd.totamount','prhd.adduser','users.email')
+                    ->join('material.authdtl as adtl', function($join){
+                        $join = $join
+                            ->where('adtl.compcode',session('compcode'))
+                            // ->where('adtl.authorid',session('username'))
+                            ->where('adtl.trantype','PR')
+                            ->where('adtl.cando','ACTIVE')
+                            ->on('adtl.prtype','qpr.prtype')
+                            ->on('adtl.recstatus','qpr.trantype')
+                            ->where(function ($query) {
+                                $query->on('adtl.deptcode','qpr.deptcode')
+                                      ->orWhere('adtl.deptcode', 'ALL');
+                            });
+                    })
+                    ->join('material.purreqhd as prhd', function($join){
+                        $join = $join
+                            ->where('prhd.compcode',session('compcode'))
+                            ->on('prhd.recno','qpr.recno')
+                            ->on('prhd.recstatus','qpr.recstatus')
+                            ->where(function ($query) {
+                                $query
+                                    ->on('prhd.totamount','>=','adtl.minlimit')
+                                    ->on('prhd.totamount','<=', 'adtl.maxlimit');
+                            });
+                    })
+                    ->join('sysdb.users as users', function($join){
+                        $join = $join
+                            ->where('users.compcode',session('compcode'))
+                            // ->where('users.email','HAZMAN.YUSOF@GMAIL.COM')
+                            ->on('users.username','adtl.authorid');
+                    })
+                    ->where('qpr.compcode',session('compcode'))
+                    ->where('qpr.trantype',$trantype)
+                    ->where('qpr.recno',$recno)
+                    ->get();
+                    
+        SendEmailPR::dispatch($qpr);
     }
 
     function skip_authorization(Request $request, $deptcode, $idno){

@@ -16,9 +16,14 @@ class sendmaildefault extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($subject,$type,$recno,$curr_stats,$reqdept,$prepredon)
     {
-        //
+        $this->subject = $subject;
+        $this->type = $type;
+        $this->recno = $recno;
+        $this->curr_stats = $curr_stats;
+        $this->reqdept = $reqdept;
+        $this->prepredon = $prepredon;
     }
 
     /**
@@ -26,8 +31,16 @@ class sendmaildefault extends Mailable
      *
      * @return $this
      */
-    public function build()
-    {
-        return $this->markdown('email.mail');
+    public function build(){
+        return $this->markdown('email.mail')
+                        ->subject($this->subject)
+                        ->with([
+                            'subject' => $this->subject,
+                            'type' => $this->type,
+                            'recno' => $this->recno,
+                            'curr_stats' => $this->curr_stats,
+                            'reqdept' => $this->reqdept,
+                            'prepredon' => $this->prepredon,
+                        ]);
     }
 }

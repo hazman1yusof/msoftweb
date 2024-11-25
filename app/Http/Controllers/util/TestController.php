@@ -68,8 +68,8 @@ class TestController extends defaultController
             //     return $this->update_stockexp($request);
             // case 'del_stockexp':
             //     return $this->del_stockexp($request);
-            // case 'test_email':
-            //     return $this->test_email($request);
+            case 'test_email':
+                return $this->test_email($request);
             case 'betulkan_uom_kh_stockloc':
                 return $this->betulkan_uom_kh_stockloc($request);
             case 'betulkan_uom_kh_product':
@@ -802,8 +802,46 @@ class TestController extends defaultController
     }
 
     public function test_email(Request $request){
-        $recipient = "hazman.yusof@gmail.com";
-        Mail::to($recipient)->send(new sendmaildefault());
+        $trantype = 'SUPPORT';
+        $recno = '64';
+        $qpr = DB::table('material.queuepr as qpr')
+                    ->select('qpr.trantype','adtl.authorid','prhd.recno','prhd.reqdept','prhd.purreqno','prhd.purreqdt','prhd.recstatus','prhd.totamount','prhd.adduser','users.email')
+                    ->join('material.authdtl as adtl', function($join) use ($request){
+                        $join = $join
+                            ->where('adtl.compcode',session('compcode'))
+                            // ->where('adtl.authorid',session('username'))
+                            ->where('adtl.trantype','PR')
+                            ->where('adtl.cando','ACTIVE')
+                            ->on('adtl.prtype','qpr.prtype')
+                            ->on('adtl.recstatus','qpr.trantype')
+                            ->where(function ($query) {
+                                $query->on('adtl.deptcode','qpr.deptcode')
+                                      ->orWhere('adtl.deptcode', 'ALL');
+                            });
+                    })
+                    ->join('material.purreqhd as prhd', function($join) use ($request){
+                        $join = $join
+                            ->where('prhd.compcode',session('compcode'))
+                            ->on('prhd.recno','qpr.recno')
+                            ->on('prhd.recstatus','qpr.recstatus')
+                            ->where(function ($query) {
+                                $query
+                                    ->on('prhd.totamount','>=','adtl.minlimit')
+                                    ->on('prhd.totamount','<=', 'adtl.maxlimit');
+                            });
+                    })
+                    ->join('sysdb.users as users', function($join) use ($request){
+                        $join = $join
+                            ->where('users.compcode',session('compcode'))
+                            ->where('users.email','HAZMAN.YUSOF@GMAIL.COM')
+                            ->on('users.username','adtl.authorid');
+                    })
+                    ->where('qpr.compcode',session('compcode'))
+                    ->where('qpr.trantype',$trantype)
+                    ->where('qpr.recno',$recno)
+                    ->get();
+                    
+        SendEmailPR::dispatch($qpr);
     }
 
     public function update_supplier(Request $request){

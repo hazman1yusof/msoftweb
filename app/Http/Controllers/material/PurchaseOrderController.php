@@ -9,9 +9,7 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 use PDF;
-
-
-use App\Jobs\SendEmailPR;
+use App\Jobs\SendEmailPO;
 
 class PurchaseOrderController extends defaultController
 {   
@@ -432,7 +430,7 @@ class PurchaseOrderController extends defaultController
                 $data->email_to = 'hazman.yusof@gmail.com';
                 $data->whatsapp = '01123090948';
 
-                   // $this->sendemail($data);
+                $this->sendemail('VERIFIED',$purordhd_get->recno);
 
                 // }
 
@@ -897,13 +895,14 @@ class PurchaseOrderController extends defaultController
 
            // $this->sendemail($data);
 
+            $this->sendemail('APPROVED',$purordhd_get->recno);
            
             DB::commit();
         
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+            return response($e, 500);
         }
     }
 
@@ -991,7 +990,6 @@ class PurchaseOrderController extends defaultController
                     ]);
 
             }
-
            
             DB::commit();
         
@@ -1145,12 +1143,12 @@ class PurchaseOrderController extends defaultController
                 // ->where('unit', '=', session('unit'))
                 ->first();
 
-        $deldept_unit = DB::table('sysdb.department')
-                        ->where('compcode',session('compcode'))
-                        ->where('deptcode',$del_dept)
-                        ->first();
+        // $deldept_unit = DB::table('sysdb.department')
+        //                 ->where('compcode',session('compcode'))
+        //                 ->where('deptcode',$del_dept)
+        //                 ->first();
 
-        $deldept_unit = $deldept_unit->sector;
+        // $deldept_unit = $deldept_unit->sector;
 
         foreach ($pr_dt as $key => $value) {
             ///1. insert detail we get from existing purchase request
@@ -1161,10 +1159,10 @@ class PurchaseOrderController extends defaultController
                             ->leftJoin('material.product AS p', function($join){
                                 $join = $join->on("p.itemcode", '=', 's.itemcode');
                                 $join = $join->on("p.uomcode", '=', 's.uomcode');
-                                $join = $join->where("p.unit", '=', $deldept_unit);
+                                // $join = $join->where("p.unit", '=', $deldept_unit);
                                 $join = $join->where("p.compcode", '=', session('compcode'));
                             })
-                            ->where('s.unit','=',$deldept_unit)
+                            // ->where('s.unit','=',$deldept_unit)
                             ->where('s.compcode','=',session('compcode'))
                             ->where('s.year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
                             ->where('s.deptcode','=',$del_dept)
@@ -1346,16 +1344,47 @@ class PurchaseOrderController extends defaultController
         }
     }
 
-    function sendemail($data){
-        SendEmailPR::dispatch($data);
-        // ProcessPodcast::dispatch();
+    function sendemail($trantype,$recno){
+        // $trantype = 'SUPPORT';
+        // $recno = '64';
+        $qpo = DB::table('material.queuepo as qpo')
+                    ->select('qpo.trantype','adtl.authorid','pohd.recno','pohd.prdept','pohd.purordno','pohd.purdate','pohd.recstatus','pohd.totamount','pohd.adduser','users.email')
+                    ->join('material.authdtl as adtl', function($join){
+                        $join = $join
+                            ->where('adtl.compcode',session('compcode'))
+                            // ->where('adtl.authorid',session('username'))
+                            ->where('adtl.trantype','PO')
+                            ->where('adtl.cando','ACTIVE')
+                            ->on('adtl.prtype','qpo.prtype')
+                            ->on('adtl.recstatus','qpo.trantype')
+                            ->where(function ($query) {
+                                $query->on('adtl.deptcode','qpo.deptcode')
+                                      ->orWhere('adtl.deptcode', 'ALL');
+                            });
+                    })
+                    ->join('material.purordhd as pohd', function($join){
+                        $join = $join
+                            ->where('pohd.compcode',session('compcode'))
+                            ->on('pohd.recno','qpo.recno')
+                            ->on('pohd.recstatus','qpo.recstatus')
+                            ->where(function ($query) {
+                                $query
+                                    ->on('pohd.totamount','>=','adtl.minlimit')
+                                    ->on('pohd.totamount','<=', 'adtl.maxlimit');
+                            });;
+                    })
+                    ->join('sysdb.users as users', function($join){
+                        $join = $join
+                            ->where('users.compcode',session('compcode'))
+                            // ->where('users.email','HAZMAN.YUSOF@GMAIL.COM')
+                            ->on('users.username','adtl.authorid');
+                    })
+                    ->where('qpo.compcode',session('compcode'))
+                    ->where('qpo.trantype',$trantype)
+                    ->where('qpo.recno',$recno)
+                    ->get();
 
-        // $data_ = ['data' => $data];
-
-        // Mail::send('email.mail', $data_, function($message) use ($data) {
-        //     $message->from('me@gmail.com', 'medicsoft');
-        //     $message->to($data->email_to);
-        // });
+        SendEmailPO::dispatch($qpo);
     }
 
     function skip_authorization(Request $request, $deptcode, $idno){

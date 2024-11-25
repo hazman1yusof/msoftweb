@@ -230,10 +230,10 @@ class PurchaseOrderDetailController extends defaultController
                             ->leftJoin('material.product AS p', function($join) use ($deldept_unit){
                                 $join = $join->on("p.itemcode", '=', 's.itemcode');
                                 $join = $join->on("p.uomcode", '=', 's.uomcode');
-                                $join = $join->where("p.unit", '=', $deldept_unit);
+                                // $join = $join->where("p.unit", '=', $deldept_unit);
                                 $join = $join->where("p.compcode", '=', session('compcode'));
                             })
-                            ->where('s.unit','=',$deldept_unit)
+                            // ->where('s.unit','=',$deldept_unit)
                             ->where('s.compcode','=',session('compcode'))
                             ->where('s.year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
                             ->where('s.deptcode','=',$purordhd->deldept)
