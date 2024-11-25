@@ -3260,7 +3260,7 @@ $(document).ready(function () {
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
 					// $(obj.textfield).closest('td').next().find("input[type=text]").focus();

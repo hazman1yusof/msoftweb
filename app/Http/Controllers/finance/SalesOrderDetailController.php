@@ -125,8 +125,8 @@ class SalesOrderDetailController extends defaultController
         $table = DB::table('hisdb.chgmast as cm')
                         // ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                         ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','pt.generic','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
-                        ->where('cm.unit','=',session('unit'))
                         ->where('cm.compcode','=',session('compcode'))
+                        ->where('cm.unit', '=', session('unit'))
                         ->where('cm.recstatus','<>','DELETE');
                         // ->where(function ($query) {
                         //    $query->whereNotNull('st.idno')
@@ -172,18 +172,93 @@ class SalesOrderDetailController extends defaultController
 
         if(!empty($request->searchCol)){
             $searchCol_array = $request->searchCol;
+            // if($searchCol_array[0] == 'generic'){
+            //     $table = $table->whereRaw("MATCH (pt.generic) AGAINST ('".$this->clean($request->wholeword)."*' IN BOOLEAN MODE)");
+            // }else if($searchCol_array[0] == 'description'){
+            //     $table = $table->whereRaw("MATCH (cm.description) AGAINST ('".$this->clean($request->wholeword)."*' IN BOOLEAN MODE)");
+            // }else{
+            //     $table->Where('cm.'.$searchCol_array[$key],'like','%'.$request->wholeword.'%');
+            // }
+
+            // dd($this->fullTextWildcards($request->wholeword));
+            $wholeword = false;
             if($searchCol_array[0] == 'generic'){
-                $table->Where('pt.'.$searchCol_array[0],'like','%'.$request->wholeword.'%');
-            }else{
-                $table->Where('cm.'.$searchCol_array[0],'like','%'.$request->wholeword.'%');
+                $pt = DB::table('material.product')
+                            ->where('compcode', '=', session('compcode'))
+                            ->where('unit', '=', session('unit'))
+                            ->where('generic',$request->wholeword);
+                
+                if($pt->exists()){
+                    $table = $table->where('pt.generic',$request->wholeword);
+                    $wholeword = true;
+                }
+
+            }else if($searchCol_array[0] == 'description'){
+                $pt = DB::table('hisdb.chgmast')
+                            ->where('compcode', '=', session('compcode'))
+                            ->where('unit', '=', session('unit'))
+                            ->where('description',$request->wholeword);
+                
+                if($pt->exists()){
+                    $table = $table->where('cm.description',$request->wholeword);
+                    $wholeword = true;
+                }
+            }
+
+            if(!$wholeword){
+                $count = array_count_values($searchCol_array);
+
+                foreach ($count as $key => $value) {
+                    $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                    $table = $table->Where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                        foreach ($searchCol_array as $key => $value) {
+                            $found = array_search($key,$occur_ar);
+                            if($found !== false && trim($request->searchVal[$key]) != '%%'){//trim whitespace
+                                $search_ = $this->begins_search_if(['itemcode','chgcode'],$searchCol_array[$key],$request->searchVal[$key]);
+                                if($searchCol_array[0] == 'generic'){
+                                    $table->Where('pt.'.$searchCol_array[$key],'like',$search_);
+                                }else{
+                                    $table->Where('cm.'.$searchCol_array[$key],'like',$search_);
+                                }
+                            }
+                        }
+                    });
+                }
             }
         }
 
         if(!empty($request->searchCol2)){
-            $table = $table->where(function($table) use ($request){
-                $table->orwhere('cm.chgcode','like', '%'.$request->wholeword.'%');
-                $table->orwhere('cm.description','like', '%'.$request->wholeword.'%');
-            });
+            $searchCol_array = $request->searchCol2;
+            
+            $wholeword = false;
+
+            $pt = DB::table('hisdb.chgmast')
+                        ->where('compcode', '=', session('compcode'))
+                        ->where('unit', '=', session('unit'))
+                        ->where('chgcode',$request->wholeword);
+            
+            if($pt->exists()){
+                $table = $table->where('cm.chgcode',$request->wholeword);
+                $wholeword = true;
+            }
+
+            $pt = DB::table('hisdb.chgmast')
+                        ->where('compcode', '=', session('compcode'))
+                        ->where('unit', '=', session('unit'))
+                        ->where('description',$request->wholeword);
+            
+            if($pt->exists()){
+                $table = $table->where('cm.description',$request->wholeword);
+                $wholeword = true;
+            }
+
+            if(!$wholeword){
+                $table = $table->where(function($table) use ($request){
+                    $table->orwhere('cm.chgcode','like', '%'.$request->wholeword.'%');
+                    $table->orwhere('cm.description','like', '%'.$request->wholeword.'%');
+                });
+            }
         }
 
         // if(!empty($request->searchCol)){

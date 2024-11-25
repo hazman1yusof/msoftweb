@@ -2581,7 +2581,7 @@ $(document).ready(function () {
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
 				}

@@ -161,101 +161,6 @@ abstract class defaultController extends Controller{
             }
         }
 
-        /////////searching/////////
-        if(!empty($request->searchCol) && !empty($request->searchVal)){
-            if(!empty($request->fixPost)){
-                $searchCol_array = $this->fixPost3($request->searchCol);
-            }else{
-                $searchCol_array = $request->searchCol;
-            }
-
-            $table->Where($searchCol_array[0],'like','%'.$request->wholeword.'%');
-
-            // $count = array_count_values($searchCol_array);
-
-            // foreach ($count as $key => $value) {
-            //     $occur_ar = $this->index_of_occurance($key,$searchCol_array);
-
-            //     $table = $table->orWhere(function ($table) use ($request,$searchCol_array,$occur_ar) {
-            //         foreach ($searchCol_array as $key => $value) {
-            //             $found = array_search($key,$occur_ar);
-            //             if($found !== false && trim($request->searchVal[$key]) != '%%'){//trim whitespace
-            //                 $search_ = $this->begins_search_if(['itemcode','chgcode'],$searchCol_array[$key],$request->searchVal[$key]);
-            //                 $table->Where($searchCol_array[$key],'like',$search_);
-            //             }
-            //         }
-            //     });
-            // }
-            
-        }
-
-        // if(!empty($request->searchCol)){
-        //     if(!empty($request->fixPost)){
-        //         $searchCol_array = $this->fixPost3($request->searchCol);
-        //     }else{
-        //         $searchCol_array = $request->searchCol;
-        //     }
-
-        //     foreach ($searchCol_array as $key => $value) {
-        //         $table = $table->orWhere($searchCol_array[$key],'like',$request->searchVal[$key]);
-        //     }
-        // }
-
-        /////////searching 2///////// ni search utk ordialog
-        if(!empty($request->searchCol2)){
-
-            if(!empty($request->fixPost)){
-                $searchCol_array = $this->fixPost3($request->searchCol2);
-            }else{
-                $searchCol_array = $request->searchCol2;
-            }
-
-            // $searchCol_array_1 = $searchCol_array_2 = $searchVal_array_1 = $searchVal_array_2 = [];
-
-            // foreach ($searchCol_array as $key => $value) {
-            //     if(($key+1)%2){
-            //         array_push($searchCol_array_1, $searchCol_array[$key]);
-            //         array_push($searchVal_array_1, $request->searchVal2[$key]);
-            //     }else{
-            //         array_push($searchCol_array_2, $searchCol_array[$key]);
-            //         array_push($searchVal_array_2, $request->searchVal2[$key]);
-            //     }
-            // }
-            
-            $table = $table->where(function($table) use ($searchCol_array, $request){
-                foreach ($searchCol_array as $key => $value) {
-                    if($key>1) break;
-                    $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
-                }
-            });
-
-            if(count($searchCol_array)>2){
-                $table = $table->where(function($table) use ($searchCol_array, $request){
-                    foreach ($searchCol_array as $key => $value) {
-                        if($key<=1) continue;
-                        $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
-                    }
-                });
-            }
-            
-        }
-
-        // if(!empty($request->searchCol2)){
-
-        //     $table = $table->where(function($query) use ($request){
-
-        //         if(!empty($request->fixPost)){
-        //             $searchCol_array = $this->fixPost3($request->searchCol2);
-        //         }else{
-        //             $searchCol_array = $request->searchCol2;
-        //         }
-
-        //         foreach ($searchCol_array as $key => $value) {
-        //             $query = $query->orWhere($searchCol_array[$key],'like',$request->searchVal2[$key]);
-        //         }
-        //     });
-        // }
-
         //////////where////////// 
 
         // filterCol:['trandate','trandate']
@@ -307,7 +212,145 @@ abstract class defaultController extends Controller{
             foreach ($request->whereNotInCol as $key => $value) {
                 $table = $table->whereNotIn($value,$request->whereNotInVal[$key]);
             }
+        }  
+
+        /////////searching/////////
+        if(!empty($request->searchCol) && !empty($request->searchVal)){
+            if(!empty($request->fixPost)){
+                $searchCol_array = $this->fixPost3($request->searchCol);
+            }else{
+                $searchCol_array = $request->searchCol;
+            }
+
+            $wholeword = false;
+            if(!empty($searchCol_array[0])){
+                $clone = clone $table;
+                $clone = $clone->where($searchCol_array[0],$request->wholeword);
+                // dd($this->getQueries($clone));
+                if($clone->exists()){
+                    $table = $table->where($searchCol_array[0],$request->wholeword);
+                    $wholeword = true;
+                }
+            }
+
+            if(!$wholeword && !empty($searchCol_array[1])){
+                $clone = clone $table;
+                $clone = $clone->where($searchCol_array[1],$request->wholeword);
+                // dd($this->getQueries($clone));
+                if($clone->exists()){
+                    $table = $table->where($searchCol_array[1],$request->wholeword);
+                    $wholeword = true;
+                }
+            }
+
+            // $table->Where($searchCol_array[0],'like','%'.$request->wholeword.'%');
+
+            $count = array_count_values($searchCol_array);
+
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false && trim($request->searchVal[$key]) != '%%'){//trim whitespace
+                            $search_ = $this->begins_search_if(['itemcode','chgcode'],$searchCol_array[$key],$request->searchVal[$key]);
+                            $table->Where($searchCol_array[$key],'like',$search_);
+                        }
+                    }
+                });
+            }
+            
         }
+
+        // if(!empty($request->searchCol)){
+        //     if(!empty($request->fixPost)){
+        //         $searchCol_array = $this->fixPost3($request->searchCol);
+        //     }else{
+        //         $searchCol_array = $request->searchCol;
+        //     }
+
+        //     foreach ($searchCol_array as $key => $value) {
+        //         $table = $table->orWhere($searchCol_array[$key],'like',$request->searchVal[$key]);
+        //     }
+        // }
+
+        /////////searching 2///////// ni search utk ordialog
+        if(!empty($request->searchCol2)){
+
+            if(!empty($request->fixPost)){
+                $searchCol_array = $this->fixPost3($request->searchCol2);
+            }else{
+                $searchCol_array = $request->searchCol2;
+            }
+
+            $wholeword = false;
+            if(!empty($searchCol_array[0])){
+                $clone = clone $table;
+                $clone = $clone->where($searchCol_array[0],$request->wholeword);
+                // dd($this->getQueries($clone));
+                if($clone->exists()){
+                    $table = $table->where($searchCol_array[0],$request->wholeword);
+                    $wholeword = true;
+                }
+            }
+
+            if(!$wholeword && !empty($searchCol_array[1])){
+                $clone = clone $table;
+                $clone = $clone->where($searchCol_array[1],$request->wholeword);
+                // dd($this->getQueries($clone));
+                if($clone->exists()){
+                    $table = $table->where($searchCol_array[1],$request->wholeword);
+                    $wholeword = true;
+                }
+            }
+
+            // $searchCol_array_1 = $searchCol_array_2 = $searchVal_array_1 = $searchVal_array_2 = [];
+
+            // foreach ($searchCol_array as $key => $value) {
+            //     if(($key+1)%2){
+            //         array_push($searchCol_array_1, $searchCol_array[$key]);
+            //         array_push($searchVal_array_1, $request->searchVal2[$key]);
+            //     }else{
+            //         array_push($searchCol_array_2, $searchCol_array[$key]);
+            //         array_push($searchVal_array_2, $request->searchVal2[$key]);
+            //     }
+            // }
+            if(!$wholeword){
+                $table = $table->where(function($table) use ($searchCol_array, $request){
+                    foreach ($searchCol_array as $key => $value) {
+                        if($key>1) break;
+                        $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    }
+                });
+
+                if(count($searchCol_array)>2){
+                    $table = $table->where(function($table) use ($searchCol_array, $request){
+                        foreach ($searchCol_array as $key => $value) {
+                            if($key<=1) continue;
+                            $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                        }
+                    });
+                }
+            }
+            
+        }
+
+        // if(!empty($request->searchCol2)){
+
+        //     $table = $table->where(function($query) use ($request){
+
+        //         if(!empty($request->fixPost)){
+        //             $searchCol_array = $this->fixPost3($request->searchCol2);
+        //         }else{
+        //             $searchCol_array = $request->searchCol2;
+        //         }
+
+        //         foreach ($searchCol_array as $key => $value) {
+        //             $query = $query->orWhere($searchCol_array[$key],'like',$request->searchVal2[$key]);
+        //         }
+        //     });
+        // }
 
         //////////ordering///////// ['expdate asc','idno desc']
         if(!empty($request->sortby)){
@@ -872,6 +915,14 @@ abstract class defaultController extends Controller{
         }
 
         return $search_val;
+    }
+
+    public function clean($string) {
+        if(empty($string)){
+            return null;
+        }
+
+        return preg_replace('/[^A-Za-z0-9\s]/', '', $string); // Removes special chars.
     }
 
     public function convertNumberToWordBM($num = false)
