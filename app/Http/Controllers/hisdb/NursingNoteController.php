@@ -170,7 +170,6 @@ class NursingNoteController extends defaultController
             
             case 'Bladder_del':
                     return $this->del_Bladder($request);
-    
             
             case 'get_table_progress':
                 return $this->get_table_progress($request);
@@ -2185,7 +2184,7 @@ class NursingNoteController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);
-        
+
         $responce = new stdClass();
         
         if($episode_obj->exists()){
@@ -2193,7 +2192,7 @@ class NursingNoteController extends defaultController
             // dd($episode_obj);
             $responce->episode = $episode_obj;
         }
-        
+
         return json_encode($responce);
         
     }
