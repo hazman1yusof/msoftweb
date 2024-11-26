@@ -17,13 +17,13 @@
         
         var dbacthdr = {
             @foreach($dbacthdr as $key => $val)
-                '{{$key}}' : '{{$val}}',
+                '{{$key}}' : `{{$val}}`,
             @endforeach
         };
         
         var title = {
             @foreach($company as $key => $val)
-                '{{$key}}' : '{{$val}}',
+                '{{$key}}' : `{{$val}}`,
             @endforeach
         };
         
@@ -164,7 +164,7 @@
                             widths: ['*'], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'REFERENCE NO : {{$dbacthdr->reference}}' },
+                                    { text: `REFERENCE NO : {{$dbacthdr->reference}}` },
                                 ],
                                 [
                                     { text: `REMARK : {{$dbacthdr->remark}}` },
