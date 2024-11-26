@@ -1295,6 +1295,14 @@ Route::post('/wardpanel/form','hisdb\WardPanelController@form');
 Route::get('/nursingActionPlan','hisdb\NursingActionPlanController@show');
 Route::get('/nursingActionPlan/table','hisdb\NursingActionPlanController@table');
 Route::post('/nursingActionPlan/form','hisdb\NursingActionPlanController@form');
+Route::get('/nursingActionPlan/treatment_chart','hisdb\NursingActionPlanController@treatment_chart');
+Route::get('/nursingActionPlan/observation_chart','hisdb\NursingActionPlanController@observation_chart');
+Route::get('/nursingActionPlan/feeding_chart','hisdb\NursingActionPlanController@feeding_chart');
+Route::get('/nursingActionPlan/imgDiag_chart','hisdb\NursingActionPlanController@imgDiag_chart');
+Route::get('/nursingActionPlan/bloodTrans_chart','hisdb\NursingActionPlanController@bloodTrans_chart');
+Route::get('/nursingActionPlan/exams_chart','hisdb\NursingActionPlanController@exams_chart');
+Route::get('/nursingActionPlan/procedure_chart','hisdb\NursingActionPlanController@procedure_chart');
+
 
 //// Nursing Note page ///
 Route::get('/nursingnote','hisdb\NursingNoteController@show');
@@ -1304,6 +1312,7 @@ Route::get('/nursingnote/fitchart_chart','hisdb\NursingNoteController@fitchart_c
 Route::get('/nursingnote/circulation_chart','hisdb\NursingNoteController@circulation_chart');
 Route::get('/nursingnote/slidingScale_chart','hisdb\NursingNoteController@slidingScale_chart');
 Route::get('/nursingnote/othersChart_chart','hisdb\NursingNoteController@othersChart_chart');
+// Route::get('/nursingnote/bladder_chart','hisdb\NursingNoteController@bladder_chart');
 
 //// Doctor Note page ///
 Route::get('/doctornote','hisdb\DoctorNoteController@show');
