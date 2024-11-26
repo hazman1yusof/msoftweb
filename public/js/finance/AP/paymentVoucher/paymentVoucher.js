@@ -1079,6 +1079,12 @@ $(document).ready(function () {
 		let lineno_ = cbselect.lineno_;
 		let recstatus = cbselect.recstatus;
 
+		if($('#recstatus_use').val() == 'CANCEL' && ["Banana", "Orange", "Apple", "Mango"].includes(rowObject.apacthdr_recstatus){
+			if(.includes("Mango")$('#recstatus_use').val() == 'VERIFIED' && rowObject['apacthdr_trantype'] == 'PV'){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' onclick='click_selection(checkbox_selection_"+rowObject['apacthdr_idno']+");'>";
+			}
+		}
+
 		//pv skip support
 		if($('#recstatus_use').val() == 'SUPPORT' && rowObject['apacthdr_trantype'] == 'PV'){
 			return ' ';

@@ -60,7 +60,7 @@ class SendEmailPR implements ShouldQueue
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
 
-            if($email == 'HAZMAN.YUSOF@GMAIL.COM'){
+            if(!empty($email)){
                 Mail::to($email)->send(new sendmaildefault($subject,$type,$recno,$curr_stats,$reqdept,$prepredon));
             }
         }

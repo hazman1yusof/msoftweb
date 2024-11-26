@@ -127,6 +127,10 @@ div#fail_msg{
 								<option value="CANCELLED">CANCELLED</option>
 							@elseif (Request::get('scope') == 'CANCEL')
 								<option value="OPEN" selected>OPEN</option>
+					      <option value="CANCELLED">CANCELLED</option>
+					      <option value="PREPARED">PREPARED</option>
+					      <option value="SUPPORT">SUPPORT</option>
+					      <option value="VERIFIED">VERIFIED</option>
 								<option value="APPROVED">APPROVED</option>
 							@endif
 					    </select>
