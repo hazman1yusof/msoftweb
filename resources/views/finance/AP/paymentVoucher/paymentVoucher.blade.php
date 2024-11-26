@@ -127,11 +127,9 @@ div#fail_msg{
 								<option value="CANCELLED">CANCELLED</option>
 							@elseif (Request::get('scope') == 'CANCEL')
 								<option value="OPEN" selected>OPEN</option>
-					      <option value="CANCELLED">CANCELLED</option>
 					      <option value="PREPARED">PREPARED</option>
 					      <option value="SUPPORT">SUPPORT</option>
 					      <option value="VERIFIED">VERIFIED</option>
-								<option value="APPROVED">APPROVED</option>
 							@endif
 					    </select>
 	            </div>
@@ -579,7 +577,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js?V=1.1"></script>
+	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js?V=1.2"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 

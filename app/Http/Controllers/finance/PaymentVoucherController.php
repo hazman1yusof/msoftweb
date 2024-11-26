@@ -1167,10 +1167,10 @@ class PaymentVoucherController extends defaultController
                     ->where('idno','=', $idno_obj['idno'])
                     ->first();
 
-                if($apacthdr->recstatus == 'OPEN'){
+                if(in_array($apacthdr->recstatus, ['OPEN','PREPARED','SUPPORT','VERIFIED'])){
                     $apalloc = DB::table('finance.apalloc')
                                 ->where('compcode','=',session('compcode'))
-                                ->where('unit','=',session('unit'))
+                                // ->where('unit','=',session('unit'))
                                 ->where('docsource','=',$apacthdr->source)
                                 ->where('doctrantype','=',$apacthdr->trantype)
                                 ->where('docauditno','=',$apacthdr->auditno)
@@ -1181,7 +1181,7 @@ class PaymentVoucherController extends defaultController
                         
                         $refapacthdr = DB::table('finance.apacthdr')
                                         ->where('compcode','=',session('compcode'))
-                                        ->where('unit','=',session('unit'))
+                                        // ->where('unit','=',session('unit'))
                                         ->where('source','=',$value['refsource'])
                                         ->where('trantype','=',$value['reftrantype'])
                                         ->where('auditno','=',$value['refauditno']);
@@ -1214,7 +1214,7 @@ class PaymentVoucherController extends defaultController
 
                     $apalloc = DB::table('finance.apalloc')
                                 ->where('compcode','=',session('compcode'))
-                                ->where('unit','=',session('unit'))
+                                // ->where('unit','=',session('unit'))
                                 ->where('docsource','=',$apacthdr->source)
                                 ->where('doctrantype','=',$apacthdr->trantype)
                                 ->where('docauditno','=',$apacthdr->auditno)
@@ -1224,7 +1224,7 @@ class PaymentVoucherController extends defaultController
                         
                         $refapacthdr = DB::table('finance.apacthdr')
                                         ->where('compcode','=',session('compcode'))
-                                        ->where('unit','=',session('unit'))
+                                        // ->where('unit','=',session('unit'))
                                         ->where('source','=',$value['refsource'])
                                         ->where('trantype','=',$value['reftrantype'])
                                         ->where('auditno','=',$value['refauditno']);
@@ -1246,7 +1246,7 @@ class PaymentVoucherController extends defaultController
 
                     DB::table('finance.apalloc')
                         ->where('compcode','=',session('compcode'))
-                        ->where('unit','=',session('unit'))
+                        // ->where('unit','=',session('unit'))
                         ->where('docsource','=',$apacthdr->source)
                         ->where('doctrantype','=',$apacthdr->trantype)
                         ->where('docauditno','=',$apacthdr->auditno)
