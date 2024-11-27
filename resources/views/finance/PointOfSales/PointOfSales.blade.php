@@ -32,7 +32,7 @@ i.fa {
 	white-space: pre-wrap !important;
 }
 
-div#fail_msg,div#fail_msg_r{
+div#fail_msg,div#fail_msg_r,div#fail_msg_r2{
   padding-left: 40px;
   padding-bottom: 10px;
   color: darkred;
@@ -588,7 +588,7 @@ div#fail_msg,div#fail_msg_r{
 			<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 				<form class='form-horizontal' style='width:99%' id='formdata'>
 					{{ csrf_field() }}
-					<input id="db_idno" name="db_idno" type="text">
+					<input id="db_idno" name="db_idno" type="hidden">
 					<input id="db_source" name="db_source" type="hidden">
 					<input id="db_trantype" name="db_trantype" type="hidden">
 					<input id="pricebilltype" name="pricebilltype" type="hidden">
@@ -813,6 +813,12 @@ div#fail_msg,div#fail_msg_r{
 					<div class="panel-heading">
 						Choose type of exchange
 						<span>
+							<a class='pull-right pointer text-primary' id='pdfgen3' href="" target="_blank"
+								style="position: absolute;
+								    top: 13px;
+								    right: 120px;
+								    color: black;" 
+							><span class='fa fa-print'></span> Print POS</a>
 							<button class="btn btn-success btn-sm" id="submit_receipt2" type="button" style="
 								position: absolute;
 						    right: 30px;
@@ -1107,7 +1113,7 @@ div#fail_msg,div#fail_msg_r{
 		</script>
 
 		<script src="js/myjs/till_part.js"></script>
-		<script src="js/finance/PointOfSales/PointOfSales.js?v=1.3"></script>
+		<script src="js/finance/PointOfSales/PointOfSales.js?v=1.4"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

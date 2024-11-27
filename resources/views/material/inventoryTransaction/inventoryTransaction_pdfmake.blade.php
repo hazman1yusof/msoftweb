@@ -252,17 +252,16 @@
 
                         body: [
                             [
-								{text: 'Prepared By & Date: \n\n\n\n'}, 
-                                {text: 'Received By & Date:\n\n\n\n'}, 
+								{text: 'Prepared By & Date:\n',bold: true}, 
+                                {text: 'Received By & Date:\n',bold: true}, 
 							],
                             [
-                                {text: '___________________'},
-								{text: '___________________'}, 
+                                {text: "{!!str_replace('`', '', $ivtmphd->name)!!}"},
+								{text: ''}, 
 							],
                             [
-								{text: 'Name:', fontSize: 8},
-								{text: 'Name:', fontSize: 8},
-								
+                                {text: "{!!str_replace('`', '', $ivtmphd->designation)!!}"},
+								{text: ''}, 
 							],
                         ]
                     },

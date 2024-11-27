@@ -308,6 +308,7 @@ $(document).ready(function () {
 
 			$("#pdfgen1").attr('href','./PointOfSales/showpdf?idno='+selrowData("#jqGrid").db_idno);
 			$("#pdfgen2").attr('href','./PointOfSales/showpdf?idno='+selrowData("#jqGrid").db_idno);
+			$("#pdfgen3").attr('href','./PointOfSales/showpdf?idno='+selrowData("#jqGrid").db_idno);
 			if_cancel_hide();
 			$('#receipt_panel').collapse('hide');
 			if(selrowData("#jqGrid").db_outamount == 0){
@@ -646,6 +647,9 @@ $(document).ready(function () {
 				oper = 'edit';//sekali dia add terus jadi edit lepas tu
 				$('#db_auditno').val(data.auditno);
 				$('#db_idno').val(data.idno);//just save idno for edit later
+				$("#pdfgen1").attr('href','./PointOfSales/showpdf?idno='+data.idno);
+				$("#pdfgen2").attr('href','./PointOfSales/showpdf?idno='+data.idno);
+				$("#pdfgen3").attr('href','./PointOfSales/showpdf?idno='+data.idno);
 				$('#db_amount').val(data.totalAmount);
 				
 				urlParam2.source = 'PB';
@@ -3304,7 +3308,7 @@ function receipt_class2(){
 
 		$.post( './PointOfSales/form', serializedForm+'&'+$.param(obj)  , function( data ) {
 			// refreshGrid('#jqGrid', urlParam);
-		}).fail(function(data) {
+		},'json').fail(function(data) {
 			$('#submit_receipt2').prop('disabled',false);
 			myfail_msg_r2.add_fail({
 				id:'response',
@@ -3315,7 +3319,10 @@ function receipt_class2(){
 		}).success(function(data){
 			$('#submit_receipt2').prop('disabled',false);
 			myfail_msg_r2.clear_fail();
-			$("#dialogForm").dialog('close');
+			$("input[name='dbacthdr_outamount']").val(data.outamount);
+			$("input[name='dbacthdr_amount']").val(data.outamount);
+			// $("#dialog_payment").dialog('close');
+			// $("#dialogForm").dialog('close');
 			// $("#refresh_jqGrid").click();
 		});
 	});

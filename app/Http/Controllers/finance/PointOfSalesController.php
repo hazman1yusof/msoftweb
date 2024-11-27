@@ -1527,10 +1527,22 @@ class PointOfSalesController extends defaultController
                 throw new \Exception("Debtorcode doesnt exists, error");
             }
             $payercode = $payercode->first();
+            if($payercode->outamount == 0){
+                throw new \Exception("Outstanding already zero");
+            }
 
             $dbacthdr_amount = $request->dbacthdr_amount;
             $amount_paid = floatval($dbacthdr_amount);
             $amount_bal = floatval($payercode->outamount) - floatval($dbacthdr_amount);
+
+            if($request->tabform == '#f_tab-cash' && $amount_bal < 0){
+                $amount_paid = floatval($payercode->outamount);
+                $amount_bal = 0;
+            }
+
+            if($amount_bal < 0){
+                throw new \Exception("Payment cant Exceed outstanding");
+            }
 
             $array_insert = [
                 'compcode' => session('compcode'),
@@ -1557,7 +1569,7 @@ class PointOfSalesController extends defaultController
                 'payername' => $payercode->name,
                 'paytype' => $request->tabform,
                 'paymode' => $paymode_,
-                'amount' => $dbacthdr_amount,  
+                'amount' => $amount_paid,  
                 'outamount' => 0,  
                 'remark' => 'Point of Sales',  
                 'tillcode' => $tillcode,  
@@ -1672,6 +1684,10 @@ class PointOfSalesController extends defaultController
                 ->update([
                     'outamount' => $amount_bal
                 ]);
+
+            $responce = new stdClass();
+            $responce->outamount = round($amount_bal,2);
+            echo json_encode($responce);
 
             DB::commit();
         } catch (\Exception $e) {
