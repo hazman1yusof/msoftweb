@@ -122,9 +122,33 @@ $(document).ready(function (){
     //////////////////////////////////////header ends//////////////////////////////////////
     
     ////////////////////////////////////print button starts////////////////////////////////////
-    // $("#Treatment_chart").click(function (){
-    //     window.open('./nursingActionPlan/Treatment_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
-    // });
+    $("#treatment_chart").click(function (){
+        window.open('./nursingActionPlan/treatment_chart?mrn='+$('#mrn_nursActionPlan').val()+'&episno='+$("#episno_nursActionPlan").val()+'&age='+$("#age_nursActionPlan").val(), '_blank');
+    });
+
+    $("#observation_chart").click(function (){
+        window.open('./nursingActionPlan/observation_chart?mrn='+$('#mrn_nursActionPlan').val()+'&episno='+$("#episno_nursActionPlan").val()+'&age='+$("#age_nursActionPlan").val(), '_blank');
+    });
+
+    $("#feeding_chart").click(function (){
+        window.open('./nursingActionPlan/feeding_chart?mrn='+$('#mrn_nursActionPlan').val()+'&episno='+$("#episno_nursActionPlan").val()+'&age='+$("#age_nursActionPlan").val(), '_blank');
+    });
+
+    $("#imgDiag_chart").click(function (){
+        window.open('./nursingActionPlan/imgDiag_chart?mrn='+$('#mrn_nursActionPlan').val()+'&episno='+$("#episno_nursActionPlan").val()+'&age='+$("#age_nursActionPlan").val(), '_blank');
+    });
+
+    $("#bloodTrans_chart").click(function (){
+        window.open('./nursingActionPlan/bloodTrans_chart?mrn='+$('#mrn_nursActionPlan').val()+'&episno='+$("#episno_nursActionPlan").val()+'&age='+$("#age_nursActionPlan").val(), '_blank');
+    });
+
+    $("#exams_chart").click(function (){
+        window.open('./nursingActionPlan/exams_chart?mrn='+$('#mrn_nursActionPlan').val()+'&episno='+$("#episno_nursActionPlan").val()+'&age='+$("#age_nursActionPlan").val(), '_blank');
+    });
+
+    $("#procedure_chart").click(function (){
+        window.open('./nursingActionPlan/procedure_chart?mrn='+$('#mrn_nursActionPlan').val()+'&episno='+$("#episno_nursActionPlan").val()+'&age='+$("#age_nursActionPlan").val(), '_blank');
+    });
     /////////////////////////////////////print button ends/////////////////////////////////////
     
     // to format number input to two decimal places (0.00)
@@ -147,16 +171,19 @@ $(document).ready(function (){
 		},'json').fail(function (data){
 			alert('there is an error');
 		}).success(function (data){
-			if(!$.isEmptyObject(data.header)){
+			if(!$.isEmptyObject(data)){
+                autoinsert_rowdata("#formHeader",data.episode);
 				autoinsert_rowdata("#formHeader",data.header);
 				button_state_header('edit');
 				textarea_init_nursingActionPlan();
 			}else{
+                autoinsert_rowdata("#formHeader",data.episode);
 				autoinsert_rowdata("#formHeader",data.header);
 				button_state_header('add');
 				textarea_init_nursingActionPlan();
 			}
 		});
+        // populate_header_getdata();
         SmoothScrollTo("#jqGridNursActionPlan_panel", 500);
         let curtype = $(this).data('curtype');
         $('#jqGridNursActionPlan_panel_tabs.nav-tabs a#'+curtype).tab('show');
@@ -407,7 +434,7 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             $("#jqGridPagerDelete_Treatment,#jqGridPagerRefresh_Treatment").hide();
             
-            $("#jqGridTreatment textarea[name='treatment']").keydown(function (e){ // when click tab at last column in header, auto save
+            $("#jqGridTreatment input[name='enddate']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridTreatment_ilsave').click();
                 // addmore_jqgrid2.state = true;
@@ -455,7 +482,7 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             $("#jqGridPagerDelete_Treatment,#jqGridPagerRefresh_Treatment").hide();
             
-            $("#jqGridTreatment textarea[name='treatment']").keydown(function (e){ // when click tab at last column in header, auto save
+            $("#jqGridTreatment input[name='enddate']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridTreatment_ilsave').click();
                 // addmore_jqgrid2.state = true;
@@ -660,7 +687,7 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             $("#jqGridPagerDelete_Observation,#jqGridPagerRefresh_Observation").hide();
             
-            $("#jqGridObservation input[name='observation']").keydown(function (e){ // when click tab at last column in header, auto save
+            $("#jqGridObservation input[name='enddate']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridObservation_ilsave').click();
                 // addmore_jqgrid3.state = true;
@@ -708,7 +735,7 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             $("#jqGridPagerDelete_Observation,#jqGridPagerRefresh_Observation").hide();
             
-            $("#jqGridObservation input[name='observation']").keydown(function (e){ // when click tab at last column in header, auto save
+            $("#jqGridObservation input[name='enddate']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridObservation_ilsave').click();
                 // addmore_jqgrid3.state = true;
@@ -914,7 +941,7 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             $("#jqGridPagerDelete_Feeding,#jqGridPagerRefresh_Feeding").hide();
             
-            $("#jqGridFeeding textarea[name='feeding']").keydown(function (e){ // when click tab at last column in header, auto save
+            $("#jqGridFeeding input[name='enddate']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridFeeding_ilsave').click();
                 // addmore_jqgrid4.state = true;
@@ -962,7 +989,7 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             $("#jqGridPagerDelete_Feeding,#jqGridPagerRefresh_Feeding").hide();
             
-            $("#jqGridFeeding textarea[name='feeding']").keydown(function (e){ // when click tab at last column in header, auto save
+            $("#jqGridFeeding input[name='enddate']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridFeeding_ilsave').click();
                 // addmore_jqgrid4.state = true;
@@ -1168,7 +1195,7 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             $("#jqGridPagerDelete_ImgDiag,#jqGridPagerRefresh_ImgDiag").hide();
             
-            $("#jqGridImgDiag textarea[name='imgdiag']").keydown(function (e){ // when click tab at last column in header, auto save
+            $("#jqGridImgDiag input[name='dateline']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridImgDiag_ilsave').click();
                 // addmore_jqgrid5.state = true;
@@ -1216,7 +1243,7 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             $("#jqGridPagerDelete_ImgDiag,#jqGridPagerRefresh_ImgDiag").hide();
             
-            $("#jqGridImgDiag textarea[name='imgdiag']").keydown(function (e){ // when click tab at last column in header, auto save
+            $("#jqGridImgDiag input[name='dateline']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridImgDiag_ilsave').click();
                 // addmore_jqgrid5.state = true;
@@ -1656,7 +1683,7 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             $("#jqGridPagerDelete_Exams,#jqGridPagerRefresh_Exams").hide();
             
-            $("#jqGridExams textarea[name='exam']").keydown(function (e){ // when click tab at last column in header, auto save
+            $("#jqGridExams input[name='dateline']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridExams_ilsave').click();
                 // addmore_jqgrid7.state = true;
@@ -1704,7 +1731,7 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             $("#jqGridPagerDelete_Exams,#jqGridPagerRefresh_Exams").hide();
             
-            $("#jqGridExams textarea[name='Exams']").keydown(function (e){ // when click tab at last column in header, auto save
+            $("#jqGridExams input[name='dateline']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridExams_ilsave').click();
                 // addmore_jqgrid7.state = true;
@@ -2142,6 +2169,7 @@ function populate_header_getdata(){
         alert('there is an error');
     }).success(function (data){
         if(!$.isEmptyObject(data)){
+            autoinsert_rowdata("#formHeader",data.episode);
             autoinsert_rowdata("#formHeader",data.header);
             
             button_state_header('edit');

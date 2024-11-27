@@ -42,18 +42,15 @@
                             <button type="button" class="btn btn-default" id="cancel_header">
                                 <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                             </button> 
-                            <!--<button type="button" class="btn btn-default" id="fitchart_chart">
-                                <span class="fa fa-print fa-lg"></span> Chart 
-                            </button>-->
                         </div>
                     </div>
 
                     <div class="panel-body" style="padding-right: 0px;">
                         <form class='form-horizontal' style='width: 99%;' id='formHeader'>
                                 <div class="form-group">
-                                    <label class="col-md-1 control-label" for="dateofadm">Date of Admission</label>
+                                    <label class="col-md-1 control-label" for="reg_date">Date of Admission</label>
                                     <div class="col-md-2">
-                                        <input id="dateofadm" name="dateofadm" type="date" class="form-control input-sm">
+                                        <input id="reg_date" name="reg_date" type="date" class="form-control input-sm" rdonly>
                                     </div>
                                     
                                     <label class="col-md-1 control-label" for="operation">Operation</label>
@@ -99,14 +96,14 @@
                                 <div class="panel panel-info">
                                     <div class="panel-heading text-center" style="height: 40px;">
                                         <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-                                            id="btn_grp_edit_treatment"
+                                            id="btn_grp_edit_treatments"
                                             style="position: absolute;
                                                     padding: 0 0 0 0;
                                                     right: 40px;
                                                     top: 5px;">
-                                            <!--<button type="button" class="btn btn-default" id="treatment_chart">
+                                            <button type="button" class="btn btn-default" id="treatment_chart">
                                                 <span class="fa fa-print fa-lg"></span> Chart 
-                                            </button>-->
+                                            </button>
                                         </div>
                                     </div>
                                                                     
@@ -139,9 +136,9 @@
                                                     padding: 0 0 0 0;
                                                     right: 40px;
                                                     top: 5px;">
-                                            <!--<button type="button" class="btn btn-default" id="treatment_chart">
+                                            <button type="button" class="btn btn-default" id="observation_chart">
                                                 <span class="fa fa-print fa-lg"></span> Chart 
-                                            </button>-->
+                                            </button>
                                         </div>
                                     </div>
                                                                     
@@ -174,9 +171,9 @@
                                                     padding: 0 0 0 0;
                                                     right: 40px;
                                                     top: 5px;">
-                                            <!--<button type="button" class="btn btn-default" id="treatment_chart">
+                                            <button type="button" class="btn btn-default" id="feeding_chart">
                                                 <span class="fa fa-print fa-lg"></span> Chart 
-                                            </button>-->
+                                            </button>
                                         </div>
                                     </div>
                                                                     
@@ -209,9 +206,9 @@
                                                     padding: 0 0 0 0;
                                                     right: 40px;
                                                     top: 5px;">
-                                            <!--<button type="button" class="btn btn-default" id="treatment_chart">
+                                            <button type="button" class="btn btn-default" id="imgDiag_chart">
                                                 <span class="fa fa-print fa-lg"></span> Chart 
-                                            </button>-->
+                                            </button>
                                         </div>
                                     </div>
                                                                     
@@ -244,9 +241,9 @@
                                                     padding: 0 0 0 0;
                                                     right: 40px;
                                                     top: 5px;">
-                                            <!--<button type="button" class="btn btn-default" id="treatment_chart">
+                                            <button type="button" class="btn btn-default" id="bloodTrans_chart">
                                                 <span class="fa fa-print fa-lg"></span> Chart 
-                                            </button>-->
+                                            </button>
                                         </div>
                                     </div>
                                                                     
@@ -279,6 +276,9 @@
                                                     padding: 0 0 0 0;
                                                     right: 40px;
                                                     top: 5px;">
+                                            <button type="button" class="btn btn-default" id="exams_chart">
+                                                <span class="fa fa-print fa-lg"></span> Chart 
+                                            </button>
                                         </div>
                                     </div>
                                                                     
@@ -303,18 +303,20 @@
                         <!-- PROCEDURE -->
                         <div id="tab-procedure" class="tab-pane fade">
                             <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
-                                <div class="panel panel-info">
-                                    <div class="panel-heading text-center" style="height: 40px;" id="prod">
-                                        <!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                             id="btn_grp_edit_procedure"
                                             style="position: absolute;
                                                     padding: 0 0 0 0;
                                                     right: 40px;
                                                     top: 5px;">
-                                        <button type="button" class="btn btn-default" id="treatment_chart">
+                                            <button type="button" class="btn btn-default" id="procedure_chart">
                                                 <span class="fa fa-print fa-lg"></span> Chart 
                                             </button>
-                                        </div> -->
+                                        </div>
+                                
+                                <div class="panel panel-info">
+                                    <div class="panel-heading text-center" style="height: 40px;" id="prod">
+                                        
                                     </div>
                                                                     
                                     <div class="panel-body" style="padding-right: 0px;">
