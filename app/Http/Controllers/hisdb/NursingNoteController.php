@@ -2443,5 +2443,41 @@ class NursingNoteController extends defaultController
         return view('hisdb.nursingnote.othersChart_chart_pdfmake', compact('tabtitle','pat_mast','nurs_othershdr','nurs_othersdtl'));
         
     }
+
+    public function bladder_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        if(!$mrn || !$episno){
+            abort(404);
+        }
+        
+        $pat_mast = DB::table('hisdb.pat_mast as pm')
+                    ->select('pm.MRN','pm.Name','b.ward','b.bednum')
+                    ->leftJoin('hisdb.bedalloc as b', function ($join){
+                        $join = $join->on('b.mrn','=','pm.MRN')
+                                    ->on('b.episno','=','pm.Episno')
+                                    ->where('b.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('nursing.nursassessment as n', function ($join){
+                        $join = $join->on('n.mrn','=','pm.MRN')
+                                    ->on('n.episno','=','pm.Episno')
+                                    ->where('n.compcode','=',session('compcode'));
+                    })
+                    ->where('pm.CompCode','=',session('compcode'))
+                    ->where('pm.MRN','=',$mrn)
+                    ->where('pm.Episno','=',$episno)
+                    ->first();
+        
+        $bladder = DB::table('nursing.nurs_bladder')
+                    ->select('mrn','episno','shift','entereddate','enteredtime','input','output','positive','negative','remarks','adduser','adddate','computerid')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$mrn)
+                    ->where('episno','=',$episno)
+                    ->get();
+        
+        return view('hisdb.nursingnote.bladder_chart_pdfmake', compact('pat_mast','bladder'));
+        
+    }
     
 }

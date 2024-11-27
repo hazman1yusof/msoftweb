@@ -2355,18 +2355,9 @@
                                                 padding: 0 0 0 0;
                                                 right: 40px;
                                                 top: 5px;">
-                                        <!-- <button type="button" class="btn btn-default" id="new_bladder">
-                                            <span class="fa fa-plus-square-o"></span> New 
+                                        <button type="button" class="btn btn-default" id="bladder_chart">
+                                            <span class="fa fa-print fa-lg"></span> Chart 
                                         </button>
-                                        <button type="button" class="btn btn-default" id="edit_bladder">
-                                            <span class="fa fa-edit fa-lg"></span> Edit 
-                                        </button>
-                                        <button type="button" class="btn btn-default" data-oper='add' id="save_bladder">
-                                            <span class="fa fa-save fa-lg"></span> Save 
-                                        </button>
-                                        <button type="button" class="btn btn-default" id="cancel_bladder">
-                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
-                                        </button> -->
                                     </div>
                                 </div>
 
