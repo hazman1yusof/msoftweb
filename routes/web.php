@@ -1312,7 +1312,7 @@ Route::get('/nursingnote/fitchart_chart','hisdb\NursingNoteController@fitchart_c
 Route::get('/nursingnote/circulation_chart','hisdb\NursingNoteController@circulation_chart');
 Route::get('/nursingnote/slidingScale_chart','hisdb\NursingNoteController@slidingScale_chart');
 Route::get('/nursingnote/othersChart_chart','hisdb\NursingNoteController@othersChart_chart');
-// Route::get('/nursingnote/bladder_chart','hisdb\NursingNoteController@bladder_chart');
+Route::get('/nursingnote/bladder_chart','hisdb\NursingNoteController@bladder_chart');
 
 //// Doctor Note page ///
 Route::get('/doctornote','hisdb\DoctorNoteController@show');
