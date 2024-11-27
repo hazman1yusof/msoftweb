@@ -4426,6 +4426,8 @@ function populate_nursingnote(obj){
 
     $("#bladder_ward").val($('#ward_nursNote').val());
     $("#bladder_bednum").val($('#bednum_nursNote').val());
+
+    // $("#tot_input").val(obj.total_all_i);
     
     // var urlparam_datetime_tbl = {
     //     action: 'get_table_datetime',
