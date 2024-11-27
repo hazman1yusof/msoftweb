@@ -247,6 +247,11 @@
                                         {text: 'Received By\n\nName\n\nI/C No.',bold: true,alignment: 'right'},
                                         {text: ': ________________________\n\n: ________________________\n\n: ________________________',bold: true,alignment: 'left'},
                                     ],
+                                    [
+                                        {text: 'Approved By\n\n\n\n_____________________________',bold: true,alignment: 'left',margin: [0, 0, 0, 0]},
+                                        {},
+                                        {},
+                                    ],
                                 ]
                             },
                             layout: 'noBorders',
