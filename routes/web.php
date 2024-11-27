@@ -1387,6 +1387,9 @@ Route::post('/casenote/new_title_form','hisdb\CaseNoteController@new_title_form'
 Route::post('/casenote/new_areacode_form','hisdb\CaseNoteController@new_areacode_form');
 Route::post('/casenote/new_relationship_form','hisdb\CaseNoteController@new_relationship_form');
 
+//// IP REG FORM ////
+Route::get('/RegFormIP/RegFormIP_pdf','hisdb\RegFormIPController@RegFormIP_pdf');
+
 ///////////////////Fixed Asset setup////////////////////////////////////
 
 //// Fixed Asset Location setup page ///
