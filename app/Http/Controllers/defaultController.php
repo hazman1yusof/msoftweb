@@ -975,6 +975,11 @@ abstract class defaultController extends Controller{
         if(! $num) {
             return false;
         }
+        $neg_val = false;
+        if($num < 0){
+            $num = $num * -1;
+            $neg_val = true;
+        }
         $num = (int) $num;
         $words = array();
         $list1 = array('', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE', 'TEN', 'ELEVEN',
@@ -1010,7 +1015,12 @@ abstract class defaultController extends Controller{
         if ($commas > 1) {
             $commas = $commas - 1;
         }
-        return implode(' ', $words);
+
+        if($neg_val){
+            return 'NEGATIVE '.implode(' ', $words);
+        }else{
+            return implode(' ', $words);
+        }
     }
 
     public static function getQueries($builder){

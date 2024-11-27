@@ -516,6 +516,8 @@ class PointOfSalesController extends defaultController
             
             $responce = new stdClass();
             $responce->totalAmount = $request->purreqhd_totamount;
+            $responce->idno = $request->db_idno;
+            $responce->auditno = $request->db_auditno;
             echo json_encode($responce);
             
             DB::commit();

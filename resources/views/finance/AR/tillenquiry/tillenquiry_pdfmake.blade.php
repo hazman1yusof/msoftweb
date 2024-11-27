@@ -16,7 +16,7 @@
     <script>
         var tilldetl = {
             @foreach($tilldetl as $key => $val)
-                '{{$key}}' : '{{$val}}',
+                '{{$key}}' : `{!!str_replace('`', '', $val)!!}`,
             @endforeach
         };
         
@@ -24,7 +24,7 @@
             @foreach($dbacthdr as $key => $dbacthdr1)
             [
                 @foreach($dbacthdr1 as $key2 => $val)
-                    {'{{$key2}}' : `{{$val}}`},
+                    {'{{$key2}}' : `{!!str_replace('`', '', $val)!!}`},
                 @endforeach
             ],
             @endforeach
