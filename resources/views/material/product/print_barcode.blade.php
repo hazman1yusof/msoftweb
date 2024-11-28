@@ -23,6 +23,9 @@
 </body>
 <script>
 
+    var pages = "{{pages}}";
+    var itemcodes = [@foreach($product as $p_)'{{$p_->itemcode}}',@endforeach];
+
     var mydata = {
         'itemcode' : "{{$itemcode}}",
         'pages' : "{{$pages}}",

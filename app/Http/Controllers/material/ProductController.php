@@ -644,7 +644,22 @@ class ProductController extends defaultController
 
     public function print_barcode(Request $request){
         $pages = $request->pages;
-        $itemcode = $request->itemcode;
-        return view('material.product.print_barcode',compact('itemcode','pages'));
+        $itemcodefrom = $request->itemcodefrom;
+        if(empty($itemcodefrom)){
+            $itemcodefrom = '%';
+        }
+        $itemcodeto = $request->itemcodeto;
+
+        $product = DB::table('material.product as p')
+                ->select('itemcode','description')
+                ->where('p.compcode',session('compcode'))
+                ->whereBetween('p.itemcode',[$itemcodefrom,$itemcodeto.'%'])
+                ->get();
+
+        $product = $product->unique('itemcode');
+
+        dd($product);
+
+        return view('material.product.print_barcode',compact('product','pages'));
     }
 }

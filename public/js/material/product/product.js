@@ -50,8 +50,94 @@ $(document).ready(function () {
     });
 
     $('#barcode_print').click(function(){
-	    window.open('./product/table?action=print_barcode&itemcode='+selrowData("#jqGrid").itemcode+'&pages='+$('#barcode_pages').val());
+	    window.open('./product/table?action=print_barcode&itemcodefrom='+$('#itemcode_from_barcode').val()+'&itemcodeto='+$('#itemcode_to_barcode').val()+'&pages='+$('#barcode_pages').val());
     });
+
+	var itemcode_from_barcode = new ordialog(
+		'itemcode_from_barcode','material.product','#itemcode_from_barcode','errorField',
+		{	
+			colModel:[
+				{label:'Item Code',name:'itemcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['compcode'],//,'sector'
+				filterVal:['session.compcode']//, 'session.unit'
+			},
+			sortname:'idno',
+			sortorder:'desc',
+			ondblClickRow: function () {
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+			}
+		},{
+			title:"Select Item From",
+			open: function(){
+				itemcode_from_barcode.urlParam.filterCol=['compcode'];//,'sector'
+				itemcode_from_barcode.urlParam.filterVal=['session.compcode'];//, 'session.unit'
+			},
+			close: function(obj_){
+			},
+			justb4refresh: function(obj_){
+				obj_.urlParam.searchCol2=[];
+				obj_.urlParam.searchVal2=[];
+			},
+			justaftrefresh: function(obj_){
+				$("#Dtext_"+obj_.unique).val('');
+			}
+		},'urlParam','radio','notab'
+	);
+	itemcode_from_barcode.makedialog(true);
+
+	var itemcode_to_barcode = new ordialog(
+		'itemcode_to_barcode','material.product','#itemcode_to_barcode','errorField',
+		{	
+			colModel:[
+				{label:'Item Code',name:'itemcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['compcode'],//,'sector'
+				filterVal:['session.compcode']//, 'session.unit'
+			},
+			sortname:'idno',
+			sortorder:'desc',
+			ondblClickRow: function () {
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+			}
+		},{
+			title:"Select Item To",
+			open: function(){
+				itemcode_to_barcode.urlParam.filterCol=['compcode'];//,'sector'
+				itemcode_to_barcode.urlParam.filterVal=['session.compcode'];//, 'session.unit'
+			},
+			close: function(obj_){
+			},
+			justb4refresh: function(obj_){
+				obj_.urlParam.searchCol2=[];
+				obj_.urlParam.searchVal2=[];
+			},
+			justaftrefresh: function(obj_){
+				$("#Dtext_"+obj_.unique).val('');
+			}
+		},'urlParam','radio','notab'
+	);
+	itemcode_to_barcode.makedialog(true);
 
 	var dialog_itemcode = new ordialog(
 		'itemcodesearch','material.productmaster','#itemcodesearch',errorField,

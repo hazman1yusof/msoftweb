@@ -87,7 +87,7 @@
 		<div class="panel panel-default">
 		    <div class="panel-heading">
 		    	Product Header
-				<a class='pull-right pointer text-primary' id='print_barcode'><span class='fa fa-barcode'></span> Print Barcode</a>
+				<a class='pull-right pointer text-primary' id='print_barcode'> Print Barcode</a>
 		    </div>
 		    <div class="panel-body">
 		    	<div class='col-md-12' style="padding:0 0 15px 0">
@@ -493,13 +493,32 @@
 		</div>
 	</div>
 
-	<div id="dialog_barcode" title="Print Form" >
+	<div id="dialog_barcode" title="Print barcode Form" >
 		<div class="panel-body" style="position: relative;">
-			<label class="col-md-2 control-label" for="delordhd_credcode" style="margin-top: 10px;padding: 0px;">Pages</label>	  
-			<div class="col-md-7">
+			<div class="col-md-12">
+			  	<label class="control-label" for="itemcode_from_barcode">Item Code From</label>  
+	  			<div class='input-group'>
+					<input id="itemcode_from_barcode" name="itemcode_from_barcode" type="text" class="form-control input-sm text-uppercase">
+					<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+	  			</div>
+					<span class="help-block"></span>
+			</div>
+			<div class="col-md-12">
+			  	<label class="control-label" for="itemcode_to_barcode">Item Code To</label>  
+	  			<div class='input-group'>
+					<input id="itemcode_to_barcode" name="itemcode_to_barcode" type="text" class="form-control input-sm text-uppercase" >
+					<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+	  			</div>
+					<span class="help-block"></span>
+			</div>
+			<div class="col-md-9">
+			  	<label class="control-label" for="barcode_pages">Count</label>  
 				<input id="barcode_pages" name="barcode_pages" type="number" maxlength="2" class="form-control input-sm text-uppercase" value="1">
 			</div>
-			<button class="col-md-3 btn btn-primary" id="barcode_print">Print</button>
+			<div class="col-md-3">
+			  	<label class="control-label" for="">&nbsp;</label>  
+				<button class="btn btn-primary" id="barcode_print">Print</button>
+			</div>
 		</div>
 	</div>
 

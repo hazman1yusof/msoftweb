@@ -155,6 +155,8 @@ class stockBalanceController extends defaultController
             abort(404);
         }
 
+        $unit_from = $request->unit_from;
+        $unit_to = $request->unit_to;
         $dept_from = $request->dept_from;
         $dept_to = $request->dept_to;
         $item_from = $request->item_from;
@@ -162,7 +164,7 @@ class stockBalanceController extends defaultController
         $year = $request->year;
         $period = $request->period;
 
-        return Excel::download(new stockBalance_xlsExport($dept_from,$dept_to,$item_from,$item_to,$year,$period), 'Item List.xlsx');
+        return Excel::download(new stockBalance_xlsExport($unit_from,$unit_to,$dept_from,$dept_to,$item_from,$item_to,$year,$period), 'Item List.xlsx');
     }
 
     public function stockSheet_pdf(Request $request){

@@ -30,8 +30,11 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($dept_from,$dept_to,$item_from,$item_to,$year,$period)
+    public function __construct($unit_from,$unit_to,$dept_from,$dept_to,$item_from,$item_to,$year,$period)
     {
+
+        $this->unit_from = $unit_from;
+        $this->unit_to = $unit_to;
         $this->dept_from = $dept_from;
         $this->dept_to = $dept_to;
         $this->item_from = $item_from;
@@ -68,6 +71,11 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
     
     public function view(): View
     {
+        $unit_from = $this->unit_from;
+        if(empty($unit_from)){
+            $unit_from = '%';
+        }
+        $unit_to = $this->unit_to;
         $dept_from = $this->dept_from;
         if(empty($dept_from)){
             $dept_from = '%';
@@ -81,82 +89,97 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
         $year = $this->year;
         $period = $this->period;
 
-        $deptcode = DB::table('material.stockloc as s')
-                        ->select('s.deptcode','d.description')
-                        ->join('sysdb.department as d', function($join){
-                            $join = $join->on('d.deptcode', '=', 's.deptcode');
-                            $join = $join->where('d.compcode', '=', session('compcode'));
-                        })
-                        ->where('s.compcode',session('compcode'))
-                        // ->where('s.unit',session('unit'))
-                        ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
-                        ->where('s.year', '=', $year)
-                        ->distinct('s.deptcode')
-                        ->get('deptcode','description');
+        // $deptcode = DB::table('material.stockloc as s')
+        //                 ->select('s.deptcode','d.description')
+        //                 ->join('sysdb.department as d', function($join){
+        //                     $join = $join->on('d.deptcode', '=', 's.deptcode');
+        //                     $join = $join->where('d.compcode', '=', session('compcode'));
+        //                 })
+        //                 ->where('s.compcode',session('compcode'))
+        //                 // ->where('s.unit',session('unit'))
+        //                 ->whereBetween('s.unit',[$unit_from,$unit_to.'%'])
+        //                 ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
+        //                 ->where('s.year', '=', $year)
+        //                 ->distinct('s.deptcode')
+        //                 ->get('deptcode','description');
 
         $array_report = [];
         $break_loop = [];
         $isi_array = [];
         $loop = 0;
-        foreach ($deptcode as $dept) {
+        // foreach ($deptcode as $dept) {
 
-            $stockloc = DB::table('material.stockloc as s')
-                            ->select('p.description','s.idno','s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit')
-                            ->join('material.product as p', function($join){
-                                    $join = $join->on('p.itemcode', '=', 's.itemcode');
-                                    $join = $join->on('p.uomcode', '=', 's.uomcode');
-                                    $join = $join->where('p.compcode', '=', session('compcode'));
-                                    // $join = $join->where('p.unit', '=', session('unit'));
-                                })
-                            ->where('s.compcode',session('compcode'))
-                            // ->where('s.unit',session('unit'))
-                            ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
-                            ->whereBetween('s.itemcode',[$item_from,$item_to.'%'])
-                            ->where('s.year', '=', $year)
-                            ->orderBy('s.deptcode', 'ASC')
-                            ->orderBy('s.itemcode', 'ASC');
-                            // ->get();
+        $stockloc = DB::table('material.stockloc as s')
+                        ->select('s.unit','p.description','s.idno','s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit','d.description as dept_desc','sc.description as unit_desc')
+                        ->join('material.product as p', function($join){
+                                $join = $join->on('p.itemcode', '=', 's.itemcode');
+                                $join = $join->on('p.uomcode', '=', 's.uomcode');
+                                $join = $join->where('p.compcode', '=', session('compcode'));
+                                $join = $join->on('p.unit', '=', 's.unit');
+                            })
+                        ->join('sysdb.department as d', function($join){
+                            $join = $join->on('d.deptcode', '=', 's.deptcode');
+                            // $join = $join->on('d.unit', '=', 's.unit');
+                            $join = $join->where('d.compcode', '=', session('compcode'));
+                        })
+                        ->join('sysdb.sector as sc', function($join){
+                            $join = $join->on('sc.sectorcode', '=', 's.unit');
+                            // $join = $join->on('d.unit', '=', 's.unit');
+                            $join = $join->where('sc.compcode', '=', session('compcode'));
+                        })
+                        ->where('s.compcode',session('compcode'))
+                        ->whereBetween('s.unit',[$unit_from,$unit_from.'%'])
+                        ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
+                        ->whereBetween('s.itemcode',[$item_from,$item_to.'%'])
+                        ->where('s.year', '=', $year)
+                        ->orderBy('s.deptcode', 'ASC')
+                        ->orderBy('s.itemcode', 'ASC')
+                        ->get();
 
-            dd($this->getQueries($stockloc));
+        // dd($this->getQueries($stockloc));
 
-            $isi = 0;
-            foreach ($stockloc as $obj) {
-                $loop = $loop + 1;
-                $isi = $isi + 1;
+        $isi = 0;
+        foreach ($stockloc as $obj) {
+            $loop = $loop + 1;
+            $isi = $isi + 1;
 
-                $array_obj = (array)$obj;
-                $get_bal = $this->get_bal($array_obj,$period);
-                $obj->open_balqty = $get_bal->open_balqty;
-                $obj->open_balval = $get_bal->open_balval;
-                $obj->close_balqty = $get_bal->close_balqty;
-                $obj->close_balval = $get_bal->close_balval;
+            $array_obj = (array)$obj;
+            $get_bal = $this->get_bal($array_obj,$period);
+            $obj->open_balqty = $get_bal->open_balqty;
+            $obj->open_balval = $get_bal->open_balval;
+            $obj->close_balqty = $get_bal->close_balqty;
+            $obj->close_balval = $get_bal->close_balval;
 
-                $get_ivtxndt = $this->get_ivtxndt($obj,$period,$year);
-                $obj->grn_qty = $get_ivtxndt->grn_qty;
-                $obj->tr_qty = $get_ivtxndt->tr_qty;
-                $obj->wof_qty = $get_ivtxndt->wof_qty;
-                $obj->ai_qty = $get_ivtxndt->ai_qty;
-                $obj->ao_qty = $get_ivtxndt->ao_qty;
-                $obj->phy_qty = $get_ivtxndt->phy_qty;
+            $get_ivtxndt = $this->get_ivtxndt($obj,$period,$year);
+            $obj->grn_qty = $get_ivtxndt->grn_qty;
+            $obj->tr_qty = $get_ivtxndt->tr_qty;
+            $obj->wof_qty = $get_ivtxndt->wof_qty;
+            $obj->ai_qty = $get_ivtxndt->ai_qty;
+            $obj->ao_qty = $get_ivtxndt->ao_qty;
+            $obj->phy_qty = $get_ivtxndt->phy_qty;
 
-                $get_ivdspdt = $this->get_ivdspdt($obj,$period,$year);
-                $obj->ds_qty = $get_ivdspdt->ds_qty;
+            $get_ivdspdt = $this->get_ivdspdt($obj,$period,$year);
+            $obj->ds_qty = $get_ivdspdt->ds_qty;
 
-                $totmv = floatval($get_ivtxndt->grn_qty)-floatval($get_ivdspdt->ds_qty)-floatval($get_ivtxndt->tr_qty)+floatval($get_ivtxndt->wof_qty)-floatval($get_ivtxndt->ai_qty)+floatval($get_ivtxndt->ao_qty)+floatval($get_ivtxndt->phy_qty);
-                $oth_qty = floatval($get_bal->close_balqty) - floatval($get_bal->open_balqty) - floatval($totmv);
-                $obj->oth_qty = $oth_qty;
+            $totmv = floatval($get_ivtxndt->grn_qty)-floatval($get_ivdspdt->ds_qty)-floatval($get_ivtxndt->tr_qty)+floatval($get_ivtxndt->wof_qty)-floatval($get_ivtxndt->ai_qty)+floatval($get_ivtxndt->ao_qty)+floatval($get_ivtxndt->phy_qty);
+            $oth_qty = floatval($get_bal->close_balqty) - floatval($get_bal->open_balqty) - floatval($totmv);
+            $obj->oth_qty = $oth_qty;
 
-                array_push($array_report, $obj);
+            array_push($array_report, $obj);
 
-            }
-            array_push($isi_array, $isi);
-            $loop = $loop + 4;
-            array_push($break_loop, $loop);
         }
+        array_push($isi_array, $isi);
+        $loop = $loop + 4;
+        array_push($break_loop, $loop);
+
+        $unit = $stockloc->unique('unit');
+        $deptcode = $stockloc->unique('deptcode');
+
+        // dd($array_report);
 
         $this->break_loop = $break_loop;
         
-        return view('material.stockBalance.stockBalance_excel',compact('deptcode','array_report'));
+        return view('material.stockBalance.stockBalance_excel',compact('unit','deptcode','array_report'));
     }
     
     public function registerEvents(): array

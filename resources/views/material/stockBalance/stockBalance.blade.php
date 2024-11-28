@@ -58,6 +58,25 @@
 
 					<div class="form-group">
 						<div class="col-md-6">
+						  	<label class="control-label" for="unit_from">Unit From</label> 
+							<div class='input-group'> 
+								<input id="unit_from" name="unit_from" type="text" class="form-control input-sm" autocomplete="off">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+			      </div>
+						<div class="col-md-6">
+						  	<label class="control-label" for="unit_to">Unit To</label>  
+							<div class='input-group'>
+								<input id="unit_to" name="unit_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+			      </div>
+			    </div>
+
+					<div class="form-group">
+						<div class="col-md-6">
 						  	<label class="control-label" for="Scol">Dept From</label> 
 							<div class='input-group'> 
 								<input id="dept_from" name="dept_from" type="text" class="form-control input-sm" autocomplete="off">
@@ -73,7 +92,7 @@
 							</div>
 							<span class="help-block"></span>
 			          	</div>
-			        </div>
+			    </div>
 
 					<div class="form-group">
 						<div class="col-md-6">
