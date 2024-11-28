@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Repack</title>
+<title>Barcode Print</title>
 
 </head>
 
@@ -13,69 +13,68 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.min.js" integrity="sha512-P0bOMePRS378NwmPDVPU455C/TuxDS+8QwJozdc7PGgN8kLqR4ems0U/3DeJkmiE31749vYWHvBOtR+37qDCZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <style>
-    svg#barcode{
+    svg{
         display: none;
     }
 </style>
-<svg id="barcode"></svg>
+@foreach($product as $p_)
+    <svg id="{{$p_->itemcode}}"></svg>
+@endforeach
 <body style="margin: 0px;">
     <iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 99vw;height: 99vh;"></iframe>
 </body>
 <script>
 
-    var pages = "{{pages}}";
+    var count = {{$pages}};
     var itemcodes = [@foreach($product as $p_)'{{$p_->itemcode}}',@endforeach];
 
-    // var mydata = {
-    //     'itemcode' : "{{$itemcode}}",
-    //     'pages' : "{{$pages}}",
-    // }
+    @foreach($product as $p_)
+        JsBarcode("#{{$p_->itemcode}}", "{{$p_->itemcode}}", {
+          format: "CODE39",
+          width:1,
+          height:30,
+          displayValue: false,
+          margin:0
+        });
+    @endforeach
 
-    // JsBarcode("#barcode", mydata.itemcode, {
-    //   format: "CODE39",
-    //   width:1,
-    //   height:30,
-    //   displayValue: false,
-    //   margin:0
-    // });
+    $(document).ready(function () {
+        var docDefinition = {
+            pageSize: {
+                width: 65 * 2.8346456693,
+                height: 20 * 2.8346456693,
+            },
+            pageMargins: [5, 5, 5, 5],
+            content: make_content(),
+            styles: {
+            },
+        };
 
-    // $(document).ready(function () {
-    //     var docDefinition = {
-    //         pageSize: {
-    //             width: 65 * 2.8346456693,
-    //             height: 20 * 2.8346456693,
-    //         },
-    //         pageMargins: [5, 5, 5, 5],
-    //         content: make_content(),
-    //         styles: {
-    //         },
-    //     };
+        function make_content(){
+            var content = [];
+            var pages = parseInt(count);
 
-    //     function make_content(){
-    //         var content = [];
-    //         var pages = parseInt(mydata.pages);
+            for (var x = 0; x < itemcodes.length; x++){
+                for (var i = 0; i < pages; i++) {
+                    content.push({
+                      svg: $('svg#'+itemcodes[x]).get(0).outerHTML,
+                      width: 160,
+                      margin:[0,0,0,0],alignment:'center'
+                    });
+                    content.push({
+                        text:itemcodes[x],alignment:'center'
+                    });
+                    if(i != 0){
+                        content.push({text:'',pageBreak: 'after'});
+                    }
+                }
+            }
+            return content;
+        }
 
-    //         for (var i = pages - 1; i >= 0; i--) {
-
-    //             content.push({
-    //               svg: $('svg#barcode').get(0).outerHTML,
-    //               width: 160,
-    //               margin:[0,0,0,0],alignment:'center'
-    //             });
-    //             content.push({
-    //                 text:mydata.itemcode,alignment:'center'
-    //             });
-    //             if(i != 0){
-    //                 content.push({text:'',pageBreak: 'after'});
-    //             }
-    //         }
-
-    //         return content;
-    //     }
-
-    //     pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
-    //         $('#pdfiframe').attr('src',dataURL);
-    //     });
+        pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
+            $('#pdfiframe').attr('src',dataURL);
+        });
     });
 </script>
 

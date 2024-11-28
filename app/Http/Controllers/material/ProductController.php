@@ -658,7 +658,7 @@ class ProductController extends defaultController
 
         $product = $product->unique('itemcode');
 
-        dd($product);
+        // dd($product);
 
         return view('material.product.print_barcode',compact('product','pages'));
     }
