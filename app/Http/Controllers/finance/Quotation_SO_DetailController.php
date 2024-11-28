@@ -1583,7 +1583,7 @@ class Quotation_SO_DetailController extends defaultController
                     ->sum('totamount');
 
             if($salehdr->amount != $salehdr->outamount){
-                $variance = $salehdr->amount - $totalAmount;
+                $variance = $totalAmount - $salehdr->amount;
                 $outamount_after =  $salehdr->outamount + $variance;
 
                 $new_amt = $totalAmount;
@@ -1742,7 +1742,7 @@ class Quotation_SO_DetailController extends defaultController
                     ->sum('totamount');
 
             if($salehdr->amount != $salehdr->outamount){
-                $variance = $salehdr->amount - $totalAmount;
+                $variance = $totalAmount - $salehdr->amount;
                 $outamount_after =  $salehdr->outamount + $variance;
 
                 $new_amt = $totalAmount;
@@ -1842,7 +1842,7 @@ class Quotation_SO_DetailController extends defaultController
                     ->sum('amount');
 
             if($salehdr->amount != $salehdr->outamount){
-                $variance = $salehdr->amount - $totalAmount;
+                $variance = $totalAmount - $salehdr->amount;
                 $outamount_after =  $salehdr->outamount + $variance;
 
                 $new_amt = $totalAmount;

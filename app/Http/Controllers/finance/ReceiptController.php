@@ -135,7 +135,6 @@ class ReceiptController extends defaultController
             ];
 
             if($request->dbacthdr_trantype == "RD"){
-
                 $hdrtypmst = DB::table('debtor.hdrtypmst')
                         ->where('compcode',session('compcode'))
                         ->where('source','PB')
@@ -245,7 +244,7 @@ class ReceiptController extends defaultController
     public function upd_quoteno_outamount($quoteno,$amount){
         $salehdr = DB::table('finance.salehdr')
                         ->where('compcode','=',session('compcode'))
-                        ->where('quoteno','=',$quoteno);
+                        ->where('idno','=',$quoteno);
 
         if($salehdr->exists()){
             $salehdr = $salehdr->first();
@@ -253,7 +252,7 @@ class ReceiptController extends defaultController
 
             DB::table('finance.salehdr')
                         ->where('compcode','=',session('compcode'))
-                        ->where('quoteno','=',$quoteno)
+                        ->where('idno','=',$quoteno)
                         ->update([
                             'outamount' => $outamount
                         ]);
@@ -455,7 +454,7 @@ class ReceiptController extends defaultController
 
         $table = DB::table('finance.salehdr')
                         ->where('compcode','=',session('compcode'))
-                        ->where('quoteno','=',$quoteno);
+                        ->where('idno','=',$quoteno);
 
         $result = $table->get()->toArray();
 

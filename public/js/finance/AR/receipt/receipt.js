@@ -212,7 +212,7 @@ $(document).ready(function () {
 		'mrn','hisdb.pat_mast','#dbacthdr_mrn',errorField,
 		{	colModel:[
 				{label:'MRN',name:'MRN',width:100,classes:'pointer',canSearch:true,or_search:true},
-				{label:'HUKM MRN',name:'MRN',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'HUKM MRN',name:'newmrn',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Name',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Last Episode',name:'Episno',width:100,classes:'pointer'},
 			],
@@ -249,9 +249,9 @@ $(document).ready(function () {
 	var dbacthdr_quoteno = new ordialog(
 		'quoteno','finance.salehdr','#dbacthdr_quoteno',errorField,
 		{	colModel:[
-				{label:'Quoteno',name:'quoteno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				// {label:'Auditno',name:'auditno',width:100,classes:'pointer',canSearch:true},
+				{label:'Auto No.',name:'idno',width:50,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'MRN',name:'mrn',width:100,classes:'pointer',canSearch:true},
+				{label:'Quoteno',name:'quoteno',width:50,classes:'pointer',canSearch:true},
 				{label:'Remark',name:'remark',width:400},
 				{label:'Amount',name:'amount',width:200},
 				{label:'Outstanding',name:'outamount',width:200},
