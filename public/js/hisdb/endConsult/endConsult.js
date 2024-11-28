@@ -151,7 +151,7 @@ $(document).ready(function () {
 });
 
 //screen bed management//
-function populate_form_endConsult(obj,rowdata){	
+function populate_endConsult(obj,rowdata){	
 	//panel header	
 	$('#name_show_discharge').text(obj.name);
 	$('#mrn_show_discharge').text(("0000000" + obj.mrn).slice(-7));
