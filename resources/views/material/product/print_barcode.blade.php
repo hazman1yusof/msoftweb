@@ -18,7 +18,7 @@
     }
 </style>
 @foreach($product as $p_)
-    <svg id="{{$p_->itemcode}}"></svg>
+    <svg id="_{{$p_->itemcode}}"></svg>
 @endforeach
 <body style="margin: 0px;">
     <iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 99vw;height: 99vh;"></iframe>
@@ -27,9 +27,10 @@
 
     var count = {{$pages}};
     var itemcodes = [@foreach($product as $p_)'{{$p_->itemcode}}',@endforeach];
+    var desc = [@foreach($product as $p_)'{{$p_->description}}',@endforeach];
 
     @foreach($product as $p_)
-        JsBarcode("#{{$p_->itemcode}}", "{{$p_->itemcode}}", {
+        JsBarcode("#_{{$p_->itemcode}}", "{{$p_->itemcode}}", {
           format: "CODE39",
           width:1,
           height:30,
@@ -42,7 +43,7 @@
         var docDefinition = {
             pageSize: {
                 width: 65 * 2.8346456693,
-                height: 20 * 2.8346456693,
+                height: 25 * 2.8346456693,
             },
             pageMargins: [5, 5, 5, 5],
             content: make_content(),
@@ -57,12 +58,12 @@
             for (var x = 0; x < itemcodes.length; x++){
                 for (var i = 0; i < pages; i++) {
                     content.push({
-                      svg: $('svg#'+itemcodes[x]).get(0).outerHTML,
+                      svg: $('svg#_'+itemcodes[x]).get(0).outerHTML,
                       width: 160,
                       margin:[0,0,0,0],alignment:'center'
                     });
                     content.push({
-                        text:itemcodes[x],alignment:'center'
+                        text:itemcodes[x]+'\n'+desc[x],alignment:'center'
                     });
                     if(i != 0){
                         content.push({text:'',pageBreak: 'after'});
