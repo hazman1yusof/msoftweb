@@ -68,8 +68,8 @@ class TestController extends defaultController
             //     return $this->update_stockexp($request);
             // case 'del_stockexp':
             //     return $this->del_stockexp($request);
-            case 'test_email':
-                return $this->test_email($request);
+            case 'test_barcode':
+                return $this->test_barcode($request);
             case 'betulkan_uom_kh_stockloc':
                 return $this->betulkan_uom_kh_stockloc($request);
             case 'betulkan_uom_kh_product':
@@ -2489,6 +2489,10 @@ class TestController extends defaultController
                     ]);
             }
         }
+    }
+
+    public function test_barcode(){
+        return view('test.test');
     }
     
 }

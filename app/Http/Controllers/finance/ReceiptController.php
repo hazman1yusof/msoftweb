@@ -391,7 +391,7 @@ class ReceiptController extends defaultController
 
         $table = DB::table('finance.salehdr')
                         ->where('compcode','=',session('compcode'))
-                        ->where('recstatus','=','POSTED');
+                        ->where('recstatus','=','OPEN');
 
         if(!empty($mrn)){
             $pat_mast = DB::table('hisdb.pat_mast')

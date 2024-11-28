@@ -85,7 +85,10 @@
 		</form>
 
 		<div class="panel panel-default">
-		    <div class="panel-heading">Product Header</div>
+		    <div class="panel-heading">
+		    	Product Header
+				<a class='pull-right pointer text-primary' id='print_barcode'><span class='fa fa-barcode'></span> Print Barcode</a>
+		    </div>
 		    <div class="panel-body">
 		    	<div class='col-md-12' style="padding:0 0 15px 0">
 	        		<table id="jqGrid" class="table table-striped"></table>
@@ -490,6 +493,15 @@
 		</div>
 	</div>
 
+	<div id="dialog_barcode" title="Print Form" >
+		<div class="panel-body" style="position: relative;">
+			<label class="col-md-2 control-label" for="delordhd_credcode" style="margin-top: 10px;padding: 0px;">Pages</label>	  
+			<div class="col-md-7">
+				<input id="barcode_pages" name="barcode_pages" type="number" maxlength="2" class="form-control input-sm text-uppercase" value="1">
+			</div>
+			<button class="col-md-3 btn btn-primary" id="barcode_print">Print</button>
+		</div>
+	</div>
 
 	<!---*********************************** ADD NEW PRODUCT ************************************************** -->
 		<div id="addNewProductDialog" title="Add New Product" >

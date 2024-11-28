@@ -24,8 +24,8 @@
 <script>
 
     var mydata = {
-        'itemcode' : "12345678",
-        'pages' : "10",
+        'itemcode' : "{{$itemcode}}",
+        'pages' : "{{$pages}}",
     }
 
     JsBarcode("#barcode", mydata.itemcode, {

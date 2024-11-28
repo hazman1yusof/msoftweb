@@ -104,6 +104,7 @@
                     ]
                 },
                 pageSize: 'A4',
+                pageMargins: [23, 23, 23, 23],
                 // pageOrientation: 'landscape',
                 content: [
                     {

@@ -51,7 +51,7 @@ class StockTakeExport implements FromView, WithEvents, WithColumnWidths
             'B' => 15,
             'C' => 50,
             'D' => 15,
-            'E' => 10,
+            'E' => 15,
             'F' => 15,
             'G' => 15,
             'H' => 15,

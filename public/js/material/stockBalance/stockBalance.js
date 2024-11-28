@@ -163,8 +163,13 @@ $(document).ready(function () {
 				dialog_itemcodefrom.urlParam.table_name = ['material.stockloc AS s','material.product AS p'];
 				dialog_itemcodefrom.urlParam.fixPost = "true";
 				dialog_itemcodefrom.urlParam.table_id = "none_";
-				dialog_itemcodefrom.urlParam.filterCol=['s.recstatus','s.compcode', 's.deptcode', 's.year','s.unit'];//,'sector'
-				dialog_itemcodefrom.urlParam.filterVal=['ACTIVE','session.compcode', $('#dept_from').val(), moment().year(),'session.unit'];//, 'session.unit'
+				if($('#dept_from').val() != ''){
+					dialog_itemcodefrom.urlParam.filterCol=['s.recstatus','s.compcode', 's.deptcode', 's.year','s.unit'];//,'sector'
+					dialog_itemcodefrom.urlParam.filterVal=['ACTIVE','session.compcode', $('#dept_from').val(), moment().year(),'session.unit'];//, 'session.unit'
+				}else{
+					dialog_itemcodefrom.urlParam.filterCol=['s.recstatus','s.compcode','s.year','s.unit'];//,'sector'
+					dialog_itemcodefrom.urlParam.filterVal=['ACTIVE','session.compcode', moment().year(),'session.unit'];//, 'session.unit'
+				}
 				dialog_itemcodefrom.urlParam.join_type = ['LEFT JOIN'];
 				dialog_itemcodefrom.urlParam.join_onCol = ['s.itemcode'];
 				dialog_itemcodefrom.urlParam.join_onVal = ['p.itemcode'];

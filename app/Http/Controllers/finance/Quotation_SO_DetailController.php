@@ -1581,6 +1581,18 @@ class Quotation_SO_DetailController extends defaultController
                     ->where('auditno','=',$auditno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('totamount');
+
+            if($salehdr->amount != $salehdr->outamount){
+                $variance = $salehdr->amount - $totalAmount;
+                $outamount_after =  $salehdr->outamount + $variance;
+
+                $new_amt = $totalAmount;
+                $new_outamt = $outamount_after;
+            }else{
+
+                $new_amt = $totalAmount;
+                $new_outamt = $totalAmount;
+            }
             
             ///4. then update to header
             DB::table('finance.salehdr')
@@ -1589,8 +1601,8 @@ class Quotation_SO_DetailController extends defaultController
                     ->where('trantype','=',$trantype)
                     ->where('auditno','=',$auditno)
                     ->update([
-                        'amount' => $totalAmount,
-                        'outamount' => $totalAmount,
+                        'amount' => $new_amt,
+                        'outamount' => $new_outamt,
                     ]);
             
             echo $totalAmount;
@@ -1628,13 +1640,13 @@ class Quotation_SO_DetailController extends defaultController
             foreach ($request->dataobj as $key => $value) {
                 
                 // salesum lama
-                $salesum_lama = DB::table('finance.salesum')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('source','=',$source)
-                            ->where('trantype','=',$trantype)
-                            ->where('auditno','=',$auditno)
-                            ->where('lineno_','=',$value['lineno_'])
-                            ->first();
+                // $salesum_lama = DB::table('finance.salesum')
+                //             ->where('compcode','=',session('compcode'))
+                //             ->where('source','=',$source)
+                //             ->where('trantype','=',$trantype)
+                //             ->where('auditno','=',$auditno)
+                //             ->where('lineno_','=',$value['lineno_'])
+                //             ->first();
                 
                 $stockloc = DB::table('material.stockloc')
                         ->where('compcode','=',session('compcode'))
@@ -1718,27 +1730,39 @@ class Quotation_SO_DetailController extends defaultController
                 //         }
                 //     }
                 // }
-                
-                ///3. calculate total amount from detail
-                $totalAmount = DB::table('finance.salesum')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('source','=',$source)
-                        ->where('trantype','=',$trantype)
-                        ->where('auditno','=',$auditno)
-                        ->where('recstatus','!=','DELETE')
-                        ->sum('totamount');
-                
-                ///4. then update to header
-                DB::table('finance.salehdr')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('source','=',$source)
-                        ->where('trantype','=',$trantype)
-                        ->where('auditno','=',$auditno)
-                        ->update([
-                            'amount' => $totalAmount,
-                        ]);
-                
             }
+
+            ///3. calculate total amount from detail
+            $totalAmount = DB::table('finance.salesum')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=',$source)
+                    ->where('trantype','=',$trantype)
+                    ->where('auditno','=',$auditno)
+                    ->where('recstatus','!=','DELETE')
+                    ->sum('totamount');
+
+            if($salehdr->amount != $salehdr->outamount){
+                $variance = $salehdr->amount - $totalAmount;
+                $outamount_after =  $salehdr->outamount + $variance;
+
+                $new_amt = $totalAmount;
+                $new_outamt = $outamount_after;
+            }else{
+
+                $new_amt = $totalAmount;
+                $new_outamt = $totalAmount;
+            }
+            
+            ///4. then update to header
+            DB::table('finance.salehdr')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=',$source)
+                    ->where('trantype','=',$trantype)
+                    ->where('auditno','=',$auditno)
+                    ->update([
+                        'amount' => $totalAmount,
+                        'outamount' => $totalAmount,
+                    ]);
             
             DB::commit();
             
@@ -1817,6 +1841,18 @@ class Quotation_SO_DetailController extends defaultController
                     ->where('recstatus','!=','DELETE')
                     ->sum('amount');
 
+            if($salehdr->amount != $salehdr->outamount){
+                $variance = $salehdr->amount - $totalAmount;
+                $outamount_after =  $salehdr->outamount + $variance;
+
+                $new_amt = $totalAmount;
+                $new_outamt = $outamount_after;
+            }else{
+
+                $new_amt = $totalAmount;
+                $new_outamt = $totalAmount;
+            }
+
             ///4. then update to header
             DB::table('finance.salehdr')
                     ->where('compcode','=',session('compcode'))
@@ -1824,8 +1860,8 @@ class Quotation_SO_DetailController extends defaultController
                     ->where('trantype','=',$trantype)
                     ->where('auditno','=',$auditno)
                     ->update([
-                        'amount' => $totalAmount,
-                        'outamount' => $totalAmount,
+                        'amount' => $new_amt,
+                        'outamount' => $new_outamt,
                     ]);
 
             DB::commit();

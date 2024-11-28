@@ -71,11 +71,12 @@ class ProductController extends defaultController
                 return $this->get_charges_from_product($request);
             case 'get_product_detail':
                 return $this->get_product_detail($request);
+            case 'print_barcode':
+                return $this->print_barcode($request);
             default:
                 return 'error happen..';
         }
     }
-
 
     public function get_table_product(Request $request){
         $groupcode = $request->filterVal[0];
@@ -508,8 +509,7 @@ class ProductController extends defaultController
             }
     }
 
-    public function edit(Request $request)
-    {   
+    public function edit(Request $request){   
         // if(strtoupper($request->Class) == 'ASSET'){
             DB::beginTransaction();
             try {
@@ -640,5 +640,11 @@ class ProductController extends defaultController
                 return response($e->getMessage(), 500);
             }
         // }
+    }
+
+    public function print_barcode(Request $request){
+        $pages = $request->pages;
+        $itemcode = $request->itemcode;
+        return view('material.product.print_barcode',compact('itemcode','pages'));
     }
 }

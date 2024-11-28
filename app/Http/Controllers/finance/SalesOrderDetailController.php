@@ -1695,28 +1695,27 @@ class SalesOrderDetailController extends defaultController
                             'billtypeperct' => $value['billtypeperct'],
                             'billtypeamt' => $value['billtypeamt'],
                         ]);
+            }           
                 
-                ///3. calculate total amount from detail
-                $totalAmount = DB::table('debtor.billsum')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('source','=',$source)
-                        ->where('trantype','=',$trantype)
-                        ->where('billno','=',$auditno)
-                        ->where('recstatus','!=','DELETE')
-                        ->sum('totamount');
-                
-                ///4. then update to header
-                DB::table('debtor.dbacthdr')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('source','=',$source)
-                        ->where('trantype','=',$trantype)
-                        ->where('auditno','=',$auditno)
-                        ->update([
-                            'amount' => $totalAmount,
-                            'outamount' => $totalAmount,
-                        ]);
-                
-            }
+            ///3. calculate total amount from detail
+            $totalAmount = DB::table('debtor.billsum')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=',$source)
+                    ->where('trantype','=',$trantype)
+                    ->where('billno','=',$auditno)
+                    ->where('recstatus','!=','DELETE')
+                    ->sum('totamount');
+            
+            ///4. then update to header
+            DB::table('debtor.dbacthdr')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=',$source)
+                    ->where('trantype','=',$trantype)
+                    ->where('auditno','=',$auditno)
+                    ->update([
+                        'amount' => $totalAmount,
+                        'outamount' => $totalAmount,
+                    ]);
             
             DB::commit();
             

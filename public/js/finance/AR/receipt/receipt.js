@@ -212,6 +212,7 @@ $(document).ready(function () {
 		'mrn','hisdb.pat_mast','#dbacthdr_mrn',errorField,
 		{	colModel:[
 				{label:'MRN',name:'MRN',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'HUKM MRN',name:'MRN',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Name',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Last Episode',name:'Episno',width:100,classes:'pointer'},
 			],

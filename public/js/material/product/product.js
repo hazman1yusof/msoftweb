@@ -31,6 +31,28 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 
 	/////////////////////////////////////////////////////////object for dialog handler//////////////////
+
+	$("#dialog_barcode")
+	  .dialog({
+		width: 2/10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function( event, ui ) {
+
+		},
+		close: function( event, ui ) {
+
+		}
+	  });
+
+    $('#print_barcode').click(function(){
+        $('#dialog_barcode').dialog('open');
+    });
+
+    $('#barcode_print').click(function(){
+	    window.open('./product/table?action=print_barcode&itemcode='+selrowData("#jqGrid").itemcode+'&pages='+$('#barcode_pages').val());
+    });
+
 	var dialog_itemcode = new ordialog(
 		'itemcodesearch','material.productmaster','#itemcodesearch',errorField,
 		{	colModel:[
@@ -955,6 +977,9 @@ $(document).ready(function () {
 				hideatdialogForm_jqGrid3(false);
 				$("#jqGrid3_c").show();
 				$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
+				$("#print_barcode").show();
+
+				// $("#print_barcode").attr('href','./product/table?action=print_barcode&itemcode='+selrowData("#jqGrid").itemcode);
 
 			} else {
 				$("#jqGrid3_c").hide();
