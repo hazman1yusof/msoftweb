@@ -128,7 +128,7 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
                             $join = $join->where('sc.compcode', '=', session('compcode'));
                         })
                         ->where('s.compcode',session('compcode'))
-                        ->whereBetween('s.unit',[$unit_from,$unit_from.'%'])
+                        ->whereBetween('s.unit',[$unit_from,$unit_to.'%'])
                         ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
                         ->whereBetween('s.itemcode',[$item_from,$item_to.'%'])
                         ->where('s.year', '=', $year)

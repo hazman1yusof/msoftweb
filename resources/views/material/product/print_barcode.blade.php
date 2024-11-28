@@ -26,56 +26,56 @@
     var pages = "{{pages}}";
     var itemcodes = [@foreach($product as $p_)'{{$p_->itemcode}}',@endforeach];
 
-    var mydata = {
-        'itemcode' : "{{$itemcode}}",
-        'pages' : "{{$pages}}",
-    }
+    // var mydata = {
+    //     'itemcode' : "{{$itemcode}}",
+    //     'pages' : "{{$pages}}",
+    // }
 
-    JsBarcode("#barcode", mydata.itemcode, {
-      format: "CODE39",
-      width:1,
-      height:30,
-      displayValue: false,
-      margin:0
-    });
+    // JsBarcode("#barcode", mydata.itemcode, {
+    //   format: "CODE39",
+    //   width:1,
+    //   height:30,
+    //   displayValue: false,
+    //   margin:0
+    // });
 
-    $(document).ready(function () {
-        var docDefinition = {
-            pageSize: {
-                width: 65 * 2.8346456693,
-                height: 20 * 2.8346456693,
-            },
-            pageMargins: [5, 5, 5, 5],
-            content: make_content(),
-            styles: {
-            },
-        };
+    // $(document).ready(function () {
+    //     var docDefinition = {
+    //         pageSize: {
+    //             width: 65 * 2.8346456693,
+    //             height: 20 * 2.8346456693,
+    //         },
+    //         pageMargins: [5, 5, 5, 5],
+    //         content: make_content(),
+    //         styles: {
+    //         },
+    //     };
 
-        function make_content(){
-            var content = [];
-            var pages = parseInt(mydata.pages);
+    //     function make_content(){
+    //         var content = [];
+    //         var pages = parseInt(mydata.pages);
 
-            for (var i = pages - 1; i >= 0; i--) {
+    //         for (var i = pages - 1; i >= 0; i--) {
 
-                content.push({
-                  svg: $('svg#barcode').get(0).outerHTML,
-                  width: 160,
-                  margin:[0,0,0,0],alignment:'center'
-                });
-                content.push({
-                    text:mydata.itemcode,alignment:'center'
-                });
-                if(i != 0){
-                    content.push({text:'',pageBreak: 'after'});
-                }
-            }
+    //             content.push({
+    //               svg: $('svg#barcode').get(0).outerHTML,
+    //               width: 160,
+    //               margin:[0,0,0,0],alignment:'center'
+    //             });
+    //             content.push({
+    //                 text:mydata.itemcode,alignment:'center'
+    //             });
+    //             if(i != 0){
+    //                 content.push({text:'',pageBreak: 'after'});
+    //             }
+    //         }
 
-            return content;
-        }
+    //         return content;
+    //     }
 
-        pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
-            $('#pdfiframe').attr('src',dataURL);
-        });
+    //     pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
+    //         $('#pdfiframe').attr('src',dataURL);
+    //     });
     });
 </script>
 
