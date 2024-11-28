@@ -68,8 +68,8 @@ class TestController extends defaultController
             //     return $this->update_stockexp($request);
             // case 'del_stockexp':
             //     return $this->del_stockexp($request);
-            case 'test_barcode':
-                return $this->test_barcode($request);
+            case 'betulkan_quotation':
+                return $this->betulkan_quotation($request);
             case 'betulkan_uom_kh_stockloc':
                 return $this->betulkan_uom_kh_stockloc($request);
             case 'betulkan_uom_kh_product':
@@ -2493,6 +2493,23 @@ class TestController extends defaultController
 
     public function test_barcode(){
         return view('test.test');
+    }
+
+    public function betulkan_quotation(){
+        $salehdr = DB::table('finance.salehdr')
+                    ->where('compcode','9B')
+                    ->get();
+
+        foreach ($salehdr as $obj) {
+            if($obj->amount != $obj->outamount){
+                DB::table('finance.salehdr')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('idno','=',$obj->idno)
+                        ->update([
+                            'outamount' => $obj->amount,
+                        ]);
+            }
+        }
     }
     
 }
