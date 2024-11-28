@@ -75,7 +75,7 @@
                                     @if($obj->shift == '1')
                                     [
                                         { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->entereddate)->format('d-m-Y')}}' },
-                                        { text: '{{$obj->enteredtime}}' },
+                                        { text: '{{\Carbon\Carbon::createFromFormat('H:i:s',$obj->enteredtime)->format('H:i')}}' },
                                         { text: '{{number_format($obj->input,2)}}', alignment: 'right' },
                                         { text: '{{number_format($obj->output,2)}}', alignment: 'right' },
                                         { text: '{{number_format($obj->positive,2)}}', alignment: 'right' },
@@ -103,7 +103,7 @@
                                     @if($obj->shift == '2')
                                     [
                                         { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->entereddate)->format('d-m-Y')}}' },
-                                        { text: '{{$obj->enteredtime}}' },
+                                        { text: '{{\Carbon\Carbon::createFromFormat('H:i:s',$obj->enteredtime)->format('H:i')}}' },
                                         { text: '{{number_format($obj->input,2)}}', alignment: 'right' },
                                         { text: '{{number_format($obj->output,2)}}', alignment: 'right' },
                                         { text: '{{number_format($obj->positive,2)}}', alignment: 'right' },
@@ -131,7 +131,7 @@
                                     @if($obj->shift == '3')
                                     [
                                         { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->entereddate)->format('d-m-Y')}}' },
-                                        { text: '{{$obj->enteredtime}}' },
+                                        { text: '{{\Carbon\Carbon::createFromFormat('H:i:s',$obj->enteredtime)->format('H:i')}}' },
                                         { text: '{{number_format($obj->input,2)}}', alignment: 'right' },
                                         { text: '{{number_format($obj->output,2)}}', alignment: 'right' },
                                         { text: '{{number_format($obj->positive,2)}}', alignment: 'right' },

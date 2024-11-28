@@ -81,10 +81,10 @@
                             widths: [60,'*',70,70], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'START DATE', style: 'tableHeader' },
-                                    { text: 'OBSERVATION', style: 'tableHeader' },
-                                    { text: 'END DATE', style: 'tableHeader' },
-                                    { text: 'STAFF', style: 'tableHeader' },
+                                    { text: 'START DATE', style: 'tableHeader', fillColor: '#dddddd' },
+                                    { text: 'OBSERVATION', style: 'tableHeader', fillColor: '#dddddd' },
+                                    { text: 'END DATE', style: 'tableHeader', fillColor: '#dddddd' },
+                                    { text: 'STAFF', style: 'tableHeader', fillColor: '#dddddd' },
                                 ],
                                 @foreach ($observation as $obj)
                                 [
@@ -96,7 +96,7 @@
                                 @endforeach
                             ]
                         },
-                        layout: 'lightHorizontalLines',
+                        // layout: 'lightHorizontalLines',
                     },
                 ],
                 styles: {
