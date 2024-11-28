@@ -114,8 +114,10 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
                             ->whereBetween('s.itemcode',[$item_from,$item_to.'%'])
                             ->where('s.year', '=', $year)
                             ->orderBy('s.deptcode', 'ASC')
-                            ->orderBy('s.itemcode', 'ASC')
-                            ->get();
+                            ->orderBy('s.itemcode', 'ASC');
+                            // ->get();
+
+            dd($this->etQueries($stockloc));
 
             $isi = 0;
             foreach ($stockloc as $obj) {
@@ -298,5 +300,11 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
         $responce->ds_qty = $ds_qty;
         return $responce;
     }
+
+    public static function getQueries($builder){
+        $addSlashes = str_replace('?', "'?'", $builder->toSql());
+        return vsprintf(str_replace('?', '%s', $addSlashes), $builder->getBindings());
+    }
+
     
 }
