@@ -40,23 +40,19 @@
                             widths: [50,1,'*',80,1,'*'], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'PATIENT NAME' },
-                                    { text: ':' },
-                                    { text: '{{$pat_mast->Name}}' },{},{},{},
+                                    { text: 'PATIENT NAME', colSpan:2 },{},
+                                    { text: ':\u200B\t{{$pat_mast->Name}}', colSpan:4},{},{},{},
                                 ],
                                 [
-                                    { text: 'MRN' },
-                                    { text: ':' },
-                                    { text: '{{str_pad($pat_mast->MRN, 7, "0", STR_PAD_LEFT)}}' },
-                                    { text: 'ROOM NO' },
-                                    { text: ':' },
-                                    { text: '{{$pat_mast->ward}} / {{$pat_mast->bednum}}' }
+                                    { text: 'MRN', colSpan:2 },{},
+                                    { text: ':\u200B\t{{str_pad($pat_mast->MRN, 7, "0", STR_PAD_LEFT)}}' },
+                                    { text: 'ROOM NO', colSpan:2 },{},
+                                    { text: ':\u200B\t{{$pat_mast->ward}} / {{$pat_mast->bednum}}' }
                                 ],
                             ]
                         },
                         layout: 'noBorders',
                     },
-                    // { canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 }] },
                     {
                         style: 'tableExample',
                         table: {
@@ -159,7 +155,7 @@
                                 ],
                     
                                 [
-                                    { text: 'GRAND TOTAL', style: 'tableHeader', fillColor: '#dddddd' },
+                                    { text: 'GRAND TOTAL', style: 'tableHeader', fillColor: '#dddddd'},
                                     { text: '7AM/7PM', style: 'tableHeader', fillColor: '#dddddd' },
                                     { text: '{{number_format(($tot_i1)+($tot_i2)+($tot_i3),2)}}', style: 'tableHeader', alignment: 'right', fillColor: '#dddddd' },
                                     { text: '{{number_format(($tot_o1)+($tot_o2)+($tot_o3),2)}}', style: 'tableHeader', alignment: 'right', fillColor: '#dddddd' },
@@ -169,21 +165,33 @@
                                     { text: '', style: 'tableHeader', fillColor: '#dddddd' },
                                 ],
                                 [
-                                    {},{},{},{},{},
+                                    { text: '', border: [false, true, false, false] },
+                                    { text: '', border: [false, true, false, false] },
+                                    { text: '', border: [false, true, false, false] },
+                                    { text: '', border: [false, true, false, false] },
+                                    { text: '', border: [false, true, false, false] },//ltrb
                                     { text: 'TOTAL INPUT', style: 'tableHeader', colSpan: 2, fillColor: '#dddddd'},
                                     { text: '', style: 'tableHeader', fillColor: '#dddddd' },
                                     { text: '{{number_format(($tot_i1)+($tot_i2)+($tot_i3),2)}}', style: 'tableHeader', alignment: 'right' },
                                 ],
                                 [
-                                    {},{},{},{},{},
+                                    { text: '', border: [false, false, false, false] },
+                                    { text: '', border: [false, false, false, false] },
+                                    { text: '', border: [false, false, false, false] },
+                                    { text: '', border: [false, false, false, false] },
+                                    { text: '', border: [false, false, false, false] },//ltrb
                                     { text: 'TOTAL OUTPUT', style: 'tableHeader',colSpan: 2, fillColor: '#dddddd'},
                                     { text: '', style: 'tableHeader', fillColor: '#dddddd' },
                                     { text: '{{number_format(($tot_o1)+($tot_o2)+($tot_o3),2)}}', style: 'tableHeader', alignment: 'right' },
                                 ],[
-                                    {},{},{},{},{},
+                                    { text: '', border: [false, false, false, false] },
+                                    { text: '', border: [false, false, false, false] },
+                                    { text: '', border: [false, false, false, false] },
+                                    { text: '', border: [false, false, false, false] },
+                                    { text: '', border: [false, false, false, false] },//ltrb
                                     { text: 'BALANCE', style: 'tableHeader', colSpan: 2, fillColor: '#dddddd'},
                                     { text: '', style: 'tableHeader', fillColor: '#dddddd' },
-                                    { text: '{{number_format(($tot_i1)+($tot_i2)+($tot_i3),2)-number_format(($tot_o1)+($tot_o2)+($tot_o3),2)}}', style: 'tableHeader', alignment: 'right' },
+                                    { text: '{{number_format((($tot_i1)+($tot_i2)+($tot_i3))-number_format(($tot_o1)+($tot_o2)+($tot_o3)),2)}}', style: 'tableHeader', alignment: 'right' },
                                 ],
                             ],
                         },
