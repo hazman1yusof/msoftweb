@@ -81,10 +81,10 @@
                             widths: [60,'*',60,70], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'DATE', style: 'tableHeader' },
-                                    { text: 'EXAM', style: 'tableHeader' },
-                                    { text: 'DATELINE', style: 'tableHeader' },
-                                    { text: 'STAFF', style: 'tableHeader' },
+                                    { text: 'DATE', style: 'tableHeader', fillColor: '#dddddd' },
+                                    { text: 'EXAM', style: 'tableHeader', fillColor: '#dddddd' },
+                                    { text: 'DATELINE', style: 'tableHeader', fillColor: '#dddddd' },
+                                    { text: 'STAFF', style: 'tableHeader', fillColor: '#dddddd' },
                                 ],
                                 @foreach ($exams as $obj)
                                 [
@@ -96,7 +96,7 @@
                                 @endforeach
                             ]
                         },
-                        layout: 'lightHorizontalLines',
+                        // layout: 'lightHorizontalLines',
                     },
                 ],
                 styles: {

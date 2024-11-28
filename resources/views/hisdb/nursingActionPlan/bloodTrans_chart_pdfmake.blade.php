@@ -81,26 +81,26 @@
                             widths: [70,70,70,70,70,70], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'DATE', style: 'tableHeader' },
-                                    { text: 'PACK CELL', style: 'tableHeader' },
-                                    { text: 'WHOLE BODY', style: 'tableHeader' },
-                                    { text: 'PLATLET', style: 'tableHeader' },
-                                    { text: 'FFP', style: 'tableHeader' },
-                                    { text: 'STAFF', style: 'tableHeader' },
+                                    { text: 'DATE', style: 'tableHeader', fillColor: '#dddddd' },
+                                    { text: 'PACK CELL', style: 'tableHeader', fillColor: '#dddddd' },
+                                    { text: 'WHOLE BODY', style: 'tableHeader', fillColor: '#dddddd' },
+                                    { text: 'PLATLET', style: 'tableHeader', fillColor: '#dddddd' },
+                                    { text: 'FFP', style: 'tableHeader', fillColor: '#dddddd' },
+                                    { text: 'STAFF', style: 'tableHeader', fillColor: '#dddddd' },
                                 ],
                                 @foreach ($bloodTrans as $obj)
                                 [
                                     { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->startdate)->format('d-m-Y')}}' },
-                                    { text: '{{$obj->packcell}}' },
-                                    { text: '{{$obj->wholebody}}' },
-                                    { text: '{{$obj->platlet}}' },
-                                    { text: '{{$obj->ffp}}' },
+                                    { text: '{{$obj->packcell}}', alignment: 'right' },
+                                    { text: '{{$obj->wholebody}}', alignment: 'right' },
+                                    { text: '{{$obj->platlet}}', alignment: 'right' },
+                                    { text: '{{$obj->ffp}}', alignment: 'right' },
                                     { text: '{{$obj->adduser}}' },
                                 ],
                                 @endforeach
                             ]
                         },
-                        layout: 'lightHorizontalLines',
+                        // layout: 'lightHorizontalLines',
                     },
                 ],
                 styles: {

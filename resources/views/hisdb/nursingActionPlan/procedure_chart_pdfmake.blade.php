@@ -34,7 +34,7 @@
                         alignment: 'center'
                     },
                     {
-                        style: 'tableExample',
+                        style: 'tableExampleHdr',
                         table: {
                             headerRows: 1,
                             widths: [50,1,'*',80,1,'*'], // panjang standard dia 515
@@ -57,7 +57,7 @@
                                     { text: `{!!$pat_mast->diagnosis!!}` }
                                 ],
                                 [
-                                    { text: 'NRICS' },
+                                    { text: 'NRIC' },
                                     { text: ':' },
                                     { text: '{{$pat_mast->Newic}}' },
                                     { text: 'OPERATION' },
@@ -96,9 +96,9 @@
                                 widths: [80,80,'*'], // panjang standard dia 515
                                 body: [
                                     [
-                                        { text: 'START DATE', style: 'tableHeader' },
-                                        { text: 'END DATE', style: 'tableHeader' },
-                                        { text: 'STAFF', style: 'tableHeader' },
+                                        { text: 'START DATE', style: 'tableHeader', fillColor: '#dddddd' },
+                                        { text: 'END DATE', style: 'tableHeader', fillColor: '#dddddd' },
+                                        { text: 'STAFF', style: 'tableHeader', fillColor: '#dddddd' },
                                     ],
                                     @foreach ($procedure as $obj)
                                         @if($obj->prodType == $type->prodType)
@@ -111,7 +111,7 @@
                                     @endforeach
                                 ]
                             },
-                            layout: 'lightHorizontalLines',
+                            // layout: 'lightHorizontalLines',
                         },
                         @endforeach
                     
@@ -127,8 +127,12 @@
                         bold: true,
                         margin: [0, 10, 0, 5]
                     },
+                    tableExampleHdr: {
+                        fontSize: 8,
+                        margin: [0, 5, 0, 10]
+                    },
                     tableExample: {
-                        fontSize: 10,
+                        fontSize: 9.5,
                         margin: [0, 5, 0, 10]
                     },
                     tableDetail: {

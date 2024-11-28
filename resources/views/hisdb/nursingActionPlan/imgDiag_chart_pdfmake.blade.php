@@ -81,10 +81,10 @@
                             widths: [60,'*',70,70], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'START DATE', style: 'tableHeader' },
-                                    { text: 'IMAGING & DIAGNOSTIC', style: 'tableHeader' },
-                                    { text: 'DATELINE', style: 'tableHeader' },
-                                    { text: 'STAFF', style: 'tableHeader' },
+                                    { text: 'START DATE', style: 'tableHeader', fillColor: '#dddddd' },
+                                    { text: 'IMAGING & DIAGNOSTIC', style: 'tableHeader', fillColor: '#dddddd' },
+                                    { text: 'DATELINE', style: 'tableHeader', fillColor: '#dddddd' },
+                                    { text: 'STAFF', style: 'tableHeader', fillColor: '#dddddd' },
                                 ],
                                 @foreach ($imgDiag as $obj)
                                 [
@@ -96,7 +96,7 @@
                                 @endforeach
                             ]
                         },
-                        layout: 'lightHorizontalLines',
+                        // layout: 'lightHorizontalLines',
                     },
                 ],
                 styles: {
