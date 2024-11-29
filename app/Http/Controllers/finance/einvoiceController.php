@@ -42,8 +42,8 @@ class einvoiceController extends defaultController
     public function form(Request $request)
     {   
         switch($request->oper){
-            // case 'add':
-            //     return $this->defaultAdd($request);
+            case 'submit_einvoice':
+                return $this->submit_einvoice($request);
             // case 'edit':
             //     return $this->defaultEdit($request);
             // case 'del':
@@ -123,6 +123,28 @@ class einvoiceController extends defaultController
         
         return json_encode($responce);
 
+    }
+
+    public function submit_einvoice(Request $request){
+
+        DB::beginTransaction();
+        try {
+
+            $user = DB::table('sysdb.users')
+                    ->where('compcode',session('compcode'))
+                    ->where('username',$request->username)
+                    ->where('password',$request->password);
+
+            if(!$user->exists()){
+                throw new \Exception("Wrong Password or username");
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
 
     public function acctent_sales(Request $request){

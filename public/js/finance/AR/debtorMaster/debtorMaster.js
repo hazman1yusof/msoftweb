@@ -73,6 +73,41 @@ $(document).ready(function (){
 	);
 	dialog_debtortype.makedialog(true);
 	
+	var dialog_statecode = new ordialog(
+		'statecode','hisdb.state','#statecode',errorField,
+		{
+			colModel: [
+				{ label: 'Code', name: 'statecode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+				filterCol: ['compcode','recstatus'],
+				filterVal: ['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function (){
+			},
+			gridComplete: function (obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title: "Select Bill Type IP",
+			open: function (){
+				dialog_statecode.urlParam.filterCol= ['compcode','recstatus'],
+				dialog_statecode.urlParam.filterVal= ['session.compcode','ACTIVE']
+			},
+			close: function(){
+				$('#teloffice').focus();
+			}
+		},'urlParam', 'radio', 'tab'
+	);
+	dialog_statecode.makedialog(true);
+	
 	var dialog_billtype = new ordialog(
 		'billtype','hisdb.billtymst','#billtype',errorField,
 		{
@@ -198,11 +233,13 @@ $(document).ready(function (){
 				if(oper!='view'){
 					dialog_billtype.on();
 					dialog_billtypeop.on();
+					dialog_statecode.on();
 				}
 				if(oper!='add'){
 					dialog_debtortype.check(errorField);
 					dialog_billtype.check(errorField);
 					dialog_billtypeop.check(errorField);
+					dialog_statecode.check(errorField);
 				}
 			},
 			close: function (event, ui){
@@ -212,6 +249,7 @@ $(document).ready(function (){
 				dialog_debtortype.off();
 				dialog_billtype.off();
 				dialog_billtypeop.off();
+				dialog_statecode.off();
 				if(oper=='view'){
 					$(this).dialog("option", "buttons",butt1);
 				}
@@ -282,6 +320,7 @@ $(document).ready(function (){
 			{ label: 'Credit Term', name: 'creditterm', hidden: true },
 			{ label: 'Coverage IP', name: 'coverageip', hidden: true },
 			{ label: 'Coverage OP', name: 'coverageop', hidden: true },
+			{ label: 'tinid', name: 'tinid', hidden: true },
 			{ label: 'idno', name: 'idno', hidden: true },
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 			// { label: 'adddate', name: 'adddate', width: 90, hidden: true },

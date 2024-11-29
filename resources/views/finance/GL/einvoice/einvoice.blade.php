@@ -60,7 +60,6 @@ i.fa {
 				</div>
 			</fieldset> 
 		</form>
-
         <div class="panel panel-default">
 		    <div class="panel-heading" style="position:relative;">Reprint Bill
 					<a class='pull-right pointer text-primary' style="padding-left: 30px" id='reprint__summbill'>
@@ -69,7 +68,7 @@ i.fa {
 					<a class='pull-right pointer text-primary' style="padding-left: 30px" id='reprint_bill'>
 				    	Detail Bill
 					</a>
-					<a class='pull-right btn btn-sm btn-primary'  id='einvoice_submit' style="
+					<a class='pull-right btn btn-sm btn-primary'  id='btn_open_dialog_login' style="
 						position: absolute;
 		    		top: 3px;
 		    		right: 190px;">
@@ -107,7 +106,25 @@ i.fa {
 				</div>
 			</div>	
 		</div> 
-    </div>
+
+		<div id="dialog_user_login" title="Login User" >
+			<div class="panel-body" style="position: relative;">
+				<div id="fail_msg" style="color: darkred;"></div>
+				<div class="col-md-12">
+				  	<label class="control-label" for="username_login">Username</label>  
+						<input id="username_login" name="username_login" type="text" class="form-control input-sm text-uppercase" autocomplete="off">
+				</div>
+				<div class="col-md-12">
+				  	<label class="control-label" for="password_login">Password</label>  
+						<input id="password_login" name="password_login" type="password" class="form-control input-sm text-uppercase" autocomplete="off">
+				</div>
+				<div class="col-md-3">
+					<button class="btn btn-primary pull-right" id="login_submit" style="margin-top: 10px;">Submit</button>
+				</div>
+			</div>
+		</div>
+
+   </div>
 
 @endsection
 

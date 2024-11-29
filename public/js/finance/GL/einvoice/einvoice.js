@@ -25,6 +25,7 @@ $(document).ready(function () {
 	};
 
 	var fdl = new faster_detail_load();
+	var myfail_msg = new fail_msg_func();
 	page_to_view_only($('#viewonly').val());
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
@@ -236,6 +237,45 @@ $(document).ready(function () {
 			urlParam_acctent.action = 'acctent_cost';
 			refreshGrid("#gridacctent", urlParam_acctent);
 		}
+	});
+
+	$("#dialog_user_login")
+	  .dialog({
+		width: 3/10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function( event, ui ) {
+
+		},
+		close: function( event, ui ) {
+
+		}
+	  });
+
+    $('#btn_open_dialog_login').click(function(){
+        $('#dialog_user_login').dialog('open');
+    });
+
+    $('#login_submit').click(function(){
+		myfail_msg_.clear_fail();
+        param={
+			action: 'submit_einvoice',
+			idno: selrowData('#jqGrid').idno,
+			username: $('#username_login').val(),
+			password: $('#password_login').val(),
+			_token: $("#_token").val()
+		}
+		$.post( "./einvoice/form",param, function( data ){
+		}).fail(function(data) {
+			myfail_msg.add_fail({
+				id:'response',
+				textfld:"",
+				msg:data.responseText,
+			});
+			//////////////////errorText(dialog,data.responseText);
+		}).done(function(data){
+        	$('#dialog_user_login').dialog('close')
+		});
 	});
 
 });

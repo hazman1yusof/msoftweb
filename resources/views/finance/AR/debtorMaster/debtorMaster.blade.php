@@ -95,14 +95,13 @@
 				<div class="col-md-3">
 					<input id="postcode" name="postcode" type="text" class="form-control input-sm">
 				</div>
-				
-				<label class="col-md-2 control-label" for="payto">Payable To</label>
+				<label class="col-md-2 control-label" for="billtype">State Code</label>
 				<div class="col-md-3">
-					<select class="form-control col-md-4" id='payto' name='payto' data-validation="required" data-validation-error-msg="Please Select Value">
-						<option selected></option>
-						<option value='UKM SPECIALIST CENTRE'>UKM SPECIALIST CENTRE</option>
-						<option value='UKM MEDICARE'>UKM MEDICARE</option>
-					</select> 
+					<div class='input-group'>
+						<input id="statecode" name="statecode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					</div>
+					<span class="help-block"></span>
 				</div>
 			</div>
 			
@@ -196,12 +195,27 @@
 					<input id="creditterm" name="creditterm" type="text" class="form-control input-sm">
 				</div>
 			</div>
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="payto">Payable To</label>
+				<div class="col-md-3">
+					<select class="form-control col-md-4" id='payto' name='payto' data-validation="required" data-validation-error-msg="Please Select Value">
+						<option selected></option>
+						<option value='UKM SPECIALIST CENTRE'>UKM SPECIALIST CENTRE</option>
+						<option value='UKM MEDICARE'>UKM MEDICARE</option>
+					</select> 
+				</div>
+			</div>
 			
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="requestgl">Request GL</label>
-				<div class="col-md-8">
+				<div class="col-md-3">
 					<label class="radio-inline"><input type="radio" name="requestgl" value='1'>Yes</label>
 					<label class="radio-inline"><input type="radio" name="requestgl" value='0'>No</label>
+				</div>
+				<label class="col-md-2 control-label" for="requestgl">Tin ID</label>
+				<div class="col-md-3">
+					<input id="tinid" name="tinid" type="text" class="form-control input-sm">
 				</div>
 			</div>
 			
@@ -297,5 +311,5 @@
 			}
 		});
 	</script>
-	<script src="js/finance/AR/debtorMaster/debtorMaster.js"></script>
+	<script src="js/finance/AR/debtorMaster/debtorMaster.js?v=1.1"></script>
 @endsection
