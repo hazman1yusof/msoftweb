@@ -258,7 +258,7 @@ $(document).ready(function () {
     });
 
     $('#login_submit').click(function(){
-		myfail_msg_.clear_fail();
+		myfail_msg.clear_fail();
         param={
 			action: 'submit_einvoice',
 			idno: selrowData('#jqGrid').idno,

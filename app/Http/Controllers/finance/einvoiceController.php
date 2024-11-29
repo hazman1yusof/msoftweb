@@ -41,7 +41,7 @@ class einvoiceController extends defaultController
 
     public function form(Request $request)
     {   
-        switch($request->oper){
+        switch($request->action){
             case 'submit_einvoice':
                 return $this->submit_einvoice($request);
             // case 'edit':
