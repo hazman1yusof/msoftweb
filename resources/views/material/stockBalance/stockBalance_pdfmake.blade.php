@@ -30,7 +30,7 @@
 		@foreach($deptcode as $key => $dtobj)
 			{
 			@foreach($dtobj as $key2 => $val)
-				'{{$key2}}' : `{{$val}}`,
+				'{{$key2}}' : `{!!str_replace('`', '', $val)!!}`,
 			@endforeach
 			},
 		@endforeach 
@@ -153,7 +153,7 @@
                     headerRows: 2,
                 	dontBreakRows: true,
                     widths: [50,26,40,30,30,30,30,30,30,30,30,30,30,40],//panjang standard dia 515
-					body: make_body(e.deptcode.trim().toUpperCase(),e.description)
+					body: make_body(e.deptcode.trim().toUpperCase(),e.description,e.unit)
 				}
 			};
     		content.push(ret_con);
@@ -163,7 +163,7 @@
 		return content;
 	}
 
-	function make_body(dept,desc){
+	function make_body(dept,desc,unit){
 		var retval = [
 			[
 				{
@@ -191,8 +191,8 @@
 								{text: ': '+header.printby},
 								{text: 'Print Date',bold: true}, 
 								{text: ': '+moment().format("DD-MM-YYYY")},
-								{text: '',bold: true}, 
-								{text: ''},
+								{text: 'Unit',bold: true}, 
+								{text: ': '+unit},
 							]
                         ]
                     },

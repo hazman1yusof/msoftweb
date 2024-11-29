@@ -56,6 +56,11 @@ class stockBalanceController extends defaultController
         if($validator->fails()){
             abort(404);
         }
+        $unit_from = $request->unit_from;
+        if(empty($unit_from)){
+            $unit_from = '%';
+        }
+        $unit_to = $request->unit_to;
 
         $dept_from = $request->dept_from;
         if(empty($dept_from)){
@@ -70,29 +75,39 @@ class stockBalanceController extends defaultController
         $year = $request->year;
         $period = $request->period;
 
-        $deptcode = DB::table('material.stockloc as s')
-                        ->select('s.deptcode','d.description')
-                        ->join('sysdb.department as d', function($join){
-                            $join = $join->on('d.deptcode', '=', 's.deptcode');
-                            $join = $join->where('d.compcode', '=', session('compcode'));
-                        })
-                        ->where('s.compcode',session('compcode'))
-                        // ->where('s.unit',session('unit'))
-                        ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
-                        ->where('s.year', '=', $year)
-                        ->distinct('s.deptcode')
-                        ->get('deptcode','description');
+        // $deptcode = DB::table('material.stockloc as s')
+        //                 ->select('s.deptcode','d.description')
+        //                 ->join('sysdb.department as d', function($join){
+        //                     $join = $join->on('d.deptcode', '=', 's.deptcode');
+        //                     $join = $join->where('d.compcode', '=', session('compcode'));
+        //                 })
+        //                 ->where('s.compcode',session('compcode'))
+        //                 // ->where('s.unit',session('unit'))
+        //                 ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
+        //                 ->where('s.year', '=', $year)
+        //                 ->distinct('s.deptcode')
+        //                 ->get('deptcode','description');
      
         $stockloc = DB::table('material.stockloc as s')
-                        ->select('p.description','s.idno','s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit')
-                        ->join('material.product as p', function($join) use ($request){
+                        ->select('s.unit','p.description','s.idno','s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit','d.description as dept_desc','sc.description as unit_desc')
+                        ->join('material.product as p', function($join){
                                 $join = $join->on('p.itemcode', '=', 's.itemcode');
                                 $join = $join->on('p.uomcode', '=', 's.uomcode');
                                 $join = $join->where('p.compcode', '=', session('compcode'));
-                                // $join = $join->where('p.unit', '=', session('unit'));
+                                $join = $join->on('p.unit', '=', 's.unit');
                             })
+                        ->join('sysdb.department as d', function($join){
+                            $join = $join->on('d.deptcode', '=', 's.deptcode');
+                            // $join = $join->on('d.unit', '=', 's.unit');
+                            $join = $join->where('d.compcode', '=', session('compcode'));
+                        })
+                        ->join('sysdb.sector as sc', function($join){
+                            $join = $join->on('sc.sectorcode', '=', 's.unit');
+                            // $join = $join->on('d.unit', '=', 's.unit');
+                            $join = $join->where('sc.compcode', '=', session('compcode'));
+                        })
                         ->where('s.compcode',session('compcode'))
-                        // ->where('s.unit',session('unit'))
+                        ->whereBetween('s.unit',[$unit_from,$unit_to.'%'])
                         ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
                         ->whereBetween('s.itemcode',[$item_from,$item_to.'%'])
                         ->where('s.year', '=', $year)
@@ -126,6 +141,9 @@ class stockBalanceController extends defaultController
             $obj->oth_qty = $oth_qty;
 
         }
+
+        $unit = $stockloc->unique('unit');
+        $deptcode = $stockloc->unique('deptcode');
         
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
@@ -140,7 +158,7 @@ class stockBalanceController extends defaultController
         $header->year = $year;
         $header->period = $period;
 
-        return view('material.stockBalance.stockBalance_pdfmake',compact('stockloc','company','header','deptcode'));
+        return view('material.stockBalance.stockBalance_pdfmake',compact('stockloc','company','header','deptcode','unit'));
     }
 
     public function stockBalance_xls(Request $request){
