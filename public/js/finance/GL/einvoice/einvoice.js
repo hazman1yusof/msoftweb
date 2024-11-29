@@ -52,6 +52,7 @@ $(document).ready(function () {
 			{ label: 'Amount', name: 'amount', width: 50, align: 'right',formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}},
 			{ label: 'Bill Date', name: 'entrydate', width: 40},
 			{ label: 'invno', name: 'invno', hidden:true},
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
 		],
 		autowidth:true,
         multiSort: true,
@@ -282,4 +283,7 @@ $(document).ready(function () {
 
 function dateFormatter_(cellvalue, options, rowObject){
 	return moment(cellvalue, 'YYYY-MM-DD HH:mm:ss').format("DD-MM-YYYY");
+}
+function formatterCheckbox(cellvalue, options, rowObject){
+	return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 }
