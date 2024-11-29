@@ -1264,7 +1264,7 @@ $(document).ready(function () {
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 			}
 		}else if($('#recstatus_use').val() == 'CANCEL'){
-			if(rowObject.purordhd_recstatus == "OPEN"){
+			if(rowObject.purordhd_recstatus == "OPEN" || rowObject.purordhd_recstatus == "PREPARED" || rowObject.purordhd_recstatus == "VERIFIED"){
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 			}
 		}else if($('#recstatus_use').val() == 'REOPEN'){

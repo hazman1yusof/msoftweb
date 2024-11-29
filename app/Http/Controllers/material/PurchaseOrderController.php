@@ -507,25 +507,36 @@ class PurchaseOrderController extends defaultController
             foreach ($request->idno_array as $value){
 
                 $purordhd = DB::table("material.purordhd")
+                            ->where('compcode',session('compcode'))
                             ->where('idno','=',$value);
 
                 $purordhd_get = $purordhd->first();
 
-                if($purordhd_get->recstatus != 'OPEN'){
-                    continue;
+                if(!in_array($purordhd_get->recstatus, ['OPEN','INCOMPLETED','PREPARED','VERIFIED'])){
+                    throw new \Exception("Cant cancel this document, check document status");
                 }
 
-                $purordhd->update([
-                    'recstatus' => 'CANCELLED'
-                ]);
+                DB::table("material.purordhd")
+                    ->where('compcode',session('compcode'))
+                    ->where('idno','=',$value)
+                    ->update([
+                        'recstatus' => 'CANCELLED',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
 
                 DB::table("material.purorddt")
+                    ->where('compcode',session('compcode'))
                     ->where('recno','=',$purordhd_get->recno)
                     ->update([
                         'recstatus' => 'CANCELLED',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
+
+                DB::table("material.queuepo")
+                    ->where('recno','=',$purordhd_get->recno)
+                    ->delete();
             }
 
 
@@ -543,22 +554,6 @@ class PurchaseOrderController extends defaultController
             //             ->header('Content-Type', 'text/plain');
             //     }
             // }
-
-            $purordhd->update([
-                    'recstatus' => 'CANCELLED'
-                ]);
-
-            DB::table("material.purorddt")
-                ->where('recno','=',$purordhd_get->recno)
-                ->update([
-                    'recstatus' => 'CANCELLED',
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
-
-            DB::table("material.queuepo")
-                ->where('recno','=',$purordhd_get->recno)
-                ->delete();
            
             DB::commit();
             
