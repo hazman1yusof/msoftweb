@@ -285,5 +285,5 @@ function dateFormatter_(cellvalue, options, rowObject){
 	return moment(cellvalue, 'YYYY-MM-DD HH:mm:ss').format("DD-MM-YYYY");
 }
 function formatterCheckbox(cellvalue, options, rowObject){
-	return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+	return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['idno']+"' data-idno='"+rowObject['idno']+"' data-rowid='"+options.rowId+"'>";
 }
