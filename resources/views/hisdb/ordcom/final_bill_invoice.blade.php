@@ -177,8 +177,8 @@
                         [
                             {text: '',bold: true}, 
                             {text: ': '+e_ep.address2},
-                            {text: ''}, 
-                            {text: ''},
+                            {text: 'Bill No.',bold: true}, 
+                            {text: ': '+e_ep.billno},
                         ],
                         [
                             {text: '',bold: true}, 

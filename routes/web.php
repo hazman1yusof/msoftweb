@@ -788,6 +788,11 @@ Route::get('/reprintBill','finance\ReprintBillController@show');
 Route::get('/reprintBill/table','finance\ReprintBillController@table');
 Route::post('/reprintBill/form','finance\ReprintBillController@form');
 
+//// Reprint Bill ///
+Route::get('/einvoice','finance\einvoiceController@show');
+Route::get('/einvoice/table','finance\einvoiceController@table');
+Route::post('/einvoice/form','finance\einvoiceController@form');
+
 //// Department setup ///
 Route::get('/department','finance\DepartmentController@show');
 Route::get('/department/table','finance\DepartmentController@table');

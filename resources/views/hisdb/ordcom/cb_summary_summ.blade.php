@@ -85,8 +85,8 @@
                                 [
                                     {text: '',bold: true}, 
                                     {text: ': '+patmast_episode.address2},
-                                    {text: ''}, 
-                                    {text: ''},
+                                    {text: 'Bill No.',bold: true}, 
+                                    {text: ': '+chargetrx[0].billno},
                                 ],
                                 [
                                     {text: '',bold: true}, 
