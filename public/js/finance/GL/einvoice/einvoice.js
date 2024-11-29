@@ -52,7 +52,7 @@ $(document).ready(function () {
 			{ label: 'Amount', name: 'amount', width: 50, align: 'right',formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}},
 			{ label: 'Bill Date', name: 'entrydate', width: 40},
 			{ label: 'invno', name: 'invno', hidden:true},
-			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 25,align: "center", formatter: formatterCheckbox },
 		],
 		autowidth:true,
         multiSort: true,
