@@ -1704,23 +1704,23 @@ class PointOfSalesController extends defaultController
                 throw new \Exception("Payment amount needed");
             }
 
-            if($request->tabform == '#f_tab-cash'){
+            if($request->tabform == '#f_tab-cash' || $request->tabform == '#f_tab-cash2'){
 
-            }else if($request->tabform == '#f_tab-card'){
+            }else if($request->tabform == '#f_tab-card' || $request->tabform == '#f_tab-card2'){
                 if(empty($request->dbacthdr_paymode)){
                     throw new \Exception("Please select card");
                 }
                 if(empty($request->dbacthdr_reference)){
                     throw new \Exception("Please enter reference");
                 }
-            }else if($request->tabform == '#f_tab-cheque'){
+            }else if($request->tabform == '#f_tab-cheque' || $request->tabform == '#f_tab-cheque2'){
                 if(empty($request->dbacthdr_entrydate)){
                     throw new \Exception("Please enter Entry Date");
                 }
                 if(empty($request->dbacthdr_reference)){
                     throw new \Exception("Please enter reference");
                 }
-            }else if($request->tabform == '#f_tab-debit'){
+            }else if($request->tabform == '#f_tab-debit' || $request->tabform == '#f_tab-debit2'){
                 if(empty($request->dbacthdr_entrydate)){
                     throw new \Exception("Please enter Entry Date");
                 }
@@ -1730,7 +1730,7 @@ class PointOfSalesController extends defaultController
                 if(empty($request->dbacthdr_paymode)){
                     throw new \Exception("Please select bank");
                 }
-            }else if($request->tabform == '#f_tab-forex'){
+            }else if($request->tabform == '#f_tab-forex' || $request->tabform == '#f_tab-forex2'){
                 throw new \Exception("Forex are disabed");
             }else{
                 throw new \Exception("Error request data");
@@ -3904,21 +3904,21 @@ class PointOfSalesController extends defaultController
         $paytype_ = '';
         $mode = false;
         switch (strtolower($paytype)) {
-            case '#f_tab-cash':
+            case '#f_tab-cash2':
                 $paytype_ = 'Cash';
                 break;
-            case '#f_tab-card':
+            case '#f_tab-card2':
                 $paytype_ = 'Card';
                 $mode = true;
                 break;
-            case '#f_tab-cheque':
+            case '#f_tab-cheque2':
                 $paytype_ = 'Cheque';
                 break;
-            case '#f_tab-debit':
+            case '#f_tab-debit2':
                 $paytype_ = 'Bank';
                 $mode = true;
                 break;
-            case '#f_tab-forex':
+            case '#f_tab-forex2':
                 $paytype_ = 'Forex';
                 break;
         }

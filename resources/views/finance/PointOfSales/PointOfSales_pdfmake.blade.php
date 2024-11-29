@@ -20,7 +20,7 @@
 		@foreach($billsum as $key => $bilsm)
 		{
 			@foreach($bilsm as $key2 => $val)
-				'{{$key2}}' : `{!!$val!!}`,
+				'{{$key2}}' : `{!!str_replace('`', '', $val)!!}`,
 			@endforeach
 		},
 		@endforeach 
@@ -97,7 +97,7 @@
 											],
 											[
 												{text:'Pay Mode',margin: [0, -2, 0, 0]},
-												{text:`:  {{$receipt_obj->paymode}}`, alignment: 'left',margin: [0, -2, 0, 0]}
+												{text:`:  {!!$receipt_obj->paymode!!}`, alignment: 'left',margin: [0, -2, 0, 0]}
 											],
 											[
 												{text:'App.Code',margin: [0, -2, 0, 0]},

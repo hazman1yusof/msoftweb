@@ -3301,7 +3301,7 @@ function receipt_class2(){
 		obj.idno = $('#db_idno').val();
 		obj._token = $('#_token').val();
 		obj.oper = 'pos_receipt_save';
-		obj.tabform = $('#receipt_panel').data('tabform');
+		obj.tabform = $('#dialog_payment').data('tabform');
 		myfail_msg_r2.clear_fail();
 
 		let serializedForm = trimmall($('#dialog_payment').data('tabform'),true);

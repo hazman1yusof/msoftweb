@@ -1465,6 +1465,10 @@ class PointOfSalesDetailController extends defaultController
                     ->where('auditno','=',$auditno);
             
             $dbacthdr = $dbacthdr->first();
+
+            if($dbacthdr->recstatus == 'POSTED'){
+                throw new \Exception("Cant add anymore item, Payment already made",500);
+            }
             
             ////1. calculate rowno by recno
             $sqlln = DB::table('debtor.billsum')->select('rowno')
@@ -1605,7 +1609,7 @@ class PointOfSalesDetailController extends defaultController
             
             DB::rollback();
             
-            return response($e, 500);
+            return response($e->getMessage(), 500);
         
         }
         
@@ -1627,6 +1631,10 @@ class PointOfSalesDetailController extends defaultController
                     ->where('auditno','=',$auditno);
             
             $dbacthdr = $dbacthdr->first();
+
+            if($dbacthdr->recstatus == 'POSTED'){
+                throw new \Exception("Cant add anymore item, Payment already made",500);
+            }
             
             foreach ($request->dataobj as $key => $value) {
                 $stockloc = DB::table('material.stockloc')
@@ -1708,7 +1716,7 @@ class PointOfSalesDetailController extends defaultController
             
             DB::rollback();
             
-            return response($e, 500);
+            return response($e->getMessage(), 500);
             
         }        
     }
@@ -1721,16 +1729,20 @@ class PointOfSalesDetailController extends defaultController
 
             $source = $request->source;
             $trantype = $request->trantype;
-            $auditno = $request->auditno;
+            $auditno = intval($request->auditno);
             $idno = $request->idno;
 
-            // $dbacthdr = DB::table('debtor.dbacthdr')
-            //         ->where('compcode','=',session('compcode'))
-            //         ->where('source','=',$source)
-            //         ->where('trantype','=',$trantype)
-            //         ->where('auditno','=',$auditno);
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=',$source)
+                    ->where('trantype','=',$trantype)
+                    ->where('auditno','=',$auditno);
 
-            // $dbacthdr = $dbacthdr->first();
+            $dbacthdr = $dbacthdr->first();
+            
+            if($dbacthdr->recstatus == 'POSTED'){
+                throw new \Exception("Cant delete anymore item, Payment already made",500);
+            }
 
             // $billsum = DB::table('debtor.billsum')
             //                 ->where('compcode',session('compcode'))
