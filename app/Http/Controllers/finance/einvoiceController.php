@@ -34,6 +34,8 @@ class einvoiceController extends defaultController
                 return $this->acctent_cost($request);
             case 'einvoice_show':
                 return $this->einvoice_show($request);
+            case 'show_result':
+                return $this->show_result($request);
             default:
                 return 'error happen..';
         }
@@ -139,6 +141,10 @@ class einvoiceController extends defaultController
 
             $all_document = [];
             foreach ($request->idno_array as $idno) {
+                if($this->check_invno_exist($idno) == true){
+                    continue;
+                }
+
                 $dbacthdr = DB::table('debtor.dbacthdr as db')
                             ->select('db.idno','db.invno','db.amount','dm.name','dm.tinid','dm.address1','dm.address2','dm.address3','dm.postcode','dm.statecode','dm.countrycode','dm.teloffice','pm.Newic','pm.telhp')
                             ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
@@ -155,6 +161,7 @@ class einvoiceController extends defaultController
 
                 $lhdn_header = new stdClass();
                 $lhdn_header->idno = $dbacthdr->idno;
+                $lhdn_header->subby = $request->username;
                 $lhdn_header->invno = $dbacthdr->invno;
                 $lhdn_header->name = $dbacthdr->name;
                 $lhdn_header->tin = $dbacthdr->tinid;
@@ -208,6 +215,10 @@ class einvoiceController extends defaultController
                 array_push($all_document, $document);
             }
 
+            if(count($all_document) == 0){
+                return 0;
+            }
+
             $filename_submit = storage_path("json").'/example_submit_document.json';
             $file_submit = File::get($filename_submit);
             $json_submit = json_decode($file_submit);
@@ -235,9 +246,6 @@ class einvoiceController extends defaultController
 
                 $myresponse = json_decode($response_);
                 $this->einvoice_storeDB($myresponse,$request->username);
-                // echo $retval;
-
-                // return view('einvoice_show',compact('myresponse','header','detail'));
 
             }catch(\GuzzleHttp\Exception\RequestException $e) {
                 if ($e->hasResponse()) {
@@ -245,8 +253,6 @@ class einvoiceController extends defaultController
 
                     $myresponse = json_decode((string) $response->getBody());
                     $this->einvoice_storeDB($myresponse,$request->username);
-                    // echo $retval;
-                    // return view('einvoice_show',compact('myresponse','header','detail'));
                 }
             }
 
@@ -478,9 +484,11 @@ class einvoiceController extends defaultController
         $json->Invoice[0]->InvoiceLine = $InvoiceLine_array;
 
         $array_insert = [
-            'invno' => $header->idno,
+            'invno' => $header->invno,
+            'inv_idno' => $header->idno,
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'json' => json_encode($json),
+            'subby' => $header->subby,
         ];
 
         DB::table('sysdb.einvoice_log')
@@ -517,7 +525,7 @@ class einvoiceController extends defaultController
     public function einvoice_show(Request $request){
         $idno = $request->idno;
         $header = DB::table('debtor.dbacthdr as db')
-                    ->select('db.idno','db.invno','db.amount','dm.name','dm.tinid','dm.address1','dm.address2','dm.address3','dm.postcode','dm.statecode','dm.countrycode','dm.teloffice','pm.Newic','pm.telhp')
+                    ->select('db.idno','db.invno','db.amount','db.posteddate','dm.name','dm.tinid','dm.address1','dm.address2','dm.address3','dm.postcode','dm.statecode','dm.countrycode','dm.teloffice','pm.Newic','pm.telhp')
                     ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
                         $join = $join->where('dm.compcode', '=', session('compcode'));
                         $join = $join->on('dm.debtorcode', '=', 'db.debtorcode');
@@ -530,6 +538,19 @@ class einvoiceController extends defaultController
                     ->where('db.idno',$idno)
                     ->first();
 
+        $invoice = DB::table('sysdb.einvoice_log')
+                    ->where('inv_idno',$header->idno)
+                    ->orderBy('idno','DESC')
+                    ->first();
+
+        $header->status = $invoice->status;
+        $header->submissionUid = $invoice->submissionUid;
+        $header->invoiceCodeNumber = $invoice->invoiceCodeNumber;
+        $header->uuid = $invoice->uuid;
+        $header->message = $invoice->message;
+        $header->code = $invoice->code;
+        $header->propertyPath = $invoice->propertyPath;
+
         $detail = DB::table('debtor.billsum as bs')
                     ->select('bs.idno','bs.chggroup','bs.uom','bs.totamount','cm.description')
                     ->leftJoin('hisdb.chgmast as cm', function($join) use ($request){
@@ -537,7 +558,7 @@ class einvoiceController extends defaultController
                         $join = $join->on('cm.chgcode', '=', 'bs.chggroup');
                         $join = $join->on('cm.uom', '=', 'bs.uom');
                     })
-                    ->where('bs.invno',$dbacthdr->invno)
+                    ->where('bs.invno',$header->invno)
                     ->where('bs.compcode',session('compcode'))
                     ->where('bs.source','PB')
                     ->where('bs.trantype','IN')
@@ -562,7 +583,7 @@ class einvoiceController extends defaultController
             foreach ($myresponse->rejectedDocuments as $rejectedDocument) {
                 $invno = substr($rejectedDocument->invoiceCodeNumber, 5);
                 DB::table('sysdb.einvoice_log')
-                    ->where('invno',$invno)
+                    ->where('inv_idno',$invno)
                     ->update([
                         'status' => 'REJECTED',
                         'submissionUid' => $myresponse->submissionUid,
@@ -585,7 +606,7 @@ class einvoiceController extends defaultController
             foreach ($myresponse->acceptedDocuments as $acceptedDocument) {
                 $invno = substr($acceptedDocument->invoiceCodeNumber, 5);
                 DB::table('sysdb.einvoice_log')
-                    ->where('invno',$invno)
+                    ->where('inv_idno',$invno)
                     ->update([
                         'status' => 'ACCEPTED',
                         'submissionUid' => $myresponse->submissionUid,
@@ -608,10 +629,22 @@ class einvoiceController extends defaultController
     }
 
     public function check_invno_exist($inv_id){
-        $einvoice = DB::table('einvoice.log')
-                        ->where('invno',$inv_id)
+        $einvoice = DB::table('sysdb.einvoice_log')
+                        ->where('inv_idno',$inv_id)
                         ->where('status','ACCEPTED');
 
         return $einvoice->exists();
+    }
+
+    public function show_result(Request $request){
+        $idno_array = $request->idno_array;
+
+        $einvoices = DB::table('sysdb.einvoice_log')
+            ->whereIn('inv_idno',$idno_array)
+            ->get();
+
+        $einvoices = $einvoices->unique('invno');
+
+        return view('finance.GL.einvoice.show_result',compact('einvoices'));
     }
 }

@@ -232,13 +232,45 @@
                 style: 'tableExample',
                 table: {
                     headerRows: 1,
-                    dontBreakRows: true,
                     widths: [90,200,80,40,80],//panjang standard dia 515
                     body: make_body(e_ep.payercode)
                 }
             };
 
             retval.push(table_body);
+
+            var table_einv = {
+                style: 'header_tbl',
+                table: {
+                    headerRows: 1,
+                    widths: [100,380],//panjang standard dia 515
+                    body: [
+                        [
+                            {text: 'LHDN Status',bold: true}, 
+                            {text: ': '+e_ep.LHDNStatus},
+                        ],
+                        [
+                            {text: 'LHDN Submission ID',bold: true}, 
+                            {text: ': '+e_ep.LHDNSubID},
+                        ],
+                        [
+                            {text: 'LHDN Code N.o',bold: true}, 
+                            {text: ': '+e_ep.LHDNCodeNo},
+                        ],
+                        [
+                            {text: 'LHDN Docoument ID',bold: true}, 
+                            {text: ': '+e_ep.LHDNDocID},
+                        ],
+                        [
+                            {text: 'LHDN Submitted By',bold: true}, 
+                            {text: ': '+e_ep.LHDNSubBy},
+                        ],
+                    ]
+                },
+                layout: 'noBorders',
+            };
+
+            retval.push(table_einv);
 
         });
         return retval;

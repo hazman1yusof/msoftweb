@@ -5052,7 +5052,7 @@ class OrdcomController extends defaultController
         }
 
         $billdet = DB::table('hisdb.billdet as bd')
-                        ->select('bd.idno','bd.mrn','bd.episno','bd.billno','bd.billdate','bd.trxdate','bd.billtype','btm.description as billtype_desc','bd.chgcode','chgm.description','bd.uom','bd.quantity','bd.unitprce','bd.amount','bd.taxamount','bd.discamt','bd.lineno_','ep.payercode','dm.name as debtorname','dm.address1','dm.address2','dm.address3','dm.address4','dm.contact','ep.refno','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc','chgm.invgroup','chgm.chgclass','epis.pay_type','epis.reg_date','epis.reg_time','pm.name as pat_name','pm.newic','doc.doctorname as doc_name')
+                        ->select('bd.idno','bd.mrn','bd.episno','bd.billno','bd.invno','bd.billdate','bd.trxdate','bd.billtype','btm.description as billtype_desc','bd.chgcode','chgm.description','bd.uom','bd.quantity','bd.unitprce','bd.amount','bd.taxamount','bd.discamt','bd.lineno_','ep.payercode','dm.name as debtorname','dm.address1','dm.address2','dm.address3','dm.address4','dm.contact','ep.refno','chgc.description as chgc_desc','chgc.classlevel','chgg.description as chgg_desc','chgt.description as chgt_desc','chgm.invgroup','chgm.chgclass','epis.pay_type','epis.reg_date','epis.reg_time','pm.name as pat_name','pm.newic','doc.doctorname as doc_name')
                         ->join('hisdb.chgmast as chgm', function($join) use ($mrn,$episno){
                             $join = $join->where('chgm.compcode',session('compcode'));
                             $join = $join->on('chgm.chgcode', '=', 'bd.chgcode');
@@ -5119,6 +5119,31 @@ class OrdcomController extends defaultController
 
         $chgclass = $billdet->unique('chgclass')->sortBy('classlevel');
         $epispayer = $billdet->unique('lineno_')->sortBy('lineno_');
+
+        foreach ($epispayer as $key => $value) {
+
+            $value->LHDNStatus = '';
+            $value->LHDNSubID = '';
+            $value->LHDNCodeNo = '';
+            $value->LHDNDocID = '';
+            $value->LHDNSubBy = '';
+
+            $einvoice = DB::table('sysdb.einvoice_log')
+                            ->where('inv',$value->invno)
+                            ->where('status','ACCEPTED')
+                            ->orWhere('status','REJECTED')
+                            ->orderBy('idno','DESC');
+
+            if($einvoice->exists()){
+                $einvoice = $einvoice->first();
+                $value->LHDNStatus = $einvoice->status;
+                $value->LHDNSubID = $einvoice->submissionUid;
+                $value->LHDNCodeNo = $einvoice->invoiceCodeNumber;
+                $value->LHDNDocID = $einvoice->uuid;
+                $value->LHDNSubBy = $einvoice->subby;
+            }
+        }
+
         $invgroup = $billdet->unique('pdescription')->sortBy('pdescription');
         $username = session('username');
         $footer = '';

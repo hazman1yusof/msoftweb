@@ -271,7 +271,7 @@ $(document).ready(function () {
 		$("input[type='checkbox'][name='checkbox_selection']:checked").each(function( index ){
 			idno_array.push($(this).data('idno'));
 		});
-        param={
+        var param={
 			action: 'submit_einvoice',
 			idno: selrowData('#jqGrid').idno,
 			username: $('#username_login').val(),
@@ -290,6 +290,12 @@ $(document).ready(function () {
 			//////////////////errorText(dialog,data.responseText);
 		}).done(function(data){
     		$('#login_submit').prop('disabled',false);
+    		var param={
+    			idno_array: idno_array
+    		}
+
+			window.open('./einvoice/table?action=show_result&'+$.param(param), '_blank');
+
         	// $('#dialog_user_login').dialog('close')
 		});
 	});

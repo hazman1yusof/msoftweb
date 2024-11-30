@@ -17,7 +17,7 @@
 
     <style>
         body{
-            background: #00bcd421;
+/*            background: #00bcd421;*/
         }
         .column{
             padding: 5px 10px !important;
@@ -28,7 +28,7 @@
     </script>
 
     <body>
-      <div class="ui container" style="width: 70vw;margin: auto;">
+      <div class="ui container" style="width: 90vw;margin: auto;">
           <div class="ui segments" style="margin-top: 20px;">
             <div class="ui secondary segment">
               <b>Submitted Invoice</b>
@@ -36,37 +36,41 @@
             <div class="ui segment">
               <div class="ui grid" style="overflow-wrap: break-word;">
                   <div class="two wide column"><b>Invoice no.</b></div>
-                  <div class="six wide column">{{$header->invno}}</div>
+                  <div class="six wide column">{{str_pad($header->invno, 7, "0", STR_PAD_LEFT)}}</div>
                   <div class="two wide column"><b>Invoice Date</b></div>
-                  <div class="six wide column">{{}}</div>
+                  <div class="six wide column">{{$header->posteddate}}</div>
 
                   <div class="two wide column"><b>Buyer Name</b></div>
                   <div class="fourteen wide column">{{$header->name}}</div>
 
                   <div class="two wide column"><b>Buyer I/C</b></div>
-                  <div class="six wide column">{{$header->newic}}</div>
+                  <div class="six wide column">{{$header->Newic}}</div>
                   <div class="two wide column"><b>Buyer TIN</b></div>
-                  <div class="six wide column">{{$header->tin}}</div>
+                  <div class="six wide column">{{$header->tinid}}</div>
 
                   <div class="two wide column"><b>Address</b></div>
-                  <div class="six wide column">{{$header->addr1}}</div>
+                  <div class="six wide column">{{$header->address1}}</div>
                   <div class="two wide column"><b>Handpone</b></div>
+                  @if(!empty($header->teloffice))
+                  <div class="six wide column">{{$header->teloffice}}</div>
+                  @else
                   <div class="six wide column">{{$header->telhp}}</div>
+                  @endif
 
                   <div class="two wide column"><b></b></div>
-                  <div class="six wide column">{{$header->addr2}}</div>
+                  <div class="six wide column">{{$header->address2}}</div>
                   <div class="two wide column"><b>City</b></div>
-                  <div class="six wide column">{{$header->city}}</div>
+                  <div class="six wide column">{{$header->address2}}</div>
 
                   <div class="two wide column"><b></b></div>
-                  <div class="six wide column">{{$header->addr3}}</div>
+                  <div class="six wide column">{{$header->address3}}</div>
                   <div class="two wide column"><b>Postcode</b></div>
                   <div class="six wide column">{{$header->postcode}}</div>
 
                   <div class="two wide column"><b>State Code</b></div>
                   <div class="six wide column">{{$header->statecode}}</div>
                   <div class="two wide column"><b>Total</b></div>
-                  <div class="six wide column">{{$header->totalamount}}</div>
+                  <div class="six wide column">{{$header->amount}}</div>
               </div>
             </div>
             <div class="ui segment">
@@ -117,8 +121,8 @@
                     @foreach($detail as $key => $obj)
                     <tr>
                       <td>{{$key+1}}</td>
-                      <td>{{$obj->desc}}</td>
-                      <td>{{number_format($obj->price,2)}}</td>
+                      <td>{{$obj->description}}</td>
+                      <td>{{number_format($obj->totamount,2)}}</td>
                     </tr>
                     @endforeach
                   </tbody>
