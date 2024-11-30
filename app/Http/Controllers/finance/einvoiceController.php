@@ -576,7 +576,7 @@ class einvoiceController extends defaultController
             DB::table('sysdb.einvoice_log')
                     ->insert([
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'message' => $myresponse->error,
+                        // 'message' => $myresponse->error,
                         'status' => 'ERROR'
                     ]);
         }else{
