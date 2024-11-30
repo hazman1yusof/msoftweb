@@ -253,6 +253,7 @@ $(document).ready(function () {
 			myfail_msg.clear_fail();
 			$('#username_login').val('');
 			$('#password_login').val('');
+			refreshGrid("#jqGrid", urlParam);
 		}
 	  });
 
