@@ -5129,7 +5129,7 @@ class OrdcomController extends defaultController
             $value->LHDNSubBy = '';
 
             $einvoice = DB::table('sysdb.einvoice_log')
-                            ->where('inv',$value->invno)
+                            ->where('invno',$value->invno)
                             ->where('status','ACCEPTED')
                             ->orWhere('status','REJECTED')
                             ->orderBy('idno','DESC');
