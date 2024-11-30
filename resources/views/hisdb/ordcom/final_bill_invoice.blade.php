@@ -254,7 +254,7 @@
                             {text: ': '+e_ep.LHDNSubID},
                         ],
                         [
-                            {text: 'LHDN Code N.o',bold: true}, 
+                            {text: 'LHDN Code No.',bold: true}, 
                             {text: ': '+e_ep.LHDNCodeNo},
                         ],
                         [
