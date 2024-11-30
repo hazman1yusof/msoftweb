@@ -30,7 +30,7 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
-		url:'./reprintBill/table',
+		url:'./einvoice/table',
 		action:'maintable',
 	}
 
@@ -51,6 +51,8 @@ $(document).ready(function () {
 			{ label: 'Debtor Name', name: 'dbname', width: 110, classes: 'wrap', canSearch: true},
 			{ label: 'Amount', name: 'amount', width: 50, align: 'right',formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}},
 			{ label: 'Bill Date', name: 'entrydate', width: 40},
+			{ label: 'Submit By', name: 'LHDNSubBy', width: 40},
+			{ label: 'Status', name: 'LHDNStatus', width: 40},
 			{ label: 'invno', name: 'invno', hidden:true},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 25,align: "center", formatter: formatterCheckbox },
 		],
@@ -246,25 +248,36 @@ $(document).ready(function () {
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
-
 		},
 		close: function( event, ui ) {
-
+			myfail_msg.clear_fail();
+			$('#username_login').val('');
+			$('#password_login').val('');
 		}
 	  });
 
     $('#btn_open_dialog_login').click(function(){
-        $('#dialog_user_login').dialog('open');
+		if($("input[type='checkbox'][name='checkbox_selection']:checked").length == 0){
+			alert('Please select at least 1 Invoice');
+		}else{
+        	$('#dialog_user_login').dialog('open')
+		}
     });
 
     $('#login_submit').click(function(){
+    	$('#login_submit').prop('disabled',true);
 		myfail_msg.clear_fail();
+		var idno_array = [];
+		$("input[type='checkbox'][name='checkbox_selection']:checked").each(function( index ){
+			idno_array.push($(this).data('idno'));
+		});
         param={
 			action: 'submit_einvoice',
 			idno: selrowData('#jqGrid').idno,
 			username: $('#username_login').val(),
 			password: $('#password_login').val(),
-			_token: $("#_token").val()
+			_token: $("#_token").val(),
+			idno_array: idno_array
 		}
 		$.post( "./einvoice/form",param, function( data ){
 		}).fail(function(data) {
@@ -273,9 +286,11 @@ $(document).ready(function () {
 				textfld:"",
 				msg:data.responseText,
 			});
+    		$('#login_submit').prop('disabled',false);
 			//////////////////errorText(dialog,data.responseText);
 		}).done(function(data){
-        	$('#dialog_user_login').dialog('close')
+    		$('#login_submit').prop('disabled',false);
+        	// $('#dialog_user_login').dialog('close')
 		});
 	});
 

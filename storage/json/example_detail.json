@@ -1,0 +1,103 @@
+{
+    "ID": [
+      {
+        "_": "001"
+      }
+    ],
+    "LineExtensionAmount": [
+      {
+        "_": 1436.5,
+        "currencyID": "MYR"
+      }
+    ],
+    "TaxTotal": [
+      {
+        "TaxAmount": [
+          {
+            "_": 0,
+            "currencyID": "MYR"
+          }
+        ],
+        "TaxSubtotal": [
+          {
+            "TaxableAmount": [
+              {
+                "_": 0,
+                "currencyID": "MYR"
+              }
+            ],
+            "TaxAmount": [
+              {
+                "_": 0,
+                "currencyID": "MYR"
+              }
+            ],
+            "TaxCategory": [
+              {
+                "ID": [
+                  {
+                    "_": "022"
+                  }
+                ],
+                "TaxExemptionReason": [
+                  {
+                    "_": "NA"
+                  }
+                ],
+                "TaxScheme": [
+                  {
+                    "ID": [
+                      {
+                        "_": "OTH",
+                        "schemeID": "UN/ECE 5153",
+                        "schemeAgencyID": "6"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "Item": [
+      {
+        "CommodityClassification": [
+          {
+            "ItemClassificationCode": [
+              {
+                "_": "022",
+                "listID": "CLASS"
+              }
+            ]
+          }
+        ],
+        "Description": [
+          {
+            "_": "Computer Monitor"
+          }
+        ]
+      }
+    ],
+    "Price": [
+      {
+        "PriceAmount": [
+          {
+            "_": 1436.5,
+            "currencyID": "MYR"
+          }
+        ]
+      }
+    ],
+    "ItemPriceExtension": [
+      {
+        "Amount": [
+          {
+            "_": 1436.5,
+            "currencyID": "MYR"
+          }
+        ]
+      }
+    ]
+  }

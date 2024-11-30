@@ -107,7 +107,7 @@ i.fa {
 			</div>	
 		</div> 
 
-		<div id="dialog_user_login" title="Login User" >
+		<div id="dialog_user_login" title="E-invoice Authorisation" >
 			<div class="panel-body" style="position: relative;">
 				<div id="fail_msg" style="color: darkred;"></div>
 				<div class="col-md-12">
