@@ -146,7 +146,7 @@ class einvoiceController extends defaultController
                 }
 
                 $dbacthdr = DB::table('debtor.dbacthdr as db')
-                            ->select('db.idno','db.invno','db.amount','dm.name','dm.tinid','dm.address1','dm.address2','dm.address3','dm.postcode','dm.statecode','dm.countrycode','dm.teloffice','pm.Newic','pm.telhp')
+                            ->select('db.idno','db.invno','db.amount','dm.name','dm.tinid','dm.address1','dm.address2','dm.address3','dm.postcode','dm.statecode','pm.statecode as statecode_pm','dm.countrycode','dm.teloffice','pm.Newic','pm.telhp')
                             ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
                                 $join = $join->where('dm.compcode', '=', session('compcode'));
                                 $join = $join->on('dm.debtorcode', '=', 'db.debtorcode');
@@ -173,6 +173,9 @@ class einvoiceController extends defaultController
                 $lhdn_header->postcode = $dbacthdr->postcode;
                 $lhdn_header->city = $dbacthdr->address2;
                 $lhdn_header->statecode = $dbacthdr->statecode;
+                if(empty($dbacthdr->statecode)){
+                    $lhdn_header->statecode = $dbacthdr->statecode_pm;
+                }
                 $lhdn_header->addr1 = $dbacthdr->address1;
                 $lhdn_header->addr2 = $dbacthdr->address2;
                 $lhdn_header->addr3 = $dbacthdr->address3;
