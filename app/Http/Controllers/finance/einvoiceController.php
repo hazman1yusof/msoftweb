@@ -572,7 +572,7 @@ class einvoiceController extends defaultController
 
     public function einvoice_storeDB($myresponse,$username){
 
-        if(empty($myresponse->submissionUid)){
+        if(empty($myresponse->submissionUid) && !property_exists($myresponse,$rejectedDocuments)){
             DB::table('sysdb.einvoice_log')
                     ->insert([
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
