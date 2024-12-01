@@ -248,6 +248,7 @@ class PurchaseOrderController extends defaultController
                 'perdisc' => $request->purordhd_perdisc, 
                 'amtdisc' => $request->purordhd_amtdisc, 
                 'remarks' => $request->purordhd_remarks, 
+                'salesorder' => $request->purordhd_salesorder, 
                 // 'subamount' => $request->purordhd_subamount, 
                 // 'totamount' => $request->purordhd_totamount, 
                 'taxclaimable' => $request->purordhd_taxclaimable, 

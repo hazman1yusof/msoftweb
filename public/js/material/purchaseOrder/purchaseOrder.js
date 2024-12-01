@@ -87,6 +87,7 @@ $(document).ready(function () {
 					dialog_suppcode.check(errorField);
 					dialog_deldept.check(errorField);
 					dialog_assetno.check(errorField);
+					dialog_salesorder.check(errorField);
 
 				}if (oper != 'view') {
 					backdated.set_backdate($('#purordhd_prdept').val());
@@ -97,6 +98,7 @@ $(document).ready(function () {
 					dialog_deldept.on();
 					dialog_credcode.on();
 					dialog_assetno.on();
+					dialog_salesorder.on();
 				}
 
 				if(oper == 'edit'){
@@ -140,6 +142,7 @@ $(document).ready(function () {
 				dialog_deldept.off();
 				dialog_credcode.off();
 				dialog_assetno.off();
+				dialog_salesorder.off();
 				$(".noti").empty();
 				$("#refresh_jqGrid").click();
 				$("#purordhd_reqdept,#purordhd_reqdept,#purordhd_purreqno").prop('readonly',false);
@@ -356,6 +359,7 @@ $(document).ready(function () {
 			{ label: 'approved_remark', name: 'purordhd_approved_remark', width: 40, hidden:true},
 			{ label: 'cancelled_remark', name: 'purordhd_cancelled_remark', width: 40, hidden:true},
 			{ label: 'purordhd_prtype', name: 'purordhd_prtype', width: 40, hidden:true},
+			{ label: 'salesorder', name: 'purordhd_salesorder', width: 90, hidden: true, key:true },
 			{ label: 'idno', name: 'purordhd_idno', width: 90, hidden: true, key:true },
 			{ label: 'unit', name: 'purordhd_unit', width: 40, hidden:true},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox ,hidden:false},
@@ -690,6 +694,7 @@ $(document).ready(function () {
 		    dialog_credcode.on();
 			dialog_deldept.on();
 			dialog_assetno.on();
+			dialog_salesorder.on();
 
 		}).done(function (data) {
 			$("#saveDetailLabel").attr('disabled',false)
@@ -1779,6 +1784,7 @@ $(document).ready(function () {
 		dialog_credcode.off();
 		dialog_deldept.off();
 		dialog_assetno.off();
+		dialog_salesorder.off();
 		radbuts.check();
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
@@ -1793,6 +1799,7 @@ $(document).ready(function () {
 		    dialog_credcode.on();
 			dialog_deldept.on();
 			dialog_assetno.on();
+			dialog_salesorder.on();
 		}
 	});
 
@@ -1809,6 +1816,7 @@ $(document).ready(function () {
 		dialog_credcode.on();
 		dialog_deldept.off();
 		dialog_assetno.off();
+		dialog_salesorder.on();
 		
 		enableForm('#formdata');
 		rdonly('#formdata');
@@ -3076,6 +3084,55 @@ $(document).ready(function () {
 		}, 'urlParam','radio','tab'
 	);
 	dialog_credcode.makedialog();
+
+	var dialog_salesorder = new ordialog(
+		'salesorder', ['debtor.dbacthdr as d','hisdb.pat_mast as p'], '#purordhd_salesorder', errorField,
+		{
+			colModel: [
+				{ label: 'Auditno', name: 'd_auditno', width: 100, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'HUKM MRN', name: 'd_mrn', width: 100, classes: 'pointer', canSearch: true,checked:true, or_search: true },
+				{ label: 'Patient Name', name: 'p_Name', width: 300, classes: 'pointer'},
+				{ label: 'Amount', name: 'd_amount', width: 100, classes: 'pointer'},
+				{ label: 'Remark', name: 'd_remark', width: 300, classes: 'pointer'},
+			],
+			urlParam: {
+						filterCol:['d.compcode'],
+						filterVal:['session.compcode'],
+						fixPost:true
+					},
+			ondblClickRow: function () {
+				$('#purordhd_remarks').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#purordhd_purdate').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		}, {
+			title: "Select Sales Order",
+			open: function (obj_) {
+				dialog_salesorder.urlParam.table_name = ['debtor.dbacthdr as d','hisdb.pat_mast as p'];
+				dialog_salesorder.urlParam.fixPost = "true";
+				dialog_salesorder.urlParam.table_id = "none_";
+				dialog_salesorder.urlParam.filterCol = ['d.compcode','d.deptcode','d.source','d.trantype','d.MRN'];
+				dialog_salesorder.urlParam.filterVal = ['session.compcode','session.deptcode','PB','IN','<>.NULL'];
+				dialog_salesorder.urlParam.join_type = ['LEFT JOIN'];
+				dialog_salesorder.urlParam.join_onCol = ['d.mrn'];
+				dialog_salesorder.urlParam.join_onVal = ['p.newmrn'];
+				dialog_itemcode.urlParam.join_filterCol = [['p.compcode =']];
+				dialog_itemcode.urlParam.join_filterVal = [['session.compcode']];
+			},
+			close: function(){
+				$('#purordhd_remarks').focus();
+			}
+		}, 'urlParam','radio','tab'
+	);
+	dialog_salesorder.makedialog();
 	
 	var dialog_assetno = new ordialog(
 		'assetno', 'finance.faregister', '#purordhd_assetno', errorField,

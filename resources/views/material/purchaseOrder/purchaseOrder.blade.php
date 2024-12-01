@@ -434,10 +434,19 @@ div.data_info div.col-md-2{
 							<span class="help-block"></span>
 						</div>
 						
-						<label class="col-md-2 control-label" for="credcode">Creditor</label>
+						<label class="col-md-2 control-label" for="purordhd_credcode">Creditor</label>
 						<div class="col-md-2">
 							<div class='input-group'>
 								<input id="purordhd_credcode" name="purordhd_credcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>
+						
+						<label class="col-md-2 control-label" for="purordhd_salesorder">Sales Order</label>
+						<div class="col-md-2">
+							<div class='input-group'>
+								<input id="purordhd_salesorder" name="purordhd_salesorder" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
