@@ -1152,8 +1152,13 @@ class PurchaseOrderController extends defaultController
             ->whereNotNull('h.MRN')
             ->where('h.auditno','=',$auditno)
             // ->where('h.mrn','=','0')
-            ->where('h.compcode','=',session('compcode'))
-            ->first();
+            ->where('h.compcode','=',session('compcode'));
+
+        if(!$dbacthdr->exists()){
+            return null;
+        }
+
+        $dbacthdr = $dbacthdr->first();
 
         $billsum = DB::table('debtor.billsum AS b')
             ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
