@@ -1535,7 +1535,7 @@ class PointOfSalesController extends defaultController
             $amount_paid = floatval($dbacthdr_amount);
             $amount_bal = floatval($payercode->outamount) - floatval($dbacthdr_amount);
 
-            if($request->tabform == '#f_tab-cash' && $amount_bal < 0){
+            if(($request->tabform == '#f_tab-cash' || $request->tabform == '#f_tab-cash2') && $amount_bal < 0){
                 $amount_paid = floatval($payercode->outamount);
                 $amount_bal = 0;
             }
@@ -1583,7 +1583,7 @@ class PointOfSalesController extends defaultController
                         ->insert($array_insert);
 
             //cbtran if paymode by bank
-            if(strtolower($request->tabform) == '#f_tab-debit'){
+            if(strtolower($request->tabform) == '#f_tab-debit' || strtolower($request->tabform) == '#f_tab-debit2'){
                 $yearperiod = $this->getyearperiod(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
                 $paymode_db = DB::table('debtor.paymode')
                             ->where('compcode',session('compcode'))
@@ -3904,20 +3904,25 @@ class PointOfSalesController extends defaultController
         $paytype_ = '';
         $mode = false;
         switch (strtolower($paytype)) {
+            case '#f_tab-cash':
             case '#f_tab-cash2':
                 $paytype_ = 'Cash';
                 break;
+            case '#f_tab-card':
             case '#f_tab-card2':
                 $paytype_ = 'Card';
                 $mode = true;
                 break;
+            case '#f_tab-cheque':
             case '#f_tab-cheque2':
                 $paytype_ = 'Cheque';
                 break;
+            case '#f_tab-debit':
             case '#f_tab-debit2':
                 $paytype_ = 'Bank';
                 $mode = true;
                 break;
+            case '#f_tab-forex':
             case '#f_tab-forex2':
                 $paytype_ = 'Forex';
                 break;
