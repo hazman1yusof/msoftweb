@@ -446,7 +446,7 @@ div.data_info div.col-md-2{
 						<label class="col-md-2 control-label" for="purordhd_salesorder">Sales Order</label>
 						<div class="col-md-2">
 							<div class='input-group'>
-								<input id="purordhd_salesorder" name="purordhd_salesorder" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+								<input id="purordhd_salesorder" name="purordhd_salesorder" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -693,7 +693,7 @@ div.data_info div.col-md-2{
 			
 		});
 	</script>
-	<script src="js/material/purchaseOrder/purchaseOrder.js?v=1.13"></script>
+	<script src="js/material/purchaseOrder/purchaseOrder.js?v=1.15"></script>
 	<!-- <script src="js/material/purchaseOrder/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
