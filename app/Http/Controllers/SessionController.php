@@ -76,6 +76,8 @@ class SessionController extends Controller
                 return redirect('/warehouse');
             }else if(strtoupper($user->programmenu) == 'IMPLANT'){
                 return redirect('/implant');
+            }else if(strtoupper($user->programmenu) == 'KHEALTH'){
+                return redirect('/khealth');
             }
 
             if($user->groupid == 'patient'){
