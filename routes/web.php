@@ -1313,6 +1313,7 @@ Route::get('/nursingActionPlan/procedure_chart','hisdb\NursingActionPlanControll
 Route::get('/nursingnote','hisdb\NursingNoteController@show');
 Route::get('/nursingnote/table','hisdb\NursingNoteController@table');
 Route::post('/nursingnote/form','hisdb\NursingNoteController@form');
+Route::get('/nursingnote/invChart_chart','hisdb\InvChartController@invChart_chart');
 Route::get('/nursingnote/fitchart_chart','hisdb\NursingNoteController@fitchart_chart');
 Route::get('/nursingnote/circulation_chart','hisdb\NursingNoteController@circulation_chart');
 Route::get('/nursingnote/slidingScale_chart','hisdb\NursingNoteController@slidingScale_chart');

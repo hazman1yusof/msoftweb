@@ -377,6 +377,10 @@ $(document).ready(function (){
     /////////////////////////////////////othersChart2 ends/////////////////////////////////////
     
     ////////////////////////////////////print button starts////////////////////////////////////
+    $("#invChart_chart").click(function (){
+        window.open('./nursingnote/invChart_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+    });
+    
     $("#fitchart_chart").click(function (){
         window.open('./nursingnote/fitchart_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
     });
