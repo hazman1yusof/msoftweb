@@ -400,7 +400,7 @@ $(document).ready(function (){
     $("#othersChart2_chart").click(function (){
         window.open('./nursingnote/othersChart_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&tabtitle='+$("#othersChart2_tabtitle").val(), '_blank');
     });
-
+    
     $("#bladder_chart").click(function (){
         window.open('./nursingnote/bladder_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
     });
