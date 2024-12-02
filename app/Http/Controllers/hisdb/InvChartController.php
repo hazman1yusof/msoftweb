@@ -36,15 +36,15 @@ class InvChartController extends defaultController
         
         $datetime = DB::table('nursing.nurs_investigation')
                     // ->select('idno','compcode','mrn','episno','inv_code','inv_cat','entereddate','enteredtime','enteredby','values','adduser','adddate','upduser','upddate','lastuser','lastupdate','computerid','lastcomputerid','ipaddress','lastipaddress')
-                    ->select(DB::raw('DATE_FORMAT(entereddate, "%d/%l/%Y") as date'),DB::raw('TIME(enteredtime) as time'))
+                    // ->select(DB::raw('DATE_FORMAT(entereddate, "%d/%l/%Y") as date'),DB::raw('TIME(enteredtime) as time'))
+                    ->select('entereddate','enteredtime',DB::raw('DATE_FORMAT(entereddate, "%d/%l/%Y") as date'),DB::raw('TIME(enteredtime) as time'))
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$mrn)
                     ->where('episno','=',$episno)
-                    ->groupBy('date','time')
-                    ->orderBy('date','asc')
-                    ->orderBy('time','asc')
+                    ->groupBy('entereddate','enteredtime')
+                    ->orderBy('entereddate','asc')
+                    ->orderBy('enteredtime','asc')
                     ->get();
-        // dd($datetime);
         
         $inv_type = DB::table('nursing.nurs_invest_type as type')
                     ->select('type.inv_code','cat.inv_cat')

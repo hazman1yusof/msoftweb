@@ -24,16 +24,6 @@
             @endforeach
         ];
         
-        var inv_cat = [
-            @foreach($inv_cat as $key => $inv_cat1)
-            {
-                @foreach($inv_cat1 as $key2 => $val)
-                    '{{$key2}}' : `{{$val}}`,
-                @endforeach
-            },
-            @endforeach
-        ];
-        
         var datetime = [
             @foreach($datetime as $key => $datetime1)
             {
@@ -48,6 +38,26 @@
             @foreach($nurs_investigation as $key => $nurs_investigation1)
             {
                 @foreach($nurs_investigation1 as $key2 => $val)
+                    '{{$key2}}' : `{{$val}}`,
+                @endforeach
+            },
+            @endforeach
+        ];
+        
+        var inv_cat = [
+            @foreach($inv_cat as $key => $inv_cat1)
+            {
+                @foreach($inv_cat1 as $key2 => $val)
+                    '{{$key2}}' : `{{$val}}`,
+                @endforeach
+            },
+            @endforeach
+        ];
+        
+        var datetime = [
+            @foreach($datetime as $key => $datetime1)
+            {
+                @foreach($datetime1 as $key2 => $val)
                     '{{$key2}}' : `{{$val}}`,
                 @endforeach
             },
@@ -166,13 +176,23 @@
                 body[0].push({ text: datetime, style: 'tableHeader', alignment: 'left' });
             });
             
+            var ifsameshow = '_';
             inv_type.forEach(function (e,i){
-                let arr1 = [
-                    { text: e.inv_code },
-                    { text: e.inv_cat },
-                ];
+                let arr1 = [];
+                if(ifsameshow != e.inv_code){
+                    arr1[0] =  { text: e.inv_code };
+                    arr1[1] =  { text: e.inv_cat };
+                    ifsameshow = e.inv_code;
+                }else{
+                    arr1[0] =  { text: '' };
+                    arr1[1] =  { text: e.inv_cat };
+                }
+                let data_x = e.inv_code+'_'+e.inv_cat;
                 datetime.forEach(function (ey,iy){
-                    arr1[iy+2] = { text: '', alignment: 'right' };
+                    let data_y = ey.entereddate+'_'+ey.enteredtime;
+                    let data_all = data_x+'_'+data_y;
+
+                    arr1[iy+2] = { text: search_data(data_all), alignment: 'right' };
                 });
                 
                 body.push(arr1);
@@ -185,6 +205,20 @@
             };
             
             return ret_obj;
+        }
+
+        function search_data(data_all){
+            var ret_data = '';
+            nurs_investigation.forEach(function (ez,iz){
+                let data_all_z = ez.inv_code+'_'+ez.inv_cat+'_'+ez.entereddate+'_'+ez.enteredtime
+                if(data_all == data_all_z){
+                    if(ret_data == ''){
+                        ret_data = ez.values;
+                    }
+                }
+            });
+
+            return ret_data;
         }
         
         function make_header(){
