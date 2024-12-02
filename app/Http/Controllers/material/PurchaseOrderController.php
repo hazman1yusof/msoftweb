@@ -1107,11 +1107,11 @@ class PurchaseOrderController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
 
-        // if(!empty($purordhd->salesorder)){
-        //     $SO_obj = $this->get_SO_from_PO($apacthdr);
-        // }else{
-        //     $SO_obj = null;
-        // }
+        if(!empty($purordhd->salesorder)){
+            $SO_obj = $this->get_SO_from_PO($purordhd->salesorder);
+        }else{
+            $SO_obj = null;
+        }
 
         $attachment_files =$this->get_attachment_files($purordhd->idno);
         
@@ -1126,23 +1126,23 @@ class PurchaseOrderController extends defaultController
         $dbacthdr = DB::table('debtor.dbacthdr as h')
             ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate','h.hdrtype',
             'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4', 'm.creditterm as crterm','m.billtype as billtype','dt.debtortycode as dt_debtortycode', 'dt.description as dt_description','bt.description as bt_desc','pm.Name as pm_name','pm.address1 as pm_address1','pm.address2 as pm_address2','pm.address3 as pm_address3','pm.postcode as pm_postcode','h.doctorcode','dc.doctorname')
-            ->leftJoin('debtor.debtormast as m', function($join) use ($request){
+            ->leftJoin('debtor.debtormast as m', function($join){
                 $join = $join->on("m.debtorcode", '=', 'h.debtorcode');    
                 $join = $join->where("m.compcode", '=', session('compcode'));
             })
-            ->leftJoin('debtor.debtortype as dt', function($join) use ($request){
+            ->leftJoin('debtor.debtortype as dt', function($join){
                 $join = $join->on("dt.debtortycode", '=', 'm.debtortype');    
                 $join = $join->where("dt.compcode", '=', session('compcode'));
             })
-            ->leftJoin('hisdb.billtymst as bt', function($join) use ($request){
+            ->leftJoin('hisdb.billtymst as bt', function($join){
                 $join = $join->on("bt.billtype", '=', 'h.hdrtype');    
                 $join = $join->where("bt.compcode", '=', session('compcode'));
             })
-            ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
+            ->leftJoin('hisdb.pat_mast as pm', function($join){
                 $join = $join->on("pm.newmrn", '=', 'h.mrn');    
                 $join = $join->where("pm.compcode", '=', session('compcode'));
             })
-            ->leftJoin('hisdb.doctor as dc', function($join) use ($request){
+            ->leftJoin('hisdb.doctor as dc', function($join){
                 $join = $join->on("dc.doctorcode", '=', 'h.doctorcode');    
                 $join = $join->where("dc.compcode", '=', session('compcode'));
             })
@@ -1160,24 +1160,24 @@ class PurchaseOrderController extends defaultController
             'u.description as uom_desc', 
             'd.debtorcode as debt_debtcode','d.name as debt_name', 
             'm.description as chgmast_desc','iv.expdate','iv.batchno')
-            ->leftJoin('hisdb.chgmast as m', function($join) use ($request){
+            ->leftJoin('hisdb.chgmast as m', function($join){
                 $join = $join->on('b.chggroup', '=', 'm.chgcode');
                 $join = $join->on('b.uom', '=', 'm.uom');
                 $join = $join->where('m.compcode', '=', session('compcode'));
                 $join = $join->where('m.unit', '=', session('unit'));
             })
-            ->leftJoin('material.uom as u', function($join) use ($request){
+            ->leftJoin('material.uom as u', function($join){
                 $join = $join->on('b.uom', '=', 'u.uomcode');
                 $join = $join->where('u.compcode', '=', session('compcode'));
             })
             //->leftJoin('material.productmaster as p', 'b.description', '=', 'p.description')
             // ->leftJoin('material.uom as u', 'b.uom', '=', 'u.uomcode')
             // ->leftJoin('debtor.debtormast as d', 'b.debtorcode', '=', 'd.debtorcode')
-            ->leftJoin('debtor.debtormast as d', function($join) use ($request){
+            ->leftJoin('debtor.debtormast as d', function($join){
                 $join = $join->on('b.debtorcode', '=', 'd.debtorcode');
                 $join = $join->where('d.compcode', '=', session('compcode'));
             })
-            ->leftJoin('material.ivdspdt as iv', function($join) use ($request){
+            ->leftJoin('material.ivdspdt as iv', function($join){
                 $join = $join->on('iv.recno', '=', 'b.auditno');
                 $join = $join->where('iv.lineno_', '=', '1');
                 $join = $join->on('iv.itemcode', '=', 'b.chggroup');
@@ -1218,14 +1218,14 @@ class PurchaseOrderController extends defaultController
             $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
         }
 
-        $CN_obj = new stdClass();
-        $CN_obj->dbacthdr = $dbacthdr;
-        $CN_obj->billsum = $billsum;
-        $CN_obj->totamt_bm = $totamt_bm;
-        $CN_obj->company = $company;
-        $CN_obj->title = $title;
-        
-        return view('finance.SalesOrder.SalesOrder_pdfmake',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
+        $SO_obj = new stdClass();
+        $SO_obj->dbacthdr = $dbacthdr;
+        $SO_obj->billsum = $billsum;
+        $SO_obj->totamt_bm = $totamt_bm;
+        $SO_obj->company = $company;
+        $SO_obj->title = $title;
+
+        return $SO_obj;
     }
 
      // public function toGetAllpurreqhd($recno){
