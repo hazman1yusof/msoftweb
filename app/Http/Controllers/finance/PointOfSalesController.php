@@ -1579,6 +1579,10 @@ class PointOfSalesController extends defaultController
                 'hdrtype' => 'RC',
             ];
 
+            if(!empty($request->dbacthdr_RCCASHbalance)){
+                $array_insert['RCCASHbalance'] = $request->dbacthdr_RCCASHbalance; 
+            }
+
             DB::table('debtor.dbacthdr')
                         ->insert($array_insert);
 
@@ -2665,7 +2669,7 @@ class PointOfSalesController extends defaultController
             ->first();
 
         $receipt = DB::table('debtor.dballoc as a')
-            ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate', 'h.entrytime','h.hdrtype','h.recptno','h.doctorcode','h.reference','h.paymode','h.payername','h.doctorcode')
+            ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate', 'h.entrytime','h.hdrtype','h.recptno','h.doctorcode','h.reference','h.paymode','h.payername','h.doctorcode','h.RCCASHbalance')
             ->join('debtor.dbacthdr as h', function($join) use ($request,$dbacthdr){
                 $join = $join->where("h.source", '=', 'PB');
                 $join = $join->where("h.trantype", '=', 'RC');

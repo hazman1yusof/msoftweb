@@ -1597,11 +1597,11 @@ class PointOfSalesDetailController extends defaultController
                     ->where('trantype','=',$trantype)
                     ->where('auditno','=',$auditno)
                     ->update([
-                        'amount' => $totalAmount,
-                        'outamount' => $totalAmount,
+                        'amount' => round($totalAmount, 1),
+                        'outamount' => round($totalAmount, 1),
                     ]);
             
-            echo $totalAmount;
+            echo round($totalAmount,1);
             
             DB::commit();
             
@@ -1699,8 +1699,8 @@ class PointOfSalesDetailController extends defaultController
                         ->where('trantype','=',$trantype)
                         ->where('auditno','=',$auditno)
                         ->update([
-                            'amount' => $totalAmount,
-                            'outamount' => $totalAmount,
+                            'amount' => round($totalAmount,1),
+                            'outamount' => round($totalAmount,1),
                         ]);
                 
             }
@@ -1708,7 +1708,7 @@ class PointOfSalesDetailController extends defaultController
             DB::commit();
             
             $responce = new stdClass();
-            $responce->totalAmount = $totalAmount;
+            $responce->totalAmount = round($totalAmount,1);
             
             return json_encode($responce);
             
@@ -1793,14 +1793,14 @@ class PointOfSalesDetailController extends defaultController
                     ->where('trantype','=',$trantype)
                     ->where('auditno','=',$auditno)
                     ->update([
-                        'amount' => $totalAmount,
-                        'outamount' => $totalAmount,
+                        'amount' => round($totalAmount,1),
+                        'outamount' => round($totalAmount,1),
                     ]);
 
             DB::commit();
 
             $responce = new stdClass();
-            $responce->totalAmount = $totalAmount;
+            $responce->totalAmount = round($totalAmount,1);
 
             return json_encode($responce);
 

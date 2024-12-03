@@ -647,6 +647,7 @@ $(document).ready(function () {
 				oper = 'edit';//sekali dia add terus jadi edit lepas tu
 				$('#db_auditno').val(data.auditno);
 				$('#db_idno').val(data.idno);//just save idno for edit later
+				$("#jqGrid").data('lastselrow',data.idno);
 				$("#pdfgen1").attr('href','./PointOfSales/showpdf?idno='+data.idno);
 				$("#pdfgen2").attr('href','./PointOfSales/showpdf?idno='+data.idno);
 				$("#pdfgen3").attr('href','./PointOfSales/showpdf?idno='+data.idno);
@@ -658,6 +659,18 @@ $(document).ready(function () {
 				urlParam2.deptcode = $('#db_deptcode').val();
 			} else if (selfoper == 'edit') {
 				//doesnt need to do anything
+				
+				$('#db_auditno').val(data.auditno);
+				$('#db_idno').val(data.idno);//just save idno for edit later
+				$("#jqGrid").data('lastselrow',data.idno);
+				$("#pdfgen1").attr('href','./PointOfSales/showpdf?idno='+data.idno);
+				$("#pdfgen2").attr('href','./PointOfSales/showpdf?idno='+data.idno);
+				$("#pdfgen3").attr('href','./PointOfSales/showpdf?idno='+data.idno);
+
+				urlParam2.source = 'PB';
+				urlParam2.trantype = 'IN';
+				urlParam2.billno = data.auditno;
+				urlParam2.deptcode = $('#db_deptcode').val();
 			}
 			// refreshGrid('#jqGrid2', urlParam2);
 			disableForm('#formdata');
@@ -1734,39 +1747,6 @@ $(document).ready(function () {
 			});
 		}
 
-		// let qtyonhand = parseFloat($("#"+id_optid+"_qtyonhand").val());
-		// let st_idno = $("#jqGrid2 #"+id_optid+"_chggroup").data('st_idno');
-
-		// if(qtyonhand<quantity && st_idno!=''){
-		// 	myfail_msg.add_fail({
-		// 		id:'qtyonhand',
-		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
-		// 		msg:"Quantity Request cant be greater than quantity on hand",
-		// 	});
-		// }else{
-		// 	myfail_msg.del_fail({
-		// 		id:'qtyonhand',
-		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
-		// 		msg:"Quantity Request cant be greater than quantity on hand",
-		// 	});
-		// }
-
-		// let qtyorder = parseFloat($("#"+id_optid+"_qtyorder").val());
-
-		// if(quantity>qtyorder && qtyorder!=''){
-		// 	myfail_msg.add_fail({
-		// 		id:'qtyorder',
-		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
-		// 		msg:"Quantity Request cant be greater than quantity Order",
-		// 	});
-		// }else{
-		// 	myfail_msg.del_fail({
-		// 		id:'qtyorder',
-		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
-		// 		msg:"Quantity Request cant be greater than quantity Order",
-		// 	});
-		// }
-
 		let unitprice = Number($("#"+id_optid+"_unitprice").val());
 		let billtypeperct = 100 - Number($("#"+id_optid+"_billtypeperct").val());
 		let billtypeamt = Number($("#"+id_optid+"_billtypeamt").val());
@@ -1794,11 +1774,11 @@ $(document).ready(function () {
 		event.data.currency.forEach(function(element){
 			element.formatOn();
 		});
-		event.data.currency.formatOn();//change format to currency on each calculation
-		mycurrency.formatOn();
-		mycurrency_np.formatOn();
+		// event.data.currency.formatOn();//change format to currency on each calculation
+		// mycurrency.formatOn();
+		// mycurrency_np.formatOn();
 
-		fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+		// fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
 	}
 
@@ -3019,6 +2999,7 @@ function receipt_class(){
 	}
 
 	$('#submit_receipt').click(function(){
+		mycurrency_r.formatOff();
 		$('#submit_receipt').prop('disabled',true);
 		var idno = selrowData('#jqGrid').db_idno;
 		var obj={};
@@ -3039,11 +3020,15 @@ function receipt_class(){
 				textfld:"",
 				msg:data.responseText,
 			});
+
+			mycurrency_r.formatOn();
 			// $('#error_infront').text(data.responseText);
 		}).success(function(data){
 			$('#submit_receipt').prop('disabled',false);
 			myfail_msg_r.clear_fail();
 			$("#refresh_jqGrid").click();
+
+			mycurrency_r.formatOn();
 		});
 	});
 
@@ -3267,8 +3252,6 @@ function receipt_class2(){
 			}
 		});
 
-		$('#dialog_payment').on('shown.bs.collapse', function(e){
-		});
 		$( "#dialog_payment" ).on( "dialogopen", function( event, ui ) {
 			emptyFormdata_div('#dialog_payment');
 			myfail_msg_r2.clear_fail();
@@ -3296,6 +3279,7 @@ function receipt_class2(){
 
 	$('#submit_receipt2').click(function(){
 		$('#submit_receipt2').prop('disabled',true);
+		mycurrency_r2.formatOff();
 		// var idno = selrowData('#jqGrid').db_idno;
 		var obj={};
 		obj.idno = $('#db_idno').val();
@@ -3315,15 +3299,24 @@ function receipt_class2(){
 				textfld:"",
 				msg:data.responseText,
 			});
+			mycurrency_r2.formatOn();
 			// $('#error_infront').text(data.responseText);
 		}).success(function(data){
 			$('#submit_receipt2').prop('disabled',false);
 			myfail_msg_r2.clear_fail();
 			$("input[name='dbacthdr_outamount']").val(data.outamount);
 			$("input[name='dbacthdr_amount']").val(data.outamount);
+
+			if(parseFloat(data.outamount) == 0.00){
+				window.open('./PointOfSales/showpdf?idno='+$('#db_idno').val(), '_blank');
+				$("#dialog_payment").dialog('close');
+				$("#dialogForm").dialog('close');
+			}
+
 			// $("#dialog_payment").dialog('close');
 			// $("#dialogForm").dialog('close');
 			// $("#refresh_jqGrid").click();
+			mycurrency_r2.formatOn();
 		});
 	});
 

@@ -99,6 +99,16 @@
 												{text:'Pay Mode',margin: [0, -2, 0, 0]},
 												{text:`:  {!!$receipt_obj->paymode!!}`, alignment: 'left',margin: [0, -2, 0, 0]}
 											],
+											@if(strtolower($receipt_obj->paymode) == 'cash')
+											[
+												{text:' - Paid',margin: [0, -2, 0, 0],italics:true},
+												{text:`:  RM {{number_format($receipt_obj->amount+$receipt_obj->RCCASHbalance,2)}}`, alignment: 'left',margin: [0, -2, 0, 0]}
+											],
+											[
+												{text:' - Balance',margin: [0, -2, 0, 0],italics:true},
+												{text:`:  RM {{number_format($receipt_obj->RCCASHbalance,2)}}`, alignment: 'left',margin: [0, -2, 0, 0]}
+											],
+											@endif
 											[
 												{text:'App.Code',margin: [0, -2, 0, 0]},
 												{text:`:  `, alignment: 'left',margin: [0, -2, 0, 0]}

@@ -444,8 +444,9 @@ class TillEnquiryController extends defaultController
         // }
 
         $dbacthdr_card = $dbacthdr->where('paytype_','Card');
-        // dd($dbacthdr_card);
+        // dump($dbacthdr_card);
         $dbacthdr_card_unique = $dbacthdr->where('paytype_','Card')->unique('paymode');
+        // dd($dbacthdr_card);
         
         $title = "TILL ENQUIRY";
         

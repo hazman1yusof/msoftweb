@@ -177,26 +177,26 @@
                                     { text: 'Cash' },
                                     { text: '{{number_format($sum_cash,2)}}' },
                                     { text: '{{number_format($sum_cash_ref,2)}}' },
-                                    { text: '{{number_format($sum_cash - $sum_cash_ref,2)}}' },
+                                    { text: '{{number_format($sum_cash - $sum_cash_ref,2)}}',bold:true },
                                 ],
                                 [
                                     { text: 'Cheque' },
                                     { text: '{{number_format($sum_chq,2)}}' },
                                     { text: '{{number_format($sum_chq_ref,2)}}' },
-                                    { text: '{{number_format($sum_chq - $sum_chq_ref,2)}}' },
+                                    { text: '{{number_format($sum_chq - $sum_chq_ref,2)}}',bold:true },
                                 ],
                                 [
                                     { text: 'Card' },
                                     { text: '{{number_format($sum_card,2)}}' },
                                     { text: '{{number_format($sum_card_ref,2)}}' },
-                                    { text: '{{number_format($sum_card - $sum_card_ref,2)}}' },
+                                    { text: '{{number_format($sum_card - $sum_card_ref,2)}}',bold:true },
                                 ],
                                 @foreach ($dbacthdr_card_unique as $obj)
                                     @php($amount_RC = 0)
                                     @php($amount_RF = 0)
 
                                     @foreach ($dbacthdr_card as $obj_b)
-                                        @if($obj_b->paymode == $obj->paymode && $obj->trantype == 'RC')
+                                        @if($obj_b->paymode == $obj->paymode && ($obj->trantype == 'RC' || $obj->trantype == 'RD'))
                                             @php($amount_RC = $amount_RC + $obj_b->amount)
                                         @endif
 
@@ -206,17 +206,17 @@
                                     @endforeach
 
                                     [
-                                        { text: '-{{$obj->paymode}}',margin: [12, 0, 0, ] },
-                                        { text: '{{number_format($amount_RC,2)}}' },
-                                        { text: '{{number_format($amount_RF,2)}}' },
-                                        { text: '{{number_format($amount_RC - $amount_RF,2)}}' },
+                                        { text: '-{{$obj->paymode}}',margin: [12, 0, 0, 0 ] ,italics:true },
+                                        { text: '{{number_format($amount_RC,2)}}',margin: [12, 0, 0, 0 ] ,italics:true },
+                                        { text: '{{number_format($amount_RF,2)}}',margin: [12, 0, 0, 0 ] ,italics:true},
+                                        { text: '{{number_format($amount_RC - $amount_RF,2)}}',margin: [12, 0, 0, 0 ],italics:true  },
                                     ],
                                 @endforeach
                                 [
                                     { text: 'Auto Debit' },
                                     { text: '{{number_format($sum_bank,2)}}' },
                                     { text: '{{number_format($sum_bank_ref,2)}}' },
-                                    { text: '{{number_format($sum_bank - $sum_bank_ref,2)}}' },
+                                    { text: '{{number_format($sum_bank - $sum_bank_ref,2)}}',bold:true },
                                 ],
                             ]
                         },
@@ -233,7 +233,7 @@
                                     { text: 'Total', style: 'tableHeader' },
                                     { text: '{{number_format($sum_all,2)}}' },
                                     { text: '{{number_format($sum_all_ref,2)}}' },
-                                    { text: '{{number_format($sum_all - $sum_all_ref,2)}}' },
+                                    { text: '{{number_format($sum_all - $sum_all_ref,2)}}',bold:true },
                                 ],
                             ]
                         },

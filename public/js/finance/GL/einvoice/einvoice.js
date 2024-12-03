@@ -296,8 +296,7 @@ $(document).ready(function () {
     		}
 
 			window.open('./einvoice/table?action=show_result&'+$.param(param), '_blank');
-
-        	// $('#dialog_user_login').dialog('close')
+        	$('#dialog_user_login').dialog('close')
 		});
 	});
 
