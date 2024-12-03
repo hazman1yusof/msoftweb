@@ -191,6 +191,27 @@
                                     { text: '{{number_format($sum_card_ref,2)}}' },
                                     { text: '{{number_format($sum_card - $sum_card_ref,2)}}' },
                                 ],
+                                @foreach ($dbacthdr_card_unique as $obj)
+                                    @php($amount_RC = 0)
+                                    @php($amount_RF = 0)
+
+                                    @foreach ($dbacthdr_card as $obj_b)
+                                        @if($obj_b->paymode == $obj->paymode && $obj->trantype == 'RC')
+                                            @php($amount_RC = $amount_RC + $obj_b->amount)
+                                        @endif
+
+                                        @if($obj_b->paymode == $obj->paymode && $obj->trantype == 'RF')
+                                            @php($amount_RF = $amount_RF + $obj_b->amount)
+                                        @endif
+                                    @endforeach
+
+                                    [
+                                        { text: '-{{$obj->paymode}}',margin: [12, 0, 0, ] },
+                                        { text: '{{number_format($amount_RC,2)}}' },
+                                        { text: '{{number_format($amount_RF,2)}}' },
+                                        { text: '{{number_format($amount_RC - $amount_RF,2)}}' },
+                                    ],
+                                @endforeach
                                 [
                                     { text: 'Auto Debit' },
                                     { text: '{{number_format($sum_bank,2)}}' },
