@@ -73,7 +73,7 @@
                     ]
                 },
                 pageSize: 'A4',
-                // pageOrientation: 'landscape',
+                pageOrientation: 'landscape',
                 // pageMargins: [10, 20, 20, 30],
                 content: [
                     {
@@ -180,18 +180,18 @@
             inv_type.forEach(function (e,i){
                 let arr1 = [];
                 if(ifsameshow != e.inv_code){
-                    arr1[0] =  { text: e.inv_code };
-                    arr1[1] =  { text: e.inv_cat };
+                    arr1[0] = { text: e.inv_code };
+                    arr1[1] = { text: e.inv_cat };
                     ifsameshow = e.inv_code;
                 }else{
-                    arr1[0] =  { text: '' };
-                    arr1[1] =  { text: e.inv_cat };
+                    arr1[0] = { text: '' };
+                    arr1[1] = { text: e.inv_cat };
                 }
                 let data_x = e.inv_code+'_'+e.inv_cat;
                 datetime.forEach(function (ey,iy){
                     let data_y = ey.entereddate+'_'+ey.enteredtime;
                     let data_all = data_x+'_'+data_y;
-
+                    
                     arr1[iy+2] = { text: search_data(data_all), alignment: 'right' };
                 });
                 
@@ -206,7 +206,7 @@
             
             return ret_obj;
         }
-
+        
         function search_data(data_all){
             var ret_data = '';
             nurs_investigation.forEach(function (ez,iz){
@@ -217,7 +217,7 @@
                     }
                 }
             });
-
+            
             return ret_data;
         }
         
