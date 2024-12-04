@@ -1516,26 +1516,34 @@ class SalesOrderDetailController extends defaultController
             
             $li=intval($sqlln)+1;
 
-            $stockloc = DB::table('material.stockloc')
+            $chgmast = DB::table("hisdb.chgmast")
                     ->where('compcode','=',session('compcode'))
-                    ->where('uomcode','=',$request->uom)
-                    ->where('itemcode','=',$request->chggroup)
-                    ->where('deptcode','=',$dbacthdr->deptcode)
-                    ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+                    ->where('chgcode','=',$request->chggroup)
+                    ->where('uom','=',$request->uom)
+                    ->first();
 
-            if($stockloc->exists()){
-                $stockloc = $stockloc->first();
-            }else{
-                throw new \Exception("Stockloc not exists for item: ".$request->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$request->uom,500);
+            if($chgmast->invflag != '1'){
+                $stockloc = DB::table('material.stockloc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('uomcode','=',$request->uom)
+                        ->where('itemcode','=',$request->chggroup)
+                        ->where('deptcode','=',$dbacthdr->deptcode)
+                        ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+
+                if($stockloc->exists()){
+                    $stockloc = $stockloc->first();
+                }else{
+                    throw new \Exception("Stockloc not exists for item: ".$request->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$request->uom,500);
+                }
             }
 
-            $qtyonhand = $stockloc->qtyonhand;
-            $quantity = floatval($request->quantity);
-            $amount = $request->unitprice * $quantity;
-            $discamt = ($amount * (100-$request->billtypeperct) / 100) + $request->billtypeamt;
-            $rate = $this->taxrate($request->taxcode);
-            $taxamt = $amount * $rate / 100;
-            $totamount = $amount - $discamt + $taxamt;
+            // $qtyonhand = $stockloc->qtyonhand;  //guna je balik ni kalau perlu
+            // $quantity = floatval($request->quantity);
+            // $amount = $request->unitprice * $quantity;
+            // $discamt = ($amount * (100-$request->billtypeperct) / 100) + $request->billtypeamt;
+            // $rate = $this->taxrate($request->taxcode);
+            // $taxamt = $amount * $rate / 100;
+            // $totamount = $amount - $discamt + $taxamt;
 
             // if($quantity > $qtyonhand){
             //     throw new \Exception("Quantity exceed quantity on hand for item: ".$request->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$request->uom,500);
@@ -1640,18 +1648,6 @@ class SalesOrderDetailController extends defaultController
             $dbacthdr = $dbacthdr->first();
             
             foreach ($request->dataobj as $key => $value) {
-                $stockloc = DB::table('material.stockloc')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('uomcode','=',$value['uom'])
-                        ->where('itemcode','=',$value['chggroup'])
-                        ->where('deptcode','=',$dbacthdr->deptcode)
-                        ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
-
-                if($stockloc->exists()){
-                    $stockloc = $stockloc->first();
-                }else{
-                    throw new \Exception("Stockloc not exists for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
-                }
 
                 // $chgmast = DB::table('hisdb.chgmast as cm')
                 //             ->where('cm.compcode','=',session('compcode'))
@@ -1663,7 +1659,28 @@ class SalesOrderDetailController extends defaultController
                 //                 $join = $join->where('cp.effdate', '<=', $entrydate);
                 //             });
 
-                $qtyonhand = $stockloc->qtyonhand;
+                $chgmast = DB::table("hisdb.chgmast")
+                        ->where('compcode','=',session('compcode'))
+                        ->where('chgcode','=',$value['chggroup'])
+                        ->where('uom','=',$value['uom'])
+                        ->first();
+
+                if($chgmast->invflag == '1'){
+                    $stockloc = DB::table('material.stockloc')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('uomcode','=',$value['uom'])
+                            ->where('itemcode','=',$value['chggroup'])
+                            ->where('deptcode','=',$dbacthdr->deptcode)
+                            ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+
+                    if($stockloc->exists()){
+                        $stockloc = $stockloc->first();
+                    }else{
+                        throw new \Exception("Stockloc not exists for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
+                    }
+                }
+
+                // $qtyonhand = $stockloc->qtyonhand;
                 $quantity = floatval($value['quantity']);
                 $amount = $value['unitprice'] * $quantity;
                 $discamt = ($amount * (100-$value['billtypeperct']) / 100) + $value['billtypeamt'];

@@ -40,7 +40,7 @@
 	                    style: 'header_tbl',
 	                    table: {
 	                        headerRows: 1,
-	                        widths: [60,290,110,70],//panjang standard dia 515
+	                        widths: [60,285,98,90],//panjang standard dia 515
 	                        body: [
 	                            [
 									{text: 'SUPPLIER',bold: true}, 

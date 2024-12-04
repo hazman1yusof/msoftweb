@@ -2692,6 +2692,7 @@ class PointOfSalesController extends defaultController
             'd.debtorcode as debt_debtcode','d.name as debt_name', 
             'm.description as chgmast_desc','iv.expdate','iv.batchno')
             ->leftJoin('hisdb.chgmast as m', function($join) use ($request){
+                $join = $join->where('m.compcode', '=', session('compcode'));
                 $join = $join->on('b.chggroup', '=', 'm.chgcode');
                 $join = $join->on('b.uom', '=', 'm.uom');
                 // $join = $join->where('m.compcode', '=', session('compcode'));
