@@ -2517,6 +2517,7 @@ class TestController extends defaultController
     public function tunjuk_doctorcode(){
         $chgmast = DB::table('hisdb.chgmast as c')
                             ->where('c.compcode',session('compcode'))
+                            ->where('c.chggroup','DF')
                             ->whereNotNull('c.costcode')
                             // ->limit(1000)
                             ->get();
