@@ -88,6 +88,8 @@ class TestController extends defaultController
                 return $this->betulkan_ivtxndt($request);
             case 'msdemo_chgprice':
                 return $this->msdemo_chgprice($request);
+            case 'tunjuk_doctorcode':
+                return $this->tunjuk_doctorcode($request);
             default:
                 return 'error happen..';
         }
@@ -2510,6 +2512,29 @@ class TestController extends defaultController
                         ]);
             }
         }
+    }
+
+    public function tunjuk_doctorcode(){
+        $chgmast = DB::table('hisdb.chgmast as c')
+                            ->where('c.compcode',session('compcode'))
+                            ->whereNotNull('c.costcode')
+                            ->limit(1000)
+                            ->get();
+
+        $show= [];
+        foreach ($chgmast as $obj) {
+            $doctor = DB::table('hisdb.doctor')
+                            ->where('compcode',session('compcode'))
+                            ->where('doctorcode',$obj->costcode);
+
+            if(!$doctor->exists()){
+                array_push($show, $obj->costcode);
+            }
+
+        }
+
+        dd($show);
+
     }
     
 }
