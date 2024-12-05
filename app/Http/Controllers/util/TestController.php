@@ -2518,7 +2518,7 @@ class TestController extends defaultController
         $chgmast = DB::table('hisdb.chgmast as c')
                             ->where('c.compcode',session('compcode'))
                             ->whereNotNull('c.costcode')
-                            ->limit(1000)
+                            // ->limit(1000)
                             ->get();
 
         $show= [];
