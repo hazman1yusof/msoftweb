@@ -2534,7 +2534,9 @@ class TestController extends defaultController
 
         }
 
-        dd($show);
+        $unique = array_unique($show);
+
+        dd($unique);
 
     }
     
