@@ -1838,6 +1838,23 @@ class PaymentVoucherController extends defaultController
                     ->where('recstatus','!=','DELETE')
                     ->get();
 
+        foreach($apalloc as $obj_alloc){ //update reference document
+            
+            $refapacthdr = DB::table('finance.apacthdr')
+                            ->where('compcode','=',session('compcode'))
+                            // ->where('unit','=',session('unit'))
+                            ->where('source','=',$obj_alloc->refsource)
+                            ->where('trantype','=',$obj_alloc->reftrantype)
+                            ->where('auditno','=',$obj_alloc->refauditno);
+            
+            if($refapacthdr->exists()){
+                $refapacthdr = $refapacthdr->first();
+                $obj_alloc->invdate = Carbon::parse($refapacthdr->postdate)->format('d/m/Y');
+            }else{
+                $obj_alloc->invdate = '-';
+            }
+        }
+
 
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
