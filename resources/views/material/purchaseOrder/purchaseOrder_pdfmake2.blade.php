@@ -171,7 +171,7 @@
 							],
 							@foreach ($purorddt as $index=>$dtl)
 							[
-								{text:'{{$dtl->lineno_}}', style: 'body_row', border: [false, false, false, false]},
+								{text:'{{$index + 1}}', style: 'body_row', border: [false, false, false, false]},
 								{text:'{{$dtl->itemcode}}', style: 'body_row', border: [false, false, false, false]},
 								{text:'{{$dtl->qtyorder}}', style: 'body_row', border: [false, false, false, false]},
 								{text:`{!!str_replace('`', '', $dtl->uom_desc)!!}`, style: 'body_row', border: [false, false, false, false]},
@@ -183,7 +183,7 @@
 							],
 							[
 								{text:'',style: 'body_row', border: [false, false, false, false]},
-								{colSpan:6,text:`{!!str_replace('`', '', $dtl->description)!!}`, border: [false, false, false, false]},
+								{colSpan:6,text:`{!!str_replace('`', '', $dtl->description)!!}`, border: [false, false, false, false], margin: [0, -8, 0, 0]},
 								{text:'',style: 'body_row', border: [false, false, false, false]},
 								{text:'',style: 'body_row', border: [false, false, false, false]},
 								{text:'',style: 'body_row', border: [false, false, false, false]},
