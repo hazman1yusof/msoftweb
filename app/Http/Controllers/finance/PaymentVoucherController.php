@@ -1827,7 +1827,7 @@ class PaymentVoucherController extends defaultController
         }
 
         $apalloc = DB::table('finance.apalloc')
-                    ->select('compcode','source','trantype', 'auditno', 'lineno_', 'docsource', 'doctrantype', 'docauditno', 'refsource', 'reftrantype', 'refauditno', 'refamount', 'allocdate', 'allocamount', 'recstatus', 'remarks', 'suppcode', 'reference' )
+                    ->select('compcode','source','trantype', 'auditno', 'lineno_', 'docsource', 'doctrantype', 'docauditno', 'refsource', 'reftrantype', 'refauditno', 'refamount', 'allocdate', 'allocamount', 'recstatus', 'remarks', 'suppcode', 'reference', 'lastupdate' )
                     ->where('compcode','=', session('compcode'))
                     ->where('source','=', 'AP')
                     ->where('trantype','=', 'AL')
@@ -1928,7 +1928,7 @@ class PaymentVoucherController extends defaultController
         }
 
         $apalloc = DB::table('finance.apalloc')
-                    ->select('compcode','source','trantype', 'auditno', 'lineno_', 'docsource', 'doctrantype', 'docauditno', 'refsource', 'reftrantype', 'refauditno', 'refamount', 'allocdate', 'allocamount', 'recstatus', 'remarks', 'suppcode', 'reference' )
+                    ->select('compcode','source','trantype', 'auditno', 'lineno_', 'docsource', 'doctrantype', 'docauditno', 'refsource', 'reftrantype', 'refauditno', 'refamount', 'allocdate', 'allocamount', 'recstatus', 'remarks', 'suppcode', 'reference', 'lastupdate' )
                     ->where('compcode','=', session('compcode'))
                     ->where('source','=', 'AP')
                     ->where('trantype','=', 'AL')

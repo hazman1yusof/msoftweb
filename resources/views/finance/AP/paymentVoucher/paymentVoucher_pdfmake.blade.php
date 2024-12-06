@@ -78,12 +78,18 @@
 
 	var ini_body=[
 		@foreach ($apalloc as $obj)
-		{
-			date:`{{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}`,
-			docno:`{!!strtoupper($obj->reference)!!}`,
-			desc:`{!!strtoupper($obj->remarks)!!}`,
-			amt:`{{$obj->allocamount}}`,
-		},
+			@if(empty($obj->allocdate))
+				@php($mydate = \Carbon\Carbon::parse($obj->lastupdate)->format('d/m/Y'))
+			@else
+				@php($mydate = \Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y'))
+			@endif
+
+			{
+				date:`{{$mydate}}`,
+				docno:`{!!strtoupper($obj->reference)!!}`,
+				desc:`{!!strtoupper($obj->remarks)!!}`,
+				amt:`{{$obj->allocamount}}`,
+			},
 		@endforeach
 		];
 
