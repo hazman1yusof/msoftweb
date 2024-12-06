@@ -183,7 +183,7 @@
 							],
 							[
 								{text:'',style: 'body_row', border: [false, false, false, false]},
-								{colSpan:6,text:`{!!str_replace('`', '', $dtl->description)!!}`, border: [false, false, false, false], margin: [0, -8, 0, 0]},
+								{colSpan:6,text:`{!!str_replace('`', '', $dtl->description)!!}`, border: [false, false, false, false], margin: [0, -5, 0, 0]},
 								{text:'',style: 'body_row', border: [false, false, false, false]},
 								{text:'',style: 'body_row', border: [false, false, false, false]},
 								{text:'',style: 'body_row', border: [false, false, false, false]},
