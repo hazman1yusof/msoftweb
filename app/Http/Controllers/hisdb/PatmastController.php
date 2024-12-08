@@ -157,7 +157,7 @@ class PatmastController extends defaultController
             $select_array = ['pat_mast.idno','pat_mast.CompCode','pat_mast.MRN','pat_mast.Episno','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','pat_mast.PatientImage','racecode.Description as raceDesc','religion.Description as religionDesc','occupation.description as occupDesc','citizen.Description as cityDesc','areacode.Description as areaDesc','doctor.doctorname as q_doctorname','queue.epistycode as q_epistycode', 'queue.reg_date', 'queue.QueueNo','epispayer.payercode','debtormast.name as payername'];
 
             if($sel_epistycode == 'IP'){
-                array_push($select_array, 'bedalloc.ward','bedalloc.bednum');
+                // array_push($select_array, 'bedalloc.ward','bedalloc.bednum');
             }
 
             $table_patm = DB::table('hisdb.pat_mast') //ambil dari patmast balik
@@ -227,14 +227,14 @@ class PatmastController extends defaultController
 
 
                             
-            if($sel_epistycode == 'IP'){
-                $table_patm = $table_patm->leftJoin('hisdb.bedalloc', function($join) use ($request){
-                                $join = $join->on('bedalloc.mrn', '=', 'pat_mast.MRN')
-                                            ->on('bedalloc.episno', '=', 'pat_mast.Episno')
-                                            ->where('bedalloc.astatus', '=', 'OCCUPIED')
-                                            ->where('bedalloc.compcode','=',session('compcode'));
-                            });
-            }
+            // if($sel_epistycode == 'IP'){
+            //     $table_patm = $table_patm->leftJoin('hisdb.bedalloc', function($join) use ($request){
+            //                     $join = $join->on('bedalloc.mrn', '=', 'pat_mast.MRN')
+            //                                 ->on('bedalloc.episno', '=', 'pat_mast.Episno')
+            //                                 ->where('bedalloc.astatus', '=', 'OCCUPIED')
+            //                                 ->where('bedalloc.compcode','=',session('compcode'));
+            //                 });
+            // }
                             // ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
                             // ->leftJoin('hisdb.racecode','racecode.Code','=','pat_mast.RaceCode')
                             // ->leftJoin('hisdb.religion','religion.Code','=','pat_mast.Religion')
@@ -290,6 +290,10 @@ class PatmastController extends defaultController
                     $value->billtype = $episode->billtype;
                     $value->regdept = $episode->regdept;
                     $value->totamount = $totamount;
+                    $value->ward = $episode->ward;
+                    $value->bedtype = $episode->bedtype;
+                    $value->room = $episode->room;
+                    $value->bed = $episode->bed;
                 }
 
 
