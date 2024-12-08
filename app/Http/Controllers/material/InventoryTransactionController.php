@@ -1103,7 +1103,6 @@ class InventoryTransactionController extends defaultController
             
 
             $queries = DB::getQueryLog();
-            dump($queries);
 
 
             DB::commit();

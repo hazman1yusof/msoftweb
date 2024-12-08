@@ -126,8 +126,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Cost Center",
 			open: function(){
-				dialog_costcode.urlParam.filterCol= ['recstatus'],
-				dialog_costcode.urlParam.filterVal= ['ACTIVE']
+				dialog_costcode.urlParam.filterCol= ['compcode','recstatus'],
+				dialog_costcode.urlParam.filterVal= ['session.compcode','ACTIVE']
 			}
 		},'urlParam','radio','tab'
 	);
@@ -160,8 +160,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Sector",
 			open: function(){
-				dialog_sector.urlParam.filterCol= ['regioncode','recstatus'],
-				dialog_sector.urlParam.filterVal= [$("#formdata_dept :input[name='region']").val(),'ACTIVE']
+				dialog_sector.urlParam.filterCol= ['compcode','regioncode','recstatus'],
+				dialog_sector.urlParam.filterVal= ['session.compcode',$("#formdata_dept :input[name='region']").val(),'ACTIVE']
 			}
 		},'urlParam','radio','tab'
 	);
@@ -194,8 +194,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Region",
 			open: function(){
-				dialog_region.urlParam.filterCol= ['recstatus'],
-				dialog_region.urlParam.filterVal= ['ACTIVE']
+				dialog_region.urlParam.filterCol= ['compcode','recstatus'],
+				dialog_region.urlParam.filterVal= ['session.compcode','ACTIVE']
 			}
 		},'urlParam','radio','tab'
 	);
