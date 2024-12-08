@@ -408,6 +408,12 @@ var myEditOptions_phar = {
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
     	$("#jqGrid_phar_pagerRefresh,#jqGrid_phar_pagerDelete").show();
 		errorField.length=0;
+		let justsave = $("#jqGrid_phar").data('justsave');
+
+		if(justsave!=undefined && justsave!=null && justsave==1){
+			$('#jqGrid_phar_iladd').click();
+		}
+		$("#jqGrid_phar").data('justsave','0');
 	},
 	errorfunc: function(rowid,response){
     	alert(response.responseText);
@@ -443,6 +449,7 @@ var myEditOptions_phar = {
 				// totamount: $("#jqGrid_phar input[name='totamount']").val(),
 			});
 		$("#jqGrid_phar").jqGrid('setGridParam', { editurl: editurl });
+		$("#jqGrid_phar").data('justsave','1');
 	},
 	afterrestorefunc : function( response ) {
     	$("#jqGrid_phar_pagerRefresh,#jqGrid_phar_pagerDelete").show();

@@ -298,6 +298,12 @@ var myEditOptions_disp = {
 		refreshGrid('#jqGrid_disp',urlParam_disp,'add');
     	$("#jqGrid_disp_pagerRefresh,#jqGrid_disp_pagerDelete").show();
 		errorField.length=0;
+		let justsave = $("#jqGrid_disp").data('justsave');
+
+		if(justsave!=undefined && justsave!=null && justsave==1){
+			$('#jqGrid_disp_iladd').click();
+		}
+		$("#jqGrid_disp").data('justsave','0');
 	},
 	errorfunc: function(rowid,response){
     	alert(response.responseText);
@@ -331,6 +337,7 @@ var myEditOptions_disp = {
 				// totamount: $("#jqGrid_disp input[name='totamount']").val(),
 			});
 		$("#jqGrid_disp").jqGrid('setGridParam', { editurl: editurl });
+		$("#jqGrid_disp").data('justsave','1');
 	},
 	afterrestorefunc : function( response ) {
     	$("#jqGrid_disp_pagerRefresh,#jqGrid_disp_pagerDelete").show();
