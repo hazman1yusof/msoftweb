@@ -1425,6 +1425,21 @@ class SalesOrderDetailController extends defaultController
                                         ->where('mmap.compcode', '=', session('compcode'));
                     });
 
+        if(!empty($request->searchCol2)){
+            $searchCol_array = $request->searchCol2;
+            
+            $wholeword = false;
+
+            $pt = DB::table('hisdb.mmamaster')
+                        ->where('compcode', '=', session('compcode'))
+                        ->where('mmacode',$request->wholeword);
+            
+            if($pt->exists()){
+                $table = $table->where('mmam.mmacode',$request->wholeword);
+                $wholeword = true;
+            }
+        }
+
         if(!empty($request->searchCol)){
             $searchCol_array = $request->searchCol;
 

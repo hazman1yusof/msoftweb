@@ -779,14 +779,14 @@ var dialog_mmacode_dfee = new ordialog(
 			let data=selrowData('#'+dialog_mmacode_dfee.gridname);
 			$("#jqGrid_dfee input#"+id_optid+"_mmacode").val(data.mmacode);
 
-			var constype = $("#jqGrid_dfee #"+id_optid+"_chgcode").data('constype');
-			if(constype != undefined && constype.toUpperCase() == 'A'){
-				if(parseFloat(data.mmaanaes) > 0)$("#jqGrid_dfee input#"+id_optid+"_unitprce").val(data.mmaanaes);
-			}else if(constype != undefined && constype.toUpperCase() == 'C'){
-				if(parseFloat(data.mmaconsult) > 0)$("#jqGrid_dfee input#"+id_optid+"_unitprce").val(data.mmaconsult);
-			}else{
-				if(parseFloat(data.mmasurgeon) > 0)$("#jqGrid_dfee input#"+id_optid+"_unitprce").val(data.mmasurgeon);
-			}
+			// var constype = $("#jqGrid_dfee #"+id_optid+"_chgcode").data('constype');
+			// if(constype != undefined && constype.toUpperCase() == 'A'){
+			// 	if(parseFloat(data.mmaanaes) > 0)$("#jqGrid_dfee input#"+id_optid+"_unitprce").val(data.mmaanaes);
+			// }else if(constype != undefined && constype.toUpperCase() == 'C'){
+			// 	if(parseFloat(data.mmaconsult) > 0)$("#jqGrid_dfee input#"+id_optid+"_unitprce").val(data.mmaconsult);
+			// }else{
+			// 	if(parseFloat(data.mmasurgeon) > 0)$("#jqGrid_dfee input#"+id_optid+"_unitprce").val(data.mmasurgeon);
+			// }
 		},
 		gridComplete: function(obj){
 			var gridname = '#'+obj.gridname;
@@ -806,6 +806,7 @@ var dialog_mmacode_dfee = new ordialog(
 			dialog_mmacode_dfee.urlParam.filterVal=['session.compcode','ACTIVE'];
 		},
 		close: function(){
+			$("#jqGrid_dfee input[name='amount']").focus().select();
 			// $(dialog_tax_dfee.textfield)			//lepas close dialog focus on next textfield 
 			// 	.closest('td')						//utk dialog dalam jqgrid jer
 			// 	.next()
