@@ -140,6 +140,15 @@ $(document).ready(function(){
 		gridComplete: function(){
 			fdl_ordcom.set_array().reset();
 			myfail_msg_rehab.clear_fail();
+
+			let justsave = $("#jqGrid_rehab").data('justsave');
+
+			if(justsave!=undefined && justsave!=null && justsave==1){
+				delay(function(){
+					$('#jqGrid_rehab_iladd').click();
+				}, 500 );
+			}
+			$("#jqGrid_rehab").data('justsave','0');
 		},
 		afterShowForm: function (rowid) {
 		},
@@ -328,6 +337,7 @@ var myEditOptions_rehab = {
 				// totamount: $("#jqGrid_rehab input[name='totamount']").val(),
 			});
 		$("#jqGrid_rehab").jqGrid('setGridParam', { editurl: editurl });
+		$("#jqGrid_rehab").data('justsave','1');
 	},
 	afterrestorefunc : function( response ) {
     	$("#jqGrid_rehab_pagerRefresh,#jqGrid_rehab_pagerDelete").show();

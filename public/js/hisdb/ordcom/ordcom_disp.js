@@ -141,11 +141,13 @@ $(document).ready(function(){
 		gridComplete: function(){
 			fdl_ordcom.set_array().reset();
 			myfail_msg_disp.clear_fail();
-			
+
 			let justsave = $("#jqGrid_disp").data('justsave');
 
 			if(justsave!=undefined && justsave!=null && justsave==1){
-				$('#jqGrid_disp_iladd').click();
+				delay(function(){
+					$('#jqGrid_disp_iladd').click();
+				}, 500 );
 			}
 			$("#jqGrid_disp").data('justsave','0');
 		},

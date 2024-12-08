@@ -142,6 +142,15 @@ $(document).ready(function(){
 		gridComplete: function(){
 			fdl_ordcom.set_array().reset();
 			myfail_msg_rad.clear_fail();
+
+			let justsave = $("#jqGrid_rad").data('justsave');
+
+			if(justsave!=undefined && justsave!=null && justsave==1){
+				delay(function(){
+					$('#jqGrid_rad_iladd').click();
+				}, 500 );
+			}
+			$("#jqGrid_rad").data('justsave','0');
 		},
 		afterShowForm: function (rowid) {
 		},
@@ -330,6 +339,7 @@ var myEditOptions_rad = {
 				// totamount: $("#jqGrid_rad input[name='totamount']").val(),
 			});
 		$("#jqGrid_rad").jqGrid('setGridParam', { editurl: editurl });
+		$("#jqGrid_rad").data('justsave','1');
 	},
 	afterrestorefunc : function( response ) {
     	$("#jqGrid_rad_pagerRefresh,#jqGrid_rad_pagerDelete").show();
