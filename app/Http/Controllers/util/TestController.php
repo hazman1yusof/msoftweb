@@ -2553,46 +2553,56 @@ class TestController extends defaultController
             foreach ($doctor as $key => $value) {
                 $chgmast = DB::table('hisdb.chgmast')
                                 ->where('compcode','9B')
-                                ->where('costcode',$value->doctorcode)
-                                ->get();
+                                ->where('costcode',$value->doctorcode);
 
-                foreach ($chgmast as $key2 => $value2) {
-                    DB::table('debtor.drcontrib')
-                        ->insert([
-                            'lineno_' => 1,
-                            'compcode' => '9B',
-                            'drcode' => $value->doctorcode,
-                            'chgcode' => $value2->chgcode,
-                            'effdate' => '2024-01-01',
-                            'drprcnt' => 90,
-                            'amount' => 0,
-                            'epistype' => 'OP',
-                            'stfamount' => 90,
-                            'stfpercent' => 0,
-                            'corpprcnt' => 0,
-                            'corpamt' => 0,
-                            'unit' => session('unit')
+                if(!$chgmast->exists()){
+                    DB::table('hisdb.doctor')
+                        ->where('idno',$value->idno)
+                        ->where('compcode','9B')
+                        ->update([
+                            'compcode' => 'XX'
                         ]);
 
-                    DB::table('debtor.drcontrib')
-                        ->insert([
-                            'lineno_' => 1,
-                            'compcode' => '9B',
-                            'drcode' => $value->doctorcode,
-                            'chgcode' => $value2->chgcode,
-                            'effdate' => '2024-01-01',
-                            'drprcnt' => 90,
-                            'amount' => 0,
-                            'epistype' => 'IP',
-                            'stfamount' => 90,
-                            'stfpercent' => 0,
-                            'corpprcnt' => 0,
-                            'corpamt' => 0,
-                            'unit' => session('unit')
-                        ]);
-
-                    dump('Added: Doctor: '.$value->doctorcode.' --> chgcode: '.$value2->chgcode);
+                    dump('DEL doctor -> '.$value->doctorcode);
                 }
+
+                // foreach ($chgmast as $key2 => $value2) {
+                //     DB::table('debtor.drcontrib')
+                //         ->insert([
+                //             'lineno_' => 1,
+                //             'compcode' => '9B',
+                //             'drcode' => $value->doctorcode,
+                //             'chgcode' => $value2->chgcode,
+                //             'effdate' => '2024-01-01',
+                //             'drprcnt' => 90,
+                //             'amount' => 0,
+                //             'epistype' => 'OP',
+                //             'stfamount' => 90,
+                //             'stfpercent' => 0,
+                //             'corpprcnt' => 0,
+                //             'corpamt' => 0,
+                //             'unit' => session('unit')
+                //         ]);
+
+                //     DB::table('debtor.drcontrib')
+                //         ->insert([
+                //             'lineno_' => 1,
+                //             'compcode' => '9B',
+                //             'drcode' => $value->doctorcode,
+                //             'chgcode' => $value2->chgcode,
+                //             'effdate' => '2024-01-01',
+                //             'drprcnt' => 90,
+                //             'amount' => 0,
+                //             'epistype' => 'IP',
+                //             'stfamount' => 90,
+                //             'stfpercent' => 0,
+                //             'corpprcnt' => 0,
+                //             'corpamt' => 0,
+                //             'unit' => session('unit')
+                //         ]);
+
+                //     dump('Added: Doctor: '.$value->doctorcode.' --> chgcode: '.$value2->chgcode);
+                // }
             }
 
 
