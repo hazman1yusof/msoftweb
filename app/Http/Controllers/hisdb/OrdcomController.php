@@ -307,7 +307,7 @@ class OrdcomController extends defaultController
             $table_chgtrx = $table_chgtrx->whereNotIn('trx.chggroup',explode(",",$request->chggroup));
         }else{
             if(str_contains($request->chggroup, ',')){
-                $table_chgtrx = $table_chgtrx->whereIn('trx.chggroup',$request->chggroup);
+                $table_chgtrx = $table_chgtrx->whereIn('trx.chggroup',explode(",",$request->chggroup));
             }else{
                 $table_chgtrx = $table_chgtrx->where('trx.chggroup',$request->chggroup);
             }
