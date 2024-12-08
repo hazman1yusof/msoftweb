@@ -536,7 +536,7 @@ var dialog_chgcode_dfee = new ordialog(
 		[
 			{label: 'Charge Code',name:'chgcode',width:80,classes:'pointer',canSearch:true,or_search:true},
 			{label: 'Description',name:'description',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			{label: 'Brand Name',name:'brandname',width:200,canSearch:true},
+			{label: 'Doctor',name:'brandname',width:200,canSearch:true},
 			{label: 'UOM',name:'uom',width:50,classes:'pointer',},
 			{label: 'Quantity On Hand',name:'qtyonhand',width:100,classes:'pointer',hidden:true},
 			{label: 'Price',name:'price',width:50,classes:'pointer'},
