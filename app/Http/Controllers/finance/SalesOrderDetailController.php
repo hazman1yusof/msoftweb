@@ -1438,7 +1438,7 @@ class SalesOrderDetailController extends defaultController
                         $found = array_search($key,$occur_ar);
                         if($found !== false){
                             // $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
-                            $table->Where('uom.'.$searchCol_array[$key],'like',$request->searchVal[$key]);
+                            $table->Where('mmam.'.$searchCol_array[$key],'like',$request->searchVal[$key]);
                         }
                     }
                 });
