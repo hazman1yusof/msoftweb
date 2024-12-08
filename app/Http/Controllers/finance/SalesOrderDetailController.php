@@ -1425,6 +1425,26 @@ class SalesOrderDetailController extends defaultController
                                         ->where('mmap.compcode', '=', session('compcode'));
                     });
 
+        if(!empty($request->searchCol)){
+            $searchCol_array = $request->searchCol;
+
+            $count = array_count_values($searchCol_array);
+
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false){
+                            // $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                            $table->Where('uom.'.$searchCol_array[$key],'like',$request->searchVal[$key]);
+                        }
+                    }
+                });
+            }
+        }
+
         $paginate = $table->paginate($request->rows);
 
         $responce = new stdClass();

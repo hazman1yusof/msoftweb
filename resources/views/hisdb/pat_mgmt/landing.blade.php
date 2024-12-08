@@ -23,7 +23,7 @@
 
 	<style>
 		#Dtext_chgcode_dfee {
-			padding-left: 70px;
+			margin-left: 10px;
 	    }
 	</style>
 
