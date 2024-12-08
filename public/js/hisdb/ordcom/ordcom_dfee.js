@@ -609,7 +609,7 @@ var dialog_chgcode_dfee = new ordialog(
 			$("#jqGrid_dfee #"+id_optid+"_chgcode").data('doctorname',data['doctorname']);
 			$("#jqGrid_dfee #"+id_optid+"_chgcode").data('convfactor',data['convfactor']);
 			$('#'+dialog_chgcode_dfee.gridname).data('fail_msg','');
-			$("#jqGrid_dfee #"+id_optid+"_deptcode").val(data['deptcode']);
+			// $("#jqGrid_dfee #"+id_optid+"_deptcode").val(data['deptcode']);
 			$("#jqGrid_dfee #"+id_optid+"_chgcode").val(data['chgcode']);
 			$("#jqGrid_dfee #"+id_optid+"_brandname").val(data['brandname']);
 			$("#jqGrid_dfee #"+id_optid+"_taxcode").val(data['taxcode']);
@@ -655,7 +655,7 @@ var dialog_chgcode_dfee = new ordialog(
 
 		}
 	},{
-		title:"Select Item For Doctor",
+		title:"Select Item For Doctor Fees",
 		open:function(obj_){
 			let id_optid = obj_.id_optid;
 			dialog_chgcode_dfee.urlParam.url = "./ordcom/table";

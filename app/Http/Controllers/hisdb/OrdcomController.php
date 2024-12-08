@@ -2914,7 +2914,7 @@ class OrdcomController extends defaultController
             $table = $table->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','uom.convfactor','cm.constype','cm.revcode','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost');
         }else{
 
-            $table = $table->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','uom.convfactor','cm.constype','cm.revcode','dept.deptcode','doc.doctorcode','doc.doctorname');
+            $table = $table->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','uom.convfactor','cm.constype','cm.revcode','doc.doctorcode','doc.doctorname');
         }
 
         $table = $table->where('cm.compcode','=',session('compcode'))
@@ -2954,16 +2954,6 @@ class OrdcomController extends defaultController
             $table = $table->join('hisdb.doctor as doc', function($join){
                                 $join = $join->on('doc.doctorcode', '=', 'cm.costcode');
                                 $join = $join->where('doc.compcode', '=', session('compcode'));
-                            });
-
-            $table = $table->join('hisdb.discipline as disp', function($join){
-                                $join = $join->on('disp.code', '=', 'doc.disciplinecode');
-                                $join = $join->where('disp.compcode', '=', session('compcode'));
-                            });
-
-            $table = $table->join('sysdb.department as dept', function($join){
-                                $join = $join->on('dept.deptcode', '=', 'disp.code');
-                                $join = $join->where('dept.compcode', '=', session('compcode'));
                             });
 
         }

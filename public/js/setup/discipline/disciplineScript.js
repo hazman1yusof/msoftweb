@@ -53,6 +53,13 @@ $(document).ready(function () {
 					editrules: { required: true }, 
 					editoptions: {style: "text-transform: uppercase", maxlength:100 }
 			},
+			{ label: 'Cost center', name: 'costcode', width: 50, classes: 'wrap',editable:true,
+				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+				edittype:'custom',	editoptions:
+					{  custom_element:costcodeCustomEdit,
+						custom_value:galGridCustomValue 	
+					},
+			},
 			{ label: 'Add User', name: 'adduser', width: 50, hidden:false},
 			{ label: 'Add Date', name: 'adddate', width: 50, hidden:false},
 			{ label: 'Upd User', name: 'upduser', width: 50, hidden:false},
@@ -177,6 +184,43 @@ $(document).ready(function () {
 			alert(data);
 		}
 	};
+
+	///////////////////////////////////////cust_rules//////////////////////////////////////////////
+	function cust_rules(value,name){
+		var temp;
+		switch(name){
+			case 'Cost center':temp=$('#costcode');break;
+		}
+		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
+	}
+
+	function showdetail(cellvalue, options, rowObject){
+		var field,table,case_;
+		switch(options.colModel.name){
+			case 'costcode':field=['costcode','description'];table="finance.costcenter";case_='costcode';break;
+			
+		}
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+		fdl.get_array('costcode',options,param,case_,cellvalue);
+		
+		return cellvalue;
+	}
+
+	function costcodeCustomEdit(val, opt) {
+		// val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		let val2 = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="costcode" type="text" class="form-control input-sm" data-validation="required" style="text-transform:uppercase" value="' + val2 + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	function galGridCustomValue (elem, operation, value){
+		if(operation == 'get') {
+			return $(elem).find("input").val();
+		} 
+		else if(operation == 'set') {
+			$('input',elem).val(value);
+		}
+	}
 
 	//////////////////////////My edit options edit /////////////////////////////////////////////////////////
 	var myEditOptions_edit = {
