@@ -2546,7 +2546,7 @@ class TestController extends defaultController
         DB::beginTransaction();
 
         try {
-            $doctor = DB::table('hisdb.doctor')
+            $doctor = DB::table('test.chgmast')
                         ->where('compcode','9B')
                         ->get();
 

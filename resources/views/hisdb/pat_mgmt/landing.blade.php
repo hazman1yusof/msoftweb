@@ -21,6 +21,12 @@
     <link rel="stylesheet" href="plugins/css/trirand/ui.jqgrid-bootstrap.css" />
 	<link rel="stylesheet" href="css/landing.css?v=1">
 
+	<style>
+		#Dtext_chgcode_dfee {
+			padding-left: 70px;
+	    }
+	</style>
+
 </head>
 
 <body class="header-fixed">
