@@ -273,7 +273,7 @@ class PatmastController extends defaultController
                 // }
 
                 $episode = DB::table('hisdb.episode')
-                            ->select('newcaseP','newcaseNP','followupP','followupNP','billtype','regdept')
+                            // ->select('newcaseP','newcaseNP','followupP','followupNP','billtype','regdept')
                             ->where('compcode',session('compcode'))
                             ->where('mrn','=',$value->MRN)
                             ->where('episno','=',$value->Episno);
