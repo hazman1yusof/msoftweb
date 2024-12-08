@@ -612,6 +612,7 @@ var dialog_chgcode_dfee = new ordialog(
 			// $("#jqGrid_dfee #"+id_optid+"_deptcode").val(data['deptcode']);
 			$("#jqGrid_dfee #"+id_optid+"_chgcode").val(data['chgcode']);
 			$("#jqGrid_dfee #"+id_optid+"_brandname").val(data['brandname']);
+			$("#jqGrid_dfee #"+id_optid+"_doctorname").val(data['doctorname']);
 			$("#jqGrid_dfee #"+id_optid+"_taxcode").val(data['taxcode']);
 			$("#jqGrid_dfee #"+id_optid+"_uom_rate").val(data['rate']);
 			$("#jqGrid_dfee #"+id_optid+"_convfactor_uom").val(data['convfactor']);
