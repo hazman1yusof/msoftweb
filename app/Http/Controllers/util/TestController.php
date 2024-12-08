@@ -90,6 +90,8 @@ class TestController extends defaultController
                 return $this->msdemo_chgprice($request);
             case 'tunjuk_doctorcode':
                 return $this->tunjuk_doctorcode($request);
+            case 'set_drcontrib':
+                return $this->set_drcontrib($request);
             default:
                 return 'error happen..';
         }
@@ -2538,6 +2540,68 @@ class TestController extends defaultController
 
         dd($unique);
 
+    }
+
+    public function set_drcontrib(){
+        DB::beginTransaction();
+
+        try {
+            $doctor = DB::table('hisdb.doctor')
+                        ->where('compcode','9B')
+                        ->get();
+
+            foreach ($doctor as $key => $value) {
+                $chgmast = DB::table('hisdb.chgmast')
+                                ->where('compcode','9B')
+                                ->where('costcode',$value->doctorcode)
+                                ->get();
+
+                foreach ($chgmast as $key2 => $value2) {
+                    DB::table('debtor.drcontrib')
+                        ->insert([
+                            'lineno_' => 1,
+                            'compcode' => '9B',
+                            'drcode' => $value->doctorcode,
+                            'chgcode' => $value2->chgcode,
+                            'effdate' => '2024-01-01',
+                            'drprcnt' => 90,
+                            'amount' => 0,
+                            'epistype' => 'OP',
+                            'stfamount' => 90,
+                            'stfpercent' => 0,
+                            'corpprcnt' => 0,
+                            'corpamt' => 0,
+                            'unit' => session(unit)
+                        ]);
+
+                    DB::table('debtor.drcontrib')
+                        ->insert([
+                            'lineno_' => 1,
+                            'compcode' => '9B',
+                            'drcode' => $value->doctorcode,
+                            'chgcode' => $value2->chgcode,
+                            'effdate' => '2024-01-01',
+                            'drprcnt' => 90,
+                            'amount' => 0,
+                            'epistype' => 'IP',
+                            'stfamount' => 90,
+                            'stfpercent' => 0,
+                            'corpprcnt' => 0,
+                            'corpamt' => 0,
+                            'unit' => session(unit)
+                        ]);
+
+                    dump('Added: Doctor'.$value->doctorcode.' --> chgcode'.$value2->chgcode);
+                }
+            }
+
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+
+            dd('Error'.$e);
+        }
     }
     
 }
