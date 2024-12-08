@@ -91,7 +91,7 @@ class WardController extends defaultController
                     'description' => strtoupper($request->description),
                     // 'sector' => strtoupper($request->sector),
                     // 'region' => strtoupper($request->region),
-                    // 'recstatus' => strtoupper($request->recstatus),
+                    'recstatus' => strtoupper($request->recstatus),
                     // 'idno' => strtoupper($request->idno),
                     'lastcomputerid' => session('computerid'),
                     'upduser' => strtoupper(session('username')),
