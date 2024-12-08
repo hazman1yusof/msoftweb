@@ -306,7 +306,11 @@ class OrdcomController extends defaultController
         if(strlen($request->chggroup) > 5){
             $table_chgtrx = $table_chgtrx->whereNotIn('trx.chggroup',explode(",",$request->chggroup));
         }else{
-            $table_chgtrx = $table_chgtrx->where('trx.chggroup',$request->chggroup);
+            if(str_contains($request->chggroup, ',')){
+                $table_chgtrx = $table_chgtrx->whereIn('trx.chggroup',$request->chggroup);
+            }else{
+                $table_chgtrx = $table_chgtrx->where('trx.chggroup',$request->chggroup);
+            }
         }
 
         $table_chgtrx = $table_chgtrx->leftjoin('material.product as pt', function($join) use ($request){
