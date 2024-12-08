@@ -2591,7 +2591,7 @@ class TestController extends defaultController
                             'unit' => session('unit')
                         ]);
 
-                    dump('Added: Doctor'.$value->doctorcode.' --> chgcode'.$value2->chgcode);
+                    dump('Added: Doctor: '.$value->doctorcode.' --> chgcode: '.$value2->chgcode);
                 }
             }
 
