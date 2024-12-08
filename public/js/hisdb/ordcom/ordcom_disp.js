@@ -244,7 +244,7 @@ var myEditOptions_disp = {
     },
 	oneditfunc: function (rowid) {
 		$("#jqGrid_disp").data('lastselrow',rowid);
-		set_userdeptcode('disp');
+		// set_userdeptcode('disp');
 
 		errorField.length=0;
 		myfail_msg_disp.clear_fail();
