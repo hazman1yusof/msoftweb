@@ -141,6 +141,13 @@ $(document).ready(function(){
 		gridComplete: function(){
 			fdl_ordcom.set_array().reset();
 			myfail_msg_disp.clear_fail();
+			
+			let justsave = $("#jqGrid_disp").data('justsave');
+
+			if(justsave!=undefined && justsave!=null && justsave==1){
+				$('#jqGrid_disp_iladd').click();
+			}
+			$("#jqGrid_disp").data('justsave','0');
 		},
 		afterShowForm: function (rowid) {
 		},
@@ -298,12 +305,6 @@ var myEditOptions_disp = {
 		refreshGrid('#jqGrid_disp',urlParam_disp,'add');
     	$("#jqGrid_disp_pagerRefresh,#jqGrid_disp_pagerDelete").show();
 		errorField.length=0;
-		let justsave = $("#jqGrid_disp").data('justsave');
-
-		if(justsave!=undefined && justsave!=null && justsave==1){
-			$('#jqGrid_disp_iladd').click();
-		}
-		$("#jqGrid_disp").data('justsave','0');
 	},
 	errorfunc: function(rowid,response){
     	alert(response.responseText);

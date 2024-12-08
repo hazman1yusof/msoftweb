@@ -149,6 +149,13 @@ $(document).ready(function(){
 			fdl_ordcom.set_array().reset();
 			myfail_msg_phar.clear_fail();
 			$('#dosage_phar,#frequency_phar,#instruction_phar,#drugindicator_phar').prop('readonly', true);
+			
+			let justsave = $("#jqGrid_phar").data('justsave');
+
+			if(justsave!=undefined && justsave!=null && justsave==1){
+				$('#jqGrid_phar_iladd').click();
+			}
+			$("#jqGrid_phar").data('justsave','0');
 		},
 		afterShowForm: function (rowid) {
 		},
@@ -408,12 +415,6 @@ var myEditOptions_phar = {
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
     	$("#jqGrid_phar_pagerRefresh,#jqGrid_phar_pagerDelete").show();
 		errorField.length=0;
-		let justsave = $("#jqGrid_phar").data('justsave');
-
-		if(justsave!=undefined && justsave!=null && justsave==1){
-			$('#jqGrid_phar_iladd').click();
-		}
-		$("#jqGrid_phar").data('justsave','0');
 	},
 	errorfunc: function(rowid,response){
     	alert(response.responseText);
