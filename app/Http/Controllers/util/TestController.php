@@ -2571,7 +2571,7 @@ class TestController extends defaultController
                             'stfpercent' => 0,
                             'corpprcnt' => 0,
                             'corpamt' => 0,
-                            'unit' => session(unit)
+                            'unit' => session('unit')
                         ]);
 
                     DB::table('debtor.drcontrib')
@@ -2588,7 +2588,7 @@ class TestController extends defaultController
                             'stfpercent' => 0,
                             'corpprcnt' => 0,
                             'corpamt' => 0,
-                            'unit' => session(unit)
+                            'unit' => session('unit')
                         ]);
 
                     dump('Added: Doctor'.$value->doctorcode.' --> chgcode'.$value2->chgcode);
