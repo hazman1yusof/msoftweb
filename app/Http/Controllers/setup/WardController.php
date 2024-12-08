@@ -53,19 +53,19 @@ class WardController extends defaultController
                 throw new \Exception("Record Duplicate");
             }
 
-            DB::table('sysdb.department')
-                ->insert([  
-                    'compcode' => session('compcode'),
-                    'warddept' => $request->warddept,
-                    'description' => strtoupper($request->description),
-                    'sector' => strtoupper($request->sector),
-                    'region' => strtoupper($request->region),
-                    'recstatus' => strtoupper($request->recstatus),
-                    //'idno' => strtoupper($request->idno),
-                    'computerid' => session('computerid'),
-                    'adduser' => strtoupper(session('username')),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
+            // DB::table('sysdb.department')
+            //     ->insert([  
+            //         'compcode' => session('compcode'),
+            //         'warddept' => $request->warddept,
+            //         'description' => strtoupper($request->description),
+            //         'sector' => strtoupper($request->sector),
+            //         'region' => strtoupper($request->region),
+            //         'recstatus' => strtoupper($request->recstatus),
+            //         //'idno' => strtoupper($request->idno),
+            //         'computerid' => session('computerid'),
+            //         'adduser' => strtoupper(session('username')),
+            //         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+            //     ]);
 
              DB::commit();
         } catch (\Exception $e) {
@@ -75,7 +75,8 @@ class WardController extends defaultController
             $responce->errormsg = $e->getMessage();
             $responce->request = $_REQUEST;
 
-            return response(json_encode($responce), 500);        }
+            return response(json_encode($responce), 500);        
+        }
     }
 
     public function edit(Request $request){
@@ -86,12 +87,12 @@ class WardController extends defaultController
             DB::table('sysdb.department')
                 ->where('idno','=',$request->idno)
                 ->update([  
-                    'warddept' => $request->warddept,
+                    // 'warddept' => $request->warddept,
                     'description' => strtoupper($request->description),
-                    'sector' => strtoupper($request->sector),
-                    'region' => strtoupper($request->region),
-                    'recstatus' => strtoupper($request->recstatus),
-                    'idno' => strtoupper($request->idno),
+                    // 'sector' => strtoupper($request->sector),
+                    // 'region' => strtoupper($request->region),
+                    // 'recstatus' => strtoupper($request->recstatus),
+                    // 'idno' => strtoupper($request->idno),
                     'lastcomputerid' => session('computerid'),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
