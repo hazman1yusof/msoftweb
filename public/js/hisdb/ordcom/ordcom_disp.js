@@ -387,8 +387,10 @@ var myEditOptions_disp_edit = {
 				self.urlParam.billtype = $('#billtype_def_code').val();
 				self.urlParam.chgcode = $("#jqGrid_disp input[name='chgcode']").val();
 				self.urlParam.uom = $("#jqGrid_disp input[name='uom']").val();
-				self.urlParam.filterCol = ['cm.chggroup'];
-				self.urlParam.filterVal = [$('#ordcomtt_disp').val()];
+				self.urlParam.filterCol = [];
+				self.urlParam.filterVal = [];
+				self.urlParam.whereInCol = ['cm.chggroup'];
+				self.urlParam.whereInVal = [$('#ordcomtt_disp').val()];
 	        },function(data,self,id,fail){
 	        	if(data.rows != undefined && data.rows.length>0){
 	        		var retdata = data.rows[0];
@@ -410,8 +412,10 @@ var myEditOptions_disp_edit = {
 				self.urlParam.billtype = $('#billtype_def_code').val();
 				self.urlParam.chgcode = $("#jqGrid_disp input[name='chgcode']").val();
 				self.urlParam.uom = $("#jqGrid_disp input[name='uom']").val();
-				self.urlParam.filterCol = ['cm.chggroup'];
-				self.urlParam.filterVal = [$('#ordcomtt_disp').val()];
+				self.urlParam.filterCol = [];
+				self.urlParam.filterVal = [];
+				self.urlParam.whereInCol = ['cm.chggroup'];
+				self.urlParam.whereInVal = [$('#ordcomtt_disp').val()];
 	        },function(data,self,id,fail){
 	        	if(data.rows != undefined && data.rows.length>0){
 	        		var retdata = data.rows[0];
@@ -431,8 +435,10 @@ var myEditOptions_disp_edit = {
 				self.urlParam.billtype = $('#billtype_def_code').val();
 				self.urlParam.chgcode = $("#jqGrid_disp input[name='chgcode']").val();
 				self.urlParam.uom = $("#jqGrid_disp input[name='uom']").val();
-				self.urlParam.filterCol = ['cm.chggroup'];
-				self.urlParam.filterVal = [$('#ordcomtt_disp').val()];
+				self.urlParam.filterCol = [];
+				self.urlParam.filterVal = [];
+				self.urlParam.whereInCol = ['cm.chggroup'];
+				self.urlParam.whereInVal = [$('#ordcomtt_disp').val()];
 	        },function(data,self,id,fail){
 	        	if(data.rows != undefined && data.rows.length>0){
 	        		var retdata = data.rows[0];
@@ -728,8 +734,10 @@ var dialog_chgcode_disp = new ordialog(
 				entrydate : moment().format('YYYY-MM-DD'),
 				billtype : $('#billtype_def_code').val(),
 				deptcode : $("#dispdept_dflt").val(),
-				filterCol : ['cm.chggroup'],
-				filterVal : [$('#ordcomtt_disp').val()],
+				filterCol : [],
+				filterVal : [],
+				whereInCol : ['cm.chggroup'],
+				whereInVal : [$('#ordcomtt_disp').val()],
 			},
 		ondblClickRow:function(event){
 			if(event.type == 'keydown'){
@@ -851,8 +859,10 @@ var dialog_chgcode_disp = new ordialog(
 			dialog_chgcode_disp.urlParam.entrydate = $("#jqGrid_disp input[name='trxdate']").val();
 			dialog_chgcode_disp.urlParam.billtype = $('#billtype_def_code').val();
 			dialog_chgcode_disp.urlParam.chgcode = $("#jqGrid_disp input[name='chgcode']").val();
-			dialog_chgcode_disp.urlParam.filterCol = ['cm.chggroup'];
-			dialog_chgcode_disp.urlParam.filterVal = [$('#ordcomtt_disp').val()];
+			dialog_uomcode_disp.urlParam.filterCol = [];
+			dialog_uomcode_disp.urlParam.filterVal = [];
+			dialog_chgcode_disp.urlParam.whereInCol = ['cm.chggroup'];
+			dialog_chgcode_disp.urlParam.whereInVal = [$('#ordcomtt_disp').val()];
 		},
 		close: function(obj){
 			$("#jqGrid_disp input[name='quantity']").focus().select();
@@ -899,8 +909,10 @@ var dialog_uomcode_disp = new ordialog(
 					uom:null,
 					billtype : $('#billtype_def_code').val(),
 					price : 'PRICE2',
-					filterCol : ['cm.chggroup'],
-					filterVal : [$('#ordcomtt_disp').val()],
+					filterCol : [],
+					filterVal : [],
+					whereInCol : ['cm.chggroup'],
+					whereInVal : [$('#ordcomtt_disp').val()],
 				},
 		ondblClickRow:function(event){
 
@@ -978,8 +990,10 @@ var dialog_uomcode_disp = new ordialog(
 			dialog_uomcode_disp.urlParam.uom = $("#jqGrid_disp input[name='uom']").val();
 			dialog_uomcode_disp.urlParam.price = 'PRICE2';
 			dialog_uomcode_disp.urlParam.billtype = $('#billtype_def_code').val();
-			dialog_uomcode_disp.urlParam.filterCol = ['cm.chggroup'];
-			dialog_uomcode_disp.urlParam.filterVal = [$('#ordcomtt_disp').val()];
+			dialog_uomcode_disp.urlParam.filterCol = [];
+			dialog_uomcode_disp.urlParam.filterVal = [];
+			dialog_uomcode_disp.urlParam.whereInCol = ['cm.chggroup'];
+			dialog_uomcode_disp.urlParam.whereInVal = [$('#ordcomtt_disp').val()];
 		},
 		close: function(){
 			$("#jqGrid_disp input[name='quantity']").focus().select();
@@ -1031,8 +1045,10 @@ var dialog_uom_recv_disp = new ordialog(
 					uom:null,
 					billtype : $('#billtype_def_code').val(),
 					price : 'PRICE2',
-					filterCol : ['cm.chggroup'],
-					filterVal : [$('#ordcomtt_disp').val()],
+					filterCol : [],
+					filterVal : [],
+					whereInCol : ['cm.chggroup'],
+					whereInVal : [$('#ordcomtt_disp').val()],
 				},
 		ondblClickRow:function(event){
 
@@ -1085,8 +1101,10 @@ var dialog_uom_recv_disp = new ordialog(
 			dialog_uom_recv_disp.urlParam.price = 'PRICE2';
 			dialog_uom_recv_disp.urlParam.uom = $("#jqGrid_disp input[name='uom_recv']").val();
 			dialog_uom_recv_disp.urlParam.billtype = $('#billtype_def_code').val();
-			dialog_uom_recv_disp.urlParam.filterCol = ['cm.chggroup'];
-			dialog_uom_recv_disp.urlParam.filterVal = [$('#ordcomtt_disp').val()];
+			dialog_uom_recv_disp.urlParam.filterCol = [];
+			dialog_uom_recv_disp.urlParam.filterVal = [];
+			dialog_uom_recv_disp.urlParam.whereInCol = ['cm.chggroup'];
+			dialog_uom_recv_disp.urlParam.whereInVal = [$('#ordcomtt_disp').val()];
 		},
 		close: function(){
 			$("#jqGrid_disp input[name='quantity']").focus().select();
