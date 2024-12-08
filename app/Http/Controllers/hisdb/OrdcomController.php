@@ -3023,8 +3023,9 @@ class OrdcomController extends defaultController
         }
 
         if(!empty($request->whereInCol)){
+            dd('asdasd');
             foreach ($request->whereInCol as $key => $value) {
-                $table = $table->whereIn($value,explode(",",$request->whereIn[$key][0]));
+                $table = $table->whereIn($value,explode(",",$request->whereInVal[$key][0]));
             }
         }
 
