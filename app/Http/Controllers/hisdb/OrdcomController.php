@@ -3024,7 +3024,7 @@ class OrdcomController extends defaultController
 
         if(!empty($request->whereInCol)){
             foreach ($request->whereInCol as $key => $value) {
-                $table = $table->whereIn($value,explode(",",$request->whereNotInVal[$key][0]));
+                $table = $table->whereIn($value,explode(",",$request->whereIn[$key][0]));
             }
         }
 
