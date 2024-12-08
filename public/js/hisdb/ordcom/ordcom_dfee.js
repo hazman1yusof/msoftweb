@@ -534,15 +534,15 @@ var dialog_chgcode_dfee = new ordialog(
 	'chgcode_dfee',['material.stockloc AS s','material.product AS p','hisdb.chgmast AS c'],"#jqGrid_dfee input[name='chgcode']",errorField,
 	{	colModel:
 		[
-			{label: 'Charge Code',name:'chgcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+			{label: 'Charge Code',name:'chgcode',width:80,classes:'pointer',canSearch:true,or_search:true},
 			{label: 'Description',name:'description',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			{label: 'Inventory',name:'invflag',width:100,hidden:true},
-			{label: 'Brand Name',name:'brandname',width:200},
-			{label: 'UOM',name:'uom',width:100,classes:'pointer',},
+			{label: 'Brand Name',name:'brandname',width:200,canSearch:true},
+			{label: 'UOM',name:'uom',width:50,classes:'pointer',},
 			{label: 'Quantity On Hand',name:'qtyonhand',width:100,classes:'pointer',hidden:true},
-			{label: 'Price',name:'price',width:100,classes:'pointer'},
-			{label: 'Tax',name:'taxcode',width:100,classes:'pointer'},
+			{label: 'Price',name:'price',width:50,classes:'pointer'},
+			{label: 'Tax',name:'taxcode',width:50,classes:'pointer',hidden:true},
 			{label: 'rate',name:'rate',hidden:true},
+			{label: 'Inventory',name:'invflag',hidden:true},
 			{label: 'st_idno',name:'st_idno',hidden:true},
 			{label: 'pt_idno',name:'pt_idno',hidden:true},
 			{label: 'avgcost',name:'avgcost',hidden:true},
@@ -655,7 +655,7 @@ var dialog_chgcode_dfee = new ordialog(
 
 		}
 	},{
-		title:"Select Item For Sales Order",
+		title:"Select Item For Doctor",
 		open:function(obj_){
 			let id_optid = obj_.id_optid;
 			dialog_chgcode_dfee.urlParam.url = "./ordcom/table";
