@@ -1034,6 +1034,9 @@ class PointOfSalesDetailController extends defaultController
         $deptcode = $request->deptcode;
         $chgcode = $request->chgcode;
         $uom = $request->uom;
+        if(empty($uom)){
+            $uom = $request->wholeword;
+        }
         $entrydate = $request->entrydate;
 
         $table = DB::table('material.stockloc as st')
