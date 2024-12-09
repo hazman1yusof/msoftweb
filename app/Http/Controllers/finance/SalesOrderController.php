@@ -1917,7 +1917,7 @@ class SalesOrderController extends defaultController
     //function sendmeail($data) -- nak kena ada atau tak
 
     function showpdf_disp($request){
-        $billsum_idno = $request->idno_billsum;
+        $idno_billsum = $request->idno_billsum;
         $idno = $request->idno;
 
         $dbacthdr = DB::table('debtor.dbacthdr as h')
@@ -1955,7 +1955,7 @@ class SalesOrderController extends defaultController
         $invcode = $billsum->invcode;
 
         $billsum = DB::table('hisdb.billdet AS b')
-            ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chgcode', 'b.uom', 'b.quantity', 'b.amount', 'b.taxamount', 'b.unitprce', 'b.taxcode', 'b.discamt', 'b.recstatus',
+            ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgcode as chggroup', 'b.uom', 'b.quantity', 'b.amount', 'b.taxamount as taxamt', 'b.unitprce as unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
             'u.description as uom_desc', 
             'm.description as chgmast_desc','iv.expdate','iv.batchno')
             ->leftJoin('hisdb.chgmast as m', function($join) use ($request){
@@ -1999,6 +1999,9 @@ class SalesOrderController extends defaultController
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
+
+        $totamount = $billsum->sum('amount');
+        $dbacthdr->amount = $totamount;
 
         $totamount_expld = explode(".", (float)$dbacthdr->amount);
 

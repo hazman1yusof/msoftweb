@@ -1474,14 +1474,17 @@ $(document).ready(function (){
 		pager: "#jqGridPager3_IN",
 		loadComplete: function (data){
 			calc_jq_height_onchange("jqGrid3_IN");
+			$("#jqGrid3_IN").setSelection($("#jqGrid3_IN").getDataIDs()[0]);
 		},
-		gridComplete: function (){
-			fdl.set_array().reset();
+		onSelectRow: function (data){
 			if(selrowData("#jqGrid").db_episno == '0' || selrowData("#jqGrid").db_episno == ''){
 				$("#pdf_IN").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno);
 			}else{
 				$("#pdf_IN").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno+'&idno_billsum='+selrowData("#jqGrid3_IN").idno);
 			}
+		},
+		gridComplete: function (){
+			fdl.set_array().reset();
 		}
 	});
 	jqgrid_label_align_right("#jqGrid3_IN");
@@ -2375,7 +2378,12 @@ $(document).ready(function (){
 			case 'GSTCode': field = ['taxcode','description'];table = "hisdb.taxmast";case_ = 'GST Code DN';break;
 			
 			// IN
-			case 'chggroup': field = ['chgcode','description'];table = "hisdb.chgmast";case_ = 'chggroup';break;
+			case 'chggroup': 
+					if(cellvalue.length <= 3){
+						field = ['grpcode','description'];table = "hisdb.chggroup";case_ = 'chggroup';break;
+					}else{
+						field = ['chgcode','description'];table = "hisdb.chgmast";case_ = 'chggroup';break;
+					}
 			case 'uom': field = ['uomcode','description'];table = "material.uom";case_ = 'uom';break;
 			case 'taxcode': field = ['taxcode','description'];table = "hisdb.taxmast";case_ = 'taxcode';break;
 			
