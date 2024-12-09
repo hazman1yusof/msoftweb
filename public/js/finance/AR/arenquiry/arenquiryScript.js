@@ -757,6 +757,7 @@ $(document).ready(function (){
 			{ label: 'billdebtor', name: 'db_billdebtor', width: 20, hidden: true },
 			{ label: 'approvedby', name: 'db_approvedby', width: 20, hidden: true },
 			{ label: 'MRN', name: 'db_mrn', width: 10, align: 'right', canSearch: true, classes: 'wrap text-uppercase', formatter: showdetail, unformat: un_showdetail },
+			{ label: 'episno', name: 'db_episno', width: 10, hidden: true },
 			{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
 			{ label: 'hdrtype', name: 'db_hdrtype', width: 10, hidden: true },
@@ -865,7 +866,11 @@ $(document).ready(function (){
 			
 			$("#pdf_CN").attr('href','./CreditNoteAR/showpdf?auditno='+selrowData("#jqGrid").db_auditno);
 			$("#pdf_DN").attr('href','./DebitNote/showpdf?auditno='+selrowData("#jqGrid").db_auditno);
-			$("#pdf_IN").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno);
+			if(selrowData("#jqGrid").db_episno == '0' || selrowData("#jqGrid").db_episno == ''){
+				$("#pdf_IN").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno);
+			}else{
+				$("#pdf_IN").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno+'&idno_billsum='+selrowData("#jqGrid3_IN").idno);
+			}
 			$("#pdf_RCRD").attr('href','./receipt/showpdf?auditno='+selrowData("#jqGrid").db_auditno);
 			
 			$("#jqGrid").data('lastselrow',rowid);
@@ -1430,6 +1435,7 @@ $(document).ready(function (){
 			},
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'id', name: 'id', width: 10, hidden: true, key: true },
+			{ label: 'idno', name: 'idno', width: 10, hidden: true },
 		],
 		autowidth: true,
 		shrinkToFit: true,
