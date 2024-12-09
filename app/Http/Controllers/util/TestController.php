@@ -2531,7 +2531,7 @@ class TestController extends defaultController
                             ->where('doctorcode',$obj->costcode);
 
             if(!$doctor->exists()){
-                array_push($show, $obj->costcode);
+                array_push($show, $obj->costcode.' , '.$obj->brandname);
             }
 
         }
