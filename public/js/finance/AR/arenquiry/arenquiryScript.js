@@ -1435,7 +1435,7 @@ $(document).ready(function (){
 			},
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'id', name: 'id', width: 10, hidden: true, key: true },
-			{ label: 'idno', name: 'idno', width: 10, hidden: true },
+			{ label: 'idno', name: 'idno', width: 10, hidden: false },
 		],
 		autowidth: true,
 		shrinkToFit: true,
