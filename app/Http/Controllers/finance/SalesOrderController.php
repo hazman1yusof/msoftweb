@@ -1918,7 +1918,7 @@ class SalesOrderController extends defaultController
 
     function showpdf_disp($dbacthdr,$request){
 
-        $billsum = DB::table('debtor.billdet AS b')
+        $billsum = DB::table('hisdb.billdet AS b')
             ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
             'u.description as uom_desc', 
             'd.debtorcode as debt_debtcode','d.name as debt_name', 
