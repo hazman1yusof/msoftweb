@@ -108,7 +108,7 @@ class PatmastController extends defaultController
             $data_send['labdept_dflt'] = $ordcomtt_lab->pvalue2;
             $data_send['raddept_dflt'] = $ordcomtt_rad->pvalue2;
             $data_send['physdept_dflt'] = $ordcomtt_phys->pvalue2;
-            $data_send['rehabdept_dflt'] = $ordcomtt_phys->pvalue2;
+            $data_send['rehabdept_dflt'] = $ordcomtt_rehab->pvalue2;
             $data_send['dietdept_dflt'] = $ordcomtt_diet->pvalue2;
             $data_send['pkgdept_dflt'] = $dept->deptcode;
             $data_send['othdept_dflt'] = $ordcomtt_phar->pvalue2;
