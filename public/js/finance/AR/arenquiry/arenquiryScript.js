@@ -1435,7 +1435,7 @@ $(document).ready(function (){
 			},
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'id', name: 'id', width: 10, hidden: true, key: true },
-			{ label: 'idno', name: 'idno', width: 10, hidden: false },
+			{ label: 'idno', name: 'idno', width: 100, hidden: false },
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -1477,6 +1477,11 @@ $(document).ready(function (){
 		},
 		gridComplete: function (){
 			fdl.set_array().reset();
+			if(selrowData("#jqGrid").db_episno == '0' || selrowData("#jqGrid").db_episno == ''){
+				$("#pdf_IN").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno);
+			}else{
+				$("#pdf_IN").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno+'&idno_billsum='+selrowData("#jqGrid3_IN").idno);
+			}
 		}
 	});
 	jqgrid_label_align_right("#jqGrid3_IN");
