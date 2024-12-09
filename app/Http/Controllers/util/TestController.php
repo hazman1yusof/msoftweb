@@ -68,8 +68,8 @@ class TestController extends defaultController
             //     return $this->update_stockexp($request);
             // case 'del_stockexp':
             //     return $this->del_stockexp($request);
-            case 'betulkan_quotation':
-                return $this->betulkan_quotation($request);
+            case 'add_radiology':
+                return $this->add_radiology($request);
             case 'betulkan_uom_kh_stockloc':
                 return $this->betulkan_uom_kh_stockloc($request);
             case 'betulkan_uom_kh_product':
@@ -2611,6 +2611,75 @@ class TestController extends defaultController
             DB::rollback();
 
             dd('Error'.$e);
+        }
+    }
+
+    public function add_radiology(){
+        $chgmast = DB::table('test.chgmast')
+            ->where('chggroup','35')
+            ->get();
+
+        foreach ($chgmast as $key => $value) {
+             DB::table('temp.chgmast')
+                    ->insert([
+                        'compcode' => '9B',
+                        'unit' => "W'HOUSE",
+                        'chgcode' => $value->chgcode,
+                        'description' => $value->description,
+                        'brandname' => $value->brandname,
+                        'revcode' => $value->revcode,
+                        'uom' => $value->uom,
+                        'packqty' => $value->packqty,
+                        'invflag' => $value->invflag,
+                        'overwrite' => $value->overwrite,
+                        'buom' => $value->buom,
+                        'adduser' => $value->adduser,
+                        'adddate' => $value->adddate,
+                        'lastuser' => $value->lastuser,
+                        'lastupdate' => $value->lastupdate,
+                        'upduser' => $value->upduser,
+                        'upddate' => $value->upddate,
+                        'deluser' => $value->deluser,
+                        'deldate' => $value->deldate,
+                        'recstatus' => $value->recstatus,
+                        'lastfield' => $value->lastfield,
+                        'doctorstat' => $value->doctorstat,
+                        'chgtype' => $value->chgtype,
+                        'chggroup' => $value->chggroup,
+                        'qflag' => $value->qflag,
+                        'costcode' => $value->costcode,
+                        'chgflag' => $value->chgflag,
+                        'ipacccode' => $value->ipacccode,
+                        'opacccode' => $value->opacccode,
+                        'revdept' => $value->revdept,
+                        'chgclass' => $value->chgclass,
+                        'costdept' => $value->costdept,
+                        'invgroup' => $value->invgroup,
+                        'apprccode' => $value->apprccode,
+                        'appracct' => $value->appracct,
+                        'active' => $value->active,
+                        'constype' => $value->constype,
+                        'dosage' => $value->dosage,
+                        'druggrcode' => $value->druggrcode,
+                        'subgroup' => $value->subgroup,
+                        'stockcode' => $value->stockcode,
+                        'seqno' => $value->seqno,
+                        'instruction' => $value->instruction,
+                        'freqcode' => $value->freqcode,
+                        'durationcode' => $value->durationcode,
+                        'strength' => $value->strength,
+                        'durqty' => $value->durqty,
+                        'freqqty' => $value->freqqty,
+                        'doseqty' => $value->doseqty,
+                        'dosecode' => $value->dosecode,
+                        'barcode' => $value->barcode,
+                        'computerid' => $value->computerid,
+                        'ipaddress' => $value->ipaddress,
+                        'lastcomputerid' => $value->lastcomputerid,
+                        'lastipaddress' => $value->lastipaddress,
+                        'auto' => $value->auto,
+                        'micerra' => $value->micerra,
+                    ]);
         }
     }
     

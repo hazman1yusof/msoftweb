@@ -1087,6 +1087,11 @@ Route::post('/tillenquiry/form','finance\TillEnquiryController@form');
 Route::get('/tillenquiry/form','finance\TillEnquiryController@form');
 Route::get('/tillenquiry/showpdf','finance\TillEnquiryController@showpdf');
 
+//// Dr contrib
+Route::get('/drcontrib','finance\drcontribController@show');
+Route::get('/drcontrib/table','finance\drcontribController@table');
+Route::post('/drcontrib/form','finance\drcontribController@form');
+
 //// Summary Receipt Listing Daily -- Report
 Route::get('/SummaryRcptListing_Report','finance\SummaryRcptListing_ReportController@show');
 Route::get('/SummaryRcptListing_Report/table','finance\SummaryRcptListing_ReportController@table');
