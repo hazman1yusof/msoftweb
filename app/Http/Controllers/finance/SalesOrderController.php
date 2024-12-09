@@ -1948,6 +1948,7 @@ class SalesOrderController extends defaultController
             })
             // ->where('b.source','=',$dbacthdr->source)
             // ->where('b.trantype','=',$dbacthdr->trantype)
+            ->where('b.amount','!=',0)
             ->where('b.billno','=',$dbacthdr->auditno)
             ->where('b.compcode','=',session('compcode'))
             ->get();
