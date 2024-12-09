@@ -243,7 +243,7 @@ var myEditOptions_oth = {
     },
 	oneditfunc: function (rowid) {
 		$("#jqGrid_oth").data('lastselrow',rowid);
-		set_userdeptcode('oth');
+		// set_userdeptcode('oth');
 		errorField.length=0;
 		myfail_msg_oth.clear_fail();
 		$("#jqGrid_oth input[name='trxdate']").val(moment().format('YYYY-MM-DD'));

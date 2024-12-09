@@ -2616,7 +2616,7 @@ class TestController extends defaultController
 
     public function add_radiology(){
         $chgmast = DB::table('test.chgmast')
-            ->where('chgtype','42')
+            ->where('chggroup','00')
             ->get();
 
         foreach ($chgmast as $key => $value) {
@@ -2686,7 +2686,8 @@ class TestController extends defaultController
     public function add_radiology2(){
             $chgprice = DB::table('test.chgprice')
                 ->where('compcode','11A')
-                ->where('chgcode','like','42%')
+                ->where('chgcode','like','10%')
+                ->whereNull('lineno_')
                 ->get();
 
             foreach ($chgprice as $key => $value) {
