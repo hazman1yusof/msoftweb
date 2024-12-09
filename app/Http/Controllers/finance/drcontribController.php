@@ -146,6 +146,69 @@ class drcontribController extends defaultController
                 }
             }
 
+            $dballoc = DB::table('debtor.dballoc')
+                                ->where('compcode',session('compcode'))
+                                ->where('recstatus','POSTED')
+                                ->whereDate('allocdate','>=',$request->datefr)
+                                ->whereDate('allocdate','<=',$request->dateto)
+                                ->get();
+
+            foreach ($dballoc as $obj_al) {
+                $drtran = DB::table('debtor.drtran')
+                                ->where('compcode',session('compcode'))
+                                // ->where('mrn',$obj_al->mrn)
+                                // ->where('episno',$obj_al->episno)
+                                ->where('billno',$obj_al->refauditno)
+                                ->where('lineno_',$obj_al->reflineno)
+                                ->get();
+
+                foreach ($drtran as $obj_dr) {
+                    $dralloc_exists = DB::table('debtor.dralloc')
+                                        ->where('compcode',session('compcode'))
+                                        ->where('source',$obj_al->source)
+                                        ->where('trantype',$obj_al->trantype)
+                                        ->where('auditno',$obj_al->auditno)
+                                        ->where('lineno_',$obj_al->lineno_)
+                                        ->where('drtnbillno',$obj_al->refauditno)
+                                        ->where('drtnlineno',$obj_al->reflineno)
+                                        ->where('drtnauditno',$obj_dr->auditno)
+                                        ->where('drcode',$obj_dr->drcode)
+                                        ->exists();
+
+                    if(!$dralloc_exists){
+                        $drallocamt = $obj_al->amount / $obj_dr->invamount;
+                        $drappamt = $drallocamt * $obj_dr->drappamt;
+
+                        DB::table('debtor.dralloc')
+                                    ->insert([
+                                        'compcode' => session('compcode'),
+                                        'source' => $obj_al->source,
+                                        'trantype' => $obj_al->trantype,
+                                        'auditno' => $obj_al->auditno,
+                                        'lineno_' => $obj_al->lineno_,
+                                        'mrn' => $obj_dr->mrn,
+                                        'episno' => $obj_dr->episno,
+                                        'drtnbillno' => $obj_al->refauditno,
+                                        'drtnlineno' => $obj_al->reflineno,
+                                        'drtnauditno' => $obj_dr->auditno,
+                                        'drcode' => $obj_dr->drcode,
+                                        'chgcode' => $obj_dr->chgcode,
+                                        'allocdate' => $request->dateto,
+                                        'drallocamt' => $drallocamt,
+                                        'drappamt' => $drappamt,
+                                        'drappstfamt' => 0,
+                                        // 'cccomamt' => $obj_dr->,
+                                        'approcess' => 0,
+                                        'lastuser' => session('username'),
+                                        'lastupddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                        'paymode' => $obj_al->paymode,
+                                    ]);
+                    }
+                }
+            }
+
+
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
