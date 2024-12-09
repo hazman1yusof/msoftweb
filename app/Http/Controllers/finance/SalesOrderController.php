@@ -1947,8 +1947,8 @@ class SalesOrderController extends defaultController
                 $join = $join->on('iv.uomcode', '=', 'b.uom');
                 $join = $join->where('iv.compcode', '=', session('compcode'));
             })
-            ->where('b.source','=',$dbacthdr->source)
-            ->where('b.trantype','=',$dbacthdr->trantype)
+            // ->where('b.source','=',$dbacthdr->source)
+            // ->where('b.trantype','=',$dbacthdr->trantype)
             ->where('b.billno','=',$dbacthdr->auditno)
             ->where('b.compcode','=',session('compcode'))
             ->get();
