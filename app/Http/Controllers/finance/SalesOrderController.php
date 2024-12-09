@@ -1813,7 +1813,7 @@ class SalesOrderController extends defaultController
         }
 
         $dbacthdr = DB::table('debtor.dbacthdr as h')
-            ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate','h.hdrtype',
+            ->select('h.source','h.trantype','h.epistype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate','h.hdrtype',
             'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4', 'm.creditterm as crterm','m.billtype as billtype','dt.debtortycode as dt_debtortycode', 'dt.description as dt_description','bt.description as bt_desc','pm.Name as pm_name','pm.address1 as pm_address1','pm.address2 as pm_address2','pm.address3 as pm_address3','pm.postcode as pm_postcode','h.doctorcode','dc.doctorname')
             ->leftJoin('debtor.debtormast as m', function($join) use ($request){
                 $join = $join->on("m.debtorcode", '=', 'h.debtorcode');    
@@ -1839,6 +1839,10 @@ class SalesOrderController extends defaultController
             // ->where('h.mrn','=','0')
             ->where('h.compcode','=',session('compcode'))
             ->first();
+
+        if(!empty($dbacthdr->epistype)){
+            return $this->showpdf_disp($dbacthdr,$request);
+        }
 
         $billsum = DB::table('debtor.billsum AS b')
             ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
@@ -1911,6 +1915,78 @@ class SalesOrderController extends defaultController
     }
 
     //function sendmeail($data) -- nak kena ada atau tak
+
+    function showpdf_disp($dbacthdr,$request){
+
+        $billsum = DB::table('debtor.billdet AS b')
+            ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
+            'u.description as uom_desc', 
+            'd.debtorcode as debt_debtcode','d.name as debt_name', 
+            'm.description as chgmast_desc','iv.expdate','iv.batchno')
+            ->leftJoin('hisdb.chgmast as m', function($join) use ($request){
+                $join = $join->on('b.chggroup', '=', 'm.chgcode');
+                $join = $join->on('b.uom', '=', 'm.uom');
+                $join = $join->where('m.compcode', '=', session('compcode'));
+                $join = $join->where('m.unit', '=', session('unit'));
+            })
+            ->leftJoin('material.uom as u', function($join) use ($request){
+                $join = $join->on('b.uom', '=', 'u.uomcode');
+                $join = $join->where('u.compcode', '=', session('compcode'));
+            })
+            //->leftJoin('material.productmaster as p', 'b.description', '=', 'p.description')
+            // ->leftJoin('material.uom as u', 'b.uom', '=', 'u.uomcode')
+            // ->leftJoin('debtor.debtormast as d', 'b.debtorcode', '=', 'd.debtorcode')
+            ->leftJoin('debtor.debtormast as d', function($join) use ($request){
+                $join = $join->on('b.debtorcode', '=', 'd.debtorcode');
+                $join = $join->where('d.compcode', '=', session('compcode'));
+            })
+            ->leftJoin('material.ivdspdt as iv', function($join) use ($request){
+                $join = $join->on('iv.recno', '=', 'b.auditno');
+                $join = $join->where('iv.lineno_', '=', '1');
+                $join = $join->on('iv.itemcode', '=', 'b.chggroup');
+                $join = $join->on('iv.uomcode', '=', 'b.uom');
+                $join = $join->where('iv.compcode', '=', session('compcode'));
+            })
+            ->where('b.source','=',$dbacthdr->source)
+            ->where('b.trantype','=',$dbacthdr->trantype)
+            ->where('b.billno','=',$dbacthdr->auditno)
+            ->where('b.compcode','=',session('compcode'))
+            ->get();
+
+        // $chgmast = DB::table('debtor.billsum AS b', 'hisdb.chgmast as m')
+        //     ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus', 'm.description as chgmast_desc')
+        //     ->leftJoin('hisdb.chgmast as m', 'b.description', '=', 'm.description')
+        //     ->where('b.source','=',$dbacthdr->source)
+        //     ->where('b.trantrype','=',$dbacthdr->trantrype)
+        //     ->where('b.billno','=',$dbacthdr->auditno)
+        //     ->get();
+        
+        if($dbacthdr->recstatus == "OPEN"){
+            $title = "DELIVERY ORDER";
+        }else{
+            $title = " INVOICE";
+        }
+
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+
+        $totamount_expld = explode(".", (float)$dbacthdr->amount);
+
+        $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
+        $totamt_bm = $totamt_bm_rm." SAHAJA";
+
+        if(count($totamount_expld) > 1){
+            $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
+            $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        }
+        
+        // $pdf = PDF::loadView('finance.SalesOrder.SalesOrder_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
+    
+        // return $pdf->stream();
+        
+        return view('finance.SalesOrder.SalesOrder_pdfmake',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
+    }
 
     function skip_authorization(Request $request, $deptcode, $idno){
         $authdtl = DB::table('material.authdtl')

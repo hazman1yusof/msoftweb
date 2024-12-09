@@ -4652,7 +4652,7 @@ class OrdcomController extends defaultController
                         'billtype' => $billdet_->billtype ,
                         'chgclass' => $billdet_->chgclass ,
                         'classlevel' => $billdet_->classlevel ,
-                        'chggroup' => $billdet_->chggroup ,
+                        'chggroup' => $billdet_->chgcode ,
                         'lastuser' => session('username') ,
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur") ,
                         'invcode' => $billdet_->invcode ,

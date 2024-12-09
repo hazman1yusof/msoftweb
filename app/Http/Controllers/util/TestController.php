@@ -2684,44 +2684,88 @@ class TestController extends defaultController
     }
 
     public function add_radiology2(){
-            $chgprice = DB::table('test.chgprice')
-                ->where('compcode','11A')
-                ->where('chgcode','like','10%')
-                ->whereNull('lineno_')
-                ->get();
+        $chgprice = DB::table('test.chgprice')
+            ->where('compcode','11A')
+            ->where('chgcode','like','10%')
+            ->whereNull('lineno_')
+            ->get();
 
-            foreach ($chgprice as $key => $value) {
-                 DB::table('temp.chgprice')
-                        ->insert([
-                            'lineno_' => $value->lineno_,
-                            'compcode' => '9B',
-                            'chgcode' => $value->chgcode,
-                            'uom' => $value->uom,
-                            'effdate' => $value->effdate,
-                            'minamt' => $value->minamt,
-                            'amt1' => $value->amt1,
-                            'amt2' => $value->amt2,
-                            'amt3' => $value->amt3,
-                            'iptax' => $value->iptax,
-                            'optax' => $value->optax,
-                            'maxamt' => $value->maxamt,
-                            'costprice' => $value->costprice,
-                            'lastuser' => $value->lastuser,
-                            'lastupdate' => $value->lastupdate,
-                            'lastfield' => $value->lastfield,
-                            'unit' => "W'HOUSE",
-                            'adduser' => $value->adduser,
-                            'adddate' => $value->adddate,
-                            'autopull' => $value->autopull,
-                            'addchg' => $value->addchg,
-                            'pkgstatus' => $value->pkgstatus,
-                            'recstatus' => $value->recstatus,
-                            'deluser' => $value->deluser,
-                            'deldate' => $value->deldate,
-                            'lastcomputerid' => $value->lastcomputerid,
-                            'lastipaddress' => $value->lastipaddress
-                        ]);
-            }
+        foreach ($chgprice as $key => $value) {
+             DB::table('temp.chgprice')
+                    ->insert([
+                        'lineno_' => $value->lineno_,
+                        'compcode' => '9B',
+                        'chgcode' => $value->chgcode,
+                        'uom' => $value->uom,
+                        'effdate' => $value->effdate,
+                        'minamt' => $value->minamt,
+                        'amt1' => $value->amt1,
+                        'amt2' => $value->amt2,
+                        'amt3' => $value->amt3,
+                        'iptax' => $value->iptax,
+                        'optax' => $value->optax,
+                        'maxamt' => $value->maxamt,
+                        'costprice' => $value->costprice,
+                        'lastuser' => $value->lastuser,
+                        'lastupdate' => $value->lastupdate,
+                        'lastfield' => $value->lastfield,
+                        'unit' => "W'HOUSE",
+                        'adduser' => $value->adduser,
+                        'adddate' => $value->adddate,
+                        'autopull' => $value->autopull,
+                        'addchg' => $value->addchg,
+                        'pkgstatus' => $value->pkgstatus,
+                        'recstatus' => $value->recstatus,
+                        'deluser' => $value->deluser,
+                        'deldate' => $value->deldate,
+                        'lastcomputerid' => $value->lastcomputerid,
+                        'lastipaddress' => $value->lastipaddress
+                    ]);
         }
+    }
+
+    public function betulkan_blk_billsum(){
+        $mrn=$request->mrn;
+        $episno=$request->episno;
+
+        $chargetrx = DB::table('hisdb.chargetrx')
+            ->where('compcode','9B')
+            ->where('mrn',$mrn)
+            ->where('episno',$episno)
+            ->get();
+
+        foreach ($chargetrx as $key => $value) {
+             DB::table('temp.chgprice')
+                    ->insert([
+                        'lineno_' => $value->lineno_,
+                        'compcode' => '9B',
+                        'chgcode' => $value->chgcode,
+                        'uom' => $value->uom,
+                        'effdate' => $value->effdate,
+                        'minamt' => $value->minamt,
+                        'amt1' => $value->amt1,
+                        'amt2' => $value->amt2,
+                        'amt3' => $value->amt3,
+                        'iptax' => $value->iptax,
+                        'optax' => $value->optax,
+                        'maxamt' => $value->maxamt,
+                        'costprice' => $value->costprice,
+                        'lastuser' => $value->lastuser,
+                        'lastupdate' => $value->lastupdate,
+                        'lastfield' => $value->lastfield,
+                        'unit' => "W'HOUSE",
+                        'adduser' => $value->adduser,
+                        'adddate' => $value->adddate,
+                        'autopull' => $value->autopull,
+                        'addchg' => $value->addchg,
+                        'pkgstatus' => $value->pkgstatus,
+                        'recstatus' => $value->recstatus,
+                        'deluser' => $value->deluser,
+                        'deldate' => $value->deldate,
+                        'lastcomputerid' => $value->lastcomputerid,
+                        'lastipaddress' => $value->lastipaddress
+                    ]);
+        }
+    }
     
 }
