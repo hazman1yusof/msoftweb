@@ -1921,7 +1921,6 @@ class SalesOrderController extends defaultController
         $billsum = DB::table('hisdb.billdet AS b')
             ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.chggroup', 'b.uom', 'b.quantity', 'b.amount', 'b.taxamount as taxamt', 'b.unitprce as unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
             'u.description as uom_desc', 
-            'd.debtorcode as debt_debtcode','d.name as debt_name', 
             'm.description as chgmast_desc','iv.expdate','iv.batchno')
             ->leftJoin('hisdb.chgmast as m', function($join) use ($request){
                 $join = $join->on('b.chggroup', '=', 'm.chgcode');
@@ -1936,10 +1935,10 @@ class SalesOrderController extends defaultController
             //->leftJoin('material.productmaster as p', 'b.description', '=', 'p.description')
             // ->leftJoin('material.uom as u', 'b.uom', '=', 'u.uomcode')
             // ->leftJoin('debtor.debtormast as d', 'b.debtorcode', '=', 'd.debtorcode')
-            ->leftJoin('debtor.debtormast as d', function($join) use ($request){
-                $join = $join->on('b.debtorcode', '=', 'd.debtorcode');
-                $join = $join->where('d.compcode', '=', session('compcode'));
-            })
+            // ->leftJoin('debtor.debtormast as d', function($join) use ($request){
+            //     $join = $join->on('b.debtorcode', '=', 'd.debtorcode');
+            //     $join = $join->where('d.compcode', '=', session('compcode'));
+            // })
             ->leftJoin('material.ivdspdt as iv', function($join) use ($request){
                 $join = $join->on('iv.recno', '=', 'b.auditno');
                 $join = $join->where('iv.lineno_', '=', '1');
