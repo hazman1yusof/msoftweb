@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Card Receipt Listing')
+@section('title', 'Process Doctor Fees')
 
 @section('css')
 	<style>
@@ -63,7 +63,7 @@
     <div class="container mycontainer">
         <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 350px;">
             <form method="get">
-                <h4>Doctor Contribution</h4>
+                <h4>Process Doctor Fees</h4>
                 <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7>
 				
 				<div style="width: 800px;margin: 0 auto;">
@@ -86,7 +86,7 @@
 									<fieldset>
 										<!-- <legend>Stock Sheet :</legend> -->
 										<button type="button" class="mybtn btn btn-sm btn-primary" id="process_drcontrib">
-											Process DR Contribution
+											Process Doctor Fees
 										</button>
 									</fieldset>
 								</div>
@@ -116,7 +116,7 @@
 				}).fail(function(data) {
 					alert(data.responseText);
 				}).done(function(data){
-					console.log(data);
+					alert('Process Completed');
 				});
 			});
 			

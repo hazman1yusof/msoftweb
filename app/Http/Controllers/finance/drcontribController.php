@@ -42,22 +42,29 @@ class drcontribController extends defaultController
 
         try {
             $billdet = DB::table('hisdb.billdet as bd')
-                            ->select('bd.idno','bd.auditno','bd.compcode','bd.mrn','bd.episno','bd.epistype','bd.trxtype','bd.docref','bd.trxdate','bd.chgcode','bd.counter','bd.billcode','bd.costcd','bd.revcd','bd.mmacode','bd.billdate','bd.billtype','bd.doctorcode','bd.chg_class','bd.unitprce','bd.quantity','bd.amount','bd.trxtime','bd.chggroup','bd.dracccode','bd.cracccode','bd.taxamount','bd.billno','bd.invno','bd.rowno','bd.uom','bd.billtime','bd.invgroup','bd.reqdept','bd.issdept','bd.lineno_','bd.billflag','bd.invcode','bd.arprocess','bd.discamt','bd.disccode','bd.pkgcode','bd.splitflag','bd.taxcode','bd.adduser','bd.adddate','bd.lastuser','bd.lastupdate','bd.recstatus','bd.taxflag','bd.discflag','bd.invdesc','ep.epistycode')
+                            ->select('bd.idno','bd.auditno','bd.compcode','bd.mrn','bd.episno','bd.epistype','bd.trxtype','bd.docref','bd.trxdate','bd.chgcode','bd.counter','bd.billcode','bd.costcd','bd.revcd','bd.mmacode','bd.billdate','bd.billtype','bd.doctorcode','bd.chg_class','bd.unitprce','bd.quantity','bd.amount','bd.trxtime','bd.chggroup','bd.dracccode','bd.cracccode','bd.taxamount','bd.billno','bd.invno','bd.rowno','bd.uom','bd.billtime','bd.invgroup','bd.reqdept','bd.issdept','bd.lineno_','bd.billflag','bd.invcode','bd.arprocess','bd.discamt','bd.disccode','bd.pkgcode','bd.splitflag','bd.taxcode','bd.adduser','bd.adddate','bd.lastuser','bd.lastupdate','bd.recstatus','bd.taxflag','bd.discflag','bd.invdesc','ep.epistycode','db.source','db.trantype','db.amount as db_amount')
                             ->where('bd.compcode',session('compcode'))
-                            ->where('bd.chgclass','C')
-                            ->whereDate('bd.billdate','>=',$request->datefrom)
+                            ->where('bd.chg_class','C')
+                            ->whereDate('bd.billdate','>=',$request->datefr)
                             ->whereDate('bd.billdate','<=',$request->dateto)
+                            ->leftJoin('debtor.dbacthdr as db', function ($join){
+                                $join = $join->on('db.mrn','bd.mrn')
+                                             ->on('db.episno','bd.episno')
+                                             ->on('db.auditno','bd.billno')
+                                             ->on('db.lineno_','bd.lineno_')
+                                             ->where('db.compcode', '=', session('compcode'));
+                            })
                             ->leftJoin('hisdb.episode as ep', function($join){
                                 $join = $join->on('ep.mrn','bd.mrn')
                                              ->on('ep.episno','bd.episno')
                                              ->where('ep.compcode',session('compcode'));
-                            });
+                            })->get();
 
             foreach ($billdet as $obj_bd) {
-                $drcontrib = DB::table('hisdb.drcontrib')
+                $drcontrib = DB::table('debtor.drcontrib')
                                 ->where('compcode',session('compcode'))
                                 ->where('drcode',$obj_bd->doctorcode)
-                                ->where('epistycode',$obj_bd->epistycode)
+                                ->where('epistype',$obj_bd->epistycode)
                                 ->where('chgcode',$obj_bd->chgcode)
                                 ->whereDate('effdate','<=',$obj_bd->billdate)
                                 ->orderBy('effdate','DESC');
@@ -72,57 +79,68 @@ class drcontribController extends defaultController
                 }
 
                 if($obj_bd->amount != 0){
-                    DB::table('debtor.drtran')
-                            ->insert([
-                                'compcode' => session('compcode'),
-                                // 'source' => $obj-> ,
-                                // 'trantype' => $obj-> ,
-                                'mrn' => $obj_bd->mrn ,
-                                'episno' => $obj_bd->episno ,
-                                'billno' => $obj_bd->billno ,
-                                'lineno_' => $obj_bd->lineno_ ,
-                                'auditno' => $obj_bd->auditno ,
-                                'drcode' => $obj_bd->doctorcode ,
-                                'epistype' => $obj_bd->epistycode ,
-                                'trandate' => Carbon::now("Asia/Kuala_Lumpur") ,
-                                // 'invsrc' => $obj_bd-> ,
-                                // 'invtrtype' => $obj_bd-> ,
-                                'billdate' => $obj_bd->billdate ,
-                                // 'drrefno' => $obj_bd-> ,
-                                'chgcode' => $obj_bd->chgcode ,
-                                'chgtrxdate' => $obj_bd->adddate ,
-                                'chgamount' => $obj_bd->amount ,
-                                'chgoutamt' => $obj_bd->amount ,
-                                // 'invamount' => $obj_bd-> ,
-                                'drappamt' => $drpamount,
-                                'drappoutamt' => $drpamount,
-                                // 'drapppaid' => $obj_bd-> ,
-                                // 'drcontamt' => $obj_bd-> ,
-                                // 'drprcnt' => $obj_bd-> ,
-                                'lastuser' => session('username'),
-                                'lastupddate' => Carbon::now("Asia/Kuala_Lumpur") ,
-                                'effectdate' => $drcontrib->effdate ,
-                                // 'drstfamt' => $obj_bd-> ,
-                                // 'drstfprcnt' => $obj_bd-> ,
-                                // 'debtorcode' => $obj_bd-> ,
-                                // 'consultflag' => $obj_bd-> ,
-                                // 'totincome' => $obj_bd-> ,
-                                // 'drprcnt1' => $obj_bd-> ,
-                                // 'dramt1' => $obj_bd-> ,
-                                // 'drprcnt2' => $obj_bd-> ,
-                                // 'dramt2' => $obj_bd-> ,
-                                // 'invcode' => $obj_bd-> ,
-                                'chggroup' => $obj_bd->chggroup ,
-                                // 'fullypaid' => $obj_bd-> ,
-                            ]);
+                    $drtran_exists = DB::table('debtor.drtran')
+                                        ->where('compcode',session('compcode'))
+                                        ->where('mrn',$obj_bd->mrn)
+                                        ->where('episno',$obj_bd->episno)
+                                        ->where('lineno_',$obj_bd->lineno_)
+                                        ->where('auditno',$obj_bd->auditno)
+                                        ->where('drcode',$obj_bd->doctorcode)
+                                        ->exists();
+
+                    if(!$drtran_exists){
+                        DB::table('debtor.drtran')
+                                ->insert([
+                                    'compcode' => session('compcode'),
+                                    'source' => 'OE' ,
+                                    'trantype' => $obj_bd->trxtype ,
+                                    'mrn' => $obj_bd->mrn ,
+                                    'episno' => $obj_bd->episno ,
+                                    'billno' => $obj_bd->billno ,
+                                    'lineno_' => $obj_bd->lineno_ ,
+                                    'auditno' => $obj_bd->auditno ,
+                                    'drcode' => $obj_bd->doctorcode ,
+                                    'epistype' => $obj_bd->epistycode ,
+                                    'trandate' => $request->dateto ,
+                                    'invsrc' => $obj_bd->source ,
+                                    'invtrtype' => $obj_bd->trantype ,
+                                    'billdate' => $obj_bd->billdate ,
+                                    // 'drrefno' => $obj_bd-> ,
+                                    'chgcode' => $obj_bd->chgcode ,
+                                    'chgtrxdate' => $obj_bd->adddate ,
+                                    'chgamount' => $obj_bd->amount ,
+                                    'chgoutamt' => $obj_bd->amount ,
+                                    'invamount' => $obj_bd->db_amount ,
+                                    'drappamt' => $drpamount,
+                                    'drappoutamt' => $drpamount,
+                                    'drapppaid' => 0 ,
+                                    'drcontamt' => $drcontrib->amount ,
+                                    'drprcnt' => $drcontrib->drprcnt ,
+                                    'lastuser' => session('username'),
+                                    'lastupddate' => Carbon::now("Asia/Kuala_Lumpur") ,
+                                    'effectdate' => $drcontrib->effdate ,
+                                    // 'drstfamt' => $obj_bd-> ,
+                                    // 'drstfprcnt' => $obj_bd-> ,
+                                    // 'debtorcode' => $obj_bd-> ,
+                                    // 'consultflag' => $obj_bd-> ,
+                                    // 'totincome' => $obj_bd-> ,
+                                    // 'drprcnt1' => $obj_bd-> ,
+                                    // 'dramt1' => $obj_bd-> ,
+                                    // 'drprcnt2' => $obj_bd-> ,
+                                    // 'dramt2' => $obj_bd-> ,
+                                    'invcode' => $obj_bd->invcode ,
+                                    'chggroup' => $obj_bd->chggroup ,
+                                    // 'fullypaid' => $obj_bd-> ,
+                                ]);
+                    }
                 }
             }
 
-            // DB::commit();
+            DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+            return response($e, 500);
         }
     }
     
