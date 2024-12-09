@@ -100,6 +100,7 @@ class arenquiryController extends defaultController
                     'db.billdebtor AS db_billdebtor',
                     'db.approvedby AS db_approvedby',
                     'db.mrn AS db_mrn', // search
+                    'db.episno AS db_episno',
                     'db.unit AS db_unit',
                     'db.source AS db_source',
                     'db.trantype AS db_trantype',

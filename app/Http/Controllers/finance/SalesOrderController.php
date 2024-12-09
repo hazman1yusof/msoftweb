@@ -1812,6 +1812,10 @@ class SalesOrderController extends defaultController
             abort(404);
         }
 
+        if(!empty($request->idno_billsum)){
+            return $this->showpdf_disp($request);
+        }
+
         $dbacthdr = DB::table('debtor.dbacthdr as h')
             ->select('h.source','h.trantype','h.epistype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate','h.hdrtype',
             'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4', 'm.creditterm as crterm','m.billtype as billtype','dt.debtortycode as dt_debtortycode', 'dt.description as dt_description','bt.description as bt_desc','pm.Name as pm_name','pm.address1 as pm_address1','pm.address2 as pm_address2','pm.address3 as pm_address3','pm.postcode as pm_postcode','h.doctorcode','dc.doctorname')
@@ -1839,10 +1843,6 @@ class SalesOrderController extends defaultController
             // ->where('h.mrn','=','0')
             ->where('h.compcode','=',session('compcode'))
             ->first();
-
-        if(!empty($dbacthdr->epistype)){
-            return $this->showpdf_disp($dbacthdr,$request);
-        }
 
         $billsum = DB::table('debtor.billsum AS b')
             ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
@@ -1916,14 +1916,50 @@ class SalesOrderController extends defaultController
 
     //function sendmeail($data) -- nak kena ada atau tak
 
-    function showpdf_disp($dbacthdr,$request){
+    function showpdf_disp($request){
+        $billsum_idno = $request->idno_billsum;
+        $idno = $request->idno;
+
+        $dbacthdr = DB::table('debtor.dbacthdr as h')
+            ->select('h.source','h.trantype','h.epistype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate','h.hdrtype',
+            'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4', 'm.creditterm as crterm','m.billtype as billtype','dt.debtortycode as dt_debtortycode', 'dt.description as dt_description','bt.description as bt_desc','pm.Name as pm_name','pm.address1 as pm_address1','pm.address2 as pm_address2','pm.address3 as pm_address3','pm.postcode as pm_postcode','h.doctorcode','dc.doctorname')
+            ->leftJoin('debtor.debtormast as m', function($join) use ($request){
+                $join = $join->on("m.debtorcode", '=', 'h.debtorcode');    
+                $join = $join->where("m.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('debtor.debtortype as dt', function($join) use ($request){
+                $join = $join->on("dt.debtortycode", '=', 'm.debtortype');    
+                $join = $join->where("dt.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('hisdb.billtymst as bt', function($join) use ($request){
+                $join = $join->on("bt.billtype", '=', 'h.hdrtype');    
+                $join = $join->where("bt.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
+                $join = $join->on("pm.newmrn", '=', 'h.mrn');    
+                $join = $join->where("pm.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('hisdb.doctor as dc', function($join) use ($request){
+                $join = $join->on("dc.doctorcode", '=', 'h.doctorcode');    
+                $join = $join->where("dc.compcode", '=', session('compcode'));
+            })
+            ->where('h.idno','=',$idno)
+            // ->where('h.mrn','=','0')
+            ->where('h.compcode','=',session('compcode'))
+            ->first();
+
+        $billsum = DB::table('debtor.billsum AS b')
+                        ->where('b.idno','=',$idno_billsum)
+                        ->first();
+
+        $invcode = $billsum->invcode;
 
         $billsum = DB::table('hisdb.billdet AS b')
-            ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.chgcode as chggroup', 'b.uom', 'b.quantity', 'b.amount', 'b.taxamount as taxamt', 'b.unitprce as unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
+            ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chgcode', 'b.uom', 'b.quantity', 'b.amount', 'b.taxamount', 'b.unitprce', 'b.taxcode', 'b.discamt', 'b.recstatus',
             'u.description as uom_desc', 
             'm.description as chgmast_desc','iv.expdate','iv.batchno')
             ->leftJoin('hisdb.chgmast as m', function($join) use ($request){
-                $join = $join->on('b.chgcode', '=', 'm.chgcode');
+                $join = $join->on('b.chggroup', '=', 'm.chgcode');
                 $join = $join->on('b.uom', '=', 'm.uom');
                 $join = $join->where('m.compcode', '=', session('compcode'));
                 $join = $join->where('m.unit', '=', session('unit'));
@@ -1932,13 +1968,6 @@ class SalesOrderController extends defaultController
                 $join = $join->on('b.uom', '=', 'u.uomcode');
                 $join = $join->where('u.compcode', '=', session('compcode'));
             })
-            //->leftJoin('material.productmaster as p', 'b.description', '=', 'p.description')
-            // ->leftJoin('material.uom as u', 'b.uom', '=', 'u.uomcode')
-            // ->leftJoin('debtor.debtormast as d', 'b.debtorcode', '=', 'd.debtorcode')
-            // ->leftJoin('debtor.debtormast as d', function($join) use ($request){
-            //     $join = $join->on('b.debtorcode', '=', 'd.debtorcode');
-            //     $join = $join->where('d.compcode', '=', session('compcode'));
-            // })
             ->leftJoin('material.ivdspdt as iv', function($join) use ($request){
                 $join = $join->on('iv.recno', '=', 'b.auditno');
                 $join = $join->where('iv.lineno_', '=', '1');
@@ -1948,7 +1977,7 @@ class SalesOrderController extends defaultController
             })
             // ->where('b.source','=',$dbacthdr->source)
             // ->where('b.trantype','=',$dbacthdr->trantype)
-            ->where('b.amount','!=',0)
+            ->where('b.invcode','=',$invcode)
             ->where('b.billno','=',$dbacthdr->auditno)
             ->where('b.compcode','=',session('compcode'))
             ->get();
