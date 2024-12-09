@@ -9,6 +9,7 @@ use DateTime;
 use Carbon\Carbon;
 use App\Exports\CardReceiptExport;
 use Maatwebsite\Excel\Facades\Excel;
+use stdClass;
 
 class drcontribController extends defaultController
 {
@@ -32,6 +33,15 @@ class drcontribController extends defaultController
         switch($request->oper){
             case 'process_contrib':
                 return $this->process_contrib($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function table(Request $request){   
+        switch($request->action){
+            case 'get_table_drcontrib':
+                return $this->get_table_drcontrib($request);
             default:
                 return 'error happen..';
         }
@@ -142,6 +152,33 @@ class drcontribController extends defaultController
 
             return response($e, 500);
         }
+    }
+
+    public function get_table_drcontrib(Request $request){
+        $idno = $request->idno;
+
+        $dbacthdr = DB::table('debtor.dbacthdr')
+                        ->where('compcode',session('compcode'))
+                        ->where('idno',$idno)
+                        ->first();
+
+        $table = DB::table('debtor.drtran')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn',$dbacthdr->mrn)
+                            ->where('episno',$dbacthdr->episno)
+                            ->where('billno',$dbacthdr->auditno);
+
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);       
+
     }
     
     public function showExcel(Request $request){

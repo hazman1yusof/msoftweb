@@ -677,10 +677,10 @@ $(document).ready(function (){
 				}
 			});
 			
-			delay(function (){
-				// $("#alloText").focus(); // AlloTotal
-				myallocation.retickallotogrid();
-			}, 100);
+			// delay(function (){
+			// 	// $("#alloText").focus(); // AlloTotal
+			// 	myallocation.retickallotogrid();
+			// }, 100);
 		},
 	});
 	
@@ -798,11 +798,11 @@ $(document).ready(function (){
 			}else{
 				$('#allocate').hide();
 			}
-			$('#CN_debtorcode_show, #DN_debtorcode_show, #IN_debtorcode_show, #alloc_debtorcode_show, #track_debtorcode_show').text(selrowData("#jqGrid").db_debtorcode);
-			$('#CN_debtorname_show, #DN_debtorname_show, #IN_debtorname_show, #alloc_debtorname_show, #track_debtorname_show').text(selrowData("#jqGrid").dm_name);
-			$('#CN_docno_show, #DN_docno_show, #IN_docno_show, #alloc_docno_show, #track_docno_show').text(selrowData("#jqGrid").db_recptno);
-			$('#CN_amount_show, #DN_amount_show, #IN_amount_show, #alloc_amount_show, #track_amount_show').text(selrowData("#jqGrid").db_amount);
-			$('#CN_outamount_show, #DN_outamount_show, #IN_outamount_show, #alloc_outamount_show, #track_outamount_show').text(selrowData("#jqGrid").db_outamount);
+			$('#CN_debtorcode_show, #DN_debtorcode_show, #IN_debtorcode_show, #alloc_debtorcode_show, #track_debtorcode_show,#DF_debtorcode_show').text(selrowData("#jqGrid").db_debtorcode);
+			$('#CN_debtorname_show, #DN_debtorname_show, #IN_debtorname_show, #alloc_debtorname_show, #track_debtorname_show,#df_debtorname_show').text(selrowData("#jqGrid").dm_name);
+			$('#CN_docno_show, #DN_docno_show, #IN_docno_show, #alloc_docno_show, #track_docno_show,#DF_docno_show').text(selrowData("#jqGrid").db_recptno);
+			$('#CN_amount_show, #DN_amount_show, #IN_amount_show, #alloc_amount_show, #track_amount_show,#DF_amount_show').text(selrowData("#jqGrid").db_amount);
+			$('#CN_outamount_show, #DN_outamount_show, #IN_outamount_show, #alloc_outamount_show, #track_outamount_show,#DF_outamount_show').text(selrowData("#jqGrid").db_outamount);
 			
 			$('#jqGrid3_CN_c,#jqGrid3_DN_c,#jqGrid3_IN_c,#jqGrid_Tracking_c').hide();
 			
@@ -834,8 +834,11 @@ $(document).ready(function (){
 				urlParam_Tracking.filterVal[3] = selrowData("#jqGrid").db_auditno;
 				urlParam_Tracking.filterVal[4] = selrowData("#jqGrid").db_lineno_;
 				refreshGrid("#jqGrid_Tracking",urlParam_Tracking);
+
+				urlParam2_df.idno = selrowData("#jqGrid").db_idno;
+				refreshGrid("#jqGrid_df",urlParam2_df);
 				
-				$('#jqGrid3_IN_c,#jqGrid_Tracking_c').show();
+				$('#jqGrid3_IN_c,#jqGrid_Tracking_c,#jqGrid_df_c').show();
 			}else if(selrowData("#jqGrid").db_trantype == 'RF'){ // RF
 				urlParamAllo.payercode = selrowData("#jqGrid").db_payercode;
 				// refreshGrid("#gridAllo",urlParamAllo);
@@ -1491,6 +1494,51 @@ $(document).ready(function (){
 	
 	$("#jqGrid3_IN_panel").on("show.bs.collapse", function (){
 		$("#jqGrid3_IN").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_IN_c")[0].offsetWidth-$("#jqGrid3_IN_c")[0].offsetLeft-18));
+	});
+
+	var urlParam2_df = {
+		action: 'get_table_drcontrib',
+		url: 'drcontrib/table',
+		idno: ''
+	};
+
+	$("#jqGrid_df").jqGrid({
+		datatype: "local",
+		colModel: [
+			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable: false, hidden: true },
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'idno', name: 'idno', hidden: true, key: true },
+			{ label: 'Doctor', name: 'drcode', width: 200, classes: 'wrap', formatter: showdetail},
+			{ label: 'Bill Date', name: 'billdate', width: 100, classes: 'wrap',formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Chg Code', name: 'chgcode', width: 100, classes: 'wrap', formatter: showdetail},
+			{ label: 'Gross Amount', name: 'chgamount', width: 100, classes: 'wrap txnum', align: 'right', editable: false, formatter: 'currency',
+				formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2 }
+			},
+			{ label: 'App Amount', name: 'drappamt', width: 100, classes: 'wrap txnum', align: 'right', editable: false, formatter: 'currency',
+				formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2 }
+			},
+		],
+		shrinkToFit: true,
+		autowidth: true,
+		multiSort: true,
+		viewrecords: true,
+		rowNum: 30,
+		sortname: 'lineno_',
+		sortorder: "desc",
+		pager: "#jqGridpager_df",
+		loadComplete: function (data){
+			calc_jq_height_onchange("jqGrid_df");
+			$("#jqGrid_df").setSelection($("#jqGrid_df").getDataIDs()[0]);
+		},
+		onSelectRow: function (data){
+		},
+		gridComplete: function (){
+			fdl.set_array().reset();
+		}
+	});
+	
+	$("#jqGrid3_df_panel").on("show.bs.collapse", function (){
+		$("#jqGrid_df").jqGrid ('setGridWidth', Math.floor($("#jqGrid_df_c")[0].offsetWidth-$("#jqGrid_df_c")[0].offsetLeft-18));
 	});
 	
 	///////////////////////////////////Bill Tracking for IN///////////////////////////////////
@@ -2393,6 +2441,11 @@ $(document).ready(function (){
 			
 			// tracking
 			case 'trxcode': return cellvalue;
+
+			//DF
+			case 'chgcode': field = ['chgcode','description'];table = "hisdb.chgmast";case_ = 'chgmast';break;
+			case 'drcode': field = ['doctorcode','doctorname'];table = "hisdb.doctor";case_ = 'doctor';break;
+
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 		

@@ -244,6 +244,33 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- Doctor fees -->
+		<div class="panel panel-default" style="position: relative; display: none;" id="jqGrid_df_c">
+			<!-- <a class='pull-right pointer text-primary' id='pdf_df' href="" target="_blank" style="position: absolute; right: 190px; top: 59px;">
+				<span class='fa fa-print'></span> Print
+			</a> -->
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_df_panel">
+				<b>DOCUMENT NO: </b><span id="DF_docno_show"></span><br>
+				<b>DEBTOR: </b><span id="DF_debtorcode_show"></span> - <span id="df_debtorname_show"></span><br>
+				<b>AMOUNT: </b><span id="DF_amount_show"></span> &nbsp;
+				<b>OUTAMOUNT: </b><span id="DF_outamount_show"></span><br>
+
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 50px;">
+					<h5>Doctor Fees Detail</h5>
+				</div>
+			</div>
+			<div id="jqGrid3_df_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div id="" class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGrid_df" class="table table-striped"></table>
+						<div id="jqGridpager_df"></div>
+					</div>
+				</div>
+			</div>
+		</div>
 		
 		<div class="panel panel-default" style="position: relative;" id="jqGridAlloc_c">
 			<a class='pull-right pointer text-primary' id='pdf_RCRD' href="" target="_blank" style="position: absolute; right: 140px; top: 59px; display: none;">
