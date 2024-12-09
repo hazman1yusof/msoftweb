@@ -930,6 +930,7 @@ class PointOfSalesController extends defaultController
                     'recstatus' => 'POSTED',
                     'approvedby' => session('username'),
                     'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'entrydate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);

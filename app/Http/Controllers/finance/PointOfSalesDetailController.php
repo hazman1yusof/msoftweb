@@ -1053,6 +1053,7 @@ class PointOfSalesDetailController extends defaultController
 
         $responce = new stdClass();
         $responce->rows = $table->get();
+        $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
     }
