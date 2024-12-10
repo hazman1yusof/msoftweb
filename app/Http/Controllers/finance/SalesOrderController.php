@@ -1959,7 +1959,7 @@ class SalesOrderController extends defaultController
             'u.description as uom_desc', 
             'm.description as chgmast_desc','iv.expdate','iv.batchno')
             ->leftJoin('hisdb.chgmast as m', function($join) use ($request){
-                $join = $join->on('b.chggroup', '=', 'm.chgcode');
+                $join = $join->on('b.chgcode', '=', 'm.chgcode');
                 $join = $join->on('b.uom', '=', 'm.uom');
                 $join = $join->where('m.compcode', '=', session('compcode'));
                 $join = $join->where('m.unit', '=', session('unit'));

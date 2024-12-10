@@ -1539,6 +1539,7 @@ $(document).ready(function (){
 			fdl.set_array().reset();
 		}
 	});
+	jqgrid_label_align_right("#jqGrid_df");
 	
 	$("#jqGrid3_df_panel").on("show.bs.collapse", function (){
 		$("#jqGrid_df").jqGrid ('setGridWidth', Math.floor(($("#jqGrid_df_c")[0].offsetWidth / 2) - 10));
@@ -1586,6 +1587,7 @@ $(document).ready(function (){
 			fdl.set_array().reset();
 		}
 	});
+	jqgrid_label_align_right("#jqGrid_da");
 	
 	$("#jqGrid3_df_panel").on("shown.bs.collapse", function (){
 		$("#jqGrid_df").jqGrid ('setGridWidth', Math.floor(($("#jqGrid_df_c")[0].offsetWidth / 2) - 30));

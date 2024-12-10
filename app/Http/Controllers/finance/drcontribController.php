@@ -178,8 +178,8 @@ class drcontribController extends defaultController
                                         ->exists();
 
                     if(!$dralloc_exists){
-                        $drallocamt = $obj_al->amount / $obj_dr->invamount;
-                        $drappamt = $drallocamt * $obj_dr->drappamt;
+                        $drallocamt = $obj_al->amount / $obj_dr->invamount * $obj_dr->chgamount;
+                        $drappamt = $obj_al->amount / $obj_dr->invamount * $obj_dr->drappamt;
 
                         DB::table('debtor.dralloc')
                                     ->insert([
