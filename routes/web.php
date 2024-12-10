@@ -1333,9 +1333,9 @@ Route::get('/doctornote/table','hisdb\DoctorNoteController@table');
 Route::post('/doctornote/form','hisdb\DoctorNoteController@form');
 Route::get('/doctornote/showpdf','hisdb\DoctorNoteController@showpdf');
 Route::get('/doctornote/otbook_chart','hisdb\DoctorNoteController@otbook_chart');
-// Route::get('/doctornote/radClinic_chart','hisdb\DoctorNoteController@radClinic_chart');
+Route::get('/doctornote/radClinic_chart','hisdb\DoctorNoteController@radClinic_chart');
 Route::get('/doctornote/mri_chart','hisdb\DoctorNoteController@mri_chart');
-// Route::get('/doctornote/physio_chart','hisdb\DoctorNoteController@physio_chart');
+Route::get('/doctornote/physio_chart','hisdb\DoctorNoteController@physio_chart');
 Route::get('/doctornote/dressing_chart','hisdb\DoctorNoteController@dressing_chart');
 
 //// Request For page ///

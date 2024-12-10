@@ -1870,7 +1870,7 @@ class DoctorNoteController extends defaultController
             if($episode->newcaseP == 1 || $episode->followupP == 1){
                 // $pregnant = 1;
                 $responce->pregnant = 1;
-            }else{
+            }else if($episode->newcaseNP == 1 || $episode->followupNP == 1){
                 // $pregnant = 0;
                 $responce->pregnant = 0;
             }
@@ -2812,7 +2812,51 @@ class DoctorNoteController extends defaultController
                     ->first();
         // dd($pat_otbook);
         
-        return view('hisdb.doctornote.otbook_chart_pdfmake', compact('pat_otbook'));
+        return view('hisdb.doctornote.otbookChart_pdfmake', compact('pat_otbook'));
+        
+    }
+    
+    public function radClinic_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        if(!$mrn || !$episno){
+            abort(404);
+        }
+        
+        $pat_radiology = DB::table('hisdb.pat_radiology as r')
+                        ->select('r.idno','r.compcode','r.mrn','r.episno','r.weight','r.pt_condition','r.xray','r.xray_date','r.xray_remark','r.mri','r.mri_date','r.mri_remark','r.angio','r.angio_date','r.angio_remark','r.ultrasound','r.ultrasound_date','r.ultrasound_remark','r.ct','r.ct_date','r.ct_remark','r.fluroscopy','r.fluroscopy_date','r.fluroscopy_remark','r.mammogram','r.mammogram_date','r.mammogram_remark','r.bmd','r.bmd_date','r.bmd_remark','r.clinicaldata','r.doctorname','r.rad_note','r.radiologist','r.adduser','r.adddate','r.upduser','r.upddate','r.lastuser','r.lastupdate','r.computerid','pm.Name','pm.Address1','pm.Address2','pm.Address3','pm.Postcode','pm.telhp','pm.Newic','pm.Sex','pm.RaceCode','ep.reg_date','ep.newcaseP','ep.newcaseNP','ep.followupP','ep.followupNP','b.ward as EpWard','his.allergyh')
+                        ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                            $join = $join->on('pm.MRN','=','r.mrn');
+                            $join = $join->on('pm.Episno','=','r.episno');
+                            $join = $join->where('pm.compcode','=',session('compcode'));
+                        })
+                        ->leftjoin('hisdb.episode as ep', function ($join){
+                            $join = $join->on('ep.mrn','=','r.mrn');
+                            $join = $join->on('ep.episno','=','r.episno');
+                            $join = $join->where('ep.compcode','=',session('compcode'));
+                        })
+                        ->leftjoin('hisdb.bed as b', function ($join){
+                            $join = $join->on('b.bednum','=','ep.bed');
+                            $join = $join->where('b.compcode','=',session('compcode'));
+                        })
+                        ->leftjoin('hisdb.pathistory as his', function ($join){
+                            $join = $join->on('his.mrn','=','r.mrn');
+                            $join = $join->where('his.compcode','=',session('compcode'));
+                        })
+                        ->where('r.compcode','=',session('compcode'))
+                        ->where('r.mrn','=',$mrn)
+                        ->where('r.episno','=',$episno)
+                        ->first();
+        // dd($pat_radiology);
+        
+        $age = $request->age;
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        return view('hisdb.doctornote.radClinicChart_pdfmake',compact('pat_radiology','age'));
         
     }
     
@@ -2858,6 +2902,44 @@ class DoctorNoteController extends defaultController
                     ->first();
         
         return view('hisdb.doctornote.mriChart_pdfmake',compact('mri'));
+        
+    }
+    
+    public function physio_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        if(!$mrn || !$episno){
+            abort(404);
+        }
+        
+        $pat_physio = DB::table('hisdb.pat_physio as p')
+                    ->select('p.idno','p.compcode','p.mrn','p.episno','p.clinic_diag','p.findings','p.treatment','p.doctorname','p.adduser','p.adddate','p.upduser','p.upddate','p.lastuser','p.lastupdate','p.computerid','pm.Name','pm.Address1','pm.Address2','pm.Address3','pm.Postcode','pm.telhp','pm.Newic','pm.Sex','ep.reg_date','b.ward as EpWard')
+                    ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                        $join = $join->on('pm.MRN','=','p.mrn');
+                        $join = $join->on('pm.Episno','=','p.episno');
+                        $join = $join->where('pm.compcode','=',session('compcode'));
+                    })
+                    ->leftjoin('hisdb.episode as ep', function ($join){
+                        $join = $join->on('ep.mrn','=','p.mrn');
+                        $join = $join->on('ep.episno','=','p.episno');
+                        $join = $join->where('ep.compcode','=',session('compcode'));
+                    })
+                    ->leftjoin('hisdb.bed as b', function ($join){
+                        $join = $join->on('b.bednum','=','ep.bed');
+                        $join = $join->where('b.compcode','=',session('compcode'));
+                    })
+                    ->where('p.compcode','=',session('compcode'))
+                    ->where('p.mrn','=',$mrn)
+                    ->where('p.episno','=',$episno)
+                    ->first();
+        // dd($pat_physio);
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        return view('hisdb.doctornote.physioChart_pdfmake',compact('pat_physio'));
         
     }
     
