@@ -264,9 +264,14 @@
 			</div>
 			<div id="jqGrid3_df_panel" class="panel-collapse collapse">
 				<div class="panel-body">
-					<div id="" class='col-md-12' style="padding:0 0 15px 0">
+					<div id="jqGrid_df_c2" class='col-md-6' style="padding:10px">
 						<table id="jqGrid_df" class="table table-striped"></table>
 						<div id="jqGridpager_df"></div>
+					</div>
+
+					<div id="jqGrid_da_c2" class='col-md-6' style="padding:10px">
+						<table id="jqGrid_da" class="table table-striped"></table>
+						<div id="jqGridpager_da"></div>
 					</div>
 				</div>
 			</div>

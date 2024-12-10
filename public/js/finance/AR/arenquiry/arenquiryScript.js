@@ -804,7 +804,7 @@ $(document).ready(function (){
 			$('#CN_amount_show, #DN_amount_show, #IN_amount_show, #alloc_amount_show, #track_amount_show,#DF_amount_show').text(selrowData("#jqGrid").db_amount);
 			$('#CN_outamount_show, #DN_outamount_show, #IN_outamount_show, #alloc_outamount_show, #track_outamount_show,#DF_outamount_show').text(selrowData("#jqGrid").db_outamount);
 			
-			$('#jqGrid3_CN_c,#jqGrid3_DN_c,#jqGrid3_IN_c,#jqGrid_Tracking_c').hide();
+			$('#jqGrid3_CN_c,#jqGrid3_DN_c,#jqGrid3_IN_c,#jqGrid_Tracking_c,#jqGrid_df_c').hide();
 			
 			if(selrowData("#jqGrid").db_trantype == 'CN'){ // CN
 				urlParam2_CN.source = selrowData("#jqGrid").db_source;
@@ -837,6 +837,9 @@ $(document).ready(function (){
 
 				urlParam2_df.idno = selrowData("#jqGrid").db_idno;
 				refreshGrid("#jqGrid_df",urlParam2_df);
+
+				urlParam2_da.idno = selrowData("#jqGrid").db_idno;
+				refreshGrid("#jqGrid_da",urlParam2_da);
 				
 				$('#jqGrid3_IN_c,#jqGrid_Tracking_c,#jqGrid_df_c').show();
 			}else if(selrowData("#jqGrid").db_trantype == 'RF'){ // RF
@@ -1538,7 +1541,55 @@ $(document).ready(function (){
 	});
 	
 	$("#jqGrid3_df_panel").on("show.bs.collapse", function (){
-		$("#jqGrid_df").jqGrid ('setGridWidth', Math.floor($("#jqGrid_df_c")[0].offsetWidth-$("#jqGrid_df_c")[0].offsetLeft-18));
+		$("#jqGrid_df").jqGrid ('setGridWidth', Math.floor(($("#jqGrid_df_c")[0].offsetWidth / 2) - 10));
+	});
+
+	var urlParam2_da = {
+		action: 'get_table_dralloc',
+		url: 'drcontrib/table',
+		idno: ''
+	};
+
+	$("#jqGrid_da").jqGrid({
+		datatype: "local",
+		colModel: [
+			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable: false, hidden: true },
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'idno', name: 'idno', hidden: true, key: true },
+			{ label: 'Alloc Date', name: 'allocdate', width: 100, classes: 'wrap',formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Paymode', name: 'paymode', width: 100 },
+			{ label: 'Alloc Amount', name: 'drallocamt', width: 100, classes: 'wrap txnum', align: 'right', editable: false, formatter: 'currency',
+				formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2 }
+			},
+			{ label: 'App Amount', name: 'drappamt', width: 100, classes: 'wrap txnum', align: 'right', editable: false, formatter: 'currency',
+				formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2 }
+			},
+			{ label: 'Comm Amount', name: 'cccomamt', width: 100, classes: 'wrap txnum', align: 'right', editable: false, formatter: 'currency',
+				formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2 }
+			},
+		],
+		shrinkToFit: true,
+		autowidth: true,
+		multiSort: true,
+		viewrecords: true,
+		rowNum: 30,
+		sortname: 'lineno_',
+		sortorder: "desc",
+		pager: "#jqGridpager_da",
+		loadComplete: function (data){
+			calc_jq_height_onchange("jqGrid_da");
+			$("#jqGrid_da").setSelection($("#jqGrid_da").getDataIDs()[0]);
+		},
+		onSelectRow: function (data){
+		},
+		gridComplete: function (){
+			fdl.set_array().reset();
+		}
+	});
+	
+	$("#jqGrid3_df_panel").on("shown.bs.collapse", function (){
+		$("#jqGrid_df").jqGrid ('setGridWidth', Math.floor(($("#jqGrid_df_c")[0].offsetWidth / 2) - 30));
+		$("#jqGrid_da").jqGrid ('setGridWidth', Math.floor(($("#jqGrid_df_c")[0].offsetWidth / 2) - 30));
 	});
 	
 	///////////////////////////////////Bill Tracking for IN///////////////////////////////////

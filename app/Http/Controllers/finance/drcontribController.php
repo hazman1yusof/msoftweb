@@ -42,6 +42,8 @@ class drcontribController extends defaultController
         switch($request->action){
             case 'get_table_drcontrib':
                 return $this->get_table_drcontrib($request);
+            case 'get_table_dralloc':
+                return $this->get_table_dralloc($request);
             default:
                 return 'error happen..';
         }
@@ -241,7 +243,32 @@ class drcontribController extends defaultController
         $responce->sql_query = $this->getQueries($table);
         
         return json_encode($responce);       
+    }
 
+    public function get_table_dralloc(Request $request){
+        $idno = $request->idno;
+
+        $dbacthdr = DB::table('debtor.dbacthdr')
+                        ->where('compcode',session('compcode'))
+                        ->where('idno',$idno)
+                        ->first();
+
+        $table = DB::table('debtor.dralloc')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn',$dbacthdr->mrn)
+                            ->where('episno',$dbacthdr->episno)
+                            ->where('drtnbillno',$dbacthdr->auditno);
+
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);       
     }
     
     public function showExcel(Request $request){
