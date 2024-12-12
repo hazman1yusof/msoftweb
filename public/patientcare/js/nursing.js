@@ -26,7 +26,12 @@ var editedRow=0;
 // }
 
 $(document).ready(function () {
-
+	
+	// $("button.refreshbtn_triage").click(function (){
+	// 	empty_formNursing();
+	// 	populate_triage_currpt(selrowData('#jqGrid'));
+	// });
+	
 	var fdl = new faster_detail_load();
 
 	// disableForm('#formTriageInfo, #formActDaily, #formTriPhysical');

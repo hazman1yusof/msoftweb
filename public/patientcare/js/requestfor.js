@@ -5,6 +5,11 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
+    // $("button.refreshbtn_requestFor").click(function (){
+    //     empty_requestFor_ptcare();
+    //     populate_requestFor_ptcare(selrowData('#jqGrid'));
+    // });
+    
     $('.menu .item').tab();
     
     var fdl = new faster_detail_load();

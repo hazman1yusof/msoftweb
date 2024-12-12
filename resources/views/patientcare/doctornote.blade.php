@@ -78,7 +78,7 @@
                         top: 0px;
                         z-index: 1000;">
             <button class="ui icon tertiary button refreshbtn_userfile">
-              <i class="sync alternate icon"></i>
+                <i class="sync alternate icon"></i>
             </button>
         </div> 
         <div style="position: absolute;
@@ -120,7 +120,7 @@
                             top: 0px;
                             z-index: 1000;">
                 <button class="ui icon tertiary button refreshbtn_triage">
-                  <i class="sync alternate icon"></i>
+                    <i class="sync alternate icon"></i>
                 </button>
             </div> 
 
@@ -165,7 +165,7 @@
                             top: 0px;
                             z-index: 1000;">
                 <button class="ui icon tertiary button refreshbtn_doctornote">
-                  <i class="sync alternate icon"></i>
+                    <i class="sync alternate icon"></i>
                 </button>
             </div> 
 
@@ -210,7 +210,7 @@
                             top: 0px;
                             z-index: 1000;">
                 <button class="ui icon tertiary button refreshbtn_requestFor">
-                <i class="sync alternate icon"></i>
+                    <i class="sync alternate icon"></i>
                 </button>
             </div> 
 
@@ -254,7 +254,7 @@
                         top: 0px;
                         z-index: 1000;">
             <button class="ui icon tertiary button refreshbtn_diet">
-              <i class="sync alternate icon"></i>
+                <i class="sync alternate icon"></i>
             </button>
         </div> 
         <div style="position: absolute;
@@ -296,7 +296,7 @@
                         top: 0px;
                         z-index: 1000;">
             <button class="ui icon tertiary button refreshbtn_phys">
-              <i class="sync alternate icon"></i>
+                <i class="sync alternate icon"></i>
             </button>
         </div> 
         <div style="position: absolute;
