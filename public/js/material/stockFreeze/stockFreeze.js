@@ -815,7 +815,7 @@ $(document).ready(function () {
 	dialog_rackno.makedialog(true);
 	
 	var dialog_itemcodefrom = new ordialog(
-		'itemfrom',['material.stockloc AS s','material.product AS p', 'material.stockexp AS e'],"#itemfrom",errorField,
+		'itemfrom',['material.stockloc AS s','material.product AS p', 'material.stockexp AS e'],"#itemfrom",'errorField',
 
 		{	
 			colModel:[
@@ -873,7 +873,7 @@ $(document).ready(function () {
 	dialog_itemcodefrom.makedialog(true);
 	
 	var dialog_itemcodeto = new ordialog(
-		'itemto',['material.stockloc AS s','material.product AS p', 'material.stockexp AS e'],"#itemto",errorField,
+		'itemto',['material.stockloc AS s','material.product AS p', 'material.stockexp AS e'],"#itemto",'errorField',
 		{	
 			colModel:[
 				{label: 'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},

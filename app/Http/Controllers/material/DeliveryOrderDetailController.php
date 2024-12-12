@@ -251,7 +251,7 @@ class DeliveryOrderDetailController extends defaultController
                                     ->where('uomcode',$request->uomcode);
 
                     if($product_no_unit->exists()){
-                        $this->make_new_product_lain_unit($product_no_unit->first());
+                        $this->make_new_product_lain_unit($product_no_unit->first(),$request->deldept);
                     }else{
                         throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' not exist!');
                     }
@@ -281,7 +281,7 @@ class DeliveryOrderDetailController extends defaultController
                                         ->where('year',$this->toYear($request->deliverydate));
 
                     if($stockloc_no_dept->exists()){
-                        $this->make_new_stockloc_lain_dept($stockloc_no_dept->first());
+                        $this->make_new_stockloc_lain_dept($stockloc_no_dept->first(),$request->deldept);
                     }else{
                         throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' doesnt have stock location!');
                     }
@@ -814,7 +814,7 @@ class DeliveryOrderDetailController extends defaultController
 
     }
 
-    public function make_new_product_lain_unit($product){
+    public function make_new_product_lain_unit($product,$deldept){
         DB::table('material.product')
             ->insert([
                 'compcode' => $product->compcode,
@@ -872,10 +872,136 @@ class DeliveryOrderDetailController extends defaultController
                 // 'cm_chgtype' => $product->,
                 // 'cm_invgroup' => $product->,
             ]);
+
+            DB::table('material.stockloc')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'deptcode' => $deldept,
+                    'itemcode' => $product->itemcode,
+                    'uomcode' => $product->uomcode,
+                    // 'bincode' => $stockloc->,
+                    // 'rackno' => $stockloc->,
+                    'year' => Carbon::now("Asia/Kuala_Lumpur")->format('Y'),
+                    // 'openbalqty' => $stockloc->,
+                    // 'openbalval' => $stockloc->,
+                    // 'netmvqty1' => $stockloc->,
+                    // 'netmvqty2' => $stockloc->,
+                    // 'netmvqty3' => $stockloc->,
+                    // 'netmvqty4' => $stockloc->,
+                    // 'netmvqty5' => $stockloc->,
+                    // 'netmvqty6' => $stockloc->,
+                    // 'netmvqty7' => $stockloc->,
+                    // 'netmvqty8' => $stockloc->,
+                    // 'netmvqty9' => $stockloc->,
+                    // 'netmvqty10' => $stockloc->,
+                    // 'netmvqty11' => $stockloc->,
+                    // 'netmvqty12' => $stockloc->,
+                    // 'netmvval1' => $stockloc->,
+                    // 'netmvval2' => $stockloc->,
+                    // 'netmvval3' => $stockloc->,
+                    // 'netmvval4' => $stockloc->,
+                    // 'netmvval5' => $stockloc->,
+                    // 'netmvval6' => $stockloc->,
+                    // 'netmvval7' => $stockloc->,
+                    // 'netmvval8' => $stockloc->,
+                    // 'netmvval9' => $stockloc->,
+                    // 'netmvval10' => $stockloc->,
+                    // 'netmvval11' => $stockloc->,
+                    // 'netmvval12' => $stockloc->,
+                    'stocktxntype' => 'TR',
+                    'disptype' => 'DS',
+                    // 'qtyonhand' => $stockloc->,
+                    // 'minqty' => $stockloc->minqty,
+                    // 'maxqty' => $stockloc->maxqty,
+                    // 'reordlevel' => $stockloc->reordlevel,
+                    // 'reordqty' => $stockloc->reordqty,
+                    // 'lastissdate' => $stockloc->,
+                    // 'frozen' => $stockloc->,
+                    'adduser' => 'system/it',
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'upduser' => 'system/it',
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    // 'cntdocno' => $stockloc->,
+                    // 'fix_uom' => $stockloc->,
+                    // 'locavgcs' => $stockloc->,
+                    // 'lstfrzdt' => $stockloc->,
+                    // 'lstfrztm' => $stockloc->,
+                    // 'frzqty' => $stockloc->,
+                    'recstatus' => 'AC',
+                    // 'deluser' => $stockloc->,
+                    // 'deldate' => $stockloc->,
+                    'computerid' => session('computerid'),
+                    // 'ipaddress' => $stockloc->,
+                    // 'lastcomputerid' => $stockloc->,
+                    // 'lastipaddress' => $stockloc->,
+                    'unit' => session('unit'),
+                ]);
     }
 
-    public function make_new_stockloc_lain_dept($stockloc){
-        
+    public function make_new_stockloc_lain_dept($stockloc,$deldept){
+        DB::table('material.stockloc')
+            ->insert([
+                'compcode' => session('compcode'),
+                'deptcode' => $deldept,
+                'itemcode' => $stockloc->itemcode,
+                'uomcode' => $stockloc->uomcode,
+                // 'bincode' => $stockloc->,
+                // 'rackno' => $stockloc->,
+                'year' => $stockloc->year,
+                // 'openbalqty' => $stockloc->,
+                // 'openbalval' => $stockloc->,
+                // 'netmvqty1' => $stockloc->,
+                // 'netmvqty2' => $stockloc->,
+                // 'netmvqty3' => $stockloc->,
+                // 'netmvqty4' => $stockloc->,
+                // 'netmvqty5' => $stockloc->,
+                // 'netmvqty6' => $stockloc->,
+                // 'netmvqty7' => $stockloc->,
+                // 'netmvqty8' => $stockloc->,
+                // 'netmvqty9' => $stockloc->,
+                // 'netmvqty10' => $stockloc->,
+                // 'netmvqty11' => $stockloc->,
+                // 'netmvqty12' => $stockloc->,
+                // 'netmvval1' => $stockloc->,
+                // 'netmvval2' => $stockloc->,
+                // 'netmvval3' => $stockloc->,
+                // 'netmvval4' => $stockloc->,
+                // 'netmvval5' => $stockloc->,
+                // 'netmvval6' => $stockloc->,
+                // 'netmvval7' => $stockloc->,
+                // 'netmvval8' => $stockloc->,
+                // 'netmvval9' => $stockloc->,
+                // 'netmvval10' => $stockloc->,
+                // 'netmvval11' => $stockloc->,
+                // 'netmvval12' => $stockloc->,
+                'stocktxntype' => $stockloc->stocktxntype,
+                'disptype' => $stockloc->disptype,
+                // 'qtyonhand' => $stockloc->,
+                'minqty' => $stockloc->minqty,
+                'maxqty' => $stockloc->maxqty,
+                'reordlevel' => $stockloc->reordlevel,
+                'reordqty' => $stockloc->reordqty,
+                // 'lastissdate' => $stockloc->,
+                // 'frozen' => $stockloc->,
+                'adduser' => 'system/it',
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'upduser' => 'system/it',
+                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                // 'cntdocno' => $stockloc->,
+                // 'fix_uom' => $stockloc->,
+                // 'locavgcs' => $stockloc->,
+                // 'lstfrzdt' => $stockloc->,
+                // 'lstfrztm' => $stockloc->,
+                // 'frzqty' => $stockloc->,
+                'recstatus' => 'AC',
+                // 'deluser' => $stockloc->,
+                // 'deldate' => $stockloc->,
+                'computerid' => session('computerid'),
+                // 'ipaddress' => $stockloc->,
+                // 'lastcomputerid' => $stockloc->,
+                // 'lastipaddress' => $stockloc->,
+                'unit' => session('unit'),
+            ]);
     }
 
     public function delete_dd(Request $request){
