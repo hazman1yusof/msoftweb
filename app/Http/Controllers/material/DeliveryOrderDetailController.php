@@ -245,7 +245,16 @@ class DeliveryOrderDetailController extends defaultController
                             ->where('uomcode',$request->uomcode);
 
                 if(!$product->exists()){
-                    throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' not exist!');
+                    $product_no_unit = DB::table('material.product')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('itemcode',$request->itemcode)
+                                    ->where('uomcode',$request->uomcode);
+
+                    if($product_no_unit->exists()){
+                        $this->make_new_product_lain_unit($product_no_unit->first());
+                    }else{
+                        throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' not exist!');
+                    }
                 }
 
                 $product = $product->first();
@@ -263,8 +272,23 @@ class DeliveryOrderDetailController extends defaultController
                             ->where('year',$this->toYear($request->deliverydate));
 
                 if(!$stockloc->exists()) {
-                    throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' doesnt have stock location!');
+                    $stockloc_no_dept = DB::table('material.stockloc')
+                                        ->where('compcode',session('compcode'))
+                                        ->where('unit',session('unit'))
+                                        ->where('itemcode',$request->itemcode)
+                                        ->where('uomcode',$request->uomcode)
+                                        // ->where('deptcode',$request->deldept)
+                                        ->where('year',$this->toYear($request->deliverydate));
+
+                    if($stockloc_no_dept->exists()){
+                        $this->make_new_stockloc_lain_dept($stockloc_no_dept->first());
+                    }else{
+                        throw new \Exception("The item: ".$request->itemcode.' UOM '.$request->uomcode.' doesnt have stock location!');
+                    }
                 }
+                // else{
+                //     $this->make_new_stockloc();
+                // }
             }
 
             if($request->pricecode == 'BO'){
@@ -788,6 +812,70 @@ class DeliveryOrderDetailController extends defaultController
             return response('Error'.$e, 500);
         }
 
+    }
+
+    public function make_new_product_lain_unit($product){
+        DB::table('material.product')
+            ->insert([
+                'compcode' => $product->compcode,
+                'unit' => session('unit'),
+                'itemcode' => $product->itemcode,
+                'description' => $product->description,
+                'uomcode' => $product->uomcode,
+                'groupcode' => $product->groupcode,
+                'productcat' => $product->productcat,
+                'suppcode' => $product->suppcode,
+                'avgcost' => $product->avgcost,
+                'actavgcost' => $product->actavgcost,
+                'currprice' => $product->currprice,
+                // 'qtyonhand' => $product->,
+                // 'bonqty' => $product->,
+                // 'rpkitem' => $product->,
+                'minqty' => $product->minqty,
+                'maxqty' => $product->maxqty,
+                'reordlevel' => $product->reordlevel,
+                'reordqty' => $product->reordqty,
+                'adduser' => 'system',
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'upduser' => 'system',
+                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'ACTIVE',
+                'chgflag' => $product->chgflag,
+                'subcatcode' => $product->subcatcode,
+                'expdtflg' => $product->expdtflg,
+                'mstore' => $product->mstore,
+                'costmargin' => $product->costmargin,
+                'pouom' => $product->pouom,
+                'reuse' => $product->reuse,
+                'trqty' => $product->trqty,
+                'deactivedate' => $product->deactivedate,
+                'tagging' => $product->tagging,
+                'itemtype' => $product->itemtype,
+                'generic' => $product->generic,
+                // 'deluser' => $product->,
+                // 'deldate' => $product->,
+                'Consignment' => $product->Consignment,
+                'Class' => $product->Class,
+                'TaxCode' => $product->TaxCode,
+                'computerid' => session('computerid'),
+                // 'ipaddress' => $product->,
+                // 'lastcomputerid' => $product->,
+                // 'lastipaddress' => $product->,
+                // 'cm_uom' => $product->,
+                // 'cm_invflag' => $product->,
+                // 'cm_packqty' => $product->,
+                // 'cm_druggrcode' => $product->,
+                // 'cm_subgroup' => $product->,
+                // 'cm_stockcode' => $product->,
+                // 'cm_chgclass' => $product->,
+                // 'cm_chggroup' => $product->,
+                // 'cm_chgtype' => $product->,
+                // 'cm_invgroup' => $product->,
+            ]);
+    }
+
+    public function make_new_stockloc_lain_dept($stockloc){
+        
     }
 
     public function delete_dd(Request $request){
