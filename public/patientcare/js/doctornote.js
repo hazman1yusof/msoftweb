@@ -280,17 +280,17 @@ $(document).ready(function (){
 		window.open('./doctornote/otbook_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
 	});
 	
-	// $("#radClinic_chart").click(function (){
-	// 	window.open('./doctornote/radClinic_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
-	// });
+	$("#radClinic_chart").click(function (){
+		window.open('./doctornote/radClinic_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&age='+$("#age_doctorNote").val(), '_blank');
+	});
 	
 	$("#mri_chart").click(function (){
 		window.open('./doctornote/mri_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
 	});
 	
-	// $("#physio_chart").click(function (){
-	// 	window.open('./doctornote/physio_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
-	// });
+	$("#physio_chart").click(function (){
+		window.open('./doctornote/physio_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+	});
 	
 	$("#dressing_chart").click(function (){
 		window.open('./doctornote/dressing_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
@@ -860,6 +860,7 @@ function populate_currDoctorNote(obj){
 	// formDoctorNote
 	$('#mrn_doctorNote').val(obj.MRN);
 	$("#episno_doctorNote").val(obj.Episno);
+	$("#age_doctorNote").val(dob_age(obj.DOB));
 	$('#ptname_doctorNote').val(obj.Name);
 	// $('#preg_doctorNote').val(obj.pregnant);
 	$('#ic_doctorNote').val(obj.Newic);

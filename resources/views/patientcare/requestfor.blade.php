@@ -3,6 +3,7 @@
         <form id="formRequestFor">
             <input id="mrn_requestFor" name="mrn_requestFor" type="hidden">
             <input id="episno_requestFor" name="episno_requestFor" type="hidden">
+            <input id="age_requestFor" name="age_requestFor" type="hidden">
             <input id="ptname_requestFor" name="ptname_requestFor" type="hidden">
             <input id="preg_requestFor" name="preg_requestFor" type="hidden">
             <input id="ic_requestFor" name="ic_requestFor" type="hidden">
@@ -31,7 +32,7 @@
                                 <button class="ui button" id="edit_otbookReqFor"><span class="fa fa-edit fa-lg"></span>Edit</button>
                                 <button class="ui button" id="save_otbookReqFor"><span class="fa fa-save fa-lg"></span>Save</button>
                                 <button class="ui button" id="cancel_otbookReqFor"><span class="fa fa-ban fa-lg"></span>Cancel</button>
-                                <!-- <button class="ui button" id="otbookReqFor_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
+                                <button class="ui button" id="otbookReqFor_chart"><span class="fa fa-print fa-lg"></span>Print</button>
                             </div>
                         </div>
                         <div class="ui segment">
@@ -130,7 +131,7 @@
                                     <button class="ui button" id="edit_radClinicReqFor"><span class="fa fa-edit fa-lg"></span>Edit</button>
                                     <button class="ui button" id="save_radClinicReqFor"><span class="fa fa-save fa-lg"></span>Save</button>
                                     <button class="ui button" id="cancel_radClinicReqFor"><span class="fa fa-ban fa-lg"></span>Cancel</button>
-                                    <!-- <button class="ui button" id="radClinicReqFor_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
+                                    <button class="ui button" id="radClinicReqFor_chart"><span class="fa fa-print fa-lg"></span>Print</button>
                                 </div>
                             </div>
                             <div class="ui segment">
@@ -815,7 +816,7 @@
                                 <button class="ui button" id="edit_physioReqFor"><span class="fa fa-edit fa-lg"></span>Edit</button>
                                 <button class="ui button" id="save_physioReqFor"><span class="fa fa-save fa-lg"></span>Save</button>
                                 <button class="ui button" id="cancel_physioReqFor"><span class="fa fa-ban fa-lg"></span>Cancel</button>
-                                <!-- <button class="ui button" id="physioReqFor_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
+                                <button class="ui button" id="physioReqFor_chart"><span class="fa fa-print fa-lg"></span>Print</button>
                             </div>
                         </div>
                         <div class="ui segment">

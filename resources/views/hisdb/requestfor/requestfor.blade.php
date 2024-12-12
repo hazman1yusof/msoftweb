@@ -48,6 +48,7 @@
                     <form class='form-horizontal' style='width: 99%;' id='formRequestFor'>
                         <input id="mrn_requestFor" name="mrn_requestFor" type="hidden">
                         <input id="episno_requestFor" name="episno_requestFor" type="hidden">
+                        <input id="age_requestFor" name="age_requestFor" type="hidden">
                         <!-- <input id="recorddate_requestFor" name="recorddate_requestFor" type="hidden"> -->
                         <input id="ptname_requestFor" name="ptname_requestFor" type="hidden">
                         <input id="preg_requestFor" name="preg_requestFor" type="hidden">
@@ -91,9 +92,9 @@
                                                     <button type="button" class="btn btn-default" id="cancel_otbookReqFor">
                                                         <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                                     </button>
-                                                    <!-- <button type="button" class="btn btn-default" id="otbookReqFor_chart">
+                                                    <button type="button" class="btn btn-default" id="otbookReqFor_chart">
                                                         <span class="fa fa-print fa-lg"></span> Print 
-                                                    </button> -->
+                                                    </button>
                                                 </div>
                                             </div>
                                             
@@ -198,9 +199,9 @@
                                                             <button type="button" class="btn btn-default" id="cancel_radClinicReqFor">
                                                                 <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                                             </button>
-                                                            <!-- <button type="button" class="btn btn-default" id="radClinicReqFor_chart">
+                                                            <button type="button" class="btn btn-default" id="radClinicReqFor_chart">
                                                                 <span class="fa fa-print fa-lg"></span> Print 
-                                                            </button> -->
+                                                            </button>
                                                         </div>
                                                     </div>
                                                     
@@ -733,9 +734,9 @@
                                                     <button type="button" class="btn btn-default" id="cancel_physioReqFor">
                                                         <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                                     </button>
-                                                    <!-- <button type="button" class="btn btn-default" id="physioReqFor_chart">
+                                                    <button type="button" class="btn btn-default" id="physioReqFor_chart">
                                                         <span class="fa fa-print fa-lg"></span> Print 
-                                                    </button> -->
+                                                    </button>
                                                 </div>
                                             </div>
                                             
