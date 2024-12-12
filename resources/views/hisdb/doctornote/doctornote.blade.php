@@ -93,6 +93,7 @@
                     <form class='form-horizontal' style='width: 99%;' id='formDoctorNote'>
                         <input id="mrn_doctorNote" name="mrn_doctorNote" type="hidden">
                         <input id="episno_doctorNote" name="episno_doctorNote" type="hidden">
+                        <input id="age_doctorNote" name="age_doctorNote" type="hidden">
                         <input id="recorddate_doctorNote" name="recorddate_doctorNote" type="hidden">
                         <input id="ptname_doctorNote" name="ptname_doctorNote" type="hidden">
                         <input id="preg_doctorNote" name="preg_doctorNote" type="hidden">
@@ -503,9 +504,9 @@
                                                     <button type="button" class="btn btn-default" id="cancel_otbook">
                                                         <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                                     </button>
-                                                    <!-- <button type="button" class="btn btn-default" id="otbook_chart">
+                                                    <button type="button" class="btn btn-default" id="otbook_chart">
                                                         <span class="fa fa-print fa-lg"></span> Print 
-                                                    </button> -->
+                                                    </button>
                                                 </div>
                                             </div>
                                             
@@ -610,9 +611,9 @@
                                                             <button type="button" class="btn btn-default" id="cancel_radClinic">
                                                                 <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                                             </button>
-                                                            <!-- <button type="button" class="btn btn-default" id="radClinic_chart">
+                                                            <button type="button" class="btn btn-default" id="radClinic_chart">
                                                                 <span class="fa fa-print fa-lg"></span> Print 
-                                                            </button> -->
+                                                            </button>
                                                         </div>
                                                     </div>
                                                     
@@ -1145,9 +1146,9 @@
                                                     <button type="button" class="btn btn-default" id="cancel_physio">
                                                         <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                                                     </button>
-                                                    <!-- <button type="button" class="btn btn-default" id="physio_chart">
+                                                    <button type="button" class="btn btn-default" id="physio_chart">
                                                         <span class="fa fa-print fa-lg"></span> Print 
-                                                    </button> -->
+                                                    </button>
                                                 </div>
                                             </div>
                                             
