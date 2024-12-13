@@ -104,14 +104,19 @@
                             widths: ['*'], // panjang standard dia 515
                             body: [
                                 [                                    
-                                    @if($pat_otbook->pyrmode == 'CASH')
+                                    @if($pat_otbook->pay_type == 'PT')
                                         { text: 'TYPE OF INSURANCE (IF ANY)\u200B\t:\u200B\t'},
                                     @else
                                         { text: 'TYPE OF INSURANCE (IF ANY)\u200B\t:\u200B\t{{$pat_otbook->debtor_name}}'},
                                     @endif
                                 ],
                                 [
-                                    { text: 'MEDICAL CARD/POLICY NUM \u200B\t:\u200B\t{{$pat_otbook->staffid}}'},
+                                    @if($pat_otbook->pay_type == 'PT')
+                                        { text: 'MEDICAL CARD/POLICY NUM \u200B\t:\u200B\t'},
+                                    @else
+                                        { text: 'MEDICAL CARD/POLICY NUM \u200B\t:\u200B\t{{$pat_otbook->staffid}}'},
+                                    @endif
+
                                 ],
                             ]
                         },
