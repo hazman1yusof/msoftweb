@@ -2796,15 +2796,30 @@ class DoctorNoteController extends defaultController
         }
         
         $pat_otbook = DB::table('hisdb.pat_otbook as ot')
-                    ->select('ot.compcode','ot.mrn','ot.episno','ot.op_date','ot.oper_type','ot.adm_type','ot.anaesthetist','ot.remarks','ot.doctorname','ot.adduser','ot.adddate','ot.upduser','ot.upddate','ot.lastuser','ot.lastupdate','ot.computerid','pm.Name','pm.Newic','ap.oper_type','ap.procedure')
+                    ->select('ot.compcode','ot.mrn','ot.episno','ot.op_date','ot.oper_type','ot.adm_type','ot.anaesthetist','ot.remarks','ot.doctorname','ot.adduser','ot.adddate','ot.upduser','ot.upddate','ot.lastuser','ot.lastupdate','ot.computerid','pm.Name','pm.Newic','e.pay_type','e.pyrmode','ep.payercode','dm.name AS debtor_name','g.staffid')
                     ->leftJoin('hisdb.pat_mast as pm', function ($join) use ($request){
                         $join = $join->on('pm.MRN','=','ot.mrn')
                                     ->on('pm.Episno','=','ot.episno')
                                     ->where('pm.CompCode','=',session('compcode'));
                     })
-                    ->leftJoin('hisdb.apptbook as ap', function ($join) use ($request){
-                        $join = $join->on('ap.mrn','=','ot.mrn')
-                                    ->where('ap.compcode','=',session('compcode'));
+                    ->leftJoin('hisdb.episode as e', function ($join) use ($request){
+                        $join = $join->on('e.mrn','=','ot.mrn')
+                                    ->on('e.episno','=','ot.episno')
+                                    ->where('e.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('hisdb.epispayer as ep', function ($join) use ($request){
+                        $join = $join->on('ep.mrn','=','ot.mrn')
+                                    ->on('ep.episno','=','ot.episno')
+                                    ->where('ep.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('debtor.debtormast as dm', function ($join) use ($request){
+                        $join = $join->on('dm.debtorcode','=','ep.payercode')
+                                    ->where('dm.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('hisdb.guarantee as g', function ($join) use ($request){
+                        $join = $join->on('g.mrn','=','ot.mrn')
+                                    ->on('g.episno','=','ot.episno')
+                                    ->where('g.compcode','=',session('compcode'));
                     })
                     ->where('ot.compcode','=',session('compcode'))
                     ->where('ot.mrn','=',$mrn)

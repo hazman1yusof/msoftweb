@@ -37,11 +37,11 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [70,'*',50,'*'], // panjang standard dia 515
+                            widths: [80,'*',80,'*'], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'DATE FOR OP', bold: true },
-                                    { text: ':\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$pat_otbook->op_date)->format('d-m-Y')}}', bold: true },
+                                    { text: 'DATE FOR OP', bold: true, fontSize: 11},
+                                    { text: ':\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$pat_otbook->op_date)->format('d-m-Y')}}\n', bold: true, fontSize: 11},
                                     {},{},
                                 ],
                                 [
@@ -54,67 +54,116 @@
                         },
                         layout: 'noBorders',
                     },
-                    { text: 'TYPE OF OPERATION / PROCEDURE\t:\t{{$pat_otbook->oper_type}} - {{$pat_otbook->procedure}}', fontSize: 9 },
                     {
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [100,1,90,90], // panjang standard dia 515
+                            widths: ['*'], // panjang standard dia 515
                             body: [
-                                // [
-                                //     { text: 'TYPE OF OPERATION / PROCEDURE\t:', colSpan: 2 },{},
-                                //     { text: '\t{{$pat_otbook->oper_type}} - {{$pat_otbook->procedure}}' },
-                                // ],
                                 [
-                                    { text: 'TYPE OF ADMISSION' },
-                                    { text: ':' },
-                                    @if($pat_otbook->adm_type == 'DC')
-                                        { text: 'DAY CASE [\t√\t]' },
-                                        { text: 'IN PATIENT [\t\t]' },
-                                    @else
-                                        { text: 'DAY CASE [\t\t]' },
-                                        { text: 'IN PATIENT [\t√\t]' },
-                                    @endif
+                                    { text: 'TYPE OF OPERATION / PROCEDURE\u200B\t:\u200B\t{{$pat_otbook->oper_type}}'},
                                 ],
-                                [
-                                    { text: 'ANAESTHETIST' },
-                                    { text: ':' },
-                                    @if($pat_otbook->anaesthetist == '1')
-                                        { text: 'REQUIRED [\t√\t]' },
-                                        { text: 'NOT REQUIRED [\t\t]' },
-                                    @else
-                                        { text: 'REQUIRED [\t\t]' },
-                                        { text: 'NOT REQUIRED [\t√\t]' },
-                                    @endif
-                                ],
-                                [
-                                    { text: 'TYPE OF PAYMENT' },
-                                    { text: ':' },
-                                    { text: 'CASH [\t\t]' },
-                                    { text: 'INSURANCE [\t\t]' },
-                                ],
-                                // [
-                                //     { text: 'TYPE OF INSURANCE (IF ANY)\t:', colSpan: 2 },{},
-                                //     { text: ' ' },
-                                // ],
-                                // [
-                                //     { text: 'MEDICAL CARD / POLICY NUM\t:', colSpan: 2 },{},
-                                //     { text: ' ' },
-                                // ],
-                                // [
-                                //     { text: 'DIAGNOSIS\t:', colSpan: 2 },{},
-                                //     { text: ' ' },
-                                // ],
-                                // [
-                                //     { text: 'COMPANY REPRESENTATIVE NUMBER FOR MEDICATION (IF ANY)\t:', colSpan: 2 },{},
-                                //     { text: ' ' },
-                                // ],
                             ]
                         },
                         layout: 'noBorders',
                     },
-                    // { text: 'COMPANY REPRESENTATIVE NUMBER FOR MEDICATION (IF ANY)\t:\t ', fontSize: 9 },
-                    // { canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 }] },
+                    {
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            widths: [80,'*',80,'*'], // panjang standard dia 515
+                            body: [
+                                [
+                                    { text: 'TYPE OF ADMISSION' },
+                                    @if($pat_otbook->adm_type == 'DC')
+                                        { text: ':\u200B\tDAY CASE'},
+                                    @else
+                                        { text: ':\u200B\tIN PATIENT' },
+                                    @endif
+
+                                    { text: 'ANAESTHETIST' },
+                                    @if($pat_otbook->anaesthetist == '1')
+                                        { text: ':\u200B\tREQUIRED' },
+                                    @else
+                                        { text: ':\u200B\tNOT REQUIRED' },
+                                    @endif
+                                ],
+                                [
+                                    { text: 'TYPE OF PAYMENT' },
+                                    { text: ':\u200B\t{{$pat_otbook->pyrmode}}' },
+                                    {},{},
+                                ],
+                            ]
+                        },
+                        layout: 'noBorders',
+                    },
+                    {
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            widths: ['*'], // panjang standard dia 515
+                            body: [
+                                [                                    
+                                    @if($pat_otbook->pay_type == 'PT')
+                                        { text: 'TYPE OF INSURANCE (IF ANY)\u200B\t:\u200B\t'},
+                                    @else
+                                        { text: 'TYPE OF INSURANCE (IF ANY)\u200B\t:\u200B\t{{$pat_otbook->debtor_name}}'},
+                                    @endif
+                                ],
+                                [
+                                    @if($pat_otbook->pay_type == 'PT')
+                                        { text: 'MEDICAL CARD/POLICY NUM \u200B\t:\u200B\t'},
+                                    @else
+                                        { text: 'MEDICAL CARD/POLICY NUM \u200B\t:\u200B\t{{$pat_otbook->staffid}}'},
+                                    @endif
+
+                                ],
+                            ]
+                        },
+                        layout: 'noBorders',
+                    },
+                    {
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            widths: ['*'], // panjang standard dia 515
+                            body: [
+                                [
+                                    {
+                                        text: [
+                                            {text:'SPECIAL REMARKS/INSTRUCTION FOR MEDICATION OR ANY RELATED TO CASE\u200B\t:\u200B\t\n\n', bold:true},
+                                            `{!!str_replace('`', '', $pat_otbook->remarks)!!}`,
+                                        ],
+                                    },
+                                ],
+                            ]
+                        },
+                        // layout: 'noBorders',
+                    },
+                    {
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            widths: ['*'], // panjang standard dia 515
+                            body: [
+                                [
+                                    { text: '\n\n\n\n\n.......................................................\n'},
+                                ],
+                                [
+                                    { text: 'NAME, SIGN & COP\n\n'},
+                                ],
+                                [
+                                    {
+                                        text: [
+                                            {text:'SURGEON/OPERATING DOCTOR\u200B\t:\u200B\t', bold:true},
+                                            '{{$pat_otbook->doctorname}}',
+                                        ],
+                                    },
+                                ],
+                            ]
+                        },
+                        layout: 'noBorders',
+                    },
                 ],
                 styles: {
                     header: {
@@ -129,7 +178,7 @@
                     },
                     tableExample: {
                         fontSize: 9,
-                        margin: [0, 5, 0, 10]
+                        margin: [0, 5, 0, 5]
                     },
                     tableDetail: {
                         fontSize: 7.5,
