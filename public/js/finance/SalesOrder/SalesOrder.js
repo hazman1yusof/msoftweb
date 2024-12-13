@@ -1753,19 +1753,19 @@ $(document).ready(function () {
        
 		let quantity = parseFloat($("#"+id_optid+"_quantity").val());
 
-		if(quantity<=0 || quantity==''){
-			myfail_msg.add_fail({
-				id:'quantity',
-				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request must be greater than 0",
-			});
-		}else{
-			myfail_msg.del_fail({
-				id:'quantity',
-				textfld:"#jqGrid2 #"+id_optid+"_quantity",
-				msg:"Quantity Request must be greater than 0",
-			});
-		}
+		// if(quantity<=0 || quantity==''){
+		// 	myfail_msg.add_fail({
+		// 		id:'quantity',
+		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
+		// 		msg:"Quantity Request must be greater than 0",
+		// 	});
+		// }else{
+		// 	myfail_msg.del_fail({
+		// 		id:'quantity',
+		// 		textfld:"#jqGrid2 #"+id_optid+"_quantity",
+		// 		msg:"Quantity Request must be greater than 0",
+		// 	});
+		// }
 
 		// let qtyonhand = parseFloat($("#"+id_optid+"_qtyonhand").val());
 		// let st_idno = $("#jqGrid2 #"+id_optid+"_chggroup").data('st_idno');
