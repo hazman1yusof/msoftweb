@@ -61,14 +61,14 @@ $(document).ready(function (){
 				autoinsert_rowdata("#formAdmHandover",data.episode);
 				autoinsert_rowdata("#formAdmHandover",data.pathealth);
 				autoinsert_rowdata("#formAdmHandover",data.nurshistory);
-				autoinsert_rowdata("#formAdmHandover",data.nursassessment);
+				// autoinsert_rowdata("#formAdmHandover",data.nursassessment);
 				button_state_admHandover('edit');
 				textarea_init_admhandover();
 			}else{
 				autoinsert_rowdata("#formAdmHandover",data.episode);
 				autoinsert_rowdata("#formAdmHandover",data.pathealth);
 				autoinsert_rowdata("#formAdmHandover",data.nurshistory);
-				autoinsert_rowdata("#formAdmHandover",data.nursassessment);
+				// autoinsert_rowdata("#formAdmHandover",data.nursassessment);
 				button_state_admHandover('add');
 				textarea_init_admhandover();
 			}
@@ -174,11 +174,12 @@ function populate_admHandover(obj,rowdata){
 			autoinsert_rowdata("#formAdmHandover",data.episode);
 			autoinsert_rowdata("#formAdmHandover",data.pathealth);
 			autoinsert_rowdata("#formAdmHandover",data.nurshistory);
-			autoinsert_rowdata("#formAdmHandover",data.nursassessment);
+			// autoinsert_rowdata("#formAdmHandover",data.nursassessment);
 			button_state_admHandover('edit');
 		}else{
 			button_state_admHandover('add');
 		}
+
 	});
 }
 

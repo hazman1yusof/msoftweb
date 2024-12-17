@@ -1084,6 +1084,19 @@ class NursingController extends defaultController
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
                 ]);
+
+            DB::table('nursing.admhandover')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_ti,
+                    'episno' => $request->episno_ti,
+                    'weight' => $request->vs_weight,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser' => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
             
             DB::commit();
             
@@ -1416,6 +1429,19 @@ class NursingController extends defaultController
                 ]);
             
             DB::table('hisdb.pat_mri')
+                ->where('mrn','=',$request->mrn_ti)
+                ->where('episno','=',$request->episno_ti)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'weight' => $request->vs_weight,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser' => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+
+            DB::table('nursing.admhandover')
                 ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
