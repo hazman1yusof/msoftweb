@@ -302,10 +302,10 @@ class AdmHandoverController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn);
 
-        $nursassessment_obj = DB::table('nursing.nursassessment')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$request->mrn)
-                    ->where('episno','=',$request->episno);
+        // $nursassessment_obj = DB::table('nursing.nursassessment')
+        //             ->where('compcode','=',session('compcode'))
+        //             ->where('mrn','=',$request->mrn)
+        //             ->where('episno','=',$request->episno);
         
         $pathealth_obj = DB::table('hisdb.pathealth')
                     ->where('compcode','=',session('compcode'))
@@ -329,10 +329,10 @@ class AdmHandoverController extends defaultController
             $responce->nurshistory = $nurshistory_obj;
         }
 
-        if($nursassessment_obj->exists()){
-            $nursassessment_obj = $nursassessment_obj->first();
-            $responce->nursassessment = $nursassessment_obj;
-        }
+        // if($nursassessment_obj->exists()){
+        //     $nursassessment_obj = $nursassessment_obj->first();
+        //     $responce->nursassessment = $nursassessment_obj;
+        // }
 
         if($pathealth_obj->exists()){
             $pathealth_obj = $pathealth_obj->first();

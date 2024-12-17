@@ -77,9 +77,9 @@
 								</div>
 
 								<div class="form-group">
-									<label class="col-md-2 control-label" for="diagfinal">Diagnosis</label>
+									<label class="col-md-2 control-label" for="diagnosis">Diagnosis</label>
 									<div class="col-md-8">
-										<textarea id="diagfinal" name="diagfinal" type="text" class="form-control input-sm" rdonly></textarea>
+										<textarea id="diagnosis" name="diagnosis" type="text" class="form-control input-sm" rdonly></textarea>
 									</div>
 								</div>
 							</div>
@@ -89,10 +89,10 @@
 							<div class="panel-body" style="height: 240px;margin-left: 50px">
 								
 								<div class="form-group">
-									<label class="col-md-2 control-label" for="weight">Weight</label>
+									<label class="col-md-2 control-label" for="weights">Weight</label>
 									<div class="col-md-8">
 										<div class="input-group">
-											<input id="weight" name="weight" type="text" class="form-control input-sm" data-sanitize="numberFormat" rdonly>
+											<input id="weights" name="weights" type="text" class="form-control input-sm" data-sanitize="numberFormat" rdonly>
 											<span class="input-group-addon">kg</span>
 										</div>									
 									</div>
