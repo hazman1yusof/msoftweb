@@ -316,7 +316,7 @@ class DeliveryOrderDetailController extends defaultController
             $sqlln = DB::table('material.delorddt')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$recno)
-                        ->count('lineno_');
+                        ->max('lineno_');
 
             $li=intval($sqlln)+1;
 

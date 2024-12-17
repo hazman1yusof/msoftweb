@@ -52,7 +52,10 @@ Dashboard
 
 @section('content')
 
-<section class="section col-12" style="padding: 60px 0px 0px 0px;">
+<div class="col-12">
+</div>
+
+<section class="section col-12" style="padding: 20px 0px 0px 0px;">
 
   <div class="row justify-content-center">
 
@@ -60,6 +63,7 @@ Dashboard
       <div class="card">
         <div class="card-header">
           <h4>Revenue By Services</h4>
+          <a type="button" class="btn btn-primary" style="color:white;" href="./ptcare_reveis">Detail</a>
         </div>
         <div class="card-body">
           <canvas id="myChart2" style="display: block; width: 732px; height: 266px;" class="chartjs-render-monitor"></canvas>
@@ -71,6 +75,7 @@ Dashboard
       <div class="card">
         <div class="card-header">
           <h4>Patient Statistics</h4>
+          <a type="button" class="btn btn-primary" style="color:white;" href="./ptcare_eis">Detail</a>
         </div>
         <div class="card-body">
           <canvas id="myChart3" style="display: block; width: 732px; height: 266px;" class="chartjs-render-monitor"></canvas>

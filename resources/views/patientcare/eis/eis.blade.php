@@ -43,7 +43,7 @@ EIS
 @section('content')
 <section class="section">
   <div class="section-header">
-    <h1>EIS - Episode Statistics</h1>
+    <h1>EIS - Episode Statistics <a type="button" class="btn btm-sm btn-info" style="color: white;height: 30px;padding: 3px 5px 5px 5px;" href="./ptcare_dashboard">Summary</a></h1>
   </div>
   <hr>
 

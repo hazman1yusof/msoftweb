@@ -66,8 +66,8 @@ class TestController extends defaultController
                 // return $this->update_productmaster($request);
             // case 'update_stockexp':
             //     return $this->update_stockexp($request);
-            case 'add_radiology2':
-                return $this->add_radiology2($request);
+            case 'kh_chgprice':
+                return $this->kh_chgprice($request);
             case 'add_radiology':
                 return $this->add_radiology($request);
             case 'betulkan_uom_kh_stockloc':
@@ -2765,6 +2765,365 @@ class TestController extends defaultController
                         'lastcomputerid' => $value->lastcomputerid,
                         'lastipaddress' => $value->lastipaddress
                     ]);
+        }
+    }
+
+    public function kh_productmaster(){
+        $table = DB::table('temp.productmaster')
+                ->get();
+
+        foreach ($table as $obj) {
+            $search = DB::table('material.productmaster')
+                    ->where('itemcode',$obj->itemcode);
+
+            if(!$search->exists()){
+                DB::table('material.productmaster')
+                    ->insert([
+                        'compcode' => $obj->compcode,
+                        'unit' => $obj->unit,
+                        'itemcode' => $obj->itemcode,
+                        'description' => $obj->description,
+                        'groupcode' => $obj->groupcode,
+                        'productcat' => $obj->productcat,
+                        'avgcost' => $obj->avgcost,
+                        'adduser' => $obj->adduser,
+                        'adddate' => $obj->adddate,
+                        'upduser' => $obj->upduser,
+                        'upddate' => $obj->upddate,
+                        'recstatus' => $obj->recstatus,
+                        'deluser' => $obj->deluser,
+                        'deldate' => $obj->deldate,
+                        'Class' => $obj->Class
+                    ]);
+            }
+
+        }
+    }
+
+    public function kh_product(){
+        $table = DB::table('temp.product')
+                ->get();
+
+        foreach ($table as $obj) {
+            $search = DB::table('material.product')
+                    ->where('itemcode',$obj->itemcode);
+
+            if(!$search->exists()){
+                dump('insert -> '.$obj->itemcode);
+                DB::table('material.product')
+                    ->insert([
+                        'compcode' => $obj->compcode,
+                        'unit' => $obj->unit,
+                        'itemcode' => $obj->itemcode,
+                        'description' => $obj->description,
+                        'uomcode' => $obj->uomcode,
+                        'groupcode' => $obj->groupcode,
+                        'productcat' => $obj->productcat,
+                        'suppcode' => $obj->suppcode,
+                        'avgcost' => $obj->avgcost,
+                        'actavgcost' => $obj->actavgcost,
+                        'currprice' => $obj->currprice,
+                        'qtyonhand' => $obj->qtyonhand,
+                        'bonqty' => $obj->bonqty,
+                        'rpkitem' => $obj->rpkitem,
+                        'minqty' => $obj->minqty,
+                        'maxqty' => $obj->maxqty,
+                        'reordlevel' => $obj->reordlevel,
+                        'reordqty' => $obj->reordqty,
+                        'adduser' => $obj->adduser,
+                        'adddate' => $obj->adddate,
+                        'upduser' => $obj->upduser,
+                        'upddate' => $obj->upddate,
+                        'recstatus' => $obj->recstatus,
+                        'chgflag' => $obj->chgflag,
+                        'subcatcode' => $obj->subcatcode,
+                        'expdtflg' => $obj->expdtflg,
+                        'mstore' => $obj->mstore,
+                        'costmargin' => $obj->costmargin,
+                        'pouom' => $obj->pouom,
+                        'reuse' => $obj->reuse,
+                        'trqty' => $obj->trqty,
+                        'deactivedate' => $obj->deactivedate,
+                        'tagging' => $obj->tagging,
+                        'itemtype' => $obj->itemtype,
+                        'generic' => $obj->generic,
+                        'deluser' => $obj->deluser,
+                        'deldate' => $obj->deldate,
+                        'Consignment' => $obj->Consignment,
+                        'Class' => $obj->Class,
+                        'TaxCode' => $obj->TaxCode,
+                        'computerid' => $obj->computerid,
+                        'ipaddress' => $obj->ipaddress,
+                        'lastcomputerid' => $obj->lastcomputerid,
+                        'lastipaddress' => $obj->lastipaddress,
+                        'cm_uom' => $obj->cm_uom,
+                        'cm_invflag' => $obj->cm_invflag,
+                        'cm_packqty' => $obj->cm_packqty,
+                        'cm_druggrcode' => $obj->cm_druggrcode,
+                        'cm_subgroup' => $obj->cm_subgroup,
+                        'cm_stockcode' => $obj->cm_stockcode,
+                        'cm_chgclass' => $obj->cm_chgclass,
+                        'cm_chggroup' => $obj->cm_chggroup,
+                        'cm_chgtype' => $obj->cm_chgtype,
+                        'cm_invgroup' => $obj->cm_invgroup,
+                    ]);
+            }
+
+        }
+    }
+
+    public function kh_chgmast(){
+        $table = DB::table('temp.chgmast')
+                ->get();
+
+        foreach ($table as $obj) {
+            $search = DB::table('hisdb.chgmast')
+                    ->where('chgcode',$obj->chgcode);
+
+            if(!$search->exists()){
+                dump('insert -> '.$obj->chgcode);
+                DB::table('hisdb.chgmast')
+                    ->insert([
+                        'compcode' => $obj->compcode,
+                        'unit' => $obj->unit,
+                        'chgcode' => $obj->chgcode,
+                        'description' => $obj->description,
+                        'brandname' => $obj->brandname,
+                        'revcode' => $obj->revcode,
+                        'uom' => $obj->uom,
+                        'packqty' => $obj->packqty,
+                        'invflag' => $obj->invflag,
+                        'overwrite' => $obj->overwrite,
+                        'buom' => $obj->buom,
+                        'adduser' => $obj->adduser,
+                        'adddate' => $obj->adddate,
+                        'lastuser' => $obj->lastuser,
+                        'lastupdate' => $obj->lastupdate,
+                        'upduser' => $obj->upduser,
+                        'upddate' => $obj->upddate,
+                        'deluser' => $obj->deluser,
+                        'deldate' => $obj->deldate,
+                        'recstatus' => $obj->recstatus,
+                        'lastfield' => $obj->lastfield,
+                        'doctorstat' => $obj->doctorstat,
+                        'chgtype' => $obj->chgtype,
+                        'chggroup' => $obj->chggroup,
+                        'qflag' => $obj->qflag,
+                        'costcode' => $obj->costcode,
+                        'chgflag' => $obj->chgflag,
+                        'ipacccode' => $obj->ipacccode,
+                        'opacccode' => $obj->opacccode,
+                        'revdept' => $obj->revdept,
+                        'chgclass' => $obj->chgclass,
+                        'costdept' => $obj->costdept,
+                        'invgroup' => $obj->invgroup,
+                        'apprccode' => $obj->apprccode,
+                        'appracct' => $obj->appracct,
+                        'active' => $obj->active,
+                        'constype' => $obj->constype,
+                        'dosage' => $obj->dosage,
+                        'druggrcode' => $obj->druggrcode,
+                        'subgroup' => $obj->subgroup,
+                        'stockcode' => $obj->stockcode,
+                        'seqno' => $obj->seqno,
+                        'instruction' => $obj->instruction,
+                        'freqcode' => $obj->freqcode,
+                        'durationcode' => $obj->durationcode,
+                        'strength' => $obj->strength,
+                        'durqty' => $obj->durqty,
+                        'freqqty' => $obj->freqqty,
+                        'doseqty' => $obj->doseqty,
+                        'dosecode' => $obj->dosecode,
+                        'barcode' => $obj->barcode,
+                        'computerid' => $obj->computerid,
+                        'ipaddress' => $obj->ipaddress,
+                        'lastcomputerid' => $obj->lastcomputerid,
+                        'lastipaddress' => $obj->lastipaddress,
+                        'auto' => $obj->auto,
+                        'micerra' => $obj->micerra,
+                    ]);
+            }
+
+        }
+    }
+
+    public function kh_chgprice(){
+        $table = DB::table('temp.chgprice')
+                ->get();
+
+        foreach ($table as $obj) {
+            $search = DB::table('hisdb.chgprice')
+                    ->where('chgcode',$obj->chgcode);
+
+            if(!$search->exists()){
+                dump('insert -> '.$obj->chgcode);
+                $table2 = DB::table('temp.chgprice')
+                            ->where('chgcode',$obj->chgcode)
+                            ->get();
+
+                foreach ($table2 as $obj2) {
+                    DB::table('hisdb.chgprice')
+                        ->insert([
+                            'lineno_' => $obj->lineno_,
+                            'compcode' => $obj->compcode,
+                            'chgcode' => $obj->chgcode,
+                            'uom' => $obj->uom,
+                            'effdate' => $obj->effdate,
+                            'minamt' => $obj->minamt,
+                            'amt1' => $obj->amt1,
+                            'amt2' => $obj->amt2,
+                            'amt3' => $obj->amt3,
+                            'iptax' => $obj->iptax,
+                            'optax' => $obj->optax,
+                            'maxamt' => $obj->maxamt,
+                            'costprice' => $obj->costprice,
+                            'lastuser' => $obj->lastuser,
+                            'lastupdate' => $obj->lastupdate,
+                            'lastfield' => $obj->lastfield,
+                            'unit' => $obj->unit,
+                            'adduser' => $obj->adduser,
+                            'adddate' => $obj->adddate,
+                            'autopull' => $obj->autopull,
+                            'addchg' => $obj->addchg,
+                            'pkgstatus' => $obj->pkgstatus,
+                            'recstatus' => $obj->recstatus,
+                            'deluser' => $obj->deluser,
+                            'deldate' => $obj->deldate,
+                            'lastcomputerid' => $obj->lastcomputerid,
+                            'lastipaddress' => $obj->lastipaddress
+                        ]);
+                }
+            }
+
+        }
+    }
+    
+    public function kh_stockloc(){
+        $table = DB::table('temp.stockloc')
+                ->get();
+
+        foreach ($table as $obj) {
+            $search = DB::table('material.stockloc')
+                            ->where('itemcode',$obj->itemcode)
+                            ->where('unit',"khealth");
+
+            if($search->exists()){
+                dump('update -> '.$obj->itemcode);
+
+                $balqty = $obj->netmvqty1 + $obj->netmvqty2 + $obj->netmvqty3 + $obj->netmvqty4 + $obj->netmvqty5 + $obj->netmvqty6 + $obj->netmvqty7 + $obj->netmvqty8 + $obj->netmvqty9 + $obj->netmvqty10 + $obj->netmvqty11 + $obj->netmvqty12;
+
+                DB::table('material.stockloc')
+                            ->where('compcode','9B')
+                            ->where('unit',"khealth")
+                            ->where('itemcode',$obj->itemcode)
+                            ->update([
+                                'qtyonhand' => $balqty,
+                                'netmvqty12' => $balqty
+                            ]);
+
+                $stockexp = DB::table('material.stockexp')
+                                ->where('itemcode',$obj->itemcode)
+                                ->where('unit',"khealth");
+
+                if($stockexp->exists()){
+                    DB::table('material.stockexp')
+                                ->where('itemcode',$obj->itemcode)
+                                ->update([
+                                    'balqty' => $balqty
+                                ]);
+                }else{
+                    DB::table('material.stockexp')
+                        ->insert([
+                            'deptcode' => 'KHEALTH',
+                            'itemcode' => $obj->itemcode,
+                            'uomcode' => $obj->uomcode,
+                            'balqty' => $balqty,
+                            'year' => '2024',
+                            'unit' => 'KHEALTH'
+                        ]);
+                }
+
+            }else{
+                dump('insert -> '.$obj->itemcode);
+
+                $balqty = $obj->netmvqty1 + $obj->netmvqty2 + $obj->netmvqty3 + $obj->netmvqty4 + $obj->netmvqty5 + $obj->netmvqty6 + $obj->netmvqty7 + $obj->netmvqty8 + $obj->netmvqty9 + $obj->netmvqty10 + $obj->netmvqty11 + $obj->netmvqty12;
+
+                DB::table('material.stockloc')
+                            ->insert([
+                                'compcode' => $obj->compcode,
+                                'deptcode' => $obj->deptcode,
+                                'itemcode' => $obj->itemcode,
+                                'uomcode' => $obj->uomcode,
+                                'bincode' => $obj->bincode,
+                                'rackno' => $obj->rackno,
+                                'year' => $obj->year,
+                                'openbalqty' => $obj->openbalqty,
+                                'openbalval' => $obj->openbalval,
+                                'netmvqty12' => $balqty,
+                                'netmvval1' => $obj->netmvval1,
+                                'netmvval2' => $obj->netmvval2,
+                                'netmvval3' => $obj->netmvval3,
+                                'netmvval4' => $obj->netmvval4,
+                                'netmvval5' => $obj->netmvval5,
+                                'netmvval6' => $obj->netmvval6,
+                                'netmvval7' => $obj->netmvval7,
+                                'netmvval8' => $obj->netmvval8,
+                                'netmvval9' => $obj->netmvval9,
+                                'netmvval10' => $obj->netmvval10,
+                                'netmvval11' => $obj->netmvval11,
+                                'netmvval12' => $obj->netmvval12,
+                                'stocktxntype' => $obj->stocktxntype,
+                                'disptype' => $obj->disptype,
+                                'qtyonhand' => $balqty,
+                                'minqty' => $obj->minqty,
+                                'maxqty' => $obj->maxqty,
+                                'reordlevel' => $obj->reordlevel,
+                                'reordqty' => $obj->reordqty,
+                                'lastissdate' => $obj->lastissdate,
+                                'frozen' => $obj->frozen,
+                                'adduser' => $obj->adduser,
+                                'adddate' => $obj->adddate,
+                                'upduser' => $obj->upduser,
+                                'upddate' => $obj->upddate,
+                                'cntdocno' => $obj->cntdocno,
+                                'fix_uom' => $obj->fix_uom,
+                                'locavgcs' => $obj->locavgcs,
+                                'lstfrzdt' => $obj->lstfrzdt,
+                                'lstfrztm' => $obj->lstfrztm,
+                                'frzqty' => $obj->frzqty,
+                                'recstatus' => $obj->recstatus,
+                                'deluser' => $obj->deluser,
+                                'deldate' => $obj->deldate,
+                                'computerid' => $obj->computerid,
+                                'ipaddress' => $obj->ipaddress,
+                                'lastcomputerid' => $obj->lastcomputerid,
+                                'lastipaddress' => $obj->lastipaddress,
+                                'unit' => 'KHEALTH'
+                            ]);
+
+                $stockexp = DB::table('material.stockexp')
+                                ->where('itemcode',$obj->itemcode)
+                                ->where('unit',"khealth");
+
+                if($stockexp->exists()){
+                    DB::table('material.stockexp')
+                                ->where('itemcode',$obj->itemcode)
+                                ->update([
+                                    'balqty' => $balqty
+                                ]);
+                }else{
+                    DB::table('material.stockexp')
+                        ->insert([
+                            'deptcode' => 'KHEALTH',
+                            'itemcode' => $obj->itemcode,
+                            'uomcode' => $obj->uomcode,
+                            'balqty' => $balqty,
+                            'year' => '2024',
+                            'unit' => 'KHEALTH'
+                        ]);
+                }
+            }
+
         }
     }
     

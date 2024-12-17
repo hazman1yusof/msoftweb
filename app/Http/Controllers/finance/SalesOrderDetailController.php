@@ -1553,7 +1553,7 @@ class SalesOrderDetailController extends defaultController
                         ->where('source','=',$source)
                         ->where('trantype','=',$trantype)
                         ->where('billno','=',$auditno)
-                        ->count('rowno');
+                        ->max('rowno');
             
             $li=intval($sqlln)+1;
 
