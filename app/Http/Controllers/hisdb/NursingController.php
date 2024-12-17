@@ -1091,6 +1091,7 @@ class NursingController extends defaultController
                     'mrn' => $request->mrn_ti,
                     'episno' => $request->episno_ti,
                     'weights' => $request->vs_weight,
+                    'diagnosis' => $request->diagnosis,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'lastuser' => session('username'),
@@ -1447,6 +1448,7 @@ class NursingController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'weights' => $request->vs_weight,
+                    'diagnosis' => $request->diagnosis,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'lastuser' => session('username'),

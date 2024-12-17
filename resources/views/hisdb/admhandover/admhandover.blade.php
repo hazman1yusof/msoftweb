@@ -77,9 +77,9 @@
 								</div>
 
 								<div class="form-group">
-									<label class="col-md-2 control-label" for="diagfinal">Diagnosis</label>
+									<label class="col-md-2 control-label" for="diagnosis">Diagnosis</label>
 									<div class="col-md-8">
-										<textarea id="diagfinal" name="diagfinal" type="text" class="form-control input-sm" rdonly></textarea>
+										<textarea id="diagnosis" name="diagnosis" type="text" class="form-control input-sm" rdonly></textarea>
 									</div>
 								</div>
 							</div>

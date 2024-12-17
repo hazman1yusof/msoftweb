@@ -354,6 +354,7 @@ class DoctorNoteController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'weights' => $request->weight,
+                    'diagnosis' => $request->diagfinal,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'lastuser' => session('username'),
@@ -611,6 +612,7 @@ class DoctorNoteController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'weights' => $request->weight,
+                    'diagnosis' => $request->diagfinal,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'lastuser' => session('username'),
