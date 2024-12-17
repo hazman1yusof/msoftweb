@@ -347,6 +347,19 @@ class DoctorNoteController extends defaultController
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
                 ]);
+
+            DB::table('nursing.admhandover')
+                ->where('mrn','=',$request->mrn_doctorNote)
+                ->where('episno','=',$request->episno_doctorNote)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'weights' => $request->weight,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser' => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
             
             DB::commit();
             
@@ -585,6 +598,19 @@ class DoctorNoteController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'weight' => $request->weight,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser' => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+
+            DB::table('nursing.admhandover')
+                ->where('mrn','=',$request->mrn_doctorNote)
+                ->where('episno','=',$request->episno_doctorNote)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'weights' => $request->weight,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'lastuser' => session('username'),
