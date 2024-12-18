@@ -52,7 +52,7 @@ class ivtxndt_csv implements FromView
         foreach ($table as $key => $value) {
             $ivtxndt = DB::table('material.ivtxndt as iv')
                         ->select('iv.idno','iv.compcode','iv.recno','iv.lineno_','iv.itemcode','iv.uomcode','iv.uomcoderecv','iv.txnqty','iv.netprice','iv.adduser','iv.adddate','iv.upduser','iv.upddate','iv.productcat','iv.draccno','iv.drccode','iv.craccno','iv.crccode','iv.updtime','iv.expdate','iv.remarks','iv.qtyonhand','iv.qtyonhandrecv','iv.batchno','iv.amount','iv.trandate','iv.trantype','iv.deptcode','iv.gstamount','iv.totamount','iv.recstatus','iv.reopen','iv.unit','iv.sndrcv','do.pouom','do.qtydelivered','do.unitprice')
-                        ->leftJoin('material.delorddt as do', function($join) use ($request){
+                        ->leftJoin('material.delorddt as do', function($join){
                             $join = $join->on('do.recno', '=', 'iv.recno')
                                         ->on('do.lineno_', '=', 'iv.lineno_')
                                         ->where('do.compcode', '=', '9B');
