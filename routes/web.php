@@ -1520,6 +1520,10 @@ Route::get('/ptcare_requestfor','patientcare\RequestForController@show');
 Route::get('/ptcare_requestfor/table','patientcare\RequestForController@table');
 Route::post('/ptcare_requestfor/form','patientcare\RequestForController@form');
 
+Route::get('/ptcare_admhandover','patientcare\AdmHandoverController@show');
+Route::get('/ptcare_admhandover/table','patientcare\AdmHandoverController@table');
+Route::post('/ptcare_admhandover/form','patientcare\AdmHandoverController@form');
+
 Route::get('/ptcare_dieteticCareNotes','patientcare\DieteticCareNotesController@show');
 Route::get('/ptcare_dieteticCareNotes/table','patientcare\DieteticCareNotesController@table');
 Route::post('/ptcare_dieteticCareNotes/form','patientcare\DieteticCareNotesController@form');
