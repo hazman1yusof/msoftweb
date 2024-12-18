@@ -1241,7 +1241,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		}
 	}
 
-
 	function onClick(event){
 		var textfield = $(event.currentTarget).siblings("input[type='text']");
 

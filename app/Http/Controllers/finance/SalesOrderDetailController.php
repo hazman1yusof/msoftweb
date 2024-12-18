@@ -70,15 +70,13 @@ class SalesOrderDetailController extends defaultController
 
     public function get_table_dtl(Request $request){
         $table = DB::table('debtor.billsum as bs')
-                    ->select('bs.idno','bs.compcode','bs.lineno_','bs.rowno','bs.chggroup','bs.description','bs.uom','bs.uom_recv','bs.taxcode','bs.unitprice','bs.quantity','bs.billtypeperct','bs.billtypeamt','bs.taxamt','bs.discamt','bs.amount','bs.totamount','bs.recstatus','bs.qtyonhand','bs.qtyorder','bs.chggroup as chggroup_ori','bs.uom as uom_ori')
-                    // ->leftjoin('material.stockloc as st', function($join) use ($request){
-                    //         $join = $join->where('st.compcode', '=', session('compcode'));
-                    //         $join = $join->where('st.unit', '=', session('unit'));
-                    //         $join = $join->on('st.itemcode', '=', 'bs.chggroup');
-                    //         $join = $join->on('st.uomcode', '=', 'bs.uom');
-                    //         $join = $join->where('st.deptcode', '=', $request->deptcode);
-                    //         $join = $join->where('st.year', '=', Carbon::now('Asia/Kuala_Lumpur')->year);
-                    //     })
+                    ->select('bs.idno','bs.compcode','bs.lineno_','bs.rowno','bs.chggroup','bs.description','bs.uom','bs.uom_recv','bs.taxcode','bs.unitprice','bs.quantity','bs.billtypeperct','bs.billtypeamt','bs.taxamt','bs.discamt','bs.amount','bs.totamount','bs.recstatus','bs.qtyonhand','bs.qtyorder','bs.chggroup as chggroup_ori','bs.uom as uom_ori','cm.description')
+                    ->leftjoin('hisdb.chgmast as cm', function($join) use ($request){
+                            $join = $join->where('cm.compcode', '=', session('compcode'));
+                            // $join = $join->where('st.unit', '=', session('unit'));
+                            $join = $join->on('cm.chgcode', '=', 'bs.chggroup');
+                            $join = $join->on('cm.uom', '=', 'bs.uom');
+                        })
                     ->where('bs.source','=',$request->source)
                     ->where('bs.trantype','=',$request->trantype)
                     ->where('bs.billno','=',$request->billno)
@@ -1670,6 +1668,112 @@ class SalesOrderDetailController extends defaultController
         
     }
 
+    public function edit(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            $source = $request->source;
+            $trantype = $request->trantype;
+            $auditno = ltrim($request->auditno, "0");
+            
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=',$source)
+                    ->where('trantype','=',$trantype)
+                    ->where('auditno','=',$auditno);
+            
+            $dbacthdr = $dbacthdr->first();
+
+            $chgmast = DB::table("hisdb.chgmast")
+                    ->where('compcode','=',session('compcode'))
+                    ->where('chgcode','=',$request->chggroup)
+                    ->where('uom','=',$request->uom)
+                    ->first();
+
+            if($chgmast->invflag == '1'){
+                $stockloc = DB::table('material.stockloc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('uomcode','=',$request->uom)
+                        ->where('itemcode','=',$request->chggroup)
+                        ->where('deptcode','=',$dbacthdr->deptcode)
+                        ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+
+                if($stockloc->exists()){
+                    $stockloc = $stockloc->first();
+                }else{
+                    throw new \Exception("Stockloc not exists for item: ".$request->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$request->uom,500);
+                }
+            }
+
+            // $qtyonhand = $stockloc->qtyonhand;
+            $quantity = floatval($request->quantity);
+            $amount = $request->unitprice * $quantity;
+            $discamt = ($amount * (100-$request->billtypeperct) / 100) + $request->billtypeamt;
+            $rate = $this->taxrate($request->taxcode);
+            $taxamt = $amount * $rate / 100;
+            $totamount = $amount - $discamt + $taxamt;
+
+            // if($quantity > $qtyonhand){
+            //     throw new \Exception("Quantity exceed quantity on hand for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
+            // }
+
+            DB::table('debtor.billsum')
+                    ->where('compcode','=',session('compcode'))
+                    // ->where('source','=',$source)
+                    // ->where('trantype','=',$trantype)
+                    // ->where('billno','=',$auditno)
+                    ->where('idno','=',$request->idno)
+                    // ->where('rowno','=',$request->rowno)
+                    ->update([
+                        'unitprice' => $request->unitprice,
+                        'quantity' => $quantity,
+                        'qtyonhand' => $request->qtyonhand,
+                        'amount' => $amount,
+                        'outamt' => $amount,
+                        'discamt' => floatval($discamt),
+                        'taxamt' => floatval($taxamt),
+                        'totamount' => floatval($totamount),
+                        'lastuser' => session('username'), 
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'billtypeperct' => $request->billtypeperct,
+                        'billtypeamt' => $request->billtypeamt,
+                    ]);
+                
+            ///3. calculate total amount from detail
+            $totalAmount = DB::table('debtor.billsum')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=',$source)
+                    ->where('trantype','=',$trantype)
+                    ->where('billno','=',$auditno)
+                    ->where('recstatus','!=','DELETE')
+                    ->sum('totamount');
+            
+            ///4. then update to header
+            DB::table('debtor.dbacthdr')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=',$source)
+                    ->where('trantype','=',$trantype)
+                    ->where('auditno','=',$auditno)
+                    ->update([
+                        'amount' => $totalAmount,
+                        'outamount' => $totalAmount,
+                    ]);
+            
+            DB::commit();
+            
+            echo $totalAmount;
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }        
+    }
+
     public function edit_all(Request $request){
         
         DB::beginTransaction();
@@ -1788,8 +1892,7 @@ class SalesOrderDetailController extends defaultController
             
             return response($e->getMessage(), 500);
             
-        }
-        
+        }        
     }
 
     public function del(Request $request){

@@ -204,14 +204,18 @@ class InventoryTransactionController extends defaultController
                     ->first();
 
         $table = DB::table('material.ivtmpdt AS ivdt')
-                ->select('ivdt.idno','ivdt.compcode','ivdt.recno','ivdt.lineno_','ivdt.ivreqno','ivdt.reqlineno','ivdt.reqdept','ivdt.itemcode','ivdt.uomcode','ivdt.uomcoderecv','ivdt.txnqty','ivdt.qtyonhandrecv','ivdt.netprice','ivdt.adduser','ivdt.adddate','ivdt.upduser','ivdt.upddate','ivdt.productcat','ivdt.draccno','ivdt.drccode','ivdt.craccno','ivdt.crccode','ivdt.updtime','ivdt.expdate','ivdt.remarks','ivdt.qtyonhand','ivdt.batchno','ivdt.amount','ivdt.recstatus','ivdt.deluser','ivdt.deldate','ivdt.unit','ivdt.qtyrequest','ivdt.remarks')
+                ->select('ivdt.idno','ivdt.compcode','ivdt.recno','ivdt.lineno_','ivdt.ivreqno','ivdt.reqlineno','ivdt.reqdept','ivdt.itemcode','ivdt.uomcode','ivdt.uomcoderecv','ivdt.txnqty','ivdt.qtyonhandrecv','ivdt.netprice','ivdt.adduser','ivdt.adddate','ivdt.upduser','ivdt.upddate','ivdt.productcat','ivdt.draccno','ivdt.drccode','ivdt.craccno','ivdt.crccode','ivdt.updtime','ivdt.expdate','ivdt.remarks','ivdt.qtyonhand','ivdt.batchno','ivdt.amount','ivdt.recstatus','ivdt.deluser','ivdt.deldate','ivdt.unit','ivdt.qtyrequest','ivdt.remarks','p.description')
                 ->leftJoin('material.stockloc AS s', function($join) use ($ivtmphd){
                     $join = $join->on("s.itemcode", '=', 'ivdt.itemcode');    
                     $join = $join->on("s.uomcode", '=', 'ivdt.uomcode');  
                     $join = $join->where("s.compcode", session('compcode'));    
                     $join = $join->where("s.deptcode", $ivtmphd->txndept);    
-                    // $join = $join->where("s.unit", session('unit'));       
                     $join = $join->where("s.year", Carbon::now("Asia/Kuala_Lumpur")->year);
+                })
+                ->leftJoin('material.product AS p', function($join) use ($ivtmphd){
+                    $join = $join->on("p.itemcode", '=', 'ivdt.itemcode');    
+                    $join = $join->on("p.uomcode", '=', 'ivdt.uomcode');  
+                    $join = $join->where("p.compcode", session('compcode'));   
                 })
                 ->where('ivdt.recno','=',$request->filterVal[0])
                 ->where('ivdt.compcode','=',session('compcode'))

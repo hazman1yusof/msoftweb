@@ -66,8 +66,8 @@ class TestController extends defaultController
                 // return $this->update_productmaster($request);
             // case 'update_stockexp':
             //     return $this->update_stockexp($request);
-            case 'kh_chgprice':
-                return $this->kh_chgprice($request);
+            case 'kh_product_latest':
+                return $this->kh_product_latest($request);
             case 'add_radiology':
                 return $this->add_radiology($request);
             case 'betulkan_uom_kh_stockloc':
@@ -2800,72 +2800,30 @@ class TestController extends defaultController
         }
     }
 
-    public function kh_product(){
-        $table = DB::table('temp.product')
+    public function kh_product_latest(){
+        $table = DB::table('temp.khealth_stocktake')
                 ->get();
 
-        foreach ($table as $obj) {
-            $search = DB::table('material.product')
-                    ->where('itemcode',$obj->itemcode);
+        foreach ($table as $index => $obj) {
+            $search = DB::table('temp.chgprice')
+                    ->where('chgcode',$obj->itemcode);
 
             if(!$search->exists()){
                 dump('insert -> '.$obj->itemcode);
-                DB::table('material.product')
-                    ->insert([
-                        'compcode' => $obj->compcode,
-                        'unit' => $obj->unit,
-                        'itemcode' => $obj->itemcode,
-                        'description' => $obj->description,
-                        'uomcode' => $obj->uomcode,
-                        'groupcode' => $obj->groupcode,
-                        'productcat' => $obj->productcat,
-                        'suppcode' => $obj->suppcode,
-                        'avgcost' => $obj->avgcost,
-                        'actavgcost' => $obj->actavgcost,
-                        'currprice' => $obj->currprice,
-                        'qtyonhand' => $obj->qtyonhand,
-                        'bonqty' => $obj->bonqty,
-                        'rpkitem' => $obj->rpkitem,
-                        'minqty' => $obj->minqty,
-                        'maxqty' => $obj->maxqty,
-                        'reordlevel' => $obj->reordlevel,
-                        'reordqty' => $obj->reordqty,
-                        'adduser' => $obj->adduser,
-                        'adddate' => $obj->adddate,
-                        'upduser' => $obj->upduser,
-                        'upddate' => $obj->upddate,
-                        'recstatus' => $obj->recstatus,
-                        'chgflag' => $obj->chgflag,
-                        'subcatcode' => $obj->subcatcode,
-                        'expdtflg' => $obj->expdtflg,
-                        'mstore' => $obj->mstore,
-                        'costmargin' => $obj->costmargin,
-                        'pouom' => $obj->pouom,
-                        'reuse' => $obj->reuse,
-                        'trqty' => $obj->trqty,
-                        'deactivedate' => $obj->deactivedate,
-                        'tagging' => $obj->tagging,
-                        'itemtype' => $obj->itemtype,
-                        'generic' => $obj->generic,
-                        'deluser' => $obj->deluser,
-                        'deldate' => $obj->deldate,
-                        'Consignment' => $obj->Consignment,
-                        'Class' => $obj->Class,
-                        'TaxCode' => $obj->TaxCode,
-                        'computerid' => $obj->computerid,
-                        'ipaddress' => $obj->ipaddress,
-                        'lastcomputerid' => $obj->lastcomputerid,
-                        'lastipaddress' => $obj->lastipaddress,
-                        'cm_uom' => $obj->cm_uom,
-                        'cm_invflag' => $obj->cm_invflag,
-                        'cm_packqty' => $obj->cm_packqty,
-                        'cm_druggrcode' => $obj->cm_druggrcode,
-                        'cm_subgroup' => $obj->cm_subgroup,
-                        'cm_stockcode' => $obj->cm_stockcode,
-                        'cm_chgclass' => $obj->cm_chgclass,
-                        'cm_chggroup' => $obj->cm_chggroup,
-                        'cm_chgtype' => $obj->cm_chgtype,
-                        'cm_invgroup' => $obj->cm_invgroup,
+
+            }else{
+                $cont = $index+1;
+                dump($cont.'. update -> '.$obj->itemcode);
+                $search = $search->first();
+
+                DB::table('temp.chgprice')
+                    ->where('idno',$search->idno)
+                    ->update([
+                        'compcode' => '9B',
+                        'unit' => 'khealth',
+                        // 'qtyonhand' => $obj->qty,
+                        // 'netmvqty12' => $obj->qty,
+                        'uom' => $obj->uom
                     ]);
             }
 

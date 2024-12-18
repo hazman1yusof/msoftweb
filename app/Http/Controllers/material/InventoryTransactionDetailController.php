@@ -98,7 +98,7 @@ class InventoryTransactionDetailController extends defaultController
             $request->expdate = $this->null_date($request->expdate);
 
             $ivtmphd = DB::table("material.ivtmphd")
-                            ->where('idno','=',$request->idno)
+                            ->where('idno','=',$request->h_idno)
                             ->where('compcode','=','DD');
 
             if($ivtmphd->exists()){
@@ -106,7 +106,7 @@ class InventoryTransactionDetailController extends defaultController
                 $recno = $this->recno('IV','IT');
 
                 DB::table("material.ivtmphd")
-                    ->where('idno','=',$request->idno)
+                    ->where('idno','=',$request->h_idno)
                     ->update([
                         'docno' => $docno,
                         'recno' => $recno,
@@ -119,7 +119,7 @@ class InventoryTransactionDetailController extends defaultController
                 $recno = $this->recno('IV','IT');
 
                 DB::table("material.ivtmphd")
-                    ->where('idno','=',$request->idno)
+                    ->where('idno','=',$request->h_idno)
                     ->update([
                         'docno' => $docno,
                         'recno' => $recno,
@@ -127,7 +127,7 @@ class InventoryTransactionDetailController extends defaultController
                     ]);
             }
             $ivtmphd = DB::table("material.ivtmphd")
-                            ->where('idno','=',$request->idno)
+                            ->where('idno','=',$request->h_idno)
                             ->first();
 
 
@@ -289,26 +289,111 @@ class InventoryTransactionDetailController extends defaultController
         try {
             $request->expdate = $this->null_date($request->expdate);
 
+            $ivtmphd = DB::table('material.ivtmphd')
+                            ->where('unit',session('unit'))
+                            ->where('compcode','=',session('compcode'))
+                            ->where('recno','=',$request->recno)
+                            ->first();
+
+            $year_ = defaultController::toYear($ivtmphd->trandate);
+
+            $product = DB::table('material.product')
+                        ->where('unit','=',session('unit'))
+                        ->where('compcode','=',session('compcode'))
+                        ->where('ItemCode','=',$request->itemcode)
+                        ->where('UomCode','=',$request->uomcode);
+
+            if(!$product->exists()){
+                throw new \Exception('product doesnt exists '.$request->itemcode.' , '.$request->uomcode);
+            }
+
+            if(strtoupper($ivtmphd->trantype) == 'TUI'){
+                $stockloc_obj = DB::table('material.StockLoc')
+                        ->where('StockLoc.unit','=',session('unit'))
+                        ->where('StockLoc.CompCode','=',session('compcode'))
+                        ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
+                        ->where('StockLoc.ItemCode','=',$request->itemcode)
+                        ->where('StockLoc.Year','=', $year_)
+                        ->where('StockLoc.UomCode','=',$request->uomcode);
+
+                if(!$stockloc_obj->exists()){
+                    throw new \Exception('stockloc doesnt exists'.$request->itemcode.' , '.$request->uomcode);
+                }
+            }else if(strtoupper($ivtmphd->trantype) == 'TUO'){
+                $stockloc_obj = DB::table('material.StockLoc')
+                        ->where('StockLoc.unit','=',session('unit'))
+                        ->where('StockLoc.CompCode','=',session('compcode'))
+                        ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
+                        ->where('StockLoc.ItemCode','=',$request->itemcode)
+                        ->where('StockLoc.Year','=', $year_)
+                        ->where('StockLoc.UomCode','=',$request->uomcode);
+
+                if(!$stockloc_obj->exists()){
+                    throw new \Exception('stockloc doesnt exists'.$request->itemcode.' , '.$request->uomcode);
+                }
+                $stockloc_first = $stockloc_obj->first();
+
+                // if($stockloc_first->qtyonhand >= 0 && $value['txnqty'] > $stockloc_first->qtyonhand){
+                //     throw new \Exception("Quantity not enough at Stock location, ".$ivtmphd->txndept." - ".$value['itemcode']." - ".$value['uomcode']);
+                // }
+                
+                $chgprice_obj = DB::table('hisdb.chgprice as cp')
+                    ->where('cp.compcode', '=', session('compcode'))
+                    ->where('cp.chgcode', '=', $request->itemcode)
+                    ->where('cp.uom', '=', $request->uomcode)
+                    ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
+                    ->orderBy('cp.effdate','desc');
+
+                if($chgprice_obj->exists()){
+                    $chgprice_obj = $chgprice_obj->first();
+                    $netprice_tuo = $chgprice_obj->costprice;
+                }else{
+                    $netprice_tuo = $value['netprice'];
+                }
+
+                // if($value['qtyrequest'] < $value['txnqty']){
+                //     throw new \Exception("Quantity transaction greater than qtyrequest, ".$ivtmphd->txndept." - ".$value['itemcode']." - ".$value['uomcode']);
+                // }
+            }else{
+                $issuetype = DB::table('material.ivtxntype')->select('isstype')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('trantype','=',$ivtmphd->trantype)
+                                ->first();
+
+                if(strtoupper($issuetype->isstype) == 'TRANSFER'){
+                    $stockloc_obj = DB::table('material.StockLoc')
+                            ->where('StockLoc.unit','=',session('unit'))
+                            ->where('StockLoc.CompCode','=',session('compcode'))
+                            ->where('StockLoc.DeptCode','=',$ivtmphd->sndrcv)
+                            ->where('StockLoc.ItemCode','=',$request->itemcode)
+                            ->where('StockLoc.Year','=', $year_)
+                            ->where('StockLoc.UomCode','=',$request->uomcoderecv);
+
+                    if(!$stockloc_obj->exists()){
+                        throw new \Exception('stockloc doesnt exists');
+                    }
+                }
+            }
+
             ///1. update detail
             DB::table('material.ivtmpdt')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->where('lineno_','=',$request->lineno_)
+                ->where('idno','=',$request->idno)
                 ->update([
-                    'itemcode' => $request->itemcode,
-                    'uomcode' => $request->uomcode,
+                    // 'itemcode' => $request->itemcode,
+                    // 'uomcode' => $request->uomcode,
                     'txnqty' => $request->txnqty,
                     'netprice' => $request->netprice,
-                    'productcat' => $request->productcat,
-                    'qtyonhand' => $request->qtyonhand,
-                    'uomcoderecv'=> $request->uomcoderecv,
-                    'qtyonhandrecv'=> $request->qtyonhandrecv,
+                    // 'productcat' => $request->productcat,
+                    // 'qtyonhand' => $request->qtyonhand,
+                    // 'uomcoderecv'=> $request->uomcoderecv,
+                    // 'qtyonhandrecv'=> $request->qtyonhandrecv,
                     'amount' => $request->amount,
-                    'adduser' => session('username'), 
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'upduser' => session('username'), 
+                    'upduser' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate'=> $this->turn_date($request->expdate,'d/m/Y'),  
                     'batchno' => $request->batchno, 
-                    'recstatus' => 'OPEN', 
+                    // 'recstatus' => 'OPEN', 
                     'remarks' => $request->remarks
                 ]);
 
@@ -328,7 +413,13 @@ class InventoryTransactionDetailController extends defaultController
                 ]);
 
             DB::commit();
-            return response($totalAmount,200);
+            
+            $responce = new stdClass();
+            $responce->totalAmount = $totalAmount;
+            $responce->recno = $request->recno;
+            // $responce->docno = $docno;
+
+            return json_encode($responce);
 
         } catch (\Exception $e) {
             DB::rollback();

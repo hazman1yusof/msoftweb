@@ -64,6 +64,10 @@ div#fail_msg{
 	border-color: #e7e7e7;
 }
 
+table#jqGrid2 a.input-group-addon.btn.btn-primary{
+	padding: 2px !important;
+}
+
 @endsection
 
 @section('body')
@@ -1056,7 +1060,7 @@ div#fail_msg{
 			});
 		</script>
 
-		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.20"></script>
+		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.21"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	
