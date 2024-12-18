@@ -50,10 +50,16 @@ class ivtxndt_csv implements FromView
         $collection = collect([]);
 
         foreach ($table as $key => $value) {
-            $ivtxndt = DB::table('material.ivtxndt')
-                        ->where('compcode','9B')
-                        ->where('trantype',$value->trantype)
-                        ->where('recno',$value->recno)
+            $ivtxndt = DB::table('material.ivtxndt as iv')
+                        ->select('iv.idno','iv.compcode','iv.recno','iv.lineno_','iv.itemcode','iv.uomcode','iv.uomcoderecv','iv.txnqty','iv.netprice','iv.adduser','iv.adddate','iv.upduser','iv.upddate','iv.productcat','iv.draccno','iv.drccode','iv.craccno','iv.crccode','iv.updtime','iv.expdate','iv.remarks','iv.qtyonhand','iv.qtyonhandrecv','iv.batchno','iv.amount','iv.trandate','iv.trantype','iv.deptcode','iv.gstamount','iv.totamount','iv.recstatus','iv.reopen','iv.unit','iv.sndrcv','do.pouom','do.qtydelivered','do.unitprice')
+                        ->leftJoin('material.delorddt as do', function($join) use ($request){
+                            $join = $join->on('do.recno', '=', 'iv.recno')
+                                        ->on('do.lineno_', '=', 'iv.lineno_')
+                                        ->where('do.compcode', '=', '9B');
+                        })
+                        ->where('iv.compcode','9B')
+                        ->where('iv.trantype',$value->trantype)
+                        ->where('iv.recno',$value->recno)
                         ->get();
 
             $collection = $collection->concat($ivtxndt);

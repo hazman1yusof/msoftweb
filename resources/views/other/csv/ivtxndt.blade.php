@@ -22,6 +22,7 @@
         <td>qtyonhand</td>
         <td>batchno</td>
         <td>amount</td>
+        <td>pouom</td>
     </tr>
     @foreach ($collection as $obj)
         <tr>
@@ -30,8 +31,8 @@
             <td>{{$obj->lineno_}}</td>
             <td>{{$obj->itemcode}}</td>
             <td>{{$obj->uomcode}}</td>
-            <td>{{$obj->txnqty}}</td>
-            <td>{{$obj->netprice}}</td>
+            <td>{{$obj->qtydelivered}}</td>
+            <td>{{$obj->unitprice}}</td>
             <td>{{$obj->adduser}}</td>
             <td>{{Carbon\Carbon::parse($obj->adddate)->format('d/m/Y')}}</td>
             <td>{{$obj->upduser}}</td>
@@ -47,6 +48,7 @@
             <td>{{$obj->qtyonhand}}</td>
             <td>{{$obj->batchno}}</td>
             <td>{{$obj->amount}}</td>
+            <td>{{$obj->pouom}}</td>
         </tr>
     @endforeach
 </table>
