@@ -278,7 +278,7 @@ class TillEnquiryController extends defaultController
         
         $tilldetl = DB::table('debtor.tilldetl')
                     ->where('compcode',session('compcode'))
-                    ->where('tillcode',$request->tillcode)
+                    // ->where('tillcode',$request->tillcode)
                     ->where('tillno',$request->tillno)
                     ->first();
         
@@ -298,15 +298,18 @@ class TillEnquiryController extends defaultController
                                 ->where('pm.compcode',session('compcode'));
                 })
                 ->where('dh.compcode','=',session('compcode'))
+                // ->where('dh.tillcode',$request->tillcode)
                 // ->where('dh.trantype','=','RC')
                 ->where('dh.tillno','=',$request->tillno)
                 ->get();
+
+                // dd($dbacthdr);
         
         // $totalAmount = $dbacthdr->sum('amount');
         
         $db_dbacthdr = DB::table('debtor.dbacthdr as db')
                     ->where('db.compcode',session('compcode'))
-                    ->where('db.tillcode',$request->tillcode)
+                    // ->where('db.tillcode',$request->tillcode)
                     ->where('db.tillno',$request->tillno)
                     // ->where('db.hdrtype','A')
                     ->join('debtor.paymode as pm', function($join) use ($request){
@@ -318,7 +321,7 @@ class TillEnquiryController extends defaultController
         if($db_dbacthdr->exists()){
             $sum_cash = DB::table('debtor.dbacthdr as db')
                         ->where('db.compcode',session('compcode'))
-                        ->where('db.tillcode',$request->tillcode)
+                        // ->where('db.tillcode',$request->tillcode)
                         ->where('db.tillno',$request->tillno)
                         ->whereIn('db.trantype',['RD','RC'])
                         ->join('debtor.paymode as pm', function($join) use ($request){
@@ -331,7 +334,7 @@ class TillEnquiryController extends defaultController
             
             $sum_chq = DB::table('debtor.dbacthdr as db')
                         ->where('db.compcode',session('compcode'))
-                        ->where('db.tillcode',$request->tillcode)
+                        // ->where('db.tillcode',$request->tillcode)
                         ->where('db.tillno',$request->tillno)
                         ->whereIn('db.trantype',['RD','RC'])
                         ->join('debtor.paymode as pm', function($join) use ($request){
@@ -344,7 +347,7 @@ class TillEnquiryController extends defaultController
             
             $sum_card = DB::table('debtor.dbacthdr as db')
                         ->where('db.compcode',session('compcode'))
-                        ->where('db.tillcode',$request->tillcode)
+                        // ->where('db.tillcode',$request->tillcode)
                         ->where('db.tillno',$request->tillno)
                         ->whereIn('db.trantype',['RD','RC'])
                         ->join('debtor.paymode as pm', function($join) use ($request){
@@ -357,7 +360,7 @@ class TillEnquiryController extends defaultController
             
             $sum_bank = DB::table('debtor.dbacthdr as db')
                         ->where('db.compcode',session('compcode'))
-                        ->where('db.tillcode',$request->tillcode)
+                        // ->where('db.tillcode',$request->tillcode)
                         ->where('db.tillno',$request->tillno)
                         ->whereIn('db.trantype',['RD','RC'])
                         ->join('debtor.paymode as pm', function($join) use ($request){
@@ -370,14 +373,16 @@ class TillEnquiryController extends defaultController
             
             $sum_all = DB::table('debtor.dbacthdr as db')
                         ->where('db.compcode',session('compcode'))
-                        ->where('db.tillcode',$request->tillcode)
+                        // ->where('db.tillcode',$request->tillcode)
                         ->where('db.tillno',$request->tillno)
                         ->whereIn('db.trantype',['RD','RC'])
                         ->sum('amount');
+
+            // dump($sum_all);
             
             $sum_cash_ref = DB::table('debtor.dbacthdr as db')
                             ->where('db.compcode',session('compcode'))
-                            ->where('db.tillcode',$request->tillcode)
+                            // ->where('db.tillcode',$request->tillcode)
                             ->where('db.tillno',$request->tillno)
                             ->whereIn('db.trantype',['RF'])
                             ->join('debtor.paymode as pm', function($join) use ($request){
@@ -390,7 +395,7 @@ class TillEnquiryController extends defaultController
             
             $sum_chq_ref = DB::table('debtor.dbacthdr as db')
                             ->where('db.compcode',session('compcode'))
-                            ->where('db.tillcode',$request->tillcode)
+                            // ->where('db.tillcode',$request->tillcode)
                             ->where('db.tillno',$request->tillno)
                             ->whereIn('db.trantype',['RF'])
                             ->join('debtor.paymode as pm', function($join) use ($request){
@@ -403,7 +408,7 @@ class TillEnquiryController extends defaultController
             
             $sum_card_ref = DB::table('debtor.dbacthdr as db')
                             ->where('db.compcode',session('compcode'))
-                            ->where('db.tillcode',$request->tillcode)
+                            // ->where('db.tillcode',$request->tillcode)
                             ->where('db.tillno',$request->tillno)
                             ->whereIn('db.trantype',['RF'])
                             ->join('debtor.paymode as pm', function($join) use ($request){
@@ -416,7 +421,7 @@ class TillEnquiryController extends defaultController
             
             $sum_bank_ref = DB::table('debtor.dbacthdr as db')
                             ->where('db.compcode',session('compcode'))
-                            ->where('db.tillcode',$request->tillcode)
+                            // ->where('db.tillcode',$request->tillcode)
                             ->where('db.tillno',$request->tillno)
                             ->whereIn('db.trantype',['RF'])
                             ->join('debtor.paymode as pm', function($join) use ($request){
@@ -429,10 +434,12 @@ class TillEnquiryController extends defaultController
             
             $sum_all_ref = DB::table('debtor.dbacthdr as db')
                         ->where('db.compcode',session('compcode'))
-                        ->where('db.tillcode',$request->tillcode)
+                        // ->where('db.tillcode',$request->tillcode)
                         ->where('db.tillno',$request->tillno)
                         ->whereIn('db.trantype',['RF'])
                         ->sum('amount');
+
+            // dd($sum_all_ref);
         }else{
             abort(403, 'No Activity for this till on this period of time');
         }
