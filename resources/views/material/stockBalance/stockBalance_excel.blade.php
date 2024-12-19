@@ -33,7 +33,11 @@
                 @if(strtoupper(trim($obj->deptcode)) == strtoupper(trim($dept->deptcode)))
                 <tr>
                     <td>{{$obj->deptcode}}</td>
-                    <td>{{$obj->itemcode}}</td>
+                    @if(is_numeric($obj->itemcode))
+                    <td  data-format="0">{{$obj->itemcode}}</td>
+                    @else
+                    <td  data-format="@">{{$obj->itemcode}}</td>
+                    @endif
                     <td>{{$obj->description}}</td>
                     <td>{{$obj->uomcode}}</td>
                     <td>{{$obj->open_balval}}</td>

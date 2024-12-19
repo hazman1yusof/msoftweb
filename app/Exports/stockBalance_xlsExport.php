@@ -136,7 +136,7 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
                         ->orderBy('s.itemcode', 'ASC')
                         ->get();
 
-        // dd($this->getQueries($stockloc));
+        // dd($stockloc->count());
 
         $isi = 0;
         foreach ($stockloc as $obj) {
@@ -173,7 +173,9 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
         array_push($break_loop, $loop);
 
         $unit = $stockloc->unique('unit');
+        // dump($unit);
         $deptcode = $stockloc->unique('deptcode');
+        // dd($deptcode);
 
         // dd($array_report);
 
