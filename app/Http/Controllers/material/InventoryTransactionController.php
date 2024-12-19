@@ -1442,7 +1442,7 @@ class InventoryTransactionController extends defaultController
 
         $ivtmpdt = DB::table('material.ivtmpdt AS ivdt')
             ->select('ivdt.compcode','ivdt.recno','ivdt.lineno_','ivh.trandate','ivdt.itemcode','p.description', 'ivdt.qtyonhand','ivdt.uomcode', 'ivdt.qtyonhandrecv','ivdt.uomcoderecv','ivdt.txnqty','ivdt.qtyrequest','ivdt.netprice','ivdt.amount','ivdt.expdate','ivdt.batchno')
-            ->leftJoin('material.productmaster as p', function($join) use ($request){
+            ->leftJoin('material.product as p', function($join) use ($request){
                         $join = $join->on('ivdt.itemcode', '=', 'p.itemcode')
                                 ->where('p.compcode','=',session('compcode'));
                     })
@@ -1453,8 +1453,10 @@ class InventoryTransactionController extends defaultController
             ->where('ivdt.recstatus','!=','DELETE')
             ->where('ivdt.compcode','=',session('compcode'))
             ->where('ivdt.recno','=',$recno)
-            ->orderBy('ivdt.lineno_', 'ASC')
+            ->orderBy('ivdt.idno', 'desc')
             ->get();
+
+        // dd($this->getQueries($ivtmpdt));
         
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))

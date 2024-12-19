@@ -143,10 +143,11 @@
 							
 							],
 
-							@foreach ($ivtmpdt as $obj)
+							@foreach ($ivtmpdt as $index => $obj)
+							@php($x = $index+1)
 							[
 								
-								{text:'{{$obj->lineno_}}'},
+								{text:'{{$x}}'},
 								{text:'{{$obj->itemcode}}'},
 								{text: `{!!$obj->uomcode!!}`},
                                 {text:'{{$obj->txnqty}}', alignment: 'right'},
