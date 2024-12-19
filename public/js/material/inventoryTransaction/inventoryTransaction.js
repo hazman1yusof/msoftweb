@@ -1657,6 +1657,10 @@ $(document).ready(function () {
 			if(recstatus == "OPEN"){
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 			}
+		}else if($('#scope').val() == 'REOPEN_TUO'){
+			if(recstatus == "POSTED"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
 		}else if($('#scope').val() == 'REOPEN'){
 			if(recstatus == "CANCELLED"){
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
