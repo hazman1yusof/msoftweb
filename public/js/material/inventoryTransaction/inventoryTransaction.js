@@ -1257,7 +1257,7 @@ $(document).ready(function () {
 			let editurl = "./inventoryTransactionDetail/form?"+
 				$.param({					
 					action: 'invTranDetail_save',
-					idno: $('#idno').val(),
+					h_idno: $('#idno').val(),
 					docno:$('#docno').val(),
 					recno:$('#recno').val(),
 					sndrcv:$('#sndrcv').val(),

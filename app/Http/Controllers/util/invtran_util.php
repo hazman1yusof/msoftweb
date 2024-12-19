@@ -6,6 +6,7 @@ use DB;
 use DateTime;
 use stdClass;
 use App\Http\Controllers\defaultController;
+use Carbon\Carbon;
 
 class invtran_util extends defaultController{
 
@@ -290,7 +291,24 @@ class invtran_util extends defaultController{
                 }
 
             }else{
-                throw new \Exception("No stockexp");
+                // throw new \Exception("No stockexp");
+                DB::table('material.stockexp')
+                    ->insert([
+                        'compcode' => session('compcode'), 
+                        'unit' => session('unit'), 
+                        'deptcode' => $ivtmphd->txndept, 
+                        'itemcode' => $value->itemcode, 
+                        'uomcode' => $value->uomcode, 
+                        'expdate' => $value->expdate, 
+                        'batchno' => $value->batchno, 
+                        'balqty' => -$value->txnqty, 
+                        'adduser' => session('username'), 
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'), 
+                        // 'upduser' => $value->upduser, 
+                        // 'upddate' => $value->upddate, 
+                       // 'lasttt' => 'GRN', 
+                        'year' => Carbon::now('Asia/Kuala_Lumpur')->format('Y')
+                    ]);
             }
 
         }else{
@@ -711,8 +729,26 @@ class invtran_util extends defaultController{
 
             }else{
             	//ni akan jadi mungkin sebab dia "out" pakai expdate dgn batchno, tapi expdate dgn batchno tu x ada dlm stockexp
-                dump($value->itemcode);
-                throw new \Exception("No stockexp");
+                // dump($value->itemcode);
+                // throw new \Exception("No stockexp");
+                
+                DB::table('material.stockexp')
+                    ->insert([
+                        'compcode' => session('compcode'), 
+                        'unit' => session('unit'), 
+                        'deptcode' => $ivtmphd->txndept, 
+                        'itemcode' => $value->itemcode, 
+                        'uomcode' => $value->uomcode, 
+                        'expdate' => $value->expdate, 
+                        'batchno' => $value->batchno, 
+                        'balqty' => -$value->txnqty, 
+                        'adduser' => session('username'), 
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'), 
+                        // 'upduser' => $value->upduser, 
+                        // 'upddate' => $value->upddate, 
+                       // 'lasttt' => 'GRN', 
+                        'year' => Carbon::now('Asia/Kuala_Lumpur')->format('Y')
+                    ]);
             }
 
         }else{
@@ -876,7 +912,24 @@ class invtran_util extends defaultController{
 
             }else{
                 //ni akan jadi mungkin sebab dia "out" pakai expdate dgn batchno, tapi expdate dgn batchno tu x ada dlm stockexp
-                throw new \Exception("No stockexp itemcode: ".$value->itemcode." uomcode: ".$value->uomcode." deptcode: ".$ivtmphd->txndept.' year: '.defaultController::toYear($ivtmphd->trandate).' unit: '.session('unit'));
+                // throw new \Exception("No stockexp itemcode: ".$value->itemcode." uomcode: ".$value->uomcode." deptcode: ".$ivtmphd->txndept.' year: '.defaultController::toYear($ivtmphd->trandate).' unit: '.session('unit'));
+                DB::table('material.stockexp')
+                    ->insert([
+                        'compcode' => session('compcode'), 
+                        'unit' => session('unit'), 
+                        'deptcode' => $ivtmphd->txndept, 
+                        'itemcode' => $value->itemcode, 
+                        'uomcode' => $value->uomcode, 
+                        'expdate' => $value->expdate, 
+                        'batchno' => $value->batchno, 
+                        'balqty' => -$value->txnqty, 
+                        'adduser' => session('username'), 
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'), 
+                        // 'upduser' => $value->upduser, 
+                        // 'upddate' => $value->upddate, 
+                       // 'lasttt' => 'GRN', 
+                        'year' => Carbon::now('Asia/Kuala_Lumpur')->format('Y')
+                    ]);
             }
 
         }else{
