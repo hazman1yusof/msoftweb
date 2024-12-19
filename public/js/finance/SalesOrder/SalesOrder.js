@@ -352,13 +352,13 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			cbselect.show_hide_table();
+			$("#searchForm input[name=Stext]").focus();
 			if (oper == 'add' || oper == null ) {    //highlight 1st record
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}else{
 				$('#jqGrid tr#'+$(this).data('lastselrow')).focus().click();
 			}
-			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus().click();
-			$("#searchForm input[name=Stext]").focus();
+			// $('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus().click();
 			populate_form(selrowData("#jqGrid"));
 			fdl.set_array().reset();
 

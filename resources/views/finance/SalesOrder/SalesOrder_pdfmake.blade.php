@@ -167,7 +167,7 @@
 						body: [
 							[
 								{text:'TOTAL', style: 'totalbold', colSpan: 9},{},{},{},{},{},{},{},{},
-								{text:'{{number_format($dbacthdr->amount,2)}}', alignment: 'right'}
+								{text:'{{number_format($sum_billsum,2)}}', alignment: 'right'}
 							],
 							[
 								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 10}

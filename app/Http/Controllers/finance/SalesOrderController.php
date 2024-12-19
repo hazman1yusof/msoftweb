@@ -1897,7 +1897,9 @@ class SalesOrderController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->first();
 
-        $totamount_expld = explode(".", (float)$dbacthdr->amount);
+        $sum_billsum = $billsum->sum('amount');
+
+        $totamount_expld = explode(".", (float)$sum_billsum);
 
         $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
         $totamt_bm = $totamt_bm_rm." SAHAJA";
@@ -1911,7 +1913,7 @@ class SalesOrderController extends defaultController
     
         // return $pdf->stream();
         
-        return view('finance.SalesOrder.SalesOrder_pdfmake',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
+        return view('finance.SalesOrder.SalesOrder_pdfmake',compact('dbacthdr','billsum','totamt_bm','company', 'title','sum_billsum'));
     }
 
     //function sendmeail($data) -- nak kena ada atau tak
