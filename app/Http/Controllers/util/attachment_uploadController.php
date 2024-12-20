@@ -103,7 +103,7 @@ class attachment_uploadController extends defaultController
                 'compcode' => session('compcode'),
                 'resulttext' => $filename,
                 'attachmentfile' => $file_path,
-                'adduser' => 'system',
+                'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'page' => $request->page,
                 'auditno' => $request->idno,
@@ -168,6 +168,8 @@ class attachment_uploadController extends defaultController
                 ->where('idno',$request->idno)
                 ->update([
                     'page' => $request->page_delete.'_delete',
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
 
             DB::commit();

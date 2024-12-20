@@ -2077,6 +2077,7 @@ class PaymentVoucherController extends defaultController
 
         $attachment_files = DB::table('finance.attachment')
                         ->where('compcode',session('compcode'))
+                        ->where('page','invoiceap')
                         ->whereIn('auditno',$idno_array)
                         ->get();
 
