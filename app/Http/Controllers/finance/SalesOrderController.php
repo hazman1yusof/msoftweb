@@ -1105,7 +1105,7 @@ class SalesOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
             
-            return response($e->getMessage(), 500);
+            return response($e, 500);
         }
     }
 
@@ -2365,10 +2365,18 @@ class SalesOrderController extends defaultController
             ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
 
         // dapatkan uom conversion factor untuk dapatkan txnqty dgn netprice
-        $convuom_recv = DB::table('material.uom')
-            ->where('compcode','=',session('compcode'))
-            ->where('uomcode','=',$billsum_obj->uom_recv)
-            ->first();
+        if(!empty($billsum_obj->uom_recv)){
+            $convuom_recv = DB::table('material.uom')
+                ->where('compcode','=',session('compcode'))
+                ->where('uomcode','=',$billsum_obj->uom_recv)
+                ->first();
+        }else{
+            $convuom_recv = DB::table('material.uom')
+                ->where('compcode','=',session('compcode'))
+                ->where('uomcode','=',$billsum_obj->uom)
+                ->first();
+        }
+
         $convuom_recv = $convuom_recv->convfactor;
 
         $conv_uom = DB::table('material.uom')
