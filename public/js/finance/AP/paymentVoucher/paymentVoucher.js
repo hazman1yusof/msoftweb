@@ -195,6 +195,7 @@ $(document).ready(function () {
 		action:'maintable',
 		url:'./paymentVoucher/table',
 		source:$('#apacthdr_source').val(),
+		scope: $("#recstatus_use").val(),
 	
 	}
 

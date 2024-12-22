@@ -168,12 +168,12 @@ $(document).ready(function () {
 		filterVal_urlParam = ['session.compcode','session.username'];
 	}else if($("#recstatus_use").val() == 'RECOMMENDED1'){
 		recstatus_filter = [['VERIFIED']];
-		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
-		filterVal_urlParam = ['session.compcode','session.username'];
+		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID','purreqhd.outamount'];
+		filterVal_urlParam = ['session.compcode','session.username','>=.10000'];//sysparam IV, PRLIMIT
 	}else if($("#recstatus_use").val() == 'RECOMMENDED2'){
 		recstatus_filter = [['RECOMMENDED1']];
-		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
-		filterVal_urlParam = ['session.compcode','session.username'];
+		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID','purreqhd.outamount'];
+		filterVal_urlParam = ['session.compcode','session.username','>=.50000'];//sysparam IV, PRLIMIT
 	}else if($("#recstatus_use").val() == 'APPROVED'){
 		recstatus_filter = [['VERIFIED','RECOMMENDED1','RECOMMENDED2']];
 		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
@@ -192,8 +192,11 @@ $(document).ready(function () {
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","purreqhd_idno","purreqhd_recstatus");
 
 	var urlParam = {
-		action: 'get_table_default',
-		url:'util/get_table_default',
+		// action: 'get_table_default',
+		// url:'util/get_table_default',
+		action: 'maintable',
+		url:'./purchaseRequest/table',
+		scope: $('#recstatus_use').val(),
 		field:'',
 		table_name: ['material.purreqhd', 'material.supplier'],
 		table_id: 'purreqhd_idno',

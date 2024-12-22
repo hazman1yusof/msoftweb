@@ -81,7 +81,7 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                     ->get();
 
         
-                    // dd($this->getQueries($authorise));
+                    // dd($this->getQueries($queuepr));
 
         $queuepr_reject = DB::table('material.queuepr as qpr')
                     ->select('qpr.trantype','prhd.recno','prhd.reqdept','prhd.cancelby','prhd.canceldate','prhd.recstatus','prhd.totamount','prhd.adduser')
@@ -175,6 +175,8 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                     ->where('qpv.compcode',session('compcode'))
                     ->where('qpv.trantype','<>','DONE')
                     ->get();
+
+        // dd($this->getQueries($queuepv));
 
         $queuepv_reject = DB::table('finance.queuepv as qpv')
                     ->select('qpv.trantype','apact.adduser','apact.auditno','apact.suppcode','supp.Name','apact.actdate','apact.recstatus','apact.amount','apact.adduser','apact.cancelby','apact.canceldate')
@@ -378,8 +380,11 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
 
         $responce = new stdClass();
         $responce->queuepr = $queuepr;
+        $responce->queueprv2 = $queuepr->groupBy('trantype');
         $responce->queuepo = $queuepo;
+        $responce->queuepov2 = $queuepo->groupBy('trantype');
         $responce->queuepv = $queuepv;
+        $responce->queuepvv2 = $queuepv->groupBy('trantype');
         $responce->queuepd = $queuepd;
         $responce->queueso = $queueso;
         $responce->queueiv = $queueiv;

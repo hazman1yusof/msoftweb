@@ -81,6 +81,147 @@ class PurchaseOrderController extends defaultController
         return view('material.purchaseOrder.purchaseOrder_mobile',compact('po_hd','po_dt','scope','oper'));
     }
 
+    public function table(Request $request){   
+        switch($request->action){
+            case 'maintable':
+                return $this->maintable($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function maintable(Request $request){
+        $scope = $request->scope;
+        $table = DB::table('material.purordhd AS po')
+                    ->select('po.idno AS purordhd_idno','po.recno AS purordhd_recno','po.prdept AS purordhd_prdept','po.purordno AS purordhd_purordno','po.compcode AS purordhd_compcode','po.reqdept AS purordhd_reqdept','po.purreqno AS purordhd_purreqno','po.deldept AS purordhd_deldept','po.purdate AS purordhd_purdate','po.expecteddate AS purordhd_expecteddate','po.expirydate AS purordhd_expirydate','po.suppcode AS purordhd_suppcode','po.credcode AS purordhd_credcode','po.termdays AS purordhd_termdays','po.subamount AS purordhd_subamount','po.amtdisc AS purordhd_amtdisc','po.perdisc AS purordhd_perdisc','po.totamount AS purordhd_totamount','po.taxclaimable AS purordhd_taxclaimable','po.isspersonid AS purordhd_isspersonid','po.issdate AS purordhd_issdate','po.authpersonid AS purordhd_authpersonid','po.authdate AS purordhd_authdate','po.remarks AS purordhd_remarks','po.recstatus AS purordhd_recstatus','po.adduser AS purordhd_adduser','po.adddate AS purordhd_adddate','po.upduser AS purordhd_upduser','po.upddate AS purordhd_upddate','po.assflg AS purordhd_assflg','po.potype AS purordhd_potype','po.delordno AS purordhd_delordno','po.expflg AS purordhd_expflg','po.prortdisc AS purordhd_prortdisc','po.cancelby AS purordhd_cancelby','po.canceldate AS purordhd_canceldate','po.reopenby AS purordhd_reopenby','po.reopendate AS purordhd_reopendate','po.TaxAmt AS purordhd_TaxAmt','po.postedby AS purordhd_postedby','po.postdate AS purordhd_postdate','po.unit AS purordhd_unit','po.trantype AS purordhd_trantype','po.requestby AS purordhd_requestby','po.requestdate AS purordhd_requestdate','po.supportby AS purordhd_supportby','po.supportdate AS purordhd_supportdate','po.verifiedby AS purordhd_verifiedby','po.verifieddate AS purordhd_verifieddate','po.approvedby AS purordhd_approvedby','po.approveddate AS purordhd_approveddate','po.support_remark AS purordhd_support_remark','po.verified_remark AS purordhd_verified_remark','po.approved_remark AS purordhd_approved_remark','po.cancelled_remark AS purordhd_cancelled_remark','po.prtype AS purordhd_prtype','po.assetno AS purordhd_assetno','po.salesorder AS purordhd_salesorder','s.name AS supplier_name')
+                    ->where('po.compcode',session('compcode'));
+
+        if(!in_array($scope, ['ALL','CANCEL','REOPEN'])){
+            // if($scope == 'RECOMMENDED1'){
+            //     $table = $table->where('po.totamount','>=','10000');
+            // }else if($scope == 'RECOMMENDED2'){
+            //     $table = $table->where('po.totamount','>=','50000');
+            // }
+        }
+        
+        $table = $table->join('material.supplier as s', function($join) use ($request){
+                $join = $join->where('s.compcode', '=', session('compcode'));
+                $join = $join->on('s.SuppCode', '=', 'po.suppcode');
+        });
+
+        if(!in_array($scope, ['ALL','CANCEL','REOPEN'])){
+            $table = $table->join('material.queuepo as qpo', function($join) use ($request,$scope){
+                $join = $join
+                    ->where('qpo.compcode',session('compcode'))
+                    ->where('qpo.trantype','<>','DONE')
+                    ->on('qpo.recno','po.recno')
+                    ->on('qpo.recstatus','po.recstatus')
+                    ->where('qpo.trantype',$scope);
+            });
+
+            $table = $table->join('material.authdtl as adtl', function($join) use ($request,$scope){
+                $join = $join
+                    ->where('adtl.compcode',session('compcode'))
+                    ->where('adtl.authorid',session('username'))
+                    ->where('adtl.trantype','PO')
+                    ->where('adtl.cando','ACTIVE')
+                    ->on('adtl.prtype','qpo.prtype')
+                    ->where('adtl.recstatus',$scope)
+                    ->where(function ($query) {
+                        $query->on('adtl.deptcode','po.reqdept')
+                              ->orWhere('adtl.deptcode', 'ALL');
+                    })
+                    ->where(function ($query) {
+                        $query
+                            ->on('po.totamount','>=','adtl.minlimit')
+                            ->on('po.totamount','<=', 'adtl.maxlimit');
+                    });
+            });
+        }
+        
+        if(!empty($request->filterCol)){
+            foreach ($request->filterCol as $key => $value) {
+                $sr = substr(strstr($value,'.'),1); // tukar puerreqhd. ke po.
+                if(empty($sr)){continue;}
+                $pieces = explode(".", $request->filterVal[$key], 2);
+                if($pieces[0] == 'session'){
+                    $table = $table->where('po.'.$sr,'=',session($pieces[1]));
+                }else if($pieces[0] == '<>'){
+                    $table = $table->where('po.'.$sr,'<>',$pieces[1]);
+                }else if($pieces[0] == '>'){
+                    $table = $table->where('po.'.$sr,'>',$pieces[1]);
+                }else if($pieces[0] == '>='){
+                    $table = $table->where('po.'.$sr,'>=',$pieces[1]);
+                }else if($pieces[0] == '<'){
+                    $table = $table->where('po.'.$sr,'<',$pieces[1]);
+                }else if($pieces[0] == '<='){
+                    $table = $table->where('po.'.$sr,'<=',$pieces[1]);
+                }else if($pieces[0] == 'on'){
+                    $table = $table->whereColumn('po.'.$sr,$pieces[1]);
+                }else if($pieces[0] == 'null'){
+                    $table = $table->whereNull('po.'.$sr);
+                }else if($pieces[0] == 'notnull'){
+                    $table = $table->whereNotNull('po.'.$sr);
+                }else if($pieces[0] == 'raw'){
+                    $table = $table->where('po.'.$sr,'=',DB::raw($pieces[1]));
+                }else{
+                    $table = $table->where('po.'.$sr,'=',$request->filterVal[$key]);
+                }
+            }
+        }
+
+        if(!empty($request->WhereInCol[0])){
+            foreach ($request->WhereInCol as $key => $value) {
+                $sr = substr(strstr($value,'.'),1);
+                $table = $table->whereIn('po.'.$sr,$request->WhereInVal[$key]);
+            }
+        }
+        
+        if(!empty($request->searchCol)){
+            if($request->searchCol[0] == 'db_invno'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('db.invno','like',$request->searchVal[0]);
+                });
+            }else{
+                $table = $table->Where(function ($table) use ($request){
+                        $sr = substr(strstr($request->searchCol[0],'_'),1); // tukar puerreqhd_ ke po.
+
+                        $table->Where('po.'.$sr,'like',$request->searchVal[0]);
+                });
+            }
+        }
+        
+        if(!empty($request->sidx)){
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                foreach ($pieces as $key => $value) {
+                    $value_ = substr_replace($value,"db.",0,strpos($value,"_")+1);
+                    $pieces_inside = explode(" ", $value_);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('db.idno','DESC');
+        }
+        
+        $paginate = $table->paginate($request->rows);
+        //////////paginate/////////
+        
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);       
+    }
+
     public function form(Request $request){   
         switch($request->oper){
             case 'add':

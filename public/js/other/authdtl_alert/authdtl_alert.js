@@ -13,10 +13,10 @@ function get_authdtl_alert(){
 	},'json').done(function(data) {
 		$('#authdtl_alert_div').html('');
 		if(!$.isEmptyObject(data)){
-			populate_authdtl_alert_pv(data.queuepv);
+			populate_authdtl_alert_pv(data.queuepv,data.queuepvv2);
 			populate_authdtl_alert_pd(data.queuepd);
-			populate_authdtl_alert_pr(data.queuepr);
-			populate_authdtl_alert_po(data.queuepo);
+			populate_authdtl_alert_pr(data.queuepr,data.queueprv2);
+			populate_authdtl_alert_po(data.queuepo,data.queuepov2);
 			populate_authdtl_alert_so(data.queueso);
 			populate_authdtl_alert_iv(data.queueiv);
 			populate_authdtl_alert_ivreq(data.ivreq);
@@ -24,7 +24,7 @@ function get_authdtl_alert(){
 	});
 }
 
-function populate_authdtl_alert_pr(data){
+function populate_authdtl_alert_pr(data,datav2){
 	data.forEach(function(e,i){
 		if(e.trantype == 'REOPEN'){
 			var block_pr = `
@@ -49,37 +49,45 @@ function populate_authdtl_alert_pr(data){
 						</div>
 				</div>
 			</div>`;
-		}else{
-			var block_pr = `
+		}
+		$('#authdtl_alert_div').append(block_pr);
+	});
+
+	let keys = Object.keys(datav2);
+
+	keys.forEach(function(e,i){
+		let trantype = e;
+		let count = datav2[keys[i]].length
+		var block_pr = `
 			<div class='col-md-3'>
 				<div class='panel panel-green'>
-					<div class='panel-heading'>
+					<div class='panel-heading top-h'>
+						<span>Purchase Request</span>
+					</div>
+					<div class='panel-heading no-br'>
 						<div class='row'>
-							<div class='col-xs-2 nopadleft'><i class='fa fa-archive fa-4x'></i></div>
-							<div class='col-xs-10 text-right'>
-								<div class='huge'>Purchase Request</div>
-								<div><b>Recno: </b><span>`+e.recno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
-								<div><b>Request Dept: </b><span>`+e.reqdept+` - `+e.purreqno+`</span></div>
-								<div><b>Prepared On: </b><span>`+moment(e.purreqdt, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.adduser+`</span></div>
-							</div>
+							<div class='col-xs-12'>`;
+								datav2[keys[i]].forEach(function(e,i){
+									block_pr += `<a onclick="authdtl_alert_click('pr','`+trantype+`','`+e.recno+`')" class='dtl_a'><div><b>Recno:</b><span>`+e.recno+`</span><b> by </b><span>`+e.adduser+` - `+e.reqdept+` - `+e.purreqdt+`</span></div></a>`;
+								})
+								
+			block_pr += `	</div>
 						</div>
 					</div>
 						<div class='panel-footer'>
-							<a onclick="authdtl_alert_click('pr','`+e.trantype+`','`+e.recno+`')">
-								<span class='pull-left'>Detail</span>
+							<a onclick="authdtl_alert_click('prv2','`+trantype+`')">
+								<span class='pull-left'>`+count+` PR to be `+trantype+`</span>
 								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
 								<div class='clearfix'></div>
 							</a>
 						</div>
 				</div>
-			</div>
-			`;
-		}
-		$('#authdtl_alert_div').append(block_pr);
-	})
+			</div>`;
+			$('#authdtl_alert_div').append(block_pr);
+	});
 }
 
-function populate_authdtl_alert_po(data){
+function populate_authdtl_alert_po(data,datav2){
 	data.forEach(function(e,i){
 		if(e.trantype == 'REOPEN'){
 			var block_pr = `
@@ -104,38 +112,45 @@ function populate_authdtl_alert_po(data){
 						</div>
 				</div>
 			</div>`;
-		}else{
-			var block_pr = `
+		}
+		$('#authdtl_alert_div').append(block_pr);
+	})
+
+	let keys = Object.keys(datav2);
+
+	keys.forEach(function(e,i){
+		let trantype = e;
+		let count = datav2[keys[i]].length
+		var block_pr = `
 			<div class='col-md-3'>
 				<div class='panel panel-yellow'>
-					<div class='panel-heading'>
+					<div class='panel-heading top-h'>
+						<span>Purchase Order</span>
+					</div>
+					<div class='panel-heading no-br'>
 						<div class='row'>
-							<div class='col-xs-2 nopadleft'><i class='fa fa-suitcase fa-4x'></i></div>
-							<div class='col-xs-10 text-right'>
-								<div class='huge'>Purchase Order</div>
-								<div><b>Recno: </b><span>`+e.recno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
-								<div><b>Request Dept: </b><span>`+e.prdept+` - `+e.purordno+`</span></div>
-								<div><b>Prepared On: </b><span>`+moment(e.purdate, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.adduser+`</span></div>
-							</div>
+							<div class='col-xs-12'>`;
+								datav2[keys[i]].forEach(function(e,i){
+									block_pr += `<a onclick="authdtl_alert_click('po','`+trantype+`','`+e.recno+`')" class='dtl_a'><div><b>Recno:</b><span>`+e.recno+`</span><b> by </b><span>`+e.adduser+` - `+e.prdept+` - `+e.purdate+`</span></div></a>`;
+								})
+								
+			block_pr += `	</div>
 						</div>
 					</div>
 						<div class='panel-footer'>
-							<a onclick="authdtl_alert_click('po','`+e.trantype+`','`+e.recno+`')">
-								<span class='pull-left'>Detail</span>
+							<a onclick="authdtl_alert_click('pov2','`+trantype+`')">
+								<span class='pull-left'>`+count+` PO to be `+trantype+`</span>
 								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
 								<div class='clearfix'></div>
 							</a>
 						</div>
 				</div>
-			</div>
-			`;
-
-		}
-		$('#authdtl_alert_div').append(block_pr);
-	})
+			</div>`;
+			$('#authdtl_alert_div').append(block_pr);
+	});
 }
 
-function populate_authdtl_alert_pv(data){
+function populate_authdtl_alert_pv(data,datav2){
 	data.forEach(function(e,i){
 		if(e.trantype == 'REOPEN'){
 			var block_pr = `
@@ -160,33 +175,42 @@ function populate_authdtl_alert_pv(data){
 						</div>
 				</div>
 			</div>`;
-		}else{
-			var block_pr = `
+		}
+		$('#authdtl_alert_div').append(block_pr);
+	});
+
+	let keys = Object.keys(datav2);
+
+	keys.forEach(function(e,i){
+		let trantype = e;
+		let count = datav2[keys[i]].length
+		var block_pr = `
 			<div class='col-md-3'>
 				<div class='panel panel-teal'>
-					<div class='panel-heading'>
+					<div class='panel-heading top-h'>
+						<span>Payment Voucher</span>
+					</div>
+					<div class='panel-heading no-br'>
 						<div class='row'>
-							<div class='col-xs-2 nopadleft'><i class='fa fa-suitcase fa-4x'></i></div>
-							<div class='col-xs-10 text-right'>
-								<div class='huge'>Payment Voucher</div>
-								<div><b>Auditno: </b><span>`+e.auditno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
-								<div><b>Supplier: </b><span>`+e.suppcode+` - `+e.Name+`</span></div>
-								<div><b>Prepared On: </b><span>`+moment(e.actdate, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.adduser+`</span></div>
-							</div>
+							<div class='col-xs-12'>`;
+								datav2[keys[i]].forEach(function(e,i){
+									block_pr += `<a onclick="authdtl_alert_click('pv','`+trantype+`','`+e.auditno+`')" class='dtl_a'><div><b>Auditno:</b><span>`+e.auditno+`</span><b> by </b><span>`+e.adduser+` - `+e.suppcode+` - `+e.actdate+`</span></div></a>`;
+								})
+								
+			block_pr += `	</div>
 						</div>
 					</div>
 						<div class='panel-footer'>
-							<a onclick="authdtl_alert_click('pv','`+e.trantype+`','`+e.auditno+`')">
-								<span class='pull-left'>Detail</span>
+							<a onclick="authdtl_alert_click('pvv2','`+trantype+`')">
+								<span class='pull-left'>`+count+` PV to be `+trantype+`</span>
 								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
 								<div class='clearfix'></div>
 							</a>
 						</div>
 				</div>
 			</div>`;
-		}
-		$('#authdtl_alert_div').append(block_pr);
-	})
+			$('#authdtl_alert_div').append(block_pr);
+	});
 }
 
 function populate_authdtl_alert_pd(data){
@@ -390,11 +414,20 @@ function authdtl_alert_click(type,trantype,recno){
 		case 'pr':
 			Menu.new_dialog('PurReq_dataentry','purchaseRequest?scope='+trantype+'&recno='+recno,'Purchase Request');
 			break;
+		case 'prv2':
+			Menu.new_dialog('PurReq_dataentry','purchaseRequest?scope='+trantype,'Purchase Request');
+			break;
 		case 'po':
 			Menu.new_dialog('PurOrd_DataEntry','purchaseOrder?scope='+trantype+'&recno='+recno,'Purchase Order');
 			break;
+		case 'pov2':
+			Menu.new_dialog('PurOrd_DataEntry','purchaseOrder?scope='+trantype,'Purchase Order');
+			break;
 		case 'pv':
 			Menu.new_dialog('dataentryPV','paymentVoucher?source=AP&scope='+trantype+'&auditno='+recno,'Payment Voucher');
+			break;
+		case 'pvv2':
+			Menu.new_dialog('dataentryPV','paymentVoucher?source=AP&scope='+trantype,'Payment Voucher');
 			break;
 		case 'pd':
 			Menu.new_dialog('dataentryPV','paymentVoucher?source=AP&scope='+trantype+'&auditno='+recno,'Payment Voucher');

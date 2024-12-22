@@ -86,53 +86,10 @@ class PaymentVoucherController extends defaultController
     }
 
     public function maintable(Request $request){
+        $scope = $request->scope;
         $table = DB::table('finance.apacthdr AS ap')
                     ->select(
-                        'ap.compcode AS apacthdr_compcode',
-                        'ap.auditno AS apacthdr_auditno',
-                        'ap.trantype AS apacthdr_trantype',
-                        'ap.doctype AS apacthdr_doctype',
-                        'ap.suppcode AS apacthdr_suppcode',
-                        'su.name AS supplier_name', 
-                        'ap.actdate AS apacthdr_actdate',
-                        'ap.document AS apacthdr_document',
-                        'ap.cheqno AS apacthdr_cheqno',
-                        'ap.deptcode AS apacthdr_deptcode',
-                        'ap.amount AS apacthdr_amount',
-                        'ap.outamount AS apacthdr_outamount',
-                        'ap.recstatus AS apacthdr_recstatus',
-                        'ap.payto AS apacthdr_payto',
-                        'ap.recdate AS apacthdr_recdate',
-                        'ap.category AS apacthdr_category',
-                        'ap.remarks AS apacthdr_remarks',
-                        'ap.adduser AS apacthdr_adduser',
-                        'ap.adddate AS apacthdr_adddate',
-                        'ap.upduser AS apacthdr_upduser',
-                        'ap.upddate AS apacthdr_upddate',
-                        'ap.source AS apacthdr_source',
-                        'ap.idno AS apacthdr_idno',
-                        'ap.unit AS apacthdr_unit',
-                        'ap.pvno AS apacthdr_pvno',
-                        'ap.paymode AS apacthdr_paymode',
-                        'ap.bankcode AS apacthdr_bankcode',
-                        'ap.postdate AS apacthdr_postdate',
-                        'ap.cheqdate AS apacthdr_cheqdate',
-                        'ap.bankaccno AS apacthdr_bankaccno',
-                        'ap.requestby AS apacthdr_requestby',
-                        'ap.requestdate AS apacthdr_requestdate',
-                        'ap.request_remark AS apacthdr_request_remark',
-                        'ap.supportby AS apacthdr_supportby',
-                        'ap.supportdate AS apacthdr_supportdate',
-                        'ap.support_remark AS apacthdr_support_remark',
-                        'ap.verifiedby AS apacthdr_verifiedby',
-                        'ap.verifieddate AS apacthdr_verifieddate',
-                        'ap.verified_remark AS apacthdr_verified_remark',
-                        'ap.approvedby AS apacthdr_approvedby',
-                        'ap.approveddate AS apacthdr_approveddate',
-                        'ap.approved_remark AS apacthdr_approved_remark',
-                        'ap.cancelby AS apacthdr_cancelby',
-                        'ap.canceldate AS apacthdr_canceldate',
-                        'ap.cancelled_remark AS apacthdr_cancelled_remark',
+                        'ap.compcode AS apacthdr_compcode','ap.auditno AS apacthdr_auditno','ap.trantype AS apacthdr_trantype','ap.doctype AS apacthdr_doctype','ap.suppcode AS apacthdr_suppcode','su.name AS supplier_name','ap.actdate AS apacthdr_actdate','ap.document AS apacthdr_document','ap.cheqno AS apacthdr_cheqno','ap.deptcode AS apacthdr_deptcode','ap.amount AS apacthdr_amount','ap.outamount AS apacthdr_outamount','ap.recstatus AS apacthdr_recstatus','ap.payto AS apacthdr_payto','ap.recdate AS apacthdr_recdate','ap.category AS apacthdr_category','ap.remarks AS apacthdr_remarks','ap.adduser AS apacthdr_adduser','ap.adddate AS apacthdr_adddate','ap.upduser AS apacthdr_upduser','ap.upddate AS apacthdr_upddate','ap.source AS apacthdr_source','ap.idno AS apacthdr_idno','ap.unit AS apacthdr_unit','ap.pvno AS apacthdr_pvno','ap.paymode AS apacthdr_paymode','ap.bankcode AS apacthdr_bankcode','ap.postdate AS apacthdr_postdate','ap.cheqdate AS apacthdr_cheqdate','ap.bankaccno AS apacthdr_bankaccno','ap.requestby AS apacthdr_requestby','ap.requestdate AS apacthdr_requestdate','ap.request_remark AS apacthdr_request_remark','ap.supportby AS apacthdr_supportby','ap.supportdate AS apacthdr_supportdate','ap.support_remark AS apacthdr_support_remark','ap.verifiedby AS apacthdr_verifiedby','ap.verifieddate AS apacthdr_verifieddate','ap.verified_remark AS apacthdr_verified_remark','ap.approvedby AS apacthdr_approvedby','ap.approveddate AS apacthdr_approveddate','ap.approved_remark AS apacthdr_approved_remark','ap.cancelby AS apacthdr_cancelby','ap.canceldate AS apacthdr_canceldate','ap.cancelled_remark AS apacthdr_cancelled_remark'
                     )
                     ->leftJoin('material.supplier as su', function($join) use ($request){
                         $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
@@ -142,6 +99,36 @@ class PaymentVoucherController extends defaultController
                     ->where('ap.source','=',$request->source)
                     ->whereIn('ap.trantype',['PD','PV']);
 
+        if(!in_array($scope, ['ALL','CANCEL','REOPEN'])){
+            $table = $table->join('finance.queuepv as qpv', function($join) use ($request,$scope){
+                $join = $join
+                    ->where('qpv.compcode',session('compcode'))
+                    ->where('qpv.trantype','<>','DONE')
+                    ->on('qpv.recno','ap.auditno')
+                    ->on('qpv.recstatus','ap.recstatus')
+                    ->where('qpv.trantype',$scope);
+            });
+
+            $table = $table->join('finance.permissiondtl as prdtl', function($join) use ($request,$scope){
+                $join = $join
+                    ->where('prdtl.compcode',session('compcode'))
+                    ->where('prdtl.authorid',session('username'))
+                    ->where('prdtl.trantype','PV')
+                    ->where('prdtl.cando','ACTIVE')
+                    // ->on('adtl.prtype','qpo.prtype')
+                    ->where('prdtl.recstatus',$scope)
+                    // ->where(function ($query) {
+                    //     $query->on('adtl.deptcode','po.reqdept')
+                    //           ->orWhere('adtl.deptcode', 'ALL');
+                    // })
+                    ->where(function ($query) {
+                        $query
+                            ->on('ap.amount','>=','prdtl.minlimit')
+                            ->on('ap.amount','<=', 'prdtl.maxlimit');
+                    });
+            });
+        }
+
         if(!empty($request->filterCol)){
             if($request->filterCol[0] == 'ap.recstatus' && $request->filterVal[0] == 'All2'){
                 $table = $table->Where(function ($table) use ($request) {
@@ -150,6 +137,13 @@ class PaymentVoucherController extends defaultController
                     });
             }else{
                 $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+            }
+        }
+
+        if(!empty($request->WhereInCol[0])){
+            foreach ($request->WhereInCol as $key => $value) {
+                // $sr = substr(strstr($value,'.'),1);
+                $table = $table->whereIn($value,$request->WhereInVal[$key]);
             }
         }
 
@@ -168,7 +162,6 @@ class PaymentVoucherController extends defaultController
                         $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
                     });
             }
-            
         }
 
         if(!empty($request->sidx)){

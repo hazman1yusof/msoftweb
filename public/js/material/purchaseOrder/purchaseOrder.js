@@ -242,8 +242,11 @@ $(document).ready(function () {
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","purordhd_idno","purordhd_recstatus",recstatus_filter[0][0]);
 
 	var urlParam = {
-		action: 'get_table_default',
-		url:'util/get_table_default',
+		// action: 'get_table_default',
+		// url:'util/get_table_default',
+		action: 'maintable',
+		url:'./purchaseOrder/table',
+		scope: $('#recstatus_use').val(),
 		field:'',
 		fixPost: 'true',
 		table_name: ['material.purordhd', 'material.supplier'],

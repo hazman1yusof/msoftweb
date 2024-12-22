@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="plugins/bootstrap-3.3.5-dist/css/bootstrap.min.css"> 
 	<link rel="stylesheet" href="plugins/jasny-bootstrap/css/jasny-bootstrap.min.css"> 
 	<link rel="stylesheet" href="plugins/jquery-ui-1.11.4.custom/jquery-ui.css">
-	<link rel="stylesheet" href="css/container.css?v=1.1">
+	<link rel="stylesheet" href="css/container.css?v=1.2">
 
 	<script type="text/javascript">
 
@@ -278,7 +278,7 @@
 <script type="text/ecmascript" src="plugins/numeral.min.js"></script>
 <script type="text/ecmascript" src="plugins/moment.js"></script>
 <script type="text/ecmascript" src="plugins/velocity.min.js"></script>
-<script type="text/ecmascript" src="js/other/authdtl_alert/authdtl_alert.js?v=1.3"></script>
+<script type="text/ecmascript" src="js/other/authdtl_alert/authdtl_alert.js?v=1.4"></script>
 <script type="text/ecmascript" src="js/myjs/menu.js?v=1.1"></script>
 
 <script>

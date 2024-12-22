@@ -308,6 +308,22 @@ iframe{
 #authdtl_alert_div div.panel-footer a{
 	cursor: pointer;
 }
+#authdtl_alert_div a.dtl_a{
+	cursor: pointer;
+	color: white;
+}
+#authdtl_alert_div div.panel-heading.no-br{
+	border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  padding:5px;
+  overflow-y: scroll;
+}
+#authdtl_alert_div div.panel-heading.top-h{
+	height: 27px;
+	padding: 5px 20px ;
+	font-weight: bold;
+  font-size: 15px;
+}
 div.nopadleft{
 	padding-left: 0px !important;
 }

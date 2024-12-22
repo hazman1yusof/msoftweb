@@ -84,6 +84,147 @@ class PurchaseRequestController extends defaultController
         return view('material.purchaseRequest.purchaseRequest_mobile',compact('purreqhd','purreqdt','scope','oper'));
     }
 
+    public function table(Request $request){   
+        switch($request->action){
+            case 'maintable':
+                return $this->maintable($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function maintable(Request $request){
+        $scope = $request->scope;
+        $table = DB::table('material.purreqhd AS pr')
+                    ->select('pr.idno AS purreqhd_idno','pr.compcode AS purreqhd_compcode','pr.reqdept AS purreqhd_reqdept','pr.purreqno AS purreqhd_purreqno','pr.purreqdt AS purreqhd_purreqdt','pr.recno AS purreqhd_recno','pr.reqpersonid AS purreqhd_reqpersonid','pr.prdept AS purreqhd_prdept','pr.authpersonid AS purreqhd_authpersonid','pr.authdate AS purreqhd_authdate','pr.remarks AS purreqhd_remarks','pr.recstatus AS purreqhd_recstatus','pr.subamount AS purreqhd_subamount','pr.amtdisc AS purreqhd_amtdisc','pr.perdisc AS purreqhd_perdisc','pr.totamount AS purreqhd_totamount','pr.adduser AS purreqhd_adduser','pr.adddate AS purreqhd_adddate','pr.upduser AS purreqhd_upduser','pr.upddate AS purreqhd_upddate','pr.cancelby AS purreqhd_cancelby','pr.canceldate AS purreqhd_canceldate','pr.reopenby AS purreqhd_reopenby','pr.reopendate AS purreqhd_reopendate','pr.suppcode AS purreqhd_suppcode','pr.purordno AS purreqhd_purordno','pr.prortdisc AS purreqhd_prortdisc','pr.unit AS purreqhd_unit','pr.trantype AS purreqhd_trantype','pr.TaxAmt AS purreqhd_TaxAmt','pr.requestby AS purreqhd_requestby','pr.requestdate AS purreqhd_requestdate','pr.supportby AS purreqhd_supportby','pr.supportdate AS purreqhd_supportdate','pr.verifiedby AS purreqhd_verifiedby','pr.verifieddate AS purreqhd_verifieddate','pr.approvedby AS purreqhd_approvedby','pr.approveddate AS purreqhd_approveddate','pr.prtype AS purreqhd_prtype','pr.support_remark AS purreqhd_support_remark','pr.verified_remark AS purreqhd_verified_remark','pr.approved_remark AS purreqhd_approved_remark','pr.cancelled_remark AS purreqhd_cancelled_remark','pr.recommended1by AS purreqhd_recommended1by','pr.recommended2by AS purreqhd_recommended2by','pr.recommended1date AS purreqhd_recommended1date','pr.recommended2date AS purreqhd_recommended2date','pr.recommended1_remark AS purreqhd_recommended1_remark','pr.recommended2_remark AS purreqhd_recommended2_remark','pr.assetno AS purreqhd_assetno','s.name AS supplier_name')
+                    ->where('pr.compcode',session('compcode'));
+
+        if(!in_array($scope, ['ALL','CANCEL','REOPEN'])){
+            if($scope == 'RECOMMENDED1'){
+                $table = $table->where('pr.totamount','>=','10000');
+            }else if($scope == 'RECOMMENDED2'){
+                $table = $table->where('pr.totamount','>=','50000');
+            }
+        }
+        
+        $table = $table->join('material.supplier as s', function($join) use ($request){
+                $join = $join->where('s.compcode', '=', session('compcode'));
+                $join = $join->on('s.SuppCode', '=', 'pr.suppcode');
+        });
+
+        if(!in_array($scope, ['ALL','CANCEL','REOPEN'])){
+            $table = $table->join('material.queuepr as qpr', function($join) use ($request,$scope){
+                $join = $join
+                    ->where('qpr.compcode',session('compcode'))
+                    ->where('qpr.trantype','<>','DONE')
+                    ->on('qpr.recno','pr.recno')
+                    ->on('qpr.recstatus','pr.recstatus')
+                    ->where('qpr.trantype',$scope);
+            });
+
+            $table = $table->join('material.authdtl as adtl', function($join) use ($request,$scope){
+                $join = $join
+                    ->where('adtl.compcode',session('compcode'))
+                    ->where('adtl.authorid',session('username'))
+                    ->where('adtl.trantype','PR')
+                    ->where('adtl.cando','ACTIVE')
+                    ->on('adtl.prtype','qpr.prtype')
+                    ->where('adtl.recstatus',$scope)
+                    ->where(function ($query) {
+                        $query->on('adtl.deptcode','pr.reqdept')
+                              ->orWhere('adtl.deptcode', 'ALL');
+                    })
+                    ->where(function ($query) {
+                        $query
+                            ->on('pr.totamount','>=','adtl.minlimit')
+                            ->on('pr.totamount','<=', 'adtl.maxlimit');
+                    });
+            });
+        }
+        
+        if(!empty($request->filterCol)){
+            foreach ($request->filterCol as $key => $value) {
+                $sr = substr(strstr($value,'.'),1); // tukar puerreqhd. ke pr.
+                if(empty($sr)){continue;}
+                $pieces = explode(".", $request->filterVal[$key], 2);
+                if($pieces[0] == 'session'){
+                    $table = $table->where('pr.'.$sr,'=',session($pieces[1]));
+                }else if($pieces[0] == '<>'){
+                    $table = $table->where('pr.'.$sr,'<>',$pieces[1]);
+                }else if($pieces[0] == '>'){
+                    $table = $table->where('pr.'.$sr,'>',$pieces[1]);
+                }else if($pieces[0] == '>='){
+                    $table = $table->where('pr.'.$sr,'>=',$pieces[1]);
+                }else if($pieces[0] == '<'){
+                    $table = $table->where('pr.'.$sr,'<',$pieces[1]);
+                }else if($pieces[0] == '<='){
+                    $table = $table->where('pr.'.$sr,'<=',$pieces[1]);
+                }else if($pieces[0] == 'on'){
+                    $table = $table->whereColumn('pr.'.$sr,$pieces[1]);
+                }else if($pieces[0] == 'null'){
+                    $table = $table->whereNull('pr.'.$sr);
+                }else if($pieces[0] == 'notnull'){
+                    $table = $table->whereNotNull('pr.'.$sr);
+                }else if($pieces[0] == 'raw'){
+                    $table = $table->where('pr.'.$sr,'=',DB::raw($pieces[1]));
+                }else{
+                    $table = $table->where('pr.'.$sr,'=',$request->filterVal[$key]);
+                }
+            }
+        }
+
+        if(!empty($request->WhereInCol[0])){
+            foreach ($request->WhereInCol as $key => $value) {
+                $sr = substr(strstr($value,'.'),1);
+                $table = $table->whereIn('pr.'.$sr,$request->WhereInVal[$key]);
+            }
+        }
+        
+        if(!empty($request->searchCol)){
+            if($request->searchCol[0] == 'db_invno'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('db.invno','like',$request->searchVal[0]);
+                });
+            }else{
+                $table = $table->Where(function ($table) use ($request){
+                        $sr = substr(strstr($request->searchCol[0],'_'),1); // tukar puerreqhd_ ke pr.
+
+                        $table->Where('pr.'.$sr,'like',$request->searchVal[0]);
+                });
+            }
+        }
+        
+        if(!empty($request->sidx)){
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                foreach ($pieces as $key => $value) {
+                    $value_ = substr_replace($value,"db.",0,strpos($value,"_")+1);
+                    $pieces_inside = explode(" ", $value_);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('db.idno','DESC');
+        }
+        
+        $paginate = $table->paginate($request->rows);
+        //////////paginate/////////
+        
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);       
+    }
+
     public function form(Request $request){
         DB::enableQueryLog();
         // return $this->request_no('GRN','2FL');
