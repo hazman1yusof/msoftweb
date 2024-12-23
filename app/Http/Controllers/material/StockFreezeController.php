@@ -145,12 +145,12 @@ class StockFreezeController extends defaultController
                             ->where('s.deptcode',$request->srcdept)
                             ->whereBetween('s.itemcode',[$itemfrom,$itemto])
                             ->where('s.year', '=', Carbon::now("Asia/Kuala_Lumpur")->format('Y'))
-                            ->orderBy('s.itemcode', 'DESC');
-                            // ->get();
+                            ->orderBy('s.itemcode', 'DESC')
+                            ->get();
 
             // dd($stockloc);
 
-            dd($this->getQueries($stockloc));
+            // dd($this->getQueries($stockloc));
 
             foreach ($stockloc as $key => $value){
                 DB::table('material.phycntdt')
