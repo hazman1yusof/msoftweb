@@ -274,7 +274,7 @@ class DeliveryOrderDetailController extends defaultController
                 if(!$stockloc->exists()) {
                     $stockloc_no_dept = DB::table('material.stockloc')
                                         ->where('compcode',session('compcode'))
-                                        ->where('unit',session('unit'))
+                                        // ->where('unit',session('unit'))
                                         ->where('itemcode',$request->itemcode)
                                         ->where('uomcode',$request->uomcode)
                                         // ->where('deptcode',$request->deldept)
@@ -548,11 +548,23 @@ class DeliveryOrderDetailController extends defaultController
                                 // ->where('unit',session('unit'))
                                 ->where('itemcode',$value['itemcode'])
                                 ->where('uomcode',$value['uomcode'])
-                                ->where('deptcode',$do_hd->deldept)
+                                ->where('deptcode',$request->deldept)
                                 ->where('year',$this->toYear($do_hd->deliverydate));
 
                     if(!$stockloc->exists()) {
-                        throw new \Exception("The item: ".$value['itemcode'].' UOM '.$value['uomcode'].' doesnt have stock location!');
+                        $stockloc_no_dept = DB::table('material.stockloc')
+                                            ->where('compcode',session('compcode'))
+                                            // ->where('unit',session('unit'))
+                                            ->where('itemcode',$value['itemcode'])
+                                            ->where('uomcode',$value['uomcode'])
+                                            // ->where('deptcode',$request->deldept)
+                                            ->where('year',$this->toYear($do_hd->deliverydate));
+
+                        if($stockloc_no_dept->exists()){
+                            $this->make_new_stockloc_lain_dept($stockloc_no_dept->first(),$request->deldept);
+                        }else{
+                            throw new \Exception("The item: ".$value['itemcode'].' UOM '.$value['uomcode'].' doesnt have stock location!');
+                        }
                     }
                 }
 
@@ -993,7 +1005,7 @@ class DeliveryOrderDetailController extends defaultController
                 // 'lstfrzdt' => $stockloc->,
                 // 'lstfrztm' => $stockloc->,
                 // 'frzqty' => $stockloc->,
-                'recstatus' => 'AC',
+                'recstatus' => 'ACTIVE',
                 // 'deluser' => $stockloc->,
                 // 'deldate' => $stockloc->,
                 'computerid' => session('computerid'),
