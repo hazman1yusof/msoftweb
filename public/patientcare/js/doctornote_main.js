@@ -152,6 +152,7 @@ $(document).ready(function () {
 				// refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
 				populate_currDoctorNote(selrowData('#jqGrid'));
 				populate_requestFor_ptcare(selrowData('#jqGrid'));
+				populate_admhandover_currpt(selrowData('#jqGrid'));
 				populate_triage_currpt(selrowData('#jqGrid'));
 				populate_dieteticCareNotes_currpt(selrowData('#jqGrid'));
 				populate_userfile(selrowData('#jqGrid'));
@@ -263,6 +264,7 @@ $(document).ready(function () {
 				// refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
 				populate_currDoctorNote(selrowData('#jqGrid'));
 				populate_requestFor_ptcare(selrowData('#jqGrid'));
+				populate_admhandover_currpt(selrowData('#jqGrid'));
 				populate_triage_currpt(selrowData('#jqGrid'));
 				populate_dieteticCareNotes_currpt(selrowData('#jqGrid'));
 				populate_userfile(selrowData('#jqGrid'));

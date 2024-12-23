@@ -119,7 +119,7 @@ function autoinsert_rowdata(form,rowData){
 }
 
 $('#tab_admhandover').on('shown.bs.collapse', function (){
-    populate_admhandover_currpt(selrowData('#jqGrid'));
+    // populate_admhandover_currpt(selrowData('#jqGrid'));
     SmoothScrollTo("#tab_admhandover", 500);
     populate_admhandover_getdata();
 });
