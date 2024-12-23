@@ -21,7 +21,11 @@
 
             <tr>
                 <td>{{$obj->lineno_ + 1}}</td>
-                <td>{{$obj->itemcode}}</td>
+                @if(is_numeric($obj->itemcode))
+                <td  data-format="0">{{$obj->itemcode}}</td>
+                @else
+                <td  data-format="@">{{$obj->itemcode}}</td>
+                @endif
                 <td>{{$obj->description}}</td>
                 <td>{{$obj->batchno}}</td>
                 <td>{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}</td>

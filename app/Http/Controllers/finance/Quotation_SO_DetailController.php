@@ -1677,11 +1677,11 @@ class Quotation_SO_DetailController extends defaultController
                                 'quantity' => $value['quantity'],
                                 'qtyonhand' => $stockloc->qtyonhand,
                                 'qtydelivered' => $value['qtydelivered'],
-                                'amount' => $value['amount'],
-                                'outamt' => $value['amount'],
+                                'amount' => $value['unitprice'] * $value['quantity'],
+                                'outamt' => $value['unitprice'] * $value['quantity'],
                                 'discamt' => floatval($value['discamt']),
                                 'taxamt' => floatval($value['taxamt']),
-                                'totamount' => floatval($value['totamount']),
+                                'totamount' => floatval($value['unitprice'] * $value['quantity']),
                                 'lastuser' => session('username'), 
                                 'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                             ]);
