@@ -442,7 +442,7 @@ class StockCountController extends defaultController
                         $NewAmount = $Oldavgcost * $txnqty;
 
                         $newqtyonhand = $OldQtyOnHand + $txnqty;
-                        $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
+                        // $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
 
 
                         // update qtyonhand, avgcost, currprice
@@ -453,7 +453,7 @@ class StockCountController extends defaultController
                             ->where('product.uomcode','=',$value->uomcode)
                             ->update([
                                 'qtyonhand' => $newqtyonhand,
-                                'avgcost' => $newAvgCost,
+                                // 'avgcost' => $newAvgCost,
                             ]);
 
                     }else{
