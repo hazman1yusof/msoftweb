@@ -1177,6 +1177,33 @@ function populate_dressing_getdata(){
 	});
 }
 
+function populate_admhandover_getdata(){
+	emptyFormdata(errorField,"#formAdmhandover",["#mrn_doctorNote","#episno_doctorNote"]);
+	
+	var saveParam = {
+		action: 'get_table_admhandover',
+	}
+	
+	var postobj = {
+		_token: $('#_token').val(),
+		mrn: $("#mrn_doctorNote").val(),
+		episno: $("#episno_doctorNote").val()
+	};
+	
+	$.get("./ptcare_admhandover/table?"+$.param(saveParam), $.param(postobj), function (data){
+		
+	},'json').done(function (data){
+		if(!$.isEmptyObject(data)){
+			autoinsert_rowdata("#formAdmhandover",data.admhandover);
+			autoinsert_rowdata("#formAdmhandover",data.episode);
+			autoinsert_rowdata("#formAdmhandover",data.nurshistory);
+			autoinsert_rowdata("#formAdmhandover",data.pathealth);
+
+		}else{
+		}
+	});
+}
+
 function on_toggling_curr_past(obj = curr_obj){
 	var addnotes = document.getElementById("addnotes");
 	
@@ -1776,6 +1803,7 @@ $('#tab_doctornote').on('shown.bs.collapse', function (){
 	populate_mri_getdata();
 	populate_physio_getdata();
 	populate_dressing_getdata();
+	populate_admhandover_getdata();
 });
 
 $('#tab_doctornote').on('hide.bs.collapse', function (){
@@ -1785,6 +1813,8 @@ $('#tab_doctornote').on('hide.bs.collapse', function (){
 	disableForm('#formMRI');
 	disableForm('#formPhysio');
 	disableForm('#formDressing');
+	disableForm('#formAdmhandover');
+
 });
 
 // to reload date table on radio btn click

@@ -262,7 +262,7 @@
                             padding: 0 0 0 0;
                             right: 50px;
                             top: 48px;">
-                <h5><strong>Admission Hand Over</strong>&nbsp;&nbsp;
+                <h5><strong>Admission Handover</strong>&nbsp;&nbsp;
                     <span class="metal"></span></h5>
             </div>
             

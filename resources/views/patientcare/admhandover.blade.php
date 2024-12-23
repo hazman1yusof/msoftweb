@@ -3,11 +3,6 @@
         <form id="formAdmhandover" class="ui form">
             <input id="mrn_admhandover" name="mrn_admhandover" type="hidden">
             <input id="episno_admhandover" name="episno_admhandover" type="hidden">
-            <input id="age_admhandover" name="age_admhandover" type="hidden">
-            <input id="ptname_admhandover" name="ptname_admhandover" type="hidden">
-            <input id="preg_admhandover" name="preg_admhandover" type="hidden">
-            <input id="ic_admhandover" name="ic_admhandover" type="hidden">
-            <input id="doctorname_admhandover" name="doctorname_admhandover" type="hidden">
 
             <div class="ui grid">
                 <div class="eight wide column">

@@ -13,12 +13,10 @@ class AdmHandoverController extends defaultController
 {
     
     var $table;
-    var $duplicateCode;
     
     public function __construct()
     {
         $this->middleware('auth');
-        // $this->duplicateCode = "chgtype";
     }
     
     public function show(Request $request)
@@ -28,26 +26,26 @@ class AdmHandoverController extends defaultController
     
     public function table(Request $request)
     {
-        // switch($request->action){
-        //     case 'dietorder_preview':
-        //         return $this->dietorder_preview($request);
-            
-        //     default:
-        //         return 'error happen..';
-        // }
-    }
-    
-    public function form(Request $request)
-    {
-        DB::enableQueryLog();
         switch($request->action){
-            
             case 'get_table_admhandover':
                 return $this->get_table_admhandover($request);
             
             default:
                 return 'error happen..';
         }
+    }
+    
+    public function form(Request $request)
+    {
+        DB::enableQueryLog();
+        // switch($request->action){
+            
+        //     case 'get_table_admhandover':
+        //         return $this->get_table_admhandover($request);
+            
+        //     default:
+        //         return 'error happen..';
+        // }
     }
 
     public function get_table_admhandover(Request $request){
