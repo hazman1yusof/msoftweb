@@ -38,7 +38,7 @@
             @foreach($nurs_investigation as $key => $nurs_investigation1)
             {
                 @foreach($nurs_investigation1 as $key2 => $val)
-                    '{{$key2}}' : `{{$val}}`,
+                    '{{$key2}}' : `{!!str_replace('`', '', $val)!!}`,
                 @endforeach
             },
             @endforeach
