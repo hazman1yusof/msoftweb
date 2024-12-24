@@ -218,7 +218,7 @@ $(document).ready(function () {
 			
 			dialog_examTriage.on();
 			
-			$("input[name='examnote']").keydown(function(e) {	// when click tab at last column in header, auto save
+			$("textarea[name='examnote']").keydown(function(e) {	// when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGridExamTriage_ilsave').click();
 				// addmore_jqgrid.state = true;
@@ -271,7 +271,7 @@ $(document).ready(function () {
 			dialog_examTriage.on();
 			
 			// $("input[name='grpcode']").attr('disabled','disabled');
-			$("input[name='examnote']").keydown(function(e) {	// when click tab at last column in header, auto save
+			$("textarea[name='examnote']").keydown(function(e) {	// when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGridExamTriage_ilsave').click();
 				// addmore_jqgrid.state = true;
@@ -338,7 +338,7 @@ $(document).ready(function () {
 				if (result == true) {
 					param = {
 						_token: $("#csrf_token").val(),
-						action: 'nursing_save',
+						action: 'nursing_delete',
 						idno: selrowData('#jqGridExamTriage').idno,
 					}
 					$.post( "./nursing/form?"+$.param(param),{oper:'del'}, function( data ){
@@ -410,7 +410,7 @@ $(document).ready(function () {
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete_addnotestriage,#jqGridPagerRefresh_addnotestriage").hide();
 			
-			$("input[name='additionalnote']").keydown(function(e) {	// when click tab at last column in header, auto save
+			$("textarea[name='additionalnote']").keydown(function(e) {	// when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGridAddNotesTriage_ilsave').click();
 				// addmore_jqgrid.state = true;
