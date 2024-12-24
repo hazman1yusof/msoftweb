@@ -695,8 +695,8 @@
                                     z-index: 2;">
                                     <button class="ui button" id="new_mri"><span class="fa fa-plus-square-o"></span>New</button>
                                     <button class="ui button" id="edit_mri"><span class="fa fa-edit fa-lg"></span>Edit</button>
-                                    <button class="ui button" id="save_mri"><span class="fa fa-save fa-lg"></span>Doctor / Nurse</button>
-                                    <button class="ui button" id="accept_mri"><span class="fa fa-check fa-lg"></span>Radiographer</button>
+                                    <button class="ui button" id="save_mri"><span class="fa fa-save fa-lg"></span>Save</button>
+                                    <button class="ui button" id="accept_mri"><span class="fa fa-check fa-lg"></span>Accept</button>
                                     <button class="ui button" id="cancel_mri"><span class="fa fa-ban fa-lg"></span>Cancel</button>
                                     <button class="ui button" id="mri_chart"><span class="fa fa-print fa-lg"></span>Print</button>
                                 </div>
