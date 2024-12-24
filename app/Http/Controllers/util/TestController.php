@@ -64,34 +64,34 @@ class TestController extends defaultController
             //     return $this->update_stockloc_uomcode($request);
             // case 'update_productmaster':
                 // return $this->update_productmaster($request);
-            // case 'update_stockexp':
-            //     return $this->update_stockexp($request);
-            case 'stocktake_imp_dtl2':
-                return $this->stocktake_imp_dtl2($request);
-            case 'add_radiology':
-                return $this->add_radiology($request);
-            case 'betulkan_uom_kh_stockloc':
-                return $this->betulkan_uom_kh_stockloc($request);
-            case 'betulkan_uom_kh_product':
-                return $this->betulkan_uom_kh_product($request);
-            case 'betulkan_uom_kh_stockexp':
-                return $this->betulkan_uom_kh_stockexp($request);
-            case 'betulkan_apacthdr':
-                return $this->betulkan_apacthdr($request);
-            case 'tukar_uom':
-                return $this->tukar_uom($request);
-            case 'update_chgprice':
-                return $this->update_chgprice($request);
-            case 'betulkandb':
-                return $this->betulkandb($request);
-            case 'betulkan_ivtxndt':
-                return $this->betulkan_ivtxndt($request);
-            case 'msdemo_chgprice':
-                return $this->msdemo_chgprice($request);
-            case 'tunjuk_doctorcode':
-                return $this->tunjuk_doctorcode($request);
-            case 'set_drcontrib':
-                return $this->set_drcontrib($request);
+            case 'stockloc_JTR':
+                return $this->stockloc_JTR($request);
+            case 'stockloc_JTR_header':
+                return $this->stockloc_JTR_header($request);
+            // case 'add_radiology':
+            //     return $this->add_radiology($request);
+            // case 'betulkan_uom_kh_stockloc':
+            //     return $this->betulkan_uom_kh_stockloc($request);
+            // case 'betulkan_uom_kh_product':
+            //     return $this->betulkan_uom_kh_product($request);
+            // case 'betulkan_uom_kh_stockexp':
+            //     return $this->betulkan_uom_kh_stockexp($request);
+            // case 'betulkan_apacthdr':
+            //     return $this->betulkan_apacthdr($request);
+            // case 'tukar_uom':
+            //     return $this->tukar_uom($request);
+            // case 'update_chgprice':
+            //     return $this->update_chgprice($request);
+            // case 'betulkandb':
+            //     return $this->betulkandb($request);
+            // case 'betulkan_ivtxndt':
+            //     return $this->betulkan_ivtxndt($request);
+            // case 'msdemo_chgprice':
+            //     return $this->msdemo_chgprice($request);
+            // case 'tunjuk_doctorcode':
+            //     return $this->tunjuk_doctorcode($request);
+            // case 'set_drcontrib':
+            //     return $this->set_drcontrib($request);
             default:
                 return 'error happen..';
         }
@@ -3174,7 +3174,7 @@ class TestController extends defaultController
     }
 
     public function stocktake_imp_dtl2(){
-        
+
         $table = DB::table('material.phycntdt')
                     ->where('recno',14)
                     ->get();
@@ -3188,6 +3188,179 @@ class TestController extends defaultController
                 dump('not exists product -> '.$value->itemcode.' - '.$value->uomcode);
             }
         }
+    }
+
+    public function stockloc_JTR_header(){
+        $request_no = $this->request_no('JTR','IMP');
+        $recno = $this->recno('IV','IT');
+
+        DB::table("material.ivtxnhd")
+                    ->insert([
+                        'compcode' => '9B',
+                        'recno' => $recno,
+                        'source' => 'IV',
+                        // 'reference' => ,
+                        'txndept' => 'IMP',
+                        'trantype' => 'JTR',
+                        'docno' => $request_no,
+                        // 'srcdocno' => ,
+                        // 'sndrcvtype' => ,
+                        // 'sndrcv' => ,
+                        'trandate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        // 'datesupret' => ,
+                        // 'dateactret' => ,
+                        'trantime' => Carbon::now("Asia/Kuala_Lumpur"),
+                        // 'ivreqno' => ,
+                        // 'amount' => ,
+                        // 'respersonid' => ,
+                        // 'remarks' => ,
+                        'recstatus' => 'POSTED',
+                        'adduser' => 'system',
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        // 'upduser' => ,
+                        // 'upddate' => ,
+                        // 'updtime' => ,
+                        // 'postedby' => 'system',
+                        // 'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'unit' => 'IMP',
+                        // 'requestby' => ,
+                        // 'requestdate' => ,
+                        // 'supportby' => ,
+                        // 'supportdate' => ,
+                        // 'support_remark' => ,
+                        // 'verifiedby' => ,
+                        // 'verifieddate' => ,
+                        // 'verified_remark' => ,
+                        // 'approvedby' => ,
+                        // 'approveddate' => ,
+                        // 'approved_remark' => ,
+                        // 'cancelby' => ,
+                        // 'canceldate' => ,
+                        // 'cancelled_remark' => ,
+                    ]);
+
+        print_r($recno);
+    }
+
+    public function stockloc_JTR(Request $request){
+        $dept='IMP';
+        $month=12;
+        $year=2024;
+        $recno=$request->recno;
+
+        DB::beginTransaction();
+
+        try {
+
+            $stockloc = DB::table('material.stockloc as s')
+                            ->select('s.idno','s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit','p.avgcost')
+                            ->join('material.product as p', function($join){
+                                $join = $join->on('p.itemcode', '=', 's.itemcode')
+                                              ->where('p.compcode','9B');
+                            })
+                            ->where('s.compcode','9B')
+                            ->where('s.deptcode',$dept)
+                            ->where('s.year',$year)
+                            // ->where('s.itemcode',$itemcode)
+                            ->get();
+
+            $x=0;
+            foreach ($stockloc as $obj) {
+                $array_obj = (array)$obj;
+
+                $get_bal = $this->get_bal($array_obj,$month);
+                // dump($get_bal);
+                $variance = floatval($get_bal->variance);
+
+                if($variance != 0){
+                    $x = $x + 1;
+                    DB::table('material.ivtxndt')
+                            ->insert([
+                                'compcode' => '9B', 
+                                'recno' => $recno, 
+                                'lineno_' => $x, 
+                                'itemcode' => $obj->itemcode, 
+                                'uomcode' => $obj->uomcode,
+                                // 'uomcoderecv' => $value->uomcoderecv,  
+                                'txnqty' => 0, 
+                                'netprice' => $variance, 
+                                'adduser' => 'system', 
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                                // 'upduser' => $value->upduser, 
+                                // 'upddate' => $value->upddate, 
+                                'TranType' => 'JTR',
+                                'deptcode'  => 'IMP',
+                                // 'productcat' => $productcat, 
+                                // 'draccno' => $draccno, 
+                                // 'drccode' => $drccode, 
+                                // 'craccno' => $craccno, 
+                                // 'crccode' => $crccode, 
+                                // 'expdate' => $value->expdate, 
+                                // 'qtyonhand' => $value->qtyonhand,
+                                // 'qtyonhandrecv' => $value->qtyonhandrecv,  
+                                // 'batchno' => $value->batchno, 
+                                // 'amount' => $value->amount, 
+                                'trandate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                // 'sndrcv' => $ivtmphd->sndrcv,
+                                'unit' => 'IMP',
+                            ]);
+
+                    $NetMvVal = $array_obj['netmvval'.$month] + $variance;
+                    DB::table('material.StockLoc')
+                                    // ->where('StockLoc.unit','=',$unit_)
+                                    ->where('StockLoc.CompCode','=',session('compcode'))
+                                    ->where('StockLoc.idno','=',$obj->idno)
+                                    // ->where('StockLoc.DeptCode','=',$value->srcdept)
+                                    // ->where('StockLoc.ItemCode','=',$value->itemcode)
+                                    // ->where('StockLoc.Year','=', defaultController::toYear($phycntdate))
+                                    // ->where('StockLoc.UomCode','=',$value->uomcode)
+                                    ->update([
+                                        // 'QtyOnHand' => $QtyOnHand,
+                                        // 'NetMvQty'.$month => $NetMvQty, 
+                                        'NetMvVal'.$month => $NetMvVal
+                                    ]);
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+
+            dd('Error'.$e);
+        }
+
+
+    }
+
+    public function get_bal($array_obj,$period){
+        $open_balqty = $array_obj['openbalqty'];
+        $close_balqty = $array_obj['openbalqty'];
+        $open_balval = $array_obj['openbalval'];
+        $close_balval = $array_obj['openbalval'];
+        $until = intval($period) - 1;
+
+        for ($from = 1; $from <= $until; $from++) { 
+            $open_balqty = $open_balqty + $array_obj['netmvqty'.$from];
+            $open_balval = $open_balval + $array_obj['netmvval'.$from];
+        }
+
+        for ($from = 1; $from <= intval($period); $from++) { 
+            $close_balqty = $close_balqty + $array_obj['netmvqty'.$from];
+            $close_balval = $close_balval + $array_obj['netmvval'.$from];
+        }
+
+        $actual_balval = $array_obj['avgcost'] * $close_balqty;
+
+        $responce = new stdClass();
+        $responce->open_balqty = $open_balqty;
+        $responce->open_balval = $open_balval;
+        $responce->close_balqty = $close_balqty;
+        $responce->close_balval = $close_balval;
+        $responce->avgcost = $array_obj['avgcost'];
+        $responce->actua_balval = $actual_balval;
+        $responce->variance = $actual_balval - $close_balval;
+        return $responce;
     }
     
 }
