@@ -55,6 +55,9 @@ class NursingController extends defaultController
             case 'nursing_edit':
                 return $this->edit_exam($request);
             
+            case 'nursing_delete':
+                return $this->delete_exam($request);
+            
             case 'more_examTriage_save':
                 return $this->add_more_exam($request);
             
@@ -1612,6 +1615,28 @@ class NursingController extends defaultController
                     'exam' => $request->exam,
                     'examnote' => $request->examnote
                 ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+        
+    }
+    
+    public function delete_exam(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurassesexam')
+                ->where('idno','=',$request->idno)
+                ->delete();
             
             DB::commit();
             
