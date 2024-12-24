@@ -35,8 +35,8 @@ class InvChartController extends defaultController
                     ->first();
         
         $datetime = DB::table('nursing.nurs_investigation')
-                    // ->select(DB::raw('DATE_FORMAT(entereddate, "%d/%l/%Y") as date'),DB::raw('TIME(enteredtime) as time'))
-                    ->select('entereddate','enteredtime',DB::raw('DATE_FORMAT(entereddate, "%d/%l/%Y") as date'),DB::raw('TIME(enteredtime) as time'))
+                    // ->select(DB::raw('DATE_FORMAT(entereddate, "%d/%m/%Y") as date'),DB::raw('TIME(enteredtime) as time'))
+                    ->select('entereddate','enteredtime',DB::raw('DATE_FORMAT(entereddate, "%d/%m/%Y") as date'),DB::raw('TIME(enteredtime) as time'))
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$mrn)
                     ->where('episno','=',$episno)
