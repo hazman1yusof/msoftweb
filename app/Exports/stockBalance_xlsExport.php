@@ -142,6 +142,8 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
         foreach ($stockloc as $obj) {
             $loop = $loop + 1;
             $isi = $isi + 1;
+            $obj->unit = strtoupper($obj->unit);
+            $obj->deptcode = strtoupper($obj->deptcode);
 
             $array_obj = (array)$obj;
             $get_bal = $this->get_bal($array_obj,$period);
