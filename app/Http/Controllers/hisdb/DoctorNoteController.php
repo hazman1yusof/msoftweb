@@ -1387,6 +1387,16 @@ class DoctorNoteController extends defaultController
                     ]);
             }
             
+            DB::table('hisdb.episode')
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'reff_ed' => '1',
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
+            
             $queries = DB::getQueryLog();
             // dump($queries);
             
@@ -1658,6 +1668,7 @@ class DoctorNoteController extends defaultController
                             ->update([
                                 'newcaseP' => 1,
                                 'newcaseNP' => null,
+                                'reff_rad' => '1',
                                 'lastuser'  => session('username'),
                                 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                             ]);
@@ -1666,6 +1677,7 @@ class DoctorNoteController extends defaultController
                             ->update([
                                 'newcaseP' => null,
                                 'newcaseNP' => 1,
+                                'reff_rad' => '1',
                                 'lastuser'  => session('username'),
                                 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                             ]);
@@ -1676,6 +1688,7 @@ class DoctorNoteController extends defaultController
                             ->update([
                                 'followupP' => 1,
                                 'followupNP' => null,
+                                'reff_rad' => '1',
                                 'lastuser'  => session('username'),
                                 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                             ]);
@@ -1684,6 +1697,7 @@ class DoctorNoteController extends defaultController
                             ->update([
                                 'followupP' => null,
                                 'followupNP' => 1,
+                                'reff_rad' => '1',
                                 'lastuser'  => session('username'),
                                 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                             ]);
@@ -2189,6 +2203,16 @@ class DoctorNoteController extends defaultController
                     ]);
             }
             
+            DB::table('hisdb.episode')
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'reff_rad' => '1',
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
+            
             $queries = DB::getQueryLog();
             // dump($queries);
             
@@ -2387,6 +2411,16 @@ class DoctorNoteController extends defaultController
                     ]);
             }
             
+            DB::table('hisdb.episode')
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'reff_physio' => '1',
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
+            
             $queries = DB::getQueryLog();
             // dump($queries);
             
@@ -2519,6 +2553,16 @@ class DoctorNoteController extends defaultController
                         'computerid' => session('computerid'),
                     ]);
             }
+            
+            DB::table('hisdb.episode')
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'reff_ed' => '1',
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
             
             $queries = DB::getQueryLog();
             // dump($queries);

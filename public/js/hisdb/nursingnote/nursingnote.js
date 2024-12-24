@@ -5022,6 +5022,19 @@ function saveForm_treatment(callback){
     //         }).get()
     // );
     
+    values.push({
+        name: 'tr_entereddate',
+        value: $('#formTreatment input[name=tr_entereddate]').val()
+    })
+    values.push({
+        name: 'tr_enteredtime',
+        value: $('#formTreatment input[name=tr_enteredtime]').val()
+    })
+    values.push({
+        name: 'treatment_remarks',
+        value: $('#formTreatment textarea[name=treatment_remarks]').val()
+    })
+    
     $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').fail(function (data){
