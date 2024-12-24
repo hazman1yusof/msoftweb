@@ -66,8 +66,8 @@ class TestController extends defaultController
                 // return $this->update_productmaster($request);
             // case 'update_stockexp':
             //     return $this->update_stockexp($request);
-            case 'kh_product_latest':
-                return $this->kh_product_latest($request);
+            case 'stocktake_imp_dtl2':
+                return $this->stocktake_imp_dtl2($request);
             case 'add_radiology':
                 return $this->add_radiology($request);
             case 'betulkan_uom_kh_stockloc':
@@ -3082,6 +3082,111 @@ class TestController extends defaultController
                 }
             }
 
+        }
+    }
+
+    public function stocktake_imp_header(){
+
+        $request_no = $this->request_no('PHYCNT', 'IMP');
+        $recno = $this->recno('IV','PHYCNT');
+
+        $table = DB::table("material.phycnthd");
+
+        $array_insert = [
+            'docno' => $request_no,
+            'recno' => $recno,
+            'srcdept' => 'IMP',
+            'itemfrom' => '',
+            'itemto' => '',
+            'frzdate' => Carbon::now("Asia/Kuala_Lumpur"),//freeze date
+            'frztime' => Carbon::now("Asia/Kuala_Lumpur")->format('h:i:s'),//freeze time
+            'phycntdate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'phycnttime' => Carbon::now("Asia/Kuala_Lumpur"),
+            'respersonid' => session('username'), //freeze user
+            'remarks' => '-',
+            'rackno' => '',
+            'compcode' => session('compcode'),
+            'adduser' => session('username'),
+            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'recstatus' => 'OPEN'
+        ];
+
+        $idno = $table->insertGetId($array_insert);
+
+        print_r($idno);
+    }
+
+    public function stocktake_imp_dtl(){
+        $idno=6;
+        // $from=5001;
+        // $to=10000;
+        $table = DB::table('temp.imp_stocktake')
+                    // ->whereBetween('idno',[$from,$to])
+                    ->where('idno','>','12437')
+                    ->get();
+
+        $phycnthd =  DB::table('material.phycnthd')
+                        ->where('idno',$idno)
+                        ->first();
+
+        foreach ($table as $key => $value) {
+            $myitemcode=preg_replace('/\s+/', '', $value->itemcode);
+            $myuom=preg_replace('/\s+/', '', $value->uom);
+            $myqty=preg_replace('/\s+/', '', $value->phyqty);
+
+            $stockloc = DB::table('material.product as p')
+                        ->select('p.avgcost','s.qtyonhand')
+                        ->join('material.stockloc as s', function($join){
+                            $join = $join->on('p.itemcode', '=', 's.itemcode')
+                                          ->where('s.compcode','9B')
+                                          ->where('s.deptcode','IMP');
+                        })
+                        ->where('p.itemcode',$myitemcode)
+                        ->where('p.compcode','9B');
+
+            if(!$stockloc->exists()){
+                dump('stockloc takde - '.$myitemcode);
+            }else{
+                $stockloc = $stockloc->first();
+
+                DB::table('temp.phycntdt')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'srcdept' => $phycnthd->srcdept,
+                        'phycntdate' => $phycnthd->phycntdate,
+                        'phycnttime' => $phycnthd->phycnttime,
+                        'lineno_' => $key,
+                        'itemcode' => $myitemcode,
+                        'uomcode' => $myuom,
+                        'adduser' => 'system',
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'unitcost' => $stockloc->avgcost,
+                        'thyqty' => $stockloc->qtyonhand,
+                        'phyqty' => $myqty,
+                        'recno' => $phycnthd->recno,
+                        // 'expdate' => $value->expdate,
+                        'frzdate' => $phycnthd->frzdate,
+                        'frztime' => $phycnthd->frztime,
+                        // 'batchno' => $value->batchno,
+                    ]);
+            }
+        }
+    }
+
+    public function stocktake_imp_dtl2(){
+        
+        $table = DB::table('material.phycntdt')
+                    ->where('recno',14)
+                    ->get();
+
+        foreach ($table as $value) {
+            $product = DB::table('material.product')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('uomcode',$value->uomcode);
+            if(!$product->exists()){
+                dump('not exists product -> '.$value->itemcode.' - '.$value->uomcode);
+            }
         }
     }
     

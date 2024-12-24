@@ -207,10 +207,10 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
     }
     
     public function get_bal($array_obj,$period){
-        $open_balqty = $array_obj['openbalqty'];
-        $close_balqty = $array_obj['openbalqty'];
-        $open_balval = $array_obj['openbalval'];
-        $close_balval = $array_obj['openbalval'];
+        $open_balqty = 0;
+        $close_balqty = 0;
+        $open_balval = 0;
+        $close_balval = 0;
         $until = intval($period) - 1;
 
         for ($from = 1; $from <= $until; $from++) { 

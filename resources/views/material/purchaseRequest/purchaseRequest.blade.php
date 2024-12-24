@@ -42,6 +42,18 @@ div#fail_msg{
 	width: 12.5% !important;
 }
 
+#comment_btn_all .comment_count{
+	position: absolute;
+  top: -8px;
+  right: -13px;
+  color: white;
+  background: indianred;
+  padding: 2px 3px;
+  line-height: 10px;
+  font-size: 10px;
+  border-radius: 20%;
+}
+
 #more {display: none;}
 
 @endsection
@@ -228,6 +240,9 @@ div#fail_msg{
 					</a>
 					<a class='pull-right pointer text-primary' style="padding-left: 30px" id='attcahment_go'>
 				    <span class='fa fa-paperclip'></span> Attachment 
+					</a>
+					<a class='pull-right pointer text-primary' style="padding-left: 30px;position: relative;" id='comment_btn_all'>
+				    <span class='fa fa-commenting-o'></span> Comment <span class="comment_count">2</span>
 					</a>
 		    	</div>
 		    		<div class="panel-body">
@@ -554,6 +569,14 @@ div#fail_msg{
 			</div>
 
 			<div id="dialog_remarks_view" title="Remarks">
+			  <div class="panel panel-default">
+			    <div class="panel-body">
+			    	<textarea id='remarks_view' name='remarks_view' readonly rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
+			    </div>
+			  </div>
+			</div>
+
+			<div id="dialog_comment_btn_all" title="Comments">
 			  <div class="panel panel-default">
 			    <div class="panel-body">
 			    	<textarea id='remarks_view' name='remarks_view' readonly rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>

@@ -44,6 +44,12 @@
 	<div class="ui segments" id="main_segment">
 	  <div class="ui secondary segment" id="main_title">
 	    <h3>Purchase Request</h3>
+	    <a class="ui mini button" href="./purchaseRequest/showpdf?recno={{$purreqhd->recno}}" target="_blank" style="position: absolute;
+			    top: 10px;
+			    right: 10px;">
+			  <i class="print icon" ></i>
+			  Print
+			</a>
 	  </div>
 	  <div class="ui attached segment" id="main_segment" style="overflow:auto;">
 	  	<h3>Header</h3>
