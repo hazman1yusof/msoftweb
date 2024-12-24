@@ -241,9 +241,9 @@ div#fail_msg{
 					<a class='pull-right pointer text-primary' style="padding-left: 30px" id='attcahment_go'>
 				    <span class='fa fa-paperclip'></span> Attachment 
 					</a>
-					<a class='pull-right pointer text-primary' style="padding-left: 30px;position: relative;" id='comment_btn_all'>
+					<!-- <a class='pull-right pointer text-primary' style="padding-left: 30px;position: relative;" id='comment_btn_all'>
 				    <span class='fa fa-commenting-o'></span> Comment <span class="comment_count">2</span>
-					</a>
+					</a> -->
 		    	</div>
 		    		<div class="panel-body">
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
@@ -576,13 +576,13 @@ div#fail_msg{
 			  </div>
 			</div>
 
-			<div id="dialog_comment_btn_all" title="Comments">
+			<!-- <div id="dialog_comment_btn_all" title="Comments">
 			  <div class="panel panel-default">
 			    <div class="panel-body">
 			    	<textarea id='remarks_view' name='remarks_view' readonly rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
 			    </div>
 			  </div>
-			</div>
+			</div> -->
 
 		</div>
 @endsection
