@@ -64,6 +64,12 @@ class TestController extends defaultController
             //     return $this->update_stockloc_uomcode($request);
             // case 'update_productmaster':
                 // return $this->update_productmaster($request);
+            case 'betulkan_stockloc_kh':
+                return $this->betulkan_stockloc_kh($request);
+            case 'upd_glmastdtl_1':
+                return $this->upd_glmastdtl_1($request);
+            case 'upd_glmastdtl_2':
+                return $this->upd_glmastdtl_2($request);
             case 'btlkn_productkh':
                 return $this->btlkn_productkh($request);
             // case 'stockloc_JTR_header':
@@ -3415,7 +3421,44 @@ class TestController extends defaultController
         }
     }
 
-    public function upd_glmastdtl(){
+    public function upd_glmastdtl_1(){
+        $costcode = '1007';
+        $glaccount = '50020105'; // 20010025-credit
+
+        $gltrandr = DB::table('finance.gltran')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('year','2024')
+                            ->where('period','12')
+                            ->where('drcostcode',$costcode)
+                            ->where('dracc',$glaccount)
+                            ->sum('amount');
+        dump($gltrandr);
+
+        $gltrancr = DB::table('finance.gltran')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('year','2024')
+                            ->where('period','12')
+                            ->where('crcostcode',$costcode)
+                            ->where('cracc',$glaccount)
+                            ->sum('amount');
+        dump($gltrancr);
+
+        $calc = $gltrandr - $gltrancr;
+
+        DB::table('finance.glmasdtl')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('costcode','=',$costcode)
+                            ->where('glaccount','=',$glaccount)
+                            ->where('year','=','2024')
+                            ->update([
+                                // 'upduser' => session('username'),
+                                // 'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                                'actamount12' => $calc,
+                                // 'recstatus' => 'ACTIVE'
+                            ]);
+    }
+
+    public function upd_glmastdtl_2(){
         $costcode = '1007';
         $glaccount = '20010025'; // 20010025-credit
 
