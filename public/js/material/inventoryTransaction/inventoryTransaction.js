@@ -1309,8 +1309,8 @@ $(document).ready(function () {
 			Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtyrequest']", "#jqGrid2 input[name='txnqty']", "#jqGrid2 input[name='maxqty']", "#jqGrid2 input[name='qtyonhandrecv']", "#jqGrid2 input[name='qtyonhand']"]);
 			
 			// $("input[name='gstpercent']").val('0')//reset gst to 0
-			mycurrency2.formatOnBlur();//make field to currency on leave cursor
-			mycurrency_np.formatOnBlur();//make field to currency on leave cursor
+			mycurrency2.formatOff();//make field to currency on leave cursor
+			mycurrency_np.formatOff();//make field to currency on leave cursor
 	
 			$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='uomcoderecv'],#jqGrid2 input[name='itemcode']").on('focus',remove_noti);
 
