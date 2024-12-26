@@ -28,12 +28,14 @@ class StockCountController extends defaultController
 
     public function table(Request $request)
     {   
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
         switch($request->action){
             case 'get_table_range':
                 return $this->get_table_range($request);
             case 'get_rackno':
                 return $this->get_rackno($request);
+            case 'import_excel':
+                return $this->import_excel($request);
             default:
                 return 'error happen..';
         }
@@ -41,7 +43,12 @@ class StockCountController extends defaultController
 
     public function form(Request $request)
     {   
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
+
+        if($request->action == "import_excel"){
+            return $this->import_excel_upload($request);
+        }
+
         switch($request->oper){
             case 'add':
                 return $this->add($request);
@@ -923,6 +930,14 @@ class StockCountController extends defaultController
 
     public function showExcel(Request $request){
         return Excel::download(new StockTakeExport($request->recno), 'StockTakeExport.xlsx');
+    }
+
+    public function import_excel(Request $request){
+        return view('material.stockCount.import_excel'); 
+    }
+
+    public function import_excel_upload(Request $request){
+        dd($request->recno);
     }
 }
 

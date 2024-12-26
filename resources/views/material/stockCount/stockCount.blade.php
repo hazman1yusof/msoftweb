@@ -145,6 +145,9 @@ div#fail_msg{
 			<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #a35252;" id='pdfgen1' href="" target="_blank">
 				<span class='fa fa-file-pdf-o fa-lg'></span> Print PDF
 			</a>
+			<!-- <a class='pull-right pointer text-primary' style="padding-left: 30px;color: #518351;" id='pdfgen_excel_import' href="" target="_blank">
+				<span class='fa fa-file-pdf-o fa-lg'></span> Import Excel
+			</a> -->
 		</div>
     		<div class="panel-body">
     			<div class='col-md-12' style="padding:0 0 15px 0">
@@ -373,7 +376,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/stockCount/stockCount.js"></script>
+	<script src="js/material/stockCount/stockCount.js?v=1.1"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

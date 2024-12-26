@@ -197,6 +197,8 @@ $(document).ready(function () {
 
 			$("#pdfgen_excel").attr('href','./stockCount/showExcel?recno='+selrowData("#jqGrid").recno);
 
+			// $("#pdfgen_excel_import").attr('href','./stockCount/table?action=import_excel&recno='+selrowData("#jqGrid").recno);
+
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").recstatus;
@@ -280,6 +282,7 @@ $(document).ready(function () {
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq").click(function(){
 		var idno_array = [];
+		$('#but_post_jq').prop('disabled',true);
 	
 		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
 		var obj={};
@@ -292,8 +295,10 @@ $(document).ready(function () {
 			cbselect.empty_sel_tbl();
 			refreshGrid("#jqGrid", urlParam);
 		}).fail(function (data) {
+			$('#but_post_jq').prop('disabled',false);
 			alert(data.responseText);
 		}).done(function (data) {
+			$('#but_post_jq').prop('disabled',false);
 			//2nd successs?
 		});
 	});

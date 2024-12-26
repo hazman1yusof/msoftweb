@@ -64,10 +64,10 @@ class TestController extends defaultController
             //     return $this->update_stockloc_uomcode($request);
             // case 'update_productmaster':
                 // return $this->update_productmaster($request);
-            case 'stockloc_JTR':
-                return $this->stockloc_JTR($request);
-            case 'stockloc_JTR_header':
-                return $this->stockloc_JTR_header($request);
+            case 'btlkn_productkh':
+                return $this->btlkn_productkh($request);
+            // case 'stockloc_JTR_header':
+            //     return $this->stockloc_JTR_header($request);
             // case 'add_radiology':
             //     return $this->add_radiology($request);
             // case 'betulkan_uom_kh_stockloc':
@@ -3361,6 +3361,180 @@ class TestController extends defaultController
         $responce->actua_balval = $actual_balval;
         $responce->variance = $actual_balval - $close_balval;
         return $responce;
+    }
+
+    public function betulkan_stockloc_kh(){
+        $phycnt = DB::table('temp.ivtxndt')
+                        ->where('compcode','9B')
+                        ->where('recno','13')
+                        ->where('trantype','PHYCNT')
+                        ->where('deptcode','KHEALTH')
+                        ->get();
+
+        foreach ($phycnt as $obj) {
+            $bekap_product = DB::table('bekap_material.product')
+                                ->where('itemcode',$obj->itemcode)
+                                ->where('uomcode',$obj->uomcode)
+                                ->first();
+
+            $bekap_stockloc = DB::table('bekap_material.stockloc')
+                                ->where('itemcode',$obj->itemcode)
+                                ->where('uomcode',$obj->uomcode)
+                                ->where('deptcode','KHEALTH')
+                                ->first();
+
+            $bekap_stockexp = DB::table('bekap_material.stockexp')
+                                ->where('itemcode',$obj->itemcode)
+                                ->where('uomcode',$obj->uomcode)
+                                ->first();
+
+
+            DB::table('material.product')
+                    ->where('itemcode',$obj->itemcode)
+                    ->where('uomcode',$obj->uomcode)
+                    ->update([
+                        'qtyonhand' => $bekap_product->qtyonhand
+                    ]);
+
+            DB::table('material.stockloc')
+                    ->where('itemcode',$obj->itemcode)
+                    ->where('uomcode',$obj->uomcode)
+                    ->where('deptcode','KHEALTH')
+                    ->update([
+                        'qtyonhand' => $bekap_stockloc->qtyonhand,
+                        'netmvqty12' => $bekap_stockloc->netmvqty12,
+                        'netmvval12' => $bekap_stockloc->netmvval12
+                    ]);
+
+            DB::table('material.stockexp')
+                    ->where('itemcode',$obj->itemcode)
+                    ->where('uomcode',$obj->uomcode)
+                    ->update([
+                        'balqty' => $bekap_stockexp->balqty
+                    ]);
+        }
+    }
+
+    public function upd_glmastdtl(){
+        $costcode = '1007';
+        $glaccount = '20010025'; // 20010025-credit
+
+        $gltrandr = DB::table('finance.gltran')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('year','2024')
+                            ->where('period','12')
+                            ->where('drcostcode',$costcode)
+                            ->where('dracc',$glaccount)
+                            ->sum('amount');
+        dump($gltrandr);
+
+        $gltrancr = DB::table('finance.gltran')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('year','2024')
+                            ->where('period','12')
+                            ->where('crcostcode',$costcode)
+                            ->where('cracc',$glaccount)
+                            ->sum('amount');
+        dump($gltrancr);
+
+        $calc = $gltrandr - $gltrancr;
+
+        DB::table('finance.glmasdtl')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('costcode','=',$costcode)
+                            ->where('glaccount','=',$glaccount)
+                            ->where('year','=','2024')
+                            ->update([
+                                // 'upduser' => session('username'),
+                                // 'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                                'actamount12' => $calc,
+                                // 'recstatus' => 'ACTIVE'
+                            ]);
+    }
+
+    public function chk_if_got(){
+        $phycnt = DB::table('temp.ivtxndt')
+                        ->where('compcode','9B')
+                        ->where('recno','13')
+                        ->where('trantype','PHYCNT')
+                        ->where('deptcode','KHEALTH')
+                        ->get();
+
+        foreach ($phycnt as $obj) {
+            $ivdspdt = DB::table('material.ivdspdt')
+                        ->where('compcode','9B')
+                        ->where('itemcode',$obj->itemcode)
+                        ->where('adddate','>=',Carbon::now('Asia/Kuala_Lumpur')->format('Y-m-d'));
+
+            if($ivdspdt->exists()){
+                dump($ivdspdt->first()->idno);
+            }
+        }
+    }
+
+    public function btlkn_productkh(){
+        $phycnt = DB::table('temp.ivtxndt')
+                        ->where('compcode','9B')
+                        ->where('recno','13')
+                        ->where('trantype','PHYCNT')
+                        ->where('deptcode','KHEALTH')
+                        ->get();
+
+        $phycnt = $phycnt->unique('itemcode');
+
+        $x=1;
+        foreach ($phycnt as $obj) {
+            $ivdspdt = DB::table('material.ivdspdt')
+                        ->where('compcode','9B')
+                        ->where('itemcode',$obj->itemcode)
+                        ->where('adddate','>=',Carbon::now('Asia/Kuala_Lumpur')->format('Y-m-d'));
+
+            if($ivdspdt->exists()){
+                dump($x.'-'.$obj->itemcode.' txnqty: '.$ivdspdt->first()->txnqty);
+
+                $bekap_product = DB::table('material.product')
+                                    ->where('itemcode',$obj->itemcode)
+                                    ->where('uomcode',$obj->uomcode)
+                                    ->first();
+
+                $bekap_stockloc = DB::table('material.stockloc')
+                                    ->where('itemcode',$obj->itemcode)
+                                    ->where('uomcode',$obj->uomcode)
+                                    ->where('deptcode','KHEALTH')
+                                    ->first();
+
+                $bekap_stockexp = DB::table('material.stockexp')
+                                    ->where('itemcode',$obj->itemcode)
+                                    ->where('uomcode',$obj->uomcode)
+                                    ->first();
+
+                DB::table('material.product')
+                        ->where('itemcode',$obj->itemcode)
+                        ->where('uomcode',$obj->uomcode)
+                        ->update([
+                            'qtyonhand' => $bekap_product->qtyonhand - $ivdspdt->first()->txnqty
+                        ]);
+
+                DB::table('material.stockloc')
+                        ->where('itemcode',$obj->itemcode)
+                        ->where('uomcode',$obj->uomcode)
+                        ->where('deptcode','KHEALTH')
+                        ->update([
+                            'qtyonhand' => $bekap_stockloc->qtyonhand - $ivdspdt->first()->txnqty,
+                            'netmvqty12' => $bekap_stockloc->netmvqty12 - $ivdspdt->first()->txnqty,
+                            'netmvval12' => $bekap_stockloc->netmvval12 - $ivdspdt->first()->amount
+                        ]);
+
+                DB::table('material.stockexp')
+                        ->where('itemcode',$obj->itemcode)
+                        ->where('uomcode',$obj->uomcode)
+                        ->update([
+                            'balqty' => $bekap_stockexp->balqty - $ivdspdt->first()->txnqty
+                        ]);
+
+                $x++;
+            }
+        }
     }
     
 }
