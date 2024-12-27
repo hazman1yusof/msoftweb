@@ -89,7 +89,7 @@
                                 @foreach ($treatment as $obj)
                                 [
                                     { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->startdate)->format('d-m-Y')}}' },
-                                    { text: '{{$obj->treatment}}' },
+                                    { text: `{{$obj->treatment}}`},
                                     { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->enddate)->format('d-m-Y')}}' },
                                     { text: '{{$obj->adduser}}' },
                                 ],
