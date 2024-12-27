@@ -3373,18 +3373,20 @@ class TestController extends defaultController
         $phycnt = DB::table('material.phycntdt')
                         ->where('compcode','9B')
                         ->where('recno','13')
+                        ->whereIn('itemcode',['2227A','2228A','7613033844713','9557327001575','9557327001582','PANTS L','PANTS M','PANTS XL','T6CFN','TENA XL'])
                         // ->where('itemcode','TRUTH')
                         // ->where('trantype','PHYCNT')
                         // ->where('deptcode','KHEALTH')
                         ->get();
 
-        // $phycnt = $phycnt->unique('itemcode');
+        $phycnt = $phycnt->unique('itemcode');
 
         foreach ($phycnt as $obj) {
-            // $bekap_product = DB::table('bekap_material.product')
-            //                     ->where('itemcode',$obj->itemcode)
-            //                     ->where('uomcode',$obj->uomcode)
-            //                     ->first();
+            $phyqty = DB::table('material.phycntdt')
+                        ->where('itemcode',$obj->itemcode)
+                        ->where('compcode','9B')
+                        ->where('recno','13')
+                        ->sum('phyqty');
 
             // $bekap_stockloc = DB::table('bekap_material.stockloc')
             //                     ->where('itemcode',$obj->itemcode)
@@ -3402,7 +3404,7 @@ class TestController extends defaultController
                     ->where('itemcode',$obj->itemcode)
                     ->where('uomcode',$obj->uomcode)
                     ->update([
-                        'qtyonhand' => $obj->phyqty
+                        'qtyonhand' => $phyqty
                     ]);
 
             DB::table('material.stockloc')
@@ -3410,7 +3412,7 @@ class TestController extends defaultController
                     ->where('uomcode',$obj->uomcode)
                     ->where('deptcode','KHEALTH')
                     ->update([
-                        'qtyonhand' => $obj->phyqty,
+                        'qtyonhand' => $phyqty,
                         // 'netmvqty12' => $bekap_stockloc->netmvqty12,
                         // 'netmvval12' => $bekap_stockloc->netmvval12
                     ]);
@@ -3418,6 +3420,8 @@ class TestController extends defaultController
             DB::table('material.stockexp')
                     ->where('itemcode',$obj->itemcode)
                     ->where('uomcode',$obj->uomcode)
+                    ->where('expdate',$obj->expdate)
+                    ->where('batchno',$obj->batchno)
                     ->update([
                         'balqty' => $obj->phyqty
                     ]);
@@ -3502,12 +3506,13 @@ class TestController extends defaultController
         $phycnt = DB::table('material.phycntdt')
                         ->where('compcode','9B')
                         ->where('recno','13')
+                        ->whereIn('itemcode',['2227A','2228A','7613033844713','9557327001575','9557327001582','PANTS L','PANTS M','PANTS XL','T6CFN','TENA XL'])
                         // ->where('itemcode','TRUTH')
                         // ->where('trantype','PHYCNT')
                         // ->where('deptcode','KHEALTH')
                         ->get();
 
-        // $phycnt = $phycnt->unique('itemcode');
+        $phycnt = $phycnt->unique('itemcode');
 
         $x=1;
         foreach ($phycnt as $obj) {
@@ -3571,10 +3576,13 @@ class TestController extends defaultController
         $phycnt = DB::table('material.phycntdt')
                         ->where('compcode','9B')
                         ->where('recno','13')
+                        ->whereIn('itemcode',['2227A','2228A','7613033844713','9557327001575','9557327001582','PANTS L','PANTS M','PANTS XL','T6CFN','TENA XL'])
                         // ->where('itemcode','TRUTH')
                         // ->where('trantype','PHYCNT')
                         // ->where('deptcode','KHEALTH')
                         ->get();
+
+        $phycnt = $phycnt->unique('itemcode');
 
         $x=1;
         foreach ($phycnt as $obj) {
