@@ -1145,8 +1145,6 @@ class SalesOrderDetailController extends defaultController
         return json_encode($responce);
     }
 
-
-
     public function get_itemcode_uom_recv(Request $request){
         $chgcode = $request->chgcode;
         $deptcode = $request->deptcode;

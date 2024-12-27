@@ -409,7 +409,7 @@ $(document).ready(function () {
 			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
 				{formatter:'currency', 
 				formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-				 editrules:{required:true}, editable:true, editoptions: {readonly: 'readonly'}});
+				 editrules:{required:true}, editable:true});
 
 			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
 				{ width: 130, classes: 'wrap', editable:true,
@@ -453,7 +453,7 @@ $(document).ready(function () {
 			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
 				{formatter:'currency', 
 				formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-				 editrules:{required:true}, editable:true, editoptions: {readonly: null}});
+				 editrules:{required:true}, editable:true});
 			if(crdbfl.toUpperCase()=='IN'){
 				$("#jqGrid2").jqGrid('setColProp', 'expdate', 
 					{width: 100,editable:true,formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},edittype: 'text',editrules:{required: false,custom:false, custom_func:null},
@@ -510,7 +510,7 @@ $(document).ready(function () {
 		$("#jqGrid2").jqGrid('setColProp', 'netprice', 
 			{formatter:'currency', 
 			formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-			 editrules:{required:true}, editable:true, editoptions: {readonly: 'readonly'}});
+			 editrules:{required:true}, editable:true});
 
 		$("#jqGrid2").jqGrid('setColProp', 'uomcoderecv', 
 			{ label: 'UOM Code Recv Dept', name: 'uomcoderecv', width: 130, classes: 'wrap', editable:true,
@@ -1036,17 +1036,16 @@ $(document).ready(function () {
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 					editrules:{required: true},edittype:"text",
 						editoptions:{
-						readonly: "readonly",
 						maxlength: 12,
 						dataInit: function(element) {
 							// if($('#isstype').val().toUpperCase() == 'ADJUSTMENT'){
 							// 	$(element).prop('readonly',true);
 							// }
-							if($('#trantype').val().toUpperCase() == 'TUI'){
-								$(element).prop('readonly',false);
-							}else{
-								$(element).prop('readonly',true);
-							}
+							// if($('#trantype').val().toUpperCase() == 'TUI'){
+							// 	$(element).prop('readonly',false);
+							// }else{
+							// 	$(element).prop('readonly',true);
+							// }
 							element.style.textAlign = 'right';  
 							$(element).keypress(function(e){
 								if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {

@@ -450,7 +450,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 			
 		});
 	</script>
-	<script src="js/material/inventoryTransaction/inventoryTransaction.js?v=1.21"></script>
+	<script src="js/material/inventoryTransaction/inventoryTransaction.js?v=1.22"></script>
 	<!-- <script src="js/material/inventoryTransaction/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
