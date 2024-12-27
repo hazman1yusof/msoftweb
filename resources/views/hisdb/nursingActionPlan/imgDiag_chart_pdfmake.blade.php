@@ -89,7 +89,7 @@
                                 @foreach ($imgDiag as $obj)
                                 [
                                     { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->startdate)->format('d-m-Y')}}' },
-                                    { text: '{!!$obj->imgdiag!!}'},
+                                    { text: `{!!$obj->imgdiag!!}`},
                                     { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->dateline)->format('d-m-Y')}}' },
                                     { text: '{{$obj->adduser}}' },
                                 ],
