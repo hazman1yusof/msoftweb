@@ -42,15 +42,18 @@
 		font-weight:bold;
 	}
 	.btnform .btn{
-		width: -webkit-fill-available !important;
+		width: 16% !important;
+	}
+	.btnform .btn b{
+		letter-spacing: 0.5px !important;
 	}
 @endsection('style')
 
 @section('body')
 <div class="container mycontainer">
   <div class="row">
-	<div class="col-md-9">
-		<div class="panel panel-default" style="height: 230px;">
+	<div class="col-md-12">
+		<div class="panel panel-default" style="height: 120px;">
 			<div class="panel-heading">Item Movement Report</div>
 			<div class="panel-body">
 				<form class='form-horizontal' style='width:99%' id='formdata'>
@@ -71,49 +74,61 @@
 		</div> 
 	</div>
 
-	<div class="col-md-3">
-		<div class="panel panel-default" style="height: 510px;">
+	<div class="col-md-12">
+		<div class="panel panel-default" style="height: 150px;">
 			<div class="panel-body">
 				<div class='col-md-12 btnform' style="padding:0px">
 				 <fieldset>
 					<button name="export_dbacthdr" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_dbacthdr'>
-						<span class="fa fa-file-excel-o fa-lg"></span> Download Dbacthdr
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>Dbacthdr</b>
 					</button>
 
 					<button name="export_billdet" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_billdet'>
-						<span class="fa fa-file-excel-o fa-lg"></span> Download Billdet
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>Billdet</b>
 					</button>
 					
 					<button name="export_billsum" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_billsum'>
-						<span class="fa fa-file-excel-o fa-lg"></span> Download Billsum
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>Billsum</b>
 					</button>
 					
 					<button name="export_ivtxnhd" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_ivtxnhd'>
-						<span class="fa fa-file-excel-o fa-lg"></span> Download Ivtxnhd
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>Ivtxnhd</b>
 					</button>
 					
 					<button name="export_ivtxndt" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_ivtxndt'>
-						<span class="fa fa-file-excel-o fa-lg"></span> Download Ivtxndt
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>Ivtxndt</b>
 					</button>
 					
 					<button name="export_delordhd" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_delordhd'>
-						<span class="fa fa-file-excel-o fa-lg"></span> Download Delordhd
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>Delordhd</b>
 					</button>
 					
 					<button name="export_delorddt" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_delorddt'>
-						<span class="fa fa-file-excel-o fa-lg"></span> Download Delorddt
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>Delorddt</b>
 					</button>
 					
 					<button name="export_apacthdr" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_apacthdr'>
-						<span class="fa fa-file-excel-o fa-lg"></span> Download Apacthdr
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>Apacthdr</b>
 					</button>
 					
 					<button name="export_apacthdr" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_product'>
-						<span class="fa fa-file-excel-o fa-lg"></span> Download Product
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>Product</b>
 					</button>
 					
 					<button name="export_ivdspdt" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_ivdspdt'>
-						<span class="fa fa-file-excel-o fa-lg"></span> Download Ivdspdt
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>Ivdspdt</b>
+					</button>
+					
+					<button name="export_ivdspdt" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_dballoc'>
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>Dballoc</b>
+					</button>
+					
+					<button name="export_ivdspdt" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_apalloc'>
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>Apalloc</b>
+					</button>
+					
+					<button name="export_apactdtl" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_apactdtl'>
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>Apactdtl</b>
 					</button>
 				  </fieldset>
 				</div>

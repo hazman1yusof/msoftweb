@@ -21,6 +21,9 @@ use App\Exports\csv\delorddt_csv;
 use App\Exports\csv\apacthdr_csv;
 use App\Exports\csv\product_csv;
 use App\Exports\csv\ivdspdt_csv;
+use App\Exports\csv\dballoc_csv;
+use App\Exports\csv\apalloc_csv;
+use App\Exports\csv\apactdtl_csv;
 
 use App\Jobs\SendEmailPR;
 use App\Mail\sendmaildefault;
@@ -57,6 +60,12 @@ class ExportController extends defaultController
                 return $this->export_product($request);
             case 'export_ivdspdt':
                 return $this->export_ivdspdt($request);
+            case 'export_dballoc':
+                return $this->export_dballoc($request);
+            case 'export_apalloc':
+                return $this->export_apalloc($request);
+            case 'export_apactdtl':
+                return $this->export_apactdtl($request);
             default:
                 return 'error happen..';
         }
@@ -100,5 +109,17 @@ class ExportController extends defaultController
 
     public function export_ivdspdt(Request $request){
         return Excel::download(new ivdspdt_csv($request), 'ivdspdt_csv.csv');
+    }
+
+    public function export_dballoc(Request $request){
+        return Excel::download(new dballoc_csv($request), 'dballoc_csv.csv');
+    }
+
+    public function export_apalloc(Request $request){
+        return Excel::download(new apalloc_csv($request), 'apalloc_csv.csv');
+    }
+
+    public function export_apactdtl(Request $request){
+        return Excel::download(new apactdtl_csv($request), 'apactdtl_csv.csv');
     }
 }
