@@ -60,9 +60,9 @@ class SendEmailPO implements ShouldQueue
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
 
-            if(!empty($email)){
-                Mail::to($email)->send(new sendmaildefault($subject,$type,$recno,$curr_stats,$reqdept,$prepredon));
-            }
+            // if(!empty($email)){
+            //     Mail::to($email)->send(new sendmaildefault($subject,$type,$recno,$curr_stats,$reqdept,$prepredon));
+            // }
         }
     }
 }
