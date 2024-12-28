@@ -3370,61 +3370,65 @@ class TestController extends defaultController
     }
 
     public function betulkan_stockloc_kh(){
-        $phycnt = DB::table('material.phycntdt')
-                        ->where('compcode','9B')
-                        ->where('recno','13')
-                        ->whereIn('itemcode',['2227A','2228A','7613033844713','9557327001575','9557327001582','PANTS L','PANTS M','PANTS XL','T6CFN','TENA XL'])
+        $phycnt = DB::table('temp.khealth_stocktake')
+                        // ->where('compcode','9B')
+                        // ->where('recno','13')
+                        // ->whereIn('itemcode',['2227A','2228A','7613033844713','9557327001575','9557327001582','PANTS L','PANTS M','PANTS XL','T6CFN','TENA XL'])
                         // ->where('itemcode','TRUTH')
                         // ->where('trantype','PHYCNT')
                         // ->where('deptcode','KHEALTH')
                         ->get();
 
-        $phycnt = $phycnt->unique('itemcode');
-
+        // $phycnt = $phycnt->unique('itemcode');
+        $x=1;
         foreach ($phycnt as $obj) {
-            $phyqty = DB::table('material.phycntdt')
+            if($obj->freezeqty != $obj->qty){
+                dump($x.'. '.$obj->itemcode);
+                $x++;
+
+                // $phyqty = DB::table('material.phycntdt')
+                //             ->where('itemcode',$obj->itemcode)
+                //             ->where('compcode','9B')
+                //             ->where('recno','13')
+                //             ->sum('phyqty');
+
+                // $bekap_stockloc = DB::table('bekap_material.stockloc')
+                //                     ->where('itemcode',$obj->itemcode)
+                //                     ->where('uomcode',$obj->uomcode)
+                //                     ->where('deptcode','KHEALTH')
+                //                     ->first();
+
+                // $bekap_stockexp = DB::table('bekap_material.stockexp')
+                //                     ->where('itemcode',$obj->itemcode)
+                //                     ->where('uomcode',$obj->uomcode)
+                //                     ->first();
+
+                DB::table('material.product')
                         ->where('itemcode',$obj->itemcode)
-                        ->where('compcode','9B')
-                        ->where('recno','13')
-                        ->sum('phyqty');
+                        ->where('uomcode',$obj->uomcode)
+                        ->update([
+                            'qtyonhand' => $obj->qty
+                        ]);
 
-            // $bekap_stockloc = DB::table('bekap_material.stockloc')
-            //                     ->where('itemcode',$obj->itemcode)
-            //                     ->where('uomcode',$obj->uomcode)
-            //                     ->where('deptcode','KHEALTH')
-            //                     ->first();
+                DB::table('material.stockloc')
+                        ->where('itemcode',$obj->itemcode)
+                        ->where('uomcode',$obj->uomcode)
+                        ->where('deptcode','KHEALTH')
+                        ->update([
+                            'qtyonhand' => $obj->qty,
+                            // 'netmvqty12' => $bekap_stockloc->netmvqty12,
+                            // 'netmvval12' => $bekap_stockloc->netmvval12
+                        ]);
 
-            // $bekap_stockexp = DB::table('bekap_material.stockexp')
-            //                     ->where('itemcode',$obj->itemcode)
-            //                     ->where('uomcode',$obj->uomcode)
-            //                     ->first();
-
-
-            DB::table('material.product')
-                    ->where('itemcode',$obj->itemcode)
-                    ->where('uomcode',$obj->uomcode)
-                    ->update([
-                        'qtyonhand' => $phyqty
-                    ]);
-
-            DB::table('material.stockloc')
-                    ->where('itemcode',$obj->itemcode)
-                    ->where('uomcode',$obj->uomcode)
-                    ->where('deptcode','KHEALTH')
-                    ->update([
-                        'qtyonhand' => $phyqty,
-                        // 'netmvqty12' => $bekap_stockloc->netmvqty12,
-                        // 'netmvval12' => $bekap_stockloc->netmvval12
-                    ]);
-
-            DB::table('material.stockexp')
-                    ->where('itemcode',$obj->itemcode)
-                    ->where('uomcode',$obj->uomcode)
-                    ->where('expdate',$obj->expdate)
-                    ->where('batchno',$obj->batchno)
-                    ->update([
-                        'balqty' => $obj->phyqty
-                    ]);
+                // DB::table('material.stockexp')
+                //         ->where('itemcode',$obj->itemcode)
+                //         ->where('uomcode',$obj->uomcode)
+                //         ->where('expdate',Carbon::createFromFormat($obj->expdate,'d/m/Y')->format('Y-m-d'))
+                //         ->where('batchno',$obj->batchno)
+                //         ->update([
+                //             'balqty' => $obj->qty
+                //         ]);
+            }
         }
     }
 
@@ -3503,10 +3507,10 @@ class TestController extends defaultController
     }
 
     public function chk_if_got(){
-        $phycnt = DB::table('material.phycntdt')
-                        ->where('compcode','9B')
-                        ->where('recno','13')
-                        ->whereIn('itemcode',['2227A','2228A','7613033844713','9557327001575','9557327001582','PANTS L','PANTS M','PANTS XL','T6CFN','TENA XL'])
+        $phycnt = DB::table('temp.khealth_stocktake')
+                        // ->where('compcode','9B')
+                        // ->where('recno','13')
+                        // ->whereIn('itemcode',['2227A','2228A','7613033844713','9557327001575','9557327001582','PANTS L','PANTS M','PANTS XL','T6CFN','TENA XL'])
                         // ->where('itemcode','TRUTH')
                         // ->where('trantype','PHYCNT')
                         // ->where('deptcode','KHEALTH')
@@ -3516,73 +3520,77 @@ class TestController extends defaultController
 
         $x=1;
         foreach ($phycnt as $obj) {
-            $ivdspdt = DB::table('material.ivdspdt')
-                        ->where('compcode','9B')
-                        ->where('itemcode',$obj->itemcode)
-                        ->where('adddate','>=','2024-12-01')
-                        ->sum('txnqty');
-            $minus = $ivdspdt;
-
-            $ivtxndt = DB::table('material.ivtxndt')
-                        ->where('compcode','9B')
-                        ->where('itemcode',$obj->itemcode)
-                        ->where('trandate','>=','2024-12-01')
-                        ->sum('txnqty');
-            $add = $ivtxndt;
-
-            $all = $add - $minus;
-
-            $product = DB::table('material.product')
+            if($obj->freezeqty != $obj->qty){
+                dump($x.'. '.$obj->itemcode);
+                $x++;
+                $ivdspdt = DB::table('material.ivdspdt')
+                            ->where('compcode','9B')
                             ->where('itemcode',$obj->itemcode)
-                            ->where('uomcode',$obj->uomcode)
-                            ->first();
+                            ->where('adddate','>=','2024-12-01')
+                            ->sum('txnqty');
+                $minus = $ivdspdt;
 
-            $netmvqty11 = $product->qtyonhand - $all;
-            // dump($product->qtyonhand);
-            // dump($all);
-            // dump($netmvqty11);
+                $ivtxndt = DB::table('material.ivtxndt')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$obj->itemcode)
+                            ->where('trandate','>=','2024-12-01')
+                            ->sum('txnqty');
+                $add = $ivtxndt;
 
-            DB::table('material.stockloc')
-                    ->where('itemcode',$obj->itemcode)
-                    ->where('deptcode','KHEALTH')
-                    ->update([
-                        'netmvqty1' => 0,
-                        'netmvqty2' => 0,
-                        'netmvqty3' => 0,
-                        'netmvqty4' => 0,
-                        'netmvqty5' => 0,
-                        'netmvqty6' => 0,
-                        'netmvqty7' => 0,
-                        'netmvqty8' => 0,
-                        'netmvqty9' => 0,
-                        'netmvqty10' => 0,
-                        'netmvval1' => 0,
-                        'netmvval2' => 0,
-                        'netmvval3' => 0,
-                        'netmvval4' => 0,
-                        'netmvval5' => 0,
-                        'netmvval6' => 0,
-                        'netmvval7' => 0,
-                        'netmvval8' => 0,
-                        'netmvval9' => 0,
-                        'netmvval10' => 0,
-                        'netmvval11' => $netmvqty11 * $product->avgcost,
-                        'netmvqty11' => $netmvqty11
-                    ]);
+                $all = $add - $minus;
+
+                $product = DB::table('material.product')
+                                ->where('itemcode',$obj->itemcode)
+                                ->where('uomcode',$obj->uomcode)
+                                ->first();
+
+                $netmvqty11 = $product->qtyonhand - $all;
+                // dump($product->qtyonhand);
+                // dump($all);
+                // dump($netmvqty11);
+
+                DB::table('material.stockloc')
+                        ->where('itemcode',$obj->itemcode)
+                        ->where('deptcode','KHEALTH')
+                        ->update([
+                            'netmvqty1' => 0,
+                            'netmvqty2' => 0,
+                            'netmvqty3' => 0,
+                            'netmvqty4' => 0,
+                            'netmvqty5' => 0,
+                            'netmvqty6' => 0,
+                            'netmvqty7' => 0,
+                            'netmvqty8' => 0,
+                            'netmvqty9' => 0,
+                            'netmvqty10' => 0,
+                            'netmvval1' => 0,
+                            'netmvval2' => 0,
+                            'netmvval3' => 0,
+                            'netmvval4' => 0,
+                            'netmvval5' => 0,
+                            'netmvval6' => 0,
+                            'netmvval7' => 0,
+                            'netmvval8' => 0,
+                            'netmvval9' => 0,
+                            'netmvval10' => 0,
+                            'netmvval11' => $netmvqty11 * $product->avgcost,
+                            'netmvqty11' => $netmvqty11
+                        ]);
+            }
         }
     }
 
     public function btlkn_productkh(){
-        $phycnt = DB::table('material.phycntdt')
-                        ->where('compcode','9B')
-                        ->where('recno','13')
-                        ->whereIn('itemcode',['2227A','2228A','7613033844713','9557327001575','9557327001582','PANTS L','PANTS M','PANTS XL','T6CFN','TENA XL'])
+        $phycnt = DB::table('temp.khealth_stocktake')
+                        // ->where('compcode','9B')
+                        // ->where('recno','13')
+                        // ->whereIn('itemcode',['2227A','2228A','7613033844713','9557327001575','9557327001582','PANTS L','PANTS M','PANTS XL','T6CFN','TENA XL'])
                         // ->where('itemcode','TRUTH')
                         // ->where('trantype','PHYCNT')
                         // ->where('deptcode','KHEALTH')
                         ->get();
 
-        $phycnt = $phycnt->unique('itemcode');
+        // $phycnt = $phycnt->unique('itemcode');
 
         $x=1;
         foreach ($phycnt as $obj) {
