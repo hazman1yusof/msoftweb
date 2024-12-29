@@ -126,11 +126,24 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
                             $join = $join->on('sc.sectorcode', '=', 's.unit');
                             // $join = $join->on('d.unit', '=', 's.unit');
                             $join = $join->where('sc.compcode', '=', session('compcode'));
-                        })
-                        ->where('s.compcode',session('compcode'))
+                        });
+            $stockloc = $stockloc->where('s.compcode',session('compcode'))
                         ->whereBetween('s.unit',[$unit_from,$unit_to.'%'])
                         ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
-                        ->whereBetween('s.itemcode',[$item_from,$item_to.'%'])
+                        ->whereBetween('s.itemcode',[$item_from,$item_to.'%']);
+
+            if(strtolower($unit_from)=='khealth'){
+                $stockloc = $stockloc->join('material.stockexp as se', function($join){
+                                $join = $join->on('se.itemcode', '=', 's.itemcode');
+                                $join = $join->on('se.deptcode', '=', 's.deptcode');
+                                $join = $join->on('se.uomcode', '=', 's.uomcode');
+                                $join = $join->where('se.compcode', '=', session('compcode'));
+                                $join = $join->where('se.unit', '=', session('unit'));
+                                $join = $join->on('se.year', '=', 's.year');
+                            });
+            }
+
+            $stockloc = $stockloc->where('s.compcode',session('compcode'))
                         ->where('s.year', '=', $year)
                         ->orderBy('s.deptcode', 'ASC')
                         ->orderBy('s.itemcode', 'ASC')
@@ -209,10 +222,10 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
     }
     
     public function get_bal($array_obj,$period){
-        $open_balqty = 0;
-        $close_balqty = 0;
-        $open_balval = 0;
-        $close_balval = 0;
+        $open_balqty = $array_obj['openbalqty'];
+        $close_balqty = $array_obj['openbalqty'];
+        $open_balval = $array_obj['openbalval'];
+        $close_balval = $array_obj['openbalval'];
         $until = intval($period) - 1;
 
         for ($from = 1; $from <= $until; $from++) { 

@@ -64,14 +64,14 @@ class TestController extends defaultController
             //     return $this->update_stockloc_uomcode($request);
             // case 'update_productmaster':
                 // return $this->update_productmaster($request);
-            case 'chk_if_got':
-                return $this->chk_if_got($request);
-            case 'betulkan_stockloc_kh':
-                return $this->betulkan_stockloc_kh($request);
+            // case 'chk_if_got':
+            //     return $this->chk_if_got($request);
+            // case 'betulkan_stockloc_kh':
+            //     return $this->betulkan_stockloc_kh($request);
             // case 'upd_glmastdtl_2':
             //     return $this->upd_glmastdtl_2($request);
-            case 'btlkn_productkh':
-                return $this->btlkn_productkh($request);
+            case 'btlkn_qtymv12':
+                return $this->btlkn_qtymv12($request);
             // case 'stockloc_JTR_header':
             //     return $this->stockloc_JTR_header($request);
             // case 'add_radiology':
@@ -3644,6 +3644,47 @@ class TestController extends defaultController
 
                 $x++;
             }
+        }
+    }
+
+    public function btlkn_qtymv12(){
+        $phycnt = DB::table('temp.khealth_stocktake')
+                        // ->where('compcode','9B')
+                        // ->where('recno','13')
+                        // ->whereIn('itemcode',['2227A','2228A','7613033844713','9557327001575','9557327001582','PANTS L','PANTS M','PANTS XL','T6CFN','TENA XL'])
+                        // ->where('itemcode','TRUTH')
+                        // ->where('trantype','PHYCNT')
+                        // ->where('deptcode','KHEALTH')
+                        ->get();
+
+        $phycnt = $phycnt->unique('itemcode');
+
+        $x=1;
+        foreach ($phycnt as $obj) {
+                dump($x.'-'.$obj->itemcode);
+
+                $product = DB::table('material.product')
+                                    ->where('itemcode',$obj->itemcode)
+                                    ->where('uomcode',$obj->uomcode)
+                                    ->first();
+
+                $stockloc = DB::table('material.stockloc')
+                                    ->where('itemcode',$obj->itemcode)
+                                    ->where('uomcode',$obj->uomcode)
+                                    ->where('deptcode','KHEALTH');
+                                    
+                if($stockloc->exists()){
+                    $stockloc = $stockloc->first();
+                    $netmvqty12 = $stockloc->qtyonhand - $stockloc->netmvqty11;
+
+                    $stockloc = DB::table('material.stockloc')
+                                        ->where('itemcode',$obj->itemcode)
+                                        ->where('uomcode',$obj->uomcode)
+                                        ->where('deptcode','KHEALTH')
+                                        ->update([
+                                            'netmvqty12' => $netmvqty12
+                                        ]);
+                }
         }
     }
     
