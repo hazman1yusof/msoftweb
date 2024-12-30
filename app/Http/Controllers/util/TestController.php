@@ -66,10 +66,10 @@ class TestController extends defaultController
                 // return $this->update_productmaster($request);
             // case 'chk_if_got':
             //     return $this->chk_if_got($request);
-            // case 'betulkan_stockloc_kh':
-            //     return $this->betulkan_stockloc_kh($request);
-            // case 'upd_glmastdtl_2':
-            //     return $this->upd_glmastdtl_2($request);
+            case 'betulkan_stockexp_semua':
+                return $this->betulkan_stockexp_semua($request);
+            case 'betulkan_stockexp_semua_chk':
+                return $this->betulkan_stockexp_semua_chk($request);
             case 'btlkn_qtymv12':
                 return $this->btlkn_qtymv12($request);
             // case 'stockloc_JTR_header':
@@ -3685,6 +3685,154 @@ class TestController extends defaultController
                                             'netmvqty12' => $netmvqty12
                                         ]);
                 }
+        }
+    }
+
+    public function betulkan_stockexp_semua_chk(Request $request){
+        $unit = $request->unit;
+        $deptcode = $request->unit;
+        $year=2024;
+
+        $stockexp = DB::table('material.product')
+                            ->where('compcode','9B')
+                            ->where('unit',$unit)
+                            // ->where('deptcode',$deptcode)
+                            ->get();
+
+        foreach ($stockexp as $key => $value) {
+            $stockexp = DB::table('material.stockexp')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('compcode','9B')
+                            ->where('deptcode',$deptcode);
+
+            $stockloc = DB::table('material.stockloc')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('compcode','9B')
+                            ->where('deptcode',$deptcode);
+
+            if($stockloc->exists() && $stockexp->exists()){
+                $balqty = $stockexp->sum('balqty');
+                $qtyonhand = $stockloc->first()->qtyonhand;
+
+                if($balqty != $qtyonhand){
+                    dump($value->itemcode.' -> stockexp sum: '.$balqty.' ----- stockloc: '.$qtyonhand);
+                }
+            }
+        }
+    }
+
+    public function betulkan_stockexp_semua(Request $request){
+        $unit = $request->unit;
+        $deptcode = $request->unit;
+        $year=2024;
+
+        $stockexp = DB::table('material.product')
+                            ->where('compcode','9B')
+                            ->where('unit',$unit)
+                            // ->where('itemcode','1416FR')
+                            // ->where('deptcode',$deptcode)
+                            ->get();
+
+        $x = 1;
+        foreach ($stockexp as $key => $value) {
+            $stockexp = DB::table('material.stockexp')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('compcode','9B')
+                            ->where('deptcode',$deptcode);
+
+            $stockloc = DB::table('material.stockloc')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('compcode','9B')
+                            ->where('deptcode',$deptcode);
+
+            if($stockloc->exists() && $stockexp->exists()){
+                $balqty = $stockexp->sum('balqty');
+                $qtyonhand = $stockloc->first()->qtyonhand;
+
+                if($balqty != $qtyonhand){
+                    dump($x.'. '.$value->itemcode.' -> stockexp sum: '.$balqty.' ----- stockloc: '.$qtyonhand);
+                    $x++;
+
+                    //1.
+                    if($qtyonhand>$balqty){
+                        $var = $qtyonhand - $balqty;
+
+                        $stockexp_chg = DB::table('material.stockexp')
+                                            ->where('compcode','9B')
+                                            ->where('itemcode',$value->itemcode)
+                                            ->where('deptcode',$deptcode)
+                                            ->orderBy('idno','desc')
+                                            ->first();
+
+                        DB::table('material.stockexp')
+                                    ->where('idno',$stockexp_chg->idno)
+                                    ->where('compcode','9B')
+                                    ->where('itemcode',$value->itemcode)
+                                    ->update([
+                                        'balqty' => $stockexp_chg->balqty + $var
+                                    ]);
+
+                        $chg = $stockexp_chg->balqty + $var;
+                        dump('change stockexp '.$value->itemcode.' to '.$chg);
+
+                    }else if($qtyonhand<$balqty){
+                        $stockexp_chg = DB::table('material.stockexp')
+                                            ->where('compcode','9B')
+                                            ->where('itemcode',$value->itemcode)
+                                            ->where('deptcode',$deptcode)
+                                            ->orderBy('idno','desc')
+                                            ->get();
+
+                        $baki = $qtyonhand;
+                        $zerorise = 0;
+                        foreach ($stockexp_chg as $obj) {
+                            $baki = $baki - $obj->balqty;
+                            if($zerorise == 1){
+                                DB::table('material.stockexp')
+                                    ->where('idno',$obj->idno)
+                                    ->where('compcode','9B')
+                                    ->where('itemcode',$value->itemcode)
+                                    ->update([
+                                        'balqty' => 0
+                                    ]);
+                                dump('change stockexp '.$value->itemcode.' to 0');
+                            }else{
+                                if($baki == 0){
+                                    $zerorise = 1;
+                                    // DB::table('material.stockexp')
+                                    //     ->where('idno',$obj->idno)
+                                    //     ->where('compcode','9B')
+                                    //     ->where('itemcode',$itemcode)
+                                    //     ->update([
+                                    //         'balqty' => 0
+                                    //     ]);
+
+                                    // continue;
+                                }else if($baki > 0){
+                                    // DB::table('material.stockexp')
+                                    //     ->where('idno',$obj->idno)
+                                    //     ->where('compcode','9B')
+                                    //     ->where('itemcode',$itemcode)
+                                    //     ->update([
+                                    //         'balqty' => 0
+                                    //     ]);
+                                }else if($baki < 0){
+                                    DB::table('material.stockexp')
+                                        ->where('idno',$obj->idno)
+                                        ->where('compcode','9B')
+                                        ->where('itemcode',$value->itemcode)
+                                        ->update([
+                                            'balqty' => $baki + $obj->balqty
+                                        ]);
+                                    $chg = $baki + $obj->balqty;
+                                    dump('change stockexp '.$value->itemcode.' to '.$chg);
+                                    $zerorise = 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     
