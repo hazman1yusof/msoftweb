@@ -58,19 +58,11 @@ class YearEndController extends defaultController
     public function yearEnd_form(Request $request){
         DB::beginTransaction();
         try {
-            $stockloc = DB::table('material.stockloc')
-                        ->where('compcode',session('compcode'))
-                        ->where('deptcode','PCS')
-                        ->orderBy('idno','DESC');
 
-            if(!$stockloc->exists()){
-                throw new \Exception("No stockloc for PCS");
-            }
-
-            $lastyear = $stockloc->first()->year;
+            $curryear = Carbon::now("Asia/Kuala_Lumpur")->format('Y');
 
             $stockloc = DB::table('material.stockloc')
-                            ->where('year',$lastyear)
+                            ->where('year',$curryear)
                             ->where('compcode',session('compcode'));
 
             if((strtoupper($request->dept_from) == 'ZZZ' && strtoupper($request->dept_to) == 'ZZZ')){
