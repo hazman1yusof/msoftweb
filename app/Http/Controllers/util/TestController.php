@@ -72,10 +72,10 @@ class TestController extends defaultController
                 return $this->betulkan_stockexp_semua_chk($request);
             case 'btlkn_qtymv12':
                 return $this->btlkn_qtymv12($request);
-            // case 'stockloc_JTR_header':
-            //     return $this->stockloc_JTR_header($request);
-            // case 'add_radiology':
-            //     return $this->add_radiology($request);
+            case 'stocktake_imp_header':
+                return $this->stocktake_imp_header($request);
+            case 'stocktake_imp_dtl':
+                return $this->stocktake_imp_dtl($request);
             // case 'betulkan_uom_kh_stockloc':
             //     return $this->betulkan_uom_kh_stockloc($request);
             // case 'betulkan_uom_kh_product':
@@ -3093,7 +3093,7 @@ class TestController extends defaultController
 
     public function stocktake_imp_header(){
 
-        $request_no = $this->request_no('PHYCNT', 'IMP');
+        $request_no = $this->request_no('PHYCNT', 'FKWSTR');
         $recno = $this->recno('IV','PHYCNT');
 
         $table = DB::table("material.phycnthd");
@@ -3101,11 +3101,11 @@ class TestController extends defaultController
         $array_insert = [
             'docno' => $request_no,
             'recno' => $recno,
-            'srcdept' => 'IMP',
+            'srcdept' => 'FKWSTR',
             'itemfrom' => '',
             'itemto' => '',
-            'frzdate' => Carbon::now("Asia/Kuala_Lumpur"),//freeze date
-            'frztime' => Carbon::now("Asia/Kuala_Lumpur")->format('h:i:s'),//freeze time
+            'frzdate' => '2024-12-16',//freeze date
+            'frztime' => '11:00:00',//freeze time
             'phycntdate' => Carbon::now("Asia/Kuala_Lumpur"),
             'phycnttime' => Carbon::now("Asia/Kuala_Lumpur"),
             'respersonid' => session('username'), //freeze user
@@ -3122,13 +3122,11 @@ class TestController extends defaultController
         print_r($idno);
     }
 
-    public function stocktake_imp_dtl(){
-        $idno=6;
+    public function stocktake_imp_dtl(Request $request){
+        $idno=$request->idno;
         // $from=5001;
         // $to=10000;
-        $table = DB::table('temp.imp_stocktake')
-                    // ->whereBetween('idno',[$from,$to])
-                    ->where('idno','>','12437')
+        $table = DB::table('temp.fkwstr_stocktake')
                     ->get();
 
         $phycnthd =  DB::table('material.phycnthd')
@@ -3136,16 +3134,17 @@ class TestController extends defaultController
                         ->first();
 
         foreach ($table as $key => $value) {
-            $myitemcode=preg_replace('/\s+/', '', $value->itemcode);
-            $myuom=preg_replace('/\s+/', '', $value->uom);
-            $myqty=preg_replace('/\s+/', '', $value->phyqty);
+            $myitemcode=$value->itemcode;
+            $myuom=$value->uom;
+            $thyqty=$value->sys_qty;
+            $phyqty=$value->qty;
 
             $stockloc = DB::table('material.product as p')
                         ->select('p.avgcost','s.qtyonhand')
                         ->join('material.stockloc as s', function($join){
                             $join = $join->on('p.itemcode', '=', 's.itemcode')
                                           ->where('s.compcode','9B')
-                                          ->where('s.deptcode','IMP');
+                                          ->where('s.deptcode','FKWSTR');
                         })
                         ->where('p.itemcode',$myitemcode)
                         ->where('p.compcode','9B');
@@ -3155,7 +3154,7 @@ class TestController extends defaultController
             }else{
                 $stockloc = $stockloc->first();
 
-                DB::table('temp.phycntdt')
+                DB::table('material.phycntdt')
                     ->insert([
                         'compcode' => session('compcode'),
                         'srcdept' => $phycnthd->srcdept,
@@ -3167,8 +3166,8 @@ class TestController extends defaultController
                         'adduser' => 'system',
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'unitcost' => $stockloc->avgcost,
-                        'thyqty' => $stockloc->qtyonhand,
-                        'phyqty' => $myqty,
+                        'thyqty' => $thyqty,
+                        'phyqty' => $phyqty,
                         'recno' => $phycnthd->recno,
                         // 'expdate' => $value->expdate,
                         'frzdate' => $phycnthd->frzdate,
@@ -3179,22 +3178,22 @@ class TestController extends defaultController
         }
     }
 
-    public function stocktake_imp_dtl2(){
+    // public function stocktake_imp_dtl2(){
 
-        $table = DB::table('material.phycntdt')
-                    ->where('recno',14)
-                    ->get();
+    //     $table = DB::table('material.phycntdt')
+    //                 ->where('recno',14)
+    //                 ->get();
 
-        foreach ($table as $value) {
-            $product = DB::table('material.product')
-                            ->where('compcode','9B')
-                            ->where('itemcode',$value->itemcode)
-                            ->where('uomcode',$value->uomcode);
-            if(!$product->exists()){
-                dump('not exists product -> '.$value->itemcode.' - '.$value->uomcode);
-            }
-        }
-    }
+    //     foreach ($table as $value) {
+    //         $product = DB::table('material.product')
+    //                         ->where('compcode','9B')
+    //                         ->where('itemcode',$value->itemcode)
+    //                         ->where('uomcode',$value->uomcode);
+    //         if(!$product->exists()){
+    //             dump('not exists product -> '.$value->itemcode.' - '.$value->uomcode);
+    //         }
+    //     }
+    // }
 
     public function stockloc_JTR_header(){
         $request_no = $this->request_no('JTR','IMP');
