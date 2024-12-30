@@ -30,7 +30,7 @@
                     <td data-format="0.00" style="text-align: right">{{number_format($obj->amount, 2, '.', ',')}}</td>
                     <td data-format="0.00" style="text-align: right">{{number_format($obj->costprice, 2, '.', ',')}}</td>
                     <td data-format="0.00" style="text-align: right">{{number_format($obj->taxamount, 2, '.', ',')}}</td>
-                    <td data-format="0.00" style="text-align: right">{{number_format($obj->amount+$obj->taxamount, 2, '.', ',')}}</td>
+                    <td data-format="0.00" style="text-align: right">{{$obj->amount+$obj->taxamount}}</td>
                 </tr>
                 @php($amt += $obj->amount)
                 @php($cpr += $obj->costprice)
@@ -47,7 +47,7 @@
                 <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($amt, 2, '.', ',')}}</td>
                 <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($cpr, 2, '.', ',')}}</td>
                 <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($tax, 2, '.', ',')}}</td>
-                <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($tot, 2, '.', ',')}}</td>
+                <td data-format="0.00" style="text-align: right; font-weight:bold">{{$tot}}</td>
             </table>
         @php($totalAmount += $tot)
     @endforeach
@@ -60,7 +60,7 @@
             <td></td>
             <td></td>
             <td style="font-weight:bold">GRAND TOTAL</td>
-            <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($totalAmount, 2, '.', ',')}}</td>
+            <td data-format="0.00" style="text-align: right; font-weight:bold">{{$totalAmount}}</td>
         </table>
 </table>
 

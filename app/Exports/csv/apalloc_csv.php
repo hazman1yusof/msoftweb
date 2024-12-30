@@ -39,7 +39,7 @@ class apalloc_csv implements FromView
 
         $table = DB::table('finance.apalloc')
                     ->where('recstatus','POSTED')
-                    ->where('compcode','9B');
+                    ->where('compcode',session('compcode'));
 
         if(!empty($this->from)){
                 $table = $table->whereDate('allocdate','>=',$this->from)

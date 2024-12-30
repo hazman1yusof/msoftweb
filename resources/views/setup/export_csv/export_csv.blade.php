@@ -42,7 +42,7 @@
 		font-weight:bold;
 	}
 	.btnform .btn{
-		width: 16% !important;
+		width: 24% !important;
 	}
 	.btnform .btn b{
 		letter-spacing: 0.5px !important;
@@ -75,8 +75,8 @@
 	</div>
 
 	<div class="col-md-12">
-		<div class="panel panel-default" style="height: 150px;">
-			<div class="panel-body">
+		<div class="panel panel-default" style="height: 213px;">
+			<div class="panel-body" style="padding-left: 35px !important;">
 				<div class='col-md-12 btnform' style="padding:0px">
 				 <fieldset>
 					<button name="export_dbacthdr" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_dbacthdr'>

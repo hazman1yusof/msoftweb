@@ -38,7 +38,7 @@ class dbacthdr_csv implements FromView
     public function view(): View{
 
         $table = DB::table('debtor.dbacthdr')
-                    ->where('compcode','9B');
+                    ->where('compcode',session('compcode'));
 
         if(!empty($this->from)){
                 $table = $table->whereDate('posteddate','>=',$this->from)
