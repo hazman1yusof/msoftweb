@@ -808,6 +808,7 @@ class PurchaseOrderController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('recno','=',$purordhd_get->recno)
                     ->update([
+                        'compcode' => 'xx',
                         'AuthorisedID' => $purordhd_get->adduser,
                         'recstatus' => 'CANCELLED',
                         'trantype' => 'REOPEN',
