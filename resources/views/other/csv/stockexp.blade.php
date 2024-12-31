@@ -1,0 +1,40 @@
+<table>
+    <tr>
+        <td>compcode</td>
+        <td>deptcode</td>
+        <td>itemcode</td>
+        <td>uomcode</td>
+        <td>expdate</td>
+        <td>batchno</td>
+        <td>balqty</td>
+        <td>adduser</td>
+        <td>adddate</td>
+        <td>addtime</td>
+        <td>upduser</td>
+        <td>upddate</td>
+        <td>updtime</td>
+        <td>lasttt</td>
+        <td>year</td>
+        <td>unit</td>
+    </tr>
+    @foreach ($table as $obj)
+        <tr>
+            <td>{{$obj->compcode}}</td>
+            <td>{{$obj->deptcode}}</td>
+            <td>{{$obj->itemcode}}</td>
+            <td>{{$obj->uomcode}}</td>
+            <td>{{Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}</td>
+            <td>{{$obj->batchno}}</td>
+            <td>{{$obj->balqty}}</td>
+            <td>{{$obj->adduser}}</td>
+            <td>{{Carbon\Carbon::parse($obj->adddate)->format('d/m/Y')}}</td>
+            <td>{{$obj->addtime}}</td>
+            <td>{{$obj->upduser}}</td>
+            <td>{{Carbon\Carbon::parse($obj->upddate)->format('d/m/Y')}}</td>
+            <td>{{$obj->updtime}}</td>
+            <td>{{$obj->lasttt}}</td>
+            <td>{{$obj->year}}</td>
+            <td>{{$obj->unit}}</td>
+        </tr>
+    @endforeach
+</table>

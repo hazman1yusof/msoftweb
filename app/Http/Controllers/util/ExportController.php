@@ -24,6 +24,8 @@ use App\Exports\csv\ivdspdt_csv;
 use App\Exports\csv\dballoc_csv;
 use App\Exports\csv\apalloc_csv;
 use App\Exports\csv\apactdtl_csv;
+use App\Exports\csv\stockloc_csv;
+use App\Exports\csv\stockexp_csv;
 
 use App\Jobs\SendEmailPR;
 use App\Mail\sendmaildefault;
@@ -66,6 +68,10 @@ class ExportController extends defaultController
                 return $this->export_apalloc($request);
             case 'export_apactdtl':
                 return $this->export_apactdtl($request);
+            case 'export_stockloc':
+                return $this->export_stockloc($request);    
+            case 'export_stockexp':
+                return $this->export_stockexp($request);
             default:
                 return 'error happen..';
         }
@@ -121,5 +127,13 @@ class ExportController extends defaultController
 
     public function export_apactdtl(Request $request){
         return Excel::download(new apactdtl_csv($request), 'apactdtl_csv.csv');
+    }
+
+    public function export_stockloc(Request $request){
+        return Excel::download(new stockloc_csv($request), 'stockloc_csv.csv');
+    }
+
+    public function export_stockexp(Request $request){
+        return Excel::download(new stockexp_csv($request), 'stockexp_csv.csv');
     }
 }

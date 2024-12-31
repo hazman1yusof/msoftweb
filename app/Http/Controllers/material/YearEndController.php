@@ -85,7 +85,8 @@ class YearEndController extends defaultController
                             ->where('itemcode',$value->itemcode)
                             ->where('uomcode',$value->uomcode)
                             ->where('year',$request->year)
-                            ->where('unit',session('unit'))
+                            ->where('unit',$request->unit)
+                            // ->where('unit',session('unit'))
                             ->exists();
 
                 if($exists){
@@ -104,7 +105,7 @@ class YearEndController extends defaultController
                             'adduser' => session('username'),
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'recstatus' => $value->recstatus,
-                            'unit' => session('unit'),
+                            'unit' => $value->unit,
                         ]);
                 }
             }
@@ -157,7 +158,7 @@ class YearEndController extends defaultController
                             ->where('itemcode',$value->itemcode)
                             ->where('uomcode',$value->uomcode)
                             ->where('year',$lastyear)
-                            ->where('unit',session('unit'));
+                            ->where('unit',$value->unit);
 
                 if(!$stockloc_->exists()){
                     continue;
@@ -216,7 +217,7 @@ class YearEndController extends defaultController
                             DB::table('material.stockexp')
                                 ->insert([
                                     'compcode' => session('compcode'), 
-                                    'unit' => session('unit'), 
+                                    'unit' => $obj_exp->unit, 
                                     'deptcode' => $obj_exp->deptcode, 
                                     'itemcode' => $obj_exp->itemcode, 
                                     'uomcode' => $obj_exp->uomcode, 
@@ -236,7 +237,7 @@ class YearEndController extends defaultController
                         DB::table('material.stockexp')
                                 ->insert([
                                     'compcode' => session('compcode'), 
-                                    'unit' => session('unit'), 
+                                    'unit' => $value->unit, 
                                     'deptcode' => $value->deptcode, 
                                     'itemcode' => $value->itemcode, 
                                     'uomcode' => $value->uomcode, 
