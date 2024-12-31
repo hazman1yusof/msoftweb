@@ -39,7 +39,7 @@ class dballoc_csv implements FromView
 
         $table = DB::table('debtor.dballoc')
                     ->where('recstatus','POSTED')
-                    ->where('compcode','9B');
+                    ->where('compcode',session('compcode'));
 
         if(!empty($this->from)){
                 $table = $table->whereDate('allocdate','>=',$this->from)

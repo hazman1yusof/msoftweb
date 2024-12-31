@@ -48,7 +48,7 @@ class apactdtl_csv implements FromView
                     ->where('ahdr.recstatus','POSTED')
                     ->where('ahdr.source','AP')
                     ->where('ahdr.trantype','IN')
-                    ->where('ahdr.compcode','9B');
+                    ->where('ahdr.compcode',session('compcode'));
 
         if(!empty($this->from)){
                 $table = $table->whereDate('ahdr.postdate','>=',$this->from)

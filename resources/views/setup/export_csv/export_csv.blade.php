@@ -42,7 +42,7 @@
 		font-weight:bold;
 	}
 	.btnform .btn{
-		width: 16% !important;
+		width: 24% !important;
 	}
 	.btnform .btn b{
 		letter-spacing: 0.5px !important;
@@ -53,7 +53,7 @@
 <div class="container mycontainer">
   <div class="row">
 	<div class="col-md-12">
-		<div class="panel panel-default" style="height: 120px;">
+		<div class="panel panel-default" style="height: 200px;">
 			<div class="panel-heading">Item Movement Report</div>
 			<div class="panel-body">
 				<form class='form-horizontal' style='width:99%' id='formdata'>
@@ -69,14 +69,25 @@
 			      </div>
 			    </div>
 
+					<div class="form-group" >
+						<div class="col-md-3">
+						  <label class="control-label" for="datefrom">Dept Code</label>  
+							<select name="deptcode" id="deptcode" class="form-control input-sm">
+							  <option value="khealth">khealth</option>
+							  <option value="imp">imp</option>
+							  <option value="fkwstr">fkwstr</option>
+							</select>
+						</div>
+					</div>
+
 				</form>
 			</div>
 		</div> 
 	</div>
 
 	<div class="col-md-12">
-		<div class="panel panel-default" style="height: 150px;">
-			<div class="panel-body">
+		<div class="panel panel-default" style="height: 213px;">
+			<div class="panel-body" style="padding-left: 35px !important;">
 				<div class='col-md-12 btnform' style="padding:0px">
 				 <fieldset>
 					<button name="export_dbacthdr" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_dbacthdr'>
@@ -130,6 +141,14 @@
 					<button name="export_apactdtl" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_apactdtl'>
 						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>Apactdtl</b>
 					</button>
+					
+					<button name="export_stockloc" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_stockloc'>
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>Stockloc</b>
+					</button>
+					
+					<button name="export_stockexp" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_stockexp'>
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>Stockexp</b>
+					</button>
 				  </fieldset>
 				</div>
 			</div>
@@ -150,8 +169,9 @@ $(document).ready(function () {
 		var action = $(this).data('btntype');
 		var from = $('#datefrom').val();
 		var to = $('#dateto').val();
+		var deptcode = $('#deptcode').val();
 
-		window.open('./export_csv/table?action='+action+'&from='+from+'&to='+to, '_blank');
+		window.open('./export_csv/table?action='+action+'&from='+from+'&to='+to+'&deptcode='+deptcode, '_blank');
 	});
 });
 		

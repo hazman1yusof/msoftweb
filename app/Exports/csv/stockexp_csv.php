@@ -23,7 +23,7 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class apalloc_csv implements FromView
+class stockexp_csv implements FromView
 {
     
     /**
@@ -33,21 +33,23 @@ class apalloc_csv implements FromView
     public function __construct($request){
         $this->from = $request->from;
         $this->to = $request->to;
+        $this->deptcode = $request->deptcode;
     }
     
     public function view(): View{
 
-        $table = DB::table('finance.apalloc')
-                    ->where('recstatus','POSTED')
-                    ->where('compcode',session('compcode'));
+        $table = DB::table('material.stockexp')
+                    ->where('deptcode',$this->deptcode)
+                    ->where('year','2024')
+                    ->where('compcode','9B');
 
-        if(!empty($this->from)){
-                $table = $table->whereDate('allocdate','>=',$this->from)
-                                ->whereDate('allocdate','<=',$this->to);
-        }
+        // if(!empty($this->from)){
+        //         $table = $table->whereDate('postdate','>=',$this->from)
+        //                         ->whereDate('postdate','<=',$this->to);
+        // }
                     
         $table = $table->get();
 
-        return view('other.csv.apalloc',compact('table'));
+        return view('other.csv.stockexp',compact('table'));
     }
 }
