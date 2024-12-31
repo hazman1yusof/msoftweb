@@ -747,7 +747,7 @@ class PurchaseOrderController extends defaultController
                     ->where('idno','=',$value);
 
                 $purordhd_get = $purordhd->first();
-                if(!in_array($purordhd_get->recstatus, ['SUPPORT','VERIFIED','APPROVED'])){
+                if(!in_array($purordhd_get->recstatus, ['PREPARED','SUPPORT','VERIFIED','APPROVED'])){
                     continue;
                 }
 
