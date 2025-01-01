@@ -174,7 +174,8 @@ class YearEndController extends defaultController
                         ->where('itemcode',$value->itemcode)
                         ->where('uomcode',$value->uomcode)
                         ->where('year',$lastyear)
-                        ->where('unit',session('unit'))
+                        ->where('unit',$request->unit)
+                        // ->where('unit',session('unit'))
                         ->update([
                             'openbalqty' => $get_bal->open_balqty,
                             'openbalval' => $get_bal->open_balval,
@@ -192,7 +193,8 @@ class YearEndController extends defaultController
                 //yg tahun baru
                 $exists = DB::table('material.stockexp')
                             ->where('stockexp.compcode','=',session('compcode'))
-                            ->where('stockexp.unit','=',session('unit'))
+                            ->where('stockexp.unit',$request->unit)
+                            // ->where('stockexp.unit','=',session('unit'))
                             ->where('stockexp.deptcode','=',$value->deptcode)
                             ->where('stockexp.itemcode','=',$value->itemcode)
                             ->where('stockexp.uomcode','=',$value->uomcode)
@@ -205,7 +207,8 @@ class YearEndController extends defaultController
                     //yg tahun lepas
                     $stockexp_lama = DB::table('material.stockexp')
                                     ->where('stockexp.compcode','=',session('compcode'))
-                                    ->where('stockexp.unit','=',session('unit'))
+                                    ->where('stockexp.unit',$request->unit)
+                                    // ->where('stockexp.unit','=',session('unit'))
                                     ->where('stockexp.deptcode','=',$value->deptcode)
                                     ->where('stockexp.itemcode','=',$value->itemcode)
                                     ->where('stockexp.uomcode','=',$value->uomcode)

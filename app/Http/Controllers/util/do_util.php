@@ -110,7 +110,7 @@ class do_util extends defaultController{
             ->where('stockexp.deptcode','=',$value->deldept)
             ->where('stockexp.itemcode','=',$value->itemcode)
             ->where('stockexp.expdate','=',$value->expdate)
-            ->where('stockexp.year','=', defaultController::toYear($delordhd_obj->trandate))
+            // ->where('stockexp.year','=', defaultController::toYear($delordhd_obj->trandate))
             ->where('stockexp.uomcode','=',$value->uomcode)
             ->where('stockexp.batchno','=',$value->batchno);
 
@@ -124,7 +124,7 @@ class do_util extends defaultController{
                 ->where('stockexp.deptcode','=',$value->deldept)
                 ->where('stockexp.itemcode','=',$value->itemcode)
                 ->where('stockexp.expdate','=',$value->expdate)
-                ->where('stockexp.year','=', defaultController::toYear($delordhd_obj->trandate))
+                // ->where('stockexp.year','=', defaultController::toYear($delordhd_obj->trandate))
                 ->where('stockexp.uomcode','=',$value->uomcode)
                 ->where('stockexp.batchno','=',$value->batchno)
                 ->update([

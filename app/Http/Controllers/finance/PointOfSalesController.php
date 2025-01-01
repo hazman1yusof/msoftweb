@@ -3159,7 +3159,7 @@ class PointOfSalesController extends defaultController
             //4. tolak expdate, kalu ada batchno
             $expdate_obj = DB::table('material.stockexp')
                 ->where('compcode',session('compcode'))
-                ->where('Year','=',defaultController::toYear($dbacthdr->entrydate))
+                // ->where('Year','=',defaultController::toYear($dbacthdr->entrydate))
                 ->where('DeptCode','=',$dbacthdr->deptcode)
                 ->where('ItemCode','=',$my_chggroup)
                 ->where('UomCode','=',$my_uom)
@@ -3316,7 +3316,7 @@ class PointOfSalesController extends defaultController
             //4. tolak expdate, kalu ada batchno
             $expdate_obj = DB::table('material.stockexp')
                 ->where('compcode',session('compcode'))
-                ->where('Year','=',defaultController::toYear($dbacthdr->entrydate))
+                // ->where('Year','=',defaultController::toYear($dbacthdr->entrydate))
                 ->where('DeptCode','=',$dbacthdr->deptcode)
                 ->where('ItemCode','=',$billsum_obj->chggroup)
                 ->where('UomCode','=',$billsum_obj->uom)
@@ -3427,7 +3427,7 @@ class PointOfSalesController extends defaultController
             //4. tolak expdate, kalu ada batchno
             $expdate_obj = DB::table('material.stockexp')
                 ->where('compcode',session('compcode'))
-                ->where('Year','=',defaultController::toYear($dbacthdr->entrydate))
+                // ->where('Year','=',defaultController::toYear($dbacthdr->entrydate))
                 ->where('DeptCode','=',$dbacthdr->deptcode)
                 ->where('ItemCode','=',$billsum_obj->chggroup)
                 ->where('UomCode','=',$billsum_obj->uom)

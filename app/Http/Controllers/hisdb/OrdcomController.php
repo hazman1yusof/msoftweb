@@ -2227,7 +2227,7 @@ class OrdcomController extends defaultController
             //4. tolak expdate, kalu ada batchno
             $expdate_obj = DB::table('material.stockexp')
                 ->where('compcode',session('compcode'))
-                ->where('Year','=',defaultController::toYear($chargetrx_obj->trxdate))
+                // ->where('Year','=',defaultController::toYear($chargetrx_obj->trxdate))
                 ->where('DeptCode','=',$chargetrx_obj->reqdept)
                 ->where('ItemCode','=',$chargetrx_obj->chgcode)
                 ->where('UomCode','=',$chargetrx_obj->uom_recv)
@@ -2445,7 +2445,7 @@ class OrdcomController extends defaultController
             //4. tolak expdate, kalu ada batchno
             $expdate_obj = DB::table('material.stockexp')
                 ->where('compcode',session('compcode'))
-                ->where('Year','=',$my_year)
+                // ->where('Year','=',$my_year)
                 ->where('DeptCode','=',$my_deptcode)
                 ->where('ItemCode','=',$my_chgcode)
                 ->where('UomCode','=',$my_uom)
@@ -2692,7 +2692,7 @@ class OrdcomController extends defaultController
             //4. tolak expdate, kalu ada batchno
             $expdate_obj = DB::table('material.stockexp')
                 ->where('compcode',session('compcode'))
-                ->where('Year','=',$my_year)
+                // ->where('Year','=',$my_year)
                 ->where('DeptCode','=',$my_deptcode)
                 ->where('ItemCode','=',$my_chgcode)
                 ->where('UomCode','=',$my_uom)
