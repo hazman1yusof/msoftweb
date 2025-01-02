@@ -10,8 +10,36 @@ $(document).ready(function (){
     // });
     // populate_admhandover_currpt(selrowData('#jqGrid'));
 
-    disableForm('#formAdmhandover');
+    disableForm('#formAdmHandover');
+
+    // $("#new_admHandover").click(function (){
+	// 	button_state_admHandover('wait');
+	// 	enableForm('#formAdmHandover');
+	// 	rdonly('#formAdmHandover');
+	// });
     
+    $("#edit_admHandover").click(function (){
+		button_state_admHandover('wait');
+		enableForm('#formAdmHandover');
+		rdonly('#formAdmHandover');
+	});
+
+    $("#save_admHandover").click(function (){
+		disableForm('#formAdmHandover');
+		if($('#formAdmHandover').isValid({requiredFields: ''}, conf, true)){
+			saveForm_admHandover(function (){
+				$("#cancel_admHandover").data('oper','edit');
+				$("#cancel_admHandover").click();
+				button_state_admHandover('edit');
+
+			});
+		}
+	});
+
+    $("#cancel_admHandover").click(function (){
+		disableForm('#formAdmHandover');
+		button_state_admHandover($(this).data('oper'));
+	});
 });
 
 var errorField = [];
@@ -30,49 +58,77 @@ conf = {
     },
 };
 
+button_state_admHandover('empty');
+function button_state_admHandover(state){
+	switch(state){
+		case 'empty':
+			$("#toggle_admHandover").removeAttr('data-toggle');
+			$('#cancel_admHandover').data('oper','add');
+			$('#save_admHandover,#cancel_admHandover,#edit_admHandover').attr('disabled',true);
+			break;
+		// case 'add':
+		// 	$("#toggle_admHandover").attr('data-toggle','collapse');
+		// 	$('#cancel_admHandover').data('oper','add');
+		// 	$("#new_admHandover").attr('disabled',false);
+		// 	$('#save_admHandover,#cancel_admHandover,#edit_admHandover').attr('disabled',true);
+		// 	break;
+		case 'edit':
+			$("#toggle_admHandover").attr('data-toggle','collapse');
+			$('#cancel_admHandover').data('oper','edit');
+			$("#edit_admHandover").attr('disabled',false);
+			$('#save_admHandover,#cancel_admHandover').attr('disabled',true);
+			break;
+		case 'wait':
+			$("#toggle_admHandover").attr('data-toggle','collapse');
+			$("#save_admHandover,#cancel_admHandover").attr('disabled',false);
+			$('#edit_admHandover').attr('disabled',true);
+			break;
+	}
+	
+}
+
 function empty_admhandover_ptcare(obj){
-    emptyFormdata(errorField,"#formAdmhandover");
+    emptyFormdata(errorField,"#formAdmHandover");
     
     // panel header
-    $('#name_show_admhandover').text('');
-    $('#mrn_show_admhandover').text('');
-    $('#sex_show_admhandover').text('');
-    $('#dob_show_admhandover').text('');
-    $('#age_show_admhandover').text('');
-    $('#race_show_requestFor').text('');
-    $('#race_show_admhandover').text('');
-    $('#religion_show_admhandover').text('');
-	$('#occupation_show_admhandover').text('');
-    $('#citizenship_show_admhandover').text('');
+    $('#name_show_admHandover').text('');
+    $('#mrn_show_admHandover').text('');
+    $('#sex_show_admHandover').text('');
+    $('#dob_show_admHandover').text('');
+    $('#age_show_admHandover').text('');
+    $('#race_show_admHandover').text('');
+    $('#religion_show_admHandover').text('');
+	$('#occupation_show_admHandover').text('');
+    $('#citizenship_show_admHandover').text('');
     $('#area_show_admhandover').text('');
     
-    // formAdmhandover
-    $('#mrn_admhandover').val('');
-    $("#episno_admhandover").val('');
+    // formAdmHandover
+    $('#mrn_admHandover').val('');
+    $("#episno_admHandover").val('');
 }
 
 function populate_admhandover_currpt(obj){
-    emptyFormdata(errorField,"#formAdmhandover");
+    emptyFormdata(errorField,"#formAdmHandover");
     
     // panel header
-    $('#name_show_admhandover').text(obj.Name);
-	$('#mrn_show_admhandover').text(("0000000" + obj.MRN).slice(-7));
-	$('#sex_show_admhandover').text(if_none(obj.Sex).toUpperCase());
-	$('#dob_show_admhandover').text(dob_chg(obj.DOB));
-	$('#age_show_admhandover').text(dob_age(obj.DOB)+' (YRS)');
-	$('#race_show_admhandover').text(if_none(obj.RaceCode).toUpperCase());
-	$('#religion_show_admhandover').text(if_none(obj.religion).toUpperCase());
-	$('#occupation_show_admhandover').text(if_none(obj.OccupCode).toUpperCase());
-	$('#citizenship_show_admhandover').text(if_none(obj.Citizencode).toUpperCase());
-	$('#area_show_admhandover').text(if_none(obj.AreaCode).toUpperCase());
+    $('#name_show_admHandover').text(obj.Name);
+	$('#mrn_show_admHandover').text(("0000000" + obj.MRN).slice(-7));
+	$('#sex_show_admHandover').text(if_none(obj.Sex).toUpperCase());
+	$('#dob_show_admHandover').text(dob_chg(obj.DOB));
+	$('#age_show_admHandover').text(dob_age(obj.DOB)+' (YRS)');
+	$('#race_show_admHandover').text(if_none(obj.RaceCode).toUpperCase());
+	$('#religion_show_admHandover').text(if_none(obj.religion).toUpperCase());
+	$('#occupation_show_admHandover').text(if_none(obj.OccupCode).toUpperCase());
+	$('#citizenship_show_admHandover').text(if_none(obj.Citizencode).toUpperCase());
+	$('#area_show_admHandover').text(if_none(obj.AreaCode).toUpperCase());
     
-    // formAdmhandover
-    $("#mrn_admhandover").val(obj.MRN);
-	$("#episno_admhandover").val(obj.Episno);
+    // formAdmHandover
+    $("#mrn_admHandover").val(obj.MRN);
+	$("#episno_admHandover").val(obj.Episno);
 }
 
 function populate_admhandover_getdata(){
-    emptyFormdata(errorField,"#formAdmhandover",["#mrn_admhandover","#episno_admhandover"]);
+    emptyFormdata(errorField,"#formAdmHandover",["#mrn_admHandover","#episno_admHandover"]);
     
     var saveParam = {
         action: 'get_table_admhandover',
@@ -80,18 +136,19 @@ function populate_admhandover_getdata(){
     
     var postobj = {
         _token: $('#_token').val(),
-        mrn: $("#mrn_admhandover").val(),
-        episno: $("#episno_admhandover").val()
+        mrn: $("#mrn_admHandover").val(),
+        episno: $("#episno_admHandover").val()
     };
     
     $.get("./ptcare_admhandover/table?"+$.param(saveParam), $.param(postobj), function (data){
         
     },'json').done(function (data){
         if(!$.isEmptyObject(data)){
-			autoinsert_rowdata("#formAdmhandover",data.admhandover);
-			autoinsert_rowdata("#formAdmhandover",data.episode);
-			autoinsert_rowdata("#formAdmhandover",data.nurshistory);
-			autoinsert_rowdata("#formAdmhandover",data.pathealth);            
+			autoinsert_rowdata("#formAdmHandover",data.admhandover);
+			autoinsert_rowdata("#formAdmHandover",data.episode);
+			autoinsert_rowdata("#formAdmHandover",data.nurshistory);
+			autoinsert_rowdata("#formAdmHandover",data.pathealth);      
+            button_state_admHandover('edit');      
         }else{
         }
         
@@ -118,14 +175,71 @@ function autoinsert_rowdata(form,rowData){
     });
 }
 
-$('#tab_admhandover').on('shown.bs.collapse', function (){
+function saveForm_admHandover(callback){
+	var saveParam = {
+		action: 'save_table_admHandover',
+		oper: $("#cancel_admHandover").data('oper'),
+		mrn: $("#mrn_admHandover").val(),
+        episno: $("#episno_admHandover").val()
+	}
+	var postobj = {
+		_token: $('#_token').val(),
+		takeoverby: $("#takeoverby").val(),
+
+	};
+	
+	// values = $("#formAdmHandover").serializeArray();
+	
+	// values = values.concat(
+	// 	$('#formAdmHandover input[type=checkbox]:not(:checked)').map(
+	// 		function (){
+	// 			return {"name": this.name, "value": 0}
+	// 		}).get()
+	// );
+	
+	// values = values.concat(
+	// 	$('#formAdmHandover input[type=checkbox]:checked').map(
+	// 		function (){
+	// 			return {"name": this.name, "value": 1}
+	// 		}).get()
+	// );
+	
+	// values = values.concat(
+	// 	$('#formAdmHandover input[type=radio]:checked').map(
+	// 		function (){
+	// 			return {"name": this.name, "value": this.value}
+	// 		}).get()
+	// );
+	
+	// values = values.concat(
+	// 	$('#formAdmHandover select').map(
+	// 		function (){
+	// 			return {"name": this.name, "value": this.value}
+	// 		}).get()
+	// );
+	
+	$.post("./ptcare_admhandover/form?"+$.param(saveParam), $.param(postobj), function (data){
+		
+	},'json').done(function (data){
+		callback(data);
+		// button_state_admHandover('empty');      
+		populate_admhandover_getdata();
+
+	}).fail(function (data){
+		callback(data);
+	});
+}
+
+$('#tab_admHandover').on('shown.bs.collapse', function (){
     // populate_admhandover_currpt(selrowData('#jqGrid'));
-    SmoothScrollTo("#tab_admhandover", 500);
+    SmoothScrollTo("#tab_admHandover", 500);
     populate_admhandover_getdata();
+    rdonly('#formAdmHandover');
+
 });
 
-$("#tab_admhandover").on("hide.bs.collapse", function (){
-    disableForm('#formAdmhandover');
+$("#tab_admHandover").on("hide.bs.collapse", function (){
+    disableForm('#formAdmHandover');
 });
 
 // to format number input to two decimal places (0.00)

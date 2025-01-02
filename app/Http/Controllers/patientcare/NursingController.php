@@ -155,11 +155,14 @@ class NursingController extends defaultController
                         'dop_sharp' => $request->dop_sharp,
                         'dop_burning' => $request->dop_burning,
                         'dop_numb' => $request->dop_numb,
-                        'location' => 'TRIAGE',
+                        'location' => 'ED',
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => $request->lastuser,
-                        'lastupdate'  => $request->lastupdate
+                        'lastupdate'  => $request->lastupdate,
+                        'nursesign' => $request->nursesign,
+                        'eduser' => $request->eduser,
+                        'warduser' => $request->warduser,
                         // 'diagnosis' => $request->diagnosis,
                         // 'vs_painscore' => $request->vs_painscore,
                         // 'moa_others' => $request->moa_others,
@@ -235,7 +238,8 @@ class NursingController extends defaultController
                         'gsc_eye' => $request->gsc_eye,
                         'gsc_verbal' => $request->gsc_verbal,
                         'gsc_motor' => $request->gsc_motor,
-                        'location' => 'TRIAGE',
+                        'totgsc' => $request->totgsc,
+                        'location' => 'ED',
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
@@ -330,7 +334,7 @@ class NursingController extends defaultController
                 ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
-                ->where('location','=','TRIAGE');
+                ->where('location','=','ED');
 
             if(!$nursassessment_triage->exists()){
                 DB::table('nursing.nursassessment')
@@ -415,6 +419,9 @@ class NursingController extends defaultController
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'nursesign' => $request->nursesign,
+                        'eduser' => $request->eduser,
+                        'warduser' => $request->warduser,
                         // 'diagnosis' => $request->diagnosis,
                         // 'vs_painscore' => $request->vs_painscore,
                         // 'moa_others' => $request->moa_others,
@@ -520,6 +527,9 @@ class NursingController extends defaultController
                         'dop_numb' => $request->dop_numb,
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'nursesign' => $request->nursesign,
+                        'eduser' => $request->eduser,
+                        'warduser' => $request->warduser,
                         // 'diagnosis' => $request->diagnosis,
                         // 'vs_painscore' => $request->vs_painscore,
                         // 'moa_others' => $request->moa_others,
@@ -633,7 +643,7 @@ class NursingController extends defaultController
                 ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
-                ->where('location','=','TRIAGE');
+                ->where('location','=','ED');
 
             if(!$nursassessgen_triage->exists()){
                 DB::table('nursing.nursassessgen')
@@ -644,6 +654,7 @@ class NursingController extends defaultController
                         'gsc_eye' => $request->gsc_eye,
                         'gsc_verbal' => $request->gsc_verbal,
                         'gsc_motor' => $request->gsc_motor,
+                        'totgsc' => $request->totgsc,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
@@ -702,6 +713,7 @@ class NursingController extends defaultController
                         'gsc_eye' => $request->gsc_eye,
                         'gsc_verbal' => $request->gsc_verbal,
                         'gsc_motor' => $request->gsc_motor,
+                        'totgsc' => $request->totgsc,
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         // TRIAGE PHYSICAL ASSESSMENT
@@ -817,7 +829,8 @@ class NursingController extends defaultController
 
         try {
 
-            $location = $this->get_location($request->mrn_ti,$request->episno_ti);
+            // $location = $this->get_location($request->mrn_ti,$request->episno_ti);
+            $location = 'ED';
             
             DB::table('nursing.nursassessment')
                     ->insert([
@@ -872,6 +885,9 @@ class NursingController extends defaultController
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'nursesign' => $request->nursesign,
+                        'eduser' => $request->eduser,
+                        'warduser' => $request->warduser,
                     ]);
 
             DB::table('nursing.nurshistory')
@@ -997,7 +1013,7 @@ class NursingController extends defaultController
 
         try {
 
-            $location = $this->get_location($request->mrn_ti,$request->episno_ti);
+            // $location = $this->get_location($request->mrn_ti,$request->episno_ti);
 
             $nursassessment_triageinfo = DB::table('nursing.nursassessment')
                 ->where('mrn','=',$request->mrn_ti)
@@ -1058,6 +1074,9 @@ class NursingController extends defaultController
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'nursesign' => $request->nursesign,
+                        'eduser' => $request->eduser,
+                        'warduser' => $request->warduser,
                     ]);
             }else{
                 $nursassessment_triageinfo
@@ -1107,6 +1126,9 @@ class NursingController extends defaultController
                         'psra_atrisk' => $request->psra_atrisk,
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'nursesign' => $request->nursesign,
+                        'eduser' => $request->eduser,
+                        'warduser' => $request->warduser,
                     ]);
             }
 

@@ -27,6 +27,7 @@ class AdmHandoverController extends defaultController
     public function table(Request $request)
     {
         switch($request->action){
+            
             case 'get_table_admhandover':
                 return $this->get_table_admhandover($request);
             
@@ -38,14 +39,53 @@ class AdmHandoverController extends defaultController
     public function form(Request $request)
     {
         DB::enableQueryLog();
-        // switch($request->action){
+        switch($request->action){
             
-        //     case 'get_table_admhandover':
-        //         return $this->get_table_admhandover($request);
+            case 'save_table_admHandover':
             
-        //     default:
-        //         return 'error happen..';
-        // }
+                switch($request->oper){
+                    case 'edit':
+                        return $this->edit($request);
+                    default:
+                        return 'error happen..';
+                }
+        }
+    }
+
+    public function edit(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            $admhandover = DB::table('nursing.admhandover')
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->where('compcode','=',session('compcode'));
+                        // dd($admhandover);
+
+            if($admhandover->exists()){
+                $admhandover
+                    ->update([
+                        'takeoverby' => $request->takeoverby,
+                    ]);
+
+                    
+            }
+
+            $queries = DB::getQueryLog();
+            // dump($queries);
+
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
     }
 
     public function get_table_admhandover(Request $request){
