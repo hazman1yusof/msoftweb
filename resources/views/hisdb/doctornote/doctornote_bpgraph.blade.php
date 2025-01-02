@@ -24,7 +24,7 @@
 		.diastole{color: blue}
 		.pulse{color: red}
 		.temp{color: darkorange}
-		.dxt{color: green}
+		.gxt{color: green}
 		.legendtepi{position:absolute;left:-200px;color:#666;font-size:small;
 			-webkit-transform: rotate(270deg);
 			-moz-transform: rotate(270deg);
@@ -55,10 +55,10 @@
 
 	<script type="text/javascript">
 
-	$(function() {
+	$(function (){
 
 		$("#rangeshow").text($("#customRange2").val());
-		$("#customRange2").change(function() {
+		$("#customRange2").change(function (){
 			$("#rangeshow").text($("#customRange2").val());
 		});
 
@@ -66,7 +66,7 @@
 		// function fetchBio(){
 		// 	fetch('bio.txt')
 		// 		.then(response => response.text())
-		// 		.then(function(data){
+		// 		.then(function (data){
 		// 			var obj = $.csv.toObjects(data)[0];
 		// 			for (var prop in obj) {
 		// 		        if(!obj.hasOwnProperty(prop)) continue;
@@ -94,16 +94,16 @@
 				episno: "{{request()->get('episno')}}",
 			}
 
-			$.get( "./doctornote/table"+"?"+$.param(param), function( data ) {
+			$.get("./doctornote/table"+"?"+$.param(param), function (data){
 			
-			},'json').done(function(data) {
+			},'json').done(function (data){
 				console.log(data.data);
 
 				var obj = data.data;
 
-				var sis_dis = obj.reduce(function(accum,value,i){
-					let diff = (parseFloat(value.bphistolic) - parseFloat(value.bpdiastolic)) / 2;
-					let center = parseFloat(value.bphistolic) - parseFloat(diff);
+				var sis_dis = obj.reduce(function (accum,value,i){
+					let diff = (parseFloat(value.bpsys_stand) - parseFloat(value.bpdias_stand)) / 2;
+					let center = parseFloat(value.bpsys_stand) - parseFloat(diff);
 					let arr = accum.arr,index = accum.i;
 
 					if(all){
@@ -120,7 +120,7 @@
 
 				},{arr:[],i:0}).arr;
 
-				var pulse = obj.reduce(function(accum,value,i){
+				var pulse = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.hr]); accum.i+=1;}
 					else{
@@ -132,7 +132,7 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var temp = obj.reduce(function(accum,value,i){
+				var temp = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.temp_]); accum.i+=1;}
 					else{
@@ -144,19 +144,19 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var dxt = obj.reduce(function(accum,value,i){
+				var gxt = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
-					if(all){ arr.push([index+1,value.dxt]); accum.i+=1;}
+					if(all){ arr.push([index+1,value.gxt]); accum.i+=1;}
 					else{
 						let mom = moment(value.time, "YYYY-MM-DD HH:mm:ss");
 						if(mom.isBetween(datefr_,dateto_,'day','[]')){
-							arr.push([index+1,value.dxt]); accum.i+=1;
+							arr.push([index+1,value.gxt]); accum.i+=1;
 						}
 					}
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var roomair = obj.reduce(function(accum,value,i){
+				var roomair = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.roomair]); accum.i+=1;}
 					else{
@@ -168,7 +168,7 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var oxygen = obj.reduce(function(accum,value,i){
+				var oxygen = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.oxygen]); accum.i+=1;}
 					else{
@@ -180,7 +180,7 @@
 					return accum;					
 				},{arr:[],i:0}).arr;
 
-				var breathnormal = obj.reduce(function(accum,value,i){
+				var breathnormal = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.breathnormal]); accum.i+=1;}
 					else{
@@ -192,7 +192,7 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var breathdifficult = obj.reduce(function(accum,value,i){
+				var breathdifficult = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.breathdifficult]); accum.i+=1;}
 					else{
@@ -204,7 +204,7 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var circarrythmias = obj.reduce(function(accum,value,i){
+				var circarrythmias = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.circarrythmias]); accum.i+=1;}
 					else{
@@ -216,7 +216,7 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var circhbp = obj.reduce(function(accum,value,i){
+				var circhbp = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.circhbp]); accum.i+=1;}
 					else{
@@ -228,7 +228,7 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var circirregular = obj.reduce(function(accum,value,i){
+				var circirregular = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.circirregular]); accum.i+=1;}
 					else{
@@ -240,7 +240,7 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var circlbp = obj.reduce(function(accum,value,i){
+				var circlbp = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.circlbp]); accum.i+=1;}
 					else{
@@ -252,7 +252,7 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var drainnone = obj.reduce(function(accum,value,i){
+				var drainnone = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.drainnone]); accum.i+=1;}
 					else{
@@ -264,7 +264,7 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var draindrainage = obj.reduce(function(accum,value,i){
+				var draindrainage = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.draindrainage]); accum.i+=1;}
 					else{
@@ -276,7 +276,7 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var ivlnone = obj.reduce(function(accum,value,i){
+				var ivlnone = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.ivlnone]); accum.i+=1;}
 					else{
@@ -288,7 +288,7 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var ivlsite = obj.reduce(function(accum,value,i){
+				var ivlsite = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.ivlsite]); accum.i+=1;}
 					else{
@@ -300,7 +300,7 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var gucontinent = obj.reduce(function(accum,value,i){
+				var gucontinent = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.gucontinent]); accum.i+=1;}
 					else{
@@ -312,7 +312,7 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var gufoley = obj.reduce(function(accum,value,i){
+				var gufoley = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.gufoley]); accum.i+=1;}
 					else{
@@ -324,7 +324,7 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var frhigh = obj.reduce(function(accum,value,i){
+				var frhigh = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.frhigh]); accum.i+=1;}
 					else{
@@ -336,7 +336,7 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var frlow = obj.reduce(function(accum,value,i){
+				var frlow = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.frlow]); accum.i+=1;}
 					else{
@@ -348,7 +348,7 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var time = obj.reduce(function(accum,value,i){
+				var time = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.datetaken+' '+value.timetaken]); accum.i+=1;}
 					else{
@@ -360,7 +360,7 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var painScore = obj.reduce(function(accum,value,i){
+				var painScore = obj.reduce(function (accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.spo2]); accum.i+=1;}
 					else{
@@ -381,7 +381,7 @@
 						sis_dis = filterRange(sis_dis,range),
 						pulse = filterRange(pulse,range),
 						temp = filterRange(temp,range),
-						dxt = filterRange(dxt,range),
+						gxt = filterRange(gxt,range),
 						roomair = filterRange(roomair,range),
 						oxygen  = filterRange(oxygen,range),
 						breathnormal  = filterRange(breathnormal,range),
@@ -407,7 +407,7 @@
 		}
 
 		var plot;
-		function doPlot(x,sis_dis,pulse,temp,dxt,roomair,oxygen,breathnormal,breathdifficult,circarrythmias,circhbp,circirregular,circlbp,drainnone,draindrainage,ivlnone,ivlsite,gucontinent,gufoley,frhigh,frlow,time,painScore){
+		function doPlot(x,sis_dis,pulse,temp,gxt,roomair,oxygen,breathnormal,breathdifficult,circarrythmias,circhbp,circirregular,circlbp,drainnone,draindrainage,ivlnone,ivlsite,gucontinent,gufoley,frhigh,frlow,time,painScore){
 			var data_points = {
 				//do not show points
 				radius: 0,
@@ -419,7 +419,7 @@
 				{color: "blue", lines: {show: false}, points: data_points, data: sis_dis, label: "Blood Pressure", yaxis: 1},
 				{color: "red", lines: {show: true, lineWidth: 0.5}, points: {show:true}, data: pulse, label: "Pulse", yaxis: 1},
 				{color: "orange", lines: {show: true, lineWidth: 1}, points: {show:true}, data: temp, label: "Temperature", yaxis: 2},
-				{color: "green", lines: {show: true, lineWidth: 1}, points: {show:true}, data: dxt, label: "DXT", yaxis: 2},
+				{color: "green", lines: {show: true, lineWidth: 1}, points: {show:true}, data: gxt, label: "GXT", yaxis: 2},
 				{lines: {show: false}, data: painScore},
 				{lines: {show: false}, data: time}
 			];
@@ -533,7 +533,7 @@
 			opacity: 0.70
 		}).appendTo("body");
 
-		function updateLegend() {
+		function updateLegend(){
 			updateLegendTimeout = null;
 			var pos = latestPosition;
 			var axes = plot.getAxes();
@@ -565,7 +565,7 @@
 				diastole = parseFloat(arr[0][1]) -  parseFloat(arr[0][2]),
 				pulse = arr[1][1];
 				temp = arr[2][1];
-				dxt = arr[3][1];
+				gxt = arr[3][1];
 				painScore = arr[4][1];
 				date = arr[5][1];
 
@@ -574,7 +574,7 @@
 								+`</span><br/><b>Diastole: </b><span class='diastole'>`+diastole
 								+`</span><br/><b>Pulse: </b><span class='pulse'>`+pulse
 								+`</span><br/><b>Temperature: </b><span class='temp'>`+temp
-								+`</span><br/><b>DXT: </b><span class='dxt'>`+dxt
+								+`</span><br/><b>GXT: </b><span class='gxt'>`+gxt
 								+`</span><br/><b>SP02 (%): </b><span>`+painScore
 								+`</span>`)
 					.css({top: pos.pageY+20, left: pos.pageX+20})
@@ -584,20 +584,20 @@
 
 		var updateLegendTimeout = null;
 		var latestPosition = null;
-		$("#placeholder").bind("plothover",  function (event, pos, item) {
+		$("#placeholder").bind("plothover", function (event, pos, item){
 			latestPosition = pos;
 			if (!updateLegendTimeout) {
 				updateLegendTimeout = setTimeout(updateLegend, 50);
 			}
 		});
 
-		$("#placeholder").mouseout(function() {
+		$("#placeholder").mouseout(function (){
 			$("#tooltip").hide();
 		});
 
 		fetchdata(true,$("#customRange2").val(),firstPlot=true);
 
-		$('#customRange2').change(function(){
+		$('#customRange2').change(function (){
 			fetchdata(true,$("#customRange2").val());
 		});
 
