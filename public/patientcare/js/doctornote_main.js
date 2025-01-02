@@ -290,6 +290,7 @@ $(document).ready(function () {
 				$('#no_of_pat').text($("#jqGrid").getGridParam("reccount"));
 				empty_currDoctorNote();
 				empty_requestFor_ptcare();
+				empty_admhandover_ptcare();
 				empty_transaction();
 				empty_transaction_diet();
 				empty_transaction_phys();
