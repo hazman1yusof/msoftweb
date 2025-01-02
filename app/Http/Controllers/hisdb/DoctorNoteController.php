@@ -243,13 +243,16 @@ class DoctorNoteController extends defaultController
                     'treatment' => $request->treatment,
                     'prognosis' => $request->prognosis,
                     'plan_' => $request->plan_,
-                    'height' => $request->height,
-                    'weight' => $request->weight,
                     'bp_sys1' => $request->bp_sys1,
                     'bp_dias2' => $request->bp_dias2,
+                    'spo2' => $request->spo2,
                     'pulse' => $request->pulse,
+                    'gxt' => $request->gxt,
                     'temperature' => $request->temperature,
+                    'height' => $request->height,
+                    'weight' => $request->weight,
                     'respiration' => $request->respiration,
+                    // 'pain_score' => $request->pain_score,
                     'doctorcode'  => $doctorcode,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -476,13 +479,16 @@ class DoctorNoteController extends defaultController
                         'treatment' => $request->treatment,
                         'prognosis' => $request->prognosis,
                         'plan_' => $request->plan_,
-                        'height' => $request->height,
-                        'weight' => $request->weight,
                         'bp_sys1' => $request->bp_sys1,
                         'bp_dias2' => $request->bp_dias2,
+                        'spo2' => $request->spo2,
                         'pulse' => $request->pulse,
+                        'gxt' => $request->gxt,
                         'temperature' => $request->temperature,
+                        'height' => $request->height,
+                        'weight' => $request->weight,
                         'respiration' => $request->respiration,
+                        // 'pain_score' => $request->pain_score,
                         // 'doctorcode'  => $doctorcode,
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -510,13 +516,16 @@ class DoctorNoteController extends defaultController
                         'treatment' => $request->treatment,
                         'prognosis' => $request->prognosis,
                         'plan_' => $request->plan_,
-                        'height' => $request->height,
-                        'weight' => $request->weight,
                         'bp_sys1' => $request->bp_sys1,
                         'bp_dias2' => $request->bp_dias2,
+                        'spo2' => $request->spo2,
                         'pulse' => $request->pulse,
+                        'gxt' => $request->gxt,
                         'temperature' => $request->temperature,
+                        'height' => $request->height,
+                        'weight' => $request->weight,
                         'respiration' => $request->respiration,
+                        // 'pain_score' => $request->pain_score,
                         'doctorcode'  => $doctorcode,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -946,7 +955,7 @@ class DoctorNoteController extends defaultController
                             // ->orderBy('recordtime','desc');
             
             $vitalsign_doc = DB::table('hisdb.pathealth')
-                            ->select('height','weight','temperature','pulse','bp_sys1','bp_dias2','respiration','gxt','pain_score')
+                            ->select('bp_sys1','bp_dias2','spo2','pulse','gxt','temperature','height','weight','respiration')
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno)
@@ -980,7 +989,7 @@ class DoctorNoteController extends defaultController
                             ->where('episno','=',$request->episno);
         
         $vitalsign_triage = DB::table('nursing.nursassessment')
-                            ->select('vs_temperature as temperature','vs_pulse as pulse','vs_respiration as respiration','vs_bp_sys1 as bp_sys1','vs_bp_dias2 as bp_dias2','vs_weight as weight','vs_gxt as gxt','vs_painscore as pain_score','vs_height as height')
+                            ->select('vs_bp_sys1 as bp_sys1','vs_bp_dias2 as bp_dias2','vs_spo as spo2','vs_pulse as pulse','vs_gxt as gxt','vs_temperature as temperature','vs_weight as weight','vs_respiration as respiration','vs_height as height','vs_painscore as pain_score')
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno);
@@ -1172,13 +1181,16 @@ class DoctorNoteController extends defaultController
                                 'treatment as treatment_ref',
                                 'prognosis as prognosis_ref',
                                 'plan_ as plan_ref',
-                                'height as height_ref',
-                                'weight as weight_ref',
                                 'bp_sys1 as bp_sys1_ref',
                                 'bp_dias2 as bp_dias2_ref',
+                                'spo2 as spo2_ref',
                                 'pulse as pulse_ref',
+                                'gxt as gxt_ref',
                                 'temperature as temperature_ref',
+                                'height as height_ref',
+                                'weight as weight_ref',
                                 'respiration as respiration_ref',
+                                'pain_score as pain_score_ref',
                                 'adduser as adduser_ref',
                                 'adddate as adddate_ref'
                             )
