@@ -317,6 +317,47 @@
                                 <div class="ui secondary segment">Vital Sign</div>
                                 <div class="ui segment">
                                     <div class="field">
+                                        <label>BP</label>
+                                        <div class="ui right labeled input">
+                                            <input type="text" onKeyPress="if(this.value.length==6) return false;" id="bp_sys1" name="bp_sys1" style="width:25%">
+                                            <input type="text" onKeyPress="if(this.value.length==6) return false;" id="bp_dias2" name="bp_dias2" style="width:25%">
+                                            <div class="ui basic label">mmHg</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="field">
+                                        <label>SPO2</label>
+                                        <div class="ui right labeled input">
+                                            <input type="text" onKeyPress="if(this.value.length==6) return false;" id="spo2" name="spo2">
+                                            <div class="ui basic label">%</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="field">
+                                        <label>Pulse</label>
+                                        <div class="ui right labeled input">
+                                            <input type="text" onKeyPress="if(this.value.length==6) return false;" id="pulse" name="pulse">
+                                            <div class="ui basic label">Bpm</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="field">
+                                        <label>Glucometer</label>
+                                        <div class="ui right labeled input">
+                                            <input type="text" onKeyPress="if(this.value.length==6) return false;" id="gxt" name="gxt">
+                                            <div class="ui basic label">mmol/L</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="field">
+                                        <label>Temperature</label>
+                                        <div class="ui right labeled input">
+                                            <input type="text" onKeyPress="if(this.value.length==6) return false;" id="temperature" name="temperature">
+                                            <div class="ui basic label">°C</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="field">
                                         <label>Height</label>
                                         <div class="ui right labeled input">
                                             <input type="text" onKeyPress="if(this.value.length==6) return false;" id="height" name="height">
@@ -338,35 +379,10 @@
                                     </div>
                                     
                                     <div class="field">
-                                        <label>Blood Pressure</label>
-                                        <div class="ui right labeled input">
-                                            <input type="text" onKeyPress="if(this.value.length==6) return false;" id="bp_sys1" name="bp_sys1" style="width:25%">
-                                            <input type="text" onKeyPress="if(this.value.length==6) return false;" id="bp_dias2" name="bp_dias2" style="width:25%">
-                                            <div class="ui basic label">mmHg</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="field">
-                                        <label>Pulse Rate</label>
-                                        <div class="ui right labeled input">
-                                            <input type="text" onKeyPress="if(this.value.length==6) return false;" id="pulse" name="pulse">
-                                            <div class="ui basic label">/min</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="field">
-                                        <label>Temperature</label>
-                                        <div class="ui right labeled input">
-                                            <input type="text" onKeyPress="if(this.value.length==6) return false;" id="temperature" name="temperature">
-                                            <div class="ui basic label">°C</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="field">
-                                        <label>Respiration</label>
+                                        <label>RR</label>
                                         <div class="ui right labeled input">
                                             <input type="text" onKeyPress="if(this.value.length==6) return false;" id="respiration" name="respiration">
-                                            <div class="ui basic label">/min</div>
+                                            <div class="ui basic label">Min</div>
                                         </div>
                                     </div>
                                 </div>

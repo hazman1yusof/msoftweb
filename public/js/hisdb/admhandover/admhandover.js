@@ -1,13 +1,6 @@
 
 $(document).ready(function (){
 	
-	// $('textarea#remark,textarea#remarkkitchen').each(function (){
-	// 	this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
-	// }).on('input', function (){
-	// 	this.style.height = 'auto';
-	// 	this.style.height = (this.scrollHeight) + 'px';
-	// });
-	
 	disableForm('#formAdmHandover');
 	
 	$("#new_admHandover").click(function (){
@@ -269,7 +262,7 @@ function saveForm_admHandover(callback){
 }
 
 function textarea_init_admhandover(){
-	$('textarea#reasonadm,textarea#diagfinal,textarea#allergy,textarea#medHis,textarea#surgHis,textarea#rtkpcr_remark,textarea#bloodinv_remark,textarea#branula_remark,textarea#scan_remark,textarea#insurance_remark,textarea#medication_remark,textarea#consent_remark,textarea#smoking_remark,textarea#nbm_remark,textarea#report,textarea#medHis').each(function (){
+	$('textarea#reasonadm,textarea#diagnosis,textarea#allergy,textarea#medHis,textarea#surgHis,textarea#rtkpcr_remark,textarea#bloodinv_remark,textarea#branula_remark,textarea#scan_remark,textarea#insurance_remark,textarea#medication_remark,textarea#consent_remark,textarea#smoking_remark,textarea#nbm_remark,textarea#report,textarea#medHis').each(function (){
 		if(this.value.trim() == ''){
 			this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
 		}else{

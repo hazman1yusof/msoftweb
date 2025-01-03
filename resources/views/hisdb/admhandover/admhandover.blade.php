@@ -321,14 +321,14 @@
 
 					<div class='col-md-12'>
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="adduser">Pass Over By</label>
+							<label class="col-md-2 control-label" for="passoverby">Pass Over By</label>
 							<div class="col-md-2">
-								<input name="adduser" type="text" class="form-control input-sm" readonly>
+								<input name="passoverby" type="text" class="form-control input-sm">
 							</div>
 
-							<label class="col-md-2 control-label" for="lastuser">Take Over By</label>
+							<label class="col-md-2 control-label" for="takeoverby">Take Over By</label>
 							<div class="col-md-2">
-								<input name="lastuser" type="text" class="form-control input-sm" readonly>
+								<input name="takeoverby" type="text" class="form-control input-sm" rdonly>
 							</div>
 						</div>
 					</div>

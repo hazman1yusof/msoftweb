@@ -290,14 +290,18 @@
                                     {text: 'TAKE OVER BY: \n\n'}, 
                                 ],
                                 [
-                                    {text: '{{$admhandover->adduser}}', fontSize: 8, bold:true},
-                                    {text: '{{$admhandover->adduser}}', fontSize: 8, bold:true},
-                                    
+                                    {text: '{{$admhandover->passoverby}}', fontSize: 8, bold:true},
+                                    @if(!empty($admhandover->takeoverby))
+                                        {text: '{{$admhandover->takeoverby}}', fontSize: 8, bold:true},
+                                    @else
+                                        {text: '' },
+                                    @endif                                    
                                 ],
                                 [
                                     {text: '{{\Carbon\Carbon::parse($admhandover->adddate)->format('d/m/Y')}}', fontSize: 8},
                                     {text: '{{\Carbon\Carbon::parse($admhandover->adddate)->format('d/m/Y')}}', fontSize: 8},
                                 ],
+                                
                             ]
                         },
                         layout: 'noBorders',

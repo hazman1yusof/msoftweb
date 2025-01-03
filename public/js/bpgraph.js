@@ -176,8 +176,8 @@ function legend_tepi1(plot){
 	let o = plot.pointOffset({ x: 0, y: 120});
 	let bp=`<div class="row" >
 				<div class="col-md-3">
-					<b>DXT</b></br>
-					<span class='dxt'>(GREEN)</span>
+					<b>GXT</b></br>
+					<span class='gxt'>(GREEN)</span>
 				</div>
 				<div class="col-md-3">
 					<b>Blood Pressure</b></br>

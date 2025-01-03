@@ -19,7 +19,6 @@
             <input id="episno_ti" name="episno_ti" type="hidden">
 
             <div class="ui grid">
-
                 <div class="eight wide column">
                     <div class="ui segments">
                         <div class="ui secondary segment">INFORMATION</div>
@@ -638,9 +637,9 @@
                                 <div class="eight wide column">
                                     <div class="ui segments">
                                         <div class="ui secondary segment">GLASGOW COMA SCALE
-                                        <!-- <label for="totgsc" style="float:right;">
-                                            Total: <input type="input" name="totgsc" id="totgsc" readonly>
-                                        </label>  -->
+                                        <label for="totgsc" style="float:right;">
+                                            Total: <input type="input" name="totgsc" id="totgsc" rdonly>
+                                        </label> 
                                         </div>
                                         <div class="ui segment">
                                         <table class="table table-bordered">
@@ -651,28 +650,28 @@
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="gsc_eye" value="4">Spontaneous (4)
+                                                            <input type="radio" name="gsc_eye" value="4" class="calc">Spontaneous (4)
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="gsc_eye" value="3">to speech (3)
+                                                            <input type="radio" name="gsc_eye" value="3" class="calc">to speech (3)
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                                <input type="radio" name="gsc_eye" value="2">to pain (2)
+                                                                <input type="radio" name="gsc_eye" value="2" class="calc">to pain (2)
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="gsc_eye" value="1">NIL (1)
+                                                            <input type="radio" name="gsc_eye" value="1" class="calc">NIL (1)
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -683,35 +682,35 @@
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="gsc_verbal" value="5">Orientated (5)
+                                                            <input type="radio" name="gsc_verbal" value="5" class="calc">Orientated (5)
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="gsc_verbal" value="4">Confused (4)
+                                                            <input type="radio" name="gsc_verbal" value="4" class="calc">Confused (4)
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                                <input type="radio" name="gsc_verbal" value="3">Inappropriate (3)
+                                                                <input type="radio" name="gsc_verbal" value="3" class="calc">Inappropriate (3)
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="gsc_verbal" value="2">Incomprehensible (2)
+                                                            <input type="radio" name="gsc_verbal" value="2" class="calc">Incomprehensible (2)
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="gsc_verbal" value="1">NIL (1)
+                                                            <input type="radio" name="gsc_verbal" value="1" class="calc">NIL (1)
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -722,42 +721,42 @@
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="gsc_motor" value="6">Obey (6)
+                                                            <input type="radio" name="gsc_motor" value="6" class="calc">Obey (6)
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="gsc_motor" value="5">Localize (5)
+                                                            <input type="radio" name="gsc_motor" value="5" class="calc">Localize (5)
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                                <input type="radio" name="gsc_motor" value="4">Withdraws (4)
+                                                                <input type="radio" name="gsc_motor" value="4" class="calc">Withdraws (4)
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="gsc_motor" value="3">Abnormal flexion (3)
+                                                            <input type="radio" name="gsc_motor" value="3" class="calc">Abnormal flexion (3)
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="gsc_motor" value="2">Extends (2)
+                                                            <input type="radio" name="gsc_motor" value="2" class="calc">Extends (2)
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="gsc_motor" value="1">NIL (1)
+                                                            <input type="radio" name="gsc_motor" value="1" class="calc">NIL (1)
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -971,7 +970,7 @@
                                     <div class="ui form">
                                         <div class="inline field">
                                             <label>Nurse's Signature: </label>
-                                            <input type="text" name="adduser" id="adduser" rdonly>
+                                            <input type="text" name="nursesign" id="nursesign">
                                         </div>
                                     </div>
                                 </div>
@@ -1011,11 +1010,11 @@
                                                         <td><label for="pi_ecg">ECG</label></td>
                                                         <td></td>
                                                     </tr>
-                                                    <tr>
+                                                    <!-- <tr>
                                                         <td><input type="checkbox" id="pi_abg" name="pi_abg" value="1"></td>
                                                         <td><label for="pi_abg">ABG</label></td>
                                                         <td></td>
-                                                    </tr>
+                                                    </tr> -->
                                                     <tr>
                                                         <td><input type="checkbox" id="pi_codeblue" name="pi_codeblue" value="1"></td>
                                                         <td><label for="pi_codeblue">Code Blue</label></td>
@@ -1030,7 +1029,7 @@
                                 <div class="eight wide column">
                                     <div class="ui segments">
                                         <div class="ui secondary segment">MAINTENANCE OF SUPPORTS</div>
-                                        <div class="ui segment">
+                                        <div class="ui segment" style="height: 410px">
                                             <table class="table table-sm table-hover">
                                                 <tbody>
                                                     <tr>
@@ -1204,7 +1203,7 @@
                                     <div class="ui form">
                                         <div class="inline field">
                                             <label>A&E Staff: </label>
-                                            <input type="text" name="lastuser" id="lastuser" rdonly>
+                                            <input type="text" name="eduser" id="eduser">
                                         </div>
                                     </div>
                                 </div>
@@ -1212,7 +1211,7 @@
                                     <div class="ui form">
                                         <div class="inline field">
                                             <label>Ward Staff: </label>
-                                            <input type="text" name="warduser" id="warduser" rdonly>
+                                            <input type="text" name="warduser" id="warduser">
                                         </div>
                                     </div>
                                 </div>

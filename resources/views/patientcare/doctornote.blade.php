@@ -142,6 +142,51 @@
         </div>
     </div>
 
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="nursNote_panel">
+        <div class="panel-heading clearfix collapsed" id="toggle_nursNote">
+
+            <b>NAME: <span id="name_show_nursNote"></span></b><br>
+            MRN: <span id="mrn_show_nursNote"></span>
+            SEX: <span id="sex_show_nursNote"></span>
+            DOB: <span id="dob_show_nursNote"></span>
+            AGE: <span id="age_show_nursNote"></span>
+            RACE: <span id="race_show_nursNote"></span>
+            RELIGION: <span id="religion_show_nursNote"></span><br>
+            OCCUPATION: <span id="occupation_show_nursNote"></span>
+            CITIZENSHIP: <span id="citizenship_show_nursNote"></span>
+            AREA: <span id="area_show_nursNote"></span> 
+
+            <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_nursNote"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_nursNote" ></i >
+        
+            <div style="position: absolute;
+                            padding: 0 0 0 0;
+                            right: 0px;
+                            top: 0px;
+                            z-index: 1000;">
+                <button class="ui icon tertiary button refreshbtn_nursNote">
+                    <i class="sync alternate icon"></i>
+                </button>
+            </div> 
+
+            <div id='nursing_title' style="position: absolute;
+                            padding: 0 0 0 0;
+                            right: 50px;
+                            top: 48px;">
+                <h5><strong>Nursing Note</strong>&nbsp;&nbsp;
+                    <span class="metal"></span></h5>
+            </div> 
+
+            
+        </div>
+
+        <div id="tab_nursNote" class="panel-collapse collapse">
+            <div class="panel-body paneldiv">
+                @include('patientcare.nursingnote')
+            </div>
+        </div>
+    </div>
+
     <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="doctornote_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_doctornote">
 
@@ -231,34 +276,34 @@
         </div>
     </div>
 
-    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="admhandover_panel">
-        <div class="panel-heading clearfix collapsed" id="toggle_admhandover">
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="admHandover_panel">
+        <div class="panel-heading clearfix collapsed" id="toggle_admHandover">
 
-            <b>NAME: <span id="name_show_admhandover"></span></b><br>
-            MRN: <span id="mrn_show_admhandover"></span>
-            SEX: <span id="sex_show_admhandover"></span>
-            DOB: <span id="dob_show_admhandover"></span>
-            AGE: <span id="age_show_admhandover"></span>
-            RACE: <span id="race_show_admhandover"></span>
-            RELIGION: <span id="religion_show_admhandover"></span><br>
-            OCCUPATION: <span id="occupation_show_admhandover"></span>
-            CITIZENSHIP: <span id="citizenship_show_admhandover"></span>
-            AREA: <span id="area_show_admhandover"></span> 
+            <b>NAME: <span id="name_show_admHandover"></span></b><br>
+            MRN: <span id="mrn_show_admHandover"></span>
+            SEX: <span id="sex_show_admHandover"></span>
+            DOB: <span id="dob_show_admHandover"></span>
+            AGE: <span id="age_show_admHandover"></span>
+            RACE: <span id="race_show_admHandover"></span>
+            RELIGION: <span id="religion_show_admHandover"></span><br>
+            OCCUPATION: <span id="occupation_show_admHandover"></span>
+            CITIZENSHIP: <span id="citizenship_show_admHandover"></span>
+            AREA: <span id="area_show_admHandover"></span> 
 
-            <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_admhandover"></i>
-            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_admhandover"></i >
+            <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_admHandover"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_admHandover"></i >
         
             <div style="position: absolute;
                             padding: 0 0 0 0;
                             right: 0px;
                             top: 0px;
                             z-index: 1000;">
-                <button class="ui icon tertiary button refreshbtn_admhandover">
+                <button class="ui icon tertiary button refreshbtn_admHandover">
                     <i class="sync alternate icon"></i>
                 </button>
             </div> 
 
-            <div id='admhandover_title' style="position: absolute;
+            <div id='admHandover_title' style="position: absolute;
                             padding: 0 0 0 0;
                             right: 50px;
                             top: 48px;">
@@ -268,8 +313,8 @@
             
         </div>
 
-        <div id="tab_admhandover" class="panel-collapse collapse">
-            <div class="panel-body paneldiv" id="tab_admhandover_sticky">
+        <div id="tab_admHandover" class="panel-collapse collapse">
+            <div class="panel-body paneldiv" id="tab_admHandover_sticky">
                 @include('patientcare.admhandover')
             </div>
         </div>

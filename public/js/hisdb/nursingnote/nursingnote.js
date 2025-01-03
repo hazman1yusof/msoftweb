@@ -3900,7 +3900,8 @@ var datetime_tbl = $('#datetime_tbl').DataTable({
         { 'data': 'episno' },
         { 'data': 'datetaken', 'width': '25%' },
         { 'data': 'timetaken', 'width': '25%' },
-        { 'data': 'lastuser', 'width': '50%' },
+        { 'data': 'adduser', 'width': '50%' },
+        { 'data': 'epistycode', 'width': '25%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2], visible: false },
@@ -4863,7 +4864,8 @@ function saveForm_progress(callback){
     var postobj = {
         _token: $('#csrf_token').val(),
         mrn_nursNote: $('#mrn_nursNote').val(),
-        episno_nursNote: $('#episno_nursNote').val()
+        episno_nursNote: $('#episno_nursNote').val(),
+        epistycode: $("#epistycode").val()
     };
     
     values = $("#formProgress").serializeArray();

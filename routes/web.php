@@ -1540,6 +1540,9 @@ Route::get('/ptcare_preview','patientcare\PreviewController@preview');
 Route::get('/ptcare_preview/data','patientcare\PreviewController@previewdata');
 Route::get('/ptcare_localpreview','patientcare\WebserviceController@localpreview');
 
+Route::get('/ptcare_nursingnote','patientcare\NursingNoteController@show');
+Route::get('/ptcare_nursingnote/table','patientcare\NursingNoteController@table');
+Route::post('/ptcare_nursingnote/form','patientcare\NursingNoteController@form');
 
 Route::get('/ptcare_thumbnail/{folder}/{image_path}','patientcare\PreviewController@thumbnail');
 
