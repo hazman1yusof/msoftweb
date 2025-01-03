@@ -21,6 +21,8 @@ class InvChartController extends defaultController
     
     public function invChart_chart(Request $request){
         
+        $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
+        $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
         $mrn = $request->mrn;
         $episno = $request->episno;
         if(!$mrn || !$episno){
@@ -40,6 +42,7 @@ class InvChartController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$mrn)
                     ->where('episno','=',$episno)
+                    ->whereBetween('entereddate',[$datefr,$dateto])
                     ->groupBy('entereddate','enteredtime')
                     ->orderBy('entereddate','asc')
                     ->orderBy('enteredtime','asc')

@@ -76,7 +76,7 @@
                                             <div class='col-md-8'>
                                                 <div class="panel panel-info" id="jqGridInvChart_c">
                                                     <div class="panel-body">
-                                                        <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                             <input id="inv_cat" name="inv_cat" type="hidden">
                                                             <table id="jqGridInvChart" class="table table-striped"></table>
                                                             <div id="jqGridPagerInvChart"></div>
@@ -120,7 +120,7 @@
                                         <div class='col-md-8'>
                                             <div class="panel panel-info" id="jqGridInvChartFBC_c">
                                                 <div class="panel-body">
-                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                         <input id="inv_codeFBC" name="inv_codeFBC" type="hidden">
                                                         <input id="inv_catFBC" name="inv_catFBC" type="hidden">
                                                         <table id="jqGridInvChart_FBC" class="table table-striped"></table>
@@ -150,7 +150,7 @@
                                         <div class='col-md-8'>
                                             <div class="panel panel-info" id="jqGridInvChartCoag_c">
                                                 <div class="panel-body">
-                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                         <input id="inv_codeCoag" name="inv_codeCoag" type="hidden">
                                                         <input id="inv_catCoag" name="inv_catCoag" type="hidden">
                                                         <table id="jqGridInvChart_Coag" class="table table-striped"></table>
@@ -180,7 +180,7 @@
                                         <div class='col-md-8'>
                                             <div class="panel panel-info" id="jqGridInvChartRP_c">
                                                 <div class="panel-body">
-                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                         <input id="inv_codeRP" name="inv_codeRP" type="hidden">
                                                         <input id="inv_catRP" name="inv_catRP" type="hidden">
                                                         <table id="jqGridInvChart_RP" class="table table-striped"></table>
@@ -210,7 +210,7 @@
                                         <div class='col-md-8'>
                                             <div class="panel panel-info" id="jqGridInvChartLFT_c">
                                                 <div class="panel-body">
-                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                         <input id="inv_codeLFT" name="inv_codeLFT" type="hidden">
                                                         <input id="inv_catLFT" name="inv_catLFT" type="hidden">
                                                         <table id="jqGridInvChart_LFT" class="table table-striped"></table>
@@ -240,7 +240,7 @@
                                         <div class='col-md-8'>
                                             <div class="panel panel-info" id="jqGridInvChartElect_c">
                                                 <div class="panel-body">
-                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                         <input id="inv_codeElect" name="inv_codeElect" type="hidden">
                                                         <input id="inv_catElect" name="inv_catElect" type="hidden">
                                                         <table id="jqGridInvChart_Elect" class="table table-striped"></table>
@@ -270,7 +270,7 @@
                                         <div class='col-md-8'>
                                             <div class="panel panel-info" id="jqGridInvChartABGVBG_c">
                                                 <div class="panel-body">
-                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                         <input id="inv_codeABGVBG" name="inv_codeABGVBG" type="hidden">
                                                         <input id="inv_catABGVBG" name="inv_catABGVBG" type="hidden">
                                                         <table id="jqGridInvChart_ABGVBG" class="table table-striped"></table>
@@ -300,7 +300,7 @@
                                         <div class='col-md-8'>
                                             <div class="panel panel-info" id="jqGridInvChartUFEME_c">
                                                 <div class="panel-body">
-                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                         <input id="inv_codeUFEME" name="inv_codeUFEME" type="hidden">
                                                         <input id="inv_catUFEME" name="inv_catUFEME" type="hidden">
                                                         <table id="jqGridInvChart_UFEME" class="table table-striped"></table>
@@ -330,7 +330,7 @@
                                         <div class='col-md-8'>
                                             <div class="panel panel-info" id="jqGridInvChartCE_c">
                                                 <div class="panel-body">
-                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                         <input id="inv_codeCE" name="inv_codeCE" type="hidden">
                                                         <input id="inv_catCE" name="inv_catCE" type="hidden">
                                                         <table id="jqGridInvChart_CE" class="table table-striped"></table>
@@ -360,7 +360,7 @@
                                         <div class='col-md-8'>
                                             <div class="panel panel-info" id="jqGridInvChartCS_c">
                                                 <div class="panel-body">
-                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                         <input id="inv_codeCS" name="inv_codeCS" type="hidden">
                                                         <input id="inv_catCS" name="inv_catCS" type="hidden">
                                                         <table id="jqGridInvChart_CS" class="table table-striped"></table>
