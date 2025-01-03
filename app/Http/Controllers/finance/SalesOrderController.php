@@ -1853,7 +1853,7 @@ class SalesOrderController extends defaultController
                 $join = $join->on('b.chggroup', '=', 'm.chgcode');
                 $join = $join->on('b.uom', '=', 'm.uom');
                 $join = $join->where('m.compcode', '=', session('compcode'));
-                $join = $join->where('m.unit', '=', session('unit'));
+                // $join = $join->where('m.unit', '=', session('unit'));
             })
             ->leftJoin('material.uom as u', function($join) use ($request){
                 $join = $join->on('b.uom', '=', 'u.uomcode');
@@ -1964,7 +1964,7 @@ class SalesOrderController extends defaultController
                 $join = $join->on('b.chgcode', '=', 'm.chgcode');
                 $join = $join->on('b.uom', '=', 'm.uom');
                 $join = $join->where('m.compcode', '=', session('compcode'));
-                $join = $join->where('m.unit', '=', session('unit'));
+                // $join = $join->where('m.unit', '=', session('unit'));
             })
             ->leftJoin('material.uom as u', function($join) use ($request){
                 $join = $join->on('b.uom', '=', 'u.uomcode');

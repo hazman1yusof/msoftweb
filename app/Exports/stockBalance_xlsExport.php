@@ -138,8 +138,8 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
                                 $join = $join->on('se.deptcode', '=', 's.deptcode');
                                 $join = $join->on('se.uomcode', '=', 's.uomcode');
                                 $join = $join->where('se.compcode', '=', session('compcode'));
-                                $join = $join->where('se.unit', '=', session('unit'));
-                                $join = $join->on('se.year', '=', 's.year');
+                                // $join = $join->where('se.unit', '=', session('unit'));
+                                // $join = $join->on('se.year', '=', 's.year');
                             });
             }
 

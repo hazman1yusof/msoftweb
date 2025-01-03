@@ -60,6 +60,7 @@ class YearEndController extends defaultController
         try {
 
             $curryear = Carbon::now("Asia/Kuala_Lumpur")->format('Y');
+            $curryear = 2024;
 
             $stockloc = DB::table('material.stockloc')
                             ->where('year',$curryear)
@@ -85,7 +86,7 @@ class YearEndController extends defaultController
                             ->where('itemcode',$value->itemcode)
                             ->where('uomcode',$value->uomcode)
                             ->where('year',$request->year)
-                            ->where('unit',$request->unit)
+                            ->where('unit',$value->unit)
                             // ->where('unit',session('unit'))
                             ->exists();
 
@@ -135,7 +136,7 @@ class YearEndController extends defaultController
             $lastyear = $lastyear;//newyear
 
             $stockloc = DB::table('material.stockloc')
-                            ->where('year',$request->year)
+                            ->where('year',$request->year)//ni baru last year
                             ->where('compcode',session('compcode'));
 
             if(strtoupper($request->dept_from) == 'ZZZ' && strtoupper($request->dept_to) == 'ZZZ'){
@@ -174,7 +175,7 @@ class YearEndController extends defaultController
                         ->where('itemcode',$value->itemcode)
                         ->where('uomcode',$value->uomcode)
                         ->where('year',$lastyear)
-                        ->where('unit',$request->unit)
+                        ->where('unit',$value->unit)
                         // ->where('unit',session('unit'))
                         ->update([
                             'openbalqty' => $get_bal->open_balqty,
@@ -188,77 +189,77 @@ class YearEndController extends defaultController
                 }
             }
 
-            $counter_exp=0;
-            foreach ($stockloc->get() as $key => $value){
-                //yg tahun baru
-                $exists = DB::table('material.stockexp')
-                            ->where('stockexp.compcode','=',session('compcode'))
-                            ->where('stockexp.unit',$request->unit)
-                            // ->where('stockexp.unit','=',session('unit'))
-                            ->where('stockexp.deptcode','=',$value->deptcode)
-                            ->where('stockexp.itemcode','=',$value->itemcode)
-                            ->where('stockexp.uomcode','=',$value->uomcode)
-                            ->where('stockexp.year','=', $lastyear)
-                            ->exists();
+            // $counter_exp=0;
+            // foreach ($stockloc->get() as $key => $value){
+            //     //yg tahun baru
+            //     $exists = DB::table('material.stockexp')
+            //                 ->where('stockexp.compcode','=',session('compcode'))
+            //                 ->where('stockexp.unit',$request->unit)
+            //                 // ->where('stockexp.unit','=',session('unit'))
+            //                 ->where('stockexp.deptcode','=',$value->deptcode)
+            //                 ->where('stockexp.itemcode','=',$value->itemcode)
+            //                 ->where('stockexp.uomcode','=',$value->uomcode)
+            //                 ->where('stockexp.year','=', $lastyear)
+            //                 ->exists();
 
-                if($exists){
-                    continue;
-                }else{
-                    //yg tahun lepas
-                    $stockexp_lama = DB::table('material.stockexp')
-                                    ->where('stockexp.compcode','=',session('compcode'))
-                                    ->where('stockexp.unit',$request->unit)
-                                    // ->where('stockexp.unit','=',session('unit'))
-                                    ->where('stockexp.deptcode','=',$value->deptcode)
-                                    ->where('stockexp.itemcode','=',$value->itemcode)
-                                    ->where('stockexp.uomcode','=',$value->uomcode)
-                                    ->where('stockexp.year','=', $request->year);
+            //     if($exists){
+            //         continue;
+            //     }else{
+            //         //yg tahun lepas
+            //         $stockexp_lama = DB::table('material.stockexp')
+            //                         ->where('stockexp.compcode','=',session('compcode'))
+            //                         ->where('stockexp.unit',$request->unit)
+            //                         // ->where('stockexp.unit','=',session('unit'))
+            //                         ->where('stockexp.deptcode','=',$value->deptcode)
+            //                         ->where('stockexp.itemcode','=',$value->itemcode)
+            //                         ->where('stockexp.uomcode','=',$value->uomcode)
+            //                         ->where('stockexp.year','=', $request->year);
 
-                    if($stockexp_lama->exists()){
-                        foreach ($stockexp_lama->get() as $obj_exp) {
-                            $counter_exp++;
-                            DB::table('material.stockexp')
-                                ->insert([
-                                    'compcode' => session('compcode'), 
-                                    'unit' => $obj_exp->unit, 
-                                    'deptcode' => $obj_exp->deptcode, 
-                                    'itemcode' => $obj_exp->itemcode, 
-                                    'uomcode' => $obj_exp->uomcode, 
-                                    'expdate' => $obj_exp->expdate, 
-                                    'batchno' => $obj_exp->batchno, 
-                                    'balqty' => $obj_exp->balqty, 
-                                    'adduser' => $obj_exp->adduser, 
-                                    'adddate' => $obj_exp->adddate, 
-                                    'upduser' => $obj_exp->upduser, 
-                                    'upddate' => $obj_exp->upddate, 
-                                   // 'lasttt' => 'GRN', 
-                                    'year' => $lastyear
-                                ]);
-                        }
-                    }else{
-                        $counter_exp++;
-                        DB::table('material.stockexp')
-                                ->insert([
-                                    'compcode' => session('compcode'), 
-                                    'unit' => $value->unit, 
-                                    'deptcode' => $value->deptcode, 
-                                    'itemcode' => $value->itemcode, 
-                                    'uomcode' => $value->uomcode, 
-                                    'balqty' => $value->qtyonhand, 
-                                    'adduser' => session('username'), 
-                                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                                   // 'lasttt' => 'GRN', 
-                                    'year' => $lastyear
-                                ]);
-                    }
-                }
-            }
+            //         if($stockexp_lama->exists()){
+            //             foreach ($stockexp_lama->get() as $obj_exp) {
+            //                 $counter_exp++;
+            //                 DB::table('material.stockexp')
+            //                     ->insert([
+            //                         'compcode' => session('compcode'), 
+            //                         'unit' => $obj_exp->unit, 
+            //                         'deptcode' => $obj_exp->deptcode, 
+            //                         'itemcode' => $obj_exp->itemcode, 
+            //                         'uomcode' => $obj_exp->uomcode, 
+            //                         'expdate' => $obj_exp->expdate, 
+            //                         'batchno' => $obj_exp->batchno, 
+            //                         'balqty' => $obj_exp->balqty, 
+            //                         'adduser' => $obj_exp->adduser, 
+            //                         'adddate' => $obj_exp->adddate, 
+            //                         'upduser' => $obj_exp->upduser, 
+            //                         'upddate' => $obj_exp->upddate, 
+            //                        // 'lasttt' => 'GRN', 
+            //                         'year' => $lastyear
+            //                     ]);
+            //             }
+            //         }else{
+            //             $counter_exp++;
+            //             DB::table('material.stockexp')
+            //                     ->insert([
+            //                         'compcode' => session('compcode'), 
+            //                         'unit' => $value->unit, 
+            //                         'deptcode' => $value->deptcode, 
+            //                         'itemcode' => $value->itemcode, 
+            //                         'uomcode' => $value->uomcode, 
+            //                         'balqty' => $value->qtyonhand, 
+            //                         'adduser' => session('username'), 
+            //                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            //                        // 'lasttt' => 'GRN', 
+            //                         'year' => $lastyear
+            //                     ]);
+            //         }
+            //     }
+            // }
 
             DB::commit();
 
             $responce = new stdClass();
             $responce->counter = $counter;
-            $responce->counter_exp = $counter_exp;
+            // $responce->counter_exp = $counter_exp;
             echo json_encode($responce);
 
         } catch (\Exception $e) {
