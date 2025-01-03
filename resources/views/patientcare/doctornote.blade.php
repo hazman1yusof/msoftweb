@@ -142,29 +142,29 @@
         </div>
     </div>
 
-    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="nursingNote_panel">
-        <div class="panel-heading clearfix collapsed" id="toggle_nursingNote">
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="nursNote_panel">
+        <div class="panel-heading clearfix collapsed" id="toggle_nursNote">
 
-            <b>NAME: <span id="name_show_nursingNote"></span></b><br>
-            MRN: <span id="mrn_show_nursingNote"></span>
-            SEX: <span id="sex_show_nursingNote"></span>
-            DOB: <span id="dob_show_nursingNote"></span>
-            AGE: <span id="age_show_nursingNote"></span>
-            RACE: <span id="race_show_nursingNote"></span>
-            RELIGION: <span id="religion_show_nursingNote"></span><br>
-            OCCUPATION: <span id="occupation_show_nursingNote"></span>
-            CITIZENSHIP: <span id="citizenship_show_nursingNote"></span>
-            AREA: <span id="area_show_nursingNote"></span> 
+            <b>NAME: <span id="name_show_nursNote"></span></b><br>
+            MRN: <span id="mrn_show_nursNote"></span>
+            SEX: <span id="sex_show_nursNote"></span>
+            DOB: <span id="dob_show_nursNote"></span>
+            AGE: <span id="age_show_nursNote"></span>
+            RACE: <span id="race_show_nursNote"></span>
+            RELIGION: <span id="religion_show_nursNote"></span><br>
+            OCCUPATION: <span id="occupation_show_nursNote"></span>
+            CITIZENSHIP: <span id="citizenship_show_nursNote"></span>
+            AREA: <span id="area_show_nursNote"></span> 
 
-            <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_nursingNote"></i>
-            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_nursingNote" ></i >
+            <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_nursNote"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_nursNote" ></i >
         
             <div style="position: absolute;
                             padding: 0 0 0 0;
                             right: 0px;
                             top: 0px;
                             z-index: 1000;">
-                <button class="ui icon tertiary button refreshbtn_nursingNote">
+                <button class="ui icon tertiary button refreshbtn_nursNote">
                     <i class="sync alternate icon"></i>
                 </button>
             </div> 
@@ -180,9 +180,9 @@
             
         </div>
 
-        <div id="tab_nursingNote" class="panel-collapse collapse">
+        <div id="tab_nursNote" class="panel-collapse collapse">
             <div class="panel-body paneldiv">
-                @include('patientcare.nursingNote')
+                @include('patientcare.nursingnote')
             </div>
         </div>
     </div>
