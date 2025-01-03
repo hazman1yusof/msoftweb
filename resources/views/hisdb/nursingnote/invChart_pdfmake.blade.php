@@ -73,7 +73,7 @@
                     ]
                 },
                 pageSize: 'A4',
-                pageOrientation: 'landscape',
+                // pageOrientation: 'landscape',
                 // pageMargins: [10, 20, 20, 30],
                 content: [
                     {

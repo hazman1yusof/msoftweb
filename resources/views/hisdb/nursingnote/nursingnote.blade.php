@@ -2079,7 +2079,7 @@
                                             <div class="panel panel-info" id="jqGridFitChart_c">
                                                 <!-- <div class="panel-heading text-center">FIT CHART</div> -->
                                                 <div class="panel-body">
-                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                         <table id="jqGridFitChart" class="table table-striped"></table>
                                                         <div id="jqGridPagerFitChart"></div>
                                                     </div>
@@ -2137,7 +2137,7 @@
                                             <div class="panel panel-info" id="jqGridCirculation_c">
                                                 <!-- <div class="panel-heading text-center">CIRCULATION CHART</div> -->
                                                 <div class="panel-body">
-                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                         <table id="jqGridCirculation" class="table table-striped"></table>
                                                         <div id="jqGridPagerCirculation"></div>
                                                     </div>
@@ -2182,7 +2182,7 @@
                                             <div class="panel panel-info" id="jqGridSlidingScale_c">
                                                 <!-- <div class="panel-heading text-center">SLIDING SCALE CHART</div> -->
                                                 <div class="panel-body">
-                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                    <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                         <table id="jqGridSlidingScale" class="table table-striped"></table>
                                                         <div id="jqGridPagerSlidingScale"></div>
                                                     </div>
@@ -2270,7 +2270,7 @@
                             <div class="panel panel-info" id="jqGridOthersChart1_c">
                                 <!-- <div class="panel-heading text-center">OTHERS CHART 1</div> -->
                                 <div class="panel-body">
-                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                    <div class='col-md-12' style="padding: 0 0 15px 0;">
                                         <table id="jqGridOthersChart1" class="table table-striped"></table>
                                         <div id="jqGridPagerOthersChart1"></div>
                                     </div>
@@ -2358,7 +2358,7 @@
                             <div class="panel panel-info" id="jqGridOthersChart2_c">
                                 <!-- <div class="panel-heading text-center">OTHERS CHART 2</div> -->
                                 <div class="panel-body">
-                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                    <div class='col-md-12' style="padding: 0 0 15px 0;">
                                         <table id="jqGridOthersChart2" class="table table-striped"></table>
                                         <div id="jqGridPagerOthersChart2"></div>
                                     </div>
@@ -2451,7 +2451,7 @@
                                                                 </div>
                                                             </div>
 
-                                                            <div class='col-md-12' style="padding:0 0 15px 0">
+                                                            <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                                 <input id="firstShift" name="firstShift" value="1" type="hidden">
                                                                 <table id="jqGridBladder1" class="table table-striped"></table>
                                                                 <div id="jqGridPagerBladder1"></div>
@@ -2478,7 +2478,7 @@
                                                                 </div>
                                                             </div>
 
-                                                            <div class='col-md-12' style="padding:0 0 15px 0">
+                                                            <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                                 <input id="secondShift" name="secondShift" value="2" type="hidden">
                                                                 <table id="jqGridBladder2" class="table table-striped"></table>
                                                                 <div id="jqGridPagerBladder2"></div>
@@ -2505,7 +2505,7 @@
                                                                 </div>
                                                             </div>
 
-                                                            <div class='col-md-12' style="padding:0 0 15px 0">
+                                                            <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                                 <input id="thirdShift" name="thirdShift" value="3" type="hidden">
                                                                 <table id="jqGridBladder3" class="table table-striped"></table>
                                                                 <div id="jqGridPagerBladder3"></div>
@@ -2526,3 +2526,24 @@
 	</div>
 </div>
 
+<div id="InvChartDialog" title="Investigation Chart">
+    <div class="panel panel-default">
+        <!-- <div class="panel-heading">Investigation Chart</div> -->
+        <div class="panel-body">
+            <form class='form-horizontal' style='width: 99%;' id='formInvChartDialog'>
+                <input type="hidden" name="action">
+                
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label class="control-label" for="Scol">From</label>
+                        <input id="datefr" name="datefr" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="Scol">To</label>
+                        <input id="dateto" name="dateto" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -376,9 +376,37 @@ $(document).ready(function (){
     });
     /////////////////////////////////////othersChart2 ends/////////////////////////////////////
     
+    ///////////////////////////////////InvChartDialog starts///////////////////////////////////
+    $("#InvChartDialog").dialog({
+        autoOpen: false,
+        width: 5/10 * $(window).width(),
+        modal: true,
+        open: function (){
+            // dialog_debtorFrom.on();
+            // dialog_debtorTo.on();
+            parent_close_disabled(true);
+        },
+        close: function (event, ui){
+            // dialog_debtorFrom.off();
+            // dialog_debtorTo.off();
+            parent_close_disabled(false);
+        },
+        buttons: [{
+            text: "Print Chart", click: function (){
+                window.open('./nursingnote/invChart_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
+                // window.location='./nursingnote/invChart_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val();
+            }
+        },{
+            text: "Cancel", click: function (){
+                $(this).dialog('close');
+            }
+        }],
+    });
+    ////////////////////////////////////InvChartDialog ends////////////////////////////////////
+    
     ////////////////////////////////////print button starts////////////////////////////////////
     $("#invChart_chart").click(function (){
-        window.open('./nursingnote/invChart_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+        $("#InvChartDialog").dialog("open");
     });
     
     $("#fitchart_chart").click(function (){
