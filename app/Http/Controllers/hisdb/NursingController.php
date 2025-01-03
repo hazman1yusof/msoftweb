@@ -1106,6 +1106,27 @@ class NursingController extends defaultController
                     'computerid' => session('computerid'),
                 ]);
             
+            DB::table('nursing.nurshandover')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_ti,
+                    'episno' => $request->episno_ti,
+                    'datetaken' => $request->reg_date,
+                    'timetaken' => $request->admwardtime,
+                    'bpsys_stand' => $request->vs_bp_sys1,
+                    'bpdias_stand' => $request->vs_bp_dias2,
+                    'spo2' => $request->vs_spo,
+                    'hr' => $request->vs_pulse,
+                    'gxt' => $request->vs_gxt,
+                    'temp_' => $request->vs_temperature,
+                    'weight' => $request->vs_weight,
+                    'respiration' => $request->vs_respiration,
+                    'height' => $request->vs_height,
+                    'epistycode' => 'OP',
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
+            
             DB::commit();
             
         } catch (\Exception $e) {
@@ -1463,6 +1484,26 @@ class NursingController extends defaultController
                     'lastuser' => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                ]);
+            
+            DB::table('nursing.nurshandover')
+                ->where('mrn','=',$request->mrn_ti)
+                ->where('episno','=',$request->episno_ti)
+                ->where('compcode','=',session('compcode'))
+                ->where('datetaken','=',$request->reg_date)
+                ->where('timetaken','=',$request->admwardtime)
+                ->update([
+                    'bpsys_stand' => $request->vs_bp_sys1,
+                    'bpdias_stand' => $request->vs_bp_dias2,
+                    'spo2' => $request->vs_spo,
+                    'hr' => $request->vs_pulse,
+                    'gxt' => $request->vs_gxt,
+                    'temp_' => $request->vs_temperature,
+                    'weight' => $request->vs_weight,
+                    'respiration' => $request->vs_respiration,
+                    'height' => $request->vs_height,
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
             
             $examidno = [];
