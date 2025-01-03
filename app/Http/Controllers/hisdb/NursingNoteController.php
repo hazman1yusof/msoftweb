@@ -243,7 +243,8 @@ class NursingNoteController extends defaultController
                 }else{
                     $date['timetaken'] =  '-';
                 }
-                $date['lastuser'] = $value->lastuser;
+                $date['adduser'] = $value->adduser;
+                $date['epistycode'] = $value->epistycode;
                 
                 array_push($data,$date);
             }
@@ -454,7 +455,6 @@ class NursingNoteController extends defaultController
                     'episno' => $request->episno_nursNote,
                     'datetaken' => $request->datetaken,
                     'timetaken' => $request->timetaken,
-                    'lastuser'  => session('username'),
                     'bpsys_stand' => $request->bpsys_stand,
                     'bpdias_stand' => $request->bpdias_stand,
                     'bpsys_lieDown' => $request->bpsys_lieDown,
@@ -488,9 +488,9 @@ class NursingNoteController extends defaultController
                     'gufoley' => $request->gufoley,
                     'assesothers' => $request->assesothers,
                     'plannotes' => $request->plannotes,
-                    // 'adduser'  => session('username'),
-                    // 'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'epistycode' => $request->epistycode,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
             
             DB::commit();
@@ -550,6 +550,8 @@ class NursingNoteController extends defaultController
                         'gufoley' => $request->gufoley,
                         'assesothers' => $request->assesothers,
                         'plannotes' => $request->plannotes,
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }else{
                 DB::table('nursing.nurshandover')
@@ -559,7 +561,6 @@ class NursingNoteController extends defaultController
                         'episno' => $request->episno_nursNote,
                         'datetaken' => $request->datetaken,
                         'timetaken' => $request->timetaken,
-                        'lastuser'  => session('username'),
                         'bpsys_stand' => $request->bpsys_stand,
                         'bpdias_stand' => $request->bpdias_stand,
                         'bpsys_lieDown' => $request->bpsys_lieDown,
@@ -593,9 +594,9 @@ class NursingNoteController extends defaultController
                         'gufoley' => $request->gufoley,
                         'assesothers' => $request->assesothers,
                         'plannotes' => $request->plannotes,
-                        // 'adduser'  => session('username'),
-                        // 'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'epistycode' => $request->epistycode,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }
             

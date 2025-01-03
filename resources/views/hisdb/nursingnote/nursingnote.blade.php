@@ -89,6 +89,7 @@
                                                                 <th class="scope">Date</th>
                                                                 <th class="scope">Time</th>
                                                                 <th class="scope">Entered By</th>
+                                                                <th class="scope">Epistype</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
