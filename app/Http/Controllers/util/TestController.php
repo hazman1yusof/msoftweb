@@ -66,16 +66,16 @@ class TestController extends defaultController
                 // return $this->update_productmaster($request);
             // case 'chk_if_got':
             //     return $this->chk_if_got($request);
-            case 'betulkan_stockexp_semua':
-                return $this->betulkan_stockexp_semua($request);
-            case 'betulkan_stockexp_semua_chk':
-                return $this->betulkan_stockexp_semua_chk($request);
-            case 'btlkn_qtymv12':
-                return $this->btlkn_qtymv12($request);
-            case 'stocktake_imp_header':
-                return $this->stocktake_imp_header($request);
-            case 'stocktake_imp_dtl':
-                return $this->stocktake_imp_dtl($request);
+            case 'test_email':
+                return $this->test_email($request);
+            // case 'betulkan_stockexp_semua_chk':
+            //     return $this->betulkan_stockexp_semua_chk($request);
+            // case 'btlkn_qtymv12':
+            //     return $this->btlkn_qtymv12($request);
+            // case 'stocktake_imp_header':
+            //     return $this->stocktake_imp_header($request);
+            // case 'stocktake_imp_dtl':
+            //     return $this->stocktake_imp_dtl($request);
             // case 'betulkan_uom_kh_stockloc':
             //     return $this->betulkan_uom_kh_stockloc($request);
             // case 'betulkan_uom_kh_product':
@@ -812,8 +812,8 @@ class TestController extends defaultController
     }
 
     public function test_email(Request $request){
-        $trantype = 'SUPPORT';
-        $recno = '64';
+        $trantype = 'APPROVED';
+        $recno = '93';
         $qpr = DB::table('material.queuepr as qpr')
                     ->select('qpr.trantype','adtl.authorid','prhd.recno','prhd.reqdept','prhd.purreqno','prhd.purreqdt','prhd.recstatus','prhd.totamount','prhd.adduser','users.email')
                     ->join('material.authdtl as adtl', function($join) use ($request){
@@ -850,6 +850,8 @@ class TestController extends defaultController
                     ->where('qpr.trantype',$trantype)
                     ->where('qpr.recno',$recno)
                     ->get();
+
+        // dd($qpr);
                     
         SendEmailPR::dispatch($qpr);
     }

@@ -18,7 +18,7 @@ Route::get('/home','HomeController@index');
 Route::get('/util','HomeController@util');
 Route::get('/ptcare','HomeController@ptcare');
 Route::get('/primary_care','HomeController@primary_care');
-Route::get('/ptcare','HomeController@ptcare');
+Route::get('/clinic','HomeController@clinic');
 Route::get('/dialysis','HomeController@dialysis');
 Route::get('/implant','HomeController@implant');
 Route::get('/khealth','HomeController@khealth');
