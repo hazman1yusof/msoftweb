@@ -1766,6 +1766,7 @@ class PaymentVoucherController extends defaultController
 
     public function showpdf(Request $request){
         $auditno = $request->auditno;
+        $trantype = $request->trantype;
         if(!$auditno){
             abort(404);
         }
@@ -1805,7 +1806,8 @@ class PaymentVoucherController extends defaultController
                             ->where('ur.compcode','=',session('compcode'));
             })
             ->where('h.compcode', '=', session('compcode'))
-            ->whereIn('h.trantype',['PD','PV'])
+            ->where('h.trantype','=',$trantype)
+            // ->whereIn('h.trantype',['PD','PV'])
             ->where('h.auditno','=',$auditno)
             ->first();
 
@@ -1819,33 +1821,37 @@ class PaymentVoucherController extends defaultController
             $title = " PAYMENT DEPOSIT";
         }
 
-        $apalloc = DB::table('finance.apalloc')
-                    ->select('compcode','source','trantype', 'auditno', 'lineno_', 'docsource', 'doctrantype', 'docauditno', 'refsource', 'reftrantype', 'refauditno', 'refamount', 'allocdate', 'allocamount', 'recstatus', 'remarks', 'suppcode', 'reference', 'lastupdate' )
-                    ->where('compcode','=', session('compcode'))
-                    ->where('source','=', 'AP')
-                    ->where('trantype','=', 'AL')
-                    ->where('docsource','=', 'AP')
-                    ->where('doctrantype','=', 'PV')
-                    ->where('docauditno','=', $auditno)
-                    ->where('recstatus','!=','CANCELLED')
-                    ->where('recstatus','!=','DELETE')
-                    ->get();
+        if($trantype == 'PV'){
+            $apalloc = DB::table('finance.apalloc')
+                        ->select('compcode','source','trantype', 'auditno', 'lineno_', 'docsource', 'doctrantype', 'docauditno', 'refsource', 'reftrantype', 'refauditno', 'refamount', 'allocdate', 'allocamount', 'recstatus', 'remarks', 'suppcode', 'reference', 'lastupdate' )
+                        ->where('compcode','=', session('compcode'))
+                        ->where('source','=', 'AP')
+                        ->where('trantype','=', 'AL')
+                        ->where('docsource','=', 'AP')
+                        ->where('doctrantype','=', 'PV')
+                        ->where('docauditno','=', $auditno)
+                        ->where('recstatus','!=','CANCELLED')
+                        ->where('recstatus','!=','DELETE')
+                        ->get();
 
-        foreach($apalloc as $obj_alloc){ //update reference document
-            
-            $refapacthdr = DB::table('finance.apacthdr')
-                            ->where('compcode','=',session('compcode'))
-                            // ->where('unit','=',session('unit'))
-                            ->where('source','=',$obj_alloc->refsource)
-                            ->where('trantype','=',$obj_alloc->reftrantype)
-                            ->where('auditno','=',$obj_alloc->refauditno);
-            
-            if($refapacthdr->exists()){
-                $refapacthdr = $refapacthdr->first();
-                $obj_alloc->invdate = Carbon::parse($refapacthdr->postdate)->format('d/m/Y');
-            }else{
-                $obj_alloc->invdate = '-';
+            foreach($apalloc as $obj_alloc){ //update reference document
+                
+                $refapacthdr = DB::table('finance.apacthdr')
+                                ->where('compcode','=',session('compcode'))
+                                // ->where('unit','=',session('unit'))
+                                ->where('source','=',$obj_alloc->refsource)
+                                ->where('trantype','=',$obj_alloc->reftrantype)
+                                ->where('auditno','=',$obj_alloc->refauditno);
+                
+                if($refapacthdr->exists()){
+                    $refapacthdr = $refapacthdr->first();
+                    $obj_alloc->invdate = Carbon::parse($refapacthdr->postdate)->format('d/m/Y');
+                }else{
+                    $obj_alloc->invdate = '-';
+                }
             }
+        }else{
+            $apalloc = [];
         }
 
 

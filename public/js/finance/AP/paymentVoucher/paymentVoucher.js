@@ -342,7 +342,7 @@ $(document).ready(function () {
 
 
 			refreshGrid("#jqGrid3",urlParam2);
-			$("#pdfgen1").attr('href','./paymentVoucher/showpdf?auditno='+selrowData("#jqGrid").apacthdr_auditno);
+			$("#pdfgen1").attr('href','./paymentVoucher/showpdf?auditno='+selrowData("#jqGrid").apacthdr_auditno+'&trantype='+selrowData("#jqGrid").apacthdr_trantype);
 			$("#link_do").attr('href','./paymentVoucher/table?action=link_pv&type=do&idno='+selrowData("#jqGrid").apacthdr_idno);
 			$("#link_po").attr('href','./paymentVoucher/table?action=link_pv&type=do&idno='+selrowData("#jqGrid").apacthdr_idno);
 			$("#link_invoice").attr('href','./paymentVoucher/table?action=link_pv&type=invoice&idno='+selrowData("#jqGrid").apacthdr_idno);

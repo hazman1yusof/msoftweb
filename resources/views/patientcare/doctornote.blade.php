@@ -182,7 +182,7 @@
 
         <div id="tab_nursNote" class="panel-collapse collapse">
             <div class="panel-body paneldiv">
-                @include('patientcare.nursingnote')
+                @include('hisdb.nursingnote.nursingnote')
             </div>
         </div>
     </div>

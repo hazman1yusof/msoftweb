@@ -47,46 +47,6 @@
                     <div class="panel panel-info">
                         <div class="panel-body">
                             <form class='form-horizontal' style='width: 99%;' id='formInvChart'>
-                                <!-- <ul class="nav nav-tabs" id="jqGridNursNote_inv_tab" role="tablist">
-                                    @foreach($invest_type as $count => $types)
-                                        <li role="presentation" @if($count == 0) class="active" @endif>
-                                            <a href="#tab-{{ $types->idno }}" aria-controls="#tab-{{ $types->idno }}" role="tab" data-toggle="tab">{{ $types->inv_code }}</a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                                <div class="tab-content" style="padding: 10px 5px;">
-                                    @foreach($invest_type as $count => $types)
-                                        <div role="tabpanel" @if($count == 0) class="tab-pane active" @else class="tab-pane" @endif id="tab-{{ $types->idno }}">
-                                            <div class="col-md-4" style="padding: 0 0 0 0;">
-                                                <div class="panel panel-info">
-                                                    <div class="panel-body">
-                                                        <input id="inv_code" name="inv_code" type="hidden" value="{{ $types->inv_code }}">
-                                                        <table id="tbl_invcat" class="ui celled table" style="width: 100%;">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th class="scope">idno</th>
-                                                                    <th class="scope"> </th>
-                                                                </tr>
-                                                            </thead>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class='col-md-8'>
-                                                <div class="panel panel-info" id="jqGridInvChart_c">
-                                                    <div class="panel-body">
-                                                        <div class='col-md-12' style="padding: 0 0 15px 0;">
-                                                            <input id="inv_cat" name="inv_cat" type="hidden">
-                                                            <table id="jqGridInvChart" class="table table-striped"></table>
-                                                            <div id="jqGridPagerInvChart"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div> -->
                                 
                                 <ul class="nav nav-tabs" id="jqGridNursNote_inv_tabs">
                                     <li class="active"><a data-toggle="tab" id="navtab_FBC" href="#tab-FBC" aria-expanded="true" data-type='FBC'>FBC</a></li>
