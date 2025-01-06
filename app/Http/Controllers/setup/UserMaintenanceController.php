@@ -203,9 +203,9 @@ class UserMaintenanceController extends defaultController
             return response('duplicate doctor code', 500);
         }
         
-        if($this->duplicate_email($request->email,'add',null)){
-            return response('duplicate Email', 500);
-        }
+        // if($this->duplicate_email($request->email,'add',null)){
+        //     return response('duplicate Email', 500);
+        // }
         
         try {
             
@@ -260,9 +260,9 @@ class UserMaintenanceController extends defaultController
                 return response('duplicate doctor code', 500);
             }
 
-            if($this->duplicate_email($request->email,'edit',$request->id)){
-                return response('duplicate Email', 500);
-            }
+            // if($this->duplicate_email($request->email,'edit',$request->id)){
+            //     return response('duplicate Email', 500);
+            // }
             
             $table = DB::table('sysdb.users')->where('id','=',$request->id)->where('compcode',session('compcode'));
             $table->update([
