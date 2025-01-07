@@ -182,7 +182,7 @@
 
         <div id="tab_nursNote" class="panel-collapse collapse">
             <div class="panel-body paneldiv">
-                @include('hisdb.nursingnote.nursingnote')
+                @include('patientcare.nursingnote')
             </div>
         </div>
     </div>
@@ -447,7 +447,7 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/doctornote_main.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/requestfor.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/admhandover.js') }}"></script>
-
+    <script type="text/javascript" src="{{ asset('patientcare/js/nursingnote.js') }}"></script>
 @endsection
 
 
