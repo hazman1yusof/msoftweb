@@ -66,14 +66,14 @@ class TestController extends defaultController
                 // return $this->update_productmaster($request);
             // case 'chk_if_got':
             //     return $this->chk_if_got($request);
-            case 'test_email':
-                return $this->test_email($request);
-            // case 'betulkan_stockexp_semua_chk':
-            //     return $this->betulkan_stockexp_semua_chk($request);
-            // case 'btlkn_qtymv12':
-            //     return $this->btlkn_qtymv12($request);
-            // case 'stocktake_imp_header':
-            //     return $this->stocktake_imp_header($request);
+            case 'btlkn_imp_1':
+                return $this->btlkn_imp_1($request);
+            case 'btlkn_imp_2':
+                return $this->btlkn_imp_2($request);
+            case 'btlkn_imp_1_phycnt':
+                return $this->btlkn_imp_1_phycnt($request);
+            case 'btlkn_imp_3':
+                return $this->btlkn_imp_3($request);
             // case 'stocktake_imp_dtl':
             //     return $this->stocktake_imp_dtl($request);
             // case 'betulkan_uom_kh_stockloc':
@@ -3834,6 +3834,262 @@ class TestController extends defaultController
                     }
                 }
             }
+        }
+    }
+
+    public function btlkn_imp_1(){
+        $product = DB::table('material.product')
+                        ->where('compcode','9B')
+                        ->where('unit','=','IMP')
+                        ->whereColumn('avgcost','!=','currprice')
+                        // ->where('trantype','PHYCNT')
+                        // ->where('deptcode','KHEALTH')
+                        ->get();
+
+        foreach ($product as $obj_p) {
+            $ivdspdt = DB::table('material.ivdspdt')
+                        ->where('compcode','9B')
+                        ->where('issdept','IMP')
+                        ->where('trandate','<=','2024-12-31')
+                        ->where('itemcode',$obj_p->itemcode)
+                        ->get();
+
+            foreach ($ivdspdt as $obj_i) {
+
+                $netprice = $obj_p->currprice;
+                $totalcost = $netprice * $obj_i->txnqty;
+
+                DB::table('material.ivdspdt')
+                    ->where('compcode','9B')
+                    ->where('idno',$obj_i->idno)
+                    ->update([
+                        'netprice' => $netprice,
+                        'amount' => $totalcost
+                    ]);
+            }
+        }
+    }
+
+    public function btlkn_imp_1_phycnt(Request $request){
+
+        $phycnt = DB::table('material.ivtxndt')
+                    ->where('compcode','9B')
+                    ->where('deptcode','IMP')
+                    ->where('trantype','phycnt')
+                    ->where('recno','14')
+                    ->get();
+
+        foreach ($phycnt as $obj_p) {
+
+            $product = DB::table('material.product')
+                        ->where('compcode','9B')
+                        ->where('itemcode','=',$obj_p->itemcode)
+                        ->first();
+
+            $netprice = $product->currprice;
+            $total = $netprice * $obj_p->txnqty;
+
+                DB::table('material.ivtxndt')
+                    ->where('compcode','9B')
+                    ->where('idno',$obj_p->idno)
+                    ->update([
+                        'netprice' => $netprice,
+                        'amount' => $total,
+                        'totamount' => $total
+                    ]);
+        }
+
+        //JTR
+        DB::table('material.ivtxndt')
+                    ->where('compcode','9B')
+                    ->where('trantype','JTR')
+                    ->where('deptcode','IMP')
+                    ->update(['compcode'=>'XX']);
+    }
+
+    public function btlkn_imp_2(Request $request){
+
+        $from=$request->from;
+        $to=$request->from+5000;
+
+        $stockloc = DB::table('material.stockloc')
+                    ->where('compcode','9B')
+                    ->where('deptcode','IMP')
+                    ->where('year','2024')
+                    ->orderBy('idno', 'DESC')
+                    ->offset($from)
+                    ->limit($to)
+                    ->get();
+
+        foreach ($stockloc as $key => $value) {
+
+            // $product = DB::table('material.product')
+            //                 ->where('compcode','9B')
+            //                 ->where('itemcode',$obj->itemcode)
+            //                 ->where('uomcode',$obj->uomcode)
+            //                 ->first();
+
+            $ivdspdt = DB::table('material.ivdspdt')
+                        ->where('compcode','9B')
+                        ->where('itemcode',$value->itemcode)
+                        ->where('trandate','>=','2024-12-01')
+                        ->where('trandate','<=','2024-12-31')
+                        ->sum('txnqty');
+            $minus = $ivdspdt;
+
+            $ivtxndt = DB::table('material.ivtxndt')
+                        ->where('compcode','9B')
+                        ->where('itemcode',$value->itemcode)
+                        ->where('trandate','>=','2024-12-01')
+                        ->where('trandate','<=','2024-12-31')
+                        ->sum('txnqty');
+            $add = $ivtxndt;
+
+            $all = $add - $minus;
+
+            $ivdspdt2 = DB::table('material.ivdspdt')
+                        ->where('compcode','9B')
+                        ->where('itemcode',$value->itemcode)
+                        ->where('trandate','>=','2024-12-01')
+                        ->where('trandate','<=','2024-12-31')
+                        ->sum('amount');
+            $minus2 = $ivdspdt2;
+
+            $ivtxndt2 = DB::table('material.ivtxndt')
+                        ->where('compcode','9B')
+                        ->where('itemcode',$value->itemcode)
+                        ->where('trandate','>=','2024-12-01')
+                        ->where('trandate','<=','2024-12-31')
+                        ->sum('amount');
+            $add2 = $ivtxndt2;
+
+            $all2 = $add2 - $minus2;
+
+            // $netmvqty11 = $product->qtyonhand - $all;
+            // dump($product->qtyonhand);
+            // dump($all);
+            // dump($netmvqty11);
+
+            DB::table('material.stockloc')
+                        ->where('compcode','9B')
+                        ->where('itemcode',$value->itemcode)
+                        ->where('deptcode','IMP')
+                        ->where('year','2024')
+                        ->update([
+                            'openbalqty' => 0,
+                            'openbalval' => 0,
+                            'netmvqty1' => 0,
+                            'netmvqty2' => 0,
+                            'netmvqty3' => 0,
+                            'netmvqty4' => 0,
+                            'netmvqty5' => 0,
+                            'netmvqty6' => 0,
+                            'netmvqty7' => 0,
+                            'netmvqty8' => 0,
+                            'netmvqty12' => $all,
+                            'netmvval1' => 0,
+                            'netmvval2' => 0,
+                            'netmvval3' => 0,
+                            'netmvval4' => 0,
+                            'netmvval5' => 0,
+                            'netmvval6' => 0,
+                            'netmvval7' => 0,
+                            'netmvval8' => 0,
+                            'netmvval12' => $all2,
+                        ]);
+        }
+    }
+
+    public function btlkn_imp_3(Request $request){
+
+        $from=$request->from;
+        $to=$request->from+5000;
+
+        $stockloc = DB::table('material.stockloc')
+                    ->where('compcode','9B')
+                    ->where('deptcode','IMP')
+                    ->where('year','2024')
+                    ->orderBy('idno', 'DESC')
+                    ->offset($from)
+                    ->limit($to)
+                    ->get();
+
+        foreach ($stockloc as $key => $value) {
+
+            // $product = DB::table('material.product')
+            //                 ->where('compcode','9B')
+            //                 ->where('itemcode',$obj->itemcode)
+            //                 ->where('uomcode',$obj->uomcode)
+            //                 ->first();
+
+            $ivdspdt = DB::table('material.ivdspdt')
+                        ->where('compcode','9B')
+                        ->where('itemcode',$value->itemcode)
+                        ->where('trandate','>=','2024-11-01')
+                        ->where('trandate','<=','2024-11-30')
+                        ->sum('txnqty');
+            $minus = $ivdspdt;
+
+            $ivtxndt = DB::table('material.ivtxndt')
+                        ->where('compcode','9B')
+                        ->where('itemcode',$value->itemcode)
+                        ->where('trandate','>=','2024-11-01')
+                        ->where('trandate','<=','2024-11-30')
+                        ->sum('txnqty');
+            $add = $ivtxndt;
+
+            $all = $add - $minus;
+
+            $ivdspdt2 = DB::table('material.ivdspdt')
+                        ->where('compcode','9B')
+                        ->where('itemcode',$value->itemcode)
+                        ->where('trandate','>=','2024-11-01')
+                        ->where('trandate','<=','2024-11-30')
+                        ->sum('amount');
+            $minus2 = $ivdspdt2;
+
+            $ivtxndt2 = DB::table('material.ivtxndt')
+                        ->where('compcode','9B')
+                        ->where('itemcode',$value->itemcode)
+                        ->where('trandate','>=','2024-11-01')
+                        ->where('trandate','<=','2024-11-30')
+                        ->sum('amount');
+            $add2 = $ivtxndt2;
+
+            $all2 = $add2 - $minus2;
+
+            // $netmvqty11 = $product->qtyonhand - $all;
+            // dump($product->qtyonhand);
+            // dump($all);
+            // dump($netmvqty11);
+
+            DB::table('material.stockloc')
+                        ->where('compcode','9B')
+                        ->where('itemcode',$value->itemcode)
+                        ->where('deptcode','IMP')
+                        ->where('year','2024')
+                        ->update([
+                            'openbalqty' => 0,
+                            'openbalval' => 0,
+                            'netmvqty1' => 0,
+                            'netmvqty2' => 0,
+                            'netmvqty3' => 0,
+                            'netmvqty4' => 0,
+                            'netmvqty5' => 0,
+                            'netmvqty6' => 0,
+                            'netmvqty7' => 0,
+                            'netmvqty8' => 0,
+                            'netmvqty11' => $all,
+                            'netmvval1' => 0,
+                            'netmvval2' => 0,
+                            'netmvval3' => 0,
+                            'netmvval4' => 0,
+                            'netmvval5' => 0,
+                            'netmvval6' => 0,
+                            'netmvval7' => 0,
+                            'netmvval8' => 0,
+                            'netmvval11' => $all2,
+                        ]);
         }
     }
     

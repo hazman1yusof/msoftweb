@@ -187,6 +187,10 @@
         </div>
     </div>
 
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="ordcom_panel">
+        @include('hisdb.ordcom.ordcom',['phase' => '2'])
+    </div>
+
     <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="doctornote_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_doctornote">
 
@@ -435,6 +439,8 @@
     <script type="text/ecmascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script type="text/ecmascript" src="{{ asset('patientcare/assets/form-validator/jquery.form-validator.min.js') }}/"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/userfile.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction_diet.js') }}"></script>
@@ -447,6 +453,19 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/doctornote_main.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/requestfor.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/admhandover.js') }}"></script>
+
+    <script type="text/javascript" src="{{ asset('js/myjs/utility.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_main.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_phar.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_disp.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_lab.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_rad.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_dfee.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_phys.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_rehab.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_diet.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_oth.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_pkg.js') }}"></script>
 
 @endsection
 

@@ -2,7 +2,7 @@
 var urlParam_phar={
 	action:'ordcom_table',
 	url:'./ordcom/table',
-	chggroup: $('#ordcomtt_phar').val(),
+	chggroup: $('#jqGrid_ordcom_c #ordcomtt_phar').val(),
 	mrn:'',
 	episno:''
 };
@@ -183,7 +183,7 @@ $(document).ready(function(){
 				return false;
 			}
 		},
-		subGrid: true,
+		subGrid: needsubgrid(),
 		subGridRowExpanded: function(subgrid_id, row_id) {
 	    	var selrowdata = $('#jqGrid_phar').jqGrid ('getRowData', row_id);
 			
@@ -434,7 +434,7 @@ var myEditOptions_phar = {
 			return false;
 		}
 
-		let rowdata = getrow_bootgrid();
+		let rowdata = getrow_bootgrid_();
 
 		let editurl = "./ordcom/form?"+
 			$.param({
@@ -513,7 +513,7 @@ var myEditOptions_phar_edit = {
 				self.urlParam.chgcode = $("#jqGrid_phar input[name='chgcode']").val();
 				self.urlParam.uom = $("#jqGrid_phar input[name='uom']").val();
 				self.urlParam.filterCol = ['cm.chggroup'];
-				self.urlParam.filterVal = [$('#ordcomtt_phar').val()];
+				self.urlParam.filterVal = [$('#jqGrid_ordcom_c #ordcomtt_phar').val()];
 	        },function(data,self,id,fail){
 	        	if(data.rows != undefined && data.rows.length>0){
 	        		var retdata = data.rows[0];
@@ -539,7 +539,7 @@ var myEditOptions_phar_edit = {
 				self.urlParam.chgcode = $("#jqGrid_phar input[name='chgcode']").val();
 				self.urlParam.uom = $("#jqGrid_phar input[name='uom']").val();
 				self.urlParam.filterCol = ['cm.chggroup'];
-				self.urlParam.filterVal = [$('#ordcomtt_phar').val()];
+				self.urlParam.filterVal = [$('#jqGrid_ordcom_c #ordcomtt_phar').val()];
 	        },function(data,self,id,fail){
 	        	if(data.rows != undefined && data.rows.length>0){
 	        		var retdata = data.rows[0];
@@ -560,7 +560,7 @@ var myEditOptions_phar_edit = {
 				self.urlParam.chgcode = $("#jqGrid_phar input[name='chgcode']").val();
 				self.urlParam.uom = $("#jqGrid_phar input[name='uom_recv']").val();
 				self.urlParam.filterCol = ['cm.chggroup'];
-				self.urlParam.filterVal = [$('#ordcomtt_phar').val()];
+				self.urlParam.filterVal = [$('#jqGrid_ordcom_c #ordcomtt_phar').val()];
 	        },function(data,self,id,fail){
 	        	if(data.rows != undefined && data.rows.length>0){
 	        		var retdata = data.rows[0];
@@ -641,7 +641,7 @@ var myEditOptions_phar_edit = {
 			return false;
 		}
 
-		let rowdata = getrow_bootgrid();
+		let rowdata = getrow_bootgrid_();
 
 		let editurl = "./ordcom/form?"+
 			$.param({
@@ -748,7 +748,7 @@ function calculate_line_totgst_and_totamt_phar(event) {
 		rate = 0;
 	}
 
-	var discamt = calc_discamt_main($('#ordcomtt_phar').val(),$("#jqGrid_phar #"+id_optid+"_chgcode").val(),unitprce,quantity);
+	var discamt = calc_discamt_main($('#jqGrid_ordcom_c #ordcomtt_phar').val(),$("#jqGrid_phar #"+id_optid+"_chgcode").val(),unitprce,quantity);
 	var amount = (unitprce*quantity);
 
 	let taxamount = (amount + discamt) * rate / 100;
@@ -863,10 +863,12 @@ var dialog_chgcode_phar = new ordialog(
 				price : 'PRICE2',
 				entrydate : moment().format('YYYY-MM-DD'),
 				billtype : $('#billtype_def_code').val(),
+				mrn : urlParam_phar.mrn,
+				episno : urlParam_phar.episno,
 				uom : $("#jqGrid_phar input[name='uom']").val(),
 				deptcode : $('#phardept_dflt').val(),
 				filterCol : ['cm.chggroup'],
-				filterVal : [$('#ordcomtt_phar').val()],
+				filterVal : [$('#jqGrid_ordcom_c #ordcomtt_phar').val()],
 			},
 		ondblClickRow:function(event){
 			if(event.type == 'keydown'){
@@ -986,10 +988,12 @@ var dialog_chgcode_phar = new ordialog(
 			dialog_chgcode_phar.urlParam.price = 'PRICE2';
 			dialog_chgcode_phar.urlParam.entrydate = $("#jqGrid_phar input[name='trxdate']").val();
 			dialog_chgcode_phar.urlParam.billtype = $('#billtype_def_code').val();
+			dialog_chgcode_phar.urlParam.mrn = urlParam_phar.mrn;
+			dialog_chgcode_phar.urlParam.episno = urlParam_phar.episno;
 			dialog_chgcode_phar.urlParam.chgcode = $("#jqGrid_phar input[name='chgcode']").val();
 			dialog_chgcode_phar.urlParam.uom = $("#jqGrid_phar input[name='uom']").val();
 			dialog_chgcode_phar.urlParam.filterCol = ['cm.chggroup'];
-			dialog_chgcode_phar.urlParam.filterVal = [$('#ordcomtt_phar').val()];
+			dialog_chgcode_phar.urlParam.filterVal = [$('#jqGrid_ordcom_c #ordcomtt_phar').val()];
 		},
 		close: function(obj){
 			$("#jqGrid_phar input[name='quantity']").focus().select();
@@ -1039,7 +1043,7 @@ var dialog_uomcode_phar = new ordialog(
 					billtype : $('#billtype_def_code').val(),
 					price : 'PRICE2',
 					filterCol : ['cm.chggroup'],
-					filterVal : [$('#ordcomtt_phar').val()],
+					filterVal : [$('#jqGrid_ordcom_c #ordcomtt_phar').val()],
 				},
 		ondblClickRow:function(event){
 
@@ -1103,7 +1107,7 @@ var dialog_uomcode_phar = new ordialog(
 			dialog_uomcode_phar.urlParam.price = 'PRICE2';
 			dialog_uomcode_phar.urlParam.billtype = $('#billtype_def_code').val();
 			dialog_uomcode_phar.urlParam.filterCol = ['cm.chggroup'];
-			dialog_uomcode_phar.urlParam.filterVal = [$('#ordcomtt_phar').val()];
+			dialog_uomcode_phar.urlParam.filterVal = [$('#jqGrid_ordcom_c #ordcomtt_phar').val()];
 		},
 		close: function(){
 			$("#jqGrid_phar input[name='quantity']").focus().select();
@@ -1154,7 +1158,7 @@ var dialog_uom_recv_phar = new ordialog(
 					billtype : $('#billtype_def_code').val(),
 					price : 'PRICE2',
 					filterCol : ['cm.chggroup'],
-					filterVal : [$('#ordcomtt_phar').val()],
+					filterVal : [$('#jqGrid_ordcom_c #ordcomtt_phar').val()],
 				},
 		ondblClickRow:function(event){
 
@@ -1214,7 +1218,7 @@ var dialog_uom_recv_phar = new ordialog(
 			dialog_uom_recv_phar.urlParam.uom = $("#jqGrid_phar input[name='uom_recv']").val();
 			dialog_uom_recv_phar.urlParam.billtype = $('#billtype_def_code').val();
 			dialog_uom_recv_phar.urlParam.filterCol = ['cm.chggroup'];
-			dialog_uom_recv_phar.urlParam.filterVal = [$('#ordcomtt_phar').val()];
+			dialog_uom_recv_phar.urlParam.filterVal = [$('#jqGrid_ordcom_c #ordcomtt_phar').val()];
 		},
 		close: function(){
 			$("#jqGrid_phar input[name='quantity']").focus().select();
@@ -1614,6 +1618,14 @@ var dropdown_instruction_phar = new ordropdown("#jqGrid_phar select[name=instruc
   	}
 });
 
+function needsubgrid(){
+	if($('#ordcom_phase').val() == '2'){
+		return false;
+	}else{
+		return true;
+	}
+}
+
 var dropdown_drugindicator_phar = new ordropdown("#jqGrid_phar select[name=drugindicator]",{
 	ajax: {
 	    url: './util/get_table_default',delay: 250,
@@ -1755,7 +1767,7 @@ function cust_rules_phar(value, name) {
 
 function write_detail_phar(span,value,rowid){
 	if(span == 'clearall'){
-		var lastrowdata = getrow_bootgrid();
+		var lastrowdata = getrow_bootgrid_();
 		$('#jqgrid_detail_phar_'+rowid+' span.label_d').text('');
 		$('#jqgrid_detail_phar_docname_'+rowid).text(lastrowdata.q_doctorname);
 	}else if(Array.isArray(span)){

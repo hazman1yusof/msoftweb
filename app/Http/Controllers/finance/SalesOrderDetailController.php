@@ -2929,6 +2929,10 @@ class SalesOrderDetailController extends defaultController
     public function billtype_obj_get(Request $request){
         $billtype_obj = new stdClass();
 
+        if(empty($request->billtype)){
+            return $this->get_billtype_from_episode($request);
+        }
+
         $billtymst = DB::table('hisdb.billtymst')
                         ->where('compcode','=',session('compcode'))
                         ->where('billtype','=',$request->billtype);
@@ -2940,6 +2944,58 @@ class SalesOrderDetailController extends defaultController
             $billtysvc = DB::table('hisdb.billtysvc')
                         ->where('compcode','=',session('compcode'))
                         ->where('billtype','=',$request->billtype);
+
+            if($billtysvc->exists()){
+                foreach ($billtysvc->get() as $key => $value) {
+                    $billtysvc_obj = new stdClass();
+                    $billtysvc_obj->chggroup = $value->chggroup;
+                    $billtysvc_obj->svc = $value;
+
+                    $billtyitem = DB::table('hisdb.billtyitem')
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('billtype','=',$value->billtype)
+                                    ->where('chggroup','=',$value->chggroup);
+
+                    if($billtyitem->exists()){
+                        $billtysvc_obj->item = $billtyitem->get()->toArray(); 
+                    }
+                    array_push($billtype_obj->svc, $billtysvc_obj);
+                }
+            }
+
+            return $billtype_obj;
+
+        }else{
+            throw new \Exception("Wrong billtype");
+        }
+    }
+
+    public function get_billtype_from_episode(Request $request){
+        $billtype_obj = new stdClass();
+
+        $episode = DB::table('hisdb.episode')  
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno);
+
+        if(!$episode->exists()){
+            throw new \Exception("No episode");
+        }
+
+        $episode = $episode->first();
+        $billtype = $episode->billtype;
+
+        $billtymst = DB::table('hisdb.billtymst')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('billtype','=',$billtype);
+
+        if($billtymst->exists()){
+            $billtype_obj->billtype = $billtymst->first();
+            $billtype_obj->svc = [];
+
+            $billtysvc = DB::table('hisdb.billtysvc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('billtype','=',$billtype);
 
             if($billtysvc->exists()){
                 foreach ($billtysvc->get() as $key => $value) {

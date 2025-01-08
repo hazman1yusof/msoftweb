@@ -15,13 +15,24 @@ var conf_ordco = {
 	},
 };
 
+function getrow_bootgrid_(){
+	if($('#ordcom_phase').val() == '2'){
+		return selrowData('#jqGrid');
+	}else{
+		return getrow_bootgrid();
+	}
+}
+
 $(document).ready(function(){
 	$("#jqGrid_ordcom_panel").on("shown.bs.collapse", function(){
-		var lastrowdata = getrow_bootgrid();
+		var lastrowdata = getrow_bootgrid_();
+		console.log(lastrowdata);
 		get_billtype();
 		get_ordcom_totamount();
 		SmoothScrollTo("#jqGrid_ordcom_panel", 500,70);
-		$('a#ordcom_navtab_phar').tab('show')
+		if($('#ordcom_phase').val() != '2'){
+			$('a#ordcom_navtab_phar').tab('show');
+		}
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
 		$("#jqGrid_phar").jqGrid('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-58));
 		$("#cyclebill_dtl").attr('href',"./ordcom/table?action=showpdf_detail&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
@@ -31,7 +42,7 @@ $(document).ready(function(){
 		// if($('#isdoctor').val() != '1'){
         // 	let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
 		// 	let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
-        // 	var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
+        // 	var lastrowdata = getrow_bootgrid_(bootgrid_last_rowid,rows);
 		// 	write_detail_phar('#jqgrid_detail_phar_docname',lastrowdata.q_doctorname);
 		// 	write_detail_phar('#jqgrid_detail_phar_dept',$('#userdeptdesc').val());
 		// }
@@ -82,8 +93,6 @@ $(document).ready(function(){
 				break;
 		}
 	});
-
-
 });
 
 //screen current patient//
@@ -124,8 +133,7 @@ function populate_ordcom_currpt(obj){
 	urlParam_oth.mrn = obj.MRN;
 	urlParam_oth.episno = obj.Episno;
 	urlParam_pkg.mrn = obj.MRN;
-	urlParam_pkg.episno = obj.Episno;
-	
+	urlParam_pkg.episno = obj.Episno;	
 }
 
 function remark_formatter(cellvalue, options, rowdata){
@@ -222,7 +230,7 @@ function fail_msg_func(fail_msg_div=null){
 
 var get_billtype_main=null;
 function get_billtype(){
-	var lastrowdata = getrow_bootgrid();
+	var lastrowdata = getrow_bootgrid_();
 
 	var param={
 		action:'get_value_default',
@@ -242,7 +250,7 @@ function get_billtype(){
 }
 
 function get_ordcom_totamount(){
-	var lastrowdata = getrow_bootgrid();
+	var lastrowdata = getrow_bootgrid_();
 
 	var param={
 		url:"./ordcom/table",
@@ -297,17 +305,17 @@ function abscurrency_unformat(val,opt,rowObject ){
 
 function set_userdeptcode(tab){
 	if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
-		let rowdata = getrow_bootgrid();
+		let rowdata = getrow_bootgrid_();
 		$('#'+tab+'dept_dflt').val(rowdata.ward);
 	}else{
-		let rowdata = getrow_bootgrid();
+		let rowdata = getrow_bootgrid_();
 		$('#'+tab+'dept_dflt').val(rowdata.regdept);
 	}
 }
 
 function final_bill(grid,param){
 	if (confirm("Are you sure to run final bill for this patient?") == true) {
-		var lastrowdata = getrow_bootgrid();
+		var lastrowdata = getrow_bootgrid_();
 		var url = "./ordcom/table?action=final_bill_invoice&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno;
 		let urlparam = {	
 			action: 'final_bill',

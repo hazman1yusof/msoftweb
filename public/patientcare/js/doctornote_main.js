@@ -157,6 +157,7 @@ $(document).ready(function () {
 				populate_dieteticCareNotes_currpt(selrowData('#jqGrid'));
 				populate_userfile(selrowData('#jqGrid'));
 				populate_phys(selrowData('#jqGrid'));
+				populate_ordcom_currpt(selrowData('#jqGrid'));
 				
 				// if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
 				// 	$('#checkbox_completed').prop('disabled',true);
@@ -269,6 +270,7 @@ $(document).ready(function () {
 				populate_dieteticCareNotes_currpt(selrowData('#jqGrid'));
 				populate_userfile(selrowData('#jqGrid'));
 				populate_phys(selrowData('#jqGrid'));
+				populate_ordcom_currpt(selrowData('#jqGrid'));
 				
 				// if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
 				// 	$('#checkbox_completed').prop('disabled',true);
