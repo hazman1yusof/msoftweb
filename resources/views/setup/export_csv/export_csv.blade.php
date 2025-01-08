@@ -86,7 +86,7 @@
 	</div>
 
 	<div class="col-md-12">
-		<div class="panel panel-default" style="height: 213px;">
+		<div class="panel panel-default" style="height: 265px;">
 			<div class="panel-body" style="padding-left: 35px !important;">
 				<div class='col-md-12 btnform' style="padding:0px">
 				 <fieldset>
@@ -148,6 +148,14 @@
 					
 					<button name="export_stockexp" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_stockexp'>
 						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>Stockexp</b>
+					</button>
+					
+					<button name="export_stkcnthd" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_stkcnthd'>
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>StkcntHD</b>
+					</button>
+					
+					<button name="export_stkcntdt" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_stkcntdt'>
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>StkcntDT</b>
 					</button>
 				  </fieldset>
 				</div>

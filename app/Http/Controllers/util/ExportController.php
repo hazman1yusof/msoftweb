@@ -26,6 +26,8 @@ use App\Exports\csv\apalloc_csv;
 use App\Exports\csv\apactdtl_csv;
 use App\Exports\csv\stockloc_csv;
 use App\Exports\csv\stockexp_csv;
+use App\Exports\csv\stkcnthd_csv;
+use App\Exports\csv\stkcntdt_csv;
 
 use App\Jobs\SendEmailPR;
 use App\Mail\sendmaildefault;
@@ -69,9 +71,13 @@ class ExportController extends defaultController
             case 'export_apactdtl':
                 return $this->export_apactdtl($request);
             case 'export_stockloc':
-                return $this->export_stockloc($request);    
+                return $this->export_stockloc($request);
             case 'export_stockexp':
                 return $this->export_stockexp($request);
+            case 'export_stkcnthd':
+                return $this->export_stkcnthd($request);
+            case 'export_stkcntdt':
+                return $this->export_stkcntdt($request);
             default:
                 return 'error happen..';
         }
@@ -135,5 +141,13 @@ class ExportController extends defaultController
 
     public function export_stockexp(Request $request){
         return Excel::download(new stockexp_csv($request), 'stockexp_csv.csv');
+    }
+
+    public function export_stkcnthd(Request $request){
+        return Excel::download(new stkcnthd_csv($request), 'stkcnthd_csv.csv');
+    }
+
+    public function export_stkcntdt(Request $request){
+        return Excel::download(new stkcntdt_csv($request), 'stkcntdt_csv.csv');
     }
 }
