@@ -37,17 +37,16 @@ class stkcnthd_csv implements FromView
     
     public function view(): View{
 
-        $table = DB::table('material.ivtxnhd')
-                    ->where('compcode','9B')
-                    ->where('trantype','PHYCNT');
+        $table = DB::table('material.phycnthd')
+                    ->where('compcode','9B');
 
         if(!empty($this->from)){
-                $table = $table->whereDate('trandate','>=',$this->from)
-                                ->whereDate('trandate','<=',$this->to);
+                $table = $table->whereDate('phycntdate','>=',$this->from)
+                                ->whereDate('phycntdate','<=',$this->to);
         }
                     
         $table = $table->get();
 
-        return view('other.csv.ivtxnhd',compact('table'));
+        return view('other.csv.phycnthd',compact('table'));
     }
 }
