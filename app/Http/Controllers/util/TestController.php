@@ -3938,6 +3938,7 @@ class TestController extends defaultController
             $minus = $ivdspdt;
 
             $ivtxndt = DB::table('material.ivtxndt')
+                        ->whereIn('trantype',['GRN','AI','PHYCNT','TUI'])
                         ->where('compcode','9B')
                         ->where('itemcode',$value->itemcode)
                         ->where('trandate','>=','2024-12-01')
@@ -3945,7 +3946,16 @@ class TestController extends defaultController
                         ->sum('txnqty');
             $add = $ivtxndt;
 
-            $all = $add - $minus;
+            $ivtxndt_2 = DB::table('material.ivtxndt')
+                        ->whereIn('trantype',['TUO','AO'])
+                        ->where('compcode','9B')
+                        ->where('itemcode',$value->itemcode)
+                        ->where('trandate','>=','2024-12-01')
+                        ->where('trandate','<=','2024-12-31')
+                        ->sum('txnqty');
+            $minus_2 = $ivtxndt_2;
+
+            $all = $add - $minus - $minus_2;
 
             $ivdspdt2 = DB::table('material.ivdspdt')
                         ->where('compcode','9B')
@@ -3956,6 +3966,7 @@ class TestController extends defaultController
             $minus2 = $ivdspdt2;
 
             $ivtxndt2 = DB::table('material.ivtxndt')
+                        ->whereIn('trantype',['GRN','AI','PHYCNT','TUI'])
                         ->where('compcode','9B')
                         ->where('itemcode',$value->itemcode)
                         ->where('trandate','>=','2024-12-01')
@@ -3963,7 +3974,16 @@ class TestController extends defaultController
                         ->sum('amount');
             $add2 = $ivtxndt2;
 
-            $all2 = $add2 - $minus2;
+            $ivtxndt2_2 = DB::table('material.ivtxndt')
+                        ->whereIn('trantype',['TUO','AO'])
+                        ->where('compcode','9B')
+                        ->where('itemcode',$value->itemcode)
+                        ->where('trandate','>=','2024-12-01')
+                        ->where('trandate','<=','2024-12-31')
+                        ->sum('amount');
+            $minus2_2 = $ivtxndt2_2;
+
+            $all2 = $add2 - $minus2 - $minus2_2;
 
             // $netmvqty11 = $product->qtyonhand - $all;
             // dump($product->qtyonhand);
