@@ -272,4 +272,26 @@ class NursingNoteController extends defaultController
         }
         
     }
+
+    public function get_table_progress(Request $request){
+        
+        $nurshandover_obj = DB::table('nursing.nurshandover')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('idno','=',$request->idno);
+                            // ->where('mrn','=',$request->mrn)
+                            // ->where('episno','=',$request->episno);
+        
+        $responce = new stdClass();
+        
+        if($nurshandover_obj->exists()){
+            $nurshandover_obj = $nurshandover_obj->first();
+            $date = Carbon::createFromFormat('Y-m-d', $nurshandover_obj->datetaken)->format('Y-m-d');
+            
+            $responce->nurshandover = $nurshandover_obj;
+            $responce->date = $date;
+        }
+        
+        return json_encode($responce);
+        
+    }
 }

@@ -2429,9 +2429,9 @@
                                 <div class="panel-body">
                                     <form class='form-horizontal' style='width: 99%;' id='formBladder'>
                                         <ul class="nav nav-tabs" id="jqGridNursNote_bladder_tabs">
-                                            <li class="active"><a data-toggle="tab" id="navtab_firstShift" href="#tab-firstShift" aria-expanded="true" data-type='firstShift'>8AM - 2PM</a></li>
-                                            <li><a data-toggle="tab" id="navtab_secondShift" href="#tab-secondShift" data-type='secondShift'>3PM - 9PM</a></li>
-                                            <li><a data-toggle="tab" id="navtab_thirdShift" href="#tab-thirdShift" data-type='thirdShift'>10PM - 7AM</a></li>
+                                            <li class="active"><a data-toggle="tab" id="navtab_firstShift" href="#tab-firstShift" aria-expanded="true" data-type='firstShift'>7AM - 2PM</a></li>
+                                            <li><a data-toggle="tab" id="navtab_secondShift" href="#tab-secondShift" data-type='secondShift'>2PM - 9PM</a></li>
+                                            <li><a data-toggle="tab" id="navtab_thirdShift" href="#tab-thirdShift" data-type='thirdShift'>9PM - 7AM</a></li>
                                         </ul>
                                         <div class="tab-content" style="padding: 10px 5px;">
                                             <!-- 1st shift (8am-2pm) -->
