@@ -4003,7 +4003,7 @@ class TestController extends defaultController
     public function btlkn_imp_3(Request $request){
 
         $from=$request->from;
-        $to=$request->from+5000;
+        $to=$request->from+3000;
 
         $stockloc = DB::table('material.stockloc')
                     ->where('compcode','9B')
