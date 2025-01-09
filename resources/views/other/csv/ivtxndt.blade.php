@@ -2,7 +2,6 @@
     <tr>
         <td>compcode</td>
         <td>recno</td>
-        <td>trantype</td>
         <td>lineno_</td>
         <td>itemcode</td>
         <td>uomcode</td>
@@ -24,12 +23,12 @@
         <td>batchno</td>
         <td>amount</td>
         <td>pouom</td>
+        <td>trantype</td>
     </tr>
     @foreach ($collection as $obj)
         <tr>
             <td>{{$obj->compcode}}</td>
             <td>{{$obj->recno}}</td>
-            <td>{{$obj->trantype}}</td>
             <td>{{$obj->lineno_}}</td>
             <td>{{$obj->itemcode}}</td>
             <td>{{$obj->uomcode}}</td>
@@ -51,6 +50,7 @@
             <td>{{$obj->batchno}}</td>
             <td>{{$obj->amount}}</td>
             <td>{{$obj->pouom}}</td>
+            <td>{{$obj->trantype}}</td>
         </tr>
     @endforeach
 </table>
