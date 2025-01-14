@@ -53,15 +53,15 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [100,100], //panjang standard dia 515
+                            widths: [30,250], //panjang standard dia 515
                             body: [
                                 [
                                     {text: 'Name '},
-                                    {text: ': {{$dressing->Name}}'}
+                                    {text: ':\u200B\t{{$dressing->Name}}'}
                                 ],
                                 [
                                     {text: 'NRIC '},
-                                    {text: ': {{$dressing->Newic}}'}
+                                    {text: ':\u200B\t{{$dressing->Newic}}'}
                                 ],
                             ]
                         },
