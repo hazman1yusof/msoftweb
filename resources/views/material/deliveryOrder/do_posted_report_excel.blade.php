@@ -10,7 +10,7 @@
     </tr>
     @foreach ($do_hd as $hd_obj)
     <tr>
-        <td style="font-weight:bold; text-align: left">Pur Dept : {{$hd_obj->prdept_desc}}</td>
+        <td style="font-weight:bold; text-align: left">Delivery Dept : {{$hd_obj->deldept_desc}}</td>
         <td style="font-weight:bold; text-align: left">DO No : {{$hd_obj->delordno}}</td>
         <td style="font-weight:bold; text-align: left">GRN No : {{$hd_obj->docno}}</td>
         <td style="font-weight:bold; text-align: left">Supplier : {{$hd_obj->suppcode_desc}}</td>

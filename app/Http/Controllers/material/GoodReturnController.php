@@ -355,8 +355,8 @@ class GoodReturnController extends defaultController
                         'srcdocno'=>$delordhd_obj->srcdocno, 
                         'sndrcv'=>$delordhd_obj->suppcode, 
                         'sndrcvtype'=>'Supplier', 
-                        'trandate'=>$delordhd_obj->trandate, 
-                        'trantime'=>$delordhd_obj->trantime, 
+                        'trandate'=>Carbon::now("Asia/Kuala_Lumpur"), 
+                        'trantime'=>Carbon::now("Asia/Kuala_Lumpur"), 
                         'datesupret'=>$delordhd_obj->deliverydate, 
                         'respersonid'=>$delordhd_obj->checkpersonid, 
                         'recstatus'=>$delordhd_obj->recstatus, 
@@ -374,7 +374,6 @@ class GoodReturnController extends defaultController
 
                     //2. start looping untuk delorddt
                 foreach ($delorddt_obj as $value) {
-
                     if($value->qtyreturned <= 0){
                         continue;
                     }
@@ -420,6 +419,7 @@ class GoodReturnController extends defaultController
                     DB::table('material.ivtxndt')
                         ->insert([
                             'compcode' => $value->compcode, 
+                            'unit' => session('unit'), 
                             'recno' => $value->recno, 
                             'lineno_' => $value->lineno_, 
                             'itemcode' => $value->itemcode, 
@@ -440,7 +440,7 @@ class GoodReturnController extends defaultController
                             'qtyonhand' => 0, 
                             'batchno' => $value->batchno, 
                             'amount' => $value->amount, 
-                            'trandate' => $value->trandate, 
+                            'trandate' => Carbon::now("Asia/Kuala_Lumpur"), 
                             'trantype' => $delordhd_obj->trantype,
                             'deptcode' => $value->deldept, 
                             'gstamount' => $value->amtslstax, 
@@ -823,7 +823,7 @@ class GoodReturnController extends defaultController
                     ]);
             }
                
-        DB::commit();
+            DB::commit();
         
         } catch (\Exception $e) {
             DB::rollback();

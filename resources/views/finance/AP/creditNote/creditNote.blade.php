@@ -369,6 +369,6 @@ i.fa {
 			
 		});
 	</script>
-	<script src="js/finance/AP/creditNote/creditNote.js"></script>
+	<script src="js/finance/AP/creditNote/creditNote.js?v=1.1"></script>
 
 @endsection

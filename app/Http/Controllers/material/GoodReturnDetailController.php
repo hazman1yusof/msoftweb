@@ -254,6 +254,7 @@ class GoodReturnDetailController extends defaultController
         try {
 
             $delordhd = DB::table('material.delordhd')
+                        ->where('compcode',session('compcode'))
                         ->where('recno','=',$request->recno);
 
             if(!$delordhd->exists()){
@@ -267,11 +268,11 @@ class GoodReturnDetailController extends defaultController
                     ->where('recno','=',$request->recno)
                     ->where('lineno_','=',$value['lineno_'])
                     ->update([
-                        'pricecode' => $value['pricecode'], 
-                        'itemcode'=> $value['itemcode'], 
-                        'uomcode'=> $value['uomcode'], 
-                        'pouom'=> $value['pouom'],
-                        'qtydelivered'=> $value['qtydelivered'], 
+                        // 'pricecode' => $value['pricecode'], 
+                        // 'itemcode'=> $value['itemcode'], 
+                        // 'uomcode'=> $value['uomcode'], 
+                        // 'pouom'=> $value['pouom'],
+                        // 'qtydelivered'=> $value['qtydelivered'], 
                         'qtyreturned'=>  $value['qtyreturned'],
                         'unitprice'=>  $value['unitprice'],
                         'taxcode'=>  $value['taxcode'], 
@@ -283,8 +284,8 @@ class GoodReturnDetailController extends defaultController
                         'totamount'=>  $value['totamount'], 
                         'upduser'=> session('username'), 
                         'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
-                        'expdate'=> $this->chgDate($value['expdate']), 
-                        'batchno'=>  $value['batchno'], 
+                        // 'expdate'=> $this->chgDate($value['expdate']), 
+                        // 'batchno'=>  $value['batchno'], 
                         'remarks'=>  $value['remarks']
                     ]);
             }

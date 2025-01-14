@@ -23,6 +23,7 @@
         <td>batchno</td>
         <td>amount</td>
         <td>pouom</td>
+        <td>trantype</td>
     </tr>
     @foreach ($collection as $obj)
         <tr>
@@ -49,6 +50,7 @@
             <td>{{$obj->batchno}}</td>
             <td>{{$obj->amount}}</td>
             <td>{{$obj->pouom}}</td>
+            <td>{{$obj->trantype}}</td>
         </tr>
     @endforeach
 </table>

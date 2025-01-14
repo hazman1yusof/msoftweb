@@ -62,7 +62,30 @@ class HomeController extends Controller
         return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut','logo1'));
     }
 
-    public function ptcare(){//clinic
+    public function ptcare(){
+        $user = Auth::user();
+        $menu = $this->create_ptcare_menu();
+        $units = DB::table('sysdb.sector')
+                ->where('compcode','=',$user->compcode)
+                ->get();
+        $unit_user = '';
+        $company = DB::table('sysdb.company')->where('compcode',session('compcode'))->first();
+        $logo1 = $company->logo1;
+        $title="Clinic";
+        if($user->dept != ''){
+            $unit_user_ = DB::table('sysdb.department')
+                ->where('compcode','=',$user->compcode)
+                ->where('deptcode','=',$user->dept)
+                ->first();
+            $unit_user = $unit_user_->sector;
+        }
+        $dept_desc = $unit_user_->description;
+        $shortcut=true;
+
+        return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut','logo1'));
+    }
+
+    public function clinic(){
         $user = Auth::user();
         $menu = $this->create_clinic_menu();
         $units = DB::table('sysdb.sector')
@@ -239,7 +262,7 @@ class HomeController extends Controller
         return $menu;
     }
 
-    public function create_clinic_menu(){
+    public function create_ptcare_menu(){
         $user = Auth::user();
         $groupid = $user->groupid;
         $company = $user->compcode;
@@ -301,6 +324,19 @@ class HomeController extends Controller
         //IV
         //stock freeze
         //stock count
+
+        return $menu;
+    }
+
+    public function create_clinic_menu(){
+        $user = Auth::user();
+        $groupid = $user->groupid;
+        $company = $user->compcode;
+
+        $menu="<li><a style='padding-left:9px;' title='Patient List' class='clickable' programid='pat_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=HIS' >Patient List</a></li>";
+        $menu.="<li><a style='padding-left:9px;' title='GP List' class='clickable' programid='gp_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=OTC' >GP List</a></li>";
+        $menu.="<li><a style='padding-left:9px' title='Current Patient' class='clickable' programid='curr_pat' targeturl='pat_mast?epistycode=OP&curpat=true&PatClass=HIS'>Current Patient</a></li>";
+        $menu.="<li><a style='padding-left:9px;' title='Case Note' class='clickable' programid='casenote' targetURL='ptcare_doctornote' >Case Note</a></li>";
 
         return $menu;
     }

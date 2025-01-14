@@ -1,4 +1,4 @@
-<div class="panel panel-default" style="position: relative;">
+<div class="panel panel-default" style="position: relative;margin-bottom: 0px;">
 	<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
 		id="btn_grp_edit_ordcom"
 		style="position: absolute;
@@ -11,7 +11,7 @@
 			<span class="fa fa-plus-square-o"></span> Order
 		</button> -->
 	</div>
-	<div class="panel-heading clearfix collapsed position" id="toggle_ordcom" data-toggle="collapse" data-target="#jqGrid_ordcom_panel">
+	<div class="panel-heading clearfix collapsed position" id="toggle_ordcom" @if($phase != '2') data-toggle="collapse" data-target="#jqGrid_ordcom_panel" @endif>
 		<b>NAME: <span id="name_show_ordcom"></span></b><br>
 		MRN: <span id="mrn_show_ordcom"></span>
 		BILL TYPE: <span id="billtype_show_ordcom"></span>
@@ -24,8 +24,15 @@
 		CITIZENSHIP: <span id="citizenship_show_ordcom"></span>
 		AREA: <span id="area_show_ordcom"></span>
 		
-		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+		@if($phase == '2')
+			<input type="hidden" id="ordcom_phase" value="2">
+            <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_ordcom_panel"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid_ordcom_panel" ></i >
+		@else
+			<input type="hidden" id="ordcom_phase" value="0">
+			<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+			<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+		@endif
 		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 100px; top: 5px;">
 			<h5 style="margin-bottom: 5px;">Order Entry</h5>
 			<span><b>Total Amount : </b></span>
@@ -38,23 +45,36 @@
 	    	<input type="hidden" id="episno_ordcom" name="episno_ordcom">
 			<input type="hidden" id="ordcom_deptcode_hide" value="{{Auth::user()->deptcode}}">
 			<input type="hidden" id="ordcom_priceview_hide" value="{{Auth::user()->priceview}}">
-			<input type="hidden" id="ordcomtt_phar" value="{{$ordcomtt_phar ?? ''}}">
-			<input type="hidden" id="ordcomtt_disp" value="{{$ordcomtt_disp ?? ''}}">
-			<input type="hidden" id="ordcomtt_rad" value="{{$ordcomtt_rad ?? ''}}">
-			<input type="hidden" id="ordcomtt_lab" value="{{$ordcomtt_lab ?? ''}}">
-			<input type="hidden" id="ordcomtt_phys" value="{{$ordcomtt_phys ?? ''}}">
-			<input type="hidden" id="ordcomtt_rehab" value="{{$ordcomtt_rehab ?? ''}}">
-			<input type="hidden" id="ordcomtt_diet" value="{{$ordcomtt_diet ?? ''}}">
-			<input type="hidden" id="ordcomtt_dfee" value="{{$ordcomtt_dfee ?? ''}}">
-			<input type="hidden" id="ordcomtt_oth" value="{{$ordcomtt_oth ?? ''}}">
-			<input type="hidden" id="ordcomtt_pkg" value="{{$ordcomtt_pkg ?? ''}}">
+			<input type="hidden" id="ordcomtt_phar" value="{{$ordcomtt_phar ?? '25'}}">
+			<input type="hidden" id="ordcomtt_disp" value="{{$ordcomtt_disp ?? '65'}}">
+			<input type="hidden" id="ordcomtt_rad" value="{{$ordcomtt_rad ?? '30'}}">
+			<input type="hidden" id="ordcomtt_lab" value="{{$ordcomtt_lab ?? '35'}}">
+			<input type="hidden" id="ordcomtt_phys" value="{{$ordcomtt_phys ?? '38'}}">
+			<input type="hidden" id="ordcomtt_rehab" value="{{$ordcomtt_rehab ?? '39'}}">
+			<input type="hidden" id="ordcomtt_diet" value="{{$ordcomtt_diet ?? '92'}}">
+			<input type="hidden" id="ordcomtt_dfee" value="{{$ordcomtt_dfee ?? 'DF'}}">
+			<input type="hidden" id="ordcomtt_oth" value="{{$ordcomtt_oth ?? '25,38,39,65,30,35,92,DF,PK'}}">
+			<input type="hidden" id="ordcomtt_pkg" value="{{$ordcomtt_pkg ?? 'PK'}}">
+
+			@if($phase == '2')
+	        <input name="phardept_dflt" id="phardept_dflt" type="hidden" value="{{$phardept_dflt ?? 'PHAR'}}">
+	        <input name="dispdept_dflt" id="dispdept_dflt" type="hidden" value="{{$userdeptcode ?? 'PHAR'}}">
+	        <input name="labdept_dflt" id="labdept_dflt" type="hidden" value="{{$labdept_dflt ?? 'LAB'}}">
+	        <input name="raddept_dflt" id="raddept_dflt" type="hidden" value="{{$raddept_dflt ?? 'RAD'}}">
+	        <input name="physdept_dflt" id="physdept_dflt" type="hidden" value="{{$physdept_dflt ?? 'PHY'}}">
+	        <input name="rehabdept_dflt" id="rehabdept_dflt" type="hidden" value="{{$rehabsdept_dflt ?? 'REHAB'}}">
+	        <input name="dfeedept_dflt" id="dfeedept_dflt" type="hidden" value="{{$dfeedept_dflt ?? 'PHAR'}}">
+	        <input name="dietdept_dflt" id="dietdept_dflt" type="hidden" value="{{$dietdept_dflt ?? 'DIET'}}">
+	        <input name="pkgdept_dflt" id="pkgdept_dflt" type="hidden" value="{{$pkgdept_dflt ?? 'PHAR'}}">
+	        <input name="othdept_dflt" id="othdept_dflt" type="hidden" value="{{$othdept_dflt ?? 'PHAR'}}">
+	        @endif
 
 			<!-- coverage -->
             <div class="panel panel-default" style="position: relative;" id="div_coverage">
-                <div class="panel-heading clearfix collapsed" id="toggle_tabcoverage" data-toggle="collapse" data-target="#tabcoverage" style="position: sticky;top: -16px;z-index: 3;">
+                <div class="panel-heading clearfix collapsed" id="toggle_tabcoverage" data-toggle="collapse" data-target="#tabcoverage" style="position: sticky;top: -16px;z-index: 3;min-height: 35px;">
 
-                <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-                <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
+                <!-- <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+                <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i > -->
                 <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
                     <h5><strong>COVERAGE</strong></h5>
                 </div> 

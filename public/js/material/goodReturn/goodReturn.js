@@ -346,7 +346,7 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3",urlParam2);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			let stat = selrowData("#jqGrid").purordhd_recstatus;
+			let stat = selrowData("#jqGrid").delordhd_recstatus;
 			if(stat=='OPEN'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 			}else{
@@ -400,7 +400,7 @@ $(document).ready(function () {
 		buttonicon:"glyphicon glyphicon-edit",
 		title:"Edit Selected Row",  
 		onClickButton: function(){
-			let stat = selrowData("#jqGrid").purordhd_recstatus;
+			let stat = selrowData("#jqGrid").delordhd_recstatus;
 			if(stat=='OPEN'){
 				oper='edit';
 				selRowId=$("#jqGrid").jqGrid ('getGridParam', 'selrow');
@@ -984,26 +984,26 @@ $(document).ready(function () {
 		onClickButton: function(){
 			mycurrency2.array.length = 0;
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
-		    // for (var i = 0; i < ids.length; i++) {
+		    for (var i = 0; i < ids.length; i++) {
 
-		    //     $("#jqGrid2").jqGrid('editRow',ids[i]);
+		        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
-		    //     Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst"]);
+		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst"]);
 
-			// 	dialog_taxcode.id_optid = ids[i];
-		    //     dialog_taxcode.check(errorField,ids[i]+"_taxcode","jqGrid2",null,
-		    //     	function(self){
-			//         	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			//         },function(data,self){
-			//         	if(data.rows.length > 0){
-			// 				$("#jqGrid2 #"+self.id_optid+"_taxcode_gstpercent").val(data.rows[0].rate);
-			//         	}
-			// 			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-			//         }
-		    //     );
+				dialog_taxcode.id_optid = ids[i];
+		        dialog_taxcode.check(errorField,ids[i]+"_taxcode","jqGrid2",null,
+		        	function(self){
+			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			        },function(data,self){
+			        	if(data.rows.length > 0){
+							$("#jqGrid2 #"+self.id_optid+"_pouom_gstpercent").val(data.rows[0].rate);
+			        	}
+						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			        }
+		        );
 
-		    //     cari_gstpercent(ids[i]);
-		    // }
+		        cari_gstpercent(ids[i]);
+		    }
 		    onall_editfunc();
 			hideatdialogForm(true,'saveallrow');
 		},
@@ -1064,7 +1064,8 @@ $(document).ready(function () {
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
-				// $('#amount').val(data);
+				$('#delordhd_subamount').val(data);
+				$('#delordhd_totamount').val(data);
 				hideatdialogForm(false);
 				refreshGrid("#jqGrid2",urlParam2);
 			});
@@ -1279,20 +1280,24 @@ $(document).ready(function () {
 
 	var mycurrency2 =new currencymode([]);
 	function calculate_line_totgst_and_totamt(event){
+		mycurrency2.formatOff();
+
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
 
-		let qtyreturned = parseFloat($("#"+id_optid+"_qtyreturned").val());
-		let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
-		let amtdisc = parseFloat($("#"+id_optid+"_amtdisc").val());
-		let perdisc = parseFloat($("#"+id_optid+"_perdisc").val());
-		let gstpercent = parseFloat($("#jqGrid2 #"+id_optid+"_taxcode_gstpercent").val());
+		let qtyreturned = parseFloat($("#jqGrid2 #"+id_optid+"_qtyreturned").val());
+		let unitprice = parseFloat($("#jqGrid2 #"+id_optid+"_unitprice").val());
+		let amtdisc = parseFloat($("#jqGrid2 #"+id_optid+"_amtdisc").val());
+		let perdisc = parseFloat($("#jqGrid2 #"+id_optid+"_perdisc").val());
+		let gstpercent = parseFloat($("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val());
 		let qtydelivered = parseFloat($("#jqGrid2 #"+id_optid+"_qtydelivered").val());
 
 		var totamtperUnit = ((unitprice*qtyreturned) - (amtdisc*qtyreturned));
 		var amount = totamtperUnit- (totamtperUnit*perdisc/100);
 		
 		var tot_gst = amount * (gstpercent / 100);
+		if(isNaN(tot_gst))tot_gst = 0;
+		
 		var totalAmount = amount + tot_gst;
 
 		var netunitprice = (unitprice-amtdisc);//?
@@ -1322,7 +1327,8 @@ $(document).ready(function () {
 			}
 		}
 
-		event.data.currency.formatOn();//change format to currency on each calculation
+		mycurrency2.formatOn();
+		// event.data.currency.formatOn();//change format to currency on each calculation
 
 	}
 
@@ -2147,7 +2153,7 @@ $(document).ready(function () {
 
 				let data=selrowData('#'+dialog_taxcode.gridname);
 
-				$("#jqGrid2 #"+id_optid+"_taxcode_gstpercent").val(data['rate']);
+				$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['rate']);
 				$(dialog_taxcode.textfield).closest('td').next().has("input[type=text]").focus();
 			},
 			gridComplete: function(obj){
@@ -2179,7 +2185,7 @@ $(document).ready(function () {
 
 	function cari_gstpercent(id){
 		let data = $('#jqGrid2').jqGrid ('getRowData', id);
-		$("#jqGrid2 #"+id+"_taxcode_gstpercent").val(data.rate);
+		$("#jqGrid2 #"+id+"_pouom_gstpercent").val(data.rate);
 	}
 
 	$("#jqGrid_selection").jqGrid({
