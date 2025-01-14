@@ -1182,7 +1182,7 @@ class SalesOrderController extends defaultController
                                     ->where('uomcode','=',$billsum_obj->uom)
                                     ->where('itemcode','=',$billsum_obj->chggroup);
                     
-                    if($product->exists()){
+                    if($product->exists() && $chgmast->invflag == 1){
                         // $stockloc = DB::table('material.stockloc')
                         //         ->where('compcode','=',session('compcode'))
                         //         ->where('uomcode','=',$billsum_obj->uom)
