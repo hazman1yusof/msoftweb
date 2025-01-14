@@ -441,71 +441,137 @@
                             <div class="ui grid">
                                 <form id="formOTBook" class="floated ui form sixteen wide column">
                                     <div class='ui grid' style="padding: 15px 30px;">
-                                        <div class="sixteen wide column centered grid" style="padding: 14px 14px 0px 150px;">
-                                            <div class="inline field">
-                                                <label>Date for OP</label>
-                                                <input id="op_date" name="op_date" type="date">
-                                            </div>
-                                            
-                                            <div class="inline field">
-                                                <label>Type of Operation / Procedure</label>
-                                                <input id="oper_type" name="oper_type" type="text" style="width: 350px;">
-                                            </div>
-                                            
-                                            <div class="inline fields">
-                                                <label for="adm_type">Type of Admission</label>
-                                                <div class="field">
-                                                    <div class="ui radio checkbox">
-                                                        <input type="radio" name="adm_type" value="DC" id="adm_dc">
-                                                        <label for="adm_dc">Day Case</label>
-                                                    </div>
-                                                </div>
-                                                <div class="field">
-                                                    <div class="ui radio checkbox">
-                                                        <input type="radio" name="adm_type" value="IP" id="adm_ip">
-                                                        <label for="adm_ip">In Patient</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="inline fields">
-                                                <label for="anaesthetist">Anaesthetist</label>
-                                                <div class="field">
-                                                    <div class="ui radio checkbox">
-                                                        <input type="radio" name="anaesthetist" value="1" id="anas_req">
-                                                        <label for="anas_req">Required</label>
-                                                    </div>
-                                                </div>
-                                                <div class="field">
-                                                    <div class="ui radio checkbox">
-                                                        <input type="radio" name="anaesthetist" value="0" id="anas_notreq">
-                                                        <label for="anas_notreq">Not Required</label>
+                                        @include('patientcare.otbook_vitalsign')
+                                        
+                                        <div class="sixteen wide column">
+                                            <div class="ui segments">
+                                                <!-- <div class="ui secondary segment">Ward / OT</div> -->
+                                                <div class="ui segment">
+                                                    <div class="ui grid">
+                                                        <div class="sixteen wide column centered grid" style="padding: 14px 14px 0px 150px;">
+                                                            <div class="inline fields">
+                                                                <label for="req_type">Type</label>
+                                                                <div class="field">
+                                                                    <div class="ui radio checkbox">
+                                                                        <input type="radio" id="type_ward" name="req_type" value="WARD">
+                                                                        <label for="type_ward">Ward</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="field">
+                                                                    <div class="ui radio checkbox">
+                                                                        <input type="radio" id="type_ot" name="req_type" value="OT">
+                                                                        <label for="type_ot">OT</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="inline field">
+                                                                <label>Date for OP</label>
+                                                                <input id="op_date" name="op_date" type="date">
+                                                            </div>
+                                                            
+                                                            <div class="inline field">
+                                                                <label>Type of Operation / Procedure</label>
+                                                                <input id="oper_type" name="oper_type" type="text" style="width: 350px;">
+                                                            </div>
+                                                            
+                                                            <div class="inline fields">
+                                                                <label for="adm_type">Type of Admission</label>
+                                                                <div class="field">
+                                                                    <div class="ui radio checkbox">
+                                                                        <input type="radio" name="adm_type" value="DC" id="adm_dc">
+                                                                        <label for="adm_dc">Day Case</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="field">
+                                                                    <div class="ui radio checkbox">
+                                                                        <input type="radio" name="adm_type" value="IP" id="adm_ip">
+                                                                        <label for="adm_ip">In Patient</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="inline fields">
+                                                                <label for="anaesthetist">Anaesthetist</label>
+                                                                <div class="field">
+                                                                    <div class="ui radio checkbox">
+                                                                        <input type="radio" name="anaesthetist" value="1" id="anas_req">
+                                                                        <label for="anas_req">Required</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="field">
+                                                                    <div class="ui radio checkbox">
+                                                                        <input type="radio" name="anaesthetist" value="0" id="anas_notreq">
+                                                                        <label for="anas_notreq">Not Required</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="four wide column" style="padding: 0px 14px 14px 150px;">
+                                                            <div class="field">
+                                                                <label>Diagnosis</label>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="twelve wide column" style="padding-top: 0px;">
+                                                            <div class="field nine wide column">
+                                                                <textarea id="ot_diagnosis" name="ot_diagnosis" type="text" rows="5"></textarea>
+                                                                
+                                                                <div class="inline field" style="padding-top: 15px;">
+                                                                    <label>Diagnosed By</label>
+                                                                    <input id="ot_diagnosedby" name="ot_diagnosedby" type="text" style="width: 320px; text-transform: uppercase;">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="six wide column" style="padding: 0px 14px 14px 150px;">
+                                                            <div class="field">
+                                                                <label>Special remarks / instructions for medication or any related to case</label>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="ten wide column" style="padding-top: 0px;">
+                                                            <div class="field eight wide column">
+                                                                <textarea id="ot_remarks" name="ot_remarks" type="text" rows="5"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="sixteen wide column centered grid" style="padding: 0px 14px 14px 150px;">
+                                                            <div class="inline field">
+                                                                <label>Doctor's Name</label>
+                                                                <input id="ot_doctorname" name="ot_doctorname" type="text" style="width: 350px; text-transform: uppercase;">
+                                                            </div>
+                                                            
+                                                            <div class="inline field">
+                                                                <label>Entered By</label>
+                                                                <input id="ot_lastuser" name="ot_lastuser" type="text" style="width: 350px; text-transform: uppercase;">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         
-                                        <div class="six wide column" style="padding: 0px 14px 14px 150px;">
-                                            <div class="field">
-                                                <label>Special remarks / instructions for medication or any related to case</label>
+                                        <div class="sixteen wide column" id="Bed_div" style="display: none;">
+                                            <div class="ui segments">
+                                                <div class="ui secondary segment">BED</div>
+                                                <div class="ui segment">
+                                                    <div class="ui grid">
+                                                    
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         
-                                        <div class="ten wide column" style="padding-top: 0px;">
-                                            <div class="field eight wide column">
-                                                <textarea id="ot_remarks" name="ot_remarks" type="text" rows="5"></textarea>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="sixteen wide column centered grid" style="padding: 0px 14px 14px 150px;">
-                                            <div class="inline field">
-                                                <label>Doctor's Name</label>
-                                                <input id="ot_doctorname" name="ot_doctorname" type="text" style="width: 350px;" rdonly>
-                                            </div>
-                                            
-                                            <div class="inline field">
-                                                <label>Entered By</label>
-                                                <input id="ot_lastuser" name="ot_lastuser" type="text" style="width: 350px;" rdonly>
+                                        <div class="sixteen wide column" id="OT_div" style="display: none;">
+                                            <div class="ui segments">
+                                                <div class="ui secondary segment">OT</div>
+                                                <div class="ui segment">
+                                                    <div class="ui grid">
+                                                    
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -673,7 +739,7 @@
                                                     
                                                     <div class="inline field" style="padding-top: 15px;">
                                                         <label>Doctor's Name</label>
-                                                        <input id="radClinic_doctorname" name="radClinic_doctorname" type="text" style="width: 320px;" rdonly>
+                                                        <input id="radClinic_doctorname" name="radClinic_doctorname" type="text" style="width: 320px; text-transform: uppercase;">
                                                     </div>
                                                 </div>
                                             </div>
@@ -690,7 +756,7 @@
                                                     
                                                     <div class="inline field" style="padding-top: 15px;">
                                                         <label>Radiologist's Name</label>
-                                                        <input id="radClinic_radiologist" name="radClinic_radiologist" type="text" style="width: 300px;" rdonly>
+                                                        <input id="radClinic_radiologist" name="radClinic_radiologist" type="text" style="width: 300px; text-transform: uppercase;">
                                                     </div>
                                                 </div>
                                             </div>
@@ -712,7 +778,7 @@
                                     <button class="ui button" id="new_mri"><span class="fa fa-plus-square-o"></span>New</button>
                                     <button class="ui button" id="edit_mri"><span class="fa fa-edit fa-lg"></span>Edit</button>
                                     <button class="ui button" id="save_mri"><span class="fa fa-save fa-lg"></span>Save</button>
-                                    <button class="ui button" id="accept_mri"><span class="fa fa-check fa-lg"></span>Accept</button>
+                                    <!-- <button class="ui button" id="accept_mri"><span class="fa fa-check fa-lg"></span>Accept</button> -->
                                     <button class="ui button" id="cancel_mri"><span class="fa fa-ban fa-lg"></span>Cancel</button>
                                     <button class="ui button" id="mri_chart"><span class="fa fa-print fa-lg"></span>Print</button>
                                 </div>
@@ -1168,7 +1234,7 @@
                                                 <div class="inline fields">
                                                     <label>Name of Doctor</label>
                                                     <div class="field">
-                                                        <input id="mri_doctorname" name="mri_doctorname" type="text" style="width: 320px;" rdonly>
+                                                        <input id="mri_doctorname" name="mri_doctorname" type="text" style="width: 320px; text-transform: uppercase;">
                                                     </div>
                                                     
                                                     <label>Name of patient/parents/guardian</label>
@@ -1181,21 +1247,21 @@
                                             <div class="five wide column">
                                                 <div class="field">
                                                     <label>Doctor / Radiologist</label>
-                                                    <input id="mri_radiologist" name="mri_radiologist" type="text" style="width: 320px;" rdonly>
+                                                    <input id="mri_radiologist" name="mri_radiologist" type="text" style="width: 320px; text-transform: uppercase;">
                                                 </div>
                                             </div>
                                             
                                             <div class="five wide column">
                                                 <div class="field">
                                                     <label>Radiographer</label>
-                                                    <input id="radiographer" name="radiographer" type="text" style="width: 320px;" rdonly>
+                                                    <input id="radiographer" name="radiographer" type="text" style="width: 320px; text-transform: uppercase;">
                                                 </div>
                                             </div>
                                             
                                             <div class="five wide column">
                                                 <div class="field">
                                                     <label>Entered By</label>
-                                                    <input id="mri_lastuser" name="mri_lastuser" type="text" style="width: 320px;" rdonly>
+                                                    <input id="mri_lastuser" name="mri_lastuser" type="text" style="width: 320px; text-transform: uppercase;">
                                                 </div>
                                             </div>
                                         </div>
@@ -1225,6 +1291,18 @@
                             <div class="ui grid">
                                 <form id="formPhysio" class="floated ui form sixteen wide column">
                                     <div class='ui grid' style="padding: 15px 30px;">
+                                        <div class="four wide column" style="padding: 14px 14px 0px 150px;">
+                                            <div class="field">
+                                                <label>Date</label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="twelve wide column" style="padding: 14px 14px 0px 14px;">
+                                            <div class="field eight wide column">
+                                                <input id="req_date" name="req_date" type="date">
+                                            </div>
+                                        </div>
+                                        
                                         <div class="four wide column" style="padding: 14px 14px 0px 150px;">
                                             <div class="field">
                                                 <label>Clinical Diagnosis</label>
@@ -1257,19 +1335,53 @@
                                         
                                         <div class="thirteen wide column" style="padding: 14px 14px 0px 30px;">
                                             <div class="field eight wide column">
-                                                <textarea id="phy_treatment" name="phy_treatment" type="text" rows="5"></textarea>
+                                                <!-- <textarea id="phy_treatment" name="phy_treatment" type="text" rows="5"></textarea> -->
+                                                <div class="ui form">
+                                                    <div class="grouped fields">
+                                                        <div class="field">
+                                                            <div class="ui checkbox">
+                                                                <input type="checkbox" name="tr_physio" id="tr_physio" value="1">
+                                                                <label for="tr_physio">Physiotherapy</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="field">
+                                                            <div class="ui checkbox">
+                                                                <input type="checkbox" name="tr_occuptherapy" id="tr_occuptherapy" value="1">
+                                                                <label for="tr_occuptherapy">Occupational Therapy</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="field">
+                                                            <div class="ui checkbox">
+                                                                <input type="checkbox" name="tr_respiphysio" id="tr_respiphysio" value="1">
+                                                                <label for="tr_respiphysio">Respiratory Physiotherapy</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="field">
+                                                            <div class="ui checkbox">
+                                                                <input type="checkbox" name="tr_neuro" id="tr_neuro" value="1">
+                                                                <label for="tr_neuro">Neuro Rehab</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="field">
+                                                            <div class="ui checkbox">
+                                                                <input type="checkbox" name="tr_splint" id="tr_splint" value="1">
+                                                                <label for="tr_splint">Splinting</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         
                                         <div class="sixteen wide column centered grid" style="padding-left: 150px;">
                                             <div class="inline field">
                                                 <label>Name of Requesting Doctor</label>
-                                                <input id="phy_doctorname" name="phy_doctorname" type="text" style="width: 350px;" rdonly>
+                                                <input id="phy_doctorname" name="phy_doctorname" type="text" style="width: 350px; text-transform: uppercase;">
                                             </div>
                                             
                                             <div class="inline field">
                                                 <label>Entered By</label>
-                                                <input id="phy_lastuser" name="phy_lastuser" type="text" style="width: 350px;" rdonly>
+                                                <input id="phy_lastuser" name="phy_lastuser" type="text" style="width: 350px; text-transform: uppercase;">
                                             </div>
                                         </div>
                                     </div>
@@ -1353,12 +1465,12 @@
                                         <div class="sixteen wide column centered grid" style="padding-left: 150px;">
                                             <div class="inline field">
                                                 <label>Doctor's Name</label>
-                                                <input id="dressing_doctorname" name="dressing_doctorname" type="text" style="width: 350px;" rdonly>
+                                                <input id="dressing_doctorname" name="dressing_doctorname" type="text" style="width: 350px; text-transform: uppercase;">
                                             </div>
                                             
                                             <div class="inline field">
                                                 <label>Entered By</label>
-                                                <input id="dressing_lastuser" name="dressing_lastuser" type="text" style="width: 350px;" rdonly>
+                                                <input id="dressing_lastuser" name="dressing_lastuser" type="text" style="width: 350px; text-transform: uppercase;">
                                             </div>
                                         </div>
                                     </div>

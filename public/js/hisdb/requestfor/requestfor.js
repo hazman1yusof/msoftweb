@@ -13,17 +13,20 @@ $(document).ready(function (){
     disableForm('#formOTBookReqFor');
     
     $("#new_otbookReqFor").click(function (){
+        get_default_otbookReqFor();
         $('#cancel_otbookReqFor').data('oper','add');
         button_state_otbookReqFor('wait');
         enableForm('#formOTBookReqFor');
         rdonly('#formOTBookReqFor');
         emptyFormdata_div("#formOTBookReqFor",['#mrn_requestFor','#episno_requestFor','#otReqFor_doctorname']);
+        $('#ReqFor_allergydrugs,#ReqFor_drugs_remarks,#ReqFor_allergyplaster,#ReqFor_plaster_remarks,#ReqFor_allergyfood,#ReqFor_food_remarks,#ReqFor_allergyenvironment,#ReqFor_environment_remarks,#ReqFor_allergyothers,#ReqFor_others_remarks,#ReqFor_allergyunknown,#ReqFor_unknown_remarks,#ReqFor_allergynone,#ReqFor_none_remarks').prop('disabled',true);
     });
     
     $("#edit_otbookReqFor").click(function (){
         button_state_otbookReqFor('wait');
         enableForm('#formOTBookReqFor');
         rdonly('#formOTBookReqFor');
+        $('#ReqFor_allergydrugs,#ReqFor_drugs_remarks,#ReqFor_allergyplaster,#ReqFor_plaster_remarks,#ReqFor_allergyfood,#ReqFor_food_remarks,#ReqFor_allergyenvironment,#ReqFor_environment_remarks,#ReqFor_allergyothers,#ReqFor_others_remarks,#ReqFor_allergyunknown,#ReqFor_unknown_remarks,#ReqFor_allergynone,#ReqFor_none_remarks').prop('disabled',true);
     });
     
     $("#save_otbookReqFor").click(function (){
@@ -59,14 +62,14 @@ $(document).ready(function (){
         enableForm('#formRadClinicReqFor');
         rdonly('#formRadClinicReqFor');
         emptyFormdata_div("#formRadClinicReqFor",['#mrn_requestFor','#episno_requestFor']);
-        $('#ReqFor_rad_note').prop('disabled',true);
+        // $('#ReqFor_rad_note').prop('disabled',true);
     });
     
     $("#edit_radClinicReqFor").click(function (){
         button_state_radClinicReqFor('wait');
         enableForm('#formRadClinicReqFor');
         rdonly('#formRadClinicReqFor');
-        $('#ReqFor_rad_note').prop('disabled',true);
+        // $('#ReqFor_rad_note').prop('disabled',true);
     });
     
     $("#save_radClinicReqFor").click(function (){
@@ -424,6 +427,7 @@ function populate_requestFor_currpt(obj){
 }
 
 function populate_otbookReqFor_getdata(){
+    disableForm('#formOTBookReqFor');
     emptyFormdata(errorField,"#formOTBookReqFor",["#mrn_requestFor","#episno_requestFor"]);
     
     var saveParam = {
@@ -442,20 +446,64 @@ function populate_otbookReqFor_getdata(){
     },'json').fail(function (data){
         alert('there is an error');
     }).success(function (data){
-        if(!$.isEmptyObject(data)){
+        if(!$.isEmptyObject(data.pat_otbook)){
             autoinsert_rowdata("#formOTBookReqFor",data.pat_otbook);
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
             
             button_state_otbookReqFor('edit');
         }else{
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
+            
             button_state_otbookReqFor('add');
         }
         
-        $("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
+        // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+        if(emptyobj_(data.pat_otbook))$("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
         textarea_init_otbookReqFor();
+        toggle_reqfor_reqtype();
+    });
+}
+
+function get_default_otbookReqFor(){
+    disableForm('#formOTBookReqFor');
+    emptyFormdata(errorField,"#formOTBookReqFor",["#mrn_requestFor","#episno_requestFor"]);
+    
+    var saveParam = {
+        action: 'get_table_otbook',
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        // idno: $("#idno_otbook").val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val()
+    };
+    
+    $.get("./doctornote/table?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').fail(function (data){
+        alert('there is an error');
+    }).success(function (data){
+        if(!$.isEmptyObject(data.pat_otbook)){
+            autoinsert_rowdata("#formOTBookReqFor",data.pat_otbook);
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
+        }else{
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
+        }
+        
+        // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+        if(emptyobj_(data.pat_otbook))$("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
+        textarea_init_otbookReqFor();
+        toggle_reqfor_reqtype();
     });
 }
 
 function populate_radClinicReqFor_getdata(){
+    disableForm('#formRadClinicReqFor');
     emptyFormdata(errorField,"#formRadClinicReqFor",["#mrn_requestFor","#episno_requestFor"]);
     
     var saveParam = {
@@ -486,7 +534,7 @@ function populate_radClinicReqFor_getdata(){
         if(!emptyobj_(data.rad_weight))$("#radReqFor_weight").val(data.rad_weight);
         // $("#radReqFor_pregnant").val($('#preg_requestFor').val());
         if(!emptyobj_(data.rad_allergy))$("#radReqFor_allergy").val(data.rad_allergy);
-        $("#radClinicReqFor_doctorname").val($('#doctorname_requestFor').val());
+        // $("#radClinicReqFor_doctorname").val($('#doctorname_requestFor').val());
         
         pregnant = document.getElementById("pregnantReqFor");
         not_pregnant = document.getElementById("not_pregnantReqFor");
@@ -529,7 +577,7 @@ function get_default_radClinicReqFor(){
         if(!emptyobj_(data.rad_weight))$("#radReqFor_weight").val(data.rad_weight);
         // $("#radReqFor_pregnant").val($('#preg_requestFor').val());
         if(!emptyobj_(data.rad_allergy))$("#radReqFor_allergy").val(data.rad_allergy);
-        $("#radClinicReqFor_doctorname").val($('#doctorname_requestFor').val());
+        // $("#radClinicReqFor_doctorname").val($('#doctorname_requestFor').val());
         
         pregnant = document.getElementById("pregnantReqFor");
         not_pregnant = document.getElementById("not_pregnantReqFor");
@@ -544,6 +592,7 @@ function get_default_radClinicReqFor(){
 }
 
 function populate_mriReqFor_getdata(){
+    disableForm('#formMRIReqFor');
     emptyFormdata(errorField,"#formMRIReqFor",["#mrn_requestFor","#episno_requestFor"]);
     
     var saveParam = {
@@ -566,17 +615,18 @@ function populate_mriReqFor_getdata(){
         if(!$.isEmptyObject(data.pat_mri)){
             autoinsert_rowdata("#formMRIReqFor",data.pat_mri);
             
-            if(!emptyobj_(data.pat_mri.radiographer)){
-                button_state_mriReqFor('empty');
-            }else{
+            // if(!emptyobj_(data.pat_mri.radiographer)){
+            //     button_state_mriReqFor('empty');
+            // }else{
                 button_state_mriReqFor('edit');
-            }
+            // }
         }else{
             button_state_mriReqFor('add');
         }
         
         if(!emptyobj_(data.mri_weight))$("#mriReqFor_weight").val(data.mri_weight);
-        $("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
+        // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+        if(emptyobj_(data.pat_mri.mri_doctorname))$("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
         $("#mriReqFor_patientname").val($('#ptname_requestFor').val());
         textarea_init_mriReqFor();
     });
@@ -609,7 +659,8 @@ function get_default_mriReqFor(){
         }
         
         if(!emptyobj_(data.mri_weight))$("#mriReqFor_weight").val(data.mri_weight);
-        $("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
+        // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+        if(emptyobj_(data.pat_mri.mri_doctorname))$("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
         $("#mriReqFor_patientname").val($('#ptname_requestFor').val());
         textarea_init_mriReqFor();
     });
@@ -671,6 +722,7 @@ function radiographer_acceptReqFor(){
 }
 
 function populate_physioReqFor_getdata(){
+    disableForm('#formPhysioReqFor');
     emptyFormdata(errorField,"#formPhysioReqFor",["#mrn_requestFor","#episno_requestFor"]);
     
     var saveParam = {
@@ -697,12 +749,13 @@ function populate_physioReqFor_getdata(){
             button_state_physioReqFor('add');
         }
         
-        $("#phyReqFor_doctorname").val($('#doctorname_requestFor').val());
+        // $("#phyReqFor_doctorname").val($('#doctorname_requestFor').val());
         textarea_init_physioReqFor();
     });
 }
 
 function populate_dressingReqFor_getdata(){
+    disableForm('#formDressingReqFor');
     emptyFormdata(errorField,"#formDressingReqFor",["#mrn_requestFor","#episno_requestFor"]);
     
     var saveParam = {
@@ -731,7 +784,7 @@ function populate_dressingReqFor_getdata(){
         
         $("#dressingReqFor_patientname").val($('#ptname_requestFor').val());
         $("#ReqFor_patientnric").val($('#ic_requestFor').val());
-        $("#dressingReqFor_doctorname").val($('#doctorname_requestFor').val());
+        // $("#dressingReqFor_doctorname").val($('#doctorname_requestFor').val());
         textarea_init_dressingReqFor();
     });
 }
@@ -1081,7 +1134,7 @@ $("#jqGridRequestFor_panel").on("hide.bs.collapse", function (){
 });
 
 function textarea_init_otbookReqFor(){
-    $('textarea#otReqFor_remarks').each(function (){
+    $('textarea#otReqFor_diagnosis,textarea#otReqFor_remarks').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
@@ -1163,6 +1216,20 @@ function textarea_init_dressingReqFor(){
             this.style.height = (40) + 'px';
         }
     });
+}
+
+$("#formOTBookReqFor input[name=req_type]").on('click', function (){
+    toggle_reqfor_reqtype();
+});
+
+function toggle_reqfor_reqtype(){
+    if(document.getElementById("req_type_ward").checked){
+        $('#ReqFor_Bed_div').show();
+        $('#ReqFor_OT_div').hide();
+    }else if(document.getElementById("req_type_ot").checked){
+        $('#ReqFor_Bed_div').hide();
+        $('#ReqFor_OT_div').show();
+    }
 }
 
 // function calc_jq_height_onchange(jqgrid){

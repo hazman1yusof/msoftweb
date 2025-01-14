@@ -71,6 +71,7 @@ $(document).ready(function (){
 	disableForm('#formOTBook');
 	
 	$("#new_otbook").click(function (){
+		get_default_otbook();
 		$('#cancel_otbook').data('oper','add');
 		button_state_otbook('wait');
 		enableForm('#formOTBook');
@@ -117,14 +118,14 @@ $(document).ready(function (){
 		enableForm('#formRadClinic');
 		rdonly('#formRadClinic');
 		emptyFormdata_div("#formRadClinic",['#mrn_doctorNote','#episno_doctorNote']);
-		$('#clinicaldata').prop('disabled',true);
+		// $('#clinicaldata').prop('disabled',true);
 	});
 	
 	$("#edit_radClinic").click(function (){
 		button_state_radClinic('wait');
 		enableForm('#formRadClinic');
 		rdonly('#formRadClinic');
-		$('#clinicaldata').prop('disabled',true);
+		// $('#clinicaldata').prop('disabled',true);
 	});
 	
 	$("#save_radClinic").click(function (){
@@ -899,16 +900,56 @@ function populate_otbook_getdata(){
 	$.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
 		
 	},'json').done(function (data){
-		if(!$.isEmptyObject(data)){
+		if(!$.isEmptyObject(data.pat_otbook)){
 			autoinsert_rowdata("#formOTBook",data.pat_otbook);
+			autoinsert_rowdata("#formOTBook",data.nurshandover);
+			autoinsert_rowdata("#formOTBook",data.nurshistory);
 			
 			button_state_otbook('edit');
 		}else{
+			autoinsert_rowdata("#formOTBook",data.nurshandover);
+			autoinsert_rowdata("#formOTBook",data.nurshistory);
+			
 			button_state_otbook('add');
 		}
 		
-		$("#ot_doctorname").val($('#doctorname_doctorNote').val());
+		// by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+		if(emptyobj_(data.pat_otbook))$("#ot_doctorname").val($('#doctorname_doctorNote').val());
 		// textarea_init_otbook();
+		toggle_reqtype();
+	});
+}
+
+function get_default_otbook(){
+	emptyFormdata(errorField,"#formOTBook",["#mrn_doctorNote","#episno_doctorNote"]);
+	
+	var saveParam = {
+		action: 'get_table_otbook',
+	}
+	
+	var postobj = {
+		_token: $('#_token').val(),
+		// idno: $("#idno_otbook").val(),
+		mrn: $("#mrn_doctorNote").val(),
+		episno: $("#episno_doctorNote").val()
+	};
+	
+	$.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
+		
+	},'json').done(function (data){
+		if(!$.isEmptyObject(data.pat_otbook)){
+			autoinsert_rowdata("#formOTBook",data.pat_otbook);
+			autoinsert_rowdata("#formOTBook",data.nurshandover);
+			autoinsert_rowdata("#formOTBook",data.nurshistory);
+		}else{
+			autoinsert_rowdata("#formOTBook",data.nurshandover);
+			autoinsert_rowdata("#formOTBook",data.nurshistory);
+		}
+		
+		// by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+		if(emptyobj_(data.pat_otbook))$("#ot_doctorname").val($('#doctorname_doctorNote').val());
+		// textarea_init_otbook();
+		toggle_reqtype();
 	});
 }
 
@@ -941,7 +982,7 @@ function populate_radClinic_getdata(){
 		// if(!emptyobj_(data.rad_weight))$("#rad_weight").val(data.rad_weight);
 		// $("#rad_pregnant").val($('#preg_doctorNote').val());
 		if(!emptyobj_(data.rad_allergy))$("#rad_allergy").val(data.rad_allergy);
-		$("#radClinic_doctorname").val($('#doctorname_doctorNote').val());
+		// $("#radClinic_doctorname").val($('#doctorname_doctorNote').val());
 		
 		pregnant = document.getElementById("pregnant");
 		not_pregnant = document.getElementById("not_pregnant");
@@ -982,7 +1023,7 @@ function get_default_radClinic(){
 		// if(!emptyobj_(data.rad_weight))$("#rad_weight").val(data.rad_weight);
 		// $("#rad_pregnant").val($('#preg_doctorNote').val());
 		if(!emptyobj_(data.rad_allergy))$("#rad_allergy").val(data.rad_allergy);
-		$("#radClinic_doctorname").val($('#doctorname_doctorNote').val());
+		// $("#radClinic_doctorname").val($('#doctorname_doctorNote').val());
 		
 		pregnant = document.getElementById("pregnant");
 		not_pregnant = document.getElementById("not_pregnant");
@@ -1017,17 +1058,18 @@ function populate_mri_getdata(){
 		if(!$.isEmptyObject(data.pat_mri)){
 			autoinsert_rowdata("#formMRI",data.pat_mri);
 			
-			if(!emptyobj_(data.pat_mri.radiographer)){
-				button_state_mri('empty');
-			}else{
+			// if(!emptyobj_(data.pat_mri.radiographer)){
+			// 	button_state_mri('empty');
+			// }else{
 				button_state_mri('edit');
-			}
+			// }
 		}else{
 			button_state_mri('add');
 		}
 		
 		// if(!emptyobj_(data.mri_weight))$("#mri_weight").val(data.mri_weight);
-		$("#mri_doctorname").val($('#doctorname_doctorNote').val());
+		// by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+		if(emptyobj_(data.pat_mri.mri_doctorname))$("#mri_doctorname").val($('#doctorname_doctorNote').val());
 		$("#mri_patientname").val($('#ptname_doctorNote').val());
 		// textarea_init_mri();
 	});
@@ -1058,7 +1100,8 @@ function get_default_mri(){
 		}
 		
 		// if(!emptyobj_(data.mri_weight))$("#mri_weight").val(data.mri_weight);
-		$("#mri_doctorname").val($('#doctorname_doctorNote').val());
+		// by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+		if(emptyobj_(data.pat_mri.mri_doctorname))$("#mri_doctorname").val($('#doctorname_doctorNote').val());
 		$("#mri_patientname").val($('#ptname_doctorNote').val());
 		textarea_init_mri();
 	});
@@ -1140,7 +1183,7 @@ function populate_physio_getdata(){
 			button_state_physio('add');
 		}
 		
-		$("#phy_doctorname").val($('#doctorname_doctorNote').val());
+		// $("#phy_doctorname").val($('#doctorname_doctorNote').val());
 		// textarea_init_physio();
 	});
 }
@@ -1172,7 +1215,7 @@ function populate_dressing_getdata(){
 		
 		$("#dressing_patientname").val($('#ptname_doctorNote').val());
 		$("#patientnric").val($('#ic_doctorNote').val());
-		$("#dressing_doctorname").val($('#doctorname_doctorNote').val());
+		// $("#dressing_doctorname").val($('#doctorname_doctorNote').val());
 		// textarea_init_dressing();
 	});
 }
@@ -1207,7 +1250,7 @@ function populate_admhandover_getdata(){
 function on_toggling_curr_past(obj = curr_obj){
 	var addnotes = document.getElementById("addnotes");
 	
-	if(document.getElementById("current").checked){
+	if($('.pastcurr').find('[name="toggle_type"]:checked').val() == 'current'){
 		dateParam_docnote = {
 			action: 'get_table_date_curr',
 			mrn: obj.MRN,
@@ -1217,10 +1260,11 @@ function on_toggling_curr_past(obj = curr_obj){
 		$('#primary_icd_form,#followup_form').show();
 		
 		addnotes.style.display = "none";
-		// enableFields();
+		enableFields();
+		button_state_doctorNote('add'); // enable balik button
 		// $("#new_doctorNote").attr('disabled',false);
 		// datable_medication.clear().draw();
-	}else if(document.getElementById("past").checked){
+	}else if($('.pastcurr').find('[name="toggle_type"]:checked').val() == 'past'){
 		dateParam_docnote = {
 			action: 'get_table_date_past',
 			mrn: obj.MRN,
@@ -1367,12 +1411,24 @@ function saveForm_otbook(callback){
 		value: $('#formOTBook input[name=oper_type]').val()
 	})
 	values.push({
+		name: 'ot_diagnosis',
+		value: $('#formOTBook textarea[name=ot_diagnosis]').val()
+	})
+	values.push({
+		name: 'ot_diagnosedby',
+		value: $('#formOTBook input[name=ot_diagnosedby]').val()
+	})
+	values.push({
 		name: 'ot_remarks',
 		value: $('#formOTBook textarea[name=ot_remarks]').val()
 	})
 	values.push({
 		name: 'ot_doctorname',
 		value: $('#formOTBook input[name=ot_doctorname]').val()
+	})
+	values.push({
+		name: 'ot_lastuser',
+		value: $('#formOTBook input[name=ot_lastuser]').val()
 	})
 	
 	$.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
@@ -1513,6 +1569,10 @@ function saveForm_radClinic(callback){
 		name: 'rad_note',
 		value: $('#formRadClinic textarea[name=rad_note]').val()
 	})
+	values.push({
+		name: 'radClinic_radiologist',
+		value: $('#formRadClinic input[name=radClinic_radiologist]').val()
+	})
 	
 	$.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
 		
@@ -1596,6 +1656,18 @@ function saveForm_mri(callback){
 		name: 'mri_doctorname',
 		value: $('#formMRI input[name=mri_doctorname]').val()
 	})
+	values.push({
+		name: 'mri_radiologist',
+		value: $('#formMRI input[name=mri_radiologist]').val()
+	})
+	values.push({
+		name: 'radiographer',
+		value: $('#formMRI input[name=radiographer]').val()
+	})
+	values.push({
+		name: 'mri_lastuser',
+		value: $('#formMRI input[name=mri_lastuser]').val()
+	})
 	
 	$.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
 		
@@ -1651,6 +1723,10 @@ function saveForm_physio(callback){
 	);
 	
 	values.push({
+		name: 'req_date',
+		value: $('#formPhysio input[name=req_date]').val()
+	})
+	values.push({
 		name: 'clinic_diag',
 		value: $('#formPhysio textarea[name=clinic_diag]').val()
 	})
@@ -1665,6 +1741,10 @@ function saveForm_physio(callback){
 	values.push({
 		name: 'phy_doctorname',
 		value: $('#formPhysio input[name=phy_doctorname]').val()
+	})
+	values.push({
+		name: 'phy_lastuser',
+		value: $('#formPhysio input[name=phy_lastuser]').val()
 	})
 	
 	$.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
@@ -1747,6 +1827,10 @@ function saveForm_dressing(callback){
 	values.push({
 		name: 'dressing_doctorname',
 		value: $('#formDressing input[name=dressing_doctorname]').val()
+	})
+	values.push({
+		name: 'dressing_lastuser',
+		value: $('#formDressing input[name=dressing_lastuser]').val()
 	})
 	
 	$.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
@@ -1975,4 +2059,18 @@ function textarea_init_dressing(){
 			this.style.height = (40) + 'px';
 		}
 	});
+}
+
+$("#formOTBook input[name=req_type]").on('click', function (){
+	toggle_reqtype();
+});
+
+function toggle_reqtype(){
+	if(document.getElementById("type_ward").checked){
+		$('#Bed_div').show();
+		$('#OT_div').hide();
+	}else if(document.getElementById("type_ot").checked){
+		$('#Bed_div').hide();
+		$('#OT_div').show();
+	}
 }

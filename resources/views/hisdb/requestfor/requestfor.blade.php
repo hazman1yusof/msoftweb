@@ -73,7 +73,7 @@
                                 <form class='form-horizontal' style='width: 99%;' id='formOTBookReqFor'>
                                     <div class='col-md-12'>
                                         <div class="panel panel-default">
-                                            <div class="panel-heading text-center" style="height: 40px;">
+                                            <div class="panel-heading text-center" style="position: sticky; top: 0px; z-index: 3; height: 40px;">
                                                 <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                                     id="btn_grp_edit_otbookReqFor" 
                                                     style="position: absolute; 
@@ -101,9 +101,23 @@
                                             <!-- <button class="btn btn-default btn-sm" type="button" id="otbookReqFor_chart" style="float: right; margin: 10px 40px 10px 0px;">Print</button> -->
                                             
                                             <div class="panel-body">
+                                                @include('hisdb.requestfor.otbook_vitalsign')
+                                                
                                                 <div class='col-md-12'>
                                                     <div class="panel panel-info">
                                                         <div class="panel-body">
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label" for="req_type">Type</label>
+                                                                <div class="col-md-6">
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" id="req_type_ward" name="req_type" value="WARD">Ward
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" id="req_type_ot" name="req_type" value="OT">OT
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label" for="ReqFor_op_date">Date for OP</label>
                                                                 <div class="col-md-4">
@@ -143,6 +157,18 @@
                                                             </div>
                                                             
                                                             <div class="form-group">
+                                                                <label class="col-md-3 control-label" for="otReqFor_diagnosis">Diagnosis</label>
+                                                                <div class="col-md-6">
+                                                                    <textarea id="otReqFor_diagnosis" name="ot_diagnosis" type="text" class="form-control input-sm"></textarea>
+                                                                    
+                                                                    <label class="col-md-4 control-label" for="otReqFor_diagnosedby" style="padding-top: 12px;">Diagnosed By</label>
+                                                                    <div class="col-md-6" style="padding-top: 5px;">
+                                                                        <input id="otReqFor_diagnosedby" name="ot_diagnosedby" type="text" class="form-control input-sm">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
                                                                 <label class="col-md-3 control-label" for="otReqFor_remarks">Special remarks / instructions for medication or any related to case</label>
                                                                 <div class="col-md-6">
                                                                     <textarea id="otReqFor_remarks" name="ot_remarks" type="text" class="form-control input-sm"></textarea>
@@ -152,16 +178,34 @@
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label" for="otReqFor_doctorname">Doctor's Name</label>
                                                                 <div class="col-md-6">
-                                                                    <input id="otReqFor_doctorname" name="ot_doctorname" type="text" class="form-control input-sm" rdonly>
+                                                                    <input id="otReqFor_doctorname" name="ot_doctorname" type="text" class="form-control input-sm">
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label" for="otReqFor_lastuser">Entered By</label>
                                                                 <div class="col-md-6">
-                                                                    <input id="otReqFor_lastuser" name="ot_lastuser" type="text" class="form-control input-sm" rdonly>
+                                                                    <input id="otReqFor_lastuser" name="ot_lastuser" type="text" class="form-control input-sm">
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class='col-md-12' id="ReqFor_Bed_div" style="display: none;">
+                                                    <div class="panel panel-info">
+                                                        <div class="panel-heading text-center">BED</div>
+                                                        <div class="panel-body">
+                                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class='col-md-12' id="ReqFor_OT_div" style="display: none;">
+                                                    <div class="panel panel-info">
+                                                        <div class="panel-heading text-center">OT</div>
+                                                        <div class="panel-body">
+                                                        
                                                         </div>
                                                     </div>
                                                 </div>
@@ -180,7 +224,7 @@
                                         <form class='form-horizontal' style='width: 99%;' id='formRadClinicReqFor'>
                                             <div class='col-md-12'>
                                                 <div class="panel panel-default">
-                                                    <div class="panel-heading text-center" style="height: 40px;">
+                                                    <div class="panel-heading text-center" style="position: sticky; top: 0px; z-index: 3; height: 40px;">
                                                         <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                                             id="btn_grp_edit_radClinicReqFor" 
                                                             style="position: absolute; 
@@ -342,7 +386,7 @@
                                                                             
                                                                             <label class="col-md-4 control-label" for="radClinicReqFor_doctorname" style="padding-top: 12px;">Doctor's Name</label>
                                                                             <div class="col-md-6" style="padding-top: 5px;">
-                                                                                <input id="radClinicReqFor_doctorname" name="radClinic_doctorname" type="text" class="form-control input-sm" rdonly>
+                                                                                <input id="radClinicReqFor_doctorname" name="radClinic_doctorname" type="text" class="form-control input-sm">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -354,7 +398,7 @@
                                                                             
                                                                             <label class="col-md-4 control-label" for="radClinicReqFor_radiologist" style="padding-top: 12px;">Radiologist's Name</label>
                                                                             <div class="col-md-6" style="padding-top: 5px;">
-                                                                                <input id="radClinicReqFor_radiologist" name="radClinic_radiologist" type="text" class="form-control input-sm" rdonly>
+                                                                                <input id="radClinicReqFor_radiologist" name="radClinic_radiologist" type="text" class="form-control input-sm">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -370,7 +414,7 @@
                                         <form class='form-horizontal' style='width: 99%;' id='formMRIReqFor'>
                                             <div class='col-md-12'>
                                                 <div class="panel panel-default">
-                                                    <div class="panel-heading text-center" style="height: 40px;">
+                                                    <div class="panel-heading text-center" style="position: sticky; top: 0px; z-index: 3; height: 40px;">
                                                         <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                                             id="btn_grp_edit_mriReqFor" 
                                                             style="position: absolute; 
@@ -670,7 +714,7 @@
                                                                             <div class="form-group">
                                                                                 <label class="col-md-2 control-label" for="mriReqFor_doctorname">Name of Doctor</label>
                                                                                 <div class="col-md-3">
-                                                                                    <input id="mriReqFor_doctorname" name="mri_doctorname" type="text" class="form-control input-sm" rdonly>
+                                                                                    <input id="mriReqFor_doctorname" name="mri_doctorname" type="text" class="form-control input-sm">
                                                                                 </div>
                                                                                 
                                                                                 <label class="col-md-3 control-label" for="mriReqFor_patientname">Name of patient/parents/guardian</label>
@@ -686,17 +730,17 @@
                                                                             <div class="form-group">
                                                                                 <div class="col-md-4">
                                                                                     <label class="control-label" for="mriReqFor_radiologist" style="padding-bottom: 5px;">Doctor / Radiologist</label>
-                                                                                    <input id="mriReqFor_radiologist" name="mri_radiologist" type="text" class="form-control input-sm" rdonly>
+                                                                                    <input id="mriReqFor_radiologist" name="mri_radiologist" type="text" class="form-control input-sm">
                                                                                 </div>
                                                                                 
                                                                                 <div class="col-md-4">
                                                                                     <label class="control-label" for="ReqFor_radiographer" style="padding-bottom: 5px;">Radiographer</label>
-                                                                                    <input id="ReqFor_radiographer" name="radiographer" type="text" class="form-control input-sm" rdonly>
+                                                                                    <input id="ReqFor_radiographer" name="radiographer" type="text" class="form-control input-sm">
                                                                                 </div>
                                                                                 
                                                                                 <div class="col-md-4">
                                                                                     <label class="control-label" for="mriReqFor_lastuser" style="padding-bottom: 5px;">Entered By</label>
-                                                                                    <input id="mriReqFor_lastuser" name="mri_lastuser" type="text" class="form-control input-sm" rdonly>
+                                                                                    <input id="mriReqFor_lastuser" name="mri_lastuser" type="text" class="form-control input-sm">
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -715,7 +759,7 @@
                                 <form class='form-horizontal' style='width: 99%;' id='formPhysioReqFor'>
                                     <div class='col-md-12'>
                                         <div class="panel panel-default">
-                                            <div class="panel-heading text-center" style="height: 40px;">
+                                            <div class="panel-heading text-center" style="position: sticky; top: 0px; z-index: 3; height: 40px;">
                                                 <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                                     id="btn_grp_edit_physioReqFor" 
                                                     style="position: absolute; 
@@ -747,6 +791,13 @@
                                                     <div class="panel panel-info">
                                                         <div class="panel-body">
                                                             <div class="form-group">
+                                                                <label class="col-md-3 control-label" for="ReqFor_req_date">Date</label>
+                                                                <div class="col-md-4">
+                                                                    <input id="ReqFor_req_date" name="req_date" type="date" class="form-control input-sm">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
                                                                 <label class="col-md-3 control-label" for="ReqFor_clinic_diag">Clinical Diagnosis</label>
                                                                 <div class="col-md-6">
                                                                     <textarea id="ReqFor_clinic_diag" name="clinic_diag" type="text" class="form-control input-sm"></textarea>
@@ -763,21 +814,46 @@
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label" for="phyReqFor_treatment">Treatment</label>
                                                                 <div class="col-md-6">
-                                                                    <textarea id="phyReqFor_treatment" name="phy_treatment" type="text" class="form-control input-sm"></textarea>
+                                                                    <!-- <textarea id="phyReqFor_treatment" name="phy_treatment" type="text" class="form-control input-sm"></textarea> -->
+                                                                    
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox" name="tr_physio" id="ReqFor_tr_physio" value="1">
+                                                                        <label class="form-check-label" for="ReqFor_tr_physio">Physiotherapy</label>
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox" name="tr_occuptherapy" id="ReqFor_tr_occuptherapy" value="1">
+                                                                        <label class="form-check-label" for="ReqFor_tr_occuptherapy">Occupational Therapy</label>
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox" name="tr_respiphysio" id="ReqFor_tr_respiphysio" value="1">
+                                                                        <label class="form-check-label" for="ReqFor_tr_respiphysio">Respiratory Physiotherapy</label>
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox" name="tr_neuro" id="ReqFor_tr_neuro" value="1">
+                                                                        <label class="form-check-label" for="ReqFor_tr_neuro">Neuro Rehab</label>
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox" name="tr_splint" id="ReqFor_tr_splint" value="1">
+                                                                        <label class="form-check-label" for="ReqFor_tr_splint">Splinting</label>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label" for="phyReqFor_doctorname">Name of Requesting Doctor</label>
                                                                 <div class="col-md-6">
-                                                                    <input id="phyReqFor_doctorname" name="phy_doctorname" type="text" class="form-control input-sm" rdonly>
+                                                                    <input id="phyReqFor_doctorname" name="phy_doctorname" type="text" class="form-control input-sm">
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label" for="phyReqFor_lastuser">Entered By</label>
                                                                 <div class="col-md-6">
-                                                                    <input id="phyReqFor_lastuser" name="phy_lastuser" type="text" class="form-control input-sm" rdonly>
+                                                                    <input id="phyReqFor_lastuser" name="phy_lastuser" type="text" class="form-control input-sm">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -792,7 +868,7 @@
                                 <form class='form-horizontal' style='width: 99%;' id='formDressingReqFor'>
                                     <div class='col-md-12'>
                                         <div class="panel panel-default">
-                                            <div class="panel-heading text-center" style="height: 40px;">
+                                            <div class="panel-heading text-center" style="position: sticky; top: 0px; z-index: 3; height: 40px;">
                                                 <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                                     id="btn_grp_edit_dressingReqFor" 
                                                     style="position: absolute; 
@@ -885,14 +961,14 @@
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label" for="dressingReqFor_doctorname">Doctor's Name</label>
                                                                 <div class="col-md-6">
-                                                                    <input id="dressingReqFor_doctorname" name="dressing_doctorname" type="text" class="form-control input-sm" rdonly>
+                                                                    <input id="dressingReqFor_doctorname" name="dressing_doctorname" type="text" class="form-control input-sm">
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label" for="dressingReqFor_lastuser">Entered By</label>
                                                                 <div class="col-md-6">
-                                                                    <input id="dressingReqFor_lastuser" name="dressing_lastuser" type="text" class="form-control input-sm" rdonly>
+                                                                    <input id="dressingReqFor_lastuser" name="dressing_lastuser" type="text" class="form-control input-sm">
                                                                 </div>
                                                             </div>
                                                         </div>

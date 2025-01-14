@@ -20,6 +20,7 @@ $(document).ready(function (){
     disableForm('#formOTBookReqFor');
     
     $("#new_otbookReqFor").click(function (){
+        get_default_otbookReqFor();
         $('#cancel_otbookReqFor').data('oper','add');
         button_state_otbookReqFor('wait');
         enableForm('#formOTBookReqFor');
@@ -66,14 +67,14 @@ $(document).ready(function (){
         enableForm('#formRadClinicReqFor');
         rdonly('#formRadClinicReqFor');
         emptyFormdata_div("#formRadClinicReqFor",['#mrn_requestFor','#episno_requestFor']);
-        $('#ReqFor_clinicaldata').prop('disabled',true);
+        // $('#ReqFor_clinicaldata').prop('disabled',true);
     });
     
     $("#edit_radClinicReqFor").click(function (){
         button_state_radClinicReqFor('wait');
         enableForm('#formRadClinicReqFor');
         rdonly('#formRadClinicReqFor');
-        $('#ReqFor_clinicaldata').prop('disabled',true);
+        // $('#ReqFor_clinicaldata').prop('disabled',true);
     });
     
     $("#save_radClinicReqFor").click(function (){
@@ -480,16 +481,56 @@ function populate_otbookReqFor_getdata(){
     $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
         
     },'json').done(function (data){
-        if(!$.isEmptyObject(data)){
+        if(!$.isEmptyObject(data.pat_otbook)){
             autoinsert_rowdata("#formOTBookReqFor",data.pat_otbook);
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
             
             button_state_otbookReqFor('edit');
         }else{
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
+            
             button_state_otbookReqFor('add');
         }
         
-        $("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
+        // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+        if(emptyobj_(data.pat_otbook))$("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
         // textarea_init_otbookReqFor();
+        toggle_reqfor_reqtype();
+    });
+}
+
+function get_default_otbookReqFor(){
+    emptyFormdata(errorField,"#formOTBookReqFor",["#mrn_requestFor","#episno_requestFor"]);
+    
+    var saveParam = {
+        action: 'get_table_otbook',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // idno: $("#idno_otbook").val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val()
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data.pat_otbook)){
+            autoinsert_rowdata("#formOTBookReqFor",data.pat_otbook);
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
+        }else{
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
+            autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
+        }
+        
+        // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+        if(emptyobj_(data.pat_otbook))$("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
+        // textarea_init_otbookReqFor();
+        toggle_reqfor_reqtype();
     });
 }
 
@@ -523,7 +564,7 @@ function populate_radClinicReqFor_getdata(){
             if(!emptyobj_(data.rad_weight))$("#radReqFor_weight").val(data.rad_weight);
             // $("#radReqFor_pregnant").val($('#preg_requestFor').val());
             if(!emptyobj_(data.rad_allergy))$("#radReqFor_allergy").val(data.rad_allergy);
-            $("#radClinicReqFor_doctorname").val($('#doctorname_requestFor').val());
+            // $("#radClinicReqFor_doctorname").val($('#doctorname_requestFor').val());
             
             pregnant = document.getElementById("pregnantReqFor");
             not_pregnant = document.getElementById("not_pregnantReqFor");
@@ -565,7 +606,7 @@ function get_default_radClinicReqFor(){
         if(!emptyobj_(data.rad_weight))$("#radReqFor_weight").val(data.rad_weight);
         // $("#radReqFor_pregnant").val($('#preg_requestFor').val());
         if(!emptyobj_(data.rad_allergy))$("#radReqFor_allergy").val(data.rad_allergy);
-        $("#radClinicReqFor_doctorname").val($('#doctorname_requestFor').val());
+        // $("#radClinicReqFor_doctorname").val($('#doctorname_requestFor').val());
         
         pregnant = document.getElementById("pregnantReqFor");
         not_pregnant = document.getElementById("not_pregnantReqFor");
@@ -600,17 +641,18 @@ function populate_mriReqFor_getdata(){
         if(!$.isEmptyObject(data.pat_mri)){
             autoinsert_rowdata("#formMRIReqFor",data.pat_mri);
             
-            if(!emptyobj_(data.pat_mri.radiographer)){
-                button_state_mriReqFor('empty');
-            }else{
+            // if(!emptyobj_(data.pat_mri.radiographer)){
+            //     button_state_mriReqFor('empty');
+            // }else{
                 button_state_mriReqFor('edit');
-            }
+            // }
         }else{
             button_state_mriReqFor('add');
         }
         
         if(!emptyobj_(data.mri_weight))$("#mriReqFor_weight").val(data.mri_weight);
-        $("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
+        // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+        if(emptyobj_(data.pat_mri.mri_doctorname))$("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
         $("#mriReqFor_patientname").val($('#ptname_requestFor').val());
         // textarea_init_mriReqFor();
     });
@@ -641,7 +683,8 @@ function get_default_mriReqFor(){
         }
         
         if(!emptyobj_(data.mri_weight))$("#mriReqFor_weight").val(data.mri_weight);
-        $("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
+        // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+        if(emptyobj_(data.pat_mri.mri_doctorname))$("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
         $("#mriReqFor_patientname").val($('#ptname_requestFor').val());
         // textarea_init_mriReqFor();
     });
@@ -723,7 +766,7 @@ function populate_physioReqFor_getdata(){
             button_state_physioReqFor('add');
         }
         
-        $("#phyReqFor_doctorname").val($('#doctorname_requestFor').val());
+        // $("#phyReqFor_doctorname").val($('#doctorname_requestFor').val());
         // textarea_init_physioReqFor();
     });
 }
@@ -755,7 +798,7 @@ function populate_dressingReqFor_getdata(){
         
         $("#dressingReqFor_patientname").val($('#ptname_requestFor').val());
         $("#ReqFor_patientnric").val($('#ic_requestFor').val());
-        $("#dressingReqFor_doctorname").val($('#doctorname_requestFor').val());
+        // $("#dressingReqFor_doctorname").val($('#doctorname_requestFor').val());
         // textarea_init_dressingReqFor();
     });
 }
@@ -833,12 +876,24 @@ function saveForm_otbookReqFor(callback){
         value: $('#formOTBookReqFor input[name=oper_type]').val()
     })
     values.push({
+        name: 'ot_diagnosis',
+        value: $('#formOTBookReqFor textarea[name=ot_diagnosis]').val()
+    })
+    values.push({
+        name: 'ot_diagnosedby',
+        value: $('#formOTBookReqFor input[name=ot_diagnosedby]').val()
+    })
+    values.push({
         name: 'ot_remarks',
         value: $('#formOTBookReqFor textarea[name=ot_remarks]').val()
     })
     values.push({
         name: 'ot_doctorname',
         value: $('#formOTBookReqFor input[name=ot_doctorname]').val()
+    })
+    values.push({
+        name: 'ot_lastuser',
+        value: $('#formOTBookReqFor input[name=ot_lastuser]').val()
     })
     
     $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
@@ -979,6 +1034,10 @@ function saveForm_radClinicReqFor(callback){
         name: 'rad_note',
         value: $('#formRadClinicReqFor textarea[name=rad_note]').val()
     })
+    values.push({
+        name: 'radClinic_radiologist',
+        value: $('#formRadClinicReqFor input[name=radClinic_radiologist]').val()
+    })
     
     $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
@@ -1062,6 +1121,18 @@ function saveForm_mriReqFor(callback){
         name: 'mri_doctorname',
         value: $('#formMRIReqFor input[name=mri_doctorname]').val()
     })
+    values.push({
+        name: 'mri_radiologist',
+        value: $('#formMRIReqFor input[name=mri_radiologist]').val()
+    })
+    values.push({
+        name: 'radiographer',
+        value: $('#formMRIReqFor input[name=radiographer]').val()
+    })
+    values.push({
+        name: 'mri_lastuser',
+        value: $('#formMRIReqFor input[name=mri_lastuser]').val()
+    })
     
     $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
@@ -1117,6 +1188,10 @@ function saveForm_physioReqFor(callback){
     );
     
     values.push({
+        name: 'req_date',
+        value: $('#formPhysioReqFor input[name=req_date]').val()
+    })
+    values.push({
         name: 'clinic_diag',
         value: $('#formPhysioReqFor textarea[name=clinic_diag]').val()
     })
@@ -1131,6 +1206,10 @@ function saveForm_physioReqFor(callback){
     values.push({
         name: 'phy_doctorname',
         value: $('#formPhysioReqFor input[name=phy_doctorname]').val()
+    })
+    values.push({
+        name: 'phy_lastuser',
+        value: $('#formPhysioReqFor input[name=phy_lastuser]').val()
     })
     
     $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
@@ -1213,6 +1292,10 @@ function saveForm_dressingReqFor(callback){
     values.push({
         name: 'dressing_doctorname',
         value: $('#formDressingReqFor input[name=dressing_doctorname]').val()
+    })
+    values.push({
+        name: 'dressing_lastuser',
+        value: $('#formDressingReqFor input[name=dressing_lastuser]').val()
     })
     
     $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
@@ -1381,3 +1464,16 @@ function textarea_init_dressingReqFor(){
     });
 }
 
+$("#formOTBookReqFor input[name=req_type]").on('click', function (){
+    toggle_reqfor_reqtype();
+});
+
+function toggle_reqfor_reqtype(){
+    if(document.getElementById("req_type_ward").checked){
+        $('#ReqFor_Bed_div').show();
+        $('#ReqFor_OT_div').hide();
+    }else if(document.getElementById("req_type_ot").checked){
+        $('#ReqFor_Bed_div').hide();
+        $('#ReqFor_OT_div').show();
+    }
+}

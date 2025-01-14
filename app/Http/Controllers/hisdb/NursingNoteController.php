@@ -1207,7 +1207,7 @@ class NursingNoteController extends defaultController
                     'enteredtime'  => $request->tr_enteredtime,
                     // 'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     // 'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
-                    'adduser'  => session('username'),
+                    'adduser'  => strtoupper($request->treatment_adduser),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                 ]);
             
@@ -1240,7 +1240,7 @@ class NursingNoteController extends defaultController
                     'enteredtime'  => $request->inv_enteredtime,
                     // 'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     // 'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
-                    'adduser'  => session('username'),
+                    'adduser'  => strtoupper($request->investigation_adduser),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                 ]);
             
@@ -1273,7 +1273,7 @@ class NursingNoteController extends defaultController
                     'enteredtime'  => $request->inj_enteredtime,
                     // 'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     // 'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
-                    'adduser'  => session('username'),
+                    'adduser'  => strtoupper($request->injection_adduser),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                 ]);
             

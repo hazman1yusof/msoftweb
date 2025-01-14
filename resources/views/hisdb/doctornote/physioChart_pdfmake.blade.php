@@ -64,7 +64,9 @@
                                 [
                                     {
                                         text: [
-                                            { text: 'Ward / Clinic : ', bold: true, alignment: 'left' },
+                                            { text: 'Date Requested : ', bold: true, alignment: 'left' },
+                                            { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$pat_physio->req_date)->format('d-m-Y')}}' },
+                                            { text: '\n\nWard / Clinic : ', bold: true, alignment: 'left' },
                                             { text: '{{$pat_physio->EpWard}}' },
                                         ], alignment: 'left', border: [true, false, true, false]
                                     },
@@ -110,7 +112,32 @@
                                     {
                                         text: [
                                             { text: 'Treatment', italics: true, bold: true, alignment: 'center' },
-                                            { text: `\n\n{!!str_replace('`', '', $pat_physio->treatment)!!}` },
+                                            // { text: `\n\n{!!str_replace('`', '', $pat_physio->treatment)!!}` },
+                                            @if($pat_physio->tr_physio == '1')
+                                                { text: '\n\n[√] PHYSIOTHERAPY\n', bold: true },
+                                            @else
+                                                { text: '\n\n[  ] PHYSIOTHERAPY\n', bold: true },
+                                            @endif
+                                            @if($pat_physio->tr_occuptherapy == '1')
+                                                { text: '[√] OCCUPATIONAL THERAPY\n', bold: true },
+                                            @else
+                                                { text: '[  ] OCCUPATIONAL THERAPY\n', bold: true },
+                                            @endif
+                                            @if($pat_physio->tr_respiphysio == '1')
+                                                { text: '[√] RESPIRATORY PHYSIOTHERAPY\n', bold: true },
+                                            @else
+                                                { text: '[  ] RESPIRATORY PHYSIOTHERAPY\n', bold: true },
+                                            @endif
+                                            @if($pat_physio->tr_neuro == '1')
+                                                { text: '[√] NEURO REHAB\n', bold: true },
+                                            @else
+                                                { text: '[  ] NEURO REHAB\n', bold: true },
+                                            @endif
+                                            @if($pat_physio->tr_splint == '1')
+                                                { text: '[√] SPLINTING\n', bold: true },
+                                            @else
+                                                { text: '[  ] SPLINTING\n', bold: true },
+                                            @endif
                                         ], rowSpan: 3, alignment: 'left'
                                     }
                                 ],
