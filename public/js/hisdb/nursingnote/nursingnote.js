@@ -4479,6 +4479,7 @@ function populate_nursingnote(obj){
 }
 
 function populate_progressnote_getdata(){
+    disableForm('#formProgress');
     emptyFormdata(errorField,"#formProgress",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar"]);
     
     var saveParam = {
@@ -4511,6 +4512,7 @@ function populate_progressnote_getdata(){
 }
 
 function populate_intakeoutput_getdata(){
+    disableForm('#formIntake');
     emptyFormdata(errorField,"#formIntake",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar"]);
     
     var saveParam = {
@@ -4547,6 +4549,10 @@ function populate_drugadmin_getdata(){
 }
 
 function populate_treatment_getdata(){
+    disableForm('#formTreatment');
+    disableForm('#formInvestigation');
+    disableForm('#formInjection');
+    
     emptyFormdata(errorField,"#formTreatment",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar"]);
     emptyFormdata(errorField,"#formInvestigation",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar"]);
     emptyFormdata(errorField,"#formInjection",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar"]);
@@ -4599,6 +4605,7 @@ function populate_treatment_getdata(){
 }
 
 function populate_careplan_getdata(){
+    disableForm('#formCarePlan');
     emptyFormdata(errorField,"#formCarePlan",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar"]);
     
     var saveParam = {
@@ -5063,6 +5070,10 @@ function saveForm_treatment(callback){
     values.push({
         name: 'treatment_remarks',
         value: $('#formTreatment textarea[name=treatment_remarks]').val()
+    })
+    values.push({
+        name: 'treatment_adduser',
+        value: $('#formTreatment input[name=treatment_adduser]').val()
     })
     
     $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){

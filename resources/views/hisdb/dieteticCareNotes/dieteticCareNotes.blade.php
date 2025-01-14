@@ -27,7 +27,7 @@
 
 					<div class='col-md-12'>
 						<div class="panel panel-default">
-							<div class="panel-heading text-center">DIETETIC CARE NOTES	
+							<div class="panel-heading text-center" style="position: sticky; top: 0px; z-index: 3;">DIETETIC CARE NOTES	
 
 								<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
 									id="btn_grp_edit_dieteticCareNotes"
@@ -199,7 +199,7 @@
 
 					<div class='col-md-12'>
 						<div class="panel panel-default">
-							<div class="panel-heading text-center">FOLLOW UP DIETETIC CARE NOTES	
+							<div class="panel-heading text-center" style="position: sticky; top: 0px; z-index: 3;">FOLLOW UP DIETETIC CARE NOTES	
 
 								<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
 									id="btn_grp_edit_dieteticCareNotes_fup"
