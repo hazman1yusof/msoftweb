@@ -97,17 +97,20 @@ $(document).ready(function (){
 	disableForm('#formOTBook');
 	
 	$("#new_otbook").click(function (){
+		get_default_otbook();
 		$('#cancel_otbook').data('oper','add');
 		button_state_otbook('wait');
 		enableForm('#formOTBook');
 		rdonly('#formOTBook');
 		emptyFormdata_div("#formOTBook",['#mrn_doctorNote','#episno_doctorNote','#ot_doctorname']);
+		$('#ReqFor_allergydrugs,#ReqFor_drugs_remarks,#ReqFor_allergyplaster,#ReqFor_plaster_remarks,#ReqFor_allergyfood,#ReqFor_food_remarks,#ReqFor_allergyenvironment,#ReqFor_environment_remarks,#ReqFor_allergyothers,#ReqFor_others_remarks,#ReqFor_allergyunknown,#ReqFor_unknown_remarks,#ReqFor_allergynone,#ReqFor_none_remarks').prop('disabled',true);
 	});
 	
 	$("#edit_otbook").click(function (){
 		button_state_otbook('wait');
 		enableForm('#formOTBook');
 		rdonly('#formOTBook');
+		$('#ReqFor_allergydrugs,#ReqFor_drugs_remarks,#ReqFor_allergyplaster,#ReqFor_plaster_remarks,#ReqFor_allergyfood,#ReqFor_food_remarks,#ReqFor_allergyenvironment,#ReqFor_environment_remarks,#ReqFor_allergyothers,#ReqFor_others_remarks,#ReqFor_allergyunknown,#ReqFor_unknown_remarks,#ReqFor_allergynone,#ReqFor_none_remarks').prop('disabled',true);
 	});
 	
 	$("#save_otbook").click(function (){
@@ -143,14 +146,14 @@ $(document).ready(function (){
 		enableForm('#formRadClinic');
 		rdonly('#formRadClinic');
 		emptyFormdata_div("#formRadClinic",['#mrn_doctorNote','#episno_doctorNote']);
-		$('#rad_note').prop('disabled',true);
+		// $('#rad_note').prop('disabled',true);
 	});
 	
 	$("#edit_radClinic").click(function (){
 		button_state_radClinic('wait');
 		enableForm('#formRadClinic');
 		rdonly('#formRadClinic');
-		$('#rad_note').prop('disabled',true);
+		// $('#rad_note').prop('disabled',true);
 	});
 	
 	$("#save_radClinic").click(function (){
@@ -1226,6 +1229,7 @@ function populate_doctorNote_emergency(obj,rowdata){
 }
 
 function populate_otbook_getdata(){
+	disableForm('#formOTBook');
 	emptyFormdata(errorField,"#formOTBook",["#mrn_doctorNote","#episno_doctorNote"]);
 	
 	var saveParam = {
@@ -1244,20 +1248,64 @@ function populate_otbook_getdata(){
 	},'json').fail(function (data){
 		alert('there is an error');
 	}).success(function (data){
-		if(!$.isEmptyObject(data)){
+		if(!$.isEmptyObject(data.pat_otbook)){
 			autoinsert_rowdata("#formOTBook",data.pat_otbook);
+			autoinsert_rowdata("#formOTBook",data.nurshandover);
+			autoinsert_rowdata("#formOTBook",data.nurshistory);
 			
 			button_state_otbook('edit');
 		}else{
+			autoinsert_rowdata("#formOTBook",data.nurshandover);
+			autoinsert_rowdata("#formOTBook",data.nurshistory);
+			
 			button_state_otbook('add');
 		}
 		
-		$("#ot_doctorname").val($('#doctorname_doctorNote').val());
+		// by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+		if(emptyobj_(data.pat_otbook))$("#ot_doctorname").val($('#doctorname_doctorNote').val());
 		textarea_init_otbook();
+		toggle_reqtype();
+	});
+}
+
+function get_default_otbook(){
+	disableForm('#formOTBook');
+	emptyFormdata(errorField,"#formOTBook",["#mrn_doctorNote","#episno_doctorNote"]);
+	
+	var saveParam = {
+		action: 'get_table_otbook',
+	}
+	
+	var postobj = {
+		_token: $('#csrf_token').val(),
+		// idno: $("#idno_otbook").val(),
+		mrn: $("#mrn_doctorNote").val(),
+		episno: $("#episno_doctorNote").val()
+	};
+	
+	$.get("./doctornote/table?"+$.param(saveParam), $.param(postobj), function (data){
+		
+	},'json').fail(function (data){
+		alert('there is an error');
+	}).success(function (data){
+		if(!$.isEmptyObject(data.pat_otbook)){
+			autoinsert_rowdata("#formOTBook",data.pat_otbook);
+			autoinsert_rowdata("#formOTBook",data.nurshandover);
+			autoinsert_rowdata("#formOTBook",data.nurshistory);
+		}else{
+			autoinsert_rowdata("#formOTBook",data.nurshandover);
+			autoinsert_rowdata("#formOTBook",data.nurshistory);
+		}
+		
+		// by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+		if(emptyobj_(data.pat_otbook))$("#ot_doctorname").val($('#doctorname_doctorNote').val());
+		textarea_init_otbook();
+		toggle_reqtype();
 	});
 }
 
 function populate_radClinic_getdata(){
+	disableForm('#formRadClinic');
 	emptyFormdata(errorField,"#formRadClinic",["#mrn_doctorNote","#episno_doctorNote"]);
 	
 	var saveParam = {
@@ -1288,7 +1336,7 @@ function populate_radClinic_getdata(){
 		// if(!emptyobj_(data.rad_weight))$("#rad_weight").val(data.rad_weight);
 		// $("#rad_pregnant").val($('#preg_doctorNote').val());
 		if(!emptyobj_(data.rad_allergy))$("#rad_allergy").val(data.rad_allergy);
-		$("#radClinic_doctorname").val($('#doctorname_doctorNote').val());
+		// $("#radClinic_doctorname").val($('#doctorname_doctorNote').val());
 		
 		pregnant = document.getElementById("pregnant");
 		not_pregnant = document.getElementById("not_pregnant");
@@ -1331,7 +1379,7 @@ function get_default_radClinic(){
 		// if(!emptyobj_(data.rad_weight))$("#rad_weight").val(data.rad_weight);
 		// $("#rad_pregnant").val($('#preg_doctorNote').val());
 		if(!emptyobj_(data.rad_allergy))$("#rad_allergy").val(data.rad_allergy);
-		$("#radClinic_doctorname").val($('#doctorname_doctorNote').val());
+		// $("#radClinic_doctorname").val($('#doctorname_doctorNote').val());
 		
 		pregnant = document.getElementById("pregnant");
 		not_pregnant = document.getElementById("not_pregnant");
@@ -1346,6 +1394,7 @@ function get_default_radClinic(){
 }
 
 function populate_mri_getdata(){
+	disableForm('#formMRI');
 	emptyFormdata(errorField,"#formMRI",["#mrn_doctorNote","#episno_doctorNote"]);
 	
 	var saveParam = {
@@ -1368,17 +1417,18 @@ function populate_mri_getdata(){
 		if(!$.isEmptyObject(data.pat_mri)){
 			autoinsert_rowdata("#formMRI",data.pat_mri);
 			
-			if(!emptyobj_(data.pat_mri.radiographer)){
-				button_state_mri('empty');
-			}else{
+			// if(!emptyobj_(data.pat_mri.radiographer)){
+			// 	button_state_mri('empty');
+			// }else{
 				button_state_mri('edit');
-			}
+			// }
 		}else{
 			button_state_mri('add');
 		}
 		
 		// if(!emptyobj_(data.mri_weight))$("#mri_weight").val(data.mri_weight);
-		$("#mri_doctorname").val($('#doctorname_doctorNote').val());
+		// by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+		if(emptyobj_(data.pat_mri.mri_doctorname))$("#mri_doctorname").val($('#doctorname_doctorNote').val());
 		$("#mri_patientname").val($('#ptname_doctorNote').val());
 		textarea_init_mri();
 	});
@@ -1411,7 +1461,8 @@ function get_default_mri(){
 		}
 		
 		// if(!emptyobj_(data.mri_weight))$("#mri_weight").val(data.mri_weight);
-		$("#mri_doctorname").val($('#doctorname_doctorNote').val());
+		// by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+		if(emptyobj_(data.pat_mri.mri_doctorname))$("#mri_doctorname").val($('#doctorname_doctorNote').val());
 		$("#mri_patientname").val($('#ptname_doctorNote').val());
 		textarea_init_mri();
 	});
@@ -1473,6 +1524,7 @@ function radiographer_accept(){
 }
 
 function populate_physio_getdata(){
+	disableForm('#formPhysio');
 	emptyFormdata(errorField,"#formPhysio",["#mrn_doctorNote","#episno_doctorNote"]);
 	
 	var saveParam = {
@@ -1499,12 +1551,13 @@ function populate_physio_getdata(){
 			button_state_physio('add');
 		}
 		
-		$("#phy_doctorname").val($('#doctorname_doctorNote').val());
+		// $("#phy_doctorname").val($('#doctorname_doctorNote').val());
 		textarea_init_physio();
 	});
 }
 
 function populate_dressing_getdata(){
+	disableForm('#formDressing');
 	emptyFormdata(errorField,"#formDressing",["#mrn_doctorNote","#episno_doctorNote"]);
 	
 	var saveParam = {
@@ -1533,7 +1586,7 @@ function populate_dressing_getdata(){
 		
 		$("#dressing_patientname").val($('#ptname_doctorNote').val());
 		$("#patientnric").val($('#ic_doctorNote').val());
-		$("#dressing_doctorname").val($('#doctorname_doctorNote').val());
+		// $("#dressing_doctorname").val($('#doctorname_doctorNote').val());
 		textarea_init_dressing();
 	});
 }
@@ -2304,7 +2357,7 @@ function textarea_init_doctornote_ref(){
 }
 
 function textarea_init_otbook(){
-	$('textarea#ot_remarks').each(function (){
+	$('textarea#ot_diagnosis,textarea#ot_remarks').each(function (){
 		if(this.value.trim() == ''){
 			this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
 		}else{
@@ -2386,6 +2439,20 @@ function textarea_init_dressing(){
 			this.style.height = (40) + 'px';
 		}
 	});
+}
+
+$("#formOTBook input[name=req_type]").on('click', function (){
+	toggle_reqtype();
+});
+
+function toggle_reqtype(){
+	if(document.getElementById("type_ward").checked){
+		$('#Bed_div').show();
+		$('#OT_div').hide();
+	}else if(document.getElementById("type_ot").checked){
+		$('#Bed_div').hide();
+		$('#OT_div').show();
+	}
 }
 
 function bpgraph_init(){
