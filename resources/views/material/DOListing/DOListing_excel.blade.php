@@ -48,14 +48,14 @@
         <td>{!!$obj->uomcode!!}</td>
         <td>{!!$obj->pouom!!}</td>
         <td>{{$obj->taxcode}}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->qtyorder, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->qtydelivered, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->qtyoutstand, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->unitprice, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->perdisc, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->amtdisc, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->tot_gst, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->totamount, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="text-align: right">{{ $obj->qtyorder }}</td>
+        <td data-format="0.00" style="text-align: right">{{ $obj->qtydelivered }}</td>
+        <td data-format="0.00" style="text-align: right">{{ $obj->qtyoutstand }}</td>
+        <td data-format="0.00" style="text-align: right">{{ $obj->unitprice }}</td>
+        <td data-format="0.00" style="text-align: right">{{ $obj->perdisc }}</td>
+        <td data-format="0.00" style="text-align: right">{{ $obj->amtdisc }}</td>
+        <td data-format="0.00" style="text-align: right">{{ $obj->tot_gst }}</td>
+        <td data-format="0.00" style="text-align: right">{{ $obj->totamount }}</td>
         <td>{{$obj->recstatus}}</td>
     </tr>
     @endforeach
