@@ -95,29 +95,29 @@ $(document).ready(function (){
 		$("#allergydrugs").prop("checked", this.value !== "");
 	});
 	
-	$("#plaster_remarks").on("keyup blur", function (){
-		$("#allergyplaster").prop("checked", this.value !== "");
-	});
+	// $("#plaster_remarks").on("keyup blur", function (){
+	// 	$("#allergyplaster").prop("checked", this.value !== "");
+	// });
 	
 	$("#food_remarks").on("keyup blur", function (){
 		$("#allergyfood").prop("checked", this.value !== "");
 	});
 	
-	$("#environment_remarks").on("keyup blur", function (){
-		$("#allergyenvironment").prop("checked", this.value !== "");
-	});
+	// $("#environment_remarks").on("keyup blur", function (){
+	// 	$("#allergyenvironment").prop("checked", this.value !== "");
+	// });
 	
 	$("#others_remarks").on("keyup blur", function (){
 		$("#allergyothers").prop("checked", this.value !== "");
 	});
 	
-	$("#unknown_remarks").on("keyup blur", function (){
-		$("#allergyunknown").prop("checked", this.value !== "");
-	});
+	// $("#unknown_remarks").on("keyup blur", function (){
+	// 	$("#allergyunknown").prop("checked", this.value !== "");
+	// });
 	
-	$("#none_remarks").on("keyup blur", function (){
-		$("#allergynone").prop("checked", this.value !== "");
-	});
+	// $("#none_remarks").on("keyup blur", function (){
+	// 	$("#allergynone").prop("checked", this.value !== "");
+	// });
 	// to autocheck the checkbox bila fill in textarea ends
 	
 	$("#jqGridTriageInfo_panel").on("show.bs.collapse", function (){
