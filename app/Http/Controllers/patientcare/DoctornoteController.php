@@ -759,7 +759,7 @@ class DoctornoteController extends defaultController
         $responce = new stdClass();
         
         $episode_obj = DB::table('hisdb.episode as e')
-                        ->select('e.mrn','e.episno','p.recordtime','p.recorddate','p.adduser','e.admdoctor','d.doctorname')
+                        ->select('e.mrn','e.episno','p.recordtime','p.recorddate','p.adddate','p.adduser','e.admdoctor','d.doctorname')
                         ->join('hisdb.pathealth as p', function ($join) use ($request){
                             $join = $join->on('p.mrn', '=', 'e.mrn');
                             $join = $join->on('p.episno', '=', 'e.episno');
