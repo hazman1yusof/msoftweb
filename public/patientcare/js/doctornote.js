@@ -1862,7 +1862,7 @@ var docnote_date_tbl = $('#docnote_date_tbl').DataTable({
 		if(settings.aoData.length > 0){
 			$(this).find('tbody tr')[0].click();
 		}else{
-			// button_state_doctorNote('add');
+			button_state_doctorNote('add');
 		}
 	}
 });

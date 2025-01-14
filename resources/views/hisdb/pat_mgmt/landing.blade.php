@@ -296,7 +296,7 @@
 				
 				@if (Auth::user()->billing == 1)
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-						@include('hisdb.ordcom.ordcom')
+						@include('hisdb.ordcom.ordcom',['phase' => '1'])
 					</div>
 				@endif
 				
