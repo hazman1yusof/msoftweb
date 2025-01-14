@@ -51,7 +51,7 @@
                     <div id="tab-progress" class="active in tab-pane fade">
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
-                                <div class="panel-heading text-center" style="height: 40px;">
+                                <div class="panel-heading text-center" style="position: sticky; top: 0px; z-index: 3; height: 40px;">
                                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                         id="btn_grp_edit_progress" 
                                         style="position: absolute;
@@ -373,7 +373,7 @@
                     <div id="tab-intake" class="tab-pane fade">
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
-                                <div class="panel-heading text-center" style="height: 40px;">
+                                <div class="panel-heading text-center" style="position: sticky; top: 0px; z-index: 3; height: 40px;">
                                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                         id="btn_grp_edit_intake"
                                         style="position: absolute;
@@ -1765,7 +1765,7 @@
                                                     
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
                                                         <label for="treatment_adduser">Entered by</label>
-                                                        <input name="treatment_adduser" type="text" class="form-control input-sm" rdonly>
+                                                        <input id="treatment_adduser" name="treatment_adduser" type="text" class="form-control input-sm">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1838,7 +1838,7 @@
                                                     
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
                                                         <label for="investigation_adduser">Entered by</label>
-                                                        <input name="investigation_adduser" type="text" class="form-control input-sm" rdonly>
+                                                        <input id="investigation_adduser" name="investigation_adduser" type="text" class="form-control input-sm">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1911,7 +1911,7 @@
                                                     
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
                                                         <label for="injection_adduser">Entered by</label>
-                                                        <input name="injection_adduser" type="text" class="form-control input-sm" rdonly>
+                                                        <input id="injection_adduser" name="injection_adduser" type="text" class="form-control input-sm">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1924,7 +1924,7 @@
                     <div id="tab-careplan" class="tab-pane fade">
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
-                                <div class="panel-heading text-center" style="height: 40px;">
+                                <div class="panel-heading text-center" style="position: sticky; top: 0px; z-index: 3; height: 40px;">
                                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                         id="btn_grp_edit_careplan"
                                         style="position: absolute;
