@@ -654,8 +654,8 @@ function button_state_doctorNote(state){
 		case 'edit':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$('#cancel_doctorNote').data('oper','edit');
-			$("#edit_doctorNote").attr('disabled',false);
-			$('#save_doctorNote,#cancel_doctorNote,#new_doctorNote').attr('disabled',true);
+			$("#edit_doctorNote,#new_doctorNote").attr('disabled',false);
+			$('#save_doctorNote,#cancel_doctorNote').attr('disabled',true);
 			break;
 		case 'wait':
 			hide_tran_button(false);
