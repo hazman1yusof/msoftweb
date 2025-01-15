@@ -486,16 +486,22 @@ function populate_otbookReqFor_getdata(){
             autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
             autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
             
+            if(!emptyobj_(data.pat_otbook.ot_doctorname)){
+                $("#otReqFor_doctorname").val(data.pat_otbook.ot_doctorname);
+            }else{
+                $("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
+            }
+            
             button_state_otbookReqFor('edit');
         }else{
             autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
             autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
+            // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+            $("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
             
             button_state_otbookReqFor('add');
         }
         
-        // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
-        if(emptyobj_(data.pat_otbook))$("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
         // textarea_init_otbookReqFor();
         toggle_reqfor_reqtype();
     });
@@ -522,13 +528,19 @@ function get_default_otbookReqFor(){
             autoinsert_rowdata("#formOTBookReqFor",data.pat_otbook);
             autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
             autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
+            
+            if(!emptyobj_(data.pat_otbook.ot_doctorname)){
+                $("#otReqFor_doctorname").val(data.pat_otbook.ot_doctorname);
+            }else{
+                $("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
+            }
         }else{
             autoinsert_rowdata("#formOTBookReqFor",data.nurshandover);
             autoinsert_rowdata("#formOTBookReqFor",data.nurshistory);
+            // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+            $("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
         }
         
-        // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
-        if(emptyobj_(data.pat_otbook))$("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
         // textarea_init_otbookReqFor();
         toggle_reqfor_reqtype();
     });
@@ -641,18 +653,25 @@ function populate_mriReqFor_getdata(){
         if(!$.isEmptyObject(data.pat_mri)){
             autoinsert_rowdata("#formMRIReqFor",data.pat_mri);
             
+            if(!emptyobj_(data.pat_mri.mri_doctorname)){
+                $("#mriReqFor_doctorname").val(data.pat_mri.mri_doctorname);
+            }else{
+                $("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
+            }
+            
             // if(!emptyobj_(data.pat_mri.radiographer)){
             //     button_state_mriReqFor('empty');
             // }else{
                 button_state_mriReqFor('edit');
             // }
         }else{
+            // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+            $("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
+            
             button_state_mriReqFor('add');
         }
         
         if(!emptyobj_(data.mri_weight))$("#mriReqFor_weight").val(data.mri_weight);
-        // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
-        if(emptyobj_(data.pat_mri.mri_doctorname))$("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
         $("#mriReqFor_patientname").val($('#ptname_requestFor').val());
         // textarea_init_mriReqFor();
     });
@@ -678,13 +697,18 @@ function get_default_mriReqFor(){
     },'json').done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formMRIReqFor",data.pat_mri);
-        }else{
             
+            if(!emptyobj_(data.pat_mri.mri_doctorname)){
+                $("#mriReqFor_doctorname").val(data.pat_mri.mri_doctorname);
+            }else{
+                $("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
+            }
+        }else{
+            // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+            $("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
         }
         
         if(!emptyobj_(data.mri_weight))$("#mriReqFor_weight").val(data.mri_weight);
-        // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
-        if(emptyobj_(data.pat_mri.mri_doctorname))$("#mriReqFor_doctorname").val($('#doctorname_requestFor').val());
         $("#mriReqFor_patientname").val($('#ptname_requestFor').val());
         // textarea_init_mriReqFor();
     });

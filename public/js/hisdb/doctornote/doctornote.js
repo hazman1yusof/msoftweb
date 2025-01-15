@@ -1253,16 +1253,22 @@ function populate_otbook_getdata(){
 			autoinsert_rowdata("#formOTBook",data.nurshandover);
 			autoinsert_rowdata("#formOTBook",data.nurshistory);
 			
+			if(!emptyobj_(data.pat_otbook.ot_doctorname)){
+				$("#ot_doctorname").val(data.pat_otbook.ot_doctorname);
+			}else{
+				$("#ot_doctorname").val($('#doctorname_doctorNote').val());
+			}
+			
 			button_state_otbook('edit');
 		}else{
 			autoinsert_rowdata("#formOTBook",data.nurshandover);
 			autoinsert_rowdata("#formOTBook",data.nurshistory);
+			// by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+			$("#ot_doctorname").val($('#doctorname_doctorNote').val());
 			
 			button_state_otbook('add');
 		}
 		
-		// by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
-		if(emptyobj_(data.pat_otbook))$("#ot_doctorname").val($('#doctorname_doctorNote').val());
 		textarea_init_otbook();
 		toggle_reqtype();
 	});
@@ -1292,13 +1298,19 @@ function get_default_otbook(){
 			autoinsert_rowdata("#formOTBook",data.pat_otbook);
 			autoinsert_rowdata("#formOTBook",data.nurshandover);
 			autoinsert_rowdata("#formOTBook",data.nurshistory);
+			
+			if(!emptyobj_(data.pat_otbook.ot_doctorname)){
+				$("#ot_doctorname").val(data.pat_otbook.ot_doctorname);
+			}else{
+				$("#ot_doctorname").val($('#doctorname_doctorNote').val());
+			}
 		}else{
 			autoinsert_rowdata("#formOTBook",data.nurshandover);
 			autoinsert_rowdata("#formOTBook",data.nurshistory);
+			// by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+			$("#ot_doctorname").val($('#doctorname_doctorNote').val());
 		}
 		
-		// by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
-		if(emptyobj_(data.pat_otbook))$("#ot_doctorname").val($('#doctorname_doctorNote').val());
 		textarea_init_otbook();
 		toggle_reqtype();
 	});
@@ -1417,18 +1429,24 @@ function populate_mri_getdata(){
 		if(!$.isEmptyObject(data.pat_mri)){
 			autoinsert_rowdata("#formMRI",data.pat_mri);
 			
+			if(!emptyobj_(data.pat_mri.mri_doctorname)){
+				$("#mri_doctorname").val(data.pat_mri.mri_doctorname);
+			}else{
+				$("#mri_doctorname").val($('#doctorname_doctorNote').val());
+			}
+			
 			// if(!emptyobj_(data.pat_mri.radiographer)){
 			// 	button_state_mri('empty');
 			// }else{
 				button_state_mri('edit');
 			// }
 		}else{
+			// by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+			$("#mri_doctorname").val($('#doctorname_doctorNote').val());
 			button_state_mri('add');
 		}
 		
 		// if(!emptyobj_(data.mri_weight))$("#mri_weight").val(data.mri_weight);
-		// by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
-		if(emptyobj_(data.pat_mri.mri_doctorname))$("#mri_doctorname").val($('#doctorname_doctorNote').val());
 		$("#mri_patientname").val($('#ptname_doctorNote').val());
 		textarea_init_mri();
 	});
@@ -1456,13 +1474,18 @@ function get_default_mri(){
 	}).success(function (data){
 		if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formMRI",data.pat_mri);
-		}else{
 			
+			if(!emptyobj_(data.pat_mri.mri_doctorname)){
+				$("#mri_doctorname").val(data.pat_mri.mri_doctorname);
+			}else{
+				$("#mri_doctorname").val($('#doctorname_doctorNote').val());
+			}
+		}else{
+			// by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
+			$("#mri_doctorname").val($('#doctorname_doctorNote').val());
 		}
 		
 		// if(!emptyobj_(data.mri_weight))$("#mri_weight").val(data.mri_weight);
-		// by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
-		if(emptyobj_(data.pat_mri.mri_doctorname))$("#mri_doctorname").val($('#doctorname_doctorNote').val());
 		$("#mri_patientname").val($('#ptname_doctorNote').val());
 		textarea_init_mri();
 	});
