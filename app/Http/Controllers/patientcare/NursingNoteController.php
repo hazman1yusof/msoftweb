@@ -64,12 +64,11 @@ class NursingNoteController extends defaultController
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno);
-        
+
         if($nurshandover_obj->exists()){
             $nurshandover_obj = $nurshandover_obj->get();
-            
+
             $data = [];
-            
             foreach ($nurshandover_obj as $key => $value) {
                 if(!empty($value->datetaken)){
                     $date['datetaken'] =  Carbon::createFromFormat('Y-m-d', $value->datetaken)->format('d-m-Y');
@@ -274,10 +273,10 @@ class NursingNoteController extends defaultController
     }
 
     public function get_table_progress(Request $request){
-        
         $nurshandover_obj = DB::table('nursing.nurshandover')
                             ->where('compcode','=',session('compcode'))
                             ->where('idno','=',$request->idno);
+                            // ->where('epistycode','=','OP')
                             // ->where('mrn','=',$request->mrn)
                             // ->where('episno','=',$request->episno);
         
@@ -285,6 +284,7 @@ class NursingNoteController extends defaultController
         
         if($nurshandover_obj->exists()){
             $nurshandover_obj = $nurshandover_obj->first();
+            // dd($nurshandover_obj);
             $date = Carbon::createFromFormat('Y-m-d', $nurshandover_obj->datetaken)->format('Y-m-d');
             
             $responce->nurshandover = $nurshandover_obj;

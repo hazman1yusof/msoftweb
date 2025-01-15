@@ -18,7 +18,7 @@
                     <a class="item" data-tab="drug" id="navtab_drug">Drug Administration</a>
                 </div>
                 
-                <div class="ui bottom attached tab raised segment active" data-tab="progress">
+                <div class="ui bottom attached tab segment active" data-tab="progress">
                     <div class="ui segments" style="position: relative;">
                         <div class="ui secondary segment bluecloudsegment" style="height: 50px;">
                             <div class="ui small blue icon buttons" id="btn_grp_edit_progress" style="position: absolute;
@@ -53,6 +53,7 @@
                             </div>
                             <div class="ui grid">
                                 <form id="formProgress" class="right floated ui form ten wide column">
+                                    <input id="idno_progress" name="idno_progress" type="hidden">
                                     <div class='ui grid' style="padding: 5px 3px 3px 2px;">
                                         <div class="sixteen wide column" style="padding: 10px 0px 0px 3px;">
                                             <div class="inline fields">
@@ -213,7 +214,7 @@
                                                         <div class="eight wide column">
                                                             <div class="left floated right aligned" style="padding: 0px 3px 0px 3px;">
                                                                 <label for="ivline">IV Line</label>
-                                                                <div class="right floated left aligned" style="padding: 0px 0px 0px 3px;">
+                                                                <div class="right floated left aligned" style="padding: 30px 0px 0px 3px;">
                                                                     <div class="field">
                                                                         <label><input type="checkbox" id="ivlnone" name="ivlnone" value="1" style="margin-right: 18px;">None</label>
                                                                     </div>
@@ -314,6 +315,63 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="ui bottom attached tab segment" data-tab="drug">
+                    <form class='form-horizontal' style='width: 99%;' id='formDrug'>
+                        <div class="ui segment">
+                            <div class="ui grid">
+                                <div class="four wide column" style="padding: 3px 3px 3px 3px;">
+                                    <table id="tbl_prescription" class="ui celled table" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th class="scope">auditno</th>
+                                                <th class="scope">mrn</th>
+                                                <th class="scope">episno</th>
+                                                <th class="scope">Charge Code</th>
+                                                <th class="scope">Item</th>
+                                                <th class="scope">Quantity</th>
+                                                <th class="scope">doscode</th>
+                                                <th class="scope">doscode_desc</th>
+                                                <th class="scope">frequency</th>
+                                                <th class="scope">frequency_desc</th>
+                                                <th class="scope">ftxtdosage</th>
+                                                <th class="scope">addinstruction</th>
+                                                <th class="scope">addinstruction_desc</th>
+                                                <th class="scope">drugindicator</th>
+                                                <th class="scope">drugindicator_desc</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+
+                               
+                                </div>
+                                <!-- <div class="twelve wide column" style="position: absolute;right: 10px;">
+                                    <div class="ui segments">
+                                        <input id="trx_auditno" name="trx_auditno" type="hidden">
+                                        <input id="trx_chgcode" name="trx_chgcode" type="hidden">
+                                        <input id="trx_quantity" name="trx_quantity" type="hidden">
+
+                                        <div class="eight wide column">
+                                            <div class="field">
+                                                <input id="doc_name" name="doc_name" type="text" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class='eight wide column'>
+                                            <label class="oe_phar_label">Dose</label>
+                                            <div class="ui action input oe_phar_div">
+                                                <input id="dosage_nursNote" name="dosage" type="text" readonly>
+                                                <a class="ui icon blue button"><i class="fa fa-ellipsis-h"></i></a>
+                                            </div>
+                                            <input type="hidden" id="dosage_nursNote_code">
+                                        </div>
+                                    </div>
+                                </div> -->
+                            
+                        </div>
+                    </form>
                 </div>
                 
             </div>
