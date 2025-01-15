@@ -764,7 +764,7 @@ $(document).ready(function () {
 			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:false, key:true}, //canSearch: true, checked: true},
 			{ label: 'Delivery Order Number', name: 'document', width: 200, classes: 'wrap', canSearch: true, editable: true,
-				editrules:{required: true,custom:true, custom_func:cust_rules},
+				editrules:{required: false,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 					{ custom_element:documentCustomEdit,
 					custom_value:galGridCustomValue },
@@ -1721,7 +1721,7 @@ $(document).ready(function () {
 
         	$("#jqGrid2_oth input[name='amount']").keydown(function(e) {//when click tab at document, auto save
 				var code = e.keyCode || e.which;
-				if (code == '9')$('#jqGrid2_ilsave').click();
+				if (code == '9')$('#jqGrid2_oth_ilsave').click();
 			})
         },
         aftersavefunc: function (rowid, response, options) {
