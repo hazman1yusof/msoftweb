@@ -159,7 +159,8 @@ class ProductMasterController extends defaultController
                     'Class' => strtoupper($request->Class),
                     'groupcode' => $request->groupcode,
                     'productcat' => $productcat,
-                    'unit' => session('unit'),
+                    'TaxCode' => 'EP',
+                    'unit' => 'ALL',
                     'computerid' => session('computerid'),
                     'lastcomputerid' => session('computerid'),
                     'compcode' => session('compcode'),
@@ -189,12 +190,13 @@ class ProductMasterController extends defaultController
                     'reordlevel' => 0,
                     'reordqty' => 0,
                     'itemtype' => 'NON-POISON',
-                    'unit' => session('unit'),
+                    'unit' => 'ALL',
                     'computerid' => session('computerid'),
                     'lastcomputerid' => session('computerid'),
                     'compcode' => session('compcode'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'TaxCode' => 'EP',
                     'recstatus' => 'ACTIVE'
                 ]);
     }
@@ -214,6 +216,7 @@ class ProductMasterController extends defaultController
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'ACTIVE',
+                    'TaxCode' => 'EP',
                     'computerid' => session('computerid'),
                 ]);
     }
@@ -233,6 +236,7 @@ class ProductMasterController extends defaultController
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'ACTIVE',
+                    'TaxCode' => 'EP',
                     'computerid' => session('computerid'),
                 ]);
     }
