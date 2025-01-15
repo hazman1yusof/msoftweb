@@ -734,8 +734,8 @@ var dialog_deptcodedtl = new ordialog(
 			{label:'Unit',name:'sector'},
 		],
 		urlParam: {
-			filterCol:['storedept', 'recstatus','compcode','sector'],
-			filterVal:['1', 'ACTIVE', 'session.compcode', 'session.unit']
+			filterCol:['storedept', 'recstatus','compcode'],
+			filterVal:['1', 'ACTIVE', 'session.compcode']
 		},
 		ondblClickRow:function(){
 			//$('#delordhd_credcode').focus();
@@ -758,8 +758,8 @@ var dialog_deptcodedtl = new ordialog(
 	},{
 		title:"Select Department",
 		open: function(){
-			dialog_deptcodedtl.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
-			dialog_deptcodedtl.urlParam.filterVal=['1', 'ACTIVE', 'session.compcode', 'session.unit'];
+			dialog_deptcodedtl.urlParam.filterCol=['storedept', 'recstatus','compcode'];
+			dialog_deptcodedtl.urlParam.filterVal=['1', 'ACTIVE', 'session.compcode'];
 		}
 	},'none','radio','tab'
 );
@@ -789,8 +789,8 @@ var dialog_deptcodeD = new ordialog(
 			{label:'Unit',name:'sector'},
 		],
 		urlParam: {
-			filterCol:['storedept', 'recstatus','compcode','sector'],
-			filterVal:['1', 'ACTIVE', 'session.compcode', 'session.unit']
+			filterCol:['storedept', 'recstatus','compcode'],
+			filterVal:['1', 'ACTIVE', 'session.compcode']
 		},
 		ondblClickRow:function(){
 			$('#dtl_recstatus').focus();
@@ -811,8 +811,8 @@ var dialog_deptcodeD = new ordialog(
 	},{
 		title:"Select Department",
 		open: function(){
-			dialog_deptcodeD.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
-			dialog_deptcodeD.urlParam.filterVal=['1', 'ACTIVE', 'session.compcode', 'session.unit'];
+			dialog_deptcodeD.urlParam.filterCol=['storedept', 'recstatus','compcode'];
+			dialog_deptcodeD.urlParam.filterVal=['1', 'ACTIVE', 'session.compcode'];
 		}
 	},'none','radio','tab'
 );

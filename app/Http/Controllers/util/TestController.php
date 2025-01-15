@@ -64,16 +64,16 @@ class TestController extends defaultController
             //     return $this->update_stockloc_uomcode($request);
             // case 'update_productmaster':
                 // return $this->update_productmaster($request);
-            // case 'chk_if_got':
-            //     return $this->chk_if_got($request);
-            case 'btlkn_imp_1':
-                return $this->btlkn_imp_1($request);
-            case 'btlkn_imp_2':
-                return $this->btlkn_imp_2($request);
-            case 'btlkn_imp_1_phycnt':
-                return $this->btlkn_imp_1_phycnt($request);
-            case 'btlkn_imp_3':
-                return $this->btlkn_imp_3($request);
+            case 'test_date_zulu':
+                return $this->test_date_zulu($request);
+            // case 'btlkn_imp_1':
+            //     return $this->btlkn_imp_1($request);
+            // case 'btlkn_imp_2':
+            //     return $this->btlkn_imp_2($request);
+            // case 'btlkn_imp_1_phycnt':
+            //     return $this->btlkn_imp_1_phycnt($request);
+            // case 'btlkn_imp_3':
+            //     return $this->btlkn_imp_3($request);
             // case 'stocktake_imp_dtl':
             //     return $this->stocktake_imp_dtl($request);
             // case 'betulkan_uom_kh_stockloc':
@@ -4111,6 +4111,11 @@ class TestController extends defaultController
                             'netmvval11' => $all2,
                         ]);
         }
+    }
+
+    public function test_date_zulu(){
+        $date = Carbon::now("Etc/Zulu");
+        dd($date->format('H:i:s'));
     }
     
 }
