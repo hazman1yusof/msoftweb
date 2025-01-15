@@ -1129,7 +1129,7 @@ $(document).ready(function () {
 	function cust_rules(value,name){
 		var temp;
 		switch(name){
-			case 'Delivery Order Number':temp=$('#document');break;
+			case 'Delivery Order Number':temp=$('#jqGrid2_oth input[name="document"]');break;
 			case 'Department':temp=$('#jqGrid2_oth input[name="deptcode"]');break;
 			case 'Category':temp=$('#jqGrid2_oth input[name="category"]');break;
 			case 'GST Code':temp=$('#jqGrid2_oth input[name="GSTCode"]');break;
