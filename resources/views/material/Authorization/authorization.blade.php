@@ -126,7 +126,7 @@ i.fa {
                 <div class="form-group">
 				   	<label class="col-md-2 control-label" for="password">Password</label>  
 				 		<div class="col-md-3">
-				  			<input id="password" name="password" type="text" maxlength="15" class="form-control input-sm" rdonly>
+				  			<input id="password" name="password" type="password" maxlength="15" class="form-control input-sm" rdonly>
 				  		</div>
 				</div>
 
