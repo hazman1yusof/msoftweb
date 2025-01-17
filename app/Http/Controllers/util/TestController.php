@@ -66,8 +66,8 @@ class TestController extends defaultController
                 // return $this->update_productmaster($request);
             case 'test_date_zulu':
                 return $this->test_date_zulu($request);
-            // case 'btlkn_imp_1':
-            //     return $this->btlkn_imp_1($request);
+            case 'btlkan_stockloc_open':
+                return $this->btlkan_stockloc_open($request);
             // case 'btlkn_imp_2':
             //     return $this->btlkn_imp_2($request);
             // case 'btlkn_imp_1_phycnt':
@@ -4116,6 +4116,118 @@ class TestController extends defaultController
     public function test_date_zulu(){
         $date = Carbon::now("Etc/Zulu");
         dd($date->format('H:i:s'));
+    }
+
+    public function btlkan_stockloc_open(Request $request){
+        $type = $request->type;
+
+        if($type == 'imp'){
+            $table_used = 'temp.imp_stockloc';
+            $deptcode = 'imp';
+        }else if($type == 'khealth'){
+            $table_used = 'temp.khealth_stockloc';
+            $deptcode = 'khealth';
+        }else if($type == 'fkwstr'){
+            $table_used = 'temp.fkwstr_stockloc';
+            $deptcode = 'fkwstr';
+        }else{
+            dd('salah wei xde type');
+        }
+
+        $table = DB::table($table_used)->get();
+
+        foreach ($table as $key => $value) {
+            // dd($value);
+            $s_NetMvQty1 = DB::table('material.stockloc')
+                            ->where('compcode','9B')
+                            ->where('year','2025')
+                            ->where('deptcode',$deptcode)
+                            ->where('itemcode',$value->itemcode)
+                            ->sum('NetMvQty1');
+
+            $s_NetMvVal1 = DB::table('material.stockloc')
+                            ->where('compcode','9B')
+                            ->where('year','2025')
+                            ->where('deptcode',$deptcode)
+                            ->where('itemcode',$value->itemcode)
+                            ->sum('NetMvVal1');
+
+            DB::table('material.stockloc')
+                    ->where('compcode','9B')
+                    ->where('deptcode',$deptcode)
+                    ->where('year','2025')
+                    // ->where('unit',$unit)
+                    ->where('itemcode',$value->itemcode)
+                    ->update([
+                        'openbalqty' => $value->closeqty,
+                        'openbalval' => $value->closeamt,
+                        'qtyonhand' => $value->closeqty + $s_NetMvQty1,
+                        // 'NetMvVal1' => $value->closeamt + $s_NetMvVal1,
+                    ]);
+
+            DB::table('material.product')
+                    ->where('compcode','9B')
+                    // ->where('year','2025')
+                    // ->where('unit',$unit)
+                    ->where('itemcode',$value->itemcode)
+                    ->update([
+                        'qtyonhand' => $value->closeqty + $s_NetMvQty1,
+                        // 'openbalval' => $value->closeamt,
+                        // 'NetMvQty1' => $value->closeqty + $s_NetMvQty1,
+                        // 'NetMvVal1' => $value->closeamt + $s_NetMvVal1,
+                    ]);
+        }
+    }
+
+    public function btlkan_stockloc_open2(Request $request){
+        $type = $request->type;
+
+        if($type == 'imp'){
+            $table_used = 'temp.imp_stockloc';
+            $unit = 'imp';
+        }else if($type == 'khealth'){
+            $table_used = 'temp.khealth_stockloc';
+        }else if($type == 'fkwstr'){
+            $table_used = 'temp.fkwstr_stockloc';
+        }else{
+            dd('salah wei xde type');
+        }
+
+        $table = DB::table($table_used)->get();
+
+        foreach ($table as $key => $value) {
+            // dd($value);
+            // $s_NetMvQty1 = DB::table('material.stockloc')
+            //                 ->where('compcode','9B')
+            //                 ->where('year','2025')
+            //                 ->where('itemcode',$value->itemcode);
+
+            // $s_NetMvVal1 = DB::table('material.stockloc')
+            //                 ->where('compcode','9B')
+            //                 ->where('year','2025')
+            //                 ->where('itemcode',$value->itemcode);
+
+            $stockloc_ = DB::table('material.stockloc')
+                            ->where('compcode','9B')
+                            ->where('year','2025')
+                            ->where('itemcode',$value->itemcode);
+
+            foreach ($variable as $key => $value) {
+                // code...
+            }
+
+            DB::table('material.stockloc')
+                    ->where('compcode','9B')
+                    ->where('year','2025')
+                    // ->where('unit',$unit)
+                    ->where('itemcode',$value->itemcode)
+                    ->update([
+                        'openbalqty' => $value->closeqty,
+                        'openbalval' => $value->closeamt,
+                        // 'NetMvQty1' => $value->closeqty + $s_NetMvQty1,
+                        // 'NetMvVal1' => $value->closeamt + $s_NetMvVal1,
+                    ]);
+        }
     }
     
 }
