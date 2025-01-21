@@ -1,5 +1,5 @@
 
-$.jgrid.defaults.responsive = true;
+$.jgrid.defaults.responsive = false;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
 
@@ -196,7 +196,7 @@ $(document).ready(function (){
         //     chgcode: $("#trx_chgcode").val()
         // };
         
-        // $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){
+        // $.post("./ptcare_nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){
             
         // },'json').fail(function (data){
         //     alert('there is an error');
@@ -210,9 +210,221 @@ $(document).ready(function (){
         // });
     });
     
-    $("#tbl_prescription_refresh").click(function (){
-        $('#tbl_prescription').DataTable().ajax.reload();
+    // $("button.tbl_prescription_refresh").click(function (){
+    //     $('#tbl_prescription').DataTable().ajax.reload();
+    // });
+
+    //////////////////////////jqGridPatMedic//////////////////////////
+    var addmore_jqgrid = { more:false,state:false,edit:false }
+    
+    $("#jqGridPatMedic").jqGrid({
+        datatype: "local",
+        editurl: "./ptcare_nursingnote/form",
+        colModel: [
+            { label: 'Date', name: 'entereddate', width: 50, classes: 'wrap', editable: true,
+                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                editoptions: {
+                    dataInit: function (element){
+                        $(element).datepicker({
+                            id: 'entereddate_datePicker',
+                            dateFormat: 'yy-mm-dd',
+                            minDate: "dateToday",
+                            showOn: 'focus',
+                            changeMonth: true,
+                            changeYear: true,
+                            onSelect : function (){
+                                $(this).focus();
+                            }
+                        });
+                    }
+                }
+            },
+            { label: 'Time', name: 'enteredtime', width: 50, classes: 'wrap', editable: true,
+                editrules: { required: false, custom: true, custom_func: cust_rules_nurs },
+                formatter: showdetail_nurs, edittype: 'custom',
+                editoptions: {
+                    custom_element: enteredtimeCustomEdit_nurs,
+                    custom_value: galGridCustomValue_nurs
+                }
+            },
+            { label: 'Failure', name: 'failure', width: 54, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
+                editoptions: {
+                    value: "None:None;Fasting:Fasting;Refused:Refused;OMIT:OMIT;On Home Leave:On Home Leave;Unable to take:Unable to take;Transfer to other ward:Transfer to other ward;Withhold:Withhold"
+                }
+            },
+            { label: 'Remarks', name: 'remarks', classes: 'wrap', width: 70, editable: true, edittype: "textarea",
+                editoptions: {
+                    style: "width: -webkit-fill-available;",
+                    rows: 5
+                }
+            },
+            { label: 'Quantity', name: 'qty', width: 35, editable: true, editrules: { required: true } },
+            { label: 'Entered<br>By', name: 'enteredby', width: 35, editable: false },
+            { label: 'idno', name: 'idno', width: 10, hidden: true, key: true },
+            { label: 'compcode', name: 'compcode', hidden: true },
+            { label: 'mrn', name: 'mrn', hidden: true },
+            { label: 'episno', name: 'episno', hidden: true },
+            { label: 'adduser', name: 'adduser', hidden: true },
+            { label: 'adddate', name: 'adddate', hidden: true },
+            { label: 'auditno', name: 'auditno', hidden: true },
+            { label: 'chgcode', name: 'chgcode', hidden: true },
+        ],
+        autowidth: true,
+        multiSort: true,
+        sortname: 'idno',
+        sortorder: 'desc',
+        viewrecords: true,
+        loadonce: false,
+        width: 800,
+        height: 200,
+        rowNum: 30,
+        pager: "#jqGridPagerPatMedic",
+        loadComplete: function (){
+            if(addmore_jqgrid.more == true){$('#jqGridPatMedic_iladd').click();}
+            else{
+                $('#jqGrid2').jqGrid ('setSelection', "1");
+            }
+            $('.ui-pg-button').prop('disabled',true);
+            addmore_jqgrid.edit = addmore_jqgrid.more = false; // reset
+            
+            // calc_jq_height_onchange("jqGridPatMedic");
+        },
+        ondblClickRow: function (rowid, iRow, iCol, e){
+            $("#jqGridPatMedic_iledit").click();
+        },
     });
+    
+    ////////////////////myEditOptions_add_PatMedic////////////////////
+    var myEditOptions_add_PatMedic = {
+        keys: true,
+        extraparam: {
+            "_token": $("#_token").val()
+        },
+        oneditfunc: function (rowid){
+            $("#jqGridPagerRefresh_patMedic").hide();
+            
+            $("#jqGridPatMedic input[name='qty']").on('blur',calculate_total_qty);
+            
+            $("input[name='qty']").keydown(function (e){ // when click tab at last column in header, auto save
+                var code = e.keyCode || e.which;
+                if (code == '9')$('#jqGridPatMedic_ilsave').click();
+                // addmore_jqgrid.state = true;
+                // $('#jqGrid_ilsave').click();
+            });
+        },
+        aftersavefunc: function (rowid, response, options){
+            // addmore_jqgrid.more = true; // only addmore after save inline
+            // state true maksudnyer ada isi, tak kosong
+            refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'add');
+            errorField.length = 0;
+            $("#jqGridPagerRefresh_patMedic").show();
+            get_total_qty();
+        },
+        errorfunc: function (rowid,response){
+            $('#p_error').text(response.responseText);
+            refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'add');
+        },
+        beforeSaveRow: function (options, rowid){
+            $('#p_error').text('');
+            
+            var trx_qty = $("#trx_quantity").val();
+            var grid_qty = $("#tot_qty").val();
+            
+            if(parseFloat(grid_qty) > parseFloat(trx_qty)){
+                alert('Please check the quantity.');
+                return false;
+            }
+            
+            let data = $('#jqGridPatMedic').jqGrid ('getRowData', rowid);
+            
+            let editurl = "./ptcare_nursingnote/form?"+
+                $.param({
+                    mrn: $('#mrn_nursNote').val(),
+                    episno: $('#episno_nursNote').val(),
+                    auditno: $('#trx_auditno').val(),
+                    chgcode: $('#trx_chgcode').val(),
+                    action: 'patMedic_save',
+                });
+            $("#jqGridPatMedic").jqGrid('setGridParam', { editurl: editurl });
+        },
+        afterrestorefunc : function (response){
+            $("#jqGridPagerRefresh_patMedic").show();
+        },
+        errorTextFormat: function (data){
+            alert(data);
+        }
+    };
+    
+    ////////////////////////jqGridPagerPatMedic////////////////////////
+    $("#jqGridPatMedic").inlineNav('#jqGridPagerPatMedic', {
+        add: true,
+        edit: false,
+        cancel: true,
+        // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+        restoreAfterSelect: false,
+        addParams: {
+            addRowParams: myEditOptions_add_PatMedic
+        },
+    }).jqGrid('navButtonAdd', "#jqGridPagerPatMedic", {
+        id: "jqGridPagerRefresh_patMedic",
+        caption: "", cursor: "pointer", position: "last",
+        buttonicon: "glyphicon glyphicon-refresh",
+        title: "Refresh Table",
+        onClickButton: function (){
+            refreshGrid("#jqGridPatMedic", urlParam_PatMedic);
+        },
+    });
+    
+    $("#jqGridPatMedic_ilcancel").click(function (){
+        get_total_qty(); // refresh balik total quantity
+    });
+    
+    function calculate_total_qty(){
+        var rowids = $('#jqGridPatMedic').jqGrid('getDataIDs');
+        var total_qty = 0;
+        
+        rowids.forEach(function (e,i){
+            let quantity = $('#jqGridPatMedic input#'+e+'_qty').val();
+            if(quantity != undefined){
+                total_qty = parseFloat(total_qty)+parseFloat(quantity);
+            }else{
+                let rowdata = $('#jqGridPatMedic').jqGrid ('getRowData',e);
+                total_qty = parseFloat(total_qty)+parseFloat(rowdata.qty);
+            }
+        });
+        
+        if(!isNaN(total_qty)){
+            $('#tot_qty').val(numeral(total_qty).format('0,0.00'));
+        }
+    }
+    
+    function get_total_qty(){
+        var saveParam={
+            action: 'get_table_drug',
+        }
+        
+        var postobj={
+            _token: $('#_token').val(),
+            mrn: $("#mrn_nursNote").val(),
+            episno: $("#episno_nursNote").val(),
+            auditno: $("#trx_auditno").val(),
+            chgcode: $("#trx_chgcode").val()
+        };
+        
+        $.post("./ptcare_nursingnote/form?"+$.param(saveParam), $.param(postobj), function (data){
+            
+        },'json').fail(function (data){
+            alert('there is an error');
+        }).success(function (data){
+            if(!$.isEmptyObject(data)){
+                // autoinsert_rowdata("#formDrug",data.patmedication);
+                $("#tot_qty").val(data.total_qty);
+            }else{
+                
+            }
+        });
+    }
+    //////////////////////////////////////////drug admin ends//////////////////////////////////////////
     
 });
 
@@ -398,16 +610,22 @@ function populate_progressnote_getdata(){
         
     });
 
-    var urlparam_datetime_tbl = {
-        action: 'get_table_datetime',
-        mrn: $("#mrn_nursNote").val(),
-        episno: $("#episno_nursNote").val()
-    }
+    // var urlparam_datetime_tbl = {
+    //     action: 'get_table_datetime',
+    //     mrn: $("#mrn_nursNote").val(),
+    //     episno: $("#episno_nursNote").val()
+    // }
     
-    datetime_tbl.ajax.url("./ptcare_nursingnote/table?"+$.param(urlparam_datetime_tbl)).load(function (data){
-        emptyFormdata_div("#formProgress",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-        $('#datetime_tbl tbody tr:eq(0)').click();  // to select first row
-    });
+    // datetime_tbl.ajax.url("./ptcare_nursingnote/table?"+$.param(urlparam_datetime_tbl)).load(function (data){
+    //     emptyFormdata_div("#formProgress",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+    //     $('#datetime_tbl tbody tr:eq(0)').click();  // to select first row
+    // });
+}
+
+function populate_drugadmin_getdata(){
+    emptyFormdata(errorField,"#formDrug",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar"]);
+    
+    textarea_init_nursingnote();
 }
 
 function get_default_progressnote(){
@@ -527,8 +745,55 @@ function textarea_init_nursingnote(){
     });
 }
 
+function cust_rules_nurs(value, name){
+    var temp = null;
+    switch(name){
+        case 'Time': temp = $("#jqGridPatMedic input[name='enteredtime']"); break;
+    }
+    if(temp == null) return [true,''];
+    return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
+}
+
+function showdetail_nurs(cellvalue, options, rowObject){
+    // var field, table, case_;
+    // switch(options.colModel.name){
+    //     case 'chgcode': field = ['chgcode','description']; table = "hisdb.chgmast"; case_ = 'chgcode'; break;
+    //     case 'uom': field = ['uomcode','description']; table = "material.uom"; case_ = 'uom'; break;
+    //     case 'uom_recv': field = ['uomcode','description']; table = "material.uom"; case_ = 'uom'; break;
+    //     case 'taxcode': field = ['taxcode','description']; table = "hisdb.taxmast"; case_ = 'taxcode'; break;
+    //     case 'deptcode': field = ['deptcode','description']; table = "sysdb.department"; case_ = 'deptcode'; break;
+    // }
+    // var param = {action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+    
+    // if(cellvalue != null && cellvalue.trim() != ''){
+    //     fdl_ordcom.get_array('ordcom',options,param,case_,cellvalue);
+    // }
+    
+    // if(cellvalue == null)cellvalue = " ";
+    return cellvalue;
+}
+
+function enteredtimeCustomEdit_nurs(val,opt,rowObject){
+    return $(`<div class="input-group"><input autocomplete="off" name="time" type="time" class="form-control input-sm" style="text-transform: uppercase;" value="`+val+`" style="z-index: 0"></div>`);
+}
+
+function galGridCustomValue_nurs(elem, operation, value){
+    if(operation == 'get'){
+        // console.log($(elem).find("input").val());
+        return $(elem).find("input").val();
+    }
+    else if(operation == 'set'){
+        $('input',elem).val(value);
+    }
+}
+
+// $('#tab_nursNote').on('show.bs.collapse', function (){
+// 	return check_if_user_selected();
+// });
+
 $('#tab_nursNote').on('shown.bs.collapse', function (){
     SmoothScrollTo("#tab_nursNote", 500);
+
         // var urlParam={
         //     action:'get_table_progress',
         // }
@@ -564,11 +829,11 @@ $('#tab_nursNote').on('shown.bs.collapse', function (){
         //     // $('#datetime_tbl tbody tr:eq(0)').click();	//to select first row
         // });
 
-    // let tab = $(this).data('id');
+    // let tab = $('a.item[data-tab]').val();
     // let id = $(this).attr('id');
-    // $("#nursNote").data('tab',id); console.log(tab);
+    // $("#tab_nursNote").data('tab',id); console.log(tab);
     // switch(tab){
-    //     case 'progress':   
+    //     case 'navtab_progress':   
     //         var urlparam_datetime_tbl = {
     //             action: 'get_table_datetime',
     //             mrn: $("#mrn_nursNote").val(),
@@ -584,40 +849,41 @@ $('#tab_nursNote').on('shown.bs.collapse', function (){
     //         populate_progressnote_getdata();
     //         break;
     // }
-    //     // case 'drug':
-    //     //     var urlparam_tbl_prescription = {
-    //     //         action: 'get_prescription',
-    //     //         mrn: $("#mrn_nursNote").val(),
-    //     //         episno: $("#episno_nursNote").val(),
-    //     //         chggroup: $('#ordcomtt_phar').val(),
-    //     //     }
+        // case 'drug':
+        //     var urlparam_tbl_prescription = {
+        //         action: 'get_prescription',
+        //         mrn: $("#mrn_nursNote").val(),
+        //         episno: $("#episno_nursNote").val(),
+        //         chggroup: $('#ordcomtt_phar').val(),
+        //     }
             
-    //     //     tbl_prescription.ajax.url("./ptcare_nursingnote/table?"+$.param(urlparam_tbl_prescription)).load(function (data){
-    //     //         emptyFormdata_div("#formDrug",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-    //     //         $('#tbl_prescription tbody tr:eq(0)').click();  // to select first row
-    //     //     });
+        //     tbl_prescription.ajax.url("./ptcare_nursingnote/table?"+$.param(urlparam_tbl_prescription)).load(function (data){
+        //         emptyFormdata_div("#formDrug",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        //         $('#tbl_prescription tbody tr:eq(0)').click();  // to select first row
+        //     });
             
-    //     //     // $('#tbl_prescription').DataTable().ajax.reload();
-    //     //     $("#jqGridPatMedic").jqGrid('setGridWidth', Math.floor($("#jqGridPatMedic_c")[0].offsetWidth-$("#jqGridPatMedic_c")[0].offsetLeft-30));
-    //     //     populate_drugadmin_getdata();
-    //     //     break;
+        //     // $('#tbl_prescription').DataTable().ajax.reload();
+        //     $("#jqGridPatMedic").jqGrid('setGridWidth', Math.floor($("#jqGridPatMedic_c")[0].offsetWidth-$("#jqGridPatMedic_c")[0].offsetLeft-30));
+        //     populate_drugadmin_getdata();
+        //     break;
         
     // }
     
     populate_progressnote_getdata();
-
+    $("#jqGridPatMedic").jqGrid('setGridWidth', Math.floor($("#jqGridPatMedic_c")[0].offsetWidth-$("#jqGridPatMedic_c")[0].offsetLeft-30));
+    populate_drugadmin_getdata();
     
 });
 
-$('#tab_nursNote .menu .item').on('shown.bs.tab', function (e){
-    let tab = $(this).data('tab'); console.log(tab);
-    switch(tab){
-        case 'progress':
-            populate_progressnote_getdata();
-            break;
+// $('#tab_nursNote .menu .item').on('shown.bs.tab', function (e){
+//     let tab = $('a.item[data-tab]'); console.log(tab);
+//     switch(tab){
+//         case 'progress':
+//             populate_progressnote_getdata();
+//             break;
         
-    }
-});
+//     }
+// });
 
 $("#tab_nursNote").on("hide.bs.collapse", function (){
     button_state_progress('empty');
