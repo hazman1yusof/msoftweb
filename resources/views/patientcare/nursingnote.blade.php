@@ -169,7 +169,6 @@
                                                             <div class="ui segment">
                                                                 <div class="ui grid">
                                                                     <div class="eight wide column">
-                                                                        
                                                                         <div class="left floated right aligned" style="padding: 0px 3px 0px 3px;">
                                                                             <label for="airway">Airway</label>
                                                                             <div class="right floated left aligned" style="padding: 10px 0px 0px 3px;">
@@ -280,7 +279,7 @@
                                                                     <div class="eight wide column">
                                                                         <div class="left floated right aligned" style="padding: 0px 3px 0px 3px;">
                                                                             <label for="gu">GU</label>
-                                                                            <div class="right floated left aligned" style="padding: 10px 0px 0px 3px;">
+                                                                            <div class="right floated left aligned" style="padding: 20px 0px 0px 3px;">
                                                                                 <div class="field">
                                                                                     <label><input type="checkbox" id="gucontinent" name="gucontinent" value="1" style="margin-right: 18px;">Continent</label>
                                                                                 </div>
@@ -296,7 +295,7 @@
                                                                     <div class="eight wide column">
                                                                         <div class="left floated right aligned" style="padding: 0px 3px 0px 3px;">
                                                                             <label for="fallrisk">Disability Fall Risk</label>
-                                                                            <div class="right floated left aligned" style="padding: 0px 0px 0px 3px;">
+                                                                            <div class="right floated left aligned" style="padding: 10px 0px 0px 3px;">
                                                                                 <div class="field">
                                                                                     <label><input type="checkbox" id="frhigh" name="frhigh" value="1" style="margin-right: 18px;">High</label>
                                                                                 </div>
