@@ -97,7 +97,7 @@
                                                 </div>
                                             </div> -->
 
-                                            <div class="ui grid">
+                                            <div class="ui grid" style="display: none;">
                                                 <div class="field five wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                     <label>Serial No.</label>
                                                     <input id="serialno" name="serialno" type="number">
@@ -128,15 +128,20 @@
 
                                             <div class="ui grid">
                                                 <div class="field sixteen wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
-                                                    <label>Remarks</label>
-                                                    <textarea id="remarks" name="remarks" rows="4"></textarea>
+                                                    <label>Findings</label>
+                                                    <textarea id="finding" name="finding" rows="4"></textarea>
                                                 </div>
                                             </div>
 
                                             <div class="ui grid">
-                                                <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
+                                                <div class="field eight wide column" style="display: none;">
                                                     <label>Procedure</label>
                                                     <textarea id="procedure" name="procedure" rows="4"></textarea>
+                                                </div>
+
+                                                <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
+                                                    <label>Plan</label>
+                                                    <textarea id="plan" name="plan" rows="4"></textarea>
                                                 </div>
 
                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">

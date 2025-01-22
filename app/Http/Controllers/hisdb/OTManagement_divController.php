@@ -68,11 +68,15 @@ class OTManagement_divController extends defaultController
                         'admdate' => $request->admdate,
                         'admtime' => $request->admtime,
                         'ward' => $request->ward,
+                        'timestarted' => $request->timestarted,
+                        'timeended' => $request->timeended,
                         'hoursutilized' => $request->hoursutilized,
-                        'serialno' => $request->serialno,
+                        // 'serialno' => $request->serialno,
                         'natureoper' => $request->natureoper,
                         'specimen' => $request->specimen,
-                        'remarks' => $request->remarks,
+                        'finding' => $request->finding,
+                        'plan' => $request->plan,
+                        'diagnosis' => $request->diagnosis,
                         'electiveemgc' => $request->electiveemgc,
                         'classification' => $request->classification,
                         'anaesthtype' => $request->anaesthtype,
@@ -95,8 +99,8 @@ class OTManagement_divController extends defaultController
                     'start'       => $request->operdate.' '.$request->timestarted,
                     'end'         => $request->operdate.' '.$request->timeended,
                     'surgery_date'=> $request->operdate,
-                    'oper_status' => strtoupper($request->oper_status),
-                    'procedure' => $request->procedure,
+                    // 'oper_status' => strtoupper($request->oper_status),
+                    // 'procedure' => $request->procedure,
                     'diagnosis' => $request->diagnosis,
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -130,7 +134,6 @@ class OTManagement_divController extends defaultController
                         ->where('compcode','=',session('compcode'));
             
             if(!$otmanage->exists()){
-                
                 DB::table('nursing.otmanage')
                         ->insert([
                             'compcode' => session('compcode'),
@@ -139,11 +142,15 @@ class OTManagement_divController extends defaultController
                             'admdate' => $request->admdate,
                             'admtime' => $request->admtime,
                             'ward' => $request->ward,
+                            'timestarted' => $request->timestarted,
+                            'timeended' => $request->timeended,
                             'hoursutilized' => $request->hoursutilized,
-                            'serialno' => $request->serialno,
+                            // 'serialno' => $request->serialno,
                             'natureoper' => $request->natureoper,
                             'specimen' => $request->specimen,
-                            'remarks' => $request->remarks,
+                            'finding' => $request->finding,
+                            'plan' => $request->plan,
+                            'diagnosis' => $request->diagnosis,
                             'electiveemgc' => $request->electiveemgc,
                             'classification' => $request->classification,
                             'anaesthtype' => $request->anaesthtype,
@@ -166,25 +173,27 @@ class OTManagement_divController extends defaultController
                         'start'       => $request->operdate.' '.$request->timestarted,
                         'end'         => $request->operdate.' '.$request->timeended,
                         'surgery_date'=> $request->operdate,
-                        'oper_status' => strtoupper($request->oper_status),
-                        'procedure' => $request->procedure,
+                        // 'oper_status' => strtoupper($request->oper_status),
+                        // 'procedure' => $request->procedure,
                         'diagnosis' => $request->diagnosis,
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
-                
             }else{
-                
                 $otmanage
                     ->update([
                         'admdate' => $request->admdate,
                         'admtime' => $request->admtime,
                         'ward' => $request->ward,
+                        'timestarted' => $request->timestarted,
+                        'timeended' => $request->timeended,
                         'hoursutilized' => $request->hoursutilized,
-                        'serialno' => $request->serialno,
+                        // 'serialno' => $request->serialno,
                         'natureoper' => $request->natureoper,
                         'specimen' => $request->specimen,
-                        'remarks' => $request->remarks,
+                        'finding' => $request->finding,
+                        'plan' => $request->plan,
+                        'diagnosis' => $request->diagnosis,
                         'electiveemgc' => $request->electiveemgc,
                         'classification' => $request->classification,
                         'anaesthtype' => $request->anaesthtype,
@@ -207,13 +216,12 @@ class OTManagement_divController extends defaultController
                         'start'       => $request->operdate.' '.$request->timestarted,
                         'end'         => $request->operdate.' '.$request->timeended,
                         'surgery_date'=> $request->operdate,
-                        'oper_status' => strtoupper($request->oper_status),
-                        'procedure' => $request->procedure,
+                        // 'oper_status' => strtoupper($request->oper_status),
+                        // 'procedure' => $request->procedure,
                         'diagnosis' => $request->diagnosis,
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
-                
             }
             
             // $queries = DB::getQueryLog();
@@ -243,7 +251,7 @@ class OTManagement_divController extends defaultController
                     ->where('episno','=',$request->episno);
         
         $apptbook_obj = DB::table('hisdb.apptbook')
-                    ->select('apptdatefr as operdate', 'start', 'end', 'oper_status', 'procedure', 'diagnosis')
+                    ->select('apptdatefr as operdate','start','end','oper_status','procedure','diagnosis')
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn);
                     // ->where('episno','=',$request->episno);
