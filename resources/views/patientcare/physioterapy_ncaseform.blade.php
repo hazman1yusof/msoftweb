@@ -1217,7 +1217,7 @@
 			</div>
 		</div>
 		
-		<div class="ui segments">
+		<div class="ui segments" style="display: none;">
 			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_elec">
 				<i class="angle down icon large"></i>
 				<i class="angle up icon large"></i>
