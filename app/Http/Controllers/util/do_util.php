@@ -211,7 +211,7 @@ class do_util extends defaultController{
         //tengok product category
         $product_obj = DB::table('material.product')
             ->where('compcode','=', $value->compcode)
-            ->where('unit','=', $deldept_unit)
+            // ->where('unit','=', $deldept_unit)
             ->where('itemcode','=', $value->itemcode)
             ->first();
 
@@ -358,7 +358,7 @@ class do_util extends defaultController{
         //tengok product category
         $product_obj = DB::table('material.product')
             ->where('compcode','=', $value->compcode)
-            ->where('unit','=', $deldept_unit)
+            // ->where('unit','=', $deldept_unit)
             ->where('itemcode','=', $value->itemcode)
             ->first();
 
