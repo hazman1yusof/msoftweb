@@ -326,7 +326,7 @@ class DeliveryOrderController extends defaultController
                 foreach ($delorddt_obj as $value) {
 
                     $stockloc_chk = DB::table('material.stockloc')
-                        ->where('unit','=',$deldept_unit)
+                        // ->where('unit','=',$deldept_unit)
                         ->where('compcode','=',$value->compcode)
                         ->where('deptcode','=',$value->deldept)
                         ->where('itemcode','=',$value->itemcode)
@@ -351,7 +351,7 @@ class DeliveryOrderController extends defaultController
                     //if product.groupcode = "other" then stockflag = other
                     $Stock_flag = DB::table('material.product')
                         ->where('compcode','=', $value->compcode)
-                        ->where('unit','=', $deldept_unit)
+                        // ->where('unit','=', $deldept_unit)
                         ->where('groupcode','=', "Stock")
                         ->where('itemcode','=', $value->itemcode)
                         ->exists();
@@ -447,7 +447,7 @@ class DeliveryOrderController extends defaultController
 
                     $product_obj = DB::table('material.product')
                         ->where('compcode','=', $value->compcode)
-                        ->where('unit','=', $unit_)
+                        // ->where('unit','=', $unit_)
                         ->where('itemcode','=', $value->itemcode)
                         ->first();
 
