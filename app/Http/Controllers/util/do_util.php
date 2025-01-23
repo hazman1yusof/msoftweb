@@ -158,7 +158,7 @@ class do_util extends defaultController{
 	public static function product_ins($value,$txnqty,$netprice,$deldept_unit,$delordhd_obj){
 		$product_obj = DB::table('material.product')
 	        ->where('product.compcode','=',session('compcode'))
-            ->where('product.unit','=',$deldept_unit)
+            // ->where('product.unit','=',$deldept_unit)
 	        ->where('product.itemcode','=',$value->itemcode)
 	        ->where('product.uomcode','=',$value->uomcode);
 
@@ -193,13 +193,13 @@ class do_util extends defaultController{
 	        // update qtyonhand, avgcost, currprice
 	        DB::table('material.product')
                 ->where('product.compcode','=',session('compcode'))
-                ->where('product.unit','=',$deldept_unit)
+                // ->where('product.unit','=',$deldept_unit)
                 ->where('product.itemcode','=',$value->itemcode)
                 ->where('product.uomcode','=',$value->uomcode)
 	            ->update($product_upd);
 
 	    }else{
-            throw new \Exception("Prodcut doesnt exists Item: ".$value->itemcode." UOM: ".$value->uomcode);
+            throw new \Exception("Product doesnt exists Item: ".$value->itemcode." UOM: ".$value->uomcode);
         }
 	}
 
