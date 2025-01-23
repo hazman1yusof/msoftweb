@@ -84,7 +84,7 @@ class do_util extends defaultController{
                     'compcode' => session('compcode'),
                     'unit' => session('unit'),
                     'deptcode' => $value->deldept,
-                    'itemcode' => $request->itemcode,
+                    'itemcode' => $value->itemcode,
                     'uomcode' => $value->uomcode,
                     'year' => defaultController::toYear($delordhd_obj->trandate),
                     'stocktxntype' => 'TR',
