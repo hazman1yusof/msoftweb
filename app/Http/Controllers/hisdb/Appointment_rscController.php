@@ -50,7 +50,7 @@ class Appointment_rscController extends defaultController
         switch($request->action){
             case 'populate_new_episode_by_mrn_apptrsc':
                 return $this->populate_new_episode_by_mrn_apptrsc($request);
-                
+            
             default:
                 return 'error happen..';
         }
@@ -133,12 +133,12 @@ class Appointment_rscController extends defaultController
     }
 
     public function addEvent(Request $request){
-
+        
         DB::beginTransaction();
 
         try {
             if($request->Class2 == 'OT'){
-
+                
                 $apptidno = DB::table('hisdb.apptbook')->insertGetId([
                     'compcode'    => session('compcode'),
                     'title'       => $request->patname.' - '.$request->telhp.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30),
@@ -158,9 +158,12 @@ class Appointment_rscController extends defaultController
                     'surgery_date'=> $request->apptdatefr_day,
                     'op_unit'     => strtoupper($request->op_unit),
                     'oper_type'   => strtoupper($request->oper_type),
-                    'oper_status' => strtoupper($request->oper_status),
+                    // 'oper_status' => strtoupper($request->oper_status),
                     'diagnosis' => $request->diagnosis,
                     'procedure' => $request->procedure,
+                    'doctorname'   => strtoupper($request->doctorname),
+                    'anaesthetist'   => strtoupper($request->anaesthetist),
+                    'surgeon'   => strtoupper($request->surgeon),
                     'recstatus'   => 'A',
                     'computerid'   => $request->computerid,
                     'adduser'     => session('username'),
@@ -270,9 +273,12 @@ class Appointment_rscController extends defaultController
                             'ot_room'     => strtoupper($request->doctor),
                             'op_unit'     => strtoupper($request->op_unit),
                             'oper_type'   => strtoupper($request->oper_type),
-                            'oper_status' => strtoupper($request->oper_status),
+                            // 'oper_status' => strtoupper($request->oper_status),
                             'diagnosis' => $request->diagnosis,
                             'procedure' => $request->procedure,
+                            'doctorname'   => strtoupper($request->doctorname),
+                            'anaesthetist'   => strtoupper($request->anaesthetist),
+                            'surgeon'   => strtoupper($request->surgeon),
                             'computerid'   => $request->computerid,
                             'lastuser'    => session('username'),
                             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
@@ -455,5 +461,5 @@ class Appointment_rscController extends defaultController
         $responce->pat_mast = $pat_mast;
         echo json_encode($responce);
     }
-
+    
 }

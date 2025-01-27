@@ -154,109 +154,159 @@ $(document).ready(function () {
 		}
 	}
 
-	var dialog_mrn = new ordialog(
-		'mrn', 'hisdb.pat_mast', "#dialogForm input[name='mrn']", errorField,
+	var dialog_mrn_lama = new ordialog(
+		'mrn1','hisdb.pat_mast',"#dialogForm1 input[name='mrn1']",errorField,
 		{
 			colModel: [
-				{	label: 'MRN', name: 'MRN', width: 100, classes: 'pointer', formatter: padzero, canSearch: true, or_search: true },
-				{	label: 'Name', name: 'Name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{	label: 'telhp', name: 'telhp', width: 200, classes: 'pointer',hidden:true},
-				{	label: 'telh', name: 'telh', width: 200, classes: 'pointer',hidden:true},
-				{	label: 'Newic', name: 'Newic', width: 200, classes: 'pointer',hidden:true},
+				{ label: 'MRN', name: 'MRN', width: 100, classes: 'pointer', formatter: padzero, canSearch: true, or_search: true },
+				{ label: 'Name', name: 'Name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{ label: 'telhp', name: 'telhp', width: 200, classes: 'pointer', hidden: true },
+				{ label: 'telh', name: 'telh', width: 200, classes: 'pointer', hidden: true },
+				{ label: 'Newic', name: 'Newic', width: 200, classes: 'pointer', hidden: true },
 			],
 			urlParam: {
-				filterCol : ['compcode'],
-				filterVal : ['session.compcode'],
+				filterCol: ['compcode'],
+				filterVal: ['session.compcode'],
 
 			},
-			ondblClickRow: function () {
-				let data = selrowData('#' + dialog_mrn.gridname);
+			ondblClickRow: function (){
+				let data = selrowData('#' + dialog_mrn_lama.gridname);
 				$("#addForm input[name='patname']").val(data['Name']);
 				$("#addForm input[name='icnum']").val(data['Newic']);
 				$("#addForm input[name='telh']").val(data['telh'].trim());
 				$("#addForm input[name='telhp']").val(data['telhp'].trim());
+				$(dialog_mrn_lama.textfield).parent().next().text(" ");
+			}
+		},
+		{
+			title: "Select Case",
+			open: function (){
+				dialog_mrn_lama.urlParam.filterCol = ['compcode'];
+				dialog_mrn_lama.urlParam.filterVal = ['session.compcode'];
+			},
+		},'urlParam','radio','tab'
+	);
+	dialog_mrn_lama.makedialog(true);
+
+	var dialog_mrn = new ordialog(
+		'mrn',['hisdb.pat_mast AS p','hisdb.episode AS e','hisdb.doctor AS d'],"#dialogForm input[name='mrn']",errorField,
+		{
+			colModel: [
+				{ label: 'MRN', name: 'p_MRN', width: 100, classes: 'pointer', formatter: padzero, canSearch: true, or_search: true },
+				{ label: 'Name', name: 'p_Name', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{ label: 'telhp', name: 'p_telhp', width: 200, classes: 'pointer', hidden: true },
+				{ label: 'telh', name: 'p_telh', width: 200, classes: 'pointer', hidden: true },
+				{ label: 'Newic', name: 'p_Newic', width: 200, classes: 'pointer', hidden: true },
+				{ label: 'Doctor Name', name: 'd_doctorname', width: 200, classes: 'pointer', hidden: true },
+				{ label: 'p_CompCode', name: 'p_CompCode', width: 200, classes: 'pointer', hidden: true },
+				{ label: 'e_compcode', name: 'e_compcode', width: 200, classes: 'pointer', hidden: true },
+				{ label: 'd_compcode', name: 'd_compcode', width: 200, classes: 'pointer', hidden: true },
+			],
+			urlParam: {
+				fixPost: "true",
+				filterCol: ['p.CompCode'],
+				filterVal: ['session.compcode'],
+				join_type: ['RIGHT JOIN','LEFT JOIN'],
+				join_onCol: ['e.mrn','d.doctorcode'],
+				join_onVal: ['p.MRN','e.admdoctor'],
+				join_filterCol: [['e.episno on =','e.compcode on ='],['d.compcode on =']],
+				join_filterVal: [['p.Episno','p.compcode'],['e.compcode']],
+			},
+			ondblClickRow: function (){
+				let data = selrowData('#' + dialog_mrn.gridname);
+				$("#addForm input[name='patname']").val(data['p_Name']);
+				$("#addForm input[name='icnum']").val(data['p_Newic']);
+				$("#addForm input[name='telh']").val(data['p_telh'].trim());
+				$("#addForm input[name='telhp']").val(data['p_telhp'].trim());
+				$("#addForm input[name='doctorname']").val(data['d_doctorname'].trim());
 				$(dialog_mrn.textfield).parent().next().text(" ");
 			}
 		},
 		{
 			title: "Select Case",
-			open: function () {
-				dialog_mrn.urlParam.filterCol = ['compcode'];
+			open: function (){
+				dialog_mrn.urlParam.table_name = ['hisdb.pat_mast AS p','hisdb.episode AS e','hisdb.doctor AS d'];
+				dialog_mrn.urlParam.fixPost = "true";
+				dialog_mrn.urlParam.table_id = "none_";
+				dialog_mrn.urlParam.filterCol = ['p.CompCode'];
 				dialog_mrn.urlParam.filterVal = ['session.compcode'];
+				dialog_mrn.urlParam.join_type = ['RIGHT JOIN','LEFT JOIN'];	
+				dialog_mrn.urlParam.join_onCol = ['e.mrn','d.doctorcode'];
+				dialog_mrn.urlParam.join_onVal = ['p.MRN','e.admdoctor'];
+				dialog_mrn.urlParam.join_filterCol = [['e.episno on =','e.compcode on ='],['d.compcode on =']];
+				dialog_mrn.urlParam.join_filterVal = [['p.Episno','p.compcode'],['e.compcode']];
 			},
 		},'urlParam','radio','tab'
 	);
 	dialog_mrn.makedialog(true);
 
 	var dialog_op_unit = new ordialog(
-		'op_unit', 'hisdb.discipline', "#dialogForm input[name='op_unit']", 'errorField',
+		'op_unit','hisdb.discipline',"#dialogForm input[name='op_unit']",'errorField',
 		{
 			colModel: [
-				{	label: 'Code', name: 'code', width: 100, classes: 'pointer', canSearch: true, or_search: true },
-				{	label: 'Description', name: 'description', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{ label: 'Code', name: 'code', width: 100, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 			],
 			urlParam: {
-				filterCol : ['compcode'],
-				filterVal : ['session.compcode'],
+				filterCol: ['compcode'],
+				filterVal: ['session.compcode'],
 			},
-			ondblClickRow: function () {
+			ondblClickRow: function (){
 				$('#oper_type').focus().select();
 			}
 		},
 		{
 			title: "Select Case",
-			open: function () {
-				dialog_mrn.urlParam.filterCol = ['compcode'];
-				dialog_mrn.urlParam.filterVal = ['session.compcode'];
+			open: function (){
+				dialog_op_unit.urlParam.filterCol = ['compcode'];
+				dialog_op_unit.urlParam.filterVal = ['session.compcode'];
 			},
 		},'urlParam','radio','tab'
 	);
 	dialog_op_unit.makedialog(true);
-
-	$()
-
+	
 	var dialog_doctor = new ordialog(
-		'dialog_doctor', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d'], "input[name='transfer_doctor']", errorField,
+		'dialog_doctor',['hisdb.apptresrc AS a','hisdb.doctor AS d'],"input[name='transfer_doctor']",errorField,
         {
-            colModel: [
+			colModel: [
                 { label: 'Resource Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Interval Time', name: 'a_intervaltime', width: 400, classes: 'pointer', hidden:true},
+				{ label: 'Interval Time', name: 'a_intervaltime', width: 400, classes: 'pointer', hidden: true },
             ],
 			urlParam: {
-				join_type : ['LEFT JOIN'],
-				join_onCol : ['a.resourcecode'],
-				join_onVal : ['d.doctorcode'],
-				join_filterCol : [['a.compcode on =']],
-				join_filterVal : [['d.compcode']],
-				fixPost:'true',
-				filterCol : ['a.TYPE'],
-				filterVal : [$('#Class2').val()]
+				join_type: ['LEFT JOIN'],
+				join_onCol: ['a.resourcecode'],
+				join_onVal: ['d.doctorcode'],
+				join_filterCol: [['a.compcode on =']],
+				join_filterVal: [['d.compcode']],
+				fixPost: 'true',
+				filterCol: ['a.TYPE'],
+				filterVal: [$('#Class2').val()]
 
 			},
-            ondblClickRow: function () {
+            ondblClickRow: function (){
 				let data = selrowData('#' + dialog_name.gridname);
 
-            	var session_param ={
-					action:"get_value_default",
-					url:'util/get_table_default',
-					field:'*',
-					table_name:'hisdb.apptsession',
-					table_id:'idno',
-					filterCol:['doctorcode','status'],
-					filterVal:[data['a_resourcecode'],'True']
+            	var session_param = {
+					action: "get_value_default",
+					url: 'util/get_table_default',
+					field: '*',
+					table_name: 'hisdb.apptsession',
+					table_id: 'idno',
+					filterCol: ['doctorcode','status'],
+					filterVal: [data['a_resourcecode'],'True']
 				};
 			}
         },{
             title: "Select Resource",
-            open: function () {
+            open: function (){
                 var type = $('#Class2').val();
 				dialog_doctor.urlParam.join_type = ['LEFT JOIN'];
 				dialog_doctor.urlParam.join_onCol = ['a.resourcecode'];
 				dialog_doctor.urlParam.join_onVal = ['d.doctorcode'];
 				dialog_doctor.urlParam.join_filterCol = [['a.compcode on =']];
 				dialog_doctor.urlParam.join_filterVal = [['d.compcode']];
-				dialog_doctor.urlParam.fixPost='true';
+				dialog_doctor.urlParam.fixPost = 'true';
 				dialog_doctor.urlParam.filterCol = ['a.TYPE'];
 				dialog_doctor.urlParam.filterVal = [type];
 			}
@@ -540,9 +590,12 @@ $(document).ready(function () {
 					$('#oper_status').val(event.oper_status);
 					$('#diagnosis').text(event.diagnosis);
 					$('#procedure').text(event.procedure);
+					$('#doctorname').val(event.doctorname);
+					$('#anaesthetist').val(event.anaesthetist);
+					$('#surgeon').val(event.surgeon);
 					$('#lastupdate').val(event.lastupdate);
 					$('#delete_but,#new_episode').show();
-
+					
 					$("#dialogForm").dialog('open');
 				});
 
