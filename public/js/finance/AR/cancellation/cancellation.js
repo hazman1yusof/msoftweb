@@ -1656,12 +1656,22 @@ $(document).ready(function () {
 				if($('#Scol').val() == 'db_debtorcode'){
 					urlParam_rcpt.searchCol=["db.debtorcode"];
 					urlParam_rcpt.searchVal=[data];
+					urlParam_rd.searchCol=["db.debtorcode"];
+					urlParam_rd.searchVal=[data];
+					urlParam_rf.searchCol=["db.debtorcode"];
+					urlParam_rf.searchVal=[data];
 				}
 				// else if($('#Scol').val() == 'db_payercode'){
 				// 	urlParam_rcpt.searchCol=["db.payercode"];
 				// 	urlParam_rcpt.searchVal=[data];
 				// }
-				refreshGrid('#jqGrid_rc', urlParam_rcpt);
+				if($('#cancel_navtab_rc').attr('aria-expanded') == 'true'){
+					refreshGrid('#jqGrid_rc', urlParam_rcpt);
+				}else if($('#cancel_navtab_rd').attr('aria-expanded') == 'true'){
+					refreshGrid('#jqGrid_rd', urlParam_rcpt);
+				}else if($('#cancel_navtab_rf').attr('aria-expanded') == 'true'){
+					refreshGrid('#jqGrid_rf', urlParam_rcpt);
+				}
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;

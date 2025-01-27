@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Mail;
 
-use App\Jobs\SendEmailPR;
+use App\Jobs\SendEmailPV;
 use App\Mail\sendmaildefault;
 
 class TestController extends defaultController
@@ -64,12 +64,12 @@ class TestController extends defaultController
             //     return $this->update_stockloc_uomcode($request);
             // case 'update_productmaster':
                 // return $this->update_productmaster($request);
-            case 'test_date_zulu':
-                return $this->test_date_zulu($request);
-            case 'btlkan_stockloc_open':
-                return $this->btlkan_stockloc_open($request);
-            // case 'btlkn_imp_2':
-            //     return $this->btlkn_imp_2($request);
+            // case 'test_date_zulu':
+            //     return $this->test_date_zulu($request);
+            // case 'btlkan_stockloc_open':
+            //     return $this->btlkan_stockloc_open($request);
+            // case 'test_email':
+            //     return $this->test_email($request);
             // case 'btlkn_imp_1_phycnt':
             //     return $this->btlkn_imp_1_phycnt($request);
             // case 'btlkn_imp_3':
@@ -812,48 +812,46 @@ class TestController extends defaultController
     }
 
     public function test_email(Request $request){
-        $trantype = 'APPROVED';
-        $recno = '93';
-        $qpr = DB::table('material.queuepr as qpr')
-                    ->select('qpr.trantype','adtl.authorid','prhd.recno','prhd.reqdept','prhd.purreqno','prhd.purreqdt','prhd.recstatus','prhd.totamount','prhd.adduser','users.email')
-                    ->join('material.authdtl as adtl', function($join) use ($request){
+        $trantype = 'VERIFIED';
+        $recno = '145';
+        
+        $qpv = DB::table('finance.queuepv as qpv')
+                    ->select('qpv.trantype','prdtl.authorid','ap.pvno','qpv.recno','ap.recdate','qpv.recstatus','ap.amount','ap.payto','ap.adduser','users.email')
+                    ->join('finance.permissiondtl as prdtl', function($join){
                         $join = $join
-                            ->where('adtl.compcode',session('compcode'))
+                            ->where('prdtl.compcode',session('compcode'))
                             // ->where('adtl.authorid',session('username'))
-                            ->where('adtl.trantype','PR')
-                            ->where('adtl.cando','ACTIVE')
-                            ->on('adtl.prtype','qpr.prtype')
-                            ->on('adtl.recstatus','qpr.trantype')
-                            ->where(function ($query) {
-                                $query->on('adtl.deptcode','qpr.deptcode')
-                                      ->orWhere('adtl.deptcode', 'ALL');
-                            });
+                            ->where('prdtl.trantype','PV')
+                            ->where('prdtl.cando','ACTIVE')
+                            // ->on('adtl.prtype','qpo.prtype')
+                            ->on('prdtl.recstatus','qpv.trantype');
                     })
-                    ->join('material.purreqhd as prhd', function($join) use ($request){
+                    ->join('finance.apacthdr as ap', function($join){
                         $join = $join
-                            ->where('prhd.compcode',session('compcode'))
-                            ->on('prhd.recno','qpr.recno')
-                            ->on('prhd.recstatus','qpr.recstatus')
+                            ->where('ap.compcode',session('compcode'))
+                            ->where('ap.trantype','PV')
+                            ->on('ap.auditno','qpv.recno')
+                            ->on('ap.recstatus','qpv.recstatus')
                             ->where(function ($query) {
                                 $query
-                                    ->on('prhd.totamount','>=','adtl.minlimit')
-                                    ->on('prhd.totamount','<=', 'adtl.maxlimit');
-                            });
+                                    ->on('ap.amount','>=','prdtl.minlimit')
+                                    ->on('ap.amount','<=', 'prdtl.maxlimit');
+                            });;
                     })
-                    ->join('sysdb.users as users', function($join) use ($request){
+                    ->join('sysdb.users as users', function($join){
                         $join = $join
                             ->where('users.compcode',session('compcode'))
                             ->where('users.email','HAZMAN.YUSOF@GMAIL.COM')
-                            ->on('users.username','adtl.authorid');
+                            ->on('users.username','prdtl.authorid');
                     })
-                    ->where('qpr.compcode',session('compcode'))
-                    ->where('qpr.trantype',$trantype)
-                    ->where('qpr.recno',$recno)
+                    ->where('qpv.compcode',session('compcode'))
+                    ->where('qpv.trantype',$trantype)
+                    ->where('qpv.recno',$recno)
                     ->get();
 
-        // dd($qpr);
+        // dd($qpv);
                     
-        SendEmailPR::dispatch($qpr);
+        SendEmailPV::dispatch($qpv);
     }
 
     public function update_supplier(Request $request){

@@ -9,6 +9,7 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 use PDF;
+use App\Jobs\SendEmailPV;
 
 class PaymentVoucherController extends defaultController
 {   
@@ -877,6 +878,8 @@ class PaymentVoucherController extends defaultController
                         ->update([
                             'recstatus' => 'PREPARED'
                         ]);
+                
+                    $this->sendemail('VERIFIED',$apacthdr->auditno);
                 }
 
             }
@@ -1022,6 +1025,17 @@ class PaymentVoucherController extends defaultController
                         'recstatus' => 'VERIFIED'
                     ]);
 
+                DB::table($queue)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$apacthdr->auditno)
+                    ->update([
+                        'AuthorisedID' => $authorise_use->authorid,
+                        'recstatus' => 'VERIFIED',
+                        'trantype' => 'APPROVED',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
                 if($apacthdr->trantype == 'PV'){
                     DB::table('finance.apalloc')
                         ->where('compcode','=',session('compcode'))
@@ -1034,18 +1048,9 @@ class PaymentVoucherController extends defaultController
                         ->update([
                             'recstatus' => 'VERIFIED'
                         ]);
+                        
+                    $this->sendemail('APPROVED',$apacthdr->auditno);
                 }
-
-                DB::table($queue)
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$apacthdr->auditno)
-                    ->update([
-                        'AuthorisedID' => $authorise_use->authorid,
-                        'recstatus' => 'VERIFIED',
-                        'trantype' => 'APPROVED',
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
             }
             DB::commit();
         
@@ -1333,6 +1338,45 @@ class PaymentVoucherController extends defaultController
 
             return response($e->getMessage(), 500);
         }
+    }
+
+    function sendemail($trantype,$recno){
+        // $trantype = 'SUPPORT';
+        // $recno = '64';
+        $qpv = DB::table('finance.queuepv as qpv')
+                    ->select('qpv.trantype','prdtl.authorid','ap.pvno','qpv.recno','ap.recdate','qpv.recstatus','ap.amount','ap.payto','ap.adduser','users.email')
+                    ->join('finance.permissiondtl as prdtl', function($join){
+                        $join = $join
+                            ->where('prdtl.compcode',session('compcode'))
+                            // ->where('adtl.authorid',session('username'))
+                            ->where('prdtl.trantype','PV')
+                            ->where('prdtl.cando','ACTIVE')
+                            // ->on('adtl.prtype','qpo.prtype')
+                            ->on('prdtl.recstatus','ap.trantype');
+                    })
+                    ->join('finance.apacthdr as ap', function($join){
+                        $join = $join
+                            ->where('ap.compcode',session('compcode'))
+                            ->on('ap.auditno','qpv.recno')
+                            ->on('ap.recstatus','qpv.recstatus')
+                            ->where(function ($query) {
+                                $query
+                                    ->on('ap.amount','>=','prdtl.minlimit')
+                                    ->on('ap.amount','<=', 'prdtl.maxlimit');
+                            });;
+                    })
+                    ->join('sysdb.users as users', function($join){
+                        $join = $join
+                            ->where('users.compcode',session('compcode'))
+                            // ->where('users.email','HAZMAN.YUSOF@GMAIL.COM')
+                            ->on('users.username','prdtl.authorid');
+                    })
+                    ->where('qpv.compcode',session('compcode'))
+                    ->where('qpv.trantype',$trantype)
+                    ->where('qpv.recno',$recno)
+                    ->get();
+
+        SendEmailPV::dispatch($qpv);
     }
 
     public function reopen(Request $request){

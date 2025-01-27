@@ -603,6 +603,14 @@ class CancellationController extends defaultController
         DB::beginTransaction();
         
         try {
+
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                            ->where('idno','=',$request->idno)
+                            ->first();
+
+            if($dbacthdr->amount != $dbacthdr->outamount){
+                throw new \Exception('Amount and Outamount need to be same before cancel', 500);
+            }
             
             DB::table('debtor.dbacthdr')
                 // ->where('compcode','=',session('compcode'))
@@ -625,7 +633,6 @@ class CancellationController extends defaultController
             return response('Error'.$e, 500);
             
         }
-        
     }
     
     public function cancel_refund(Request $request){
@@ -715,7 +722,6 @@ class CancellationController extends defaultController
             return response('Error'.$e, 500);
             
         }
-        
     }
     
 }
