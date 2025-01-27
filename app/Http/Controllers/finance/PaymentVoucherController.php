@@ -836,7 +836,7 @@ class PaymentVoucherController extends defaultController
                     $trantype = 'VERIFIED';
                 }else{
                     $queue = 'finance.queuepd';
-                    $trantype = 'SUPPORT';
+                    $trantype = 'VERIFIED';
                 }
 
                 DB::table($queue)
@@ -997,7 +997,7 @@ class PaymentVoucherController extends defaultController
                     }
                 }else{
                     $queue = 'finance.queuepd';
-                    if($apacthdr->recstatus != 'SUPPORT'){
+                    if($apacthdr->recstatus != 'PREPARED'){
                         continue;
                     }
                 }
@@ -1352,11 +1352,12 @@ class PaymentVoucherController extends defaultController
                             ->where('prdtl.trantype','PV')
                             ->where('prdtl.cando','ACTIVE')
                             // ->on('adtl.prtype','qpo.prtype')
-                            ->on('prdtl.recstatus','ap.trantype');
+                            ->on('prdtl.recstatus','qpv.trantype');
                     })
                     ->join('finance.apacthdr as ap', function($join){
                         $join = $join
                             ->where('ap.compcode',session('compcode'))
+                            ->where('ap.trantype','PV')
                             ->on('ap.auditno','qpv.recno')
                             ->on('ap.recstatus','qpv.recstatus')
                             ->where(function ($query) {

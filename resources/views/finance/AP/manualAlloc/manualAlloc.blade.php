@@ -2,6 +2,16 @@
 
 @section('title', 'Manual Allocation')
 
+@section('style')
+
+div#fail_msg{
+  padding-left: 40px;
+  padding-bottom: 10px;
+  color: darkred;
+}
+
+@endsection
+
 @section('body')
 
 <!-------------------------------- Search + table ---------------------->
@@ -79,7 +89,7 @@
 <div id="dialogForm" title="Create Allocation">
 	<form style="width:99%" id='formdata' autocomplete="off">
 		
-		<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
+		<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 		
 		<div class='col-md-12'>
 			<div class='panel panel-info'>
@@ -106,7 +116,7 @@
 					<div class="panel panel-default" id="manualAllochdr_c">
 						<div class="panel-body">
 							<form id='formdata_manualAlloc' class='form-vertical'>
-								<div class='col-md-10' style="padding:0 0 15px 0">
+								<div class='col-md-12' style="padding:0 0 15px 0">
 									<table id="manualAllochdr" class="table table-striped"></table>
 									<div id="manualAllocpg"></div>
 								</div>
@@ -117,8 +127,9 @@
 				<div class='panel panel-info' id="manualAllocdtl_c">
 					<div class="panel-heading">Manual Allocation Detail</div>
 						<div class="panel-body">
+							<div id="fail_msg"></div>
 							<form id='formdata_manualAllocdtl' class='form-vertical' style='width:99%'>
-								<div class='col-md-10' style="padding:0 0 15px 0">
+								<div class='col-md-12' style="padding:0 0 15px 0">
 									<table id="manualAllocdtl" class="table table-striped"></table>
 									<div id="manualAllocdtlpg"></div>
 								</div>

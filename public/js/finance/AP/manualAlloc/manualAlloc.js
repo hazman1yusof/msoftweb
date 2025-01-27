@@ -25,6 +25,7 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 	var mycurrency =new currencymode(['#apacthdr_outamount', '#apacthdr_amount']);
 	var mycurrency2 =new currencymode([]);
+	var myfail_msg = new fail_msg_func();
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["input[name='apacthdr_entrydate']", "#recdate"]);
@@ -240,6 +241,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "./manualAlloc/form",
 		 colModel: [
+			{label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
 			{label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 			{label: 'Audit <br> No', name: 'auditno', width: 25, classes: 'wrap', hidden:false, editable:false},
 			{label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap', hidden:false, formatter: showdetail, unformat:un_showdetail, editable:false},
@@ -294,13 +296,16 @@ $(document).ready(function () {
 		pager: "#manualAllocpg",
 		gridComplete: function(rowid){
 			$("#manualAllochdr").setSelection($("#manualAllochdr").getDataIDs()[0]);
+			$('#manualAllochdr tr#'+$(this).data('lastselrow')).focus().click();
 		},
-		onSelectRow:function(rowid, selected){
+		onSelectRow:function(rowid){
 			if(rowid != null) {
-				rowData = $('#manualAllochdr').jqGrid ('getRowData', rowid);
-				//urlParam_dtl.auditno=selrowData("#manualAllocdtl").auditno;
-				refreshGrid('#manualAllocdtl', urlParam_dtl,'kosongkan');
+				let rowData = $('#manualAllochdr').jqGrid ('getRowData', rowid);
+				urlParam_dtl.suppcode=rowData.suppcode;
+				urlParam_dtl.auditno=rowData.auditno;
+				refreshGrid('#manualAllocdtl', urlParam_dtl);
 			}
+			$(this).data('lastselrow',rowid);
 		},
 		beforeSelectRow: function(rowid, e) {
 			if(oper=='view'){
@@ -349,13 +354,15 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			addmore_manualAllochdr.more=true; //only addmore after save inline
 			refreshGrid('#manualAllochdr',urlParam_hdr,'edit');
-			$("#manualAllocpgDelete,#manualAllocpgRefresh").show();
+			// $("#manualAllocpgDelete,#manualAllocpgRefresh").show();
 		}, 
 		errorfunc: function(rowid,response){
-			$(".noti").text(response.responseText);
-			// alert(response.responseText);
-			refreshGrid('#manualAllochdr',urlParam_hdr,'edit');
-			$("#manualAllocpgDelete,#manualAllocpgRefresh").show();
+			errorField.length=0;
+        	myfail_msg.add_fail({
+				id:'response',
+				textfld:"",
+				msg:response.responseText,
+			});
 		},
 		beforeSaveRow: function(options, rowid) {
 
@@ -370,8 +377,10 @@ $(document).ready(function () {
 			$("#manualAllochdr").jqGrid('setGridParam',{editurl:editurl});
 		},
 		afterrestorefunc : function( response ) {
+			myfail_msg.clear_fail();
+			errorField.length=0;
 			refreshGrid('#manualAllochdr',urlParam_hdr,'edit');
-			$("#manualAllocpgDelete,#manualAllocpgRefresh").show();
+			// $("#manualAllocpgDelete,#manualAllocpgRefresh").show();
 		}
 	};
 
@@ -390,40 +399,42 @@ $(document).ready(function () {
 			addRowParams: myEditOptions
 		},
 		editParams: myEditOptions
-	}).jqGrid('navButtonAdd',"#manualAllocpg",{
-		id: "manualAllocpgDelete",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-trash",
-		title:"Delete Selected Row",
-		onClickButton: function(){
-			selRowId = $("#manualAllochdr").jqGrid ('getGridParam', 'selrow');
-			if(!selRowId){
-				bootbox.alert('Please select row');
-			}else{
-				bootbox.confirm({
-					message: "Are you sure you want to delete this row?",
-					buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
-					},
-					callback: function (result) {
-						if(result == true){
-							param={
-								action: 'manualAlloc_save',
-								idno: selrowData('#manualAllochdr').idno,
-							}
-							$.post( "./manualAlloc/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
-							}).fail(function(data) {
-								//////////////////errorText(dialog,data.responseText);
-							}).done(function(data){
-								refreshGrid("#manualAllochdr",urlParam_hdr);
-							});
-						}else{
-							$("#manualAllocpgEditAll").show();
-						}
-					}
-				});
-			}
-		},
-	}).jqGrid('navButtonAdd', "#manualAllocpg", {
+	})
+	// .jqGrid('navButtonAdd',"#manualAllocpg",{
+	// 	id: "manualAllocpgDelete",
+	// 	caption:"",cursor: "pointer",position: "last", 
+	// 	buttonicon:"glyphicon glyphicon-trash",
+	// 	title:"Delete Selected Row",
+	// 	onClickButton: function(){
+	// 		selRowId = $("#manualAllochdr").jqGrid ('getGridParam', 'selrow');
+	// 		if(!selRowId){
+	// 			bootbox.alert('Please select row');
+	// 		}else{
+	// 			bootbox.confirm({
+	// 				message: "Are you sure you want to delete this row?",
+	// 				buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+	// 				},
+	// 				callback: function (result) {
+	// 					if(result == true){
+	// 						param={
+	// 							action: 'manualAlloc_save',
+	// 							idno: selrowData('#manualAllochdr').idno,
+	// 						}
+	// 						$.post( "./manualAlloc/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+	// 						}).fail(function(data) {
+	// 							//////////////////errorText(dialog,data.responseText);
+	// 						}).done(function(data){
+	// 							refreshGrid("#manualAllochdr",urlParam_hdr);
+	// 						});
+	// 					}else{
+	// 						$("#manualAllocpgEditAll").show();
+	// 					}
+	// 				}
+	// 			});
+	// 		}
+	// 	},
+	// })
+	.jqGrid('navButtonAdd', "#manualAllocpg", {
 		id: "manualAllocpgRefresh",
 		caption: "", cursor: "pointer", position: "last",
 		buttonicon: "glyphicon glyphicon-refresh",
@@ -437,34 +448,51 @@ $(document).ready(function () {
 
 	var urlParam_dtl={
 		action:'get_alloc_table',
-		url:'paymentVoucher/table',
+		url:'manualAlloc/table',
 		auditno:'',
 	};
 
 	$("#manualAllocdtl").jqGrid({
 		datatype: "local",
-		editurl: "./manualAllocDetail/form",
+		editurl: "./manualAlloc/form",
 		colModel: [
 			{ label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Invoice Date', name: 'allocdate', width: 100, classes: 'wrap',formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
-			{ label: 'Invoice No', name: 'reference', width: 100, classes: 'wrap',},
-			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false, align: "right"},
-			{ label: 'O/S Amount', name: 'outamount', width: 100, align: 'right', classes: 'wrap', editable:false, formatter: 'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2}},
-			{ label: 'Amount Paid', name: 'allocamount', width: 100, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false, align: "right"},
-			{ label: 'Balance', name: 'balance', width: 100, classes: 'wrap', hidden:false, formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false},
-			{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'docsource', name: 'docsource', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'doctrantype', name: 'doctrantype', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'docauditno', name: 'docauditno', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'reftrantype', name: 'reftrantype', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'refsource', name: 'refsource', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'refauditno', name: 'refauditno', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true}, 
-			{ label: 'idno', name: 'idno', width: 80, classes: 'wrap', hidden:true}, 
-		
+			{ label: 'Invoice Date', name: 'actdate', width: 100, classes: 'wrap'},
+			{ label: 'Invoice No', name: 'document', width: 100, classes: 'wrap'},
+			{ label: 'Amount', name: 'amount', width: 100,align: "right", classes: 'wrap',
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2}, 
+				editable: true,editrules: { required: true },editoptions:{readonly: "readonly"}, 
+			},
+			{ label: 'O/S Amount', name: 'outamount', width: 100, align: 'right', classes: 'wrap', 
+				formatter: 'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2},
+				editable:true,editrules: { required: true },editoptions:{readonly: "readonly"},
+			},
+			{ label: 'Amount Paid', name: 'allocamount', width: 100, align: "right", classes: 'wrap',
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editable: true,editrules: { required: true }
+			},
+			{ label: 'Balance', name: 'balance', width: 100, align: "right", classes: 'wrap',
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editable: true,editrules: { required: true },editoptions:{readonly: "readonly"}
+			},
+			{ label: 'Allocate Date', name: 'allocdate', width: 100, classes: 'wrap', editable:true,
+					formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+					editoptions: {
+						dataInit: function (element) {
+							$(element).datepicker({
+								id: 'expdate_datePicker',
+								dateFormat: 'dd/mm/yy',
+								//showOn: 'focus',
+								changeMonth: true,
+								changeYear: true,
+								onSelect : function(){
+									$(this).focus();
+								}
+							}).datepicker("setDate", "0");
+						}
+					}
+			},
+			{ label: 'id', name: 'idno', width: 80, classes: 'wrap', hidden:true,key:true}, 
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -474,10 +502,16 @@ $(document).ready(function () {
 		width: 1150,
 		height: 200,
 		rowNum: 30,
-		sortname: 'lineno_',
+		sortname: 'idno',
 		sortorder: "desc",
 		pager: "#manualAllocdtlpg",
 		loadComplete: function(data){
+		},
+		ondblClickRow:function(rowid){
+			if($('#manualAllocdtl_iledit').is(":visible")){
+				$('#manualAllocdtl_iledit').click();
+				$('#manualAllocdtl').data('lastselrow',rowid);
+			}
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -493,13 +527,14 @@ $(document).ready(function () {
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
-
-			$("#manualAllocdtlpgDelete,#manualAllocdtlpgRefresh").hide();
+			myfail_msg.clear_fail();
 			unsaved = false;
 			mycurrency2.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#manualAllocdtl input[name='stfamount']","#manualAllocdtl input[name='amount']"]);
+			Array.prototype.push.apply(mycurrency2.array, ["#manualAllocdtl input[name='balance']"]);
 
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
+
+			$("#manualAllocdtl input[name='allocamount']").on('blur',{currency: [mycurrency2]},calculate_line_balance);
 
 			$("input[name='stfamount']").keydown(function(e) {//when click tab at document, auto save
 				var code = e.keyCode || e.which;
@@ -507,38 +542,88 @@ $(document).ready(function () {
 			});
 		},
 		aftersavefunc: function (rowid, response, options) {
-			if(addmore_manualAllocdtl.state==true)addmore_manualAllocdtl.more=true; //only addmore after save inline
-			refreshGrid('#manualAllocdtl',urlParam_dtl,'add');
-			$("#manualAllocdtlpgDelete,#jmanualAllocdtlpgRefresh").show();
+			// if(addmore_manualAllocdtl.state==true)addmore_manualAllocdtl.more=true; //only addmore after save inline
+			refreshGrid('#manualAllochdr',urlParam_hdr,'edit');
+			// $("#manualAllocdtlpgDelete,#jmanualAllocdtlpgRefresh").show();
 		}, 
 		errorfunc: function(rowid,response){
-			$(".noti").text(response.responseText);
-			// alert(response.responseText);
-			refreshGrid('#manualAllocdtl',urlParam_dtl,'add');
-			$("#jmanualAllocdtlpgDelete,#manualAllocdtlpgRefresh").show();
+			errorField.length=0;
+        	myfail_msg.add_fail({
+				id:'response',
+				textfld:"",
+				msg:response.responseText,
+			});
 		},
 		beforeSaveRow: function(options, rowid) {
-
-			//if(errorField.length>0)return false; 
+			if(myfail_msg.fail_msg_array.length>0){
+				return false;
+			}
 
 			mycurrency2.formatOff();
 			let data = $('#manualAllocdtl').jqGrid ('getRowData', rowid);
-			let editurl = "./manualAllocDetail/form?"+
+			let editurl = "./manualAlloc/form?"+
 				$.param({
+					idno_doc: selrowData('#manualAllochdr').idno,
 					action: 'manualAllocdtl_save',
-					oper: 'add',
 				});
 			$("#manualAllocdtl").jqGrid('setGridParam',{editurl:editurl});
 		},
 		afterrestorefunc : function( response ) {
-			
+			errorField.length=0;
+			// refreshGrid('#manualAllocdtl',urlParam_dtl,'add');
 		}
 	};
+
+	function calculate_line_balance(event){
+		var optid = event.currentTarget.id;
+		var id_optid = optid.substring(0,optid.search("_"));
+       
+		let src_outamount = parseFloat(selrowData('#manualAllochdr').outamount);
+
+		let allocamount = parseFloat($("#"+id_optid+"_allocamount").val());
+		let outamount = parseFloat($("#"+id_optid+"_outamount").val());
+
+		var balance = outamount - allocamount;
+
+		$("#"+id_optid+"_balance").val(balance);
+
+		if(allocamount > src_outamount){
+        	myfail_msg.add_fail({
+				id:'src_outamount',
+				textfld:"#"+id_optid+"_allocamount",
+				msg:"Allocate amount cant be greater than header document outamount",
+			});
+		}else{
+        	myfail_msg.del_fail({
+				id:'src_outamount',
+				textfld:"#"+id_optid+"_allocamount",
+				msg:"Allocate amount cant be greater than header document outamount",
+			});
+		}
+
+		if(balance<0){
+        	myfail_msg.add_fail({
+				id:'balance',
+				textfld:"#"+id_optid+"_allocamount",
+				msg:"Allocate amount cant be greater than detail document outamount",
+			});
+		}else{
+			myfail_msg.del_fail({
+				id:'balance',
+				textfld:"#"+id_optid+"_allocamount",
+				msg:"Allocate amount cant be greater than document outamount",
+			});
+		}
+
+		event.data.currency.forEach(function(element){
+			element.formatOn();
+		});
+	}
 	
 	////////////////////////////////////////pager manualAllocdtl/////////////////////////////////////////////
 
 	$("#manualAllocdtl").inlineNav('#manualAllocdtlpg',{	
-		add:true,
+		add:false,
 		edit:true,
 		cancel: true,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
@@ -547,50 +632,53 @@ $(document).ready(function () {
 			addRowParams: myEditOptions2
 		},
 		editParams: myEditOptions2
-	}).jqGrid('navButtonAdd',"#manualAllocdtlpg",{
-		id: "manualAllocdtlpgDelete",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-trash",
-		title:"Delete Selected Row",
-		onClickButton: function(){
-			selRowId = $("#manualAllocdtl").jqGrid ('getGridParam', 'selrow');
-			if(!selRowId){
-				bootbox.alert('Please select row');
-			}else{
-				bootbox.confirm({
-					message: "Are you sure you want to delete this row?",
-					buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
-					},
-					callback: function (result) {
-						if(result == true){
-							param={
-								action: 'manualAllocdtl_save',
-								idno: selrowData('#manualAllocdtl').idno,
+	})
+	// .jqGrid('navButtonAdd',"#manualAllocdtlpg",{
+	// 	id: "manualAllocdtlpgDelete",
+	// 	caption:"",cursor: "pointer",position: "last", 
+	// 	buttonicon:"glyphicon glyphicon-trash",
+	// 	title:"Delete Selected Row",
+	// 	onClickButton: function(){
+	// 		selRowId = $("#manualAllocdtl").jqGrid ('getGridParam', 'selrow');
+	// 		if(!selRowId){
+	// 			bootbox.alert('Please select row');
+	// 		}else{
+	// 			bootbox.confirm({
+	// 				message: "Are you sure you want to delete this row?",
+	// 				buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+	// 				},
+	// 				callback: function (result) {
+	// 					if(result == true){
+	// 						param={
+	// 							action: 'manualAllocdtl_save',
+	// 							idno: selrowData('#manualAllocdtl').idno,
 
-							}
-							$.post( "./manualAllocDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
-							}).fail(function(data) {
-								//////////////////errorText(dialog,data.responseText);
-							}).done(function(data){
-								refreshGrid("#manualAllocdtl",urlParam_dtl);
-							});
-						}else{
-							$("#manualAllocdtlpgEditAll").show();
-						}
-					}
-				});
-			}
-		},
-	}).jqGrid('navButtonAdd',"#manualAllocdtlpg",{
-		id: "manualAllocdtlpgCancelAll",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-remove-circle",
-		title:"Cancel",
-		onClickButton: function(){
-			hideatdialogForm_jqGrid3(false);
-			refreshGrid("#manualAllocdtl",urlParam_dtl);
-		},	
-	}).jqGrid('navButtonAdd', "#manualAllocdtlpg", {
+	// 						}
+	// 						$.post( "./manualAlloc/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+	// 						}).fail(function(data) {
+	// 							//////////////////errorText(dialog,data.responseText);
+	// 						}).done(function(data){
+	// 							refreshGrid("#manualAllocdtl",urlParam_dtl);
+	// 						});
+	// 					}else{
+	// 						$("#manualAllocdtlpgEditAll").show();
+	// 					}
+	// 				}
+	// 			});
+	// 		}
+	// 	},
+	// })
+	// .jqGrid('navButtonAdd',"#manualAllocdtlpg",{
+	// 	id: "manualAllocdtlpgCancelAll",
+	// 	caption:"",cursor: "pointer",position: "last", 
+	// 	buttonicon:"glyphicon glyphicon-remove-circle",
+	// 	title:"Cancel",
+	// 	onClickButton: function(){
+	// 		hideatdialogForm_jqGrid3(false);
+	// 		refreshGrid("#manualAllocdtl",urlParam_dtl);
+	// 	},	
+	// })
+	.jqGrid('navButtonAdd', "#manualAllocdtlpg", {
 		id: "manualAllocdtlpgRefresh",
 		caption: "", cursor: "pointer", position: "last",
 		buttonicon: "glyphicon glyphicon-refresh",

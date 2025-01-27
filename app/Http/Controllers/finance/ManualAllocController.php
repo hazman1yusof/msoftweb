@@ -160,7 +160,11 @@ use PDF;
 
     public function form(Request $request)
     {   
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
+        if($request->action == 'manualAllocdtl_save'){
+            return $this->manualAllocdtl_save($request);
+        }
+
         switch($request->oper){
             case 'add':
                 return $this->add($request);break;
@@ -346,7 +350,6 @@ use PDF;
 
             return response('Error'.$e, 500);
         }
-
     }
 
     public function edit(Request $request){
@@ -661,27 +664,125 @@ use PDF;
         } catch (\Exception $e) {
             DB::rollback();
             return response($e->getMessage(), 500);
+        }           
+    }
+
+    public function manualAllocdtl_save(Request $request){
+        DB::beginTransaction();
+
+        try {
+            if($request->allocamount <= 0){
+                throw new \Exception('Allocamount need to be greater 0', 500);
+            }
+
+            $doc_ap = DB::table('finance.apacthdr')
+                            ->where('compcode',session('compcode'))
+                            // ->where('source','AP')
+                            ->where('idno',$request->idno_doc)
+                            ->first();
+
+            $outamount_doc = $doc_ap->outamount;
+            if($request->allocamount > $outamount_doc){
+                throw new \Exception('Allocamount greater than document outamount', 500);
+            }
+            $newoutamount_doc = floatval($outamount_doc - $request->allocamount);
+
+            DB::table('finance.apacthdr')
+                        ->where('compcode',session('compcode'))
+                        ->where('idno','=',$request->idno_doc)
+                        ->update([
+                            'outamount' => $newoutamount_doc
+                        ]);
+
+            $ref_ap = DB::table('finance.apacthdr')
+                            ->where('compcode',session('compcode'))
+                            // ->where('source','AP')
+                            ->where('idno',$request->idno)
+                            ->first();
+
+            $outamount_ref = $ref_ap->outamount;
+            if($request->allocamount > $outamount_ref){
+                throw new \Exception('Allocamount greater than document outamount', 500);
+            }
+            $newoutamount_ref = floatval($outamount_ref - $request->allocamount);
+
+            DB::table('finance.apacthdr')
+                        ->where('compcode',session('compcode'))
+                        ->where('idno','=',$request->idno)
+                        ->update([
+                            'outamount' => $newoutamount_ref
+                        ]);
+
+            $lineno_ = DB::table('finance.apalloc') 
+                ->where('compcode','=',session('compcode'))
+                ->where('docauditno','=',$doc_ap->auditno)
+                ->where('docsource','=',$doc_ap->source)
+                ->where('doctrantype','=',$doc_ap->trantype)->max('lineno_');
+
+            if($lineno_ == null){
+                $lineno_ = 1;
+            }else{
+                $lineno_ = $lineno_+1;
+            }
+
+            $ALauditno = $this->defaultSysparam('AP','AL');
+            DB::table('finance.apalloc')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'unit' => session('unit'),
+                    'source' => 'AP',
+                    'trantype' => 'AL',
+                    'auditno' => $ALauditno,
+                    'lineno_' => $lineno_,
+                    'docsource' => $doc_ap->source,
+                    'doctrantype' => $doc_ap->trantype,
+                    'docauditno' => $doc_ap->auditno,
+                    'refsource' => $ref_ap->source,
+                    'reftrantype' => $ref_ap->trantype,
+                    'refauditno' => $ref_ap->auditno,
+                    'refamount' => $ref_ap->amount,
+                    'allocdate' => $this->turn_date($request->allocdate,'d/m/Y'),//blank
+                    'reference' => $ref_ap->document,
+                    'remarks' => 'manual allocation - '.$ref_ap->document,
+                    'allocamount' => $request->allocamount,
+                    'outamount' => $request->outamount,
+                    'balance' => $request->balance,
+                    'paymode' => $doc_ap->paymode,
+                    'cheqdate' => $doc_ap->cheqdate,
+                    // 'recdate' => $doc_ap->recdate,
+                    'bankcode' => $doc_ap->bankcode,
+                    'suppcode' => $doc_ap->suppcode,
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'POSTED'
+                ]);
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
         }
-           
     }
 
     public function get_alloc_table(Request $request){
-        $alloc_table = DB::table('finance.apalloc')
-                            ->where('compcode','=', session('compcode'))
-                            ->where('source','=', 'AP')
-                            ->where('trantype','=', 'AL')
-                            ->where('docsource','=', 'AP')
-                            ->where('doctrantype','=', 'PV')
-                            ->where('docauditno','=', $request->apacthdr_auditno);
+        $table = DB::table('finance.apacthdr AS ap')
+                    ->where('ap.compcode','=', session('compcode'))
+                    ->where('ap.suppcode',$request->suppcode)
+                    ->where('ap.source','=','AP')
+                    ->where('ap.outamount','>',0)
+                    ->where('ap.recstatus','=','POSTED')
+                    ->whereIn('ap.trantype',['IN','DN']);
 
-        $paginate = $alloc_table->paginate($request->rows);
+        $paginate = $table->paginate($request->rows);
 
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
         $responce->records = $paginate->total();
         $responce->rows = $paginate->items();
-        $responce->sql_query = $this->getQueries($alloc_table);
+        $responce->sql_query = $this->getQueries($table);
         
         return json_encode($responce);
     }
