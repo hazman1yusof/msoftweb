@@ -354,7 +354,7 @@ button#btn_icd,button#btn_mma{
 									</select>
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group" style="display: none;">
 								<label for="oper_status" class="col-md-2 control-label">Operation Status</label>
 								<div class="col-md-3">
 									<select name="oper_status" id="oper_status" class="form-control input-sm">
@@ -384,6 +384,22 @@ button#btn_icd,button#btn_mma{
 							
 							<hr>
 							<div class="form-group">
+								<label for="doctorname" class="col-md-2 control-label">Doctor Name</label>
+								<div class="col-md-3">
+									<input type="text" class="form-control input-sm" id="doctorname" name="doctorname">	
+								</div>
+								<label for="anaesthetist" class="col-md-2 control-label">Anaesthetist</label>
+								<div class="col-md-3">
+									<input type="text" class="form-control input-sm" id="anaesthetist" name="anaesthetist">	
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="surgeon" class="col-md-2 control-label">Surgeon</label>
+								<div class="col-md-3">
+									<input type="text" class="form-control input-sm" id="surgeon" name="surgeon">	
+								</div>
+							</div>
+							<div class="form-group">
 								<label for="lastuser" class="col-md-2 control-label">Last User</label>
 								<div class="col-md-3">
 									<input type="text" class="form-control input-sm" id="lastuser" name="lastuser" readonly>	
@@ -392,7 +408,7 @@ button#btn_icd,button#btn_mma{
 								<div class="col-md-3">
 									<input type="text" class="form-control input-sm" id="lastupdate" name="lastupdate" readonly>	
 								</div>
-							</div> 
+							</div>
 						</div>
 						<div class="panel-footer">
 							<button type="button" class="btn btn-primary" id="submit">Save changes</button>
