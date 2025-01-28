@@ -265,7 +265,7 @@ function populate_authdtl_alert_pd(data,datav2){
 					</div>
 						<div class='panel-footer'>
 							<a onclick="authdtl_alert_click('pdv2','`+trantype+`')">
-								<span class='pull-left'>`+count+` PV to be `+trantype+`</span>
+								<span class='pull-left'>`+count+` PD to be `+trantype+`</span>
 								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
 								<div class='clearfix'></div>
 							</a>
