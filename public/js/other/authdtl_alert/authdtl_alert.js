@@ -14,7 +14,7 @@ function get_authdtl_alert(){
 		$('#authdtl_alert_div').html('');
 		if(!$.isEmptyObject(data)){
 			populate_authdtl_alert_pv(data.queuepv,data.queuepvv2);
-			populate_authdtl_alert_pd(data.queuepd);
+			populate_authdtl_alert_pd(data.queuepd,data.queuepdv2);
 			populate_authdtl_alert_pr(data.queuepr,data.queueprv2);
 			populate_authdtl_alert_po(data.queuepo,data.queuepov2);
 			populate_authdtl_alert_so(data.queueso);
@@ -213,7 +213,70 @@ function populate_authdtl_alert_pv(data,datav2){
 	});
 }
 
-function populate_authdtl_alert_pd(data){
+function populate_authdtl_alert_pd(data,datav2){
+	data.forEach(function(e,i){
+		if(e.trantype == 'REOPEN'){
+			var block_pr = `
+			<div class='col-md-3'>
+				<div class='panel panel-grey'>
+					<div class='panel-heading'>
+						<div class='row'>
+							<div class='col-xs-2 nopadleft'><i class='fa fa-suitcase fa-4x'></i></div>
+							<div class='col-xs-10 text-right'>
+								<div class='huge'><span class='reject_span1'>(Rejected)</span> Payment Voucher</div>
+								<div><b>Auditno: </b><span>`+e.auditno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
+								<div><b>Reject On: </b><span>`+moment(e.canceldate, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.cancelby+`</span></div>
+							</div>
+						</div>
+					</div>
+						<div class='panel-footer'>
+							<a onclick="authdtl_alert_click('pd','`+e.trantype+`','`+e.auditno+`')">
+								<span class='pull-left'>Detail</span>
+								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+								<div class='clearfix'></div>
+							</a>
+						</div>
+				</div>
+			</div>`;
+		}
+		$('#authdtl_alert_div').append(block_pr);
+	});
+
+	let keys = Object.keys(datav2);
+
+	keys.forEach(function(e,i){
+		let trantype = e;
+		let count = datav2[keys[i]].length
+		var block_pr = `
+			<div class='col-md-3'>
+				<div class='panel panel-grey'>
+					<div class='panel-heading top-h'>
+						<span>Payment Voucher</span>
+					</div>
+					<div class='panel-heading no-br'>
+						<div class='row'>
+							<div class='col-xs-12'>`;
+								datav2[keys[i]].forEach(function(e,i){
+									block_pr += `<a onclick="authdtl_alert_click('pd','`+trantype+`','`+e.auditno+`')" class='dtl_a'><div><b>Auditno:</b><span>`+e.auditno+`</span><b> by </b><span>`+e.adduser+` - `+e.suppcode+` - `+e.actdate+`</span></div></a>`;
+								})
+								
+			block_pr += `	</div>
+						</div>
+					</div>
+						<div class='panel-footer'>
+							<a onclick="authdtl_alert_click('pdv2','`+trantype+`')">
+								<span class='pull-left'>`+count+` PV to be `+trantype+`</span>
+								<span class='pull-right'><i class='fa fa-arrow-circle-right'></i></span>
+								<div class='clearfix'></div>
+							</a>
+						</div>
+				</div>
+			</div>`;
+			$('#authdtl_alert_div').append(block_pr);
+	});
+}
+
+function populate_authdtl_alert_pd_LAMA(data){
 	data.forEach(function(e,i){
 		if(e.trantype == 'REOPEN'){
 			var block_pr = `
@@ -430,7 +493,10 @@ function authdtl_alert_click(type,trantype,recno){
 			Menu.new_dialog('dataentryPV','paymentVoucher?source=AP&scope='+trantype,'Payment Voucher');
 			break;
 		case 'pd':
-			Menu.new_dialog('dataentryPV','paymentVoucher?source=AP&scope='+trantype+'&auditno='+recno,'Payment Voucher');
+			Menu.new_dialog('dataentryPD','paymentVoucher?source=AP&scope='+trantype+'&ttype=PD&auditno='+recno,'Payment Deposit');
+			break;
+		case 'pdv2':
+			Menu.new_dialog('dataentryPD','paymentVoucher?source=AP&scope='+trantype+'&ttype=PD','Payment Deposit');
 			break;
 		case 'so':
 			Menu.new_dialog('salesorder_datentry','SalesOrder?scope='+trantype+'&auditno='+recno,'Sales Order');

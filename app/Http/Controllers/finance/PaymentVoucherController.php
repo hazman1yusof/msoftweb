@@ -97,36 +97,53 @@ class PaymentVoucherController extends defaultController
                         $join = $join->where('su.compcode', '=', session('compcode'));
                     })
                     ->where('ap.compcode','=', session('compcode'))
-                    ->where('ap.source','=',$request->source)
-                    ->whereIn('ap.trantype',['PD','PV']);
+                    ->where('ap.source','=',$request->source);
+
+        if(in_array('PD',$request->filterVal)){
+            $table = $table->where('ap.trantype','PD');
+        }else{
+            $table = $table->whereIn('ap.trantype',['PD','PV']);
+        }
 
         if(!in_array($scope, ['ALL','CANCEL','REOPEN'])){
-            $table = $table->join('finance.queuepv as qpv', function($join) use ($request,$scope){
-                $join = $join
-                    ->where('qpv.compcode',session('compcode'))
-                    ->where('qpv.trantype','<>','DONE')
-                    ->on('qpv.recno','ap.auditno')
-                    ->on('qpv.recstatus','ap.recstatus')
-                    ->where('qpv.trantype',$scope);
-            });
+
+            if(in_array('PD',$request->filterVal)){
+                $table = $table->join('finance.queuepd as qpd', function($join) use ($request,$scope){
+                    $join = $join
+                        ->where('qpd.compcode',session('compcode'))
+                        ->where('qpd.trantype','<>','DONE')
+                        ->on('qpd.recno','ap.auditno')
+                        ->on('qpd.recstatus','ap.recstatus')
+                        ->where('qpd.trantype',$scope);
+                });
+            }else{
+                $table = $table->join('finance.queuepv as qpv', function($join) use ($request,$scope){
+                    $join = $join
+                        ->where('qpv.compcode',session('compcode'))
+                        ->where('qpv.trantype','<>','DONE')
+                        ->on('qpv.recno','ap.auditno')
+                        ->on('qpv.recstatus','ap.recstatus')
+                        ->where('qpv.trantype',$scope);
+                });
+            }
 
             $table = $table->join('finance.permissiondtl as prdtl', function($join) use ($request,$scope){
                 $join = $join
                     ->where('prdtl.compcode',session('compcode'))
                     ->where('prdtl.authorid',session('username'))
-                    ->where('prdtl.trantype','PV')
                     ->where('prdtl.cando','ACTIVE')
-                    // ->on('adtl.prtype','qpo.prtype')
                     ->where('prdtl.recstatus',$scope)
-                    // ->where(function ($query) {
-                    //     $query->on('adtl.deptcode','po.reqdept')
-                    //           ->orWhere('adtl.deptcode', 'ALL');
-                    // })
                     ->where(function ($query) {
                         $query
                             ->on('ap.amount','>=','prdtl.minlimit')
                             ->on('ap.amount','<=', 'prdtl.maxlimit');
                     });
+
+                if(in_array('PD',$request->filterVal)){
+                    $join = $join->where('prdtl.trantype','PD');
+                }else{
+                    $join = $join->where('prdtl.trantype','PV');
+                }
             });
         }
 
@@ -492,7 +509,7 @@ class PaymentVoucherController extends defaultController
                     'source' => 'AP',
                     'auditno' => $auditno,
                     'trantype' => $request->apacthdr_trantype,
-                    'actdate' => $request->apacthdr_actdate,
+                    'actdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recdate' => $request->apacthdr_postdate,
                     'postdate' => $request->apacthdr_postdate,
                     // 'pvno' => $pvno,
@@ -1085,7 +1102,7 @@ class PaymentVoucherController extends defaultController
                 $authorise = DB::table('finance.permissiondtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('authorid','=',session('username'))
-                    ->where('trantype','=','PV')
+                    ->where('trantype','=',$apacthdr->trantype)
                     ->where('cando','=', 'ACTIVE')
                     ->where('recstatus','=','APPROVED')
                     // ->where('deptcode','=',$purordhd_get->prdept)

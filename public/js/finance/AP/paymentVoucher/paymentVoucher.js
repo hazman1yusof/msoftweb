@@ -791,6 +791,7 @@ $(document).ready(function () {
 
 	$('#Scol').on('change', whenchangetodate);
 	$('#Status').on('change', searchChange);
+	$('#ttype').on('change', searchChange);
 	$('#actdate_search').on('click', searchDate);
 
 	function whenchangetodate() {
@@ -820,7 +821,7 @@ $(document).ready(function () {
 	searchChange(true);
 	function searchChange(once=false){
 		cbselect.empty_sel_tbl();
-		var arrtemp = [$('#Status option:selected').val()];
+		var arrtemp = [$('#Status option:selected').val(),$('#ttype option:selected').val()];
 		var filter = arrtemp.reduce(function(a,b,c){
 			if(b.toUpperCase() == 'ALL'){
 				return a;
@@ -829,7 +830,7 @@ $(document).ready(function () {
 				a.fv = a.fv.concat(b);
 				return a;
 			}
-		},{fct:['ap.recstatus'],fv:[],fc:[]});
+		},{fct:['ap.recstatus','ap.trantype'],fv:[],fc:[]});
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
@@ -1085,9 +1086,9 @@ $(document).ready(function () {
 		}
 
 		//pv skip support
-		if($('#recstatus_use').val() == 'SUPPORT' && rowObject['apacthdr_trantype'] == 'PV'){
+		if($('#recstatus_use').val() == 'SUPPORT'){
 			return ' ';
-		}else if($('#recstatus_use').val() == 'VERIFIED' && rowObject['apacthdr_trantype'] == 'PV'){
+		}else if($('#recstatus_use').val() == 'VERIFIED'){
 			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' onclick='click_selection(checkbox_selection_"+rowObject['apacthdr_idno']+");'>";
 		}else if($('#recstatus_use').val() == 'REOPEN' && rowObject['apacthdr_recstatus'] == 'CANCELLED'){
 			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' onclick='click_selection(checkbox_selection_"+rowObject['apacthdr_idno']+");'>";

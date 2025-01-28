@@ -386,6 +386,7 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
         $responce->queuepv = $queuepv;
         $responce->queuepvv2 = $queuepv->groupBy('trantype');
         $responce->queuepd = $queuepd;
+        $responce->queuepdv2 = $queuepd->groupBy('trantype');
         $responce->queueso = $queueso;
         $responce->queueiv = $queueiv;
         $responce->ivreq = $ivreq_posted;

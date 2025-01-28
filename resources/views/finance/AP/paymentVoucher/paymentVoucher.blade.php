@@ -60,6 +60,7 @@ div#fail_msg{
 
 	<!-- @include('layouts.default_search_and_table') -->
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
+	<input id="ttype_get" name="ttype_get" type="hidden" value="{{Request::get('ttype')}}">
 	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
 	@if (Request::get('scope') == 'ALL')
@@ -105,15 +106,15 @@ div#fail_msg{
 
 				<div class="col-md-2">
 				  	<label class="control-label" for="Status">Status</label>  
-					  	<select id="Status" name="Status" class="form-control input-sm">
-						  	@if (Request::get('scope') == 'ALL')
-						      <option value="All" selected>ALL</option>
-						      <option value="OPEN">OPEN</option>
-						      <option value="CANCELLED">CANCELLED</option>
-						      <option value="PREPARED">PREPARED</option>
-						      <option value="SUPPORT">SUPPORT</option>
-						      <option value="VERIFIED">VERIFIED</option>
-						      <option value="APPROVED">APPROVED</option>
+				  	<select id="Status" name="Status" class="form-control input-sm">
+					  	@if (Request::get('scope') == 'ALL')
+					      <option value="All" selected>ALL</option>
+					      <option value="OPEN">OPEN</option>
+					      <option value="CANCELLED">CANCELLED</option>
+					      <option value="PREPARED">PREPARED</option>
+					      <option value="SUPPORT">SUPPORT</option>
+					      <option value="VERIFIED">VERIFIED</option>
+					      <option value="APPROVED">APPROVED</option>
 							@elseif (Request::get('scope') == 'SUPPORT')
 								<option value="PREPARED" selected>PREPARED</option>
 							@elseif (Request::get('scope') == 'VERIFIED')
@@ -131,8 +132,23 @@ div#fail_msg{
 					      <option value="SUPPORT">SUPPORT</option>
 					      <option value="VERIFIED">VERIFIED</option>
 							@endif
-					    </select>
-	            </div>
+				    </select>
+	        </div>
+
+					<div class="col-md-2">
+				  	<label class="control-label" for="ttype">Trantype</label>  
+				  	<select id="ttype" name="ttype" class="form-control input-sm">
+				  	@if (Request::get('ttype') == 'PD')
+			      <option value="All">ALL</option>
+			      <option value="PV">Payment Voucher</option>
+			      <option value="PD" selected>Payment Deposit</option>
+				  	@else
+			      <option value="All" selected>ALL</option>
+			      <option value="PV">Payment Voucher</option>
+			      <option value="PD">Payment Deposit</option>
+				  	@endif
+				    </select>
+					</div>
 
 	          <?php 
 					$scope_use = 'posted';
