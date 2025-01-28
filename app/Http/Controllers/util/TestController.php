@@ -66,8 +66,8 @@ class TestController extends defaultController
                 // return $this->update_productmaster($request);
             // case 'test_date_zulu':
             //     return $this->test_date_zulu($request);
-            // case 'btlkan_stockloc_open':
-            //     return $this->btlkan_stockloc_open($request);
+            case 'btlkan_stockloc_open':
+                return $this->btlkan_stockloc_open($request);
             // case 'test_email':
             //     return $this->test_email($request);
             // case 'btlkn_imp_1_phycnt':
