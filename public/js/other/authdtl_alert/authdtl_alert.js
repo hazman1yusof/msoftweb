@@ -223,7 +223,7 @@ function populate_authdtl_alert_pd(data,datav2){
 						<div class='row'>
 							<div class='col-xs-2 nopadleft'><i class='fa fa-suitcase fa-4x'></i></div>
 							<div class='col-xs-10 text-right'>
-								<div class='huge'><span class='reject_span1'>(Rejected)</span> Payment Voucher</div>
+								<div class='huge'><span class='reject_span1'>(Rejected)</span> Payment Deposit</div>
 								<div><b>Auditno: </b><span>`+e.auditno+`</span><b> Status: </b><span>`+e.recstatus+`</span></div>
 								<div><b>Reject On: </b><span>`+moment(e.canceldate, 'YYYY-MM-D').format('DD-MM-YYYY')+` by `+e.cancelby+`</span></div>
 							</div>
@@ -251,7 +251,7 @@ function populate_authdtl_alert_pd(data,datav2){
 			<div class='col-md-3'>
 				<div class='panel panel-grey'>
 					<div class='panel-heading top-h'>
-						<span>Payment Voucher</span>
+						<span>Payment Deposit</span>
 					</div>
 					<div class='panel-heading no-br'>
 						<div class='row'>
