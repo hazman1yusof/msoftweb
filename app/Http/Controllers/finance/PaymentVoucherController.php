@@ -99,7 +99,7 @@ class PaymentVoucherController extends defaultController
                     ->where('ap.compcode','=', session('compcode'))
                     ->where('ap.source','=',$request->source);
 
-        if(in_array('PD',$request->filterVal)){
+        if(!empty($request->filterVal) && in_array('PD',$request->filterVal)){
             $table = $table->where('ap.trantype','PD');
         }else{
             $table = $table->whereIn('ap.trantype',['PD','PV']);
@@ -107,7 +107,7 @@ class PaymentVoucherController extends defaultController
 
         if(!in_array($scope, ['ALL','CANCEL','REOPEN'])){
 
-            if(in_array('PD',$request->filterVal)){
+            if(!empty($request->filterVal) && in_array('PD',$request->filterVal)){
                 $table = $table->join('finance.queuepd as qpd', function($join) use ($request,$scope){
                     $join = $join
                         ->where('qpd.compcode',session('compcode'))
@@ -139,7 +139,7 @@ class PaymentVoucherController extends defaultController
                             ->on('ap.amount','<=', 'prdtl.maxlimit');
                     });
 
-                if(in_array('PD',$request->filterVal)){
+                if(!empty($request->filterVal) && in_array('PD',$request->filterVal)){
                     $join = $join->where('prdtl.trantype','PD');
                 }else{
                     $join = $join->where('prdtl.trantype','PV');
