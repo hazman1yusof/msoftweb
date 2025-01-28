@@ -1206,27 +1206,53 @@ class RequestForController extends defaultController
         
         try {
             
-            DB::table('hisdb.pat_physio')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno,
-                    'req_date' => $request->req_date,
-                    'clinic_diag' => $request->clinic_diag,
-                    'findings' => $request->findings,
-                    // 'treatment' => $request->phy_treatment,
-                    'tr_physio' => $request->tr_physio,
-                    'tr_occuptherapy' => $request->tr_occuptherapy,
-                    'tr_respiphysio' => $request->tr_respiphysio,
-                    'tr_neuro' => $request->tr_neuro,
-                    'tr_splint' => $request->tr_splint,
-                    'doctorname' => strtoupper($request->phy_doctorname),
-                    'adduser'  => strtoupper($request->phy_lastuser),
-                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'lastuser' => strtoupper($request->phy_lastuser),
-                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'computerid' => session('computerid'),
-                ]);
+            $pat_physio = DB::table('hisdb.pat_physio')
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->where('compcode','=',session('compcode'));
+            
+            if($pat_physio->exists()){
+                $pat_physio
+                    ->update([
+                        'req_date' => $request->req_date,
+                        'clinic_diag' => $request->clinic_diag,
+                        'findings' => $request->findings,
+                        // 'treatment' => $request->phy_treatment,
+                        'tr_physio' => $request->tr_physio,
+                        'tr_occuptherapy' => $request->tr_occuptherapy,
+                        'tr_respiphysio' => $request->tr_respiphysio,
+                        'tr_neuro' => $request->tr_neuro,
+                        'tr_splint' => $request->tr_splint,
+                        'doctorname' => strtoupper($request->phy_doctorname),
+                        'upduser'  => strtoupper($request->phy_lastuser),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser' => strtoupper($request->phy_lastuser),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            }else{
+                DB::table('hisdb.pat_physio')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'req_date' => $request->req_date,
+                        'clinic_diag' => $request->clinic_diag,
+                        'findings' => $request->findings,
+                        // 'treatment' => $request->phy_treatment,
+                        'tr_physio' => $request->tr_physio,
+                        'tr_occuptherapy' => $request->tr_occuptherapy,
+                        'tr_respiphysio' => $request->tr_respiphysio,
+                        'tr_neuro' => $request->tr_neuro,
+                        'tr_splint' => $request->tr_splint,
+                        'doctorname' => strtoupper($request->phy_doctorname),
+                        'adduser'  => strtoupper($request->phy_lastuser),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser' => strtoupper($request->phy_lastuser),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            }
             
             DB::table('hisdb.episode')
                 ->where('mrn','=',$request->mrn)
