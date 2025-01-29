@@ -420,6 +420,7 @@ class do_util extends defaultController{
             ->where('compcode',session('compcode'))
             ->where('lineno_',$value->lineno_)
             ->where('source',$source_)
+            ->where('auditno',$delordhd_obj->auditno)
             ->where('trantype',$delordhd_obj->trantype)
             ->delete();
 
