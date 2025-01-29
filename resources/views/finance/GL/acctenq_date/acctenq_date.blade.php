@@ -76,13 +76,13 @@
 
 			  <div class="col-md-2">
 			  	<label class="control-label" for="year">From</label>  
-				<input id="fromdate" name="fromdate" type="date" class="form-control input-sm uppercase" autocomplete="off" data-validation="required"/>
+				<input id="fromdate" name="fromdate" type="date" class="form-control input-sm uppercase" autocomplete="off" data-validation="required" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->format('Y-m-01')}}" />
               </div>
 
 
 			  <div class="col-md-2">
 			  	<label class="control-label" for="year">to</label>  
-				<input id="todate" name="todate" type="date" class="form-control input-sm uppercase" autocomplete="off" data-validation="required"/>
+				<input id="todate" name="todate" type="date" class="form-control input-sm uppercase" autocomplete="off" data-validation="required" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->format('Y-m-t')}}" />
               </div>
 
 			  <div class="col-md-1">
@@ -124,6 +124,12 @@
 
 	<div id="dialogForm" title="Viewing Detail"></div>
 
+	<div id="open_detail_dialog" title="Detail View" style="padding:0">
+		<div class='col-md-12' style="padding:0" >
+			<iframe id='open_detail_iframe' src='' style="height: calc(100vh - 100px);width: 100%; border: none;"></iframe>
+			<!-- guna nama 'open_detail_iframe' dialog utk semua detail view, utk tak error dkt parent_close_disabled -->
+		</div>
+	</div>
 
 
 	@endsection
@@ -131,7 +137,7 @@
 
 @section('scripts')
 
-	<script src="js/finance/GL/acctenq_date/acctenq_date.js"></script>
+	<script src="js/finance/GL/acctenq_date/acctenq_date.js?v=1.1"></script>
 	<script src="plugins/datatables/js/jquery.datatables.min.js"></script>
 	
 @endsection

@@ -244,7 +244,7 @@ $(document).ready(function () {
 			{ label: 'Debtor Code', name: 'db_payercode', width: 20, canSearch: true },
 			{ label: 'Debtor Name', name: 'dm_name', width: 30, canSearch: true, classes: 'wrap',checked:true },
 			{ label: 'Document Date', name: 'db_entrydate', width: 12, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
-			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right', formatter: padzero, unformat: unpadzero},
+			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right', formatter: padzero, unformat: unpadzero,canSearch: true},
 			{ label: 'Invoice No', name: 'db_invno', width: 10, align: 'right', canSearch: true, formatter: padzero, unformat: unpadzero },
 			// { label: 'Sector', name: 'db_unit', width: 15, canSearch: true, classes: 'wrap' },
 			{ label: 'Quotation No', name: 'db_quoteno', width: 10, align: 'right', formatter: padzero5, unformat: unpadzero },
@@ -384,6 +384,8 @@ $(document).ready(function () {
 			}
 			page_to_view_only($('#viewonly').val(),function(){
 				$('#customer_text').hide();
+				let firstrow = $("#jqGrid").getDataIDs()[0];
+				$('#jqGrid tr#'+firstrow).dblclick();
 			});
 		},
 		loadComplete:function(data){
@@ -756,6 +758,8 @@ $(document).ready(function () {
 				let searchVal = ['%'+$('#searchForm [name=Stext]').val().trim()+'%'];
 				urlParam.searchCol=searchCol;
 				urlParam.searchVal=searchVal;
+				urlParam.filterCol=null;
+				urlParam.filterVal=null;
 			}
 			once=false;
 		}

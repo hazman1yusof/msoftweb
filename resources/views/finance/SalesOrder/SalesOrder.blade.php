@@ -95,7 +95,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 							<div class="col-md-2">
 						  		<label class="control-label" for="Scol">Search By : </label>  
 						  		<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
-			              	</div>
+			        </div>
 
 						  	<div class="col-md-5">
 						  		<label class="control-label"></label>  
@@ -1060,7 +1060,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 			});
 		</script>
 
-		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.22"></script>
+		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.23"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

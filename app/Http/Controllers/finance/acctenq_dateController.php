@@ -38,6 +38,8 @@ class acctenq_dateController extends defaultController
         switch($request->action){
             case 'getdata';
                 return $this->getdata($request);
+            case 'get_auditno_forsrc';
+                return $this->get_auditno_forsrc($request);
         }
     }
 
@@ -68,5 +70,22 @@ class acctenq_dateController extends defaultController
         $responce->rows = $gltran;
 
         return json_encode($responce);
+    }
+
+    public function get_auditno_forsrc(Request $request){
+
+        if($request->source == 'PB' && $request->trantype == 'IN'){
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$request->source)
+                            ->where('trantype',$request->trantype)
+                            ->where('invno',$request->auditno)
+                            ->first();
+
+            $responce = new stdClass();
+            $responce->dbacthdr = $dbacthdr;
+
+            return json_encode($responce);
+        }
     }
 }

@@ -21,7 +21,7 @@ $(document).ready(function () {
 	/////////////////////////validation//////////////////////////
 	var errorField=[];
 	var mymodal = new modal();
-	var detbut = new detail_button();
+	// var detbut = new detail_button();
 	//////////////////////////////////////////////////////////////
 
 	////////////////////object for dialog handler//////////////////
@@ -178,7 +178,7 @@ $(document).ready(function () {
 		scrollY: 500,
 		paging: false,
 	    columns: [
-	    	{ data: 'open' ,"width": "5%"},
+	    	{ data: 'open' ,"width": "5%","sClass": "opendetail"},
 			{ data: 'source'},
 			{ data: 'trantype'},
 			{ data: 'auditno'},
@@ -205,9 +205,63 @@ $(document).ready(function () {
 	// 	// detbut.show($(this));
 	// });
 
-	$('#TableGlmasTran').on( 'click', 'i', function () {
-		detbut.show($(this).closest( "tr" ));
+	$("#open_detail_dialog").dialog({
+		width: 9/10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function( event, ui ) {
+		},
+		close: function( event, ui ) {
+		},
 	});
+
+	$('#TableGlmasTran').on( 'click', 'td.opendetail', function () {
+		// detbut.show($(this).closest( "tr" ));
+		var rowdata = DataTable.row(this).data();
+		let src = null;
+
+		if(rowdata.source == "DO" && rowdata.trantype == "GRN"){
+			src = './deliveryOrder?scope=ALL&viewonly=viewonly&recno='+rowdata.auditno;
+
+			$('iframe#open_detail_iframe').attr('src',src);
+			$("#open_detail_dialog").dialog("open");
+
+		}else if(rowdata.source == "PB" && rowdata.trantype == "IN"){
+			mymodal.show("#TableGlmasTran_c");
+			get_auditno_forsrc("PB","IN",rowdata.auditno);
+		}
+	});
+
+	function get_auditno_forsrc(source,trantype,auditno){
+		param={
+			url: './acctenq_date/table',
+			action:'get_auditno_forsrc',
+			source: source,
+			trantype: trantype,
+			auditno: auditno,
+		}
+
+		$.get( param.url+"?"+$.param(param), function( data ) {
+				
+		},'json').done(function(data) {
+			mymodal.hide();
+			if(data.dbacthdr != null){
+				let auditno = data.dbacthdr.auditno;
+				let pos = data.dbacthdr.pointofsales;
+				console.log(pos);
+
+				if(pos == 1){
+					let src = './PointOfSales?scope=ALL&viewonly=viewonly&auditno='+auditno;
+					$('iframe#open_detail_iframe').attr('src',src);
+					$("#open_detail_dialog").dialog("open");
+				}else{
+					let src = './SalesOrder?scope=ALL&viewonly=viewonly&auditno='+auditno;
+					$('iframe#open_detail_iframe').attr('src',src);
+					$("#open_detail_dialog").dialog("open");
+				}
+			}
+		});
+	}
 
 	hidetbl(true);
 	function hidetbl(hide){
@@ -315,229 +369,229 @@ $(document).ready(function () {
 		});
 	}
 
-	function detail_button(){
-		this.pagesList = [
-			{
-				source:'CM',
-				trantype:'FT',
-				loadurl:"../../CM/bankTransfer/bankTransfer.php #dialogForm",
-				urlParam:{
-					action:'get_value_default',
-					field: ['auditno','pvno','actdate','paymode','bankcode','cheqno','cheqdate','amount','payto','remarks'],
-					table_name:'finance.apacthdr',
-					table_id:'auditno',
-					filterCol: ['source', 'trantype','auditno'],
-					filterVal: ['CM', 'FT',''],
-				}
-			},{
-				source:'CM',
-				trantype:'DP',
-				loadurl:"../../CM/Direct%20Payment/DirectPayment.php #dialogForm",
-				urlParam:{
-					action:'get_value_default',
-					field:['*'],
-					table_name:'finance.apacthdr',
-					table_id:'auditno',
-					filterCol: ['source', 'trantype','auditno'],
-					filterVal: ['CM', 'DP', ''],
-				},
-				jqgrid:[ //rightnow only handle 1 jqgrid inside page, change if later need more
-					{
-						id:'#jqGrid2',
-						urlParam:{
-							action:'get_table_default',
-							field:[
-								{label:'Department',name:'deptcode'},
-								{label:'Category',name:'category'},
-								{label:'Document',name:'document'},
-								{label:'Amount Before GST',name:'AmtB4GST'},
-								{label:'GST Code',name:'GSTCode'},
-								{label:'Total Amount',name:'amount'}
-							],
-							table_name:'finance.apactdtl',
-							table_id:'none_',
-							filterCol:['auditno', 'recstatus','trantype','source'],
-							filterVal:['', 'ACTIVE','DP','CM'],
-						}
-					}
-				]
-			},{
-				source:'PB',
-				trantype:'RC',
-				loadurl:"../../AR/receipt/receipt.php #dialogForm",
-				urlParam:{
-					action:'get_value_default',
-					field:["*"],
-					table_name:'debtor.dbacthdr',
-					table_id:'auditno',
-					filterCol:['source', 'trantype','auditno'],
-					filterVal:['PB', 'RC','']
-				}
-			},{
-				source:'CM',
-				trantype:'CA',
-				loadurl:"../../CM/Credit%20Debit%20Transaction/creditDebitTrans.php #dialogForm",
-				urlParam:{
-					action:'get_value_default',
-					field:["*"],
-					table_name:'finance.apacthdr',
-					table_id:'auditno',
-					filterCol:['source', 'trantype','auditno'],
-					filterVal:['CM', 'CA','']
-				},
-				jqgrid:[ //rightnow only handle 1 jqgrid inside page, change if later need more
-					{
-						id:'#jqGrid2',
-						urlParam:{
-							action:'get_table_default',
-							field:[
-								{label:'Department',name:'deptcode'},
-								{label:'Category',name:'category'},
-								{label:'Document',name:'document'},
-								{label:'Amount Before GST',name:'AmtB4GST'},
-								{label:'GST Code',name:'GSTCode'},
-								{label:'Total Amount',name:'amount'}
-							],
-							table_name:'finance.apactdtl',
-							table_id:'none_',
-							filterCol:['auditno', 'recstatus','trantype','source'],
-							filterVal:['', 'ACTIVE','','CM'],
-						}
-					}
-				]
-			},{
-				source:'CM',
-				trantype:'DA',
-				loadurl:"../../CM/Credit%20Debit%20Transaction/creditDebitTrans.php #dialogForm",
-				urlParam:{
-					action:'get_value_default',
-					field:["*"],
-					table_name:'finance.apacthdr',
-					table_id:'auditno',
-					filterCol:['source', 'trantype','auditno'],
-					filterVal:['CM', 'DA','']
-				},
-				jqgrid:[ //rightnow only handle 1 jqgrid inside page, change if later need more
-					{
-						id:'#jqGrid2',
-						urlParam:{
-							action:'get_table_default',
-							field:[
-								{label:'Department',name:'deptcode'},
-								{label:'Category',name:'category'},
-								{label:'Document',name:'document'},
-								{label:'Amount Before GST',name:'AmtB4GST'},
-								{label:'GST Code',name:'GSTCode'},
-								{label:'Total Amount',name:'amount'}
-							],
-							table_name:'finance.apactdtl',
-							table_id:'none_',
-							filterCol:['auditno', 'recstatus','trantype','source'],
-							filterVal:['', 'ACTIVE','','CM'],
-						}
-					}
-				]
-			}
-		];
+	// function detail_button(){
+	// 	this.pagesList = [
+	// 		{
+	// 			source:'CM',
+	// 			trantype:'FT',
+	// 			loadurl:"../../CM/bankTransfer/bankTransfer.php #dialogForm",
+	// 			urlParam:{
+	// 				action:'get_value_default',
+	// 				field: ['auditno','pvno','actdate','paymode','bankcode','cheqno','cheqdate','amount','payto','remarks'],
+	// 				table_name:'finance.apacthdr',
+	// 				table_id:'auditno',
+	// 				filterCol: ['source', 'trantype','auditno'],
+	// 				filterVal: ['CM', 'FT',''],
+	// 			}
+	// 		},{
+	// 			source:'CM',
+	// 			trantype:'DP',
+	// 			loadurl:"../../CM/Direct%20Payment/DirectPayment.php #dialogForm",
+	// 			urlParam:{
+	// 				action:'get_value_default',
+	// 				field:['*'],
+	// 				table_name:'finance.apacthdr',
+	// 				table_id:'auditno',
+	// 				filterCol: ['source', 'trantype','auditno'],
+	// 				filterVal: ['CM', 'DP', ''],
+	// 			},
+	// 			jqgrid:[ //rightnow only handle 1 jqgrid inside page, change if later need more
+	// 				{
+	// 					id:'#jqGrid2',
+	// 					urlParam:{
+	// 						action:'get_table_default',
+	// 						field:[
+	// 							{label:'Department',name:'deptcode'},
+	// 							{label:'Category',name:'category'},
+	// 							{label:'Document',name:'document'},
+	// 							{label:'Amount Before GST',name:'AmtB4GST'},
+	// 							{label:'GST Code',name:'GSTCode'},
+	// 							{label:'Total Amount',name:'amount'}
+	// 						],
+	// 						table_name:'finance.apactdtl',
+	// 						table_id:'none_',
+	// 						filterCol:['auditno', 'recstatus','trantype','source'],
+	// 						filterVal:['', 'ACTIVE','DP','CM'],
+	// 					}
+	// 				}
+	// 			]
+	// 		},{
+	// 			source:'PB',
+	// 			trantype:'RC',
+	// 			loadurl:"../../AR/receipt/receipt.php #dialogForm",
+	// 			urlParam:{
+	// 				action:'get_value_default',
+	// 				field:["*"],
+	// 				table_name:'debtor.dbacthdr',
+	// 				table_id:'auditno',
+	// 				filterCol:['source', 'trantype','auditno'],
+	// 				filterVal:['PB', 'RC','']
+	// 			}
+	// 		},{
+	// 			source:'CM',
+	// 			trantype:'CA',
+	// 			loadurl:"../../CM/Credit%20Debit%20Transaction/creditDebitTrans.php #dialogForm",
+	// 			urlParam:{
+	// 				action:'get_value_default',
+	// 				field:["*"],
+	// 				table_name:'finance.apacthdr',
+	// 				table_id:'auditno',
+	// 				filterCol:['source', 'trantype','auditno'],
+	// 				filterVal:['CM', 'CA','']
+	// 			},
+	// 			jqgrid:[ //rightnow only handle 1 jqgrid inside page, change if later need more
+	// 				{
+	// 					id:'#jqGrid2',
+	// 					urlParam:{
+	// 						action:'get_table_default',
+	// 						field:[
+	// 							{label:'Department',name:'deptcode'},
+	// 							{label:'Category',name:'category'},
+	// 							{label:'Document',name:'document'},
+	// 							{label:'Amount Before GST',name:'AmtB4GST'},
+	// 							{label:'GST Code',name:'GSTCode'},
+	// 							{label:'Total Amount',name:'amount'}
+	// 						],
+	// 						table_name:'finance.apactdtl',
+	// 						table_id:'none_',
+	// 						filterCol:['auditno', 'recstatus','trantype','source'],
+	// 						filterVal:['', 'ACTIVE','','CM'],
+	// 					}
+	// 				}
+	// 			]
+	// 		},{
+	// 			source:'CM',
+	// 			trantype:'DA',
+	// 			loadurl:"../../CM/Credit%20Debit%20Transaction/creditDebitTrans.php #dialogForm",
+	// 			urlParam:{
+	// 				action:'get_value_default',
+	// 				field:["*"],
+	// 				table_name:'finance.apacthdr',
+	// 				table_id:'auditno',
+	// 				filterCol:['source', 'trantype','auditno'],
+	// 				filterVal:['CM', 'DA','']
+	// 			},
+	// 			jqgrid:[ //rightnow only handle 1 jqgrid inside page, change if later need more
+	// 				{
+	// 					id:'#jqGrid2',
+	// 					urlParam:{
+	// 						action:'get_table_default',
+	// 						field:[
+	// 							{label:'Department',name:'deptcode'},
+	// 							{label:'Category',name:'category'},
+	// 							{label:'Document',name:'document'},
+	// 							{label:'Amount Before GST',name:'AmtB4GST'},
+	// 							{label:'GST Code',name:'GSTCode'},
+	// 							{label:'Total Amount',name:'amount'}
+	// 						],
+	// 						table_name:'finance.apactdtl',
+	// 						table_id:'none_',
+	// 						filterCol:['auditno', 'recstatus','trantype','source'],
+	// 						filterVal:['', 'ACTIVE','','CM'],
+	// 					}
+	// 				}
+	// 			]
+	// 		}
+	// 	];
 
-		this.show = function(obj){
-			mymodal.show("body");
-			var source = obj.children("td:nth-child(2)").text();
-			var trantype = obj.children("td:nth-child(3)").text();
-			var auditno = obj.children("td:nth-child(4)").text();
-			var pageUse = this.pagesList.find(function(obj){
-				return (obj.source === source && obj.trantype === trantype);
-			});
-			if(pageUse == undefined){
-				mymodal.hide();
-				alert('Unknown source: '+source+' | trantype: '+trantype+' or no selected row');
-				return false;
-			}
-			pageUse.urlParam.filterVal[2] = auditno;
+	// 	this.show = function(obj){
+	// 		mymodal.show("body");
+	// 		var source = obj.children("td:nth-child(2)").text();
+	// 		var trantype = obj.children("td:nth-child(3)").text();
+	// 		var auditno = obj.children("td:nth-child(4)").text();
+	// 		var pageUse = this.pagesList.find(function(obj){
+	// 			return (obj.source === source && obj.trantype === trantype);
+	// 		});
+	// 		if(pageUse == undefined){
+	// 			mymodal.hide();
+	// 			alert('Unknown source: '+source+' | trantype: '+trantype+' or no selected row');
+	// 			return false;
+	// 		}
+	// 		pageUse.urlParam.filterVal[2] = auditno;
 
-			$.get( "../../../../assets/php/entry.php?"+$.param(pageUse.urlParam), function( data ) {
+	// 		$.get( "../../../../assets/php/entry.php?"+$.param(pageUse.urlParam), function( data ) {
 				
-			},'json').done(function(data) {
-				mymodal.hide();
-				if(!$.isEmptyObject(data.rows)){
-					$( "#dialogForm" ).load( pageUse.loadurl, function(){
-						populatePage(data.rows[0],'#formdata',source,trantype);
-						disableForm('#formdata');
-						if(source=="PB" && trantype=="RC"){
-							$(".nav-tabs a[form='"+data.rows[0].paytype+"']").tab('show');
-							populatePage(data.rows[0],data.rows[0].paytype,source,trantype);
-							disableForm(data.rows[0].paytype);
-						}
-						$("#dialogForm").dialog("open");
-						if(pageUse.hasOwnProperty('jqgrid')){
-							pageUse.jqgrid[0].urlParam.filterVal[0] = auditno;
-							pageUse.jqgrid[0].urlParam.filterVal[2] = trantype;
-							jqgrid_inpage(
-								pageUse.jqgrid[0].id,
-								populate_colmodel(pageUse.jqgrid[0].urlParam.field),
-								pageUse.jqgrid[0].urlParam
-							);//change here
-						}
-					});
-				}
-			});
-		}
+	// 		},'json').done(function(data) {
+	// 			mymodal.hide();
+	// 			if(!$.isEmptyObject(data.rows)){
+	// 				$( "#dialogForm" ).load( pageUse.loadurl, function(){
+	// 					populatePage(data.rows[0],'#formdata',source,trantype);
+	// 					disableForm('#formdata');
+	// 					if(source=="PB" && trantype=="RC"){
+	// 						$(".nav-tabs a[form='"+data.rows[0].paytype+"']").tab('show');
+	// 						populatePage(data.rows[0],data.rows[0].paytype,source,trantype);
+	// 						disableForm(data.rows[0].paytype);
+	// 					}
+	// 					$("#dialogForm").dialog("open");
+	// 					if(pageUse.hasOwnProperty('jqgrid')){
+	// 						pageUse.jqgrid[0].urlParam.filterVal[0] = auditno;
+	// 						pageUse.jqgrid[0].urlParam.filterVal[2] = trantype;
+	// 						jqgrid_inpage(
+	// 							pageUse.jqgrid[0].id,
+	// 							populate_colmodel(pageUse.jqgrid[0].urlParam.field),
+	// 							pageUse.jqgrid[0].urlParam
+	// 						);//change here
+	// 					}
+	// 				});
+	// 			}
+	// 		});
+	// 	}
 
-		function populate_colmodel(field){
-			console.log(field);
-			var colmodel = [];
-			field.forEach(function(element){
-				colmodel.push({label:element.label,name:element.name,formatter:showdetail,classes: 'wrap'});
-			});
-			return colmodel;
-		}
+	// 	function populate_colmodel(field){
+	// 		console.log(field);
+	// 		var colmodel = [];
+	// 		field.forEach(function(element){
+	// 			colmodel.push({label:element.label,name:element.name,formatter:showdetail,classes: 'wrap'});
+	// 		});
+	// 		return colmodel;
+	// 	}
 
-		function showdetail(cellvalue, options, rowObject){
-			var field,table;
-			switch(options.colModel.name){
-				case 'deptcode':field=['deptcode','description'];table="sysdb.department";break;
-				case 'category':field=['catcode','description'];table="material.category";break;
-				case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";break;
-				default: return cellvalue;
-			}
-			var param={action:'input_check',table:table,field:field,value:cellvalue};
-			$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+	// 	function showdetail(cellvalue, options, rowObject){
+	// 		var field,table;
+	// 		switch(options.colModel.name){
+	// 			case 'deptcode':field=['deptcode','description'];table="sysdb.department";break;
+	// 			case 'category':field=['catcode','description'];table="material.category";break;
+	// 			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";break;
+	// 			default: return cellvalue;
+	// 		}
+	// 		var param={action:'input_check',table:table,field:field,value:cellvalue};
+	// 		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
 				
-			},'json').done(function(data) {
-				if(!$.isEmptyObject(data.row)){
-					$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.row.description+"</span>");
-				}
-			});
-			return cellvalue;
-		}
+	// 		},'json').done(function(data) {
+	// 			if(!$.isEmptyObject(data.row)){
+	// 				$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.row.description+"</span>");
+	// 			}
+	// 		});
+	// 		return cellvalue;
+	// 	}
 
-		function jqgrid_inpage(jqgrid,colmodel,urlParam){
-			var jqgrid = $("#dialogForm "+jqgrid).jqGrid({
-				datatype: "local",
-				colModel: colmodel,
-				autowidth:true,
-				viewrecords: true,
-				loadonce:false,
-				width: 200,
-				height: 200,
-				rowNum: 300,
-			});
+	// 	function jqgrid_inpage(jqgrid,colmodel,urlParam){
+	// 		var jqgrid = $("#dialogForm "+jqgrid).jqGrid({
+	// 			datatype: "local",
+	// 			colModel: colmodel,
+	// 			autowidth:true,
+	// 			viewrecords: true,
+	// 			loadonce:false,
+	// 			width: 200,
+	// 			height: 200,
+	// 			rowNum: 300,
+	// 		});
 
-			addParamField(jqgrid,true,urlParam);
-		}
+	// 		addParamField(jqgrid,true,urlParam);
+	// 	}
 
-		function populatePage(obj,form,source,trantype){
-			$.each(obj, function( index, value ) {
-				if(source=="PB" && trantype=="RC")index = "dbacthdr_"+index;
-				var input=$(form+" [name='"+index+"']");
-				if(input.is("[type=radio]")){
-					$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
-				}else{
-					input.val(value);
-				}
-			});
-		}
-	}
+	// 	function populatePage(obj,form,source,trantype){
+	// 		$.each(obj, function( index, value ) {
+	// 			if(source=="PB" && trantype=="RC")index = "dbacthdr_"+index;
+	// 			var input=$(form+" [name='"+index+"']");
+	// 			if(input.is("[type=radio]")){
+	// 				$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+	// 			}else{
+	// 				input.val(value);
+	// 			}
+	// 		});
+	// 	}
+	// }
 
 	set_yearperiod();
 	function set_yearperiod(){

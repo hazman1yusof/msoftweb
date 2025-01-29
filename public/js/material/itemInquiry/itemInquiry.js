@@ -667,7 +667,7 @@ $(document).ready(function () {
 				if(row.mrn != '-' && row.episno != '-'){
 					src = './reprintBill?viewonly=viewonly&auditno='+row.recno+'&lineno_='+row.lineno_;
 				}else{
-					src = './SalesOrder?scope=ALL&viewonly=viewonly&auditno='+row.recno;;
+					src = './SalesOrder?scope=ALL&viewonly=viewonly&auditno='+row.recno;
 				}
 				break;
 			case 'GRN' :
