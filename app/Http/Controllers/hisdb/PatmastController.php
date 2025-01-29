@@ -1305,6 +1305,12 @@ class PatmastController extends defaultController
                 throw new \Exception('dept_wrong');
             }
 
+            if($epis_dept == 'ED'){
+                $reff_ed = 1;
+            }else{
+                $reff_ed = null;
+            }
+
             DB::table("hisdb.episode")
                 ->insert([
                     "compcode" => session('compcode'),
@@ -1331,6 +1337,7 @@ class PatmastController extends defaultController
                     "adduser" => session('username'),
                     "episactive" => 1,
                     "allocpayer" => 1,
+                    "reff_ed" => $reff_ed,
                     'episstatus' => 'CURRENT',
                     'computerid' => session('computerid')
                 ]);
