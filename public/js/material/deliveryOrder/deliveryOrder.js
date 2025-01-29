@@ -408,7 +408,10 @@ $(document).ready(function () {
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
 			errorField.length = 0;
-			page_to_view_only($('#viewonly').val());
+			page_to_view_only($('#viewonly').val(),function(){
+				let firstrow = $("#jqGrid").getDataIDs()[0];
+				$('#jqGrid tr#'+firstrow).dblclick();
+			});
 		},
 		loadComplete: function(){
 			//calc_jq_height_onchange("jqGrid");
