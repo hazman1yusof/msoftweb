@@ -26,7 +26,6 @@ function getrow_bootgrid_(){
 $(document).ready(function(){
 	$("#jqGrid_ordcom_panel").on("shown.bs.collapse", function(){
 		var lastrowdata = getrow_bootgrid_();
-		console.log(lastrowdata);
 		get_billtype();
 		get_ordcom_totamount();
 		SmoothScrollTo("#jqGrid_ordcom_panel", 500,70);
@@ -109,7 +108,12 @@ function populate_ordcom_currpt(obj){
 	$('#occupation_show_ordcom').text(if_none(obj.occupDesc).toUpperCase());
 	$('#citizenship_show_ordcom').text(if_none(obj.cityDesc).toUpperCase());
 	$('#area_show_ordcom').text(if_none(obj.areaDesc).toUpperCase());
-	set_ordcom_totamount(obj.totamount);
+
+	if($('#ordcom_phase').val() == '2'){
+		get_ordcom_totamount();
+	}else{
+		set_ordcom_totamount(obj.totamount);
+	}
 
 	//formordcom	
 	$('#mrn_ordcom').val(obj.MRN);	
