@@ -219,7 +219,7 @@ $(document).ready(function(){
 					<div class="panel-body jqgrid_detail_dose">
 						<div>
 							<label class="oe_phar_label">Dose</label>
-							<div class="input-group oe_phar_div">
+							<div class="input-group oe_phar_div" style="width: 100%;min-width: 200px;">
 							<select id="dosage_phar_`+row_id+`" class="form-control input-sm" name="dosage" style="width: 100%;min-width: 200px;" optid="`+row_id+`">
 							</select>
 							</div>
@@ -227,7 +227,7 @@ $(document).ready(function(){
 						</div>
 						<div>
 							<label class="oe_phar_label">Frequency</label>
-							<div class="input-group oe_phar_div">
+							<div class="input-group oe_phar_div" style="width: 100%;min-width: 200px;">
 							<select id="frequency_phar_`+row_id+`" class="form-control input-sm" name="frequency" style="width: 100%;min-width: 200px;" optid="`+row_id+`">
 							</select>
 							</div>
@@ -235,7 +235,7 @@ $(document).ready(function(){
 						</div>
 						<div>
 							<label class="oe_phar_label">Instruction</label>
-							<div class="input-group oe_phar_div">
+							<div class="input-group oe_phar_div" style="width: 100%;min-width: 200px;">
 							<select id="instruction_phar_`+row_id+`" class="form-control input-sm" name="instruction" style="width: 100%;min-width: 200px;" optid="`+row_id+`">
 							</select>
 							</div>
@@ -243,7 +243,7 @@ $(document).ready(function(){
 						</div>
 						<div>
 							<label class="oe_phar_label">Indicator</label>
-							<div class="input-group oe_phar_div">
+							<div class="input-group oe_phar_div" style="width: 100%;min-width: 200px;">
 							<select id="drugindicator_phar_`+row_id+`" class="form-control input-sm" name="drugindicator" style="width: 100%;min-width: 200px;" optid="`+row_id+`">
 							</select>
 							</div>
