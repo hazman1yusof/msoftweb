@@ -164,7 +164,7 @@ class DoctornoteController extends defaultController
         $data_send['pkgdept_dflt'] = session('deptcode');
         $data_send['othdept_dflt'] = session('deptcode');
 
-        return view('patientcare.doctornote');
+        return view('patientcare.doctornote',$data_send);
     }
     
     public function get_table_doctornote($request){
