@@ -59,10 +59,10 @@ $(document).ready(function () {
 				{ label: 'Description', name: 'description', width: 40, classes: 'pointer', canSearch: true, or_search: true }
             ],
             urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A'],
-				filterCol : ['a.TYPE'],
-				filterVal : [$('#Class2').val()],
+				filterCol:['a.compcode','a.recstatus','a.TYPE'],
+				filterVal:['session.compcode','ACTIVE',$('#Class2').val()],
+				// filterCol : ['a.TYPE'],
+				// filterVal : [$('#Class2').val()],
 
 			},
             onSelectRow: function () {
@@ -134,8 +134,8 @@ $(document).ready(function () {
 				// $("#grid_session").jqGrid ('setGridWidth', Math.floor($("#grid_session_c")[0].offsetWidth-$("#grid_session_c")[0].offsetLeft));
 
                 var type = $('#Class2').val();
-				dialog_name.urlParam.filterCol = ['a.TYPE'];
-				dialog_name.urlParam.filterVal = [type];
+				dialog_name.urlParam.filterCol = ['a.compcode','a.recstatus','a.TYPE'];
+				dialog_name.urlParam.filterVal = ['session.compcode','ACTIVE',type];
 			},
 			close: function () {
 				
