@@ -154,8 +154,8 @@ class DoctornoteController extends defaultController
         $data_send['ordcomtt_oth'] = $ordcomtt_oth->pvalue1;
         $data_send['ordcomtt_pkg'] = $ordcomtt_pkg->pvalue1;
 
-        $data_send['phardept_dflt'] = session('deptcode');
-        $data_send['dispdept_dflt'] = session('deptcode');
+        $data_send['phardept_dflt'] = $ordcomtt_phar->pvalue2;
+        $data_send['dispdept_dflt'] = $ordcomtt_phar->pvalue2;
         $data_send['labdept_dflt'] = $ordcomtt_lab->pvalue2;
         $data_send['raddept_dflt'] = $ordcomtt_rad->pvalue2;
         $data_send['physdept_dflt'] = $ordcomtt_phys->pvalue2;
