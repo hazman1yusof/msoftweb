@@ -161,9 +161,9 @@ class DoctornoteController extends defaultController
         $data_send['physdept_dflt'] = $ordcomtt_phys->pvalue2;
         $data_send['rehabdept_dflt'] = $ordcomtt_rehab->pvalue2;
         $data_send['dietdept_dflt'] = $ordcomtt_diet->pvalue2;
-        $data_send['pkgdept_dflt'] = $dept->deptcode;
+        $data_send['pkgdept_dflt'] = session('deptcode');
         $data_send['othdept_dflt'] = session('deptcode');
-        
+
         return view('patientcare.doctornote');
     }
     
