@@ -177,6 +177,7 @@ $(document).ready(function(){
 			}
 		},
 		subGridBeforeExpand(pID, id){
+			return false;
 			if($("#jqGrid_phar").data('lastselrow')==id){
 				return true;
 			}else if($('#jqGrid_phar_iladd').hasClass('ui-disabled')){
