@@ -3706,7 +3706,7 @@ class OrdcomController extends defaultController
 
     public function get_itemcode_price_check(Request $request){
         // $deptcode = $request->deptcode;
-        // $priceuse = $request->price;
+        $priceuse = $request->price;
         // $entrydate = $request->entrydate;
         if($request->from == 'chgcode_oth'){
             $chgcode = $request->filterVal[0];
@@ -3717,20 +3717,20 @@ class OrdcomController extends defaultController
         // $dfee = $request->dfee;
         // $billtype_obj = $this->billtype_obj_get($request);
 
-        // switch ($priceuse) {
-        //     case 'PRICE1':
-        //         $cp_fld = 'amt1';
-        //         break;
-        //     case 'PRICE2':
-        //         $cp_fld = 'amt2';
-        //         break;
-        //     case 'PRICE3':
-        //         $cp_fld = 'amt3';
-        //         break;
-        //     default:
-        //         $cp_fld = 'costprice';
-        //         break;
-        // }
+        switch ($priceuse) {
+            case 'PRICE1':
+                $cp_fld = 'amt1';
+                break;
+            case 'PRICE2':
+                $cp_fld = 'amt2';
+                break;
+            case 'PRICE3':
+                $cp_fld = 'amt3';
+                break;
+            default:
+                $cp_fld = 'costprice';
+                break;
+        }
 
         $table = DB::table('hisdb.chgmast as cm')
                         ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
