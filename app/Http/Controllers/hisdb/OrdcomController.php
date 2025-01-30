@@ -3717,20 +3717,20 @@ class OrdcomController extends defaultController
         // $dfee = $request->dfee;
         // $billtype_obj = $this->billtype_obj_get($request);
 
-        switch ($priceuse) {
-            case 'PRICE1':
-                $cp_fld = 'amt1';
-                break;
-            case 'PRICE2':
-                $cp_fld = 'amt2';
-                break;
-            case 'PRICE3':
-                $cp_fld = 'amt3';
-                break;
-            default:
-                $cp_fld = 'costprice';
-                break;
-        }
+        // switch ($priceuse) {
+        //     case 'PRICE1':
+        //         $cp_fld = 'amt1';
+        //         break;
+        //     case 'PRICE2':
+        //         $cp_fld = 'amt2';
+        //         break;
+        //     case 'PRICE3':
+        //         $cp_fld = 'amt3';
+        //         break;
+        //     default:
+        //         $cp_fld = 'costprice';
+        //         break;
+        // }
 
         $table = DB::table('hisdb.chgmast as cm')
                         ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
@@ -3780,7 +3780,7 @@ class OrdcomController extends defaultController
 
         $rows = $table->get();
 
-        $array_return = [];
+        // $array_return = [];
         // foreach ($rows as $key => $value) {
         //     $billtype_amt_percent = $this->get_billtype_amt_percent($billtype_obj,$value);
         //     $value->billty_amount = $billtype_amt_percent->amount; 
@@ -3809,7 +3809,7 @@ class OrdcomController extends defaultController
         // }
 
         $responce = new stdClass();
-        $responce->rows = $array_return;
+        $responce->rows = $rows;
         $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
