@@ -111,37 +111,60 @@ class RequestForController extends defaultController
         DB::beginTransaction();
         
         try {
+
+            if($request->req_type == 'WARD'){
+                DB::table('hisdb.episode')
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno)
+                    ->where('compcode','=',session('compcode'))
+                    ->update([
+                        'ward' => $request->ReqFor_ward,
+                        'bed' => $request->ReqFor_bed,
+                        'bedtype' => $request->ReqFor_bedtype,
+                        'room' => $request->ReqFor_room,
+                        'epistycode' => 'IP',
+                        // 'reff_ed' => '1',
+                        'lastuser'  => strtoupper($request->ot_lastuser),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+
+                DB::table('hisdb.queue') 
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno)
+                    ->where('compcode','=',session('compcode'))
+                    ->update([
+                        'bed' => $request->ReqFor_bed,
+                        'bedtype' => $request->ReqFor_bedtype,
+                        'room' => $request->ReqFor_room,
+                        'epistycode' => 'IP',
+                        'chggroup' => 'IP',
+                        'lastuser'  => strtoupper($request->ot_lastuser),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+                    
+            }else if($request->req_type == 'OT'){
             
-            DB::table('hisdb.pat_otbook')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno,
-                    'req_type' => $request->req_type,
-                    'op_date' => $request->op_date,
-                    'oper_type' => $request->oper_type,
-                    'adm_type' => $request->adm_type,
-                    'anaesthetist' => $request->anaesthetist,
-                    'diagnosis' => $request->ot_diagnosis,
-                    'diagnosedby' => strtoupper($request->ot_diagnosedby),
-                    'remarks' => $request->ot_remarks,
-                    'doctorname'  => strtoupper($request->ot_doctorname),
-                    'adduser'  => strtoupper($request->ot_lastuser),
-                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'lastuser' => strtoupper($request->ot_lastuser),
-                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'computerid' => session('computerid'),
-                ]);
-            
-            DB::table('hisdb.episode')
-                ->where('mrn','=',$request->mrn)
-                ->where('episno','=',$request->episno)
-                ->where('compcode','=',session('compcode'))
-                ->update([
-                    'reff_ed' => '1',
-                    'lastuser'  => strtoupper($request->ot_lastuser),
-                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                ]);
+                DB::table('hisdb.pat_otbook')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'req_type' => $request->req_type,
+                        'op_date' => $request->op_date,
+                        'oper_type' => $request->oper_type,
+                        'adm_type' => $request->adm_type,
+                        'anaesthetist' => $request->anaesthetist,
+                        'diagnosis' => $request->ot_diagnosis,
+                        'diagnosedby' => strtoupper($request->ot_diagnosedby),
+                        'remarks' => $request->ot_remarks,
+                        'doctorname'  => strtoupper($request->ot_doctorname),
+                        'adduser'  => strtoupper($request->ot_lastuser),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser' => strtoupper($request->ot_lastuser),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            }
             
             DB::commit();
             

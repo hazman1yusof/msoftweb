@@ -43,6 +43,9 @@ $(document).ready(function (){
                 $('#cancel_otbookReqFor').data('oper','edit');
                 $("#cancel_otbookReqFor").click();
                 populate_otbookReqFor_getdata();
+                refreshGrid("#jqGrid", urlParam);
+                $('#calendar').fullCalendar( 'refetchEventSources', 'doctornote_event' );
+                SmoothScrollToTop();
             });
         }else{
             enableForm('#formOTBookReqFor');
@@ -256,6 +259,66 @@ $(document).ready(function (){
     // });
     
     // $tabs.first().tab('change tab', 'otbookReqFor');
+
+    var accomodation_table = $('#accomodation_table').DataTable( {
+            "ajax": "pat_mast/get_entry?action=accomodation_table",
+            "paging":false,
+            "columns": [
+                {'data': 'desc_bt'},
+                {'data': 'bednum'},
+                {'data': 'desc_d'},
+                {'data': 'room'},
+                {'data': 'occup'},
+                {'data': 'bedtype'},
+                {'data': 'ward'},
+            ],
+            order: [[5, 'asc'],[6, 'asc']],
+            columnDefs: [ {
+                targets: [0,5,6],
+                visible: false
+            } ],
+            rowGroup: {
+                dataSrc: [ "desc_bt" ],
+                startRender: function ( rows, group ) {
+                    return group + `<i class="arrow fa fa-angle-double-down"></i>`;
+                }
+            },
+            "createdRow": function( row, data, dataIndex ) {
+                $(row).addClass( data['desc_bt'] );
+                if(data.occup != 'VACANT'){
+                    $(row).addClass('disabled red');
+                }
+            },
+            "initComplete": function(settings, json) {
+                let opt_bt = opt_ward = "";
+
+                $('input[type="radio"][name="search_bed"]').on('click',function(){
+                    let seltype = $(this).data('seltype');
+                    if(seltype == 'bt'){
+                        $("#search_bed_select_bed_dept").show();
+                        $("#search_bed_select_ward").hide();
+                    }else{
+                        $("#search_bed_select_bed_dept").hide();
+                        $("#search_bed_select_ward").show();
+                    }
+                });
+
+                $("select[name='search_bed_select']").on('change',function(){
+                    // accomodation_table.columns( $(this).data('dtbid') ).search( this.value ).draw();
+                    accomodation_table.search( this.value ).draw();
+                });
+            }
+        } );
+
+    $('#accomodation_table tbody').on('click', 'tr', function () {
+        let rowdata = accomodation_table.row(this).data();
+        $('#ReqFor_bed').val(rowdata.bednum);
+        $('#ReqFor_ward').val(rowdata.ward);
+        $('#ReqFor_room').val(rowdata.room);
+        $('#ReqFor_bedtype').val(rowdata.bedtype);
+        $('#accomodation_table tbody tr').removeClass('blue');
+        $(this).addClass('blue');
+    });
     
 });
 
@@ -848,6 +911,12 @@ function autoinsert_rowdata(form,rowData){
 }
 
 function saveForm_otbookReqFor(callback){
+
+    var result = confirm("This patient will be transfer to ward : "+$('#ReqFor_bed').val()+"");
+    if(result != true){
+        return 0;
+    }
+
     var saveParam = {
         action: 'save_otbook',
         oper: $("#cancel_otbookReqFor").data('oper'),

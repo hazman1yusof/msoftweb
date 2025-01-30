@@ -2208,11 +2208,13 @@ function closealltab(except){
 	});
 }
 
-function SmoothScrollToTop(){
+function SmoothScrollToTop(callback){
   $("html, body").stop().animate({
   		scrollTop:0
   }, 500, 'swing', function() {
-
+	  if (callback !== undefined) {
+	    callback();
+	  }
   });
 }
 

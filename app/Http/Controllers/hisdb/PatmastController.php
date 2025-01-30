@@ -2334,11 +2334,11 @@ class PatmastController extends defaultController
                 //epistycode = IP if epis_type  = IP @ DP
                 //epistycode = OP if epis_type  = OP @ OTC
 
-            // if($epis_type == "IP" || $epis_type == "DP"){
-            //     $epistycode_q = "IP";
-            // }else{
-            //     $epistycode_q = "OP";
-            // }
+            if($epis_type == "IP" || $epis_type == "DP"){
+                $epistycode_q = "IP";
+            }else{
+                $epistycode_q = "OP";
+            }
 
             $queueAll_obj=DB::table('hisdb.queue')
                 ->where('mrn','=',$epis_mrn)
