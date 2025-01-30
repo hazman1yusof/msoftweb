@@ -3715,7 +3715,7 @@ class OrdcomController extends defaultController
         }
         $uom = $request->uom;
         $dfee = $request->dfee;
-        $billtype_obj = $this->billtype_obj_get($request);
+        // $billtype_obj = $this->billtype_obj_get($request);
 
         switch ($priceuse) {
             case 'PRICE1':
@@ -3781,32 +3781,32 @@ class OrdcomController extends defaultController
         $rows = $table->get();
 
         $array_return = [];
-        foreach ($rows as $key => $value) {
-            $billtype_amt_percent = $this->get_billtype_amt_percent($billtype_obj,$value);
-            $value->billty_amount = $billtype_amt_percent->amount; 
-            $value->billty_percent = $billtype_amt_percent->percent_;
+        // foreach ($rows as $key => $value) {
+        //     $billtype_amt_percent = $this->get_billtype_amt_percent($billtype_obj,$value);
+        //     $value->billty_amount = $billtype_amt_percent->amount; 
+        //     $value->billty_percent = $billtype_amt_percent->percent_;
 
-            $chgprice_obj = DB::table('hisdb.chgprice as cp')
-                ->select('cp.idno',$cp_fld,'cp.optax','tm.rate','cp.chgcode')
-                ->leftJoin('hisdb.taxmast as tm', 'cp.optax', '=', 'tm.taxcode')
-                ->where('cp.compcode', '=', session('compcode'))
-                ->where('cp.chgcode', '=', $value->chgcode);
-                if(!$dfee){
-                    $chgprice_obj = $chgprice_obj->where('cp.uom', '=', $value->uom);
-                }
-            $chgprice_obj = $chgprice_obj->whereDate('cp.effdate', '<=', $entrydate)
-                ->orderBy('cp.effdate','desc');
+        //     $chgprice_obj = DB::table('hisdb.chgprice as cp')
+        //         ->select('cp.idno',$cp_fld,'cp.optax','tm.rate','cp.chgcode')
+        //         ->leftJoin('hisdb.taxmast as tm', 'cp.optax', '=', 'tm.taxcode')
+        //         ->where('cp.compcode', '=', session('compcode'))
+        //         ->where('cp.chgcode', '=', $value->chgcode);
+        //         if(!$dfee){
+        //             $chgprice_obj = $chgprice_obj->where('cp.uom', '=', $value->uom);
+        //         }
+        //     $chgprice_obj = $chgprice_obj->whereDate('cp.effdate', '<=', $entrydate)
+        //         ->orderBy('cp.effdate','desc');
 
-            if($chgprice_obj->exists()){
-                $chgprice_obj = $chgprice_obj->first();
+        //     if($chgprice_obj->exists()){
+        //         $chgprice_obj = $chgprice_obj->first();
 
-                if($value->chgcode == $chgprice_obj->chgcode && $value->idno != $chgprice_obj->idno){
-                    unset($rows[$key]);
-                    continue;
-                }
-            }
-            array_push($array_return,$value);
-        }
+        //         if($value->chgcode == $chgprice_obj->chgcode && $value->idno != $chgprice_obj->idno){
+        //             unset($rows[$key]);
+        //             continue;
+        //         }
+        //     }
+        //     array_push($array_return,$value);
+        // }
 
         $responce = new stdClass();
         $responce->rows = $array_return;
@@ -3856,9 +3856,22 @@ class OrdcomController extends defaultController
     public function billtype_obj_get(Request $request){
         $billtype_obj = new stdClass();
 
-        $billtymst = DB::table('hisdb.billtymst')
+        if(empty($request->billtype)){
+            $episode = DB::table('hisdb.episode')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn',$request->mrn)
+                            ->where('episno',$request->episno)
+                            ->first();
+
+            $billtymst = DB::table('hisdb.billtymst')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('billtype','=',$episode->billtype);
+        }else{
+
+            $billtymst = DB::table('hisdb.billtymst')
                         ->where('compcode','=',session('compcode'))
                         ->where('billtype','=',$request->billtype);
+        }
 
         if($billtymst->exists()){
             $billtype_obj->billtype = $billtymst->first();
