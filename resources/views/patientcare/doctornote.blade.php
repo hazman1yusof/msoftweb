@@ -54,6 +54,7 @@
     <input id="user_dept" name="user_dept" value="{{ Auth::user()->dept }}" type="hidden">
     <input id="sel_date" name="sel_date" value="{{ \Carbon\Carbon::now()->toDateString() }}" type="hidden">
     <input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
+    <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
 
     <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="userfile_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_userfile" >
