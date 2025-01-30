@@ -190,7 +190,7 @@ $(document).ready(function(){
 	       	var subgrid_table_id;
 	       	subgrid_table_id = subgrid_id+"_t";
 	       	$("#"+subgrid_id).html(`
-		       	<div id='jqgrid_detail_phar_`+row_id+`' class="panel panel-default jqgrid_detail" style="float:left;">
+		       	<div id='jqgrid_detail_phar_`+row_id+`' class="panel panel-default jqgrid_detail" style="float:left;width:50%">
 					<div class="panel-heading">
 						<b><span>Chgcode </span>:<span class="label_d" id="jqgrid_detail_phar_chgcode_`+row_id+`"></span></b>
 						<b><span>Description </span>:<span class="label_d" id="jqgrid_detail_phar_chgcode_desc_`+row_id+`"></span></b>
@@ -212,7 +212,7 @@ $(document).ready(function(){
 						</div>
 					</div>
 				</div>
-				<div id='jqgrid_detail_phar2_`+row_id+`' class="panel panel-default jqgrid_detail" style="float:right;">
+				<div id='jqgrid_detail_phar2_`+row_id+`' class="panel panel-default jqgrid_detail" style="float:right;width:50%">
 					<div class="panel-heading">
 						<b>Dosage</b>
 					</div>
