@@ -517,9 +517,9 @@ var myEditOptions_phar_edit = {
 	        },function(data,self,id,fail){
 	        	if(data.rows != undefined && data.rows.length>0){
 	        		var retdata = data.rows[0];
-					$("#jqGrid_phar input[name='billtypeperct']").val(retdata['billty_percent']);
-					$("#jqGrid_phar input[name='billtypeamt']").val(retdata['billty_amount']);
-					$("#jqGrid_phar #"+rowid+"_unitprce").val(retdata['price']);
+					// $("#jqGrid_phar input[name='billtypeperct']").val(retdata['billty_percent']);
+					// $("#jqGrid_phar input[name='billtypeamt']").val(retdata['billty_amount']);
+					// $("#jqGrid_phar #"+rowid+"_unitprce").val(retdata['price']);
 					write_detail_phar('#jqgrid_detail_phar_unitprice',retdata['price'],self.id_optid);
 					write_detail_phar('#jqgrid_detail_phar_chgcode',retdata['chgcode'],self.id_optid);
 					write_detail_phar('#jqgrid_detail_phar_chgcode_desc',retdata['description'],self.id_optid);
