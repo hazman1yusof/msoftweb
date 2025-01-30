@@ -212,7 +212,7 @@ $(document).ready(function(){
 						</div>
 					</div>
 				</div>
-				<div id='jqgrid_detail_phar2_`+row_id+`' class="panel panel-default jqgrid_detail" style="float:right;width:50%">
+				<div id='jqgrid_detail_phar2_`+row_id+`' class="panel panel-default jqgrid_detail" style="float:right;width:49%">
 					<div class="panel-heading">
 						<b>Dosage</b>
 					</div>
@@ -220,7 +220,7 @@ $(document).ready(function(){
 						<div>
 							<label class="oe_phar_label">Dose</label>
 							<div class="input-group oe_phar_div">
-							<select id="dosage_phar_`+row_id+`" class="form-control input-sm" name="dosage" style="width: 100%" optid="`+row_id+`">
+							<select id="dosage_phar_`+row_id+`" class="form-control input-sm" name="dosage" style="width: 100%;min-width: 200px;" optid="`+row_id+`">
 							</select>
 							</div>
 							<input type="hidden" id="dosage_phar_code_`+row_id+`">
@@ -228,7 +228,7 @@ $(document).ready(function(){
 						<div>
 							<label class="oe_phar_label">Frequency</label>
 							<div class="input-group oe_phar_div">
-							<select id="frequency_phar_`+row_id+`" class="form-control input-sm" name="frequency" style="width: 100%" optid="`+row_id+`">
+							<select id="frequency_phar_`+row_id+`" class="form-control input-sm" name="frequency" style="width: 100%;min-width: 200px;" optid="`+row_id+`">
 							</select>
 							</div>
 							<input type="hidden" id="frequency_phar_code_`+row_id+`">
@@ -236,7 +236,7 @@ $(document).ready(function(){
 						<div>
 							<label class="oe_phar_label">Instruction</label>
 							<div class="input-group oe_phar_div">
-							<select id="instruction_phar_`+row_id+`" class="form-control input-sm" name="instruction" style="width: 100%" optid="`+row_id+`">
+							<select id="instruction_phar_`+row_id+`" class="form-control input-sm" name="instruction" style="width: 100%;min-width: 200px;" optid="`+row_id+`">
 							</select>
 							</div>
 							<input type="hidden" id="instruction_phar_code_`+row_id+`">
@@ -244,7 +244,7 @@ $(document).ready(function(){
 						<div>
 							<label class="oe_phar_label">Indicator</label>
 							<div class="input-group oe_phar_div">
-							<select id="drugindicator_phar_`+row_id+`" class="form-control input-sm" name="drugindicator" style="width: 100%" optid="`+row_id+`">
+							<select id="drugindicator_phar_`+row_id+`" class="form-control input-sm" name="drugindicator" style="width: 100%;min-width: 200px;" optid="`+row_id+`">
 							</select>
 							</div>
 							<input type="hidden" id="drugindicator_phar_code_`+row_id+`">
