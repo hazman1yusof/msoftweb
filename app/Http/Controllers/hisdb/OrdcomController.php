@@ -3705,16 +3705,16 @@ class OrdcomController extends defaultController
     }
 
     public function get_itemcode_price_check(Request $request){
-        $deptcode = $request->deptcode;
-        $priceuse = $request->price;
-        $entrydate = $request->entrydate;
+        // $deptcode = $request->deptcode;
+        // $priceuse = $request->price;
+        // $entrydate = $request->entrydate;
         if($request->from == 'chgcode_oth'){
             $chgcode = $request->filterVal[0];
         }else{
             $chgcode = $request->filterVal[1];
         }
-        $uom = $request->uom;
-        $dfee = $request->dfee;
+        // $uom = $request->uom;
+        // $dfee = $request->dfee;
         // $billtype_obj = $this->billtype_obj_get($request);
 
         switch ($priceuse) {
@@ -3737,46 +3737,46 @@ class OrdcomController extends defaultController
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE')
                         ->where('cm.chgcode','=',$chgcode);
-        if(!$dfee){
-            $table = $table->where('cm.uom','=',$uom);
-        }
+        // if(!$dfee){
+        //     $table = $table->where('cm.uom','=',$uom);
+        // }
 
-        $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
-                            $join = $join->where('cp.compcode', '=', session('compcode'));
-                            $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
-                            $join = $join->on('cp.uom', '=', 'cm.uom');
-                            if($request->from != 'chgcode_dfee'){
-                                $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
-                            }
-                            $join = $join->where('cp.effdate', '<=', $entrydate);
-                        });
+        // $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
+        //                     $join = $join->where('cp.compcode', '=', session('compcode'));
+        //                     $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
+        //                     $join = $join->on('cp.uom', '=', 'cm.uom');
+        //                     if($request->from != 'chgcode_dfee'){
+        //                         $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+        //                     }
+        //                     $join = $join->where('cp.effdate', '<=', $entrydate);
+        //                 });
 
-        $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
-                            $join = $join->on('st.itemcode', '=', 'cm.chgcode');
-                            $join = $join->on('st.uomcode', '=', 'cm.uom');
-                            $join = $join->where('st.compcode', '=', session('compcode'));
-                            $join = $join->where('st.unit', '=', session('unit'));
-                            $join = $join->where('st.deptcode', '=', $deptcode);
-                            $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
-                        });
+        // $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
+        //                     $join = $join->on('st.itemcode', '=', 'cm.chgcode');
+        //                     $join = $join->on('st.uomcode', '=', 'cm.uom');
+        //                     $join = $join->where('st.compcode', '=', session('compcode'));
+        //                     $join = $join->where('st.unit', '=', session('unit'));
+        //                     $join = $join->where('st.deptcode', '=', $deptcode);
+        //                     $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+        //                 });
 
-        $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
-                            $join = $join->where('pt.compcode', '=', session('compcode'));
-                            $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
-                            $join = $join->on('pt.uomcode', '=', 'cm.uom');
-                            $join = $join->where('pt.unit', '=', session('unit'));
-                        });
+        // $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
+        //                     $join = $join->where('pt.compcode', '=', session('compcode'));
+        //                     $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
+        //                     $join = $join->on('pt.uomcode', '=', 'cm.uom');
+        //                     $join = $join->where('pt.unit', '=', session('unit'));
+        //                 });
 
-        $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
-                            $join = $join->where('cp.compcode', '=', session('compcode'));
-                            $join = $join->on('cp.optax', '=', 'tm.taxcode');
-                        });
+        // $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
+        //                     $join = $join->where('cp.compcode', '=', session('compcode'));
+        //                     $join = $join->on('cp.optax', '=', 'tm.taxcode');
+        //                 });
 
-        $table = $table->join('material.uom as uom', function($join){
-                            $join = $join->on('uom.uomcode', '=', 'cm.uom')
-                                        ->where('uom.compcode', '=', session('compcode'))
-                                        ->where('uom.recstatus','=','ACTIVE');
-                    });
+        // $table = $table->join('material.uom as uom', function($join){
+        //                     $join = $join->on('uom.uomcode', '=', 'cm.uom')
+        //                                 ->where('uom.compcode', '=', session('compcode'))
+        //                                 ->where('uom.recstatus','=','ACTIVE');
+        //             });
 
         $rows = $table->get();
 
