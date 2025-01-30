@@ -1619,6 +1619,7 @@ var dropdown_instruction_phar = new ordropdown("#jqGrid_phar select[name=instruc
 });
 
 function needsubgrid(){
+	return true;
 	if($('#ordcom_phase').val() == '2'){
 		return false;
 	}else{
