@@ -111,53 +111,56 @@ $(document).ready(function () {
 	    },
 
 	});
-
-	$('#tab_phys').on('show.bs.collapse', function () {
+	
+	$('#tab_phys').on('show.bs.collapse', function (){
 		return check_if_user_selected();
 	})
-
-	$('#tab_phys').on('shown.bs.collapse', function () {
+	
+	$('#tab_phys').on('shown.bs.collapse', function (){
 		SmoothScrollTo('#tab_phys', 300);
-
-	    var postobj={
-	    	_token : $('#_token').val(),
-	    	mrn:$('#mrn_phys').val(),
-	    	episno:$("#episno_phys").val()
-	    };
-
-		var dateParam_phys={
-			action:'get_table_date_phys',
-			type:'Current',
-			mrn:$('#mrn_phys').val(),
-			episno:$("#episno_phys").val(),
-			date:$('#sel_date').val()
-		}
-
-	    phys_date_tbl.ajax.url( "./ptcare_phys/table?"+$.param(dateParam_phys) ).load();
-
-		var phys_ncase_urlparam={
-			action:'get_table_phys_ncase'
+		
+		var postobj = {
+			_token: $('#_token').val(),
+			mrn: $('#mrn_phys').val(),
+			episno: $("#episno_phys").val()
 		};
-	    var postobj={
-	    	_token : $('#_token').val(),
-			mrn:$('#mrn_phys').val(),
-	    };
-
-		$.post( "./ptcare_phys/form?"+$.param(phys_ncase_urlparam), $.param(postobj), function( data ) {
-	        
-	    },'json').fail(function(data) {
-	        alert('there is an error');
-	    }).done(function(data){
-	    	if(!$.isEmptyObject(data)){
+		
+		var dateParam_phys = {
+			action: 'get_table_date_phys',
+			type: 'Current',
+			mrn: $('#mrn_phys').val(),
+			episno: $("#episno_phys").val(),
+			date: $('#sel_date').val()
+		}
+		
+		phys_date_tbl.ajax.url("./ptcare_phys/table?"+$.param(dateParam_phys)).load();
+		
+		var phys_ncase_urlparam = {
+			action: 'get_table_phys_ncase'
+		};
+		
+		var postobj = {
+			_token: $('#_token').val(),
+			mrn: $('#mrn_phys').val(),
+			episno: $("#episno_phys").val(),
+		};
+		
+		$.post("./ptcare_phys/form?"+$.param(phys_ncase_urlparam), $.param(postobj), function (data){
+			
+		},'json').fail(function (data){
+			alert('there is an error');
+		}).done(function (data){
+			if(!$.isEmptyObject(data.patrehab_ncase)){
 				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehab_ncase);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);
 				button_state_phys_ncase('edit');
-	        }else{
+			}else{
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);
 				button_state_phys_ncase('add');
-	        }
-
+			}
 		});
 	});
-
+	
 	// $('input.hidden[type=checkbox]').change(function(){
 	// 	if($(this).val('Rehabilitation')){
 	// 		if($(this).is(':checked')){
