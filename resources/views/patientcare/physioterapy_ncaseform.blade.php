@@ -1245,5 +1245,66 @@
 				</div>
 			</div>
 		</div>
+		
+		<div class="ui segments">
+			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_findings">
+				<i class="angle down icon large"></i>
+				<i class="angle up icon large"></i> 
+				<h4 style="text-align: center; margin-top: 3px;">RELEVANT FINDING(S)</h4>
+			</div>
+			<div class="ui segment collapse" id="phys_findings">
+				<div class="ui form">
+					<div class="field"><textarea rows="6" cols="50" name="findings"></textarea></div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="ui segments">
+			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_treatment">
+				<i class="angle down icon large"></i>
+				<i class="angle up icon large"></i> 
+				<h4 style="text-align: center; margin-top: 3px;">TREATMENT</h4>
+			</div>
+			<div class="ui segment collapse" id="phys_treatment">
+				<div class="ui form ui grid">
+					<div class="five wide column grouped fields">
+						<div class="sixteen wide column field">
+							<div class="ui checkbox">
+								<input type="checkbox" name="tr_physio" id="Physio_tr_physio" value="1">
+								<label for="Physio_tr_physio">Physiotherapy</label>
+							</div>
+						</div>
+						<div class="sixteen wide column field">
+							<div class="ui checkbox">
+								<input type="checkbox" name="tr_occuptherapy" id="Physio_tr_occuptherapy" value="1">
+								<label for="Physio_tr_occuptherapy">Occupational Therapy</label>
+							</div>
+						</div>
+					</div>
+					<div class="five wide column grouped fields">
+						<div class="sixteen wide column field">
+							<div class="ui checkbox">
+								<input type="checkbox" name="tr_respiphysio" id="Physio_tr_respiphysio" value="1">
+								<label for="Physio_tr_respiphysio">Respiratory Physiotherapy</label>
+							</div>
+						</div>
+						<div class="sixteen wide column field">
+							<div class="ui checkbox">
+								<input type="checkbox" name="tr_neuro" id="Physio_tr_neuro" value="1">
+								<label for="Physio_tr_neuro">Neuro Rehab</label>
+							</div>
+						</div>
+					</div>
+					<div class="five wide column grouped fields">
+						<div class="sixteen wide column field">
+							<div class="ui checkbox">
+								<input type="checkbox" name="tr_splint" id="Physio_tr_splint" value="1">
+								<label for="Physio_tr_splint">Splinting</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</form>
 </div>
