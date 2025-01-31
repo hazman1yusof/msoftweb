@@ -1340,8 +1340,6 @@ function init_icd_but(){
 
 	$("#Dtext_"+unique).on('keyup',{unique:unique,gridname:gridname,urlParam:urlParam},onChange_btnicd);
 	$("#Dcol_"+unique).on('change',{unique:unique,gridname:gridname,urlParam:urlParam},onChange_btnicd);
-
-
 }
 
 function init_mma_but(){
@@ -1407,8 +1405,6 @@ function init_mma_but(){
 
 	$("#Dtext_"+unique).on('keyup',{unique:unique,gridname:gridname,urlParam:urlParam},onChange_btnicd);
 	$("#Dcol_"+unique).on('change',{unique:unique,gridname:gridname,urlParam:urlParam},onChange_btnicd);
-
-
 }
 
 function othDialog_radio_btnicd(gridname,unique){

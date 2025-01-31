@@ -759,6 +759,7 @@ Route::post('/apptrsc/delEvent','hisdb\AppointmentController@delEvent');
 
 /////////// appointment resource - resource setup page ////////////////////////////////////
 Route::get('/apptrsc_rsc','hisdb\Appointment_rscController@show');
+Route::get('/apptrsc_rsc_iframe','hisdb\Appointment_rscController@apptrsc_rsc_iframe');
 Route::get('/apptrsc_rsc/table','hisdb\Appointment_rscController@table');
 Route::post('/apptrsc_rsc/form','hisdb\Appointment_rscController@form');
 Route::get('/apptrsc_rsc/getEvent','hisdb\Appointment_rscController@getEvent');

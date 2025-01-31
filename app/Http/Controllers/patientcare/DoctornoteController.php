@@ -102,6 +102,13 @@ class DoctornoteController extends defaultController
         // }
         $data_send = [];
 
+        $apptresrc = DB::table('hisdb.apptresrc')
+                        ->where('compcode',session('compcode'))
+                        ->where('TYPE','OT')
+                        ->first();
+                        
+        $data_send['apptresrc_reqfor'] = $apptresrc->resourcecode;
+
         $ordcomtt_phar = DB::table('sysdb.sysparam')
                     ->where('compcode',session('compcode'))
                     ->where('source','=','OE')
