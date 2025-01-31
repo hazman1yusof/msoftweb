@@ -285,11 +285,9 @@
             });
 
             function pat_name_f(cellvalue, options, rowObject){
-                console.log(rowObject);
                 return '<b>'+pad('0000000',rowObject.mrn,true)+'</b><br/>'+rowObject.pat_name;
             }
             function doctor_f(cellvalue, options, rowObject){
-                console.log(rowObject);
                 return '<b>'+rowObject.admdoctor+'</b><br/>'+rowObject.doctorname;
             }
 

@@ -29,7 +29,7 @@
                 <h2 class="h2">Patient List</h2>
                 <table id="jqGrid" class="table table-striped"></table>
                 <div id="jqGridPager"></div>
-                <a class="ui grey label left floated" style="margin-top: 8px;">
+                <a class="ui grey label left floated" style="margin-top: 8px;" id="refresh_main">
                     <i class="user icon"></i>
                     Patient : <span id="no_of_pat">0</span>
                 </a>

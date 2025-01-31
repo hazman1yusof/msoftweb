@@ -171,7 +171,7 @@
                                 <div class="sixteen wide column" id="ReqFor_Bed_div" style="display: none;">
                                     <div class="ui segments">
                                         <div class="ui secondary segment">BED</div>
-                                        <div class="ui segment">
+                                        <div class="ui segment" style="overflow:auto;height: 65vh;">
                                             <table id="accomodation_table" style="margin-left: 12px;" class="ui celled striped table" width="100%">
                                                 <thead>
                                                     <tr>

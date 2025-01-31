@@ -43,8 +43,7 @@ $(document).ready(function (){
                 $('#cancel_otbookReqFor').data('oper','edit');
                 $("#cancel_otbookReqFor").click();
                 populate_otbookReqFor_getdata();
-                refreshGrid("#jqGrid", urlParam);
-                $('#calendar').fullCalendar( 'refetchEventSources', 'doctornote_event' );
+                $('#refresh_main').click();
                 SmoothScrollToTop();
             });
         }else{

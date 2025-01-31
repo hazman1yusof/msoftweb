@@ -58,6 +58,11 @@ $(document).ready(function () {
 	    ]
 	});
 
+	$('#refresh_main').click(function(){
+		$('#calendar').fullCalendar( 'refetchEventSources', 'doctornote_event' );
+		refreshGrid("#jqGrid", urlParam);
+	});
+
 	var urlParam = {
 		action: 'get_table_doctornote',
 		url: './ptcare_doctornote/table',
