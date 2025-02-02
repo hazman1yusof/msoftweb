@@ -171,21 +171,7 @@
                                 <div class="sixteen wide column" id="ReqFor_Bed_div" style="display: none;">
                                     <div class="ui segments">
                                         <div class="ui secondary segment">BED</div>
-                                        <div class="ui segment" style="overflow:auto;height: 65vh;">
-                                            <table id="accomodation_table" style="margin-left: 12px;" class="ui celled striped table" width="100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th>desc_bt</th>
-                                                        <th>Bed Number</th>
-                                                        <th>Ward</th>
-                                                        <th>Room</th>
-                                                        <th>Status</th>
-                                                        <th>Bed Type</th>
-                                                        <th>Ward</th>
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
+                                        <iframe id='wardbook_iframe' src='' style="height: calc(65vh);width: 100%; border: none;overflow:auto;"></iframe>
                                     </div>
                                 </div>
                                 

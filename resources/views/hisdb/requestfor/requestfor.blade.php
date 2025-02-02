@@ -117,6 +117,29 @@
                                                                     </label>
                                                                 </div>
                                                             </div>
+
+                                                            <div class="form-row">
+                                                                <label class="col-md-3 control-label" for="req_type"></label>
+                                                                <div class="form-group col-md-2" style="margin-left: 2px;">
+                                                                    <label for="vs_bloodpressure">Bed</label>
+                                                                        <input id="ReqFor_bed" name="ReqFor_bed" type="text" class="form-control input-sm" rdonly readonly>
+                                                                </div>
+                                                                
+                                                                <div class="form-group col-md-2" style="margin-left: 2px;">
+                                                                    <label for="ReqFor_ward">Ward</label>
+                                                                        <input id="ReqFor_ward" name="ReqFor_ward" type="text" class="form-control input-sm" rdonly readonly>
+                                                                </div>
+                                                                
+                                                                <div class="form-group col-md-2" style="margin-left: 2px;">
+                                                                    <label for="ReqFor_room">Room</label>
+                                                                        <input id="ReqFor_room" name="ReqFor_room" type="text" class="form-control input-sm" rdonly readonly>
+                                                                </div>
+                                                                
+                                                                <div class="form-group col-md-2" style="margin-left: 2px;">
+                                                                    <label for="ReqFor_bedtype">Bed Type</label>
+                                                                        <input id="ReqFor_bedtype" name="ReqFor_bedtype" type="text" class="form-control input-sm" rdonly readonly>
+                                                                </div>
+                                                            </div>
                                                             
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label" for="ReqFor_op_date">Date for OP</label>
@@ -196,7 +219,7 @@
                                                     <div class="panel panel-info">
                                                         <div class="panel-heading text-center">BED</div>
                                                         <div class="panel-body">
-                                                        
+                                                            <iframe id='wardbook_iframe' src='' style="height: calc(65vh);width: 100%; border: none;overflow:auto;"></iframe>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -205,7 +228,7 @@
                                                     <div class="panel panel-info">
                                                         <div class="panel-heading text-center">OT</div>
                                                         <div class="panel-body">
-                                                        
+                                                            <iframe id='otbook_iframe' src='' style="height: calc(95vh);width: 100%; border: none;"></iframe>
                                                         </div>
                                                     </div>
                                                 </div>

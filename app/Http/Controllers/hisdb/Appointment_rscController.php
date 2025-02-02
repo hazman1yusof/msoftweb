@@ -73,6 +73,10 @@ class Appointment_rscController extends defaultController
         return view('hisdb.apptrsc.apptrsc_iframe',compact('apptresrc','apptresrc_all','op_unit','episode','patmast'));
     }
 
+    public function wardbook_iframe(Request $request){
+        return view('hisdb.apptrsc.wardbook_iframe');
+    }
+
     public function table(Request $request)
     {   
         switch($request->action){

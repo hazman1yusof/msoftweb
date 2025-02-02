@@ -141,29 +141,74 @@ class RequestForController extends defaultController
                         'lastuser'  => strtoupper($request->ot_lastuser),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
+
+                $episode = DB::table('hisdb.episode')
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno)
+                    ->first();
+
+                $patmast = DB::table('hisdb.pat_mast')
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->first();
+
+                if($bed_obj->exists()){
+                    DB::table('hisdb.bedalloc')
+                        ->insert([  
+                            'mrn' => $request->mrn,
+                            'episno' => $request->episno,
+                            'name' => $patmast->Name,
+                            'astatus' => "OCCUPIED",
+                            'ward' =>  $request->ReqFor_ward,
+                            'room' =>  $request->ReqFor_room,
+                            'bednum' =>  $request->ReqFor_bed,
+                            'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'astime' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'compcode' => session('compcode'),
+                            'adduser' => strtoupper(session('username')),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'computerid' => session('computerid')
+                        ]);
+
+                    DB::table('hisdb.bed')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('bednum','=',$request->ReqFor_bed)
+                        ->update([
+                            'occup' => "OCCUPIED",
+                            'mrn' => $request->mrn,
+                            'episno' => $request->episno,
+                            'name' => $patmast->Name,
+                            'admdoctor' => $episode->admdoctor,
+                            'upduser' => strtoupper(session('username')),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'computerid' => session('computerid'),
+                            'newic' => $patmast->Newic
+                        ]);
+                }
                     
             }else if($request->req_type == 'OT'){
             
-                DB::table('hisdb.pat_otbook')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn,
-                        'episno' => $request->episno,
-                        'req_type' => $request->req_type,
-                        'op_date' => $request->op_date,
-                        'oper_type' => $request->oper_type,
-                        'adm_type' => $request->adm_type,
-                        'anaesthetist' => $request->anaesthetist,
-                        'diagnosis' => $request->ot_diagnosis,
-                        'diagnosedby' => strtoupper($request->ot_diagnosedby),
-                        'remarks' => $request->ot_remarks,
-                        'doctorname'  => strtoupper($request->ot_doctorname),
-                        'adduser'  => strtoupper($request->ot_lastuser),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser' => strtoupper($request->ot_lastuser),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'computerid' => session('computerid'),
-                    ]);
+                // DB::table('hisdb.pat_otbook')
+                //     ->insert([
+                //         'compcode' => session('compcode'),
+                //         'mrn' => $request->mrn,
+                //         'episno' => $request->episno,
+                //         'req_type' => $request->req_type,
+                //         'op_date' => $request->op_date,
+                //         'oper_type' => $request->oper_type,
+                //         'adm_type' => $request->adm_type,
+                //         'anaesthetist' => $request->anaesthetist,
+                //         'diagnosis' => $request->ot_diagnosis,
+                //         'diagnosedby' => strtoupper($request->ot_diagnosedby),
+                //         'remarks' => $request->ot_remarks,
+                //         'doctorname'  => strtoupper($request->ot_doctorname),
+                //         'adduser'  => strtoupper($request->ot_lastuser),
+                //         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                //         'lastuser' => strtoupper($request->ot_lastuser),
+                //         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                //         'computerid' => session('computerid'),
+                //     ]);
             }
             
             DB::commit();

@@ -1250,11 +1250,31 @@ function toggle_reqfor_reqtype(){
     if(document.getElementById("req_type_ward").checked){
         $('#ReqFor_Bed_div').show();
         $('#ReqFor_OT_div').hide();
+        let newurl = './wardbook_iframe';
+        let cururl = $('iframe#wardbook_iframe').attr('src');
+
+        if(newurl != cururl){
+            $('iframe#wardbook_iframe').attr('src',newurl);
+        }
     }else if(document.getElementById("req_type_ot").checked){
         $('#ReqFor_Bed_div').hide();
         $('#ReqFor_OT_div').show();
+        let newurl = './apptrsc_rsc_iframe?mrn='+$('#mrn_requestFor').val()+'&episno='+$('#episno_requestFor').val();
+        let cururl = $('iframe#otbook_iframe').attr('src');
+
+        if(newurl != cururl){
+            $('iframe#otbook_iframe').attr('src',newurl);
+        }
     }
 }
+
+window.message_parent_wardbook = function(data) { // inside the iframe
+    console.log(data);
+    $('#ReqFor_bed').val(data.bednum);
+    $('#ReqFor_ward').val(data.ward);
+    $('#ReqFor_room').val(data.room);
+    $('#ReqFor_bedtype').val(data.bedtype);
+};
 
 // function calc_jq_height_onchange(jqgrid){
 //     let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');

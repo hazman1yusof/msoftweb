@@ -50,6 +50,11 @@ Route::post('/save_mykad_local','util\MycardController@save_mykad_local');
 /// announcement thingy ///
 Route::get('/announcement/generate','setup\AnnouncementController@generate');
 
+//// nocsrf page ///
+// Route::get('/menu_maintenance','setup\MenuMaintenanceController@show');
+// Route::get('/menu_maintenance/table','setup\MenuMaintenanceController@table');
+Route::post('/nocsrf','setup\nocsrfController@form');
+
 //// menu mainatenance page ///
 Route::get('/menu_maintenance','setup\MenuMaintenanceController@show');
 Route::get('/menu_maintenance/table','setup\MenuMaintenanceController@table');
@@ -760,6 +765,7 @@ Route::post('/apptrsc/delEvent','hisdb\AppointmentController@delEvent');
 /////////// appointment resource - resource setup page ////////////////////////////////////
 Route::get('/apptrsc_rsc','hisdb\Appointment_rscController@show');
 Route::get('/apptrsc_rsc_iframe','hisdb\Appointment_rscController@apptrsc_rsc_iframe');
+Route::get('/wardbook_iframe','hisdb\Appointment_rscController@wardbook_iframe');
 Route::get('/apptrsc_rsc/table','hisdb\Appointment_rscController@table');
 Route::post('/apptrsc_rsc/form','hisdb\Appointment_rscController@form');
 Route::get('/apptrsc_rsc/getEvent','hisdb\Appointment_rscController@getEvent');
