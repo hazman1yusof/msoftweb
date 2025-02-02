@@ -25,8 +25,6 @@ class nocsrfController extends defaultController
     }
 
     public function register_imsc(Request $request){
-        $compcode='10A';
-
         $patmast_req = (object)$request->patmast[0];
         $episode_req = (object)$request->episode[0];
         $epispayer_req = $request->epispayer;
@@ -38,7 +36,7 @@ class nocsrfController extends defaultController
 
         if(!empty($patmast_req->mrn)){
             $patmast = DB::table('hisdb.pat_mast')
-                            ->where('compcode',$compcode)
+                            ->where('compcode',$patmast_req->compcode)
                             ->where('mrn',$patmast_req->mrn);
 
             if(!$patmast->exists()){
@@ -52,7 +50,7 @@ class nocsrfController extends defaultController
 
         if(!empty($episode_req->mrn) && !empty($episode_req->episno)){
             $episode = DB::table('hisdb.episode')
-                            ->where('compcode',$compcode)
+                            ->where('compcode',$episode_req->compcode)
                             ->where('mrn',$episode_req->mrn)
                             ->where('episno',$episode_req->episno);
 
@@ -69,7 +67,7 @@ class nocsrfController extends defaultController
             $epispayer_obj = (object)$epispayer_obj;
             if(!empty($epispayer_obj->mrn) && !empty($epispayer_obj->episno) && !empty($epispayer_obj->lineno)){
                 $epispayer = DB::table('hisdb.epispayer')
-                                ->where('compcode',$compcode)
+                                ->where('compcode',$epispayer_obj->compcode)
                                 ->where('mrn',$epispayer_obj->mrn)
                                 ->where('episno',$epispayer_obj->episno)
                                 ->where('lineno',$epispayer_obj->lineno);
@@ -88,7 +86,7 @@ class nocsrfController extends defaultController
             $queue_obj = (object)$queue_obj;
             if(!empty($queue_obj->mrn) && !empty($queue_obj->episno) && !empty($queue_obj->queueno)){
                 $queue = DB::table('hisdb.queue')
-                                ->where('compcode',$compcode)
+                                ->where('compcode',$queue_obj->compcode)
                                 ->where('queueno',$queue_obj->queueno)
                                 ->where('mrn',$queue_obj->mrn)
                                 ->where('episno',$queue_obj->episno);
@@ -108,7 +106,7 @@ class nocsrfController extends defaultController
             $docalloc_obj = (object)$docalloc_obj;
             if(!empty($docalloc_obj->mrn) && !empty($docalloc_obj->episno) && !empty($docalloc_obj->allocno)){
                 $docalloc = DB::table('hisdb.docalloc')
-                                ->where('compcode',$compcode)
+                                ->where('compcode',$docalloc_obj->compcode)
                                 ->where('mrn',$docalloc_obj->mrn)
                                 ->where('episno',$docalloc_obj->episno)
                                 ->where('allocno',$docalloc_obj->allocno);
@@ -127,7 +125,7 @@ class nocsrfController extends defaultController
             $bedalloc_obj = (object)$bedalloc_obj;
             if(!empty($bedalloc_obj->mrn) && !empty($docalloc_obj->episno) && !empty($docalloc_obj->allocno)){
                 $bedalloc = DB::table('hisdb.bedalloc')
-                                ->where('compcode',$compcode)
+                                ->where('compcode',$bedalloc_obj->compcode)
                                 ->where('mrn',$bedalloc_obj->mrn)
                                 ->where('episno',$bedalloc_obj->episno)
                                 ->where('anum',$bedalloc_obj->anum);
@@ -146,7 +144,7 @@ class nocsrfController extends defaultController
             $doctor_obj = (object)$doctor_obj;
             if(!empty($doctor_obj->doctorcode)){
                 $doctor = DB::table('hisdb.doctor')
-                                ->where('compcode',$compcode)
+                                ->where('compcode',$doctor_obj->compcode)
                                 ->where('doctorcode',$doctor_obj->doctorcode);
 
                 if(!$doctor->exists()){
@@ -163,7 +161,7 @@ class nocsrfController extends defaultController
             $debtor_obj = (object)$debtor_obj;
             if(!empty($debtor_obj->debtorcode)){
                 $debtor = DB::table('debtor.debtormast')
-                                ->where('compcode',$compcode)
+                                ->where('compcode',$debtor_obj->compcode)
                                 ->where('debtorcode',$debtor_obj->debtorcode);
 
                 if(!$debtor->exists()){
