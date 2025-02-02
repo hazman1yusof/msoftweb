@@ -161,7 +161,7 @@ class nocsrfController extends defaultController
 
         foreach ($debtor_req as $debtor_obj) {
             $debtor_obj = (object)$debtor_obj;
-            if(!empty($doctor_obj->debtorcode)){
+            if(!empty($debtor_obj->debtorcode)){
                 $debtor = DB::table('debtor.debtormast')
                                 ->where('compcode',$compcode)
                                 ->where('debtorcode',$debtor_obj->debtorcode);
