@@ -113,7 +113,7 @@
                                                     <div class='col-md-4' style="padding-right: 0px;">
                                                         <div class="panel panel-info">
                                                             <div class="panel-heading text-center">PATIENT STATUS</div>
-                                                            <div class="panel-body" style="height: 610px; padding-right: 0px;">
+                                                            <div class="panel-body" style="height: 670px; padding-right: 0px;">
                                                                 <div class="form-group col-md-12">
                                                                     <label class="control-label" for="ncase_bp_stand" style="padding-bottom: 5px;">BP (standing)</label>
                                                                     <div class="input-group">
@@ -187,6 +187,14 @@
                                                                         <span class="input-group-addon">cm</span>
                                                                     </div>
                                                                 </div>
+                                                                
+                                                                <div class="form-group col-md-12">
+                                                                    <label class="control-label" for="painscore" style="padding-bottom: 5px;">Pain Score</label>
+                                                                    <div class="input-group">
+                                                                        <input id="painscore" name="painscore" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                                        <span class="input-group-addon">/10</span>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -194,7 +202,7 @@
                                                     <div class='col-md-8'>
                                                         <div class="panel panel-info">
                                                             <div class="panel-heading text-center">ASSESSMENT</div>
-                                                            <div class="panel-body" style="height: 610px;">
+                                                            <div class="panel-body" style="height: 670px;">
                                                                 <div class='col-md-6' style="padding: 0px 0px;">
                                                                     <div class="form-group">
                                                                         <label class="col-md-4 control-label" for="airway">Airway</label>  
