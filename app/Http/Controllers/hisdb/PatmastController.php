@@ -259,7 +259,7 @@ class PatmastController extends defaultController
             // dd($table_patm->paginate());
 
             if(!empty($request->searchCol) && $request->searchCol[0]!='doctor'){
-                $table_patm = $table_patm->where($request->searchCol[0],'like',$request->searchVal[0]);
+                $table_patm = $table_patm->where('pat_mast.'.$request->searchCol[0],'like',$request->searchVal[0]);
             }
 
            if(!empty($request->sort)){
