@@ -188,7 +188,7 @@ class nocsrfController extends defaultController
                 }
             }
 
-            // DB::commit();
+            DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
 
