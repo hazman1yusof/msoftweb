@@ -10,14 +10,24 @@ $(document).ready(function (){
     //     populate_nursingnote_ptcare(selrowData('#jqGrid'));
     // });
     
-    $('.menu .item').tab(
+    $('#nursNote .menu .item').tab(
         // {'onLoad':
         //     function(){
         //         alert("Called");
-        //         populate_progressnote_getdata();
+        //         // populate_progressnote_getdata();
         //     }
         // }    
+        
     );
+
+    // $('#tab_nursNote .menu .item')
+    //     .tab({
+    //         'onLoad':
+    //         function(){
+    //             alert("Called");
+    //     })
+
+        // $('#nursNote .menu .item').tab('change tab','progress');
     
     var fdl = new faster_detail_load();
 
@@ -46,21 +56,11 @@ $(document).ready(function (){
     });
 
     $("#save_progress").click(function (){
-        var urlparam_datetime_tbl={
-			action:'get_table_datetime',
-			mrn:$("#mrn_nursNote").val(),
-			episno:$("#episno_nursNote").val(),
-		}
-
-        // disableForm('#formProgress');
+        disableForm('#formProgress');
         if($('#formProgress').isValid({requiredFields: ''}, conf, true)){
-            saveForm_progress(function (data){
+            saveForm_progress(function (){
                 $("#cancel_progress").data('oper','edit');
                 $("#cancel_progress").click();
-                datetime_tbl.ajax.url( "./ptcare_nursingnote/table?"+$.param(urlparam_datetime_tbl) ).load(function(data){
-                    emptyFormdata_div("#formProgress",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-					// $('#datetime_tbl tbody tr:eq(0)').click();	//to select first row
-			    });
                 // $("#jqGridPagerRefresh").click();
                 // $('#datetime_tbl').DataTable().ajax.reload();
             });
@@ -68,6 +68,28 @@ $(document).ready(function (){
             enableForm('#formProgress');
             rdonly('#formProgress');
         }
+        // var urlparam_datetime_tbl={
+		// 	action:'get_table_datetime',
+		// 	mrn:$("#mrn_nursNote").val(),
+		// 	episno:$("#episno_nursNote").val(),
+		// }
+
+        // // disableForm('#formProgress');
+        // if($('#formProgress').isValid({requiredFields: ''}, conf, true)){
+        //     saveForm_progress(function (data){
+        //         $("#cancel_progress").data('oper','edit');
+        //         $("#cancel_progress").click();
+        //         datetime_tbl.ajax.url( "./ptcare_nursingnote/table?"+$.param(urlparam_datetime_tbl) ).load(function(data){
+        //             emptyFormdata_div("#formProgress",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+		// 			// $('#datetime_tbl tbody tr:eq(0)').click();	//to select first row
+		// 	    });
+        //         // $("#jqGridPagerRefresh").click();
+        //         // $('#datetime_tbl').DataTable().ajax.reload();
+        //     });
+        // }else{
+        //     enableForm('#formProgress');
+        //     rdonly('#formProgress');
+        // }
     });
     
     $("#cancel_progress").click(function (){
@@ -610,16 +632,16 @@ function populate_progressnote_getdata(){
         
     });
 
-    // var urlparam_datetime_tbl = {
-    //     action: 'get_table_datetime',
-    //     mrn: $("#mrn_nursNote").val(),
-    //     episno: $("#episno_nursNote").val()
-    // }
+    var urlparam_datetime_tbl = {
+        action: 'get_table_datetime',
+        mrn: $("#mrn_nursNote").val(),
+        episno: $("#episno_nursNote").val()
+    }
     
-    // datetime_tbl.ajax.url("./ptcare_nursingnote/table?"+$.param(urlparam_datetime_tbl)).load(function (data){
-    //     emptyFormdata_div("#formProgress",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-    //     $('#datetime_tbl tbody tr:eq(0)').click();  // to select first row
-    // });
+    datetime_tbl.ajax.url("./ptcare_nursingnote/table?"+$.param(urlparam_datetime_tbl)).load(function (data){
+        emptyFormdata_div("#formProgress",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        $('#datetime_tbl tbody tr:eq(0)').click();  // to select first row
+    });
 }
 
 function populate_drugadmin_getdata(){
@@ -868,22 +890,11 @@ $('#tab_nursNote').on('shown.bs.collapse', function (){
         //     break;
         
     // }
-    
     populate_progressnote_getdata();
-    $("#jqGridPatMedic").jqGrid('setGridWidth', Math.floor($("#jqGridPatMedic_c")[0].offsetWidth-$("#jqGridPatMedic_c")[0].offsetLeft-30));
+    // $("#jqGridPatMedic").jqGrid('setGridWidth', Math.floor($("#jqGridPatMedic_c")[0].offsetWidth-$("#jqGridPatMedic_c")[0].offsetLeft-30));
     populate_drugadmin_getdata();
     
 });
-
-// $('#tab_nursNote .menu .item').on('shown.bs.tab', function (e){
-//     let tab = $('a.item[data-tab]'); console.log(tab);
-//     switch(tab){
-//         case 'progress':
-//             populate_progressnote_getdata();
-//             break;
-        
-//     }
-// });
 
 $("#tab_nursNote").on("hide.bs.collapse", function (){
     button_state_progress('empty');

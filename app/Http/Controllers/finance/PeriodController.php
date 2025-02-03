@@ -88,15 +88,15 @@ class PeriodController extends defaultController
                     'periodstatus10' => $request->periodstatus10,
                     'periodstatus11' => $request->periodstatus11,
                     'periodstatus12' => $request->periodstatus12,
-                    'adduser' => session('compcode'),
+                    'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'upduser' => session('compcode'),
+                    'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'ACTIVE',
                     'computerid' => session('computerid')
                 ]);
 
-            // DB::commit();
+            DB::commit();
             
         } catch (\Exception $e) {
             
@@ -151,7 +151,7 @@ class PeriodController extends defaultController
                     'periodstatus10' => $request->periodstatus10,
                     'periodstatus11' => $request->periodstatus11,
                     'periodstatus12' => $request->periodstatus12,
-                    'upduser' => session('compcode'),
+                    'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'ACTIVE',
                     'computerid' => session('computerid')

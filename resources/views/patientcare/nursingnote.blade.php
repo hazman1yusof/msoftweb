@@ -159,6 +159,14 @@
                                                                         <div class="ui basic label">Min</div>
                                                                     </div>
                                                                 </div>
+
+                                                                <div class="field">
+                                                                    <label>Pain Score</label>
+                                                                    <div class="ui right labeled input">
+                                                                        <input type="text" onKeyPress="if(this.value.length==6) return false;" id="painscore" name="painscore">
+                                                                        <div class="ui basic label">/10</div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -449,8 +457,8 @@
                                             </div>
                                         </div>
 
-                                        <div class="ui segment">
-                                            <div class="sixteen wide column" id="patMedic">
+                                        <!-- <div class="ui segment"> -->
+                                            <div class="sixteen wide column" id="patMedic" style="padding: 3px 3px 3px 3px;">
                                                 <div class="ui segment" id="jqGridPatMedic_c">
                                                     <div class="fields" style="padding-top: 10px;">
                                                         <label>Total Quantity: </label>
@@ -462,7 +470,7 @@
                                                     <div id="jqGridPagerPatMedic"></div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        <!-- </div> -->
 
                                     </div>
                                 </div>

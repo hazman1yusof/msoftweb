@@ -227,6 +227,7 @@ class NursingNoteController extends defaultController
                     'epistycode' => $request->epistycode,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'painscore' => $request->painscore,
                 ]);
             
             DB::commit();
@@ -288,6 +289,7 @@ class NursingNoteController extends defaultController
                         'plannotes' => $request->plannotes,
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'painscore' => $request->painscore,
                     ]);
             }else{
                 DB::table('nursing.nurshandover')
