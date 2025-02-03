@@ -71,6 +71,7 @@ use PDF;
                     )
                     ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
                     ->where('ap.compcode','=', session('compcode'))
+                    ->where('ap.recstatus','=', 'APPROVED')
                     ->where('ap.source','=','AP')
                     ->whereIn('ap.trantype',['PD','CN']);
 

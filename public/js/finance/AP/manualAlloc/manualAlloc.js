@@ -231,8 +231,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'finance.apacthdr',
 		table_id:'auditno',
-		filterCol:['source','trantype', 'outamount'],
-		filterVal:[$('#apacthdr_source').val(),$('#apacthdr_trantype').val(), '>.0']
+		filterCol:['source','trantype', 'outamount','recstatus'],
+		filterVal:[$('#apacthdr_source').val(),$('#apacthdr_trantype').val(), '>.0','APPROVED']
 	}
 
 	var addmore_manualAllochdr={more:false,state:true,edit:false}

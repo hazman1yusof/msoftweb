@@ -1095,8 +1095,10 @@ class PaymentVoucherController extends defaultController
 
                 if($apacthdr->trantype == 'PV'){
                     $queue = 'finance.queuepv';
+                    $outamount_ = 0.00;
                 }else{
                     $queue = 'finance.queuepd';
+                    $outamount_ = $apacthdr->amount;
                 }
 
                 $authorise = DB::table('finance.permissiondtl')
@@ -1127,7 +1129,7 @@ class PaymentVoucherController extends defaultController
                         'pvno' => $pvno,
                         'recdate' => $apacthdr->postdate,
                         'recstatus' => 'POSTED',
-                        'outamount' => 0.00,
+                        'outamount' => $outamount_,
                         'approvedby' => session('username'),
                         'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'recstatus' => 'APPROVED'
