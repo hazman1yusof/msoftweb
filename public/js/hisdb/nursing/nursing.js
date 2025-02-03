@@ -927,18 +927,18 @@ function populate_triage_currpt_getdata(){
 			if(!emptyobj_(data.triage_nurshistory))autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'add');
-			// button_state_ti('edit');
+			button_state_ti('edit');
 			textare_init_triage();
 			dialog_tri_col.check('errorField');
 			tri_color_set();
 			
-			if($('#epistycode').val() == 'OP'){
-				button_state_ti('edit');
-			}else if($('#epistycode').val() == 'IP'){
-				button_state_ti('empty');
-			}
+			// if($('#epistycode').val() == 'OP'){
+			// 	button_state_ti('edit');
+			// }else if($('#epistycode').val() == 'IP'){
+			// 	button_state_ti('empty');
+			// }
 		}else{
-			// button_state_ti('add');
+			button_state_ti('add');
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
 			$('#formTriageInfo span#adduser').text('');
@@ -946,11 +946,11 @@ function populate_triage_currpt_getdata(){
 			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 			textare_init_triage();
 			
-			if($('#epistycode').val() == 'OP'){
-				button_state_ti('add');
-			}else if($('#epistycode').val() == 'IP'){
-				button_state_ti('empty');
-			}
+			// if($('#epistycode').val() == 'OP'){
+			// 	button_state_ti('add');
+			// }else if($('#epistycode').val() == 'IP'){
+			// 	button_state_ti('empty');
+			// }
 		}
 	});
 }
