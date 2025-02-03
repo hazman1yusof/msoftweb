@@ -97,12 +97,21 @@ class nocsrfController extends defaultController
                                     ->where('episno',$queue_obj->episno);
 
                     if(!$queue->exists()){
+
+                        DB::table('hisdb.queue')
+                                    ->where('compcode',$queue_obj->compcode)
+                                    // ->where('deptcode',$queue_obj->deptcode)
+                                    ->where('mrn',$queue_obj->mrn)
+                                    ->where('episno',$queue_obj->episno)
+                                    ->delete();
+
                         $this->queue_add($queue_obj);
                         print_r('queue_add ');
-                    }else{
-                        $this->queue_edit($queue_obj);
-                        print_r('queue_edit ');
                     }
+                    // else{
+                    //     $this->queue_edit($queue_obj);
+                    //     print_r('queue_edit ');
+                    // }
                 }
             }
 
@@ -179,7 +188,7 @@ class nocsrfController extends defaultController
                 }
             }
 
-            DB::commit();
+            // DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
 
