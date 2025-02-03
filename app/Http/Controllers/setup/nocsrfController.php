@@ -25,254 +25,258 @@ class nocsrfController extends defaultController
     }
 
     public function register_imsc(Request $request){
-        $patmast_req = (object)$request->patmast[0];
-        $episode_req = (object)$request->episode[0];
-        $epispayer_req = $request->epispayer;
-        $queue_req = $request->queue;
-        $docalloc_req = $request->docalloc;
-        $bedalloc_req = $request->bedalloc;
-        $doctor_req = $request->doctor;
-        $debtor_req = $request->debtor;
+        DB::beginTransaction();
+        try {
+            $compcode = '10A';
+            $patmast_req = (object)$request->patmast[0];
+            $episode_req = (object)$request->episode[0];
+            $epispayer_req = $request->epispayer;
+            $queue_req = $request->queue;
+            $docalloc_req = $request->docalloc;
+            $bedalloc_req = $request->bedalloc;
+            $doctor_req = $request->doctor;
+            $debtor_req = $request->debtor;
 
-        if(!empty($patmast_req->mrn)){
-            $patmast = DB::table('hisdb.pat_mast')
-                            ->where('compcode',$patmast_req->compcode)
-                            ->where('mrn',$patmast_req->mrn);
+            // print_r($debtor_req);
+            // return 0;
 
-            if(!$patmast->exists()){
-                $this->patmast_add($patmast_req);
-                print_r('patmast_add ');
-            }else{
-                $this->patmast_edit($patmast_req);
-                print_r('patmast_edit ');
-            }
-        }
+            if(!empty($patmast_req->mrn)){
+                $patmast = DB::table('hisdb.pat_mast')
+                                ->where('compcode',$compcode)
+                                ->where('mrn',$patmast_req->mrn);
 
-        if(!empty($episode_req->mrn) && !empty($episode_req->episno)){
-            $episode = DB::table('hisdb.episode')
-                            ->where('compcode',$episode_req->compcode)
-                            ->where('mrn',$episode_req->mrn)
-                            ->where('episno',$episode_req->episno);
-
-            if(!$episode->exists()){
-                $this->episode_add($episode_req);
-                print_r('episode_add ');
-            }else{
-                $this->episode_edit($episode_req);
-                print_r('episode_edit ');
-            }
-        }
-
-        foreach ($epispayer_req as $epispayer_obj) {
-            $epispayer_obj = (object)$epispayer_obj;
-            if(!empty($epispayer_obj->mrn) && !empty($epispayer_obj->episno) && !empty($epispayer_obj->lineno)){
-                $epispayer = DB::table('hisdb.epispayer')
-                                ->where('compcode',$epispayer_obj->compcode)
-                                ->where('mrn',$epispayer_obj->mrn)
-                                ->where('episno',$epispayer_obj->episno)
-                                ->where('lineno',$epispayer_obj->lineno);
-
-                if(!$epispayer->exists()){
-                    $this->epispayer_add($epispayer_obj);
-                    print_r('epispayer_add ');
+                if(!$patmast->exists()){
+                    $this->patmast_add($patmast_req);
+                    print_r('patmast_add ');
                 }else{
-                    $this->epispayer_edit($epispayer_obj);
-                    print_r('epispayer_edit ');
+                    $this->patmast_edit($patmast_req);
+                    print_r('patmast_edit ');
                 }
             }
-        }
 
-        foreach ($queue_req as $queue_obj) {
-            $queue_obj = (object)$queue_obj;
-            if(!empty($queue_obj->mrn) && !empty($queue_obj->episno) && !empty($queue_obj->queueno)){
-                $queue = DB::table('hisdb.queue')
-                                ->where('compcode',$queue_obj->compcode)
-                                ->where('queueno',$queue_obj->queueno)
-                                ->where('mrn',$queue_obj->mrn)
-                                ->where('episno',$queue_obj->episno);
+            if(!empty($episode_req->mrn) && !empty($episode_req->episno)){
+                $episode = DB::table('hisdb.episode')
+                                ->where('compcode',$compcode)
+                                ->where('mrn',$episode_req->mrn)
+                                ->where('episno',$episode_req->episno);
 
-                if(!$queue->exists()){
-                    $this->queue_add($queue_obj);
-                    print_r('queue_add ');
+                if(!$episode->exists()){
+                    $this->episode_add($episode_req);
+                    print_r('episode_add ');
                 }else{
-                    $this->queue_edit($queue_obj);
-                    print_r('queue_edit ');
+                    $this->episode_edit($episode_req);
+                    print_r('episode_edit ');
                 }
             }
-        }
 
+            foreach ($epispayer_req as $epispayer_obj) {
+                $epispayer_obj = (object)$epispayer_obj;
+                if(!empty($epispayer_obj->mrn) && !empty($epispayer_obj->episno) && !empty($epispayer_obj->lineno)){
+                    $epispayer = DB::table('hisdb.epispayer')
+                                    ->where('compcode',$compcode)
+                                    ->where('mrn',$epispayer_obj->mrn)
+                                    ->where('episno',$epispayer_obj->episno)
+                                    ->where('lineno',$epispayer_obj->lineno);
 
-        foreach ($docalloc_req as $docalloc_obj) {
-            $docalloc_obj = (object)$docalloc_obj;
-            if(!empty($docalloc_obj->mrn) && !empty($docalloc_obj->episno) && !empty($docalloc_obj->allocno)){
-                $docalloc = DB::table('hisdb.docalloc')
-                                ->where('compcode',$docalloc_obj->compcode)
-                                ->where('mrn',$docalloc_obj->mrn)
-                                ->where('episno',$docalloc_obj->episno)
-                                ->where('allocno',$docalloc_obj->allocno);
-
-                if(!$docalloc->exists()){
-                    $this->docalloc_add($docalloc_obj);
-                    print_r('docalloc_add ');
-                }else{
-                    $this->docalloc_edit($docalloc_obj);
-                    print_r('docalloc_edit ');
+                    if(!$epispayer->exists()){
+                        $this->epispayer_add($epispayer_obj);
+                        print_r('epispayer_add ');
+                    }else{
+                        $this->epispayer_edit($epispayer_obj);
+                        print_r('epispayer_edit ');
+                    }
                 }
             }
-        }
 
-        foreach ($bedalloc_req as $bedalloc_obj) {
-            $bedalloc_obj = (object)$bedalloc_obj;
-            if(!empty($bedalloc_obj->mrn) && !empty($docalloc_obj->episno) && !empty($docalloc_obj->allocno)){
-                $bedalloc = DB::table('hisdb.bedalloc')
-                                ->where('compcode',$bedalloc_obj->compcode)
-                                ->where('mrn',$bedalloc_obj->mrn)
-                                ->where('episno',$bedalloc_obj->episno)
-                                ->where('anum',$bedalloc_obj->anum);
+            foreach ($queue_req as $queue_obj) {
+                $queue_obj = (object)$queue_obj;
+                if(!empty($queue_obj->mrn) && !empty($queue_obj->episno) && !empty($queue_obj->deptcode)){
+                    $queue = DB::table('hisdb.queue')
+                                    ->where('compcode',$compcode)
+                                    ->where('deptcode',$queue_obj->deptcode)
+                                    ->where('mrn',$queue_obj->mrn)
+                                    ->where('episno',$queue_obj->episno);
 
-                if(!$bedalloc->exists()){
-                    $this->bedalloc_add($bedalloc_obj);
-                    print_r('bedalloc_add ');
-                }else{
-                    $this->bedalloc_edit($bedalloc_obj);
-                    print_r('bedalloc_edit ');
+                    if(!$queue->exists()){
+                        $this->queue_add($queue_obj);
+                        print_r('queue_add ');
+                    }else{
+                        $this->queue_edit($queue_obj);
+                        print_r('queue_edit ');
+                    }
                 }
             }
-        }
 
-        foreach ($doctor_req as $doctor_obj) {
-            $doctor_obj = (object)$doctor_obj;
-            if(!empty($doctor_obj->doctorcode)){
-                $doctor = DB::table('hisdb.doctor')
-                                ->where('compcode',$doctor_obj->compcode)
-                                ->where('doctorcode',$doctor_obj->doctorcode);
 
-                if(!$doctor->exists()){
-                    $this->doctor_add($doctor_obj);
-                    print_r('doctor_add ');
-                }else{
-                    $this->doctor_edit($doctor_obj);
-                    print_r('doctor_edit ');
+            foreach ($docalloc_req as $docalloc_obj) {
+                $docalloc_obj = (object)$docalloc_obj;
+                if(!empty($docalloc_obj->mrn) && !empty($docalloc_obj->episno) && !empty($docalloc_obj->allocno)){
+                    $docalloc = DB::table('hisdb.docalloc')
+                                    ->where('compcode',$compcode)
+                                    ->where('mrn',$docalloc_obj->mrn)
+                                    ->where('episno',$docalloc_obj->episno)
+                                    ->where('allocno',$docalloc_obj->allocno);
+
+                    if(!$docalloc->exists()){
+                        $this->docalloc_add($docalloc_obj);
+                        print_r('docalloc_add ');
+                    }else{
+                        $this->docalloc_edit($docalloc_obj);
+                        print_r('docalloc_edit ');
+                    }
                 }
             }
-        }
 
-        foreach ($debtor_req as $debtor_obj) {
-            $debtor_obj = (object)$debtor_obj;
-            if(!empty($debtor_obj->debtorcode)){
-                $debtor = DB::table('debtor.debtormast')
-                                ->where('compcode',$debtor_obj->compcode)
-                                ->where('debtorcode',$debtor_obj->debtorcode);
+            foreach ($bedalloc_req as $bedalloc_obj) {
+                $bedalloc_obj = (object)$bedalloc_obj;
+                if(!empty($bedalloc_obj->mrn) && !empty($docalloc_obj->episno) && !empty($docalloc_obj->allocno)){
+                    $bedalloc = DB::table('hisdb.bedalloc')
+                                    ->where('compcode',$compcode)
+                                    ->where('mrn',$bedalloc_obj->mrn)
+                                    ->where('episno',$bedalloc_obj->episno)
+                                    ->where('anum',$bedalloc_obj->anum);
 
-                if(!$debtor->exists()){
-                    $this->debtor_add($debtor_obj);
-                    print_r('debtor_add ');
-                }else{
-                    $this->debtor_edit($debtor_obj);
-                    print_r('debtor_edit ');
+                    if(!$bedalloc->exists()){
+                        $this->bedalloc_add($bedalloc_obj);
+                        print_r('bedalloc_add ');
+                    }else{
+                        $this->bedalloc_edit($bedalloc_obj);
+                        print_r('bedalloc_edit ');
+                    }
                 }
             }
+
+            foreach ($doctor_req as $doctor_obj) {
+                $doctor_obj = (object)$doctor_obj;
+                if(!empty($doctor_obj->doctorcode)){
+                    $doctor = DB::table('hisdb.doctor')
+                                    ->where('compcode',$compcode)
+                                    ->where('doctorcode',$doctor_obj->doctorcode);
+
+                    if(!$doctor->exists()){
+                        $this->doctor_add($doctor_obj);
+                        print_r('doctor_add ');
+                    }else{
+                        $this->doctor_edit($doctor_obj);
+                        print_r('doctor_edit ');
+                    }
+                }
+            }
+
+            foreach ($debtor_req as $debtor_obj) {
+                $debtor_obj = (object)$debtor_obj;
+                if(!empty($debtor_obj->debtorcode)){
+                    $debtor = DB::table('debtor.debtormast')
+                                    ->where('compcode',$compcode)
+                                    ->where('debtorcode',$debtor_obj->debtorcode);
+
+                    if(!$debtor->exists()){
+                        $this->debtor_add($debtor_obj);
+                        print_r('debtor_add ');
+                    }else{
+                        $this->debtor_edit($debtor_obj);
+                        print_r('debtor_edit ');
+                    }
+                }
+            }
+
+            // DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
         }
     }
 
     public function patmast_add($patmast){
         DB::table('hisdb.pat_mast')
             ->insert([
-                'CompCode' => $this->null($patmast->compcode),
-                'MRN' => $this->null($patmast->mrn),
-                'Episno' => $this->null($patmast->episno),
-                'Name' => $this->null($patmast->name),
-                'Call_Name' => $this->null($patmast->call_name),
+                'mrn' => $this->null($patmast->mrn),
+                'episno' => $this->null($patmast->episno),
+                'name' => $this->null($patmast->name),
+                'call_name' => $this->null($patmast->call_name),
                 'addtype' => $this->null($patmast->addtype),
-                'Address1' => $this->null($patmast->address1),
-                'Address2' => $this->null($patmast->address2),
-                'Address3' => $this->null($patmast->address3),
-                'Postcode' => $this->null($patmast->postcode),
+                'address1' => $this->null($patmast->address1),
+                'address2' => $this->null($patmast->address2),
+                'address3' => $this->null($patmast->address3),
+                'postcode' => $this->null($patmast->postcode),
                 'citycode' => $this->null($patmast->citycode),
-                'AreaCode' => $this->null($patmast->areacode),
-                'StateCode' => $this->null($patmast->statecode),
-                'CountryCode' => $this->null($patmast->countrycode),
+                'areacode' => $this->null($patmast->areacode),
+                'statecode' => $this->null($patmast->statecode),
+                'countrycode' => $this->null($patmast->countrycode),
                 'telh' => $this->null($patmast->telh),
                 'telhp' => $this->null($patmast->telhp),
                 'telo' => $this->null($patmast->telo),
-                'Tel_O_Ext' => $this->null($patmast->tel_o_ext),
+                'tel_o_ext' => $this->null($patmast->tel_o_ext),
                 'ptel' => $this->null($patmast->ptel),
                 'ptel_hp' => $this->null($patmast->ptel_hp),
-                'ID_Type' => $this->null($patmast->id_type),
+                'id_type' => $this->null($patmast->id_type),
                 'idnumber' => $this->null($patmast->idnumber),
-                'Newic' => $this->null($patmast->newic),
-                'Oldic' => $this->null($patmast->oldic),
+                'newic' => $this->null($patmast->newic),
+                'oldic' => $this->null($patmast->oldic),
                 'icolor' => $this->null($patmast->icolor),
-                'Sex' => $this->null($patmast->sex),
-                'DOB' => $this->null($patmast->dob),
-                'Religion' => $this->null($patmast->religion),
-                'AllergyCode1' => $this->null($patmast->allergycode1),
-                'AllergyCode2' => $this->null($patmast->allergycode2),
-                'Century' => $this->null($patmast->century),
-                'Citizencode' => $this->null($patmast->citizencode),
-                'OccupCode' => $this->null($patmast->occupcode),
-                'Staffid' => $this->null($patmast->staffid),
-                'MaritalCode' => $this->null($patmast->maritalcode),
-                'LanguageCode' => $this->null($patmast->languagecode),
-                'TitleCode' => $this->null($patmast->titlecode),
-                'RaceCode' => $this->null($patmast->racecode),
+                'sex' => $this->null($patmast->sex),
+                'dob' => $this->turn_date($this->null($patmast->dob)),
+                'religion' => $this->null($patmast->religion),
+                'allergycode1' => $this->null($patmast->allergycode1),
+                'allergycode2' => $this->null($patmast->allergycode2),
+                'century' => $this->null($patmast->century),
+                'citizencode' => $this->null($patmast->citizencode),
+                'occupcode' => $this->null($patmast->occupcode),
+                'staffid' => $this->null($patmast->staffid),
+                'maritalcode' => $this->null($patmast->maritalcode),
+                'languagecode' => $this->null($patmast->languagecode),
+                'titlecode' => $this->null($patmast->titlecode),
+                'racecode' => $this->null($patmast->racecode),
                 'bloodgrp' => $this->null($patmast->bloodgrp),
-                'Accum_chg' => $this->null($patmast->accum_chg),
-                'Accum_Paid' => $this->null($patmast->accum_paid),
-                'first_visit_date' => $this->null($patmast->first_visit_date),
-                'Reg_Date' => $this->null($patmast->reg_date),
-                'last_visit_date' => $this->null($patmast->last_visit_date),
+                'accum_chg' => $this->null($patmast->accum_chg),
+                'accum_paid' => $this->null($patmast->accum_paid),
+                'first_visit_date' => $this->turn_date($this->null($patmast->first_visit_date)),
+                'reg_date' => $this->turn_date($this->null($patmast->reg_date)),
+                'last_visit_date' => $this->turn_date($this->null($patmast->last_visit_date)),
                 'last_episno' => $this->null($patmast->last_episno),
-                'PatStatus' => $this->null($patmast->patstatus),
-                'Confidential' => $this->null($patmast->confidential),
-                'Active' => $this->null($patmast->active),
-                'FirstIpEpisNo' => $this->null($patmast->firstipepisno),
-                'FirstOpEpisNo' => $this->null($patmast->firstopepisno),
-                'AddUser' => $this->null($patmast->adduser),
-                'AddDate' => $this->null($patmast->adddate),
-                'Lastupdate' => $this->null($patmast->lastupdate),
-                'LastUser' => $this->null($patmast->lastuser),
-                'OffAdd1' => $this->null($patmast->offadd1),
-                'OffAdd2' => $this->null($patmast->offadd2),
-                'OffAdd3' => $this->null($patmast->offadd3),
-                'OffPostcode' => $this->null($patmast->offpostcode),
-                'MRFolder' => $this->null($patmast->mrfolder),
-                'MRLoc' => $this->null($patmast->mrloc),
-                'MRActive' => $this->null($patmast->mractive),
-                'OldMrn' => $this->null($patmast->oldmrn),
-                'NewMrn' => $this->null($patmast->newmrn),
-                'Remarks' => $this->null($patmast->remarks),
-                'RelateCode' => $this->null($patmast->relatecode),
-                'ChildNo' => $this->null($patmast->childno),
-                'CorpComp' => $this->null($patmast->corpcomp),
-                'Email' => $this->null($patmast->email),
-                'Email_official' => $this->null($patmast->email_official),
-                'CurrentEpis' => $this->null($patmast->currentepis),
-                'NameSndx' => $this->null($patmast->namesndx),
-                'BirthPlace' => $this->null($patmast->birthplace),
-                'TngID' => $this->null($patmast->tngid),
-                'PatientImage' => $this->null($patmast->patientimage),
-                'pAdd1' => $this->null($patmast->padd1),
-                'pAdd2' => $this->null($patmast->padd2),
-                'pAdd3' => $this->null($patmast->padd3),
-                'pPostCode' => $this->null($patmast->ppostcode),
-                'DeptCode' => $this->null($patmast->deptcode),
-                'DeceasedDate' => $this->null($patmast->deceaseddate),
-                'PatientCat' => $this->null($patmast->patientcat),
-                'PatType' => $this->null($patmast->pattype),
-                'PatClass' => $this->null($patmast->patclass),
+                'patstatus' => $this->null($patmast->patstatus),
+                'confidential' => $this->null($patmast->confidential),
+                'active' => $this->null($patmast->active),
+                'firstipepisno' => $this->null($patmast->firstipepisno),
+                'firstopepisno' => $this->null($patmast->firstopepisno),
+                'adduser' => $this->null($patmast->adduser),
+                'adddate' => $this->turn_date($this->null($patmast->adddate)),
+                'lastupdate' => $this->turn_date($this->null($patmast->lastupdate)),
+                'lastuser' => $this->null($patmast->lastuser),
+                'offadd1' => $this->null($patmast->offadd1),
+                'offadd2' => $this->null($patmast->offadd2),
+                'offadd3' => $this->null($patmast->offadd3),
+                'offpostcode' => $this->null($patmast->offpostcode),
+                'mrfolder' => $this->null($patmast->mrfolder),
+                'mrloc' => $this->null($patmast->mrloc),
+                'mractive' => $this->null($patmast->mractive),
+                'oldmrn' => $this->null($patmast->oldmrn),
+                'newmrn' => $this->null($patmast->newmrn),
+                'remarks' => $this->null($patmast->remarks),
+                'relatecode' => $this->null($patmast->relatecode),
+                'childno' => $this->null($patmast->childno),
+                'corpcomp' => $this->null($patmast->corpcomp),
+                'email' => $this->null($patmast->email),
+                'email_official' => $this->null($patmast->email_official),
+                'currentepis' => $this->null($patmast->currentepis),
+                'namesndx' => $this->null($patmast->namesndx),
+                'birthplace' => $this->null($patmast->birthplace),
+                'tngid' => $this->null($patmast->tngid),
+                'patientimage' => $this->null($patmast->patientimage),
+                'padd1' => $this->null($patmast->padd1),
+                'padd2' => $this->null($patmast->padd2),
+                'padd3' => $this->null($patmast->padd3),
+                'ppostcode' => $this->null($patmast->ppostcode),
+                'deptcode' => $this->null($patmast->deptcode),
+                'deceaseddate' => $this->turn_date($this->null($patmast->deceaseddate)),
+                'patientcat' => $this->null($patmast->patientcat),
+                'pattype' => $this->null($patmast->pattype),
+                'idno' => $this->null($patmast->idno),
                 'upduser' => $this->null($patmast->upduser),
-                'upddate' => $this->null($patmast->upddate),
+                'upddate' => $this->turn_date($this->null($patmast->upddate)),
                 'recstatus' => $this->null($patmast->recstatus),
-                'loginid' => $this->null($patmast->loginid),
-                'pat_category' => $this->null($patmast->pat_category),
-                'idnumber_exp' => $this->null($patmast->idnumber_exp),
-                'telhp2' => $this->null($patmast->telhp2),
-                'patient_status' => $this->null($patmast->patient_status),
-                'totallimit' => $this->null($patmast->totallimit),
-                'HDlimit' => $this->null($patmast->hdlimit),
-                'EPlimit' => $this->null($patmast->eplimit),
-                'computerid' => $this->null($patmast->computerid)
+                'loginid' => $this->null($patmast->loginid)
             ]);
     }
 
@@ -281,108 +285,98 @@ class nocsrfController extends defaultController
             ->where('compcode','10A')
             ->where('mrn',$patmast->mrn)
             ->update([
-                'CompCode' => $this->null($patmast->compcode),
-                'MRN' => $this->null($patmast->mrn),
-                'Episno' => $this->null($patmast->episno),
-                'Name' => $this->null($patmast->name),
-                'Call_Name' => $this->null($patmast->call_name),
+                'mrn' => $this->null($patmast->mrn),
+                'episno' => $this->null($patmast->episno),
+                'name' => $this->null($patmast->name),
+                'call_name' => $this->null($patmast->call_name),
                 'addtype' => $this->null($patmast->addtype),
-                'Address1' => $this->null($patmast->address1),
-                'Address2' => $this->null($patmast->address2),
-                'Address3' => $this->null($patmast->address3),
-                'Postcode' => $this->null($patmast->postcode),
+                'address1' => $this->null($patmast->address1),
+                'address2' => $this->null($patmast->address2),
+                'address3' => $this->null($patmast->address3),
+                'postcode' => $this->null($patmast->postcode),
                 'citycode' => $this->null($patmast->citycode),
-                'AreaCode' => $this->null($patmast->areacode),
-                'StateCode' => $this->null($patmast->statecode),
-                'CountryCode' => $this->null($patmast->countrycode),
+                'areacode' => $this->null($patmast->areacode),
+                'statecode' => $this->null($patmast->statecode),
+                'countrycode' => $this->null($patmast->countrycode),
                 'telh' => $this->null($patmast->telh),
                 'telhp' => $this->null($patmast->telhp),
                 'telo' => $this->null($patmast->telo),
-                'Tel_O_Ext' => $this->null($patmast->tel_o_ext),
+                'tel_o_ext' => $this->null($patmast->tel_o_ext),
                 'ptel' => $this->null($patmast->ptel),
                 'ptel_hp' => $this->null($patmast->ptel_hp),
-                'ID_Type' => $this->null($patmast->id_type),
+                'id_type' => $this->null($patmast->id_type),
                 'idnumber' => $this->null($patmast->idnumber),
-                'Newic' => $this->null($patmast->newic),
-                'Oldic' => $this->null($patmast->oldic),
+                'newic' => $this->null($patmast->newic),
+                'oldic' => $this->null($patmast->oldic),
                 'icolor' => $this->null($patmast->icolor),
-                'Sex' => $this->null($patmast->sex),
-                'DOB' => $this->null($patmast->dob),
-                'Religion' => $this->null($patmast->religion),
-                'AllergyCode1' => $this->null($patmast->allergycode1),
-                'AllergyCode2' => $this->null($patmast->allergycode2),
-                'Century' => $this->null($patmast->century),
-                'Citizencode' => $this->null($patmast->citizencode),
-                'OccupCode' => $this->null($patmast->occupcode),
-                'Staffid' => $this->null($patmast->staffid),
-                'MaritalCode' => $this->null($patmast->maritalcode),
-                'LanguageCode' => $this->null($patmast->languagecode),
-                'TitleCode' => $this->null($patmast->titlecode),
-                'RaceCode' => $this->null($patmast->racecode),
+                'sex' => $this->null($patmast->sex),
+                'dob' => $this->turn_date($this->null($patmast->dob)),
+                'religion' => $this->null($patmast->religion),
+                'allergycode1' => $this->null($patmast->allergycode1),
+                'allergycode2' => $this->null($patmast->allergycode2),
+                'century' => $this->null($patmast->century),
+                'citizencode' => $this->null($patmast->citizencode),
+                'occupcode' => $this->null($patmast->occupcode),
+                'staffid' => $this->null($patmast->staffid),
+                'maritalcode' => $this->null($patmast->maritalcode),
+                'languagecode' => $this->null($patmast->languagecode),
+                'titlecode' => $this->null($patmast->titlecode),
+                'racecode' => $this->null($patmast->racecode),
                 'bloodgrp' => $this->null($patmast->bloodgrp),
-                'Accum_chg' => $this->null($patmast->accum_chg),
-                'Accum_Paid' => $this->null($patmast->accum_paid),
-                'first_visit_date' => $this->null($patmast->first_visit_date),
-                'Reg_Date' => $this->null($patmast->reg_date),
-                'last_visit_date' => $this->null($patmast->last_visit_date),
+                'accum_chg' => $this->null($patmast->accum_chg),
+                'accum_paid' => $this->null($patmast->accum_paid),
+                'first_visit_date' => $this->turn_date($this->null($patmast->first_visit_date)),
+                'reg_date' => $this->turn_date($this->null($patmast->reg_date)),
+                'last_visit_date' => $this->turn_date($this->null($patmast->last_visit_date)),
                 'last_episno' => $this->null($patmast->last_episno),
-                'PatStatus' => $this->null($patmast->patstatus),
-                'Confidential' => $this->null($patmast->confidential),
-                'Active' => $this->null($patmast->active),
-                'FirstIpEpisNo' => $this->null($patmast->firstipepisno),
-                'FirstOpEpisNo' => $this->null($patmast->firstopepisno),
-                'AddUser' => $this->null($patmast->adduser),
-                'AddDate' => $this->null($patmast->adddate),
-                'Lastupdate' => $this->null($patmast->lastupdate),
-                'LastUser' => $this->null($patmast->lastuser),
-                'OffAdd1' => $this->null($patmast->offadd1),
-                'OffAdd2' => $this->null($patmast->offadd2),
-                'OffAdd3' => $this->null($patmast->offadd3),
-                'OffPostcode' => $this->null($patmast->offpostcode),
-                'MRFolder' => $this->null($patmast->mrfolder),
-                'MRLoc' => $this->null($patmast->mrloc),
-                'MRActive' => $this->null($patmast->mractive),
-                'OldMrn' => $this->null($patmast->oldmrn),
-                'NewMrn' => $this->null($patmast->newmrn),
-                'Remarks' => $this->null($patmast->remarks),
-                'RelateCode' => $this->null($patmast->relatecode),
-                'ChildNo' => $this->null($patmast->childno),
-                'CorpComp' => $this->null($patmast->corpcomp),
-                'Email' => $this->null($patmast->email),
-                'Email_official' => $this->null($patmast->email_official),
-                'CurrentEpis' => $this->null($patmast->currentepis),
-                'NameSndx' => $this->null($patmast->namesndx),
-                'BirthPlace' => $this->null($patmast->birthplace),
-                'TngID' => $this->null($patmast->tngid),
-                'PatientImage' => $this->null($patmast->patientimage),
-                'pAdd1' => $this->null($patmast->padd1),
-                'pAdd2' => $this->null($patmast->padd2),
-                'pAdd3' => $this->null($patmast->padd3),
-                'pPostCode' => $this->null($patmast->ppostcode),
-                'DeptCode' => $this->null($patmast->deptcode),
-                'DeceasedDate' => $this->null($patmast->deceaseddate),
-                'PatientCat' => $this->null($patmast->patientcat),
-                'PatType' => $this->null($patmast->pattype),
-                'PatClass' => $this->null($patmast->patclass),
+                'patstatus' => $this->null($patmast->patstatus),
+                'confidential' => $this->null($patmast->confidential),
+                'active' => $this->null($patmast->active),
+                'firstipepisno' => $this->null($patmast->firstipepisno),
+                'firstopepisno' => $this->null($patmast->firstopepisno),
+                'adduser' => $this->null($patmast->adduser),
+                'adddate' => $this->turn_date($this->null($patmast->adddate)),
+                'lastupdate' => $this->turn_date($this->null($patmast->lastupdate)),
+                'lastuser' => $this->null($patmast->lastuser),
+                'offadd1' => $this->null($patmast->offadd1),
+                'offadd2' => $this->null($patmast->offadd2),
+                'offadd3' => $this->null($patmast->offadd3),
+                'offpostcode' => $this->null($patmast->offpostcode),
+                'mrfolder' => $this->null($patmast->mrfolder),
+                'mrloc' => $this->null($patmast->mrloc),
+                'mractive' => $this->null($patmast->mractive),
+                'oldmrn' => $this->null($patmast->oldmrn),
+                'newmrn' => $this->null($patmast->newmrn),
+                'remarks' => $this->null($patmast->remarks),
+                'relatecode' => $this->null($patmast->relatecode),
+                'childno' => $this->null($patmast->childno),
+                'corpcomp' => $this->null($patmast->corpcomp),
+                'email' => $this->null($patmast->email),
+                'email_official' => $this->null($patmast->email_official),
+                'currentepis' => $this->null($patmast->currentepis),
+                'namesndx' => $this->null($patmast->namesndx),
+                'birthplace' => $this->null($patmast->birthplace),
+                'tngid' => $this->null($patmast->tngid),
+                'patientimage' => $this->null($patmast->patientimage),
+                'padd1' => $this->null($patmast->padd1),
+                'padd2' => $this->null($patmast->padd2),
+                'padd3' => $this->null($patmast->padd3),
+                'ppostcode' => $this->null($patmast->ppostcode),
+                'deptcode' => $this->null($patmast->deptcode),
+                'deceaseddate' => $this->turn_date($this->null($patmast->deceaseddate)),
+                'patientcat' => $this->null($patmast->patientcat),
+                'pattype' => $this->null($patmast->pattype),
+                'idno' => $this->null($patmast->idno),
                 'upduser' => $this->null($patmast->upduser),
-                'upddate' => $this->null($patmast->upddate),
+                'upddate' => $this->turn_date($this->null($patmast->upddate)),
                 'recstatus' => $this->null($patmast->recstatus),
-                'loginid' => $this->null($patmast->loginid),
-                'pat_category' => $this->null($patmast->pat_category),
-                'idnumber_exp' => $this->null($patmast->idnumber_exp),
-                'telhp2' => $this->null($patmast->telhp2),
-                'patient_status' => $this->null($patmast->patient_status),
-                'totallimit' => $this->null($patmast->totallimit),
-                'HDlimit' => $this->null($patmast->hdlimit),
-                'EPlimit' => $this->null($patmast->eplimit),
-                'computerid' => $this->null($patmast->computerid)
+                'loginid' => $this->null($patmast->loginid)
             ]);
     }
 
     public function episode_add($episode){
         DB::table('hisdb.episode')
             ->insert([
-                'compcode' => $this->null($episode->compcode),
                 'mrn' => $this->null($episode->mrn),
                 'episno' => $this->null($episode->episno),
                 'admsrccode' => $this->null($episode->admsrccode),
@@ -407,12 +401,11 @@ class nocsrfController extends defaultController
                 'remarks' => $this->null($episode->remarks),
                 'episstatus' => $this->null($episode->episstatus),
                 'episactive' => $this->null($episode->episactive),
-                'adddate' => $this->null($episode->adddate),
+                'adddate' => $this->turn_date($this->null($episode->adddate)),
                 'adduser' => $this->null($episode->adduser),
-                'reg_by' => $this->null($episode->reg_by),
-                'reg_date' => $this->null($episode->reg_date),
+                'reg_date' => $this->turn_date($this->null($episode->reg_date)),
                 'reg_time' => $this->null($episode->reg_time),
-                'dischargedate' => $this->null($episode->dischargedate),
+                'dischargedate' => $this->turn_date($this->null($episode->dischargedate)),
                 'dischargeuser' => $this->null($episode->dischargeuser),
                 'dischargetime' => $this->null($episode->dischargetime),
                 'dischargedest' => $this->null($episode->dischargedest),
@@ -421,10 +414,10 @@ class nocsrfController extends defaultController
                 'allocnok' => $this->null($episode->allocnok),
                 'allocpayer' => $this->null($episode->allocpayer),
                 'allocicd' => $this->null($episode->allocicd),
-                'lastupdate' => $this->null($episode->lastupdate),
+                'lastupdate' => $this->turn_date($this->null($episode->lastupdate)),
                 'lastuser' => $this->null($episode->lastuser),
                 'lasttime' => $this->null($episode->lasttime),
-                'procedure' => $this->null($episode->procedure),
+                'procode' => $this->null($episode->procode),
                 'dischargediag' => $this->null($episode->dischargediag),
                 'lodgerno' => $this->null($episode->lodgerno),
                 'regdept' => $this->null($episode->regdept),
@@ -434,7 +427,7 @@ class nocsrfController extends defaultController
                 'diet4' => $this->null($episode->diet4),
                 'diet5' => $this->null($episode->diet5),
                 'glauthid' => $this->null($episode->glauthid),
-                'treatment' => $this->null($episode->treatment),
+                'treatcode' => $this->null($episode->treatcode),
                 'diagcode' => $this->null($episode->diagcode),
                 'complain' => $this->null($episode->complain),
                 'diagfinal' => $this->null($episode->diagfinal),
@@ -459,39 +452,7 @@ class nocsrfController extends defaultController
                 'agreementid' => $this->null($episode->agreementid),
                 'adminfees' => $this->null($episode->adminfees),
                 'eddept' => $this->null($episode->eddept),
-                'dischargestatus' => $this->null($episode->dischargestatus),
-                'procode' => $this->null($episode->procode),
-                'treatcode' => $this->null($episode->treatcode),
-                'payer' => $this->null($episode->payer),
-                'doctorstatus' => $this->null($episode->doctorstatus),
-                'reff_rehab' => $this->null($episode->reff_rehab),
-                'reff_physio' => $this->null($episode->reff_physio),
-                'reff_diet' => $this->null($episode->reff_diet),
-                'reff_ed' => $this->null($episode->reff_ed),
-                'reff_rad' => $this->null($episode->reff_rad),
-                'stats_rehab' => $this->null($episode->stats_rehab),
-                'stats_physio' => $this->null($episode->stats_physio),
-                'stats_diet' => $this->null($episode->stats_diet),
-                'dry_weight' => $this->null($episode->dry_weight),
-                'duration_hd' => $this->null($episode->duration_hd),
-                'lastarrivaldate' => $this->null($episode->lastarrivaldate),
-                'lastarrivaltime' => $this->null($episode->lastarrivaltime),
-                'lastarrivalno' => $this->null($episode->lastarrivalno),
-                'picdoctor' => $this->null($episode->picdoctor),
-                'nurse_stat' => $this->null($episode->nurse_stat),
-                'computerid' => $this->null($episode->computerid),
-                'patologist' => $this->null($episode->patologist),
-                'phyexam' => $this->null($episode->phyexam),
-                'summary' => $this->null($episode->summary),
-                'followup' => $this->null($episode->followup),
-                'status_discwell' => $this->null($episode->status_discwell),
-                'status_discimproved' => $this->null($episode->status_discimproved),
-                'status_discaor' => $this->null($episode->status_discaor),
-                'status_discexpired' => $this->null($episode->status_discexpired),
-                'status_discabsconded' => $this->null($episode->status_discabsconded),
-                'status_disctransferred' => $this->null($episode->status_disctransferred),
-                'medondischg' => $this->null($episode->medondischg),
-                'medcert' => $this->null($episode->medcert),
+                'payer' => $this->null($episode->payer)
             ]);
     }
 
@@ -501,7 +462,6 @@ class nocsrfController extends defaultController
             ->where('mrn',$episode->mrn)
             ->where('episno',$episode->episno)
             ->update([
-                'compcode' => $this->null($episode->compcode),
                 'mrn' => $this->null($episode->mrn),
                 'episno' => $this->null($episode->episno),
                 'admsrccode' => $this->null($episode->admsrccode),
@@ -526,12 +486,11 @@ class nocsrfController extends defaultController
                 'remarks' => $this->null($episode->remarks),
                 'episstatus' => $this->null($episode->episstatus),
                 'episactive' => $this->null($episode->episactive),
-                'adddate' => $this->null($episode->adddate),
+                'adddate' => $this->turn_date($this->null($episode->adddate)),
                 'adduser' => $this->null($episode->adduser),
-                'reg_by' => $this->null($episode->reg_by),
-                'reg_date' => $this->null($episode->reg_date),
+                'reg_date' => $this->turn_date($this->null($episode->reg_date)),
                 'reg_time' => $this->null($episode->reg_time),
-                'dischargedate' => $this->null($episode->dischargedate),
+                'dischargedate' => $this->turn_date($this->null($episode->dischargedate)),
                 'dischargeuser' => $this->null($episode->dischargeuser),
                 'dischargetime' => $this->null($episode->dischargetime),
                 'dischargedest' => $this->null($episode->dischargedest),
@@ -540,10 +499,10 @@ class nocsrfController extends defaultController
                 'allocnok' => $this->null($episode->allocnok),
                 'allocpayer' => $this->null($episode->allocpayer),
                 'allocicd' => $this->null($episode->allocicd),
-                'lastupdate' => $this->null($episode->lastupdate),
+                'lastupdate' => $this->turn_date($this->null($episode->lastupdate)),
                 'lastuser' => $this->null($episode->lastuser),
                 'lasttime' => $this->null($episode->lasttime),
-                'procedure' => $this->null($episode->procedure),
+                'procode' => $this->null($episode->procode),
                 'dischargediag' => $this->null($episode->dischargediag),
                 'lodgerno' => $this->null($episode->lodgerno),
                 'regdept' => $this->null($episode->regdept),
@@ -553,7 +512,7 @@ class nocsrfController extends defaultController
                 'diet4' => $this->null($episode->diet4),
                 'diet5' => $this->null($episode->diet5),
                 'glauthid' => $this->null($episode->glauthid),
-                'treatment' => $this->null($episode->treatment),
+                'treatcode' => $this->null($episode->treatcode),
                 'diagcode' => $this->null($episode->diagcode),
                 'complain' => $this->null($episode->complain),
                 'diagfinal' => $this->null($episode->diagfinal),
@@ -578,39 +537,7 @@ class nocsrfController extends defaultController
                 'agreementid' => $this->null($episode->agreementid),
                 'adminfees' => $this->null($episode->adminfees),
                 'eddept' => $this->null($episode->eddept),
-                'dischargestatus' => $this->null($episode->dischargestatus),
-                'procode' => $this->null($episode->procode),
-                'treatcode' => $this->null($episode->treatcode),
-                'payer' => $this->null($episode->payer),
-                'doctorstatus' => $this->null($episode->doctorstatus),
-                'reff_rehab' => $this->null($episode->reff_rehab),
-                'reff_physio' => $this->null($episode->reff_physio),
-                'reff_diet' => $this->null($episode->reff_diet),
-                'reff_ed' => $this->null($episode->reff_ed),
-                'reff_rad' => $this->null($episode->reff_rad),
-                'stats_rehab' => $this->null($episode->stats_rehab),
-                'stats_physio' => $this->null($episode->stats_physio),
-                'stats_diet' => $this->null($episode->stats_diet),
-                'dry_weight' => $this->null($episode->dry_weight),
-                'duration_hd' => $this->null($episode->duration_hd),
-                'lastarrivaldate' => $this->null($episode->lastarrivaldate),
-                'lastarrivaltime' => $this->null($episode->lastarrivaltime),
-                'lastarrivalno' => $this->null($episode->lastarrivalno),
-                'picdoctor' => $this->null($episode->picdoctor),
-                'nurse_stat' => $this->null($episode->nurse_stat),
-                'computerid' => $this->null($episode->computerid),
-                'patologist' => $this->null($episode->patologist),
-                'phyexam' => $this->null($episode->phyexam),
-                'summary' => $this->null($episode->summary),
-                'followup' => $this->null($episode->followup),
-                'status_discwell' => $this->null($episode->status_discwell),
-                'status_discimproved' => $this->null($episode->status_discimproved),
-                'status_discaor' => $this->null($episode->status_discaor),
-                'status_discexpired' => $this->null($episode->status_discexpired),
-                'status_discabsconded' => $this->null($episode->status_discabsconded),
-                'status_disctransferred' => $this->null($episode->status_disctransferred),
-                'medondischg' => $this->null($episode->medondischg),
-                'medcert' => $this->null($episode->medcert)
+                'payer' => $this->null($episode->payer)
             ]);
     }
 
@@ -626,19 +553,17 @@ class nocsrfController extends defaultController
                     'pay_type' => $this->null($epispayer->pay_type),
                     'pyrmode' => $this->null($epispayer->pyrmode),
                     'pyrcharge' => $this->null($epispayer->pyrcharge),
-                    'pyrcrdtlmt' => $this->null($epispayer->pyrcrdtlmt),
+                    'pyrcrdtlmt' => $this->null_yes($this->null($epispayer->pyrcrdtlmt)),
                     'pyrlmtamt' => $this->null($epispayer->pyrlmtamt),
                     'totbal' => $this->null($epispayer->totbal),
                     'allgroup' => $this->null($epispayer->allgroup),
                     'alldept' => $this->null($epispayer->alldept),
-                    'adddate' => $this->null($epispayer->adddate),
+                    'adddate' => $this->turn_date($this->null($epispayer->adddate)),
                     'adduser' => $this->null($epispayer->adduser),
-                    'lastupdate' => $this->null($epispayer->lastupdate),
-                    'lastuser' => $this->null($epispayer->lastuser),
+                    'lastupdate' => $this->turn_date($this->null($epispayer->lastupdate)),
                     'billtype' => $this->null($epispayer->billtype),
                     'refno' => $this->null($epispayer->refno),
-                    'chgrate' => $this->null($epispayer->chgrate),
-                    'computerid' => $this->null($epispayer->computerid)
+                    'chgrate' => $this->null($epispayer->chgrate)
                 ]);
     }
 
@@ -658,19 +583,17 @@ class nocsrfController extends defaultController
                     'pay_type' => $this->null($epispayer->pay_type),
                     'pyrmode' => $this->null($epispayer->pyrmode),
                     'pyrcharge' => $this->null($epispayer->pyrcharge),
-                    'pyrcrdtlmt' => $this->null($epispayer->pyrcrdtlmt),
+                    'pyrcrdtlmt' => $this->null_yes($this->null($epispayer->pyrcrdtlmt)),
                     'pyrlmtamt' => $this->null($epispayer->pyrlmtamt),
                     'totbal' => $this->null($epispayer->totbal),
                     'allgroup' => $this->null($epispayer->allgroup),
                     'alldept' => $this->null($epispayer->alldept),
-                    'adddate' => $this->null($epispayer->adddate),
+                    'adddate' => $this->turn_date($this->null($epispayer->adddate)),
                     'adduser' => $this->null($epispayer->adduser),
-                    'lastupdate' => $this->null($epispayer->lastupdate),
-                    'lastuser' => $this->null($epispayer->lastuser),
+                    'lastupdate' => $this->turn_date($this->null($epispayer->lastupdate)),
                     'billtype' => $this->null($epispayer->billtype),
                     'refno' => $this->null($epispayer->refno),
-                    'chgrate' => $this->null($epispayer->chgrate),
-                    'computerid' => $this->null($epispayer->computerid)
+                    'chgrate' => $this->null($epispayer->chgrate)
                 ]);
     }
 
@@ -690,27 +613,27 @@ class nocsrfController extends defaultController
                 'room' => $this->null($queue->room),
                 'bed' => $this->null($queue->bed),
                 'admdoctor' => $this->null($queue->admdoctor),
-                'adddate' => $this->null($queue->adddate),
+                'adddate' => $this->turn_date($this->null($queue->adddate)),
                 'adduser' => $this->null($queue->adduser),
                 'newic' => $this->null($queue->newic),
                 'oldic' => $this->null($queue->oldic),
                 'sex' => $this->null($queue->sex),
-                'dob' => $this->null($queue->dob),
+                'dob' => $this->turn_date($this->null($queue->dob)),
                 'religion' => $this->null($queue->religion),
                 'racecode' => $this->null($queue->racecode),
-                'reg_date' => $this->null($queue->reg_date),
+                'reg_date' => $this->turn_date($this->null($queue->reg_date)),
                 'ageyy' => $this->null($queue->ageyy),
                 'case_code' => $this->null($queue->case_code),
                 'episstatus' => $this->null($queue->episstatus),
                 'reg_time' => $this->null($queue->reg_time),
-                'lastupdate' => $this->null($queue->lastupdate),
+                'lastupdate' => $this->turn_date($this->null($queue->lastupdate)),
                 'lastuser' => $this->null($queue->lastuser),
                 'lasttime' => $this->null($queue->lasttime),
                 'deptcode' => $this->null($queue->deptcode),
                 'seqno' => $this->null($queue->seqno),
                 'name' => $this->null($queue->name),
                 'agemm' => $this->null($queue->agemm),
-                'qdate' => $this->null($queue->qdate),
+                'qdate' => $this->turn_date($this->null($queue->qdate)),
                 'qtime' => $this->null($queue->qtime),
                 'attndoctor' => $this->null($queue->attndoctor),
                 'deposit' => $this->null($queue->deposit),
@@ -755,27 +678,27 @@ class nocsrfController extends defaultController
                 'room' => $this->null($queue->room),
                 'bed' => $this->null($queue->bed),
                 'admdoctor' => $this->null($queue->admdoctor),
-                'adddate' => $this->null($queue->adddate),
+                'adddate' => $this->turn_date($this->null($queue->adddate)),
                 'adduser' => $this->null($queue->adduser),
                 'newic' => $this->null($queue->newic),
                 'oldic' => $this->null($queue->oldic),
                 'sex' => $this->null($queue->sex),
-                'dob' => $this->null($queue->dob),
+                'dob' => $this->turn_date($this->null($queue->dob)),
                 'religion' => $this->null($queue->religion),
                 'racecode' => $this->null($queue->racecode),
-                'reg_date' => $this->null($queue->reg_date),
+                'reg_date' => $this->turn_date($this->null($queue->reg_date)),
                 'ageyy' => $this->null($queue->ageyy),
                 'case_code' => $this->null($queue->case_code),
                 'episstatus' => $this->null($queue->episstatus),
                 'reg_time' => $this->null($queue->reg_time),
-                'lastupdate' => $this->null($queue->lastupdate),
+                'lastupdate' => $this->turn_date($this->null($queue->lastupdate)),
                 'lastuser' => $this->null($queue->lastuser),
                 'lasttime' => $this->null($queue->lasttime),
                 'deptcode' => $this->null($queue->deptcode),
                 'seqno' => $this->null($queue->seqno),
                 'name' => $this->null($queue->name),
                 'agemm' => $this->null($queue->agemm),
-                'qdate' => $this->null($queue->qdate),
+                'qdate' => $this->turn_date($this->null($queue->qdate)),
                 'qtime' => $this->null($queue->qtime),
                 'attndoctor' => $this->null($queue->attndoctor),
                 'deposit' => $this->null($queue->deposit),
@@ -808,9 +731,9 @@ class nocsrfController extends defaultController
                 'episno' => $this->null($docalloc->episno),
                 'allocno' => $this->null($docalloc->allocno),
                 'doctorcode' => $this->null($docalloc->doctorcode),
-                'asdate' => $this->null($docalloc->asdate),
+                'asdate' => $this->turn_date($this->null($docalloc->asdate)),
                 'astime' => $this->null($docalloc->astime),
-                'aedate' => $this->null($docalloc->aedate),
+                'aedate' => $this->turn_date($this->null($docalloc->aedate)),
                 'aetime' => $this->null($docalloc->aetime),
                 'aprovide' => $this->null($docalloc->aprovide),
                 'astatus' => $this->null($docalloc->astatus),
@@ -818,9 +741,9 @@ class nocsrfController extends defaultController
                 'servicecode' => $this->null($docalloc->servicecode),
                 'doctype' => $this->null($docalloc->doctype),
                 'epistycode' => $this->null($docalloc->epistycode),
-                'adddate' => $this->null($docalloc->adddate),
+                'adddate' => $this->turn_date($this->null($docalloc->adddate)),
                 'adduser' => $this->null($docalloc->adduser),
-                'lastupdate' => $this->null($docalloc->lastupdate),
+                'lastupdate' => $this->turn_date($this->null($docalloc->lastupdate)),
                 'lastuser' => $this->null($docalloc->lastuser),
                 'computerid' => $this->null($docalloc->computerid)
             ]);
@@ -838,9 +761,9 @@ class nocsrfController extends defaultController
                 'episno' => $this->null($docalloc->episno),
                 'allocno' => $this->null($docalloc->allocno),
                 'doctorcode' => $this->null($docalloc->doctorcode),
-                'asdate' => $this->null($docalloc->asdate),
+                'asdate' => $this->turn_date($this->null($docalloc->asdate)),
                 'astime' => $this->null($docalloc->astime),
-                'aedate' => $this->null($docalloc->aedate),
+                'aedate' => $this->turn_date($this->null($docalloc->aedate)),
                 'aetime' => $this->null($docalloc->aetime),
                 'aprovide' => $this->null($docalloc->aprovide),
                 'astatus' => $this->null($docalloc->astatus),
@@ -848,9 +771,9 @@ class nocsrfController extends defaultController
                 'servicecode' => $this->null($docalloc->servicecode),
                 'doctype' => $this->null($docalloc->doctype),
                 'epistycode' => $this->null($docalloc->epistycode),
-                'adddate' => $this->null($docalloc->adddate),
+                'adddate' => $this->turn_date($this->null($docalloc->adddate)),
                 'adduser' => $this->null($docalloc->adduser),
-                'lastupdate' => $this->null($docalloc->lastupdate),
+                'lastupdate' => $this->turn_date($this->null($docalloc->lastupdate)),
                 'lastuser' => $this->null($docalloc->lastuser),
                 'computerid' => $this->null($docalloc->computerid)
             ]);
@@ -866,9 +789,9 @@ class nocsrfController extends defaultController
                 'epistycode' => $this->null($bedalloc->epistycode),
                 'acode' => $this->null($bedalloc->acode),
                 'atype' => $this->null($bedalloc->atype),
-                'asdate' => $this->null($bedalloc->asdate),
+                'asdate' => $this->turn_date($this->null($bedalloc->asdate)),
                 'astime' => $this->null($bedalloc->astime),
-                'aedate' => $this->null($bedalloc->aedate),
+                'aedate' => $this->turn_date($this->null($bedalloc->aedate)),
                 'aetime' => $this->null($bedalloc->aetime),
                 'aprovide' => $this->null($bedalloc->aprovide),
                 'astatus' => $this->null($bedalloc->astatus),
@@ -880,9 +803,9 @@ class nocsrfController extends defaultController
                 'sex' => $this->null($bedalloc->sex),
                 'name' => $this->null($bedalloc->name),
                 'isolate' => $this->null($bedalloc->isolate),
-                'adddate' => $this->null($bedalloc->adddate),
+                'adddate' => $this->turn_date($this->null($bedalloc->adddate)),
                 'adduser' => $this->null($bedalloc->adduser),
-                'lastupdate' => $this->null($bedalloc->lastupdate),
+                'lastupdate' => $this->turn_date($this->null($bedalloc->lastupdate)),
                 'lastuser' => $this->null($bedalloc->lastuser),
                 'lodgerno' => $this->null($bedalloc->lodgerno),
                 'baby' => $this->null($bedalloc->baby),
@@ -896,9 +819,9 @@ class nocsrfController extends defaultController
                 'bed9' => $this->null($bedalloc->bed9),
                 'bed10' => $this->null($bedalloc->bed10),
                 'deluser' => $this->null($bedalloc->deluser),
-                'deldate' => $this->null($bedalloc->deldate),
+                'deldate' => $this->turn_date($this->null($bedalloc->deldate)),
                 'upduser' => $this->null($bedalloc->upduser),
-                'upddate' => $this->null($bedalloc->upddate),
+                'upddate' => $this->turn_date($this->null($bedalloc->upddate)),
                 'computerid' => $this->null($bedalloc->computerid)
             ]);
     }
@@ -917,9 +840,9 @@ class nocsrfController extends defaultController
                 'epistycode' => $this->null($bedalloc->epistycode),
                 'acode' => $this->null($bedalloc->acode),
                 'atype' => $this->null($bedalloc->atype),
-                'asdate' => $this->null($bedalloc->asdate),
+                'asdate' => $this->turn_date($this->null($bedalloc->asdate)),
                 'astime' => $this->null($bedalloc->astime),
-                'aedate' => $this->null($bedalloc->aedate),
+                'aedate' => $this->turn_date($this->null($bedalloc->aedate)),
                 'aetime' => $this->null($bedalloc->aetime),
                 'aprovide' => $this->null($bedalloc->aprovide),
                 'astatus' => $this->null($bedalloc->astatus),
@@ -931,9 +854,9 @@ class nocsrfController extends defaultController
                 'sex' => $this->null($bedalloc->sex),
                 'name' => $this->null($bedalloc->name),
                 'isolate' => $this->null($bedalloc->isolate),
-                'adddate' => $this->null($bedalloc->adddate),
+                'adddate' => $this->turn_date($this->null($bedalloc->adddate)),
                 'adduser' => $this->null($bedalloc->adduser),
-                'lastupdate' => $this->null($bedalloc->lastupdate),
+                'lastupdate' => $this->turn_date($this->null($bedalloc->lastupdate)),
                 'lastuser' => $this->null($bedalloc->lastuser),
                 'lodgerno' => $this->null($bedalloc->lodgerno),
                 'baby' => $this->null($bedalloc->baby),
@@ -947,9 +870,9 @@ class nocsrfController extends defaultController
                 'bed9' => $this->null($bedalloc->bed9),
                 'bed10' => $this->null($bedalloc->bed10),
                 'deluser' => $this->null($bedalloc->deluser),
-                'deldate' => $this->null($bedalloc->deldate),
+                'deldate' => $this->turn_date($this->null($bedalloc->deldate)),
                 'upduser' => $this->null($bedalloc->upduser),
-                'upddate' => $this->null($bedalloc->upddate),
+                'upddate' => $this->turn_date($this->null($bedalloc->upddate)),
                 'computerid' => $this->null($bedalloc->computerid)
             ]);
     }
@@ -977,22 +900,22 @@ class nocsrfController extends defaultController
                 'type' => $this->null($doctor->type),
                 'doctype' => $this->null($doctor->doctype),
                 'statuscode' => $this->null($doctor->statuscode),
-                'upddate' => $this->null($doctor->upddate),
+                'upddate' => $this->turn_date($this->null($doctor->upddate)),
                 'upduser' => $this->null($doctor->upduser),
                 'chgcode' => $this->null($doctor->chgcode),
                 'creditorcode' => $this->null($doctor->creditorcode),
                 'debtorcode' => $this->null($doctor->debtorcode),
                 'contraflag' => $this->null($doctor->contraflag),
                 'admright' => $this->null($doctor->admright),
-                'resigndate' => $this->null($doctor->resigndate),
+                'resigndate' => $this->turn_date($this->null($doctor->resigndate)),
                 'recstatus' => $this->null($doctor->recstatus),
                 'deptcode' => $this->null($doctor->deptcode),
                 'costcode' => $this->null($doctor->costcode),
                 'appointment' => $this->null($doctor->appointment),
                 'classcode' => $this->null($doctor->classcode),
                 'adduser' => $this->null($doctor->adduser),
-                'adddate' => $this->null($doctor->adddate),
-                'deldate' => $this->null($doctor->deldate),
+                'adddate' => $this->turn_date($this->null($doctor->adddate)),
+                'deldate' => $this->turn_date($this->null($doctor->deldate)),
                 'deluser' => $this->null($doctor->deluser),
                 'gstno' => $this->null($doctor->gstno),
                 'operationtheatre' => $this->null($doctor->operationtheatre),
@@ -1033,22 +956,22 @@ class nocsrfController extends defaultController
                 'type' => $this->null($doctor->type),
                 'doctype' => $this->null($doctor->doctype),
                 'statuscode' => $this->null($doctor->statuscode),
-                'upddate' => $this->null($doctor->upddate),
+                'upddate' => $this->turn_date($this->null($doctor->upddate)),
                 'upduser' => $this->null($doctor->upduser),
                 'chgcode' => $this->null($doctor->chgcode),
                 'creditorcode' => $this->null($doctor->creditorcode),
                 'debtorcode' => $this->null($doctor->debtorcode),
                 'contraflag' => $this->null($doctor->contraflag),
                 'admright' => $this->null($doctor->admright),
-                'resigndate' => $this->null($doctor->resigndate),
+                'resigndate' => $this->turn_date($this->null($doctor->resigndate)),
                 'recstatus' => $this->null($doctor->recstatus),
                 'deptcode' => $this->null($doctor->deptcode),
                 'costcode' => $this->null($doctor->costcode),
                 'appointment' => $this->null($doctor->appointment),
                 'classcode' => $this->null($doctor->classcode),
                 'adduser' => $this->null($doctor->adduser),
-                'adddate' => $this->null($doctor->adddate),
-                'deldate' => $this->null($doctor->deldate),
+                'adddate' => $this->turn_date($this->null($doctor->adddate)),
+                'deldate' => $this->turn_date($this->null($doctor->deldate)),
                 'deluser' => $this->null($doctor->deluser),
                 'gstno' => $this->null($doctor->gstno),
                 'operationtheatre' => $this->null($doctor->operationtheatre),
@@ -1067,58 +990,57 @@ class nocsrfController extends defaultController
     public function debtor_add($debtor){
         DB::table('debtor.debtormast')
             ->insert([
-                'compcode' => $this->null($debtor->compcode),
-                'debtortype' => $this->null($debtor->debtortype),
-                'debtorcode' => $this->null($debtor->debtorcode),
-                'name' => $this->null($debtor->name),
-                'address1' => $this->null($debtor->address1),
-                'address2' => $this->null($debtor->address2),
-                'address3' => $this->null($debtor->address3),
-                'address4' => $this->null($debtor->address4),
-                'postcode' => $this->null($debtor->postcode),
-                'statecode' => $this->null($debtor->statecode),
-                'countrycode' => $this->null($debtor->countrycode),
-                'contact' => $this->null($debtor->contact),
-                'position' => $this->null($debtor->position),
-                'teloffice' => $this->null($debtor->teloffice),
-                'fax' => $this->null($debtor->fax),
-                'email' => $this->null($debtor->email),
-                'payto' => $this->null($debtor->payto),
-                'billtype' => $this->null($debtor->billtype),
-                'billtypeop' => $this->null($debtor->billtypeop),
-                'recstatus' => $this->null($debtor->recstatus),
-                'outamt' => $this->null($debtor->outamt),
-                'depamt' => $this->null($debtor->depamt),
-                'creditlimit' => $this->null($debtor->creditlimit),
-                'actdebccode' => $this->null($debtor->actdebccode),
-                'actdebglacc' => $this->null($debtor->actdebglacc),
-                'depccode' => $this->null($debtor->depccode),
-                'depglacc' => $this->null($debtor->depglacc),
-                'otherccode' => $this->null($debtor->otherccode),
-                'otheracct' => $this->null($debtor->otheracct),
-                'debtorgroup' => $this->null($debtor->debtorgroup),
-                'crgroup' => $this->null($debtor->crgroup),
-                'otheraddr1' => $this->null($debtor->otheraddr1),
-                'otheraddr2' => $this->null($debtor->otheraddr2),
-                'otheraddr3' => $this->null($debtor->otheraddr3),
-                'otheraddr4' => $this->null($debtor->otheraddr4),
-                'accno' => $this->null($debtor->accno),
-                'othertel' => $this->null($debtor->othertel),
-                'requestgl' => $this->null($debtor->requestgl),
-                'creditterm' => $this->null($debtor->creditterm),
-                'adduser' => $this->null($debtor->adduser),
-                'adddate' => $this->null($debtor->adddate),
-                'coverageip' => $this->null($debtor->coverageip),
-                'coverageop' => $this->null($debtor->coverageop),
-                'upduser' => $this->null($debtor->upduser),
-                'upddate' => $this->null($debtor->upddate),
-                'deluser' => $this->null($debtor->deluser),
-                'deldate' => $this->null($debtor->deldate),
-                'computerid' => $this->null($debtor->computerid),
-                'ipaddress' => $this->null($debtor->ipaddress),
-                'lastcomputerid' => $this->null($debtor->lastcomputerid),
-                'lastipaddress' => $this->null($debtor->lastipaddress),
-                'tinid' => $this->null($debtor->tinid)
+                'compcode' => $this->null($debtor->compcode), 
+                'debtortype' => $this->null($debtor->debtortype), 
+                'debtorcode' => $this->null($debtor->debtorcode), 
+                'name' => $this->null($debtor->name), 
+                'address1' => $this->null($debtor->address1), 
+                'address2' => $this->null($debtor->address2), 
+                'address3' => $this->null($debtor->address3), 
+                'address4' => $this->null($debtor->address4), 
+                'postcode' => $this->null($debtor->postcode), 
+                'statecode' => $this->null($debtor->statecode), 
+                'countrycode' => $this->null($debtor->countrycode), 
+                'contact' => $this->null($debtor->contact), 
+                'position' => $this->null($debtor->position), 
+                'teloffice' => $this->null($debtor->teloffice), 
+                'fax' => $this->null($debtor->fax), 
+                'email' => $this->null($debtor->email), 
+                'payto' => $this->null($debtor->payto), 
+                'billtype' => $this->null($debtor->billtype), 
+                'billtypeop' => $this->null($debtor->billtypeop), 
+                'recstatus' => $this->null($debtor->recstatus), 
+                'outamt' => $this->null($debtor->outamt), 
+                'depamt' => $this->null($debtor->depamt), 
+                'creditlimit' => $this->null($debtor->creditlimit), 
+                'actdebccode' => $this->null($debtor->actdebccode), 
+                'actdebglacc' => $this->null($debtor->actdebglacc), 
+                'depccode' => $this->null($debtor->depccode), 
+                'depglacc' => $this->null($debtor->depglacc), 
+                'otherccode' => $this->null($debtor->otherccode), 
+                'otheracct' => $this->null($debtor->otheracct), 
+                'debtorgroup' => $this->null($debtor->debtorgroup), 
+                'crgroup' => $this->null($debtor->crgroup), 
+                'otheraddr1' => $this->null($debtor->otheraddr1), 
+                'otheraddr2' => $this->null($debtor->otheraddr2), 
+                'otheraddr3' => $this->null($debtor->otheraddr3), 
+                'otheraddr4' => $this->null($debtor->otheraddr4), 
+                'accno' => $this->null($debtor->accno), 
+                'othertel' => $this->null($debtor->othertel), 
+                'requestgl' => $this->null($debtor->requestgl), 
+                'creditterm' => $this->null($debtor->creditterm), 
+                'adduser' => $this->null($debtor->adduser), 
+                'adddate' => $this->turn_date($this->null($debtor->adddate)), 
+                'coverageip' => $this->null($debtor->coverageip), 
+                'coverageop' => $this->null($debtor->coverageop), 
+                'upduser' => $this->null($debtor->upduser), 
+                'upddate' => $this->turn_date($this->null($debtor->upddate)), 
+                'deluser' => $this->null($debtor->deluser), 
+                'deldate' => $this->turn_date($this->null($debtor->deldate)), 
+                'computerid' => $this->null($debtor->computerid), 
+                'ipaddress' => $this->null($debtor->ipaddress), 
+                'lastcomputerid' => $this->null($debtor->lastcomputerid), 
+                'lastipaddress' => $this->null($debtor->lastipaddress)
             ]);
     }
 
@@ -1127,58 +1049,57 @@ class nocsrfController extends defaultController
             ->where('compcode','10A')
             ->where('debtorcode',$debtor->debtorcode)
             ->update([
-                'compcode' => $this->null($debtor->compcode),
-                'debtortype' => $this->null($debtor->debtortype),
-                'debtorcode' => $this->null($debtor->debtorcode),
-                'name' => $this->null($debtor->name),
-                'address1' => $this->null($debtor->address1),
-                'address2' => $this->null($debtor->address2),
-                'address3' => $this->null($debtor->address3),
-                'address4' => $this->null($debtor->address4),
-                'postcode' => $this->null($debtor->postcode),
-                'statecode' => $this->null($debtor->statecode),
-                'countrycode' => $this->null($debtor->countrycode),
-                'contact' => $this->null($debtor->contact),
-                'position' => $this->null($debtor->position),
-                'teloffice' => $this->null($debtor->teloffice),
-                'fax' => $this->null($debtor->fax),
-                'email' => $this->null($debtor->email),
-                'payto' => $this->null($debtor->payto),
-                'billtype' => $this->null($debtor->billtype),
-                'billtypeop' => $this->null($debtor->billtypeop),
-                'recstatus' => $this->null($debtor->recstatus),
-                'outamt' => $this->null($debtor->outamt),
-                'depamt' => $this->null($debtor->depamt),
-                'creditlimit' => $this->null($debtor->creditlimit),
-                'actdebccode' => $this->null($debtor->actdebccode),
-                'actdebglacc' => $this->null($debtor->actdebglacc),
-                'depccode' => $this->null($debtor->depccode),
-                'depglacc' => $this->null($debtor->depglacc),
-                'otherccode' => $this->null($debtor->otherccode),
-                'otheracct' => $this->null($debtor->otheracct),
-                'debtorgroup' => $this->null($debtor->debtorgroup),
-                'crgroup' => $this->null($debtor->crgroup),
-                'otheraddr1' => $this->null($debtor->otheraddr1),
-                'otheraddr2' => $this->null($debtor->otheraddr2),
-                'otheraddr3' => $this->null($debtor->otheraddr3),
-                'otheraddr4' => $this->null($debtor->otheraddr4),
-                'accno' => $this->null($debtor->accno),
-                'othertel' => $this->null($debtor->othertel),
-                'requestgl' => $this->null($debtor->requestgl),
-                'creditterm' => $this->null($debtor->creditterm),
-                'adduser' => $this->null($debtor->adduser),
-                'adddate' => $this->null($debtor->adddate),
-                'coverageip' => $this->null($debtor->coverageip),
-                'coverageop' => $this->null($debtor->coverageop),
-                'upduser' => $this->null($debtor->upduser),
-                'upddate' => $this->null($debtor->upddate),
-                'deluser' => $this->null($debtor->deluser),
-                'deldate' => $this->null($debtor->deldate),
-                'computerid' => $this->null($debtor->computerid),
-                'ipaddress' => $this->null($debtor->ipaddress),
-                'lastcomputerid' => $this->null($debtor->lastcomputerid),
-                'lastipaddress' => $this->null($debtor->lastipaddress),
-                'tinid' => $this->null($debtor->tinid)
+                'compcode' => $this->null($debtor->compcode), 
+                'debtortype' => $this->null($debtor->debtortype), 
+                'debtorcode' => $this->null($debtor->debtorcode), 
+                'name' => $this->null($debtor->name), 
+                'address1' => $this->null($debtor->address1), 
+                'address2' => $this->null($debtor->address2), 
+                'address3' => $this->null($debtor->address3), 
+                'address4' => $this->null($debtor->address4), 
+                'postcode' => $this->null($debtor->postcode), 
+                'statecode' => $this->null($debtor->statecode), 
+                'countrycode' => $this->null($debtor->countrycode), 
+                'contact' => $this->null($debtor->contact), 
+                'position' => $this->null($debtor->position), 
+                'teloffice' => $this->null($debtor->teloffice), 
+                'fax' => $this->null($debtor->fax), 
+                'email' => $this->null($debtor->email), 
+                'payto' => $this->null($debtor->payto), 
+                'billtype' => $this->null($debtor->billtype), 
+                'billtypeop' => $this->null($debtor->billtypeop), 
+                'recstatus' => $this->null($debtor->recstatus), 
+                'outamt' => $this->null($debtor->outamt), 
+                'depamt' => $this->null($debtor->depamt), 
+                'creditlimit' => $this->null($debtor->creditlimit), 
+                'actdebccode' => $this->null($debtor->actdebccode), 
+                'actdebglacc' => $this->null($debtor->actdebglacc), 
+                'depccode' => $this->null($debtor->depccode), 
+                'depglacc' => $this->null($debtor->depglacc), 
+                'otherccode' => $this->null($debtor->otherccode), 
+                'otheracct' => $this->null($debtor->otheracct), 
+                'debtorgroup' => $this->null($debtor->debtorgroup), 
+                'crgroup' => $this->null($debtor->crgroup), 
+                'otheraddr1' => $this->null($debtor->otheraddr1), 
+                'otheraddr2' => $this->null($debtor->otheraddr2), 
+                'otheraddr3' => $this->null($debtor->otheraddr3), 
+                'otheraddr4' => $this->null($debtor->otheraddr4), 
+                'accno' => $this->null($debtor->accno), 
+                'othertel' => $this->null($debtor->othertel), 
+                'requestgl' => $this->null($debtor->requestgl), 
+                'creditterm' => $this->null($debtor->creditterm), 
+                'adduser' => $this->null($debtor->adduser), 
+                'adddate' => $this->turn_date($this->null($debtor->adddate)), 
+                'coverageip' => $this->null($debtor->coverageip), 
+                'coverageop' => $this->null($debtor->coverageop), 
+                'upduser' => $this->null($debtor->upduser), 
+                'upddate' => $this->turn_date($this->null($debtor->upddate)), 
+                'deluser' => $this->null($debtor->deluser), 
+                'deldate' => $this->turn_date($this->null($debtor->deldate)), 
+                'computerid' => $this->null($debtor->computerid), 
+                'ipaddress' => $this->null($debtor->ipaddress), 
+                'lastcomputerid' => $this->null($debtor->lastcomputerid), 
+                'lastipaddress' => $this->null($debtor->lastipaddress)
             ]);
     }
 
@@ -1187,6 +1108,14 @@ class nocsrfController extends defaultController
             return null;
         }else{
             return $val;
+        }
+    }
+
+    public function null_yes($val){
+        if(trim($val) == 'yes'){
+            return 1;
+        }else{
+            return 0;
         }
     }
 }
