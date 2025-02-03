@@ -90,24 +90,24 @@ class nocsrfController extends defaultController
             foreach ($queue_req as $queue_obj) {
                 $queue_obj = (object)$queue_obj;
                 if(!empty($queue_obj->mrn) && !empty($queue_obj->episno) && !empty($queue_obj->deptcode)){
-                    $queue = DB::table('hisdb.queue')
-                                    ->where('compcode',$queue_obj->compcode)
-                                    ->where('deptcode',$queue_obj->deptcode)
-                                    ->where('mrn',$queue_obj->mrn)
-                                    ->where('episno',$queue_obj->episno);
+                    // $queue = DB::table('hisdb.queue')
+                    //                 ->where('compcode',$queue_obj->compcode)
+                    //                 ->where('deptcode',$queue_obj->deptcode)
+                    //                 ->where('mrn',$queue_obj->mrn)
+                    //                 ->where('episno',$queue_obj->episno);
 
-                    if(!$queue->exists()){
+                    // if(!$queue->exists()){
 
-                        DB::table('hisdb.queue')
-                                    ->where('compcode',$queue_obj->compcode)
-                                    // ->where('deptcode',$queue_obj->deptcode)
-                                    ->where('mrn',$queue_obj->mrn)
-                                    ->where('episno',$queue_obj->episno)
-                                    ->delete();
+                    DB::table('hisdb.queue')
+                                ->where('compcode',$queue_obj->compcode)
+                                // ->where('deptcode',$queue_obj->deptcode)
+                                ->where('mrn',$queue_obj->mrn)
+                                ->where('episno',$queue_obj->episno)
+                                ->delete();
 
-                        $this->queue_add($queue_obj);
-                        print_r('queue_add ');
-                    }
+                    $this->queue_add($queue_obj);
+                    print_r('queue_add ');
+                    // }
                     // else{
                     //     $this->queue_edit($queue_obj);
                     //     print_r('queue_edit ');
