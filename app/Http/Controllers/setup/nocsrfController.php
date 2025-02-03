@@ -378,7 +378,7 @@ class nocsrfController extends defaultController
     public function episode_add($episode){
         DB::table('hisdb.episode')
             ->insert([
-                'compcode' => $this->null($patmast->compcode),
+                'compcode' => $this->null($episode->compcode),
                 'mrn' => $this->null($episode->mrn),
                 'episno' => $this->null($episode->episno),
                 'admsrccode' => $this->null($episode->admsrccode),
@@ -464,7 +464,7 @@ class nocsrfController extends defaultController
             ->where('mrn',$episode->mrn)
             ->where('episno',$episode->episno)
             ->update([
-                'compcode' => $this->null($patmast->compcode),
+                'compcode' => $this->null($episode->compcode),
                 'mrn' => $this->null($episode->mrn),
                 'episno' => $this->null($episode->episno),
                 'admsrccode' => $this->null($episode->admsrccode),
