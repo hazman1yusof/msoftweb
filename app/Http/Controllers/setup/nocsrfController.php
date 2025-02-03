@@ -87,11 +87,12 @@ class nocsrfController extends defaultController
                 }
             }
 
+            $queue_obj = (object)$queue_req[0];
             DB::table('hisdb.queue')
-                        ->where('compcode',$queue_req[0]->compcode)
+                        ->where('compcode',$queue_obj->compcode)
                         // ->where('deptcode',$queue_obj->deptcode)
-                        ->where('mrn',$queue_req[0]->mrn)
-                        ->where('episno',$queue_req[0]->episno)
+                        ->where('mrn',$queue_obj->mrn)
+                        ->where('episno',$queue_obj->episno)
                         ->delete();
 
             foreach ($queue_req as $queue_obj) {
