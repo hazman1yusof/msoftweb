@@ -76,6 +76,8 @@ class NursingNoteController extends defaultController
                 switch($request->oper){
                     case 'add':
                         return $this->add_treatment($request);
+                    case 'edit':
+                        return $this->edit_treatment($request);
                     default:
                         return 'error happen..';
                 }
@@ -84,6 +86,8 @@ class NursingNoteController extends defaultController
                 switch($request->oper){
                     case 'add':
                         return $this->add_investigation($request);
+                    case 'edit':
+                        return $this->edit_investigation($request);
                     default:
                         return 'error happen..';
                 }
@@ -92,6 +96,8 @@ class NursingNoteController extends defaultController
                 switch($request->oper){
                     case 'add':
                         return $this->add_injection($request);
+                    case 'edit':
+                        return $this->edit_injection($request);
                     default:
                         return 'error happen..';
                 }
@@ -1226,6 +1232,34 @@ class NursingNoteController extends defaultController
         
     }
     
+    public function edit_treatment(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.pattreatment')
+                ->where('idno','=',$request->tr_idno)
+                ->update([
+                    'remarks' => $request->treatment_remarks,
+                    // 'entereddate'  => $request->tr_entereddate,
+                    'enteredtime'  => $request->tr_enteredtime,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
     public function add_investigation(Request $request){
         
         DB::beginTransaction();
@@ -1259,6 +1293,34 @@ class NursingNoteController extends defaultController
         
     }
     
+    public function edit_investigation(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.pattreatment')
+                ->where('idno','=',$request->inv_idno)
+                ->update([
+                    'remarks' => $request->investigation_remarks,
+                    // 'entereddate'  => $request->inv_entereddate,
+                    'enteredtime'  => $request->inv_enteredtime,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
     public function add_injection(Request $request){
         
         DB::beginTransaction();
@@ -1278,6 +1340,34 @@ class NursingNoteController extends defaultController
                     // 'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'adduser'  => strtoupper($request->injection_adduser),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit_injection(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.pattreatment')
+                ->where('idno','=',$request->inj_idno)
+                ->update([
+                    'remarks' => $request->injection_remarks,
+                    // 'entereddate'  => $request->inj_entereddate,
+                    'enteredtime'  => $request->inj_enteredtime,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                 ]);
             
             DB::commit();

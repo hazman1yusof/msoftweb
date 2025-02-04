@@ -176,6 +176,15 @@ $(document).ready(function (){
         enableForm('#formTreatment');
         rdonly('#formTreatment');
         emptyFormdata_div("#formTreatment",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        document.getElementById("tr_idno").value = "";
+        // dialog_mrn_edit.on();
+    });
+    
+    $("#edit_treatment").click(function (){
+        button_state_treatment('wait');
+        enableForm('#formTreatment');
+        rdonly('#formTreatment');
+        $("#tr_entereddate,#treatment_adduser").attr("readonly", true);
         // dialog_mrn_edit.on();
     });
     
@@ -183,7 +192,7 @@ $(document).ready(function (){
         disableForm('#formTreatment');
         if($('#formTreatment').isValid({requiredFields: ''}, conf, true)){
             saveForm_treatment(function (){
-                $("#cancel_treatment").data('oper','add');
+                $("#cancel_treatment").data('oper','edit');
                 $("#cancel_treatment").click();
                 // $("#jqGridPagerRefresh").click();
                 // $('#tbl_treatment').DataTable().ajax.reload();
@@ -206,6 +215,15 @@ $(document).ready(function (){
         enableForm('#formInvestigation');
         rdonly('#formInvestigation');
         emptyFormdata_div("#formInvestigation",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        document.getElementById("inv_idno").value = "";
+        // dialog_mrn_edit.on();
+    });
+    
+    $("#edit_investigation").click(function (){
+        button_state_investigation('wait');
+        enableForm('#formInvestigation');
+        rdonly('#formInvestigation');
+        $("#inv_entereddate,#investigation_adduser").attr("readonly", true);
         // dialog_mrn_edit.on();
     });
     
@@ -236,6 +254,15 @@ $(document).ready(function (){
         enableForm('#formInjection');
         rdonly('#formInjection');
         emptyFormdata_div("#formInjection",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        document.getElementById("inj_idno").value = "";
+        // dialog_mrn_edit.on();
+    });
+    
+    $("#edit_injection").click(function (){
+        button_state_injection('wait');
+        enableForm('#formInjection');
+        rdonly('#formInjection');
+        $("#inj_entereddate,#injection_adduser").attr("readonly", true);
         // dialog_mrn_edit.on();
     });
     
@@ -845,11 +872,11 @@ $(document).ready(function (){
         // populate_progressnote_getdata();
         $("#idno_progress").val(data.idno);
         
-        var saveParam={
+        var saveParam = {
             action: 'get_table_progress',
         }
         
-        var postobj={
+        var postobj = {
             _token: $('#csrf_token').val(),
             idno: data.idno,
             // mrn: data.mrn,
@@ -1130,11 +1157,11 @@ $(document).ready(function (){
     }
     
     function get_total_qty(){
-        var saveParam={
+        var saveParam = {
             action: 'get_table_drug',
         }
         
-        var postobj={
+        var postobj = {
             _token: $('#csrf_token').val(),
             mrn: $("#mrn_nursNote").val(),
             episno: $("#episno_nursNote").val(),
@@ -1178,6 +1205,7 @@ $(document).ready(function (){
         $(this).addClass('active');
         
         // populate_treatment_getdata();
+        $("#tr_idno").val(data.idno);
         
         var saveParam = {
             action: 'get_table_treatment',
@@ -1198,7 +1226,7 @@ $(document).ready(function (){
             if(!$.isEmptyObject(data)){
                 autoinsert_rowdata("#formTreatment",data.treatment);
                 
-                button_state_treatment('add');
+                button_state_treatment('edit');
                 textarea_init_nursingnote();
             }else{
                 button_state_treatment('add');
@@ -1227,6 +1255,7 @@ $(document).ready(function (){
         $(this).addClass('active');
         
         // populate_investigation_getdata();
+        $("#inv_idno").val(data.idno);
         
         var saveParam = {
             action: 'get_table_treatment',
@@ -1247,7 +1276,7 @@ $(document).ready(function (){
             if(!$.isEmptyObject(data)){
                 autoinsert_rowdata("#formInvestigation",data.investigation);
                 
-                button_state_investigation('add');
+                button_state_investigation('edit');
                 textarea_init_nursingnote();
             }else{
                 button_state_investigation('add');
@@ -1276,6 +1305,7 @@ $(document).ready(function (){
         $(this).addClass('active');
         
         // populate_injection_getdata();
+        $("#inj_idno").val(data.idno);
         
         var saveParam = {
             action: 'get_table_treatment',
@@ -1296,7 +1326,7 @@ $(document).ready(function (){
             if(!$.isEmptyObject(data)){
                 autoinsert_rowdata("#formInjection",data.injection);
                 
-                button_state_injection('add');
+                button_state_injection('edit');
                 textarea_init_nursingnote();
             }else{
                 button_state_injection('add');
@@ -4297,18 +4327,24 @@ function button_state_treatment(state){
         case 'empty':
             $("#toggle_nursNote").removeAttr('data-toggle');
             $('#cancel_treatment').data('oper','add');
-            $('#new_treatment,#save_treatment,#cancel_treatment').attr('disabled',true);
+            $('#new_treatment,#save_treatment,#cancel_treatment,#edit_treatment').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_nursNote").attr('data-toggle','collapse');
             $('#cancel_treatment').data('oper','add');
             $("#new_treatment").attr('disabled',false);
+            $('#save_treatment,#cancel_treatment,#edit_treatment').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_nursNote").attr('data-toggle','collapse');
+            $('#cancel_treatment').data('oper','edit');
+            $("#new_treatment,#edit_treatment").attr('disabled',false);
             $('#save_treatment,#cancel_treatment').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_nursNote").attr('data-toggle','collapse');
             $("#save_treatment,#cancel_treatment").attr('disabled',false);
-            $('#new_treatment').attr('disabled',true);
+            $('#new_treatment,#edit_treatment').attr('disabled',true);
             break;
     }
 }
@@ -4319,18 +4355,24 @@ function button_state_investigation(state){
         case 'empty':
             $("#toggle_nursNote").removeAttr('data-toggle');
             $('#cancel_investigation').data('oper','add');
-            $('#new_investigation,#save_investigation,#cancel_investigation').attr('disabled',true);
+            $('#new_investigation,#save_investigation,#cancel_investigation,#edit_investigation').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_nursNote").attr('data-toggle','collapse');
             $('#cancel_investigation').data('oper','add');
             $("#new_investigation").attr('disabled',false);
+            $('#save_investigation,#cancel_investigation,#edit_investigation').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_nursNote").attr('data-toggle','collapse');
+            $('#cancel_investigation').data('oper','edit');
+            $("#new_investigation,#edit_investigation").attr('disabled',false);
             $('#save_investigation,#cancel_investigation').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_nursNote").attr('data-toggle','collapse');
             $("#save_investigation,#cancel_investigation").attr('disabled',false);
-            $('#new_investigation').attr('disabled',true);
+            $('#new_investigation,#edit_investigation').attr('disabled',true);
             break;
     }
 }
@@ -4341,18 +4383,24 @@ function button_state_injection(state){
         case 'empty':
             $("#toggle_nursNote").removeAttr('data-toggle');
             $('#cancel_injection').data('oper','add');
-            $('#new_injection,#save_injection,#cancel_injection').attr('disabled',true);
+            $('#new_injection,#save_injection,#cancel_injection,#edit_injection').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_nursNote").attr('data-toggle','collapse');
             $('#cancel_injection').data('oper','add');
             $("#new_injection").attr('disabled',false);
+            $('#save_injection,#cancel_injection,#edit_injection').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_nursNote").attr('data-toggle','collapse');
+            $('#cancel_injection').data('oper','edit');
+            $("#new_injection,#edit_injection").attr('disabled',false);
             $('#save_injection,#cancel_injection').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_nursNote").attr('data-toggle','collapse');
             $("#save_injection,#cancel_injection").attr('disabled',false);
-            $('#new_injection').attr('disabled',true);
+            $('#new_injection,#edit_injection').attr('disabled',true);
             break;
     }
 }
@@ -4575,7 +4623,7 @@ function populate_treatment_getdata(){
         if(!$.isEmptyObject(data.treatment)){
             autoinsert_rowdata("#formTreatment",data.treatment);
             
-            button_state_treatment('add');
+            button_state_treatment('edit');
             textarea_init_nursingnote();
         }else{
             button_state_treatment('add');
@@ -4585,7 +4633,7 @@ function populate_treatment_getdata(){
         if(!$.isEmptyObject(data.investigation)){
             autoinsert_rowdata("#formInvestigation",data.investigation);
             
-            button_state_investigation('add');
+            button_state_investigation('edit');
             textarea_init_nursingnote();
         }else{
             button_state_investigation('add');
@@ -4595,7 +4643,7 @@ function populate_treatment_getdata(){
         if(!$.isEmptyObject(data.injection)){
             autoinsert_rowdata("#formInjection",data.injection);
             
-            button_state_injection('add');
+            button_state_injection('edit');
             textarea_init_nursingnote();
         }else{
             button_state_injection('add');
@@ -5018,6 +5066,7 @@ function saveForm_treatment(callback){
     
     var postobj = {
         _token: $('#csrf_token').val(),
+        tr_idno: $('#tr_idno').val(),
         mrn_nursNote: $('#mrn_nursNote').val(),
         episno_nursNote: $('#episno_nursNote').val()
     };
@@ -5094,6 +5143,7 @@ function saveForm_investigation(callback){
     
     var postobj = {
         _token: $('#csrf_token').val(),
+        inv_idno: $('#inv_idno').val(),
         mrn_nursNote: $('#mrn_nursNote').val(),
         episno_nursNote: $('#episno_nursNote').val()
     };
@@ -5153,6 +5203,7 @@ function saveForm_injection(callback){
     
     var postobj = {
         _token: $('#csrf_token').val(),
+        inj_idno: $('#inj_idno').val(),
         mrn_nursNote: $('#mrn_nursNote').val(),
         episno_nursNote: $('#episno_nursNote').val()
     };

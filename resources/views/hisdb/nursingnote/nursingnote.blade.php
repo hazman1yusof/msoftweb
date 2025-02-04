@@ -102,10 +102,10 @@
                                                 <div class="panel-body" style="padding: 15px 0px;">
                                                     <div class="form-inline col-md-12" style="padding-bottom: 15px;">
                                                         <label class="control-label" for="datetaken" style="padding-right: 5px;">Date</label>
-                                                        <input id="datetaken" name="datetaken" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
+                                                        <input id="datetaken" name="datetaken" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>">
                                                         
                                                         <label class="control-label" for="timetaken" style="padding-left: 15px; padding-right: 5px;">Time</label>
-                                                        <input id="timetaken" name="timetaken" type="time" class="form-control input-sm">
+                                                        <input id="timetaken" name="timetaken" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                         
                                                         <button class="btn btn-default btn-sm" type="button" id="doctornote_bpgraph" style="float: right; margin-right: 20px;">Chart</button>
                                                     </div>
@@ -1711,18 +1711,22 @@
                     <div id="tab-treatment" class="tab-pane fade">
                         <div class='col-md-4' style="padding-left: 0px; padding-right: 3px;">
                             <div class="panel panel-info">
-                                <div class="panel-heading text-center" style="height: 40px;">
-                                    <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 215px; top: 5px;">
-                                        <h6>TREATMENT AND PROCEDURE</h6>
+                                <div class="panel-heading text-center" style="height: 60px;">
+                                    <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 45px; top: 5px;">
+                                        <h6>TREATMENT &</h6>
+                                        <h6>PROCEDURE</h6>
                                     </div>
                                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                         id="btn_grp_edit_treatment"
                                         style="position: absolute;
                                                 padding: 0 0 0 0;
                                                 right: 10px;
-                                                top: 5px;">
+                                                top: 15px;">
                                         <button type="button" class="btn btn-default" id="new_treatment">
                                             <span class="fa fa-plus-square-o"></span> New 
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="edit_treatment">
+                                            <span class="fa fa-edit fa-lg"></span> Edit 
                                         </button>
                                         <button type="button" class="btn btn-default" data-oper='add' id="save_treatment">
                                             <span class="fa fa-save fa-lg"></span> Save 
@@ -1735,6 +1739,8 @@
                                 
                                 <div class="panel-body" style="padding: 15px 5px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formTreatment'>
+                                        <input id="tr_idno" name="tr_idno" type="hidden">
+                                        
                                         <div class="col-md-3" style="padding: 0 0 0 0;">
                                             <div class="panel panel-info">
                                                 <div class="panel-body" style="padding: 0 0 0 0;">
@@ -1784,8 +1790,8 @@
                         </div>
                         <div class='col-md-4' style="padding-left: 3px; padding-right: 3px;">
                             <div class="panel panel-info">
-                                <div class="panel-heading text-center" style="height: 40px;">
-                                    <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 215px; top: 5px;">
+                                <div class="panel-heading text-center" style="height: 60px;">
+                                    <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 45px; top: 15px;">
                                         <h6>INVESTIGATION</h6>
                                     </div>
                                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
@@ -1793,9 +1799,12 @@
                                         style="position: absolute;
                                                 padding: 0 0 0 0;
                                                 right: 10px;
-                                                top: 5px;">
+                                                top: 15px;">
                                         <button type="button" class="btn btn-default" id="new_investigation">
                                             <span class="fa fa-plus-square-o"></span> New 
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="edit_investigation">
+                                            <span class="fa fa-edit fa-lg"></span> Edit 
                                         </button>
                                         <button type="button" class="btn btn-default" data-oper='add' id="save_investigation">
                                             <span class="fa fa-save fa-lg"></span> Save 
@@ -1808,6 +1817,8 @@
                                 
                                 <div class="panel-body" style="padding: 15px 5px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formInvestigation'>
+                                        <input id="inv_idno" name="inv_idno" type="hidden">
+                                        
                                         <div class="col-md-3" style="padding: 0 0 0 0;">
                                             <div class="panel panel-info">
                                                 <div class="panel-body" style="padding: 0 0 0 0;">
@@ -1857,8 +1868,8 @@
                         </div>
                         <div class='col-md-4' style="padding-left: 3px; padding-right: 0px;">
                             <div class="panel panel-info">
-                                <div class="panel-heading text-center" style="height: 40px;">
-                                    <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 215px; top: 5px;">
+                                <div class="panel-heading text-center" style="height: 60px;">
+                                    <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 45px; top: 15px;">
                                         <h6>INJECTION</h6>
                                     </div>
                                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
@@ -1866,9 +1877,12 @@
                                         style="position: absolute;
                                                 padding: 0 0 0 0;
                                                 right: 10px;
-                                                top: 5px;">
+                                                top: 15px;">
                                         <button type="button" class="btn btn-default" id="new_injection">
                                             <span class="fa fa-plus-square-o"></span> New 
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="edit_injection">
+                                            <span class="fa fa-edit fa-lg"></span> Edit 
                                         </button>
                                         <button type="button" class="btn btn-default" data-oper='add' id="save_injection">
                                             <span class="fa fa-save fa-lg"></span> Save 
@@ -1881,6 +1895,8 @@
                                 
                                 <div class="panel-body" style="padding: 15px 5px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formInjection'>
+                                        <input id="inj_idno" name="inj_idno" type="hidden">
+
                                         <div class="col-md-3" style="padding: 0 0 0 0;">
                                             <div class="panel panel-info">
                                                 <div class="panel-body" style="padding: 0 0 0 0;">
