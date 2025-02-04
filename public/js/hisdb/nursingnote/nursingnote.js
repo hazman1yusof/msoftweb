@@ -231,7 +231,7 @@ $(document).ready(function (){
         disableForm('#formInvestigation');
         if($('#formInvestigation').isValid({requiredFields: ''}, conf, true)){
             saveForm_investigation(function (){
-                $("#cancel_investigation").data('oper','add');
+                $("#cancel_investigation").data('oper','edit');
                 $("#cancel_investigation").click();
                 // $("#jqGridPagerRefresh").click();
                 // $('#tbl_investigation').DataTable().ajax.reload();
@@ -270,7 +270,7 @@ $(document).ready(function (){
         disableForm('#formInjection');
         if($('#formInjection').isValid({requiredFields: ''}, conf, true)){
             saveForm_injection(function (){
-                $("#cancel_injection").data('oper','add');
+                $("#cancel_injection").data('oper','edit');
                 $("#cancel_injection").click();
                 // $("#jqGridPagerRefresh").click();
                 // $('#tbl_injection').DataTable().ajax.reload();
