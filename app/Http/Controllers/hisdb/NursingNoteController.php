@@ -1238,15 +1238,35 @@ class NursingNoteController extends defaultController
         
         try {
             
-            DB::table('nursing.pattreatment')
-                ->where('idno','=',$request->tr_idno)
-                ->update([
-                    'remarks' => $request->treatment_remarks,
-                    // 'entereddate'  => $request->tr_entereddate,
-                    'enteredtime'  => $request->tr_enteredtime,
-                    'upduser'  => session('username'),
-                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
-                ]);
+            if(!empty($request->tr_idno)){
+                DB::table('nursing.pattreatment')
+                    ->where('idno','=',$request->tr_idno)
+                    ->update([
+                        'remarks' => $request->treatment_remarks,
+                        // 'entereddate'  => $request->tr_entereddate,
+                        'enteredtime'  => $request->tr_enteredtime,
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                    ]);
+            }else{
+                DB::table('nursing.pattreatment')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_nursNote,
+                        'episno' => $request->episno_nursNote,
+                        'type' => 'TREATMENT',
+                        'remarks' => $request->treatment_remarks,
+                        'entereddate'  => $request->tr_entereddate,
+                        'enteredtime'  => $request->tr_enteredtime,
+                        // 'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        // 'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'adduser'  => strtoupper($request->treatment_adduser),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                    ]);
+            }
+            
+            $queries = DB::getQueryLog();
+            // dump($queries);
             
             DB::commit();
             
@@ -1299,15 +1319,35 @@ class NursingNoteController extends defaultController
         
         try {
             
-            DB::table('nursing.pattreatment')
-                ->where('idno','=',$request->inv_idno)
-                ->update([
-                    'remarks' => $request->investigation_remarks,
-                    // 'entereddate'  => $request->inv_entereddate,
-                    'enteredtime'  => $request->inv_enteredtime,
-                    'upduser'  => session('username'),
-                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
-                ]);
+            if(!empty($request->inv_idno)){
+                DB::table('nursing.pattreatment')
+                    ->where('idno','=',$request->inv_idno)
+                    ->update([
+                        'remarks' => $request->investigation_remarks,
+                        // 'entereddate'  => $request->inv_entereddate,
+                        'enteredtime'  => $request->inv_enteredtime,
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                    ]);
+            }else{
+                DB::table('nursing.pattreatment')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_nursNote,
+                        'episno' => $request->episno_nursNote,
+                        'type' => 'INVESTIGATION',
+                        'remarks' => $request->investigation_remarks,
+                        'entereddate'  => $request->inv_entereddate,
+                        'enteredtime'  => $request->inv_enteredtime,
+                        // 'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        // 'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'adduser'  => strtoupper($request->investigation_adduser),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                    ]);
+            }
+            
+            $queries = DB::getQueryLog();
+            // dump($queries);
             
             DB::commit();
             
@@ -1360,15 +1400,35 @@ class NursingNoteController extends defaultController
         
         try {
             
-            DB::table('nursing.pattreatment')
-                ->where('idno','=',$request->inj_idno)
-                ->update([
-                    'remarks' => $request->injection_remarks,
-                    // 'entereddate'  => $request->inj_entereddate,
-                    'enteredtime'  => $request->inj_enteredtime,
-                    'upduser'  => session('username'),
-                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
-                ]);
+            if(!empty($request->inj_idno)){
+                DB::table('nursing.pattreatment')
+                    ->where('idno','=',$request->inj_idno)
+                    ->update([
+                        'remarks' => $request->injection_remarks,
+                        // 'entereddate'  => $request->inj_entereddate,
+                        'enteredtime'  => $request->inj_enteredtime,
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                    ]);
+            }else{
+                DB::table('nursing.pattreatment')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_nursNote,
+                        'episno' => $request->episno_nursNote,
+                        'type' => 'INJECTION',
+                        'remarks' => $request->injection_remarks,
+                        'entereddate'  => $request->inj_entereddate,
+                        'enteredtime'  => $request->inj_enteredtime,
+                        // 'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        // 'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'adduser'  => strtoupper($request->injection_adduser),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                    ]);
+            }
+            
+            $queries = DB::getQueryLog();
+            // dump($queries);
             
             DB::commit();
             
