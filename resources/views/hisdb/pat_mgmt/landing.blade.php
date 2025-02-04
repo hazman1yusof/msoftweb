@@ -409,7 +409,7 @@
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.1"></script>
 				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
 				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invFBC.js"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCoag.js"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invRP.js"></script>
@@ -431,7 +431,7 @@
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.1"></script>
 				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
 				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js"></script>
-				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invFBC.js"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCoag.js"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invRP.js"></script>
