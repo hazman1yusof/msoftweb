@@ -152,6 +152,42 @@ function enableForm(formName, except){
 	}
 }
 
+function readonlyForm(formName, except){
+	$(formName+' textarea').prop("readonly",true);
+	$(formName+' input').prop("readonly",true);
+	$(formName+' input[type=radio]').prop("readonly",true);
+	$(formName+' input[type=checkbox]').prop("readonly",true);
+	$(formName+' select').prop("readonly",true);
+	
+	if(except!=null){
+		$.each(except, function( index, value ) {
+			$(formName+' textarea[name='+value+']').prop("readonly",false);
+			$(formName+' input[name='+value+']').prop("readonly",false);
+			$(formName+' input[type=radio][name='+value+']').prop("readonly",false);
+			$(formName+' input[type=checkbox][name='+value+']').prop("readonly",false);
+			$(formName+' select[name='+value+']').prop("readonly",false);
+		});
+	}
+}
+
+function unreadonlyForm(formName, except){
+	$(formName+' textarea').prop("readonly",false);
+	$(formName+' input').prop("readonly",false);
+	$(formName+' input[type=radio]').prop("readonly",false);
+	$(formName+' input[type=checkbox]').prop("readonly",false);
+	$(formName+' select').prop("readonly",false);
+
+	if(except!=null){
+		$.each(except, function( index, value ) {
+			$(formName+' textarea[name='+value+']').prop("readonly",true);
+			$(formName+' input[name='+value+']').prop("readonly",true);
+			$(formName+' input[type=radio][name='+value+']').prop("readonly",true);
+			$(formName+' input[type=checkbox][name='+value+']').prop("readonly",true);
+			$(formName+' select[name='+value+']').prop("readonly",true);
+		});
+	}
+}
+
 function populateFormdata(grid,dialog,form,selRowId,state,except){
 	if(!selRowId){
 		alert('Please select row');

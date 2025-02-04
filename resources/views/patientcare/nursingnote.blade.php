@@ -66,11 +66,11 @@
                                                         <div class="inline fields">
                                                             <div class="field">
                                                                 <label for="datetaken" style="padding-right: 5px;">Date</label>
-                                                                <input id="datetaken" name="datetaken" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
+                                                                <input id="datetaken" name="datetaken" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                             </div>
                                                             <div class="field">
                                                                 <label for="timetaken" style="padding-left: 15px; padding-right: 5px;">Time</label>
-                                                                <input id="timetaken" name="timetaken" type="time" class="form-control input-sm">
+                                                                <input id="timetaken" name="timetaken" type="time" class="form-control input-sm"  data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                             </div>                
                                                             <!-- <div style="position: absolute;
                                                                             padding: 0 0 0 0;

@@ -224,12 +224,12 @@ class NursingNoteController extends defaultController
                     'gufoley' => $request->gufoley,
                     'assesothers' => $request->assesothers,
                     'plannotes' => $request->plannotes,
-                    'epistycode' => $request->epistycode,
+                    'epistycode' => 'OP',
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'painscore' => $request->painscore,
                 ]);
-            
+
             DB::commit();
             
         } catch (\Exception $e) {
@@ -332,7 +332,7 @@ class NursingNoteController extends defaultController
                         'gufoley' => $request->gufoley,
                         'assesothers' => $request->assesothers,
                         'plannotes' => $request->plannotes,
-                        'epistycode' => $request->epistycode,
+                        'epistycode' => 'OP',
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
