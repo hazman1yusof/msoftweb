@@ -58,7 +58,7 @@ class GlmasterController extends defaultController
                     'compcode' => session('compcode'),
                     'glaccno' => strtoupper($request->glaccno),
                     'description' => strtoupper($request->description),
-                    'accgroup' => strtoupper($request->accgroup),
+                    'acttype' => strtoupper($request->acttype),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
                     'computerid' => session('computerid'),
@@ -88,7 +88,7 @@ class GlmasterController extends defaultController
                 ->update([  
                     'glaccno' => strtoupper($request->glaccno),
                     'description' => strtoupper($request->description),
-                    'accgroup' => strtoupper($request->accgroup),
+                    'acttype' => strtoupper($request->acttype),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
                     'lastcomputerid' => session('computerid'),
