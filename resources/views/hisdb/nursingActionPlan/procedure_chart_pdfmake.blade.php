@@ -93,10 +93,11 @@
                             style: 'tableExample',
                             table: {
                                 headerRows: 1,
-                                widths: [80,80,'*'], // panjang standard dia 515
+                                widths: [50,50,50,'*'], // panjang standard dia 515
                                 body: [
                                     [
                                         { text: 'START DATE', style: 'tableHeader', fillColor: '#dddddd' },
+                                        { text: 'SIZE', style: 'tableHeader', fillColor: '#dddddd' },
                                         { text: 'END DATE', style: 'tableHeader', fillColor: '#dddddd' },
                                         { text: 'STAFF', style: 'tableHeader', fillColor: '#dddddd' },
                                     ],
@@ -104,7 +105,12 @@
                                         @if($obj->prodType == $type->prodType)
                                         [
                                             { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->startdate)->format('d-m-Y')}}' },
-                                            { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->enddate)->format('d-m-Y')}}' },
+                                            { text: `{!!$obj->size!!}`},
+                                            @if(!empty($obj->enddate))
+                                                { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->enddate)->format('d-m-Y')}}' },
+                                            @else
+                                                { text: '' },
+                                            @endif                                            
                                             { text: '{{$obj->adduser}}' },
                                         ],
                                         @endif

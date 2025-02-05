@@ -78,7 +78,7 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [70,70,70,70,70,70], // panjang standard dia 515
+                            widths: [70,70,70,70,70,70,70], // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'DATE', style: 'tableHeader', fillColor: '#dddddd' },
@@ -86,6 +86,7 @@
                                     { text: 'WHOLE BODY', style: 'tableHeader', fillColor: '#dddddd' },
                                     { text: 'PLATLET', style: 'tableHeader', fillColor: '#dddddd' },
                                     { text: 'FFP', style: 'tableHeader', fillColor: '#dddddd' },
+                                    { text: 'REMARKS', style: 'tableHeader', fillColor: '#dddddd' },
                                     { text: 'STAFF', style: 'tableHeader', fillColor: '#dddddd' },
                                 ],
                                 @foreach ($bloodTrans as $obj)
@@ -95,6 +96,7 @@
                                     { text: '{{$obj->wholebody}}', alignment: 'right' },
                                     { text: '{{$obj->platlet}}', alignment: 'right' },
                                     { text: '{{$obj->ffp}}', alignment: 'right' },
+                                    { text: `{!!$obj->remarks!!}`},
                                     { text: '{{$obj->adduser}}' },
                                 ],
                                 @endforeach

@@ -78,19 +78,19 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [60,'*',70,70], // panjang standard dia 515
+                            widths: [60,'*','*',60], // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'START DATE', style: 'tableHeader', fillColor: '#dddddd' },
                                     { text: 'IMAGING & DIAGNOSTIC', style: 'tableHeader', fillColor: '#dddddd' },
-                                    { text: 'DATELINE', style: 'tableHeader', fillColor: '#dddddd' },
+                                    { text: 'REMARKS', style: 'tableHeader', fillColor: '#dddddd' },
                                     { text: 'STAFF', style: 'tableHeader', fillColor: '#dddddd' },
                                 ],
                                 @foreach ($imgDiag as $obj)
                                 [
                                     { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->startdate)->format('d-m-Y')}}' },
                                     { text: `{!!$obj->imgdiag!!}`},
-                                    { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->dateline)->format('d-m-Y')}}' },
+                                    { text: `{!!$obj->remarks!!}`},
                                     { text: '{{$obj->adduser}}' },
                                 ],
                                 @endforeach

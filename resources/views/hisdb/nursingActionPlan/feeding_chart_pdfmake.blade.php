@@ -90,7 +90,11 @@
                                 [
                                     { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->startdate)->format('d-m-Y')}}' },
                                     { text: `{!!$obj->feeding!!}`},
-                                    { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->enddate)->format('d-m-Y')}}' },
+                                    @if(!empty($obj->enddate))
+                                        { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->enddate)->format('d-m-Y')}}' },
+                                    @else
+                                        { text: '' },
+                                    @endif
                                     { text: '{{$obj->adduser}}' },
                                 ],
                                 @endforeach

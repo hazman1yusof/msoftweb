@@ -1111,30 +1111,36 @@ $(document).ready(function (){
                     }
                 }
             },
-            { label: 'Imaging & Diagnostic', name: 'imgdiag', classes: 'wrap', width: 70, editable: true, edittype: "textarea",
+            { label: 'Imaging & Diagnostic', name: 'imgdiag', classes: 'wrap', width: 60, editable: true, edittype: "textarea",
                 editoptions: {
                     style: "width: -webkit-fill-available;",
                     rows: 5
                 }
             },
-            { label: 'Dateline', name: 'dateline', width: 50, classes: 'wrap', editable: true,
-                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+            { label: 'Remarks', name: 'remarks', classes: 'wrap', width: 60, editable: true, edittype: "textarea",
                 editoptions: {
-                    dataInit: function (element){
-                        $(element).datepicker({
-                            id: 'dateline_datePicker',
-                            dateFormat: 'dd-mm-yy',
-                            minDate: "dateToday",
-                            showOn: 'focus',
-                            changeMonth: true,
-                            changeYear: true,
-                            onSelect : function (){
-                                $(this).focus();
-                            }
-                        });
-                    }
+                    style: "width: -webkit-fill-available;",
+                    rows: 5
                 }
             },
+            // { label: 'Dateline', name: 'dateline', width: 50, classes: 'wrap', editable: true,
+            //     formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+            //     editoptions: {
+            //         dataInit: function (element){
+            //             $(element).datepicker({
+            //                 id: 'dateline_datePicker',
+            //                 dateFormat: 'dd-mm-yy',
+            //                 minDate: "dateToday",
+            //                 showOn: 'focus',
+            //                 changeMonth: true,
+            //                 changeYear: true,
+            //                 onSelect : function (){
+            //                     $(this).focus();
+            //                 }
+            //             });
+            //         }
+            //     }
+            // },
             { label: 'Entered By', name: 'adduser', width: 35, editable: false },
             { label: 'idno', name: 'idno', width: 10, hidden: true, key: true },
             { label: 'compcode', name: 'compcode', hidden: true },
@@ -1195,7 +1201,7 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             $("#jqGridPagerDelete_ImgDiag,#jqGridPagerRefresh_ImgDiag").hide();
             
-            $("#jqGridImgDiag input[name='dateline']").keydown(function (e){ // when click tab at last column in header, auto save
+            $("#jqGridImgDiag textarea[name='remarks']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridImgDiag_ilsave').click();
                 // addmore_jqgrid5.state = true;
@@ -1243,7 +1249,7 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             $("#jqGridPagerDelete_ImgDiag,#jqGridPagerRefresh_ImgDiag").hide();
             
-            $("#jqGridImgDiag input[name='dateline']").keydown(function (e){ // when click tab at last column in header, auto save
+            $("#jqGridImgDiag textarea[name='remarks']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridImgDiag_ilsave').click();
                 // addmore_jqgrid5.state = true;
@@ -1369,6 +1375,12 @@ $(document).ready(function (){
             { label: 'Whole Body', name: 'wholebody', width: 40, editable: true },
             { label: 'Platlet', name: 'platlet', width: 40, editable: true },
             { label: 'FFP', name: 'ffp', width: 40, editable: true },
+            { label: 'Remarks', name: 'remarks', classes: 'wrap', width: 60, editable: true, edittype: "textarea",
+                editoptions: {
+                    style: "width: -webkit-fill-available;",
+                    rows: 5
+                }
+            },
             { label: 'Entered By', name: 'adduser', width: 35, editable: false },
             { label: 'idno', name: 'idno', width: 10, hidden: true, key: true },
             { label: 'compcode', name: 'compcode', hidden: true },
@@ -1429,7 +1441,7 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             $("#jqGridPagerDelete_BloodTrans,#jqGridPagerRefresh_BloodTrans").hide();
             
-            $("#jqGridBloodTrans input[name='ffp']").keydown(function (e){ // when click tab at last column in header, auto save
+            $("#jqGridBloodTrans textarea[name='remarks']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridBloodTrans_ilsave').click();
                 // addmore_jqgrid6.state = true;
@@ -1477,7 +1489,7 @@ $(document).ready(function (){
         oneditfunc: function (rowid){
             $("#jqGridPagerDelete_BloodTrans,#jqGridPagerRefresh_BloodTrans").hide();
             
-            $("#jqGridBloodTrans input[name='ffp']").keydown(function (e){ // when click tab at last column in header, auto save
+            $("#jqGridBloodTrans textarea[name='remarks']").keydown(function (e){ // when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridBloodTrans_ilsave').click();
                 // addmore_jqgrid6.state = true;
@@ -1835,7 +1847,7 @@ $(document).ready(function (){
         datatype: "local",
         editurl: "./nursingActionPlan/form",
         colModel: [
-            { label: 'Start Date', name: 'startdate', width: 50, classes: 'wrap', editable: true,
+            { label: 'Start Date', name: 'startdate', width: 30, classes: 'wrap', editable: true,
                 formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
                 editoptions: {
                     dataInit: function (element){
@@ -1853,7 +1865,8 @@ $(document).ready(function (){
                     }
                 }
             },
-            { label: 'End Date', name: 'enddate', width: 50, classes: 'wrap', editable: true,
+            { label: 'Size', name: 'size', width: 30, editable: true },
+            { label: 'End Date', name: 'enddate', width: 30, classes: 'wrap', editable: true,
                 formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
                 editoptions: {
                     dataInit: function (element){

@@ -216,7 +216,7 @@ class NursingActionPlanController extends defaultController
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
-                    'enddate' => Carbon::parse($request->enddate)->format('Y-m-d'),
+                    'enddate' => $request->enddate,
                     'treatment' => $request->treatment,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -303,7 +303,7 @@ class NursingActionPlanController extends defaultController
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
-                    'enddate' => Carbon::parse($request->enddate)->format('Y-m-d'),
+                    'enddate' => $request->enddate,
                     'observation' => $request->observation,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -390,7 +390,7 @@ class NursingActionPlanController extends defaultController
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
-                    'enddate' => Carbon::parse($request->enddate)->format('Y-m-d'),
+                    'enddate' => $request->enddate,
                     'feeding' => $request->feeding,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -477,8 +477,9 @@ class NursingActionPlanController extends defaultController
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
-                    'dateline' => Carbon::parse($request->dateline)->format('Y-m-d'),
+                    // 'dateline' => Carbon::parse($request->dateline)->format('Y-m-d'),
                     'imgdiag' => $request->imgdiag,
+                    'remarks' => $request->remarks,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     // 'lastuser'  => session('username'),
@@ -508,8 +509,9 @@ class NursingActionPlanController extends defaultController
                 ->where('idno','=',$request->idno)
                 ->update([
                     'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
-                    'dateline' => Carbon::parse($request->dateline)->format('Y-m-d'),
+                    // 'dateline' => Carbon::parse($request->dateline)->format('Y-m-d'),
                     'imgdiag' => $request->imgdiag,
+                    'remarks' => $request->remarks,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     // 'lastuser'  => session('username'),
@@ -573,6 +575,7 @@ class NursingActionPlanController extends defaultController
                     // 'lastuser'  => session('username'),
                     // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                    'remarks' => $request->remarks,
                 ]);
             
             DB::commit();
@@ -606,6 +609,7 @@ class NursingActionPlanController extends defaultController
                     // 'lastuser'  => session('username'),
                     // 'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                    'remarks' => $request->remarks,
                 ]);
             
             DB::commit();
@@ -655,7 +659,7 @@ class NursingActionPlanController extends defaultController
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
-                    'dateline' => Carbon::parse($request->dateline)->format('Y-m-d'),
+                    'dateline' => $request->dateline,
                     'exam' => $request->exam,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -760,7 +764,8 @@ class NursingActionPlanController extends defaultController
                     'mrn' => $request->mrn_nursActionPlan,
                     'episno' => $request->episno_nursActionPlan,
                     'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
-                    'enddate' => Carbon::parse($request->enddate)->format('Y-m-d'),
+                    'size' => $request->size,
+                    'enddate' => $request->enddate,
                     'prodType' => $ptype,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -769,6 +774,7 @@ class NursingActionPlanController extends defaultController
                     'computerid' => session('computerid'),
                 ]);
             
+                // dd($request->enddate);
             DB::commit();
             
         } catch (\Exception $e) {
@@ -791,6 +797,7 @@ class NursingActionPlanController extends defaultController
                 ->where('idno','=',$request->idno)
                 ->update([
                     'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
+                    'size' => $request->size,
                     'enddate' => Carbon::parse($request->enddate)->format('Y-m-d'),
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -1022,7 +1029,7 @@ class NursingActionPlanController extends defaultController
                     ->first();
 
         $imgDiag = DB::table('nursing.nursactplan_imgdiag as id')
-                        ->select('id.compcode','id.mrn','id.episno','id.startdate','id.dateline','id.imgdiag','id.adduser','id.adddate','id.upduser','id.upddate','id.lastuser','id.lastupdate','id.computerid')
+                        ->select('id.compcode','id.mrn','id.episno','id.startdate','id.imgdiag','id.adduser','id.adddate','id.upduser','id.upddate','id.lastuser','id.lastupdate','id.computerid','id.remarks')
                         ->where('id.compcode','=',session('compcode'))
                         ->where('id.mrn','=',$mrn)
                         ->where('id.episno','=',$episno)
@@ -1064,7 +1071,7 @@ class NursingActionPlanController extends defaultController
                     ->first();
 
         $bloodTrans = DB::table('nursing.nursactplan_bloodtrans as bt')
-                        ->select('bt.compcode','bt.mrn','bt.episno','bt.startdate','bt.packcell','bt.wholebody','bt.platlet','bt.ffp','bt.adduser','bt.adddate','bt.upduser','bt.upddate','bt.lastuser','bt.lastupdate','bt.computerid')
+                        ->select('bt.compcode','bt.mrn','bt.episno','bt.startdate','bt.packcell','bt.wholebody','bt.platlet','bt.ffp','bt.adduser','bt.adddate','bt.upduser','bt.upddate','bt.lastuser','bt.lastupdate','bt.computerid','bt.remarks')
                         ->where('bt.compcode','=',session('compcode'))
                         ->where('bt.mrn','=',$mrn)
                         ->where('bt.episno','=',$episno)
@@ -1148,7 +1155,7 @@ class NursingActionPlanController extends defaultController
                     ->first();
 
         $procedure = DB::table('nursing.nursactplan_procedure as p')
-                        ->select('p.compcode','p.mrn','p.episno','p.startdate','p.prodType','p.enddate','p.adduser','p.adddate','p.upduser','p.upddate','p.lastuser','p.lastupdate','p.computerid')
+                        ->select('p.compcode','p.mrn','p.episno','p.startdate','p.prodType','p.enddate','p.adduser','p.adddate','p.upduser','p.upddate','p.lastuser','p.lastupdate','p.computerid','p.size')
                         ->where('p.compcode','=',session('compcode'))
                         ->where('p.mrn','=',$mrn)
                         ->where('p.episno','=',$episno)
