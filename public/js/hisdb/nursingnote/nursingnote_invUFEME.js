@@ -27,7 +27,7 @@ $(document).ready(function(){
                     dataInit: function (element){
                         $(element).datepicker({
                             id: 'startdate_datePicker',
-                            dateFormat: 'dd-mm-yy',
+                            dateFormat: 'yy-mm-dd',
                             minDate: "dateToday",
                             showOn: 'focus',
                             changeMonth: true,

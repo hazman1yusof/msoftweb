@@ -1575,7 +1575,7 @@ class NursingNoteController extends defaultController
                     'episno' => $request->episno,
                     'inv_code' => $request->inv_code,
                     'inv_cat' => $request->inv_cat,
-                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
+                    'entereddate' => $request->entereddate,
                     'enteredtime' => $request->enteredtime,
                     'values' => $request->values,
                     'adduser'  => session('username'),
@@ -1606,7 +1606,7 @@ class NursingNoteController extends defaultController
             DB::table('nursing.nurs_investigation')
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
+                    'entereddate' => $request->entereddate,
                     'enteredtime' => $request->enteredtime,
                     'values' => $request->values,
                     'upduser'  => session('username'),
@@ -1699,7 +1699,7 @@ class NursingNoteController extends defaultController
                 // ->where('mrn','=',$request->mrn)
                 // ->where('episno','=',$request->episno)
                 ->update([
-                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
+                    'entereddate' => $request->entereddate,
                     'enteredtime' => $request->enteredtime,
                     'fit' => $request->fit,
                     'duration' => $request->duration,
@@ -1798,7 +1798,7 @@ class NursingNoteController extends defaultController
                 // ->where('mrn','=',$request->mrn)
                 // ->where('episno','=',$request->episno)
                 ->update([
-                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
+                    'entereddate' => $request->entereddate,
                     'enteredtime' => $request->enteredtime,
                     'capillary' => $request->capillary,
                     'skintemp' => $request->skintemp,
@@ -1896,7 +1896,7 @@ class NursingNoteController extends defaultController
                 // ->where('mrn','=',$request->mrn)
                 // ->where('episno','=',$request->episno)
                 ->update([
-                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
+                    'entereddate' => $request->entereddate,
                     'enteredtime' => $request->enteredtime,
                     'dextrostix' => $request->dextrostix,
                     'remarks' => $request->remarks,
@@ -2001,7 +2001,7 @@ class NursingNoteController extends defaultController
                 // ->where('episno','=',$request->episno)
                 // ->where('tabtitle','=',$request->tabtitle)
                 ->update([
-                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
+                    'entereddate' => $request->entereddate,
                     'enteredtime' => $request->enteredtime,
                     'remarks' => $request->remarks,
                     'upduser'  => session('username'),
@@ -2103,7 +2103,7 @@ class NursingNoteController extends defaultController
             DB::table('nursing.nurs_bladder')
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'entereddate' => Carbon::parse($request->entereddate)->format('Y-m-d'),
+                    'entereddate' => $request->entereddate,
                     'enteredtime' => $request->enteredtime,
                     'input' => $request->input,
                     'output' => $request->output,
