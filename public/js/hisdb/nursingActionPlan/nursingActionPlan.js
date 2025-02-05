@@ -333,7 +333,7 @@ $(document).ready(function (){
         editurl: "./nursingActionPlan/form",
         colModel: [
             { label: 'Start Date', name: 'startdate', width: 50, classes: 'wrap', editable: true,
-                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                formatter: dateFormatter, unformat: dateUNFormatter, formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
                 editoptions: {
                     dataInit: function (element){
                         $(element).datepicker({
@@ -357,7 +357,7 @@ $(document).ready(function (){
                 }
             },
             { label: 'End Date', name: 'enddate', width: 50, classes: 'wrap', editable: true,
-                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                formatter: dateFormatter, unformat: dateUNFormatter, formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
                 editoptions: {
                     dataInit: function (element){
                         $(element).datepicker({
@@ -432,6 +432,7 @@ $(document).ready(function (){
             "_token": $("#csrf_token").val()
         },
         oneditfunc: function (rowid){
+            
             $("#jqGridPagerDelete_Treatment,#jqGridPagerRefresh_Treatment").hide();
             
             $("#jqGridTreatment input[name='enddate']").keydown(function (e){ // when click tab at last column in header, auto save
@@ -449,12 +450,9 @@ $(document).ready(function (){
             $("#jqGridPagerDelete_Treatment,#jqGridPagerRefresh_Treatment").show();
         },
         errorfunc: function (rowid,response){
-            // $('#p_error').text(response.responseText);
-            // alert(response.responseText);
             refreshGrid('#jqGridTreatment',urlParam_Treatment,'add');
         },
         beforeSaveRow: function (options, rowid){
-            $('#p_error').text('');
             
             let data = $('#jqGridTreatment').jqGrid ('getRowData', rowid);
             
@@ -590,7 +588,7 @@ $(document).ready(function (){
         editurl: "./nursingActionPlan/form",
         colModel: [
             { label: 'Start Date', name: 'startdate', width: 50, classes: 'wrap', editable: true,
-                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                formatter: dateFormatter, unformat: dateUNFormatter, formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
                 editoptions: {
                     dataInit: function (element){
                         $(element).datepicker({
@@ -614,7 +612,7 @@ $(document).ready(function (){
                 }
             },
             { label: 'End Date', name: 'enddate', width: 50, classes: 'wrap', editable: true,
-                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                formatter: dateFormatter, unformat: dateUNFormatter, formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
                 editoptions: {
                     dataInit: function (element){
                         $(element).datepicker({
@@ -844,7 +842,7 @@ $(document).ready(function (){
         editurl: "./nursingActionPlan/form",
         colModel: [
             { label: 'Start Date', name: 'startdate', width: 50, classes: 'wrap', editable: true,
-                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                formatter: dateFormatter, unformat: dateUNFormatter, formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
                 editoptions: {
                     dataInit: function (element){
                         $(element).datepicker({
@@ -868,7 +866,7 @@ $(document).ready(function (){
                 }
             },
             { label: 'End Date', name: 'enddate', width: 50, classes: 'wrap', editable: true,
-                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                formatter: dateFormatter, unformat: dateUNFormatter, formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
                 editoptions: {
                     dataInit: function (element){
                         $(element).datepicker({
@@ -1099,7 +1097,7 @@ $(document).ready(function (){
         editurl: "./nursingActionPlan/form",
         colModel: [
             { label: 'Date', name: 'startdate', width: 50, classes: 'wrap', editable: true,
-                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                formatter: dateFormatter, unformat: dateUNFormatter, formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
                 editoptions: {
                     dataInit: function (element){
                         $(element).datepicker({
@@ -1360,7 +1358,7 @@ $(document).ready(function (){
         editurl: "./nursingActionPlan/form",
         colModel: [
             { label: 'Date', name: 'startdate', width: 40, classes: 'wrap', editable: true,
-                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                formatter: dateFormatter, unformat: dateUNFormatter, formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
                 editoptions: {
                     dataInit: function (element){
                         $(element).datepicker({
@@ -1601,7 +1599,7 @@ $(document).ready(function (){
         editurl: "./nursingActionPlan/form",
         colModel: [
             { label: 'Date', name: 'startdate', width: 50, classes: 'wrap', editable: true,
-                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                formatter: dateFormatter, unformat: dateUNFormatter, formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
                 editoptions: {
                     dataInit: function (element){
                         $(element).datepicker({
@@ -1625,7 +1623,7 @@ $(document).ready(function (){
                 }
             },
             { label: 'Dateline', name: 'dateline', width: 50, classes: 'wrap', editable: true,
-                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                formatter: dateFormatter, unformat: dateUNFormatter, formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
                 editoptions: {
                     dataInit: function (element){
                         $(element).datepicker({
@@ -1856,7 +1854,7 @@ $(document).ready(function (){
         editurl: "./nursingActionPlan/form",
         colModel: [
             { label: 'Start Date', name: 'startdate', width: 30, classes: 'wrap', editable: true,
-                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                formatter: dateFormatter, unformat: dateUNFormatter, formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
                 editoptions: {
                     dataInit: function (element){
                         $(element).datepicker({
@@ -1875,7 +1873,7 @@ $(document).ready(function (){
             },
             { label: 'Size', name: 'size', width: 30, editable: true },
             { label: 'End Date', name: 'enddate', width: 30, classes: 'wrap', editable: true,
-                formatter: "date", formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
+                formatter: dateFormatter, unformat: dateUNFormatter, formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' },
                 editoptions: {
                     dataInit: function (element){
                         $(element).datepicker({

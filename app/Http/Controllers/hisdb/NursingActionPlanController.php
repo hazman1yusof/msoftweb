@@ -246,8 +246,8 @@ class NursingActionPlanController extends defaultController
             DB::table('nursing.nursactplan_treatment')
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'startdate' => date('Y-m-d H:i:s', strtotime($request->startdate)),
-                    'enddate' => date('Y-m-d H:i:s', strtotime($request->enddate)),
+                    'startdate' => $request->startdate,
+                    'enddate' => $request->enddate,
                     'treatment' => $request->treatment,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -342,8 +342,8 @@ class NursingActionPlanController extends defaultController
             DB::table('nursing.nursactplan_observation')
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'startdate' => date('Y-m-d H:i:s', strtotime($request->startdate)),
-                    'enddate' => date('Y-m-d H:i:s', strtotime($request->enddate)),
+                    'startdate' => $request->startdate,
+                    'enddate' => $request->enddate,
                     'observation' => $request->observation,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -438,8 +438,8 @@ class NursingActionPlanController extends defaultController
             DB::table('nursing.nursactplan_feeding')
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'startdate' => date('Y-m-d H:i:s', strtotime($request->startdate)),
-                    'enddate' => date('Y-m-d H:i:s', strtotime($request->enddate)),
+                    'startdate' => $request->startdate,
+                    'enddate' => $request->enddate,
                     'feeding' => $request->feeding,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -502,7 +502,7 @@ class NursingActionPlanController extends defaultController
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
-                    'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
+                    'startdate' => $request->startdate,
                     // 'dateline' => Carbon::parse($request->dateline)->format('Y-m-d'),
                     'imgdiag' => $request->imgdiag,
                     'remarks' => $request->remarks,
@@ -534,7 +534,7 @@ class NursingActionPlanController extends defaultController
             DB::table('nursing.nursactplan_imgdiag')
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
+                    'startdate' => $request->startdate,
                     // 'dateline' => Carbon::parse($request->dateline)->format('Y-m-d'),
                     'imgdiag' => $request->imgdiag,
                     'remarks' => $request->remarks,
@@ -634,7 +634,7 @@ class NursingActionPlanController extends defaultController
             DB::table('nursing.nursactplan_bloodtrans')
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'startdate' => date('Y-m-d H:i:s', strtotime($request->startdate)),
+                    'startdate' => $request->startdate,
                     'packcell' => $request->packcell,
                     'wholebody' => $request->wholebody,
                     'platlet' => $request->platlet,
@@ -733,8 +733,8 @@ class NursingActionPlanController extends defaultController
             DB::table('nursing.nursactplan_exam')
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'startdate' => date('Y-m-d H:i:s', strtotime($request->startdate)),
-                    'dateline' => date('Y-m-d H:i:s', strtotime($request->dateline)),
+                    'startdate' => $request->startdate,
+                    'dateline' => $request->dateline,
                     'exam' => $request->exam,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -848,7 +848,7 @@ class NursingActionPlanController extends defaultController
             DB::table('nursing.nursactplan_procedure')
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'startdate' => date('Y-m-d H:i:s', strtotime($request->startdate)),
+                    'startdate' => $request->startdate,
                     'size' => $request->size,
                     'enddate' => Carbon::parse($request->enddate)->format('Y-m-d'),
                     'upduser'  => session('username'),
