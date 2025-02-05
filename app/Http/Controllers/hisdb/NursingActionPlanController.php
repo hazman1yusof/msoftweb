@@ -215,7 +215,7 @@ class NursingActionPlanController extends defaultController
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
-                    'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
+                    'startdate' => $request->startdate,
                     'enddate' => $request->enddate,
                     'treatment' => $request->treatment,
                     'adduser'  => session('username'),
@@ -246,8 +246,8 @@ class NursingActionPlanController extends defaultController
             DB::table('nursing.nursactplan_treatment')
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
-                    'enddate' => Carbon::parse($request->enddate)->format('Y-m-d'),
+                    'startdate' => date('Y-m-d H:i:s', strtotime($request->startdate)),
+                    'enddate' => date('Y-m-d H:i:s', strtotime($request->enddate)),
                     'treatment' => $request->treatment,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -274,10 +274,19 @@ class NursingActionPlanController extends defaultController
         
         try {
             
-            DB::table('nursing.nursactplan_treatment')
-                ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
-                ->delete();
+            $treatment = DB::table('nursing.nursactplan_treatment')
+                        ->where('idno','=',$request->idno)
+                        ->where('compcode','=',session('compcode'))
+                        ->first();
+
+            if($treatment->adduser !== session('username')){
+                throw new \Exception("You are not authorized to delete this data.",500);
+            } else{
+                DB::table('nursing.nursactplan_treatment')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('idno','=',$request->idno)
+                    ->delete();
+            }
             
             DB::commit();
             
@@ -302,7 +311,7 @@ class NursingActionPlanController extends defaultController
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
-                    'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
+                    'startdate' => $request->startdate,
                     'enddate' => $request->enddate,
                     'observation' => $request->observation,
                     'adduser'  => session('username'),
@@ -333,8 +342,8 @@ class NursingActionPlanController extends defaultController
             DB::table('nursing.nursactplan_observation')
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
-                    'enddate' => Carbon::parse($request->enddate)->format('Y-m-d'),
+                    'startdate' => date('Y-m-d H:i:s', strtotime($request->startdate)),
+                    'enddate' => date('Y-m-d H:i:s', strtotime($request->enddate)),
                     'observation' => $request->observation,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -360,11 +369,20 @@ class NursingActionPlanController extends defaultController
         DB::beginTransaction();
         
         try {
-            
-            DB::table('nursing.nursactplan_observation')
-                ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
-                ->delete();
+
+            $observation = DB::table('nursing.nursactplan_observation')
+                        ->where('idno','=',$request->idno)
+                        ->where('compcode','=',session('compcode'))
+                        ->first();
+
+            if($observation->adduser !== session('username')){
+                throw new \Exception("You are not authorized to delete this data.",500);
+            } else{
+                DB::table('nursing.nursactplan_observation')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('idno','=',$request->idno)
+                    ->delete();
+            }
             
             DB::commit();
             
@@ -389,7 +407,7 @@ class NursingActionPlanController extends defaultController
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
-                    'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
+                    'startdate' => $request->startdate,
                     'enddate' => $request->enddate,
                     'feeding' => $request->feeding,
                     'adduser'  => session('username'),
@@ -420,8 +438,8 @@ class NursingActionPlanController extends defaultController
             DB::table('nursing.nursactplan_feeding')
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
-                    'enddate' => Carbon::parse($request->enddate)->format('Y-m-d'),
+                    'startdate' => date('Y-m-d H:i:s', strtotime($request->startdate)),
+                    'enddate' => date('Y-m-d H:i:s', strtotime($request->enddate)),
                     'feeding' => $request->feeding,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -447,11 +465,19 @@ class NursingActionPlanController extends defaultController
         DB::beginTransaction();
         
         try {
-            
-            DB::table('nursing.nursactplan_feeding')
-                ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
-                ->delete();
+            $feeding = DB::table('nursing.nursactplan_feeding')
+                        ->where('idno','=',$request->idno)
+                        ->where('compcode','=',session('compcode'))
+                        ->first();
+
+            if($feeding->adduser !== session('username')){
+                throw new \Exception("You are not authorized to delete this data.",500);
+            } else{
+                DB::table('nursing.nursactplan_feeding')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('idno','=',$request->idno)
+                    ->delete();
+            }
             
             DB::commit();
             
@@ -536,11 +562,20 @@ class NursingActionPlanController extends defaultController
         DB::beginTransaction();
         
         try {
-            
-            DB::table('nursing.nursactplan_imgdiag')
-                ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
-                ->delete();
+
+            $imgdiag = DB::table('nursing.nursactplan_imgdiag')
+                        ->where('idno','=',$request->idno)
+                        ->where('compcode','=',session('compcode'))
+                        ->first();
+
+            if($imgdiag->adduser !== session('username')){
+                throw new \Exception("You are not authorized to delete this data.",500);
+            } else{
+                DB::table('nursing.nursactplan_imgdiag')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('idno','=',$request->idno)
+                    ->delete();
+            }
             
             DB::commit();
             
@@ -565,7 +600,7 @@ class NursingActionPlanController extends defaultController
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
-                    'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
+                    'startdate' => $request->startdate,
                     'packcell' => $request->packcell,
                     'wholebody' => $request->wholebody,
                     'platlet' => $request->platlet,
@@ -599,7 +634,7 @@ class NursingActionPlanController extends defaultController
             DB::table('nursing.nursactplan_bloodtrans')
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
+                    'startdate' => date('Y-m-d H:i:s', strtotime($request->startdate)),
                     'packcell' => $request->packcell,
                     'wholebody' => $request->wholebody,
                     'platlet' => $request->platlet,
@@ -629,11 +664,20 @@ class NursingActionPlanController extends defaultController
         DB::beginTransaction();
         
         try {
-            
-            DB::table('nursing.nursactplan_bloodtrans')
-                ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
-                ->delete();
+
+            $bloodtrans = DB::table('nursing.nursactplan_bloodtrans')
+                        ->where('idno','=',$request->idno)
+                        ->where('compcode','=',session('compcode'))
+                        ->first();
+
+            if($bloodtrans->adduser !== session('username')){
+                throw new \Exception("You are not authorized to delete this data.",500);
+            } else{
+                DB::table('nursing.nursactplan_bloodtrans')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('idno','=',$request->idno)
+                    ->delete();
+            }
             
             DB::commit();
             
@@ -658,7 +702,7 @@ class NursingActionPlanController extends defaultController
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
-                    'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
+                    'startdate' => $request->startdate,
                     'dateline' => $request->dateline,
                     'exam' => $request->exam,
                     'adduser'  => session('username'),
@@ -689,8 +733,8 @@ class NursingActionPlanController extends defaultController
             DB::table('nursing.nursactplan_exam')
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
-                    'dateline' => Carbon::parse($request->dateline)->format('Y-m-d'),
+                    'startdate' => date('Y-m-d H:i:s', strtotime($request->startdate)),
+                    'dateline' => date('Y-m-d H:i:s', strtotime($request->dateline)),
                     'exam' => $request->exam,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -716,11 +760,19 @@ class NursingActionPlanController extends defaultController
         DB::beginTransaction();
         
         try {
-            
-            DB::table('nursing.nursactplan_exam')
-                ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
-                ->delete();
+            $exam = DB::table('nursing.nursactplan_exam')
+                        ->where('idno','=',$request->idno)
+                        ->where('compcode','=',session('compcode'))
+                        ->first();
+
+            if($exam->adduser !== session('username')){
+                throw new \Exception("You are not authorized to delete this data.",500);
+            } else{
+                DB::table('nursing.nursactplan_exam')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('idno','=',$request->idno)
+                    ->delete();
+            }
             
             DB::commit();
             
@@ -763,7 +815,7 @@ class NursingActionPlanController extends defaultController
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn_nursActionPlan,
                     'episno' => $request->episno_nursActionPlan,
-                    'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
+                    'startdate' => $request->startdate,
                     'size' => $request->size,
                     'enddate' => $request->enddate,
                     'prodType' => $ptype,
@@ -796,7 +848,7 @@ class NursingActionPlanController extends defaultController
             DB::table('nursing.nursactplan_procedure')
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'startdate' => Carbon::parse($request->startdate)->format('Y-m-d'),
+                    'startdate' => date('Y-m-d H:i:s', strtotime($request->startdate)),
                     'size' => $request->size,
                     'enddate' => Carbon::parse($request->enddate)->format('Y-m-d'),
                     'upduser'  => session('username'),
@@ -823,11 +875,19 @@ class NursingActionPlanController extends defaultController
         DB::beginTransaction();
         
         try {
-            
-            DB::table('nursing.nursactplan_procedure')
-                ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
-                ->delete();
+            $procedure = DB::table('nursing.nursactplan_procedure')
+                        ->where('idno','=',$request->idno)
+                        ->where('compcode','=',session('compcode'))
+                        ->first();
+
+            if($procedure->adduser !== session('username')){
+                throw new \Exception("You are not authorized to delete this data.",500);
+            } else{
+                DB::table('nursing.nursactplan_procedure')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('idno','=',$request->idno)
+                    ->delete();
+            }
             
             DB::commit();
             

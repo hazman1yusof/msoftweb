@@ -338,8 +338,8 @@ $(document).ready(function (){
                     dataInit: function (element){
                         $(element).datepicker({
                             id: 'startdate_datePicker',
-                            dateFormat: 'dd-mm-yy',
-                            minDate: "dateToday",
+                            dateFormat: 'yy-mm-dd',
+                            // minDate: "dateToday",
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -362,8 +362,8 @@ $(document).ready(function (){
                     dataInit: function (element){
                         $(element).datepicker({
                             id: 'enddate_datePicker',
-                            dateFormat: 'dd-mm-yy',
-                            minDate: "dateToday",
+                            dateFormat: 'yy-mm-dd',
+                            // minDate: "dateToday",
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -449,7 +449,8 @@ $(document).ready(function (){
             $("#jqGridPagerDelete_Treatment,#jqGridPagerRefresh_Treatment").show();
         },
         errorfunc: function (rowid,response){
-            $('#p_error').text(response.responseText);
+            // $('#p_error').text(response.responseText);
+            // alert(response.responseText);
             refreshGrid('#jqGridTreatment',urlParam_Treatment,'add');
         },
         beforeSaveRow: function (options, rowid){
@@ -497,7 +498,8 @@ $(document).ready(function (){
             $("#jqGridPagerDelete_Treatment,#jqGridPagerRefresh_Treatment").show();
         },
         errorfunc: function (rowid,response){
-            $('#p_error').text(response.responseText);
+            // $('#p_error').text(response.responseText);
+            alert(response.responseText);
             refreshGrid('#jqGridTreatment',urlParam_Treatment,'edit');
         },
         beforeSaveRow: function (options, rowid){
@@ -553,6 +555,7 @@ $(document).ready(function (){
                     $.post("./nursingActionPlan/form?"+$.param(param), {oper:'del'}, function (data){
                         
                     }).fail(function (data){
+                        alert(data.responseText);
                         //////////////////errorText(dialog,data.responseText);
                     }).done(function (data){
                         refreshGrid("#jqGridTreatment", urlParam_Treatment);
@@ -592,8 +595,8 @@ $(document).ready(function (){
                     dataInit: function (element){
                         $(element).datepicker({
                             id: 'startdate_datePicker',
-                            dateFormat: 'dd-mm-yy',
-                            minDate: "dateToday",
+                            dateFormat: 'yy-mm-dd',
+                            // minDate: "dateToday",
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -616,8 +619,8 @@ $(document).ready(function (){
                     dataInit: function (element){
                         $(element).datepicker({
                             id: 'enddate_datePicker',
-                            dateFormat: 'dd-mm-yy',
-                            minDate: "dateToday",
+                            dateFormat: 'yy-mm-dd',
+                            // minDate: "dateToday",
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -806,6 +809,7 @@ $(document).ready(function (){
                     $.post("./nursingActionPlan/form?"+$.param(param), {oper:'del'}, function (data){
                         
                     }).fail(function (data){
+                        alert(data.responseText);
                         //////////////////errorText(dialog,data.responseText);
                     }).done(function (data){
                         refreshGrid("#jqGridObservation", urlParam_Observation);
@@ -845,8 +849,8 @@ $(document).ready(function (){
                     dataInit: function (element){
                         $(element).datepicker({
                             id: 'startdate_datePicker',
-                            dateFormat: 'dd-mm-yy',
-                            minDate: "dateToday",
+                            dateFormat: 'yy-mm-dd',
+                            // minDate: "dateToday",
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -869,8 +873,8 @@ $(document).ready(function (){
                     dataInit: function (element){
                         $(element).datepicker({
                             id: 'enddate_datePicker',
-                            dateFormat: 'dd-mm-yy',
-                            minDate: "dateToday",
+                            dateFormat: 'yy-mm-dd',
+                            // minDate: "dateToday",
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -1060,6 +1064,7 @@ $(document).ready(function (){
                     $.post("./nursingActionPlan/form?"+$.param(param), {oper:'del'}, function (data){
                         
                     }).fail(function (data){
+                        alert(data.responseText);
                         //////////////////errorText(dialog,data.responseText);
                     }).done(function (data){
                         refreshGrid("#jqGridFeeding", urlParam_Feeding);
@@ -1099,8 +1104,8 @@ $(document).ready(function (){
                     dataInit: function (element){
                         $(element).datepicker({
                             id: 'startdate_datePicker',
-                            dateFormat: 'dd-mm-yy',
-                            minDate: "dateToday",
+                            dateFormat: 'yy-mm-dd',
+                            // minDate: "dateToday",
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -1320,6 +1325,7 @@ $(document).ready(function (){
                     $.post("./nursingActionPlan/form?"+$.param(param), {oper:'del'}, function (data){
                         
                     }).fail(function (data){
+                        alert(data.responseText);
                         //////////////////errorText(dialog,data.responseText);
                     }).done(function (data){
                         refreshGrid("#jqGridImgDiag", urlParam_ImgDiag);
@@ -1359,8 +1365,8 @@ $(document).ready(function (){
                     dataInit: function (element){
                         $(element).datepicker({
                             id: 'startdate_datePicker',
-                            dateFormat: 'dd-mm-yy',
-                            minDate: "dateToday",
+                            dateFormat: 'yy-mm-dd',
+                            // minDate: "dateToday",
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -1560,6 +1566,7 @@ $(document).ready(function (){
                     $.post("./nursingActionPlan/form?"+$.param(param), {oper:'del'}, function (data){
                         
                     }).fail(function (data){
+                        alert(data.responseText);
                         //////////////////errorText(dialog,data.responseText);
                     }).done(function (data){
                         refreshGrid("#jqGridBloodTrans", urlParam_BloodTrans);
@@ -1599,8 +1606,8 @@ $(document).ready(function (){
                     dataInit: function (element){
                         $(element).datepicker({
                             id: 'startdate_datePicker',
-                            dateFormat: 'dd-mm-yy',
-                            minDate: "dateToday",
+                            dateFormat: 'yy-mm-dd',
+                            // minDate: "dateToday",
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -1623,8 +1630,8 @@ $(document).ready(function (){
                     dataInit: function (element){
                         $(element).datepicker({
                             id: 'dateline_datePicker',
-                            dateFormat: 'dd-mm-yy',
-                            minDate: "dateToday",
+                            dateFormat: 'yy-mm-dd',
+                            // minDate: "dateToday",
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -1814,6 +1821,7 @@ $(document).ready(function (){
                     $.post("./nursingActionPlan/form?"+$.param(param), {oper:'del'}, function (data){
                         
                     }).fail(function (data){
+                        alert(data.responseText);
                         //////////////////errorText(dialog,data.responseText);
                     }).done(function (data){
                         refreshGrid("#jqGridExams", urlParam_Exams);
@@ -1853,8 +1861,8 @@ $(document).ready(function (){
                     dataInit: function (element){
                         $(element).datepicker({
                             id: 'startdate_datePicker',
-                            dateFormat: 'dd-mm-yy',
-                            minDate: "dateToday",
+                            dateFormat: 'yy-mm-dd',
+                            // minDate: "dateToday",
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -1872,8 +1880,8 @@ $(document).ready(function (){
                     dataInit: function (element){
                         $(element).datepicker({
                             id: 'enddate_datePicker',
-                            dateFormat: 'dd-mm-yy',
-                            minDate: "dateToday",
+                            dateFormat: 'yy-mm-dd',
+                            // minDate: "dateToday",
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -2067,6 +2075,7 @@ $(document).ready(function (){
                     $.post("./nursingActionPlan/form?"+$.param(param), {oper:'del'}, function (data){
                         
                     }).fail(function (data){
+                        alert(data.responseText);
                         //////////////////errorText(dialog,data.responseText);
                     }).done(function (data){
                         refreshGrid("#jqGridProcedure", urlParam_Procedure);
