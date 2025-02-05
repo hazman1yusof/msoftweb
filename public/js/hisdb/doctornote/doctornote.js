@@ -2120,6 +2120,10 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function (){
 	
 	populate_otbook_getdata();
 	populate_radClinic_getdata();
+	
+	populate_physio_getdata();
+	populate_dressing_getdata();
+	populate_mri_getdata();
 });
 
 $('#jqGridDoctorNote_panel_tabs.nav-tabs a').on('shown.bs.tab', function (e){

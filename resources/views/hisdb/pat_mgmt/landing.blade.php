@@ -357,20 +357,20 @@
 				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
 				<script type="text/javascript" src="js/hisdb/paediatric/paediatric.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
-				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/admhandover/admhandover.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 				<!-- <script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script> -->
 			@elseif (Auth::user()->nurse == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
-				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/admhandover/admhandover.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 				<!-- <script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script> -->
@@ -421,10 +421,10 @@
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCS.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
-				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script>
 			@elseif (Auth::user()->nurse == 1)
@@ -442,10 +442,10 @@
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCE.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCS.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
-				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
-				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script>
 			@endif

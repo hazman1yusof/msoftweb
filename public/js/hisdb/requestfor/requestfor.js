@@ -1109,6 +1109,10 @@ $('#jqGridRequestFor_panel').on('shown.bs.collapse', function (){
     
     populate_otbookReqFor_getdata();
     populate_radClinicReqFor_getdata();
+    
+    populate_physioReqFor_getdata();
+    populate_dressingReqFor_getdata();
+    populate_mriReqFor_getdata();
 });
 
 $('#jqGridRequestFor_panel_tabs.nav-tabs a').on('shown.bs.tab', function (e){
