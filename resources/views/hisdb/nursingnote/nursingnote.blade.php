@@ -1,5 +1,7 @@
 
 <div class="panel panel-default" style="position: relative;" id="jqGridNursNote_c">
+    <input type="hidden" name="curr_user" id="curr_user" value="{{ Auth::user()->username }}">
+    
     <div class="panel-heading clearfix collapsed position" id="toggle_nursNote" style="position: sticky; top: 0px; z-index: 3;">
         <b>NAME: <span id="name_show_nursNote"></span></b><br>
         MRN: <span id="mrn_show_nursNote"></span>
@@ -1740,6 +1742,7 @@
                                 <div class="panel-body" style="padding: 15px 5px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formTreatment'>
                                         <input id="tr_idno" name="tr_idno" type="hidden">
+                                        <input id="tr_adduser" name="tr_adduser" type="hidden">
                                         
                                         <div class="col-md-3" style="padding: 0 0 0 0;">
                                             <div class="panel panel-info">
@@ -1751,6 +1754,7 @@
                                                                 <th class="scope">mrn</th>
                                                                 <th class="scope">episno</th>
                                                                 <th class="scope">Date/Time</th>
+                                                                <th class="scope">adduser</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -1764,12 +1768,12 @@
                                                 <div class="panel-body" style="padding: 2px;">
                                                     <div class="form-inline col-md-12" style="padding: 10px 15px 10px 0px;">
                                                         <label class="control-label" for="tr_entereddate">Date</label>
-                                                        <input id="tr_entereddate" name="tr_entereddate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
+                                                        <input id="tr_entereddate" name="tr_entereddate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>" required>
                                                     </div>
                                                     
                                                     <div class="form-inline col-md-12" style="padding: 0px 15px 10px 0px;">
                                                         <label class="control-label" for="tr_enteredtime">Time</label>
-                                                        <input id="tr_enteredtime" name="tr_enteredtime" type="time" class="form-control input-sm">
+                                                        <input id="tr_enteredtime" name="tr_enteredtime" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." required>
                                                     </div>
                                                     
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
@@ -1779,7 +1783,7 @@
                                                     
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
                                                         <label for="treatment_adduser">Entered by</label>
-                                                        <input id="treatment_adduser" name="treatment_adduser" type="text" class="form-control input-sm">
+                                                        <input id="treatment_adduser" name="treatment_adduser" type="text" class="form-control input-sm" rdonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1818,6 +1822,7 @@
                                 <div class="panel-body" style="padding: 15px 5px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formInvestigation'>
                                         <input id="inv_idno" name="inv_idno" type="hidden">
+                                        <input id="inv_adduser" name="inv_adduser" type="hidden">
                                         
                                         <div class="col-md-3" style="padding: 0 0 0 0;">
                                             <div class="panel panel-info">
@@ -1829,6 +1834,7 @@
                                                                 <th class="scope">mrn</th>
                                                                 <th class="scope">episno</th>
                                                                 <th class="scope">Date/Time</th>
+                                                                <th class="scope">adduser</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -1842,12 +1848,12 @@
                                                 <div class="panel-body" style="padding: 2px;">
                                                     <div class="form-inline col-md-12" style="padding: 10px 15px 10px 0px;">
                                                         <label class="control-label" for="inv_entereddate">Date</label>
-                                                        <input id="inv_entereddate" name="inv_entereddate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
+                                                        <input id="inv_entereddate" name="inv_entereddate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>">
                                                     </div>
                                                     
                                                     <div class="form-inline col-md-12" style="padding: 0px 15px 10px 0px;">
                                                         <label class="control-label" for="inv_enteredtime">Time</label>
-                                                        <input id="inv_enteredtime" name="inv_enteredtime" type="time" class="form-control input-sm">
+                                                        <input id="inv_enteredtime" name="inv_enteredtime" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                     </div>
                                                     
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
@@ -1857,7 +1863,7 @@
                                                     
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
                                                         <label for="investigation_adduser">Entered by</label>
-                                                        <input id="investigation_adduser" name="investigation_adduser" type="text" class="form-control input-sm">
+                                                        <input id="investigation_adduser" name="investigation_adduser" type="text" class="form-control input-sm" rdonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1896,6 +1902,7 @@
                                 <div class="panel-body" style="padding: 15px 5px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formInjection'>
                                         <input id="inj_idno" name="inj_idno" type="hidden">
+                                        <input id="inj_adduser" name="inj_adduser" type="hidden">
 
                                         <div class="col-md-3" style="padding: 0 0 0 0;">
                                             <div class="panel panel-info">
@@ -1907,6 +1914,7 @@
                                                                 <th class="scope">mrn</th>
                                                                 <th class="scope">episno</th>
                                                                 <th class="scope">Date/Time</th>
+                                                                <th class="scope">adduser</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -1920,12 +1928,12 @@
                                                 <div class="panel-body" style="padding: 2px;">
                                                     <div class="form-inline col-md-12" style="padding: 10px 15px 10px 0px;">
                                                         <label class="control-label" for="inj_entereddate">Date</label>
-                                                        <input id="inj_entereddate" name="inj_entereddate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
+                                                        <input id="inj_entereddate" name="inj_entereddate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>">
                                                     </div>
                                                     
                                                     <div class="form-inline col-md-12" style="padding: 0px 15px 10px 0px;">
                                                         <label class="control-label" for="inj_enteredtime">Time</label>
-                                                        <input id="inj_enteredtime" name="inj_enteredtime" type="time" class="form-control input-sm">
+                                                        <input id="inj_enteredtime" name="inj_enteredtime" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                                     </div>
                                                     
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
@@ -1935,7 +1943,7 @@
                                                     
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
                                                         <label for="injection_adduser">Entered by</label>
-                                                        <input id="injection_adduser" name="injection_adduser" type="text" class="form-control input-sm">
+                                                        <input id="injection_adduser" name="injection_adduser" type="text" class="form-control input-sm" rdonly>
                                                     </div>
                                                 </div>
                                             </div>
