@@ -1280,6 +1280,13 @@
                                                             </div>
                                                             
                                                             <div class="form-group">
+                                                                <label class="col-md-3 control-label" for="remarks">Remarks</label>
+                                                                <div class="col-md-6">
+                                                                    <textarea id="remarks" name="remarks" type="text" class="form-control input-sm"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
                                                                 <label class="col-md-3 control-label" for="phy_doctorname">Name of Requesting Doctor</label>
                                                                 <div class="col-md-6">
                                                                     <input id="phy_doctorname" name="phy_doctorname" type="text" class="form-control input-sm">

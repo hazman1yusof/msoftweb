@@ -1209,7 +1209,7 @@ function textarea_init_mriReqFor(){
 }
 
 function textarea_init_physioReqFor(){
-    $('textarea#ReqFor_clinic_diag,textarea#ReqFor_findings,textarea#phyReqFor_treatment').each(function (){
+    $('textarea#ReqFor_clinic_diag,textarea#ReqFor_findings,textarea#phyReqFor_treatment,textarea#ReqFor_remarks').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{

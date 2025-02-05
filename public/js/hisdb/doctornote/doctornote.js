@@ -2431,7 +2431,7 @@ function textarea_init_mri(){
 }
 
 function textarea_init_physio(){
-	$('textarea#clinic_diag,textarea#findings,textarea#phy_treatment').each(function (){
+	$('textarea#clinic_diag,textarea#findings,textarea#phy_treatment,textarea#remarks').each(function (){
 		if(this.value.trim() == ''){
 			this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
 		}else{

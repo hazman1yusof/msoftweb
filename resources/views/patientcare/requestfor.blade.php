@@ -984,6 +984,18 @@
                                     </div>
                                 </div>
                                 
+                                <div class="four wide column" style="padding: 14px 14px 0px 150px;">
+                                    <div class="field">
+                                        <label>Remarks</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="twelve wide column" style="padding: 14px 14px 0px 14px;">
+                                    <div class="field eight wide column">
+                                        <textarea id="ReqFor_remarks" name="remarks" type="text" rows="5"></textarea>
+                                    </div>
+                                </div>
+                                
                                 <div class="sixteen wide column centered grid" style="padding-left: 150px;">
                                     <div class="inline field">
                                         <label>Name of Requesting Doctor</label>
