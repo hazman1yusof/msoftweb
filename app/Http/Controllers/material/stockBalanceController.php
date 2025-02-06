@@ -10,6 +10,7 @@ use DateTime;
 use Carbon\Carbon;
 use PDF;
 use App\Exports\stockBalance_xlsExport;
+use App\Exports\stockBalance_basic_xlsExport;
 use App\Exports\stockSheet_xlsExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
@@ -32,10 +33,14 @@ class stockBalanceController extends defaultController
     {   
         DB::enableQueryLog();
         switch($request->action){
-            case 'stockBalance_pdf':
-                return $this->stockBalance_pdf($request);
-            case 'stockBalance_xls':
-                return $this->stockBalance_xls($request);
+            case 'stockBalance_pdf_basic':
+                return $this->stockBalance_pdf_basic($request);
+            case 'stockBalance_xls_basic':
+                return $this->stockBalance_xls_basic($request);
+            case 'stockBalance_pdf_ttype':
+                return $this->stockBalance_pdf_ttype($request);
+            case 'stockBalance_xls_ttype':
+                return $this->stockBalance_xls_ttype($request);
             case 'stockSheet_pdf':
                 return $this->stockSheet_pdf($request);
             case 'stockSheet_xls':
@@ -45,7 +50,7 @@ class stockBalanceController extends defaultController
         }
     }
     
-    public function stockBalance_pdf(Request $request){
+    public function stockBalance_pdf_ttype(Request $request){
         $validator = Validator::make($request->all(), [
             'dept_to' => 'required',
             'item_to' => 'required',
@@ -161,7 +166,7 @@ class stockBalanceController extends defaultController
         return view('material.stockBalance.stockBalance_pdfmake',compact('stockloc','company','header','deptcode','unit'));
     }
 
-    public function stockBalance_xls(Request $request){
+    public function stockBalance_xls_ttype(Request $request){
         $validator = Validator::make($request->all(), [
             'dept_to' => 'required',
             'item_to' => 'required',
@@ -183,6 +188,30 @@ class stockBalanceController extends defaultController
         $period = $request->period;
 
         return Excel::download(new stockBalance_xlsExport($unit_from,$unit_to,$dept_from,$dept_to,$item_from,$item_to,$year,$period), 'Item List.xlsx');
+    }
+
+    public function stockBalance_xls_basic(Request $request){
+        $validator = Validator::make($request->all(), [
+            'dept_to' => 'required',
+            'item_to' => 'required',
+            'year' => 'required',
+            'period' => 'required',
+        ]);
+
+        if($validator->fails()){
+            abort(404);
+        }
+
+        $unit_from = $request->unit_from;
+        $unit_to = $request->unit_to;
+        $dept_from = $request->dept_from;
+        $dept_to = $request->dept_to;
+        $item_from = $request->item_from;
+        $item_to = $request->item_to;
+        $year = $request->year;
+        $period = $request->period;
+
+        return Excel::download(new stockBalance_basic_xlsExport($unit_from,$unit_to,$dept_from,$dept_to,$item_from,$item_to,$year,$period), 'Item List.xlsx');
     }
 
     public function stockSheet_pdf(Request $request){

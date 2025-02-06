@@ -156,11 +156,21 @@
 				  </fieldset>
 
 				 <fieldset>
-				  <legend>Stock Balance :</legend>
-					<button name="stockBalance_pdf" type="button" class="mybtn btn btn-sm mybtnpdf">
+				  <legend>Stock Balance (Basic Report) :</legend>
+					<button name="stockBalance_pdf_basic" type="button" class="mybtn btn btn-sm mybtnpdf">
 						<span class="fa fa-file-pdf-o fa-lg"></span> Stock Balance PDF
 					</button>
-					<button name="stockBalance_xls" type="button" class="mybtn btn btn-sm mybtnxls">
+					<button name="stockBalance_xls_basic" type="button" class="mybtn btn btn-sm mybtnxls">
+						<span class="fa fa-file-excel-o fa-lg"></span> Stock Balance XLS
+					</button>
+				  </fieldset>
+
+				 <fieldset>
+				  <legend>Stock Balance (with Trantype) :</legend>
+					<button name="stockBalance_pdf_ttype" type="button" class="mybtn btn btn-sm mybtnpdf">
+						<span class="fa fa-file-pdf-o fa-lg"></span> Stock Balance PDF
+					</button>
+					<button name="stockBalance_xls_ttype" type="button" class="mybtn btn btn-sm mybtnxls">
 						<span class="fa fa-file-excel-o fa-lg"></span> Stock Balance XLS
 					</button>
 				  </fieldset>
@@ -176,6 +186,6 @@
 
 @section('scripts')
 
-	<script src="js/material/stockBalance/stockBalance.js?v=1.1"></script>
+	<script src="js/material/stockBalance/stockBalance.js?v=1.2"></script>
 
 @endsection

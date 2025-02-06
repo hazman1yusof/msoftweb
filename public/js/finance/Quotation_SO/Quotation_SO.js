@@ -1511,6 +1511,8 @@ $(document).ready(function (){
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		mycurrency_np.formatOnBlur();//make field to currency on leave cursor
+        mycurrency2.array.length = 0;
+        mycurrency_np.array.length = 0;
 		
 		$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='quantity']").on('blur',{currency: [mycurrency2,mycurrency_np],alledit:'true'},calculate_line_totgst_and_totamt);
 
