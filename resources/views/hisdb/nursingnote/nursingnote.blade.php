@@ -1755,6 +1755,7 @@
                                                                 <th class="scope">episno</th>
                                                                 <th class="scope">Date/Time</th>
                                                                 <th class="scope">adduser</th>
+                                                                <th class="scope">dt</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -1835,6 +1836,7 @@
                                                                 <th class="scope">episno</th>
                                                                 <th class="scope">Date/Time</th>
                                                                 <th class="scope">adduser</th>
+                                                                <th class="scope">dt</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -1915,6 +1917,7 @@
                                                                 <th class="scope">episno</th>
                                                                 <th class="scope">Date/Time</th>
                                                                 <th class="scope">adduser</th>
+                                                                <th class="scope">dt</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
