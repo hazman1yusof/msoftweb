@@ -162,6 +162,21 @@
 								},{},{},{},{},{},{},{},{}
 							],
 							[ {},{},{},{},{},{},{},{},{},{},{} ],
+							@if($purreqhd->recstatus == 'CANCELLED')
+							[
+								{
+									text: [
+										'Cancel Remarks:\n',
+										{ text: 'Cancel By: '+purreqhd.cancelby, bold: true,color:'darkred' },
+									], colSpan: 2, rowSpan: 2, alignment: 'left',color:'darkred'
+								},{},
+								{
+									text: purreqhd.cancelled_remark,
+									colSpan: 9, rowSpan: 2, alignment: 'left',color:'darkred'
+								},{},{},{},{},{},{},{},{}
+							],
+							[ {},{},{},{},{},{},{},{},{},{},{} ],
+							@endif
 						]
 					}
 				},
