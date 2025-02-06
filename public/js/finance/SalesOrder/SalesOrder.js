@@ -1021,12 +1021,12 @@ $(document).ready(function () {
 				label: 'Bill Type <br>%', name: 'billtypeperct', width: 100, align: 'right', classes: 'wrap txnum',
 				editable: true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
-				editrules: { required: true },editoptions:{readonly: "readonly"}
+				editrules: { required: false },editoptions:{readonly: "readonly"}
 			},
 			{
 				label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap txnum', editable: true,
 				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
-				editrules: { required: true },editoptions:{readonly: "readonly"}
+				editrules: { required: false },editoptions:{readonly: "readonly"}
 			},
 			{ label: 'Discount Amount', name: 'discamt', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
@@ -1036,7 +1036,7 @@ $(document).ready(function () {
 				label: 'Tax Amount', name: 'taxamt', width: 100, align: 'right', classes: 'wrap txnum',
 				editable: true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
-				editrules: { required: true },editoptions:{readonly: "readonly"},
+				editrules: { required: false },editoptions:{readonly: "readonly"},
 			},
 			{ label: 'Total Amount', name: 'totamount', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
