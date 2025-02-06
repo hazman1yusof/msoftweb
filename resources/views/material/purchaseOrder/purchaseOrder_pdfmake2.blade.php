@@ -40,7 +40,7 @@
 	                    style: 'header_tbl',
 	                    table: {
 	                        headerRows: 1,
-	                        widths: [60,285,98,90],//panjang standard dia 515
+	                        widths: [60,290,101,190],//panjang standard dia 515
 	                        body: [
 	                            [
 									{text: 'SUPPLIER',bold: true}, 
@@ -63,8 +63,16 @@
 									{text: ''}, 
 									{text: ''},
 								],
-								// [{},{},{},{}],
-								[{text:'TEL NO',bold: true},{text: ': {{$supplier->TelNo}}'},{},{}],
+								[
+									{text:'TEL NO',bold: true},
+									{text: ': {{$supplier->TelNo}}'},
+									@if(!empty($purordhd->purreqno))
+									{text: 'PR Document',bold: true},
+									{text: ': {{$purordhd->reqdept}} - {{$purordhd->purreqno}}'}
+									@else
+									{},{}
+									@endif
+								],
 								// [{text:'FAX NO',bold: true},{text: ': {{$supplier->Faxno}}'},{},{}],
 	                        ]
 	                    },
@@ -106,6 +114,28 @@
 			        layout: 'noBorders',
 		        }
 
+		        var header_cancel = {
+                    style: 'header_tbl',
+                    table: {
+                        headerRows: 1,
+                        widths: [80,200,110,70],//panjang standard dia 515
+                        body: [
+                            [
+								{text: 'CANCEL REMARK',bold: true, color:'darkred'}, 
+								{text: `: {!!$purordhd->cancelled_remark!!}`,colSpan: 2, color:'darkred'},
+								{}, 
+								{},
+							],[
+								{text: 'CANCEL BY',bold: true, color:'darkred'}, 
+								{text: `: {!!$purordhd->cancelby!!}`, color:'darkred'},
+								{}, 
+								{},
+							],
+                        ]
+                    },
+			        layout: 'noBorders',
+		        }
+
 				// var addr1_unit = {text: `{!!$deldept->addr2!!}`,fontSize:8,alignment: 'center',margin: [0, 1, 0, 1]};
 				// var addr2_unit = {text: `{!!$deldept->addr3!!}`,fontSize:8,alignment: 'center',margin: [0, 1, 0, 1]};
 				// var addr3_unit = {text: `{!!$deldept->addr4!!}`,fontSize:8,alignment: 'center',margin: [0, 1, 0, 1]};
@@ -137,7 +167,11 @@
 				}
 
 				retval.push(header_tbl);
+				@if($purordhd->recstatus == 'CANCELLED')
+				retval.push(header_cancel);
+				@else
 				retval.push(header_tbl_deldept);
+				@endif
 				return retval
 
 			},
