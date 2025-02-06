@@ -1241,11 +1241,11 @@ class NursingNoteController extends defaultController
         try {
             
             if(!empty($request->tr_idno)){
-                $pattreatment = DB::table('nursing.pattreatment')
-                    ->where('idno','=',$request->tr_idno)
-                    ->first();
+                // $pattreatment = DB::table('nursing.pattreatment')
+                //                 ->where('idno','=',$request->tr_idno)
+                //                 ->first();
                 
-                if($pattreatment->adduser == session('username')){
+                // if($pattreatment->adduser == session('username')){
                     DB::table('nursing.pattreatment')
                         ->where('idno','=',$request->tr_idno)
                         ->update([
@@ -1255,9 +1255,9 @@ class NursingNoteController extends defaultController
                             'upduser'  => session('username'),
                             'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                         ]);
-                }else{
-                    return response('You are not authorized to edit this.', 500);
-                }
+                // }else{
+                //     return response('You are not authorized to edit this.', 500);
+                // }
             }else{
                 DB::table('nursing.pattreatment')
                     ->insert([
@@ -1332,11 +1332,11 @@ class NursingNoteController extends defaultController
         try {
             
             if(!empty($request->inv_idno)){
-                $pattreatment = DB::table('nursing.pattreatment')
-                                ->where('idno','=',$request->inv_idno)
-                                ->first();
+                // $pattreatment = DB::table('nursing.pattreatment')
+                //                 ->where('idno','=',$request->inv_idno)
+                //                 ->first();
                 
-                if($pattreatment->adduser == session('username')){
+                // if($pattreatment->adduser == session('username')){
                     DB::table('nursing.pattreatment')
                         ->where('idno','=',$request->inv_idno)
                         ->update([
@@ -1346,9 +1346,9 @@ class NursingNoteController extends defaultController
                             'upduser'  => session('username'),
                             'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                         ]);
-                }else{
-                    return response('You are not authorized to edit this.', 500);
-                }
+                // }else{
+                //     return response('You are not authorized to edit this.', 500);
+                // }
             }else{
                 DB::table('nursing.pattreatment')
                     ->insert([
@@ -1423,11 +1423,11 @@ class NursingNoteController extends defaultController
         try {
             
             if(!empty($request->inj_idno)){
-                $pattreatment = DB::table('nursing.pattreatment')
-                                ->where('idno','=',$request->inj_idno)
-                                ->first();
+                // $pattreatment = DB::table('nursing.pattreatment')
+                //                 ->where('idno','=',$request->inj_idno)
+                //                 ->first();
                 
-                if($pattreatment->adduser == session('username')){
+                // if($pattreatment->adduser == session('username')){
                     DB::table('nursing.pattreatment')
                         ->where('idno','=',$request->inj_idno)
                         ->update([
@@ -1437,9 +1437,9 @@ class NursingNoteController extends defaultController
                             'upduser'  => session('username'),
                             'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                         ]);
-                }else{
-                    return response('You are not authorized to edit this.', 500);
-                }
+                // }else{
+                //     return response('You are not authorized to edit this.', 500);
+                // }
             }else{
                 DB::table('nursing.pattreatment')
                     ->insert([
