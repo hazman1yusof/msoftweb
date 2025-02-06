@@ -1740,7 +1740,7 @@
                                 </div>
                                 
                                 <div class="panel-body" style="padding: 15px 5px;">
-                                    <form class='form-horizontal' style='width: 99%;' id='formTreatment'>
+                                    <form class='form-horizontal' style='width: 99%;' id='formTreatmentP'>
                                         <input id="tr_idno" name="tr_idno" type="hidden">
                                         <input id="tr_adduser" name="tr_adduser" type="hidden">
                                         
