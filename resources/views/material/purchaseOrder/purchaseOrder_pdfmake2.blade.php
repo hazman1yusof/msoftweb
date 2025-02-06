@@ -68,7 +68,7 @@
 									{text: ': {{$supplier->TelNo}}'},
 									@if(!empty($purordhd->purreqno))
 									{text: 'PR Document',bold: true},
-									{text: ': {{$purordhd->reqdept}} - {{$purordhd->purreqno}}'}
+									{text: ': {{$purordhd->reqdept}}-{{str_pad($purordhd->purreqno, 5, '0', STR_PAD_LEFT)}}'}
 									@else
 									{},{}
 									@endif
