@@ -198,7 +198,7 @@ class invtran_util extends defaultController{
             $month = defaultController::toMonth($ivtmphd->trandate);
             $QtyOnHand = $stockloc_first->qtyonhand - $value->txnqty; 
             $NetMvQty = $stockloc_arr['netmvqty'.$month] - $value->txnqty;
-            $NetMvVal = $stockloc_arr['netmvval'.$month] - ($value->netprice * $value->txnqty);
+            $NetMvVal = $stockloc_arr['netmvval'.$month] - round($value->netprice * $value->txnqty,2);
 
             $stockloc_obj
                 ->update([
@@ -355,7 +355,7 @@ class invtran_util extends defaultController{
                 $month = defaultController::toMonth($ivtmphd->trandate);
                 $QtyOnHand = $stockloc_first->qtyonhand + $txnqty; 
                 $NetMvQty = $stockloc_arr['netmvqty'.$month] + $txnqty;
-                $NetMvVal = $stockloc_arr['netmvval'.$month] + ($netprice * $txnqty);
+                $NetMvVal = $stockloc_arr['netmvval'.$month] + round($netprice * $txnqty,2);
 
                 $stockloc_obj
                     ->update([
@@ -514,7 +514,7 @@ class invtran_util extends defaultController{
             $month = defaultController::toMonth($ivtmphd->trandate);
             $QtyOnHand = $stockloc_first->qtyonhand + $value->txnqty; 
             $NetMvQty = $stockloc_arr['netmvqty'.$month] + $value->txnqty;
-            $NetMvVal = $stockloc_arr['netmvval'.$month] + ($value->netprice * $value->txnqty);
+            $NetMvVal = $stockloc_arr['netmvval'.$month] + round($value->netprice * $value->txnqty,2);
 
             $stockloc_obj
                 ->update([
@@ -638,7 +638,7 @@ class invtran_util extends defaultController{
             $month = defaultController::toMonth($ivtmphd->trandate);
             $QtyOnHand = $stockloc_first->qtyonhand - $value->txnqty; 
             $NetMvQty = $stockloc_arr['netmvqty'.$month] - $value->txnqty;
-            $NetMvVal = $stockloc_arr['netmvval'.$month] - ($value->netprice * $value->txnqty);
+            $NetMvVal = $stockloc_arr['netmvval'.$month] - round($value->netprice * $value->txnqty,2);
 
             $stockloc_obj
                 ->update([
@@ -821,7 +821,7 @@ class invtran_util extends defaultController{
             $month = defaultController::toMonth($ivtmphd->trandate);
             $QtyOnHand = $stockloc_first->qtyonhand - $value->txnqty; 
             $NetMvQty = $stockloc_arr['netmvqty'.$month] - $value->txnqty;
-            $NetMvVal = $stockloc_arr['netmvval'.$month] - ($value->netprice * $value->txnqty);
+            $NetMvVal = $stockloc_arr['netmvval'.$month] - round($value->netprice * $value->txnqty, 2);
 
             $stockloc_obj
                 ->update([
@@ -1006,7 +1006,7 @@ class invtran_util extends defaultController{
             $month = defaultController::toMonth($ivtmphd->trandate);
             $QtyOnHand = $stockloc_first->qtyonhand + $value->txnqty; 
             $NetMvQty = $stockloc_arr['netmvqty'.$month] + $value->txnqty;
-            $NetMvVal = $stockloc_arr['netmvval'.$month] + ($value->netprice * $value->txnqty);
+            $NetMvVal = $stockloc_arr['netmvval'.$month] + round($value->netprice * $value->txnqty,2);
 
             $stockloc_obj
                 ->update([
@@ -1131,7 +1131,7 @@ class invtran_util extends defaultController{
         $month = defaultController::toMonth($ivtmphd->trandate);
         $QtyOnHand = $stockloc_first->qtyonhand + $value->txnqty; 
         $NetMvQty = $stockloc_arr['netmvqty'.$month] + $value->txnqty;
-        $NetMvVal = $stockloc_arr['netmvval'.$month] + ($value->netprice * $value->txnqty);
+        $NetMvVal = $stockloc_arr['netmvval'.$month] + round($value->netprice * $value->txnqty,2);
 
         $stockloc_obj
             ->update([

@@ -4038,11 +4038,12 @@ var tbl_treatment = $('#tbl_treatment').DataTable({
         { 'data': 'episno' },
         { 'data': 'datetime', 'width': '50%' },
         { 'data': 'adduser' },
+        { 'data': 'dt' },
     ],
     columnDefs: [
-        { targets: [0, 1, 2, 4], visible: false },
+        { targets: [0, 1, 2, 4, 5], visible: false },
     ],
-    order: [[3, 'desc']],
+    order: [[5, 'desc']],
     "drawCallback": function (settings){
         $(this).find('tbody tr')[0].click();
     }
@@ -4058,11 +4059,12 @@ var tbl_investigation = $('#tbl_investigation').DataTable({
         { 'data': 'episno' },
         { 'data': 'datetime', 'width': '50%' },
         { 'data': 'adduser' },
+        { 'data': 'dt' },
     ],
     columnDefs: [
-        { targets: [0, 1, 2, 4], visible: false },
+        { targets: [0, 1, 2, 4, 5], visible: false },
     ],
-    order: [[3, 'desc']],
+    order: [[5, 'desc']],
     "drawCallback": function (settings){
         $(this).find('tbody tr')[0].click();
     }
@@ -4078,11 +4080,12 @@ var tbl_injection = $('#tbl_injection').DataTable({
         { 'data': 'episno' },
         { 'data': 'datetime', 'width': '50%' },
         { 'data': 'adduser' },
+        { 'data': 'dt' },
     ],
     columnDefs: [
-        { targets: [0, 1, 2, 4], visible: false },
+        { targets: [0, 1, 2, 4, 5], visible: false },
     ],
-    order: [[3, 'desc']],
+    order: [[5, 'desc']],
     "drawCallback": function (settings){
         $(this).find('tbody tr')[0].click();
     }

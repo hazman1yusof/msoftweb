@@ -61,7 +61,7 @@ class do_util extends defaultController{
             $month = defaultController::toMonth($delordhd_obj->trandate);
             $QtyOnHand = $stockloc_obj->first()->qtyonhand + $txnqty; 
             $NetMvQty = $stockloc_arr['netmvqty'.$month] + $txnqty;
-            $NetMvVal = $stockloc_arr['netmvval'.$month] + ($netprice * $txnqty);
+            $NetMvVal = $stockloc_arr['netmvval'.$month] + round($netprice * $txnqty, 2);
 
             DB::table('material.StockLoc')
                 ->where('StockLoc.CompCode','=',session('compcode'))

@@ -96,7 +96,7 @@ class DeliveryOrderController extends defaultController
 
             if(!empty($request->referral)){
                 $request_no = $this->request_no('GRN', $request->delordhd_prdept);
-                $recno = $this->recno('PUR','DO');
+                $recno = $this->recno('IV','IT');
                 $compcode = session('compcode');
             }else{
                 $request_no = 0;
