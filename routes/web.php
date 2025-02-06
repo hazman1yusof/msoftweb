@@ -1287,6 +1287,11 @@ Route::get('/pat_enq','hisdb\PatEnqController@show');
 Route::get('/pat_enq/table','hisdb\PatEnqController@table');
 Route::post('/pat_enq/form','hisdb\PatEnqController@form');
 
+//// Nursing ED (Triage Info) page ///
+Route::get('/nursingED','hisdb\NursingEDController@show');
+Route::get('/nursingED/table','hisdb\NursingEDController@table');
+Route::post('/nursingED/form','hisdb\NursingEDController@form');
+
 //// Nursing (Triage Info) page ///
 Route::get('/nursing','hisdb\NursingController@show');
 Route::get('/nursing/table','hisdb\NursingController@table');
