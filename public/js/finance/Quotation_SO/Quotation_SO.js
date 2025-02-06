@@ -1061,8 +1061,8 @@ $(document).ready(function (){
 			unsaved = false;
 			mycurrency2.array.length = 0;
 			mycurrency_np.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='billtypeperct']","#jqGrid2 input[name='billtypeamt']","#jqGrid2 input[name='totamount']","#jqGrid2 input[name='amount']"]);
-			Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtydelivered']","#jqGrid2 input[name='quantity']"]);
+			// Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='billtypeperct']","#jqGrid2 input[name='billtypeamt']","#jqGrid2 input[name='totamount']","#jqGrid2 input[name='amount']"]);
+			// Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtydelivered']","#jqGrid2 input[name='quantity']"]);
 			
 			mycurrency2.formatOnBlur(); // make field to currency on leave cursor
 			mycurrency_np.formatOnBlur(); // make field to currency on leave cursor
@@ -1194,9 +1194,9 @@ $(document).ready(function (){
                 let rowdata = $("#jqGrid2").jqGrid ('getRowData', ids[i]);
 				$("#jqGrid2").jqGrid('editRow',ids[i]);
 				
-				Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount"]);
+				// Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount"]);
 				
-				Array.prototype.push.apply(mycurrency_np.array, ["#"+ids[i]+"_quantity"]);
+				// Array.prototype.push.apply(mycurrency_np.array, ["#"+ids[i]+"_quantity"]);
 				
 				dialog_chggroup.id_optid = ids[i];
 				dialog_chggroup.check(errorField,ids[i]+"_chggroup","jqGrid2",null,
