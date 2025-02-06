@@ -764,6 +764,8 @@ function dateFormatter(cellvalue, options, rowObject){
 }
 
 function dateUNFormatter(cellvalue, options, rowObject){
+	if(cellvalue == null) return '';
+	if(cellvalue.trim() == '') return '';
 	return moment(cellvalue, "DD/MM/YYYY").format("YYYY-MM-DD");
 }
 

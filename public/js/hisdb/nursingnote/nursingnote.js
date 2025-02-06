@@ -177,6 +177,7 @@ $(document).ready(function (){
         rdonly('#formTreatment');
         emptyFormdata_div("#formTreatment",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         document.getElementById("tr_idno").value = "";
+        document.getElementById("tr_adduser").value = "";
         // dialog_mrn_edit.on();
     });
     
@@ -216,6 +217,7 @@ $(document).ready(function (){
         rdonly('#formInvestigation');
         emptyFormdata_div("#formInvestigation",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         document.getElementById("inv_idno").value = "";
+        document.getElementById("inv_adduser").value = "";
         // dialog_mrn_edit.on();
     });
     
@@ -255,6 +257,7 @@ $(document).ready(function (){
         rdonly('#formInjection');
         emptyFormdata_div("#formInjection",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         document.getElementById("inj_idno").value = "";
+        document.getElementById("inj_adduser").value = "";
         // dialog_mrn_edit.on();
     });
     
@@ -1204,8 +1207,15 @@ $(document).ready(function (){
         $('#tbl_treatment tbody tr').removeClass('active');
         $(this).addClass('active');
         
+        if(check_same_usr_edit(data)){
+            button_state_treatment('edit');
+        }else{
+            button_state_treatment('add');
+        }
+        
         // populate_treatment_getdata();
         $("#tr_idno").val(data.idno);
+        $("#tr_adduser").val(data.adduser);
         
         var saveParam = {
             action: 'get_table_treatment',
@@ -1226,10 +1236,10 @@ $(document).ready(function (){
             if(!$.isEmptyObject(data)){
                 autoinsert_rowdata("#formTreatment",data.treatment);
                 
-                button_state_treatment('edit');
+                // button_state_treatment('edit');
                 textarea_init_nursingnote();
             }else{
-                button_state_treatment('add');
+                // button_state_treatment('add');
                 textarea_init_nursingnote();
             }
         });
@@ -1254,8 +1264,15 @@ $(document).ready(function (){
         $('#tbl_investigation tbody tr').removeClass('active');
         $(this).addClass('active');
         
+        if(check_same_usr_edit(data)){
+            button_state_investigation('edit');
+        }else{
+            button_state_investigation('add');
+        }
+        
         // populate_investigation_getdata();
         $("#inv_idno").val(data.idno);
+        $("#inv_adduser").val(data.adduser);
         
         var saveParam = {
             action: 'get_table_treatment',
@@ -1276,10 +1293,10 @@ $(document).ready(function (){
             if(!$.isEmptyObject(data)){
                 autoinsert_rowdata("#formInvestigation",data.investigation);
                 
-                button_state_investigation('edit');
+                // button_state_investigation('edit');
                 textarea_init_nursingnote();
             }else{
-                button_state_investigation('add');
+                // button_state_investigation('add');
                 textarea_init_nursingnote();
             }
         });
@@ -1304,8 +1321,15 @@ $(document).ready(function (){
         $('#tbl_injection tbody tr').removeClass('active');
         $(this).addClass('active');
         
+        if(check_same_usr_edit(data)){
+            button_state_injection('edit');
+        }else{
+            button_state_injection('add');
+        }
+        
         // populate_injection_getdata();
         $("#inj_idno").val(data.idno);
+        $("#inj_adduser").val(data.adduser);
         
         var saveParam = {
             action: 'get_table_treatment',
@@ -1326,10 +1350,10 @@ $(document).ready(function (){
             if(!$.isEmptyObject(data)){
                 autoinsert_rowdata("#formInjection",data.injection);
                 
-                button_state_injection('edit');
+                // button_state_injection('edit');
                 textarea_init_nursingnote();
             }else{
-                button_state_injection('add');
+                // button_state_injection('add');
                 textarea_init_nursingnote();
             }
         });
@@ -4013,9 +4037,10 @@ var tbl_treatment = $('#tbl_treatment').DataTable({
         { 'data': 'mrn' },
         { 'data': 'episno' },
         { 'data': 'datetime', 'width': '50%' },
+        { 'data': 'adduser' },
     ],
     columnDefs: [
-        { targets: [0, 1, 2], visible: false },
+        { targets: [0, 1, 2, 4], visible: false },
     ],
     order: [[0, 'desc']],
     "drawCallback": function (settings){
@@ -4032,9 +4057,10 @@ var tbl_investigation = $('#tbl_investigation').DataTable({
         { 'data': 'mrn' },
         { 'data': 'episno' },
         { 'data': 'datetime', 'width': '50%' },
+        { 'data': 'adduser' },
     ],
     columnDefs: [
-        { targets: [0, 1, 2], visible: false },
+        { targets: [0, 1, 2, 4], visible: false },
     ],
     order: [[0, 'desc']],
     "drawCallback": function (settings){
@@ -4051,9 +4077,10 @@ var tbl_injection = $('#tbl_injection').DataTable({
         { 'data': 'mrn' },
         { 'data': 'episno' },
         { 'data': 'datetime', 'width': '50%' },
+        { 'data': 'adduser' },
     ],
     columnDefs: [
-        { targets: [0, 1, 2], visible: false },
+        { targets: [0, 1, 2, 4], visible: false },
     ],
     order: [[0, 'desc']],
     "drawCallback": function (settings){
@@ -5720,6 +5747,19 @@ var dialog_drugindicator_nursNote = new ordialog(
 );
 dialog_drugindicator_nursNote.makedialog(false);
 
+function check_same_usr_edit(data){
+    let same = true;
+    var adduser = data.adduser;
+    
+    if(adduser == null){
+        same = false;
+    }else if(adduser.toUpperCase() != $('#curr_user').val().toUpperCase()){
+        same = false;
+    }
+    
+    return same;
+}
+
 // function calc_jq_height_onchange(jqgrid){
 //     let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
 //     if(scrollHeight < 50){
@@ -5729,4 +5769,3 @@ dialog_drugindicator_nursNote.makedialog(false);
 //     }
 //     $('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 // }
-

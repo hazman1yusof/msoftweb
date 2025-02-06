@@ -356,6 +356,7 @@ class NursingNoteController extends defaultController
                 $date['idno'] = $value->idno;
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
+                $date['adduser'] = $value->adduser;
                 // $date['enteredtime'] = $value->enteredtime;
                 // if(!empty($value->enteredtime)){
                 //     $date['enteredtime'] =  Carbon::createFromFormat('H:i:s', $value->enteredtime)->format('h:i A');
@@ -1216,7 +1217,8 @@ class NursingNoteController extends defaultController
                     'enteredtime'  => $request->tr_enteredtime,
                     // 'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     // 'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
-                    'adduser'  => strtoupper($request->treatment_adduser),
+                    // 'adduser'  => strtoupper($request->treatment_adduser),
+                    'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                 ]);
             
@@ -1239,15 +1241,23 @@ class NursingNoteController extends defaultController
         try {
             
             if(!empty($request->tr_idno)){
-                DB::table('nursing.pattreatment')
-                    ->where('idno','=',$request->tr_idno)
-                    ->update([
-                        'remarks' => $request->treatment_remarks,
-                        // 'entereddate'  => $request->tr_entereddate,
-                        'enteredtime'  => $request->tr_enteredtime,
-                        'upduser'  => session('username'),
-                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
-                    ]);
+                // $pattreatment = DB::table('nursing.pattreatment')
+                //                 ->where('idno','=',$request->tr_idno)
+                //                 ->first();
+                
+                // if($pattreatment->adduser == session('username')){
+                    DB::table('nursing.pattreatment')
+                        ->where('idno','=',$request->tr_idno)
+                        ->update([
+                            'remarks' => $request->treatment_remarks,
+                            // 'entereddate'  => $request->tr_entereddate,
+                            'enteredtime'  => $request->tr_enteredtime,
+                            'upduser'  => session('username'),
+                            'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                        ]);
+                // }else{
+                //     return response('You are not authorized to edit this.', 500);
+                // }
             }else{
                 DB::table('nursing.pattreatment')
                     ->insert([
@@ -1260,7 +1270,8 @@ class NursingNoteController extends defaultController
                         'enteredtime'  => $request->tr_enteredtime,
                         // 'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         // 'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
-                        'adduser'  => strtoupper($request->treatment_adduser),
+                        // 'adduser'  => strtoupper($request->treatment_adduser),
+                        'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                     ]);
             }
@@ -1297,7 +1308,8 @@ class NursingNoteController extends defaultController
                     'enteredtime'  => $request->inv_enteredtime,
                     // 'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     // 'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
-                    'adduser'  => strtoupper($request->investigation_adduser),
+                    // 'adduser'  => strtoupper($request->investigation_adduser),
+                    'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                 ]);
             
@@ -1320,15 +1332,23 @@ class NursingNoteController extends defaultController
         try {
             
             if(!empty($request->inv_idno)){
-                DB::table('nursing.pattreatment')
-                    ->where('idno','=',$request->inv_idno)
-                    ->update([
-                        'remarks' => $request->investigation_remarks,
-                        // 'entereddate'  => $request->inv_entereddate,
-                        'enteredtime'  => $request->inv_enteredtime,
-                        'upduser'  => session('username'),
-                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
-                    ]);
+                // $pattreatment = DB::table('nursing.pattreatment')
+                //                 ->where('idno','=',$request->inv_idno)
+                //                 ->first();
+                
+                // if($pattreatment->adduser == session('username')){
+                    DB::table('nursing.pattreatment')
+                        ->where('idno','=',$request->inv_idno)
+                        ->update([
+                            'remarks' => $request->investigation_remarks,
+                            // 'entereddate'  => $request->inv_entereddate,
+                            'enteredtime'  => $request->inv_enteredtime,
+                            'upduser'  => session('username'),
+                            'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                        ]);
+                // }else{
+                //     return response('You are not authorized to edit this.', 500);
+                // }
             }else{
                 DB::table('nursing.pattreatment')
                     ->insert([
@@ -1341,7 +1361,8 @@ class NursingNoteController extends defaultController
                         'enteredtime'  => $request->inv_enteredtime,
                         // 'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         // 'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
-                        'adduser'  => strtoupper($request->investigation_adduser),
+                        // 'adduser'  => strtoupper($request->investigation_adduser),
+                        'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                     ]);
             }
@@ -1378,7 +1399,8 @@ class NursingNoteController extends defaultController
                     'enteredtime'  => $request->inj_enteredtime,
                     // 'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     // 'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
-                    'adduser'  => strtoupper($request->injection_adduser),
+                    // 'adduser'  => strtoupper($request->injection_adduser),
+                    'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                 ]);
             
@@ -1401,15 +1423,23 @@ class NursingNoteController extends defaultController
         try {
             
             if(!empty($request->inj_idno)){
-                DB::table('nursing.pattreatment')
-                    ->where('idno','=',$request->inj_idno)
-                    ->update([
-                        'remarks' => $request->injection_remarks,
-                        // 'entereddate'  => $request->inj_entereddate,
-                        'enteredtime'  => $request->inj_enteredtime,
-                        'upduser'  => session('username'),
-                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
-                    ]);
+                // $pattreatment = DB::table('nursing.pattreatment')
+                //                 ->where('idno','=',$request->inj_idno)
+                //                 ->first();
+                
+                // if($pattreatment->adduser == session('username')){
+                    DB::table('nursing.pattreatment')
+                        ->where('idno','=',$request->inj_idno)
+                        ->update([
+                            'remarks' => $request->injection_remarks,
+                            // 'entereddate'  => $request->inj_entereddate,
+                            'enteredtime'  => $request->inj_enteredtime,
+                            'upduser'  => session('username'),
+                            'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                        ]);
+                // }else{
+                //     return response('You are not authorized to edit this.', 500);
+                // }
             }else{
                 DB::table('nursing.pattreatment')
                     ->insert([
@@ -1422,7 +1452,8 @@ class NursingNoteController extends defaultController
                         'enteredtime'  => $request->inj_enteredtime,
                         // 'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         // 'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
-                        'adduser'  => strtoupper($request->injection_adduser),
+                        // 'adduser'  => strtoupper($request->injection_adduser),
+                        'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                     ]);
             }

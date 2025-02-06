@@ -138,7 +138,7 @@
                                             @else
                                                 { text: '[  ] SPLINTING\n', bold: true },
                                             @endif
-                                        ], rowSpan: 3, alignment: 'left'
+                                        ], rowSpan: 2, alignment: 'left'
                                     }
                                 ],
                                 [
@@ -147,7 +147,12 @@
                                 ],
                                 [
                                     { text: 'Signature & Name of Requesting Doctor : \n\n{{$pat_physio->doctorname}}', alignment: 'left' },
-                                    {},
+                                    {
+                                        text: [
+                                            { text: 'Remarks', italics: false, bold: true, alignment: 'left' },
+                                            { text: `\n\n{!!str_replace('`', '', $pat_physio->remarks)!!}` },
+                                        ], alignment: 'left'
+                                    },
                                 ],
                             ]
                         },

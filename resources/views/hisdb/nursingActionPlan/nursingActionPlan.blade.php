@@ -89,7 +89,7 @@
                             <input id="bednum_nursActionPlan" name="bednum_nursActionPlan" type="hidden">
                             <input id="age_nursActionPlan" name="age_nursActionPlan" type="hidden">
                             <input type="hidden" id="ordcomtt_phar" value="{{$ordcomtt_phar ?? ''}}">
-
+                            
                             <!-- TREATMENT -->
                             <div id="tab-treatments" class="tab-pane fade">
                                 <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
@@ -109,6 +109,9 @@
                                                                         
                                         <div class="panel-body" style="padding-right: 0px;">
                                             <form class='form-horizontal' style='width: 99%;' id='formTreatment'>
+                                                <!-- <div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
+                                                            <p id="p_error"></p>
+                                                        </div> -->
                                                 <div class='col-md-12'>
                                                     <div class="panel panel-info" id="jqGridTreatment_c">
                                                         <div class="panel-body">
