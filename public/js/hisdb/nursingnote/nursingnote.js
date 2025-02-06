@@ -4042,7 +4042,7 @@ var tbl_treatment = $('#tbl_treatment').DataTable({
     columnDefs: [
         { targets: [0, 1, 2, 4], visible: false },
     ],
-    order: [[3, 'desc']],
+    order: [[0, 'desc']],
     "drawCallback": function (settings){
         $(this).find('tbody tr')[0].click();
     }
@@ -4062,7 +4062,7 @@ var tbl_investigation = $('#tbl_investigation').DataTable({
     columnDefs: [
         { targets: [0, 1, 2, 4], visible: false },
     ],
-    order: [[3, 'desc']],
+    order: [[0, 'desc']],
     "drawCallback": function (settings){
         $(this).find('tbody tr')[0].click();
     }
@@ -4082,7 +4082,7 @@ var tbl_injection = $('#tbl_injection').DataTable({
     columnDefs: [
         { targets: [0, 1, 2, 4], visible: false },
     ],
-    order: [[3, 'desc']],
+    order: [[0, 'desc']],
     "drawCallback": function (settings){
         $(this).find('tbody tr')[0].click();
     }

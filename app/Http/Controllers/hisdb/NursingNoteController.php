@@ -340,9 +340,7 @@ class NursingNoteController extends defaultController
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno)
-                            ->where('type','=',$request->type)
-                            ->orderBy('entereddate', 'desc')
-                            ->orderBy('enteredtime', 'desc');
+                            ->where('type','=',$request->type);
         
         if($pattreatment_obj->exists()){
             $pattreatment_obj = $pattreatment_obj->get();
