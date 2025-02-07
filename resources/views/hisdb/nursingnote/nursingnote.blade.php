@@ -119,8 +119,8 @@
                                                                 <div class="form-group col-md-12">
                                                                     <label class="control-label" for="ncase_bp_stand" style="padding-bottom: 5px;">BP (standing)</label>
                                                                     <div class="input-group">
-                                                                        <input id="bpsys_stand" name="bpsys_stand" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" style="width: 50%;">
-                                                                        <input id="bpdias_stand" name="bpdias_stand" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" style="width: 50%;">
+                                                                        <input id="bpsys_stand" name="bpsys_stand" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" style="width: 50%;">
+                                                                        <input id="bpdias_stand" name="bpdias_stand" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" style="width: 50%;">
                                                                         <span class="input-group-addon">mmHg</span>
                                                                     </div>
                                                                 </div>
@@ -128,8 +128,8 @@
                                                                 <div class="form-group col-md-12">
                                                                     <label class="control-label" for="ncase_bp_lieDown" style="padding-bottom: 5px;">BP (lying down)</label>
                                                                     <div class="input-group">
-                                                                        <input id="bpsys_lieDown" name="bpsys_lieDown" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" style="width: 50%;">
-                                                                        <input id="bpdias_lieDown" name="bpdias_lieDown" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" style="width: 50%;">
+                                                                        <input id="bpsys_lieDown" name="bpsys_lieDown" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" style="width: 50%;">
+                                                                        <input id="bpdias_lieDown" name="bpdias_lieDown" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" style="width: 50%;">
                                                                         <span class="input-group-addon">mmHg</span>
                                                                     </div>
                                                                 </div>
@@ -137,7 +137,7 @@
                                                                 <div class="form-group col-md-12">
                                                                     <label class="control-label" for="spo2" style="padding-bottom: 5px;">SPO2</label>
                                                                     <div class="input-group">
-                                                                        <input id="spo2" name="spo2" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                                        <input id="spo2" name="spo2" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                                         <span class="input-group-addon">%</span>
                                                                     </div>
                                                                 </div>
@@ -145,7 +145,7 @@
                                                                 <div class="form-group col-md-12">
                                                                     <label class="control-label" for="hr" style="padding-bottom: 5px;">HR</label>
                                                                     <div class="input-group">
-                                                                        <input id="hr" name="hr" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                                        <input id="hr" name="hr" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                                         <span class="input-group-addon">Bpm</span>
                                                                     </div>
                                                                 </div>
@@ -153,7 +153,7 @@
                                                                 <div class="form-group col-md-12">
                                                                     <label class="control-label" for="gxt" style="padding-bottom: 5px;">Glucometer</label>
                                                                     <div class="input-group">
-                                                                        <input id="gxt" name="gxt" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                                        <input id="gxt" name="gxt" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                                         <span class="input-group-addon">mmol/L</span>
                                                                     </div>
                                                                 </div>
@@ -177,7 +177,7 @@
                                                                 <div class="form-group col-md-12">
                                                                     <label class="control-label" for="respiration" style="padding-bottom: 5px;">RR</label>
                                                                     <div class="input-group">
-                                                                        <input id="respiration" name="respiration" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                                        <input id="respiration" name="respiration" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                                         <span class="input-group-addon">Min</span>
                                                                     </div>
                                                                 </div>
@@ -193,7 +193,7 @@
                                                                 <div class="form-group col-md-12">
                                                                     <label class="control-label" for="painscore" style="padding-bottom: 5px;">Pain Score</label>
                                                                     <div class="input-group">
-                                                                        <input id="painscore" name="painscore" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                                        <input id="painscore" name="painscore" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                                         <span class="input-group-addon">/10</span>
                                                                     </div>
                                                                 </div>
