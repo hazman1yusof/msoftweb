@@ -49,7 +49,11 @@
                                     {text: 'DATE OF ADMISSION '},
                                     {text: ': {{\Carbon\Carbon::createFromFormat('Y-m-d',$discharge->reg_date)->format('d-m-Y')}}'},{},
                                     {text: 'DATE OF DISCHARGE '},
-                                    {text: ': {{\Carbon\Carbon::createFromFormat('Y-m-d',$discharge->dischargedate)->format('d-m-Y')}}'},
+                                    @if(!empty($discharge->dischargedate))
+                                        {text: ': {{\Carbon\Carbon::createFromFormat('Y-m-d',$discharge->dischargedate)->format('d-m-Y')}}'},
+                                    @else
+                                        { text: ': ' },
+                                    @endif
                                 ],
                             ]
                         },
