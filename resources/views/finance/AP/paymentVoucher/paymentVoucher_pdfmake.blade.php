@@ -396,7 +396,7 @@
 		}else if(ini_body.length > 18 && make_body_loop == 1){
 
 		    ini_body.forEach(function(e,i){
-		    	if(i>pad_loop){
+		    	if(i>=pad_loop){
 			    	let arr = [
 						{text:e.date, style: 'body_row', border: [false, false, false, false]},
 						{text:e.docno, style: 'body_row', border: [false, false, false, false]},
