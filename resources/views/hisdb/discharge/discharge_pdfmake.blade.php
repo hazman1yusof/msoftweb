@@ -37,7 +37,7 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [80, '*',80,94,'*'], //panjang standard dia 515
+                            widths: [60, '*',60,94,'*'], //panjang standard dia 515
                             body: [
                                 [
                                     {text: 'NAME ' },
@@ -46,7 +46,7 @@
                                     {text: ': {{str_pad($discharge->mrn, 7, "0", STR_PAD_LEFT)}}'},
                                 ],
                                 [
-                                    {text: 'DATE OF ADMISSION '},
+                                    {text: 'DATE OF\nADMISSION '},
                                     {text: ': {{\Carbon\Carbon::createFromFormat('Y-m-d',$discharge->reg_date)->format('d-m-Y')}}'},{},
                                     {text: 'DATE OF DISCHARGE '},
                                     @if(!empty($discharge->dischargedate))
@@ -133,7 +133,7 @@
                         margin: [0, 10, 0, 5]
                     },
                     tableExample: {
-                        fontSize: 8,
+                        fontSize: 7.5,
                         margin: [0, 5, 0, 15]
                     },
                     tableHeader: {
