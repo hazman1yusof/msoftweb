@@ -79,6 +79,7 @@
 								<div class="panel-body">
 									<input id="mrn_ti" name="mrn_ti" type="hidden">
 									<input id="episno_ti" name="episno_ti" type="hidden">
+									<input id="epistycode_ti" name="epistycode_ti" type="hidden" value="{{request()->get('epistycode')}}">
 									
 									<div class="form-group">
 										<label class="col-md-2 control-label" for="admwardtime">Time</label>

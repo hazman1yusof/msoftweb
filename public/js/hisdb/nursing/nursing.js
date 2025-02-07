@@ -130,7 +130,7 @@ $(document).ready(function (){
 		}
 		
 		nursing_date_tbl.ajax.url("./doctornote/table?"+$.param(urlaram_nursing_date_tbl)).load(function (data){
-			emptyFormdata_div("#formTriageInfo",['#mrn_ti','#episno_ti']);
+			emptyFormdata_div("#formTriageInfo",['#mrn_ti','#episno_ti','#epistycode_ti']);
 			$('#nursing_date_tbl tbody tr:eq(0)').click(); // to select first row
 		});
 	});
@@ -615,7 +615,7 @@ $(document).ready(function (){
 			$(this).addClass('selected');
 		}
 		
-		emptyFormdata_div("#formTriageInfo",['#mrn_ti','#episno_ti']);
+		emptyFormdata_div("#formTriageInfo",['#mrn_ti','#episno_ti','#epistycode_ti']);
 		$('#nursing_date_tbl tbody tr').removeClass('active');
 		$(this).addClass('active');
 		
@@ -899,7 +899,7 @@ function populate_triage_currpt(obj){
 }
 
 function populate_triage_currpt_getdata(){
-	emptyFormdata(errorField,"#formTriageInfo",["#mrn_ti","#episno_ti"]);
+	emptyFormdata(errorField,"#formTriageInfo",["#mrn_ti","#episno_ti","#epistycode_ti"]);
 	$(dialog_tri_col.textfield).removeClass("red").removeClass("yellow").removeClass("green");
 	$(dialog_tri_col.textfield).next().removeClass("red").removeClass("yellow").removeClass("green");
 	
@@ -1028,7 +1028,7 @@ function populate_triage_casenote(obj){
 	}
 	
 	nursing_date_tbl.ajax.url("./doctornote/table?"+$.param(urlaram_nursing_date_tbl)).load(function (data){
-		emptyFormdata_div("#formTriageInfo",['#mrn_ti','#episno_ti']);
+		emptyFormdata_div("#formTriageInfo",['#mrn_ti','#episno_ti','#epistycode_ti']);
 		$('#nursing_date_tbl tbody tr:eq(0)').click(); // to select first row
 	});
 }
