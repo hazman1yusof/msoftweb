@@ -875,7 +875,7 @@ function populate_attachmentfile(){
 
 <body style="margin: 0px;">
 <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
-<div class="ui segments" style="width: 18vw;height: 95vh;float: left; margin: 10px; position: fixed;">
+<div class="ui segments" style="width: 18vw;height: 95vh;float: left; margin: 10px; position: fixed;overflow-y: scroll;">
   <div class="ui secondary segment">
     <h3>
 		<b>Navigation</b>
