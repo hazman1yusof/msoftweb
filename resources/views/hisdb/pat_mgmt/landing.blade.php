@@ -233,8 +233,6 @@
 			
 			@if (request()->get('epistycode') == 'IP')
 				@if (Auth::user()->doctor == 1)
-
-			
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursing_row">
 						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
 					</div>
@@ -267,8 +265,6 @@
 						@include('hisdb.dietorder.dietorder')
 					</div>
 				@elseif (Auth::user()->nurse == 1)
-					
-
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
 					</div>

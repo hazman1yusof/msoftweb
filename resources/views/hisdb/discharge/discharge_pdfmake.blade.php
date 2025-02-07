@@ -97,13 +97,23 @@
                                     {text: 'FOLLOW UP',bold: true,},
                                     {text: `{!!$discharge->followup!!}`},
                                 ],
-                                [
-                                    {text: 'DR. INCHARGE',bold: true,},
-                                    {text: `{!!$discharge->doctorname!!}`},
-                                ],
                             ]
                         },
                         // layout: 'lightHorizontalLines',
+                    },
+                    {
+                        style: 'body_sign',
+                        table: {
+                            widths: ['*'],//panjang standard dia 515
+                            body: [
+                                [
+                                   
+                                    {text: `\n\n\n\n\n_____________________________________\n\nName & Signature of Attending Doctor`,bold: true,alignment: 'left'},
+
+                                ]
+                            ]
+                        },
+                        layout: 'noBorders',
                     },
                 ],
                 styles: {
@@ -138,11 +148,15 @@
                     comp_header: {
                         bold: true,
                         fontSize: 8,
-                    }
+                    },
+                    body_sign: {
+                        fontSize: 8,
+                        margin: [1, 20, 0, 0]//left, top, right, bottom
+				    },
                 },
                 images: {
                     letterhead: {
-                        url: "{{asset('/img/letterheadukm.png')}}",
+                        url: "{{asset('/img/logo/imsclogo.png')}}",
                         headers: {
                             myheader: '123',
                             myotherheader: 'abc',
