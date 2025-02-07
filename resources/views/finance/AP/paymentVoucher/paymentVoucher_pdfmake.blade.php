@@ -396,7 +396,7 @@
 		}else if(ini_body.length > 18 && make_body_loop == 1){
 
 		    ini_body.forEach(function(e,i){
-		    	if(i>pad_loop){
+		    	if(i>=pad_loop){
 			    	let arr = [
 						{text:e.date, style: 'body_row', border: [false, false, false, false]},
 						{text:e.docno, style: 'body_row', border: [false, false, false, false]},
@@ -875,7 +875,7 @@ function populate_attachmentfile(){
 
 <body style="margin: 0px;">
 <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
-<div class="ui segments" style="width: 18vw;height: 95vh;float: left; margin: 10px; position: fixed;">
+<div class="ui segments" style="width: 18vw;height: 95vh;float: left; margin: 10px; position: fixed;overflow-y: scroll;">
   <div class="ui secondary segment">
     <h3>
 		<b>Navigation</b>

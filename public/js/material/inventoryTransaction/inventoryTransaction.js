@@ -1187,12 +1187,12 @@ $(document).ready(function () {
 
 			mycurrency2.array.length = 0;
 			mycurrency_np.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amount']", "#jqGrid2 input[name='netprice']"]);
-			Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtyrequest']", "#jqGrid2 input[name='txnqty']", "#jqGrid2 input[name='maxqty']", "#jqGrid2 input[name='qtyonhandrecv']", "#jqGrid2 input[name='qtyonhand']"]);
+			// Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amount']", "#jqGrid2 input[name='netprice']"]);
+			// Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtyrequest']", "#jqGrid2 input[name='txnqty']", "#jqGrid2 input[name='maxqty']", "#jqGrid2 input[name='qtyonhandrecv']", "#jqGrid2 input[name='qtyonhand']"]);
 			
 			// $("input[name='gstpercent']").val('0')//reset gst to 0
-			mycurrency2.formatOnBlur();//make field to currency on leave cursor
-			mycurrency_np.formatOnBlur();//make field to currency on leave cursor
+			// mycurrency2.formatOnBlur();//make field to currency on leave cursor
+			// mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 	
 			$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='uomcoderecv'],#jqGrid2 input[name='itemcode']").on('focus',remove_noti);
 
@@ -1304,8 +1304,8 @@ $(document).ready(function () {
 
 			mycurrency2.array.length = 0;
 			mycurrency_np.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amount']", "#jqGrid2 input[name='netprice']"]);
-			Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtyrequest']", "#jqGrid2 input[name='txnqty']", "#jqGrid2 input[name='maxqty']", "#jqGrid2 input[name='qtyonhandrecv']", "#jqGrid2 input[name='qtyonhand']"]);
+			// Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amount']", "#jqGrid2 input[name='netprice']"]);
+			// Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtyrequest']", "#jqGrid2 input[name='txnqty']", "#jqGrid2 input[name='maxqty']", "#jqGrid2 input[name='qtyonhandrecv']", "#jqGrid2 input[name='qtyonhand']"]);
 			
 			// $("input[name='gstpercent']").val('0')//reset gst to 0
 			mycurrency2.formatOff();//make field to currency on leave cursor
@@ -1465,7 +1465,7 @@ $(document).ready(function () {
 
 		        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
-		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
+		        // Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
 
 		        //Array.prototype.push.apply(mycurrency_np.array, ["#"+ids[i]+"_qtyrequest"]);
 
@@ -2015,8 +2015,8 @@ $(document).ready(function () {
 		dialog_uomcodetrdept.off();
 		$(dialog_uomcodetrdept.textfield).attr('disabled',true);
 		
-		mycurrency2.formatOnBlur();//make field to currency on leave cursor
-		mycurrency_np.formatOnBlur();//make field to currency on leave cursor
+		// mycurrency2.formatOnBlur();//make field to currency on leave cursor
+		// mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 
 
 		$("#jqGrid2 input[name='txnqty'],#jqGrid2 input[name='netprice']").on('blur',errorField,calculate_amount_and_other);

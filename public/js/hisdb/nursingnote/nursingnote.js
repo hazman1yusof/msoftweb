@@ -167,15 +167,15 @@ $(document).ready(function (){
     ///////////////////////////////////////drug admin ends///////////////////////////////////////
     
     //////////////////////////////////////treatment starts//////////////////////////////////////
-    disableForm('#formTreatment');
+    disableForm('#formTreatmentP');
     disableForm('#formInvestigation');
     disableForm('#formInjection');
     
     $("#new_treatment").click(function (){
         button_state_treatment('wait');
-        enableForm('#formTreatment');
-        rdonly('#formTreatment');
-        emptyFormdata_div("#formTreatment",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        enableForm('#formTreatmentP');
+        rdonly('#formTreatmentP');
+        emptyFormdata_div("#formTreatmentP",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         document.getElementById("tr_idno").value = "";
         document.getElementById("tr_adduser").value = "";
         // dialog_mrn_edit.on();
@@ -183,15 +183,15 @@ $(document).ready(function (){
     
     $("#edit_treatment").click(function (){
         button_state_treatment('wait');
-        enableForm('#formTreatment');
-        rdonly('#formTreatment');
+        enableForm('#formTreatmentP');
+        rdonly('#formTreatmentP');
         $("#tr_entereddate,#treatment_adduser").attr("readonly", true);
         // dialog_mrn_edit.on();
     });
     
     $("#save_treatment").click(function (){
-        disableForm('#formTreatment');
-        if($('#formTreatment').isValid({requiredFields: ''}, conf, true)){
+        disableForm('#formTreatmentP');
+        if($('#formTreatmentP').isValid({requiredFields: ''}, conf, true)){
             saveForm_treatment(function (){
                 $("#cancel_treatment").data('oper','edit');
                 $("#cancel_treatment").click();
@@ -199,13 +199,13 @@ $(document).ready(function (){
                 // $('#tbl_treatment').DataTable().ajax.reload();
             });
         }else{
-            enableForm('#formTreatment');
-            rdonly('#formTreatment');
+            enableForm('#formTreatmentP');
+            rdonly('#formTreatmentP');
         }
     });
     
     $("#cancel_treatment").click(function (){
-        disableForm('#formTreatment');
+        disableForm('#formTreatmentP');
         button_state_treatment($(this).data('oper'));
         $('#tbl_treatment').DataTable().ajax.reload();
         // dialog_mrn_edit.off();
@@ -487,7 +487,7 @@ $(document).ready(function (){
         
         disableForm('#formProgress');
         disableForm('#formIntake');
-        disableForm('#formTreatment');
+        disableForm('#formTreatmentP');
         disableForm('#formInvestigation');
         disableForm('#formInjection');
         disableForm('#formCarePlan');
@@ -573,7 +573,7 @@ $(document).ready(function (){
                 }
                 
                 tbl_treatment.ajax.url("./nursingnote/table?"+$.param(urlparam_tbl_treatment)).load(function (data){
-                    emptyFormdata_div("#formTreatment",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+                    emptyFormdata_div("#formTreatmentP",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
                     $('#tbl_treatment tbody tr:eq(0)').click();  // to select first row
                 });
                 
@@ -1203,7 +1203,7 @@ $(document).ready(function (){
             $(this).addClass('selected');
         }
         
-        emptyFormdata_div("#formTreatment",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+        emptyFormdata_div("#formTreatmentP",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         $('#tbl_treatment tbody tr').removeClass('active');
         $(this).addClass('active');
         
@@ -1234,7 +1234,7 @@ $(document).ready(function (){
             alert('there is an error');
         }).success(function (data){
             if(!$.isEmptyObject(data)){
-                autoinsert_rowdata("#formTreatment",data.treatment);
+                autoinsert_rowdata("#formTreatmentP",data.treatment);
                 
                 // button_state_treatment('edit');
                 textarea_init_nursingnote();
@@ -4627,11 +4627,11 @@ function populate_drugadmin_getdata(){
 }
 
 function populate_treatment_getdata(){
-    disableForm('#formTreatment');
+    disableForm('#formTreatmentP');
     disableForm('#formInvestigation');
     disableForm('#formInjection');
     
-    emptyFormdata(errorField,"#formTreatment",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar"]);
+    emptyFormdata(errorField,"#formTreatmentP",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar"]);
     emptyFormdata(errorField,"#formInvestigation",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar"]);
     emptyFormdata(errorField,"#formInjection",["#mrn_nursNote","#episno_nursNote","#doctor_nursNote","#ordcomtt_phar"]);
     
@@ -4651,7 +4651,7 @@ function populate_treatment_getdata(){
         alert('there is an error');
     }).success(function (data){
         if(!$.isEmptyObject(data.treatment)){
-            autoinsert_rowdata("#formTreatment",data.treatment);
+            autoinsert_rowdata("#formTreatmentP",data.treatment);
             
             button_state_treatment('edit');
             textarea_init_nursingnote();
@@ -5101,59 +5101,59 @@ function saveForm_treatment(callback){
         episno_nursNote: $('#episno_nursNote').val()
     };
     
-    values = $("#formTreatment").serializeArray();
+    values = $("#formTreatmentP").serializeArray();
     
     values = values.concat(
-        $('#formTreatment input[type=checkbox]:not(:checked)').map(
+        $('#formTreatmentP input[type=checkbox]:not(:checked)').map(
             function (){
                 return {"name": this.name, "value": 0}
             }).get()
     );
     
     values = values.concat(
-        $('#formTreatment input[type=checkbox]:checked').map(
+        $('#formTreatmentP input[type=checkbox]:checked').map(
             function (){
                 return {"name": this.name, "value": 1}
             }).get()
     );
     
     values = values.concat(
-        $('#formTreatment input[type=radio]:checked').map(
+        $('#formTreatmentP input[type=radio]:checked').map(
             function (){
                 return {"name": this.name, "value": this.value}
             }).get()
     );
     
     values = values.concat(
-        $('#formTreatment select').map(
+        $('#formTreatmentP select').map(
             function (){
                 return {"name": this.name, "value": this.value}
             }).get()
     );
     
     // values = values.concat(
-    //     $('#formTreatment input[type=radio]:checked').map(
+    //     $('#formTreatmentP input[type=radio]:checked').map(
     //         function (){
     //             return {"name": this.name, "value": this.value}
     //         }).get()
     // );
     
-    values.push({
-        name: 'tr_entereddate',
-        value: $('#formTreatment input[name=tr_entereddate]').val()
-    })
-    values.push({
-        name: 'tr_enteredtime',
-        value: $('#formTreatment input[name=tr_enteredtime]').val()
-    })
-    values.push({
-        name: 'treatment_remarks',
-        value: $('#formTreatment textarea[name=treatment_remarks]').val()
-    })
-    values.push({
-        name: 'treatment_adduser',
-        value: $('#formTreatment input[name=treatment_adduser]').val()
-    })
+    // values.push({
+    //     name: 'tr_entereddate',
+    //     value: $('#formTreatmentP input[name=tr_entereddate]').val()
+    // })
+    // values.push({
+    //     name: 'tr_enteredtime',
+    //     value: $('#formTreatmentP input[name=tr_enteredtime]').val()
+    // })
+    // values.push({
+    //     name: 'treatment_remarks',
+    //     value: $('#formTreatmentP textarea[name=treatment_remarks]').val()
+    // })
+    // values.push({
+    //     name: 'treatment_adduser',
+    //     value: $('#formTreatmentP input[name=treatment_adduser]').val()
+    // })
     
     $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         

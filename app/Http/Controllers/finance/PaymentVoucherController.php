@@ -2127,7 +2127,8 @@ class PaymentVoucherController extends defaultController
     }
 
     function get_attachment_files($apalloc){
-        $idno_array = [];
+        // $idno_array = [];
+        $attachment_files = [];
         foreach ($apalloc as $obj) {
             $apacthdr = DB::table('finance.apacthdr')
                             ->where('compcode',session('compcode'))
@@ -2135,14 +2136,24 @@ class PaymentVoucherController extends defaultController
                             ->where('trantype','IN')
                             ->where('auditno',$obj->refauditno)
                             ->first();
-            array_push($idno_array,$apacthdr->idno);
-        }
 
-        $attachment_files = DB::table('finance.attachment')
+            $attachment_file = DB::table('finance.attachment')
                         ->where('compcode',session('compcode'))
                         ->where('page','invoiceap')
-                        ->whereIn('auditno',$idno_array)
-                        ->get();
+                        ->where('auditno',$apacthdr->idno)
+                        ->first();
+
+            if(!empty($attachment_file)){
+                array_push($attachment_files,$attachment_file);
+            }
+        }
+
+        // $attachment_files = DB::table('finance.attachment')
+        //                 ->where('compcode',session('compcode'))
+        //                 ->where('page','invoiceap')
+        //                 ->whereIn('auditno',$idno_array)
+        //                 ->get();
+        // dd($attachment_files);
 
         return $attachment_files;
     }
