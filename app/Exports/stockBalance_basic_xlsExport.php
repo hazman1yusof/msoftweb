@@ -127,7 +127,9 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
                             // $join = $join->on('d.unit', '=', 's.unit');
                             $join = $join->where('sc.compcode', '=', session('compcode'));
                         });
-        $stockloc = $stockloc->where('s.compcode',session('compcode'))
+        $stockloc = $stockloc
+                    ->where('s.compcode',session('compcode'))
+                    ->where('s.stocktxntype','TR')
                     ->whereBetween('s.unit',[$unit_from,$unit_to.'%'])
                     ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
                     ->whereBetween('s.itemcode',[$item_from,$item_to.'%']);
