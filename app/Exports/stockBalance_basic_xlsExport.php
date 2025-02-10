@@ -127,27 +127,29 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
                             // $join = $join->on('d.unit', '=', 's.unit');
                             $join = $join->where('sc.compcode', '=', session('compcode'));
                         });
-            $stockloc = $stockloc->where('s.compcode',session('compcode'))
-                        ->whereBetween('s.unit',[$unit_from,$unit_to.'%'])
-                        ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
-                        ->whereBetween('s.itemcode',[$item_from,$item_to.'%']);
+        $stockloc = $stockloc->where('s.compcode',session('compcode'))
+                    ->whereBetween('s.unit',[$unit_from,$unit_to.'%'])
+                    ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
+                    ->whereBetween('s.itemcode',[$item_from,$item_to.'%']);
 
-            if(strtolower($unit_from)=='khealth'){
-                $stockloc = $stockloc->join('material.stockexp as se', function($join){
-                                $join = $join->on('se.itemcode', '=', 's.itemcode');
-                                $join = $join->on('se.deptcode', '=', 's.deptcode');
-                                $join = $join->on('se.uomcode', '=', 's.uomcode');
-                                $join = $join->where('se.compcode', '=', session('compcode'));
-                                // $join = $join->where('se.unit', '=', session('unit'));
-                                // $join = $join->on('se.year', '=', 's.year');
-                            });
-            }
+        if(strtolower($unit_from)=='khealth'){
+            $stockloc = $stockloc->join('material.stockexp as se', function($join){
+                            $join = $join->on('se.itemcode', '=', 's.itemcode');
+                            $join = $join->on('se.deptcode', '=', 's.deptcode');
+                            $join = $join->on('se.uomcode', '=', 's.uomcode');
+                            $join = $join->where('se.compcode', '=', session('compcode'));
+                            // $join = $join->where('se.unit', '=', session('unit'));
+                            // $join = $join->on('se.year', '=', 's.year');
+                        });
+        }
 
-            $stockloc = $stockloc->where('s.compcode',session('compcode'))
-                        ->where('s.year', '=', $year)
-                        ->orderBy('s.deptcode', 'ASC')
-                        ->orderBy('s.itemcode', 'ASC')
-                        ->get();
+        $stockloc = $stockloc->where('s.compcode',session('compcode'))
+                    ->where('s.year', '=', $year)
+                    ->orderBy('s.deptcode', 'ASC')
+                    ->orderBy('s.itemcode', 'ASC')
+                    ->get();
+
+        dd($stockloc);
 
         $isi = 0;
         foreach ($stockloc as $obj) {
