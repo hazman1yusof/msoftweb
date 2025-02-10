@@ -26,10 +26,10 @@
                 // pageOrientation: 'landscape',
                 content: [
                     {
-                        image: 'letterhead', width: 175, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead', width: 500, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: '\nADMISSION HANDOVER\n',
+                        text: 'ADMISSION HANDOVER\n',
                         style: 'header',
                         alignment: 'center',
                     },
@@ -299,7 +299,7 @@
                                 ],
                                 [
                                     {text: '{{\Carbon\Carbon::parse($admhandover->adddate)->format('d/m/Y')}}', fontSize: 8},
-                                    {text: '{{\Carbon\Carbon::parse($admhandover->adddate)->format('d/m/Y')}}', fontSize: 8},
+                                    {text: '{{\Carbon\Carbon::parse($admhandover->lastupdate)->format('d/m/Y')}}', fontSize: 8},
                                 ],
                                 
                             ]
@@ -343,7 +343,7 @@
                 },
                 images: {
                     letterhead: {
-                        url: "{{asset('/img/letterheadukm.png')}}",
+                        url: "{{asset('/img/logo/IMSCletterhead.png')}}",
                         headers: {
                             myheader: '123',
                             myotherheader: 'abc',

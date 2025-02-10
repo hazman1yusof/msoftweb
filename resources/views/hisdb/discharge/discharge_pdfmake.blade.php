@@ -29,7 +29,7 @@
                         image: 'letterhead', width: 500, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: '\nDISCHARGE SUMMARY\n',
+                        text: 'DISCHARGE SUMMARY\n',
                         style: 'header',
                         alignment: 'center',
                     },
@@ -37,23 +37,28 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [60, '*',60,94,'*'], //panjang standard dia 515
+                            widths: [50,1,'*',80,1,'*'], // panjang standard dia 515
                             body: [
                                 [
-                                    {text: 'NAME ' },
-                                    {text: ': {{$discharge->Name}}'},{},
-                                    {text: 'MRN ' },
-                                    {text: ': {{str_pad($discharge->mrn, 7, "0", STR_PAD_LEFT)}}'},
+                                    { text: 'NAME' },
+                                    { text: ':' },
+                                    { text: '{{$discharge->Name}}' },
+                                    { text: 'MRN' },
+                                    { text: ':' },
+                                    {text: '{{str_pad($discharge->mrn, 7, "0", STR_PAD_LEFT)}}'},
+
                                 ],
                                 [
-                                    {text: 'DATE OF\nADMISSION '},
-                                    {text: ': {{\Carbon\Carbon::createFromFormat('Y-m-d',$discharge->reg_date)->format('d-m-Y')}}'},{},
-                                    {text: 'DATE OF DISCHARGE '},
-                                    @if(!empty($discharge->dischargedate))
-                                        {text: ': {{\Carbon\Carbon::createFromFormat('Y-m-d',$discharge->dischargedate)->format('d-m-Y')}}'},
-                                    @else
-                                        { text: ': ' },
-                                    @endif
+                                    { text: 'DATE OF\nADMISSION' },
+                                    { text: ':' },
+                                    { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$discharge->reg_date)->format('d-m-Y')}}'},
+                                    { text: 'DATE OF DISCHARGE'},
+                                    { text: ':' },
+                                        @if(!empty($discharge->dischargedate))
+                                            {text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$discharge->dischargedate)->format('d-m-Y')}}'},
+                                        @else
+                                            { text: '' },
+                                        @endif
                                 ],
                             ]
                         },

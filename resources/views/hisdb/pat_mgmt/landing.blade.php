@@ -265,6 +265,7 @@
 						@include('hisdb.dietorder.dietorder')
 					</div>
 				@elseif (Auth::user()->nurse == 1)
+
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
 					</div>
@@ -353,7 +354,7 @@
 		
 		@if (request()->get('epistycode') == 'OP')
 			@if (Auth::user()->doctor == 1)
-				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.2"></script>
+				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
 				<script type="text/javascript" src="js/hisdb/paediatric/paediatric.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
@@ -361,17 +362,17 @@
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
 				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.2"></script>
-				<script type="text/javascript" src="js/hisdb/admhandover/admhandover.js"></script>
+				<script type="text/javascript" src="js/hisdb/admhandover/admhandover.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 				<!-- <script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script> -->
 			@elseif (Auth::user()->nurse == 1)
-				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.2"></script>
+				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
 				<script type="text/javascript" src="js/hisdb/requestfor/requestfor.js?v=1.2"></script>
-				<script type="text/javascript" src="js/hisdb/admhandover/admhandover.js"></script>
+				<script type="text/javascript" src="js/hisdb/admhandover/admhandover.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 				<!-- <script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script> -->
 			@endif
@@ -407,7 +408,7 @@
 			
 			@if (Auth::user()->doctor == 1)
 				<!-- <script type="text/javascript" src="js/hisdb/nursingED/nursingED.js?v=1.1"></script> -->
-				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.2"></script>
+				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.1"></script>
 				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
 				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js?v=1.3"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js?v=1.6"></script>
@@ -430,7 +431,7 @@
 				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script>
 			@elseif (Auth::user()->nurse == 1)
 				<!-- <script type="text/javascript" src="js/hisdb/nursingED/nursingED.js?v=1.1"></script> -->
-				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.2"></script>
+				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.1"></script>
 				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
 				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js?v=1.3"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js?v=1.6"></script>

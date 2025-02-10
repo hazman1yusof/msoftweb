@@ -76,6 +76,8 @@ $(document).ready(function (){
 		// $("#jqGridAdmHandover_panel > div").scrollTop(0);
 	});
 
+	/////////////////////////////////print button starts////////////////////////////////////////////
+
 	$("#admhandover_report").click(function() {
 		window.open('./admhandover/showpdf?mrn_admHandover='+$('#mrn_admHandover').val()+'&episno_admHandover='+$('#episno_admHandover').val(), '_blank');
 	});
@@ -103,7 +105,7 @@ function button_state_admHandover(state){
 		case 'empty':
 			$("#toggle_admHandover").removeAttr('data-toggle');
 			$('#cancel_admHandover').data('oper','add');
-			$('#new_admHandover,#save_admHandover,#cancel_admHandover,#edit_admHandover').attr('disabled',true);
+			$('#new_admHandover,#save_admHandover,#cancel_admHandover,#edit_admHandover,#admhandover_report').attr('disabled',true);
 			break;
 		case 'add':
 			$("#toggle_admHandover").attr('data-toggle','collapse');
@@ -114,7 +116,7 @@ function button_state_admHandover(state){
 		case 'edit':
 			$("#toggle_admHandover").attr('data-toggle','collapse');
 			$('#cancel_admHandover').data('oper','edit');
-			$("#edit_admHandover").attr('disabled',false);
+			$("#edit_admHandover,#admhandover_report").attr('disabled',false);
 			$('#save_admHandover,#cancel_admHandover,#new_admHandover').attr('disabled',true);
 			break;
 		case 'wait':
