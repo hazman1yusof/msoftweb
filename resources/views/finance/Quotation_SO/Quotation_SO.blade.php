@@ -105,11 +105,7 @@
                         <option value="All" selected>ALL</option>
                         <option value="Open">OPEN</option>
                         <option value="Posted">POSTED</option>
-                        <option value="Request">REQUEST</option>
-                        <option value="Support">SUPPORT</option>
-                        <option value="Incompleted">INCOMPLETED</option>
-                        <option value="Verified">VERIFIED</option>
-                        <option value="Approved">APPROVED</option>
+                        <option value="Partial">PARTIAL</option>
                         <option value="Cancelled">CANCELLED</option>
                     </select>
                 </div>
