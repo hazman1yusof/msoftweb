@@ -26,7 +26,7 @@
                 // pageOrientation: 'landscape',
                 content: [
                     {
-                        image: 'letterhead', width: 175, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead', width: 500, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
                         text: '\nDISCHARGE SUMMARY\n',
@@ -156,10 +156,12 @@
                 },
                 images: {
                     letterhead: {
-                        url: "{{asset('/img/logo/imsclogo.png')}}",
+                        url: "{{asset('/img/logo/IMSCletterhead.png')}}",
                         headers: {
                             myheader: '123',
                             myotherheader: 'abc',
+                            margin: [1, 5, 0, 0]//left, top, right, bottom
+
                         }
                     }
                 }
