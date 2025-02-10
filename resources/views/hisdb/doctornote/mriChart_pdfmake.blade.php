@@ -26,10 +26,10 @@
                 // pageOrientation: 'landscape',
                 content: [
                     {
-                        image: 'letterhead', width: 175, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead', width: 430, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: '\nCHECKLIST MRI FORM\n',
+                        text: 'CHECKLIST MRI FORM',
                         style: 'header',
                         alignment: 'center',
                     },
@@ -439,7 +439,7 @@
                                 [
                                     {
                                         text: [
-                                            'Relatives accompanying must comply with items listed above. Prohibited items; watches, magnetic cards (credit/ATM cards) and any ferromagnetic and metallic materials.\n\n',
+                                            'Relatives accompanying must comply with items listed above. Prohibited items; watches, magnetic cards (credit/ATM cards) and any ferromagnetic and metallic materials.\n',
                                             { text: 'Penjaga yang menemani pesakit hendaklah mematuhi peraturan di atas. Barang larangan seperti jam tangan, kad magnetic (kad kredit/ATM) termasuk apa-apa bahan ferromagnetic dan bahan-bahan besi', italics: true }
                                         ], colSpan: 4,
                                     },{},{},{}
@@ -466,7 +466,7 @@
                     },
                     tableExample: {
                         fontSize: 8,
-                        margin: [0, 5, 0, 15]
+                        margin: [0, 5, 0, 0]
                     },
                     tableExample2: {
                         fontSize: 8,
@@ -488,7 +488,7 @@
                 },
                 images: {
                     letterhead: {
-                        url: "{{asset('/img/letterheadukm.png')}}",
+                        url: "{{asset('/img/logo/IMSCletterhead.png')}}",
                         headers: {
                             myheader: '123',
                             myotherheader: 'abc',

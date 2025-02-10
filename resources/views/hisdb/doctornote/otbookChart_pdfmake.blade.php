@@ -26,10 +26,10 @@
                 // pageMargins: [10, 20, 20, 30],
                 content: [
                     {
-                        image: 'letterhead', width: 175, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead', width: 500, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: '\nWARD / OT BOOKING SLIP\n\n',
+                        text: 'WARD / OT BOOKING SLIP\n\n',
                         style: 'header',
                         alignment: 'center'
                     },
@@ -40,8 +40,12 @@
                             widths: [80,'*',80,'*'], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'DATE FOR OP', bold: true, fontSize: 11},
-                                    { text: ':\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$pat_otbook->op_date)->format('d-m-Y')}}\n', bold: true, fontSize: 11},
+                                    { text: 'DATE FOR OP', bold: true, fontSize: 11 },
+                                    @if(!empty($pat_otbook->op_date))
+                                        { text: ':\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$pat_otbook->op_date)->format('d-m-Y')}}\n', bold: true, fontSize: 11 },
+                                    @else
+                                        { text: ':\t\n' },
+                                    @endif
                                     {},{},
                                 ],
                                 [
@@ -61,7 +65,7 @@
                             widths: ['*'], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'TYPE OF OPERATION / PROCEDURE\u200B\t:\u200B\t{{$pat_otbook->oper_type}}'},
+                                    { text: 'TYPE OF OPERATION / PROCEDURE\u200B\t:\u200B\t{{$pat_otbook->oper_type}}' },
                                 ],
                             ]
                         },
@@ -76,11 +80,11 @@
                                 [
                                     { text: 'TYPE OF ADMISSION' },
                                     @if($pat_otbook->adm_type == 'DC')
-                                        { text: ':\u200B\tDAY CASE'},
+                                        { text: ':\u200B\tDAY CASE' },
                                     @else
                                         { text: ':\u200B\tIN PATIENT' },
                                     @endif
-
+                                    
                                     { text: 'ANAESTHETIST' },
                                     @if($pat_otbook->anaesthetist == '1')
                                         { text: ':\u200B\tREQUIRED' },
@@ -105,18 +109,17 @@
                             body: [
                                 [                                    
                                     @if($pat_otbook->pay_type == 'PT')
-                                        { text: 'TYPE OF INSURANCE (IF ANY)\u200B\t:\u200B\t'},
+                                        { text: 'TYPE OF INSURANCE (IF ANY)\u200B\t:\u200B\t' },
                                     @else
-                                        { text: 'TYPE OF INSURANCE (IF ANY)\u200B\t:\u200B\t{{$pat_otbook->debtor_name}}'},
+                                        { text: 'TYPE OF INSURANCE (IF ANY)\u200B\t:\u200B\t{{$pat_otbook->debtor_name}}' },
                                     @endif
                                 ],
                                 [
                                     @if($pat_otbook->pay_type == 'PT')
-                                        { text: 'MEDICAL CARD/POLICY NUM \u200B\t:\u200B\t'},
+                                        { text: 'MEDICAL CARD/POLICY NUM \u200B\t:\u200B\t' },
                                     @else
-                                        { text: 'MEDICAL CARD/POLICY NUM \u200B\t:\u200B\t{{$pat_otbook->staffid}}'},
+                                        { text: 'MEDICAL CARD/POLICY NUM \u200B\t:\u200B\t{{$pat_otbook->staffid}}' },
                                     @endif
-
                                 ],
                             ]
                         },
@@ -131,7 +134,7 @@
                                 [
                                     {
                                         text: [
-                                            {text:'SPECIAL REMARKS/INSTRUCTION FOR MEDICATION OR ANY RELATED TO CASE\u200B\t:\u200B\t\n\n', bold:true},
+                                            { text: 'SPECIAL REMARKS/INSTRUCTION FOR MEDICATION OR ANY RELATED TO CASE\u200B\t:\u200B\t\n\n', bold: true },
                                             `{!!str_replace('`', '', $pat_otbook->remarks)!!}`,
                                         ],
                                     },
@@ -147,15 +150,15 @@
                             widths: ['*'], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: '\n\n\n\n\n.......................................................\n'},
+                                    { text: '\n\n\n\n\n.......................................................\n' },
                                 ],
                                 [
-                                    { text: 'NAME, SIGN & COP\n\n'},
+                                    { text: 'NAME, SIGN & COP\n\n' },
                                 ],
                                 [
                                     {
                                         text: [
-                                            {text:'SURGEON/OPERATING DOCTOR\u200B\t:\u200B\t', bold:true},
+                                            { text: 'SURGEON/OPERATING DOCTOR\u200B\t:\u200B\t', bold: true },
                                             '{{$pat_otbook->doctorname}}',
                                         ],
                                     },
@@ -201,7 +204,7 @@
                 },
                 images: {
                     letterhead: {
-                        url: '{{asset('/img/letterheadukm.png')}}',
+                        url: "{{asset('/img/logo/IMSCletterhead.png')}}",
                         headers: {
                             myheader: '123',
                             myotherheader: 'abc',

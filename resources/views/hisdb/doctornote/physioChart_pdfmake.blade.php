@@ -25,7 +25,7 @@
                 // pageOrientation: 'landscape',
                 content: [
                     {
-                        image: 'letterhead', width: 175, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead', width: 430, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
                     {
@@ -210,7 +210,7 @@
                 },
                 images: {
                     letterhead: {
-                        url: "{{asset('/img/letterheadukm.png')}}",
+                        url: "{{asset('/img/logo/IMSCletterhead.png')}}",
                         headers: {
                             myheader: '123',
                             myotherheader: 'abc',
