@@ -41,13 +41,10 @@ class DebtorMasterController extends defaultController
     }
     
     public function showExcel(Request $request){
-        return Excel::download(new DebtorMasterExport($request->compcode), 'DebtorMaster.xlsx');
+        return Excel::download(new DebtorMasterExport(), 'DebtorMaster.xlsx');
     }
     
     public function showpdf(Request $request){
-        
-        $compcode = $request->compcode;
-        
         $debtormast = DB::table('debtor.debtormast')
                     ->where('compcode', '=', session('compcode'))
                     ->orderBy('idno', 'ASC')

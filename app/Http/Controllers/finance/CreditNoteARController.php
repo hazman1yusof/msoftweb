@@ -1242,8 +1242,10 @@ class CreditNoteARController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
-        $pdf = PDF::loadView('finance.AR.CreditNoteAR.CreditNoteAR_pdf',compact('dbacthdr','dballoc','dballoc_dtl','title','company','totamt_eng'));
-        return $pdf->stream();
+        // $pdf = PDF::loadView('finance.AR.CreditNoteAR.CreditNoteAR_pdf',compact('dbacthdr','dballoc','dballoc_dtl','title','company','totamt_eng'));
+        // return $pdf->stream();
+
+        return view('finance.AR.CreditNoteAR.CreditNoteAR_pdfmake',compact('dbacthdr','dballoc','dballoc_dtl','title','company','totamt_eng'));
         
         return view('finance.AR.CreditNoteAR.CreditNoteAR_pdf',compact('dbacthdr','dballoc','dballoc_dtl','title','company','totamt_eng'));
         

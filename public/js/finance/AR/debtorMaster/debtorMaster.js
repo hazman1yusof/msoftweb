@@ -440,12 +440,12 @@ $(document).ready(function (){
 	addParamField('#jqGrid',true,urlParam);
 	addParamField('#jqGrid',false,saveParam,['depamt','idno','compcode','adduser','adddate','upduser','upddate','computerid','ipaddress']);
 	
-	$('#excelgen1').click(function (){
-		window.location='./debtorMaster/showExcel?compcode='+selrowData('#jqGrid').compcode;
-	});
+	// $('#excelgen1').click(function (){
+	// 	window.location='./debtorMaster/showExcel?compcode='+selrowData('#jqGrid').compcode;
+	// });
 	
-	$('#pdfgen1').click(function (){
-		window.open('./debtorMaster/showpdf?compcode='+selrowData('#jqGrid').compcode, '_blank');
-	});
+	// $('#pdfgen1').click(function (){
+	// 	window.open('./debtorMaster/showpdf?compcode='+selrowData('#jqGrid').compcode, '_blank');
+	// });
 });
 		

@@ -19,10 +19,10 @@
 		
 		<div class="panel panel-default">
 			<div class="panel-heading">Debtor Master Setup Header
-				<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #518351;" id='excelgen1' href="" target="_blank">
+				<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #518351;" id='excelgen1' href="./debtorMaster/showExcel" target="_blank">
 					<span class='fa fa-file-excel-o fa-lg'></span> Download Excel
 				</a>
-				<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #a35252;" id='pdfgen1' href="" target="_blank">
+				<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #a35252;" id='pdfgen1' href="./debtorMaster/showpdf" target="_blank">
 					<span class='fa fa-file-pdf-o fa-lg'></span> Print PDF
 				</a>
 			</div>
@@ -311,5 +311,5 @@
 			}
 		});
 	</script>
-	<script src="js/finance/AR/debtorMaster/debtorMaster.js?v=1.1"></script>
+	<script src="js/finance/AR/debtorMaster/debtorMaster.js?v=1.2"></script>
 @endsection

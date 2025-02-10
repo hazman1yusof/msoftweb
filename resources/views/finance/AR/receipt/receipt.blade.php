@@ -684,6 +684,6 @@
 @section('scripts')
 	
 	<script src="js/myjs/till_part.js"></script>
-	<script src="js/finance/AR/receipt/receipt.js?v=1.3"></script>
+	<script src="js/finance/AR/receipt/receipt.js?v=1.4"></script>
 	
 @endsection
