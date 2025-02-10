@@ -68,6 +68,7 @@ class AdmHandoverController extends defaultController
                 $admhandover
                     ->update([
                         'takeoverby' => $request->takeoverby,
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
 
                     

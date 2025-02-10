@@ -26,10 +26,10 @@
                 // pageMargins: [10, 20, 20, 30],
                 content: [
                     {
-                        image: 'letterhead', width: 175, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead', width: 500, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: '\nEXAM CHART\n\n',
+                        text: 'EXAM CHART\n\n',
                         style: 'header',
                         alignment: 'center'
                     },
@@ -90,7 +90,7 @@
                                 [
                                     { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->startdate)->format('d-m-Y')}}' },
                                     { text: `{!!$obj->exam!!}`},
-                                    @if(!empty($obj->enddate))
+                                    @if(!empty($obj->dateline))
                                         { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->dateline)->format('d-m-Y')}}' },
                                     @else
                                         { text: '' },
@@ -139,7 +139,7 @@
                 },
                 images: {
                     letterhead: {
-                        url: '{{asset('/img/letterheadukm.png')}}',
+                        url: "{{asset('/img/logo/IMSCletterhead.png')}}",
                         headers: {
                             myheader: '123',
                             myotherheader: 'abc',
