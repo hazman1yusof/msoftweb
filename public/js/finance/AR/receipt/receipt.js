@@ -758,7 +758,7 @@ $(document).ready(function () {
 		}).success(function(data){
 			if(grid!=null){
 				if($("#dbacthdr_trantype").val() == 'RC'){
-					$(grid).data('need_allocate','1');
+					$("#jqGrid").data('need_allocate','1');
 				}
 				refreshGrid(grid,urlParam,oper);
 				$('.ui-dialog-buttonset button[role=button]').prop('disabled',false);
@@ -1044,7 +1044,7 @@ $(document).ready(function () {
 			if(allocate!=undefined && allocate=='1'){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 				$('#allocate').click();
-				$(grid).data('need_allocate','0');
+				$("#jqGrid").data('need_allocate','0');
 			}
 		},
 		loadComplete:function(data){

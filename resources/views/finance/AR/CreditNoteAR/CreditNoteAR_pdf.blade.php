@@ -58,7 +58,7 @@ hr {
                             <p>Date <span style="margin-left: 50px;"> : &nbsp; {{\Carbon\Carbon::parse($dbacthdr->entrydate)->format('d/m/Y')}}</p>
                             <p>Time <span style="margin-left: 47px;"> : &nbsp; {{\Carbon\Carbon::parse($dbacthdr->entrytime)->format('H:i:s')}}</p>
                             <p>Cashier <span style="margin-left: 34px;"> : &nbsp; {{$dbacthdr->entryuser}}</p>
-                            <p>C/N By <span style="margin-left: 37px;"> : &nbsp; {{$dbacthdr->paymode}}</p>
+                            <p>Pay Mode <span style="margin-left: 37px;"> : &nbsp; {{$dbacthdr->paymode}}</p>
                             <p>Amount <span style="margin-left: 33px;"> : &nbsp; {{$dbacthdr->amount}}</p>
                         </td>
                     </tr>

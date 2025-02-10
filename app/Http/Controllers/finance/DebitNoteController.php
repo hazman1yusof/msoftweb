@@ -811,8 +811,11 @@ class DebitNoteController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
-        $pdf = PDF::loadView('finance.AR.DebitNote.DebitNote_pdf',compact('dbacthdr','title','dbactdtl','company','sysparam','totamt_eng'));
-        return $pdf->stream();
+        // $pdf = PDF::loadView('finance.AR.DebitNote.DebitNote_pdf',compact('dbacthdr','title','dbactdtl','company','sysparam','totamt_eng'));
+        // return $pdf->stream();
+
+
+        return view('finance.AR.DebitNote.DebitNote_pdfmake',compact('dbacthdr','title','dbactdtl','company','sysparam','totamt_eng'));
         
         return view('finance.AR.DebitNote.DebitNote_pdf',compact('dbacthdr','title','dbactdtl','company','sysparam','totamt_eng'));
         

@@ -30,10 +30,8 @@ class DebtorMasterExport implements FromView, WithEvents, WithColumnWidths
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($compcode)
-    {
-        $this->compcode = $compcode;
-        
+    public function __construct()
+    {   
         $this->comp = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
@@ -55,8 +53,6 @@ class DebtorMasterExport implements FromView, WithEvents, WithColumnWidths
     
     public function view(): View
     {
-        $compcode = $this->compcode;
-        
         $debtormast = DB::table('debtor.debtormast')
                     ->where('compcode', '=', session('compcode'))
                     ->orderBy('idno', 'ASC')

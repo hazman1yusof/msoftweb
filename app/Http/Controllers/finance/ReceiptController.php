@@ -105,7 +105,7 @@ class ReceiptController extends defaultController
                 'unit' => session('unit'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'entrydate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'entrydate' => (!empty($request->dbacthdr_entrydate))? $request->dbacthdr_entrydate : Carbon::now("Asia/Kuala_Lumpur"),
                 'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
                 'posteddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'reference' => strtoupper($request->dbacthdr_reference),
