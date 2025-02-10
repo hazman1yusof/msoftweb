@@ -26,10 +26,10 @@
                 // pageOrientation: 'landscape',
                 content: [
                     {
-                        image: 'letterhead', width: 175, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead', width: 500, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: '\nDRESSING\n',
+                        text: 'DRESSING\n',
                         style: 'header',
                         alignment: 'center',
                     },
@@ -145,7 +145,7 @@
                         margin: [0, 10, 0, 5]
                     },
                     tableExample: {
-                        fontSize: 8,
+                        fontSize: 9,
                         margin: [0, 5, 0, 15]
                     },
                     tableHeader: {
@@ -164,7 +164,7 @@
                 },
                 images: {
                     letterhead: {
-                        url: "{{asset('/img/letterheadukm.png')}}",
+                        url: "{{asset('/img/logo/IMSCletterhead.png')}}",
                         headers: {
                             myheader: '123',
                             myotherheader: 'abc',
