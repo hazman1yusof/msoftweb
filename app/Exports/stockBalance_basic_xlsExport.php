@@ -30,7 +30,7 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($unit_from,$unit_to,$dept_from,$dept_to,$item_from,$item_to,$year,$period)
+    public function __construct($unit_from,$unit_to,$dept_from,$dept_to,$item_from,$item_to,$year,$period,$zero_delete)
     {
 
         $this->unit_from = $unit_from;
@@ -42,6 +42,7 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
         $this->year = $year;
         $this->period = $period;
         $this->break_loop=[];
+        $this->zero_delete=$zero_delete;
 
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
@@ -88,7 +89,7 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
         $item_to = $this->item_to;
         $year = $this->year;
         $period = $this->period;
-        $zero_delete = 1;
+        $zero_delete = $this->zero_delete;
 
         // $deptcode = DB::table('material.stockloc as s')
         //                 ->select('s.deptcode','d.description')
@@ -135,16 +136,16 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
                     ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
                     ->whereBetween('s.itemcode',[$item_from,$item_to.'%']);
 
-        if(strtolower($unit_from)=='khealth'){
-            $stockloc = $stockloc->join('material.stockexp as se', function($join){
-                            $join = $join->on('se.itemcode', '=', 's.itemcode');
-                            $join = $join->on('se.deptcode', '=', 's.deptcode');
-                            $join = $join->on('se.uomcode', '=', 's.uomcode');
-                            $join = $join->where('se.compcode', '=', session('compcode'));
-                            // $join = $join->where('se.unit', '=', session('unit'));
-                            // $join = $join->on('se.year', '=', 's.year');
-                        });
-        }
+        // if(strtolower($unit_from)=='khealth'){
+        //     $stockloc = $stockloc->join('material.stockexp as se', function($join){
+        //                     $join = $join->on('se.itemcode', '=', 's.itemcode');
+        //                     $join = $join->on('se.deptcode', '=', 's.deptcode');
+        //                     $join = $join->on('se.uomcode', '=', 's.uomcode');
+        //                     $join = $join->where('se.compcode', '=', session('compcode'));
+        //                     // $join = $join->where('se.unit', '=', session('unit'));
+        //                     // $join = $join->on('se.year', '=', 's.year');
+        //                 });
+        // }
 
         $stockloc = $stockloc->where('s.compcode',session('compcode'))
                     ->where('s.year', '=', $year)

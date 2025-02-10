@@ -83,7 +83,7 @@
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
-			          	</div>
+			      </div>
 						<div class="col-md-6">
 						  	<label class="control-label" for="Scol">Dept To</label>  
 							<div class='input-group'>
@@ -91,7 +91,7 @@
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
-			          	</div>
+			      </div>
 			    </div>
 
 					<div class="form-group">
@@ -102,7 +102,7 @@
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
-			          	</div>
+			      </div>
 						<div class="col-md-6">
 						  	<label class="control-label" for="Scol">Item To</label>  
 							<div class='input-group'>
@@ -110,39 +110,49 @@
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
-			          	</div>
-			        </div>
+	          </div>
+	        </div>
 
 					<div class="form-group">
 						<div class="col-md-6">
-						  	<label class="control-label" for="Scol">Year</label> 
-					  		<select id='year' name='year' class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" ></select>
-			          	</div>
+					  	<label class="control-label" for="Scol">Year</label> 
+				  		<select id='year' name='year' class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" ></select>
+			      </div>
 						<div class="col-md-6">
-						  	<label class="control-label" for="Scol">Period</label>  
-					  		<select id='period' name='period' class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" >
-					  			<option>1</option>
-					  			<option>2</option>
-					  			<option>3</option>
-					  			<option>4</option>
-					  			<option>5</option>
-					  			<option>6</option>
-					  			<option>7</option>
-					  			<option>8</option>
-					  			<option>9</option>
-					  			<option>10</option>
-					  			<option>11</option>
-					  			<option>12</option>
-					  		</select>
-			          	</div>
-			        </div>
+					  	<label class="control-label" for="Scol">Period</label>  
+				  		<select id='period' name='period' class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" >
+				  			<option>1</option>
+				  			<option>2</option>
+				  			<option>3</option>
+				  			<option>4</option>
+				  			<option>5</option>
+				  			<option>6</option>
+				  			<option>7</option>
+				  			<option>8</option>
+				  			<option>9</option>
+				  			<option>10</option>
+				  			<option>11</option>
+				  			<option>12</option>
+				  		</select>
+          	</div>
+	        </div>
+
+					<div class="form-group">
+						<div class="col-md-6">
+					  	<label class="control-label" for="zero_delete">
+  						<input type="checkbox" id="zero_delete" name="zero_delete" value="1"> 
+  						Show zero balance</label> 
+			      </div>
+						<div class="col-md-6">
+	          </div>
+	        </div>
 				</form>
 			</div>
 		</div> 
 	</div>
 
 	<div class="col-md-3">
-		<div class="panel panel-default" style="height: 280px;">
+		<div class="panel panel-default" style="height: 340px;">
 			<div class="panel-body">
 				<div class='col-md-12 btnform' style="padding:0px">
 				 <fieldset>

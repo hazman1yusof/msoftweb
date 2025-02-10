@@ -162,6 +162,11 @@ class stockBalanceController extends defaultController
         $header->itemto = $item_to;
         $header->year = $year;
         $header->period = $period;
+        if(empty($request->zero_delete)){
+            $zero_delete = 1;
+        }else{
+            $zero_delete = 0;
+        }
 
         return view('material.stockBalance.stockBalance_pdfmake',compact('stockloc','company','header','deptcode','unit'));
     }
@@ -186,8 +191,13 @@ class stockBalanceController extends defaultController
         $item_to = $request->item_to;
         $year = $request->year;
         $period = $request->period;
+        if(empty($request->zero_delete)){
+            $zero_delete = 1;
+        }else{
+            $zero_delete = 0;
+        }
 
-        return Excel::download(new stockBalance_xlsExport($unit_from,$unit_to,$dept_from,$dept_to,$item_from,$item_to,$year,$period), 'Item List.xlsx');
+        return Excel::download(new stockBalance_xlsExport($unit_from,$unit_to,$dept_from,$dept_to,$item_from,$item_to,$year,$period,$zero_delete), 'Item List.xlsx');
     }
 
     public function stockBalance_xls_basic(Request $request){
@@ -210,8 +220,13 @@ class stockBalanceController extends defaultController
         $item_to = $request->item_to;
         $year = $request->year;
         $period = $request->period;
+        if(empty($request->zero_delete)){
+            $zero_delete = 1;
+        }else{
+            $zero_delete = 0;
+        }
 
-        return Excel::download(new stockBalance_basic_xlsExport($unit_from,$unit_to,$dept_from,$dept_to,$item_from,$item_to,$year,$period), 'Item List.xlsx');
+        return Excel::download(new stockBalance_basic_xlsExport($unit_from,$unit_to,$dept_from,$dept_to,$item_from,$item_to,$year,$period,$zero_delete), 'Item List.xlsx');
     }
 
     public function stockSheet_pdf(Request $request){

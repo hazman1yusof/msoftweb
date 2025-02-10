@@ -30,7 +30,7 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($unit_from,$unit_to,$dept_from,$dept_to,$item_from,$item_to,$year,$period)
+    public function __construct($unit_from,$unit_to,$dept_from,$dept_to,$item_from,$item_to,$year,$period,$zero_delete)
     {
 
         $this->unit_from = $unit_from;
@@ -42,6 +42,7 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
         $this->year = $year;
         $this->period = $period;
         $this->break_loop=[];
+        $this->zero_delete = $zero_delete;
 
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
@@ -88,6 +89,7 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
         $item_to = $this->item_to;
         $year = $this->year;
         $period = $this->period;
+        $zero_delete = $this->zero_delete;
 
         // $deptcode = DB::table('material.stockloc as s')
         //                 ->select('s.deptcode','d.description')
@@ -132,16 +134,16 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
                         ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
                         ->whereBetween('s.itemcode',[$item_from,$item_to.'%']);
 
-            if(strtolower($unit_from)=='khealth'){
-                $stockloc = $stockloc->join('material.stockexp as se', function($join){
-                                $join = $join->on('se.itemcode', '=', 's.itemcode');
-                                $join = $join->on('se.deptcode', '=', 's.deptcode');
-                                $join = $join->on('se.uomcode', '=', 's.uomcode');
-                                $join = $join->where('se.compcode', '=', session('compcode'));
-                                // $join = $join->where('se.unit', '=', session('unit'));
-                                // $join = $join->on('se.year', '=', 's.year');
-                            });
-            }
+            // if(strtolower($unit_from)=='khealth'){
+            //     $stockloc = $stockloc->join('material.stockexp as se', function($join){
+            //                     $join = $join->on('se.itemcode', '=', 's.itemcode');
+            //                     $join = $join->on('se.deptcode', '=', 's.deptcode');
+            //                     $join = $join->on('se.uomcode', '=', 's.uomcode');
+            //                     $join = $join->where('se.compcode', '=', session('compcode'));
+            //                     // $join = $join->where('se.unit', '=', session('unit'));
+            //                     // $join = $join->on('se.year', '=', 's.year');
+            //                 });
+            // }
 
             $stockloc = $stockloc->where('s.compcode',session('compcode'))
                         ->where('s.year', '=', $year)
@@ -164,6 +166,16 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
             $obj->open_balval = $get_bal->open_balval;
             $obj->close_balqty = $get_bal->close_balqty;
             $obj->close_balval = $get_bal->close_balval;
+
+            if($zero_delete == 1){
+                if(!empty($obj->open_balqty) && !empty($obj->open_balval) && !empty($obj->close_balqty) && !empty($obj->close_balval)){
+                    // array_push($array_report, $obj);
+                }else{
+                    continue;
+                }
+            }else{
+                // array_push($array_report, $obj);
+            }
 
             $get_ivtxndt = $this->get_ivtxndt($obj,$period,$year);
             $obj->grn_qty = $get_ivtxndt->grn_qty;
