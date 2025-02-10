@@ -88,6 +88,7 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
         $item_to = $this->item_to;
         $year = $this->year;
         $period = $this->period;
+        $zero_delete = 1;
 
         // $deptcode = DB::table('material.stockloc as s')
         //                 ->select('s.deptcode','d.description')
@@ -179,8 +180,13 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
             // $totmv = floatval($get_ivtxndt->grn_qty)-floatval($get_ivdspdt->ds_qty)-floatval($get_ivtxndt->tr_qty)+floatval($get_ivtxndt->wof_qty)+floatval($get_ivtxndt->ai_qty)-floatval($get_ivtxndt->ao_qty)+floatval($get_ivtxndt->phy_qty);
             // $oth_qty = floatval($get_bal->close_balqty) - floatval($get_bal->open_balqty) - floatval($totmv);
             // $obj->oth_qty = $oth_qty;
-
-            array_push($array_report, $obj);
+            if($zero_delete == 1){
+                if(!empty($obj->open_balqty) && !empty($obj->open_balval) && !empty($obj->close_balqty) && !empty($obj->close_balval)){
+                    array_push($array_report, $obj);
+                }
+            }else{
+                array_push($array_report, $obj);
+            }
 
         }
         array_push($isi_array, $isi);
