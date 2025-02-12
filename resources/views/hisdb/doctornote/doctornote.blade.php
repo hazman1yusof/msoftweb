@@ -36,7 +36,7 @@
                 <span class="fa fa-save fa-lg"></span> Save 
             </button>
             <button type="button" class="btn btn-default" id="cancel_doctorNote">
-                <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+                <span class="fa fa-ban fa-lg" aria-hidden="true"></span> Cancel 
             </button>
         </div>
     </div>
@@ -526,7 +526,7 @@
                                                         <span class="fa fa-save fa-lg"></span> Save 
                                                     </button>
                                                     <button type="button" class="btn btn-default" id="cancel_otbook">
-                                                        <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+                                                        <span class="fa fa-ban fa-lg" aria-hidden="true"></span> Cancel 
                                                     </button>
                                                     <button type="button" class="btn btn-default" id="otbook_chart">
                                                         <span class="fa fa-print fa-lg"></span> Print 
@@ -677,7 +677,7 @@
                                                                 <span class="fa fa-save fa-lg"></span> Save 
                                                             </button>
                                                             <button type="button" class="btn btn-default" id="cancel_radClinic">
-                                                                <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+                                                                <span class="fa fa-ban fa-lg" aria-hidden="true"></span> Cancel 
                                                             </button>
                                                             <button type="button" class="btn btn-default" id="radClinic_chart">
                                                                 <span class="fa fa-print fa-lg"></span> Print 
@@ -870,7 +870,7 @@
                                                                 <span class="fa fa-check fa-lg"></span> Accept 
                                                             </button> -->
                                                             <button type="button" class="btn btn-default" id="cancel_mri">
-                                                                <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+                                                                <span class="fa fa-ban fa-lg" aria-hidden="true"></span> Cancel 
                                                             </button>
                                                             <button type="button" class="btn btn-default" id="mri_chart">
                                                                 <span class="fa fa-print fa-lg"></span> Print 
@@ -1212,7 +1212,7 @@
                                                         <span class="fa fa-save fa-lg"></span> Save 
                                                     </button>
                                                     <button type="button" class="btn btn-default" id="cancel_physio">
-                                                        <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+                                                        <span class="fa fa-ban fa-lg" aria-hidden="true"></span> Cancel 
                                                     </button>
                                                     <button type="button" class="btn btn-default" id="physio_chart">
                                                         <span class="fa fa-print fa-lg"></span> Print 
@@ -1328,7 +1328,7 @@
                                                         <span class="fa fa-save fa-lg"></span> Save 
                                                     </button>
                                                     <button type="button" class="btn btn-default" id="cancel_dressing">
-                                                        <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+                                                        <span class="fa fa-ban fa-lg" aria-hidden="true"></span> Cancel 
                                                     </button>
                                                     <button type="button" class="btn btn-default" id="dressing_chart">
                                                         <span class="fa fa-print fa-lg"></span> Print 
@@ -1457,13 +1457,13 @@
                         <span class="fa fa-save fa-lg"></span> Save 
                     </button>
                     <button type="button" class="btn btn-default" id="cancel_refLetter">
-                        <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
+                        <span class="fa fa-ban fa-lg" aria-hidden="true"></span> Cancel 
                     </button>
                     <!-- <a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank">
                         <input type="button" value="PRINT">
                     </a> -->
                     <button type="button" class="btn btn-default" id="pdfgen1">
-                        <span class="fa fa-print fa-lg"> </span> Print 
+                        <span class="fa fa-print fa-lg"></span> Print 
                     </button>
                 </div>
             </div>
