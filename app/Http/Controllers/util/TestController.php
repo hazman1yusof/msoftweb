@@ -4416,6 +4416,8 @@ class TestController extends defaultController
 
 
             foreach ($ivtmphd as $key => $value) {
+                $newrecno = str_pad($value->recno, 6, "400000", STR_PAD_LEFT);
+
                 DB::table('material.ivtmphd')
                         ->where('compcode',session('compcode'))
                         ->where('recno',$value->recno)
@@ -4441,7 +4443,6 @@ class TestController extends defaultController
                             ->where('trantype',$value->trantype);
 
                 if($ivtxnhd->exists()){
-                    $newrecno = str_pad($value->recno, 6, "400000", STR_PAD_LEFT);
 
                     DB::table('material.ivtxnhd')
                             ->where('compcode',session('compcode'))
