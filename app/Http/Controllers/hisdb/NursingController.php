@@ -1122,8 +1122,8 @@ class NursingController extends defaultController
                     'weight' => $request->vs_weight,
                     'respiration' => $request->vs_respiration,
                     'height' => $request->vs_height,
-                    'epistycode' => 'OP',
-                    // 'epistycode' => $request->epistycode_ti,
+                    // 'epistycode' => 'OP',
+                    'epistycode' => $request->epistycode_ti,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
