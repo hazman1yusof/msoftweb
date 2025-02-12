@@ -420,9 +420,11 @@ class do_util extends defaultController{
             ->where('compcode',session('compcode'))
             ->where('lineno_',$value->lineno_)
             ->where('source',$source_)
-            ->where('auditno',$delordhd_obj->auditno)
+            ->where('auditno',$delordhd_obj->recno)
             ->where('trantype',$delordhd_obj->trantype)
-            ->delete();
+            ->update([
+                'compcode' => 'XX'
+            ]);
 
         //2. check glmastdtl utk debit, kalu ada update kalu xde create
         $gltranAmount =  defaultController::isGltranExist_($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);

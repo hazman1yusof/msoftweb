@@ -66,8 +66,10 @@ class TestController extends defaultController
                 // return $this->update_productmaster($request);
             case 'recon_DO':
                 return $this->recon_DO($request);
-            // case 'btlkan_stockloc_open':
-            //     return $this->btlkan_stockloc_open($request);
+            case 'ivtmphd_ivtxnhd_recno':
+                return $this->ivtmphd_ivtxnhd_recno($request);
+            case 'delordhd_ivtxnhd_recno':
+                return $this->delordhd_ivtxnhd_recno($request);
             // case 'test_email':
             //     return $this->test_email($request);
             // case 'btlkn_imp_1_phycnt':
@@ -4399,6 +4401,143 @@ class TestController extends defaultController
                     ]);
             }
         }
+    }
+
+    public function ivtmphd_ivtxnhd_recno(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+            $ivtmphd = DB::table('material.ivtmphd')
+                        ->where('compcode',session('compcode'))
+                        ->where('trandate','>=','2025-01-01')
+                        ->where('trandate','<=','2025-01-31')
+                        ->get();
+
+
+            foreach ($ivtmphd as $key => $value) {
+                DB::table('material.ivtmphd')
+                        ->where('compcode',session('compcode'))
+                        ->where('recno',$value->recno)
+                        ->where('source',$value->source)
+                        ->where('trantype',$value->trantype)
+                        ->update([
+                            'recno' => $newrecno
+                        ]);
+
+                DB::table('material.ivtmpdt')
+                        ->where('compcode',session('compcode'))
+                        ->where('recno',$value->recno)
+                        // ->where('source',$value->source)
+                        // ->where('trantype',$value->trantype)
+                        ->update([
+                            'recno' => $newrecno
+                        ]);
+
+                $ivtxnhd = DB::table('material.ivtxnhd')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno',$value->recno)
+                            ->where('source',$value->source)
+                            ->where('trantype',$value->trantype);
+
+                if($ivtxnhd->exists()){
+                    $newrecno = str_pad($value->recno, 6, "400000", STR_PAD_LEFT);
+
+                    DB::table('material.ivtxnhd')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno',$value->recno)
+                            ->where('source',$value->source)
+                            ->where('trantype',$value->trantype)
+                            ->update([
+                                'recno' => $newrecno
+                            ]);
+
+                    DB::table('material.ivtxndt')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno',$value->recno)
+                            ->where('trantype',$value->trantype)
+                            ->update([
+                                'recno' => $newrecno
+                            ]);
+                }
+
+                echo nl2br("$key. New Record No. $newrecno -> $value->trantype - $value->source - $value->recno \n");
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }       
+    }
+
+    public function delordhd_ivtxnhd_recno(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+            $delordhd = DB::table('material.delordhd')
+                            ->where('compcode',session('compcode'))
+                            ->where('trandate','>=','2025-01-01')
+                            ->where('trandate','<=','2025-01-31')
+                            ->get();
+
+            foreach ($delordhd as $key => $value) {
+                $newrecno = str_pad($value->recno, 6, "300000", STR_PAD_LEFT);
+
+                DB::table('material.delordhd')
+                        ->where('compcode',session('compcode'))
+                        ->where('recno',$value->recno)
+                        ->where('trantype',$value->trantype)
+                        ->update([
+                            'recno' => $newrecno
+                        ]);
+
+                DB::table('material.delorddt')
+                        ->where('compcode',session('compcode'))
+                        ->where('recno',$value->recno)
+                        // ->where('trantype',$value->trantype)
+                        ->update([
+                            'recno' => $newrecno
+                        ]);
+
+                $ivtxnhd = DB::table('material.ivtxnhd')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno',$value->recno)
+                            ->where('source','IV')
+                            ->where('trantype',$value->trantype);
+
+                if($ivtxnhd->exists()){
+                    DB::table('material.ivtxnhd')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno',$value->recno)
+                            ->where('source','IV')
+                            ->where('trantype',$value->trantype)
+                            ->update([
+                                'recno' => $newrecno
+                            ]);
+
+                    DB::table('material.ivtxndt')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno',$value->recno)
+                            ->where('trantype',$value->trantype)
+                            ->update([
+                                'recno' => $newrecno
+                            ]);
+                }
+
+                echo nl2br("$key. New Record No. $newrecno -> $value->trantype - IV - $value->recno \n");
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }               
     }
     
 }

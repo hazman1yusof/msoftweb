@@ -156,7 +156,7 @@ class GoodReturnController extends defaultController
 
             if(!empty($request->referral)){
                 $request_no = $this->request_no('GRT', $request->delordhd_deldept);
-                $recno = $this->recno('PUR','DO');
+                $recno = $this->recno('IV','IT');
                 $compcode = session('compcode');
             }else{
                 $request_no = 0;
