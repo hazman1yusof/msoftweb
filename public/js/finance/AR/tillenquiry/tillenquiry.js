@@ -60,7 +60,7 @@ $(document).ready(function () {
 			{ label: 'idno', name: 'idno', hidden: true },
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'Till Code', name: 'tillcode', width: 30, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
-			{ label: 'Till No', name: 'tillno', width: 15, align: 'right', classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
+			{ label: 'Till No', name: 'tillno', width: 15, align: 'right', classes: 'wrap', canSearch: true },
 			{ label: 'Cashier', name: 'cashier', width: 20, classes: 'wrap' },
 			{ label: 'Open Date', name: 'opendate', width: 25, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'Open Time', name: 'opentime', width: 25, classes: 'wrap' },

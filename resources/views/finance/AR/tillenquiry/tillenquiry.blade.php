@@ -366,5 +366,5 @@
             }
         });
     </script>
-    <script src="js/finance/AR/tillenquiry/tillenquiry.js"></script>
+    <script src="js/finance/AR/tillenquiry/tillenquiry.js?v=1.1"></script>
 @endsection
