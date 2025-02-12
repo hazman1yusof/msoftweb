@@ -1337,6 +1337,11 @@ Route::get('/nursingnote/slidingScale_chart','hisdb\NursingNoteController@slidin
 Route::get('/nursingnote/othersChart_chart','hisdb\NursingNoteController@othersChart_chart');
 Route::get('/nursingnote/bladder_chart','hisdb\NursingNoteController@bladder_chart');
 
+//// Client Progress Note (Doctor Note) page ///
+Route::get('/clientprogressnote','hisdb\ClientProgressNoteController@show');
+Route::get('/clientprogressnote/table','hisdb\ClientProgressNoteController@table');
+Route::post('/clientprogressnote/form','hisdb\ClientProgressNoteController@form');
+
 //// Doctor Note page ///
 Route::get('/doctornote','hisdb\DoctorNoteController@show');
 Route::get('/bpgraph','hisdb\DoctorNoteController@bpgraph');
