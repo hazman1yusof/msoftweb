@@ -307,7 +307,7 @@ $(document).ready(function() {
                 }
             }else if($('#epistycode').val() == 'IP'){
                 if($('#user_doctor').val() == '1'){
-                    // populate_triageED_currpt(lastrowdata);
+                    populate_triageED_currpt(lastrowdata);
                     populate_triage_currpt(lastrowdata);
                     // populate_nursAssessment_currpt(lastrowdata);
                     populate_nursingActionPlan(lastrowdata);
@@ -320,7 +320,7 @@ $(document).ready(function() {
                     populate_dieteticCareNotes_currpt(lastrowdata);
                     populate_dietOrder_currpt(lastrowdata);
                 }else if($('#user_nurse').val() == '1'){
-                    // populate_triageED_currpt(lastrowdata);
+                    populate_triageED_currpt(lastrowdata);
                     populate_triage_currpt(lastrowdata);
                     // populate_nursAssessment_currpt(lastrowdata);
                     populate_nursingActionPlan(lastrowdata);
