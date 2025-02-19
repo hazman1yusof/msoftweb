@@ -53,7 +53,7 @@ class cmapactdtl_csv implements FromView
                                 ->whereDate('ahdr.postdate','<=',$this->to);
         }
                     
-        $table = $table->get();
+        // $table = $table->get();
         dd($this->getQueries($table));
 
         return view('other.csv.cmapactdtl',compact('table'));
