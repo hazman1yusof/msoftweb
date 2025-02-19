@@ -132,6 +132,7 @@ div#fail_msg{
 					      <option value="PREPARED">PREPARED</option>
 					      <option value="SUPPORT">SUPPORT</option>
 					      <option value="VERIFIED">VERIFIED</option>
+					      <option value="APPROVED">APPROVED</option>
 							@endif
 				    </select>
 	        </div>
@@ -594,7 +595,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js?V=1.7"></script>
+	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js?V=1.8"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 
