@@ -54,6 +54,7 @@ class cmapactdtl_csv implements FromView
         }
                     
         $table = $table->get();
+        dd($table);
 
         return view('other.csv.cmapactdtl',compact('table'));
     }
