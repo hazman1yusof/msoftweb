@@ -54,8 +54,13 @@ class cmapactdtl_csv implements FromView
         }
                     
         $table = $table->get();
-        dd($table);
+        dd($this->getQueries($table));
 
         return view('other.csv.cmapactdtl',compact('table'));
+    }
+
+    public static function getQueries($builder){
+        $addSlashes = str_replace('?', "'?'", $builder->toSql());
+        return vsprintf(str_replace('?', '%s', $addSlashes), $builder->getBindings());
     }
 }
