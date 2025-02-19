@@ -49,12 +49,12 @@ class cmapactdtl_csv implements FromView
                     ->where('ahdr.compcode',session('compcode'));
 
         if(!empty($this->from)){
-                $table = $table->whereDate('ahdr.postdate','>=',$this->from)
-                                ->whereDate('ahdr.postdate','<=',$this->to);
+                $table = $table->whereDate('ahdr.actdate','>=',$this->from)
+                                ->whereDate('ahdr.actdate','<=',$this->to);
         }
                     
-        // $table = $table->get();
-        dd($this->getQueries($table));
+        $table = $table->get();
+        // dd($this->getQueries($table));
 
         return view('other.csv.cmapactdtl',compact('table'));
     }
