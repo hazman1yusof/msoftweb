@@ -1081,7 +1081,7 @@ $(document).ready(function () {
 		let lineno_ = cbselect.lineno_;
 		let recstatus = cbselect.recstatus;
 
-		if($('#recstatus_use').val() == 'CANCEL' && ['OPEN','PREPARED','SUPPORT','VERIFIED'].includes(rowObject.apacthdr_recstatus)){
+		if($('#recstatus_use').val() == 'CANCEL' && ['OPEN','PREPARED','SUPPORT','VERIFIED','REJECTED'].includes(rowObject.apacthdr_recstatus)){
 			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' onclick='click_selection(checkbox_selection_"+rowObject['apacthdr_idno']+");'>";
 		}
 

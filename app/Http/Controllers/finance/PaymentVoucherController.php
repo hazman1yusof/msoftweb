@@ -1184,7 +1184,7 @@ class PaymentVoucherController extends defaultController
                     ->where('idno','=', $idno_obj['idno'])
                     ->first();
 
-                if(in_array($apacthdr->recstatus, ['OPEN','PREPARED','SUPPORT','VERIFIED'])){
+                if(in_array($apacthdr->recstatus, ['OPEN','PREPARED','SUPPORT','VERIFIED','REJECTED'])){
                     $apalloc = DB::table('finance.apalloc')
                                 ->where('compcode','=',session('compcode'))
                                 // ->where('unit','=',session('unit'))
