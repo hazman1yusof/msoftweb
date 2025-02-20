@@ -35,8 +35,9 @@ class HomeController extends Controller
         $logo1 = $company->logo1;
         $dept_desc = $unit_user_->description;
         $shortcut=false;
+        $logout_timer = $this->get_logout_timer();
 
-        return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut','logo1'));
+        return view('init.container',compact('menu','units','unit_user','title','dept_desc','shortcut','logo1','logout_timer'));
     }
 
     public function primary_care(){
@@ -710,7 +711,16 @@ class HomeController extends Controller
         return $pvalue1;
     }
 
+    public function get_logout_timer(){
+        $logout_timer = DB::table('sysdb.sysparam')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','MS')
+                            ->where('trantype','hisweb');
 
-
-
+        if($logout_timer->exists()){
+            return $logout_timer->first()->pvalue1;
+        }else{
+            return 0;
+        }
+    }
 }

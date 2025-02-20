@@ -36,7 +36,8 @@
     <title>Medicsoft Enterprise Edition</title>
   </head>
 
-  <body>	
+  <body>
+  <input type="hidden" name="logout_timer" id="logout_timer" value="{{$logout_timer ?? '0'}}">
 	<div class="navbar navbar-fixed-top">
 		@if($shortcut)
 		<a type="button" class="btn btn-default btn-lg" aria-label="Left Align" style="border-radius: 50%;border-color: white;color: #00608f;float: left;margin: 3px 20px;background: rgb(0 0 0 / 4%);" href="./">
@@ -486,6 +487,39 @@
 			}
 		}
 	});
+  function idle_logout() {
+  	console.log('logging out');
+  	var logout_timer = parseInt($('#logout_timer').val());
+    if(logout_timer != 0){
+  		window.location.replace("./logout");
+    }
+  }
+
+  let idle_t; // must be declared here
+  function idle_resetTimer() {
+    clearTimeout(idle_t); // global function
+    var logout_timer = parseInt($('#logout_timer').val());
+    if(logout_timer != 0){
+    	idle_t = setTimeout(idle_logout, logout_timer);
+    }
+  }
+
+	function noIdlingHere() {
+	    function resetTimer() {
+	    	idle_resetTimer();
+	    }
+
+	    window.addEventListener('load', resetTimer, true);
+	    window.addEventListener('mousemove', resetTimer, true);
+	    window.addEventListener('mousedown', resetTimer, true);
+	    window.addEventListener('touchstart', resetTimer, true);
+	    window.addEventListener('touchmove', resetTimer, true);
+	    window.addEventListener('click', resetTimer, true);
+	    window.addEventListener('keydown', resetTimer, true);
+	    window.addEventListener('scroll', resetTimer, true);
+	    window.addEventListener('wheel', resetTimer, true);
+	}
+	noIdlingHere();
 </script>
 
 </html>

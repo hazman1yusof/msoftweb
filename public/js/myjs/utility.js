@@ -2483,6 +2483,25 @@ function fail_msg_func(fail_msg_div=null){
 	}
 }
 
+function noIdlingHere() {
+    function resetTimer() {
+    	parent.idle_resetTimer();
+    } 
+
+    window.addEventListener('load', resetTimer, true);
+    window.addEventListener('mousemove', resetTimer, true);
+    window.addEventListener('mousedown', resetTimer, true);
+    window.addEventListener('touchstart', resetTimer, true);
+    window.addEventListener('touchmove', resetTimer, true);
+    window.addEventListener('click', resetTimer, true);
+    window.addEventListener('keydown', resetTimer, true);
+    window.addEventListener('scroll', resetTimer, true);
+    window.addEventListener('wheel', resetTimer, true);
+}
+if (window.frameElement) {
+	noIdlingHere();
+}
+
 $(document).ready(function () {
 
 	$('.panel-heading.clearfix.collapsed.position .arrow.fa').click(function(){
