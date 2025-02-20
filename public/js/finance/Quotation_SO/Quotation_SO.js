@@ -989,8 +989,15 @@ $(document).ready(function (){
         if(options.gid != "jqGrid"){
             return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
         }
-		if(rowObject.SL_recstatus == "OPEN"){
-            return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+
+        if($('#recstatus_use').val() == 'CANCEL_PARTIAL'){
+            if(rowObject.SL_recstatus == "PARTIAL"){
+                return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+            }
+        }else{
+            if(rowObject.SL_recstatus == "OPEN"){
+                return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+            }
         }
 
         return ' ';

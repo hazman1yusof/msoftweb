@@ -61,6 +61,8 @@ class Quotation_SO_Controller extends defaultController
                 return $this->del($request);
             case 'posted':
                 return $this->posted($request);
+            case 'cancel_partial':
+                return $this->cancel_partial($request);
             case 'reopen':
                 return $this->reopen($request);
             case 'cancel':
@@ -418,8 +420,42 @@ class Quotation_SO_Controller extends defaultController
             
             return response($e, 500);
             
-        }
+        }        
+    }
+
+    public function cancel_partial(Request $request){
         
+        DB::beginTransaction();
+        
+        try {
+            
+            foreach($request->idno_array as $value){
+                $salehdr = DB::table("finance.salehdr")
+                        ->where('compcode',session('compcode'))
+                        ->where('idno','=',$value)
+                        ->first();
+                
+                if($salehdr->recstatus != 'PARTIAL'){
+                    continue;
+                }
+                
+                DB::table("finance.salehdr")
+                    ->where('compcode',session('compcode'))
+                    ->where('idno','=',$value)
+                    ->update([
+                        'recstatus' => 'CANCELLED'
+                    ]);
+            }
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e, 500);
+            
+        }        
     }
     
     public function init_glmastdtl($dbcc,$dbacc,$crcc,$cracc,$yearperiod,$amount){

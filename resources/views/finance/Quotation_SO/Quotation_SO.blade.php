@@ -102,11 +102,18 @@
                 <div class="col-md-2">
                     <label class="control-label" for="Status">Status</label>
                     <select id="Status" name="Status" class="form-control input-sm">
+
+                        @if (Request::get('scope') == 'CANCEL_PARTIAL')
+                        <option value="Partial" selected>PARTIAL</option>
+                        <option value="Cancelled">CANCELLED</option>
+                        @else
                         <option value="All" selected>ALL</option>
                         <option value="Open">OPEN</option>
                         <option value="Posted">POSTED</option>
                         <option value="Partial">PARTIAL</option>
                         <option value="Cancelled">CANCELLED</option>
+                        @endif
+
                     </select>
                 </div>
 
@@ -153,20 +160,23 @@
                 </div> -->
                 
                 <?php
-                    $scope_use = 'posted';
+                    $data_oper = 'posted';
                     
                     if(Request::get('scope') == 'ALL'){
-                        $scope_use = 'posted';
-                    }else if(Request::get('scope') == 'REQUEST'){
-                        $scope_use = 'posted';
+                        $data_oper = 'posted';
+                        $btn_ttl = 'POSTED';
+                    }else if(Request::get('scope') == 'CANCEL_PARTIAL'){
+                        $data_oper = 'cancel_partial';
+                        $btn_ttl = 'CANCEL';
                     }else if(Request::get('scope') == 'SUPPORT'){
-                        $scope_use = 'support';
+                        $data_oper = 'support';
                     }else if(Request::get('scope') == 'VERIFIED'){
-                        $scope_use = 'verify';
+                        $data_oper = 'verify';
                     }else if(Request::get('scope') == 'APPROVED'){
-                        $scope_use = 'approved';
+                        $data_oper = 'approved';
                     }else{
-                        $scope_use = 'posted';
+                        $data_oper = 'posted';
+                        $btn_ttl = 'POSTED';
                     }
                 ?>
                 
@@ -179,9 +189,9 @@
                         type="button" 
                         class="btn btn-primary btn-sm" 
                         id="but_post_jq" 
-                        data-oper="posted" 
+                        data-oper="{{$data_oper}}" 
                         style="display: none;">
-                        POST
+                        {{$btn_ttl}}
                     </button>
                     
                     <!-- <button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
@@ -591,7 +601,7 @@
 			});
 		</script>
 
-		<script src="js/finance/Quotation_SO/Quotation_SO.js?v=1.10"></script>
+		<script src="js/finance/Quotation_SO/Quotation_SO.js?v=1.11"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 @endsection
