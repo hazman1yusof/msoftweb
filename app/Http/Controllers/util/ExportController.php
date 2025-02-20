@@ -28,6 +28,8 @@ use App\Exports\csv\stockloc_csv;
 use App\Exports\csv\stockexp_csv;
 use App\Exports\csv\stkcnthd_csv;
 use App\Exports\csv\stkcntdt_csv;
+use App\Exports\csv\cmapacthdr_csv;
+use App\Exports\csv\cmapactdtl_csv;
 
 use App\Jobs\SendEmailPR;
 use App\Mail\sendmaildefault;
@@ -78,6 +80,10 @@ class ExportController extends defaultController
                 return $this->export_stkcnthd($request);
             case 'export_stkcntdt':
                 return $this->export_stkcntdt($request);
+            case 'export_cmapacthdr':
+                return $this->export_cmapacthdr($request);
+            case 'export_cmapactdtl':
+                return $this->export_cmapactdtl($request);
             default:
                 return 'error happen..';
         }
@@ -149,5 +155,13 @@ class ExportController extends defaultController
 
     public function export_stkcntdt(Request $request){
         return Excel::download(new stkcntdt_csv($request), 'stkcntdt_csv.csv');
+    }
+
+    public function export_cmapacthdr(Request $request){
+        return Excel::download(new cmapacthdr_csv($request), 'cmapacthdr_csv.csv');
+    }
+
+    public function export_cmapactdtl(Request $request){
+        return Excel::download(new cmapactdtl_csv($request), 'cmapactdtl_csv.csv');
     }
 }

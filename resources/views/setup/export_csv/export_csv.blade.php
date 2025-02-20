@@ -157,6 +157,18 @@
 					<button name="export_stkcntdt" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_stkcntdt'>
 						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>StkcntDT</b>
 					</button>
+					
+					<button name="export_stkcntdt" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_stkcntdt'>
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>StkcntDT</b>
+					</button>
+					
+					<button name="export_cmapacthdr" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_cmapacthdr'>
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>CM Apacthdr</b>
+					</button>
+					
+					<button name="export_cmapactdtl" type="button" class="mybtn btn btn-sm mybtnxls" data-btntype='export_cmapactdtl'>
+						<span class="fa fa-file-excel-o fa-lg"></span> Download <b>CM Apactdtl</b>
+					</button>
 				  </fieldset>
 				</div>
 			</div>
