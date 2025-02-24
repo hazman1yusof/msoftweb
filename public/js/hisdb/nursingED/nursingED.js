@@ -106,9 +106,90 @@ $(document).ready(function (){
 		});
 	});
 
+
+	$(".changeTextInputColorBP").on('change',function (){
+		var age = $('#age_show_triageED').val();
+		var vs_bp_sys1 = $("#formTriageInfoED input[name=vs_bp_sys1]").val();
+		var vs_bp_dias2 = $("#formTriageInfoED input[name=vs_bp_dias2]").val();
 	
-	
+		if (age >= 18) {
+			// Adult cases
+			if ((vs_bp_sys1 >= 130) && (vs_bp_dias2 >= 90)){
+				// console.log('high');
+				$("#formTriageInfoED input[name=vs_bp_sys1]").addClass("red");
+				$("#formTriageInfoED input[name=vs_bp_dias2]").addClass("red");
+
+			} else {
+				$("#formTriageInfoED input[name=vs_bp_sys1]").removeClass("red");
+				$("#formTriageInfoED input[name=vs_bp_dias2]").removeClass("red");
+			}
+		} else if ((age <= 17) && (age >=1)){
+			// Pediatric cases
+			if ((vs_bp_sys1 >= 130) && (vs_bp_dias2 >= 90)){
+				$("#formTriageInfoED input[name=vs_bp_sys1]").addClass("red");
+				$("#formTriageInfoED input[name=vs_bp_dias2]").addClass("red");
+			} else {
+				$("#formTriageInfoED input[name=vs_bp_sys1]").removeClass("red");
+				$("#formTriageInfoED input[name=vs_bp_dias2]").removeClass("red");
+			}
+		} else {
+			// Neonatal cases
+			if ((vs_bp_sys1 >= 130) && (vs_bp_dias2 >= 90)){
+				$("#formTriageInfoED input[name=vs_bp_sys1]").addClass("red");
+				$("#formTriageInfoED input[name=vs_bp_dias2]").addClass("red");
+			} else {
+				$("#formTriageInfoED input[name=vs_bp_sys1]").removeClass("red");
+				$("#formTriageInfoED input[name=vs_bp_dias2]").removeClass("red");
+			}
+		}
+	});
+
 });
+
+function changeTextInputColor(empty){
+	if(empty == 'empty'){
+		$("#formTriageInfoED input[name=vs_bp_sys1]").removeClass("red");
+		$("#formTriageInfoED input[name=vs_bp_dias2]").removeClass("red");
+
+		$("#formTriageInfoED input[name=vs_bp_sys1]").next().removeClass("red");
+		$("#formTriageInfoED input[name=vs_bp_dias2]").next().removeClass("red");
+		
+	}
+	
+	var age = $('#age_show_triageED').val();
+	var vs_bp_sys1 = $("#formTriageInfoED input[name=vs_bp_sys1]").val();
+	var vs_bp_dias2 = $("#formTriageInfoED input[name=vs_bp_dias2]").val();
+
+	if (age >= 18) {
+		// Adult cases
+		if ((vs_bp_sys1 >= 130) && (vs_bp_dias2 >= 90)){
+			$("#formTriageInfoED input[name=vs_bp_sys1]").addClass("red");
+			$("#formTriageInfoED input[name=vs_bp_dias2]").addClass("red");
+
+		} else {
+			$("#formTriageInfoED input[name=vs_bp_sys1]").removeClass("red");
+			$("#formTriageInfoED input[name=vs_bp_dias2]").removeClass("red");
+		}
+	} else if ((age <= 17) && (age >=1)){
+		// Pediatric cases
+		if ((vs_bp_sys1 >= 130) && (vs_bp_dias2 >= 90)){
+			$("#formTriageInfoED input[name=vs_bp_sys1]").addClass("red");
+			$("#formTriageInfoED input[name=vs_bp_dias2]").addClass("red");
+		} else {
+			$("#formTriageInfoED input[name=vs_bp_sys1]").removeClass("red");
+			$("#formTriageInfoED input[name=vs_bp_dias2]").removeClass("red");
+		}
+	} else {
+		// Neonatal cases
+		if ((vs_bp_sys1 >= 130) && (vs_bp_dias2 >= 90)){
+			$("#formTriageInfoED input[name=vs_bp_sys1]").addClass("red");
+			$("#formTriageInfoED input[name=vs_bp_dias2]").addClass("red");
+		} else {
+			$("#formTriageInfoED input[name=vs_bp_sys1]").removeClass("red");
+			$("#formTriageInfoED input[name=vs_bp_dias2]").removeClass("red");
+		}
+	}
+}
 
 var errorField = [];
 conf = {
@@ -178,8 +259,10 @@ function populate_formNursingED(obj,rowdata){
 	// formTriageInfoED
 	$("#mrn_tiED").val(obj.a_mrn);
 	$("#episno_tiED").val(obj.a_Episno);
+	$("#age_show_triageED").val(dob_age(obj.DOB));
 	$("#reg_date").val(obj.reg_date);
 	tri_color_setED('empty');
+	changeTextInputColor('empty');
 	
 }
 
@@ -201,7 +284,8 @@ function populate_triageED(obj,rowdata){
 	
 	$("#mrn_tiED").val(obj.MRN);
 	$("#episno_tiED").val(obj.Episno);
-	
+	$("#age_show_triageED").val(dob_age(obj.DOB));
+
 	var saveParam = {
 		action: 'get_table_triageED',
 	}
@@ -253,6 +337,7 @@ function populate_triageED_currpt(obj){
 	
 	$("#mrn_tiED").val(obj.MRN);
 	$("#episno_tiED").val(obj.Episno);
+    $("#age_show_triageED").val(dob_age(obj.DOB));
 	
 }
 
@@ -260,6 +345,13 @@ function populate_triageED_currpt_getdata(){
 	emptyFormdata(errorField,"#formTriageInfoED",["#mrn_tiED","#episno_tiED"]);
 	$(dialog_tri_colED.textfield).removeClass("red").removeClass("yellow").removeClass("green");
 	$(dialog_tri_colED.textfield).next().removeClass("red").removeClass("yellow").removeClass("green");
+
+	$("#formTriageInfoED input[name=vs_bp_sys1]").removeClass("red");
+	$("#formTriageInfoED input[name=vs_bp_dias2]").removeClass("red");
+
+	$("#formTriageInfoED input[name=vs_bp_sys1]").next().removeClass("red");
+	$("#formTriageInfoED input[name=vs_bp_dias2]").next().removeClass("red");
+
 	
 	var urlparam = {
 		action: 'get_table_triageED',
@@ -287,6 +379,7 @@ function populate_triageED_currpt_getdata(){
 			textare_init_triageED();
 			dialog_tri_colED.check('errorField');
 			tri_color_setED();
+			changeTextInputColor();
 			
 		}else{
 			button_state_tiED('add');
@@ -314,6 +407,7 @@ function autoinsert_rowdata(form,rowData){
 
 function empty_formNursingED(){
 	tri_color_setED('empty');
+	changeTextInputColor('empty');
 	$('#name_show_tiED').text('');
 	$('#newic_show_tiED').text('');
 	$('#sex_show_tiED').text('');
@@ -545,7 +639,7 @@ function tri_color_setED(empty){
 }
 
 function textare_init_triageED(){
-	$('textarea#admreason,textarea#medicalhistory,textarea#surgicalhistory,textarea#familymedicalhist,textarea#currentmedication,textarea#diagnosis,textarea#drugs_remarks,textarea#plaster_remarks,textarea#food_remarks,textarea#environment_remarks,textarea#others_remarks,textarea#unknown_remarks,textarea#none_remarks,textarea#br_breathingdesc,textarea#br_coughdesc,textarea#br_smokedesc,textarea#ed_eatdrinkdesc,textarea#eb_bowelmovedesc,textarea#bl_urinedesc,textarea#bl_urinefreq,textarea#pa_notes').each(function (){
+	$('textarea#admreason,textarea#currentmedication,textarea#drugs_remarks,textarea#food_remarks,textarea#others_remarks,textarea#tpa_medication_note,textarea#pi_labinv_remarks,textarea#pi_bloodprod_remarks,textarea#pi_diaginv_remarks,textarea#mos_ivfluids_remarks,textarea#mos_oxygen_remarks,textarea#mos_woundprep_remarks').each(function (){
 		if(this.value.trim() == ''){
 			this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
 		}else{

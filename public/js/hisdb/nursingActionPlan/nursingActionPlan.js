@@ -339,7 +339,7 @@ $(document).ready(function (){
                         $(element).datepicker({
                             id: 'startdate_datePicker',
                             dateFormat: 'yy-mm-dd',
-                            // minDate: "dateToday",
+                            minDate: new Date($("#reg_date").val()),
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -363,7 +363,7 @@ $(document).ready(function (){
                         $(element).datepicker({
                             id: 'enddate_datePicker',
                             dateFormat: 'yy-mm-dd',
-                            // minDate: "dateToday",
+                            minDate: new Date($("#reg_date").val()),
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -432,7 +432,6 @@ $(document).ready(function (){
             "_token": $("#csrf_token").val()
         },
         oneditfunc: function (rowid){
-            
             $("#jqGridPagerDelete_Treatment,#jqGridPagerRefresh_Treatment").hide();
             
             $("#jqGridTreatment input[name='enddate']").keydown(function (e){ // when click tab at last column in header, auto save
@@ -594,7 +593,7 @@ $(document).ready(function (){
                         $(element).datepicker({
                             id: 'startdate_datePicker',
                             dateFormat: 'yy-mm-dd',
-                            // minDate: "dateToday",
+                            minDate: new Date($("#reg_date").val()),
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -618,7 +617,7 @@ $(document).ready(function (){
                         $(element).datepicker({
                             id: 'enddate_datePicker',
                             dateFormat: 'yy-mm-dd',
-                            // minDate: "dateToday",
+                            minDate: new Date($("#reg_date").val()),
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -848,7 +847,7 @@ $(document).ready(function (){
                         $(element).datepicker({
                             id: 'startdate_datePicker',
                             dateFormat: 'yy-mm-dd',
-                            // minDate: "dateToday",
+                            minDate: new Date($("#reg_date").val()),
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -872,7 +871,7 @@ $(document).ready(function (){
                         $(element).datepicker({
                             id: 'enddate_datePicker',
                             dateFormat: 'yy-mm-dd',
-                            // minDate: "dateToday",
+                            minDate: new Date($("#reg_date").val()),
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -1103,7 +1102,7 @@ $(document).ready(function (){
                         $(element).datepicker({
                             id: 'startdate_datePicker',
                             dateFormat: 'yy-mm-dd',
-                            // minDate: "dateToday",
+                            minDate: new Date($("#reg_date").val()),
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -1364,7 +1363,7 @@ $(document).ready(function (){
                         $(element).datepicker({
                             id: 'startdate_datePicker',
                             dateFormat: 'yy-mm-dd',
-                            // minDate: "dateToday",
+                            minDate: new Date($("#reg_date").val()),
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -1605,7 +1604,7 @@ $(document).ready(function (){
                         $(element).datepicker({
                             id: 'startdate_datePicker',
                             dateFormat: 'yy-mm-dd',
-                            // minDate: "dateToday",
+                            minDate: new Date($("#reg_date").val()),
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -1629,7 +1628,7 @@ $(document).ready(function (){
                         $(element).datepicker({
                             id: 'dateline_datePicker',
                             dateFormat: 'yy-mm-dd',
-                            // minDate: "dateToday",
+                            minDate: new Date($("#reg_date").val()),
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -1860,7 +1859,7 @@ $(document).ready(function (){
                         $(element).datepicker({
                             id: 'startdate_datePicker',
                             dateFormat: 'yy-mm-dd',
-                            // minDate: "dateToday",
+                            minDate: new Date($("#reg_date").val()),
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -1879,7 +1878,7 @@ $(document).ready(function (){
                         $(element).datepicker({
                             id: 'enddate_datePicker',
                             dateFormat: 'yy-mm-dd',
-                            // minDate: "dateToday",
+                            minDate: new Date($("#reg_date").val()),
                             showOn: 'focus',
                             changeMonth: true,
                             changeYear: true,
@@ -2168,6 +2167,7 @@ function populate_nursingActionPlan(obj){
     $("#ward_nursActionPlan").val(obj.ward);
     $("#bednum_nursActionPlan").val(obj.bednum);
     $("#age_nursActionPlan").val(dob_age(obj.DOB));
+    $("#reg_date").val(obj.reg_date);
 }
 
 function populate_header_getdata(){

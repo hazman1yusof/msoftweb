@@ -233,8 +233,8 @@
 			
 			@if (request()->get('epistycode') == 'IP')
 				@if (Auth::user()->doctor == 1)
-
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px;display:none" id="nursingED_row">
+	
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursingED_row">
 						@include('hisdb.nursingED.nursingED')
 					</div>
 
@@ -270,7 +270,7 @@
 						@include('hisdb.dietorder.dietorder')
 					</div>
 				@elseif (Auth::user()->nurse == 1)
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px;display:none" id="nursingED_row">
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursingED_row">
 						@include('hisdb.nursingED.nursingED')
 					</div>
 
@@ -415,10 +415,10 @@
 			<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script>
 			
 			@if (Auth::user()->doctor == 1)
-				<script type="text/javascript" src="js/hisdb/nursingED/nursingED.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingED/nursingED.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.1"></script>
 				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
-				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js?v=1.3"></script>
+				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js?v=1.4"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js?v=1.6"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invFBC.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCoag.js?v=1.1"></script>
@@ -438,10 +438,10 @@
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 				<script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script>
 			@elseif (Auth::user()->nurse == 1)
-				<script type="text/javascript" src="js/hisdb/nursingED/nursingED.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingED/nursingED.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.1"></script>
 				<!-- <script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script> -->
-				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js?v=1.3"></script>
+				<script type="text/javascript" src="js/hisdb/nursingActionPlan/nursingActionPlan.js?v=1.4"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js?v=1.6"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invFBC.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCoag.js?v=1.1"></script>
