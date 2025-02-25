@@ -284,6 +284,7 @@ $(document).ready(function() {
                     populate_triage_currpt(lastrowdata);
                     populate_antenatal(lastrowdata);
                     populate_paediatric(lastrowdata);
+                    populate_clientProgNote_currpt(lastrowdata);
                     populate_doctorNote_currpt(lastrowdata);
                     populate_requestFor_currpt(lastrowdata);
                     populate_admHandover_currpt(lastrowdata);
@@ -291,6 +292,7 @@ $(document).ready(function() {
                     // populate_dietOrder_currpt(lastrowdata);
                 }else if($('#user_nurse').val() == '1'){
                     populate_triage_currpt(lastrowdata);
+                    populate_clientProgNote_currpt(lastrowdata);
                     populate_doctorNote_currpt(lastrowdata);
                     populate_requestFor_currpt(lastrowdata);
                     populate_admHandover_currpt(lastrowdata);
@@ -315,6 +317,7 @@ $(document).ready(function() {
                     populate_nursingnote(lastrowdata);
                     // populate_invHeader_getdata(lastrowdata);
                     populate_antenatal(lastrowdata);
+                    populate_clientProgNote_currpt(lastrowdata);
                     populate_doctorNote_currpt(lastrowdata);
                     populate_requestFor_currpt(lastrowdata);
                     populate_dieteticCareNotes_currpt(lastrowdata);
@@ -327,6 +330,7 @@ $(document).ready(function() {
                     populate_header_getdata(lastrowdata);
                     populate_nursingnote(lastrowdata);
                     // populate_invHeader_getdata(lastrowdata);
+                    populate_clientProgNote_currpt(lastrowdata);
                     populate_doctorNote_currpt(lastrowdata);
                     populate_requestFor_currpt(lastrowdata);
                     populate_dieteticCareNotes_currpt(lastrowdata);

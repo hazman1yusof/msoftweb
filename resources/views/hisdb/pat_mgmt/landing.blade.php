@@ -176,6 +176,10 @@
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.clientprogressnote.clientprogressnote')
+					</div>
+					
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.doctornote.doctornote')
 					</div>
 					
@@ -200,6 +204,10 @@
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.clientprogressnote.clientprogressnote')
+					</div>
+					
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.doctornote.doctornote')
 					</div>
 					
@@ -210,7 +218,7 @@
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.admhandover.admhandover')
 					</div>
-
+					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.dieteticCareNotes.dieteticCareNotes')
 					</div>
@@ -233,11 +241,10 @@
 			
 			@if (request()->get('epistycode') == 'IP')
 				@if (Auth::user()->doctor == 1)
-	
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursingED_row">
 						@include('hisdb.nursingED.nursingED')
 					</div>
-
+					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursing_row">
 						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
 					</div>
@@ -252,6 +259,10 @@
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="antenatal_row">
 						@include('hisdb.antenatal.antenatal')
+					</div>
+					
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.clientprogressnote.clientprogressnote')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
@@ -273,7 +284,7 @@
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursingED_row">
 						@include('hisdb.nursingED.nursingED')
 					</div>
-
+					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
 					</div>
@@ -284,6 +295,10 @@
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.nursingnote.nursingnote')
+					</div>
+					
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.clientprogressnote.clientprogressnote')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
@@ -365,6 +380,7 @@
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
 				<script type="text/javascript" src="js/hisdb/paediatric/paediatric.js"></script>
+				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnote.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
@@ -375,6 +391,7 @@
 				<!-- <script type="text/javascript" src="js/hisdb/dietorder/dietorder.js?v=2"></script> -->
 			@elseif (Auth::user()->nurse == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnote.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
@@ -430,6 +447,7 @@
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCE.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCS.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
+				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnote.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
@@ -452,6 +470,7 @@
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invUFEME.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCE.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCS.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnote.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js?v=1.2"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
