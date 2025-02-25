@@ -536,7 +536,7 @@ function saveForm_tiED(callback){
 }
 
 var dialog_tri_colED = new ordialog(
-	'tri_col','sysdb.sysparam',"#formTriageInfoED input[name='triagecolor']",errorField,
+	'tri_colED','sysdb.sysparam',"#formTriageInfoED input[name='triagecolor']",errorField,
 	{
 		colModel: [
 			{ label: 'Color', name: 'colorcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
@@ -584,9 +584,9 @@ var dialog_tri_colED = new ordialog(
 				}, 100 );
 			});
 			
-			$( "table#othergrid_tri_col tr:nth-child(2)" ).addClass('red')
-			$( "table#othergrid_tri_col tr:nth-child(3)" ).addClass('yellow')
-			$( "table#othergrid_tri_col tr:nth-child(4)" ).addClass('green')
+			$( "table#othergrid_tri_colED tr:nth-child(2)" ).addClass('red')
+			$( "table#othergrid_tri_colED tr:nth-child(3)" ).addClass('yellow')
+			$( "table#othergrid_tri_colED tr:nth-child(4)" ).addClass('green')
 		}
 	},{
 		title: "Select Triage",
