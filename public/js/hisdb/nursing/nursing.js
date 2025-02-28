@@ -52,7 +52,7 @@ $(document).ready(function (){
 		enableForm('#formTriageInfo');
 		rdonly('#formTriageInfo');
 		// dialog_mrn_edit.on();
-		$("#admwardtime").attr("readonly", true);
+		$("#triage_admwardtime").attr("readonly", true);
 	});
 	
 	$("#save_ti").click(function (){

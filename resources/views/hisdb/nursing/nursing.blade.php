@@ -84,7 +84,7 @@
 									<div class="form-group">
 										<label class="col-md-2 control-label" for="admwardtime">Time</label>
 										<div class="col-md-4">
-											<input name="admwardtime" id="admwardtime" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter time.">
+											<input name="admwardtime" id="triage_admwardtime" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter time.">
 										</div>
 										
 										<label class="col-md-3 control-label" for="triagecolor">Triage Color Zone</label>
