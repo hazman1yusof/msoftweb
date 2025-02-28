@@ -208,6 +208,7 @@ class NursingEDController extends defaultController
                     'respiration' => $request->vs_respiration,
                     'height' => $request->vs_height,
                     'epistycode' => 'IP',
+                    'location' => $location,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
@@ -544,6 +545,7 @@ class NursingEDController extends defaultController
                         'respiration' => $request->vs_respiration,
                         'height' => $request->vs_height,
                         'epistycode' => 'IP',
+                        'location' => $location,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);

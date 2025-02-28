@@ -96,7 +96,7 @@ class NursingNoteController extends defaultController
                     $date['timetaken'] =  '-';
                 }
                 $date['adduser'] = $value->adduser;
-                $date['epistycode'] = $value->epistycode;
+                $date['location'] = $value->location;
                 
                 array_push($data,$date);
             }
@@ -225,6 +225,7 @@ class NursingNoteController extends defaultController
                     'assesothers' => $request->assesothers,
                     'plannotes' => $request->plannotes,
                     'epistycode' => 'OP',
+                    'location' => 'ED',
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'painscore' => $request->painscore,
@@ -333,6 +334,7 @@ class NursingNoteController extends defaultController
                         'assesothers' => $request->assesothers,
                         'plannotes' => $request->plannotes,
                         'epistycode' => 'OP',
+                        'location' => 'ED',
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);

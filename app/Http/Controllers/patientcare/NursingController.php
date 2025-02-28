@@ -310,6 +310,7 @@ class NursingController extends defaultController
                         'respiration' => $request->vs_respiration,
                         'height' => $request->vs_height,
                         'epistycode' => 'OP',
+                        'location' => 'ED',
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
@@ -811,6 +812,7 @@ class NursingController extends defaultController
                         'respiration' => $request->vs_respiration,
                         'height' => $request->vs_height,
                         'epistycode' => 'OP',
+                        'location' => 'ED',
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
@@ -1058,6 +1060,7 @@ class NursingController extends defaultController
                     'respiration' => $request->vs_respiration,
                     'height' => $request->vs_height,
                     'epistycode' => 'OP',
+                    'location' => 'ED',
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
@@ -1417,6 +1420,7 @@ class NursingController extends defaultController
                         'respiration' => $request->vs_respiration,
                         'height' => $request->vs_height,
                         'epistycode' => 'OP',
+                        'location' => 'ED',
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
