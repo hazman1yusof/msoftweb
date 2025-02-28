@@ -57,7 +57,7 @@ class NursingEDController extends defaultController
 
             // $location = $this->get_location($request->mrn_tiED,$request->episno_tiED);
 
-            $location = 'WARD';
+            $location = 'ED';
             
             DB::table('nursing.nursassessment')
                     ->insert([
@@ -250,7 +250,7 @@ class NursingEDController extends defaultController
         try {
 
             // $location = $this->get_location($request->mrn_tiED,$request->episno_tiED);
-            $location = 'WARD';
+            $location = 'ED';
 
             $nursassessment_triageinfo = DB::table('nursing.nursassessment')
                 ->where('mrn','=',$request->mrn_tiED)
@@ -593,11 +593,13 @@ class NursingEDController extends defaultController
 
         $triage_obj = DB::table('nursing.nursassessment')
                     ->where('compcode','=',session('compcode'))
+                    ->where('location','=','ED')
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
 
         $triage_gen_obj = DB::table('nursing.nursassessgen')
                     ->where('compcode','=',session('compcode'))
+                    ->where('location','=','ED')
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
 

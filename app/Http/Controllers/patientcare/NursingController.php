@@ -1500,11 +1500,13 @@ class NursingController extends defaultController
 
         $triage_obj = DB::table('nursing.nursassessment')
                     ->where('compcode','=',session('compcode'))
+                    ->where('location','=','ED')
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
 
         $triage_gen_obj = DB::table('nursing.nursassessgen')
                     ->where('compcode','=',session('compcode'))
+                    ->where('location','=','ED')
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
 
