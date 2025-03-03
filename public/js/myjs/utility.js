@@ -638,7 +638,7 @@ function currencymode(arraycurrency,nopoint=false){
 			if(self.nopoint){
 				$(value).val(numeral($(value).val()).format('0,0'));
 			}else{
-				$(value).val(numeral($(value).val()).format('0,0.00'));
+				$(value).val(numeral($(value).val()).format('0,0.0000'));
 			}
 		});
 	}
@@ -676,7 +676,7 @@ function currencymode(arraycurrency,nopoint=false){
 		if(nopoint){
 			$(value).val(numeral($(value).val()).format('0,0'));
 		}else{
-			$(value).val(numeral($(value).val()).format('0,0.00'));
+			$(value).val(numeral($(value).val()).format('0,0.0000'));
 		}
 	}
 
