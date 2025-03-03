@@ -62,7 +62,8 @@ class DischargeController extends Controller
     public function discharge_patient(Request $request){ 
         $pat_mast = DB::table('hisdb.pat_mast')
                         ->where('compcode','=',session('compcode'))
-                        ->where('mrn','=',$request->mrn);
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno);
 
         $episode = DB::table('hisdb.episode')
                         ->where('compcode','=',session('compcode'))
