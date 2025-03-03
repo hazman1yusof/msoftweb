@@ -850,11 +850,11 @@ $(document).ready(function () {
         	}
         	mycurrency2.formatOff();
 
-			if(parseInt($('#jqGrid2 input[name="amount"]').val()) == 0){
-				myerrorIt_only2('#jqGrid2 input[name="amount"]');
-				alert('Amount cant be 0');
-				return false;
-			}
+			// if(parseInt($('#jqGrid2 input[name="amount"]').val()) == 0){
+			// 	myerrorIt_only2('#jqGrid2 input[name="amount"]');
+			// 	alert('Amount cant be 0');
+			// 	return false;
+			// }
 			
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			let editurl = "./DebitNoteAPDetail/form?"+
@@ -982,11 +982,11 @@ $(document).ready(function () {
 					return false;
 				}
 
-				if(parseInt($("#jqGrid2 input#"+ids[i]+"_amount").val()) == 0){
-					alert('Amount cant be 0');
-					mycurrency2.formatOn();
-					return false;
-				}
+				// if(parseInt($("#jqGrid2 input#"+ids[i]+"_amount").val()) == 0){
+				// 	alert('Amount cant be 0');
+				// 	mycurrency2.formatOn();
+				// 	return false;
+				// }
 
 		    	var obj = 
 		    	{
