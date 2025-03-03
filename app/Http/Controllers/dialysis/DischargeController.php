@@ -77,7 +77,11 @@ class DischargeController extends Controller
 
         try {
 
-            if($pat_mast->exists() && $episode->exists() && $queue->exists()){
+            if($pat_mast->exists()){
+                $pat_mast->update(['PatStatus' => 0]);
+            }
+
+            if($episode->exists()){
                 $episode->update([
                             'episstatus' => 'DISCHARGE',
                             'episactive' => 0,
@@ -86,11 +90,16 @@ class DischargeController extends Controller
                             'dischargetime' => Carbon::now("Asia/Kuala_Lumpur"),
                             'dischargedest' => $request->destination
                         ]);
-                $pat_mast->update(['PatStatus' => 0]);
-                $queue->update(['Billflag' => 1]);
-            }else{
-                throw new \Exception('patmast, episno or queue doesnt exist', 500);
             }
+
+            if($queue->exists()){
+                $queue->update(['Billflag' => 1]);
+            }
+
+            // if($pat_mast->exists() && $episode->exists() && $queue->exists()){
+            // }else{
+            //     throw new \Exception('patmast, episno or queue doesnt exist', 500);
+            // }
 
             DB::commit();
         } catch (\Exception $e) {
