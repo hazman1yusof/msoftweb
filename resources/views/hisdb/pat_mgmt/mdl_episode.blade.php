@@ -130,11 +130,11 @@
                                                 <small for="txt_epis_bed">WARD</small>
                                                 <input type="text" class="form-control form-mandatory" name="txt_epis_ward" id="txt_epis_ward" disabled="">
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-1">
                                                 <small for="txt_epis_bed">ROOM</small>
                                                 <input type="text" class="form-control form-mandatory" name="txt_epis_room" id="txt_epis_room" disabled>
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-3">
                                                 <small for="txt_epis_bed">BED TYPE</small>
                                                 <input type="text" class="form-control form-mandatory" name="txt_epis_bedtype" id="txt_epis_bedtype" disabled>
                                             </div>

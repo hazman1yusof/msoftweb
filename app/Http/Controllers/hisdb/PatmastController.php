@@ -3019,9 +3019,12 @@ class PatmastController extends defaultController
                 // ->where('debtortype','=',$epispayer->pay_type)
                 ->first();
 
-        $bed = DB::table('hisdb.bed')
-                ->where('compcode','=',session('compcode'))
-                ->where('bednum','=',$episode->bed)
+        $bed = DB::table('hisdb.bed as bed')
+                ->select('bed.idno','bed.compcode','bed.ward','bed.room','bed.bednum','bed.bedtype','bed.tel_ext','bed.statistic','bed.occup','bed.isolate','bed.baby','bed.bedstatus','bed.bedchgcode','bed.lodchgcode','bed.mealschgcode','bed.otherchgcode','bed.category','bed.f1','bed.f2','bed.f3','bed.f4','bed.f5','bed.lastuser','bed.lastupdate','bed.adduser','bed.adddate','bed.upduser','bed.upddate','bed.deluser','bed.deldate','bed.computerid','bed.lastcomputerid','bed.recstatus','bed.mrn','bed.episno','bed.name','bed.admdoctor','bed.newic','bedtype.description')
+                ->where('bed.compcode','=',session('compcode'))
+                ->leftJoin('hisdb.bedtype as bedtype', 'bed.bedtype', '=', 'bedtype.bedtype')
+                ->where('bedtype.compcode','=','bed.compcode')
+                ->where('bed.bednum','=',$episode->bed)
                 ->first();
 
         $responce = new stdClass();
