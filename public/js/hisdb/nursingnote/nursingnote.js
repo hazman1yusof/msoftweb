@@ -3983,7 +3983,7 @@ var datetime_tbl = $('#datetime_tbl').DataTable({
         { 'data': 'datetaken', 'width': '25%' },
         { 'data': 'timetaken', 'width': '25%' },
         { 'data': 'adduser', 'width': '50%' },
-        { 'data': 'epistycode', 'width': '25%' },
+        { 'data': 'location', 'width': '25%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2], visible: false },

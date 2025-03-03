@@ -91,7 +91,7 @@
                                                                 <th class="scope">Date</th>
                                                                 <th class="scope">Time</th>
                                                                 <th class="scope">Entered By</th>
-                                                                <th class="scope">Epistype</th>
+                                                                <th class="scope">Location</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
