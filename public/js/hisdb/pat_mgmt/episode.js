@@ -611,8 +611,8 @@ function populate_episode_by_mrn_episno(mrn,episno,form){
             }
             $('#cmb_epis_pay_mode').removeClass('form-disabled').addClass('form-mandatory');
             $('#cmb_epis_pay_mode').val(episdata.pyrmode.toUpperCase());
-            $('#txt_epis_payer').val(episdata.dbms_name);
-            $('#hid_epis_payer').val(episdata.payer);
+            $('#txt_epis_payer').val(debtormast.name);
+            $('#hid_epis_payer').val(debtormast.debtorcode);
             $('#txt_epis_bill_type').val(episdata.bmst_desc);
             $('#hid_epis_bill_type').val(episdata.billtype);
             $('#txt_epis_refno').val(data.txt_epis_refno);
