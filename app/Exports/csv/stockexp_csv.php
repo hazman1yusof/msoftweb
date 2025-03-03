@@ -38,9 +38,11 @@ class stockexp_csv implements FromView
     
     public function view(): View{
 
+        $year = Carbon::createFromFormat('Y-m-d', $this->to)->year;
+        
         $table = DB::table('material.stockexp')
                     ->where('deptcode',$this->deptcode)
-                    ->where('year','2024')
+                    ->where('year',$year)
                     ->where('compcode','9B');
 
         // if(!empty($this->from)){
