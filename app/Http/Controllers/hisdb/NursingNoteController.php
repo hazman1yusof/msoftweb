@@ -250,7 +250,7 @@ class NursingNoteController extends defaultController
                     $date['timetaken'] =  '-';
                 }
                 $date['adduser'] = $value->adduser;
-                $date['epistycode'] = $value->epistycode;
+                $date['location'] = $value->location;
                 
                 array_push($data,$date);
             }
@@ -460,6 +460,12 @@ class NursingNoteController extends defaultController
         
         try {
             
+            if($request->epistycode == 'OP'){
+                $location = 'TRIAGE';
+            }else if($request->epistycode == 'IP'){
+                $location = 'WARD';
+            }
+            
             DB::table('nursing.nurshandover')
                 ->insert([
                     'compcode' => session('compcode'),
@@ -502,6 +508,7 @@ class NursingNoteController extends defaultController
                     'assesothers' => $request->assesothers,
                     'plannotes' => $request->plannotes,
                     'epistycode' => $request->epistycode,
+                    'location' => $location,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
@@ -523,6 +530,12 @@ class NursingNoteController extends defaultController
         DB::beginTransaction();
         
         try {
+            
+            if($request->epistycode == 'OP'){
+                $location = 'TRIAGE';
+            }else if($request->epistycode == 'IP'){
+                $location = 'WARD';
+            }
             
             if(!empty($request->idno_progress)){
                 DB::table('nursing.nurshandover')
@@ -610,6 +623,7 @@ class NursingNoteController extends defaultController
                         'assesothers' => $request->assesothers,
                         'plannotes' => $request->plannotes,
                         'epistycode' => $request->epistycode,
+                        'location' => $location,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);

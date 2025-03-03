@@ -1450,7 +1450,8 @@ class DoctorNoteController extends defaultController
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno)
-                            ->where('epistycode','=','OP');
+                            ->orderBy('idno','desc');
+                            // ->where('epistycode','=','OP');
         
         $nurshistory_obj = DB::table('nursing.nurshistory')
                             ->where('compcode','=',session('compcode'))
