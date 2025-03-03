@@ -606,7 +606,7 @@ function populate_episode_by_mrn_episno(mrn,episno,form){
                 $("#txt_epis_bed").val(bed.ward);
                 $("#txt_epis_ward").val(bed.ward);
                 $("#txt_epis_room").val(bed.room);
-                $("#txt_epis_bedtype").val(episdata.bed);
+                $("#txt_epis_bedtype").val(bed.bedtype);
                 $('#txt_epis_bed').prop('disabled',true);
             }
             $('#cmb_epis_pay_mode').removeClass('form-disabled').addClass('form-mandatory');
