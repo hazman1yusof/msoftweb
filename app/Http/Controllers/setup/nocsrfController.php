@@ -386,6 +386,12 @@ class nocsrfController extends defaultController
     }
 
     public function episode_add($episode){
+        if(strtoupper($episode->regdept) == 'A&E'){
+            $reff_ed = 1;
+        }else{
+            $reff_ed = null;
+        }
+
         DB::table('hisdb.episode')
             ->insert([
                 'compcode' => $this->null($episode->compcode),
@@ -464,7 +470,8 @@ class nocsrfController extends defaultController
                 'agreementid' => $this->null($episode->agreementid),
                 'adminfees' => $this->null($episode->adminfees),
                 'eddept' => $this->null($episode->eddept),
-                'payer' => $this->null($episode->payer)
+                'payer' => $this->null($episode->payer),
+                'reff_ed' => $reff_ed
             ]);
     }
 
