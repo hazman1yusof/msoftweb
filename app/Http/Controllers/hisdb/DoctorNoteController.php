@@ -2905,11 +2905,24 @@ class DoctorNoteController extends defaultController
             abort(404);
         }
         
-        $intakeoutput = DB::table('nursing.intakeoutput')
+        $recorddate = DB::table('nursing.intakeoutput')
+                    ->select('mrn','episno','recorddate')
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn',$request->mrn)
+                    ->where('episno',$request->episno)
+                    ->get();
+        
+        $intakeoutput = [];
+        foreach($recorddate as $key => $value){
+            $io_data = DB::table('nursing.intakeoutput')
                         ->where('compcode',session('compcode'))
-                        ->where('mrn',$request->mrn)
-                        ->where('episno',$request->episno)
+                        ->where('mrn',$value->mrn)
+                        ->where('episno',$value->episno)
+                        ->where('recorddate',$value->recorddate)
                         ->first();
+            
+            array_push($intakeoutput, $io_data);
+        }
         
         $pat_mast = DB::table('hisdb.pat_mast')
                     ->where('CompCode',session('compcode'))
@@ -2918,7 +2931,7 @@ class DoctorNoteController extends defaultController
         
         // dd($intakeoutput);
         
-        return view('hisdb.doctornote.iograph_pdfmake',compact('intakeoutput','pat_mast'));
+        return view('hisdb.doctornote.iograph_pdfmake',compact('recorddate','intakeoutput','pat_mast'));
         
     }
     
