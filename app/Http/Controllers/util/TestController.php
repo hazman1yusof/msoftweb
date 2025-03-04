@@ -64,14 +64,14 @@ class TestController extends defaultController
             //     return $this->update_stockloc_uomcode($request);
             // case 'update_productmaster':
                 // return $this->update_productmaster($request);
-            case 'recon_DO':
-                return $this->recon_DO($request);
-            case 'ivtmphd_ivtxnhd_recno':
-                return $this->ivtmphd_ivtxnhd_recno($request);
-            case 'delordhd_ivtxnhd_recno':
-                return $this->delordhd_ivtxnhd_recno($request);
-            // case 'test_email':
-            //     return $this->test_email($request);
+            // case 'recon_DO':
+            //     return $this->recon_DO($request);
+            // case 'ivtmphd_ivtxnhd_recno':
+            //     return $this->ivtmphd_ivtxnhd_recno($request);
+            // case 'delordhd_ivtxnhd_recno':
+            //     return $this->delordhd_ivtxnhd_recno($request);
+            case 'betulkan_ivtxndt_dr_do':
+                return $this->betulkan_ivtxndt_dr_do($request);
             // case 'btlkn_imp_1_phycnt':
             //     return $this->btlkn_imp_1_phycnt($request);
             // case 'btlkn_imp_3':
@@ -4539,6 +4539,59 @@ class TestController extends defaultController
 
             dd('Error'.$e);
         }               
+    }
+
+    public function betulkan_ivtxndt_dr_do(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $delorddt = DB::table('material.delorddt')
+                            ->where('compcode',session('compcode'))
+                            ->whereColumn('pouom','!=','uomcode')
+                            ->where('trandate','>=','2025-02-01')
+                            ->where('trandate','<=','2025-02-28')
+                            ->where('recstatus','POSTED')
+                            ->get();
+
+            $key=0;
+            foreach ($delorddt as $key => $value) {
+                $key++;
+                $ivtxndt = DB::table('material.ivtxndt')
+                        ->where('compcode',session('compcode'))
+                        ->where('recno',$value->recno)
+                        ->where('lineno_',$value->lineno_)
+                        ->where('itemcode',$value->itemcode);
+
+                if($ivtxndt->exists()){
+                    DB::table('material.ivtxndt')
+                        ->where('compcode',session('compcode'))
+                        ->where('recno',$value->recno)
+                        ->where('lineno_',$value->lineno_)
+                        ->where('itemcode',$value->itemcode)
+                        ->update([
+                            'uomcode' => $value->pouom,
+                            'uomcoderecv' => $value->uomcode,
+                            'txnqty' => $value->qtydelivered,
+                            'netprice' => $value->netunitprice,
+                            'amount' => $value->amount,
+                            'totamount' => $value->amount
+                        ]);
+
+                echo nl2br("$key. update ivtxndt itemcode: $value->itemcode, recno: $value->recno, lineno_: $value->lineno_ \n");
+
+                }else{
+                    dump($value);
+                    dd($value->itemcode.' not exists');
+                }
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }   
     }
     
 }
