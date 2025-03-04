@@ -1305,7 +1305,7 @@ class PatmastController extends defaultController
                 throw new \Exception('dept_wrong');
             }
 
-            if($epis_dept == 'ED'){
+            if($epis_dept == 'A&E'){
                 $reff_ed = 1;
             }else{
                 $reff_ed = null;
