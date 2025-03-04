@@ -32,8 +32,8 @@
             <td>{{$obj->lineno_}}</td>
             <td>{{$obj->itemcode}}</td>
             <td>{{$obj->uomcode}}</td>
-            <td>{{$obj->qtydelivered}}</td>
-            <td>{{$obj->unitprice}}</td>
+            <td>{{$obj->txnqty}}</td>
+            <td>{{$obj->netprice}}</td>
             <td>{{$obj->adduser}}</td>
             <td>{{Carbon\Carbon::parse($obj->adddate)->format('d/m/Y')}}</td>
             <td>{{$obj->upduser}}</td>
