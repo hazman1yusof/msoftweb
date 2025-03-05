@@ -2931,7 +2931,8 @@ class DoctorNoteController extends defaultController
         
         // dd($intakeoutput);
         
-        return view('hisdb.doctornote.iograph_pdfmake',compact('recorddate','intakeoutput','pat_mast'));
+        // return view('hisdb.doctornote.iograph_pdfmake',compact('recorddate','intakeoutput','pat_mast'));
+        return view('hisdb.doctornote.intakeoutput_pdfmake',compact('recorddate','intakeoutput','pat_mast'));
         
     }
     

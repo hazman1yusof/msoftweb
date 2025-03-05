@@ -277,7 +277,10 @@ function saveForm_intake(callback){
     
     $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
-    },'json').fail(function (data){ 
+    },'json').fail(function (data){
+        // $('#p_error_intake').text(data.responseText);
+        alert(data.responseText);
+        
         // alert('there is an error');
         callback();
     }).success(function (data){

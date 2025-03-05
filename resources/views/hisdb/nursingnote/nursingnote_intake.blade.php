@@ -44,13 +44,16 @@
                 </div>
                 
                 <div class='col-md-10' style="padding-right: 0px;">
+                    <div class="col-md-5" style="padding-top: 20px; text-align: left; color: red;">
+                        <p id="p_error_intake"></p>
+                    </div>
                     <div class="form-inline col-md-12" style="padding-bottom: 15px;">
                         <label class="control-label" for="recorddate" style="padding-right: 5px;">Date</label>
                         <input id="recorddate_intake" name="recorddate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>">
                         
                         <button class="btn btn-default btn-sm" type="button" id="doctornote_iograph" style="float: right; margin-right: 20px;">Preview</button>
                     </div>
-                    <ul class="nav nav-tabs">
+                    <ul class="nav nav-tabs" id="jqGridNursNote_intake_tabs">
                         <li class="active"><a data-toggle="tab" id="navtab_first" href="#tab-first" aria-expanded="true" data-shift='first'>First Shift</a></li>
                         <li><a data-toggle="tab" id="navtab_second" href="#tab-second" data-shift='second'>Second Shift</a></li>
                         <li><a data-toggle="tab" id="navtab_third" href="#tab-third" data-shift='third'>Third Shift</a></li>

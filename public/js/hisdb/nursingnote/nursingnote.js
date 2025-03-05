@@ -73,6 +73,7 @@ $(document).ready(function (){
     var fdl = new faster_detail_load();
     
     textarea_init_nursingnote();
+    textarea_init_intake();
     
     /////////////////////////////////////progressnote starts/////////////////////////////////////
     disableForm('#formProgress');
@@ -514,6 +515,21 @@ $(document).ready(function (){
                 
                 // $('#tbl_intake_date').DataTable().ajax.reload();
                 populate_intakeoutput_getdata();
+                
+                $('#jqGridNursNote_intake_tabs.nav-tabs a').on('shown.bs.tab', function (e){
+                    let shift = $(this).data('shift');
+                    switch(shift){
+                        case 'first':
+                            textarea_init_intake();
+                            break;
+                        case 'second':
+                            textarea_init_intake();
+                            break;
+                        case 'third':
+                            textarea_init_intake();
+                            break;
+                    }
+                });
                 break;
             case 'drug':
                 var urlparam_tbl_prescription = {
@@ -634,48 +650,44 @@ $(document).ready(function (){
                 populate_othersChart2_getdata();
                 break;
             case 'bladder':
+                get_total_IO1();
                 
-                get_total_IO1();  
-
                 $("#jqGridBladder1").jqGrid('setGridWidth', Math.floor($("#jqGridBladder_c_1")[0].offsetWidth-$("#jqGridBladder_c_1")[0].offsetLeft-30));
                 urlParam_Bladder.filterVal[0] = $("#mrn_nursNote").val();
                 urlParam_Bladder.filterVal[1] = $("#episno_nursNote").val();
                 urlParam_Bladder.filterVal[2] = $("#firstShift").val();
                 refreshGrid('#jqGridBladder1',urlParam_Bladder,'add');
-
+                
                 $('#jqGridNursNote_bladder_tabs.nav-tabs a').on('shown.bs.tab', function (e){
                     let type = $(this).data('type');console.log(type);
                     switch(type){
                         case 'firstShift':
-                            get_total_IO1();  
+                            get_total_IO1();
                             urlParam_Bladder.filterVal[0] = $("#mrn_nursNote").val();
                             urlParam_Bladder.filterVal[1] = $("#episno_nursNote").val();
                             urlParam_Bladder.filterVal[2] = $("#firstShift").val();
-                            refreshGrid('#jqGridBladder1',urlParam_Bladder,'add');  
+                            refreshGrid('#jqGridBladder1',urlParam_Bladder,'add');
                             $("#jqGridBladder1").jqGrid('setGridWidth', Math.floor($("#jqGridBladder_c_1")[0].offsetWidth-$("#jqGridBladder_c_1")[0].offsetLeft-30));
                             break;
-
                         case 'secondShift':
-                            get_total_IO2();  
+                            get_total_IO2();
                             urlParam_Bladder.filterVal[0] = $("#mrn_nursNote").val();
                             urlParam_Bladder.filterVal[1] = $("#episno_nursNote").val();
                             urlParam_Bladder.filterVal[2] = $("#secondShift").val();
-                            refreshGrid('#jqGridBladder2',urlParam_Bladder,'add');  
+                            refreshGrid('#jqGridBladder2',urlParam_Bladder,'add');
                             $("#jqGridBladder2").jqGrid('setGridWidth', Math.floor($("#jqGridBladder_c_2")[0].offsetWidth-$("#jqGridBladder_c_2")[0].offsetLeft-30));
                             break;
-
                         case 'thirdShift':
-                            get_total_IO3();  
+                            get_total_IO3();
                             urlParam_Bladder.filterVal[0] = $("#mrn_nursNote").val();
                             urlParam_Bladder.filterVal[1] = $("#episno_nursNote").val();
                             urlParam_Bladder.filterVal[2] = $("#thirdShift").val();
-                            refreshGrid('#jqGridBladder3',urlParam_Bladder,'add');  
+                            refreshGrid('#jqGridBladder3',urlParam_Bladder,'add');
                             $("#jqGridBladder3").jqGrid('setGridWidth', Math.floor($("#jqGridBladder_c_3")[0].offsetWidth-$("#jqGridBladder_c_3")[0].offsetLeft-30));
                             break;
                     }
                 });
             break;
-                
         }
     });
     

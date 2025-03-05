@@ -964,7 +964,13 @@ class NursingNoteController extends defaultController
         DB::beginTransaction();
         
         try {
-
+            
+            $intakeoutput = DB::table('nursing.intakeoutput')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn_nursNote)
+                            ->where('episno','=',$request->episno_nursNote)
+                            ->where('recorddate','=',$request->recorddate);
+            
             if(!empty($request->idno_intake)){
                 DB::table('nursing.intakeoutput')
                     ->where('idno','=',$request->idno_intake)
@@ -1221,6 +1227,11 @@ class NursingNoteController extends defaultController
                         'computerid' => session('computerid'),
                     ]);
             }else{
+                if($intakeoutput->exists()){
+                    // throw new \Exception('Date already exist.', 500);
+                    return response('Date already exist.');
+                }
+                
                 DB::table('nursing.intakeoutput')
                     ->insert([
                         'compcode' => session('compcode'),
