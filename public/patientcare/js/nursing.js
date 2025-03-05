@@ -716,6 +716,48 @@ $(document).ready(function () {
 		});
 	});
 
+	$(".ui.right.labeled.input").on('change',function (){
+		var age = $('#age_show_triage').val();
+		var vs_bp_sys1 = $("#formTriageInfo input[name=vs_bp_sys1]").val();
+		var vs_bp_dias2 = $("#formTriageInfo input[name=vs_bp_dias2]").val();
+
+		if (age >= 18) {
+			// Adult cases
+			if ((vs_bp_sys1 >= 130) && (vs_bp_dias2 >= 90)){
+				console.log('high');
+				// $('.ui.right.labeled.input input[name=vs_bp_sys1]').addClass('red');
+				// $('.ui.right.labeled.input input[name=vs_bp_dias2]').addClass('red');
+
+				$("#formTriageInfo input[name=vs_bp_sys1]").addClass("red");
+				$("#formTriageInfo input[name=vs_bp_dias2]").addClass("red");
+
+			} else {
+				// console.log('normal');
+				// $("#formTriageInfo input[name=vs_bp_sys1]").removeClass("red");
+				// $("#formTriageInfo input[name=vs_bp_dias2]").removeClass("red");
+			}
+		} else if ((age <= 17) && (age >=1)){
+			// Pediatric cases
+			if ((vs_bp_sys1 >= 130) && (vs_bp_dias2 >= 90)){
+				$("#formTriageInfo input[name=vs_bp_sys1]").addClass("red");
+				$("#formTriageInfo input[name=vs_bp_dias2]").addClass("red");
+			} else {
+				$("#formTriageInfo input[name=vs_bp_sys1]").removeClass("red");
+				$("#formTriageInfo input[name=vs_bp_dias2]").removeClass("red");
+			}
+		} else {
+			// Neonatal cases
+			if ((vs_bp_sys1 >= 130) && (vs_bp_dias2 >= 90)){
+				$("#formTriageInfo input[name=vs_bp_sys1]").addClass("red");
+				$("#formTriageInfo input[name=vs_bp_dias2]").addClass("red");
+			} else {
+				$("#formTriageInfo input[name=vs_bp_sys1]").removeClass("red");
+				$("#formTriageInfo input[name=vs_bp_dias2]").removeClass("red");
+			}
+		}
+	});
+
+
 });
 
 var nursing_date_tbl = $('#nursing_date_tbl').DataTable({
@@ -809,6 +851,7 @@ function populate_triage_currpt(obj){
 
 	$("#mrn_ti").val(obj.MRN);
 	$("#episno_ti").val(obj.Episno);
+	$("#age_show_triage").val(dob_age(obj.DOB));
 
 	// table examination
 	// urlParam_ExamTriage.filterVal[0] = obj.MRN;

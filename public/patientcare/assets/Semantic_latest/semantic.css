@@ -11866,6 +11866,12 @@ img.ui.bordered.image {
   box-shadow: none;
 }
 
+/* .ui.red.right.labeled.input input{
+	color: white !important;
+	border-color:red !important;
+	background-color:red !important;
+} */
+
 /*--------------------
       Placeholder
 ---------------------*/

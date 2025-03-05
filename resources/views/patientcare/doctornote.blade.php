@@ -1,23 +1,6 @@
 @extends('patientcare.layouts.main')
 
 @section('style')
-.ui .input.green{
-	color: white !important;
-	border-color:green !important;
-	background-color:green !important;
-}
-
-.ui .input.red{
-	color: white !important;
-	border-color:red !important;
-	background-color:red !important;
-}
-
-.ui .input.yellow{
-	color: black !important;
-	border-color:#9e9e00 !important;
-	background-color:yellow !important;
-}
 
 @endsection
 
