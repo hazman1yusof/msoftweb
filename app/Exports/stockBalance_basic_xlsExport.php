@@ -166,6 +166,8 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
             $obj->open_balval = $get_bal->open_balval;
             $obj->close_balqty = $get_bal->close_balqty;
             $obj->close_balval = $get_bal->close_balval;
+            $obj->netmvqty = $get_bal->netmvqty;
+            $obj->netmvval = $get_bal->netmvval;
 
             // $get_ivtxndt = $this->get_ivtxndt($obj,$period,$year);
             // $obj->grn_qty = $get_ivtxndt->grn_qty;
@@ -250,6 +252,8 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
         $responce->open_balval = $open_balval;
         $responce->close_balqty = $close_balqty;
         $responce->close_balval = $close_balval;
+        $responce->netmvqty = $array_obj['netmvqty'.$period];
+        $responce->netmvval = $array_obj['netmvval'.$period];
         return $responce;
     }
 

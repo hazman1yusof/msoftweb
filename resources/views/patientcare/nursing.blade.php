@@ -1,24 +1,3 @@
-@section('style')
-.green.ui.input{
-	color: white !important;
-	border-color:green !important;
-	background-color:green !important;
-}
-
-.red.ui.right.labeled.input input{
-	color: #f0ebec !important;
-	border-color: #961737 !important;
-	background-color: #961737 !important; 
-}
-
-.yellow.ui.input{
-	color: black !important;
-	border-color:#9e9e00 !important;
-	background-color:yellow !important;
-}
-
-@endsection
-
 <div class="ui segments" style="position: relative;">
     <div class="ui secondary segment bluecloudsegment">
         NURSING

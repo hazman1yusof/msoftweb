@@ -505,24 +505,25 @@ $(document).ready(function () {
 	}
 
 	function case_tui_tuo(ttype){
-		$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
-		$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
-		$("#jqGrid2").jqGrid('setColProp', 'netprice', 
-			{formatter:'currency', 
-			formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-			 editrules:{required:true}, editable:true});
-
-		$("#jqGrid2").jqGrid('setColProp', 'uomcoderecv', 
-			{ label: 'UOM Code Recv Dept', name: 'uomcoderecv', width: 130, classes: 'wrap', editable:true,
-				editrules:{required: false,custom:true, custom_func:cust_rules},
-				formatter: showdetail,
-					edittype:'custom',	editoptions:
-					    {  custom_element:uomcoderecvCustomEdit,
-					       custom_value:galGridCustomValue 	
-					    },
-			});
-
 		if(ttype.toUpperCase() == 'TUI'){
+			
+			$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
+			$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
+			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
+				{formatter:'currency', 
+				formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
+				 editrules:{required:true}, editable:true});
+
+			$("#jqGrid2").jqGrid('setColProp', 'uomcoderecv', 
+				{ label: 'UOM Code Recv Dept', name: 'uomcoderecv', width: 130, classes: 'wrap', editable:true,
+					editrules:{required: false,custom:true, custom_func:cust_rules},
+					formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:uomcoderecvCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+				});
+
 			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
 				{width: 100,editable:true,formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},edittype: 'text',editrules:{required: false,custom:false, custom_func:null},
 					editoptions: {
@@ -542,13 +543,35 @@ $(document).ready(function () {
 	                } 
 				});
 
-			$("label[for=sndrcv],label[for=sndrcvtype],#sndrcvtype_parent, #sndrcv_parent").hide();
+			$("#sndrcv_parent, label[for=sndrcv],#sndrcvtype_parent, label[for=sndrcvtype]").show();
 			hideReqRecNo();
 				
-			$("#sndrcv").removeAttr('data-validation');
-			$("#sndrcvtype").removeAttr('data-validation');
+			$("#sndrcvtype option[value='DEPARTMENT']").show();
+			$("#sndrcvtype option[value='Supplier'], #sndrcvtype option[value='Other']").hide();
+
+			$("#sndrcv").attr('data-validation', 'required');
+			$("#sndrcvtype").attr('data-validation', 'required');
+
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 		}else if(ttype.toUpperCase() == 'TUO'){
+			
+			$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
+			$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
+			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
+				{formatter:'currency', 
+				formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
+				 editrules:{required:true}, editable:true});
+
+			$("#jqGrid2").jqGrid('setColProp', 'uomcoderecv', 
+				{ label: 'UOM Code Recv Dept', name: 'uomcoderecv', width: 130, classes: 'wrap', editable:true,
+					editrules:{required: false,custom:true, custom_func:cust_rules},
+					formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:uomcoderecvCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+				});
+
 			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
 				{ width: 130, classes: 'wrap', editable:true,
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},

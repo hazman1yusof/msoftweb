@@ -386,10 +386,12 @@ class nocsrfController extends defaultController
     }
 
     public function episode_add($episode){
+        $reff_ed = null;
+        $reff_physio = null;
         if(strtoupper($episode->regdept) == 'A&E'){
             $reff_ed = 1;
-        }else{
-            $reff_ed = null;
+        }else if(strtoupper($episode->regdept) == 'PHY'){
+            $reff_physio = 1;
         }
 
         DB::table('hisdb.episode')
@@ -471,7 +473,8 @@ class nocsrfController extends defaultController
                 'adminfees' => $this->null($episode->adminfees),
                 'eddept' => $this->null($episode->eddept),
                 'payer' => $this->null($episode->payer),
-                'reff_ed' => $reff_ed
+                'reff_ed' => $reff_ed,
+                'reff_physio' => $reff_physio
             ]);
     }
 

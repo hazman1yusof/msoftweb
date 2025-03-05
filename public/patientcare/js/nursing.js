@@ -716,7 +716,7 @@ $(document).ready(function () {
 		});
 	});
 
-	$(".ui.right.labeled.input").on('change',function (){
+	$("#formTriageInfo input[name=vs_bp_sys1],#formTriageInfo input[name=vs_bp_dias2]").on('change',function (){
 		var age = $('#age_show_triage').val();
 		var vs_bp_sys1 = $("#formTriageInfo input[name=vs_bp_sys1]").val();
 		var vs_bp_dias2 = $("#formTriageInfo input[name=vs_bp_dias2]").val();
@@ -724,12 +724,11 @@ $(document).ready(function () {
 		if (age >= 18) {
 			// Adult cases
 			if ((vs_bp_sys1 >= 130) && (vs_bp_dias2 >= 90)){
-				console.log('high');
 				// $('.ui.right.labeled.input input[name=vs_bp_sys1]').addClass('red');
 				// $('.ui.right.labeled.input input[name=vs_bp_dias2]').addClass('red');
 
-				$("#formTriageInfo input[name=vs_bp_sys1]").addClass("red");
-				$("#formTriageInfo input[name=vs_bp_dias2]").addClass("red");
+				$("#formTriageInfo input[name=vs_bp_sys1]").parent('div').addClass("red");
+				$("#formTriageInfo input[name=vs_bp_dias2]").parent('div').addClass("red");
 
 			} else {
 				// console.log('normal');
@@ -739,20 +738,20 @@ $(document).ready(function () {
 		} else if ((age <= 17) && (age >=1)){
 			// Pediatric cases
 			if ((vs_bp_sys1 >= 130) && (vs_bp_dias2 >= 90)){
-				$("#formTriageInfo input[name=vs_bp_sys1]").addClass("red");
-				$("#formTriageInfo input[name=vs_bp_dias2]").addClass("red");
+				$("#formTriageInfo input[name=vs_bp_sys1]").parent('div').addClass("red");
+				$("#formTriageInfo input[name=vs_bp_dias2]").parent('div').addClass("red");
 			} else {
-				$("#formTriageInfo input[name=vs_bp_sys1]").removeClass("red");
-				$("#formTriageInfo input[name=vs_bp_dias2]").removeClass("red");
+				$("#formTriageInfo input[name=vs_bp_sys1]").parent('div').removeClass("red");
+				$("#formTriageInfo input[name=vs_bp_dias2]").parent('div').removeClass("red");
 			}
 		} else {
 			// Neonatal cases
 			if ((vs_bp_sys1 >= 130) && (vs_bp_dias2 >= 90)){
-				$("#formTriageInfo input[name=vs_bp_sys1]").addClass("red");
-				$("#formTriageInfo input[name=vs_bp_dias2]").addClass("red");
+				$("#formTriageInfo input[name=vs_bp_sys1]").parent('div').addClass("red");
+				$("#formTriageInfo input[name=vs_bp_dias2]").parent('div').addClass("red");
 			} else {
-				$("#formTriageInfo input[name=vs_bp_sys1]").removeClass("red");
-				$("#formTriageInfo input[name=vs_bp_dias2]").removeClass("red");
+				$("#formTriageInfo input[name=vs_bp_sys1]").parent('div').removeClass("red");
+				$("#formTriageInfo input[name=vs_bp_dias2]").parent('div').removeClass("red");
 			}
 		}
 	});

@@ -758,7 +758,7 @@ class SalesOrderController extends defaultController
                             ->where('uom','=',$billsum_obj->uom)
                             ->first();
                     
-                    $updinv = ($chgmast->invflag == '1')? 1 : 0;
+                    $updinv = ($chgmast->invflag == '1') ? 1 : 0;
 
                     $product = DB::table('material.product')
                                     ->where('compcode','=',session('compcode'))
@@ -1750,7 +1750,6 @@ class SalesOrderController extends defaultController
 
             }
 
-           
             DB::commit();
         
         } catch (\Exception $e) {
@@ -1793,10 +1792,8 @@ class SalesOrderController extends defaultController
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
-
             }
 
-           
             DB::commit();
         
         } catch (\Exception $e) {
@@ -2394,7 +2391,7 @@ class SalesOrderController extends defaultController
             $stockloc_first = $stockloc->first();
             $stockloc_arr = (array)$stockloc_first;
 
-            $month = defaultController::toMonth($dbacthdr->entrydate);
+            $month = defaultController::toMonth($dbacthdr->posteddate);
             $NetMvQty = floatval($stockloc_arr['netmvqty'.$month]) - floatval($curr_quan);
             $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) - floatval(floatval($curr_netprice) * floatval($curr_quan));
 
@@ -2491,7 +2488,7 @@ class SalesOrderController extends defaultController
             'uomcode' => $billsum_obj->uom,
             'txnqty' => $curr_quan,
             'adduser' => session('username'),
-            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'adddate' => $dbacthdr->entrydate,
             'netprice' => $curr_netprice,
             'saleamt' => $billsum_obj->amount,
             'productcat' => $product->first()->productcat,
@@ -2499,7 +2496,7 @@ class SalesOrderController extends defaultController
             'reqdept' => $dbacthdr->deptcode,
             'amount' => floatval(floatval($curr_netprice) * floatval($curr_quan)),
             'trantype' => 'DS',
-            'trandate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'trandate' => $dbacthdr->posteddate,
             'trxaudno' => $billsum_obj->auditno,
             'mrn' => $this->givenullifempty($dbacthdr->mrn),
             'episno' => $this->givenullifempty($dbacthdr->episno),
@@ -2560,7 +2557,7 @@ class SalesOrderController extends defaultController
             $stockloc_first = $stockloc->first();
             $stockloc_arr = (array)$stockloc_first;
 
-            $month = defaultController::toMonth($dbacthdr->entrydate);
+            $month = defaultController::toMonth($dbacthdr->posteddate);
             $NetMvQty = floatval($stockloc_arr['netmvqty'.$month]) + floatval($prev_quan) - floatval($curr_quan);
             $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) + floatval(floatval($prev_netprice) * floatval($prev_quan)) - floatval(floatval($curr_netprice) * floatval($curr_quan));
 
@@ -2684,7 +2681,7 @@ class SalesOrderController extends defaultController
             $stockloc_first = $stockloc->first();
             $stockloc_arr = (array)$stockloc_first;
 
-            $month = defaultController::toMonth($dbacthdr->entrydate);
+            $month = defaultController::toMonth($dbacthdr->posteddate);
             $NetMvQty = floatval($stockloc_arr['netmvqty'.$month]) + floatval($prev_quan);
             $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) + floatval(floatval($prev_netprice) * floatval($prev_quan));
 
@@ -2739,7 +2736,6 @@ class SalesOrderController extends defaultController
                         'year' => Carbon::now("Asia/Kuala_Lumpur")->year
                     ]);
             }
-
         }
 
         $gltran = DB::table('finance.gltran')
@@ -2835,6 +2831,7 @@ class SalesOrderController extends defaultController
 
         DB::table('material.ivdspdt')
             ->where('compcode','=',session('compcode'))
+            ->where('trantype','=','DS')
             ->where('recno','=',$billsum_obj->auditno)
             ->delete();
     }
