@@ -1097,7 +1097,7 @@ class SalesOrderDetailController extends defaultController
 
         $table = DB::table('material.uom as uom')
                     ->where('uom.compcode', '=', session('compcode'))
-                    ->where('uom.uomcode', '=', $uom)
+                    ->where('uom.uomcode', '=', $uom);
 
         $responce = new stdClass();
         $responce->rows = $table->get();
