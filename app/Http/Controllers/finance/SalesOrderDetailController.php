@@ -1080,20 +1080,24 @@ class SalesOrderDetailController extends defaultController
         $uom = $request->uom;
         $entrydate = $request->entrydate;
 
-        $table = DB::table('material.stockloc as st')
-                            ->select('st.idno','st.idno','uom.uomcode','uom.description','uom.convfactor')
-                            ->where('st.compcode', '=', session('compcode'))
-                            ->where('st.unit', '=', session('unit'))
-                            ->where('st.deptcode', '=', $deptcode)
-                            ->where('st.itemcode', '=', $chgcode)
-                            ->where('st.uomcode', '=', $uom)
-                            ->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+        // $table = DB::table('material.stockloc as st')
+        //                     ->select('st.idno','st.idno','uom.uomcode','uom.description','uom.convfactor')
+        //                     ->where('st.compcode', '=', session('compcode'))
+        //                     ->where('st.unit', '=', session('unit'))
+        //                     ->where('st.deptcode', '=', $deptcode)
+        //                     ->where('st.itemcode', '=', $chgcode)
+        //                     ->where('st.uomcode', '=', $uom)
+        //                     ->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
 
-        $table = $table->join('material.uom as uom', function($join) use ($chgcode){
-                            $join = $join->on('uom.uomcode', '=', 'st.uomcode')
-                                        ->where('uom.compcode', '=', session('compcode'))
-                                        ->where('uom.recstatus','=','ACTIVE');
-                    });
+        // $table = $table->join('material.uom as uom', function($join) use ($chgcode){
+        //                     $join = $join->on('uom.uomcode', '=', 'st.uomcode')
+        //                                 ->where('uom.compcode', '=', session('compcode'))
+        //                                 ->where('uom.recstatus','=','ACTIVE');
+        //             });
+
+        $table = DB::table('material.uom as uom')
+                    ->where('uom.compcode', '=', session('compcode'))
+                    ->where('uom.uomcode', '=', $uom)
 
         $responce = new stdClass();
         $responce->rows = $table->get();
