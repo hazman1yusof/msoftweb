@@ -70,8 +70,12 @@ $(document).ready(function () {
 				// refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 				// refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
 				button_state_ti('edit');
+				tri_color_set();
+				changeTextInputColor();
 			}else{
 				button_state_ti('add');
+				tri_color_set('empty');
+				changeTextInputColor('empty');
 				// refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 				// refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
 				if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
@@ -648,7 +652,6 @@ $(document).ready(function () {
 	// 	$("#dialognewexamFormTriage").dialog('open');
 	// });
 
-
 	$('#nursing_date_tbl tbody').on('click', 'tr', function () { 
 	    var data = nursing_date_tbl.row( this ).data();
 
@@ -724,16 +727,12 @@ $(document).ready(function () {
 		if (age >= 18) {
 			// Adult cases
 			if ((vs_bp_sys1 >= 130) && (vs_bp_dias2 >= 90)){
-				// $('.ui.right.labeled.input input[name=vs_bp_sys1]').addClass('red');
-				// $('.ui.right.labeled.input input[name=vs_bp_dias2]').addClass('red');
-
 				$("#formTriageInfo input[name=vs_bp_sys1]").parent('div').addClass("red");
 				$("#formTriageInfo input[name=vs_bp_dias2]").parent('div').addClass("red");
 
 			} else {
-				// console.log('normal');
-				// $("#formTriageInfo input[name=vs_bp_sys1]").removeClass("red");
-				// $("#formTriageInfo input[name=vs_bp_dias2]").removeClass("red");
+				$("#formTriageInfo input[name=vs_bp_sys1]").parent('div').removeClass("red");
+				$("#formTriageInfo input[name=vs_bp_dias2]").parent('div').removeClass("red");
 			}
 		} else if ((age <= 17) && (age >=1)){
 			// Pediatric cases
@@ -755,9 +754,52 @@ $(document).ready(function () {
 			}
 		}
 	});
-
-
 });
+
+function changeTextInputColor(empty){
+	if(empty == 'empty'){
+		$("#formTriageInfo input[name=vs_bp_sys1]").parent('div').removeClass("red");
+		$("#formTriageInfo input[name=vs_bp_dias2]").parent('div').removeClass("red");
+
+		$("#formTriageInfo input[name=vs_bp_sys1]").next().removeClass("red");
+		$("#formTriageInfo input[name=vs_bp_dias2]").next().removeClass("red");
+		
+	}
+	
+	var age = $('#age_show_triage').val();
+	var vs_bp_sys1 = $("#formTriageInfo input[name=vs_bp_sys1]").val();
+	var vs_bp_dias2 = $("#formTriageInfo input[name=vs_bp_dias2]").val();
+
+	if (age >= 18) {
+		// Adult cases
+		if ((vs_bp_sys1 >= 130) && (vs_bp_dias2 >= 90)){
+			$("#formTriageInfo input[name=vs_bp_sys1]").parent('div').addClass("red");
+			$("#formTriageInfo input[name=vs_bp_dias2]").parent('div').addClass("red");
+
+		} else {
+			$("#formTriageInfo input[name=vs_bp_sys1]").parent('div').removeClass("red");
+			$("#formTriageInfo input[name=vs_bp_dias2]").parent('div').removeClass("red");
+		}
+	} else if ((age <= 17) && (age >=1)){
+		// Pediatric cases
+		if ((vs_bp_sys1 >= 130) && (vs_bp_dias2 >= 90)){
+			$("#formTriageInfo input[name=vs_bp_sys1]").parent('div').addClass("red");
+			$("#formTriageInfo input[name=vs_bp_dias2]").parent('div').addClass("red");
+		} else {
+			$("#formTriageInfo input[name=vs_bp_sys1]").parent('div').removeClass("red");
+			$("#formTriageInfo input[name=vs_bp_dias2]").parent('div').removeClass("red");
+		}
+	} else {
+		// Neonatal cases
+		if ((vs_bp_sys1 >= 130) && (vs_bp_dias2 >= 90)){
+			$("#formTriageInfo input[name=vs_bp_sys1]").parent('div').addClass("red");
+			$("#formTriageInfo input[name=vs_bp_dias2]").parent('div').addClass("red");
+		} else {
+			$("#formTriageInfo input[name=vs_bp_sys1]").parent('div').removeClass("red");
+			$("#formTriageInfo input[name=vs_bp_dias2]").parent('div').removeClass("red");
+		}
+	}
+}
 
 var nursing_date_tbl = $('#nursing_date_tbl').DataTable({
 	"ajax": "",
@@ -836,6 +878,8 @@ function button_state_ti(state){
 //screen current patient//
 function populate_triage_currpt(obj){
 	emptyFormdata(errorField,"#formTriageInfo");
+	tri_color_set();
+	changeTextInputColor();
 	//panel header
 	$('#name_show_triage').text(obj.Name);
 	$('#mrn_show_triage').text(("0000000" + obj.MRN).slice(-7));
@@ -884,6 +928,8 @@ function empty_formNursing(){
 	emptyFormdata('#formTriageInfo')
 
 	button_state_ti('empty');
+	tri_color_set('empty');
+	changeTextInputColor('empty');
 	$('#name_show_triage').text('');
 	$('#mrn_show_triage').text('');
 	$('#sex_show_triage').text('');
@@ -1032,13 +1078,13 @@ var dialog_tri_col = new ordialog(
 		ondblClickRow:function(event){
 
 			$(dialog_tri_col.textfield).val(selrowData("#"+dialog_tri_col.gridname)['description']);
-			$(dialog_tri_col.textfield)
+			$(dialog_tri_col.textfield).parent('div')
 							.removeClass( "red" )
 							.removeClass( "yellow" )
 							.removeClass( "green" )
 							.addClass( selrowData("#"+dialog_tri_col.gridname)['description'] );
 
-			$(dialog_tri_col.textfield).next()
+			$(dialog_tri_col.textfield).parent('div').next()
 							.removeClass( "red" )
 							.removeClass( "yellow" )
 							.removeClass( "green" )
@@ -1067,9 +1113,9 @@ var dialog_tri_col = new ordialog(
 				}, 100 );
 			});
 
-			$( "table#othergrid_tri_col tr:nth-child(2)" ).addClass('red')
-			$( "table#othergrid_tri_col tr:nth-child(3)" ).addClass('yellow')
-			$( "table#othergrid_tri_col tr:nth-child(4)" ).addClass('green')
+			$( "table#othergrid_tri_col tr:nth-child(2)" ).parent('div').addClass('red')
+			$( "table#othergrid_tri_col tr:nth-child(3)" ).parent('div').addClass('yellow')
+			$( "table#othergrid_tri_col tr:nth-child(4)" ).parent('div').addClass('green')
 		}
 	},{
 		title:"Select Triage",
@@ -1081,18 +1127,18 @@ var dialog_tri_col = new ordialog(
 			if(!fail){
 				let desc = data.rows[0].description;
 				$(self.textfield).val(desc);
-				$(self.textfield)
+				$(self.textfield).parent('div')
 								.removeClass( "red" )
 								.removeClass( "yellow" )
 								.removeClass( "green" )
 								.addClass(desc);
 				
-				$(self.textfield).next()
+				$(self.textfield).parent('div').next()
 								.removeClass( "red" )
 								.removeClass( "yellow" )
 								.removeClass( "green" )
 								.addClass(desc);
-				$(self.textfield).parent().next('span.help-block').text('');
+				// $(self.textfield).parent().next('span.help-block').text('');
 			}
 		},
 		width:5/10 * $(window).width()
@@ -1102,19 +1148,19 @@ dialog_tri_col.makedialog();
 
 function tri_color_set(empty){
 	if(empty == 'empty'){
-		$(dialog_tri_col.textfield).removeClass( "red" ).removeClass( "yellow" ).removeClass( "green" );
+		$(dialog_tri_col.textfield).parent('div').removeClass( "red" ).removeClass( "yellow" ).removeClass( "green" );
 
-		$(dialog_tri_col.textfield).next().removeClass( "red" ).removeClass( "yellow" ).removeClass( "green" );
+		$(dialog_tri_col.textfield).parent('div').next().removeClass( "red" ).removeClass( "yellow" ).removeClass( "green" );
 	}
 
 	var color = $(dialog_tri_col.textfield).val();
-	$(dialog_tri_col.textfield)
+	$(dialog_tri_col.textfield).parent('div')
 					.removeClass( "red" )
 					.removeClass( "yellow" )
 					.removeClass( "green" )
 					.addClass( color );
 
-	$(dialog_tri_col.textfield).next()
+	$(dialog_tri_col.textfield).parent('div').next()
 					.removeClass( "red" )
 					.removeClass( "yellow" )
 					.removeClass( "green" )

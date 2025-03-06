@@ -1,23 +1,56 @@
 @extends('patientcare.layouts.main')
 
 @section('style')
-    .green.ui.input{
+    .red.ui.right.labeled.input input{
+        color: white !important;
+        border-color:red !important;
+        background-color:red !important;
+    }
+
+    .red.ui.table tr{
+        color:white;
+        background-color:red !important;
+    }
+
+    .red.ui.action.input input{
+        color: white !important;
+        border-color:red !important;
+        background-color:red !important;
+    }
+
+    .yellow.ui.right.labeled.input input{
+        color: black !important;
+        border-color:#9e9e00 !important;
+        background-color:yellow !important;
+    }
+
+    .yellow.ui.table tr{
+        background-color:yellow !important;
+    }
+
+    .yellow.ui.action.input input{
+        color: black !important;
+        border-color:#9e9e00 !important;
+        background-color:yellow !important;
+    }
+
+    .green.ui.right.labeled.input input{
         color: white !important;
         border-color:green !important;
         background-color:green !important;
     }
 
-    .red.ui.right.labeled.input input{
-        color: #f0ebec !important;
-        border-color: #961737 !important;
-        background-color: #961737 !important; 
+    .green.ui.table tr{
+        color:white;
+        background-color:green !important;
     }
 
-    .yellow.ui.input{
-        color: black !important;
-        border-color:#9e9e00 !important;
-        background-color:yellow !important;
+    .green.ui.action.input input{
+        color: white !important;
+        border-color:green !important;
+        background-color:green !important;
     }
+
 @endsection
 
 @section('content')
