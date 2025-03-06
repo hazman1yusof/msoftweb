@@ -1563,7 +1563,7 @@ class SalesOrderDetailController extends defaultController
                     ->where('uom','=',$request->uom)
                     ->first();
 
-            if($chgmast->invflag != '1'){
+            if($chgmast->invflag == '1'){
                 $stockloc = DB::table('material.stockloc')
                         ->where('compcode','=',session('compcode'))
                         ->where('uomcode','=',$request->uom)
