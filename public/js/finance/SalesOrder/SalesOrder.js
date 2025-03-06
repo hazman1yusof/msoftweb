@@ -1006,7 +1006,7 @@ $(document).ready(function () {
 				label: 'Quantity on Hand', name: 'qtyonhand', width: 100, align: 'right', classes: 'wrap txnum',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-				editrules: { required: true },editoptions:{readonly: "readonly"}
+				editrules: { required: false },editoptions:{readonly: "readonly"}
 			},
 			{ label: 'Total Amount <br>Before Tax', name: 'amount', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
@@ -1030,7 +1030,7 @@ $(document).ready(function () {
 			},
 			{ label: 'Discount Amount', name: 'discamt', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
-				editrules:{required: true},editoptions:{readonly: "readonly"},
+				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
 			{
 				label: 'Tax Amount', name: 'taxamt', width: 100, align: 'right', classes: 'wrap txnum',
