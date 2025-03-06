@@ -411,7 +411,7 @@ class DeliveryOrderController extends defaultController
                     }
                     
                     $productcat = $value->productcat;
-                    $value->amount = round($value->netunitprice * $value->qtydelivered, 2)
+                    $value->amount = round($value->netunitprice * $value->qtydelivered, 2);
 
                     $value->expdate = $this->null_date($value->expdate);
 
