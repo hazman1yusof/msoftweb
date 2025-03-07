@@ -21,10 +21,74 @@
                 
                 <div class="sixteen wide column">
                     <div class="ui segments">
-                        <div class="ui secondary segment">PRE-TRANSFER CHECK</div>
+                        <div class="ui secondary segment">
+                            PATIENT PROFILE <br> (To be filled by Ward Staff)
+                        </div>
                         <div class="ui segment">
                             <div class="ui grid">
-                                
+                                <table class="ui very basic table" style="padding-top: 15px; padding-bottom: 15px;">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="form-inline"> Reg. No <span style="margin-left: 41px;"> :  &nbsp;
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="pt_regno" name="regno">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-inline"> Diagnosis <span style="margin-left: 30px;"> :  &nbsp;
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="pt_diagnosis" name="diagnosis" size="120">
+                                                        <!-- <textarea id="pt_diagnosis" name="diagnosis" type="text" rows="5"></textarea> -->
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-inline"> Operation <span style="margin-left: 28px;"> :  &nbsp;
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="pt_operation" name="operation" size="120">
+                                                        <!-- <textarea id="pt_operation" name="operation" type="text" rows="5"></textarea> -->
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-inline"> Checked by (Ward Staff) <span style="margin-left: 20px;"> :  &nbsp;
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="pt_checkby" name="checkby" style="text-transform: uppercase;">
+                                                    </div> &nbsp; &nbsp; &nbsp;
+                                                    Date &nbsp; &nbsp; &nbsp; :  &nbsp;
+                                                    <div class="form-group">
+                                                        <input type="date" class="form-control" id="pt_date" name="date">
+                                                    </div> &nbsp; &nbsp; &nbsp;
+                                                    Contact person & HP No. &nbsp; &nbsp; &nbsp; :  &nbsp;
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="pt_contactperson" name="contactperson" size="40">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sixteen wide column">
+                    <div class="ui segments">
+                        <div class="ui secondary segment">
+                            PRE-TRANSFER CHECK <br> (Is done by the Ward Nurse before sending patient to OT and at Reception Area in OT by the OT Reception Nurse)
+                        </div>
+                        <div class="ui segment">
+                            <div class="ui grid">
+                                <!-- yang baru -->
                                 <table class="ui very basic table" style="padding-top: 15px; padding-bottom: 15px;">
                                     <thead>
                                         <tr>
@@ -38,13 +102,12 @@
                                     <tbody>
                                         <tr>
                                             <td>1</td>
-                                            <td>Patient's Name/Unknown
-                                                <label class="checkbox-inline" style="padding-left: 30px;">
-                                                    <input type="checkbox" name="pat_id" value="1">Patient's ID
-                                                </label>
-                                                <label class="checkbox-inline">
-                                                    <input type="checkbox" name="use2iden" value="1">(use two identifiers)
-                                                </label>
+                                            <td>
+                                                <label class="checkbox-inline" style="padding-left: 0px;">Patient's Name</label>
+                                                <input type="checkbox" name="pat_name" id="preop_pat_name" value="1">
+                                                
+                                                <label class="checkbox-inline">Identity Tag</label>
+                                                <input type="checkbox" name="identitytag" id="preop_identitytag" value="1">
                                             </td>
                                             <td><input type="checkbox" name="pat_ward" value="1"></td>
                                             <td><input type="checkbox" name="pat_ot" value="1"></td>
@@ -52,22 +115,15 @@
                                         </tr>
                                         <tr>
                                             <td>2</td>
-                                            <td>
-                                                <div>
-                                                    <div style="width: 45%;float: left;">
-                                                        Consent for:<br>
-                                                        <input type="checkbox" name="cons_surgery" value="1"> &nbsp; Surgery<br>
-                                                        <input type="checkbox" name="cons_anaes" value="1"> &nbsp; Anaestesia<br>
-                                                        <input type="checkbox" name="cons_trans" value="1"> &nbsp; Transfusion<br>
-                                                        <input type="checkbox" name="cons_photo" value="1"> &nbsp; Photo<br>
-                                                    </div>
-                                                    <div style="width: 45%;float: right;">
-                                                        Re-check procedure with:<br>
-                                                        <input type="checkbox" name="check_form" value="1"> &nbsp; Consent Form<br>
-                                                        <input type="checkbox" name="check_pat" value="1"> &nbsp; Patient<br>
-                                                        <input type="checkbox" name="check_list" value="1"> &nbsp; OT List<br>
-                                                    </div>
-                                                </div>
+                                            <td>Consent for
+                                                <input type="checkbox" name="cons_surgery" id="preop_cons_surgery" value="1" style="margin-left: 15px;">
+                                                <label class="checkbox-inline" style="padding-left: 5px;">Surgery</label>
+                                                
+                                                <input type="checkbox" name="cons_anaes" id="preop_cons_anaes" value="1" style="margin-left: 15px;">
+                                                <label class="checkbox-inline" style="padding-left: 5px;">Anaestesia</label>
+                                                
+                                                <input type="checkbox" name="cons_trans" id="preop_cons_trans" value="1" style="margin-left: 15px;">
+                                                <label class="checkbox-inline" style="padding-left: 5px;">Transfusion</label>
                                             </td>
                                             <td><input type="checkbox" name="cons_ward" value="1"></td>
                                             <td><input type="checkbox" name="cons_ot" value="1"></td>
@@ -75,7 +131,7 @@
                                         </tr>
                                         <tr>
                                             <td>3</td>
-                                            <td>Check side of operation
+                                            <td>Check <b>side</b> of operation
                                                 <label class="checkbox-inline" style="padding-left: 30px;">
                                                     <input type="checkbox" name="check_side_left" value="1">Left
                                                 </label>
@@ -92,7 +148,7 @@
                                         </tr>
                                         <tr>
                                             <td>4</td>
-                                            <td>Side of operation marked?
+                                            <td>Site (location) of operation marked?
                                                 <label class="radio-inline" style="padding-left: 30px;">
                                                     <input type="radio" name="side_op_mark" value="1">Yes
                                                 </label>
@@ -110,10 +166,12 @@
                                         <tr>
                                             <td>5</td>
                                             <td>
-                                                <div class="form-inline"> Last meal &nbsp;
+                                                <div class="form-inline"> Last meal : &nbsp;
+                                                    Date &nbsp;
                                                     <div class="form-group">
                                                         <input type="date" class="form-control" id="lastmeal_date" name="lastmeal_date">
                                                     </div>  &nbsp;
+                                                    Time &nbsp;
                                                     <div class="form-group">
                                                         <input type="time" class="form-control" id="lastmeal_time" name="lastmeal_time">
                                                     </div>
@@ -125,102 +183,43 @@
                                         </tr>
                                         <tr>
                                             <td>6</td>
-                                            <td>Check for dentures, jewellery, contact lenses, implant/foreign body etc.<br>
-                                                <i>(for person in charge of removing the item(s), to write their name and quantity of item in the remarks)</i><br>
-                                                <label class="checkbox-inline" style="padding-left: 30px;">
-                                                    <input type="checkbox" name="check_item_na" value="1">NA
-                                                </label>
-                                            </td>
+                                            <td>Check for dentures, jewellery, contact lenses etc. :</td>
                                             <td><input type="checkbox" name="check_item_ward" value="1"></td>
                                             <td><input type="checkbox" name="check_item_ot" value="1"></td>
                                             <td><textarea class="form-control input-sm" id="check_item_remark" name="check_item_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>7</td>
-                                            <td>Allergies?
-                                                <label class="radio-inline" style="padding-left: 30px;">
-                                                    <input type="radio" name="allergies" value="1">Yes
-                                                </label>
-                                                <label class="radio-inline">
-                                                    <input type="radio" name="allergies" value="0">No
-                                                </label>
-                                            </td>
-                                            <td><input type="checkbox" name="allergies_ward" value="1"></td>
-                                            <td><input type="checkbox" name="allergies_ot" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="allergies_remark" name="allergies_remark"></textarea></td>
-                                        </tr>
-                                        <tr>
-                                            <td>8</td>
-                                            <td>Availability of implant/prosthesis?
-                                                <label class="radio-inline" style="padding-left: 30px;">
-                                                    <input type="radio" name="implant_avlblt" value="1">Yes
-                                                </label>
-                                                <label class="radio-inline">
-                                                    <input type="radio" name="implant_avlblt" value="0">No
-                                                </label>
-                                            </td>
-                                            <td><input type="checkbox" name="implant_ward" value="1"></td>
-                                            <td><input type="checkbox" name="implant_ot" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="implant_remark" name="implant_remark"></textarea></td>
-                                        </tr>
-                                        <tr>
-                                            <td>9</td>
-                                            <td>Premedication (drug,dose,route and time given)  &nbsp;
-                                                <label class="checkbox-inline">
-                                                    <input type="checkbox" name="premed_na" value="1">NA
-                                                </label>
-                                            </td>
+                                            <td>Premedication (write drug given)</td>
                                             <td><input type="checkbox" name="premed_ward" value="1"></td>
                                             <td><input type="checkbox" name="premed_ot" value="1"></td>
                                             <td><textarea class="form-control input-sm" id="premed_remark" name="premed_remark"></textarea></td>
                                         </tr>
                                         <tr>
-                                            <td>10</td>
-                                            <td>Blood or Blood product availability (write what is available)  &nbsp;
-                                                <label class="checkbox-inline">
-                                                    <input type="checkbox" name="blood_na" value="1">NA
-                                                </label>
-                                            </td>
+                                            <td>8</td>
+                                            <td>Blood availability (write what is available)</td>
                                             <td><input type="checkbox" name="blood_ward" value="1"></td>
                                             <td><input type="checkbox" name="blood_ot" value="1"></td>
                                             <td><textarea class="form-control input-sm" id="blood_remark" name="blood_remark"></textarea></td>
                                         </tr>
                                         <tr>
-                                            <td>11</td>
-                                            <td>Case notes  &nbsp;
-                                                <label class="checkbox-inline">
-                                                    <input type="checkbox" name="casenotes_na" value="1">NA
-                                                </label>
+                                            <td>9</td>
+                                            <td>
+                                                <label class="checkbox-inline" style="padding-left: 0px;">Case notes</label>
+                                                <input type="checkbox" name="casenotes" id="preop_casenotes" value="1">
+                                                
+                                                <label class="checkbox-inline">Old notes</label>
+                                                <input type="checkbox" name="oldnotes" id="preop_oldnotes" value="1">
+                                                
+                                                <label class="checkbox-inline">X-rays</label>
+                                                <input type="checkbox" name="xrays" id="preop_xrays" value="1">
                                             </td>
                                             <td><input type="checkbox" name="casenotes_ward" value="1"></td>
                                             <td><input type="checkbox" name="casenotes_ot" value="1"></td>
                                             <td><textarea class="form-control input-sm" id="casenotes_remark" name="casenotes_remark"></textarea></td>
                                         </tr>
                                         <tr>
-                                            <td>12</td>
-                                            <td>Old notes  &nbsp;
-                                                <label class="checkbox-inline">
-                                                    <input type="checkbox" name="oldnotes_na" value="1">NA
-                                                </label>
-                                            </td>
-                                            <td><input type="checkbox" name="oldnotes_ward" value="1"></td>
-                                            <td><input type="checkbox" name="oldnotes_ot" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="oldnotes_remark" name="oldnotes_remark"></textarea></td>
-                                        </tr>
-                                        <tr>
-                                            <td>13</td>
-                                            <td>Imaging Study <small>(To specify other document(s) and type of imaging studies in the remarks)</small>  &nbsp;
-                                                <label class="checkbox-inline">
-                                                    <input type="checkbox" name="imaging_na" value="1">NA
-                                                </label>
-                                            </td>
-                                            <td><input type="checkbox" name="imaging_ward" value="1"></td>
-                                            <td><input type="checkbox" name="imaging_ot" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="imaging_remark" name="imaging_remark"></textarea></td>
-                                        </tr>
-                                        <tr>
-                                            <!-- vital sign -->
-                                            <td>14</td>
+                                            <td>10</td>
                                             <td>
                                                 <div class="form-inline"> B/P:  &nbsp;
                                                     <div class="form-group">
@@ -233,10 +232,6 @@
                                                     <div class="form-group">
                                                         <input type="text" class="form-control" id="pulse" name="pulse" size="4">
                                                     </div> &nbsp; bpm &nbsp; &nbsp;
-                                                    Temperature:  &nbsp;
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" id="temperature" name="temperature" size="4">
-                                                    </div> &nbsp; °C &nbsp; &nbsp;
                                                 </div>
                                             </td>
                                             <td><input type="checkbox" name="vs_ward" value="1"></td>
@@ -244,24 +239,49 @@
                                             <td><textarea class="form-control input-sm" id="vs_remark" name="vs_remark"></textarea></td>
                                         </tr>
                                         <tr>
-                                            <td>15</td>
-                                            <td>Others:  &nbsp;
-                                                <label class="checkbox-inline">
-                                                    <input type="checkbox" name="others_na" value="1">NA
-                                                </label>
+                                            <td>11</td>
+                                            <td>Pre-operation visit done by surgeon</td>
+                                            <td><input type="checkbox" name="preopvisit_ward" value="1"></td>
+                                            <td><input type="checkbox" name="preopvisit_ot" value="1"></td>
+                                            <td><textarea class="form-control input-sm" id="preopvisit_remark" name="preopvisit_remark"></textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4">
+                                                <div class="form-inline">
+                                                    <i>Handed over by (Ward Nurse): </i> &nbsp;
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="wardnurse" name="wardnurse" size="120" style="text-transform: uppercase;">
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="form-inline">
+                                                    <i>Received by (OT Nurse): </i> &nbsp;
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="otnurse" name="otnurse" size="120" style="text-transform: uppercase;">
+                                                    </div>
+                                                </div>
                                             </td>
-                                            <td><input type="checkbox" name="others_ward" value="1"></td>
-                                            <td><input type="checkbox" name="others_ot" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="others_remark" name="others_remark"></textarea></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>12</td>
+                                            <td colspan="4">
+                                                <div class="form-inline">
+                                                    Last Menstrual Period (LMP) &nbsp;
+                                                    <div class="form-group">
+                                                        <input type="date" class="form-control" id="lmp" name="lmp">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                
-                                <div class="field ten wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
-                                    <label>Any important issues to be highlighted</label>
-                                    <textarea id="imprtnt_issues" name="imprtnt_issues"></textarea>
-                                </div>
-                                
                             </div>
                         </div>
                     </div>
@@ -269,28 +289,16 @@
                 
                 <div class="sixteen wide column">
                     <div class="ui segments">
-                        <div class="ui secondary segment">INFORMATION ON OPERATING ROOM / SURGEON / TIME OF SURGERY</div>
+                        <div class="ui secondary segment">
+                            INFORMATION ON OPERATING ROOM / SURGEON / TIME OF SURGERY <br> (Written in OR by Circulating Nurse)
+                        </div>
                         <div class="ui segment">
                             <div class="ui grid">
-                                
                                 <table class="ui very basic table" style="padding-top: 15px; padding-bottom: 15px;">
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <div class="form-inline"> Temperature <span style="margin-left: 48px;"> :  &nbsp;
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" id="info_temperature" name="info_temperature" size="4">
-                                                    </div> &nbsp; °C &nbsp; &nbsp; <span style="margin-left: 60px;">
-                                                    Humidity &nbsp; &nbsp; &nbsp; :  &nbsp;
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" id="info_humidity" name="info_humidity" size="4">
-                                                    </div> &nbsp; <span class="glyphicon glyphicon-tint"> &nbsp; &nbsp;
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-inline"> OT Room <span style="margin-left: 69px;"> :  &nbsp;
+                                                <div class="form-inline"> Operating room no <span style="margin-left: 10px;"> :  &nbsp;
                                                     <div class="form-group">
                                                         <select name="info_otroom" id="info_otroom" class="form-control input-sm">
                                                             <option value=""></option>
@@ -304,7 +312,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <div class="form-inline"> Anaesthetist(s) <span style="margin-left: 34px;"> :  &nbsp;
+                                                <div class="form-inline"> Anaesthetist <span style="margin-left: 50px;"> :  &nbsp;
                                                     <div class="input-group">
                                                         <input type="text" class="form-control" name="desc_anaesthetist" id="desc_anaesthetist" size="40" tabindex=4>
                                                         <input type="hidden" id="info_anaesthetist" name="info_anaesthetist"/>
@@ -317,7 +325,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <div class="form-inline"> Surgeon <span style="margin-left: 76px;"> :  &nbsp;
+                                                <div class="form-inline"> Surgeons <span style="margin-left: 71px;"> :  &nbsp;
                                                     <div class="input-group">
                                                         <input type="text" class="form-control" name="desc_surgeon" id="desc_surgeon" size="40" tabindex=4>
                                                         <input type="hidden" id="info_surgeon" name="info_surgeon"/>
@@ -330,20 +338,19 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <div class="form-inline"> Asst. Surgeon <span style="margin-left: 44px;"> :  &nbsp;
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" name="desc_asstsurgeon" id="desc_asstsurgeon" size="40" tabindex=4>
-                                                        <input type="hidden" id="info_asstsurgeon" name="info_asstsurgeon"/>
-                                                        <span class="input-group-btn">
-                                                            <button type="button" class="btn btn-info" id="btn_asstsurgeon" data-toggle="modal" onclick_xguna="pop_item_select('asstsurgeon');"><span class="fa fa-ellipsis-h"></span></button>
-                                                        </span>
+                                                <div class="form-inline"> Time start <span style="margin-left: 65px;"> :  &nbsp;
+                                                    <div class="form-group">
+                                                        <input type="time" class="form-control" id="info_starttime" name="starttime">
+                                                    </div> &nbsp; &nbsp; &nbsp;
+                                                    Time complete &nbsp; &nbsp; &nbsp; :  &nbsp;
+                                                    <div class="form-group">
+                                                        <input type="time" class="form-control" id="info_endtime" name="endtime">
                                                     </div>
                                                 </div>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                
                             </div>
                         </div>
                     </div>
