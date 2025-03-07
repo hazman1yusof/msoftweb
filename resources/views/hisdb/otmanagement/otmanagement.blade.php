@@ -343,7 +343,20 @@
         </div>
     </div>
     
-    @include('patientcare.itemselector')
+    <!-- @include('patientcare.itemselector') -->
+
+    <div id="mdl_item_selector2" title="Select Item" >
+      <div class="content">
+            <table id="tbl_item_select" class="ui celled table" width="100%">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+            </table>
+      </div>
+    </div>
 
 @endsection
 

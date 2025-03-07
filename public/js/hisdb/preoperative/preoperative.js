@@ -369,6 +369,82 @@ function textfield_modal(){
     }
     
     this.dontcheck = false;
+
+    function pop_item_select(type,ontab=false,text_val,obj){
+        var act = null;
+        var id = id;
+        var rowid = rowid;
+        var selecter = null;
+        var title="Item selector";
+        var mdl = null;
+        var text_val = $('input#'+id).val();
+        
+        act = get_url(type);
+        
+        // $('#mdl_item_selector').modal({
+        //     'closable':false,
+        //     onHidden : function (){
+        //         $('#tbl_item_select').html('');
+        //         selecter.destroy();
+        //     },
+        // }).modal('show');
+        // $('body,#mdl_item_selector').addClass('scrolling');
+        
+        selecter = $('#tbl_item_select').DataTable({
+            "ajax": "./preoperative/get_entry?action=" + act,
+            "ordering": false,
+            "lengthChange": false,
+            "info": true,
+            "pagingType": "numbers",
+            "search": {
+                "smart": true,
+                "search": text_val
+            },
+            "columns": [
+                {'data': 'code'},
+                {'data': 'description'}
+            ],
+            "columnDefs": [{
+                "width": "20%",
+                "targets": 0,
+                "data": "code",
+                "render": function (data, type, row, meta){
+                    return data;
+                }
+            }],
+            "initComplete": function (oSettings, json){
+                delay(function (){
+                    $('div.dataTables_filter input', selecter.table().container()).get(0).focus();
+                }, 10);
+            },
+        });
+
+        $("#mdl_item_selector2").dialog({
+            width: 6/10 * $(window).width(),
+            modal: true,
+            autoOpen: false,
+            position: { my: "top", at: "top", of: window },
+            open: function( event, ui ) {
+
+            },
+            beforeClose: function(event, ui){
+
+            },
+            close: function( event, ui ) {
+                $('#tbl_item_select').html('');
+                selecter.destroy();
+            }
+         });
+        
+        // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
+        $('#tbl_item_select tbody').on('dblclick', 'tr', function (){
+            item = selecter.row( this ).data();
+            $('input[name=desc_'+type+']').val(item["description"]);
+            $('input[name=info_'+type+']').val(item["code"]);
+            // $('#mdl_item_selector').modal('hide');
+            $("#mdl_item_selector2").dialog('close');
+        });
+    }
     
     function onTab(event){
         var obj = event.data.data;
@@ -377,8 +453,9 @@ function textfield_modal(){
         var id_use = id_.substring(id_.indexOf("_")+1);
         
         if(event.key == "Tab" && textfield.val() != ""){
-            $('#mdl_item_selector').modal('show');
+            // $('#mdl_item_selector').modal('show');
             pop_item_select(id_use,true,textfield.val(),obj);
+            $("#mdl_item_selector2").dialog('open');
             obj.dontcheck = true;
         }
     }
@@ -389,8 +466,9 @@ function textfield_modal(){
         var id_ = textfield.attr('id');
         var id_use = id_.substring(id_.indexOf("_")+1);
         
-        $('#mdl_item_selector').modal('show');
+        // $('#mdl_item_selector').modal('show');
         pop_item_select(id_use,false,textfield.val(),obj);
+        $("#mdl_item_selector2").dialog('open');
         obj.dontcheck = true;
     }
     
@@ -432,64 +510,6 @@ function textfield_modal(){
             }
         }
         obj.dontcheck = false;
-    }
-    
-    function pop_item_select(type,ontab=false,text_val,obj){
-        var act = null;
-        var id = id;
-        var rowid = rowid;
-        var selecter = null;
-        var title="Item selector";
-        var mdl = null;
-        var text_val = $('input#'+id).val();
-        
-        act = get_url(type);
-        
-        $('#mdl_item_selector').modal({
-            'closable':false,
-            onHidden : function (){
-                $('#tbl_item_select').html('');
-                selecter.destroy();
-            },
-        }).modal('show');
-        $('body,#mdl_item_selector').addClass('scrolling');
-        
-        selecter = $('#tbl_item_select').DataTable({
-                "ajax": "./preoperative/get_entry?action=" + act,
-                "ordering": false,
-                "lengthChange": false,
-                "info": true,
-                "pagingType": "numbers",
-                "search": {
-                    "smart": true,
-                    "search": text_val
-                },
-                "columns": [
-                    {'data': 'code'},
-                    {'data': 'description'}
-                ],
-                "columnDefs": [{
-                    "width": "20%",
-                    "targets": 0,
-                    "data": "code",
-                    "render": function (data, type, row, meta){
-                        return data;
-                    }
-                }],
-                "initComplete": function (oSettings, json){
-                    delay(function (){
-                        $('div.dataTables_filter input', selecter.table().container()).get(0).focus();
-                    }, 10);
-                },
-        });
-        
-        // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
-        $('#tbl_item_select tbody').on('dblclick', 'tr', function (){
-            item = selecter.row( this ).data();
-            $('input[name=desc_'+type+']').val(item["description"]);
-            $('input[name=info_'+type+']').val(item["code"]);
-            $('#mdl_item_selector').modal('hide');
-        });
     }
 }
 
