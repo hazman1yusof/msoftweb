@@ -142,7 +142,7 @@
             </div>
         </div>
     </div>
-
+    
     <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="preoperativeDC_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_preoperativeDC">
             <b>NAME: <span id="name_show_preoperativeDC"></span></b> <br>

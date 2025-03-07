@@ -1,64 +1,59 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
-var editedRow=0;
+var editedRow = 0;
 
-$(document).ready(function () {
-
+$(document).ready(function (){
+    
     textare_init_preoperative();
     
     var fdl = new faster_detail_load();
     
     disableForm('#form_preoperative');
     
-    $("#new_preoperative").click(function(){
+    $("#new_preoperative").click(function (){
         $('#cancel_preoperative').data('oper','add');
         button_state_preoperative('wait');
         enableForm('#form_preoperative');
         rdonly('#form_preoperative');
         // emptyFormdata_div("#form_preoperative",['#mrn_preoperative','#episno_preoperative']);
         // dialog_mrn_edit.on();
-        
     });
     
-    $("#edit_preoperative").click(function(){
+    $("#edit_preoperative").click(function (){
         button_state_preoperative('wait');
         enableForm('#form_preoperative');
         rdonly('#form_preoperative');
         // dialog_mrn_edit.on();
-        
     });
     
-    $("#save_preoperative").click(function(){
-        if( $('#form_preoperative').isValid({requiredFields: ''}, conf, true) ) {
-            saveForm_preoperative(function(data){
+    $("#save_preoperative").click(function (){
+        if($('#form_preoperative').isValid({requiredFields: ''}, conf, true)){
+            saveForm_preoperative(function (data){
                 // emptyFormdata_div("#form_preoperative",['#mrn_preoperative','#episno_preoperative']);
                 disableForm('#form_preoperative');
-                
             });
         }else{
             enableForm('#form_preoperative');
             rdonly('#form_preoperative');
         }
-        
     });
     
-    $("#cancel_preoperative").click(function(){
+    $("#cancel_preoperative").click(function (){
         // emptyFormdata_div("#form_preoperative",['#mrn_preoperative','#episno_preoperative']);
         disableForm('#form_preoperative');
         button_state_preoperative($(this).data('oper'));
         getdata_preoperative();
         // dialog_mrn_edit.off();
-        
     });
     
-    // $("#side_op_na").change(function(){
+    // $("#side_op_na").change(function (){
     //     $('input[name="side_op_mark"]').removeAttr("checked");
     // });
     
-    $("#side_op_na").click(function(){
+    $("#side_op_na").click(function (){
         if($('#side_op_na').is(":checked")){
-            $("input[name='side_op_mark']").each(function(){
+            $("input[name='side_op_mark']").each(function (){
                 if(($(this).val() == "1") || ($(this).val() == "0")){
                     $(this).prop("checked",false);
                 }
@@ -66,24 +61,24 @@ $(document).ready(function () {
         }
     });
     
-    $("input[name='side_op_mark']").click(function(){
+    $("input[name='side_op_mark']").click(function (){
         if($(this).is(':checked')){
             $("#side_op_na").prop("checked", false);
         }
     })
     
     // to format number input to two decimal places (0.00)
-    $(".floatNumberField").change(function() {
+    $(".floatNumberField").change(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
     });
     
     // to limit to two decimal places (onkeypress)
-    $(document).on('keydown', 'input[pattern]', function(e){
+    $(document).on('keydown', 'input[pattern]', function (e){
         var input = $(this);
         var oldVal = input.val();
         var regex = new RegExp(input.attr('pattern'), 'g');
         
-        setTimeout(function(){
+        setTimeout(function (){
             var newVal = input.val();
             if(!regex.test(newVal)){
                 input.val(oldVal);
@@ -95,12 +90,12 @@ $(document).ready(function () {
 
 var errorField = [];
 conf = {
-    modules : 'logic',
+    modules: 'logic',
     language: {
         requiredFields: 'You have not answered all required fields'
     },
-    onValidate: function ($form) {
-        if (errorField.length > 0) {
+    onValidate: function ($form){
+        if(errorField.length > 0){
             return {
                 element: $(errorField[0]),
                 message: ''
@@ -202,12 +197,12 @@ function populate_preoperative(obj){
 }
 
 function autoinsert_rowdata(form,rowData){
-    $.each(rowData, function( index, value ) {
-        var input=$(form+" [name='"+index+"']");
+    $.each(rowData, function (index, value){
+        var input = $(form+" [name='"+index+"']");
         if(input.is("[type=radio]")){
             $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
         }else if(input.is("[type=checkbox]")){
-            if(value==1){
+            if(value == 1){
                 $(form+" [name='"+index+"']").prop('checked', true);
             }
         }else if(input.is("textarea")){
@@ -223,9 +218,9 @@ function autoinsert_rowdata(form,rowData){
 
 function saveForm_preoperative(callback){
     let oper = $("#cancel_preoperative").data('oper');
-    var saveParam={
-        action:'save_table_preoperative',
-        oper:oper,
+    var saveParam = {
+        action: 'save_table_preoperative',
+        oper: oper,
     }
     
     if(oper == 'add'){
@@ -236,62 +231,62 @@ function saveForm_preoperative(callback){
         // saveParam.recordtime = row.recordtime;
     }
     
-    var postobj={
-        _token : $('#_token').val(),
-        // sex_edit : $('#sex_edit').val(),
-        // idtype_edit : $('#idtype_edit').val()
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
     };
     
     values = $("#form_preoperative").serializeArray();
     
     values = values.concat(
         $('#form_preoperative input[type=checkbox]:not(:checked)').map(
-        function() {
+        function (){
             return {"name": this.name, "value": 0}
         }).get()
     );
     
     values = values.concat(
         $('#form_preoperative input[type=checkbox]:checked').map(
-        function() {
+        function (){
             return {"name": this.name, "value": 1}
         }).get()
     );
     
     values = values.concat(
         $('#form_preoperative input[type=radio]:checked').map(
-        function() {
+        function (){
             return {"name": this.name, "value": this.value}
         }).get()
     );
     
     values = values.concat(
         $('#form_preoperative select').map(
-        function() {
+        function (){
             return {"name": this.name, "value": this.value}
         }).get()
     );
     
-    $.post( "./preoperative/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post("./preoperative/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
-    },'json').done(function(data) {
+    },'json').done(function (data){
         callback(data);
         button_state_preoperative('edit');
-    }).fail(function(data){
+    }).fail(function (data){
         callback(data);
         button_state_preoperative($(this).data('oper'));
     });
 }
 
 function textare_init_preoperative(){
-    $('textarea#pat_remark,textarea#cons_remark,textarea#check_side_remark,textarea#side_op_remark,textarea#lastmeal_remark,textarea#check_item_remark,textarea#allergies_remark,textarea#implant_remark,textarea#premed_remark,textarea#blood_remark,textarea#casenotes_remark,textarea#oldnotes_remark,textarea#imaging_remark,textarea#vs_remark,textarea#others_remark,textarea#preopvisit_remark,textarea#imprtnt_issues').each(function () {
+    $('textarea#pat_remark,textarea#cons_remark,textarea#check_side_remark,textarea#side_op_remark,textarea#lastmeal_remark,textarea#check_item_remark,textarea#allergies_remark,textarea#implant_remark,textarea#premed_remark,textarea#blood_remark,textarea#casenotes_remark,textarea#oldnotes_remark,textarea#imaging_remark,textarea#vs_remark,textarea#others_remark,textarea#preopvisit_remark,textarea#imprtnt_issues').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
             this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }
-    }).off().on('input', function () {
-        if(this.scrollHeight>40){
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + 'px';
         }else{
@@ -300,7 +295,7 @@ function textare_init_preoperative(){
     });
 }
 
-$('#tab_preoperative').on('shown.bs.collapse', function () {
+$('#tab_preoperative').on('shown.bs.collapse', function (){
     SmoothScrollTo('#tab_preoperative', 300,114);
     
     if($('#mrn_preoperative').val() != ''){
@@ -308,27 +303,27 @@ $('#tab_preoperative').on('shown.bs.collapse', function () {
     }
 });
 
-$('#tab_preoperative').on('hide.bs.collapse', function () {
+$('#tab_preoperative').on('hide.bs.collapse', function (){
     emptyFormdata_div("#form_preoperative",['#mrn_preoperative','#episno_preoperative']);
     button_state_preoperative('empty');
 });
 
 function getdata_preoperative(){
-    var urlparam={
-        action:'get_table_preoperative',
+    var urlparam = {
+        action: 'get_table_preoperative',
     }
     
-    var postobj={
-        _token : $('#_token').val(),
-        mrn:$('#mrn_preoperative').val(),
-        episno:$("#episno_preoperative").val()
+    var postobj = {
+        _token: $('#_token').val(),
+        mrn: $('#mrn_preoperative').val(),
+        episno: $("#episno_preoperative").val()
     };
     
-    $.post( "./preoperative/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+    $.post("./preoperative/form?"+$.param(urlparam), $.param(postobj), function (data){
         
     },'json').fail(function(data) {
         alert('there is an error');
-    }).done(function(data){
+    }).done(function (data){
         if(!$.isEmptyObject(data)){
             button_state_preoperative('edit');
             autoinsert_rowdata("#form_preoperative",data.preop);
@@ -361,15 +356,15 @@ textfield_modal.clicking();
 function textfield_modal(){
     this.textfield_array = ['#info_anaesthetist','#info_surgeon','#info_asstsurgeon'];
     
-    this.ontabbing = function(){
+    this.ontabbing = function (){
         $("#info_anaesthetist,#info_surgeon,#info_asstsurgeon").on('keydown',{data:this},onTab);
     }
     
-    this.checking = function(){
+    this.checking = function (){
         $("#info_anaesthetist,#info_surgeon,#info_asstsurgeon").on('blur',{data:this},onCheck);
     }
     
-    this.clicking = function(){
+    this.clicking = function (){
         $("#btn_anaesthetist,#btn_surgeon,#btn_asstsurgeon").on('click',{data:this},onClick);
     }
     
@@ -425,10 +420,10 @@ function textfield_modal(){
             
             var act = get_url(id_use);
             if(search.trim() != ""){
-                $.get( "./preoperative/get_entry?action="+act+"&search="+search, function( data ) {
+                $.get("./preoperative/get_entry?action="+act+"&search="+search, function (data){
                     
-                },'json').done(function(data) {
-                    if(!$.isEmptyObject(data) && data.data!=null){
+                },'json').done(function (data){
+                    if(!$.isEmptyObject(data) && data.data != null){
                         myerrorIt_only('#'+id_,false);
                     }else{
                         myerrorIt_only('#'+id_,true);
@@ -452,19 +447,19 @@ function textfield_modal(){
         
         $('#mdl_item_selector').modal({
             'closable':false,
-            onHidden : function(){
+            onHidden : function (){
                 $('#tbl_item_select').html('');
                 selecter.destroy();
             },
         }).modal('show');
         $('body,#mdl_item_selector').addClass('scrolling');
         
-        selecter = $('#tbl_item_select').DataTable( {
+        selecter = $('#tbl_item_select').DataTable({
                 "ajax": "./preoperative/get_entry?action=" + act,
                 "ordering": false,
                 "lengthChange": false,
                 "info": true,
-                "pagingType" : "numbers",
+                "pagingType": "numbers",
                 "search": {
                     "smart": true,
                     "search": text_val
@@ -473,23 +468,23 @@ function textfield_modal(){
                     {'data': 'code'},
                     {'data': 'description'}
                 ],
-                "columnDefs": [ {
+                "columnDefs": [{
                     "width": "20%",
                     "targets": 0,
                     "data": "code",
-                    "render": function ( data, type, row, meta ) {
+                    "render": function (data, type, row, meta){
                         return data;
                     }
-                } ],
-                "initComplete": function(oSettings, json) {
-                    delay(function(){
+                }],
+                "initComplete": function (oSettings, json){
+                    delay(function (){
                         $('div.dataTables_filter input', selecter.table().container()).get(0).focus();
-                    }, 10 );
+                    }, 10);
                 },
         });
         
         // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
-        $('#tbl_item_select tbody').on('dblclick', 'tr', function () {
+        $('#tbl_item_select tbody').on('dblclick', 'tr', function (){
             item = selecter.row( this ).data();
             $('input[name=desc_'+type+']').val(item["description"]);
             $('input[name=info_'+type+']').val(item["code"]);
@@ -498,12 +493,12 @@ function textfield_modal(){
     }
 }
 
-function loading_desc_epis(obj){ //loading description dia sebab save code dia je
-    this.code_fields=obj;
-    this.anaesthetist={code:'code',desc:'description'};//data simpan dekat dalam ni
-    this.surgeon={code:'code',desc:'description'};//data simpan dekat dalam ni
-    this.asstsurgeon={code:'code',desc:'description'};//data simpan dekat dalam ni
-    this.load_desc = function(){
+function loading_desc_epis(obj){ // loading description dia sebab save code dia je
+    this.code_fields = obj;
+    this.anaesthetist = {code:'code',desc:'description'}; // data simpan dekat dalam ni
+    this.surgeon = {code:'code',desc:'description'}; // data simpan dekat dalam ni
+    this.asstsurgeon = {code:'code',desc:'description'}; // data simpan dekat dalam ni
+    this.load_desc = function (){
         load_for_desc(this,'anaesthetist','preoperative/get_entry?action=get_reg_doctor');
         load_for_desc(this,'surgeon','preoperative/get_entry?action=get_reg_doctor');
         load_for_desc(this,'asstsurgeon','preoperative/get_entry?action=get_reg_doctor');
@@ -515,9 +510,9 @@ function loading_desc_epis(obj){ //loading description dia sebab save code dia j
         
         if(!storage_obj){
             $.ajaxSetup({async: false});
-            $.get( url, function( data ) {
+            $.get(url, function (data){
                 
-            },'json').done(function(data) {
+            },'json').done(function (data){
                 if(!$.isEmptyObject(data)){
                     selobj[id].data = data.data;
                     
@@ -534,12 +529,12 @@ function loading_desc_epis(obj){ //loading description dia sebab save code dia j
             });
         }else{
             let obj_stored = {
-                'json':JSON.parse(storage_obj),
+                'json': JSON.parse(storage_obj),
             }
             
             selobj[id].data = obj_stored.json.description
             
-            //remove storage after 7 days
+            // remove storage after 7 days
             let moment_stored = obj_stored.json.timestamp;
             if(moment().diff(moment(moment_stored),'days') > 7){
                 localStorage.removeItem(storage_name);
@@ -547,21 +542,21 @@ function loading_desc_epis(obj){ //loading description dia sebab save code dia j
         }
     }
     
-    this.write_desc = function(){
-        self=this;
-        obj.forEach(function(elem){
+    this.write_desc = function (){
+        self = this;
+        obj.forEach(function (elem){
             if($(elem.code).val().trim() != ""){
                 $(elem.desc).val(self.get_desc($(elem.code).val(),elem.id,elem.desc));
             }
         });
     }
     
-    this.get_desc = function(search_code,id,inp){
+    this.get_desc = function (search_code,id,inp){
         let code_ = this[id].code;
         let desc_ = this[id].desc;
-        let retdata="";
+        let retdata = "";
         
-        retdata = this[id].data.find(function(obj){
+        retdata = this[id].data.find(function (obj){
             return obj[code_] == search_code;
         });
         
