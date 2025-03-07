@@ -5,7 +5,7 @@ var editedRow=0;
 
 $(document).ready(function () {
 
-    textare_init_preoperative();
+    textare_init_preoperativeDC();
     
     var fdl = new faster_detail_load();
     
@@ -29,7 +29,7 @@ $(document).ready(function () {
         
     });
     
-    $("#save_preoperative").click(function(){
+    $("#save_preoperativeDC").click(function(){
         if( $('#form_preoperativeDC').isValid({requiredFields: ''}, conf, true) ) {
             saveForm_preoperativeDC(function(data){
                 // emptyFormdata_div("#form_preoperativeDC",['#mrn_preoperativeDC','#episno_preoperativeDC']);
@@ -47,7 +47,7 @@ $(document).ready(function () {
         // emptyFormdata_div("#form_preoperativeDC",['#mrn_preoperativeDC','#episno_preoperativeDC']);
         disableForm('#form_preoperativeDC');
         button_state_preoperativeDC($(this).data('oper'));
-        getdata_preoperative();
+        getdata_preoperativeDC();
         // dialog_mrn_edit.off();
         
     });
@@ -114,30 +114,30 @@ function button_state_preoperativeDC(state){
     // empty_transaction('add');
     switch(state){
         case 'empty':
-            $("#toggle_preoperative").removeAttr('data-toggle');
+            $("#toggle_preoperativeDC").removeAttr('data-toggle');
             $('#cancel_preoperativeDC').data('oper','add');
-            $('#new_preoperativeDC,#save_preoperative,#cancel_preoperativeDC,#edit_preoperativeDC,#btn_anaesthetist,#btn_surgeon,#btn_asstsurgeon').attr('disabled',true);
+            $('#new_preoperativeDC,#save_preoperativeDC,#cancel_preoperativeDC,#edit_preoperativeDC').attr('disabled',true);
             break;
         case 'add':
-            $("#toggle_preoperative").attr('data-toggle','collapse');
+            $("#toggle_preoperativeDC").attr('data-toggle','collapse');
             $('#cancel_preoperativeDC').data('oper','add');
             $("#new_preoperativeDC").attr('disabled',false);
-            $('#save_preoperative,#cancel_preoperativeDC,#edit_preoperativeDC,#btn_anaesthetist,#btn_surgeon,#btn_asstsurgeon').attr('disabled',true);
+            $('#save_preoperativeDC,#cancel_preoperativeDC,#edit_preoperativeDC').attr('disabled',true);
             break;
         case 'edit':
-            $("#toggle_preoperative").attr('data-toggle','collapse');
+            $("#toggle_preoperativeDC").attr('data-toggle','collapse');
             $('#cancel_preoperativeDC').data('oper','edit');
             $("#edit_preoperativeDC").attr('disabled',false);
-            $('#save_preoperative,#cancel_preoperativeDC,#new_preoperativeDC,#btn_anaesthetist,#btn_surgeon,#btn_asstsurgeon').attr('disabled',true);
+            $('#save_preoperativeDC,#cancel_preoperativeDC,#new_preoperativeDC').attr('disabled',true);
             break;
         case 'wait':
-            $("#toggle_preoperative").attr('data-toggle','collapse');
-            $("#save_preoperative,#cancel_preoperativeDC,#btn_anaesthetist,#btn_surgeon,#btn_asstsurgeon").attr('disabled',false);
+            $("#toggle_preoperativeDC").attr('data-toggle','collapse');
+            $("#save_preoperativeDC,#cancel_preoperativeDC").attr('disabled',false);
             $('#edit_preoperativeDC,#new_preoperativeDC').attr('disabled',true);
             break;
         case 'disableAll':
-            $("#toggle_preoperative").attr('data-toggle','collapse');
-            $('#new_preoperativeDC,#edit_preoperativeDC,#save_preoperative,#cancel_preoperativeDC').attr('disabled',true);
+            $("#toggle_preoperativeDC").attr('data-toggle','collapse');
+            $('#new_preoperativeDC,#edit_preoperativeDC,#save_preoperativeDC,#cancel_preoperativeDC').attr('disabled',true);
             break;
     }
 }
@@ -224,7 +224,7 @@ function autoinsert_rowdata(form,rowData){
 function saveForm_preoperativeDC(callback){
     let oper = $("#cancel_preoperativeDC").data('oper');
     var saveParam={
-        action:'save_table_preoperative',
+        action:'save_table_preoperativeDC',
         oper:oper,
     }
     
@@ -283,7 +283,7 @@ function saveForm_preoperativeDC(callback){
     });
 }
 
-function textare_init_preoperative(){
+function textare_init_preoperativeDC(){
     $('textarea#pat_remark,textarea#cons_remark,textarea#check_side_remark,textarea#side_op_remark,textarea#lastmeal_remark,textarea#check_item_remark,textarea#allergies_remark,textarea#implant_remark,textarea#premed_remark,textarea#blood_remark,textarea#casenotes_remark,textarea#oldnotes_remark,textarea#imaging_remark,textarea#vs_remark,textarea#others_remark,textarea#imprtnt_issues').each(function () {
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
@@ -300,22 +300,22 @@ function textare_init_preoperative(){
     });
 }
 
-$('#tab_preoperative').on('shown.bs.collapse', function () {
-    SmoothScrollTo('#tab_preoperative', 300,114);
+$('#tab_preoperativeDC').on('shown.bs.collapse', function () {
+    SmoothScrollTo('#tab_preoperativeDC', 300,114);
     
     if($('#mrn_preoperativeDC').val() != ''){
-        getdata_preoperative();
+        getdata_preoperativeDC();
     }
 });
 
-$('#tab_preoperative').on('hide.bs.collapse', function () {
+$('#tab_preoperativeDC').on('hide.bs.collapse', function () {
     emptyFormdata_div("#form_preoperativeDC",['#mrn_preoperativeDC','#episno_preoperativeDC']);
     button_state_preoperativeDC('empty');
 });
 
-function getdata_preoperative(){
+function getdata_preoperativeDC(){
     var urlparam={
-        action:'get_table_preoperative',
+        action:'get_table_preoperativeDC',
     }
     
     var postobj={
@@ -332,10 +332,10 @@ function getdata_preoperative(){
         if(!$.isEmptyObject(data)){
             button_state_preoperativeDC('edit');
             autoinsert_rowdata("#form_preoperativeDC",data.preop);
-            textare_init_preoperative();
+            textare_init_preoperativeDC();
         }else{
             button_state_preoperativeDC('add');
-            textare_init_preoperative();
+            textare_init_preoperativeDC();
         }
     });
 }
@@ -351,230 +351,4 @@ function check_same_usr_edit(data){
     }
     
     return same;
-}
-
-var textfield_modal = new textfield_modal();
-textfield_modal.ontabbing();
-textfield_modal.checking();
-textfield_modal.clicking();
-
-function textfield_modal(){
-    this.textfield_array = ['#info_anaesthetist','#info_surgeon','#info_asstsurgeon'];
-    
-    this.ontabbing = function(){
-        $("#info_anaesthetist,#info_surgeon,#info_asstsurgeon").on('keydown',{data:this},onTab);
-    }
-    
-    this.checking = function(){
-        $("#info_anaesthetist,#info_surgeon,#info_asstsurgeon").on('blur',{data:this},onCheck);
-    }
-    
-    this.clicking = function(){
-        $("#btn_anaesthetist,#btn_surgeon,#btn_asstsurgeon").on('click',{data:this},onClick);
-    }
-    
-    this.dontcheck = false;
-    
-    function onTab(event){
-        var obj = event.data.data;
-        var textfield = $(event.currentTarget);
-        var id_ = textfield.attr('id');
-        var id_use = id_.substring(id_.indexOf("_")+1);
-        
-        if(event.key == "Tab" && textfield.val() != ""){
-            $('#mdl_item_selector').modal('show');
-            pop_item_select(id_use,true,textfield.val(),obj);
-            obj.dontcheck = true;
-        }
-    }
-    
-    function onClick(event){
-        var obj = event.data.data;
-        var textfield = $(event.currentTarget);
-        var id_ = textfield.attr('id');
-        var id_use = id_.substring(id_.indexOf("_")+1);
-        
-        $('#mdl_item_selector').modal('show');
-        pop_item_select(id_use,false,textfield.val(),obj);
-        obj.dontcheck = true;
-    }
-    
-    function get_url(type){
-        let act = null;
-        switch (type){
-            case "anaesthetist":
-                act = "get_reg_doctor";
-                break;
-            case "surgeon":
-                act = "get_reg_doctor";
-                break;
-            case "asstsurgeon":
-                act = "get_reg_doctor";
-                break;
-        }
-        return act;
-    }
-    
-    function onCheck(event){
-        var obj = event.data.data;
-        if(!obj.dontcheck){
-            var textfield = $(event.currentTarget);
-            var search = textfield.val();
-            var id_ = textfield.attr('id');
-            var id_use = id_.substring(id_.indexOf("_")+1);
-            
-            var act = get_url(id_use);
-            if(search.trim() != ""){
-                $.get( "./preoperativeDC/get_entry?action="+act+"&search="+search, function( data ) {
-                    
-                },'json').done(function(data) {
-                    if(!$.isEmptyObject(data) && data.data!=null){
-                        myerrorIt_only('#'+id_,false);
-                    }else{
-                        myerrorIt_only('#'+id_,true);
-                    }
-                });
-            }
-        }
-        obj.dontcheck = false;
-    }
-    
-    function pop_item_select(type,ontab=false,text_val,obj){
-        var act = null;
-        var id = id;
-        var rowid = rowid;
-        var selecter = null;
-        var title="Item selector";
-        var mdl = null;
-        var text_val = $('input#'+id).val();
-        
-        act = get_url(type);
-        
-        $('#mdl_item_selector').modal({
-            'closable':false,
-            onHidden : function(){
-                $('#tbl_item_select').html('');
-                selecter.destroy();
-            },
-        }).modal('show');
-        $('body,#mdl_item_selector').addClass('scrolling');
-        
-        selecter = $('#tbl_item_select').DataTable( {
-                "ajax": "./preoperativeDC/get_entry?action=" + act,
-                "ordering": false,
-                "lengthChange": false,
-                "info": true,
-                "pagingType" : "numbers",
-                "search": {
-                    "smart": true,
-                    "search": text_val
-                },
-                "columns": [
-                    {'data': 'code'},
-                    {'data': 'description'}
-                ],
-                "columnDefs": [ {
-                    "width": "20%",
-                    "targets": 0,
-                    "data": "code",
-                    "render": function ( data, type, row, meta ) {
-                        return data;
-                    }
-                } ],
-                "initComplete": function(oSettings, json) {
-                    delay(function(){
-                        $('div.dataTables_filter input', selecter.table().container()).get(0).focus();
-                    }, 10 );
-                },
-        });
-        
-        // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
-        $('#tbl_item_select tbody').on('dblclick', 'tr', function () {
-            item = selecter.row( this ).data();
-            $('input[name=desc_'+type+']').val(item["description"]);
-            $('input[name=info_'+type+']').val(item["code"]);
-            $('#mdl_item_selector').modal('hide');
-        });
-    }
-}
-
-function loading_desc_epis(obj){ //loading description dia sebab save code dia je
-    this.code_fields=obj;
-    this.anaesthetist={code:'code',desc:'description'};//data simpan dekat dalam ni
-    this.surgeon={code:'code',desc:'description'};//data simpan dekat dalam ni
-    this.asstsurgeon={code:'code',desc:'description'};//data simpan dekat dalam ni
-    this.load_desc = function(){
-        load_for_desc(this,'anaesthetist','preoperativeDC/get_entry?action=get_reg_doctor');
-        load_for_desc(this,'surgeon','preoperativeDC/get_entry?action=get_reg_doctor');
-        load_for_desc(this,'asstsurgeon','preoperativeDC/get_entry?action=get_reg_doctor');
-    }
-    
-    function load_for_desc(selobj,id,url){
-        let storage_name = 'fastload_bio_'+id;
-        let storage_obj = localStorage.getItem(storage_name);
-        
-        if(!storage_obj){
-            $.ajaxSetup({async: false});
-            $.get( url, function( data ) {
-                
-            },'json').done(function(data) {
-                if(!$.isEmptyObject(data)){
-                    selobj[id].data = data.data;
-                    
-                    let desc = data.data;
-                    let now = moment();
-                    
-                    var json = JSON.stringify({
-                        'description':desc,
-                        'timestamp': now
-                    });
-                    
-                    localStorage.setItem(storage_name,json);
-                }
-            });
-        }else{
-            let obj_stored = {
-                'json':JSON.parse(storage_obj),
-            }
-            
-            selobj[id].data = obj_stored.json.description
-            
-            //remove storage after 7 days
-            let moment_stored = obj_stored.json.timestamp;
-            if(moment().diff(moment(moment_stored),'days') > 7){
-                localStorage.removeItem(storage_name);
-            }
-        }
-    }
-    
-    this.write_desc = function(){
-        self=this;
-        obj.forEach(function(elem){
-            if($(elem.code).val().trim() != ""){
-                $(elem.desc).val(self.get_desc($(elem.code).val(),elem.id,elem.desc));
-            }
-        });
-    }
-    
-    this.get_desc = function(search_code,id,inp){
-        let code_ = this[id].code;
-        let desc_ = this[id].desc;
-        let retdata="";
-        
-        retdata = this[id].data.find(function(obj){
-            return obj[code_] == search_code;
-        });
-        
-        if(retdata == undefined){
-            if(search_code.trim() != ''){
-                myerrorIt_only(inp,true);
-                return search_code;
-            }else{
-                myerrorIt_only(inp,false);
-                return '';
-            }
-        }else{
-            return retdata[desc_];
-        }
-    }
 }

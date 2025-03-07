@@ -58,16 +58,17 @@
                                             <td>Fasted from
                                                 <div class="form-inline"> &nbsp;
                                                     <div class="form-group">
-                                                        <input type="time" class="form-control" id="lastmeal_date" name="lastmeal_date">
+                                                        <input type="time" class="form-control" id="fasted_time_from" name="fasted_time_from">
                                                     </div>  &nbsp;
                                                     <div class="form-group">
-                                                        <input type="time" class="form-control" id="lastmeal_time" name="lastmeal_time">
+                                                        <input type="time" class="form-control" id="fasted_time_until" name="fasted_time_until">
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td><input type="checkbox" name="check_side_ward" value="1"></td>
-                                            <td><input type="checkbox" name="check_side_ot" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="check_side_remark" name="check_side_remark"></textarea></td>
+                                            <td><input type="checkbox" name="fasted_ward" value="1"></td>
+                                            <td><input type="checkbox" name="fasted_rec" value="1"></td>
+                                            <td><input type="checkbox" name="fasted_theatre" value="1"></td>
+                                            <td><textarea class="form-control input-sm" id="fasted_remarks" name="fasted_remarks"></textarea></td>
                                         </tr>
                                           
                                     </tbody>

@@ -35,7 +35,7 @@ class PreoperativeDCController extends defaultController
     {
         DB::enableQueryLog();
         switch($request->action){
-            case 'save_table_preoperative':
+            case 'tab_preoperativeDC':
             
                 switch($request->oper){
                     case 'add':
@@ -46,8 +46,8 @@ class PreoperativeDCController extends defaultController
                         return 'error happen..';
                 }
                 
-            case 'get_table_preoperative':
-                return $this->get_table_preoperative($request);
+            case 'get_table_preoperativeDC':
+                return $this->get_table_preoperativeDC($request);
             
             default:
                 return 'error happen..';
@@ -281,7 +281,7 @@ class PreoperativeDCController extends defaultController
         
     }
     
-    public function get_table_preoperative(Request $request){
+    public function get_table_preoperativeDC(Request $request){
         
         $preop_obj = DB::table('nursing.otpreop as ot')
                     ->select([
