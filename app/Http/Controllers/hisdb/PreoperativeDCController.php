@@ -442,7 +442,7 @@ class PreoperativeDCController extends defaultController
         // }
 
         if($preopdc_obj->exists()){
-            $preopdc_obj = $prpreopdc_objeop_obj->first();
+            $preopdc_obj = $preopdc_obj->first();
             $responce->preopdc = $preopdc_obj;
         }
         
