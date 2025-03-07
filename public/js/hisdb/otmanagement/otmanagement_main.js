@@ -153,6 +153,7 @@ $(document).ready(function () {
 				$('button#timer_stop').click();
 				populate_otmgmt_div(selrowData('#jqGrid'));
 				populate_preoperative(selrowData('#jqGrid'));
+				populate_preoperativeDC(selrowData('#jqGrid'));
 				populate_oper_team(selrowData('#jqGrid'));
 				populate_otswab(selrowData('#jqGrid'));
 				populate_ottime(selrowData('#jqGrid'));
@@ -165,6 +166,7 @@ $(document).ready(function () {
 				$('#no_of_pat').text($("#jqGrid").getGridParam("reccount"));
 				empty_otmgmt_div();
 				empty_preoperative();
+				empty_preoperativeDC();
 				empty_oper_team();
 				empty_otswab();
 				empty_ottime();
@@ -240,6 +242,7 @@ $(document).ready(function () {
 				$('button#timer_stop').click();
 				populate_otmgmt_div(selrowData('#jqGrid'));
 				populate_preoperative(selrowData('#jqGrid'));
+				populate_preoperativeDC(selrowData('#jqGrid'));
 				populate_oper_team(selrowData('#jqGrid'));
 				populate_otswab(selrowData('#jqGrid'));
 				populate_ottime(selrowData('#jqGrid'));
@@ -253,6 +256,7 @@ $(document).ready(function () {
 				$('#no_of_pat').text($("#jqGrid").getGridParam("reccount"));
 				empty_otmgmt_div();
 				empty_preoperative();
+				empty_preoperativeDC();
 				empty_oper_team();
 				empty_otswab();
 				empty_ottime();

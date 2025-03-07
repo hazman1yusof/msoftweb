@@ -297,6 +297,12 @@ Route::get('/preoperative/table','hisdb\PreoperativeController@table');
 Route::post('/preoperative/form','hisdb\PreoperativeController@form');
 Route::get('/preoperative/get_entry','hisdb\PreoperativeController@get_entry');
 
+//// Preoperative (daycare)page ////
+Route::get('/preoperativeDC','hisdb\PreoperativeDCController@show');
+Route::get('/preoperativeDC/table','hisdb\PreoperativeDCController@table');
+Route::post('/preoperativeDC/form','hisdb\PreoperativeDCController@form');
+Route::get('/preoperativeDC/get_entry','hisdb\PreoperativeDCController@get_entry');
+
 //// Operating Team page ////
 Route::get('/oper_team','hisdb\OperTeamController@show');
 Route::get('/oper_team/table','hisdb\OperTeamController@table');

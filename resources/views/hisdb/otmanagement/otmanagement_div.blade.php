@@ -83,7 +83,38 @@
                         <div class="ui secondary segment">OPERATION INFO</div>
                         <div class="ui segment">
                             <div class="ui grid">
-                            
+                                <div class="sixteen wide column">
+                                    <div class="ui segments">
+                                        <div class="ui segment">
+
+                                            <div class="ui grid">
+                                                <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
+                                                    <label>Surgeon</label>
+                                                    <input type="text" id="surgeon" name="surgeon">
+                                                </div>
+
+                                                <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
+                                                    <label>Anaest</label>
+                                                    <input type="text" id="anaest" name="anaest">
+                                                </div>
+                                            </div>
+
+                                            <div class="ui grid">
+                                                <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
+                                                    <label>Scrub Nurse</label>
+                                                    <input type="text" id="scrubnurse" name="scrubnurse">
+                                                </div>
+
+                                                <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
+                                                    <label>Consultant</label>
+                                                    <input type="text" id="consultant" name="consultant">
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="ten wide column">
                                     <div class="ui segments">
                                         <div class="ui segment" style="height: 480px">
@@ -121,9 +152,10 @@
                                                 </div>
 
                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
-                                                    <label>Specimen</label>
-                                                    <textarea id="specimen" name="specimen" rows="4"></textarea>
+                                                    <label>Diagnosis</label>
+                                                    <textarea id="diagnosis" name="diagnosis" rows="4"></textarea>
                                                 </div>
+
                                             </div>
 
                                             <div class="ui grid">
@@ -145,8 +177,8 @@
                                                 </div>
 
                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
-                                                    <label>Diagnosis</label>
-                                                    <textarea id="diagnosis" name="diagnosis" rows="4"></textarea>
+                                                    <label>Specimen</label>
+                                                    <textarea id="specimen" name="specimen" rows="4"></textarea>
                                                 </div>
                                             </div>
                                             
@@ -220,6 +252,52 @@
                                                         <div class="ui segment">
 
                                                             <div class="ui grid">
+                                                                <div class="inline field">
+                                                                    <label style="margin:0px; padding: 3px 3px 3px 3px;">Emergency</label>
+                                                                    <div class="field">
+                                                                        <label>
+                                                                            <input type="checkbox" id="e_yes" name="e_yes" value="1">
+                                                                            Yes 
+                                                                        </label>
+                                                                        <label>
+                                                                            <input type="checkbox" id="e_no" name="e_no" value="0">
+                                                                            No 
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="ui grid">
+                                                                <div class="field">
+                                                                <label style="margin:0px; padding: 10px 3px 10px 3px;">Material sent to pathologist.</label>
+                                                                    <label>
+                                                                        <input type="checkbox" id="general" name="general" value="1">
+                                                                        General 
+                                                                    </label>
+                                                                    <label>
+                                                                        <input type="checkbox" id="local" name="local" value="1">
+                                                                        Local 
+                                                                    </label>
+                                                                    <label>
+                                                                        <input type="checkbox" id="spinal" name="spinal" value="1">
+                                                                        Spinal 
+                                                                    </label>
+                                                                    <label>
+                                                                        <input type="checkbox" id="other" name="other" value="1">
+                                                                        Other 
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- <div class="sixteen wide column">
+                                                    <div class="ui segments">
+                                                        <div class="ui segment">
+
+                                                            <div class="ui grid">
                                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                                     <label>First Scrub</label>
                                                                     <input type="text" id="firstscrubnrs" name="firstscrubnrs">
@@ -245,7 +323,7 @@
                                                             
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
 
                                             </div>
                                         </div>
