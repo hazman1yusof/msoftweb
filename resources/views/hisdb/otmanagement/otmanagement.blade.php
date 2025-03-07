@@ -211,7 +211,7 @@
                             padding: 0 0 0 0;
                             right: 50px;
                             top: 48px;">
-                <h5><strong>Operating Team</strong>&nbsp;&nbsp;
+                <h5><strong>Operating Team Checklist</strong>&nbsp;&nbsp;
                     <span class="metal"></span></h5>
             </div>
         </div>
