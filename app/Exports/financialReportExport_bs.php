@@ -173,7 +173,12 @@ class financialReportExport_bs implements FromView, WithEvents, WithColumnWidths
                 if($obj_rpt->code == $CLOSESTK->pvalue1){
 
                     $arr_rpt['curr_month'] = $arr_rpt['tot_actamount'.$monthfrom];
-                    $arr_rpt['last_month'] = $arr_rpt['tot_actamount'.($monthfrom-1)];
+
+                    if($monthfrom-1 == 0){
+                        $arr_rpt['last_month'] = 0;
+                    }else{
+                        $arr_rpt['last_month'] = $arr_rpt['tot_actamount'.($monthfrom-1)];
+                    }
                 }else{
 
                     $arr_rpt['curr_month'] = $arr_rpt['openbalance'];
