@@ -148,9 +148,18 @@ class financialReportExport implements FromView, WithEvents, WithColumnWidths,Sh
                     $glmasdtl = DB::table('finance.glmasdtl as gldt')
                             ->select('gldt.glaccount','gldt.openbalance','gldt.actamount1','gldt.actamount2','gldt.actamount3','gldt.actamount4','gldt.actamount5','gldt.actamount6','gldt.actamount7','gldt.actamount8','gldt.actamount9','gldt.actamount10','gldt.actamount11','gldt.actamount12')
                             ->where('gldt.glaccount','>=',$obj_con->acctfr)
-                            ->where('gldt.glaccount','<=',$obj_con->acctto)
-                            ->where('gldt.costcode','>=',$obj_rpt->costcodefr)
-                            ->where('gldt.costcode','<=',$obj_rpt->costcodeto)
+                            ->where('gldt.glaccount','<=',$obj_con->acctto);
+
+                    if($obj_rpt->costcodefr!=null){
+                        $glmasdtl = $glmasdtl->where('gldt.costcode','>=',$obj_rpt->costcodefr);
+                    }
+
+                    if($obj_rpt->costcodeto!=null){
+                        $glmasdtl = $glmasdtl->where('gldt.costcode','<=',$obj_rpt->costcodeto);
+                    }
+
+
+                    $glmasdtl = $glmasdtl
                             ->where('gldt.year','>=', $yearfrom)
                             ->where('gldt.year','<=', $yearto)
                             ->where('gldt.compcode',session('compcode'))
