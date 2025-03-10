@@ -1530,8 +1530,8 @@ Route::post('/webservice/form','util\WebserviceController@form');
 //dari ptcare
 
 //// sysparam ////
-Route::get('/sysparam_triage_color','patientcare\SysparamController@sysparam_triage_color');
-Route::get('/sysparam_triage_color_chk','patientcare\SysparamController@sysparam_triage_color_chk');
+Route::get('/ptcare_sysparam_triage_color','patientcare\SysparamController@sysparam_triage_color');
+Route::get('/ptcare_sysparam_triage_color_chk','patientcare\SysparamController@sysparam_triage_color_chk');
 
 Route::get('/ptcare_prescription', "patientcare\PrescriptionController@index");
 Route::get('/ptcare_prescription/{id}', "patientcare\PrescriptionController@detail");
