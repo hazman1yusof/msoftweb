@@ -534,6 +534,21 @@ class ReceiptController extends defaultController
                 }
                 
                 $auditno = $this->defaultSysparam('AR','AL');
+
+                if(!empty($receipt_first->mrn)){
+                    $pat_mast = DB::table('hisdb.pat_mast')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('NewMrn',$receipt_first->mrn);
+
+                    if($pat_mast->exists()){
+                        $pat_mast = $pat_mast->first();
+                        $mrn_ = $pat_mast->MRN;
+                        $episno_ = $pat_mast->Episno;
+                    }else{
+                        $mrn_ = 0;
+                        $episno_ = 0;
+                    }
+                }
                 
                 DB::table('debtor.dballoc')
                     ->insert([
@@ -551,8 +566,8 @@ class ReceiptController extends defaultController
                         'refamount' => $invoice_first->amount,
                         'reflineno' => $invoice_first->lineno_,
                         'recptno' => $receipt_first->recptno,
-                        'mrn' => $receipt_first->mrn,
-                        'episno' => $receipt_first->episno,
+                        'mrn' => $mrn_,
+                        'episno' => $episno_,
                         'allocsts' => 'ACTIVE',
                         'amount' => floatval($value['obj']['amtpaid']),
                         'tillcode' => $receipt_first->tillcode,
