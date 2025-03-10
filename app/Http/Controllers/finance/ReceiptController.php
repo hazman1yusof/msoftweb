@@ -535,6 +535,8 @@ class ReceiptController extends defaultController
                 
                 $auditno = $this->defaultSysparam('AR','AL');
 
+                $mrn_ = 0;
+                $episno_ = 0;
                 if(!empty($receipt_first->mrn)){
                     $pat_mast = DB::table('hisdb.pat_mast')
                                     ->where('compcode',session('compcode'))
@@ -544,9 +546,6 @@ class ReceiptController extends defaultController
                         $pat_mast = $pat_mast->first();
                         $mrn_ = $pat_mast->MRN;
                         $episno_ = $pat_mast->Episno;
-                    }else{
-                        $mrn_ = 0;
-                        $episno_ = 0;
                     }
                 }
                 
