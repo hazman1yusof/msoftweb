@@ -158,7 +158,6 @@ class financialReportExport implements FromView, WithEvents, WithColumnWidths,Sh
                         $glmasdtl = $glmasdtl->where('gldt.costcode','<=',$obj_rpt->costcodeto);
                     }
 
-
                     $glmasdtl = $glmasdtl
                             ->where('gldt.year','>=', $yearfrom)
                             ->where('gldt.year','<=', $yearto)
