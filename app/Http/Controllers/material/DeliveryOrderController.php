@@ -867,15 +867,17 @@ class DeliveryOrderController extends defaultController
                             ->where('recno','=',$po_recno)
                             ->where('lineno_','=',$value->lineno_);
 
-                        $podt_obj_lama = $podt_obj->first();
+                        if($podt_obj->exists()){
+                            $podt_obj_lama = $podt_obj->first();
 
-                        $jumlah_qtydelivered = Floatval($podt_obj_lama->qtydelivered) - Floatval($value->qtydelivered);
-                        $qtyoutstand = Floatval($podt_obj_lama->qtyorder) + Floatval($jumlah_qtydelivered);
+                            $jumlah_qtydelivered = Floatval($podt_obj_lama->qtydelivered) - Floatval($value->qtydelivered);
+                            $qtyoutstand = Floatval($podt_obj_lama->qtyorder) + Floatval($jumlah_qtydelivered);
 
-                        $podt_obj->update([
-                            'qtydelivered' => $jumlah_qtydelivered,
-                            'qtyoutstand' => $qtyoutstand
-                        ]);
+                            $podt_obj->update([
+                                'qtydelivered' => $jumlah_qtydelivered,
+                                'qtyoutstand' => $qtyoutstand
+                            ]);
+                        }
 
 
                         // update qtyoutstand utk suma DO pulak
