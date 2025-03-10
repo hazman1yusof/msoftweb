@@ -30,7 +30,7 @@
                 <div class="if_tablet left floated" style="display:none;">
                     <div class="ui calendar" id="button_calendar">
                         <button class="ui teal mini icon button">
-                            <i class="calendar alternate outline icon"></i> Select date
+                            <i class="calendar alternate outline icon"></i> Select date 
                         </button><span id="sel_date_span" style="margin-left: 10px;color: teal;font-weight: 700;">{{Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d/m/Y')}}</span>
                     </div>
                 </div>
@@ -131,7 +131,7 @@
                             padding: 0 0 0 0;
                             right: 50px;
                             top: 48px;">
-                <h5><strong>Pre Operative Checklist</strong>&nbsp;&nbsp;
+                <h5><strong>Pre-Operative Checklist</strong>&nbsp;&nbsp;
                     <span class="metal"></span></h5>
             </div>
         </div>
@@ -171,7 +171,7 @@
                             padding: 0 0 0 0;
                             right: 50px;
                             top: 48px;">
-                <h5><strong>Pre Operative Checklist (Daycare)</strong>&nbsp;&nbsp;
+                <h5><strong>Pre-Operative Checklist (Daycare)</strong>&nbsp;&nbsp;
                     <span class="metal"></span></h5>
             </div>
         </div>
@@ -251,7 +251,7 @@
                             padding: 0 0 0 0;
                             right: 50px;
                             top: 48px;">
-                <h5><strong>Swab & Instrument Count</strong>&nbsp;&nbsp;
+                <h5><strong>Swab & Instrument Count Form</strong>&nbsp;&nbsp;
                     <span class="metal"></span></h5>
             </div>
         </div>
@@ -331,7 +331,7 @@
                             padding: 0 0 0 0;
                             right: 50px;
                             top: 48px;">
-                <h5><strong>Pre-Discharge</strong>&nbsp;&nbsp;
+                <h5><strong>Pre-Discharge Check</strong>&nbsp;&nbsp;
                     <span class="metal"></span></h5>
             </div>
         </div>
@@ -344,9 +344,9 @@
     </div>
     
     <!-- @include('patientcare.itemselector') -->
-
-    <div id="mdl_item_selector2" title="Select Item" >
-      <div class="content">
+    
+    <div id="mdl_item_selector2" title="Select Item" style="display: none;">
+        <div class="content">
             <table id="tbl_item_select" class="ui celled table" width="100%">
                 <thead>
                     <tr>
@@ -355,9 +355,9 @@
                     </tr>
                 </thead>
             </table>
-      </div>
+        </div>
     </div>
-
+    
 @endsection
 
 @section('css')
@@ -372,10 +372,10 @@
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-
+    
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;500&family=Open+Sans:wght@300;700&family=Syncopate&display=swap" rel="stylesheet">
-
+    
 @endsection
 
 @section('js')
@@ -408,5 +408,5 @@
     <script type="text/javascript" src="js/hisdb/otswab/otswab.js"></script>
     <script type="text/javascript" src="js/hisdb/ottime/ottime.js"></script>
     <script type="text/javascript" src="js/hisdb/otdischarge/otdischarge.js"></script>
-
+    
 @endsection

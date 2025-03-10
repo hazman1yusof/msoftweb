@@ -1,6 +1,6 @@
 <div class="ui segments" style="position: relative;">
     <div class="ui secondary segment bluecloudsegment">
-        SWAB & INSTRUMENT COUNT
+        SWAB & INSTRUMENT COUNT FORM
         <div class="ui small blue icon buttons" id="btn_grp_edit_otswab" style="position: absolute;
                     padding: 0 0 0 0;
                     right: 40px;
@@ -22,7 +22,6 @@
                 <div class="sixteen wide column">
                     <div class="ui segments">
                         <div class="ui segment">
-                            
                             <div class="ui grid">
                                 <div class="field eight wide column" style="margin:0px; padding: 10px 14px;">
                                     <div class="form-inline">
@@ -44,7 +43,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                
                                 <div class="field eight wide column" style="margin:0px; padding: 10px 14px;">
                                     <div class="form-inline">
                                         Date/Time End <br>
@@ -66,7 +65,6 @@
                                     </div>
                                 </div>
                             </div>
-                            
                         </div>
                     </div>
                 </div>
@@ -76,23 +74,20 @@
                         <div class="ui secondary segment">SET & INSTRUMENTS</div>
                         <div class="ui segment">
                             <div class="ui grid">
-                                
                                 <div class="sixteen wide column">
                                     <div class="ui segments">
                                         <div class="ui segment">
-                                            
                                             <div class="ui grid">
                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                     <label>Basic set used in procedure</label>
                                                     <textarea id="basicset" name="basicset" rows="4"></textarea>
                                                 </div>
-
+                                                
                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
                                                     <label>Supplementary set used in procedure</label>
                                                     <textarea id="spplmtryset" name="spplmtryset" rows="4"></textarea>
                                                 </div>
                                             </div>
-                                            
                                         </div>
                                     </div>
                                 </div>
@@ -109,7 +104,6 @@
                                 <div class="sixteen wide column">
                                     <div class="ui segments">
                                         <div class="ui segment">
-                                            
                                             <table class="ui very basic table" style="padding-top: 15px; padding-bottom: 15px;">
                                                 <tbody>
                                                     <tr>
@@ -135,7 +129,6 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            
                                         </div>
                                     </div>
                                 </div>
@@ -143,7 +136,6 @@
                                 <div class="sixteen wide column">
                                     <div class="ui segments">
                                         <div class="ui segment">
-                                            
                                             <table class="ui very basic table" style="padding-top: 15px; padding-bottom: 15px;">
                                                 <thead>
                                                     <tr>
@@ -228,16 +220,13 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            
                                         </div>
                                     </div>
                                 </div>
-                                
                             </div>
                         </div>
                     </div>
                 </div>
-                
             </div>
         </form>
     </div>

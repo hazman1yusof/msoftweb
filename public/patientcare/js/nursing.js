@@ -1070,31 +1070,28 @@ var dialog_tri_col = new ordialog(
 			{label:'Description',name:'description',width:400,classes:'pointer', hidden: true,canSearch:false,or_search:true},
 		],
 		urlParam: {
-			url:'./sysparam_triage_color',
-			url_chk: './sysparam_triage_color_chk',
+			url:'./ptcare_sysparam_triage_color',
+			url_chk: './ptcare_sysparam_triage_color_chk',
 			filterCol:['recstatus','compcode'],
 			filterVal:['ACTIVE', 'session.compcode']
-			},
+		},
 		ondblClickRow:function(event){
-
 			$(dialog_tri_col.textfield).val(selrowData("#"+dialog_tri_col.gridname)['description']);
 			$(dialog_tri_col.textfield).parent('div')
 							.removeClass( "red" )
 							.removeClass( "yellow" )
 							.removeClass( "green" )
 							.addClass( selrowData("#"+dialog_tri_col.gridname)['description'] );
-
+			
 			$(dialog_tri_col.textfield).parent('div').next()
 							.removeClass( "red" )
 							.removeClass( "yellow" )
 							.removeClass( "green" )
 							.addClass( selrowData("#"+dialog_tri_col.gridname)['description'] );
-
 		},
 		onSelectRow:function(rowid, selected){
 			$('#'+dialog_tri_col.gridname+' tr#'+rowid).dblclick();
 			// $(dialog_tri_col.textfield).val(selrowData("#"+dialog_tri_col.gridname)['description']);
-
 		},
 		gridComplete: function(obj){
 			var gridname = '#'+obj.gridname;
@@ -1112,7 +1109,7 @@ var dialog_tri_col = new ordialog(
 						$(self).parent().click();
 				}, 100 );
 			});
-
+			
 			$( "table#othergrid_tri_col tr:nth-child(2)" ).parent('div').addClass('red')
 			$( "table#othergrid_tri_col tr:nth-child(3)" ).parent('div').addClass('yellow')
 			$( "table#othergrid_tri_col tr:nth-child(4)" ).parent('div').addClass('green')

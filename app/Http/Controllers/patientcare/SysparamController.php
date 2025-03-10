@@ -5,8 +5,9 @@ namespace App\Http\Controllers\patientcare;
 use Illuminate\Http\Request;
 use stdClass;
 use DB;
+use App\Http\Controllers\defaultController;
 
-class SysparamController extends Controller
+class SysparamController extends defaultController
 {
     //
     public function __construct(){
