@@ -54,7 +54,7 @@ class OperTeamController extends defaultController
         }
     }
     
-    public function add(Request $request){
+    public function add_lama(Request $request){
         
         DB::beginTransaction();
         
@@ -68,7 +68,7 @@ class OperTeamController extends defaultController
                         'confirmed_pt' => $request->confirmed_pt,
                         'op_site_mark' => $request->op_site_mark,
                         'op_site_na' => $request->op_site_na,
-                        'machine_chck' => $request->machine_chck,
+                        'machine_check' => $request->machine_check,
                         'machine_na' => $request->machine_na,
                         'monitor_on' => $request->monitor_on,
                         'monitor_na' => $request->monitor_na,
@@ -79,31 +79,177 @@ class OperTeamController extends defaultController
                         'gxm_gsh' => $request->gxm_gsh,
                         'gxm_gsh_na' => $request->gxm_gsh_na,
                         'iv_access' => $request->iv_access,
-                        'apparatus_chck' => $request->apparatus_chck,
-                        'ottable_chck' => $request->ottable_chck,
-                        'board_surgeon' => $request->board_surgeon,
+                        'apparatus_check' => $request->apparatus_check,
+                        'otTable_check' => $request->otTable_check,
+                        'whiteboard' => $request->whiteboard,
                         'intro_team' => $request->intro_team,
                         'bsi_confirmed_pt' => $request->bsi_confirmed_pt,
                         'antibio_prophy' => $request->antibio_prophy,
                         'display_img' => $request->display_img,
                         'brief_surgeon' => $request->brief_surgeon,
                         'anaesth_review' => $request->anaesth_review,
-                        'scrubnrse_review' => $request->scrubnrse_review,
+                        'scrubnurse_review' => $request->scrubnurse_review,
                         'pfusion_review' => $request->pfusion_review,
                         'surgeon_start' => $request->surgeon_start,
                         'periodic_upd' => $request->periodic_upd,
                         'shout_out' => $request->shout_out,
-                        'pre_disclsre' => $request->pre_disclsre,
-                        'final_procdre' => $request->final_procdre,
+                        'pre_disclosure' => $request->pre_disclosure,
+                        'final_procedure' => $request->final_procedure,
                         'final_count' => $request->final_count,
-                        'specimen_lbl' => $request->specimen_lbl,
-                        'specimen_lbl_na' => $request->specimen_lbl_na,
-                        'incident_addr' => $request->incident_addr,
-                        'postop_instr' => $request->postop_instr,
+                        'specimenlabel' => $request->specimenlabel,
+                        'specimenlabel_na' => $request->specimenlabel_na,
+                        'issues_addressed' => $request->issues_addressed,
+                        'special_instruction' => $request->special_instruction,
                         'relative_remark' => $request->relative_remark,
                         'inform_relative' => $request->inform_relative,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+        
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit_lama(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.otteam')
+                ->where('mrn','=',$request->mrn_oper_team)
+                ->where('episno','=',$request->episno_oper_team)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'confirmed_pt' => $request->confirmed_pt,
+                    'op_site_mark' => $request->op_site_mark,
+                    'op_site_na' => $request->op_site_na,
+                    'machine_check' => $request->machine_check,
+                    'machine_na' => $request->machine_na,
+                    'monitor_on' => $request->monitor_on,
+                    'monitor_na' => $request->monitor_na,
+                    'allergy_remark' => $request->allergy_remark,
+                    'pt_allergy' => $request->pt_allergy,
+                    'diff_airway' => $request->diff_airway,
+                    'diff_airway_na' => $request->diff_airway_na,
+                    'gxm_gsh' => $request->gxm_gsh,
+                    'gxm_gsh_na' => $request->gxm_gsh_na,
+                    'iv_access' => $request->iv_access,
+                    'apparatus_check' => $request->apparatus_check,
+                    'otTable_check' => $request->otTable_check,
+                    'whiteboard' => $request->whiteboard,
+                    'intro_team' => $request->intro_team,
+                    'bsi_confirmed_pt' => $request->bsi_confirmed_pt,
+                    'antibio_prophy' => $request->antibio_prophy,
+                    'display_img' => $request->display_img,
+                    'brief_surgeon' => $request->brief_surgeon,
+                    'anaesth_review' => $request->anaesth_review,
+                    'scrubnurse_review' => $request->scrubnurse_review,
+                    'pfusion_review' => $request->pfusion_review,
+                    'surgeon_start' => $request->surgeon_start,
+                    'periodic_upd' => $request->periodic_upd,
+                    'shout_out' => $request->shout_out,
+                    'pre_disclosure' => $request->pre_disclosure,
+                    'final_procedure' => $request->final_procedure,
+                    'final_count' => $request->final_count,
+                    'specimenlabel' => $request->specimenlabel,
+                    'specimenlabel_na' => $request->specimenlabel_na,
+                    'issues_addressed' => $request->issues_addressed,
+                    'special_instruction' => $request->special_instruction,
+                    'relative_remark' => $request->relative_remark,
+                    'inform_relative' => $request->inform_relative,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            // $queries = DB::getQueryLog();
+            // dump($queries);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function add(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.otteam')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_oper_team,
+                        'episno' => $request->episno_oper_team,
+                        // BEFORE INDUCTION OF ANAESTHESIA
+                        'confirmed_pt' => $request->confirmed_pt,
+                        'op_site_mark' => $request->op_site_mark,
+                        'op_site_na' => $request->op_site_na,
+                        'machine_check' => $request->machine_check,
+                        'pulseoximeter' => $request->pulseoximeter,
+                        'pt_allergy' => $request->pt_allergy,
+                        'diff_airway' => $request->diff_airway,
+                        'bloodloss' => $request->bloodloss,
+                        'iv_access' => $request->iv_access,
+                        // BEFORE SKIN INCISION
+                        'whiteboard' => $request->whiteboard,
+                        'intro_team' => $request->intro_team,
+                        'bsi_confirmed_pt' => $request->bsi_confirmed_pt,
+                        'antibio_prophy' => $request->antibio_prophy,
+                        'antibio_prophy_na' => $request->antibio_prophy_na,
+                        'display_img_na' => $request->display_img_na,
+                        'display_img' => $request->display_img,
+                        'brief_surgeon' => $request->brief_surgeon,
+                        'surgeon_review_remark' => $request->surgeon_review_remark,
+                        'anaesth_review' => $request->anaesth_review,
+                        'scrubnurse_review' => $request->scrubnurse_review,
+                        // DURING PROCEDURE
+                        'procedure_hdr' => $request->procedure_hdr,
+                        'checkin' => $request->checkin,
+                        'periodic_upd' => $request->periodic_upd,
+                        'shout_out' => $request->shout_out,
+                        'pre_disclosure' => $request->pre_disclosure,
+                        // BEFORE PATIENT LEAVES OPERATING ROOM
+                        'final_procedure' => $request->final_procedure,
+                        'final_count' => $request->final_count,
+                        'specimenlabel' => $request->specimenlabel,
+                        'issues_addressed' => $request->issues_addressed,
+                        'special_instruction' => $request->special_instruction,
+                        'inform_relative' => $request->inform_relative,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
                     ]);
             
             DB::commit();
@@ -133,45 +279,46 @@ class OperTeamController extends defaultController
                 ->where('episno','=',$request->episno_oper_team)
                 ->where('compcode','=',session('compcode'))
                 ->update([
+                    // BEFORE INDUCTION OF ANAESTHESIA
                     'confirmed_pt' => $request->confirmed_pt,
                     'op_site_mark' => $request->op_site_mark,
                     'op_site_na' => $request->op_site_na,
-                    'machine_chck' => $request->machine_chck,
-                    'machine_na' => $request->machine_na,
-                    'monitor_on' => $request->monitor_on,
-                    'monitor_na' => $request->monitor_na,
-                    'allergy_remark' => $request->allergy_remark,
+                    'machine_check' => $request->machine_check,
+                    'pulseoximeter' => $request->pulseoximeter,
                     'pt_allergy' => $request->pt_allergy,
                     'diff_airway' => $request->diff_airway,
-                    'diff_airway_na' => $request->diff_airway_na,
-                    'gxm_gsh' => $request->gxm_gsh,
-                    'gxm_gsh_na' => $request->gxm_gsh_na,
+                    'bloodloss' => $request->bloodloss,
                     'iv_access' => $request->iv_access,
-                    'apparatus_chck' => $request->apparatus_chck,
-                    'ottable_chck' => $request->ottable_chck,
-                    'board_surgeon' => $request->board_surgeon,
+                    // BEFORE SKIN INCISION
+                    'whiteboard' => $request->whiteboard,
                     'intro_team' => $request->intro_team,
                     'bsi_confirmed_pt' => $request->bsi_confirmed_pt,
                     'antibio_prophy' => $request->antibio_prophy,
+                    'antibio_prophy_na' => $request->antibio_prophy_na,
+                    'display_img_na' => $request->display_img_na,
                     'display_img' => $request->display_img,
                     'brief_surgeon' => $request->brief_surgeon,
+                    'surgeon_review_remark' => $request->surgeon_review_remark,
                     'anaesth_review' => $request->anaesth_review,
-                    'scrubnrse_review' => $request->scrubnrse_review,
-                    'pfusion_review' => $request->pfusion_review,
-                    'surgeon_start' => $request->surgeon_start,
+                    'scrubnurse_review' => $request->scrubnurse_review,
+                    // DURING PROCEDURE
+                    'procedure_hdr' => $request->procedure_hdr,
+                    'checkin' => $request->checkin,
                     'periodic_upd' => $request->periodic_upd,
                     'shout_out' => $request->shout_out,
-                    'pre_disclsre' => $request->pre_disclsre,
-                    'final_procdre' => $request->final_procdre,
+                    'pre_disclosure' => $request->pre_disclosure,
+                    // BEFORE PATIENT LEAVES OPERATING ROOM
+                    'final_procedure' => $request->final_procedure,
                     'final_count' => $request->final_count,
-                    'specimen_lbl' => $request->specimen_lbl,
-                    'specimen_lbl_na' => $request->specimen_lbl_na,
-                    'incident_addr' => $request->incident_addr,
-                    'postop_instr' => $request->postop_instr,
-                    'relative_remark' => $request->relative_remark,
+                    'specimenlabel' => $request->specimenlabel,
+                    'issues_addressed' => $request->issues_addressed,
+                    'special_instruction' => $request->special_instruction,
                     'inform_relative' => $request->inform_relative,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
                 ]);
             
             // $queries = DB::getQueryLog();

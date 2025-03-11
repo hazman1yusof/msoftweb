@@ -296,7 +296,7 @@ function textare_init_preoperative(){
 }
 
 $('#tab_preoperative').on('shown.bs.collapse', function (){
-    SmoothScrollTo('#tab_preoperative', 300,114);
+    SmoothScrollTo('#tab_preoperative', 300, 114);
     
     if($('#mrn_preoperative').val() != ''){
         getdata_preoperative();
@@ -369,21 +369,21 @@ function textfield_modal(){
     }
     
     this.dontcheck = false;
-
+    
     function pop_item_select(type,ontab=false,text_val,obj){
         var act = null;
         var id = id;
         var rowid = rowid;
         var selecter = null;
-        var title="Item selector";
+        var title = "Item selector";
         var mdl = null;
         var text_val = $('input#'+id).val();
         
         act = get_url(type);
         
         // $('#mdl_item_selector').modal({
-        //     'closable':false,
-        //     onHidden : function (){
+        //     'closable': false,
+        //     onHidden: function (){
         //         $('#tbl_item_select').html('');
         //         selecter.destroy();
         //     },
@@ -418,23 +418,23 @@ function textfield_modal(){
                 }, 10);
             },
         });
-
+        
         $("#mdl_item_selector2").dialog({
             width: 6/10 * $(window).width(),
             modal: true,
             autoOpen: false,
             position: { my: "top", at: "top", of: window },
-            open: function( event, ui ) {
-
+            open: function (event, ui){
+                
             },
-            beforeClose: function(event, ui){
-
+            beforeClose: function (event, ui){
+                
             },
-            close: function( event, ui ) {
+            close: function (event, ui){
                 $('#tbl_item_select').html('');
                 selecter.destroy();
             }
-         });
+        });
         
         // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
         $('#tbl_item_select tbody').on('dblclick', 'tr', function (){
