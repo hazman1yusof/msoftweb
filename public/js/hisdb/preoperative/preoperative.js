@@ -47,13 +47,13 @@ $(document).ready(function (){
         // dialog_mrn_edit.off();
     });
     
-    // $("#side_op_na").change(function (){
-    //     $('input[name="side_op_mark"]').removeAttr("checked");
+    // $("#preop_opSite_na").change(function (){
+    //     $('input[name="opSite_mark"]').removeAttr("checked");
     // });
     
-    $("#side_op_na").click(function (){
-        if($('#side_op_na').is(":checked")){
-            $("input[name='side_op_mark']").each(function (){
+    $("#preop_opSite_na").click(function (){
+        if($('#preop_opSite_na').is(":checked")){
+            $("input[name='opSite_mark']").each(function (){
                 if(($(this).val() == "1") || ($(this).val() == "0")){
                     $(this).prop("checked",false);
                 }
@@ -61,9 +61,9 @@ $(document).ready(function (){
         }
     });
     
-    $("input[name='side_op_mark']").click(function (){
+    $("input[name='opSite_mark']").click(function (){
         if($(this).is(':checked')){
-            $("#side_op_na").prop("checked", false);
+            $("#preop_opSite_na").prop("checked", false);
         }
     })
     
@@ -279,7 +279,7 @@ function saveForm_preoperative(callback){
 }
 
 function textare_init_preoperative(){
-    $('textarea#pat_remark,textarea#cons_remark,textarea#check_side_remark,textarea#side_op_remark,textarea#lastmeal_remark,textarea#check_item_remark,textarea#allergies_remark,textarea#implant_remark,textarea#premed_remark,textarea#blood_remark,textarea#casenotes_remark,textarea#oldnotes_remark,textarea#imaging_remark,textarea#vs_remark,textarea#others_remark,textarea#preopvisit_remark,textarea#imprtnt_issues').each(function (){
+    $('textarea#preop_pat_remark,textarea#preop_consent_remark,textarea#preop_checkSide_remark,textarea#preop_opSite_remark,textarea#preop_lastmeal_remark,textarea#preop_checkItem_remark,textarea#preop_allergies_remark,textarea#preop_implant_remark,textarea#preop_premed_remark,textarea#preop_blood_remark,textarea#preop_casenotes_remark,textarea#preop_oldnotes_remark,textarea#preop_imaging_remark,textarea#preop_vs_remark,textarea#preop_others_remark,textarea#preop_preopvisit_remark,textarea#preop_importantIssues').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
