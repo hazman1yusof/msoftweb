@@ -99,8 +99,35 @@ class DischargeController extends defaultController
 
         try {
 
-            if($pat_mast->exists() && $episode->exists() && $queue->exists()){
-                $episode->update([
+            // if($pat_mast->exists() && $episode->exists() && $queue->exists()){
+            //     $episode->update([
+            //                 'episstatus' => 'DISCHARGE',
+            //                 'episactive' => 0,
+            //                 'dischargedate' => Carbon::now("Asia/Kuala_Lumpur"),
+            //                 'dischargeuser' => session('username'),
+            //                 'dischargetime' => Carbon::now("Asia/Kuala_Lumpur"),
+            //                 'dischargedest' => $request->destination
+            //             ]);
+            //     $pat_mast->update(['PatStatus' => 0]);
+            //     $queue->update(['Billflag' => 1]);
+            // }else{
+            //     throw new \Exception('patmast episno or queue doesnt exist', 500);
+            // }
+
+            if($pat_mast->exists()){
+                DB::table('hisdb.pat_mast')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->update(['PatStatus' => 0]);
+            }
+
+            if($episode->exists()){
+                DB::table('hisdb.episode')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->update([
                             'episstatus' => 'DISCHARGE',
                             'episactive' => 0,
                             'dischargedate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -108,10 +135,14 @@ class DischargeController extends defaultController
                             'dischargetime' => Carbon::now("Asia/Kuala_Lumpur"),
                             'dischargedest' => $request->destination
                         ]);
-                $pat_mast->update(['PatStatus' => 0]);
-                $queue->update(['Billflag' => 1]);
-            }else{
-                throw new \Exception('patmast episno or queue doesnt exist', 500);
+            }
+
+            if($queue->exists()){
+                DB::table('hisdb.queue')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->update(['Billflag' => 1]);
             }
 
             DB::commit();

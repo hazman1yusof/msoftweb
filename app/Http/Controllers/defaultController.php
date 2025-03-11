@@ -977,7 +977,7 @@ abstract class defaultController extends Controller{
         }else{
             return implode(' ', $words);
         }
-        return implode(' ', $words);
+        // return implode(' ', $words);
     }
 
     public function convertNumberToWordENG($num = false)

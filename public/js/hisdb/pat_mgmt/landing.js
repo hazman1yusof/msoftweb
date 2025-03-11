@@ -348,9 +348,9 @@ $(document).ready(function() {
                     populate_ordcom_currpt(lastrowdata);
                 }
                 
-                if(lastrowdata.PatStatus == 1 ){
-                    populate_discharge_currpt(lastrowdata);
-                }
+                populate_discharge_currpt(lastrowdata);
+                // if(lastrowdata.PatStatus == 1 ){
+                // }
             }
             
             if(lastrowdata.pregnant == 1){
