@@ -931,6 +931,11 @@ abstract class defaultController extends Controller{
         if(! $num) {
             return false;
         }
+        $neg_val = false;
+        if($num < 0){
+            $num = $num * -1;
+            $neg_val = true;
+        }
         $num = (int) $num;
         $words = array();
         $list1 = array('', 'SATU', 'DUA', 'TIGA', 'EMPAT', 'LIMA', 'ENAM', 'TUJUH', 'LAPAN', 'SEMBILAN', 'SEPULUH', 'SEBELAS',
@@ -965,6 +970,12 @@ abstract class defaultController extends Controller{
         $commas = count($words);
         if ($commas > 1) {
             $commas = $commas - 1;
+        }
+
+        if($neg_val){
+            return 'NEGATIVE '.implode(' ', $words);
+        }else{
+            return implode(' ', $words);
         }
         return implode(' ', $words);
     }

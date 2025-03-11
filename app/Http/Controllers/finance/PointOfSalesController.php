@@ -3370,7 +3370,7 @@ class PointOfSalesController extends defaultController
                         ->where('recno','=',$billsum_obj->auditno)
                         ->first();
 
-        $this->sysdb_log('update',$ivdspdt_lama,'sysdb.ivdspdtlog');
+        // $this->sysdb_log('update',$ivdspdt_lama,'sysdb.ivdspdtlog');
 
         DB::table('material.ivdspdt')
             ->where('compcode','=',session('compcode'))
