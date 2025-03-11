@@ -190,7 +190,7 @@ $(document).ready(function () {
 		}
 		var reporttype = $("#reporttype").val();
 
-		window.open('./financialReport/table?action=genexcel&monthfrom='+$("#monthfrom").val()+'&monthto='+$("#monthto").val()+'&yearfrom='+$("#yearfrom").val()+'&yearto='+$("#yearto").val()+'&reportname='+$("#reportname").val()+'&reporttype='+$("#reporttype").val(), '_blank');
+		window.open('./financialReport/table?action=genexcel&monthfrom='+$("#monthfrom").val()+'&monthto='+$("#monthto").val()+'&yearfrom='+$("#yearfrom").val()+'&yearto='+$("#yearto").val()+'&reportname='+$("#reportname").val()+'&reporttype='+$("#reporttype").val()+'&Class='+$('input:radio[name=Class]:checked').val(), '_blank');
 	});
 
 });

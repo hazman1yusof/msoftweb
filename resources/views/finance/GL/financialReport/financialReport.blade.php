@@ -181,5 +181,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/finance/GL/financialReport/financialReport.js"></script>
+	<script src="js/finance/GL/financialReport/financialReport.js?v=1.1"></script>
 @endsection
