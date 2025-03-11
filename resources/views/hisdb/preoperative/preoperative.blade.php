@@ -1,6 +1,6 @@
 <div class="ui segments" style="position: relative;">
     <div class="ui secondary segment bluecloudsegment">
-        PRE OPERATIVE
+        PRE-OPERATIVE CHECKLIST
         <div class="ui small blue icon buttons" id="btn_grp_edit_preoperative" style="position: absolute;
                     padding: 0 0 0 0;
                     right: 40px;

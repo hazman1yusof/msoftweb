@@ -1,61 +1,56 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
-var editedRow=0;
+var editedRow = 0;
 
-$(document).ready(function () {
-
+$(document).ready(function (){
+    
     textare_init_oper_team();
     
     var fdl = new faster_detail_load();
     
     disableForm('#form_oper_team');
     
-    $("#new_oper_team").click(function(){
+    $("#new_oper_team").click(function (){
         $('#cancel_oper_team').data('oper','add');
         button_state_oper_team('wait');
         enableForm('#form_oper_team');
         rdonly('#form_oper_team');
         // emptyFormdata_div("#form_oper_team",['#mrn_oper_team','#episno_oper_team']);
         // dialog_mrn_edit.on();
-        
     });
     
-    $("#edit_oper_team").click(function(){
+    $("#edit_oper_team").click(function (){
         button_state_oper_team('wait');
         enableForm('#form_oper_team');
         rdonly('#form_oper_team');
         // dialog_mrn_edit.on();
-        
     });
     
-    $("#save_oper_team").click(function(){
-        if( $('#form_oper_team').isValid({requiredFields: ''}, conf, true) ) {
-            saveForm_oper_team(function(data){
+    $("#save_oper_team").click(function (){
+        if($('#form_oper_team').isValid({requiredFields: ''}, conf, true)){
+            saveForm_oper_team(function (data){
                 // emptyFormdata_div("#form_oper_team",['#mrn_oper_team','#episno_oper_team']);
                 disableForm('#form_oper_team');
-                
             });
         }else{
             enableForm('#form_oper_team');
             rdonly('#form_oper_team');
         }
-        
     });
     
-    $("#cancel_oper_team").click(function(){
+    $("#cancel_oper_team").click(function (){
         // emptyFormdata_div("#form_oper_team",['#mrn_oper_team','#episno_oper_team']);
         disableForm('#form_oper_team');
         button_state_oper_team($(this).data('oper'));
         getdata_oper_team();
         // dialog_mrn_edit.off();
-        
     });
     
     // Op site marked
-    $("#op_site_na").click(function(){
+    $("#op_site_na").click(function (){
         if($('#op_site_na').is(":checked")){
-            $("input[name='op_site_mark']").each(function(){
+            $("input[name='op_site_mark']").each(function (){
                 if(($(this).val() == "1") || ($(this).val() == "0")){
                     $(this).prop("checked",false);
                 }
@@ -63,17 +58,17 @@ $(document).ready(function () {
         }
     });
     
-    $("input[name='op_site_mark']").click(function(){
+    $("input[name='op_site_mark']").click(function (){
         if($(this).is(':checked')){
             $("#op_site_na").prop("checked", false);
         }
     })
     // Op site marked ends
-
+    
     // GA machine and defib machine
-    $("#machine_na").click(function(){
+    $("#machine_na").click(function (){
         if($('#machine_na').is(":checked")){
-            $("input[name='machine_chck']").each(function(){
+            $("input[name='machine_check']").each(function (){
                 if(($(this).val() == "1") || ($(this).val() == "0")){
                     $(this).prop("checked",false);
                 }
@@ -81,17 +76,17 @@ $(document).ready(function () {
         }
     });
     
-    $("input[name='machine_chck']").click(function(){
+    $("input[name='machine_check']").click(function (){
         if($(this).is(':checked')){
             $("#machine_na").prop("checked", false);
         }
     })
     // GA machine and defib machine ends
-
+    
     // Haemodynamic monitor
-    $("#monitor_na").click(function(){
+    $("#monitor_na").click(function (){
         if($('#monitor_na').is(":checked")){
-            $("input[name='monitor_on']").each(function(){
+            $("input[name='monitor_on']").each(function (){
                 if(($(this).val() == "1") || ($(this).val() == "0")){
                     $(this).prop("checked",false);
                 }
@@ -99,17 +94,17 @@ $(document).ready(function () {
         }
     });
     
-    $("input[name='monitor_on']").click(function(){
+    $("input[name='monitor_on']").click(function (){
         if($(this).is(':checked')){
             $("#monitor_na").prop("checked", false);
         }
     })
     // Haemodynamic monitor ends
-
+    
     // Difficult airway/aspiration risk
-    $("#diff_airway_na").click(function(){
+    $("#diff_airway_na").click(function (){
         if($('#diff_airway_na').is(":checked")){
-            $("input[name='diff_airway']").each(function(){
+            $("input[name='diff_airway']").each(function (){
                 if(($(this).val() == "1") || ($(this).val() == "0")){
                     $(this).prop("checked",false);
                 }
@@ -117,17 +112,17 @@ $(document).ready(function () {
         }
     });
     
-    $("input[name='diff_airway']").click(function(){
+    $("input[name='diff_airway']").click(function (){
         if($(this).is(':checked')){
             $("#diff_airway_na").prop("checked", false);
         }
     })
     // Difficult airway/aspiration risk ends
-
+    
     // Any GXM/GSH
-    $("#gxm_gsh_na").click(function(){
+    $("#gxm_gsh_na").click(function (){
         if($('#gxm_gsh_na').is(":checked")){
-            $("input[name='gxm_gsh']").each(function(){
+            $("input[name='gxm_gsh']").each(function (){
                 if(($(this).val() == "1") || ($(this).val() == "0")){
                     $(this).prop("checked",false);
                 }
@@ -135,17 +130,17 @@ $(document).ready(function () {
         }
     });
     
-    $("input[name='gxm_gsh']").click(function(){
+    $("input[name='gxm_gsh']").click(function (){
         if($(this).is(':checked')){
             $("#gxm_gsh_na").prop("checked", false);
         }
     })
     // Any GXM/GSH ends
-
-    // Specimen(s) to be labelled
-    $("#specimen_lbl_na").click(function(){
-        if($('#specimen_lbl_na').is(":checked")){
-            $("input[name='specimen_lbl']").each(function(){
+    
+    // Antibiotic prophylaxis
+    $("#antibio_prophy_na").click(function (){
+        if($('#antibio_prophy_na').is(":checked")){
+            $("input[name='antibio_prophy']").each(function (){
                 if(($(this).val() == "1") || ($(this).val() == "0")){
                     $(this).prop("checked",false);
                 }
@@ -153,25 +148,61 @@ $(document).ready(function () {
         }
     });
     
-    $("input[name='specimen_lbl']").click(function(){
+    $("input[name='antibio_prophy']").click(function (){
         if($(this).is(':checked')){
-            $("#specimen_lbl_na").prop("checked", false);
+            $("#antibio_prophy_na").prop("checked", false);
+        }
+    })
+    // Antibiotic prophylaxis ends
+    
+    // Essential imaging
+    $("#display_img_na").click(function (){
+        if($('#display_img_na').is(":checked")){
+            $("input[name='display_img']").each(function (){
+                if(($(this).val() == "1") || ($(this).val() == "0")){
+                    $(this).prop("checked",false);
+                }
+            });
+        }
+    });
+    
+    $("input[name='display_img']").click(function (){
+        if($(this).is(':checked')){
+            $("#display_img_na").prop("checked", false);
+        }
+    })
+    // Essential imaging ends
+    
+    // Specimen(s) to be labelled
+    $("#specimenlabel_na").click(function (){
+        if($('#specimenlabel_na').is(":checked")){
+            $("input[name='specimenlabel']").each(function (){
+                if(($(this).val() == "1") || ($(this).val() == "0")){
+                    $(this).prop("checked",false);
+                }
+            });
+        }
+    });
+    
+    $("input[name='specimenlabel']").click(function (){
+        if($(this).is(':checked')){
+            $("#specimenlabel_na").prop("checked", false);
         }
     })
     // Specimen(s) to be labelled ends
     
     // to format number input to two decimal places (0.00)
-    $(".floatNumberField").change(function() {
+    $(".floatNumberField").change(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
     });
     
     // to limit to two decimal places (onkeypress)
-    $(document).on('keydown', 'input[pattern]', function(e){
+    $(document).on('keydown', 'input[pattern]', function (e){
         var input = $(this);
         var oldVal = input.val();
         var regex = new RegExp(input.attr('pattern'), 'g');
         
-        setTimeout(function(){
+        setTimeout(function (){
             var newVal = input.val();
             if(!regex.test(newVal)){
                 input.val(oldVal);
@@ -183,12 +214,12 @@ $(document).ready(function () {
 
 var errorField = [];
 conf = {
-    modules : 'logic',
+    modules: 'logic',
     language: {
         requiredFields: 'You have not answered all required fields'
     },
-    onValidate: function ($form) {
-        if (errorField.length > 0) {
+    onValidate: function ($form){
+        if(errorField.length > 0){
             return {
                 element: $(errorField[0]),
                 message: ''
@@ -290,12 +321,12 @@ function populate_oper_team(obj){
 }
 
 function autoinsert_rowdata(form,rowData){
-    $.each(rowData, function( index, value ) {
-        var input=$(form+" [name='"+index+"']");
+    $.each(rowData, function (index, value){
+        var input = $(form+" [name='"+index+"']");
         if(input.is("[type=radio]")){
             $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
         }else if(input.is("[type=checkbox]")){
-            if(value==1){
+            if(value == 1){
                 $(form+" [name='"+index+"']").prop('checked', true);
             }
         }else if(input.is("textarea")){
@@ -311,9 +342,9 @@ function autoinsert_rowdata(form,rowData){
 
 function saveForm_oper_team(callback){
     let oper = $("#cancel_oper_team").data('oper');
-    var saveParam={
-        action:'save_table_oper_team',
-        oper:oper,
+    var saveParam = {
+        action: 'save_table_oper_team',
+        oper: oper,
     }
     
     if(oper == 'add'){
@@ -324,62 +355,62 @@ function saveForm_oper_team(callback){
         // saveParam.recordtime = row.recordtime;
     }
     
-    var postobj={
-        _token : $('#_token').val(),
-        // sex_edit : $('#sex_edit').val(),
-        // idtype_edit : $('#idtype_edit').val()
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
     };
     
     values = $("#form_oper_team").serializeArray();
     
     values = values.concat(
         $('#form_oper_team input[type=checkbox]:not(:checked)').map(
-        function() {
+        function (){
             return {"name": this.name, "value": 0}
         }).get()
     );
     
     values = values.concat(
         $('#form_oper_team input[type=checkbox]:checked').map(
-        function() {
+        function (){
             return {"name": this.name, "value": 1}
         }).get()
     );
     
     values = values.concat(
         $('#form_oper_team input[type=radio]:checked').map(
-        function() {
+        function (){
             return {"name": this.name, "value": this.value}
         }).get()
     );
     
     values = values.concat(
         $('#form_oper_team select').map(
-        function() {
+        function (){
             return {"name": this.name, "value": this.value}
         }).get()
     );
     
-    $.post( "./oper_team/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post("./oper_team/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
-    },'json').done(function(data) {
+    },'json').done(function (data){
         callback(data);
         button_state_oper_team('edit');
-    }).fail(function(data){
+    }).fail(function (data){
         callback(data);
         button_state_oper_team($(this).data('oper'));
     });
 }
 
 function textare_init_oper_team(){
-    $('textarea#allergy_remark,textarea#relative_remark').each(function () {
+    $('textarea#allergy_remark,textarea#surgeon_review_remark,textarea#relative_remark').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
             this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }
-    }).off().on('input', function () {
-        if(this.scrollHeight>40){
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + 'px';
         }else{
@@ -388,35 +419,35 @@ function textare_init_oper_team(){
     });
 }
 
-$('#tab_oper_team').on('shown.bs.collapse', function () {
-    SmoothScrollTo('#tab_oper_team', 300,114);
+$('#tab_oper_team').on('shown.bs.collapse', function (){
+    SmoothScrollTo('#tab_oper_team', 300, 114);
     
     if($('#mrn_oper_team').val() != ''){
         getdata_oper_team();
     }
 });
 
-$('#tab_oper_team').on('hide.bs.collapse', function () {
+$('#tab_oper_team').on('hide.bs.collapse', function (){
     emptyFormdata_div("#form_oper_team",['#mrn_oper_team','#episno_oper_team']);
     button_state_oper_team('empty');
 });
 
 function getdata_oper_team(){
-    var urlparam={
-        action:'get_table_oper_team',
+    var urlparam = {
+        action: 'get_table_oper_team',
     }
     
-    var postobj={
-        _token : $('#_token').val(),
-        mrn:$('#mrn_oper_team').val(),
-        episno:$("#episno_oper_team").val()
+    var postobj = {
+        _token: $('#_token').val(),
+        mrn: $('#mrn_oper_team').val(),
+        episno: $("#episno_oper_team").val()
     };
     
-    $.post( "./oper_team/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+    $.post("./oper_team/form?"+$.param(urlparam), $.param(postobj), function (data){
         
-    },'json').fail(function(data) {
+    },'json').fail(function (data){
         alert('there is an error');
-    }).done(function(data){
+    }).done(function (data){
         if(!$.isEmptyObject(data)){
             button_state_oper_team('edit');
             autoinsert_rowdata("#form_oper_team",data.otteam);
