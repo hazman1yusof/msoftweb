@@ -54,7 +54,7 @@ class OTDischargeController extends defaultController
         }
     }
     
-    public function add(Request $request){
+    public function add_lama(Request $request){
         
         DB::beginTransaction();
         
@@ -65,17 +65,17 @@ class OTDischargeController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn_otdischarge,
                         'episno' => $request->episno_otdischarge,
-                        'pat_id' => $request->pat_id,
+                        'patID' => $request->patID,
                         'use2iden' => $request->use2iden,
                         'pat_ot' => $request->pat_ot,
                         'pat_ward' => $request->pat_ward,
                         'pat_remark' => $request->pat_remark,
-                        'cl_alert' => $request->cl_alert,
-                        'cl_drowsy' => $request->cl_drowsy,
-                        'cl_intubated' => $request->cl_intubated,
-                        'conslevel_ot' => $request->conslevel_ot,
-                        'conslevel_ward' => $request->conslevel_ward,
-                        'conslevel_remark' => $request->conslevel_remark,
+                        'consciousAlert' => $request->consciousAlert,
+                        'consciousDrowsy' => $request->consciousDrowsy,
+                        'consciousIntubated' => $request->consciousIntubated,
+                        'consciouslvl_ot' => $request->consciouslvl_ot,
+                        'consciouslvl_ward' => $request->consciouslvl_ward,
+                        'consciouslvl_remark' => $request->consciouslvl_remark,
                         'vitalsign_ot' => $request->vitalsign_ot,
                         'vitalsign_ward' => $request->vitalsign_ward,
                         'vitalsign_remark' => $request->vitalsign_remark,
@@ -143,6 +143,9 @@ class OTDischargeController extends defaultController
                         'addmore6_remark' => $request->addmore6_remark,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
                     ]);
             
             DB::commit();
@@ -161,7 +164,7 @@ class OTDischargeController extends defaultController
         
     }
     
-    public function edit(Request $request){
+    public function edit_lama(Request $request){
         
         DB::beginTransaction();
         
@@ -172,17 +175,17 @@ class OTDischargeController extends defaultController
                 ->where('episno','=',$request->episno_otdischarge)
                 ->where('compcode','=',session('compcode'))
                 ->update([
-                    'pat_id' => $request->pat_id,
+                    'patID' => $request->patID,
                     'use2iden' => $request->use2iden,
                     'pat_ot' => $request->pat_ot,
                     'pat_ward' => $request->pat_ward,
                     'pat_remark' => $request->pat_remark,
-                    'cl_alert' => $request->cl_alert,
-                    'cl_drowsy' => $request->cl_drowsy,
-                    'cl_intubated' => $request->cl_intubated,
-                    'conslevel_ot' => $request->conslevel_ot,
-                    'conslevel_ward' => $request->conslevel_ward,
-                    'conslevel_remark' => $request->conslevel_remark,
+                    'consciousAlert' => $request->consciousAlert,
+                    'consciousDrowsy' => $request->consciousDrowsy,
+                    'consciousIntubated' => $request->consciousIntubated,
+                    'consciouslvl_ot' => $request->consciouslvl_ot,
+                    'consciouslvl_ward' => $request->consciouslvl_ward,
+                    'consciouslvl_remark' => $request->consciouslvl_remark,
                     'vitalsign_ot' => $request->vitalsign_ot,
                     'vitalsign_ward' => $request->vitalsign_ward,
                     'vitalsign_remark' => $request->vitalsign_remark,
@@ -250,6 +253,188 @@ class OTDischargeController extends defaultController
                     'addmore6_remark' => $request->addmore6_remark,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            // $queries = DB::getQueryLog();
+            // dump($queries);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function add(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.otdischarge')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_otdischarge,
+                        'episno' => $request->episno_otdischarge,
+                        'patName' => $request->patName,
+                        'identitytag' => $request->identitytag,
+                        'pat_checked' => $request->pat_checked,
+                        'pat_remark' => $request->pat_remark,
+                        'consciousAlert' => $request->consciousAlert,
+                        'consciousDrowsy' => $request->consciousDrowsy,
+                        'consciousIntubated' => $request->consciousIntubated,
+                        'consciouslvl_checked' => $request->consciouslvl_checked,
+                        'consciouslvl_remark' => $request->consciouslvl_remark,
+                        'vitalsign_checked' => $request->vitalsign_checked,
+                        'bpsys1' => $request->bpsys1,
+                        'bpdias' => $request->bpdias,
+                        'painscore' => $request->painscore,
+                        'checksite_checked' => $request->checksite_checked,
+                        'checksite_remark' => $request->checksite_remark,
+                        'checkdrains_checked' => $request->checkdrains_checked,
+                        'checkdrains_remark' => $request->checkdrains_remark,
+                        'checkiv_checked' => $request->checkiv_checked,
+                        'checkiv_remark' => $request->checkiv_remark,
+                        'blood_checked' => $request->blood_checked,
+                        'blood_remark' => $request->blood_remark,
+                        'specimen_checked' => $request->specimen_checked,
+                        'specimen_remark' => $request->specimen_remark,
+                        'casenotes' => $request->casenotes,
+                        'oldnotes' => $request->oldnotes,
+                        'xrays' => $request->xrays,
+                        'opernotes' => $request->opernotes,
+                        'gaform' => $request->gaform,
+                        'docs_checked' => $request->docs_checked,
+                        'docs_remark' => $request->docs_remark,
+                        'painrelief_checked' => $request->painrelief_checked,
+                        'painrelief_remark' => $request->painrelief_remark,
+                        'addmore1' => $request->addmore1,
+                        'addmore1_checked' => $request->addmore1_checked,
+                        'addmore1_remark' => $request->addmore1_remark,
+                        'addmore2' => $request->addmore2,
+                        'addmore2_checked' => $request->addmore2_checked,
+                        'addmore2_remark' => $request->addmore2_remark,
+                        'addmore3' => $request->addmore3,
+                        'addmore3_checked' => $request->addmore3_checked,
+                        'addmore3_remark' => $request->addmore3_remark,
+                        'addmore4' => $request->addmore4,
+                        'addmore4_checked' => $request->addmore4_checked,
+                        'addmore4_remark' => $request->addmore4_remark,
+                        'addmore5' => $request->addmore5,
+                        'addmore5_checked' => $request->addmore5_checked,
+                        'addmore5_remark' => $request->addmore5_remark,
+                        'addmore6' => $request->addmore6,
+                        'addmore6_checked' => $request->addmore6_checked,
+                        'addmore6_remark' => $request->addmore6_remark,
+                        'otNurse' => $request->otNurse,
+                        'wardNurse' => $request->wardNurse,
+                        'entereddate' => $request->entereddate,
+                        'enteredtime' => $request->enteredtime,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+        
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.otdischarge')
+                ->where('mrn','=',$request->mrn_otdischarge)
+                ->where('episno','=',$request->episno_otdischarge)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'patName' => $request->patName,
+                    'identitytag' => $request->identitytag,
+                    'pat_checked' => $request->pat_checked,
+                    'pat_remark' => $request->pat_remark,
+                    'consciousAlert' => $request->consciousAlert,
+                    'consciousDrowsy' => $request->consciousDrowsy,
+                    'consciousIntubated' => $request->consciousIntubated,
+                    'consciouslvl_checked' => $request->consciouslvl_checked,
+                    'consciouslvl_remark' => $request->consciouslvl_remark,
+                    'vitalsign_checked' => $request->vitalsign_checked,
+                    'bpsys1' => $request->bpsys1,
+                    'bpdias' => $request->bpdias,
+                    'painscore' => $request->painscore,
+                    'checksite_checked' => $request->checksite_checked,
+                    'checksite_remark' => $request->checksite_remark,
+                    'checkdrains_checked' => $request->checkdrains_checked,
+                    'checkdrains_remark' => $request->checkdrains_remark,
+                    'checkiv_checked' => $request->checkiv_checked,
+                    'checkiv_remark' => $request->checkiv_remark,
+                    'blood_checked' => $request->blood_checked,
+                    'blood_remark' => $request->blood_remark,
+                    'specimen_checked' => $request->specimen_checked,
+                    'specimen_remark' => $request->specimen_remark,
+                    'casenotes' => $request->casenotes,
+                    'oldnotes' => $request->oldnotes,
+                    'xrays' => $request->xrays,
+                    'opernotes' => $request->opernotes,
+                    'gaform' => $request->gaform,
+                    'docs_checked' => $request->docs_checked,
+                    'docs_remark' => $request->docs_remark,
+                    'painrelief_checked' => $request->painrelief_checked,
+                    'painrelief_remark' => $request->painrelief_remark,
+                    'addmore1' => $request->addmore1,
+                    'addmore1_checked' => $request->addmore1_checked,
+                    'addmore1_remark' => $request->addmore1_remark,
+                    'addmore2' => $request->addmore2,
+                    'addmore2_checked' => $request->addmore2_checked,
+                    'addmore2_remark' => $request->addmore2_remark,
+                    'addmore3' => $request->addmore3,
+                    'addmore3_checked' => $request->addmore3_checked,
+                    'addmore3_remark' => $request->addmore3_remark,
+                    'addmore4' => $request->addmore4,
+                    'addmore4_checked' => $request->addmore4_checked,
+                    'addmore4_remark' => $request->addmore4_remark,
+                    'addmore5' => $request->addmore5,
+                    'addmore5_checked' => $request->addmore5_checked,
+                    'addmore5_remark' => $request->addmore5_remark,
+                    'addmore6' => $request->addmore6,
+                    'addmore6_checked' => $request->addmore6_checked,
+                    'addmore6_remark' => $request->addmore6_remark,
+                    'otNurse' => $request->otNurse,
+                    'wardNurse' => $request->wardNurse,
+                    'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
                 ]);
             
             // $queries = DB::getQueryLog();

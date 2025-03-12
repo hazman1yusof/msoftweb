@@ -1,72 +1,67 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
-var editedRow=0;
+var editedRow = 0;
 
-$(document).ready(function () {
-
+$(document).ready(function (){
+    
     textare_init_otdischarge();
     
     var fdl = new faster_detail_load();
     
     disableForm('#form_otdischarge');
     
-    $("#new_otdischarge").click(function(){
+    $("#new_otdischarge").click(function (){
         $('#cancel_otdischarge').data('oper','add');
         button_state_otdischarge('wait');
         enableForm('#form_otdischarge');
         rdonly('#form_otdischarge');
-        // $("#pat_remark,#conslevel_remark,#vitalsign_remark,#checksite_remark,#checkdrains_remark,#checkiv_remark,#blood_remark,#specimen_remark,#docs_remark,#imgstudies_remark,#painrelief_remark,#others_remark,#arterial_remark,#pcapump_remark,#addmore1_remark,#addmore2_remark,#addmore3_remark,#addmore4_remark,#addmore5_remark,#addmore6_remark").prop("readonly",true);
+        // $("#predischg_pat_remark,#predischg_consciouslvl_remark,#predischg_vitalsign_remark,#predischg_checksite_remark,#predischg_checkdrains_remark,#predischg_checkiv_remark,#predischg_blood_remark,#predischg_specimen_remark,#predischg_docs_remark,#predischg_imgstudies_remark,#predischg_painrelief_remark,#predischg_others_remark,#predischg_arterial_remark,#predischg_pcapump_remark,#predischg_addmore1_remark,#predischg_addmore2_remark,#predischg_addmore3_remark,#predischg_addmore4_remark,#predischg_addmore5_remark,#predischg_addmore6_remark").prop("readonly",true);
         // emptyFormdata_div("#form_otdischarge",['#mrn_otdischarge','#episno_otdischarge']);
         // dialog_mrn_edit.on();
-        
     });
     
-    $("#edit_otdischarge").click(function(){
+    $("#edit_otdischarge").click(function (){
         button_state_otdischarge('wait');
         enableForm('#form_otdischarge');
         rdonly('#form_otdischarge');
-        // $("#pat_remark,#conslevel_remark,#vitalsign_remark,#checksite_remark,#checkdrains_remark,#checkiv_remark,#blood_remark,#specimen_remark,#docs_remark,#imgstudies_remark,#painrelief_remark,#others_remark,#arterial_remark,#pcapump_remark,#addmore1_remark,#addmore2_remark,#addmore3_remark,#addmore4_remark,#addmore5_remark,#addmore6_remark").prop("readonly",true);
+        // $("#predischg_pat_remark,#predischg_consciouslvl_remark,#predischg_vitalsign_remark,#predischg_checksite_remark,#predischg_checkdrains_remark,#predischg_checkiv_remark,#predischg_blood_remark,#predischg_specimen_remark,#predischg_docs_remark,#predischg_imgstudies_remark,#predischg_painrelief_remark,#predischg_others_remark,#predischg_arterial_remark,#predischg_pcapump_remark,#predischg_addmore1_remark,#predischg_addmore2_remark,#predischg_addmore3_remark,#predischg_addmore4_remark,#predischg_addmore5_remark,#predischg_addmore6_remark").prop("readonly",true);
         // dialog_mrn_edit.on();
-        
     });
     
-    $("#save_otdischarge").click(function(){
-        if( $('#form_otdischarge').isValid({requiredFields: ''}, conf, true) ) {
-            saveForm_otdischarge(function(data){
+    $("#save_otdischarge").click(function (){
+        if($('#form_otdischarge').isValid({requiredFields: ''}, conf, true)){
+            saveForm_otdischarge(function (data){
                 // emptyFormdata_div("#form_otdischarge",['#mrn_otdischarge','#episno_otdischarge']);
                 disableForm('#form_otdischarge');
-                
             });
         }else{
             enableForm('#form_otdischarge');
             rdonly('#form_otdischarge');
-            // $("#pat_remark,#conslevel_remark,#vitalsign_remark,#checksite_remark,#checkdrains_remark,#checkiv_remark,#blood_remark,#specimen_remark,#docs_remark,#imgstudies_remark,#painrelief_remark,#others_remark,#arterial_remark,#pcapump_remark,#addmore1_remark,#addmore2_remark,#addmore3_remark,#addmore4_remark,#addmore5_remark,#addmore6_remark").prop("readonly",true);
+            // $("#predischg_pat_remark,#predischg_consciouslvl_remark,#predischg_vitalsign_remark,#predischg_checksite_remark,#predischg_checkdrains_remark,#predischg_checkiv_remark,#predischg_blood_remark,#predischg_specimen_remark,#predischg_docs_remark,#predischg_imgstudies_remark,#predischg_painrelief_remark,#predischg_others_remark,#predischg_arterial_remark,#predischg_pcapump_remark,#predischg_addmore1_remark,#predischg_addmore2_remark,#predischg_addmore3_remark,#predischg_addmore4_remark,#predischg_addmore5_remark,#predischg_addmore6_remark").prop("readonly",true);
         }
-        
     });
     
-    $("#cancel_otdischarge").click(function(){
+    $("#cancel_otdischarge").click(function (){
         // emptyFormdata_div("#form_otdischarge",['#mrn_otdischarge','#episno_otdischarge']);
         disableForm('#form_otdischarge');
         button_state_otdischarge($(this).data('oper'));
         getdata_otdischarge();
         // dialog_mrn_edit.off();
-        
     });
     
     // to format number input to two decimal places (0.00)
-    $(".floatNumberField").change(function() {
+    $(".floatNumberField").change(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
     });
     
     // to limit to two decimal places (onkeypress)
-    $(document).on('keydown', 'input[pattern]', function(e){
+    $(document).on('keydown', 'input[pattern]', function (e){
         var input = $(this);
         var oldVal = input.val();
         var regex = new RegExp(input.attr('pattern'), 'g');
         
-        setTimeout(function(){
+        setTimeout(function (){
             var newVal = input.val();
             if(!regex.test(newVal)){
                 input.val(oldVal);
@@ -78,12 +73,12 @@ $(document).ready(function () {
 
 var errorField = [];
 conf = {
-    modules : 'logic',
+    modules: 'logic',
     language: {
         requiredFields: 'You have not answered all required fields'
     },
-    onValidate: function ($form) {
-        if (errorField.length > 0) {
+    onValidate: function ($form){
+        if(errorField.length > 0){
             return {
                 element: $(errorField[0]),
                 message: ''
@@ -185,12 +180,12 @@ function populate_otdischarge(obj){
 }
 
 function autoinsert_rowdata(form,rowData){
-    $.each(rowData, function( index, value ) {
-        var input=$(form+" [name='"+index+"']");
+    $.each(rowData, function (index, value){
+        var input = $(form+" [name='"+index+"']");
         if(input.is("[type=radio]")){
             $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
         }else if(input.is("[type=checkbox]")){
-            if(value==1){
+            if(value == 1){
                 $(form+" [name='"+index+"']").prop('checked', true);
             }
         }else if(input.is("textarea")){
@@ -206,9 +201,9 @@ function autoinsert_rowdata(form,rowData){
 
 function saveForm_otdischarge(callback){
     let oper = $("#cancel_otdischarge").data('oper');
-    var saveParam={
-        action:'save_table_otdischarge',
-        oper:oper,
+    var saveParam = {
+        action: 'save_table_otdischarge',
+        oper: oper,
     }
     
     if(oper == 'add'){
@@ -219,62 +214,62 @@ function saveForm_otdischarge(callback){
         // saveParam.recordtime = row.recordtime;
     }
     
-    var postobj={
-        _token : $('#_token').val(),
-        // sex_edit : $('#sex_edit').val(),
-        // idtype_edit : $('#idtype_edit').val()
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
     };
     
     values = $("#form_otdischarge").serializeArray();
     
     values = values.concat(
         $('#form_otdischarge input[type=checkbox]:not(:checked)').map(
-        function() {
+        function (){
             return {"name": this.name, "value": 0}
         }).get()
     );
     
     values = values.concat(
         $('#form_otdischarge input[type=checkbox]:checked').map(
-        function() {
+        function (){
             return {"name": this.name, "value": 1}
         }).get()
     );
     
     values = values.concat(
         $('#form_otdischarge input[type=radio]:checked').map(
-        function() {
+        function (){
             return {"name": this.name, "value": this.value}
         }).get()
     );
     
     values = values.concat(
         $('#form_otdischarge select').map(
-        function() {
+        function (){
             return {"name": this.name, "value": this.value}
         }).get()
     );
     
-    $.post( "./otdischarge/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post("./otdischarge/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
-    },'json').done(function(data) {
+    },'json').done(function (data){
         callback(data);
         button_state_otdischarge('edit');
-    }).fail(function(data){
+    }).fail(function (data){
         callback(data);
         button_state_otdischarge($(this).data('oper'));
     });
 }
 
 function textare_init_otdischarge(){
-    $('textarea#pat_remark,textarea#conslevel_remark,textarea#vitalsign_remark,textarea#checksite_remark,textarea#checkdrains_remark,textarea#checkiv_remark,textarea#blood_remark,textarea#specimen_remark,textarea#docs_remark,textarea#imgstudies_remark,textarea#painrelief_remark,textarea#others_remark,textarea#arterial_remark,textarea#pcapump_remark,textarea#addmore1,textarea#addmore1_remark,textarea#addmore2,textarea#addmore2_remark,textarea#addmore3,textarea#addmore3_remark,textarea#addmore4,textarea#addmore4_remark,textarea#addmore5,textarea#addmore5_remark,textarea#addmore6,textarea#addmore6_remark').each(function () {
+    $('textarea#predischg_pat_remark,textarea#predischg_consciouslvl_remark,textarea#predischg_vitalsign_remark,textarea#predischg_checksite_remark,textarea#predischg_checkdrains_remark,textarea#predischg_checkiv_remark,textarea#predischg_blood_remark,textarea#predischg_specimen_remark,textarea#predischg_docs_remark,textarea#predischg_imgstudies_remark,textarea#predischg_painrelief_remark,textarea#predischg_others_remark,textarea#predischg_arterial_remark,textarea#predischg_pcapump_remark,textarea#predischg_addmore1,textarea#predischg_addmore1_remark,textarea#predischg_addmore2,textarea#predischg_addmore2_remark,textarea#predischg_addmore3,textarea#predischg_addmore3_remark,textarea#predischg_addmore4,textarea#predischg_addmore4_remark,textarea#predischg_addmore5,textarea#predischg_addmore5_remark,textarea#predischg_addmore6,textarea#predischg_addmore6_remark').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
             this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }
-    }).off().on('input', function () {
-        if(this.scrollHeight>40){
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + 'px';
         }else{
@@ -283,35 +278,35 @@ function textare_init_otdischarge(){
     });
 }
 
-$('#tab_otdischarge').on('shown.bs.collapse', function () {
-    SmoothScrollTo('#tab_otdischarge', 300,114);
+$('#tab_otdischarge').on('shown.bs.collapse', function (){
+    SmoothScrollTo('#tab_otdischarge', 300, 114);
     
     if($('#mrn_otdischarge').val() != ''){
         getdata_otdischarge();
     }
 });
 
-$('#tab_otdischarge').on('hide.bs.collapse', function () {
+$('#tab_otdischarge').on('hide.bs.collapse', function (){
     emptyFormdata_div("#form_otdischarge",['#mrn_otdischarge','#episno_otdischarge']);
     button_state_otdischarge('empty');
 });
 
 function getdata_otdischarge(){
-    var urlparam={
-        action:'get_table_otdischarge',
+    var urlparam = {
+        action: 'get_table_otdischarge',
     }
     
-    var postobj={
-        _token : $('#_token').val(),
-        mrn:$('#mrn_otdischarge').val(),
-        episno:$("#episno_otdischarge").val()
+    var postobj = {
+        _token: $('#_token').val(),
+        mrn: $('#mrn_otdischarge').val(),
+        episno: $("#episno_otdischarge").val()
     };
     
-    $.post( "./otdischarge/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+    $.post("./otdischarge/form?"+$.param(urlparam), $.param(postobj), function (data){
         
-    },'json').fail(function(data) {
+    },'json').fail(function (data){
         alert('there is an error');
-    }).done(function(data){
+    }).done(function (data){
         if(!$.isEmptyObject(data)){
             button_state_otdischarge('edit');
             autoinsert_rowdata("#form_otdischarge",data.otdischarge);
