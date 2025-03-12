@@ -48,9 +48,9 @@ $(document).ready(function (){
     });
     
     // Op site marked
-    $("#op_site_na").click(function (){
-        if($('#op_site_na').is(":checked")){
-            $("input[name='op_site_mark']").each(function (){
+    $("#operteam_opSite_na").click(function (){
+        if($('#operteam_opSite_na').is(":checked")){
+            $("input[name='opSite_mark']").each(function (){
                 if(($(this).val() == "1") || ($(this).val() == "0")){
                     $(this).prop("checked",false);
                 }
@@ -58,16 +58,16 @@ $(document).ready(function (){
         }
     });
     
-    $("input[name='op_site_mark']").click(function (){
+    $("input[name='opSite_mark']").click(function (){
         if($(this).is(':checked')){
-            $("#op_site_na").prop("checked", false);
+            $("#operteam_opSite_na").prop("checked", false);
         }
     })
     // Op site marked ends
     
     // GA machine and defib machine
-    $("#machine_na").click(function (){
-        if($('#machine_na').is(":checked")){
+    $("#operteam_machine_na").click(function (){
+        if($('#operteam_machine_na').is(":checked")){
             $("input[name='machine_check']").each(function (){
                 if(($(this).val() == "1") || ($(this).val() == "0")){
                     $(this).prop("checked",false);
@@ -78,14 +78,14 @@ $(document).ready(function (){
     
     $("input[name='machine_check']").click(function (){
         if($(this).is(':checked')){
-            $("#machine_na").prop("checked", false);
+            $("#operteam_machine_na").prop("checked", false);
         }
     })
     // GA machine and defib machine ends
     
     // Haemodynamic monitor
-    $("#monitor_na").click(function (){
-        if($('#monitor_na').is(":checked")){
+    $("#operteam_monitor_na").click(function (){
+        if($('#operteam_monitor_na').is(":checked")){
             $("input[name='monitor_on']").each(function (){
                 if(($(this).val() == "1") || ($(this).val() == "0")){
                     $(this).prop("checked",false);
@@ -96,15 +96,15 @@ $(document).ready(function (){
     
     $("input[name='monitor_on']").click(function (){
         if($(this).is(':checked')){
-            $("#monitor_na").prop("checked", false);
+            $("#operteam_monitor_na").prop("checked", false);
         }
     })
     // Haemodynamic monitor ends
     
     // Difficult airway/aspiration risk
-    $("#diff_airway_na").click(function (){
-        if($('#diff_airway_na').is(":checked")){
-            $("input[name='diff_airway']").each(function (){
+    $("#operteam_difficultAirway_na").click(function (){
+        if($('#operteam_difficultAirway_na').is(":checked")){
+            $("input[name='difficultAirway']").each(function (){
                 if(($(this).val() == "1") || ($(this).val() == "0")){
                     $(this).prop("checked",false);
                 }
@@ -112,17 +112,17 @@ $(document).ready(function (){
         }
     });
     
-    $("input[name='diff_airway']").click(function (){
+    $("input[name='difficultAirway']").click(function (){
         if($(this).is(':checked')){
-            $("#diff_airway_na").prop("checked", false);
+            $("#operteam_difficultAirway_na").prop("checked", false);
         }
     })
     // Difficult airway/aspiration risk ends
     
     // Any GXM/GSH
-    $("#gxm_gsh_na").click(function (){
-        if($('#gxm_gsh_na').is(":checked")){
-            $("input[name='gxm_gsh']").each(function (){
+    $("#operteam_gxmgsh_na").click(function (){
+        if($('#operteam_gxmgsh_na').is(":checked")){
+            $("input[name='gxmgsh']").each(function (){
                 if(($(this).val() == "1") || ($(this).val() == "0")){
                     $(this).prop("checked",false);
                 }
@@ -130,17 +130,17 @@ $(document).ready(function (){
         }
     });
     
-    $("input[name='gxm_gsh']").click(function (){
+    $("input[name='gxmgsh']").click(function (){
         if($(this).is(':checked')){
-            $("#gxm_gsh_na").prop("checked", false);
+            $("#operteam_gxmgsh_na").prop("checked", false);
         }
     })
     // Any GXM/GSH ends
     
     // Antibiotic prophylaxis
-    $("#antibio_prophy_na").click(function (){
-        if($('#antibio_prophy_na').is(":checked")){
-            $("input[name='antibio_prophy']").each(function (){
+    $("#operteam_antibioProphy_na").click(function (){
+        if($('#operteam_antibioProphy_na').is(":checked")){
+            $("input[name='antibioProphy']").each(function (){
                 if(($(this).val() == "1") || ($(this).val() == "0")){
                     $(this).prop("checked",false);
                 }
@@ -148,17 +148,17 @@ $(document).ready(function (){
         }
     });
     
-    $("input[name='antibio_prophy']").click(function (){
+    $("input[name='antibioProphy']").click(function (){
         if($(this).is(':checked')){
-            $("#antibio_prophy_na").prop("checked", false);
+            $("#operteam_antibioProphy_na").prop("checked", false);
         }
     })
     // Antibiotic prophylaxis ends
     
     // Essential imaging
-    $("#display_img_na").click(function (){
-        if($('#display_img_na').is(":checked")){
-            $("input[name='display_img']").each(function (){
+    $("#operteam_displayImg_na").click(function (){
+        if($('#operteam_displayImg_na').is(":checked")){
+            $("input[name='displayImg']").each(function (){
                 if(($(this).val() == "1") || ($(this).val() == "0")){
                     $(this).prop("checked",false);
                 }
@@ -166,16 +166,16 @@ $(document).ready(function (){
         }
     });
     
-    $("input[name='display_img']").click(function (){
+    $("input[name='displayImg']").click(function (){
         if($(this).is(':checked')){
-            $("#display_img_na").prop("checked", false);
+            $("#operteam_displayImg_na").prop("checked", false);
         }
     })
     // Essential imaging ends
     
     // Specimen(s) to be labelled
-    $("#specimenlabel_na").click(function (){
-        if($('#specimenlabel_na').is(":checked")){
+    $("#operteam_specimenlabel_na").click(function (){
+        if($('#operteam_specimenlabel_na').is(":checked")){
             $("input[name='specimenlabel']").each(function (){
                 if(($(this).val() == "1") || ($(this).val() == "0")){
                     $(this).prop("checked",false);
@@ -186,7 +186,7 @@ $(document).ready(function (){
     
     $("input[name='specimenlabel']").click(function (){
         if($(this).is(':checked')){
-            $("#specimenlabel_na").prop("checked", false);
+            $("#operteam_specimenlabel_na").prop("checked", false);
         }
     })
     // Specimen(s) to be labelled ends
@@ -403,7 +403,7 @@ function saveForm_oper_team(callback){
 }
 
 function textare_init_oper_team(){
-    $('textarea#allergy_remark,textarea#surgeon_review_remark,textarea#relative_remark').each(function (){
+    $('textarea#operteam_allergy_remark,textarea#operteam_surgeonReview_remark,textarea#operteam_relative_remark').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{

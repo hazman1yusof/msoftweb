@@ -4,11 +4,11 @@
             <td>
                 <div class="form-inline"> Temperature <span style="margin-left: 48px;"> :  &nbsp;
                     <div class="form-group">
-                        <input type="text" class="form-control" id="info_temperature" name="info_temperature" size="4">
+                        <input type="text" class="form-control" id="preop_info_temperature" name="info_temperature" size="4">
                     </div> &nbsp; °C &nbsp; &nbsp; <span style="margin-left: 60px;">
                     Humidity &nbsp; &nbsp; &nbsp; :  &nbsp;
                     <div class="form-group">
-                        <input type="text" class="form-control" id="info_humidity" name="info_humidity" size="4">
+                        <input type="text" class="form-control" id="preop_info_humidity" name="info_humidity" size="4">
                     </div> &nbsp; <span class="glyphicon glyphicon-tint"> &nbsp; &nbsp;
                 </div>
             </td>
@@ -17,7 +17,7 @@
             <td>
                 <div class="form-inline"> OT Room <span style="margin-left: 69px;"> :  &nbsp;
                     <div class="form-group">
-                        <select name="info_otroom" id="info_otroom" class="form-control input-sm">
+                        <select name="info_otroom" id="preop_info_otroom" class="form-control input-sm">
                             <option value=""></option>
                             @foreach($otroom as $obj)
                                 <option value="{{$obj->resourcecode}}">{{$obj->description}}</option>
