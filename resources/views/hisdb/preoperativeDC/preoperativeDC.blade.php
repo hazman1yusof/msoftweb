@@ -61,7 +61,7 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th width="60%"> </th>
+                                            <th width="60%">Description</th>
                                             <th>Ward</th>
                                             <th>Reception</th>
                                             <th>Theatre</th>
@@ -315,7 +315,7 @@
                                             <td><input type="text" name="grpCrossMatch_3" id="grpCrossMatch_3"></td>
                                             <td><input type="text" name="grpCrossMatch_4" id="grpCrossMatch_4"></td>
                                             <td><input type="text" name="grpCrossMatch_doc" id="grpCrossMatch_doc"></td>
-                                            <td><textarea class="form-control input-sm" id="grpCrossMatch_remarks" name="grpCrossMatch_remarks"></textarea></td>
+                                            <td>Availability:<textarea class="form-control input-sm" id="grpCrossMatch_remarks" name="grpCrossMatch_remarks"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td><b>ECG</b></td>
