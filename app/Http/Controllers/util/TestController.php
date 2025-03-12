@@ -4596,56 +4596,82 @@ class TestController extends defaultController
 
     public  function betulkan_stockloc_2025(Request $request){
         DB::beginTransaction();
+        $year = 2025;
+        $step = $request->step;
 
         try {
             $temp_stockloc = DB::table('temp.temp_stock')
                                 ->get();
 
-            foreach ($temp_stockloc as $key => $value) {
-                $newrecno = str_pad($value->recno, 6, "300000", STR_PAD_LEFT);
+            if($step == 1){
+                foreach ($temp_stockloc as $key => $value) {
+                    $stockloc = DB::table('material.stockloc')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('deptcode',$value->dept)
+                                    ->where('itemcode',$value->itemcode)
+                                    ->where('year',$year);
 
-                DB::table('material.delordhd')
-                        ->where('compcode',session('compcode'))
-                        ->where('recno',$value->recno)
-                        ->where('trantype',$value->trantype)
-                        ->update([
-                            'recno' => $newrecno
-                        ]);
+                    if($stockloc->exists()){
+                        DB::table('material.stockloc')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('deptcode',$value->dept)
+                                    ->where('itemcode',$value->itemcode)
+                                    ->where('year',$year)
+                                    ->update([
+                                        'openbalqty' => $value->openbalqty,
+                                        'openbalval' => $value->openbalval,
+                                        'netmvqty1' => $value->netmvqty1,
+                                        'netmvqty2' => $value->netmvqty2,
+                                        'netmvval1' => $value->netmvval1,
+                                        'netmvval2' => $value->netmvval2
+                                    ]);
 
-                DB::table('material.delorddt')
-                        ->where('compcode',session('compcode'))
-                        ->where('recno',$value->recno)
-                        // ->where('trantype',$value->trantype)
-                        ->update([
-                            'recno' => $newrecno
-                        ]);
-
-                $ivtxnhd = DB::table('material.ivtxnhd')
-                            ->where('compcode',session('compcode'))
-                            ->where('recno',$value->recno)
-                            ->where('source','IV')
-                            ->where('trantype',$value->trantype);
-
-                if($ivtxnhd->exists()){
-                    DB::table('material.ivtxnhd')
-                            ->where('compcode',session('compcode'))
-                            ->where('recno',$value->recno)
-                            ->where('source','IV')
-                            ->where('trantype',$value->trantype)
-                            ->update([
-                                'recno' => $newrecno
-                            ]);
-
-                    DB::table('material.ivtxndt')
-                            ->where('compcode',session('compcode'))
-                            ->where('recno',$value->recno)
-                            ->where('trantype',$value->trantype)
-                            ->update([
-                                'recno' => $newrecno
-                            ]);
+                        echo nl2br("$key. Update stockloc $value->itemcode - $value->dept \n");
+                    }
                 }
+            }else if($step == 2){
+                $stockloc_new = DB::table('material.stockloc')
+                                ->where('compcode',session('compcode'))
+                                ->where('year',$year)
+                                ->get();
 
-                echo nl2br("$key. New Record No. $newrecno -> $value->trantype - IV - $value->recno \n");
+                foreach ($stockloc_new as $key => $value) {
+                    $qtyonhand = $value->openbalqty + $value->netmvqty1 + $value->netmvqty2 + $value->netmvqty3;
+
+                    DB::table('material.stockloc')
+                                ->where('compcode',session('compcode'))
+                                ->where('deptcode',$value->deptcode)
+                                ->where('itemcode',$value->itemcode)
+                                ->where('year',$year)
+                                ->update([
+                                    'qtyonhand' => $qtyonhand
+                                ]);
+
+                    echo nl2br("$key. Update stockloc $value->itemcode - $value->deptcode  - qtyonhand: $qtyonhand \n");
+                }
+            }else if($step == 3){
+                $product = DB::table('temp.temp_stock')
+                                ->offset($request->offset)
+                                ->limit($request->limit)
+                                ->get();
+
+                foreach ($product as $key => $value) {
+                    $qtyonhand = DB::table('material.stockloc')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('itemcode',$value->itemcode)
+                                    ->where('year',$year)
+                                    ->sum('qtyonhand');
+
+                    DB::table('material.product')
+                                ->where('compcode',session('compcode'))
+                                ->where('itemcode',$value->itemcode)
+                                // ->where('uomcode',$value->uomcode)
+                                ->update([
+                                    'qtyonhand' => $qtyonhand
+                                ]);
+
+                    echo nl2br("$key. Update product $value->itemcode - qtyonhand: $qtyonhand \n");
+                }
             }
 
             DB::commit();
