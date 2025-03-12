@@ -66,10 +66,10 @@ class TestController extends defaultController
                 // return $this->update_productmaster($request);
             // case 'recon_DO':
             //     return $this->recon_DO($request);
-            // case 'ivtmphd_ivtxnhd_recno':
-            //     return $this->ivtmphd_ivtxnhd_recno($request);
-            // case 'delordhd_ivtxnhd_recno':
-            //     return $this->delordhd_ivtxnhd_recno($request);
+            case 'betulkan_stockexp_semua_chk':
+                return $this->betulkan_stockexp_semua_chk($request);
+            case 'betulkan_stockexp_semua':
+                return $this->betulkan_stockexp_semua($request);
             case 'betulkan_stockloc_2025':
                 return $this->betulkan_stockloc_2025($request);
             // case 'btlkn_imp_1_phycnt':
@@ -3691,8 +3691,8 @@ class TestController extends defaultController
 
     public function betulkan_stockexp_semua_chk(Request $request){
         $unit = $request->unit;
-        $deptcode = $request->unit;
-        $year=2024;
+        $deptcode = $request->deptcode;
+        $year=$request->year;
 
         $stockexp = DB::table('material.product')
                             ->where('compcode','9B')
@@ -3709,6 +3709,7 @@ class TestController extends defaultController
             $stockloc = DB::table('material.stockloc')
                             ->where('itemcode',$value->itemcode)
                             ->where('compcode','9B')
+                            ->where('year',$year)
                             ->where('deptcode',$deptcode);
 
             if($stockloc->exists() && $stockexp->exists()){
@@ -3724,8 +3725,8 @@ class TestController extends defaultController
 
     public function betulkan_stockexp_semua(Request $request){
         $unit = $request->unit;
-        $deptcode = $request->unit;
-        $year=2024;
+        $deptcode = $request->deptcode;
+        $year=$request->year;
 
         $stockexp = DB::table('material.product')
                             ->where('compcode','9B')
@@ -3744,6 +3745,7 @@ class TestController extends defaultController
             $stockloc = DB::table('material.stockloc')
                             ->where('itemcode',$value->itemcode)
                             ->where('compcode','9B')
+                            ->where('year',$year)
                             ->where('deptcode',$deptcode);
 
             if($stockloc->exists() && $stockexp->exists()){
