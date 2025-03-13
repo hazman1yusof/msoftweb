@@ -145,6 +145,9 @@ div#fail_msg{
 			<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #a35252;" id='pdfgen1' href="" target="_blank">
 				<span class='fa fa-file-pdf-o fa-lg'></span> Print PDF
 			</a>
+			<a class='pull-right pointer text-primary' style="padding-left: 30px;" id='pdfupd'>
+				<span class='fa fa-upload fa-lg'></span> Upload Excel
+			</a>
 			<!-- <a class='pull-right pointer text-primary' style="padding-left: 30px;color: #518351;" id='pdfgen_excel_import' href="" target="_blank">
 				<span class='fa fa-file-pdf-o fa-lg'></span> Import Excel
 			</a> -->

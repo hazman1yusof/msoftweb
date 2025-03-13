@@ -83,6 +83,13 @@ class StockCountController extends defaultController
 
         try {
 
+            $dept = DB::table('sysdb.department')
+                        ->where('compcode',session('compcode'))
+                        ->where('deptcode',$request->srcdept)
+                        ->first();
+
+            $unit = $dept->sector;
+
             $table = DB::table("material.phycnthd");
 
             $array_insert = [
@@ -124,7 +131,7 @@ class StockCountController extends defaultController
                                 $join = $join->on('p.itemcode', '=', 's.itemcode');
                                 $join = $join->on('p.uomcode', '=', 's.uomcode');
                                 $join = $join->where('p.compcode', '=', session('compcode'));
-                                $join = $join->where('p.unit', '=', session('unit'));
+                                $join = $join->where('p.unit', '=', $unit);
                             })
 
                             ->leftjoin('material.stockexp as se', function($join) use ($request){
@@ -132,7 +139,7 @@ class StockCountController extends defaultController
                                 $join = $join->on('se.deptcode', '=', 's.deptcode');
                                 $join = $join->on('se.uomcode', '=', 's.uomcode');
                                 $join = $join->where('se.compcode', '=', session('compcode'));
-                                $join = $join->where('se.unit', '=', session('unit'));
+                                $join = $join->where('se.unit', '=', $unit);
                                 $join = $join->on('se.year', '=', 's.year');
                             });
 

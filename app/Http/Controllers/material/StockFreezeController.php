@@ -70,6 +70,13 @@ class StockFreezeController extends defaultController
             $request_no = $this->request_no('PHYCNT', $request->srcdept);
             $recno = $this->recno('IV','PHYCNT');
 
+            $dept = DB::table('sysdb.department')
+                        ->where('compcode',session('compcode'))
+                        ->where('deptcode',$request->srcdept)
+                        ->first();
+
+            $unit = $dept->sector;
+
             $table = DB::table("material.phycnthd");
 
             $array_insert = [
@@ -111,7 +118,7 @@ class StockFreezeController extends defaultController
                                 $join = $join->on('p.itemcode', '=', 's.itemcode');
                                 $join = $join->on('p.uomcode', '=', 's.uomcode');
                                 $join = $join->where('p.compcode', '=', session('compcode'));
-                                $join = $join->where('p.unit', '=', session('unit'));
+                                $join = $join->where('p.unit', '=', $unit);
                             })
 
                             ->join('material.stockexp as se', function($join) use ($request){
@@ -119,7 +126,7 @@ class StockFreezeController extends defaultController
                                 $join = $join->on('se.deptcode', '=', 's.deptcode');
                                 $join = $join->on('se.uomcode', '=', 's.uomcode');
                                 $join = $join->where('se.compcode', '=', session('compcode'));
-                                $join = $join->where('se.unit', '=', session('unit'));
+                                $join = $join->where('se.unit', '=', $unit);
                                 // $join = $join->on('se.year', '=', 's.year');
                             });
 
@@ -141,7 +148,7 @@ class StockFreezeController extends defaultController
 
             $stockloc =  $stockloc
                             ->where('s.compcode',session('compcode'))
-                            ->where('s.unit',session('unit'))
+                            ->where('s.unit',$unit)
                             ->where('s.deptcode',$request->srcdept)
                             ->whereBetween('s.itemcode',[$itemfrom,$itemto])
                             ->where('s.year', '=', Carbon::now("Asia/Kuala_Lumpur")->format('Y'))
@@ -177,7 +184,7 @@ class StockFreezeController extends defaultController
                // update frozen = yes at stockloc
                 DB::table('material.stockloc')
                     ->where('compcode','=',session('compcode'))
-                    ->where('unit','=',session('unit'))
+                    ->where('unit','=',$unit)
                     ->where('itemcode','=',$value->itemcode)
                     ->where('uomcode','=',$value->uomcode)
                     ->where('deptcode','=',$phycnthd->srcdept)
