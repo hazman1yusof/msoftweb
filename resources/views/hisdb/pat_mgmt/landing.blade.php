@@ -465,6 +465,7 @@
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invUFEME.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCE.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCS.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_glasgow.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
 				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnote.js"></script>
 				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnoteref.js"></script>
@@ -491,6 +492,7 @@
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invUFEME.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCE.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_invCS.js?v=1.1"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote_glasgow.js?v=1.1"></script>
 				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnote.js"></script>
 				<script type="text/javascript" src="js/hisdb/clientprogressnote/clientprogressnoteref.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
