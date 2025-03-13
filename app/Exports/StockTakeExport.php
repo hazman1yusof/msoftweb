@@ -74,7 +74,7 @@ class StockTakeExport implements FromView, WithEvents, WithColumnWidths
 
         $phycntdt = DB::table('material.phycntdt AS pdt')
             ->select('pdt.idno','pdt.compcode','pdt.srcdept','pdt.phycntdate','pdt.phycnttime','pdt.lineno_','pdt.itemcode','pdt.uomcode','pdt.adduser','pdt.adddate','pdt.upduser','pdt.upddate','pdt.unitcost','pdt.phyqty','pdt.thyqty','pdt.recno','pdt.expdate','pdt.updtime','pdt.stktime','pdt.frzdate','pdt.frztime','pdt.dspqty','pdt.batchno','p.description')
-            ->leftJoin('material.product as p', function($join){
+            ->leftJoin('material.product as p', function($join) use ($unit){
                         $join = $join->on('p.itemcode', '=', 'pdt.itemcode')
                                      ->on('p.uomcode', '=', 'pdt.uomcode')
                                      ->where('p.unit','=',$unit)

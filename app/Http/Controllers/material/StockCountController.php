@@ -911,16 +911,16 @@ class StockCountController extends defaultController
             ->where('recno','=',$recno)
             ->first();
 
-        // $dept = DB::table('sysdb.department')
-        //             ->where('compcode',session('compcode'))
-        //             ->where('deptcode',$phycnthd->srcdept)
-        //             ->first();
+        $dept = DB::table('sysdb.department')
+                    ->where('compcode',session('compcode'))
+                    ->where('deptcode',$phycnthd->srcdept)
+                    ->first();
 
-        // $unit = $dept->sector;
+        $unit = $dept->sector;
 
         $phycntdt = DB::table('material.phycntdt AS pdt')
             ->select('pdt.idno','pdt.compcode','pdt.srcdept','pdt.phycntdate','pdt.phycnttime','pdt.lineno_','pdt.itemcode','pdt.uomcode','pdt.adduser','pdt.adddate','pdt.upduser','pdt.upddate','pdt.unitcost','pdt.phyqty','pdt.thyqty','pdt.recno','pdt.expdate','pdt.updtime','pdt.stktime','pdt.frzdate','pdt.frztime','pdt.dspqty','pdt.remark','pdt.batchno','p.description')
-            ->leftJoin('material.product as p', function($join) use ($request){
+            ->leftJoin('material.product as p', function($join) use ($request,$unit){
                         $join = $join->on('p.itemcode', '=', 'pdt.itemcode')
                                      ->on('p.uomcode', '=', 'pdt.uomcode')
                                      // ->where('p.unit','=',$unit)
