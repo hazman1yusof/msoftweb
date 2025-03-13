@@ -37,6 +37,8 @@
                     <li><a data-toggle="tab" id="navtab_othersChart1" href="#tab-othersChart1" data-type='othersChart1'>PAD Chart</a></li>
                     <li><a data-toggle="tab" id="navtab_othersChart2" href="#tab-othersChart2" data-type='othersChart2'>Drain Chart</a></li>
                     <li><a data-toggle="tab" id="navtab_bladder" href="#tab-bladder" data-type='bladder'>Bladder Irrigation</a></li>
+                    <li><a data-toggle="tab" id="navtab_gcs" href="#tab-gcs" data-type='gcs'>Glasgow Coma Scale</a></li>
+
                 </ul>
                 <div class="tab-content" style="padding: 10px 5px;">
                     <input id="mrn_nursNote" name="mrn_nursNote" type="hidden">
@@ -1335,6 +1337,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div id="tab-gcs" class="tab-pane fade">
+                        @include('hisdb.nursingnote.nursingnote_glasgow')
                     </div>
                 </div>
             </div>
