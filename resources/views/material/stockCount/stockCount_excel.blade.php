@@ -17,6 +17,12 @@
         <?php
             $var = $obj->phyqty - $obj->thyqty;
             $var_val = $var * $obj->unitcost;
+
+            if(empty($obj->expdate)){
+                $expdate = null;
+            }else{
+                $expdate = \Carbon\Carbon::parse($obj->expdate)->format('d/m/Y');
+            }
         ?>
 
             <tr>
@@ -28,7 +34,7 @@
                 @endif
                 <td>{{$obj->description}}</td>
                 <td>{{$obj->batchno}}</td>
-                <td>{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}</td>
+                <td>{{$expdate}}</td>
                 <td>{{$obj->uomcode}}</td>
                 <td>{{$obj->thyqty}}</td>
                 <td>{{$obj->phyqty}}</td>
