@@ -204,7 +204,7 @@
                         <!-- <h5>DURING PROCEDURE <input type="text" class="form-control" id="operteam_procedure_hdr" name="procedure_hdr"></h5> -->
                         <div class="inline field">
                             <label>DURING PROCEDURE</label>
-                            <input id="operteam_procedure_hdr" name="procedure_hdr" type="text" style="width: 500px; text-transform: uppercase;">
+                            <input id="operteam_procedure_hdr" name="procedure_hdr" type="text" style="width: 380px; text-transform: uppercase;">
                         </div>
                         <div class="ui secondary segment">INTRA-OPERATIVE COMMUNICATION</div>
                         <div class="ui segment" style="height: 402px;">
