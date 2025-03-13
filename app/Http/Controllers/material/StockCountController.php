@@ -175,27 +175,25 @@ class StockCountController extends defaultController
                     $batchno = null;
                 }
 
-                $array_insert = [
-                    'compcode' => session('compcode'),
-                    'srcdept' => $phycnthd->srcdept,
-                    'phycntdate' => $phycnthd->phycntdate,
-                    'phycnttime' => $phycnthd->phycnttime,
-                    'lineno_' => $key,
-                    'itemcode' => $value->itemcode,
-                    'uomcode' => $value->uomcode,
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'unitcost' => $value->avgcost,
-                    'thyqty' => $value->qtyonhand,
-                    'recno' => $phycnthd->recno,
-                    'expdate' => $value->expdate,
-                    'frzdate' => $phycnthd->frzdate,
-                    'frztime' => $phycnthd->frztime,
-                    'batchno' => $value->batchno,
-                ]
-
                 DB::table('material.phycntdt')
-                    ->insert();
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'srcdept' => $phycnthd->srcdept,
+                        'phycntdate' => $phycnthd->phycntdate,
+                        'phycnttime' => $phycnthd->phycnttime,
+                        'lineno_' => $key,
+                        'itemcode' => $value->itemcode,
+                        'uomcode' => $value->uomcode,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'unitcost' => $value->avgcost,
+                        'thyqty' => $value->qtyonhand,
+                        'recno' => $phycnthd->recno,
+                        'expdate' => $expdate,
+                        'frzdate' => $phycnthd->frzdate,
+                        'frztime' => $phycnthd->frztime,
+                        'batchno' => $batchno,
+                    ]);
 
                // update frozen = yes at stockloc
                 DB::table('material.stockloc')
