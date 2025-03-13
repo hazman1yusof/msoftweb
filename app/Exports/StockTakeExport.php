@@ -77,7 +77,7 @@ class StockTakeExport implements FromView, WithEvents, WithColumnWidths
             ->leftJoin('material.product as p', function($join){
                         $join = $join->on('p.itemcode', '=', 'pdt.itemcode')
                                      ->on('p.uomcode', '=', 'pdt.uomcode')
-                                     ->where('p.unit','=',session('unit'))
+                                     ->where('p.unit','=',$unit)
                                      ->where('p.compcode','=',session('compcode'));
                     })
             ->where('pdt.compcode','=',session('compcode'))
