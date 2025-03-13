@@ -120,7 +120,7 @@ class StockFreezeController extends defaultController
                                 $join = $join->on('se.uomcode', '=', 's.uomcode');
                                 $join = $join->where('se.compcode', '=', session('compcode'));
                                 $join = $join->where('se.unit', '=', session('unit'));
-                                $join = $join->on('se.year', '=', 's.year');
+                                // $join = $join->on('se.year', '=', 's.year');
                             });
 
             if(!empty($request->rackno)){
