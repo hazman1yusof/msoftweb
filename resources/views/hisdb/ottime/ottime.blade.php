@@ -24,7 +24,6 @@
                         <div class="ui secondary segment">ROOM RECORD</div>
                         <div class="ui segment">
                             <div class="ui grid">
-                                
                                 <div class="twelve wide column">
                                     <table class="ui very basic table" style="padding-top: 15px; padding-bottom: 15px;">
                                         <tbody>
@@ -32,10 +31,10 @@
                                                 <td>PCR RESULT</td>
                                                 <td>
                                                     <label class="radio-inline" style="padding-left: 30px;">
-                                                        <input type="radio" name="pcr_result" value="0">Negative
+                                                        <input type="radio" name="pcrResult" value="0">Negative
                                                     </label>
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="pcr_result" value="1">Positive &nbsp; &nbsp;
+                                                        <input type="radio" name="pcrResult" value="1">Positive &nbsp; &nbsp;
                                                     </label>
                                                 </td>
                                             </tr>
@@ -43,7 +42,7 @@
                                                 <td>PCR DATE RESULT</td>
                                                 <td>
                                                     <div class="field five wide column">
-                                                        <input type="date" class="form-control" id="pcr_date" name="pcr_date">
+                                                        <input type="date" class="form-control" id="pcrDate" name="pcrDate">
                                                     </div>
                                                 </td>
                                             </tr>
@@ -52,19 +51,19 @@
                                                 <td>
                                                     <div class="form-inline">
                                                         <!-- <div class="form-group">
-                                                            <input type="time" class="form-control" id="callpt_time" name="callpt_time">
+                                                            <input type="time" class="form-control" id="callPtTime" name="callPtTime">
                                                         </div>  &nbsp; -->
                                                         <div class="form-group">
-                                                            <div class="ui calendar" id="callpt_time">
+                                                            <div class="ui calendar" id="callPtTime">
                                                                 <div class="ui input left icon">
                                                                     <i class="time icon"></i>
-                                                                    <input type="text" class="form-control" name="callpt_time" size="10">
+                                                                    <input type="text" class="form-control" name="callPtTime" size="10">
                                                                 </div>
                                                             </div>
                                                         </div>  &nbsp;
                                                         <small>/24H</small>  &nbsp;
                                                         <div class="form-group">
-                                                            <input type="date" class="form-control" id="callpt_date" name="callpt_date">
+                                                            <input type="date" class="form-control" id="callPtDate" name="callPtDate">
                                                         </div>
                                                     </div>
                                                 </td>
@@ -74,19 +73,19 @@
                                                 <td>
                                                     <div class="form-inline">
                                                         <!-- <div class="form-group">
-                                                            <input type="time" class="form-control" id="ppkward_time" name="ppkward_time">
+                                                            <input type="time" class="form-control" id="ppkWardTime" name="ppkWardTime">
                                                         </div>  &nbsp; -->
                                                         <div class="form-group">
-                                                            <div class="ui calendar" id="ppkward_time">
+                                                            <div class="ui calendar" id="ppkWardTime">
                                                                 <div class="ui input left icon">
                                                                     <i class="time icon"></i>
-                                                                    <input type="text" class="form-control" name="ppkward_time" size="10">
+                                                                    <input type="text" class="form-control" name="ppkWardTime" size="10">
                                                                 </div>
                                                             </div>
                                                         </div>  &nbsp;
                                                         <small>/24H</small>  &nbsp;
                                                         <div class="form-group">
-                                                            <input type="date" class="form-control" id="ppkward_date" name="ppkward_date">
+                                                            <input type="date" class="form-control" id="ppkWardDate" name="ppkWardDate">
                                                         </div>
                                                     </div>
                                                 </td>
@@ -96,19 +95,19 @@
                                                 <td>
                                                     <div class="form-inline">
                                                         <!-- <div class="form-group">
-                                                            <input type="time" class="form-control" id="reception_time" name="reception_time">
+                                                            <input type="time" class="form-control" id="receptionTime" name="receptionTime">
                                                         </div>  &nbsp; -->
                                                         <div class="form-group">
-                                                            <div class="ui calendar" id="reception_time">
+                                                            <div class="ui calendar" id="receptionTime">
                                                                 <div class="ui input left icon">
                                                                     <i class="time icon"></i>
-                                                                    <input type="text" class="form-control" name="reception_time" size="10">
+                                                                    <input type="text" class="form-control" name="receptionTime" size="10">
                                                                 </div>
                                                             </div>
                                                         </div>  &nbsp;
                                                         <small>/24H</small>  &nbsp;
                                                         <div class="form-group">
-                                                            <input type="date" class="form-control" id="reception_date" name="reception_date">
+                                                            <input type="date" class="form-control" id="receptionDate" name="receptionDate">
                                                         </div>
                                                     </div>
                                                 </td>
@@ -118,19 +117,19 @@
                                                 <td>
                                                     <div class="form-inline">
                                                         <!-- <div class="form-group">
-                                                            <input type="time" class="form-control" id="patientOT_time" name="patientOT_time">
+                                                            <input type="time" class="form-control" id="patientOTtime" name="patientOTtime">
                                                         </div>  &nbsp; -->
                                                         <div class="form-group">
-                                                            <div class="ui calendar" id="patientOT_time">
+                                                            <div class="ui calendar" id="patientOTtime">
                                                                 <div class="ui input left icon">
                                                                     <i class="time icon"></i>
-                                                                    <input type="text" class="form-control" name="patientOT_time" size="10">
+                                                                    <input type="text" class="form-control" name="patientOTtime" size="10">
                                                                 </div>
                                                             </div>
                                                         </div>  &nbsp;
                                                         <small>/24H</small>  &nbsp;
                                                         <div class="form-group">
-                                                            <input type="date" class="form-control" id="patientOT_date" name="patientOT_date">
+                                                            <input type="date" class="form-control" id="patientOTdate" name="patientOTdate">
                                                         </div>
                                                     </div>
                                                 </td>
@@ -178,19 +177,19 @@
                                                 <td>
                                                     <div class="form-inline">
                                                         <!-- <div class="form-group">
-                                                            <input type="time" class="form-control" id="ptOut_time" name="ptOut_time">
+                                                            <input type="time" class="form-control" id="ptOutTime" name="ptOutTime">
                                                         </div>  &nbsp; -->
                                                         <div class="form-group">
-                                                            <div class="ui calendar" id="ptOut_time">
+                                                            <div class="ui calendar" id="ptOutTime">
                                                                 <div class="ui input left icon">
                                                                     <i class="time icon"></i>
-                                                                    <input type="text" class="form-control" name="ptOut_time" size="10">
+                                                                    <input type="text" class="form-control" name="ptOutTime" size="10">
                                                                 </div>
                                                             </div>
                                                         </div>  &nbsp;
                                                         <small>/24H</small>  &nbsp;
                                                         <div class="form-group">
-                                                            <input type="date" class="form-control" id="ptOut_date" name="ptOut_date">
+                                                            <input type="date" class="form-control" id="ptOutDate" name="ptOutDate">
                                                         </div>
                                                     </div>
                                                 </td>
@@ -200,19 +199,19 @@
                                                 <td>
                                                     <div class="form-inline">
                                                         <!-- <div class="form-group">
-                                                            <input type="time" class="form-control" id="wardCall_time" name="wardCall_time">
+                                                            <input type="time" class="form-control" id="wardCallTime" name="wardCallTime">
                                                         </div>  &nbsp; -->
                                                         <div class="form-group">
-                                                            <div class="ui calendar" id="wardCall_time">
+                                                            <div class="ui calendar" id="wardCallTime">
                                                                 <div class="ui input left icon">
                                                                     <i class="time icon"></i>
-                                                                    <input type="text" class="form-control" name="wardCall_time" size="10">
+                                                                    <input type="text" class="form-control" name="wardCallTime" size="10">
                                                                 </div>
                                                             </div>
                                                         </div>  &nbsp;
                                                         <small>/24H</small>  &nbsp;
                                                         <div class="form-group">
-                                                            <input type="date" class="form-control" id="wardCall_date" name="wardCall_date">
+                                                            <input type="date" class="form-control" id="wardCallDate" name="wardCallDate">
                                                         </div>
                                                     </div>
                                                 </td>
@@ -222,19 +221,19 @@
                                                 <td>
                                                     <div class="form-inline">
                                                         <!-- <div class="form-group">
-                                                            <input type="time" class="form-control" id="ptWard_time" name="ptWard_time">
+                                                            <input type="time" class="form-control" id="ptWardTime" name="ptWardTime">
                                                         </div>  &nbsp; -->
                                                         <div class="form-group">
-                                                            <div class="ui calendar" id="ptWard_time">
+                                                            <div class="ui calendar" id="ptWardTime">
                                                                 <div class="ui input left icon">
                                                                     <i class="time icon"></i>
-                                                                    <input type="text" class="form-control" name="ptWard_time" size="10">
+                                                                    <input type="text" class="form-control" name="ptWardTime" size="10">
                                                                 </div>
                                                             </div>
                                                         </div>  &nbsp;
                                                         <small>/24H</small>  &nbsp;
                                                         <div class="form-group">
-                                                            <input type="date" class="form-control" id="ptWard_date" name="ptWard_date">
+                                                            <input type="date" class="form-control" id="ptWardDate" name="ptWardDate">
                                                         </div>
                                                     </div>
                                                 </td>
@@ -251,7 +250,7 @@
                                                 <td>GA NURSE</td>
                                                 <td>
                                                     <div class="form-inline">
-                                                        <input type="text" class="form-control" id="ga_nurse" name="ga_nurse">
+                                                        <input type="text" class="form-control" id="gaNurse" name="gaNurse">
                                                     </div>
                                                 </td>
                                             </tr>
@@ -259,7 +258,7 @@
                                                 <td>CIRCULATING PERSON</td>
                                                 <td>
                                                     <div class="form-inline">
-                                                        <input type="text" class="form-control" id="circltg_person" name="circltg_person">
+                                                        <input type="text" class="form-control" id="circulateperson" name="circulateperson">
                                                     </div>
                                                 </td>
                                             </tr>
@@ -267,7 +266,7 @@
                                                 <td>HEALTHCARE ASSISTANT</td>
                                                 <td>
                                                     <div class="form-inline">
-                                                        <textarea id="hlthcare_asst" name="hlthcare_asst" rows="4"></textarea>
+                                                        <textarea id="hlthcareAsst" name="hlthcareAsst" rows="4"></textarea>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -290,12 +289,10 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                
                             </div>
                         </div>
                     </div>
                 </div>
-                
             </div>
         </form>
     </div>

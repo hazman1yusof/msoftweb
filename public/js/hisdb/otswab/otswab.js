@@ -640,7 +640,7 @@ function saveForm_otswab(callback){
 }
 
 function textare_init_otswab(){
-    $('textarea#basicset,textarea#supplemntryset,textarea#issuesOccured,textarea#actualOper,textarea#specimenSent').each(function (){
+    $('textarea#otswab_basicset,textarea#otswab_supplemntryset,textarea#otswab_issuesOccured,textarea#otswab_actualOper,textarea#otswab_specimenSent').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
