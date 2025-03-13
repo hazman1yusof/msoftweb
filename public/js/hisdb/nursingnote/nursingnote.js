@@ -428,8 +428,13 @@ $(document).ready(function (){
     
     $("#jqGridNursNote_panel").on("shown.bs.collapse", function (){
         SmoothScrollTo("#jqGridNursNote_panel", 500);
+        
         let curtype = $(this).data('curtype');
-        $('#jqGridNursNote_panel_tabs.nav-tabs a#'+curtype).tab('show');
+        if($('#epistycode').val() == 'IP'){
+            $('#jqGridNursNote_panel_tabs.nav-tabs a#'+curtype).tab('show');
+        }else if($('#epistycode').val() == 'OP'){
+            $('#jqGridNursNote_panel_tabs.nav-tabs a#'+'navtab_progress').tab('show');
+        }
     });
     
     $("#jqGridNursNote_panel").on("hidden.bs.collapse", function (){
