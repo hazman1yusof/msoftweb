@@ -89,6 +89,7 @@ class StockCountController extends defaultController
                         ->first();
 
             $unit = $dept->sector;
+            $include_expiry = false;
 
             $table = DB::table("material.phycnthd");
 
@@ -125,16 +126,22 @@ class StockCountController extends defaultController
                             ->first();
 
             $stockloc = DB::table('material.stockloc as s')
-                            ->select('s.itemcode','s.uomcode','p.avgcost','s.qtyonhand','se.expdate','se.batchno')
 
-                            ->leftjoin('material.product as p', function($join) use ($request){
-                                $join = $join->on('p.itemcode', '=', 's.itemcode');
-                                $join = $join->on('p.uomcode', '=', 's.uomcode');
-                                $join = $join->where('p.compcode', '=', session('compcode'));
-                                $join = $join->where('p.unit', '=', $unit);
-                            })
+            if($include_expiry){
+                $stockloc = $stockloc->select('s.itemcode','s.uomcode','p.avgcost','s.qtyonhand','se.expdate','se.batchno')
+            }else{
+                $stockloc = $stockloc->select('s.itemcode','s.uomcode','p.avgcost','s.qtyonhand')
+            }
 
-                            ->leftjoin('material.stockexp as se', function($join) use ($request){
+            $stockloc = $stockloc->leftjoin('material.product as p', function($join) use ($request){
+                            $join = $join->on('p.itemcode', '=', 's.itemcode');
+                            $join = $join->on('p.uomcode', '=', 's.uomcode');
+                            $join = $join->where('p.compcode', '=', session('compcode'));
+                            $join = $join->where('p.unit', '=', $unit);
+                        });
+
+            if($include_expiry){
+                $stockloc = $stockloc->leftjoin('material.stockexp as se', function($join) use ($request){
                                 $join = $join->on('se.itemcode', '=', 's.itemcode');
                                 $join = $join->on('se.deptcode', '=', 's.deptcode');
                                 $join = $join->on('se.uomcode', '=', 's.uomcode');
@@ -142,6 +149,7 @@ class StockCountController extends defaultController
                                 $join = $join->where('se.unit', '=', $unit);
                                 $join = $join->on('se.year', '=', 's.year');
                             });
+            }
 
             if(!empty($request->rackno)){
                 $stockloc = $stockloc->where('rackno',$request->rackno);
@@ -158,25 +166,36 @@ class StockCountController extends defaultController
                             ->get();
 
             foreach ($stockloc as $key => $value){
+
+                if($include_expiry){
+                    $expdate = $value->expdate;
+                    $batchno = $value->batchno;
+                }else{
+                    $expdate = null;
+                    $batchno = null;
+                }
+
+                $array_insert = [
+                    'compcode' => session('compcode'),
+                    'srcdept' => $phycnthd->srcdept,
+                    'phycntdate' => $phycnthd->phycntdate,
+                    'phycnttime' => $phycnthd->phycnttime,
+                    'lineno_' => $key,
+                    'itemcode' => $value->itemcode,
+                    'uomcode' => $value->uomcode,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'unitcost' => $value->avgcost,
+                    'thyqty' => $value->qtyonhand,
+                    'recno' => $phycnthd->recno,
+                    'expdate' => $value->expdate,
+                    'frzdate' => $phycnthd->frzdate,
+                    'frztime' => $phycnthd->frztime,
+                    'batchno' => $value->batchno,
+                ]
+
                 DB::table('material.phycntdt')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'srcdept' => $phycnthd->srcdept,
-                        'phycntdate' => $phycnthd->phycntdate,
-                        'phycnttime' => $phycnthd->phycnttime,
-                        'lineno_' => $key,
-                        'itemcode' => $value->itemcode,
-                        'uomcode' => $value->uomcode,
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'unitcost' => $value->avgcost,
-                        'thyqty' => $value->qtyonhand,
-                        'recno' => $phycnthd->recno,
-                        'expdate' => $value->expdate,
-                        'frzdate' => $phycnthd->frzdate,
-                        'frztime' => $phycnthd->frztime,
-                        'batchno' => $value->batchno,
-                    ]);
+                    ->insert();
 
                // update frozen = yes at stockloc
                 DB::table('material.stockloc')
@@ -209,7 +228,6 @@ class StockCountController extends defaultController
             
             return response($e, 500);
         }
-
     }
 
     public function edit_all(Request $request){
