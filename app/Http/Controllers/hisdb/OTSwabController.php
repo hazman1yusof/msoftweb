@@ -65,7 +65,7 @@ class OTSwabController extends defaultController
         }
     }
     
-    public function add(Request $request){
+    public function add_lama(Request $request){
         
         DB::beginTransaction();
         
@@ -81,30 +81,139 @@ class OTSwabController extends defaultController
                         'enddate' => $request->enddate,
                         'endtime' => $request->endtime,
                         'basicset' => $request->basicset,
-                        'spplmtryset' => $request->spplmtryset,
-                        'issue_occur' => $request->issue_occur,
-                        'actual_oper' => $request->actual_oper,
-                        'specimensent' => $request->specimensent,
-                        'scrubnurse1' => $request->scrubnurse1,
-                        'scrubnrs1_start' => $request->scrubnrs1_start,
-                        'scrubnrs1_end' => $request->scrubnrs1_end,
-                        'scrubnurse2' => $request->scrubnurse2,
-                        'scrubnrs2_start' => $request->scrubnrs2_start,
-                        'scrubnrs2_end' => $request->scrubnrs2_end,
-                        'scrubnurse3' => $request->scrubnurse3,
-                        'scrubnrs3_start' => $request->scrubnrs3_start,
-                        'scrubnrs3_end' => $request->scrubnrs3_end,
-                        'circltnurse1' => $request->circltnurse1,
-                        'circltnrs1_start' => $request->circltnrs1_start,
-                        'circltnrs1_end' => $request->circltnrs1_end,
-                        'circltnurse2' => $request->circltnurse2,
-                        'circltnrs2_start' => $request->circltnrs2_start,
-                        'circltnrs2_end' => $request->circltnrs2_end,
-                        'circltnurse3' => $request->circltnurse3,
-                        'circltnrs3_start' => $request->circltnrs3_start,
-                        'circltnrs3_end' => $request->circltnrs3_end,
+                        'supplemntryset' => $request->supplemntryset,
+                        'issuesOccured' => $request->issuesOccured,
+                        'actualOper' => $request->actualOper,
+                        'specimenSent' => $request->specimenSent,
+                        'scrubNurse1' => $request->scrubNurse1,
+                        'scrubNurse1Start' => $request->scrubNurse1Start,
+                        'scrubNurse1End' => $request->scrubNurse1End,
+                        'scrubNurse2' => $request->scrubNurse2,
+                        'scrubNurse2Start' => $request->scrubNurse2Start,
+                        'scrubNurse2End' => $request->scrubNurse2End,
+                        'scrubNurse3' => $request->scrubNurse3,
+                        'scrubNurse3Start' => $request->scrubNurse3Start,
+                        'scrubNurse3End' => $request->scrubNurse3End,
+                        'circulateNurse1' => $request->circulateNurse1,
+                        'circulateNurse1Start' => $request->circulateNurse1Start,
+                        'circulateNurse1End' => $request->circulateNurse1End,
+                        'circulateNurse2' => $request->circulateNurse2,
+                        'circulateNurse2Start' => $request->circulateNurse2Start,
+                        'circulateNurse2End' => $request->circulateNurse2End,
+                        'circulateNurse3' => $request->circulateNurse3,
+                        'circulateNurse3Start' => $request->circulateNurse3Start,
+                        'circulateNurse3End' => $request->circulateNurse3End,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+        
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit_lama(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.otswab')
+                ->where('mrn','=',$request->mrn_otswab)
+                ->where('episno','=',$request->episno_otswab)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'startdate' => $request->startdate,
+                    'starttime' => $request->starttime,
+                    'enddate' => $request->enddate,
+                    'endtime' => $request->endtime,
+                    'basicset' => $request->basicset,
+                    'supplemntryset' => $request->supplemntryset,
+                    'issuesOccured' => $request->issuesOccured,
+                    'actualOper' => $request->actualOper,
+                    'specimenSent' => $request->specimenSent,
+                    'scrubNurse1' => $request->scrubNurse1,
+                    'scrubNurse1Start' => $request->scrubNurse1Start,
+                    'scrubNurse1End' => $request->scrubNurse1End,
+                    'scrubNurse2' => $request->scrubNurse2,
+                    'scrubNurse2Start' => $request->scrubNurse2Start,
+                    'scrubNurse2End' => $request->scrubNurse2End,
+                    'scrubNurse3' => $request->scrubNurse3,
+                    'scrubNurse3Start' => $request->scrubNurse3Start,
+                    'scrubNurse3End' => $request->scrubNurse3End,
+                    'circulateNurse1' => $request->circulateNurse1,
+                    'circulateNurse1Start' => $request->circulateNurse1Start,
+                    'circulateNurse1End' => $request->circulateNurse1End,
+                    'circulateNurse2' => $request->circulateNurse2,
+                    'circulateNurse2Start' => $request->circulateNurse2Start,
+                    'circulateNurse2End' => $request->circulateNurse2End,
+                    'circulateNurse3' => $request->circulateNurse3,
+                    'circulateNurse3Start' => $request->circulateNurse3Start,
+                    'circulateNurse3End' => $request->circulateNurse3End,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            // $queries = DB::getQueryLog();
+            // dump($queries);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function add(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.otswab')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_otswab,
+                        'episno' => $request->episno_otswab,
+                        'basicset' => $request->basicset,
+                        'supplemntryset' => $request->supplemntryset,
+                        'actualOper' => $request->actualOper,
+                        'specimenSent' => $request->specimenSent,
+                        'issuesOccured' => $request->issuesOccured,
+                        'scrubNurse1' => $request->scrubNurse1,
+                        'scrubNurse2' => $request->scrubNurse2,
+                        'circulateNurse1' => $request->circulateNurse1,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
                     ]);
             
             DB::commit();
@@ -134,35 +243,19 @@ class OTSwabController extends defaultController
                 ->where('episno','=',$request->episno_otswab)
                 ->where('compcode','=',session('compcode'))
                 ->update([
-                    'startdate' => $request->startdate,
-                    'starttime' => $request->starttime,
-                    'enddate' => $request->enddate,
-                    'endtime' => $request->endtime,
                     'basicset' => $request->basicset,
-                    'spplmtryset' => $request->spplmtryset,
-                    'issue_occur' => $request->issue_occur,
-                    'actual_oper' => $request->actual_oper,
-                    'specimensent' => $request->specimensent,
-                    'scrubnurse1' => $request->scrubnurse1,
-                    'scrubnrs1_start' => $request->scrubnrs1_start,
-                    'scrubnrs1_end' => $request->scrubnrs1_end,
-                    'scrubnurse2' => $request->scrubnurse2,
-                    'scrubnrs2_start' => $request->scrubnrs2_start,
-                    'scrubnrs2_end' => $request->scrubnrs2_end,
-                    'scrubnurse3' => $request->scrubnurse3,
-                    'scrubnrs3_start' => $request->scrubnrs3_start,
-                    'scrubnrs3_end' => $request->scrubnrs3_end,
-                    'circltnurse1' => $request->circltnurse1,
-                    'circltnrs1_start' => $request->circltnrs1_start,
-                    'circltnrs1_end' => $request->circltnrs1_end,
-                    'circltnurse2' => $request->circltnurse2,
-                    'circltnrs2_start' => $request->circltnrs2_start,
-                    'circltnrs2_end' => $request->circltnrs2_end,
-                    'circltnurse3' => $request->circltnurse3,
-                    'circltnrs3_start' => $request->circltnrs3_start,
-                    'circltnrs3_end' => $request->circltnrs3_end,
+                    'supplemntryset' => $request->supplemntryset,
+                    'actualOper' => $request->actualOper,
+                    'specimenSent' => $request->specimenSent,
+                    'issuesOccured' => $request->issuesOccured,
+                    'scrubNurse1' => $request->scrubNurse1,
+                    'scrubNurse2' => $request->scrubNurse2,
+                    'circulateNurse1' => $request->circulateNurse1,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
                 ]);
             
             // $queries = DB::getQueryLog();
@@ -205,7 +298,7 @@ class OTSwabController extends defaultController
     // public function get_grid_otswab(Request $request){
         
     //     $table = DB::table('nursing.otswab')
-    //                 ->select('idno','compcode','mrn','episno','items','count_initial','add_1','count_1st','add_2','count_2nd','add_3','count_final','adduser','adddate')
+    //                 ->select('idno','compcode','mrn','episno','items','countInitial','add1','count1st','add2','count2nd','add3','countFinal','adduser','adddate')
     //                 ->where('compcode','=',session('compcode'))
     //                 ->where('mrn','=',$request->mrn)
     //                 ->where('episno','=',$request->episno);
@@ -238,15 +331,27 @@ class OTSwabController extends defaultController
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'items' => $request->items,
-                        'count_initial' => $request->count_initial,
-                        'add_1' => $request->add_1,
-                        'count_1st' => $request->count_1st,
-                        'add_2' => $request->add_2,
-                        'count_2nd' => $request->count_2nd,
-                        'add_3' => $request->add_3,
-                        'count_final' => $request->count_final,
+                        'countInitial' => $request->countInitial,
+                        'add1' => $request->add1,
+                        'add2' => $request->add2,
+                        'add3' => $request->add3,
+                        'add4' => $request->add4,
+                        'count1st' => $request->count1st,
+                        'add5' => $request->add5,
+                        'add6' => $request->add6,
+                        'add7' => $request->add7,
+                        'add8' => $request->add8,
+                        'count2nd' => $request->count2nd,
+                        'add9' => $request->add9,
+                        'add10' => $request->add10,
+                        'add11' => $request->add11,
+                        'add12' => $request->add12,
+                        'countFinal' => $request->countFinal,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
                     ]);
             
             DB::commit();
@@ -272,15 +377,27 @@ class OTSwabController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'items' => $request->items,
-                    'count_initial' => $request->count_initial,
-                    'add_1' => $request->add_1,
-                    'count_1st' => $request->count_1st,
-                    'add_2' => $request->add_2,
-                    'count_2nd' => $request->count_2nd,
-                    'add_3' => $request->add_3,
-                    'count_final' => $request->count_final,
+                    'countInitial' => $request->countInitial,
+                    'add1' => $request->add1,
+                    'add2' => $request->add2,
+                    'add3' => $request->add3,
+                    'add4' => $request->add4,
+                    'count1st' => $request->count1st,
+                    'add5' => $request->add5,
+                    'add6' => $request->add6,
+                    'add7' => $request->add7,
+                    'add8' => $request->add8,
+                    'count2nd' => $request->count2nd,
+                    'add9' => $request->add9,
+                    'add10' => $request->add10,
+                    'add11' => $request->add11,
+                    'add12' => $request->add12,
+                    'countFinal' => $request->countFinal,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
                 ]);
             
             DB::commit();
