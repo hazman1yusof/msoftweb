@@ -66,6 +66,8 @@ class TestController extends defaultController
                 // return $this->update_productmaster($request);
             // case 'recon_DO':
             //     return $this->recon_DO($request);
+            case 'check_avgcost_divert_too_much':
+                return $this->check_avgcost_divert_too_much($request);
             case 'check_product_qtyonhand_sama_dgn_stockloc_qtyonhand':
                 return $this->check_product_qtyonhand_sama_dgn_stockloc_qtyonhand($request);
             case 'betulkan_stockexp_semua_chk':
@@ -4689,7 +4691,7 @@ class TestController extends defaultController
 
     public function check_product_qtyonhand_sama_dgn_stockloc_qtyonhand(Request $request){
         DB::beginTransaction();
-        
+
         try {
             $unit = $request->unit;
             $product = DB::table('material.product')
@@ -4727,6 +4729,30 @@ class TestController extends defaultController
             dd('Error'.$e);
         }    
         
+    }
+
+    public function check_avgcost_divert_too_much(Request $request){
+        $unit = $request->unit;
+
+        $product = DB::table('material.product')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',$unit)
+                            ->get();
+ // && ((float)$value->avgcost != (float)$value->currprice)
+        $i = 1;
+        foreach ($product as $key => $value) {
+            if(!empty((float)$value->currprice)){
+                $n = (float)$value->avgcost;
+                $a = (float)$value->currprice - 10;
+                $b = (float)$value->currprice + 10;
+                if(($n-$a)*($n-$b) > 0){
+                    echo nl2br("$i. $value->itemcode avgcost problem $value->avgcost - currprice: $value->currprice \n");
+                    $i++;
+                }
+                // if (!in_array((float)$value->avgcost, range((float)$value->currprice - 10, (float)$value->currprice + 10))) {
+                // }
+            }
+        }
     }
     
 }

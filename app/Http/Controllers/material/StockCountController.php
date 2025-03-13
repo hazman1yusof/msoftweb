@@ -140,6 +140,10 @@ class StockCountController extends defaultController
                 $stockloc = $stockloc->where('rackno',$request->rackno);
             }
 
+            if(empty($request->itemto)){
+                $request->itemto = 'ZZZ';
+            }
+
             $stockloc =  $stockloc
                             ->where('s.compcode',session('compcode'))
                             ->where('s.deptcode',$request->srcdept)
