@@ -172,9 +172,11 @@ class StockFreezeController extends defaultController
                 if($include_expiry){
                     $expdate = $value->expdate;
                     $batchno = $value->batchno;
+                    $qtyonhand = $value->balqty
                 }else{
                     $expdate = null;
                     $batchno = null;
+                    $qtyonhand = $value->qtyonhand
                 }
 
                 DB::table('material.phycntdt')
@@ -189,8 +191,8 @@ class StockFreezeController extends defaultController
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'unitcost' => $value->avgcost,
-                        'thyqty' => $value->balqty,
-                        'phyqty' => $value->balqty,
+                        'thyqty' => $qtyonhand,
+                        'phyqty' => $qtyonhand,
                         'recno' => $phycnthd->recno,
                         'expdate' => $expdate,
                         'frzdate' => $phycnthd->frzdate,
