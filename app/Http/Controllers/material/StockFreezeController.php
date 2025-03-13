@@ -115,9 +115,9 @@ class StockFreezeController extends defaultController
             $stockloc = DB::table('material.stockloc as s');
 
             if($include_expiry){
-                $stockloc = $stockloc->select('s.itemcode','s.uomcode','p.avgcost','se.balqty','se.expdate','se.batchno')
+                $stockloc = $stockloc->select('s.itemcode','s.uomcode','p.avgcost','se.balqty','se.expdate','se.batchno');
             }else{
-                $stockloc = $stockloc->select('s.itemcode','s.uomcode','p.avgcost','s.qtyonhand')
+                $stockloc = $stockloc->select('s.itemcode','s.uomcode','p.avgcost','s.qtyonhand');
             }
 
             $stockloc = $stockloc->join('material.product as p', function($join) use ($request,$unit){
