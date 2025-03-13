@@ -654,6 +654,13 @@ class StockCountController extends defaultController
                                 ->where('idno','=',$idno)
                                 ->first();
 
+                $dept = DB::table('sysdb.department')
+                            ->where('compcode',session('compcode'))
+                            ->where('deptcode',$phycnthd_obj->srcdept)
+                            ->first();
+
+                $unit = $dept->sector;
+
                 // $this->check_sequence_backdated($ivtmphd);
 
                 //-- 2. transfer from ivtmpdt to ivtxndt --//
@@ -668,7 +675,7 @@ class StockCountController extends defaultController
 
                     DB::table('material.stockloc')
                             ->where('compcode','=',session('compcode'))
-                            ->where('unit','=',session('unit'))
+                            ->where('unit','=',$unit)
                             ->where('itemcode','=',$value->itemcode)
                             ->where('uomcode','=',$value->uomcode)
                             ->where('deptcode','=',$value->srcdept)
