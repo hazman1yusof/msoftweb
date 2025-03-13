@@ -125,7 +125,7 @@ class StockCountController extends defaultController
                             ->where('idno',$idno)
                             ->first();
 
-            $stockloc = DB::table('material.stockloc as s')
+            $stockloc = DB::table('material.stockloc as s');
 
             if($include_expiry){
                 $stockloc = $stockloc->select('s.itemcode','s.uomcode','p.avgcost','s.qtyonhand','se.expdate','se.batchno')
