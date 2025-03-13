@@ -114,14 +114,14 @@ class StockFreezeController extends defaultController
             $stockloc = DB::table('material.stockloc as s')
                             ->select('s.itemcode','s.uomcode','p.avgcost','se.balqty','se.expdate','se.batchno')
 
-                            ->join('material.product as p', function($join) use ($request){
+                            ->join('material.product as p', function($join) use ($request,$unit){
                                 $join = $join->on('p.itemcode', '=', 's.itemcode');
                                 $join = $join->on('p.uomcode', '=', 's.uomcode');
                                 $join = $join->where('p.compcode', '=', session('compcode'));
                                 $join = $join->where('p.unit', '=', $unit);
                             })
 
-                            ->join('material.stockexp as se', function($join) use ($request){
+                            ->join('material.stockexp as se', function($join) use ($request,$unit){
                                 $join = $join->on('se.itemcode', '=', 's.itemcode');
                                 $join = $join->on('se.deptcode', '=', 's.deptcode');
                                 $join = $join->on('se.uomcode', '=', 's.uomcode');
@@ -213,7 +213,7 @@ class StockFreezeController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
             
-            return response($e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }
