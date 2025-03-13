@@ -36,7 +36,6 @@ class OTTimeController extends defaultController
         DB::enableQueryLog();
         switch($request->action){
             case 'save_table_ottime':
-            
                 switch($request->oper){
                     case 'add':
                         return $this->add($request);
@@ -45,7 +44,7 @@ class OTTimeController extends defaultController
                     default:
                         return 'error happen..';
                 }
-                
+            
             case 'get_table_ottime':
                 return $this->get_table_ottime($request);
             
@@ -65,32 +64,35 @@ class OTTimeController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn_ottime,
                         'episno' => $request->episno_ottime,
-                        'pcr_result' => $request->pcr_result,
-                        'pcr_date' => $request->pcr_date,
-                        'callpt_time' => $request->callpt_time,
-                        'callpt_date' => $request->callpt_date,
-                        'ppkward_time' => $request->ppkward_time,
-                        'ppkward_date' => $request->ppkward_date,
-                        'reception_time' => $request->reception_time,
-                        'reception_date' => $request->reception_date,
-                        'patientOT_time' => $request->patientOT_time,
-                        'patientOT_date' => $request->patientOT_date,
+                        'pcrResult' => $request->pcrResult,
+                        'pcrDate' => $request->pcrDate,
+                        'callPtTime' => $request->callPtTime,
+                        'callPtDate' => $request->callPtDate,
+                        'ppkWardTime' => $request->ppkWardTime,
+                        'ppkWardDate' => $request->ppkWardDate,
+                        'receptionTime' => $request->receptionTime,
+                        'receptionDate' => $request->receptionDate,
+                        'patientOTtime' => $request->patientOTtime,
+                        'patientOTdate' => $request->patientOTdate,
                         'incisionstart' => $request->incisionstart,
                         'incisionend' => $request->incisionend,
-                        'ptOut_time' => $request->ptOut_time,
-                        'ptOut_date' => $request->ptOut_date,
-                        'wardCall_time' => $request->wardCall_time,
-                        'wardCall_date' => $request->wardCall_date,
-                        'ptWard_time' => $request->ptWard_time,
-                        'ptWard_date' => $request->ptWard_date,
+                        'ptOutTime' => $request->ptOutTime,
+                        'ptOutDate' => $request->ptOutDate,
+                        'wardCallTime' => $request->wardCallTime,
+                        'wardCallDate' => $request->wardCallDate,
+                        'ptWardTime' => $request->ptWardTime,
+                        'ptWardDate' => $request->ptWardDate,
                         'scrubperson' => $request->scrubperson,
-                        'ga_nurse' => $request->ga_nurse,
-                        'circltg_person' => $request->circltg_person,
-                        'hlthcare_asst' => $request->hlthcare_asst,
+                        'gaNurse' => $request->gaNurse,
+                        'circulateperson' => $request->circulateperson,
+                        'hlthcareAsst' => $request->hlthcareAsst,
                         'otCleanedBy' => $request->otCleanedBy,
                         'remarks' => $request->remarks,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
                     ]);
             
             DB::commit();
@@ -98,7 +100,7 @@ class OTTimeController extends defaultController
             $responce = new stdClass();
             
             return json_encode($responce);
-        
+            
         } catch (\Exception $e) {
             
             DB::rollback();
@@ -120,32 +122,35 @@ class OTTimeController extends defaultController
                 ->where('episno','=',$request->episno_ottime)
                 ->where('compcode','=',session('compcode'))
                 ->update([
-                    'pcr_result' => $request->pcr_result,
-                    'pcr_date' => $request->pcr_date,
-                    'callpt_time' => $request->callpt_time,
-                    'callpt_date' => $request->callpt_date,
-                    'ppkward_time' => $request->ppkward_time,
-                    'ppkward_date' => $request->ppkward_date,
-                    'reception_time' => $request->reception_time,
-                    'reception_date' => $request->reception_date,
-                    'patientOT_time' => $request->patientOT_time,
-                    'patientOT_date' => $request->patientOT_date,
+                    'pcrResult' => $request->pcrResult,
+                    'pcrDate' => $request->pcrDate,
+                    'callPtTime' => $request->callPtTime,
+                    'callPtDate' => $request->callPtDate,
+                    'ppkWardTime' => $request->ppkWardTime,
+                    'ppkWardDate' => $request->ppkWardDate,
+                    'receptionTime' => $request->receptionTime,
+                    'receptionDate' => $request->receptionDate,
+                    'patientOTtime' => $request->patientOTtime,
+                    'patientOTdate' => $request->patientOTdate,
                     'incisionstart' => $request->incisionstart,
                     'incisionend' => $request->incisionend,
-                    'ptOut_time' => $request->ptOut_time,
-                    'ptOut_date' => $request->ptOut_date,
-                    'wardCall_time' => $request->wardCall_time,
-                    'wardCall_date' => $request->wardCall_date,
-                    'ptWard_time' => $request->ptWard_time,
-                    'ptWard_date' => $request->ptWard_date,
+                    'ptOutTime' => $request->ptOutTime,
+                    'ptOutDate' => $request->ptOutDate,
+                    'wardCallTime' => $request->wardCallTime,
+                    'wardCallDate' => $request->wardCallDate,
+                    'ptWardTime' => $request->ptWardTime,
+                    'ptWardDate' => $request->ptWardDate,
                     'scrubperson' => $request->scrubperson,
-                    'ga_nurse' => $request->ga_nurse,
-                    'circltg_person' => $request->circltg_person,
-                    'hlthcare_asst' => $request->hlthcare_asst,
+                    'gaNurse' => $request->gaNurse,
+                    'circulateperson' => $request->circulateperson,
+                    'hlthcareAsst' => $request->hlthcareAsst,
                     'otCleanedBy' => $request->otCleanedBy,
                     'remarks' => $request->remarks,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
                 ]);
             
             // $queries = DB::getQueryLog();
@@ -173,7 +178,7 @@ class OTTimeController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
-                    
+        
         $responce = new stdClass();
         
         if($ottime_obj->exists()){
@@ -182,7 +187,7 @@ class OTTimeController extends defaultController
         }
         
         return json_encode($responce);
-    
+        
     }
     
 }

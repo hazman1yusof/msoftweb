@@ -64,12 +64,12 @@
                                     <div class="ui grid">
                                         <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                             <label>Basic set used in procedure</label>
-                                            <textarea id="basicset" name="basicset" rows="4"></textarea>
+                                            <textarea id="otswab_basicset" name="basicset" rows="4"></textarea>
                                         </div>
                                         
                                         <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
                                             <label>Supplementary set used in procedure</label>
-                                            <textarea id="supplemntryset" name="supplemntryset" rows="4"></textarea>
+                                            <textarea id="otswab_supplemntryset" name="supplemntryset" rows="4"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -93,21 +93,21 @@
                                             <tr>
                                                 <td width="23%">Issues/Incidents occured (If any)</td>
                                                 <td width="50%">
-                                                    <textarea class="form-control input-sm" id="issuesOccured" name="issuesOccured" rows="4"></textarea>
+                                                    <textarea class="form-control input-sm" id="otswab_issuesOccured" name="issuesOccured" rows="4"></textarea>
                                                 </td>
                                                 <td width="60%"></td>
                                             </tr>
                                             <tr>
                                                 <td>Actual operation(s)/procedure(s) done</td>
                                                 <td>
-                                                    <textarea class="form-control input-sm" id="actualOper" name="actualOper" rows="4"></textarea>
+                                                    <textarea class="form-control input-sm" id="otswab_actualOper" name="actualOper" rows="4"></textarea>
                                                 </td>
                                                 <td></td>
                                             </tr>
                                             <tr>
                                                 <td>Specimen(s) sent</td>
                                                 <td>
-                                                    <textarea class="form-control input-sm" id="specimenSent" name="specimenSent" rows="4" rdonly></textarea>
+                                                    <textarea class="form-control input-sm" id="otswab_specimenSent" name="specimenSent" rows="4" rdonly></textarea>
                                                 </td>
                                                 <td></td>
                                             </tr>
@@ -132,73 +132,73 @@
                                         <tbody>
                                             <tr>
                                                 <td width="35%">Name of 1st Scrub Nurse<br>
-                                                    <input type="text" class="form-control" id="scrubNurse1" name="scrubNurse1">
+                                                    <input type="text" class="form-control" id="otswab_scrubNurse1" name="scrubNurse1" style="text-transform: uppercase;">
                                                 </td>
                                                 <td width="20%" style="padding-top: 31px;">
-                                                    <input type="time" class="form-control" id="scrubNurse1Start" name="scrubNurse1Start">
+                                                    <input type="time" class="form-control" id="otswab_scrubNurse1Start" name="scrubNurse1Start">
                                                 </td>
                                                 <td width="20%" style="padding-top: 31px;">
-                                                    <input type="time" class="form-control" id="scrubNurse1End" name="scrubNurse1End">
+                                                    <input type="time" class="form-control" id="otswab_scrubNurse1End" name="scrubNurse1End">
                                                 </td>
                                                 <td width="25%"></td>
                                             </tr>
                                             <tr>
                                                 <td>Name of 2nd Scrub Nurse<br>
-                                                    <input type="text" class="form-control" id="scrubNurse2" name="scrubNurse2">
+                                                    <input type="text" class="form-control" id="otswab_scrubNurse2" name="scrubNurse2" style="text-transform: uppercase;">
                                                 </td>
                                                 <td style="padding-top: 31px;">
-                                                    <input type="time" class="form-control" id="scrubNurse2Start" name="scrubNurse2Start">
+                                                    <input type="time" class="form-control" id="otswab_scrubNurse2Start" name="scrubNurse2Start">
                                                 </td>
                                                 <td style="padding-top: 31px;">
-                                                    <input type="time" class="form-control" id="scrubNurse2End" name="scrubNurse2End">
+                                                    <input type="time" class="form-control" id="otswab_scrubNurse2End" name="scrubNurse2End">
                                                 </td>
                                                 <td></td>
                                             </tr>
                                             <tr>
                                                 <td>Name of 3rd Scrub Nurse<br>
-                                                    <input type="text" class="form-control" id="scrubNurse3" name="scrubNurse3">
+                                                    <input type="text" class="form-control" id="otswab_scrubNurse3" name="scrubNurse3" style="text-transform: uppercase;">
                                                 </td>
                                                 <td style="padding-top: 31px;">
-                                                    <input type="time" class="form-control" id="scrubNurse3Start" name="scrubNurse3Start">
+                                                    <input type="time" class="form-control" id="otswab_scrubNurse3Start" name="scrubNurse3Start">
                                                 </td>
                                                 <td style="padding-top: 31px;">
-                                                    <input type="time" class="form-control" id="scrubNurse3End" name="scrubNurse3End">
+                                                    <input type="time" class="form-control" id="otswab_scrubNurse3End" name="scrubNurse3End">
                                                 </td>
                                                 <td></td>
                                             </tr>
                                             <tr>
                                                 <td>Name of 1st Circulating Nurse<br>
-                                                    <input type="text" class="form-control" id="circulateNurse1" name="circulateNurse1">
+                                                    <input type="text" class="form-control" id="otswab_circulateNurse1" name="circulateNurse1" style="text-transform: uppercase;">
                                                 </td>
                                                 <td style="padding-top: 31px;">
-                                                    <input type="time" class="form-control" id="circulateNurse1Start" name="circulateNurse1Start">
+                                                    <input type="time" class="form-control" id="otswab_circulateNurse1Start" name="circulateNurse1Start">
                                                 </td>
                                                 <td style="padding-top: 31px;">
-                                                    <input type="time" class="form-control" id="circulateNurse1End" name="circulateNurse1End">
+                                                    <input type="time" class="form-control" id="otswab_circulateNurse1End" name="circulateNurse1End">
                                                 </td>
                                                 <td></td>
                                             </tr>
                                             <tr>
                                                 <td>Name of 2nd Circulating Nurse<br>
-                                                    <input type="text" class="form-control" id="circulateNurse2" name="circulateNurse2">
+                                                    <input type="text" class="form-control" id="otswab_circulateNurse2" name="circulateNurse2" style="text-transform: uppercase;">
                                                 </td>
                                                 <td style="padding-top: 31px;">
-                                                    <input type="time" class="form-control" id="circulateNurse2Start" name="circulateNurse2Start">
+                                                    <input type="time" class="form-control" id="otswab_circulateNurse2Start" name="circulateNurse2Start">
                                                 </td>
                                                 <td style="padding-top: 31px;">
-                                                    <input type="time" class="form-control" id="circulateNurse2End" name="circulateNurse2End">
+                                                    <input type="time" class="form-control" id="otswab_circulateNurse2End" name="circulateNurse2End">
                                                 </td>
                                                 <td></td>
                                             </tr>
                                             <tr>
                                                 <td>Name of 3rd Circulating Nurse<br>
-                                                    <input type="text" class="form-control" id="circulateNurse3" name="circulateNurse3">
+                                                    <input type="text" class="form-control" id="otswab_circulateNurse3" name="circulateNurse3" style="text-transform: uppercase;">
                                                 </td>
                                                 <td style="padding-top: 31px;">
-                                                    <input type="time" class="form-control" id="circulateNurse3Start" name="circulateNurse3Start">
+                                                    <input type="time" class="form-control" id="otswab_circulateNurse3Start" name="circulateNurse3Start">
                                                 </td>
                                                 <td style="padding-top: 31px;">
-                                                    <input type="time" class="form-control" id="circulateNurse3End" name="circulateNurse3End">
+                                                    <input type="time" class="form-control" id="otswab_circulateNurse3End" name="circulateNurse3End">
                                                 </td>
                                                 <td></td>
                                             </tr>

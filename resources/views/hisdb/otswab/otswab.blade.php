@@ -30,12 +30,12 @@
                                             <div class="ui grid">
                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                     <label>Basic set : </label>
-                                                    <textarea id="basicset" name="basicset" rows="4"></textarea>
+                                                    <textarea id="otswab_basicset" name="basicset" rows="4"></textarea>
                                                 </div>
                                                 
                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
                                                     <label>Supplementary : </label>
-                                                    <textarea id="supplemntryset" name="supplemntryset" rows="4"></textarea>
+                                                    <textarea id="otswab_supplemntryset" name="supplemntryset" rows="4"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -59,7 +59,7 @@
                                                     <tr>
                                                         <td width="15%">Operation(s) done : </td>
                                                         <td>
-                                                            <textarea class="form-control input-sm" id="actualOper" name="actualOper" rows="4"></textarea>
+                                                            <textarea class="form-control input-sm" id="otswab_actualOper" name="actualOper" rows="4"></textarea>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -74,12 +74,12 @@
                                             <div class="ui grid">
                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                     <label>SPECIMENS SENT : </label>
-                                                    <textarea id="specimenSent" name="specimenSent" rows="4"></textarea>
+                                                    <textarea id="otswab_specimenSent" name="specimenSent" rows="4"></textarea>
                                                 </div>
                                                 
                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
                                                     <label>INCIDENT / EQUIPMENT FAILURE : </label>
-                                                    <textarea id="issuesOccured" name="issuesOccured" rows="4"></textarea>
+                                                    <textarea id="otswab_issuesOccured" name="issuesOccured" rows="4"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -94,21 +94,21 @@
                                                     <tr>
                                                         <td width="15%">1st Scrub Nurse</td>
                                                         <td>
-                                                            <input type="text" class="form-control" id="scrubNurse1" name="scrubNurse1">
+                                                            <input type="text" class="form-control" id="otswab_scrubNurse1" name="scrubNurse1" style="text-transform: uppercase;">
                                                         </td>
                                                         <td width="30%"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>2nd Scrub Nurse</td>
                                                         <td>
-                                                            <input type="text" class="form-control" id="scrubNurse2" name="scrubNurse2">
+                                                            <input type="text" class="form-control" id="otswab_scrubNurse2" name="scrubNurse2" style="text-transform: uppercase;">
                                                         </td>
                                                         <td></td>
                                                     </tr>
                                                     <tr>
                                                         <td>Circulating Nurse</td>
                                                         <td>
-                                                            <input type="text" class="form-control" id="circulateNurse1" name="circulateNurse1">
+                                                            <input type="text" class="form-control" id="otswab_circulateNurse1" name="circulateNurse1" style="text-transform: uppercase;">
                                                         </td>
                                                         <td></td>
                                                     </tr>

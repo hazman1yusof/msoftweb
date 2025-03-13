@@ -1,15 +1,15 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
-var editedRow=0;
+var editedRow = 0;
 
-$(document).ready(function () {
+$(document).ready(function (){
     
     // textare_init_ottime();
     
     var fdl = new faster_detail_load();
     
-    $('#callpt_time,#ppkward_time,#reception_time,#patientOT_time,#incisionstart,#incisionend,#ptOut_time,#wardCall_time,#ptWard_time')
+    $('#callPtTime,#ppkWardTime,#receptionTime,#patientOTtime,#incisionstart,#incisionend,#ptOutTime,#wardCallTime,#ptWardTime')
         .calendar({
             type: 'time',
             formatter: {
@@ -20,59 +20,54 @@ $(document).ready(function () {
     
     disableForm('#form_ottime');
     
-    $("#new_ottime").click(function(){
+    $("#new_ottime").click(function (){
         $('#cancel_ottime').data('oper','add');
         button_state_ottime('wait');
         enableForm('#form_ottime');
         rdonly('#form_ottime');
         // emptyFormdata_div("#form_ottime",['#mrn_ottime','#episno_ottime']);
         // dialog_mrn_edit.on();
-        
     });
     
-    $("#edit_ottime").click(function(){
+    $("#edit_ottime").click(function (){
         button_state_ottime('wait');
         enableForm('#form_ottime');
         rdonly('#form_ottime');
         // dialog_mrn_edit.on();
-        
     });
     
-    $("#save_ottime").click(function(){
-        if( $('#form_ottime').isValid({requiredFields: ''}, conf, true) ) {
-            saveForm_ottime(function(data){
+    $("#save_ottime").click(function (){
+        if($('#form_ottime').isValid({requiredFields: ''}, conf, true)){
+            saveForm_ottime(function (data){
                 // emptyFormdata_div("#form_ottime",['#mrn_ottime','#episno_ottime']);
                 disableForm('#form_ottime');
-                
             });
         }else{
             enableForm('#form_ottime');
             rdonly('#form_ottime');
         }
-        
     });
     
-    $("#cancel_ottime").click(function(){
+    $("#cancel_ottime").click(function (){
         // emptyFormdata_div("#form_ottime",['#mrn_ottime','#episno_ottime']);
         disableForm('#form_ottime');
         button_state_ottime($(this).data('oper'));
         getdata_ottime();
         // dialog_mrn_edit.off();
-        
     });
     
     // to format number input to two decimal places (0.00)
-    $(".floatNumberField").change(function() {
+    $(".floatNumberField").change(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
     });
     
     // to limit to two decimal places (onkeypress)
-    $(document).on('keydown', 'input[pattern]', function(e){
+    $(document).on('keydown', 'input[pattern]', function (e){
         var input = $(this);
         var oldVal = input.val();
         var regex = new RegExp(input.attr('pattern'), 'g');
         
-        setTimeout(function(){
+        setTimeout(function (){
             var newVal = input.val();
             if(!regex.test(newVal)){
                 input.val(oldVal);
@@ -84,12 +79,12 @@ $(document).ready(function () {
 
 var errorField = [];
 conf = {
-    modules : 'logic',
+    modules: 'logic',
     language: {
         requiredFields: 'You have not answered all required fields'
     },
-    onValidate: function ($form) {
-        if (errorField.length > 0) {
+    onValidate: function ($form){
+        if(errorField.length > 0){
             return {
                 element: $(errorField[0]),
                 message: ''
@@ -191,12 +186,12 @@ function populate_ottime(obj){
 }
 
 function autoinsert_rowdata(form,rowData){
-    $.each(rowData, function( index, value ) {
-        var input=$(form+" [name='"+index+"']");
+    $.each(rowData, function (index, value){
+        var input = $(form+" [name='"+index+"']");
         if(input.is("[type=radio]")){
             $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
         }else if(input.is("[type=checkbox]")){
-            if(value==1){
+            if(value == 1){
                 $(form+" [name='"+index+"']").prop('checked', true);
             }
         }else if(input.is("textarea")){
@@ -212,9 +207,9 @@ function autoinsert_rowdata(form,rowData){
 
 function saveForm_ottime(callback){
     let oper = $("#cancel_ottime").data('oper');
-    var saveParam={
-        action:'save_table_ottime',
-        oper:oper,
+    var saveParam = {
+        action: 'save_table_ottime',
+        oper: oper,
     }
     
     if(oper == 'add'){
@@ -225,62 +220,62 @@ function saveForm_ottime(callback){
         // saveParam.recordtime = row.recordtime;
     }
     
-    var postobj={
-        _token : $('#_token').val(),
-        // sex_edit : $('#sex_edit').val(),
-        // idtype_edit : $('#idtype_edit').val()
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
     };
     
     values = $("#form_ottime").serializeArray();
     
     values = values.concat(
         $('#form_ottime input[type=checkbox]:not(:checked)').map(
-        function() {
+        function (){
             return {"name": this.name, "value": 0}
         }).get()
     );
     
     values = values.concat(
         $('#form_ottime input[type=checkbox]:checked').map(
-        function() {
+        function (){
             return {"name": this.name, "value": 1}
         }).get()
     );
     
     values = values.concat(
         $('#form_ottime input[type=radio]:checked').map(
-        function() {
+        function (){
             return {"name": this.name, "value": this.value}
         }).get()
     );
     
     values = values.concat(
         $('#form_ottime select').map(
-        function() {
+        function (){
             return {"name": this.name, "value": this.value}
         }).get()
     );
     
-    $.post( "./ottime/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post("./ottime/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
-    },'json').done(function(data) {
+    },'json').done(function (data){
         callback(data);
         button_state_ottime('edit');
-    }).fail(function(data){
+    }).fail(function (data){
         callback(data);
         button_state_ottime($(this).data('oper'));
     });
 }
 
 function textare_init_ottime(){
-    $('textarea#hlthcare_asst,textarea#otCleanedBy,textarea#remarks').each(function () {
+    $('textarea#hlthcareAsst,textarea#otCleanedBy,textarea#remarks').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
             this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }
-    }).off().on('input', function () {
-        if(this.scrollHeight>40){
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + 'px';
         }else{
@@ -289,35 +284,35 @@ function textare_init_ottime(){
     });
 }
 
-$('#tab_ottime').on('shown.bs.collapse', function () {
-    SmoothScrollTo('#tab_ottime', 300,114);
+$('#tab_ottime').on('shown.bs.collapse', function (){
+    SmoothScrollTo('#tab_ottime', 300, 114);
     
     if($('#mrn_ottime').val() != ''){
         getdata_ottime();
     }
 });
 
-$('#tab_ottime').on('hide.bs.collapse', function () {
+$('#tab_ottime').on('hide.bs.collapse', function (){
     emptyFormdata_div("#form_ottime",['#mrn_ottime','#episno_ottime']);
     button_state_ottime('empty');
 });
 
 function getdata_ottime(){
-    var urlparam={
-        action:'get_table_ottime',
+    var urlparam = {
+        action: 'get_table_ottime',
     }
     
-    var postobj={
-        _token : $('#_token').val(),
-        mrn:$('#mrn_ottime').val(),
-        episno:$("#episno_ottime").val()
+    var postobj = {
+        _token: $('#_token').val(),
+        mrn: $('#mrn_ottime').val(),
+        episno: $("#episno_ottime").val()
     };
     
-    $.post( "./ottime/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+    $.post("./ottime/form?"+$.param(urlparam), $.param(postobj), function (data){
         
-    },'json').fail(function(data) {
+    },'json').fail(function (data){
         alert('there is an error');
-    }).done(function(data){
+    }).done(function (data){
         if(!$.isEmptyObject(data)){
             button_state_ottime('edit');
             autoinsert_rowdata("#form_ottime",data.ottime);
