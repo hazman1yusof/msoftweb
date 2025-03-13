@@ -67,7 +67,7 @@ class StockCountController extends defaultController
         }
     }
 
-    public function add(Request $request){
+    public function add(Request $request){//ni takguna lorr
 
         DB::beginTransaction();
         if(!empty($request->fixPost)){

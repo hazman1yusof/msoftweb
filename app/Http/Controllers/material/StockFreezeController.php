@@ -76,6 +76,7 @@ class StockFreezeController extends defaultController
                         ->first();
 
             $unit = $dept->sector;
+            $include_expiry = false;
 
             $table = DB::table("material.phycnthd");
 
@@ -111,17 +112,23 @@ class StockFreezeController extends defaultController
                             ->where('idno',$idno)
                             ->first();
 
-            $stockloc = DB::table('material.stockloc as s')
-                            ->select('s.itemcode','s.uomcode','p.avgcost','se.balqty','se.expdate','se.batchno')
+            $stockloc = DB::table('material.stockloc as s');
 
-                            ->join('material.product as p', function($join) use ($request,$unit){
+            if($include_expiry){
+                $stockloc = $stockloc->select('s.itemcode','s.uomcode','p.avgcost','se.balqty','se.expdate','se.batchno')
+            }else{
+                $stockloc = $stockloc->select('s.itemcode','s.uomcode','p.avgcost','s.qtyonhand')
+            }
+
+            $stockloc = $stockloc->join('material.product as p', function($join) use ($request,$unit){
                                 $join = $join->on('p.itemcode', '=', 's.itemcode');
                                 $join = $join->on('p.uomcode', '=', 's.uomcode');
                                 $join = $join->where('p.compcode', '=', session('compcode'));
                                 $join = $join->where('p.unit', '=', $unit);
                             })
 
-                            ->join('material.stockexp as se', function($join) use ($request,$unit){
+            if($include_expiry){
+                $stockloc = $stockloc->join('material.stockexp as se', function($join) use ($request,$unit){
                                 $join = $join->on('se.itemcode', '=', 's.itemcode');
                                 $join = $join->on('se.deptcode', '=', 's.deptcode');
                                 $join = $join->on('se.uomcode', '=', 's.uomcode');
@@ -129,6 +136,7 @@ class StockFreezeController extends defaultController
                                 $join = $join->where('se.unit', '=', $unit);
                                 // $join = $join->on('se.year', '=', 's.year');
                             });
+            }
 
             if(!empty($request->rackno)){
                 $stockloc = $stockloc->where('rackno',$request->rackno);
@@ -160,6 +168,15 @@ class StockFreezeController extends defaultController
             // dd($this->getQueries($stockloc));
 
             foreach ($stockloc as $key => $value){
+
+                if($include_expiry){
+                    $expdate = $value->expdate;
+                    $batchno = $value->batchno;
+                }else{
+                    $expdate = null;
+                    $batchno = null;
+                }
+
                 DB::table('material.phycntdt')
                     ->insert([
                         'compcode' => session('compcode'),
@@ -175,10 +192,10 @@ class StockFreezeController extends defaultController
                         'thyqty' => $value->balqty,
                         'phyqty' => $value->balqty,
                         'recno' => $phycnthd->recno,
-                        'expdate' => $value->expdate,
+                        'expdate' => $expdate,
                         'frzdate' => $phycnthd->frzdate,
                         'frztime' => $phycnthd->frztime,
-                        'batchno' => $value->batchno,
+                        'batchno' => $batchno,
                     ]);
 
                // update frozen = yes at stockloc
