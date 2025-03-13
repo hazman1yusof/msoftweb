@@ -37,7 +37,7 @@ class do_util extends defaultController{
                 'batchno' => $value->batchno, 
                 'amount' => $value->amount, 
                 // 'amount' => round($value->netunitprice * $value->qtydelivered, 2), 
-                'trandate' => $delordhd_obj->trandate, 
+                'trandate' => Carbon::now("Asia/Kuala_Lumpur"), 
                 'trantype' => $delordhd_obj->trantype,
                 'deptcode' => $value->deldept, 
                 'gstamount' => $value->amtslstax, 
@@ -52,7 +52,7 @@ class do_util extends defaultController{
             ->where('StockLoc.unit','=',$deldept_unit)
             ->where('StockLoc.DeptCode','=',$value->deldept)
             ->where('StockLoc.ItemCode','=',$value->itemcode)
-            ->where('StockLoc.Year','=', defaultController::toYear($delordhd_obj->trandate))
+            ->where('StockLoc.Year','=', defaultController::toYear(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d')))
             ->where('StockLoc.UomCode','=',$value->uomcode);
 
         //2.kalu ada stockloc, update 
@@ -60,7 +60,7 @@ class do_util extends defaultController{
 
         //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
             $stockloc_arr = (array)$stockloc_obj->first();
-            $month = defaultController::toMonth($delordhd_obj->trandate);
+            $month = defaultController::toMonth(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
             $QtyOnHand = $stockloc_obj->first()->qtyonhand + $txnqty; 
             $NetMvQty = $stockloc_arr['netmvqty'.$month] + $txnqty;
             $NetMvVal = $stockloc_arr['netmvval'.$month] + round($netprice * $txnqty, 2);
@@ -70,7 +70,7 @@ class do_util extends defaultController{
                 ->where('StockLoc.unit','=',$deldept_unit)
                 ->where('StockLoc.DeptCode','=',$value->deldept)
                 ->where('StockLoc.ItemCode','=',$value->itemcode)
-                ->where('StockLoc.Year','=', defaultController::toYear($delordhd_obj->trandate))
+                ->where('StockLoc.Year','=', defaultController::toYear(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d')))
                 ->where('StockLoc.UomCode','=',$value->uomcode)
                 ->update([
                     'QtyOnHand' => $QtyOnHand,
@@ -88,7 +88,7 @@ class do_util extends defaultController{
                     'deptcode' => $value->deldept,
                     'itemcode' => $value->itemcode,
                     'uomcode' => $value->uomcode,
-                    'year' => defaultController::toYear($delordhd_obj->trandate),
+                    'year' => defaultController::toYear(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d')),
                     'stocktxntype' => 'TR',
                     // 'frozen' => $request->frozen,
                     // 'disptype' => $request->disptype,
@@ -152,7 +152,7 @@ class do_util extends defaultController{
                     'upduser' => $value->upduser, 
                     'upddate' => $value->upddate, 
                    // 'lasttt' => 'GRN', 
-                    'year' => defaultController::toYear($delordhd_obj->trandate)
+                    'year' => defaultController::toYear(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
                 ]);
         }
 	}
@@ -165,7 +165,7 @@ class do_util extends defaultController{
 	        ->where('product.uomcode','=',$value->uomcode);
 
 	    if($product_obj->exists()){ // kalu jumpa
-	        $month = defaultController::toMonth($delordhd_obj->trandate);
+	        $month = defaultController::toMonth(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
 	        $OldQtyOnHand = $product_obj->first()->qtyonhand;
 	        $currprice = $netprice;
 	        $Oldavgcost = $product_obj->first()->avgcost;
@@ -208,7 +208,7 @@ class do_util extends defaultController{
 	public static function postingGL($value,$delordhd_obj,$productcat,$deldept_unit){
 
         //amik yearperiod dari delordhd
-        $yearperiod = defaultController::getyearperiod_($delordhd_obj->trandate);
+        $yearperiod = defaultController::getyearperiod_(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
 
         //tengok product category
         $product_obj = DB::table('material.product')
@@ -282,7 +282,7 @@ class do_util extends defaultController{
                 'trantype' => $delordhd_obj->trantype,
                 'reference' => $delordhd_obj->deldept .' '. str_pad($delordhd_obj->docno,7,"0",STR_PAD_LEFT),
                 'description' => $value->itemcode.'</br>'.$product_obj->description, 
-                'postdate' => $delordhd_obj->trandate,
+                'postdate' => Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'),
                 'year' => $yearperiod->year,
                 'period' => $yearperiod->period,
                 'drcostcode' => $drcostcode,
@@ -355,7 +355,7 @@ class do_util extends defaultController{
     public static function postingGL_cancel($value,$delordhd_obj,$productcat,$deldept_unit){
 
         //amik yearperiod dari delordhd
-        $yearperiod = defaultController::getyearperiod_($delordhd_obj->trandate);
+        $yearperiod = defaultController::getyearperiod_($delordhd_obj->postdate);
 
         //tengok product category
         $product_obj = DB::table('material.product')
@@ -492,7 +492,7 @@ class do_util extends defaultController{
 		if($value->amtslstax > 0){
 
             //amik yearperiod dari delordhd
-            $yearperiod = defaultController::getyearperiod_($delordhd_obj->trandate);
+            $yearperiod = defaultController::getyearperiod_(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
 
             $queryACC = DB::table('sysdb.sysparam')
                 ->where('compcode','=',session('compcode'))

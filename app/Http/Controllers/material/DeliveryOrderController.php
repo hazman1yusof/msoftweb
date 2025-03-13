@@ -375,8 +375,8 @@ class DeliveryOrderController extends defaultController
                             'srcdocno'=>$delordhd_obj->srcdocno, 
                             'sndrcv'=>$delordhd_obj->suppcode, 
                             'sndrcvtype'=>'Supplier', 
-                            'trandate'=>$delordhd_obj->trandate, 
-                            'trantime'=>$delordhd_obj->trantime, 
+                            'trandate'=>Carbon::now("Asia/Kuala_Lumpur"), 
+                            'trantime'=>Carbon::now("Asia/Kuala_Lumpur"), 
                             'datesupret'=>$delordhd_obj->deliverydate, 
                             'respersonid'=>$delordhd_obj->checkpersonid, 
                             'recstatus'=>$delordhd_obj->recstatus, 
@@ -1179,13 +1179,17 @@ class DeliveryOrderController extends defaultController
                 ->where('compcode', '=' ,session('compcode'))
                 ->update([
                     'recstatus'  => 'POSTED',
-                    'postedby' => session('username')
+                    'postedby' => session('username'),
+                    'postdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
         DB::table('material.delorddt')
                 ->where('recno', '=', $delordhd_obj->recno)
                 ->where('compcode', '=', session('compcode'))
-                ->update(['recstatus'  => 'POSTED']);
+                ->update([
+                    'trandate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus'  => 'POSTED'
+                ]);
 
         if(!empty($do_hd->srcdocno)){
             $podt_obj = DB::table('material.purorddt')

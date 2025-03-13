@@ -764,12 +764,12 @@ class InventoryTransactionController extends defaultController
                         'SndRcvType'   => $ivtmphd->sndrcvtype,
                         'Source'   => $ivtmphd->source,
                         'SrcDocNo' => $ivtmphd->srcdocno,
-                        'TranDate' => $ivtmphd->trandate,
-                        'TranTime' => $ivtmphd->trantime,
+                        'TranDate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'TranTime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'TranType' => $ivtmphd->trantype,
                         'TxnDept'  => $ivtmphd->txndept,
-                        'UpdDate'  => $ivtmphd->upddate,
-                        'UpdTime'  => $ivtmphd->updtime,
+                        'UpdDate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'UpdTime'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'UpdUser'  => $ivtmphd->upduser
                     ]);
 
@@ -805,8 +805,8 @@ class InventoryTransactionController extends defaultController
                             'netprice' => $value->netprice, 
                             'adduser' => $value->adduser, 
                             'adddate' => $value->adddate, 
-                            'upduser' => $value->upduser, 
-                            'upddate' => $value->upddate, 
+                            'upduser' => session('username'), 
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                             'TranType' => $ivtmphd->trantype,
                             'deptcode'  => $ivtmphd->txndept,
                             // 'productcat' => $productcat, 
@@ -819,7 +819,7 @@ class InventoryTransactionController extends defaultController
                             'qtyonhandrecv' => $value->qtyonhandrecv,  
                             'batchno' => $value->batchno, 
                             'amount' => $value->amount, 
-                            'trandate' => $ivtmphd->trandate,
+                            'trandate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'sndrcv' => $ivtmphd->sndrcv,
                             'unit'    => session('unit'),
                         ]);
@@ -936,7 +936,6 @@ class InventoryTransactionController extends defaultController
                                 'recstatus' => 'ACTIVE'
                             ]);
                     }
-
                 }
 
                 //--- 8. change recstatus to posted ---//

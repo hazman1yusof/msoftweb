@@ -66,6 +66,8 @@ class TestController extends defaultController
                 // return $this->update_productmaster($request);
             // case 'recon_DO':
             //     return $this->recon_DO($request);
+            case 'check_product_qtyonhand_sama_dgn_stockloc_qtyonhand':
+                return $this->check_product_qtyonhand_sama_dgn_stockloc_qtyonhand($request);
             case 'betulkan_stockexp_semua_chk':
                 return $this->betulkan_stockexp_semua_chk($request);
             case 'betulkan_stockexp_semua':
@@ -4683,6 +4685,48 @@ class TestController extends defaultController
 
             dd('Error'.$e);
         }               
+    }
+
+    public function check_product_qtyonhand_sama_dgn_stockloc_qtyonhand(Request $request){
+        DB::beginTransaction();
+        
+        try {
+            $unit = $request->unit;
+            $product = DB::table('material.product')
+                                ->where('compcode',session('compcode'))
+                                ->where('unit',$unit)
+                                ->get();
+
+            foreach ($product as $key => $value) {
+                $qtyonhand = DB::table('material.stockloc')
+                                ->where('compcode',session('compcode'))
+                                ->where('itemcode',$value->itemcode)
+                                ->where('year','2025')
+                                ->sum('qtyonhand');
+
+                if($qtyonhand != $value->qtyonhand){
+                    echo nl2br("$key. qtyonhand not same $value->itemcode - qtyonhand(p - s): $qtyonhand - $value->qtyonhand \n");
+
+                    DB::table('material.product')
+                                ->where('compcode',session('compcode'))
+                                ->where('itemcode',$value->itemcode)
+                                // ->where('uomcode',$value->uomcode)
+                                ->update([
+                                    'qtyonhand' => $qtyonhand
+                                ]);
+
+                    echo nl2br("$key. Update product $value->itemcode - qtyonhand: $qtyonhand \n");
+                }
+
+            }
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }    
+        
     }
     
 }
