@@ -11,6 +11,7 @@
         <td style="font-weight:bold">Variance Qty</td>
         <td style="font-weight:bold">W.Avg Cost</td>
         <td style="font-weight:bold">Variance Value</td>
+        <td style="font-weight:bold">Put count Quantity here!</td>
     </tr>
     @php($totalvv = 0)
     @foreach($phycntdt as $obj)
@@ -26,7 +27,7 @@
         ?>
 
             <tr>
-                <td>{{$obj->lineno_ + 1}}</td>
+                <td>{{$obj->lineno_}}</td>
                 @if(is_numeric($obj->itemcode))
                 <td  data-format="0">{{$obj->itemcode}}</td>
                 @else
@@ -41,6 +42,7 @@
                 <td>{{$var}}</td>
                 <td>{{$obj->unitcost}}</td>
                 <td>{{$var_val}}</td>
+                <td></td>
             </tr>
         @php($totalvv = $totalvv + $var_val)
     @endforeach
@@ -56,5 +58,6 @@
         <td></td>
         <td style="font-weight:bold">TOTAL:</td>
         <td style="text-align: right">{{ $totalvv }}</td>
+        <td></td>
     </tr>
 </table>

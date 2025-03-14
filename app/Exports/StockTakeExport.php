@@ -58,6 +58,7 @@ class StockTakeExport implements FromView, WithEvents, WithColumnWidths
             'I' => 15,
             'J' => 15,
             'K' => 15,
+            'L' => 30,
         ];
     }
     
@@ -82,6 +83,7 @@ class StockTakeExport implements FromView, WithEvents, WithColumnWidths
                     })
             ->where('pdt.compcode','=',session('compcode'))
             ->where('pdt.recno','=',$recno)
+            ->orderBy('pdt.lineno_','ASC')
             ->get();
         
         return view('material.stockCount.stockCount_excel',compact('phycntdt'));

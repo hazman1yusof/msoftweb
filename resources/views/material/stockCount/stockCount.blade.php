@@ -341,6 +341,31 @@ div#fail_msg{
 			</div>
 		</div>
 	</div>
+
+	<div id="upload_dialog" title="Upload File">
+		<div class='panel panel-info'>
+			<div class="panel-body" style="position: relative;">
+				<form id="formContent" method="post" enctype="multipart/form-data" style="text-align: center;">
+		  			{{csrf_field()}}
+		  			<input type="hidden" name="action" value="import_excel">
+		  			<input type="hidden" name="recno" id="recno_upld">
+		    		<input type="file" name="file" id="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="
+			    		border-radius: 5px;
+					    border: lightblue solid 1px;
+					    padding: 10px;
+					    margin: auto;
+					    margin-bottom: 10px;">
+	    			<button id="uploadbutton" type="submit" class="btn btn-primary btn-sm">Upload</button>
+	    			<div>
+	    				<p style="padding-top: 10px;
+					    color: darkgreen;
+					    font-size: larger;
+					    display: none;" id="warn_upld" data-def_txt="Please wait while the file are being process"></p>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 @endsection
 
 
@@ -379,7 +404,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/stockCount/stockCount.js?v=1.1"></script>
+	<script src="js/material/stockCount/stockCount.js?v=1.2"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

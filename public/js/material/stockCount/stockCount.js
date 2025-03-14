@@ -122,6 +122,59 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid2",null,"kosongkan");
 		},
 	});
+
+	$("#upload_dialog")
+		.dialog({ 
+		width: 3/10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function( event, ui ) {
+			$("#warn_upld").hide();
+			$(".ui-dialog-titlebar-close").show();
+			$('#uploadbutton').prop('disabled',false);
+		},
+		close: function( event, ui ) {
+			$("#refresh_jqGrid").click();
+		}
+	});
+
+	$('#pdfupd').click(function(){
+		$("#upload_dialog").dialog('open');
+	});
+
+	$("#formContent").submit(function(e){
+		$('#uploadbutton').prop('disabled',true);
+		$(".ui-dialog-titlebar-close").hide();
+		$("#warn_upld").show();
+	    $('#warn_upld').html($('#warn_upld').data('def_txt'));
+	    e.preventDefault();
+	    var formdata = new FormData(this);
+
+		$.ajax({
+			url: "./stockCount/form",
+			type: "POST",
+			data: formdata,
+    		dataType: "json",
+			mimeTypes:"multipart/form-data",
+			contentType: false,
+			cache: false,
+			processData: false
+		}).done(function( obj ) {
+			if(obj.res == 'success'){
+				$(".ui-dialog-titlebar-close").show();
+		    	$('#warn_upld').html(obj.msg);
+				$('#uploadbutton').prop('disabled',false);
+			}else{
+				$(".ui-dialog-titlebar-close").show();
+		    	$('#warn_upld').html(obj.msg);
+				$('#uploadbutton').prop('disabled',false);
+			}
+		}).fail(function(obj) {
+			$(".ui-dialog-titlebar-close").show();
+	    	$('#warn_upld').html(obj.msg);
+			$('#uploadbutton').prop('disabled',false);
+	  	});
+	});
 	////////////////////////////////////////end dialog///////////////////////////////////////////////////
 
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
@@ -185,6 +238,7 @@ $(document).ready(function () {
 		onSelectRow:function(rowid, selected){
 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 			urlParam2.filterVal[0]=selrowData("#jqGrid").recno;
+			$('#recno_upld').val(selrowData("#jqGrid").recno);
 			
 			populate_form(selrowData("#jqGrid"));
 

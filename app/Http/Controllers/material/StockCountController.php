@@ -10,6 +10,7 @@ use DateTime;
 use Carbon\Carbon;
 use PDF;
 use App\Exports\StockTakeExport;
+use App\Imports\StockCountImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class StockCountController extends defaultController
@@ -978,7 +979,48 @@ class StockCountController extends defaultController
     }
 
     public function import_excel_upload(Request $request){
-        dd($request->recno);
+        
+        DB::beginTransaction();
+        try {
+
+            $type = $request->file('file')->getClientMimeType();
+            $filename = $request->file('file')->getClientOriginalName();
+
+            $phycnthd = DB::table('material.phycnthd')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno',$request->recno)
+                            ->first();
+
+            $file_path = $request->file('file')->store('attachment', \config('get_config.ATTACHMENT_UPLOAD'));
+            DB::table('material.phycntupld')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'resulttext' => $filename,
+                    'attachmentfile' => $file_path,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'auditno' => $phycnthd->recno,
+                    'hd_id' => $phycnthd->idno,
+                    'hd_dept' => $request->srcdept,
+                    'hd_date' => $request->phycntdate,
+                    'hd_time' => $request->phycnttime
+                ]);
+
+            Excel::import(new StockCountImport($request->recno), request()->file('file'));
+
+            DB::commit();
+
+            $responce = new stdClass();
+            $responce->res = 'success';
+            $responce->msg = 'Process Sucess';
+
+            echo json_encode($responce);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
 }
 
