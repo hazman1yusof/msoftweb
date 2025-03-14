@@ -39,6 +39,8 @@
                         <li><a data-toggle="tab" id="navtab_othersChart2" href="#tab-othersChart2" data-type='othersChart2'>Drain Chart</a></li>
                         <li><a data-toggle="tab" id="navtab_bladder" href="#tab-bladder" data-type='bladder'>Bladder Irrigation</a></li>
                         <li><a data-toggle="tab" id="navtab_gcs" href="#tab-gcs" data-type='gcs'>Glasgow Coma Scale</a></li>
+                        <li><a data-toggle="tab" id="navtab_pivc" href="#tab-pivc" data-type='pivc'>PIVC</a></li>
+
                     @endif
                     @if(request()->get('epistycode') == 'OP')
                         <li><a data-toggle="tab" id="navtab_progress" href="#tab-progress" data-type='progress'>Progress Note</a></li>
@@ -1344,6 +1346,9 @@
                     </div>
                     <div id="tab-gcs" class="tab-pane fade">
                         @include('hisdb.nursingnote.nursingnote_glasgow')
+                    </div>
+                    <div id="tab-pivc" class="tab-pane fade">
+                        @include('hisdb.nursingnote.nursingnote_pivc')
                     </div>
                 </div>
             </div>

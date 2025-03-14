@@ -447,6 +447,7 @@ $(document).ready(function (){
         button_state_othersChart1('empty');
         button_state_othersChart2('empty');
         button_state_glasgow('empty');
+        button_state_pivc('empty');
 
         disableForm('#formProgress');
         disableForm('#formIntake');
@@ -457,6 +458,7 @@ $(document).ready(function (){
         disableForm('#formOthersChart1');
         disableForm('#formOthersChart2');
         disableForm('#formGlasgow');
+        disableForm('#formPivc');
         
         refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'kosongkan');
         refreshGrid('#jqGridFitChart',urlParam_FitChart,'kosongkan');
@@ -709,6 +711,22 @@ $(document).ready(function (){
                 
                 // $('#datetimegcs_tbl').DataTable().ajax.reload();
                 populate_glasgow_getdata();
+                break;
+
+            case 'pivc':
+                var urlparam_datetimepivc_tbl = {
+                    action: 'get_table_datetimePIVC',
+                    mrn: $("#mrn_nursNote").val(),
+                    episno: $("#episno_nursNote").val()
+                }
+                
+                datetimepivc_tbl.ajax.url("./nursingnote/table?"+$.param(urlparam_datetimepivc_tbl)).load(function (data){
+                    emptyFormdata_div("#formPivc",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+                    $('#datetimepivc_tbl tbody tr:eq(0)').click();  // to select first row
+                });
+                
+                // $('#datetimepivc_tbl').DataTable().ajax.reload();
+                populate_pivc_getdata();
                 break;
         }
     });
@@ -4494,6 +4512,7 @@ function populate_nursingnote(obj){
     emptyFormdata(errorField,"#formProgress");
     emptyFormdata(errorField,"#formIntake");
     emptyFormdata(errorField,"#formGlasgow");
+    emptyFormdata(errorField,"#formPivc");
     
     // panel header
     $('#name_show_nursNote').text(obj.Name);
