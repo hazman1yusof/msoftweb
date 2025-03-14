@@ -31,6 +31,8 @@ class StockFreezeController extends defaultController
                 return $this->get_table_range($request);
             case 'get_rackno':
                 return $this->get_rackno($request);
+            case 'getitemrange':
+                return $this->getitemrange($request);
             default:
                 return 'error happen..';
         }
@@ -122,7 +124,7 @@ class StockFreezeController extends defaultController
 
             $stockloc = $stockloc->join('material.product as p', function($join) use ($request,$unit){
                                 $join = $join->on('p.itemcode', '=', 's.itemcode');
-                                $join = $join->on('p.uomcode', '=', 's.uomcode');
+                                // $join = $join->on('p.uomcode', '=', 's.uomcode');
                                 $join = $join->where('p.compcode', '=', session('compcode'));
                                 $join = $join->where('p.unit', '=', $unit);
                                 $join = $join->where('p.groupcode', '=', 'STOCK');
@@ -133,7 +135,7 @@ class StockFreezeController extends defaultController
                 $stockloc = $stockloc->join('material.stockexp as se', function($join) use ($request,$unit){
                                 $join = $join->on('se.itemcode', '=', 's.itemcode');
                                 $join = $join->on('se.deptcode', '=', 's.deptcode');
-                                $join = $join->on('se.uomcode', '=', 's.uomcode');
+                                // $join = $join->on('se.uomcode', '=', 's.uomcode');
                                 $join = $join->where('se.compcode', '=', session('compcode'));
                                 $join = $join->where('se.unit', '=', $unit);
                                 // $join = $join->on('se.year', '=', 's.year');
@@ -236,7 +238,6 @@ class StockFreezeController extends defaultController
             
             return response($e->getMessage(), 500);
         }
-
     }
 
     // public function edit(Request $request){
@@ -518,11 +519,9 @@ class StockFreezeController extends defaultController
             
             return response($e->getMessage(), 500);
         }
-
     }
 
     public function cancel(Request $request){
-        
     }
 
     public function check_sequence_backdated($ivtmphd){
@@ -545,7 +544,6 @@ class StockFreezeController extends defaultController
         if($diff > intval($sequence->backday)){
             throw new \Exception("backdated sequence exceed ".$sequence->backday.' days', 500);
         }
-
     }
     
     public function get_table_range(Request $request){
@@ -642,7 +640,6 @@ class StockFreezeController extends defaultController
         $responce->sql_query = $this->getQueries($table);
         
         return json_encode($responce);
-        
     }
     
     public function get_rackno(Request $request){
@@ -689,7 +686,72 @@ class StockFreezeController extends defaultController
         $responce->sql_query = $this->getQueries($table);
         
         return json_encode($responce);
+    }
+    
+    public function getitemrange(Request $request){
+        if(empty($request->srcdept)){
+            $unit = session('unit');
+        }else{
+            $dept = DB::table('sysdb.department')
+                        ->where('compcode',session('compcode'))
+                        ->where('deptcode',$request->srcdept)
+                        ->first();
+
+            $unit = $dept->sector;
+        }
+
+        $table = DB::table('material.stockloc as s')
+                        ->select('s.itemcode','s.uomcode','p.description');
+
+        $table = $table->join('material.product as p', function($join) use ($request,$unit){
+                            $join = $join->on('p.itemcode', '=', 's.itemcode');
+                            // $join = $join->on('p.uomcode', '=', 's.uomcode');
+                            $join = $join->where('p.compcode', '=', session('compcode'));
+                            $join = $join->where('p.unit', '=', $unit);
+                            $join = $join->where('p.groupcode', '=', 'STOCK');
+                            $join = $join->where('p.recstatus', '=', 'ACTIVE');
+                        });
+
+        $table =  $table->where('s.compcode',session('compcode'))
+                        ->where('s.unit',$unit)
+                        ->where('s.deptcode',$request->srcdept)
+                        ->where('s.year', '=', Carbon::now("Asia/Kuala_Lumpur")->format('Y'));
+
+        if(!empty($request->wholeword)){
+            $table =  $table->where('s.itemcode','like',$request->wholeword.'%');
+        }
+
+        if(!empty($request->sidx)){
+            
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                foreach ($pieces as $key => $value) {
+                    $value_ = substr_replace($value,"s.",0,strpos($value,"_")+1);
+                    $pieces_inside = explode(" ", $value_);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('s.itemcode','ASC');
+        }
         
+        $paginate = $table->paginate($request->rows);
+        
+        //////////paginate/////////
+        
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);
     }
     
     public function showpdf(Request $request){

@@ -819,26 +819,25 @@ $(document).ready(function () {
 
 		{	
 			colModel:[
-				{label: 'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label: 'UOM Code',name:'s_uomcode',width:100,classes:'pointer', hidden:false},
-				{label: 'deptcode',name:'s_deptcode',width:200,classes:'pointer',hidden:true},
-				{label: 'year',name:'s_year',width:100,classes:'pointer', hidden:true},
-				{label: 'unitcost',name:'p_currprice',width:100,classes:'pointer', hidden:true},
-				{label: 'thyqty',name:'e_balqty',width:100,classes:'pointer', hidden:true},
-				{label: 'expdate',name:'e_expdate',width:100,classes:'pointer', hidden:true},
-				{label: 'batchno',name:'e_batchno',width:100,classes:'pointer', hidden:true},
+				{label: 'Item Code',name:'itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label: 'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label: 'UOM Code',name:'uomcode',width:100,classes:'pointer', hidden:false},
 
 			],
 			urlParam: {
-				fixPost : "true",
-				filterCol:['s.recstatus','s.compcode', 's.deptcode', 's.year','s.unit'],//,'sector'
-				filterVal:['ACTIVE','session.compcode', $('#srcdept').val(), moment().year(),'session.unit'],
-				join_type:['LEFT JOIN', 'LEFT JOIN'],
-				join_onCol:['s.itemcode', 's.itemcode'],
-				join_onVal:['p.itemcode', 'e.itemcode'],
-				join_filterCol:[['s.compcode on =','s.uomcode on =','s.unit on ='],['s.compcode on =','s.uomcode on =','s.unit on =','s.deptcode on =','s.year on =']],
-				join_filterVal:[['p.compcode','p.uomcode','p.unit'],['e.compcode','e.uomcode','e.unit','e.deptcode','e.year']],
+				// fixPost : "true",
+				// filterCol:['s.recstatus','s.compcode', 's.deptcode', 's.year','s.unit'],//,'sector'
+				// filterVal:['ACTIVE','session.compcode', $('#srcdept').val(), moment().year(),'session.unit'],
+				// join_type:['LEFT JOIN', 'LEFT JOIN'],
+				// join_onCol:['s.itemcode', 's.itemcode'],
+				// join_onVal:['p.itemcode', 'e.itemcode'],
+				// join_filterCol:[['s.compcode on =','s.uomcode on =','s.unit on ='],['s.compcode on =','s.uomcode on =','s.unit on =','s.deptcode on =','s.year on =']],
+				// join_filterVal:[['p.compcode','p.uomcode','p.unit'],['e.compcode','e.uomcode','e.unit','e.deptcode','e.year']],
+				url:"./stockFreeze/table",
+				action: 'getitemrange',
+				url_chk: './stockFreeze/table',
+				action_chk: 'getitemrange_check',
+				srcdept: null
 			},
 			ondblClickRow: function () {
 	
@@ -855,16 +854,11 @@ $(document).ready(function () {
 		},{
 			title:"Select Department",
 			open: function(){
-				dialog_itemcodefrom.urlParam.table_name = ['material.stockloc AS s','material.product AS p', 'material.stockexp AS e'];
-				dialog_itemcodefrom.urlParam.fixPost = "true";
-				dialog_itemcodefrom.urlParam.table_id = "none_";
-				dialog_itemcodefrom.urlParam.filterCol=['s.recstatus','s.compcode', 's.deptcode', 's.year','s.unit'];//,'sector'
-				dialog_itemcodefrom.urlParam.filterVal=['ACTIVE','session.compcode', $('#srcdept').val(), moment($('#s_itemcode').val()).year(),'session.unit'];//, 'session.unit'
-				dialog_itemcodefrom.urlParam.join_type = ['LEFT JOIN', 'LEFT JOIN'];
-				dialog_itemcodefrom.urlParam.join_onCol = ['s.itemcode', 's.itemcode'];
-				dialog_itemcodefrom.urlParam.join_onVal = ['p.itemcode', 'e.itemcode'];
-				dialog_itemcodefrom.urlParam.join_filterCol = [['s.compcode on =','s.uomcode on =','s.unit on ='],['s.compcode on =','s.uomcode on =','s.unit on =','s.deptcode on =','s.year on =']];
-				dialog_itemcodefrom.urlParam.join_filterVal = [['p.compcode','p.uomcode','p.unit'],['e.compcode','e.uomcode','e.unit','e.deptcode','e.year']];
+				dialog_itemcodefrom.urlParam.url = "./stockFreeze/table";
+				dialog_itemcodefrom.urlParam.action = 'getitemrange';
+				dialog_itemcodefrom.urlParam.url_chk = "./stockFreeze/table";
+				dialog_itemcodefrom.urlParam.action_chk = "getitemrange_check";
+				dialog_itemcodefrom.urlParam.srcdept = $('#srcdept').val();
 			},
 			close: function(obj_){
 			}
@@ -876,26 +870,25 @@ $(document).ready(function () {
 		'itemto',['material.stockloc AS s','material.product AS p', 'material.stockexp AS e'],"#itemto",'errorField',
 		{	
 			colModel:[
-				{label: 'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label: 'Description',name:'p_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label: 'UOM Code',name:'s_uomcode',width:100,classes:'pointer', hidden:false},
-				{label: 'deptcode',name:'s_deptcode',width:200,classes:'pointer',hidden:true},
-				{label: 'year',name:'s_year',width:100,classes:'pointer', hidden:true},
-				{label: 'unitcost',name:'p_currprice',width:100,classes:'pointer', hidden:true},
-				{label: 'thyqty',name:'e_balqty',width:100,classes:'pointer', hidden:true},
-				{label: 'expdate',name:'e_expdate',width:100,classes:'pointer', hidden:true},
-				{label: 'batchno',name:'e_batchno',width:100,classes:'pointer', hidden:true},
+				{label: 'Item Code',name:'itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label: 'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label: 'UOM Code',name:'uomcode',width:100,classes:'pointer', hidden:false},
 
 			],
 			urlParam: {
-				fixPost : "true",
-				filterCol:['s.recstatus','s.compcode', 's.deptcode', 's.year','s.unit'],//,'sector'
-				filterVal:['ACTIVE','session.compcode', $('#srcdept').val(), moment().year(),'session.unit'],
-				join_type:['LEFT JOIN', 'LEFT JOIN'],
-				join_onCol:['s.itemcode', 's.itemcode'],
-				join_onVal:['p.itemcode', 'e.itemcode'],
-				join_filterCol:[['s.compcode on =','s.uomcode on =','s.unit on ='],['s.compcode on =','s.uomcode on =','s.unit on =','s.deptcode on =','s.year on =']],
-				join_filterVal:[['p.compcode','p.uomcode','p.unit'],['e.compcode','e.uomcode','e.unit','e.deptcode','e.year']],
+				// fixPost : "true",
+				// filterCol:['s.recstatus','s.compcode', 's.deptcode', 's.year','s.unit'],//,'sector'
+				// filterVal:['ACTIVE','session.compcode', $('#srcdept').val(), moment().year(),'session.unit'],
+				// join_type:['LEFT JOIN', 'LEFT JOIN'],
+				// join_onCol:['s.itemcode', 's.itemcode'],
+				// join_onVal:['p.itemcode', 'e.itemcode'],
+				// join_filterCol:[['s.compcode on =','s.uomcode on =','s.unit on ='],['s.compcode on =','s.uomcode on =','s.unit on =','s.deptcode on =','s.year on =']],
+				// join_filterVal:[['p.compcode','p.uomcode','p.unit'],['e.compcode','e.uomcode','e.unit','e.deptcode','e.year']],
+				url:"./stockFreeze/table",
+				action: 'getitemrange',
+				url_chk: './stockFreeze/table',
+				action_chk: 'getitemrange_check',
+				srcdept: null
 			},
 			ondblClickRow: function () {
 				$("#jqGrid2").jqGrid("clearGridData", true);
@@ -916,16 +909,11 @@ $(document).ready(function () {
 		},{
 			title:"Select Department",
 			open: function(){
-				dialog_itemcodeto.urlParam.table_name = ['material.stockloc AS s','material.product AS p', 'material.stockexp AS e'];
-				dialog_itemcodeto.urlParam.fixPost = "true";
-				dialog_itemcodeto.urlParam.table_id = "none_";
-				dialog_itemcodeto.urlParam.filterCol=['s.recstatus','s.compcode', 's.deptcode', 's.year','s.unit'];//,'sector'
-				dialog_itemcodeto.urlParam.filterVal=['ACTIVE','session.compcode', $('#srcdept').val(), moment($('#s_itemcode').val()).year(),'session.unit'];//, 'session.unit'
-				dialog_itemcodeto.urlParam.join_type = ['LEFT JOIN', 'LEFT JOIN'];
-				dialog_itemcodeto.urlParam.join_onCol = ['s.itemcode', 's.itemcode'];
-				dialog_itemcodeto.urlParam.join_onVal = ['p.itemcode', 'e.itemcode'];
-				dialog_itemcodeto.urlParam.join_filterCol = [['s.compcode on =','s.uomcode on =','s.unit on ='],['s.compcode on =','s.uomcode on =','s.unit on =','s.deptcode on =','s.year on =']];
-				dialog_itemcodeto.urlParam.join_filterVal = [['p.compcode','p.uomcode','p.unit'],['e.compcode','e.uomcode','e.unit','e.deptcode','e.year']];
+				dialog_itemcodeto.urlParam.url = "./stockFreeze/table";
+				dialog_itemcodeto.urlParam.action = 'getitemrange';
+				dialog_itemcodeto.urlParam.url_chk = "./stockFreeze/table";
+				dialog_itemcodeto.urlParam.action_chk = "getitemrange_check";
+				dialog_itemcodeto.urlParam.srcdept = $('#srcdept').val();
 			},
 			close: function(obj_){
 			},
