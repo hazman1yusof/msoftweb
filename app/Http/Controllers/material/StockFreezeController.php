@@ -125,6 +125,7 @@ class StockFreezeController extends defaultController
                                 $join = $join->on('p.uomcode', '=', 's.uomcode');
                                 $join = $join->where('p.compcode', '=', session('compcode'));
                                 $join = $join->where('p.unit', '=', $unit);
+                                $join = $join->where('p.groupcode', '=', 'STOCK');
                             });
 
             if($include_expiry){
