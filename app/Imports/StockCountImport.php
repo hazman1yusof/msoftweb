@@ -33,7 +33,6 @@ class StockCountImport implements ToCollection, WithCalculatedFormulas{
                     continue;
                 }
 
-                dd('test');
                 $lineno_ = $row[0];
                 $itemcode = $row[1];
                 $phyqty = $row[11];
