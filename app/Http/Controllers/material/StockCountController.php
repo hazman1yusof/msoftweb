@@ -303,6 +303,18 @@ class StockCountController extends defaultController
                 foreach ($phycntdt_obj as $value) {
                     $vrqty =  floatval($value->phyqty) - floatval($value->thyqty);
                     if(floatval($vrqty) == 0){
+                        
+                        DB::table('material.stockloc')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('unit','=',$unit_)
+                                ->where('itemcode','=',$value->itemcode)
+                                // ->where('uomcode','=',$value->uomcode)
+                                ->where('deptcode','=',$value->srcdept)
+                                ->where('year', '=', $yearperiod->year)
+                                ->update([
+                                    'frozen' => '0',
+                                ]);
+
                         continue;
                     }
 
