@@ -31,6 +31,8 @@ class StockCountImport implements ToCollection{
                 if($row[11] == null || $key == 0){
                     continue;
                 }
+
+                dd('test');
                 $lineno_ = $row[0];
                 $itemcode = $row[1];
                 $phyqty = $row[11];
