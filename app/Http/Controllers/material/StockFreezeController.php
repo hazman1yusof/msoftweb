@@ -126,6 +126,7 @@ class StockFreezeController extends defaultController
                                 $join = $join->where('p.compcode', '=', session('compcode'));
                                 $join = $join->where('p.unit', '=', $unit);
                                 $join = $join->where('p.groupcode', '=', 'STOCK');
+                                $join = $join->where('p.recstatus', '=', 'ACTIVE');
                             });
 
             if($include_expiry){
