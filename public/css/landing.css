@@ -485,3 +485,9 @@ div#ordcom_div_cyclebill > a,div#ordcom_div_label > a{
 .table>tbody>tr.tr_pdclass>td,.table>tbody>tr.tr_pdclass>td>a>span.glyphicon,.table>tbody>tr.tr_pdclass>td>span.help-block{
 	color: darkred; !important;
 }
+
+.center {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}

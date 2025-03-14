@@ -25,20 +25,24 @@
         <div class="panel-body paneldiv" style="overflow-y: auto;">
             <div class='col-md-12' style="padding: 0 0 15px 0;">
                 <ul class="nav nav-tabs" id="jqGridNursNote_panel_tabs">
-                    <li><a data-toggle="tab" id="navtab_invChart" href="#tab-invChart" data-type='invChart'>Investigation Chart</a></li>
-                    <li><a data-toggle="tab" id="navtab_progress" href="#tab-progress" data-type='progress'>Progress Note</a></li>
-                    <li><a data-toggle="tab" id="navtab_intake" href="#tab-intake" data-type='intake'>Intake Output</a></li>
-                    <li><a data-toggle="tab" id="navtab_drug" href="#tab-drug" data-type='drug'>Drug Administration</a></li>
-                    <li><a data-toggle="tab" id="navtab_treatment" href="#tab-treatment" data-type='treatment'>Nursing Report</a></li>
-                    <li><a data-toggle="tab" id="navtab_careplan" href="#tab-careplan" data-type='careplan'>Care Plan</a></li>
-                    <li><a data-toggle="tab" id="navtab_fitchart" href="#tab-fitchart" data-type='fitchart'>Fit Chart</a></li>
-                    <li><a data-toggle="tab" id="navtab_circulation" href="#tab-circulation" data-type='circulation'>Circulation Chart</a></li>
-                    <li><a data-toggle="tab" id="navtab_slidingScale" href="#tab-slidingScale" data-type='slidingScale'>Sliding Scale Chart</a></li>
-                    <li><a data-toggle="tab" id="navtab_othersChart1" href="#tab-othersChart1" data-type='othersChart1'>PAD Chart</a></li>
-                    <li><a data-toggle="tab" id="navtab_othersChart2" href="#tab-othersChart2" data-type='othersChart2'>Drain Chart</a></li>
-                    <li><a data-toggle="tab" id="navtab_bladder" href="#tab-bladder" data-type='bladder'>Bladder Irrigation</a></li>
-                    <li><a data-toggle="tab" id="navtab_gcs" href="#tab-gcs" data-type='gcs'>Glasgow Coma Scale</a></li>
-
+                    @if(request()->get('epistycode') == 'IP')
+                        <li><a data-toggle="tab" id="navtab_invChart" href="#tab-invChart" data-type='invChart'>Investigation Chart</a></li>
+                        <li><a data-toggle="tab" id="navtab_progress" href="#tab-progress" data-type='progress'>Progress Note</a></li>
+                        <li><a data-toggle="tab" id="navtab_intake" href="#tab-intake" data-type='intake'>Intake Output</a></li>
+                        <li><a data-toggle="tab" id="navtab_drug" href="#tab-drug" data-type='drug'>Drug Administration</a></li>
+                        <li><a data-toggle="tab" id="navtab_treatment" href="#tab-treatment" data-type='treatment'>Nursing Report</a></li>
+                        <li><a data-toggle="tab" id="navtab_careplan" href="#tab-careplan" data-type='careplan'>Care Plan</a></li>
+                        <li><a data-toggle="tab" id="navtab_fitchart" href="#tab-fitchart" data-type='fitchart'>Fit Chart</a></li>
+                        <li><a data-toggle="tab" id="navtab_circulation" href="#tab-circulation" data-type='circulation'>Circulation Chart</a></li>
+                        <li><a data-toggle="tab" id="navtab_slidingScale" href="#tab-slidingScale" data-type='slidingScale'>Sliding Scale Chart</a></li>
+                        <li><a data-toggle="tab" id="navtab_othersChart1" href="#tab-othersChart1" data-type='othersChart1'>PAD Chart</a></li>
+                        <li><a data-toggle="tab" id="navtab_othersChart2" href="#tab-othersChart2" data-type='othersChart2'>Drain Chart</a></li>
+                        <li><a data-toggle="tab" id="navtab_bladder" href="#tab-bladder" data-type='bladder'>Bladder Irrigation</a></li>
+                        <li><a data-toggle="tab" id="navtab_gcs" href="#tab-gcs" data-type='gcs'>Glasgow Coma Scale</a></li>
+                    @endif
+                    @if(request()->get('epistycode') == 'OP')
+                        <li><a data-toggle="tab" id="navtab_progress" href="#tab-progress" data-type='progress'>Progress Note</a></li>
+                    @endif
                 </ul>
                 <div class="tab-content" style="padding: 10px 5px;">
                     <input id="mrn_nursNote" name="mrn_nursNote" type="hidden">

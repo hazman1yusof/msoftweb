@@ -287,6 +287,7 @@ $(document).ready(function() {
                     populate_triage_currpt(lastrowdata);
                     populate_antenatal(lastrowdata);
                     populate_paediatric(lastrowdata);
+                    populate_nursingnote(lastrowdata);
                     populate_clientProgNote_currpt(lastrowdata);
                     populate_clientProgNoteRef_currpt(lastrowdata);
                     populate_doctorNote_currpt(lastrowdata);
@@ -296,6 +297,7 @@ $(document).ready(function() {
                     // populate_dietOrder_currpt(lastrowdata);
                 }else if($('#user_nurse').val() == '1'){
                     populate_triage_currpt(lastrowdata);
+                    populate_nursingnote(lastrowdata);
                     populate_clientProgNote_currpt(lastrowdata);
                     populate_clientProgNoteRef_currpt(lastrowdata);
                     populate_doctorNote_currpt(lastrowdata);
