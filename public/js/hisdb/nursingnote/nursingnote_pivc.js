@@ -265,6 +265,8 @@ function saveForm_pivc(callback){
         
     },'json').fail(function (data){
         // alert('there is an error');
+        alert(data.responseText);
+
         callback();
     }).success(function (data){
         callback();

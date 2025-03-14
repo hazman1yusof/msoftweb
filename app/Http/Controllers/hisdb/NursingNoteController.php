@@ -2891,6 +2891,12 @@ class NursingNoteController extends defaultController
         DB::beginTransaction();
         
         try {
+
+            $pivc = DB::table('nursing.pivc')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn_nursNote)
+                            ->where('episno','=',$request->episno_nursNote)
+                            ->where('practiceDate','=',$request->practiceDate);
             
             if(!empty($request->idno_pivc)){
                 DB::table('nursing.pivc')
@@ -2898,7 +2904,6 @@ class NursingNoteController extends defaultController
                     // ->where('mrn','=',$request->mrn_nursNote)
                     // ->where('episno','=',$request->episno_nursNote)
                     ->update([
-                        'practiceDate' => $request->practiceDate,
                         'hygiene_M' => $request->hygiene_M,
                         'hygiene_E' => $request->hygiene_E,
                         'hygiene_N' => $request->hygiene_N,
@@ -2951,6 +2956,12 @@ class NursingNoteController extends defaultController
                         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }else{
+
+                if($pivc->exists()){
+                    // throw new \Exception('Date already exist.', 500);
+                    return response('Date already exist.');
+                }
+                
                 DB::table('nursing.pivc')
                     ->insert([
                         'compcode' => session('compcode'),
