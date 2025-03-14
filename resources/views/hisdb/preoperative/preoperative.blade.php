@@ -28,7 +28,7 @@
                             <div class="ui grid">
                                 <table class="ui very basic table" style="padding-top: 15px; padding-bottom: 15px;">
                                     <tbody>
-                                        <tr>
+                                        <!-- <tr>
                                             <td>
                                                 <div class="form-inline"> Reg. No <span style="margin-left: 41px;"> :  &nbsp;
                                                     <div class="form-group">
@@ -36,7 +36,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                        </tr>
+                                        </tr> -->
                                         <tr>
                                             <td>
                                                 <div class="form-inline"> Diagnosis <span style="margin-left: 30px;"> :  &nbsp;

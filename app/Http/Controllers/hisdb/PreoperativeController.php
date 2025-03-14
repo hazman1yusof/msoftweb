@@ -299,7 +299,7 @@ class PreoperativeController extends defaultController
                         'mrn' => $request->mrn_preoperative,
                         'episno' => $request->episno_preoperative,
                         // PATIENT PROFILE
-                        'regno' => $request->regno,
+                        // 'regno' => $request->regno,
                         'diagnosis' => $request->diagnosis,
                         'operation' => $request->operation,
                         'checkby' => $request->checkby,
@@ -401,7 +401,7 @@ class PreoperativeController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     // PATIENT PROFILE
-                    'regno' => $request->regno,
+                    // 'regno' => $request->regno,
                     'diagnosis' => $request->diagnosis,
                     'operation' => $request->operation,
                     'checkby' => $request->checkby,
