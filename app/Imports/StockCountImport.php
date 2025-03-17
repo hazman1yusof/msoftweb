@@ -29,7 +29,7 @@ class StockCountImport implements ToCollection, WithCalculatedFormulas{
                             ->first();
 
             foreach ($rows as $key => $row) {
-                if($row[11] == null || $key == 0){
+                if($row[11] === null || $key == 0){
                     continue;
                 }
 
