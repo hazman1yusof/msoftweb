@@ -93,7 +93,7 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th width="60%"> </th>
+                                            <th width="60%"></th>
                                             <th>Ward</th>
                                             <th>OT</th>
                                             <th width="25%">Remark</th>
