@@ -488,7 +488,7 @@ $(document).ready(function (){
                 
                 tbl_invcat_FBC.ajax.url("./nursingnote/table?"+$.param(urlparam_tbl_invcat_FBC)).load(function (data){
                     emptyFormdata_div("#formInvChart",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar','#inv_codeFBC']);
-                    $('#tbl_invcat_FBC tbody tr:eq(0)').click();  // to select first row
+                    $('#tbl_invcat_FBC tbody tr:eq(0)').click(); // to select first row
                 });
                 
                 // $('#tbl_invcat_FBC').DataTable().ajax.reload();
@@ -504,7 +504,7 @@ $(document).ready(function (){
                 
                 datetime_tbl.ajax.url("./nursingnote/table?"+$.param(urlparam_datetime_tbl)).load(function (data){
                     emptyFormdata_div("#formProgress",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-                    $('#datetime_tbl tbody tr:eq(0)').click();  // to select first row
+                    $('#datetime_tbl tbody tr:eq(0)').click(); // to select first row
                 });
                 
                 // $('#datetime_tbl').DataTable().ajax.reload();
@@ -550,7 +550,7 @@ $(document).ready(function (){
                 
                 tbl_prescription.ajax.url("./nursingnote/table?"+$.param(urlparam_tbl_prescription)).load(function (data){
                     emptyFormdata_div("#formDrug",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-                    $('#tbl_prescription tbody tr:eq(0)').click();  // to select first row
+                    $('#tbl_prescription tbody tr:eq(0)').click(); // to select first row
                 });
                 
                 // $('#tbl_prescription').DataTable().ajax.reload();
@@ -567,7 +567,7 @@ $(document).ready(function (){
                 
                 tbl_treatment.ajax.url("./nursingnote/table?"+$.param(urlparam_tbl_treatment)).load(function (data){
                     emptyFormdata_div("#formTreatmentP",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-                    $('#tbl_treatment tbody tr:eq(0)').click();  // to select first row
+                    $('#tbl_treatment tbody tr:eq(0)').click(); // to select first row
                 });
                 
                 var urlparam_tbl_investigation = {
@@ -579,7 +579,7 @@ $(document).ready(function (){
                 
                 tbl_investigation.ajax.url("./nursingnote/table?"+$.param(urlparam_tbl_investigation)).load(function (data){
                     emptyFormdata_div("#formInvestigation",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-                    $('#tbl_investigation tbody tr:eq(0)').click();  // to select first row
+                    $('#tbl_investigation tbody tr:eq(0)').click(); // to select first row
                 });
                 
                 var urlparam_tbl_injection = {
@@ -591,7 +591,7 @@ $(document).ready(function (){
                 
                 tbl_injection.ajax.url("./nursingnote/table?"+$.param(urlparam_tbl_injection)).load(function (data){
                     emptyFormdata_div("#formInjection",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-                    $('#tbl_injection tbody tr:eq(0)').click();  // to select first row
+                    $('#tbl_injection tbody tr:eq(0)').click(); // to select first row
                 });
                 
                 // $('#tbl_treatment').DataTable().ajax.reload();
@@ -608,7 +608,7 @@ $(document).ready(function (){
                 
                 tbl_careplan_date.ajax.url("./nursingnote/table?"+$.param(urlparam_tbl_careplan_date)).load(function (data){
                     emptyFormdata_div("#formCarePlan",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-                    $('#tbl_careplan_date tbody tr:eq(0)').click();  // to select first row
+                    $('#tbl_careplan_date tbody tr:eq(0)').click(); // to select first row
                 });
                 
                 // $('#tbl_careplan_date').DataTable().ajax.reload();
@@ -696,7 +696,7 @@ $(document).ready(function (){
                             break;
                     }
                 });
-            break;
+                break;
             case 'gcs':
                 var urlparam_datetimegcs_tbl = {
                     action: 'get_table_datetimeGCS',
@@ -706,13 +706,12 @@ $(document).ready(function (){
                 
                 datetimegcs_tbl.ajax.url("./nursingnote/table?"+$.param(urlparam_datetimegcs_tbl)).load(function (data){
                     emptyFormdata_div("#formGlasgow",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-                    $('#datetimegcs_tbl tbody tr:eq(0)').click();  // to select first row
+                    $('#datetimegcs_tbl tbody tr:eq(0)').click(); // to select first row
                 });
                 
                 // $('#datetimegcs_tbl').DataTable().ajax.reload();
                 populate_glasgow_getdata();
                 break;
-
             case 'pivc':
                 var urlparam_datetimepivc_tbl = {
                     action: 'get_table_datetimePIVC',
@@ -722,11 +721,26 @@ $(document).ready(function (){
                 
                 datetimepivc_tbl.ajax.url("./nursingnote/table?"+$.param(urlparam_datetimepivc_tbl)).load(function (data){
                     emptyFormdata_div("#formPivc",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
-                    $('#datetimepivc_tbl tbody tr:eq(0)').click();  // to select first row
+                    $('#datetimepivc_tbl tbody tr:eq(0)').click(); // to select first row
                 });
                 
                 // $('#datetimepivc_tbl').DataTable().ajax.reload();
                 populate_pivc_getdata();
+                break;
+            case 'morsefallscale':
+                var urlparam_tbl_morsefallscale = {
+                    action: 'get_datetime_morsefallscale',
+                    mrn: $("#mrn_nursNote").val(),
+                    episno: $("#episno_nursNote").val()
+                }
+                
+                tbl_morsefallscale_date.ajax.url("./morsefallscale/table?"+$.param(urlparam_tbl_morsefallscale)).load(function (data){
+                    emptyFormdata_div("#formMorseFallScale",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar','#morsefallscale_ward','#morsefallscale_diag','#morsefallscale_admdate']);
+                    $('#tbl_morsefallscale_date tbody tr:eq(0)').click(); // to select first row
+                });
+                
+                // $('#tbl_morsefallscale_date').DataTable().ajax.reload();
+                populate_morsefallscale_getdata();
                 break;
         }
     });
