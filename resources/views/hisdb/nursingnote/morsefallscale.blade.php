@@ -20,9 +20,9 @@
                 <button type="button" class="btn btn-default" id="cancel_morsefallscale">
                     <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                 </button>
-                <button type="button" class="btn btn-default" id="morsefallscale_chart">
+                <!-- <button type="button" class="btn btn-default" id="morsefallscale_chart">
                     <span class="fa fa-print fa-lg"></span> Chart 
-                </button>
+                </button> -->
             </div>
         </div>
         
@@ -189,7 +189,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Name of Staf : </td>
+                                                    <td>Name of Staff : </td>
                                                     <td>
                                                         <input id="morsefallscale_staffname" name="staffname" type="text" class="form-control input-sm">
                                                     </td>
