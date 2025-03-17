@@ -184,7 +184,9 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
             // $oth_qty = floatval($get_bal->close_balqty) - floatval($get_bal->open_balqty) - floatval($totmv);
             // $obj->oth_qty = $oth_qty;
             if($zero_delete == 1){
-                if(!empty($obj->open_balqty) && !empty($obj->open_balval) && !empty($obj->close_balqty) && !empty($obj->close_balval) && !empty($obj->netmvqty) && !empty($obj->netmvval)){
+                if(empty($obj->open_balqty) && empty($obj->open_balval) && empty($obj->close_balqty) && empty($obj->close_balval) && empty($obj->netmvqty) && empty($obj->netmvval)){
+                    continue;
+                }else{
                     array_push($array_report, $obj);
                 }
             }else{
@@ -205,7 +207,7 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
 
         $this->break_loop = $break_loop;
         
-        return view('material.stockBalance.stockBalance_basic_excel',compact('unit','deptcode','array_report'));
+        return view('material.stockBalance.stockBalance_basic_excel',compact('unit','deptcode','array_report','period'));
     }
     
     public function registerEvents(): array

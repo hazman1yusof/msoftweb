@@ -3,7 +3,7 @@
     </tr>
     @foreach($unit as $index_unit => $unit_)
         <tr>
-            <td colspan="3" style="font-weight:bold">{{$unit_->unit}} - {{$unit_->unit_desc}}</td>
+            <td colspan="3" style="font-weight:bold">{{$unit_->unit}} - {{$unit_->unit_desc}} - Period: {{$period}}</td>
         </tr>
         <tr></tr>
         @foreach($deptcode as $index => $dept)
