@@ -236,7 +236,6 @@ class StockCountController extends defaultController
 
             foreach ($request->dataobj as $obj){
 
-                $vrqty =  floatval($obj['phyqty']) - floatval($obj['thyqty']);
                 if($vrqty != 0 && empty($obj['remark'])){
                     throw new \Exception("Remark needed if quantity has variance! itemcode ".$obj['itemcode']." on line no ".$obj['lineno_'], 500);
                 }
@@ -247,6 +246,7 @@ class StockCountController extends defaultController
                     ->update([
                         'phyqty' => $obj['phyqty'],
                         'thyqty' => $obj['thyqty'],
+                        'vrqty' => $obj['vrqty'],
                         // 'dspqty' =>  floatval($obj['phyqty']) - floatval($obj['thyqty']),
                         'remark' => $obj['remark'],
                         'upduser' => session('username'),
