@@ -248,6 +248,7 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3",urlParam2);
 
 			$("#pdfgen1").attr('href','./stockCount/showExcel?recno='+selrowData("#jqGrid").recno);
+			$("#pdfgen2").attr('href','./stockCount/showExcel?recno='+selrowData("#jqGrid").recno);
 
 			$("#pdfgen_excel").attr('href','./stockCount/showExcel?recno='+selrowData("#jqGrid").recno);
 
