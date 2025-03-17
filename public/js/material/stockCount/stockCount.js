@@ -577,7 +577,7 @@ $(document).ready(function () {
                 editrules:{required: true},
             },
             { label: 'Variance<br>Quantity', name: 'vrqty', width: 80, align: 'right', classes: 'wrap', editable:true,	
-                formatter:vrqty_formatter,
+                // formatter:vrqty_formatter,
                 editrules:{required: true},editoptions:{readonly: "readonly"},
             },
             { label: 'Remark', name: 'remark', width: 100, align: 'right', classes: 'wrap', editable:true,

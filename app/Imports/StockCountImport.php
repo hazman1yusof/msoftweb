@@ -37,6 +37,15 @@ class StockCountImport implements ToCollection, WithCalculatedFormulas{
                 $itemcode = $row[1];
                 $phyqty = $row[11];
                 
+                $phycntdt = DB::table("material.phycntdt")
+                        ->where('compcode',session('compcode'))
+                        ->where('recno',$phycnthd->recno)
+                        ->where('itemcode',$itemcode)
+                        ->where('lineno_',$lineno_)
+                        ->first();
+
+                $vrqty = (int)$phycntdt->thyqty - (int)$phyqty;
+                
                 DB::table("material.phycntdt")
                         ->where('compcode',session('compcode'))
                         ->where('recno',$phycnthd->recno)
@@ -44,6 +53,7 @@ class StockCountImport implements ToCollection, WithCalculatedFormulas{
                         ->where('lineno_',$lineno_)
                         ->update([
                             'phyqty' => $phyqty,
+                            'vrqty' => $vrqty
                         ]);
             }
 
