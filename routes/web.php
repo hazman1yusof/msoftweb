@@ -976,6 +976,13 @@ Route::post('/directPaymentDetail/form','finance\DirectPaymentDetailController@f
 Route::get('/directPaymentDetail/table','finance\DirectPaymentDetailController@table');
 Route::get('/directPayment/showpdf','finance\DirectPaymentController@showpdf');
 
+//// Direct Payment ///
+Route::get('/bankInRegistration','finance\bankInRegistrationController@show');
+Route::get('/bankInRegistration/table','finance\bankInRegistrationController@table');
+Route::post('/bankInRegistration/form','finance\bankInRegistrationController@form');
+Route::post('/bankInRegistrationDetail/form','finance\bankInRegistrationDetailController@form');
+Route::get('/bankInRegistrationDetail/table','finance\bankInRegistrationDetailController@table');
+
 //// Credit Debit Transaction ///
 Route::get('/creditDebitTrans','finance\CreditDebitTransController@show');
 Route::get('/creditDebitTrans/table','finance\CreditDebitTransController@table');

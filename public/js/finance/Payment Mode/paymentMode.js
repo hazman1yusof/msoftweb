@@ -29,6 +29,8 @@ $(document).ready(function () {
 
 	////////////////////object for dialog handler//////////////////
 
+	var mycurrency =new currencymode(['#comrate']);
+
 	var dialog_costcode = new ordialog(
 		'ccode','finance.costcenter','#ccode',errorField,
 		{	colModel:[
@@ -172,6 +174,7 @@ $(document).ready(function () {
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var butt1=[{
 		text: "Save",click: function() {
+			mycurrency.formatOff();
 			if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 				saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
 			}
@@ -196,6 +199,8 @@ $(document).ready(function () {
 		autoOpen: false,
 		open: function( event, ui ) {
 			parent_close_disabled(true);
+			mycurrency.formatOnBlur();
+			mycurrency.formatOn();
 			switch(oper) {
 				case state = 'add':
 					$( this ).dialog( "option", "title", "Add" );
@@ -305,6 +310,7 @@ $(document).ready(function () {
 			{label: 'Card Flag', name: 'cardflag', width: 30, classes: 'wrap', formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
 			{label: 'ValExpDate', name: 'valexpdate', width: 30, classes: 'wrap', formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
 			{label: 'Card Cent', name: 'cardcent', width: 90, hidden: true, classes: 'wrap'},
+			{ label: 'comrate', name: 'comrate', width: 90, hidden:true},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
 			{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
 			{ label: 'deluser', name: 'deluser', width: 90, hidden:true},
@@ -339,8 +345,6 @@ $(document).ready(function () {
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 			$("#searchForm input[name=Stext]").focus();
 		},
-		
-		
 	});
 
 	
@@ -361,6 +365,7 @@ $(document).ready(function () {
 				alert('Please select row');
 				return emptyFormdata(errorField,'#formdata');
 			}else{
+				mycurrency.formatOff();
 				saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam,{'idno':selrowData('#jqGrid').idno});
 			}
 		},

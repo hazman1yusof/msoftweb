@@ -95,6 +95,11 @@
 							</div>
 						<span class="help-block"></span>
 						</div>
+
+					<label class="col-md-2 control-label" for="glaccno">Commision Rate</label>  
+		  			<div class="col-md-3">
+							<input id="comrate" name="comrate" type="text" class="form-control input-sm text-uppercase">
+						</div>
 				</div>
                
 				 
