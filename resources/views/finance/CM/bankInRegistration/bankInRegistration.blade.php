@@ -224,7 +224,7 @@ i.fa {
 
 					  			<label class="col-md-2 control-label" for="amount">Cash Amount</label>  
 				  				<div class="col-md-2">
-										<input id="amount" name="amount" type="text" class="form-control input-sm" readonly rdOnly>
+										<input id="amount" name="amount" type="text" class="form-control input-sm" data-validation="required">
 				  				</div>
 				    		</div>
 
@@ -240,7 +240,7 @@ i.fa {
 
 					  			<label class="col-md-1 control-label" for="postdate">Posted Date</label>  
 				  				<div class="col-md-2">
-										<input id="postdate" name="postdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" readonly rdOnly>
+										<input id="postdate" name="postdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  				</div>
 
 					  			<label class="col-md-2 control-label" for="comamt">Commision Amt</label>  
@@ -252,7 +252,7 @@ i.fa {
 				    		<div class="form-group">
 				    			<label class="col-md-2 control-label" for="remarks">Reference</label>  
 				  				<div class="col-md-6" >
-										<input id="remarks" name="remarks" type="text" class="form-control input-sm" readonly rdOnly>
+										<input id="remarks" name="remarks" type="text" class="form-control input-sm">
 				  				</div>
 
 					  			<label class="col-md-2 control-label" for="gst">GST</label>  

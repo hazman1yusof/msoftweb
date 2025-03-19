@@ -452,7 +452,7 @@ class DeliveryOrderController extends defaultController
                         ->where('itemcode','=', $value->itemcode)
                         ->first();
 
-                    if(strtoupper($product_obj->groupcode) == "STOCK" ){
+                    if(strtoupper($product_obj->groupcode) == "STOCK" || strtoupper($product_obj->groupcode) == "CONSIGNMENT"){
                         //--- 2.5. masuk dalam intxndt ---//
                         do_util::ivtxndt_ins($value,$txnqty,$netprice,$delordhd_obj,$productcat);
 

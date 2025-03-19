@@ -142,7 +142,6 @@ class bankInRegistrationController extends defaultController
             $table = $table->orderBy('ap.idno','DESC');
         }
 
-
         $paginate = $table->paginate($request->rows);
 
         //////////paginate/////////
@@ -165,42 +164,105 @@ class bankInRegistrationController extends defaultController
 
         try{
 
-            $auditno = $this->defaultSysparam('CM','DP');
+            // $auditno = $this->defaultSysparam('CM','DP');
             // $pvno = $this->defaultSysparam('HIS','PV');
-            $amount = 0;
+            $compcode='DD';
+
+            switch(strtoupper($request->paymode)){
+                case 'CASH':
+                    $source = 'CM';
+                    $trantype = 'BS';
+                    $bankcode = null;
+                    $payto = $request->payer1;
+                    break;
+                case 'CARD':
+                    $source = 'CM';
+                    $trantype = 'BD';
+                    $bankcode = $request->payer2;
+                    $payto = $request->payer2;
+                    break;
+                case 'CHEQUE':
+                    $source = 'CM';
+                    $trantype = 'BQ';
+                    $bankcode = null;
+                    $payto = $request->payer1;
+                    break;
+            }
 
             $idno = DB::table('finance.apacthdr')
                     ->insertGetId([
-                        'auditno' => $auditno,
-                        'bankcode' => strtoupper($request->bankcode),
-                        'payto' => strtoupper($request->payto),
-                        'actdate' => $request->actdate,
-                        'amount' => $amount,
-                        'paymode' => strtoupper($request->paymode),
-                        'cheqno' => $request->cheqno,
-                        'remarks' => strtoupper($request->remarks),
-                        'TaxClaimable' => $request->TaxClaimable,
-                        // 'pvno' => $pvno,
-                        'cheqdate' => $request->cheqdate,
-                        'source' => 'CM',
-                        'trantype' => 'DP',
-                        'compcode' => session('compcode'),
-                        'unit' => session('unit'),
+                        'compcode' => $compcode,
+                        'source' => $source,
+                        'trantype' => $trantype,
+                        // 'doctype' => 
+                        // 'auditno' => 
+                        // 'document' => 
+                        // 'suppcode' => 
+                        'payto' => $payto,
+                        // 'suppgroup' => 
+                        'bankcode' => $bankcode,
+                        'paymode' => $request->paymode,
+                        // 'cheqno' => 
+                        // 'cheqdate' => 
+                        'actdate' => $request->postdate,
+                        // 'recdate' => 
+                        // 'category' => 
+                        'amount' => $request->amount,
+                        'outamount' => $request->amount,
+                        // 'remarks' => 
+                        // 'postflag' => 
+                        // 'doctorflag' => 
+                        // 'stat' => 
+                        'entryuser' => session('username'),
+                        'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        // 'conversion' => 
+                        // 'srcfrom' => 
+                        // 'srcto' => 
+                        // 'deptcode' => 
+                        // 'reconflg' => 
+                        // 'effectdatefr' => 
+                        // 'effectdateto' => 
+                        // 'frequency' => 
+                        // 'refsource' => 
+                        // 'reftrantype' => 
+                        // 'refauditno' => 
+                        // 'pvno' => 
+                        'entrydate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'recstatus' => 'ACTIVE',
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'recstatus' => 'OPEN'
+                        // 'reference' => 
+                        // 'TaxClaimable' => 
+                        'unit' => session('unit'),
+                        // 'allocdate' => 
+                        'postuser' => session('username'),
+                        'postdate' => $request->postdate
+                        // 'unallocated' => 
+                        // 'requestby' => 
+                        // 'requestdate' => 
+                        // 'request_remark' => 
+                        // 'supportby' => 
+                        // 'supportdate' => 
+                        // 'support_remark' => 
+                        // 'verifiedby' => 
+                        // 'verifieddate' => 
+                        // 'verified_remark' => 
+                        // 'approvedby' => 
+                        // 'approveddate' => 
+                        // 'approved_remark' => 
+                        // 'cancelby' => 
+                        // 'canceldate' => 
+                        // 'cancelled_remark' => 
+                        // 'bankaccno' => 
                     ]);
 
-            if($request->paymode == 'TT'){
-                $last_tt = $this->defaultSysparam('CM','TT');
-                $array_insert['cheqno'] = $last_tt;
-            }
-
             $responce = new stdClass();
-            $responce->auditno = $auditno;
+            $responce->auditno = '';
             $responce->pvno = '';
             $responce->idno = $idno;
-            $responce->amount = 0;
+            $responce->amount = $request->amount;
 
             echo json_encode($responce);
 
@@ -521,7 +583,6 @@ class bankInRegistrationController extends defaultController
         $responce->glccode = $bank->glccode;
         $responce->glaccno = $bank->glaccno;
         return $responce;
-
     }   
 
     public function getDept($deptcode){
@@ -533,7 +594,6 @@ class bankInRegistrationController extends defaultController
         $responce = new stdClass();
         $responce->costcode = $dept->costcode;
         return $responce;
-
     }
 
     public function getCat($catcode){
@@ -546,9 +606,7 @@ class bankInRegistrationController extends defaultController
         $responce = new stdClass();
         $responce->expacct = $dept->expacct;
         return $responce;
-
     }
-
 
     public function isPaytypeCheque($paymode){
         $paytype = DB::table('debtor.paymode')
@@ -592,22 +650,40 @@ class bankInRegistrationController extends defaultController
     }
 
     public function edit(Request $request){
-
+        switch(strtoupper($request->paymode)){
+            case 'CASH':
+                $source = 'CM';
+                $trantype = 'BS';
+                $bankcode = null;
+                $payto = $request->payer1;
+                break;
+            case 'CARD':
+                $source = 'CM';
+                $trantype = 'BD';
+                $bankcode = $request->payer2;
+                $payto = $request->payer2;
+                break;
+            case 'CHEQUE':
+                $source = 'CM';
+                $trantype = 'BQ';
+                $bankcode = null;
+                $payto = $request->payer1;
+                break;
+        }
         $table = DB::table("finance.apacthdr");
 
         $array_update = [
-            'bankcode' => strtoupper($request->bankcode),
-            'payto' => strtoupper($request->payto),
-            'actdate' => $request->actdate,
-            'paymode' => strtoupper($request->paymode),
-            'cheqno' => $request->cheqno,
-            'remarks' => strtoupper($request->remarks),
-            'TaxClaimable' => $request->TaxClaimable,
-            'cheqdate' => $request->cheqdate,
-            'unit' => session('unit'),
-            'compcode' => session('compcode'),
+            'source' => $source,
+            'trantype' => $trantype,
+            'payto' => $payto,
+            'bankcode' => $bankcode,
+            'paymode' => $request->paymode,
+            'actdate' => $request->postdate,
+            'amount' => $request->amount,
+            'outamount' => $request->amount,
             'upduser' => session('username'),
-            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'postdate' => $request->postdate
         ];
 
         try {
@@ -624,7 +700,7 @@ class bankInRegistrationController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e, 500);
         }
     }
 
@@ -714,6 +790,5 @@ class bankInRegistrationController extends defaultController
         }
 
         return view('finance.CM.directPayment.directPayment_pdfmake',compact('apacthdr','apactdtl','totamt_eng','company', 'title'));
-
     }
 }
