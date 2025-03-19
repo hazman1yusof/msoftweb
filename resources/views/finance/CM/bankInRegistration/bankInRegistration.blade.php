@@ -315,7 +315,15 @@ i.fa {
 
 			<div class='col-md-12'>
 				<div class='panel panel-info'>
-					<div class="panel-heading">Bank In Registration Detail</div>
+					<div class="panel-heading">Bank In Registration Detail
+						<input id="alloText" type="text" class="form-control input-sm">
+						<select class="form-control" id="alloCol">
+							<option value="trantype" >Type</option>
+							<option value="auditno" >Audit No</option>
+							<option value="recptno" >Document</option>
+							<option value="posteddate" >Document Date</option>
+						</select>
+					</div>
 					<div class="panel-body">
 						<form id='formdata2' class='form-vertical' style='width:99%'>
 							

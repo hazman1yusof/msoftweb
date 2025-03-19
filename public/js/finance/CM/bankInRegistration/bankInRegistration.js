@@ -809,8 +809,7 @@ $(document).ready(function () {
 		this.retickallotogrid = function(){
 			var self=this;
 			$.each(this.arrayAllo, function( index, obj ) {
-				$("input#"+obj.idno).prop('checked', true);
-				console.log($("input#"+obj.idno));
+				$("input#checkbox_selection_"+obj.idno).prop('checked', true);
 				// $("#"+obj.idno+"_amtpaid").on('change',[obj.idno,self.arrayAllo],onchangeField);
 				// if(obj.obj.amtpaid != " "){
 				// 	$("#"+obj.idno+"_amtpaid").val(obj.obj.amtpaid).removeClass( "error" ).addClass( "valid" );
