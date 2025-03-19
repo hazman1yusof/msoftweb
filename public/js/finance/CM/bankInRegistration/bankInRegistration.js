@@ -732,21 +732,17 @@ $(document).ready(function () {
 			this.alloBalance=parseFloat(os);
 			this.outamt=parseFloat(os);
 
-			this.updateAlloField();
+			// this.updateAlloField();
 		}
 		this.addAllo = function(idno,paid,bal){
 			var obj=getlAlloFromGrid(idno);
-			obj.amtpaid = paid;
-			obj.amtbal = bal;
-			var fieldID="#"+idno+"_amtpaid";
-			var self=this;
 
 			this.arrayAllo.push({idno:idno,obj:obj});
 			console.log(this.arrayAllo);
 			
 			// $(fieldID).on('change',[idno,self.arrayAllo,self.allo_error],onchangeField);
 
-			// this.updateAlloField();
+			this.updateAlloField();
 		}
 		// function onchangeField(obj){
 		// 	var idno = obj.handleObj.data[0];
@@ -795,6 +791,7 @@ $(document).ready(function () {
 			});
 
 			console.log(this.arrayAllo);
+			this.updateAlloField();
 		}
 		this.alloInArray = function(idno){
 			var retval=false;
@@ -819,12 +816,17 @@ $(document).ready(function () {
 		}
 		this.updateAlloField = function(){
 			// var self=this;
-			// this.alloTotal = 0;
-			// $.each(this.arrayAllo, function( index, obj ) {
-			// 	if(obj.obj.amtpaid != " "){
-			// 		self.alloTotal += parseFloat(obj.obj.amtpaid);
-			// 	}
-			// });
+			this.alloTotal = 0;
+			let totalallo = 0;
+			let totalcom = 0;
+			$.each(this.arrayAllo, function( index, obj ) {
+				let amt = parseFloat(obj.obj.refamount);
+				// let com = parseFloat(obj.comamt);
+				console.log(amt);
+				totalallo += amt;
+			});
+			$('#dtlamt').val(totalallo);
+			mycurrency.formatOn();
 			// this.alloBalance = this.outamt - this.alloTotal;
 
 			// $("#AlloTotal").val(this.alloTotal);
@@ -849,7 +851,7 @@ $(document).ready(function () {
 
 		function getlAlloFromGrid(idno){
 			var temp=$("#jqGrid2").jqGrid ('getRowData', idno);
-			return {idno:temp.idno,auditno:temp.auditno,amtbal:temp.comamt,amtpaid:temp.amount};
+			return temp;
 		}
 
 		function adderror_allo(array,idno){
@@ -864,6 +866,10 @@ $(document).ready(function () {
 			}
 		}
 	}
+
+	$('#searhcAlloBtn').click(function(){
+		search('#jqGrid2',$("#alloText").val(),$("#alloCol").val(),urlParam2);
+	});
 
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
@@ -1011,6 +1017,25 @@ $(document).ready(function () {
 		$(".noti").empty();
 		refreshGrid("#jqGrid2",urlParam2);
 		errorField.length=0;
+	});
+
+	$('#saveAndPost').click(function(){
+		let idno_array = [];
+		myallocation.arrayAllo.forEach(function(e,i){
+			idno_array.push(e.idno);
+		});
+
+		var obj={
+			dataobj : idno_array
+		}
+
+		$.post( "./bankInRegistrationDetail/form?action=saveandpost&idno="+$('#idno').val(), obj , function( data ) {
+			
+		},'json').fail(function (data) {
+			alert(data.responseText);
+		}).done(function (data) {
+			
+		});
 	});
 
 	// var radbuts=new checkradiobutton(['TaxClaimable']);
@@ -1213,7 +1238,7 @@ $(document).ready(function () {
 				dialog_bankcode.urlParam.filterVal=['session.compcode','ACTIVE']
 			},
 			close:function(){
-				$('#amount').focus();
+				$('#amount').select().focus();
 			}
 		},'urlParam','radio','tab'
 	);

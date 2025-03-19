@@ -315,14 +315,24 @@ i.fa {
 
 			<div class='col-md-12'>
 				<div class='panel panel-info'>
-					<div class="panel-heading">Bank In Registration Detail
-						<input id="alloText" type="text" class="form-control input-sm">
-						<select class="form-control" id="alloCol">
+					<div class="panel-heading" style="padding: 15px;">Bank In Registration Detail
+						<input id="alloText" placeholder="Search Here.." type="text" class="form-control input-sm" style="position: absolute;
+						  right: 120px;
+						  top: 10px;
+						  width: 200px;">
+						<select class="form-control" id="alloCol" style="position: absolute;
+					    right: 330px;
+					    top: 10px;
+					    width: 200px;">
 							<option value="trantype" >Type</option>
 							<option value="auditno" >Audit No</option>
-							<option value="recptno" >Document</option>
+							<option value="recptno" selected>Document</option>
 							<option value="posteddate" >Document Date</option>
 						</select>
+						<button id="searhcAlloBtn" type="button" class="btn btn-primary" style="position: absolute;
+					    right: 50px;
+					    top: 10px;">
+					  Search</button>
 					</div>
 					<div class="panel-body">
 						<form id='formdata2' class='form-vertical' style='width:99%'>

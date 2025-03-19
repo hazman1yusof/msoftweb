@@ -29,8 +29,72 @@ class bankInRegistrationDetailController extends defaultController
                 return $this->edit_all($request);
             case 'del':
                 return $this->del($request);
+            case 'saveandpost':
+                return $this->saveandpost($request);
             default:
                 return 'error happen..';
+        }
+    }
+
+    public function saveandpost(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $apacthdr = DB::table('debtor.apacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno',$request->idno)
+
+            foreach ($request->dataobj as $key => $value) {
+                $dbacthdr = DB::table('debtor.dbacthdr')
+                                ->where('compcode',session('compcode'))
+                                ->where('idno',$value->idno)
+                                ->first();
+
+                ///1. update detail
+                DB::table('finance.apactdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('idno','=',$value['idno'])
+                    ->update([
+                        'document' => strtoupper($value['document']),
+                        'deptcode' => strtoupper($value['deptcode']),
+                        'category' => strtoupper($value['category']),
+                        'GSTCode' => strtoupper($value['GSTCode']),
+                        'AmtB4GST' => $gstcode_obj->AmtB4GST,
+                        'taxamt' => $gstcode_obj->tot_gst,
+                        'amount' => $gstcode_obj->amount,
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                       
+                    ]);
+
+                ///2. recalculate total amount
+                $totalAmount = DB::table('finance.apactdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('auditno','=',$request->auditno)
+                    ->where('source','=','CM')
+                    ->where('trantype','=','DP')
+                    ->where('recstatus','!=','DELETE')
+                    ->sum('amount');
+
+                ///3. update total amount to header
+                DB::table('finance.apacthdr')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=','CM')
+                    ->where('trantype','=','DP')
+                    ->where('auditno','=',$request->auditno)
+                    ->update([
+                        'amount' => $totalAmount, 
+                    ]);
+            }
+
+            DB::commit();
+            return response($totalAmount,200);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
         }
     }
 
@@ -65,6 +129,18 @@ class bankInRegistrationDetailController extends defaultController
             case 'CARD':
                 $table = $this->dbacthdr_paymode_card($apacthdr);
                 break;
+        }
+
+        if(!empty($request->searchCol)){
+            if($request->searchCol[0] == 'posteddate'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('db.posteddate',$request->wholeword);
+                });
+            }else{
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('db.'.$request->searchCol[0],'like',$request->searchVal[0]);
+                });
+            }
         }
 
         $paginate = $table->paginate($request->rows);
@@ -305,7 +381,6 @@ class bankInRegistrationDetailController extends defaultController
 
             return response('Error'.$e, 500);
         }
-
     }
 
     public function del(Request $request){
@@ -352,8 +427,7 @@ class bankInRegistrationDetailController extends defaultController
             DB::rollback();
 
             return response('Error'.$e, 500);
-        }
-        
+        }        
     }
 
     public function edit_all(Request $request){
@@ -411,7 +485,6 @@ class bankInRegistrationDetailController extends defaultController
 
             return response('Error'.$e, 500);
         }
-
     }
 
     public function check_gstcode(Request $request){
