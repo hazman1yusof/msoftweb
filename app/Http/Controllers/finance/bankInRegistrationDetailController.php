@@ -34,6 +34,21 @@ class bankInRegistrationDetailController extends defaultController
         }
     }
 
+    public function table(Request $request)
+    {   
+        DB::enableQueryLog();
+        switch($request->action){
+            case 'get_detail':
+                return $this->get_detail($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function get_detail(Request $request){
+        dd('hi');
+    }
+
     public function get_draccno($itemcode){
         $query = DB::table('material.category')
                 ->select('category.stockacct')

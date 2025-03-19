@@ -222,7 +222,7 @@ $(document).ready(function () {
 				$('#but_cancel_jq,#but_post_jq').hide();			
 			}
 			
-			urlParam2.filterVal[1]=selrowData("#jqGrid").auditno;
+			urlParam2.idno=selrowData("#jqGrid").idno;
 			refreshGrid("#jqGrid3",urlParam2);
 			$("#pdfgen1").attr('href','./directPayment/showpdf?auditno='+selrowData("#jqGrid").auditno);
 
@@ -449,9 +449,9 @@ $(document).ready(function () {
 				$('#pvno').val(data.pvno);
 				//$('#amount').val(data.amount);//just save idno for edit later
 				
-				urlParam2.filterVal[1]=data.auditno;
+				urlParam2.idno=data.idno;
 			}else if(selfoper=='edit'){
-				urlParam2.filterVal[1]=$('#auditno').val();
+				urlParam2.idno=data.idno;
 				//doesnt need to do anything
 			}
 			disableForm('#formdata');

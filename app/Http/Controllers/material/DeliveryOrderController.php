@@ -1066,8 +1066,13 @@ class DeliveryOrderController extends defaultController
         $po_hd = DB::table('material.purordhd')
                 ->where('purordno', '=', $delordhd->srcdocno)
                 ->where('prdept', '=', $delordhd->prdept)
-                ->where('compcode', '=', session('compcode'))
-                ->first();
+                ->where('compcode', '=', session('compcode'));
+
+        if($po_hd->exists()){
+            $po_hd = $po_hd->first();
+        }else{
+            return 0;
+        }    
 
         switch ($po_hd->recstatus) {
             case 'CANCELLED':
