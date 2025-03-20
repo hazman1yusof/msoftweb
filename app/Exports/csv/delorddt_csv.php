@@ -38,7 +38,8 @@ class delorddt_csv implements FromView
     public function view(): View{
 
         $table = DB::table('material.delordhd')
-                    ->where('compcode','9B');
+                    ->where('compcode','9B')
+                    ->where('recstatus','POSTED');
 
         if(!empty($this->from)){
                 $table = $table->whereDate('trandate','>=',$this->from)
