@@ -24,6 +24,10 @@ $(document).ready(function () {
 		},
 	};
 
+	$('body').click(function(){
+		$('#error_infront').text('');
+	});
+
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency =new currencymode(['#delordhd_subamount','#delordhd_totamount', '#delordhd_TaxAmt', '#delordhd_amtdisc']);
 	var radbuts=new checkradiobutton(['delordhd_taxclaimable']);
@@ -411,10 +415,6 @@ $(document).ready(function () {
 			page_to_view_only($('#viewonly').val(),function(){
 				let firstrow = $("#jqGrid").getDataIDs()[0];
 				$('#jqGrid tr#'+firstrow).dblclick();
-			});
-
-			$('input[name=checkbox_selection]').change(function(){
-				$('#error_infront').text('');
 			});
 		},
 		loadComplete: function(){
