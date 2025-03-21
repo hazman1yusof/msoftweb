@@ -168,6 +168,10 @@ class arenquiryController extends defaultController
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where('dm.name','like',$request->searchVal[0]);
                 });
+            }else if($request->searchCol[0] == 'db_recptno'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('dm.recptno','like',$request->searchVal[0]);
+                });
             }else{
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
