@@ -30,7 +30,7 @@ class bankInRegistrationDetailController extends defaultController
             case 'del':
                 return $this->del($request);
             case 'saveandpost':
-                return $this->saveandpost($request);
+                // return $this->saveandpost($request);
             default:
                 return 'error happen..';
         }
