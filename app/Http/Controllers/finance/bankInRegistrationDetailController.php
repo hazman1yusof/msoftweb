@@ -165,6 +165,7 @@ class bankInRegistrationDetailController extends defaultController
                     ->select('db.idno','db.compcode','db.source','db.trantype as reftype','db.auditno as allocauditno','db.lineno_','db.idno as lineno_','db.amount as refamount','db.outamount','db.recstatus','db.entrydate','db.entrytime','db.entryuser','db.reference as rereference','db.recptno as refrecptno','db.paymode as refpaymode','db.tillcode','db.tillno','db.debtortype','db.debtorcode','db.payercode','db.billdebtor','db.remark','db.mrn','db.episno','db.authno','db.expdate','db.adddate','db.adduser','db.upddate','db.upduser','db.deldate','db.deluser','db.epistype','db.cbflag','db.conversion','db.payername','db.hdrtype','db.currency','db.rate','db.unit','db.invno','db.paytype','db.bankcharges','db.RCCASHbalance','db.RCOSbalance','db.RCFinalbalance','db.PymtDescription','db.orderno','db.ponum','db.podate','db.termdays','db.termmode','db.deptcode','db.posteddate as refdocdate','db.approvedby','db.approveddate','db.approved_remark','db.unallocated','db.datesend','db.quoteno','db.preparedby','db.prepareddate','db.cancelby','db.canceldate','db.cancelled_remark','db.pointofsales','db.doctorcode','db.LHDNStatus','db.LHDNSubID','db.LHDNCodeNo','db.LHDNDocID','db.LHDNSubBy')
                     ->where('db.compcode',session('compcode'))
                     ->where('db.source','PB')
+                    ->where('db.recstatus','POSTED')
                     ->whereIn('db.trantype',['RC','RD'])
                     ->where('db.posteddate','<=',$apacthdr->postdate)
                     ->where('db.paymode',$apacthdr->paymode)
@@ -193,6 +194,7 @@ class bankInRegistrationDetailController extends defaultController
                     ->where('db.compcode',session('compcode'))
                     ->where('db.source','PB')
                     ->whereIn('db.trantype',['RC','RD'])
+                    ->where('db.recstatus','POSTED')
                     ->where('db.posteddate','<=',$apacthdr->postdate)
                     ->where('db.paymode',$apacthdr->paymode)
                     ->where('db.cbflag',0);
