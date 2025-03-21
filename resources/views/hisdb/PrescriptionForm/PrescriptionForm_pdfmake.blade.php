@@ -25,6 +25,15 @@
         var Age = '';
         var TCA = '';
         var Clinic = '';
+        
+        var pharmacy = [
+            
+        ];
+        
+        var medications = [
+            
+        ];
+        
         var Sex = '';
         var Dates = '';
         var Address1 = '';
