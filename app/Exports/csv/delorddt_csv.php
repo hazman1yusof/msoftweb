@@ -42,8 +42,8 @@ class delorddt_csv implements FromView
                     ->where('recstatus','POSTED');
 
         if(!empty($this->from)){
-                $table = $table->whereDate('trandate','>=',$this->from)
-                                ->whereDate('trandate','<=',$this->to);
+                $table = $table->whereDate('postdate','>=',$this->from)
+                                ->whereDate('postdate','<=',$this->to);
         }
                     
         $table = $table->get();
