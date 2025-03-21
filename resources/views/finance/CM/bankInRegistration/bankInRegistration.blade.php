@@ -287,12 +287,7 @@ i.fa {
 				    		</div>
 
 				    		<div class="form-group">
-				    			<label class="col-md-3 control-label" for="tobeposted">All Receipt/Deposit to be posted</label>  
-				  				<div class="col-md-1">
-						 				<input type="checkbox" id="tobeposted" name="tobeposted">
-                  </div>
-
-					  			<label class="col-md-1 control-label" for="unit">Units</label>  
+					  			<label class="col-md-2 control-label" for="unit">Units</label>  
 				  				<div class="col-md-3" >
 						 				<select class="form-control input-sm" for="unit" name="unit" id="unit">
 										  	<option value="ALL" selected>ALL</option>
