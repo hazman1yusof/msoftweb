@@ -172,6 +172,10 @@ class arenquiryController extends defaultController
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where('db.recptno','like',$request->searchVal[0]);
                 });
+            }else if($request->searchCol[0] == 'db_billno'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('db.auditno','like',$request->searchVal[0]);
+                });
             }else{
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
@@ -233,6 +237,7 @@ class arenquiryController extends defaultController
             switch($value->db_trantype){
                 case 'IN':
                     $value->db_recptno = str_pad($value->db_invno, 8, "0", STR_PAD_LEFT);
+                    $value->db_billno = 'PB-IN-'.str_pad($value->db_invno, 8, "0", STR_PAD_LEFT);
                     break;
                 case 'CN':
                     $value->db_recptno = 'CN-'.str_pad($value->db_auditno, 8, "0", STR_PAD_LEFT);
