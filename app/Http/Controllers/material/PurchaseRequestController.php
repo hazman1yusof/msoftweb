@@ -1503,7 +1503,7 @@ class PurchaseRequestController extends defaultController
 
         $attachment_files =$this->get_attachment_files($purreqhd->idno);
 
-        $print_connection = $this->print_connection($purreqhd);
+        // $print_connection = $this->print_connection($purreqhd);
 
         // $pdf = PDF::loadView('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm','company', 'supplier', 'prdept', 'total_tax', 'total_discamt'));
         // return $pdf->stream();      

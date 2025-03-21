@@ -744,7 +744,7 @@ $(document).ready(function (){
 			{ label: 'Audit No', name: 'db_auditno', width: 10, align: 'right', classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 8, formatter: padzero5, unformat: unpadzero, hidden: true },
-			{ label: 'Document No', name: 'db_recptno', width: 20, align: 'right' },
+			{ label: 'Document No', name: 'db_recptno', width: 20, align: 'right', canSearch: true },
 			{ label: 'Date', name: 'db_posteddate', width: 12, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'Amount', name: 'db_amount', width: 12, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'Outamount', name: 'db_outamount', width: 12, classes: 'wrap', align: 'right', formatter: 'currency' },
