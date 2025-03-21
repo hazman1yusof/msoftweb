@@ -564,6 +564,10 @@ class DeliveryOrderController extends defaultController
                     ->where('idno', '=', $idno);
 
                 $delordhd_obj = $delordhd->first();
+                
+                if($delordhd_obj->recstatus != 'CANCELLED'){
+                    continue;
+                }
 
                 //--- 8. change recstatus to cancelled -dd--//
                 DB::table('material.delordhd')
@@ -656,8 +660,22 @@ class DeliveryOrderController extends defaultController
                     continue;
                 }
 
+                $cancel_month = DB::table('sysdb.sysparam')
+                                ->where('compcode',session('compcode'))
+                                ->where('source','DO')
+                                ->where('trantype','CANCEL');
+
+                if($cancel_month->exists()){
+                    $cancel_month = $cancel_month->first();
+
+                    if(Carbon::createFromFormat('Y-m-d H:i:s',$delordhd_obj->postdate)->lt(Carbon::createFromFormat('Y-m-d',$cancel_month->pvalue2.'-'.$cancel_month->pvalue1.'-01'))){
+                        throw new \Exception("Cancel disable for date lower than - ".$cancel_month->pvalue2."-".$cancel_month->pvalue1."-01");
+                        continue;
+                    }
+                }
+
                 if(!empty($delordhd_obj->invoiceno)){
-                    continue;
+                    throw new \Exception("Cant cancel DO with Invoice, cancel invoice first");
                 }
 
                 $deldept_unit = DB::table('sysdb.department')

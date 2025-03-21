@@ -534,6 +534,13 @@ $(document).ready(function () {
 		obj.oper = $(this).data('oper');
 		obj._token = $('#_token').val();
 		oper=null;
+
+		if($(this).data('oper') == 'cancel'){
+			if (confirm('Are you sure, you want to '+$(this).data('oper')) != true) {
+				$("#but_post_jq").attr('disabled',false);
+				return 0;
+			}
+		}
 		
 		$.post( './deliveryOrder/form', obj , function( data ) {
 			cbselect.empty_sel_tbl();
