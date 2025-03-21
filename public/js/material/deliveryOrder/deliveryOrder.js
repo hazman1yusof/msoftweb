@@ -412,6 +412,10 @@ $(document).ready(function () {
 				let firstrow = $("#jqGrid").getDataIDs()[0];
 				$('#jqGrid tr#'+firstrow).dblclick();
 			});
+
+			$('input[name=checkbox_selection]').change(function(){
+				$('#error_infront').text('');
+			});
 		},
 		loadComplete: function(){
 			//calc_jq_height_onchange("jqGrid");
