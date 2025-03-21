@@ -742,7 +742,7 @@ $(document).ready(function (){
 			{ label: 'Debtor Name', name: 'dm_name', width: 28, classes: 'wrap text-uppercase', canSearch: true, selected: true },
 			{ label: 'Payer Code', name: 'db_payercode', width: 20, hidden: true },
 			{ label: 'Audit No', name: 'db_auditno', width: 10, align: 'right', classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
-			{ label: 'Bill No', name: 'db_billno', width: 18, align: 'right', classes: 'wrap', canSearch: true },
+			{ label: 'Bill No', name: 'db_billno', hidden: true, canSearch: true },
 			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 8, formatter: padzero5, unformat: unpadzero, hidden: true },
 			{ label: 'Document No', name: 'db_recptno', width: 18, align: 'right', canSearch: true },
