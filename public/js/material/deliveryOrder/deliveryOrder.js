@@ -101,6 +101,13 @@ $(document).ready(function () {
 				dialog_deldept.on();
 				dialog_srcdocno.on();
 			}
+
+			if(oper == 'edit'){
+				dialog_srcdocno.off();
+				
+				$("#delordhd_srcdocno").prop('readonly',true);
+				$('#dialogForm input:radio[name=purordhd_prtype]').attr('disabled',true);
+			}
 		},
 		beforeClose: function(event, ui){
 			if(unsaved){

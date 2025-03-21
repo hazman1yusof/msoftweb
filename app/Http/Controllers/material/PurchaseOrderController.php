@@ -1962,6 +1962,7 @@ class PurchaseOrderController extends defaultController
                     
                     DB::table('material.purreqhd')
                         ->where('compcode','=',session('compcode'))
+                        ->where('reqdept','=',$purordhd->reqdept)
                         ->where('purreqno','=',$purordhd->purreqno)
                         ->update([
                             'recstatus' => $status_header

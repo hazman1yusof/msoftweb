@@ -1503,6 +1503,8 @@ class PurchaseRequestController extends defaultController
 
         $attachment_files =$this->get_attachment_files($purreqhd->idno);
 
+        $print_connection = $this->print_connection($purreqhd);
+
         // $pdf = PDF::loadView('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm','company', 'supplier', 'prdept', 'total_tax', 'total_discamt'));
         // return $pdf->stream();      
         
@@ -1642,8 +1644,7 @@ class PurchaseRequestController extends defaultController
             return true;
         }
         
-        return false;   
-        
+        return false;           
     }
 
     function skip_authorization_2(Request $request, $prhd){
@@ -1769,6 +1770,12 @@ class PurchaseRequestController extends defaultController
             ->get();
 
         return $attachment_files;
+    }
+
+    function print_connection($purreqhd){
+        //1. get PO
+        // $purordhd = DB::table('material.purordhd')
+        //     ->where('compcode','=',session('compcode'))
     }
     
 }

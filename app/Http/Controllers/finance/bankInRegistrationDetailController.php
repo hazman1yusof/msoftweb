@@ -43,7 +43,7 @@ class bankInRegistrationDetailController extends defaultController
 
             $apacthdr = DB::table('debtor.apacthdr')
                             ->where('compcode',session('compcode'))
-                            ->where('idno',$request->idno)
+                            ->where('idno',$request->idno);
 
             foreach ($request->dataobj as $key => $value) {
                 $dbacthdr = DB::table('debtor.dbacthdr')
