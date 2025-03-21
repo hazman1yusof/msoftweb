@@ -170,7 +170,7 @@ class arenquiryController extends defaultController
                 });
             }else if($request->searchCol[0] == 'db_recptno'){
                 $table = $table->Where(function ($table) use ($request){
-                        $table->Where('dm.recptno','like',$request->searchVal[0]);
+                        $table->Where('db.recptno','like',$request->searchVal[0]);
                 });
             }else{
                 $table = $table->Where(function ($table) use ($request){
