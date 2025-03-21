@@ -884,13 +884,12 @@ $(document).ready(function () {
 		// },
 		// editParams: myEditOptions
 	})
-	// .jqGrid('navButtonAdd',"#jqGridPager2",{
-	// 	id: "saveAndPost",
-	// 	caption:"Save and Post",cursor: "pointer",position: "last", 
-	// 	buttonicon:"",
-	// 	title:"Save and Post"
-	// })
 	.jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "saveAndPost",
+		caption:"Save and Post",cursor: "pointer",position: "last", 
+		buttonicon:"",
+		title:"Save and Post"
+	}).jqGrid('navButtonAdd',"#jqGridPager2",{
 		id: "saveHeaderLabel",
 		caption:"Header",cursor: "pointer",position: "last", 
 		buttonicon:"",
