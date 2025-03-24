@@ -169,6 +169,7 @@ class bankInRegistrationDetailController extends defaultController
                     ->whereIn('db.trantype',['RC','RD'])
                     ->where('db.posteddate','<=',$apacthdr->postdate)
                     ->where('db.paymode',$apacthdr->paymode)
+                    ->where('db.amount','!=',0)
                     ->where('db.cbflag',0);
 
         return $table;
@@ -187,8 +188,8 @@ class bankInRegistrationDetailController extends defaultController
                     ->leftjoin('finance.cardcent as cc', function($join) use ($apacthdr){
                             $join = $join
                                 ->where('cc.compcode',session('compcode'))
-                                ->where('py.cardcode','AR')
-                                ->where('py.paytype','CARD')
+                                // ->where('cc.cardcode','AR')
+                                // ->where('cc.paytype','CARD')
                                 ->on('cc.cardcode','py.cardcent');
                         })
                     ->where('db.compcode',session('compcode'))
@@ -197,6 +198,7 @@ class bankInRegistrationDetailController extends defaultController
                     ->where('db.recstatus','POSTED')
                     ->where('db.posteddate','<=',$apacthdr->postdate)
                     ->where('db.paymode',$apacthdr->paymode)
+                    ->where('db.amount','!=',0)
                     ->where('db.cbflag',0);
 
         return $table;

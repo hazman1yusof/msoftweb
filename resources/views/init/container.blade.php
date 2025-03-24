@@ -45,7 +45,7 @@
 		</a>
 		@endif
 		<a class="navbar-brand" href="#" style="padding: 0px 10px 0px 0px;float: right;">
-			<img src="img/{{$logo1}}" alt="logo" height="50px" width="auto">
+			<img src="img/{{$logo1}}" alt="logo" height="50px" width="auto" id="main_comp_logo">
 		</a>
 		<div class="container">
 			<div class="navbar-header">
@@ -286,6 +286,11 @@
 	$(document).ready(function(){
     Menu.init_menu();
     Menu.init_announce();
+
+    $('#main_comp_logo').dblclick(function(){
+    	clear_storage();
+    });
+
     // Menu.init_card();
     $("#session_unit").change(function(){
     	$.post( '/sessionUnit', {_token:$('#_token').val(), unit:$(this).val()}, function( data ) {
@@ -520,6 +525,13 @@
 	    window.addEventListener('wheel', resetTimer, true);
 	}
 	noIdlingHere();
+
+	function clear_storage(){
+		if(confirm('Do You want to clear storage caching?')){
+			localStorage.clear();
+			location.reload();
+		}
+	}
 </script>
 
 </html>

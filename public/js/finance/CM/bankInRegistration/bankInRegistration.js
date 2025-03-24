@@ -888,7 +888,7 @@ $(document).ready(function () {
 		id: "saveAndPost",
 		caption:"Save and Post",cursor: "pointer",position: "last", 
 		buttonicon:"",
-		title:"Save and Post"
+		title:"Save"
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
 		id: "saveHeaderLabel",
 		caption:"Header",cursor: "pointer",position: "last", 
