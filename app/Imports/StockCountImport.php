@@ -43,7 +43,7 @@ class StockCountImport implements ToCollection, WithCalculatedFormulas{
                         ->where('itemcode',$itemcode);
                         // ->where('lineno_',$lineno_)
 
-                if($phycntdt->exist()){
+                if($phycntdt->exists()){
                     $phycntdt = $phycntdt->first();
 
                     $vrqty = (int)$phycntdt->thyqty - (int)$phyqty;
