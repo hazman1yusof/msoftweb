@@ -46,7 +46,7 @@ class StockCountImport implements ToCollection, WithCalculatedFormulas{
                 if($phycntdt->exists()){
                     $phycntdt = $phycntdt->first();
 
-                    $vrqty = (int)$phycntdt->thyqty - (int)$phyqty;
+                    $vrqty = (int)$phyqty - (int)$phycntdt->thyqty;
                     
                     DB::table("material.phycntdt")
                             ->where('compcode',session('compcode'))

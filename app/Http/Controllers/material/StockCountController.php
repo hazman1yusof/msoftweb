@@ -388,7 +388,7 @@ class StockCountController extends defaultController
                                     ->where('updtime','>=',$frztime);
 
                         if($ivdspdt->exists()){
-                            $thyqty = DB::table('material.ivdspdt')
+                            $dspqty = DB::table('material.ivdspdt')
                                         ->where('compcode',session('compcode'))
                                         ->where('itemcode',$value->itemcode)
                                         ->where('issdept',$value->srcdept)
@@ -396,18 +396,18 @@ class StockCountController extends defaultController
                                         ->where('updtime','>=',$frztime)
                                         ->sum('txnqty');
 
-                            $thyqty_amt = floatval($thyqty) * floatval($value->unitcost);
+                            $dspqty_amt = floatval($thyqty) * floatval($value->unitcost);
                         }else{
-                            $thyqty = 0;
-                            $thyqty_amt = 0;
+                            $dspqty = 0;
+                            $dspqty_amt = 0;
                         }
 
                     //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
                         $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
                         $month = defaultController::toMonth($phycntdate);
                         $QtyOnHand = $stockloc_first->qtyonhand + $vrqty; 
-                        $NetMvQty = $stockloc_arr['netmvqty'.$month] + floatval($vrqty) - $thyqty;
-                        $NetMvVal = $stockloc_arr['netmvval'.$month] + $amount - $thyqty_amt;
+                        $NetMvQty = $stockloc_arr['netmvqty'.$month] + floatval($vrqty) - $dspqty;
+                        $NetMvVal = $stockloc_arr['netmvval'.$month] + $amount - $dspqty_amt;
 
                         DB::table('material.StockLoc')
                             ->where('StockLoc.unit','=',$unit_)
