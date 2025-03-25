@@ -297,7 +297,7 @@ i.fa {
 										</select>
                   </div>
 
-					  			<label class="col-md-2 control-label" for="dtlamt">Total Detail Amt</label>  
+					  			<label class="col-md-offset-3 col-md-2 control-label" for="dtlamt">Total Detail Amt</label>  
 				  				<div class="col-md-2">
 										<input id="dtlamt" name="dtlamt" type="text" class="form-control input-sm" readonly rdOnly>
 				  				</div>

@@ -20,9 +20,9 @@ class StockCountImport implements ToCollection, WithCalculatedFormulas{
     }
 
     public function collection(Collection $rows){
-        DB::beginTransaction();
+        // DB::beginTransaction();
 
-        try {
+        // try {
             $phycnthd = DB::table('material.phycnthd')
                             ->where('compcode',session('compcode'))
                             ->where('recno',$this->recno)
@@ -40,28 +40,31 @@ class StockCountImport implements ToCollection, WithCalculatedFormulas{
                 $phycntdt = DB::table("material.phycntdt")
                         ->where('compcode',session('compcode'))
                         ->where('recno',$phycnthd->recno)
-                        ->where('itemcode',$itemcode)
-                        ->where('lineno_',$lineno_)
-                        ->first();
+                        ->where('itemcode',$itemcode);
+                        // ->where('lineno_',$lineno_)
 
-                $vrqty = (int)$phycntdt->thyqty - (int)$phyqty;
-                
-                DB::table("material.phycntdt")
-                        ->where('compcode',session('compcode'))
-                        ->where('recno',$phycnthd->recno)
-                        ->where('itemcode',$itemcode)
-                        ->where('lineno_',$lineno_)
-                        ->update([
-                            'phyqty' => $phyqty,
-                            'vrqty' => $vrqty
-                        ]);
+                if($phycntdt->exist()){
+                    $phycntdt = $phycntdt->first();
+
+                    $vrqty = (int)$phycntdt->thyqty - (int)$phyqty;
+                    
+                    DB::table("material.phycntdt")
+                            ->where('compcode',session('compcode'))
+                            ->where('recno',$phycnthd->recno)
+                            ->where('itemcode',$itemcode)
+                            ->where('lineno_',$lineno_)
+                            ->update([
+                                'phyqty' => $phyqty,
+                                'vrqty' => $vrqty
+                            ]);
+                }
             }
 
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
+        //     DB::commit();
+        // } catch (\Exception $e) {
+        //     DB::rollback();
 
-            return response($e->getMessage(), 500);
-        }
+        //     return response($e->getMessage(), 500);
+        // }
     }
 }

@@ -28,7 +28,7 @@ $(document).ready(function () {
 	//////////////////////////////////////////////////////////////
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency =new currencymode(['#amount','#comamt','#netamount','#dtlamt']);
+	var mycurrency =new currencymode(['#amount','#refcomrate','#comamt','#netamount','#dtlamt']);
 	var fdl = new faster_detail_load();
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
@@ -664,8 +664,9 @@ $(document).ready(function () {
 		 	{ label: 'Document', name: 'refrecptno', width: 20, classes: 'wrap', editable:false},
 			{ label: 'Doc Date', name: 'refdocdate', width: 20, classes: 'wrap', editable:false},
 			{ label: 'Amount', name: 'refamount', width: 20, classes: 'wrap', editable:false},
-			{ label: 'Comm Amt', name: 'comamt', width: 20, classes: 'wrap', editable:false},
+			{ label: 'Comm Rate', name: 'refcomrate', width: 20, classes: 'wrap', editable:false, formatter: formattertext,unformat:unformattertext},
 			{ label: ' ', name: 'tick', width: 20, editable: false, formatter: formatterCheckbox2},
+			{ label: 'Comm Amt', name: 'commamt', width: 20, classes: 'wrap', editable:false},
 			{ label: 'Reference', name: 'refreference', width: 20, classes: 'wrap', editable:false},
 			{ label: 'Department', name: 'deptcode', width: 100, classes: 'wrap', hidden:true},
 			{ label: 'Category', name: 'category', width: 100, hidden:true},
@@ -698,6 +699,16 @@ $(document).ready(function () {
 				}else{
 					if(myallocation.alloInArray(idno)){
 						myallocation.deleteAllo(idno);
+					}
+				}
+			});
+
+			$("#jqGrid2_c input[type='text'][name='text_selection2']").on('change',function(){
+				var idno = $(this).data("idno");
+				var rowdata = $("#jqGrid2").jqGrid ('getRowData', idno);
+				if($('#checkbox_selection2_'+idno).prop("checked") == true){
+					if(myallocation.alloInArray(idno)){
+						myallocation.editAllo(idno,rowdata.outamount,0);
 					}
 				}
 			});
@@ -741,6 +752,22 @@ $(document).ready(function () {
 			console.log(this.arrayAllo);
 			
 			// $(fieldID).on('change',[idno,self.arrayAllo,self.allo_error],onchangeField);
+
+			this.updateAlloField();
+		}
+		this.editAllo = function(idno,paid,bal){
+			let refcomrate = $('#text_comrate_'+idno).val();
+
+			var alloIndex = getIndex(this.arrayAllo,idno);
+			let obj = this.arrayAllo[alloIndex].obj;
+			let commamt = parseFloat(refcomrate) * parseFloat(obj.refamount) / 100;
+
+
+			this.arrayAllo[alloIndex].obj.refcomrate = refcomrate;
+			this.arrayAllo[alloIndex].obj.commamt = commamt;
+			console.log(this.arrayAllo);
+			
+			// // $(fieldID).on('change',[idno,self.arrayAllo,self.allo_error],onchangeField);
 
 			this.updateAlloField();
 		}
@@ -806,7 +833,7 @@ $(document).ready(function () {
 		this.retickallotogrid = function(){
 			var self=this;
 			$.each(this.arrayAllo, function( index, obj ) {
-				$("input#checkbox_selection_"+obj.idno).prop('checked', true);
+				$("input#checkbox_selection2_"+obj.idno).prop('checked', true);
 				// $("#"+obj.idno+"_amtpaid").on('change',[obj.idno,self.arrayAllo],onchangeField);
 				// if(obj.obj.amtpaid != " "){
 				// 	$("#"+obj.idno+"_amtpaid").val(obj.obj.amtpaid).removeClass( "error" ).addClass( "valid" );
@@ -821,11 +848,14 @@ $(document).ready(function () {
 			let totalcom = 0;
 			$.each(this.arrayAllo, function( index, obj ) {
 				let amt = parseFloat(obj.obj.refamount);
-				// let com = parseFloat(obj.comamt);
-				console.log(amt);
+				let com = parseFloat(obj.obj.commamt).toFixed(4);
+				$("#jqGrid2").jqGrid('setRowData', obj.idno ,{commamt:com});
+
+				totalcom += com;
 				totalallo += amt;
 			});
 			$('#dtlamt').val(totalallo);
+			$('#comamt').val(totalcom);
 			mycurrency.formatOn();
 			// this.alloBalance = this.outamt - this.alloTotal;
 
@@ -851,6 +881,13 @@ $(document).ready(function () {
 
 		function getlAlloFromGrid(idno){
 			var temp=$("#jqGrid2").jqGrid ('getRowData', idno);
+			temp.refcomrate = $('#text_comrate_'+idno).val();
+			let comamt = parseFloat($('#text_comrate_'+idno).val()) * parseFloat(temp.refamount) / 100;
+			if(isNaN(comamt)){
+				comamt = 0;
+			}
+			temp.commamt = comamt;
+
 			return temp;
 		}
 
@@ -886,7 +923,7 @@ $(document).ready(function () {
 	})
 	.jqGrid('navButtonAdd',"#jqGridPager2",{
 		id: "saveAndPost",
-		caption:"Save and Post",cursor: "pointer",position: "last", 
+		caption:"Save",cursor: "pointer",position: "last", 
 		buttonicon:"",
 		title:"Save"
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
@@ -915,11 +952,48 @@ $(document).ready(function () {
 		}
 	}
 
+	function formattertext(cellvalue, options, rowObject){
+		let idno = cbselect.idno;
+		let recstatus = cbselect.recstatus;
+		
+		return "<input class='form-control input-sm' data-rate='"+cellvalue+"' type='text' name='text_selection2' id='text_comrate_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+	}
+
+	function unformattertext(cellvalue, options, td){
+		return $(td).children('input').val();
+	}
+
+	function formatter_commamt_edit(cellvalue, options, rowObject){
+		let idno = cbselect.idno;
+		let recstatus = cbselect.recstatus;
+		let amt = rowObject.refamount;
+		let comrate = $('#text_comrate_'+idno).val();
+		let comamt = parseFloat(comrate) * parseFloat(amt);
+
+		if(isNaN(comamt)){
+			return '';
+		}
+		return comamt;
+	}
+
+	function formatter_commamt(cellvalue, options, rowObject){
+		let idno = cbselect.idno;
+		let recstatus = cbselect.recstatus;
+		let amt = rowObject.refamount;
+		let comrate = rowObject.refcomrate;
+		let comamt = parseFloat(comrate) * parseFloat(amt);
+
+		if(isNaN(comamt)){
+			return '';
+		}
+		return comamt;
+	}
+
 	function formatterCheckbox2(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
 		
-		return "<input type='checkbox' name='checkbox_selection2' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		return "<input type='checkbox' name='checkbox_selection2' id='checkbox_selection2_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 	}
 
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
@@ -1022,15 +1096,19 @@ $(document).ready(function () {
 
 	$('#saveAndPost').click(function(){
 		let idno_array = [];
+		let rate_array = [];
 		myallocation.arrayAllo.forEach(function(e,i){
 			idno_array.push(e.idno);
+			rate_array.push(e.obj.refcomrate);
 		});
 
 		var obj={
-			dataobj : idno_array
+			_token : $('#_token').val(),
+			idno_array : idno_array,
+			rate_array : rate_array
 		}
 
-		$.post( "./bankInRegistrationDetail/form?action=saveandpost&idno="+$('#idno').val(), obj , function( data ) {
+		$.post( "./bankInRegistrationDetail/form?oper=saveandpost&idno="+$('#idno').val(), obj , function( data ) {
 			
 		},'json').fail(function (data) {
 			alert(data.responseText);
