@@ -628,7 +628,7 @@ $(document).ready(function () {
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
 
-	addParamField('#jqGrid2',false,urlParam2,['vrqty']);
+	addParamField('#jqGrid2',false,urlParam2);
 
 	count_Search("#jqGrid2",urlParam2);
 	function count_Search(grid,urlParam){
