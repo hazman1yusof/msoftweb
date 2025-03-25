@@ -280,6 +280,9 @@ class StockCountController extends defaultController
                                 ->where('idno','=',$idno)
                                 ->first();
 
+                $frzdate = $phycnthd_obj->frzdate;
+                $frztime = $phycnthd_obj->frztime;
+
                 $unit_ = DB::table('sysdb.department')
                                 ->where('compcode',session('compcode'))
                                 ->where('deptcode',$phycnthd_obj->srcdept)
@@ -377,12 +380,34 @@ class StockCountController extends defaultController
                     //2.kalu ada stockloc, update 
                     if($stockloc_obj->exists()){
 
+                        $ivdspdt = DB::table('material.ivdspdt')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('itemcode',$value->itemcode)
+                                    ->where('issdept',$value->srcdept)
+                                    ->where('trandate','>=',$frzdate)
+                                    ->where('updtime','>=',$frztime);
+
+                        if($ivdspdt->exists()){
+                            $thyqty = DB::table('material.ivdspdt')
+                                        ->where('compcode',session('compcode'))
+                                        ->where('itemcode',$value->itemcode)
+                                        ->where('issdept',$value->srcdept)
+                                        ->where('trandate','>=',$frzdate)
+                                        ->where('updtime','>=',$frztime)
+                                        ->sum('txnqty');
+
+                            $thyqty_amt = floatval($thyqty) * floatval($value->unitcost);
+                        }else{
+                            $thyqty = 0;
+                            $thyqty_amt = 0;
+                        }
+
                     //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
                         $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
                         $month = defaultController::toMonth($phycntdate);
                         $QtyOnHand = $stockloc_first->qtyonhand + $vrqty; 
-                        $NetMvQty = $stockloc_arr['netmvqty'.$month] + floatval($vrqty);
-                        $NetMvVal = $stockloc_arr['netmvval'.$month] + $amount;
+                        $NetMvQty = $stockloc_arr['netmvqty'.$month] + floatval($vrqty) - $thyqty;
+                        $NetMvVal = $stockloc_arr['netmvval'.$month] + $amount - $thyqty_amt;
 
                         DB::table('material.StockLoc')
                             ->where('StockLoc.unit','=',$unit_)
