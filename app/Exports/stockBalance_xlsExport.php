@@ -117,6 +117,7 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
                                 $join = $join->on('p.itemcode', '=', 's.itemcode');
                                 $join = $join->on('p.uomcode', '=', 's.uomcode');
                                 $join = $join->where('p.compcode', '=', session('compcode'));
+                                $join = $join->where('p.groupcode', '=', 'STOCK');
                                 $join = $join->on('p.unit', '=', 's.unit');
                             })
                         ->join('sysdb.department as d', function($join){
@@ -130,6 +131,7 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
                             $join = $join->where('sc.compcode', '=', session('compcode'));
                         });
             $stockloc = $stockloc->where('s.compcode',session('compcode'))
+                        ->where('s.stocktxntype','TR')
                         ->whereBetween('s.unit',[$unit_from,$unit_to.'%'])
                         ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
                         ->whereBetween('s.itemcode',[$item_from,$item_to.'%']);

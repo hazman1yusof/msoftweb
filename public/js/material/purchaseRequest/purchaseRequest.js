@@ -963,9 +963,8 @@ $(document).ready(function () {
 			{ label: 'recno', name: 'recno', width: 50, classes: 'wrap', hidden: true },
 			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable: false},
 			{
-				label: 'Price Code', name: 'pricecode', width: 110, classes: 'wrap', editable: true,
+				label: 'Price Code', name: 'pricecode', width: 80, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },editoptions: { readonly: "readonly" },
-				formatter: showdetail,
 				edittype: 'custom', editoptions:
 				{
 					custom_element: pricecodeCustomEdit,
@@ -973,16 +972,15 @@ $(document).ready(function () {
 				},
 			},
 			{
-				label: 'Item Code', name: 'itemcode', width: 180, classes: 'wrap', editable: true,
+				label: 'Item Code', name: 'itemcode', width: 150, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
-				formatter: showdetail,
 				edittype: 'custom', editoptions:
 				{
 					custom_element: itemcodeCustomEdit,
 					custom_value: galGridCustomValue
 				},
 			},
-			{ label: 'Item Description', name: 'description', width: 180, classes: 'wrap', editable: false, editoptions: { readonly: "readonly" }, hidden:true },
+			{ label: 'Item Description', name: 'description', width: 250, classes: 'wrap', editable: false, editoptions: { readonly: "readonly" } },
 			{
 				label: 'UOM Code', name: 'uomcode', width: 100, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
@@ -1514,13 +1512,13 @@ $(document).ready(function () {
 		        // });
 
 		        dialog_itemcode.id_optid = ids[i];
-		        dialog_itemcode.check(errorField,ids[i]+"_itemcode","jqGrid2",null,
-		        	function(self){
-		        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			        },function(self){
-						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-				    }
-			    );
+		        // dialog_itemcode.check(errorField,ids[i]+"_itemcode","jqGrid2",null,
+		        // 	function(self){
+		        // 		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			    //     },function(self){
+				// 		fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+				//     }
+			    // );
 
 		        dialog_uomcode.id_optid = ids[i];
 		        dialog_uomcode.check(errorField,ids[i]+"_uomcode","jqGrid2",null,
@@ -1690,7 +1688,7 @@ $(document).ready(function () {
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function pricecodeCustomEdit(val,opt){
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
+		val = getEditVal(val);
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="pricecode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function uomcodeCustomEdit(val,opt){  	

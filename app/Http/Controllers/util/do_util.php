@@ -84,7 +84,7 @@ class do_util extends defaultController{
             DB::table('material.stockloc')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'unit' => session('unit'),
+                    'unit' => $deldept_unit,
                     'deptcode' => $value->deldept,
                     'itemcode' => $value->itemcode,
                     'uomcode' => $value->uomcode,

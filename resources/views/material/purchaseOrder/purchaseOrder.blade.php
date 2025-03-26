@@ -46,6 +46,10 @@ div.data_info div.col-md-2{
 	width: 20%;
 }
 
+table#jqGrid2 a.input-group-addon.btn.btn-primary{
+	padding: 2px !important;
+}
+
 .frozen-div{overflow:hidden;}
 
 #more {display: none;}
@@ -693,7 +697,7 @@ div.data_info div.col-md-2{
 			
 		});
 	</script>
-	<script src="js/material/purchaseOrder/purchaseOrder.js?v=1.16"></script>
+	<script src="js/material/purchaseOrder/purchaseOrder.js?v=1.17"></script>
 	<!-- <script src="js/material/purchaseOrder/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

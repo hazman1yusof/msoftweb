@@ -224,7 +224,7 @@ i.fa {
 
 					  			<label class="col-md-2 control-label" for="amount">Cash Amount</label>  
 				  				<div class="col-md-2">
-										<input id="amount" name="amount" type="text" class="form-control input-sm" readonly rdOnly>
+										<input id="amount" name="amount" type="text" class="form-control input-sm" data-validation="required">
 				  				</div>
 				    		</div>
 
@@ -240,7 +240,7 @@ i.fa {
 
 					  			<label class="col-md-1 control-label" for="postdate">Posted Date</label>  
 				  				<div class="col-md-2">
-										<input id="postdate" name="postdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" readonly rdOnly>
+										<input id="postdate" name="postdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  				</div>
 
 					  			<label class="col-md-2 control-label" for="comamt">Commision Amt</label>  
@@ -252,7 +252,7 @@ i.fa {
 				    		<div class="form-group">
 				    			<label class="col-md-2 control-label" for="remarks">Reference</label>  
 				  				<div class="col-md-6" >
-										<input id="remarks" name="remarks" type="text" class="form-control input-sm" readonly rdOnly>
+										<input id="remarks" name="remarks" type="text" class="form-control input-sm">
 				  				</div>
 
 					  			<label class="col-md-2 control-label" for="gst">GST</label>  
@@ -287,12 +287,7 @@ i.fa {
 				    		</div>
 
 				    		<div class="form-group">
-				    			<label class="col-md-3 control-label" for="tobeposted">All Receipt/Deposit to be posted</label>  
-				  				<div class="col-md-1">
-						 				<input type="checkbox" id="tobeposted" name="tobeposted">
-                  </div>
-
-					  			<label class="col-md-1 control-label" for="unit">Units</label>  
+					  			<label class="col-md-2 control-label" for="unit">Units</label>  
 				  				<div class="col-md-3" >
 						 				<select class="form-control input-sm" for="unit" name="unit" id="unit">
 										  	<option value="ALL" selected>ALL</option>
@@ -302,7 +297,7 @@ i.fa {
 										</select>
                   </div>
 
-					  			<label class="col-md-2 control-label" for="dtlamt">Total Detail Amt</label>  
+					  			<label class="col-md-offset-3 col-md-2 control-label" for="dtlamt">Total Detail Amt</label>  
 				  				<div class="col-md-2">
 										<input id="dtlamt" name="dtlamt" type="text" class="form-control input-sm" readonly rdOnly>
 				  				</div>
@@ -315,7 +310,25 @@ i.fa {
 
 			<div class='col-md-12'>
 				<div class='panel panel-info'>
-					<div class="panel-heading">Bank In Registration Detail</div>
+					<div class="panel-heading" style="padding: 15px;">Bank In Registration Detail
+						<input id="alloText" placeholder="Search Here.." type="text" class="form-control input-sm" style="position: absolute;
+						  right: 120px;
+						  top: 10px;
+						  width: 200px;">
+						<select class="form-control" id="alloCol" style="position: absolute;
+					    right: 330px;
+					    top: 10px;
+					    width: 200px;">
+							<option value="trantype" >Type</option>
+							<option value="auditno" >Audit No</option>
+							<option value="recptno" selected>Document</option>
+							<option value="posteddate" >Document Date</option>
+						</select>
+						<button id="searhcAlloBtn" type="button" class="btn btn-primary" style="position: absolute;
+					    right: 50px;
+					    top: 10px;">
+					  Search</button>
+					</div>
 					<div class="panel-body">
 						<form id='formdata2' class='form-vertical' style='width:99%'>
 							

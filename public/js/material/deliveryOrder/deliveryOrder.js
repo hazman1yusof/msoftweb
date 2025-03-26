@@ -24,6 +24,10 @@ $(document).ready(function () {
 		},
 	};
 
+	$('body').click(function(){
+		$('#error_infront').text('');
+	});
+
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency =new currencymode(['#delordhd_subamount','#delordhd_totamount', '#delordhd_TaxAmt', '#delordhd_amtdisc']);
 	var radbuts=new checkradiobutton(['delordhd_taxclaimable']);
@@ -96,6 +100,13 @@ $(document).ready(function () {
 				dialog_reqdept.on();
 				dialog_deldept.on();
 				dialog_srcdocno.on();
+			}
+
+			if(oper == 'edit'){
+				dialog_srcdocno.off();
+				
+				$("#delordhd_srcdocno").prop('readonly',true);
+				$('#dialogForm input:radio[name=purordhd_prtype]').attr('disabled',true);
 			}
 		},
 		beforeClose: function(event, ui){
@@ -253,14 +264,15 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{ label: 'Record No', name: 'delordhd_recno', width: 120, classes: 'wrap', canSearch: true, frozen: true},
-			{ label: 'Purchase Department', name: 'delordhd_prdept', width: 190, classes: 'wrap', canSearch:true, formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 190, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Record No', name: 'delordhd_recno', width: 100, classes: 'wrap', canSearch: true, frozen: true},
+			{ label: 'Purchase Department', name: 'delordhd_prdept', width: 170, classes: 'wrap', canSearch:true, formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 170, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'DO No', name: 'delordhd_delordno', width: 150, classes: 'wrap', canSearch: true, align: 'right'},
-			{ label: 'Request Department', name: 'delordhd_reqdept', width: 190, canSearch: true, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'GRN No', name: 'delordhd_docno', width: 150, classes: 'wrap', canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
+			{ label: 'Request Department', name: 'delordhd_reqdept', width: 170, canSearch: true, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'GRN No', name: 'delordhd_docno', width: 130, classes: 'wrap', canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
 			{ label: 'Received Date', name: 'delordhd_trandate', width: 200, classes: 'wrap', canSearch: true , formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Supplier Code', name: 'delordhd_suppcode', width: 250, classes: 'wrap', canSearch: true, formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Post Date', name: 'delordhd_postdate', width: 180, classes: 'wrap' , formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Supplier Code', name: 'delordhd_suppcode', width: 180, classes: 'wrap', canSearch: true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Supplier Name', name: 'supplier_name', width: 250, classes: 'wrap', canSearch: false, hidden:true },
 			{ label: 'Purchase Order No', name: 'delordhd_srcdocno', width: 150, classes: 'wrap', canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
 			{ label: 'Invoice No', name: 'delordhd_invoiceno', width: 200, classes: 'wrap', canSearch: true},
@@ -288,7 +300,6 @@ $(document).ready(function () {
 			{ label: 'credcode', name: 'delordhd_credcode', width: 40, hidden:true},
 			{ label: 'impflg', name: 'delordhd_impflg', width: 40, hidden:true},
 			{ label: 'allocdate', name: 'delordhd_allocdate', width: 40, hidden:true},
-			{ label: 'postdate', name: 'delordhd_postdate', width: 40, hidden:true},
 			{ label: 'deluser', name: 'delordhd_deluser', width: 40, hidden:true},
 			{ label: 'idno', name: 'delordhd_idno', width: 40, hidden:true},
 			{ label: 'taxclaimable', name: 'delordhd_taxclaimable', width: 40, hidden:true},
@@ -534,6 +545,13 @@ $(document).ready(function () {
 		obj.oper = $(this).data('oper');
 		obj._token = $('#_token').val();
 		oper=null;
+
+		if($(this).data('oper') == 'cancel'){
+			if (confirm('Are you sure, you want to '+$(this).data('oper')) != true) {
+				$("#but_post_jq").attr('disabled',false);
+				return 0;
+			}
+		}
 		
 		$.post( './deliveryOrder/form', obj , function( data ) {
 			cbselect.empty_sel_tbl();
@@ -797,23 +815,22 @@ $(document).ready(function () {
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable:false},
-			
-			{ label: 'Item Description', name: 'description', width: 250, classes: 'wrap', editable:false, hidden:true},
-			{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable:false},			
+			{ label: 'Price Code', name: 'pricecode', width: 80, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},
 						edittype:'custom',	editoptions:
 						    {  custom_element:pricecodeCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
 			{ label: 'Item Code', name: 'itemcode', width: 150, classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,
+					editrules:{required: true,custom:true, custom_func:cust_rules},
 						edittype:'custom',	editoptions:
 						    {  custom_element:itemcodeCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
+			{ label: 'Item Description', name: 'description', width: 250, classes: 'wrap', editable:false, hidden:false},
 			{ label: 'UOM Code', name: 'uomcode', width: 120, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -1397,22 +1414,22 @@ $(document).ready(function () {
 				}
 
 				dialog_pricecode.id_optid = ids[i];
-		        dialog_pricecode.check(errorField,ids[i]+"_pricecode","jqGrid2",null,
-		        	function(self){
-		        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			        },function(self){
-						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-				    }
-			    );
+		        // dialog_pricecode.check(errorField,ids[i]+"_pricecode","jqGrid2",null,
+		        // 	function(self){
+		        // 		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			    //     },function(self){
+				// 		fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+				//     }
+			    // );
 
 		        dialog_itemcode.id_optid = ids[i];
-		        dialog_itemcode.check(errorField,ids[i]+"_itemcode","jqGrid2",null,
-		        	function(self){
-		        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			        },function(self){
-						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-				    }
-			    );
+		        // dialog_itemcode.check(errorField,ids[i]+"_itemcode","jqGrid2",null,
+		        // 	function(self){
+		        // 		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			    //     },function(self){
+				// 		fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+				//     }
+			    // );
 
 		        dialog_pouom.id_optid = ids[i];
 		        dialog_pouom.check(errorField,ids[i]+"_pouom","jqGrid2",null,
@@ -1424,13 +1441,13 @@ $(document).ready(function () {
 			    );
 
 		        dialog_uomcode.id_optid = ids[i];
-		        dialog_uomcode.check(errorField,ids[i]+"_uomcode","jqGrid2",null,
-		        	function(self){
-			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			        },function(self){
-						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-			        }
-			    );
+		        // dialog_uomcode.check(errorField,ids[i]+"_uomcode","jqGrid2",null,
+		        // 	function(self){
+			    //     	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			    //     },function(self){
+				// 		fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			    //     }
+			    // );
 
 				dialog_taxcode.id_optid = ids[i];
 		        dialog_taxcode.check(errorField,ids[i]+"_taxcode","jqGrid2",null,
@@ -1612,7 +1629,7 @@ $(document).ready(function () {
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function pricecodeCustomEdit(val,opt){
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		val = getEditVal(val);
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="pricecode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function uomcodeCustomEdit(val,opt){  	

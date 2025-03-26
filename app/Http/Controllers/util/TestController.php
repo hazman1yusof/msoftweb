@@ -64,10 +64,10 @@ class TestController extends defaultController
             //     return $this->update_stockloc_uomcode($request);
             // case 'update_productmaster':
                 // return $this->update_productmaster($request);
-            // case 'recon_DO':
-            //     return $this->recon_DO($request);
-            case 'check_avgcost_divert_too_much':
-                return $this->check_avgcost_divert_too_much($request);
+            case 'delete_stockloc_terlebih':
+                return $this->delete_stockloc_terlebih($request);
+            case 'betulkan_poli_qtyonhand':
+                return $this->betulkan_poli_qtyonhand($request);
             case 'check_product_qtyonhand_sama_dgn_stockloc_qtyonhand':
                 return $this->check_product_qtyonhand_sama_dgn_stockloc_qtyonhand($request);
             case 'betulkan_stockexp_semua_chk':
@@ -76,8 +76,8 @@ class TestController extends defaultController
                 return $this->betulkan_stockexp_semua($request);
             case 'betulkan_stockloc_2025':
                 return $this->betulkan_stockloc_2025($request);
-            // case 'btlkn_imp_1_phycnt':
-            //     return $this->btlkn_imp_1_phycnt($request);
+            case 'netmvval_from_netmvqty':
+                return $this->netmvval_from_netmvqty($request);
             // case 'btlkn_imp_3':
             //     return $this->btlkn_imp_3($request);
             // case 'stocktake_imp_dtl':
@@ -4753,6 +4753,137 @@ class TestController extends defaultController
                 // }
             }
         }
+    }
+
+    public function netmvval_from_netmvqty(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+            $unit = $request->unit;
+
+            $product = DB::table('material.product')
+                                ->where('compcode',session('compcode'))
+                                ->where('unit',$unit)
+                                ->get();
+            $i = 1;
+            foreach ($product as $key => $value) {
+                $stockloc = DB::table('material.stockloc')
+                                ->where('compcode',session('compcode'))
+                                ->where('itemcode',$value->itemcode)
+                                ->where('year','2025');
+
+                if($stockloc->exists()){
+                    $stockloc = $stockloc->first();
+
+                    $avgcost = $value->avgcost;
+
+                    $netmvval3 = $stockloc->netmvqty3 * $avgcost;
+
+                    if($netmvval3 != $stockloc->netmvval3){
+
+                        echo nl2br("$i. $value->itemcode netmvval3 not same: suppose: $netmvval3 - real: $stockloc->netmvval3  \n");
+
+                        DB::table('material.stockloc')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('itemcode',$value->itemcode)
+                                    ->where('year','2025')
+                                    ->update([
+                                        'netmvval3' => $netmvval3
+                                    ]);
+                        $i++;
+                    }
+                }
+
+            }
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }   
+    }
+
+    public function delete_stockloc_terlebih(Request $request){
+        DB::beginTransaction();
+        $unit = $request->unit;
+
+        try {
+            $stockloc = DB::table('material.stockloc')
+                            ->where('deptcode','=',$unit)
+                            ->where('compcode',session('compcode'))
+                            ->where('year',Carbon::now('Asia/Kuala_Lumpur')->format('Y'))
+                            ->get();
+
+            foreach ($stockloc as $key => $value) {
+                $stockloc = DB::table('material.stockloc')
+                                ->where('itemcode','=',$value->itemcode)
+                                ->where('deptcode','=',$unit)
+                                ->where('compcode',session('compcode'))
+                                ->where('year',Carbon::now('Asia/Kuala_Lumpur')->format('Y'));
+
+                if($stockloc->count() > 1){
+                    $stockloc_ = $stockloc->first();
+
+                    DB::table('material.stockloc')
+                                ->where('itemcode','=',$value->itemcode)
+                                ->where('deptcode','=',$unit)
+                                ->where('compcode',session('compcode'))
+                                ->where('year',Carbon::now('Asia/Kuala_Lumpur')->format('Y'))
+                                ->where('idno','!=',$stockloc_->idno)
+                                ->update([
+                                    'compcode' => 'CC'
+                                ]);
+                }
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }      
+    }
+
+    public  function betulkan_poli_qtyonhand(Request $request){
+        DB::beginTransaction();
+        $unit = $request->unit;
+
+        try {
+            $stockloc = DB::table('material.stockloc')
+                            ->where('deptcode','=',$unit)
+                            ->where('compcode',session('compcode'))
+                            ->where('year',Carbon::now('Asia/Kuala_Lumpur')->format('Y'))
+                            ->get();
+
+            foreach ($stockloc as $key => $value) {
+                $txnqty = DB::table('material.ivtxndt')
+                                ->where('itemcode','=',$value->itemcode)
+                                ->where('deptcode','=',$unit)
+                                ->where('compcode',session('compcode'))
+                                ->where('trandate','>','2025-01-01')
+                                ->sum('txnqty');
+
+                DB::table('material.stockloc')
+                            ->where('itemcode','=',$value->itemcode)
+                            ->where('deptcode','=',$unit)
+                            ->where('compcode',session('compcode'))
+                            ->where('year',Carbon::now('Asia/Kuala_Lumpur')->format('Y'))
+                            ->update([
+                                'qtyonhand' => $txnqty
+                            ]);
+
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }               
     }
     
 }

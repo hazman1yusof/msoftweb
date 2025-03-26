@@ -1440,6 +1440,9 @@ Route::post('/casenote/new_relationship_form','hisdb\CaseNoteController@new_rela
 //// IP REG FORM ////
 Route::get('/RegFormIP/RegFormIP_pdf','hisdb\RegFormIPController@RegFormIP_pdf');
 
+//// PRESCRIPTION FORM ////
+Route::get('/PrescriptionForm/PrescriptionForm_pdf','hisdb\PrescriptionFormController@PrescriptionForm_pdf');
+
 ///////////////////Fixed Asset setup////////////////////////////////////
 
 //// Fixed Asset Location setup page ///

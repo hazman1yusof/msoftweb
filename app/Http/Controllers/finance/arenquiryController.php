@@ -90,6 +90,7 @@ class arenquiryController extends defaultController
                     'db.auditno AS db_auditno', // search
                     'db.invno AS db_invno', // search
                     'db.recptno AS db_recptno', 
+                    'db.recptno AS db_billno', 
                     'db.ponum AS db_ponum',
                     'db.amount AS db_amount',
                     'db.remark AS db_remark',
@@ -168,6 +169,15 @@ class arenquiryController extends defaultController
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where('dm.name','like',$request->searchVal[0]);
                 });
+            }else if($request->searchCol[0] == 'db_recptno'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('db.recptno','like',$request->searchVal[0]);
+                });
+            }else if($request->searchCol[0] == 'db_billno'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('db.auditno','like',$request->searchVal[0]);
+                })
+                ->where('db.trantype','=','IN');
             }else{
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where($request->searchCol[0],'like',$request->searchVal[0]);

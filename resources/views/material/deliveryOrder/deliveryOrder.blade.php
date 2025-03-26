@@ -50,6 +50,10 @@ div#fail_msg{
 	opacity:.3;
 }
 
+table#jqGrid2 a.input-group-addon.btn.btn-primary{
+	padding: 2px !important;
+}
+
 #more {display: none;}
 
 @endsection
@@ -514,7 +518,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/material/deliveryOrder/deliveryOrder.js?v=1.8"></script>
+	<script src="js/material/deliveryOrder/deliveryOrder.js?v=1.12"></script>
 	<!-- <script src="js/material/deliveryOrder/pdfgen.js"></script> -->
 	<script src="js/myjs/barcode.js"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>

@@ -2391,7 +2391,7 @@ class SalesOrderController extends defaultController
             $stockloc_first = $stockloc->first();
             $stockloc_arr = (array)$stockloc_first;
 
-            $month = defaultController::toMonth($dbacthdr->posteddate);
+            $month = defaultController::toMonth(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
             $NetMvQty = floatval($stockloc_arr['netmvqty'.$month]) - floatval($curr_quan);
             $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) - floatval(floatval($curr_netprice) * floatval($curr_quan));
 
@@ -2496,7 +2496,7 @@ class SalesOrderController extends defaultController
             'reqdept' => $dbacthdr->deptcode,
             'amount' => floatval(floatval($curr_netprice) * floatval($curr_quan)),
             'trantype' => 'DS',
-            'trandate' => $dbacthdr->posteddate,
+            'trandate' => Carbon::now("Asia/Kuala_Lumpur"),
             'trxaudno' => $billsum_obj->auditno,
             'mrn' => $this->givenullifempty($dbacthdr->mrn),
             'episno' => $this->givenullifempty($dbacthdr->episno),
@@ -2557,7 +2557,7 @@ class SalesOrderController extends defaultController
             $stockloc_first = $stockloc->first();
             $stockloc_arr = (array)$stockloc_first;
 
-            $month = defaultController::toMonth($dbacthdr->posteddate);
+            $month = defaultController::toMonth(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
             $NetMvQty = floatval($stockloc_arr['netmvqty'.$month]) + floatval($prev_quan) - floatval($curr_quan);
             $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) + floatval(floatval($prev_netprice) * floatval($prev_quan)) - floatval(floatval($curr_netprice) * floatval($curr_quan));
 
