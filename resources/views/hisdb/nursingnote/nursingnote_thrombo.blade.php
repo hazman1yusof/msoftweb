@@ -37,9 +37,9 @@
                             <table id="datetimethrombo_tbl" class="ui celled table" style="width: 100%;">
                                 <thead>
                                     <tr>
+                                        <th class="scope">Cannulation<br>No</th>
                                         <th class="scope">mrn</th>
                                         <th class="scope">episno</th>
-                                        <th class="scope">Cannulation<br>No</th>
                                         <th class="scope">Date</th>
                                         <th class="scope">Time</th>
                                     </tr>
@@ -163,10 +163,10 @@
                             <div class='col-md-12'>
                                 <div class="panel panel-info" id="jqGridThrombo_c">
                                     <div class="panel-body">
-                                        <div class='col-md-12' style="overflow-y : auto;overflow-x : auto;">
+                                        <div class='col-md-12'>
                                             <input id="cannulationNo" name="cannulationNo" type="hidden">
                                             <b>Phlebitis Score</b><br><br>
-                                            Grade 0: IV site appears healthy<br>
+                                            Grade 0: IV site appears healthy.<br>
                                             Grade 1: One of the following is evident: slight pain at the IV site or slight redness near IV site.<br>
                                             Grade 2: Two of the following are evidence: pain, erythema and swelling.<br>
                                             Grade 3: All of the following sign are evidence: pain along the path of the catheter, erythema and induration.<br>

@@ -755,10 +755,6 @@ $(document).ready(function (){
                     $('#datetimethrombo_tbl tbody tr:eq(0)').click(); // to select first row
                 });
 
-                urlParam_Thrombo.filterVal[0] = $("#mrn_nursNote").val();
-                urlParam_Thrombo.filterVal[1] = $("#episno_nursNote").val();
-                urlParam_Thrombo.filterVal[2] = $("#idno_thrombo").val();
-                refreshGrid('#jqGridThrombo',urlParam_Thrombo,'add_thrombojqgrid');
                 $("#jqGridThrombo").jqGrid('setGridWidth', Math.floor($("#jqGridThrombo_c")[0].offsetWidth-$("#jqGridThrombo_c")[0].offsetLeft-30));
                 populate_thrombo_getdata();
                 break;
