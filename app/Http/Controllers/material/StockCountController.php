@@ -280,6 +280,10 @@ class StockCountController extends defaultController
                                 ->where('idno','=',$idno)
                                 ->first();
 
+                if($phycnthd_obj->recstatus == 'POSTED'){
+                    throw new \Exception("Stock Count Already POSTED!");
+                }
+
                 $frzdate = $phycnthd_obj->frzdate;
                 $frztime = $phycnthd_obj->frztime;
 
@@ -320,6 +324,26 @@ class StockCountController extends defaultController
 
                         continue;
                     }
+
+                    $ivdspdt = DB::table('material.ivdspdt')
+                                ->where('compcode',session('compcode'))
+                                ->where('itemcode',$value->itemcode)
+                                ->where('issdept',$value->srcdept)
+                                ->where('trandate','>=',$frzdate)
+                                ->where('updtime','>=',$frztime);
+
+                    if($ivdspdt->exists()){
+                        $dspqty = DB::table('material.ivdspdt')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('itemcode',$value->itemcode)
+                                    ->where('issdept',$value->srcdept)
+                                    ->where('trandate','>=',$frzdate)
+                                    ->where('updtime','>=',$frztime)
+                                    ->sum('txnqty');
+                    }else{
+                        $dspqty = 0;
+                    }
+                    $vrqty =  floatval($value->phyqty) - floatval($value->thyqty) + Floatval($value->dspqty);
 
                     $obj_acc = $this->get_acc($value,$phycnthd_obj);
 
@@ -380,34 +404,12 @@ class StockCountController extends defaultController
                     //2.kalu ada stockloc, update 
                     if($stockloc_obj->exists()){
 
-                        $ivdspdt = DB::table('material.ivdspdt')
-                                    ->where('compcode',session('compcode'))
-                                    ->where('itemcode',$value->itemcode)
-                                    ->where('issdept',$value->srcdept)
-                                    ->where('trandate','>=',$frzdate)
-                                    ->where('updtime','>=',$frztime);
-
-                        if($ivdspdt->exists()){
-                            $dspqty = DB::table('material.ivdspdt')
-                                        ->where('compcode',session('compcode'))
-                                        ->where('itemcode',$value->itemcode)
-                                        ->where('issdept',$value->srcdept)
-                                        ->where('trandate','>=',$frzdate)
-                                        ->where('updtime','>=',$frztime)
-                                        ->sum('txnqty');
-
-                            $dspqty_amt = floatval($dspqty) * floatval($value->unitcost);
-                        }else{
-                            $dspqty = 0;
-                            $dspqty_amt = 0;
-                        }
-
                     //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
                         $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
                         $month = defaultController::toMonth($phycntdate);
-                        $QtyOnHand = $stockloc_first->qtyonhand + $vrqty - $dspqty; 
-                        $NetMvQty = $stockloc_arr['netmvqty'.$month] + floatval($vrqty) - $dspqty;
-                        $NetMvVal = $stockloc_arr['netmvval'.$month] + $amount - $dspqty_amt;
+                        $QtyOnHand = $stockloc_first->qtyonhand + $vrqty; 
+                        $NetMvQty = $stockloc_arr['netmvqty'.$month] + floatval($vrqty);
+                        $NetMvVal = $stockloc_arr['netmvval'.$month] + $amount;
 
                         DB::table('material.StockLoc')
                             ->where('StockLoc.unit','=',$unit_)
@@ -485,7 +487,7 @@ class StockCountController extends defaultController
                                     'UomCode' => $value->uomcode,
                                     'BatchNo' => $value->batchno,
                                     'expdate' => $value->expdate,
-                                    'balqty' => $vrqty
+                                    'balqty' => $QtyOnHand
                                 ]);
                         }
 
@@ -624,6 +626,13 @@ class StockCountController extends defaultController
                             ->where('year', '=', $yearperiod->year)
                             ->update([
                                 'frozen' => '0',
+                            ]);
+
+                    DB::table('material.phycntdt')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('idno','=',$value->idno)
+                            ->update([
+                                'dspqty' => $dspqty,
                             ]);
                 }
 

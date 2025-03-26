@@ -62,8 +62,8 @@ class TestController extends defaultController
             //     return $this->get_merge_pdf($request);
             // case 'update_stockloc_uomcode':
             //     return $this->update_stockloc_uomcode($request);
-            // case 'update_productmaster':
-                // return $this->update_productmaster($request);
+            case 'betulkan_semula_imp_stockcount':
+                return $this->betulkan_semula_imp_stockcount($request);
             case 'delete_stockloc_terlebih':
                 return $this->delete_stockloc_terlebih($request);
             case 'betulkan_poli_qtyonhand':
@@ -4884,6 +4884,92 @@ class TestController extends defaultController
 
             dd('Error'.$e);
         }               
+    }
+
+    public function betulkan_semula_imp_stockcount(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $ivtxndt = DB::table('material.ivtxndt')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno','34')
+                            ->where('trantype','phycnt')
+                            ->where('deptcode','imp')
+                            ->get();
+
+            $phycnthd = DB::table('material.phycnthd')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno','30')
+                            ->first();
+
+            foreach ($ivtxndt as $key => $value) {
+                $ivdspdt = DB::table('material.ivdspdt')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$value->itemcode)
+                            ->where('issdept','IMP');
+
+                $phycntdt = DB::table('material.phycntdt')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno','34')
+                            ->where('itemcode',$value->itemcode)
+                            ->first();
+
+                $thyqty = $phycntdt->thyqty;
+                $phyqty = $phycntdt->phyqty;
+
+                $dspqty = DB::table('material.ivdspdt')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$value->itemcode)
+                            ->where('issdept','IMP')
+                            ->where('trandate','>=',$phycnthd->frzdate)
+                            ->where('updtime','>=',$phycnthd->frztime)
+                            ->sum('txnqty');
+
+                $dspqty_minus = DB::table('material.ivdspdt')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$value->itemcode)
+                            ->where('issdept','IMP')
+                            ->where('trandate','=',$phycnthd->phycntdate)
+                            ->sum('txnqty');
+
+                $vrqty =  floatval($phyqty) - floatval($thyqty) + Floatval($dspqty);
+
+                DB::table('material.ivtxndt')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno',$value->idno)
+                            ->update([
+                                'txnqty' => $vrqty
+                            ]);
+
+                $newqtyonhand = $phyqty;
+                $product_obj = DB::table('material.product')
+                    ->where('product.unit','=','imp')
+                    ->where('product.compcode','=',session('compcode'))
+                    ->where('product.itemcode','=',$value->itemcode)
+                    ->where('product.uomcode','=',$value->uomcode)
+                    ->update([
+                        'qtyonhand' => $newqtyonhand,
+                        // 'avgcost' => $newAvgCost,
+                    ]);
+
+                DB::table('material.stockloc')
+                    // ->where('product.unit','=','imp')
+                    ->where('stockloc.compcode','=',session('compcode'))
+                    ->where('stockloc.itemcode','=',$value->itemcode)
+                    ->where('stockloc.deptcode','=','IMP')
+                    ->update([
+                        'qtyonhand' => $newqtyonhand,
+                        // 'avgcost' => $newAvgCost,
+                    ]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }          
     }
     
 }
