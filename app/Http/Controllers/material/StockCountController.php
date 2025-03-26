@@ -396,7 +396,7 @@ class StockCountController extends defaultController
                                         ->where('updtime','>=',$frztime)
                                         ->sum('txnqty');
 
-                            $dspqty_amt = floatval($thyqty) * floatval($value->unitcost);
+                            $dspqty_amt = floatval($dspqty) * floatval($value->unitcost);
                         }else{
                             $dspqty = 0;
                             $dspqty_amt = 0;

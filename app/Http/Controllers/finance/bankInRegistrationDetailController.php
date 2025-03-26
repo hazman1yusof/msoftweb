@@ -246,7 +246,7 @@ class bankInRegistrationDetailController extends defaultController
                     ->where('db.source','PB')
                     ->whereIn('db.trantype',['RC','RD'])
                     ->where('db.recstatus','POSTED')
-                    ->where('db.posteddate','<=',$apacthdr->postdate)
+                    ->where('db.posteddate',$apacthdr->postdate)
                     // ->whereOn('db.paymode','pt')
                     ->where('db.amount','!=',0)
                     ->where('db.cbflag',0);
