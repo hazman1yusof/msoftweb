@@ -55,7 +55,23 @@ class bankInRegistrationDetailController extends defaultController
                                 'compcode'=>session('compcode'),
                                 'auditno'=>$auditno
                             ]);
+            }else{
+                $auditno = $apacthdr->auditno;
+                DB::table('finance.apactdtl')
+                        ->where('compcode',session('compcode'))
+                        ->where('source',$apacthdr->source)
+                        ->where('trantype',$apacthdr->trantype)
+                        ->where('auditno',$apacthdr->auditno)
+                        ->delete();
             }
+
+            DB::table('finance.apacthdr')
+                        ->where('idno',$request->idno)
+                        ->update([
+                            'amount' => $request->amount,
+                            'commamt' => $request->comamt,
+                            'totBankinAmt' => $request->dtlamt,
+                        ]);
 
             $lineno_ = 1;
             foreach ($request->idno_array as $key_db => $value_db) {
@@ -65,6 +81,9 @@ class bankInRegistrationDetailController extends defaultController
                                 ->first();
 
                 $rate = $request->rate_array[$key_db];
+                if(empty($rate)){
+                    $rate = 0;
+                }
 
                 $commamt = floatval($dbacthdr->amount) * floatval($rate) / 100;
 
@@ -103,17 +122,17 @@ class bankInRegistrationDetailController extends defaultController
                         // 'deluser' => $dbacthdr->,
                         // 'deldate' => $dbacthdr->,
                         // 'GSTCode' => $dbacthdr->,
-                        // 'AmtB4GST' => $dbacthdr->,
+                        // 'AmtB4GST' => $commamt,
                         'unit' => session('unit'),
                         'taxamt' => $rate,//*+
                     ]);
 
-                DB::table('debtor.dbacthdr')
-                                ->where('compcode',session('compcode'))
-                                ->where('idno',$value_db)
-                                ->update([
-                                    'cbflag' => 1
-                                ]);
+                // DB::table('debtor.dbacthdr')
+                //                 ->where('compcode',session('compcode'))
+                //                 ->where('idno',$value_db)
+                //                 ->update([
+                //                     'cbflag' => 1
+                //                 ]);
 
                 $lineno_ = $lineno_ + 1;
             }
@@ -164,7 +183,7 @@ class bankInRegistrationDetailController extends defaultController
         if(!empty($request->searchCol)){
             if($request->searchCol[0] == 'posteddate'){
                 $table = $table->Where(function ($table) use ($request){
-                        $table->Where('db.posteddate',$request->wholeword);
+                        $table->Where('db.posteddate','>=',$request->wholeword);
                 });
             }else{
                 $table = $table->Where(function ($table) use ($request){
@@ -187,7 +206,6 @@ class bankInRegistrationDetailController extends defaultController
         $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
-
     }
 
     public function dbacthdr_paymode_cash($apacthdr){
@@ -237,7 +255,56 @@ class bankInRegistrationDetailController extends defaultController
     }
 
     public function maintable(Request $request){
-        dd('hi');
+        $apacthdr = DB::table('finance.apacthdr')
+                        // ->where('compcode',session('compcode'))
+                        ->where('idno',$request->idno)
+                        ->first();
+
+        $table = DB::table('finance.apactdtl as ap')
+                    ->join('debtor.dbacthdr as db', function($join){
+                            $join = $join
+                                ->where('db.compcode',session('compcode'))
+                                ->on('db.idno','ap.grnno');
+                        });
+
+        if($apacthdr->paymode == 'CARD'){
+            $table = $table
+                        ->select('db.idno','ap.compcode','ap.source','ap.trantype','ap.auditno','ap.lineno_','ap.entrydate','ap.document','ap.reference','ap.amount','ap.stat','ap.mrn','ap.episno','ap.billno','ap.paymode','ap.allocauditno','ap.alloclineno','ap.alloctnauditno','ap.alloctnlineno','ap.lastuser','ap.lastupdate','ap.grnno','ap.dorecno','ap.category','ap.deptcode','ap.adduser','ap.adddate','ap.recstatus','ap.upduser','ap.upddate','ap.deluser','ap.deldate','ap.GSTCode','ap.AmtB4GST','ap.unit','ap.taxamt as refcomrate','db.trantype as reftype','db.auditno as allocauditno','db.paymode as refpaymode','db.recptno as refrecptno','db.posteddate as refdocdate','db.amount as refamount',"py.comrate",'db.reference as refreference')
+                        ->join('debtor.paymode as py', function($join) use ($apacthdr){
+                            $join = $join
+                                ->where('py.compcode',session('compcode'))
+                                ->where('py.source','AR')
+                                ->where('py.paytype','CARD')
+                                ->where('py.cardcent',$apacthdr->payto)
+                                ->on('py.paymode','db.paymode');
+                        });
+        }else{
+                $table = $table
+                        ->select('db.idno','ap.compcode','ap.source','ap.trantype','ap.auditno','ap.lineno_','ap.entrydate','ap.document','ap.reference','ap.amount','ap.stat','ap.mrn','ap.episno','ap.billno','ap.paymode','ap.allocauditno','ap.alloclineno','ap.alloctnauditno','ap.alloctnlineno','ap.lastuser','ap.lastupdate','ap.grnno','ap.dorecno','ap.category','ap.deptcode','ap.adduser','ap.adddate','ap.recstatus','ap.upduser','ap.upddate','ap.deluser','ap.deldate','ap.GSTCode','ap.AmtB4GST','ap.unit','ap.taxamt as refcomrate','db.trantype as reftype','db.auditno as allocauditno','db.paymode as refpaymode','db.recptno as refrecptno','db.posteddate as refdocdate','db.amount as refamount','db.reference as refreference');
+        }
+                
+        $table = $table
+                    ->where('ap.compcode',session('compcode'))
+                    ->where('ap.source',$apacthdr->source)
+                    ->where('ap.trantype',$apacthdr->trantype)
+                    ->where('ap.auditno',$apacthdr->auditno);
+
+        // dd($this->getQueries($table));
+
+        $paginate = $table->paginate($request->rows);
+
+        //////////paginate/////////
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
     }
 
     public function get_draccno($itemcode){

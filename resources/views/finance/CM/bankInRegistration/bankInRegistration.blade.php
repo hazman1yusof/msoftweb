@@ -222,7 +222,7 @@ i.fa {
 										<input id="auditno" name="auditno" type="text" class="form-control input-sm" readonly rdOnly>
 				  				</div>
 
-					  			<label class="col-md-2 control-label" for="amount">Cash Amount</label>  
+					  			<label class="col-md-2 control-label" for="amount" id="amount_label">Cash Amount</label>  
 				  				<div class="col-md-2">
 										<input id="amount" name="amount" type="text" class="form-control input-sm" data-validation="required">
 				  				</div>
@@ -245,14 +245,14 @@ i.fa {
 
 					  			<label class="col-md-2 control-label" for="comamt">Commision Amt</label>  
 				  				<div class="col-md-2">
-										<input id="comamt" name="comamt" type="text" class="form-control input-sm" readonly rdOnly>
+										<input id="comamt" name="comamt" type="text" class="form-control input-sm">
 				  				</div>
 				    		</div>
 
 				    		<div class="form-group">
-				    			<label class="col-md-2 control-label" for="remarks">Reference</label>  
+				    			<label class="col-md-2 control-label" for="reference">Reference</label>  
 				  				<div class="col-md-6" >
-										<input id="remarks" name="remarks" type="text" class="form-control input-sm">
+										<input id="reference" name="reference" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
 				  				</div>
 
 					  			<label class="col-md-2 control-label" for="gst">GST</label>  
@@ -280,10 +280,10 @@ i.fa {
 					  				</div>
 					  			</div>
 
-					  			<label class="col-md-2 control-label" for="netamount">Nett Amount</label>  
+					  			<!-- <label class="col-md-2 control-label" for="netamount">Nett Amount</label>  
 				  				<div class="col-md-2">
 										<input id="netamount" name="netamount" type="text" class="form-control input-sm" readonly rdOnly>
-				  				</div>
+				  				</div> -->
 				    		</div>
 
 				    		<div class="form-group">
@@ -311,23 +311,29 @@ i.fa {
 			<div class='col-md-12'>
 				<div class='panel panel-info'>
 					<div class="panel-heading" style="padding: 15px;">Bank In Registration Detail
-						<input id="alloText" placeholder="Search Here.." type="text" class="form-control input-sm" style="position: absolute;
-						  right: 120px;
-						  top: 10px;
-						  width: 200px;">
-						<select class="form-control" id="alloCol" style="position: absolute;
-					    right: 330px;
-					    top: 10px;
-					    width: 200px;">
-							<option value="trantype" >Type</option>
-							<option value="auditno" >Audit No</option>
-							<option value="recptno" selected>Document</option>
-							<option value="posteddate" >Document Date</option>
-						</select>
-						<button id="searhcAlloBtn" type="button" class="btn btn-primary" style="position: absolute;
-					    right: 50px;
-					    top: 10px;">
-					  Search</button>
+						<div id="allo_search_div" style="display:none;">
+							<input id="alloDate" type="date" class="form-control input-sm" style="position: absolute;
+							  right: 120px;
+							  top: 10px;
+							  width: 200px;display: none;">
+							<input id="alloText" placeholder="Search Here.." type="text" class="form-control input-sm" style="position: absolute;
+							  right: 120px;
+							  top: 10px;
+							  width: 200px;">
+							<select class="form-control" id="alloCol" style="position: absolute;
+						    right: 330px;
+						    top: 10px;
+						    width: 200px;">
+								<option value="trantype" >Type</option>
+								<option value="auditno" >Audit No</option>
+								<option value="recptno" selected>Document</option>
+								<option value="posteddate" >Document Date</option>
+							</select>
+							<button id="searhcAlloBtn" type="button" class="btn btn-primary" style="position: absolute;
+						    right: 50px;
+						    top: 10px;">
+						  Search</button>
+						</div>
 					</div>
 					<div class="panel-body">
 						<form id='formdata2' class='form-vertical' style='width:99%'>

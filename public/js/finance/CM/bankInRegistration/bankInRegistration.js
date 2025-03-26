@@ -30,6 +30,7 @@ $(document).ready(function () {
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency =new currencymode(['#amount','#refcomrate','#comamt','#netamount','#dtlamt']);
 	var fdl = new faster_detail_load();
+	var myallocation = new Allocation();
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#actdate"]);
@@ -44,6 +45,7 @@ $(document).ready(function () {
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
+			urlParam2.edit='false';
 			parent_close_disabled(true);
 			actdateObj.getdata().set();
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
@@ -58,11 +60,12 @@ $(document).ready(function () {
 					rdonly("#formdata");
 					hideOne("#formdata");
 					setpaymodeused();
+					dialog_bankcode.on();
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
-					enableForm('#formdata');
+					enableForm('#formdata',['bankcode','paymode','unit']);
 					frozeOnEdit("#dialogForm");
 					rdonly("#formdata");
 					$('#formdata :input[hideOne]').show();
@@ -75,9 +78,8 @@ $(document).ready(function () {
 					setpaymodeused('view');
 					break;
 			}
-			if(oper!='view'){
-				dialog_bankcode.on();
-			}
+			// if(oper=='edit'){
+			// }
 
 			if(oper!='add'){
 				dialog_bankcode.check(errorField);
@@ -98,6 +100,7 @@ $(document).ready(function () {
 		},
 
 		close: function( event, ui ) {
+			urlParam2.edit='false';
 			// addmore_jqgrid2.state = false;
 			// addmore_jqgrid2.more = false;
 			parent_close_disabled(false);
@@ -161,7 +164,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
 		action:'maintable',
-		url:'./directPayment/table',
+		url:'./bankInRegistration/table',
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -178,23 +181,25 @@ $(document).ready(function () {
 			{ label: 'idno', name: 'idno', width: 40, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', width: 10 , hidden: true  },
 			{ label: 'Bank Code', name: 'bankcode', width: 35 , checked:true, canSearch: true, classes : 'wrap text-uppercase', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Pay To', name: 'payto', width: 35, classes : 'wrap text-uppercase', canSearch: true, formatter: showdetail,unformat:un_showdetail },
+			{ label: 'Payer', name: 'payto', width: 35, classes : 'wrap text-uppercase', canSearch: true, formatter: showdetail,unformat:un_showdetail },
 			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', canSearch: false, checked: false, hidden:true},
 			{ label: 'Audit No', name: 'auditno', width: 15,  canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
-			{ label: 'PV No', name: 'pvno', width: 15, hidden:false, align: 'right', formatter: padzero, unformat: unpadzero},
+			{ label: 'Paymode', name: 'paymode', width: 15},
 			{ label: 'Post Date', name: 'actdate', width: 25, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Amount', name: 'amount', width: 30,  align: 'right',formatter:'currency'},
+			{ label: 'Commision', name: 'commamt', width: 30,  align: 'right',formatter:'currency'},
+			{ label: 'Tot Detail Amt', name: 'totBankinAmt', width: 30,  align: 'right',formatter:'currency'},
 			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap text-uppercase'},
-			{ label: ' ', name: 'Checkbox',sortable:false, width: 15,align: "center", formatter: formatterCheckbox },	
+			{ label: 'Reference', name: 'reference', width: 25},
 			{ label: 'Payment Mode', name: 'paymode', width: 30, hidden:true },
 			{ label: 'Cheque No', name: 'cheqno', width: 40, hidden:true},//formatter:formatterCheqnno, unformat:unformatterCheqnno
 			{ label: 'Entered By', name: 'adduser', width: 35,  hidden:true},
 			{ label: 'Entered Date', name: 'adddate', width: 40,  hidden:true},
-			{ label: 'Remarks', name: 'remarks', width: 40, hidden:true},
 			{ label: 'GST', name: 'TaxClaimable', width: 40, hidden:true},
 			{ label: 'Cheq Date', name: 'cheqdate', width: 40, hidden:true},
 			{ label: 'source', name: 'source', width: 40, hidden:true},
 		 	{ label: 'trantype', name: 'trantype', width: 40, hidden:true},
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 15,align: "center", formatter: formatterCheckbox },	
 		 	
 		],
 		autowidth:true,
@@ -221,7 +226,7 @@ $(document).ready(function () {
 			
 			urlParam2.idno=selrowData("#jqGrid").idno;
 			refreshGrid("#jqGrid3",urlParam2);
-			$("#pdfgen1").attr('href','./directPayment/showpdf?auditno='+selrowData("#jqGrid").auditno);
+			$("#pdfgen1").attr('href','./bankInRegistration/showpdf?auditno='+selrowData("#jqGrid").auditno);
 
 			populate_form(selrowData("#jqGrid"));
 		},
@@ -296,6 +301,8 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view', '');
+
+			$("#jqGrid2").data('initAllo','true');
 			refreshGrid("#jqGrid2",urlParam2);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
@@ -307,6 +314,8 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
+
+			$("#jqGrid2").data('initAllo','true');
 			refreshGrid("#jqGrid2",urlParam2);
 
 			if(selrowData("#jqGrid").recstatus == 'POSTED'){
@@ -333,6 +342,7 @@ $(document).ready(function () {
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 
 	function hideatdialogForm(hide,saveallrow){
+		$('#allo_search_div').hide();
 		if(saveallrow == 'saveallrow'){
 			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#saveDetailLabel,#saveAndPost").hide();
 			$("#jqGridPager2SaveAll,#jqGridPager2CancelAll").show();
@@ -342,6 +352,7 @@ $(document).ready(function () {
 		}else{
 			$("#jqGrid2_iladd,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#saveAndPost").show();
 			$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll,#jqGrid2_ilcancel,#jqGrid2_ilsave").hide();
+			$('#allo_search_div').show();
 		}
 	}
 
@@ -388,7 +399,7 @@ $(document).ready(function () {
 		obj.oper = $(this).data('oper');
 		obj._token = $('#_token').val();
 		
-		$.post( 'directPayment/form', obj , function( data ) {
+		$.post( 'bankInRegistration/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 			$(self_).attr('disabled',false);
 			cbselect.empty_sel_tbl();
@@ -400,23 +411,23 @@ $(document).ready(function () {
 		});
 	});
 
-	$("#but_post2_jq").click(function(){
+	// $("#but_post2_jq").click(function(){
 	
-		var obj={};
-		obj.auditno = selrowData('#jqGrid').auditno;
-		obj.oper = $(this).data('oper');
-		obj._token = $('#_token').val();
-		oper=null;
+	// 	var obj={};
+	// 	obj.auditno = selrowData('#jqGrid').auditno;
+	// 	obj.oper = $(this).data('oper');
+	// 	obj._token = $('#_token').val();
+	// 	oper=null;
 		
-		$.post( './directPayment/form', obj , function( data ) {
-			cbselect.empty_sel_tbl();
-			refreshGrid('#jqGrid', urlParam);
-		}).fail(function(data) {
-			$('#error_infront').text(data.responseText);
-		}).success(function(data){
+	// 	$.post( './directPayment/form', obj , function( data ) {
+	// 		cbselect.empty_sel_tbl();
+	// 		refreshGrid('#jqGrid', urlParam);
+	// 	}).fail(function(data) {
+	// 		$('#error_infront').text(data.responseText);
+	// 	}).success(function(data){
 			
-		});
-	});
+	// 	});
+	// });
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form,selfoper,saveParam,obj,needrefresh){
@@ -456,7 +467,7 @@ $(document).ready(function () {
 				refreshGrid("#jqGrid2", urlParam2);
 				//doesnt need to do anything
 			}
-			disableForm('#formdata');
+			disableForm('#formdata',['amount','comamt']);
 
 			// if(needrefresh === 'refreshGrid'){
 			// 	refreshGrid("#jqGrid", urlParam);
@@ -639,7 +650,6 @@ $(document).ready(function () {
 		}
 	}
 
-	var myallocation = new Allocation();
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
 		action:'maintable',
@@ -664,7 +674,7 @@ $(document).ready(function () {
 		 	{ label: 'Document', name: 'refrecptno', width: 20, classes: 'wrap', editable:false},
 			{ label: 'Doc Date', name: 'refdocdate', width: 20, classes: 'wrap', editable:false},
 			{ label: 'Amount', name: 'refamount', width: 20, classes: 'wrap', editable:false},
-			{ label: 'Comm Rate', name: 'refcomrate', width: 20, classes: 'wrap', editable:false, formatter: formattertext,unformat:unformattertext},
+			{ label: 'Comm Rate', name: 'refcomrate', width: 20, classes: 'wrap', editable:false, hidden:true},
 			{ label: ' ', name: 'tick', width: 20, editable: false, formatter: formatterCheckbox2},
 			{ label: 'Comm Amt', name: 'commamt', width: 20, classes: 'wrap', editable:false},
 			{ label: 'Reference', name: 'refreference', width: 20, classes: 'wrap', editable:false},
@@ -674,6 +684,8 @@ $(document).ready(function () {
 			{ label: 'GST Code', name: 'GSTCode', width: 100, hidden:true},
 			{ label: 'Amount Before GST', name: 'AmtB4GST', hidden:true},
 			{ label: 'Amount', name: 'amount', width: 80, hidden:true},
+			{ label: 'commamt', name: 'commamt', width: 80, hidden:true},
+			{ label: 'totBankinAmt', name: 'totBankinAmt', width: 80, hidden:true},
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -687,6 +699,10 @@ $(document).ready(function () {
 		// sortorder: "desc",
 		pager: "#jqGridPager2",
 		loadComplete: function(data){
+			if($('#jqGrid2').data("initAllo") == 'true'){
+				$('#jqGrid2').data("initAllo",'false');
+				myallocation.initAllo();
+			}
 		},
 		gridComplete: function(){
 			$("#jqGrid2_c input[type='checkbox']").on('click',function(){
@@ -745,6 +761,24 @@ $(document).ready(function () {
 
 			// this.updateAlloField();
 		}
+		this.initAllo = function(){
+			this.arrayAllo.length = 0;
+			let self = this;
+			let rowdata = $('#jqGrid2').jqGrid ('getRowData');
+
+			rowdata.forEach(function(e,i){
+				let comamt = parseFloat(e.refcomrate) * parseFloat(e.refamount) / 100;
+				if(isNaN(comamt)){
+					comamt = 0;
+				}
+				e.commamt = parseFloat(comamt).toFixed(4);
+
+				self.arrayAllo.push({idno:e.idno,obj:e});
+			});
+			console.log(this.arrayAllo);
+
+			this.updateAlloField();
+		}
 		this.addAllo = function(idno,paid,bal){
 			var obj=getlAlloFromGrid(idno);
 
@@ -764,7 +798,7 @@ $(document).ready(function () {
 
 
 			this.arrayAllo[alloIndex].obj.refcomrate = refcomrate;
-			this.arrayAllo[alloIndex].obj.commamt = commamt;
+			this.arrayAllo[alloIndex].obj.commamt = parseFloat(commamt).toFixed(4);
 			console.log(this.arrayAllo);
 			
 			// // $(fieldID).on('change',[idno,self.arrayAllo,self.allo_error],onchangeField);
@@ -834,6 +868,8 @@ $(document).ready(function () {
 			var self=this;
 			$.each(this.arrayAllo, function( index, obj ) {
 				$("input#checkbox_selection2_"+obj.idno).prop('checked', true);
+				$("#jqGrid2").jqGrid('setRowData', obj.idno ,{commamt:obj.obj.commamt});
+				// $('#text_comrate_'+obj.idno).val(obj.obj.refcomrate)
 				// $("#"+obj.idno+"_amtpaid").on('change',[obj.idno,self.arrayAllo],onchangeField);
 				// if(obj.obj.amtpaid != " "){
 				// 	$("#"+obj.idno+"_amtpaid").val(obj.obj.amtpaid).removeClass( "error" ).addClass( "valid" );
@@ -847,12 +883,13 @@ $(document).ready(function () {
 			let totalallo = 0;
 			let totalcom = 0;
 			$.each(this.arrayAllo, function( index, obj ) {
-				let amt = parseFloat(obj.obj.refamount);
+				let amt = parseFloat(obj.obj.refamount).toFixed(4);
 				let com = parseFloat(obj.obj.commamt).toFixed(4);
+
 				$("#jqGrid2").jqGrid('setRowData', obj.idno ,{commamt:com});
 
-				totalcom += com;
-				totalallo += amt;
+				totalcom = parseFloat(totalcom) + parseFloat(com);
+				totalallo = parseFloat(totalallo) + parseFloat(amt);
 			});
 			$('#dtlamt').val(totalallo);
 			$('#comamt').val(totalcom);
@@ -881,12 +918,11 @@ $(document).ready(function () {
 
 		function getlAlloFromGrid(idno){
 			var temp=$("#jqGrid2").jqGrid ('getRowData', idno);
-			temp.refcomrate = $('#text_comrate_'+idno).val();
-			let comamt = parseFloat($('#text_comrate_'+idno).val()) * parseFloat(temp.refamount) / 100;
+			let comamt = parseFloat(temp.refcomrate) * parseFloat(temp.refamount) / 100;
 			if(isNaN(comamt)){
 				comamt = 0;
 			}
-			temp.commamt = comamt;
+			temp.commamt = parseFloat(comamt).toFixed(4);;
 
 			return temp;
 		}
@@ -904,8 +940,23 @@ $(document).ready(function () {
 		}
 	}
 
+	$('#alloCol').change(function(){
+		console.log($(this).val());
+		if($(this).val() == 'posteddate'){
+			$('#alloDate').show();
+			$('#alloText').hide();
+		}else{
+			$('#alloText').show();
+			$('#alloDate').hide();
+		}
+	});
+
 	$('#searhcAlloBtn').click(function(){
-		search('#jqGrid2',$("#alloText").val(),$("#alloCol").val(),urlParam2);
+		if($("#alloText").is(":visible")){
+			search('#jqGrid2',$("#alloText").val(),$("#alloCol").val(),urlParam2);
+		}else{
+			search('#jqGrid2',$("#alloDate").val(),$("#alloCol").val(),urlParam2);
+		}
 	});
 
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
@@ -955,45 +1006,33 @@ $(document).ready(function () {
 	function formattertext(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
-		
-		return "<input class='form-control input-sm' data-rate='"+cellvalue+"' type='text' name='text_selection2' id='text_comrate_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+
+		if(urlParam2.edit == 'false'){
+			return cellvalue;
+		}else if(urlParam2.edit == 'true'){
+			return "<input class='form-control input-sm' data-rate='"+cellvalue+"' type='text' name='text_selection2' id='text_comrate_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		}
 	}
 
 	function unformattertext(cellvalue, options, td){
-		return $(td).children('input').val();
-	}
-
-	function formatter_commamt_edit(cellvalue, options, rowObject){
-		let idno = cbselect.idno;
-		let recstatus = cbselect.recstatus;
-		let amt = rowObject.refamount;
-		let comrate = $('#text_comrate_'+idno).val();
-		let comamt = parseFloat(comrate) * parseFloat(amt);
-
-		if(isNaN(comamt)){
-			return '';
+		if(urlParam2.edit == 'false'){
+			return cellvalue;
+		}else if(urlParam2.edit == 'true'){
+			return $(td).children('input').val();
 		}
-		return comamt;
-	}
-
-	function formatter_commamt(cellvalue, options, rowObject){
-		let idno = cbselect.idno;
-		let recstatus = cbselect.recstatus;
-		let amt = rowObject.refamount;
-		let comrate = rowObject.refcomrate;
-		let comamt = parseFloat(comrate) * parseFloat(amt);
-
-		if(isNaN(comamt)){
-			return '';
-		}
-		return comamt;
 	}
 
 	function formatterCheckbox2(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
+
+
+		if(urlParam2.edit == 'false'){
+			return '';
+		}else if(urlParam2.edit == 'true'){
+			return "<input type='checkbox' name='checkbox_selection2' id='checkbox_selection2_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		}
 		
-		return "<input type='checkbox' name='checkbox_selection2' id='checkbox_selection2_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 	}
 
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
@@ -1009,7 +1048,7 @@ $(document).ready(function () {
 		}
 		var param={action:'input_check',url:'./util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
-		fdl.get_array('directPayment',options,param,case_,cellvalue);
+		fdl.get_array('bankInRegistration',options,param,case_,cellvalue);
 		if(cellvalue == null)cellvalue = " ";
 		return cellvalue;
 	}
@@ -1077,7 +1116,7 @@ $(document).ready(function () {
 			unsaved = false;
 		} else {
 			mycurrency.formatOn();
-			dialog_bankcode.on();
+			// dialog_bankcode.on();
 		}
 	});
 
@@ -1086,15 +1125,17 @@ $(document).ready(function () {
 	$("#saveHeaderLabel").click(function(){
 		emptyFormdata(errorField,'#formdata2');
 		hideatdialogForm(true);
-		dialog_bankcode.on();
-		enableForm('#formdata');
+		// dialog_bankcode.on();
+		enableForm('#formdata',['bankcode','paymode','unit']);
 		rdonly('#formdata');
 		$(".noti").empty();
+		urlParam2.edit='false';
 		refreshGrid("#jqGrid2",urlParam2);
 		errorField.length=0;
 	});
 
 	$('#saveAndPost').click(function(){
+		mycurrency.formatOff();
 		let idno_array = [];
 		let rate_array = [];
 		myallocation.arrayAllo.forEach(function(e,i){
@@ -1104,6 +1145,9 @@ $(document).ready(function () {
 
 		var obj={
 			_token : $('#_token').val(),
+			amount : $('#amount').val(),
+			comamt : $('#comamt').val(),
+			dtlamt : $('#dtlamt').val(),
 			idno_array : idno_array,
 			rate_array : rate_array
 		}
@@ -1111,9 +1155,14 @@ $(document).ready(function () {
 		$.post( "./bankInRegistrationDetail/form?oper=saveandpost&idno="+$('#idno').val(), obj , function( data ) {
 			
 		},'json').fail(function (data) {
+			mycurrency.formatOn();
 			alert(data.responseText);
 		}).done(function (data) {
-			
+			mycurrency.formatOn();
+			urlParam2.edit='false';
+			$("#jqGrid2").data('initAllo','true');
+			refreshGrid("#jqGrid2",urlParam2);
+			hideatdialogForm(true);
 		});
 	});
 
@@ -1133,7 +1182,6 @@ $(document).ready(function () {
 	///////////////////////////////////////////////////////////////////////////////
 
 	function onall_editfunc(){
-		
 		$("#jqGrid2 input[name='amount'], #jqGrid2 input[name='AmtB4GST'], #jqGrid2 input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 		//$("#jqGrid2 input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_edited_gst);
 		
@@ -1321,7 +1369,7 @@ $(document).ready(function () {
 			}
 		},'urlParam','radio','tab'
 	);
-	dialog_bankcode.makedialog(true);
+	dialog_bankcode.makedialog(false);
 
 	var dialog_payer = new ordialog(
 		'payer2','finance.cardcent','#payer2','errorField',
@@ -1496,10 +1544,17 @@ $(document).ready(function () {
 			$('#payer1_div').hide();
 			$('#payer2_div').show();
 			dialog_payer.on();
+			$('#amount_label').html('Card Amount');
+		}else if($(this).val() == 'CASH'){
+			$('#payer1_div').show();
+			$('#payer2_div').hide();
+			dialog_payer.off();
+			$('#amount_label').html('Cash Amount');
 		}else{
 			$('#payer1_div').show();
 			$('#payer2_div').hide();
 			dialog_payer.off();
+			$('#amount_label').html('Cheque Amount');
 		}
 	});
 
@@ -1514,10 +1569,20 @@ $(document).ready(function () {
 				$('#payer1_div').hide();
 				$('#payer2_div').show();
 				dialog_payer.on();
+				$('#payer2').val(selrowData("#jqGrid").payto);
+				$('#amount_label').html('Card Amount');
+			}else if(paymode == 'CASH'){
+				$('#payer1_div').show();
+				$('#payer2_div').hide();
+				dialog_payer.off();
+				$('#payer1').val(selrowData("#jqGrid").payto);
+				$('#amount_label').html('Cash Amount');
 			}else{
 				$('#payer1_div').show();
 				$('#payer2_div').hide();
 				dialog_payer.off();
+				$('#payer1').val(selrowData("#jqGrid").payto);
+				$('#amount_label').html('Cheque Amount');
 			}
 		}
 	}

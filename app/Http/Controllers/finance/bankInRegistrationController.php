@@ -59,40 +59,11 @@ class bankInRegistrationController extends defaultController
     public function maintable(Request $request){
 
         $table = DB::table('finance.apacthdr AS ap')
-                    ->select(
-                        'ap.compcode AS compcode',
-                        'ap.auditno AS auditno',
-                        'ap.trantype AS trantype',
-                        'ap.doctype AS doctype',
-                        'ap.suppcode AS suppcode',
-                        'ap.actdate AS actdate',
-                        'ap.document AS document',
-                        'ap.cheqno AS cheqno',
-                        'ap.deptcode AS deptcode',
-                        'ap.amount AS amount',
-                        'ap.outamount AS outamount',
-                        'ap.recstatus AS recstatus',
-                        'ap.payto AS payto',
-                        'su.name AS supplier_name', 
-                        'ap.recdate AS recdate',
-                        'ap.category AS category',
-                        'ap.remarks AS remarks',
-                        'ap.adduser AS adduser',
-                        'ap.adddate AS adddate',
-                        'ap.upduser AS upduser',
-                        'ap.upddate AS upddate',
-                        'ap.source AS source',
-                        'ap.idno AS idno',
-                        'ap.unit AS unit',
-                        'ap.pvno AS pvno',
-                        'ap.paymode AS paymode',
-                        'ap.bankcode AS bankcode',
-                        'ap.TaxClaimable AS TaxClaimable',
-                    )
-                    ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.payto')
+                    ->select('ap.idno','ap.compcode','ap.source','ap.trantype','ap.doctype','ap.auditno','ap.document','ap.suppcode','ap.payto','ap.suppgroup','ap.bankcode','ap.paymode','ap.cheqno','ap.cheqdate','ap.actdate','ap.recdate','ap.category','ap.amount','ap.outamount','ap.remarks','ap.postflag','ap.doctorflag','ap.stat','ap.entryuser','ap.entrytime','ap.upduser','ap.upddate','ap.conversion','ap.srcfrom','ap.srcto','ap.deptcode','ap.reconflg','ap.effectdatefr','ap.effectdateto','ap.frequency','ap.refsource','ap.reftrantype','ap.refauditno','ap.pvno','ap.entrydate','ap.recstatus','ap.adduser','ap.adddate','ap.reference','ap.TaxClaimable','ap.unit','ap.allocdate','ap.postuser','ap.postdate','ap.unallocated','ap.requestby','ap.requestdate','ap.request_remark','ap.supportby','ap.supportdate','ap.support_remark','ap.verifiedby','ap.verifieddate','ap.verified_remark','ap.approvedby','ap.approveddate','ap.approved_remark','ap.cancelby','ap.canceldate','ap.cancelled_remark','ap.bankaccno','ap.commamt','ap.totBankinAmt')
+                    // ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.payto')
                     ->where('ap.compcode','=', session('compcode'))
                     ->where('ap.source','=', 'CM')
-                    ->where('ap.trantype', '=','DP');
+                    ->whereIn('ap.trantype', ['BD','BS','BQ']);
 
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
@@ -172,19 +143,16 @@ class bankInRegistrationController extends defaultController
                 case 'CASH':
                     $source = 'CM';
                     $trantype = 'BS';
-                    $bankcode = null;
                     $payto = $request->payer1;
                     break;
                 case 'CARD':
                     $source = 'CM';
                     $trantype = 'BD';
-                    $bankcode = $request->payer2;
                     $payto = $request->payer2;
                     break;
                 case 'CHEQUE':
                     $source = 'CM';
                     $trantype = 'BQ';
-                    $bankcode = null;
                     $payto = $request->payer1;
                     break;
             }
@@ -200,7 +168,7 @@ class bankInRegistrationController extends defaultController
                         // 'suppcode' => 
                         'payto' => $payto,
                         // 'suppgroup' => 
-                        'bankcode' => $bankcode,
+                        'bankcode' => $request->bankcode,
                         'paymode' => $request->paymode,
                         // 'cheqno' => 
                         // 'cheqdate' => 
@@ -230,10 +198,10 @@ class bankInRegistrationController extends defaultController
                         // 'refauditno' => 
                         // 'pvno' => 
                         'entrydate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'recstatus' => 'ACTIVE',
+                        'recstatus' => 'OPEN',
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        // 'reference' => 
+                        'reference' => $request->reference,
                         // 'TaxClaimable' => 
                         'unit' => session('unit'),
                         // 'allocdate' => 
@@ -272,6 +240,65 @@ class bankInRegistrationController extends defaultController
             DB::rollback();
 
             return response($e->getMessage().$e, 500);
+        }
+    }
+
+    public function edit(Request $request){
+        $apacthdr = DB::table('finance.apacthdr')
+                        // ->where('compcode',session('compcode'))
+                        ->where('idno',$request->idno)
+                        ->first();
+
+        switch(strtoupper($apacthdr->paymode)){
+            case 'CASH':
+                $source = 'CM';
+                $trantype = 'BS';
+                $payto = $request->payer1;
+                break;
+            case 'CARD':
+                $source = 'CM';
+                $trantype = 'BD';
+                $payto = $request->payer2;
+                break;
+            case 'CHEQUE':
+                $source = 'CM';
+                $trantype = 'BQ';
+                $payto = $request->payer1;
+                break;
+        }
+
+        $table = DB::table("finance.apacthdr");
+
+        $array_update = [
+            // 'source' => $source,
+            // 'trantype' => $trantype,
+            'payto' => $payto,
+            // 'bankcode' => $bankcode,
+            // 'paymode' => $request->paymode,
+            'reference' => $request->reference,
+            'amount' => $request->amount,
+            'outamount' => $request->amount,
+            'commamt' => $request->comamt,
+            'upduser' => session('username'),
+            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'postdate' => $request->postdate
+        ];
+
+        try {
+            //////////where//////////
+            $table = $table->where('idno','=',$request->idno);
+            $table->update($array_update);
+
+            $responce = new stdClass();
+            $responce->auditno = $request->auditno;
+            $responce->idno = $request->idno;
+            echo json_encode($responce);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e, 500);
         }
     }
 
@@ -647,61 +674,6 @@ class bankInRegistrationController extends defaultController
         $responce->pvalue1 = $tax->pvalue1;
         $responce->pvalue2 = $tax->pvalue2;
         return $responce;         
-    }
-
-    public function edit(Request $request){
-        switch(strtoupper($request->paymode)){
-            case 'CASH':
-                $source = 'CM';
-                $trantype = 'BS';
-                $bankcode = null;
-                $payto = $request->payer1;
-                break;
-            case 'CARD':
-                $source = 'CM';
-                $trantype = 'BD';
-                $bankcode = $request->payer2;
-                $payto = $request->payer2;
-                break;
-            case 'CHEQUE':
-                $source = 'CM';
-                $trantype = 'BQ';
-                $bankcode = null;
-                $payto = $request->payer1;
-                break;
-        }
-        $table = DB::table("finance.apacthdr");
-
-        $array_update = [
-            'source' => $source,
-            'trantype' => $trantype,
-            'payto' => $payto,
-            'bankcode' => $bankcode,
-            'paymode' => $request->paymode,
-            'actdate' => $request->postdate,
-            'amount' => $request->amount,
-            'outamount' => $request->amount,
-            'upduser' => session('username'),
-            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'postdate' => $request->postdate
-        ];
-
-        try {
-            //////////where//////////
-            $table = $table->where('idno','=',$request->idno);
-            $table->update($array_update);
-
-            $responce = new stdClass();
-            $responce->auditno = $request->auditno;
-            $responce->idno = $request->idno;
-            echo json_encode($responce);
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e, 500);
-        }
     }
 
     public function del(Request $request){

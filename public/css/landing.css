@@ -343,9 +343,9 @@ div.fail_msg{
 .ui-jqgrid-bdiv label{
 	margin: 5px 0px 0px 0px;
 }
-.ui-jqgrid-bdiv{
+/*.ui-jqgrid-bdiv{
 	overflow-x: hidden !important;
-}
+}*/
 div#jqGrid_ordcom_panel a.input-group-addon.btn.btn-primary{
 	padding: 6px;
     color: white;
