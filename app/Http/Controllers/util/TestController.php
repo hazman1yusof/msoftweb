@@ -62,8 +62,8 @@ class TestController extends defaultController
             //     return $this->get_merge_pdf($request);
             // case 'update_stockloc_uomcode':
             //     return $this->update_stockloc_uomcode($request);
-            case 'betulkan_semula_imp_stockcount':
-                return $this->betulkan_semula_imp_stockcount($request);
+            case 'kira_blk_netmvqty':
+                return $this->kira_blk_netmvqty($request);
             case 'delete_stockloc_terlebih':
                 return $this->delete_stockloc_terlebih($request);
             case 'betulkan_poli_qtyonhand':
@@ -4970,6 +4970,99 @@ class TestController extends defaultController
 
             dd('Error'.$e);
         }          
+    }
+
+    public function kira_blk_netmvqty(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $from=$request->from;
+            $to=$request->from+3000;
+
+            $stockloc = DB::table('material.stockloc')
+                        ->where('compcode','9B')
+                        ->where('deptcode','IMP')
+                        ->where('year','2025')
+                        ->orderBy('idno', 'DESC')
+                        ->where('itemcode','71021339')
+                        ->offset($from)
+                        ->limit($to)
+                        ->get();
+
+            foreach ($stockloc as $key => $value) {
+
+                // $product = DB::table('material.product')
+                //                 ->where('compcode','9B')
+                //                 ->where('itemcode',$obj->itemcode)
+                //                 ->where('uomcode',$obj->uomcode)
+                //                 ->first();
+
+                $ivdspdt = DB::table('material.ivdspdt')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('issdept','IMP')
+                            ->where('trandate','>=','2025-03-01')
+                            ->where('trandate','<=','2025-03-31')
+                            ->sum('txnqty');
+                $minus = $ivdspdt;
+
+                $ivtxndt = DB::table('material.ivtxndt')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('deptcode','IMP')
+                            ->where('trandate','>=','2025-03-01')
+                            ->where('trandate','<=','2025-03-31')
+                            ->sum('txnqty');
+                $add = $ivtxndt;
+
+
+                $all = floatval($add) - floatval($minus);
+
+                $ivdspdt2 = DB::table('material.ivdspdt')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('issdept','IMP')
+                            ->where('trandate','>=','2025-03-01')
+                            ->where('trandate','<=','2025-03-31')
+                            ->sum('amount');
+                $minus2 = $ivdspdt2;
+
+                $ivtxndt2 = DB::table('material.ivtxndt')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('deptcode','IMP')
+                            ->where('trandate','>=','2025-03-01')
+                            ->where('trandate','<=','2025-03-31')
+                            ->sum('amount');
+                $add2 = $ivtxndt2;
+
+                $all2 = floatval($add2) - floatval($minus2);
+
+                // $netmvqty11 = $product->qtyonhand - $all;
+                // dump($product->qtyonhand);
+                // dump($all);
+                // dump($netmvqty11);
+
+                DB::table('material.stockloc')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('deptcode','IMP')
+                            ->where('year','2025')
+                            ->update([
+                                'netmvqty3' => $all,
+                                'netmvval3' => $all2,
+                            ]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }      
+
+        
     }
     
 }
