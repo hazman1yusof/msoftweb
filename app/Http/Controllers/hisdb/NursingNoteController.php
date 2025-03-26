@@ -2901,8 +2901,6 @@ class NursingNoteController extends defaultController
             if(!empty($request->idno_pivc)){
                 DB::table('nursing.pivc')
                     ->where('idno','=',$request->idno_pivc)
-                    // ->where('mrn','=',$request->mrn_nursNote)
-                    // ->where('episno','=',$request->episno_nursNote)
                     ->update([
                         'hygiene_M' => $request->hygiene_M,
                         'hygiene_E' => $request->hygiene_E,
@@ -2958,7 +2956,6 @@ class NursingNoteController extends defaultController
             }else{
 
                 if($pivc->exists()){
-                    // throw new \Exception('Date already exist.', 500);
                     return response('Date already exist.');
                 }
                 

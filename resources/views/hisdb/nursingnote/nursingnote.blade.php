@@ -41,7 +41,9 @@
                         <li><a data-toggle="tab" id="navtab_gcs" href="#tab-gcs" data-type='gcs'>Glasgow Coma Scale</a></li>
                         <li><a data-toggle="tab" id="navtab_pivc" href="#tab-pivc" data-type='pivc'>PIVC</a></li>
                         <li><a data-toggle="tab" id="navtab_morsefallscale" href="#tab-morsefallscale" data-type='morsefallscale'>Daily Morse Fall Scale Assessment</a></li>
-                    @endif
+                        <li><a data-toggle="tab" id="navtab_thrombo" href="#tab-thrombo" data-type='thrombo'>Thrombophlebitis</a></li>
+
+                        @endif
                     @if(request()->get('epistycode') == 'OP')
                         <li><a data-toggle="tab" id="navtab_progress" href="#tab-progress" data-type='progress'>Progress Note</a></li>
                     @endif
@@ -54,7 +56,7 @@
                     <input id="bednum_nursNote" name="bednum_nursNote" type="hidden">
                     <input id="age_nursNote" name="age_nursNote" type="hidden">
                     <input type="hidden" id="ordcomtt_phar" value="{{$ordcomtt_phar ?? ''}}">
-                    <!-- <input type="hidden" id="invtt_fbc" value="{{$invtt_fbc ?? ''}}"> -->
+                    
                     <div id="tab-invChart" class="tab-pane fade">
                         @include('hisdb.nursingnote.nursingnote_invChart')
                     </div>
@@ -1352,6 +1354,9 @@
                     </div>
                     <div id="tab-morsefallscale" class="tab-pane fade">
                         @include('hisdb.nursingnote.morsefallscale')
+                    </div>
+                    <div id="tab-thrombo" class="tab-pane fade">
+                        @include('hisdb.nursingnote.nursingnote_thrombo')
                     </div>
                 </div>
             </div>

@@ -1351,6 +1351,8 @@ Route::get('/nursingnote/othersChart_chart','hisdb\NursingNoteController@othersC
 Route::get('/nursingnote/bladder_chart','hisdb\NursingNoteController@bladder_chart');
 Route::post('/morsefallscale/form','hisdb\MorseFallScaleController@form');
 Route::get('/morsefallscale/table','hisdb\MorseFallScaleController@table');
+Route::post('/thrombophlebitis/form','hisdb\ThrombophlebitisController@form');
+Route::get('/thrombophlebitis/table','hisdb\ThrombophlebitisController@table');
 
 //// Client Progress Note (Doctor Note) page ///
 Route::get('/clientprogressnote','hisdb\ClientProgressNoteController@show');

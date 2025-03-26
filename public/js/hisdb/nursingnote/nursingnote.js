@@ -469,6 +469,7 @@ $(document).ready(function (){
         refreshGrid('#jqGridBladder1',urlParam_Bladder,'kosongkan');
         refreshGrid('#jqGridBladder2',urlParam_Bladder,'kosongkan');
         refreshGrid('#jqGridBladder3',urlParam_Bladder,'kosongkan');
+        refreshGrid('#jqGridThrombo',urlParam_Thrombo,'kosongkan');
         
         $("#jqGridNursNote_panel > div").scrollTop(0);
         $("#jqGridNursNote_panel #jqGridNursNote_panel_tabs li").removeClass('active');
@@ -741,6 +742,25 @@ $(document).ready(function (){
                 
                 // $('#tbl_morsefallscale_date').DataTable().ajax.reload();
                 populate_morsefallscale_getdata();
+                break;
+            case 'thrombo':
+                var urlparam_datetimethrombo_tbl = {
+                    action: 'get_table_datetimeThrombo',
+                    mrn: $("#mrn_nursNote").val(),
+                    episno: $("#episno_nursNote").val()
+                }
+                
+                datetimethrombo_tbl.ajax.url("./thrombophlebitis/table?"+$.param(urlparam_datetimethrombo_tbl)).load(function (data){
+                    emptyFormdata_div("#formThrombo",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
+                    $('#datetimethrombo_tbl tbody tr:eq(0)').click(); // to select first row
+                });
+
+                urlParam_Thrombo.filterVal[0] = $("#mrn_nursNote").val();
+                urlParam_Thrombo.filterVal[1] = $("#episno_nursNote").val();
+                urlParam_Thrombo.filterVal[2] = $("#idno_thrombo").val();
+                refreshGrid('#jqGridThrombo',urlParam_Thrombo,'add_thrombojqgrid');
+                $("#jqGridThrombo").jqGrid('setGridWidth', Math.floor($("#jqGridThrombo_c")[0].offsetWidth-$("#jqGridThrombo_c")[0].offsetLeft-30));
+                populate_thrombo_getdata();
                 break;
         }
     });
@@ -3278,7 +3298,6 @@ $(document).ready(function (){
         }
     }
 
-
     function get_total_IO1(){
         var saveParam={
             action: 'get_table_bladder1',
@@ -3608,7 +3627,6 @@ $(document).ready(function (){
             $('#tot_output2').val(numeral(total_output2).format('0,0.00'));
         }
     }
-
 
     function get_total_IO2(){
         var saveParam={
@@ -3940,7 +3958,6 @@ $(document).ready(function (){
         }
     }
 
-
     function get_total_IO3(){
         var saveParam={
             action: 'get_table_bladder3',
@@ -3967,42 +3984,7 @@ $(document).ready(function (){
         });
     }
     ///////////////////////////////////////////end grid///////////////////////////////////////////
-    ///////////////////////////////////////bladder 3 ends///////////////////////////////////////
-
-    ///calculate balance
-    // function calc_balance(){
-    //     var rowids = $('#jqGridBladder1,#jqGridBladder2,#jqGridBladder3').jqGrid('getDataIDs');
-
-    //     var total_i = 0;
-    //     var total_o = 0;
-    //     var balance = 0;
-
-    //     rowids.forEach(function (e,i){
-
-    //      });
-
-    //     var total_input1 = $('#jqGridBladder1 input#'+e+'_tot_input1').val();
-    //     var total_input2 = $('#jqGridBladder2 input#'+e+'_tot_input2').val();
-    //     var total_input3 = $('#jqGridBladder3 input#'+e+'_tot_input3').val();
-
-    //     var total_output1 = $('#jqGridBladder1 input#'+e+'_tot_output1').val();
-    //     var total_output2 = $('#jqGridBladder2 input#'+e+'_tot_output2').val();
-    //     var total_output3 = $('#jqGridBladder3 input#'+e+'_tot_output3').val();
-
-    //     total_i = parseFloat(total_input1)+parseFloat(total_input2)+parseFloat(total_input3);
-    //     total_o = parseFloat(total_output1)+parseFloat(total_output2)+parseFloat(total_output3);
-    //     balance = parseFloat(total_i)-parseFloat(total_o);
-
-    //     if(!isNaN(total_i)){
-    //         $('#tot_input').val(numeral(total_i).format('0,0.00'));
-    //     }
-    //     if(!isNaN(total_o)){
-    //         $('#tot_output').val(numeral(total_o).format('0,0.00'));
-    //     }
-    //     if(!isNaN(balance)){
-    //         $('#balance').val(numeral(balance).format('0,0.00'));
-    //     }
-    // }
+    ///////////////////////////////////////bladder 3 ends////////////////////////////////////////
 });
 
 /////////////////////progressnote starts/////////////////////
