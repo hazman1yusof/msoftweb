@@ -396,16 +396,16 @@ var datetimethrombo_tbl = $('#datetimethrombo_tbl').DataTable({
     "sDom": "",
     "paging": false,
     "columns": [
+        { 'data': 'idno', 'width': '5%' },
         { 'data': 'mrn' },
         { 'data': 'episno' },
-        { 'data': 'idno', 'width': '5%' },
         { 'data': 'dateInsert', 'width': '25%' },
         { 'data': 'timeInsert', 'width': '25%' },
     ],
     columnDefs: [
-        { targets: [0, 1], visible: false },
+        { targets: [0, 1, 2], visible: false },
     ],
-    order: [[2, 'desc']],
+    order: [[0, 'desc']],
     "drawCallback": function (settings){
         $(this).find('tbody tr')[0].click();
     }

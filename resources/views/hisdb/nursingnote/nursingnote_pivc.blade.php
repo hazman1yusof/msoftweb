@@ -119,7 +119,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td style="font-weight: bold;">7</td>
-                                                    <td>Clean/wipe the top vials/bags before withdrawing medication.</td><td></td>
+                                                    <td>Clean/wipe the top of vials/bags before withdrawing medication.</td><td></td>
                                                     <td><input type="checkbox" id="cleanVial_M" name="cleanVial_M" value="1"></td>
                                                     <td><input type="checkbox" id="cleanVial_E" name="cleanVial_E" value="1"></td>
                                                     <td><input type="checkbox" id="cleanVial_N" name="cleanVial_N" value="1"></td>
