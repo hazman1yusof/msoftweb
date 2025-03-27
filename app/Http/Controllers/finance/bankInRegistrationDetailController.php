@@ -41,6 +41,10 @@ class bankInRegistrationDetailController extends defaultController
 
         try {
 
+            if(empty($request->idno_array)){
+                return 0;
+            }
+
             $apacthdr = DB::table('finance.apacthdr')
                             // ->where('compcode',session('compcode'))
                             ->where('idno',$request->idno)
