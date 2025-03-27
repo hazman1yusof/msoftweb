@@ -1453,7 +1453,7 @@ $(document).ready(function () {
 		},
 	});
 
-	AlloSearch("#gridAllo",urlParamAllo);
+	AlloSearch("#gridAllo",urlParam2);
 	function AlloSearch(grid,urlParam){
 		$("#alloText").on( "keyup", function() {
 			delay(function(){

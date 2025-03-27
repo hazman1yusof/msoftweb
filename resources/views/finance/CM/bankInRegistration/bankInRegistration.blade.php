@@ -304,15 +304,15 @@ i.fa {
 					<div class="panel-heading" style="padding: 15px;">Bank In Registration Detail
 						<div id="allo_search_div" style="display:none;">
 							<input id="alloDate" type="date" class="form-control input-sm" style="position: absolute;
-							  right: 190px;
+							  right: 100px;
 							  top: 10px;
 							  width: 200px;display: none;">
 							<input id="alloText" placeholder="Search Here.." type="text" class="form-control input-sm" style="position: absolute;
-							  right: 190px;
+							  right: 100px;
 							  top: 10px;
 							  width: 200px;">
 							<select class="form-control" id="alloCol" style="position: absolute;
-						    right: 400px;
+						    right: 310px;
 						    top: 10px;
 						    width: 200px;">
 								<option value="trantype" >Type</option>
@@ -322,13 +322,13 @@ i.fa {
 								<option value="reference" >Reference</option>
 							</select>
 							<button id="resetAlloBtn" type="button" class="btn btn-danger" style="position: absolute;
-						    right: 120px;
+						    right: 30px;
 						    top: 10px;">
 						  Reset</button>
-							<button id="searhcAlloBtn" type="button" class="btn btn-primary" style="position: absolute;
+							<!-- <button id="searhcAlloBtn" type="button" class="btn btn-primary" style="position: absolute;
 						    right: 50px;
 						    top: 10px;">
-						  Search</button>
+						  Search</button> -->
 						</div>
 					</div>
 					<div class="panel-body">

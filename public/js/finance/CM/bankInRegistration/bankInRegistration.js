@@ -951,19 +951,28 @@ $(document).ready(function () {
 		}
 	});
 
-	$('#searhcAlloBtn').click(function(){
-		if($("#alloText").is(":visible")){
-			search('#jqGrid2',$("#alloText").val(),$("#alloCol").val(),urlParam2);
-		}else{
-			search('#jqGrid2',$("#alloDate").val(),$("#alloCol").val(),urlParam2);
-		}
-	});
+	AlloSearch("#jqGrid2",urlParam2);
+	function AlloSearch(grid,urlParam){
+		$("#alloText").on( "keyup", function() {
+			delay(function(){
+				search(grid,$("#alloText").val(),$("#alloCol").val(),urlParam);
+			}, 800 );
+		});
 
-	$('#resetAlloBtn').click(function(){
-		$("#alloText").val('');
-		$("#alloDate").val('');
-		search('#jqGrid2','','',urlParam2);
-	});
+		$("#alloDate").on( "change", function() {
+			search(grid,$("#alloDate").val(),$("#alloCol").val(),urlParam);
+		});
+
+		$("#alloCol").on( "change", function() {
+			search(grid,$("#alloText").val(),$("#alloCol").val(),urlParam);
+		});
+
+		$('#resetAlloBtn').click(function(){
+			$("#alloText").val('');
+			$("#alloDate").val('');
+			search(grid,'','',urlParam);
+		});
+	}
 
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
