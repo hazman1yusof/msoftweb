@@ -123,13 +123,8 @@ class bankInRegistrationDetailController extends defaultController
                 $lineno_ = $lineno_ + 1;
             }
 
-            $responce = new stdClass();
-            $responce->auditno = $auditno;
-            $responce->amount = $request->amount;
-
-            echo json_encode($responce);
-
             DB::commit();
+            return response($auditno,200);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -138,8 +133,7 @@ class bankInRegistrationDetailController extends defaultController
         }
     }
 
-    public function table(Request $request)
-    {   
+    public function table(Request $request){   
         DB::enableQueryLog();
         switch($request->action){
             case 'maintable':
@@ -198,13 +192,37 @@ class bankInRegistrationDetailController extends defaultController
 
         $paginate = $table->paginate($request->rows);
 
+        foreach ($paginate->items() as $key => $value) {
+            $cbdtl = DB::table('finance.cbdtl')
+                        ->where('compcode',session('compcode'))
+                        ->where('recstatus','OPEN')
+                        ->where(function($query) use ($apacthdr) {
+                            $query
+                                ->where('source','!=',$apacthdr->source)
+                                ->orWhere('trantype','!=',$apacthdr->trantype)
+                                ->orWhere('auditno','!=',$apacthdr->auditno);
+                        })
+                        ->where('refsrc','=',$value->source)
+                        ->where('reftrantype','=',$value->reftype)
+                        ->where('refauditno','=',$value->allocauditno);
+
+            if($cbdtl->exists()){
+                $paginate->forget($key);
+            }
+        }
+
+        $newrow = [];
+        foreach ($paginate->items() as $obj) {
+            array_push($newrow,$obj);
+        }
+
         //////////paginate/////////
 
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
         $responce->records = $paginate->total();
-        $responce->rows = $paginate->items();
+        $responce->rows = $newrow;
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);

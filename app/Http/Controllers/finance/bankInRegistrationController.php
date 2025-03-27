@@ -278,7 +278,7 @@ class bankInRegistrationController extends defaultController
             'reference' => $request->reference,
             'amount' => $request->amount,
             'outamount' => $request->amount,
-            'commamt' => $request->comamt,
+            'commamt' => $request->commamt,
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'postdate' => $request->postdate

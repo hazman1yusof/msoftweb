@@ -1165,6 +1165,7 @@ $(document).ready(function () {
 			mycurrency.formatOn();
 			urlParam2.edit='true';
 			refreshGrid("#jqGrid2",urlParam2);
+			$('#auditno').val(data);
 			hideatdialogForm(false);
 		});
 	});
