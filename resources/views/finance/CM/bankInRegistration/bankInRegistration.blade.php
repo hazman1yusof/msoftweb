@@ -236,7 +236,7 @@ i.fa {
 
 					  			<label class="col-md-2 control-label" for="comamt">Commision Amt</label>  
 				  				<div class="col-md-2">
-										<input id="comamt" name="comamt" type="text" class="form-control input-sm">
+										<input id="comamt" name="comamt" type="text" class="form-control input-sm" disabled>
 				  				</div>
 				    		</div>
 

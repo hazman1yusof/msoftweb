@@ -675,7 +675,7 @@ $(document).ready(function () {
 			{ label: 'Doc Date', name: 'refdocdate', width: 20, classes: 'wrap', editable:false},
 			{ label: 'Amount', name: 'refamount', width: 20, classes: 'wrap', editable:false},
 			{ label: 'Comm Rate', name: 'refcomrate', width: 20, classes: 'wrap', editable:false, hidden:true},
-			{ label: 'Register', name: 'cb_idno', width: 20, editable: false, formatter: formatterCheckbox2},
+			{ label: 'Bank In', name: 'cb_idno', width: 20, editable: false, formatter: formatterCheckbox2},
 			{ label: 'Comm Amt', name: 'commamt', width: 20, classes: 'wrap', editable:false},
 			{ label: 'Reference', name: 'refreference', width: 20, classes: 'wrap', editable:false},
 			{ label: 'Department', name: 'deptcode', width: 100, classes: 'wrap', hidden:true},
@@ -1553,17 +1553,20 @@ $(document).ready(function () {
 			dialog_payer.on();
 			$('#amount_label').html('Card Amount');
 			$('#payer2').data('validation','required');
+			$('#comamt').prop("disabled",false);
 
 		}else if($(this).val() == 'CASH'){
 			$('#payer1_div').show();
 			$('#payer2_div').hide();
 			dialog_payer.off();
 			$('#amount_label').html('Cash Amount');
+			$('#comamt').val('').prop("disabled",true);
 		}else{
 			$('#payer1_div').show();
 			$('#payer2_div').hide();
 			dialog_payer.off();
 			$('#amount_label').html('Cheque Amount');
+			$('#comamt').val('').prop("disabled",true);
 		}
 	});
 
