@@ -57,7 +57,7 @@ class bankInRegistrationDetailController extends defaultController
                             ]);
             }else{
                 $auditno = $apacthdr->auditno;
-                DB::table('finance.apactdtl')
+                DB::table('finance.cbdtl')
                         ->where('compcode',session('compcode'))
                         ->where('source',$apacthdr->source)
                         ->where('trantype',$apacthdr->trantype)
@@ -88,43 +88,29 @@ class bankInRegistrationDetailController extends defaultController
                 $commamt = floatval($dbacthdr->amount) * floatval($rate) / 100;
 
                 ///1. update detail
-                DB::table('finance.apactdtl')
+                DB::table('finance.cbdtl')
                     ->insert([
                         'compcode' => session('compcode'),
+                        'bankcode' => $apacthdr->bankcode,
                         'source' => $apacthdr->source,
                         'trantype' => $apacthdr->trantype,
                         'auditno' => $auditno,
                         'lineno_' => $lineno_,
-                        'entrydate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'docdate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'document' => $dbacthdr->recptno,
-                        'reference' => $dbacthdr->reference,
                         'amount' => $dbacthdr->amount,
-                        // 'stat' => $dbacthdr->,
-                        'mrn' => $dbacthdr->mrn,
-                        'episno' => $dbacthdr->episno,
-                        'billno' => $dbacthdr->auditno,
+                        'reference' => $dbacthdr->reference,
+                        'cbflag' => 0,
+                        'refsrc' => $dbacthdr->source,
+                        'reftrantype' => $dbacthdr->trantype,
+                        'refauditno' => $dbacthdr->auditno,
                         'paymode' => $dbacthdr->paymode,
-                        // 'allocauditno' => $dbacthdr->,
-                        // 'alloclineno' => $dbacthdr->,
-                        // 'alloctnauditno' => $dbacthdr->,
-                        // 'alloctnlineno' => $dbacthdr->,
-                        // 'lastuser' => $dbacthdr->,
-                        // 'lastupdate' => $dbacthdr->,
-                        'grnno' => $value_db,//*+
-                        // 'dorecno' => $dbacthdr->,
-                        // 'category' => $dbacthdr->,
-                        'deptcode' => $dbacthdr->deptcode,
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'recstatus' => 'OPEN',
-                        // 'upduser' => $dbacthdr->,
-                        // 'upddate' => $dbacthdr->,
-                        // 'deluser' => $dbacthdr->,
-                        // 'deldate' => $dbacthdr->,
-                        // 'GSTCode' => $dbacthdr->,
-                        // 'AmtB4GST' => $commamt,
-                        'unit' => session('unit'),
-                        'taxamt' => $rate,//*+
+                        'commamt' => $commamt,
+                        // 'category' => $dbacthdr-> ,
+                        // 'oldforexcode' => $dbacthdr-> ,
+                        // 'oldrate' => $dbacthdr-> ,
+                        // 'newforexcode' => $dbacthdr-> ,
+                        'newrate' => $rate
                     ]);
 
                 // DB::table('debtor.dbacthdr')
@@ -183,12 +169,25 @@ class bankInRegistrationDetailController extends defaultController
         if(!empty($request->searchCol)){
             if($request->searchCol[0] == 'posteddate'){
                 $table = $table->Where(function ($table) use ($request){
-                        $table->Where('db.posteddate','>=',$request->wholeword);
+                        $table->Where('db.posteddate','=',$request->wholeword);
                 });
             }else{
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where('db.'.$request->searchCol[0],'like',$request->searchVal[0]);
                 });
+            }
+        }
+
+        if(!empty($request->sidx)){
+
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                    $pieces_inside = explode(" ", $pieces[$i]);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
             }
         }
 
@@ -209,8 +208,26 @@ class bankInRegistrationDetailController extends defaultController
     }
 
     public function dbacthdr_paymode_cash($apacthdr){
+        $apacthdr = DB::table('finance.apacthdr')
+                        // ->where('compcode',session('compcode'))
+                        ->where('idno',$apacthdr->idno)
+                        ->first();
+
         $table = DB::table('debtor.dbacthdr as db')
-                    ->select('db.idno','db.compcode','db.source','db.trantype as reftype','db.auditno as allocauditno','db.lineno_','db.idno as lineno_','db.amount as refamount','db.outamount','db.recstatus','db.entrydate','db.entrytime','db.entryuser','db.reference as refreference','db.recptno as refrecptno','db.paymode as refpaymode','db.tillcode','db.tillno','db.debtortype','db.debtorcode','db.payercode','db.billdebtor','db.remark','db.mrn','db.episno','db.authno','db.expdate','db.adddate','db.adduser','db.upddate','db.upduser','db.deldate','db.deluser','db.epistype','db.cbflag','db.conversion','db.payername','db.hdrtype','db.currency','db.rate','db.unit','db.invno','db.paytype','db.bankcharges','db.RCCASHbalance','db.RCOSbalance','db.RCFinalbalance','db.PymtDescription','db.orderno','db.ponum','db.podate','db.termdays','db.termmode','db.deptcode','db.posteddate as refdocdate','db.approvedby','db.approveddate','db.approved_remark','db.unallocated','db.datesend','db.quoteno','db.preparedby','db.prepareddate','db.cancelby','db.canceldate','db.cancelled_remark','db.pointofsales','db.doctorcode','db.LHDNStatus','db.LHDNSubID','db.LHDNCodeNo','db.LHDNDocID','db.LHDNSubBy')
+                    ->select('db.idno','cb.idno as cb_idno','db.compcode','db.source','db.trantype as reftype','db.auditno as allocauditno','db.lineno_','db.idno as lineno_','db.amount as refamount','db.outamount','db.recstatus','db.entrydate','db.entrytime','db.entryuser','db.reference as refreference','db.recptno as refrecptno','db.paymode as refpaymode','db.tillcode','db.tillno','db.debtortype','db.debtorcode','db.payercode','db.billdebtor','db.remark','db.mrn','db.episno','db.authno','db.expdate','db.adddate','db.adduser','db.upddate','db.upduser','db.deldate','db.deluser','db.epistype','db.cbflag','db.conversion','db.payername','db.hdrtype','db.currency','db.rate','db.unit','db.invno','db.paytype','db.bankcharges','db.RCCASHbalance','db.RCOSbalance','db.RCFinalbalance','db.PymtDescription','db.orderno','db.ponum','db.podate','db.termdays','db.termmode','db.deptcode','db.posteddate as refdocdate','db.approvedby','db.approveddate','db.approved_remark','db.unallocated','db.datesend','db.quoteno','db.preparedby','db.prepareddate','db.cancelby','db.canceldate','db.cancelled_remark','db.pointofsales','db.doctorcode','db.LHDNStatus','db.LHDNSubID','db.LHDNCodeNo','db.LHDNDocID','db.LHDNSubBy');
+
+        $table = $table
+                    ->leftJoin('finance.cbdtl as cb', function($join) use ($apacthdr){
+                        $join = $join
+                            ->where('cb.source',$apacthdr->source)
+                            ->where('cb.trantype',$apacthdr->trantype)
+                            ->where('cb.auditno',$apacthdr->auditno)
+                            ->on('cb.refsrc','db.source')
+                            ->on('cb.reftrantype','db.trantype')
+                            ->on('cb.refauditno','db.auditno');
+                    });
+
+            $table = $table
                     ->where('db.compcode',session('compcode'))
                     ->where('db.source','PB')
                     ->where('db.recstatus','POSTED')
@@ -224,8 +241,15 @@ class bankInRegistrationDetailController extends defaultController
     }
 
     public function dbacthdr_paymode_card($apacthdr){
+        $apacthdr = DB::table('finance.apacthdr')
+                        // ->where('compcode',session('compcode'))
+                        ->where('idno',$apacthdr->idno)
+                        ->first();
+
         $table = DB::table('debtor.dbacthdr as db')
-                    ->select('db.idno','db.compcode','db.source','db.trantype as reftype','db.auditno as allocauditno','db.lineno_','db.idno as lineno_','db.amount as refamount','db.outamount','db.recstatus','db.entrydate','db.entrytime','db.entryuser','db.reference as refreference','db.recptno as refrecptno','db.paymode as refpaymode','db.tillcode','db.tillno','db.debtortype','db.debtorcode','db.payercode','db.billdebtor','db.remark','db.mrn','db.episno','db.authno','db.expdate','db.adddate','db.adduser','db.upddate','db.upduser','db.deldate','db.deluser','db.epistype','db.cbflag','db.conversion','db.payername','db.hdrtype','db.currency','db.rate','db.unit','db.invno','db.paytype','db.bankcharges','db.RCCASHbalance','db.RCOSbalance','db.RCFinalbalance','db.PymtDescription','db.orderno','db.ponum','db.podate','db.termdays','db.termmode','db.deptcode','db.posteddate as refdocdate','db.approvedby','db.approveddate','db.approved_remark','db.unallocated','db.datesend','db.quoteno','db.preparedby','db.prepareddate','db.cancelby','db.canceldate','db.cancelled_remark','db.pointofsales','db.doctorcode','db.LHDNStatus','db.LHDNSubID','db.LHDNCodeNo','db.LHDNDocID','db.LHDNSubBy',"py.comrate as refcomrate")
+                    ->select('db.idno','cb.idno as cb_idno','db.compcode','db.source','db.trantype as reftype','db.auditno as allocauditno','db.lineno_','db.idno as lineno_','db.amount as refamount','db.outamount','db.recstatus','db.entrydate','db.entrytime','db.entryuser','db.reference as refreference','db.recptno as refrecptno','db.paymode as refpaymode','db.tillcode','db.tillno','db.debtortype','db.debtorcode','db.payercode','db.billdebtor','db.remark','db.mrn','db.episno','db.authno','db.expdate','db.adddate','db.adduser','db.upddate','db.upduser','db.deldate','db.deluser','db.epistype','db.cbflag','db.conversion','db.payername','db.hdrtype','db.currency','db.rate','db.unit','db.invno','db.paytype','db.bankcharges','db.RCCASHbalance','db.RCOSbalance','db.RCFinalbalance','db.PymtDescription','db.orderno','db.ponum','db.podate','db.termdays','db.termmode','db.deptcode','db.posteddate as refdocdate','db.approvedby','db.approveddate','db.approved_remark','db.unallocated','db.datesend','db.quoteno','db.preparedby','db.prepareddate','db.cancelby','db.canceldate','db.cancelled_remark','db.pointofsales','db.doctorcode','db.LHDNStatus','db.LHDNSubID','db.LHDNCodeNo','db.LHDNDocID','db.LHDNSubBy','py.comrate as refcomrate');
+
+        $table = $table
                     ->join('debtor.paymode as py', function($join) use ($apacthdr){
                             $join = $join
                                 ->where('py.compcode',session('compcode'))
@@ -234,20 +258,23 @@ class bankInRegistrationDetailController extends defaultController
                                 ->where('py.cardcent',$apacthdr->payto)
                                 ->on('py.paymode','db.paymode');
                         })
-                    // ->join('finance.cardcent as cc', function($join) use ($apacthdr){
-                    //         $join = $join
-                    //             ->where('cc.compcode',session('compcode'))
-                    //             ->where('cc.cardcode',$apacthdr->payto)
-                    //             // ->where('cc.cardcode','AR')
-                    //             // ->where('cc.paytype','CARD')
-                    //             // ->on('cc.cardcode','py.cardcent');
-                    //     })
+                    ->leftJoin('finance.cbdtl as cb', function($join) use ($apacthdr){
+                        $join = $join
+                            ->where('cb.source',$apacthdr->source)
+                            ->where('cb.trantype',$apacthdr->trantype)
+                            ->where('cb.auditno',$apacthdr->auditno)
+                            ->on('cb.refsrc','db.source')
+                            ->on('cb.reftrantype','db.trantype')
+                            ->on('cb.refauditno','db.auditno');
+                    });
+
+            $table = $table
                     ->where('db.compcode',session('compcode'))
                     ->where('db.source','PB')
-                    ->whereIn('db.trantype',['RC','RD'])
                     ->where('db.recstatus','POSTED')
-                    ->where('db.posteddate',$apacthdr->postdate)
-                    // ->whereOn('db.paymode','pt')
+                    ->whereIn('db.trantype',['RC','RD'])
+                    ->where('db.posteddate','<=',$apacthdr->postdate)
+                    // ->where('db.paymode',$apacthdr->paymode)
                     ->where('db.amount','!=',0)
                     ->where('db.cbflag',0);
 
@@ -260,16 +287,18 @@ class bankInRegistrationDetailController extends defaultController
                         ->where('idno',$request->idno)
                         ->first();
 
-        $table = DB::table('finance.apactdtl as ap')
+        $table = DB::table('finance.cbdtl as cb')
                     ->join('debtor.dbacthdr as db', function($join){
                             $join = $join
                                 ->where('db.compcode',session('compcode'))
-                                ->on('db.idno','ap.grnno');
+                                ->on('db.source','cb.refsrc')
+                                ->on('db.trantype','cb.reftrantype')
+                                ->on('db.auditno','cb.refauditno');
                         });
 
         if($apacthdr->paymode == 'CARD'){
             $table = $table
-                        ->select('db.idno','ap.compcode','ap.source','ap.trantype','ap.auditno','ap.lineno_','ap.entrydate','ap.document','ap.reference','ap.amount','ap.stat','ap.mrn','ap.episno','ap.billno','ap.paymode','ap.allocauditno','ap.alloclineno','ap.alloctnauditno','ap.alloctnlineno','ap.lastuser','ap.lastupdate','ap.grnno','ap.dorecno','ap.category','ap.deptcode','ap.adduser','ap.adddate','ap.recstatus','ap.upduser','ap.upddate','ap.deluser','ap.deldate','ap.GSTCode','ap.AmtB4GST','ap.unit','ap.taxamt as refcomrate','db.trantype as reftype','db.auditno as allocauditno','db.paymode as refpaymode','db.recptno as refrecptno','db.posteddate as refdocdate','db.amount as refamount',"py.comrate",'db.reference as refreference')
+                        ->select('db.idno','cb.compcode','cb.bankcode','cb.source','cb.trantype','cb.auditno','cb.lineno_','cb.docdate','cb.document','cb.amount','cb.reference','cb.cbflag','cb.refsrc','cb.reftrantype','cb.refauditno','cb.paymode','cb.commamt','cb.category','cb.oldforexcode','cb.oldrate','cb.newforexcode','cb.newrate','db.trantype as reftype','db.auditno as allocauditno','db.paymode as refpaymode','db.recptno as refrecptno','db.posteddate as refdocdate','db.amount as refamount','db.reference as refreference','py.comrate')
                         ->join('debtor.paymode as py', function($join) use ($apacthdr){
                             $join = $join
                                 ->where('py.compcode',session('compcode'))
@@ -280,14 +309,14 @@ class bankInRegistrationDetailController extends defaultController
                         });
         }else{
                 $table = $table
-                        ->select('db.idno','ap.compcode','ap.source','ap.trantype','ap.auditno','ap.lineno_','ap.entrydate','ap.document','ap.reference','ap.amount','ap.stat','ap.mrn','ap.episno','ap.billno','ap.paymode','ap.allocauditno','ap.alloclineno','ap.alloctnauditno','ap.alloctnlineno','ap.lastuser','ap.lastupdate','ap.grnno','ap.dorecno','ap.category','ap.deptcode','ap.adduser','ap.adddate','ap.recstatus','ap.upduser','ap.upddate','ap.deluser','ap.deldate','ap.GSTCode','ap.AmtB4GST','ap.unit','ap.taxamt as refcomrate','db.trantype as reftype','db.auditno as allocauditno','db.paymode as refpaymode','db.recptno as refrecptno','db.posteddate as refdocdate','db.amount as refamount','db.reference as refreference');
+                        ->select('db.idno','cb.compcode','cb.bankcode','cb.source','cb.trantype','cb.auditno','cb.lineno_','cb.docdate','cb.document','cb.amount','cb.reference','cb.cbflag','cb.refsrc','cb.reftrantype','cb.refauditno','cb.paymode','cb.commamt','cb.category','cb.oldforexcode','cb.oldrate','cb.newforexcode','cb.newrate','db.trantype as reftype','db.auditno as allocauditno','db.paymode as refpaymode','db.recptno as refrecptno','db.posteddate as refdocdate','db.amount as refamount','db.reference as refreference');
         }
                 
         $table = $table
-                    ->where('ap.compcode',session('compcode'))
-                    ->where('ap.source',$apacthdr->source)
-                    ->where('ap.trantype',$apacthdr->trantype)
-                    ->where('ap.auditno',$apacthdr->auditno);
+                    ->where('cb.compcode',session('compcode'))
+                    ->where('cb.source',$apacthdr->source)
+                    ->where('cb.trantype',$apacthdr->trantype)
+                    ->where('cb.auditno',$apacthdr->auditno);
 
         // dd($this->getQueries($table));
 

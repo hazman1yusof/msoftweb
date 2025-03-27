@@ -180,17 +180,17 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'idno', name: 'idno', width: 40, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', width: 10 , hidden: true  },
-			{ label: 'Bank Code', name: 'bankcode', width: 35 , checked:true, canSearch: true, classes : 'wrap text-uppercase', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Payer', name: 'payto', width: 35, classes : 'wrap text-uppercase', canSearch: true, formatter: showdetail,unformat:un_showdetail },
+			{ label: 'Bank Code', name: 'bankcode', width: 30 , checked:true, canSearch: true, classes : 'wrap text-uppercase', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Payer', name: 'payto', width: 30, classes : 'wrap text-uppercase', canSearch: true, formatter: showdetail,unformat:un_showdetail },
+			{ label: 'Reference', name: 'reference', width: 30},
 			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', canSearch: false, checked: false, hidden:true},
 			{ label: 'Audit No', name: 'auditno', width: 15,  canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
 			{ label: 'Paymode', name: 'paymode', width: 15},
-			{ label: 'Post Date', name: 'actdate', width: 25, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Amount', name: 'amount', width: 30,  align: 'right',formatter:'currency'},
-			{ label: 'Commision', name: 'commamt', width: 30,  align: 'right',formatter:'currency'},
-			{ label: 'Tot Detail Amt', name: 'totBankinAmt', width: 30,  align: 'right',formatter:'currency'},
-			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap text-uppercase'},
-			{ label: 'Reference', name: 'reference', width: 25},
+			{ label: 'Post Date', name: 'actdate', width: 15, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Amount', name: 'amount', width: 20,  align: 'right',formatter:'currency'},
+			{ label: 'Commision', name: 'commamt', width: 20,  align: 'right',formatter:'currency'},
+			{ label: 'Tot Detail Amt', name: 'totBankinAmt', width: 20,  align: 'right',formatter:'currency'},
+			{ label: 'Status', name: 'recstatus', width: 15, classes: 'wrap text-uppercase'},
 			{ label: 'Payment Mode', name: 'paymode', width: 30, hidden:true },
 			{ label: 'Cheque No', name: 'cheqno', width: 40, hidden:true},//formatter:formatterCheqnno, unformat:unformatterCheqnno
 			{ label: 'Entered By', name: 'adduser', width: 35,  hidden:true},
@@ -199,7 +199,7 @@ $(document).ready(function () {
 			{ label: 'Cheq Date', name: 'cheqdate', width: 40, hidden:true},
 			{ label: 'source', name: 'source', width: 40, hidden:true},
 		 	{ label: 'trantype', name: 'trantype', width: 40, hidden:true},
-			{ label: ' ', name: 'Checkbox',sortable:false, width: 15,align: "center", formatter: formatterCheckbox },	
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },	
 		 	
 		],
 		autowidth:true,
@@ -214,15 +214,15 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow: function(rowid, selected) {
-			let recstatus = selrowData("#jqGrid").recstatus;
-			if(recstatus=='OPEN'){
-				$('#but_cancel_jq,#but_post_jq').show();			
-			}else if(recstatus=="POSTED"){
-				$('#but_post_jq').hide();
-				$('#but_cancel_jq').show();
-			}else if (recstatus == "CANCELLED"){
-				$('#but_cancel_jq,#but_post_jq').hide();			
-			}
+			// let recstatus = selrowData("#jqGrid").recstatus;
+			// if(recstatus=='OPEN'){
+			// 	$('#but_cancel_jq,#but_post_jq').show();			
+			// }else if(recstatus=="POSTED"){
+			// 	$('#but_post_jq').hide();
+			// 	$('#but_cancel_jq').show();
+			// }else if (recstatus == "CANCELLED"){
+			// 	$('#but_cancel_jq,#but_post_jq').hide();			
+			// }
 			
 			urlParam2.idno=selrowData("#jqGrid").idno;
 			refreshGrid("#jqGrid3",urlParam2);
@@ -670,12 +670,12 @@ $(document).ready(function () {
 			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
 		 	{ label: 'Ref Type', name: 'reftype', width: 20, classes: 'wrap', editable:false},
 		 	{ label: 'Ref Auditno', name: 'allocauditno', width: 20, classes: 'wrap', editable:false},
-		 	{ label: 'Paymode', name: 'refpaymode', width: 20, classes: 'wrap', editable:false},
+		 	{ label: 'Pay Type', name: 'refpaymode', width: 20, classes: 'wrap', editable:false},
 		 	{ label: 'Document', name: 'refrecptno', width: 20, classes: 'wrap', editable:false},
 			{ label: 'Doc Date', name: 'refdocdate', width: 20, classes: 'wrap', editable:false},
 			{ label: 'Amount', name: 'refamount', width: 20, classes: 'wrap', editable:false},
 			{ label: 'Comm Rate', name: 'refcomrate', width: 20, classes: 'wrap', editable:false, hidden:true},
-			{ label: ' ', name: 'tick', width: 20, editable: false, formatter: formatterCheckbox2},
+			{ label: 'Register', name: 'cb_idno', width: 20, editable: false, formatter: formatterCheckbox2},
 			{ label: 'Comm Amt', name: 'commamt', width: 20, classes: 'wrap', editable:false},
 			{ label: 'Reference', name: 'refreference', width: 20, classes: 'wrap', editable:false},
 			{ label: 'Department', name: 'deptcode', width: 100, classes: 'wrap', hidden:true},
@@ -957,6 +957,12 @@ $(document).ready(function () {
 		}else{
 			search('#jqGrid2',$("#alloDate").val(),$("#alloCol").val(),urlParam2);
 		}
+	});
+
+	$('#resetAlloBtn').click(function(){
+		$("#alloText").val('');
+		$("#alloDate").val('');
+		search('#jqGrid2','','',urlParam2);
 	});
 
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
@@ -1372,7 +1378,7 @@ $(document).ready(function () {
 	dialog_bankcode.makedialog(false);
 
 	var dialog_payer = new ordialog(
-		'payer2','finance.cardcent','#payer2','errorField',
+		'payer2','finance.cardcent','#payer2',errorField,
 		{	colModel:[
 				{label:'Card code',name:'cardcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -1540,11 +1546,14 @@ $(document).ready(function () {
 	}
 
 	$("#paymode").change(function(){
+		$('#payer2').data('validation','');
 		if($(this).val() == 'CARD'){
 			$('#payer1_div').hide();
 			$('#payer2_div').show();
 			dialog_payer.on();
 			$('#amount_label').html('Card Amount');
+			$('#payer2').data('validation','required');
+
 		}else if($(this).val() == 'CASH'){
 			$('#payer1_div').show();
 			$('#payer2_div').hide();

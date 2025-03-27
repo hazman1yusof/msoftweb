@@ -126,11 +126,6 @@ i.fa {
 				
 				<span id="error_infront" style="color: red"></span>
 				<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
-				<!-- <button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button> -->
-
-				@if (Request::get('scope') != 'ALL' && Request::get('scope') != 'REOPEN' && Request::get('scope') != 'CANCEL')
-				<button type="button" class="btn btn-danger btn-sm" id="but_cancel_jq" data-oper="reject" style="display: none;">REJECT</button>
-				@endif
 
 				<button 
 				type="button" 
@@ -138,11 +133,7 @@ i.fa {
 					id="but_post_jq" 
 					data-oper="{{$scope_use}}" 
 					style="display: none;">
-					@if (strtoupper(Request::get('scope')) == 'ALL')
-						{{'POSTED'}}
-					@else
-						{{Request::get('scope')}}
-					@endif
+					POSTED
 				</button>
 
 			</div>
@@ -273,7 +264,7 @@ i.fa {
 					    			<label class="col-md-2 control-label" for="payer2">Payer</label>  
 					  				<div class="col-md-6" >
 							 				<div class='input-group'>
-												<input id="payer2" name="payer2" type="text" class="form-control input-sm text-uppercase">
+												<input id="payer2" name="payer2" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 												<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 						  				</div>
 						 					<span class="help-block"></span>
@@ -313,22 +304,27 @@ i.fa {
 					<div class="panel-heading" style="padding: 15px;">Bank In Registration Detail
 						<div id="allo_search_div" style="display:none;">
 							<input id="alloDate" type="date" class="form-control input-sm" style="position: absolute;
-							  right: 120px;
+							  right: 190px;
 							  top: 10px;
 							  width: 200px;display: none;">
 							<input id="alloText" placeholder="Search Here.." type="text" class="form-control input-sm" style="position: absolute;
-							  right: 120px;
+							  right: 190px;
 							  top: 10px;
 							  width: 200px;">
 							<select class="form-control" id="alloCol" style="position: absolute;
-						    right: 330px;
+						    right: 400px;
 						    top: 10px;
 						    width: 200px;">
 								<option value="trantype" >Type</option>
 								<option value="auditno" >Audit No</option>
 								<option value="recptno" selected>Document</option>
 								<option value="posteddate" >Document Date</option>
+								<option value="reference" >Reference</option>
 							</select>
+							<button id="resetAlloBtn" type="button" class="btn btn-danger" style="position: absolute;
+						    right: 120px;
+						    top: 10px;">
+						  Reset</button>
 							<button id="searhcAlloBtn" type="button" class="btn btn-primary" style="position: absolute;
 						    right: 50px;
 						    top: 10px;">
