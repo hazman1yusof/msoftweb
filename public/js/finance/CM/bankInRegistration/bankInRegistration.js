@@ -665,7 +665,7 @@ $(document).ready(function () {
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true, key:true},
-		 	{ label: 'No', name: 'lineno_', width: 10, classes: 'wrap', editable:false},
+		 	{ label: 'No', name: 'lineno_', width: 10, classes: 'wrap', editable:false, hidden:true},
 			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
 		 	{ label: 'Ref Type', name: 'reftype', width: 20, classes: 'wrap', editable:false},
