@@ -234,9 +234,9 @@ i.fa {
 										<input id="postdate" name="postdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  				</div>
 
-					  			<label class="col-md-2 control-label" for="comamt">Commision Amt</label>  
+					  			<label class="col-md-2 control-label" for="commamt">Commision Amt</label>  
 				  				<div class="col-md-2">
-										<input id="comamt" name="comamt" type="text" class="form-control input-sm" disabled>
+										<input id="commamt" name="commamt" type="text" class="form-control input-sm" disabled>
 				  				</div>
 				    		</div>
 

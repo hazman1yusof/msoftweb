@@ -28,7 +28,7 @@ $(document).ready(function () {
 	//////////////////////////////////////////////////////////////
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency =new currencymode(['#amount','#refcomrate','#comamt','#netamount','#dtlamt']);
+	var mycurrency =new currencymode(['#amount','#refcomrate','#commamt','#netamount','#dtlamt']);
 	var fdl = new faster_detail_load();
 	var myallocation = new Allocation();
 
@@ -88,15 +88,15 @@ $(document).ready(function () {
 
 		beforeClose: function(event, ui){
 			mycurrency.formatOff();
-			if(unsaved){
-				event.preventDefault();
-				bootbox.confirm("Are you sure want to leave without save?", function(result){
-					if (result == true) {
-						unsaved = false;
-						$("#dialogForm").dialog('close');
-					}
-				});
-			}
+			// if(unsaved){
+			// 	event.preventDefault();
+			// 	bootbox.confirm("Are you sure want to leave without save?", function(result){
+			// 		if (result == true) {
+			// 			unsaved = false;
+			// 			$("#dialogForm").dialog('close');
+			// 		}
+			// 	});
+			// }
 		},
 
 		close: function( event, ui ) {
@@ -467,7 +467,7 @@ $(document).ready(function () {
 				refreshGrid("#jqGrid2", urlParam2);
 				//doesnt need to do anything
 			}
-			disableForm('#formdata',['amount','comamt']);
+			disableForm('#formdata',['amount','commamt']);
 
 			// if(needrefresh === 'refreshGrid'){
 			// 	refreshGrid("#jqGrid", urlParam);
@@ -719,15 +719,15 @@ $(document).ready(function () {
 				}
 			});
 
-			$("#jqGrid2_c input[type='text'][name='text_selection2']").on('change',function(){
-				var idno = $(this).data("idno");
-				var rowdata = $("#jqGrid2").jqGrid ('getRowData', idno);
-				if($('#checkbox_selection2_'+idno).prop("checked") == true){
-					if(myallocation.alloInArray(idno)){
-						myallocation.editAllo(idno,rowdata.outamount,0);
-					}
-				}
-			});
+			// $("#jqGrid2_c input[type='text'][name='text_selection2']").on('change',function(){
+			// 	var idno = $(this).data("idno");
+			// 	var rowdata = $("#jqGrid2").jqGrid ('getRowData', idno);
+			// 	if($('#checkbox_selection2_'+idno).prop("checked") == true){
+			// 		if(myallocation.alloInArray(idno)){
+			// 			myallocation.editAllo(idno,rowdata.outamount,0);
+			// 		}
+			// 	}
+			// });
 
 			delay(function(){
 	        	// $("#alloText").focus();//AlloTotal
@@ -764,8 +764,9 @@ $(document).ready(function () {
 		this.initAllo = function(){
 			this.arrayAllo.length = 0;
 			let self = this;
-			let rowdata = $('#jqGrid2').jqGrid ('getRowData');
+			let rowdata = $('#jqGrid2').jqGrid('getRowData');
 
+			mycurrency.formatOff();
 			rowdata.forEach(function(e,i){
 				let comamt = parseFloat(e.refcomrate) * parseFloat(e.refamount) / 100;
 				if(isNaN(comamt)){
@@ -775,63 +776,61 @@ $(document).ready(function () {
 
 				self.arrayAllo.push({idno:e.idno,obj:e});
 			});
-			console.log(this.arrayAllo);
+			// console.log(this.arrayAllo);
 
 			this.updateAlloField();
 		}
 		this.addAllo = function(idno,paid,bal){
 			var obj=getlAlloFromGrid(idno);
 
+			mycurrency.formatOff();
 			this.arrayAllo.push({idno:idno,obj:obj});
-			console.log(this.arrayAllo);
+
+			let com_hdr = $('#commamt').val();
+			let new_com_hdr = parseFloat(com_hdr) + parseFloat(obj.commamt);
+			$('#commamt').val(new_com_hdr);
+			// console.log(this.arrayAllo);
 			
 			// $(fieldID).on('change',[idno,self.arrayAllo,self.allo_error],onchangeField);
 
 			this.updateAlloField();
 		}
-		this.editAllo = function(idno,paid,bal){
-			let refcomrate = $('#text_comrate_'+idno).val();
+		this.deleteAllo = function(idno){
+			var self=this;
+			let comamt_del = 0;
+			mycurrency.formatOff();
+			$.each(self.arrayAllo, function( index, obj ) {
+				if(obj.idno==idno){
+					comamt_del = obj.obj.commamt;
+					self.arrayAllo.splice(index, 1);
+					return false;
+				}
+			});
 
-			var alloIndex = getIndex(this.arrayAllo,idno);
-			let obj = this.arrayAllo[alloIndex].obj;
-			let commamt = parseFloat(refcomrate) * parseFloat(obj.refamount) / 100;
+			let com_hdr = $('#commamt').val();
+			let new_com_hdr = parseFloat(com_hdr) - parseFloat(comamt_del);
+			$('#commamt').val(new_com_hdr);
 
-
-			this.arrayAllo[alloIndex].obj.refcomrate = refcomrate;
-			this.arrayAllo[alloIndex].obj.commamt = parseFloat(commamt).toFixed(4);
-			console.log(this.arrayAllo);
-			
-			// // $(fieldID).on('change',[idno,self.arrayAllo,self.allo_error],onchangeField);
-
+			// console.log(this.arrayAllo);
 			this.updateAlloField();
 		}
-		// function onchangeField(obj){
-		// 	var idno = obj.handleObj.data[0];
-		// 	var arrayAllo = obj.handleObj.data[1];
-		// 	var allo_error = obj.handleObj.data[2];
+		// this.editAllo = function(idno,paid,bal){
+		// 	let refcomrate = $('#text_comrate_'+idno).val();
 
-		// 	var alloIndex = getIndex(arrayAllo,idno);
-		// 	var outamt = $("#gridAllo").jqGrid('getRowData', idno).outamount;
-		// 	var newamtpaid = parseFloat(obj.target.value);
-		// 	newamtpaid = isNaN(Number(newamtpaid)) ? 0 : parseFloat(obj.target.value);
-		// 	if(parseFloat(newamtpaid)>parseFloat(outamt)){
-		// 		alert("Amount paid exceed O/S amount");
-		// 		$("#"+idno+"_amtpaid").addClass( "error" ).removeClass( "valid" );
-		// 		adderror_allo(allo_error,idno);
-		// 		obj.target.focus();
-		// 		return false;
-		// 	}
-		// 	$("#"+idno+"_amtpaid").removeClass( "error" ).addClass( "valid" );
-		// 	delerror_allo(allo_error,idno);
-		// 	var balance = outamt - newamtpaid;
+		// 	var alloIndex = getIndex(this.arrayAllo,idno);
+		// 	let obj = this.arrayAllo[alloIndex].obj;
+		// 	let commamt = parseFloat(refcomrate) * parseFloat(obj.refamount) / 100;
 
-		// 	obj.target.value = numeral(newamtpaid).format('0,0.00');;
-		// 	arrayAllo[alloIndex].obj.amtpaid = newamtpaid;
-		// 	arrayAllo[alloIndex].obj.amtbal = balance;
-		// 	setbal(idno,balance);
 
-		// 	myallocation.updateAlloField();
+		// 	this.arrayAllo[alloIndex].obj.refcomrate = refcomrate;
+		// 	this.arrayAllo[alloIndex].obj.commamt = parseFloat(commamt).toFixed(4);
+		// 	// console.log(this.arrayAllo);
+			
+		// 	// // $(fieldID).on('change',[idno,self.arrayAllo,self.allo_error],onchangeField);
+
+		// 	this.updateAlloField();
 		// }
+
 		function getIndex(array,idno){
 			var retval=0;
 			$.each(array, function( index, obj ) {
@@ -841,18 +840,6 @@ $(document).ready(function () {
 				}
 			});
 			return retval;
-		}
-		this.deleteAllo = function(idno){
-			var self=this;
-			$.each(self.arrayAllo, function( index, obj ) {
-				if(obj.idno==idno){
-					self.arrayAllo.splice(index, 1);
-					return false;
-				}
-			});
-
-			console.log(this.arrayAllo);
-			this.updateAlloField();
 		}
 		this.alloInArray = function(idno){
 			var retval=false;
@@ -878,10 +865,12 @@ $(document).ready(function () {
 			});
 		}
 		this.updateAlloField = function(){
+			// console.log(this.arrayAllo);
 			// var self=this;
 			this.alloTotal = 0;
 			let totalallo = 0;
 			let totalcom = 0;
+
 			$.each(this.arrayAllo, function( index, obj ) {
 				let amt = parseFloat(obj.obj.refamount).toFixed(4);
 				let com = parseFloat(obj.obj.commamt).toFixed(4);
@@ -892,7 +881,7 @@ $(document).ready(function () {
 				totalallo = parseFloat(totalallo) + parseFloat(amt);
 			});
 			$('#dtlamt').val(totalallo);
-			$('#comamt').val(totalcom);
+			// $('#commamt').val(totalcom);
 			mycurrency.formatOn();
 			// this.alloBalance = this.outamt - this.alloTotal;
 
@@ -999,9 +988,9 @@ $(document).ready(function () {
 		title:"Header"
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
 		id: "saveDetailLabel",
-		caption:"Detail",cursor: "pointer",position: "last", 
+		caption:"Save",cursor: "pointer",position: "last", 
 		buttonicon:"",
-		title:"Detail"
+		title:"Save"
 	});
 	
 	//////////////////////////formatter checkbox//////////////////////////////////////////////////
@@ -1161,7 +1150,7 @@ $(document).ready(function () {
 		var obj={
 			_token : $('#_token').val(),
 			amount : $('#amount').val(),
-			comamt : $('#comamt').val(),
+			comamt : $('#commamt').val(),
 			dtlamt : $('#dtlamt').val(),
 			idno_array : idno_array,
 			rate_array : rate_array
@@ -1174,10 +1163,9 @@ $(document).ready(function () {
 			alert(data.responseText);
 		}).done(function (data) {
 			mycurrency.formatOn();
-			urlParam2.edit='false';
-			$("#jqGrid2").data('initAllo','true');
+			urlParam2.edit='true';
 			refreshGrid("#jqGrid2",urlParam2);
-			hideatdialogForm(true);
+			hideatdialogForm(false);
 		});
 	});
 
@@ -1562,20 +1550,20 @@ $(document).ready(function () {
 			dialog_payer.on();
 			$('#amount_label').html('Card Amount');
 			$('#payer2').data('validation','required');
-			$('#comamt').prop("disabled",false);
+			$('#commamt').prop("disabled",false);
 
 		}else if($(this).val() == 'CASH'){
 			$('#payer1_div').show();
 			$('#payer2_div').hide();
 			dialog_payer.off();
 			$('#amount_label').html('Cash Amount');
-			$('#comamt').val('').prop("disabled",true);
+			$('#commamt').val('').prop("disabled",true);
 		}else{
 			$('#payer1_div').show();
 			$('#payer2_div').hide();
 			dialog_payer.off();
 			$('#amount_label').html('Cheque Amount');
-			$('#comamt').val('').prop("disabled",true);
+			$('#commamt').val('').prop("disabled",true);
 		}
 	});
 
@@ -1592,18 +1580,21 @@ $(document).ready(function () {
 				dialog_payer.on();
 				$('#payer2').val(selrowData("#jqGrid").payto);
 				$('#amount_label').html('Card Amount');
+				$('#commamt').prop("disabled",false);
 			}else if(paymode == 'CASH'){
 				$('#payer1_div').show();
 				$('#payer2_div').hide();
 				dialog_payer.off();
 				$('#payer1').val(selrowData("#jqGrid").payto);
 				$('#amount_label').html('Cash Amount');
+				$('#commamt').val('').prop("disabled",true);
 			}else{
 				$('#payer1_div').show();
 				$('#payer2_div').hide();
 				dialog_payer.off();
 				$('#payer1').val(selrowData("#jqGrid").payto);
 				$('#amount_label').html('Cheque Amount');
+				$('#commamt').val('').prop("disabled",true);
 			}
 		}
 	}

@@ -123,8 +123,13 @@ class bankInRegistrationDetailController extends defaultController
                 $lineno_ = $lineno_ + 1;
             }
 
+            $responce = new stdClass();
+            $responce->auditno = $auditno;
+            $responce->amount = $request->amount;
+
+            echo json_encode($responce);
+
             DB::commit();
-            return response($lineno_,200);
 
         } catch (\Exception $e) {
             DB::rollback();
