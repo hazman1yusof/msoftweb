@@ -47,7 +47,6 @@ class bankInRegistrationController extends defaultController
 
     public function table(Request $request)
     {   
-        DB::enableQueryLog();
         switch($request->action){
             case 'maintable':
                 return $this->maintable($request);
@@ -272,7 +271,7 @@ class bankInRegistrationController extends defaultController
         $array_update = [
             // 'source' => $source,
             // 'trantype' => $trantype,
-            'payto' => $payto,
+            // 'payto' => $payto,
             // 'bankcode' => $bankcode,
             // 'paymode' => $request->paymode,
             'reference' => $request->reference,
@@ -280,8 +279,8 @@ class bankInRegistrationController extends defaultController
             'outamount' => $request->amount,
             'commamt' => $request->commamt,
             'upduser' => session('username'),
-            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'postdate' => $request->postdate
+            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+            // 'postdate' => $request->postdate
         ];
 
         try {
@@ -310,29 +309,29 @@ class bankInRegistrationController extends defaultController
 
             foreach ($request->idno_array as $idno){
                 $apacthdr = DB::table('finance.apacthdr')
+                            ->where('compcode',session('compcode'))
                             ->where('idno','=',$idno);
 
                 $apacthdr_get = $apacthdr->first();
-                $yearperiod = $this->getyearperiod($apacthdr_get->actdate);
-                $pvno = $this->defaultSysparam('HIS','PV');
+                $yearperiod = $this->getyearperiod($apacthdr_get->postdate);
 
                 //1st step add cbtran credit
                 DB::table('finance.cbtran')
                     ->insert([  
-                        'compcode' => $apacthdr_get->compcode, 
+                        'compcode' => session('compcode'), 
                         'bankcode' => $apacthdr_get->bankcode, 
                         'source' => $apacthdr_get->source, 
                         'trantype' => $apacthdr_get->trantype, 
                         'auditno' => $apacthdr_get->auditno, 
-                        'postdate' => $apacthdr_get->actdate, 
+                        'postdate' => $apacthdr_get->postdate, 
                         'year' => $yearperiod->year, 
                         'period' => $yearperiod->period, 
-                        'cheqno' => $apacthdr_get->cheqno, 
-                        'amount' => -$apacthdr_get->amount, 
-                        'remarks' => strtoupper($apacthdr_get->remarks), 
+                        // 'cheqno' => $apacthdr_get->cheqno, 
+                        'amount' => $apacthdr_get->amount, 
+                        'remarks' => strtoupper($apacthdr_get->payto), 
                         'upduser' => session('username'), 
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                        'reference' => 'Pay To :'. ' ' .$apacthdr_get->payto  .' '. $apacthdr_get->remarks, 
+                        'reference' => $apacthdr_get->reference, 
                         'recstatus' => 'ACTIVE' 
                     ]);
 
@@ -365,216 +364,237 @@ class bankInRegistrationController extends defaultController
                 }
 
                 //2nd step step add gltran   
-                $queryDP_obj = DB::table('finance.apacthdr')
-                        ->select ('apactdtl.compcode', 'apactdtl.source', 'apactdtl.trantype', 'apactdtl.auditno', 'apactdtl.lineno_', 'apactdtl.document', 'apacthdr.remarks', 'apactdtl.deptcode', 'apactdtl.category', 'apacthdr.bankcode', 'apactdtl.amount', 'apacthdr.actdate', 'apactdtl.AmtB4GST')
-                        ->join('finance.apactdtl', function($join) use ($request){
-                            $join = $join->on('apactdtl.auditno', '=', 'apacthdr.auditno');
-                            $join = $join->on('apactdtl.compcode', '=', 'apacthdr.compcode');
-                            $join = $join->on('apactdtl.source', '=', 'apacthdr.source');
-                            $join = $join->on('apactdtl.trantype', '=', 'apacthdr.trantype');
-                        })
-                        ->where('apactdtl.compcode', '=', session('compcode'))
-                        ->where('apactdtl.source', '=', $apacthdr_get->source)
-                        ->where('apactdtl.trantype', '=', $apacthdr_get->trantype)
-                        ->where('apactdtl.auditno', '=', $apacthdr_get->auditno)
-                        ->get();
+                $bank_get = DB::table('finance.bank')
+                                ->where('compcode', session('compcode'))
+                                ->where('bankcode', $apacthdr_get->bankcode)
+                                ->first();
+                $drcostcode = $bank_get->glccode;
+                $dracc = $bank_get->glaccno;
 
-                if($apacthdr_get->TaxClaimable == "Claimable" ){
-                    $gst = $this->getTax('TX', 'BS');
-                }else{
-                    $gst = $this->getTax('TX', 'PNL');
+                if($apacthdr_get->trantype == 'BD'){
+                    $paymode_get = DB::table('debtor.paymode')
+                                    ->where('compcode', session('compcode'))
+                                    ->where('cardcent', $apacthdr_get->payto)
+                                    ->first();
+                    $crcostcode = $paymode_get->ccode;
+                    $cracc = $paymode_get->glaccno;
+
+                }else if($apacthdr_get->trantype == 'BS'){
+                    $paymode_get = DB::table('debtor.paymode')
+                                    ->where('compcode', session('compcode'))
+                                    ->where('paytype', 'CASH')
+                                    ->first();
+                    $crcostcode = $paymode_get->ccode;
+                    $cracc = $paymode_get->glaccno;
+
+                }else if($apacthdr_get->trantype == 'BQ'){
+                    $paymode_get = DB::table('debtor.paymode')
+                                    ->where('compcode', session('compcode'))
+                                    ->where('paytype', 'CHEQUE')
+                                    ->first();
+                    $crcostcode = $paymode_get->ccode;
+                    $cracc = $paymode_get->glaccno;
                 }
 
-                foreach ($queryDP_obj as $key => $apactdtl) {
-                    $creditbank = $this->getGLcode($apacthdr_get->bankcode);
-                    $debitbank = $this->getDept($apactdtl->deptcode);
-                    $debitbank2 = $this->getCat($apactdtl->category);
-                    
-                    DB::table('finance.gltran')
-                                ->insert([
-                                    'compcode' => session('compcode'),
-                                    'auditno' => $apactdtl->auditno,
-                                    'lineno_' => $apactdtl->lineno_,
-                                    'source' => $apactdtl->source,
-                                    'trantype' => $apactdtl->trantype,
-                                    'reference' => $apacthdr_get->cheqno,
-                                    'description' => strtoupper($apacthdr_get->remarks),
-                                    'year' => $yearperiod->year,
-                                    'period' => $yearperiod->period,
-                                    'drcostcode' => $debitbank->costcode,
-                                    'crcostcode' => $creditbank->glccode,
-                                    'dracc' => $debitbank2->expacct,
-                                    'cracc' => $creditbank->glaccno,
-                                    'amount' => $apactdtl->AmtB4GST,
-                                    'postdate' => $apacthdr_get->actdate,
-                                    'adduser' => session('username'),
-                                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                                ]);
+                DB::table('finance.gltran')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'auditno' => $apacthdr_get->auditno,
+                                'lineno_' => 1,
+                                'source' => $apacthdr_get->source,
+                                'trantype' => $apacthdr_get->trantype,
+                                'reference' => $apacthdr_get->reference,
+                                'description' => strtoupper($apacthdr_get->payto),
+                                'year' => $yearperiod->year,
+                                'period' => $yearperiod->period,
+                                'drcostcode' => $drcostcode,
+                                'crcostcode' => $crcostcode,
+                                'dracc' => $cracc,
+                                'cracc' => $cracc,
+                                'amount' => $apacthdr_get->amount,
+                                'postdate' => $apacthdr_get->postdate,
+                                'adduser' => session('username'),
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            ]);
 
-                    if($this->isGltranExist($debitbank->costcode,$debitbank2->expacct,$yearperiod->year,$yearperiod->period)){
+                if($this->isGltranExist($drcostcode,$dracc,$yearperiod->year,$yearperiod->period)){
+                    DB::table('finance.glmasdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('costcode','=',$drcostcode)
+                        ->where('glaccount','=',$dracc)
+                        ->where('year','=',$yearperiod->year)
+                        ->update([
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'actamount'.$yearperiod->period => $this->gltranAmount + $apacthdr_get->amount,
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }else{
+                    DB::table('finance.glmasdtl')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'costcode' => $drcostcode,
+                            'glaccount' => $dracc,
+                            'year' => $yearperiod->year,
+                            "actamount".$yearperiod->period => $apacthdr_get->amount,
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }
+            
+                if($this->isGltranExist($crcostcode,$cracc,$yearperiod->year,$yearperiod->period)){
+                    DB::table('finance.glmasdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('costcode','=',$crcostcode)
+                        ->where('glaccount','=',$cracc)
+                        ->where('year','=',$yearperiod->year)
+                        ->update([
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'actamount'.$yearperiod->period => $this->gltranAmount - $apacthdr_get->amount,
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }else{
+                    DB::table('finance.glmasdtl')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'costcode' => $crcostcode,
+                            'glaccount' => $cracc,
+                            'year' => $yearperiod->year,
+                            "actamount".$yearperiod->period => -$apacthdr_get->amount,
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }
+
+                if($apacthdr_get->commamt != 0){
+
+                    $sysparam_get = DB::table('sysdb.sysparam')
+                                    ->where('compcode', session('compcode'))
+                                    ->where('source', 'CM')
+                                    ->where('trantype', 'CARDCOMM')
+                                    ->first();
+                    $drcostcode = $sysparam_get->pvalue1;
+                    $dracc = $sysparam_get->pvalue2;
+
+                    $paymode_get = DB::table('debtor.paymode')
+                                    ->where('compcode', session('compcode'))
+                                    ->where('cardcent', $apacthdr_get->payto)
+                                    ->first();
+                    $crcostcode = $paymode_get->ccode;
+                    $cracc = $paymode_get->glaccno;
+
+                    DB::table('finance.gltran')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'auditno' => $apacthdr_get->auditno,
+                                'lineno_' => 2,
+                                'source' => $apacthdr_get->source,
+                                'trantype' => $apacthdr_get->trantype,
+                                'reference' => $apacthdr_get->reference,
+                                'description' => strtoupper($apacthdr_get->payto),
+                                'year' => $yearperiod->year,
+                                'period' => $yearperiod->period,
+                                'drcostcode' => $drcostcode,
+                                'crcostcode' => $crcostcode,
+                                'dracc' => $cracc,
+                                'cracc' => $cracc,
+                                'amount' => $apacthdr_get->commamt,
+                                'postdate' => $apacthdr_get->postdate,
+                                'adduser' => session('username'),
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            ]);
+
+                    if($this->isGltranExist($drcostcode,$dracc,$yearperiod->year,$yearperiod->period)){
                         DB::table('finance.glmasdtl')
                             ->where('compcode','=',session('compcode'))
-                            ->where('costcode','=',$debitbank->costcode)
-                            ->where('glaccount','=',$debitbank2->expacct)
+                            ->where('costcode','=',$drcostcode)
+                            ->where('glaccount','=',$dracc)
                             ->where('year','=',$yearperiod->year)
                             ->update([
                                 'upduser' => session('username'),
                                 'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                'actamount'.$yearperiod->period => $this->gltranAmount + $apactdtl->AmtB4GST,
+                                'actamount'.$yearperiod->period => $this->gltranAmount + $apacthdr_get->commamt,
                                 'recstatus' => 'ACTIVE'
                             ]);
                     }else{
                         DB::table('finance.glmasdtl')
                             ->insert([
                                 'compcode' => session('compcode'),
-                                'costcode' => $debitbank->costcode,
-                                'glaccount' => $debitbank2->expacct,
+                                'costcode' => $drcostcode,
+                                'glaccount' => $dracc,
                                 'year' => $yearperiod->year,
-                                "actamount".$yearperiod->period => -$apactdtl->AmtB4GST,
+                                "actamount".$yearperiod->period => $apacthdr_get->commamt,
                                 'adduser' => session('username'),
                                 'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
                                 'recstatus' => 'ACTIVE'
                             ]);
                     }
                 
-                    /////////////for gst/////////////////////////////////
-                    $amountgst = floatval($apactdtl->amount) - floatval($apactdtl->AmtB4GST);
-
-                    if($amountgst > 0.00){
-                        DB::table('finance.gltran')
-                            ->insert([
-                                'compcode' => session('compcode'),
-                                'auditno' => $apactdtl->auditno,
-                                'lineno_' => $apactdtl->lineno_,
-                                'source' => $apactdtl->source,
-                                'trantype' => $apactdtl->trantype,
-                                'reference' => $apacthdr_get->cheqno,
-                                'description' => strtoupper($apacthdr_get->remarks),
-                                'year' => $yearperiod->year,
-                                'period' => $yearperiod->period,
-                                'drcostcode' => $gst->pvalue1,
-                                'crcostcode' => $creditbank->glccode,
-                                'dracc' => $gst->pvalue2,
-                                'cracc' => $creditbank->glaccno,
-                                'amount' => $amountgst,
-                                // 'idno' => $idno,
-                                'postdate' => $apacthdr_get->actdate,
-                                'adduser' => session('username'),
-                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            ]);
-                        
-                        if($this->isGltranExist($gst->pvalue1,$gst->pvalue2,$yearperiod->year,$yearperiod->period)){
-                            DB::table('finance.glmasdtl')
-                                ->where('compcode','=',session('compcode'))
-                                ->where('costcode','=',$gst->pvalue1)
-                                ->where('glaccount','=',$gst->pvalue2)
-                                ->where('year','=',$yearperiod->year)
-                                ->update([
-                                    'upduser' => session('username'),
-                                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                    'actamount'.$yearperiod->period => $this->gltranAmount + $amountgst,
-                                    'recstatus' => 'ACTIVE'
-                                ]);
-                        }else{
-                            DB::table('finance.glmasdtl')
-                                ->insert([
-                                    'compcode' => session('compcode'),
-                                    'costcode' => $gst->pvalue1,
-                                    'glaccount' => $gst->pvalue2,
-                                    'year' => $yearperiod->year,
-                                    "actamount".$yearperiod->period => -$amountgst,
-                                    'adduser' => session('username'),
-                                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                    'recstatus' => 'ACTIVE'
-                                ]);
-                        }
-
-                        //3th step add glmasdtl untuk bankcode
-
-                        //creditbank glmastdtl
-                        if($this->isGltranExist($creditbank->glccode,$creditbank->glaccno,$yearperiod->year,$yearperiod->period)){
-                            DB::table('finance.glmasdtl')
-                                ->where('compcode','=',session('compcode'))
-                                ->where('costcode','=',$creditbank->glccode)
-                                ->where('glaccount','=',$creditbank->glaccno)
-                                ->where('year','=',$yearperiod->year)
-                                ->update([
-                                    'upduser' => session('username'),
-                                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                    'actamount'.$yearperiod->period => $this->gltranAmount - $amountgst,
-                                    'recstatus' => 'ACTIVE'
-                                ]);
-                        }else{
-                            DB::table('finance.glmasdtl')
-                                ->insert([
-                                    'compcode' => session('compcode'),
-                                    'costcode' => $creditbank->glccode,
-                                    'glaccount' => $creditbank->glaccno,
-                                    'year' => $yearperiod->year,
-                                    "actamount".$yearperiod->period => -$amountgst,
-                                    'adduser' => session('username'),
-                                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                    'recstatus' => 'ACTIVE'
-                                ]);
-                        }
-                    }
-                }
-                
-                //step update stat at cheqtran   //->dah buat waktu add, kalu buat waktu posted nanti
-                // if($this->isPaytypeCheque($apacthdr_get->paymode == "Cheque")){
-                //     DB::table('finance.chqtran')
-                //         ->where('compcode','=',session('compcode'))
-                //         ->where('bankcode','=',$apacthdr_get->bankcode)
-                //         ->where('cheqno','=',$apacthdr_get->cheqno)
-                //         ->update([
-                //             'upduser' => session('username'),
-                //             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                //             'cheqdate' => $apacthdr_get->cheqdate,
-                //             'amount' => $apacthdr_get->amount,
-                //             'remarks' => strtoupper($apacthdr_get->remarks),
-                //             'recstatus' => 'ISSUED',
-                //             'auditno' => $apacthdr_get->auditno,
-                //             'trantype' => $apacthdr_get->trantype,
-                //             'source' => $apacthdr_get->source,
-                            
-                //         ]);
-                // } 
-
-                if($apacthdr_get->paymode == 'CHEQUE'){
-                    $chqtran =  DB::table('finance.chqtran')
-                                ->where('compcode','=',session('compcode'))
-                                ->where('bankcode','=',$apacthdr_get->bankcode)
-                                ->where('cheqno','=',$apacthdr_get->cheqno)
-                                ->where('recstatus','OPEN');
-
-                    if(!$chqtran->exists()){
-                        throw new \Exception("Cheque Error, try again..");
-                    }
-
-                    DB::table('finance.chqtran')
+                    if($this->isGltranExist($crcostcode,$cracc,$yearperiod->year,$yearperiod->period)){
+                        DB::table('finance.glmasdtl')
                             ->where('compcode','=',session('compcode'))
-                            ->where('bankcode','=',$apacthdr_get->bankcode)
-                            ->where('cheqno','=',$apacthdr_get->cheqno)
-                            ->where('recstatus','OPEN')
+                            ->where('costcode','=',$crcostcode)
+                            ->where('glaccount','=',$cracc)
+                            ->where('year','=',$yearperiod->year)
                             ->update([
                                 'upduser' => session('username'),
                                 'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                'cheqdate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                'amount' => $apacthdr_get->amount,
-                                'remarks' => strtoupper($apacthdr_get->remarks),
-                                'recstatus' => 'ISSUED',
-                                'auditno' => $apacthdr_get->auditno,
-                                'trantype' => $apacthdr_get->trantype,
-                                'source' => $apacthdr_get->source,
-                                'payto' => $apacthdr_get->payto,
+                                'actamount'.$yearperiod->period => $this->gltranAmount - $apacthdr_get->commamt,
+                                'recstatus' => 'ACTIVE'
+                            ]);
+                    }else{
+                        DB::table('finance.glmasdtl')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'costcode' => $crcostcode,
+                                'glaccount' => $cracc,
+                                'year' => $yearperiod->year,
+                                "actamount".$yearperiod->period => -$apacthdr_get->commamt,
+                                'adduser' => session('username'),
+                                'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                                'recstatus' => 'ACTIVE'
+                            ]);
+                    }
+                }
+                
+                //5th step change status to posted
+                DB::table('finance.apacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno','=',$idno)
+                            ->update([
+                                'recstatus' => 'POSTED'
+                            ]);
+
+                DB::table('finance.cbdtl')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$apacthdr_get->source)
+                            ->where('trantype',$apacthdr_get->trantype)
+                            ->where('auditno',$apacthdr_get->auditno)
+                            ->update([
+                                'recstatus' => 'POSTED'
+                            ]);
+
+                $cbdtl_get = DB::table('finance.cbdtl')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$apacthdr_get->source)
+                            ->where('trantype',$apacthdr_get->trantype)
+                            ->where('auditno',$apacthdr_get->auditno)
+                            ->get();
+
+                foreach ($cbdtl_get as $key => $value) {
+                    DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$value->refsrc)
+                            ->where('trantype',$value->reftrantype)
+                            ->where('auditno',$value->refauditno)
+                            ->update([
+                                'cbflag' => 1
                             ]);
                 }
 
-                //5th step change status to posted
-                $apacthdr->update([
-                    'pvno' => $pvno,
-                    'recstatus' => 'POSTED'
-                ]);
             }
 
             DB::commit();

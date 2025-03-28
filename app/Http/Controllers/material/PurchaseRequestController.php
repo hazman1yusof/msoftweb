@@ -1774,8 +1774,10 @@ class PurchaseRequestController extends defaultController
 
     function print_connection($purreqhd){
         //1. get PO
-        // $purordhd = DB::table('material.purordhd')
-        //     ->where('compcode','=',session('compcode'))
+        $purordhd = DB::table('material.purordhd')
+            ->where('compcode','=',session('compcode'))
+            ->where('reqdept',$purreqhd->reqdept)
+            ->where('purreqno',$purreqhd->purreqno);
     }
     
 }

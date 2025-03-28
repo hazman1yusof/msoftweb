@@ -24,6 +24,10 @@ $(document).ready(function () {
 			}
 		},
 	};
+
+	$("body").click(function(){
+		$('#error_infront').text('');
+	});
 			
 	//////////////////////////////////////////////////////////////
 
@@ -389,7 +393,7 @@ $(document).ready(function () {
 	// 	});
 	// });
 	$("#but_post_jq").click(function(){
-		$(this).attr('disabled',true);
+		$(this).prop('disabled',true);
 		var self_ = this;
 		var idno_array = [];
 	
@@ -405,9 +409,9 @@ $(document).ready(function () {
 			cbselect.empty_sel_tbl();
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
-			$(self_).attr('disabled',false);
+			$(self_).prop('disabled',false);
 		}).success(function(data){
-			$(self_).attr('disabled',false);
+			$(self_).prop('disabled',false);
 		});
 	});
 
@@ -431,6 +435,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form,selfoper,saveParam,obj,needrefresh){
+		$('#saveDetailLabel').prop('disabled',true);
 		if(obj==null){
 			obj={};
 		}
@@ -440,9 +445,11 @@ $(document).ready(function () {
 			
 		},'json').fail(function (data) {
 			alert(data.responseText);
+			$('#saveDetailLabel').prop('disabled',false);
 		}).done(function (data) {
 			mycurrency.formatOn();
 			unsaved = false;
+			$('#saveDetailLabel').prop('disabled',false);
 			hideatdialogForm(false);
 			// addmore_jqgrid2.state = true;
 			// if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
@@ -1139,6 +1146,7 @@ $(document).ready(function () {
 	});
 
 	$('#saveAndPost').click(function(){
+		$(this).prop('disabled',true);
 		mycurrency.formatOff();
 		let idno_array = [];
 		let rate_array = [];
@@ -1161,12 +1169,14 @@ $(document).ready(function () {
 		},'json').fail(function (data) {
 			mycurrency.formatOn();
 			alert(data.responseText);
+			$(this).prop('disabled',false);
 		}).done(function (data) {
 			mycurrency.formatOn();
 			urlParam2.edit='true';
 			refreshGrid("#jqGrid2",urlParam2);
 			$('#auditno').val(data);
 			hideatdialogForm(false);
+			$(this).prop('disabled',false);
 		});
 	});
 
