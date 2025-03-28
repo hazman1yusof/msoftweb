@@ -316,7 +316,7 @@ class bankInRegistrationController extends defaultController
                 $apacthdr_get = $apacthdr->first();
 
                 if($this->check_amount_comm($apacthdr_get)){
-                    throw new \Exception('Header and commision amount cant be different with detail amount', 500);
+                    throw new \Exception('Amunt + commision not equal with total detail', 500);
                 }
 
                 $yearperiod = $this->getyearperiod($apacthdr_get->postdate);
