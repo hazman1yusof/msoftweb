@@ -614,10 +614,10 @@ class bankInRegistrationController extends defaultController
     public function check_amount_comm($apacthdr_get){
         if(strtoupper($apacthdr_get->paymode) == 'CARD'){
             if((floatval($apacthdr_get->amount) + floatval($apacthdr_get->commamt)) != floatval($apacthdr_get->totBankinAmt)){
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public function isCBtranExist($bankcode,$year,$period){
