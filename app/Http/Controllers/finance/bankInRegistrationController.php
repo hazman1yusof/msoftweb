@@ -308,11 +308,17 @@ class bankInRegistrationController extends defaultController
         try {
 
             foreach ($request->idno_array as $idno){
+
                 $apacthdr = DB::table('finance.apacthdr')
                             ->where('compcode',session('compcode'))
                             ->where('idno','=',$idno);
 
                 $apacthdr_get = $apacthdr->first();
+
+                if($this->check_amount_comm($apacthdr_get)){
+                    throw new \Exception('Header and commision amount cant be different with detail amount', 500);
+                }
+
                 $yearperiod = $this->getyearperiod($apacthdr_get->postdate);
 
                 //1st step add cbtran credit
@@ -601,8 +607,17 @@ class bankInRegistrationController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
+    }
+
+    public function check_amount_comm($apacthdr_get){
+        if(strtoupper($apacthdr_get->paymode) == 'CARD'){
+            if((floatval($apacthdr_get->amount) + floatval($apacthdr_get->commamt)) != floatval($apacthdr_get->totBankinAmt)){
+                return false;
+            }
+        }
+        return true;
     }
 
     public function isCBtranExist($bankcode,$year,$period){
