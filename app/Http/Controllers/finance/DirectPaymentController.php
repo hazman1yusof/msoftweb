@@ -342,6 +342,33 @@ class DirectPaymentController extends defaultController
                                 'recstatus' => 'ACTIVE'
                             ]);
                     }
+
+                    //creditbank glmastdtl
+                    if($this->isGltranExist($creditbank->glccode,$creditbank->glaccno,$yearperiod->year,$yearperiod->period)){
+                        DB::table('finance.glmasdtl')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('costcode','=',$creditbank->glccode)
+                            ->where('glaccount','=',$creditbank->glaccno)
+                            ->where('year','=',$yearperiod->year)
+                            ->update([
+                                'upduser' => session('username'),
+                                'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                                'actamount'.$yearperiod->period => $this->gltranAmount - $amountgst,
+                                'recstatus' => 'ACTIVE'
+                            ]);
+                    }else{
+                        DB::table('finance.glmasdtl')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'costcode' => $creditbank->glccode,
+                                'glaccount' => $creditbank->glaccno,
+                                'year' => $yearperiod->year,
+                                "actamount".$yearperiod->period => -$amountgst,
+                                'adduser' => session('username'),
+                                'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                                'recstatus' => 'ACTIVE'
+                            ]);
+                    }
                 
                     /////////////for gst/////////////////////////////////
                     $amountgst = floatval($apactdtl->amount) - floatval($apactdtl->AmtB4GST);
@@ -387,35 +414,6 @@ class DirectPaymentController extends defaultController
                                     'compcode' => session('compcode'),
                                     'costcode' => $gst->pvalue1,
                                     'glaccount' => $gst->pvalue2,
-                                    'year' => $yearperiod->year,
-                                    "actamount".$yearperiod->period => -$amountgst,
-                                    'adduser' => session('username'),
-                                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                    'recstatus' => 'ACTIVE'
-                                ]);
-                        }
-
-                        //3th step add glmasdtl untuk bankcode
-
-                        //creditbank glmastdtl
-                        if($this->isGltranExist($creditbank->glccode,$creditbank->glaccno,$yearperiod->year,$yearperiod->period)){
-                            DB::table('finance.glmasdtl')
-                                ->where('compcode','=',session('compcode'))
-                                ->where('costcode','=',$creditbank->glccode)
-                                ->where('glaccount','=',$creditbank->glaccno)
-                                ->where('year','=',$yearperiod->year)
-                                ->update([
-                                    'upduser' => session('username'),
-                                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                                    'actamount'.$yearperiod->period => $this->gltranAmount - $amountgst,
-                                    'recstatus' => 'ACTIVE'
-                                ]);
-                        }else{
-                            DB::table('finance.glmasdtl')
-                                ->insert([
-                                    'compcode' => session('compcode'),
-                                    'costcode' => $creditbank->glccode,
-                                    'glaccount' => $creditbank->glaccno,
                                     'year' => $yearperiod->year,
                                     "actamount".$yearperiod->period => -$amountgst,
                                     'adduser' => session('username'),
