@@ -14,23 +14,20 @@ use DateTime;
 class bankReconController extends defaultController
 {   
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware('auth');
     }
 
-    public function show(Request $request)
-    {   
+    public function show(Request $request){   
 
-        $unit = DB::table('sysdb.sector')
+        $bank = DB::table('finance.bank')
                     ->where('compcode',session('compcode'))
                     ->get();
 
-        return view('finance.CM.bankRecon.bankRecon',compact('unit'));
+        return view('finance.CM.bankRecon.bankRecon',compact('bank'));
     }
 
-    public function form(Request $request)
-    {   
+    public function form(Request $request){   
         switch($request->oper){
             case 'add':
                 return $this->add($request);
@@ -40,16 +37,23 @@ class bankReconController extends defaultController
                 return $this->del($request);
             case 'posted':
                 return $this->posted($request);
+            case 'cbrecdtl_add':
+                return $this->cbrecdtl_add($request);
+            case 'cbrecdtl_del':
+                return $this->cbrecdtl_del($request);
             default:
                 return 'error happen..';
         }
     }
 
-    public function table(Request $request)
-    {   
+    public function table(Request $request){   
         switch($request->action){
             case 'maintable':
                 return $this->maintable($request);
+            case 'cbrecdtl_tbl':
+                return $this->cbrecdtl_tbl($request);
+            case 'cbtran_tbl':
+                return $this->cbtran_tbl($request);
             default:
                 return 'error happen..';
         }
@@ -57,34 +61,65 @@ class bankReconController extends defaultController
 
     public function maintable(Request $request){
 
-        $table = DB::table('finance.apacthdr AS ap')
-                    ->select('ap.idno','ap.compcode','ap.source','ap.trantype','ap.doctype','ap.auditno','ap.document','ap.suppcode','ap.payto','ap.suppgroup','ap.bankcode','ap.paymode','ap.cheqno','ap.cheqdate','ap.actdate','ap.recdate','ap.category','ap.amount','ap.outamount','ap.remarks','ap.postflag','ap.doctorflag','ap.stat','ap.entryuser','ap.entrytime','ap.upduser','ap.upddate','ap.conversion','ap.srcfrom','ap.srcto','ap.deptcode','ap.reconflg','ap.effectdatefr','ap.effectdateto','ap.frequency','ap.refsource','ap.reftrantype','ap.refauditno','ap.pvno','ap.entrydate','ap.recstatus','ap.adduser','ap.adddate','ap.reference','ap.TaxClaimable','ap.unit','ap.allocdate','ap.postuser','ap.postdate','ap.unallocated','ap.requestby','ap.requestdate','ap.request_remark','ap.supportby','ap.supportdate','ap.support_remark','ap.verifiedby','ap.verifieddate','ap.verified_remark','ap.approvedby','ap.approveddate','ap.approved_remark','ap.cancelby','ap.canceldate','ap.cancelled_remark','ap.bankaccno','ap.commamt','ap.totBankinAmt')
-                    // ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.payto')
-                    ->where('ap.compcode','=', session('compcode'))
-                    ->where('ap.source','=', 'CM')
-                    ->whereIn('ap.trantype', ['BD','BS','BQ']);
+        if(empty($request->bankcode) && empty($request->recdate)){
+            $responce = new stdClass();
+            $responce->page = 0;
+            $responce->total = 0;
+            $responce->records = 0;
+            $responce->rows = [];
+            $responce->cbrecdtl_sumamt = 0;
+            return json_encode($responce);
+        }
+
+        $recdate_ = Carbon::createFromFormat('Y-m',$request->recdate)->endOfMonth()->format('Y-m-d');
+
+        $cbhdr = DB::table('finance.cbrechdr')
+                        ->where('compcode',session('compcode'))
+                        ->where('recdate',$recdate_)
+                        ->where('bankcode',$request->bankcode);
+
+        if(!$cbhdr->exists()){
+            $responce = new stdClass();
+            $responce->page = 0;
+            $responce->total = 0;
+            $responce->records = 0;
+            $responce->rows = [];
+            $responce->cbrecdtl_sumamt = 0;
+            return json_encode($responce);
+        }
+
+        $cbhdr = $cbhdr->first();
+
+        if($request->oper == 'init'){
+            $cbrecdtl_sumamt = $this->init_recon($request,$cbhdr);
+        }
+
+        $table = DB::table('finance.cbrecdtl AS cbdt')
+                    ->select('cbdt.idno','cbdt.compcode','cbdt.auditno','cbdt.docdate','cbdt.year','cbdt.period','cbdt.amount','cbdt.remarks','cbdt.lastuser','cbdt.lastupdate','cbdt.bitype','cbdt.reference','cbdt.stat','cbdt.refsrc','cbdt.reftrantype','cbdt.refauditno','cbdt.recstatus','cbdt.bankcode','cbdt.cheqno',)
+                    ->where('cbdt.compcode','=', session('compcode'))
+                    ->where('cbdt.auditno','=', $cbhdr->auditno);
 
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
         }
 
         if(!empty($request->filterdate)){
-            $table = $table->where('ap.actdate','>=',$request->filterdate[0]);
-            $table = $table->where('ap.actdate','<=',$request->filterdate[1]);
+            $table = $table->where('cbdt.actdate','>=',$request->filterdate[0]);
+            $table = $table->where('cbdt.actdate','<=',$request->filterdate[1]);
         }
 
         if(!empty($request->searchCol)){
             if($request->searchCol[0] == 'bankcode'){
                 $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('ap.bankcode','like',$request->searchVal[0]);
+                        $table->Where('cbdt.bankcode','like',$request->searchVal[0]);
                     });
             } else if($request->searchCol[0] == 'payto'){
                 $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('ap.payto','like',$request->searchVal[0]);
+                        $table->Where('cbdt.payto','like',$request->searchVal[0]);
                     });
             }else if($request->searchCol[0] == 'auditno'){
                 $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('ap.auditno','like',$request->searchVal[0]);
+                        $table->Where('cbdt.auditno','like',$request->searchVal[0]);
                     });
             }else{
                 $table = $table->Where(function ($table) use ($request) {
@@ -103,13 +138,150 @@ class bankReconController extends defaultController
             }else{
                 foreach ($pieces as $key => $value) {
                     // $value_ = substr_replace($value,"ap.",0,strpos($value,"_")+1);
-                    $value_ = 'ap.'.$value;
+                    $value_ = 'cbdt.'.$value;
                     $pieces_inside = explode(" ", $value_);
                     $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
                 }
             }
         }else{
-            $table = $table->orderBy('ap.idno','DESC');
+            $table = $table->orderBy('cbdt.idno','DESC');
+        }
+
+        $paginate = $table->paginate($request->rows);
+
+        //////////paginate/////////
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+        $responce->cbrecdtl_sumamt = $cbrecdtl_sumamt;
+
+        return json_encode($responce);
+    }
+
+    public function init_recon(Request $request,$cbhdr){
+        $cbrecdtl_sumamt = DB::table('finance.cbrecdtl')
+                            ->where('compcode',session('compcode'))
+                            ->where('auditno',$cbhdr->auditno)
+                            ->sum('amount');
+
+        $bankstmt = DB::table('finance.bankstmt')
+                                ->where('compcode',session('compcode'))
+                                ->where('mmyy',$cbhdr->recdate)
+                                ->where('bankcode',$cbhdr->bankcode);
+
+        if($bankstmt->exists()){
+            DB::table('finance.bankstmt')
+                    ->where('compcode',session('compcode'))
+                    ->where('mmyy',$cbhdr->recdate)
+                    ->where('bankcode',$cbhdr->bankcode)
+                    ->update([
+                        'currentbal' => $cbrecdtl_sumamt
+                    ]);
+
+            return $cbrecdtl_sumamt;
+        }else{
+            DB::table('finance.bankstmt')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'bankcode' => $cbhdr->bankcode,
+                    'mmyy' => $cbhdr->recdate,
+                    'currentbal' => $cbrecdtl_sumamt,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    // 'unreconamt' => ,
+                ]);
+
+            return $cbrecdtl_sumamt;
+        }
+    }
+
+    public function cbrecdtl_tbl(Request $request){
+        if(empty($request->bankcode) && empty($request->recdate)){
+            $responce = new stdClass();
+            $responce->page = 0;
+            $responce->total = 0;
+            $responce->records = 0;
+            $responce->rows = [];
+            return json_encode($responce);
+        }
+
+        $recdate_ = Carbon::createFromFormat('Y-m',$request->recdate)->endOfMonth()->format('Y-m-d');
+
+        $cbhdr = DB::table('finance.cbrechdr')
+                        ->where('compcode',session('compcode'))
+                        ->where('recdate',$recdate_)
+                        ->where('bankcode',$request->bankcode);
+
+        if(!$cbhdr->exists()){
+            $responce = new stdClass();
+            $responce->page = 0;
+            $responce->total = 0;
+            $responce->records = 0;
+            $responce->rows = [];
+            return json_encode($responce);
+        }
+
+        $cbhdr = $cbhdr->first();
+
+        $table = DB::table('finance.cbrecdtl AS cbdt')
+                    ->select('cbdt.idno','cbdt.compcode','cbdt.auditno','cbdt.docdate','cbdt.year','cbdt.period','cbdt.amount','cbdt.remarks','cbdt.lastuser','cbdt.lastupdate','cbdt.bitype','cbdt.reference','cbdt.stat','cbdt.refsrc','cbdt.reftrantype','cbdt.refauditno','cbdt.recstatus','cbdt.bankcode','cbdt.cheqno',)
+                    ->where('cbdt.compcode','=', session('compcode'))
+                    ->where('cbdt.auditno','=', $cbhdr->auditno);
+
+        if(!empty($request->filterCol)){
+            $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+        }
+
+        if(!empty($request->filterdate)){
+            $table = $table->where('cbdt.actdate','>=',$request->filterdate[0]);
+            $table = $table->where('cbdt.actdate','<=',$request->filterdate[1]);
+        }
+
+        if(!empty($request->searchCol)){
+            if($request->searchCol[0] == 'bankcode'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('cbdt.bankcode','like',$request->searchVal[0]);
+                    });
+            } else if($request->searchCol[0] == 'payto'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('cbdt.payto','like',$request->searchVal[0]);
+                    });
+            }else if($request->searchCol[0] == 'auditno'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('cbdt.auditno','like',$request->searchVal[0]);
+                    });
+            }else{
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
+                    });
+            }
+            
+        }
+
+        if(!empty($request->sidx)){
+
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                foreach ($pieces as $key => $value) {
+                    // $value_ = substr_replace($value,"ap.",0,strpos($value,"_")+1);
+                    $value_ = 'cbdt.'.$value;
+                    $pieces_inside = explode(" ", $value_);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('cbdt.idno','DESC');
         }
 
         $paginate = $table->paginate($request->rows);
@@ -126,7 +298,269 @@ class bankReconController extends defaultController
         $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
+    }
 
+    public function cbtran_tbl(Request $request){
+        if(empty($request->bankcode) && empty($request->recdate)){
+            $responce = new stdClass();
+            $responce->page = 0;
+            $responce->total = 0;
+            $responce->records = 0;
+            $responce->rows = [];
+            return json_encode($responce);
+        }
+
+        $recdate_ = Carbon::createFromFormat('Y-m',$request->recdate)->endOfMonth()->format('Y-m-d');
+
+        $table = DB::table('finance.cbtran AS cb')
+                    ->select('cb.idno','cb.compcode','cb.bankcode','cb.source','cb.trantype','cb.auditno','cb.postdate','cb.year','cb.period','cb.cheqno','cb.amount','cb.remarks','cb.upduser','cb.upddate','cb.bitype','cb.reference','cb.recstatus','cb.refsrc','cb.reftrantype','cb.refauditno','cb.reconstatus')
+                    ->where('cb.compcode','=', session('compcode'))
+                    ->where('cb.reconstatus','!=', 1)
+                    ->where('cb.bankcode','=', $request->bankcode);
+
+        if(!empty($request->filterCol)){
+            $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+        }
+
+        if(!empty($request->filterdate)){
+            $table = $table->where('cb.actdate','>=',$request->filterdate[0]);
+            $table = $table->where('cb.actdate','<=',$request->filterdate[1]);
+        }
+
+        if(!empty($request->searchCol)){
+            if($request->searchCol[0] == 'bankcode'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('cb.bankcode','like',$request->searchVal[0]);
+                    });
+            } else if($request->searchCol[0] == 'payto'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('cb.payto','like',$request->searchVal[0]);
+                    });
+            }else if($request->searchCol[0] == 'auditno'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('cb.auditno','like',$request->searchVal[0]);
+                    });
+            }else{
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
+                    });
+            }
+            
+        }
+
+        if(!empty($request->sidx)){
+
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                foreach ($pieces as $key => $value) {
+                    // $value_ = substr_replace($value,"ap.",0,strpos($value,"_")+1);
+                    $value_ = 'cb.'.$value;
+                    $pieces_inside = explode(" ", $value_);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('cb.idno','DESC');
+        }
+
+        $paginate = $table->paginate($request->rows);
+
+        //////////paginate/////////
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+    }
+
+    public function cbrecdtl_add(Request $request){
+        DB::beginTransaction();
+
+        try{
+
+            $recdate_ = Carbon::createFromFormat('Y-m',$request->recdate)->endOfMonth()->format('Y-m-d');
+
+            $cbrechdr = DB::table('finance.cbrechdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('bankcode',$request->bankcode)
+                            ->where('recdate',$recdate_);
+
+            if($cbrechdr->exists()){
+                DB::table('finance.cbrechdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('bankcode',$request->bankcode)
+                            ->where('recdate',$recdate_)
+                            ->update([
+                                'openamt' => $request->clsBnkStatmnt,
+                                'upduser' => session('username'),
+                                'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            ]);
+
+                $cbrechdr = $cbrechdr->first();
+
+                $auditno = $cbrechdr->auditno;
+            }else{
+
+                $auditno = $this->recno('CM','RECON');
+
+                DB::table('finance.cbrechdr')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'auditno' => $auditno,
+                                'bankcode' => $request->bankcode,
+                                'recdate' => $recdate_,
+                                'openamt' => $request->clsBnkStatmnt,
+                                'adduser' => session('username'),
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            ]);
+            }
+
+            foreach ($request->idno_array as $key_db => $value_db) {
+                $cbtran = DB::table('finance.cbtran')
+                                ->where('compcode',session('compcode'))
+                                ->where('idno',$value_db)
+                                ->first();
+
+                $cbrecdtl = DB::table('finance.cbrecdtl')
+                        ->where('compcode',session('compcode'))
+                        ->where('refsrc',$cbtran->source)
+                        ->where('reftrantype',$cbtran->trantype)
+                        ->where('refauditno',$cbtran->auditno);
+
+                if(!$cbrecdtl->exists()){
+                    DB::table('finance.cbrecdtl')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'auditno' => $auditno,
+                            'docdate' => $cbtran->postdate,
+                            'year' => $cbtran->year,
+                            'period' => $cbtran->period,
+                            'amount' => $cbtran->amount,
+                            'remarks' => $cbtran->remarks,
+                            'lastuser' => session('username'),
+                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'bitype' => $cbtran->bitype,
+                            'reference' => $cbtran->reference,
+                            'stat' => 1,
+                            'refsrc' => $cbtran->source,
+                            'reftrantype' => $cbtran->trantype,
+                            'refauditno' => $cbtran->auditno,
+                            'recstatus' => $cbtran->recstatus,
+                            'bankcode' => $cbtran->bankcode,
+                            'cheqno' => $cbtran->cheqno,
+                        ]);
+
+
+                        DB::table('finance.cbtran')
+                                ->where('compcode',session('compcode'))
+                                ->where('idno',$value_db)
+                                ->update([
+                                    'reconstatus' => 1
+                                ]);
+                }
+            }
+
+
+            $responce = new stdClass();
+            $responce->auditno = $auditno;
+
+            echo json_encode($responce);
+
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function cbrecdtl_del(Request $request){
+        DB::beginTransaction();
+
+        try{
+
+            $recdate_ = Carbon::createFromFormat('Y-m',$request->recdate)->endOfMonth()->format('Y-m-d');
+
+            $cbrechdr = DB::table('finance.cbrechdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('bankcode',$request->bankcode)
+                            ->where('recdate',$recdate_);
+
+            if($cbrechdr->exists()){
+                DB::table('finance.cbrechdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('bankcode',$request->bankcode)
+                            ->where('recdate',$recdate_)
+                            ->update([
+                                'openamt' => $request->clsBnkStatmnt,
+                                'upduser' => session('username'),
+                                'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            ]);
+
+                $cbrechdr = $cbrechdr->first();
+
+                $auditno = $cbrechdr->auditno;
+            }else{
+                throw new \Exception('Error, No cbrechdr', 500);
+            }
+
+            foreach ($request->idno_array as $key_db => $value_db) {
+                $cbrecdtl = DB::table('finance.cbrecdtl')
+                                ->where('compcode',session('compcode'))
+                                ->where('idno',$value_db);
+
+                if(!$cbrecdtl->exists()){
+                    continue;
+                }
+
+                $cbrecdtl = $cbrecdtl->first();
+
+                $cbtran = DB::table('finance.cbtran')
+                        ->where('compcode',session('compcode'))
+                        ->where('source',$cbrecdtl->refsrc)
+                        ->where('trantype',$cbrecdtl->reftrantype)
+                        ->where('auditno',$cbrecdtl->refauditno);
+
+                if($cbtran->exists()){
+                    DB::table('finance.cbtran')
+                        ->where('compcode',session('compcode'))
+                        ->where('source',$cbrecdtl->refsrc)
+                        ->where('trantype',$cbrecdtl->reftrantype)
+                        ->where('auditno',$cbrecdtl->refauditno)
+                        ->update([
+                            'reconstatus' => 0
+                        ]);
+
+                    DB::table('finance.cbrecdtl')
+                                ->where('compcode',session('compcode'))
+                                ->where('idno',$value_db)
+                                ->delete();
+                }
+            }
+
+
+            $responce = new stdClass();
+            $responce->auditno = $auditno;
+
+            echo json_encode($responce);
+
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
 
     public function add(Request $request){
