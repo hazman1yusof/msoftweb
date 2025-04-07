@@ -1503,12 +1503,14 @@ class PurchaseRequestController extends defaultController
 
         $attachment_files =$this->get_attachment_files($purreqhd->idno);
 
-        // $print_connection = $this->print_connection($purreqhd);
+        $print_connection = $this->print_connection($purreqhd);
+
+        // dd($print_connection);
 
         // $pdf = PDF::loadView('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm','company', 'supplier', 'prdept', 'total_tax', 'total_discamt'));
         // return $pdf->stream();      
         
-        return view('material.purchaseRequest.purchaseRequest_pdfmake',compact('purreqhd','purreqdt','totamt_eng','company','supplier','reqdept','total_tax','total_discamt','attachment_files'));
+        return view('material.purchaseRequest.purchaseRequest_pdfmake',compact('purreqhd','purreqdt','totamt_eng','company','supplier','reqdept','total_tax','total_discamt','attachment_files','print_connection'));
     }
 
     function sendemail($trantype,$recno){
@@ -1773,11 +1775,49 @@ class PurchaseRequestController extends defaultController
     }
 
     function print_connection($purreqhd){
-        //1. get PO
+
+        $responce = new stdClass();
+        $responce->purordhd = null;
+        $responce->delordhd = null;
+        $responce->apacthdr = null;
+        
         $purordhd = DB::table('material.purordhd')
             ->where('compcode','=',session('compcode'))
             ->where('reqdept',$purreqhd->reqdept)
-            ->where('purreqno',$purreqhd->purreqno);
+            ->where('purreqno',$purreqhd->purreqno)
+            ->where('recstatus','!=','CANCELLED')
+            ->orderBy('idno','DESC');
+
+        if($purordhd->exists()){
+            $purordhd = $purordhd->first();
+            $responce->purordhd = $purordhd;
+
+            $delordhd = DB::table('material.delordhd')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('prdept',$purordhd->prdept)
+                            ->where('srcdocno',$purordhd->purordno)
+                            ->where('recstatus','!=','CANCELLED')
+                            ->orderBy('idno','DESC');
+
+            if($delordhd->exists()){
+                $delordhd = $delordhd->first();
+                $responce->delordhd = $delordhd;
+
+                // $apacthdr = DB::table('finance.apacthdr')
+                //             ->where('compcode','=',session('compcode'))
+                //             ->where('source','=','AP')
+                //             ->where('trantype','=','IN')
+                //             ->where('document',$delordhd->invoiceno)
+                //             ->orderBy('idno','DESC');
+
+                // if($apacthdr->exists()){
+                //     $apacthdr = $apacthdr->first();
+                //     $responce->apacthdr = $apacthdr;
+                // }
+
+            }
+        }
+        return $responce;
     }
     
 }

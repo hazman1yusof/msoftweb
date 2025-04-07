@@ -381,6 +381,13 @@
 		});
 
 		populate_attachmentfile();
+
+		$('#ref_dropdown.ui.dropdown')
+		  .dropdown({
+		  	onChange: function(value, text, $selectedItem) {
+		      window.open(value);
+		    }
+		  });
 	});
 
 	function makeid(length) {
@@ -433,6 +440,21 @@
     	<b>Navigation</b>
     	<button id="merge_btn" class="ui small primary button" style="font-size: 12px;padding: 6px 10px;float: right;">Merge</button>
 		</h3>
+		@if(!empty($print_connection->purordhd) || !empty($print_connection->delordhd))
+		<div class="ui dropdown" id="ref_dropdown">
+		  <div class="text">Document Reference</div>
+		  <i class="dropdown icon"></i>
+		  <div class="menu">
+		  	@if(!empty($print_connection->purordhd))
+		    <div class="item" data-value="../purchaseOrder/showpdf?recno={{$print_connection->purordhd->recno}}">Purchase Order</div>
+		  	@endif
+
+		  	@if(!empty($print_connection->delordhd))
+		    <div class="item" data-value="../deliveryOrder/showpdf?recno={{$print_connection->delordhd->recno}}">Delivery Order</div>
+		  	@endif
+		  </div>
+		</div>
+		@endif
   </div>
   <div class="ui segment teal inverted canclick" style="cursor: pointer;" data-goto='#pdfiframe'>
     <p>Purchase Request </p>

@@ -1260,8 +1260,9 @@ class PurchaseOrderController extends defaultController
         }
 
         $attachment_files =$this->get_attachment_files($purordhd->idno);
+        $print_connection = $this->print_connection($purordhd);
         
-        return view('material.purchaseOrder.purchaseOrder_pdfmake2',compact('purordhd','purorddt','totamt_eng', 'company', 'supplier','deldept', 'total_tax', 'total_discamt','attachment_files','SO_obj'));
+        return view('material.purchaseOrder.purchaseOrder_pdfmake2',compact('purordhd','purorddt','totamt_eng', 'company', 'supplier','deldept', 'total_tax', 'total_discamt','attachment_files','SO_obj','print_connection'));
     }
 
     public function get_SO_from_PO($auditno){
@@ -1986,6 +1987,52 @@ class PurchaseOrderController extends defaultController
             ->get();
 
         return $attachment_files;
+    }
+
+    function print_connection($purordhd){
+
+        $responce = new stdClass();
+        $responce->purreqhd = null;
+        $responce->delordhd = null;
+        $responce->apacthdr = null;
+        
+        $purreqhd = DB::table('material.purreqhd')
+            ->where('compcode','=',session('compcode'))
+            ->where('reqdept',$purordhd->reqdept)
+            ->where('purreqno',$purordhd->purreqno)
+            ->where('recstatus','!=','CANCELLED')
+            ->orderBy('idno','DESC');
+
+        if($purreqhd->exists()){
+            $purreqhd = $purreqhd->first();
+            $responce->purreqhd = $purreqhd;
+        }
+
+        $delordhd = DB::table('material.delordhd')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('prdept',$purordhd->prdept)
+                        ->where('srcdocno',$purordhd->purordno)
+                        ->where('recstatus','!=','CANCELLED')
+                        ->orderBy('idno','DESC');
+
+        if($delordhd->exists()){
+            $delordhd = $delordhd->first();
+            $responce->delordhd = $delordhd;
+
+            // $apacthdr = DB::table('finance.apacthdr')
+            //             ->where('compcode','=',session('compcode'))
+            //             ->where('source','=','AP')
+            //             ->where('trantype','=','IN')
+            //             ->where('document',$delordhd->invoiceno)
+            //             ->orderBy('idno','DESC');
+
+            // if($apacthdr->exists()){
+            //     $apacthdr = $apacthdr->first();
+            //     $responce->apacthdr = $apacthdr;
+            // }
+
+        }
+        return $responce;
     }
 
 
