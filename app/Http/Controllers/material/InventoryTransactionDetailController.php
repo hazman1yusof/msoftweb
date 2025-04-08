@@ -249,10 +249,10 @@ class InventoryTransactionDetailController extends defaultController
                     'remarks' => $request->remarks
                 ];
 
-            if(strtoupper($ivtmphd->trantype) == 'TUO'){
-                $add_array['netprice'] = $netprice_tuo;
-                $add_array['amount'] = $netprice_tuo * $request->txnqty;
-            }
+            // if(strtoupper($ivtmphd->trantype) == 'TUO'){
+            //     $add_array['netprice'] = $netprice_tuo;
+            //     $add_array['amount'] = $netprice_tuo * $request->txnqty;
+            // }
 
             ///2. insert detailF
             DB::table('material.ivtmpdt')

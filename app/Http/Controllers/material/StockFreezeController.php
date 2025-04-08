@@ -70,7 +70,7 @@ class StockFreezeController extends defaultController
         try {
 
             $request_no = $this->request_no('PHYCNT', $request->srcdept);
-            $recno = $this->recno('IV','PHYCNT');
+            $recno = $this->recno('IV','IT');
 
             $dept = DB::table('sysdb.department')
                         ->where('compcode',session('compcode'))

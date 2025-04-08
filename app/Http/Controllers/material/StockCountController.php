@@ -80,7 +80,7 @@ class StockCountController extends defaultController
         }
 
         $request_no = $this->request_no('PHYCNT', $request->srcdept);
-        $recno = $this->recno('IV','PHYCNT');
+        $recno = $this->recno('IV','IT');
 
         try {
 
