@@ -56,10 +56,10 @@ class TestController extends defaultController
             //     return $this->set_stockloc_unit($request);
             // case 'test_alert_auth': //dah xperlu
             //     return $this->test_alert_auth($request);
-            // case 'test_glmasdtl':
-            //     return $this->test_glmasdtl($request);
-            // case 'get_merge_pdf':
-            //     return $this->get_merge_pdf($request);
+            case 'ivtxndt_10s_peritem':
+                return $this->ivtxndt_10s_peritem($request);
+            case 'ivtxndt_10s':
+                return $this->ivtxndt_10s($request);
             case 'kira_netmvqty_netmvval_peritem':
                 return $this->kira_netmvqty_netmvval_peritem($request);
             case 'kira_blk_netmvqty':
@@ -5150,6 +5150,128 @@ class TestController extends defaultController
                             ]);
             }
 
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
+    }
+
+    public function ivtxndt_10s(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $ivtxndt = DB::table('material.ivtxndt')
+                            ->where('compcode',session('compcode'))
+                            ->where('trantype','PHYCNT')
+                            ->where('trandate','>','2025-03-01')
+                            ->where('deptcode','FKWSTR')
+                            ->get();
+
+            foreach ($ivtxndt as $key => $value) {
+                if(abs($value->totamount) > 200){
+                    $totamount = $value->totamount;
+                    $txnqty = $value->txnqty;
+                    $netprice = $value->netprice;
+
+                    $net10 = $netprice * 10;
+                    $new_unitcost = $net10 / $txnqty;
+
+                    DB::table('material.ivtxndt')
+                                ->where('idno',$value->idno)
+                                ->update([
+                                    'netprice' => $new_unitcost,
+                                    'totamount' => $net10,
+                                    'amount' => $net10
+                                ]);
+                }
+            }
+        
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
+    }
+
+    public function ivtxndt_10s_peritem(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $ivtxndt = DB::table('material.ivtxndt')
+                            ->where('compcode',session('compcode'))
+                            ->where('trantype','PHYCNT')
+                            ->where('trandate','>','2025-03-01')
+                            ->where('deptcode','FKWSTR')
+                            ->get();
+
+            foreach ($ivtxndt as $key => $value) {
+                $ivdspdt = DB::table('material.ivdspdt')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('trandate','>=','2025-03-01')
+                            ->where('trandate','<=','2025-03-31')
+                            ->sum('txnqty');
+                $minus = $ivdspdt;
+
+                $ivtxndt = DB::table('material.ivtxndt')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('trandate','>=','2025-03-01')
+                            ->where('trandate','<=','2025-03-31')
+                            ->get();
+
+                $add = 0;
+                $add2 = 0;
+                foreach ($ivtxndt as $key => $value) {
+                    $ivtxntype = DB::table('material.ivtxntype')
+                                        ->where('compcode','9B')
+                                        ->where('trantype',$value->trantype)
+                                        ->first();
+
+                    $crdbfl = $ivtxntype->crdbfl;
+
+                    if($crdbfl == 'In'){
+                        $add = $add + $value->txnqty;
+                        $add2 = $add2 + $value->amount;
+                    }else{
+                        $add = $add - $value->txnqty;
+                        $add2 = $add2 - $value->amount;
+                    }
+                }
+
+                $all = $add - $minus;
+
+                $ivdspdt2 = DB::table('material.ivdspdt')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('trandate','>=','2025-03-01')
+                            ->where('trandate','<=','2025-03-31')
+                            ->sum('amount');
+                $minus2 = $ivdspdt2;
+
+                $all2 = $add2 - $minus2;
+
+                // $netmvqty11 = $product->qtyonhand - $all;
+                // dump($product->qtyonhand);
+                // dump($all);
+                // dump($netmvqty11);
+
+                DB::table('material.stockloc')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('deptcode',$value->deptcode)
+                            ->where('year','2025')
+                            ->update([
+                                'netmvqty3' => $all,
+                                'netmvval3' => $all2
+                            ]);
+            }
+        
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
