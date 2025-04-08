@@ -5108,7 +5108,7 @@ class TestController extends defaultController
                 foreach ($ivtxndt as $key => $value) {
                     $ivtxntype = DB::table('material.ivtxntype')
                                         ->where('compcode','9B')
-                                        ->where('trantype',$ivtxndt->trantype)
+                                        ->where('trantype',$value->trantype)
                                         ->first();
 
                     $crdbfl = $ivtxntype->crdbfl;
