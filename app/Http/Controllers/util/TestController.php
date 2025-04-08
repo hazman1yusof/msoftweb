@@ -54,8 +54,8 @@ class TestController extends defaultController
             //     return $this->set_class($request);
             // case 'set_stockloc_unit':
             //     return $this->set_stockloc_unit($request);
-            // case 'test_alert_auth': //dah xperlu
-            //     return $this->test_alert_auth($request);
+            case 'update_imp_ivdspdt_negetive': //dah xperlu
+                return $this->update_imp_ivdspdt_negetive($request);
             case 'ivtxndt_10s_peritem':
                 return $this->ivtxndt_10s_peritem($request);
             case 'ivtxndt_10s':
@@ -5279,6 +5279,42 @@ class TestController extends defaultController
 
             dd('Error'.$e);
         }  
+    }
+
+    public function update_imp_ivdspdt_negetive(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $ivdspdt = DB::table('material.ivdspdt')
+                            ->where('compcode','9B')
+                            ->where('itemcode','71003540')
+                            ->where('trandate','>=','2025-03-01')
+                            ->get();
+
+            foreach ($ivdspdt as $key => $value) {
+                $txnqty = $value->txnqty;
+                $netprice = $value->netprice;
+
+                $newnetprice = 12;
+                $newamount = $txnqty * 12;
+
+
+                DB::table('material.ivdspdt')
+                        ->where('idno',$value->idno)
+                        ->update([
+                            'netprice' => $newnetprice,
+                            'amount' => $newamount,
+                        ]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
+
     }
     
 }
