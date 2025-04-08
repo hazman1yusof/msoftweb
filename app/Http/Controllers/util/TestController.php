@@ -60,8 +60,8 @@ class TestController extends defaultController
             //     return $this->test_glmasdtl($request);
             // case 'get_merge_pdf':
             //     return $this->get_merge_pdf($request);
-            // case 'update_stockloc_uomcode':
-            //     return $this->update_stockloc_uomcode($request);
+            case 'kira_netmvqty_netmvval_peritem':
+                return $this->kira_netmvqty_netmvval_peritem($request);
             case 'kira_blk_netmvqty':
                 return $this->kira_blk_netmvqty($request);
             case 'delete_stockloc_terlebih':
@@ -5060,9 +5060,93 @@ class TestController extends defaultController
             report($e);
 
             dd('Error'.$e);
-        }      
+        }              
+    }
 
-        
+    public function kira_netmvqty_netmvval_peritem(Request $request){
+        DB::beginTransaction();
+
+        try {
+            
+            $itemcode=$request->itemcode;
+            $deptcode=$request->deptcode;
+            $month=$request->month;
+
+            $stockloc = DB::table('material.stockloc')
+                        ->where('compcode','9B')
+                        ->where('itemcode',$itemcode)
+                        ->where('deptcode',$deptcode)
+                        ->where('year','2025')
+                        ->orderBy('idno', 'DESC')
+                        ->get()
+
+            foreach ($stockloc as $key => $value) {
+
+                // $product = DB::table('material.product')
+                //                 ->where('compcode','9B')
+                //                 ->where('itemcode',$obj->itemcode)
+                //                 ->where('uomcode',$obj->uomcode)
+                //                 ->first();
+
+                $ivdspdt = DB::table('material.ivdspdt')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('trandate','>=','2025-03-01')
+                            ->where('trandate','<=','2025-03-31')
+                            ->sum('txnqty');
+                $minus = $ivdspdt;
+
+                $ivtxndt = DB::table('material.ivtxndt')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('trandate','>=','2025-03-01')
+                            ->where('trandate','<=','2025-03-31')
+                            ->sum('txnqty');
+                $add = $ivtxndt;
+
+                $all = $add - $minus;
+
+                $ivdspdt2 = DB::table('material.ivdspdt')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('trandate','>=','2025-03-01')
+                            ->where('trandate','<=','2025-03-31')
+                            ->sum('amount');
+                $minus2 = $ivdspdt2;
+
+                $ivtxndt2 = DB::table('material.ivtxndt')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$value->itemcode)
+                            ->where('trandate','>=','2025-03-01')
+                            ->where('trandate','<=','2025-03-31')
+                            ->sum('amount');
+                $add2 = $ivtxndt2;
+
+                $all2 = $add2 - $minus2;
+
+                // $netmvqty11 = $product->qtyonhand - $all;
+                // dump($product->qtyonhand);
+                // dump($all);
+                // dump($netmvqty11);
+
+                DB::table('material.stockloc')
+                            ->where('compcode','9B')
+                            ->where('itemcode',$itemcode)
+                            ->where('deptcode',$deptcode)
+                            ->where('year','2025')
+                            ->update([
+                                'netmvqty3' => $all,
+                                'netmvval3' => $all2
+                            ]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
     }
     
 }
