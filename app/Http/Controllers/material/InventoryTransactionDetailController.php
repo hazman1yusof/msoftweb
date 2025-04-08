@@ -130,6 +130,13 @@ class InventoryTransactionDetailController extends defaultController
                             ->where('idno','=',$request->h_idno)
                             ->first();
 
+            $txndept = $ivtmphd->txndept;
+            $department = DB::table('sysdb.department')
+                            ->where('compcode',session('compcode'))
+                            ->where('deptcode',$txndept)
+                            ->first();
+            $unit_ = $department->sector;
+
 
             ////1. calculate lineno_ by recno
             $sqlln = DB::table('material.ivtmpdt')->select('lineno_')
@@ -146,7 +153,7 @@ class InventoryTransactionDetailController extends defaultController
             // }
 
             $product = DB::table('material.product')
-                    ->where('unit','=',session('unit'))
+                    // ->where('unit','=',session('unit'))
                     ->where('compcode','=',session('compcode'))
                     ->where('ItemCode','=',$request->itemcode)
                     ->where('UomCode','=',$request->uomcode);
@@ -157,7 +164,7 @@ class InventoryTransactionDetailController extends defaultController
 
             if(strtoupper($ivtmphd->trantype) == 'TUI'){
                 $stockloc_obj = DB::table('material.StockLoc')
-                        ->where('StockLoc.unit','=',session('unit'))
+                        ->where('StockLoc.unit','=',$unit_)
                         ->where('StockLoc.CompCode','=',session('compcode'))
                         ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
                         ->where('StockLoc.ItemCode','=',$request->itemcode)
@@ -169,7 +176,7 @@ class InventoryTransactionDetailController extends defaultController
                 }
             }else if(strtoupper($ivtmphd->trantype) == 'TUO'){
                 $stockloc_obj = DB::table('material.StockLoc')
-                        ->where('StockLoc.unit','=',session('unit'))
+                        ->where('StockLoc.unit','=',$unit_)
                         ->where('StockLoc.CompCode','=',session('compcode'))
                         ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
                         ->where('StockLoc.ItemCode','=',$request->itemcode)
@@ -207,7 +214,7 @@ class InventoryTransactionDetailController extends defaultController
 
                 if(strtoupper($issuetype->isstype) == 'TRANSFER'){
                     $stockloc_obj = DB::table('material.StockLoc')
-                            ->where('StockLoc.unit','=',session('unit'))
+                            ->where('StockLoc.unit','=',$unit_)
                             ->where('StockLoc.CompCode','=',session('compcode'))
                             ->where('StockLoc.DeptCode','=',$request->sndrcv)
                             ->where('StockLoc.ItemCode','=',$request->itemcode)
@@ -233,7 +240,7 @@ class InventoryTransactionDetailController extends defaultController
                     'uomcoderecv'=> $request->uomcoderecv,
                     'qtyonhandrecv'=> $request->qtyonhandrecv,
                     'amount' => $request->amount,
-                    'unit' => session('unit'), 
+                    'unit' => $unit_, 
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate'=> $this->turn_date($request->expdate,'d/m/Y'),  
