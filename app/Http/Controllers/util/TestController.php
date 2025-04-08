@@ -5067,7 +5067,7 @@ class TestController extends defaultController
         DB::beginTransaction();
 
         try {
-            
+
             $itemcode=$request->itemcode;
             $deptcode=$request->deptcode;
             $month=$request->month;
@@ -5078,7 +5078,7 @@ class TestController extends defaultController
                         ->where('deptcode',$deptcode)
                         ->where('year','2025')
                         ->orderBy('idno', 'DESC')
-                        ->get()
+                        ->get();
 
             foreach ($stockloc as $key => $value) {
 
