@@ -802,9 +802,17 @@ class invtran_util extends defaultController{
 	}
 
     public static function posting_TUO($value,$ivtmphd){
+
+        $txndept = $ivtmphd->txndept;
+        $department = DB::table('sysdb.department')
+                        ->where('compcode',session('compcode'))
+                        ->where('deptcode',$txndept)
+                        ->first();
+        $unit_ = $department->sector;
+
         //1. amik stockloc
         $stockloc_obj = DB::table('material.StockLoc')
-            ->where('StockLoc.unit',session('unit'))
+            ->where('StockLoc.unit',$unit_)
             ->where('StockLoc.CompCode','=',session('compcode'))
             ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
             ->where('StockLoc.ItemCode','=',$value->itemcode)
@@ -833,7 +841,7 @@ class invtran_util extends defaultController{
             //4. tolak expdate, kalu ada batchno
             $expdate_obj = DB::table('material.stockexp')
                 ->where('compcode',session('compcode'))
-                ->where('unit',session('unit'))
+                ->where('unit',$unit_)
                 // ->where('Year','=',defaultController::toYear($ivtmphd->trandate))
                 ->where('DeptCode','=',$ivtmphd->txndept)
                 ->where('ItemCode','=',$value->itemcode)
@@ -878,7 +886,7 @@ class invtran_util extends defaultController{
                 if($got_stockexp && $txnqty_>0){
                     $expdate_obj = DB::table('material.stockexp')
                         ->where('compcode',session('compcode'))
-                        ->where('unit',session('unit'))
+                        ->where('unit',$unit_)
                         // ->where('Year','=',defaultController::toYear($ivtmphd->trandate))
                         ->where('DeptCode','=',$ivtmphd->txndept)
                         ->where('ItemCode','=',$value->itemcode)
@@ -916,7 +924,7 @@ class invtran_util extends defaultController{
                 DB::table('material.stockexp')
                     ->insert([
                         'compcode' => session('compcode'), 
-                        'unit' => session('unit'), 
+                        'unit' => $unit_, 
                         'deptcode' => $ivtmphd->txndept, 
                         'itemcode' => $value->itemcode, 
                         'uomcode' => $value->uomcode, 
@@ -941,7 +949,7 @@ class invtran_util extends defaultController{
             //1. waktu OUT trandept
 
         $product_obj = DB::table('material.product')
-            ->where('product.unit',session('unit'))
+            ->where('product.unit',$unit_)
             ->where('product.compcode','=',session('compcode'))
             ->where('product.itemcode','=',$value->itemcode)
             ->where('product.uomcode','=',$value->uomcode);
@@ -974,7 +982,7 @@ class invtran_util extends defaultController{
 
             // update qtyonhand, avgcost, currprice
             $product_obj = DB::table('material.product')
-                ->where('product.unit',session('unit'))
+                ->where('product.unit',$unit_)
                 ->where('product.compcode','=',session('compcode'))
                 ->where('product.itemcode','=',$value->itemcode)
                 ->where('product.uomcode','=',$value->uomcode)
@@ -987,9 +995,17 @@ class invtran_util extends defaultController{
     }
 
     public static function un_posting_TUO($value,$ivtmphd){
+
+        $txndept = $ivtmphd->txndept;
+        $department = DB::table('sysdb.department')
+                        ->where('compcode',session('compcode'))
+                        ->where('deptcode',$txndept)
+                        ->first();
+        $unit_ = $department->sector;
+        
         //1. amik stockloc
         $stockloc_obj = DB::table('material.StockLoc')
-            ->where('StockLoc.unit',session('unit'))
+            ->where('StockLoc.unit',$unit_)
             ->where('StockLoc.CompCode','=',session('compcode'))
             ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
             ->where('StockLoc.ItemCode','=',$value->itemcode)
@@ -1018,7 +1034,7 @@ class invtran_util extends defaultController{
             //4. tolak expdate, kalu ada batchno
             $expdate_obj = DB::table('material.stockexp')
                 ->where('compcode',session('compcode'))
-                ->where('unit',session('unit'))
+                ->where('unit',$unit_)
                 // ->where('Year','=',defaultController::toYear($ivtmphd->trandate))
                 ->where('DeptCode','=',$ivtmphd->txndept)
                 ->where('ItemCode','=',$value->itemcode)
@@ -1045,7 +1061,7 @@ class invtran_util extends defaultController{
                 DB::table('material.stockexp')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'unit' => session('unit'),
+                        'unit' => $unit_,
                         'Year' => defaultController::toYear($ivtmphd->trandate),
                         'DeptCode' => $ivtmphd->txndept,
                         'ItemCode' => $value->itemcode,
@@ -1065,7 +1081,7 @@ class invtran_util extends defaultController{
             //1. waktu OUT trandept
 
         $product_obj = DB::table('material.product')
-            ->where('product.unit',session('unit'))
+            ->where('product.unit',$unit_)
             ->where('product.compcode','=',session('compcode'))
             ->where('product.itemcode','=',$value->itemcode)
             ->where('product.uomcode','=',$value->uomcode);
@@ -1098,7 +1114,7 @@ class invtran_util extends defaultController{
 
             // update qtyonhand, avgcost, currprice
             $product_obj = DB::table('material.product')
-                ->where('product.unit',session('unit'))
+                ->where('product.unit',$unit_)
                 ->where('product.compcode','=',session('compcode'))
                 ->where('product.itemcode','=',$value->itemcode)
                 ->where('product.uomcode','=',$value->uomcode)
