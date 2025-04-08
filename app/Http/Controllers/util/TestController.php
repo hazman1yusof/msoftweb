@@ -5101,8 +5101,26 @@ class TestController extends defaultController
                             ->where('itemcode',$value->itemcode)
                             ->where('trandate','>=','2025-03-01')
                             ->where('trandate','<=','2025-03-31')
-                            ->sum('txnqty');
-                $add = $ivtxndt;
+                            ->get();
+
+                $add = 0;
+                $add2 = 0;
+                foreach ($ivtxndt as $key => $value) {
+                    $ivtxntype = DB::table('material.ivtxntype')
+                                        ->where('compcode','9B')
+                                        ->where('trantype',$ivtxndt->trantype)
+                                        ->first();
+
+                    $crdbfl = $ivtxntype->crdbfl;
+
+                    if($crdbfl == 'In'){
+                        $add = $add + $value->txnqty;
+                        $add2 = $add2 + $value->amount;
+                    }else{
+                        $add = $add - $value->txnqty;
+                        $add2 = $add2 - $value->amount;
+                    }
+                }
 
                 $all = $add - $minus;
 
@@ -5113,14 +5131,6 @@ class TestController extends defaultController
                             ->where('trandate','<=','2025-03-31')
                             ->sum('amount');
                 $minus2 = $ivdspdt2;
-
-                $ivtxndt2 = DB::table('material.ivtxndt')
-                            ->where('compcode','9B')
-                            ->where('itemcode',$value->itemcode)
-                            ->where('trandate','>=','2025-03-01')
-                            ->where('trandate','<=','2025-03-31')
-                            ->sum('amount');
-                $add2 = $ivtxndt2;
 
                 $all2 = $add2 - $minus2;
 
