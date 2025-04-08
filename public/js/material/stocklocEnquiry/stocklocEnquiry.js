@@ -346,7 +346,7 @@ $(document).ready(function () {
 				$(form+' #netmvqty12').val(numeral(data.rows[0].netmvqty12).format('0,0.00'));
 				$(form+' #netmvval12').val(numeral(data.rows[0].netmvval12).format('0,0.0000'));
 
-	            var accumqty=0;
+	            var accumqty=data.rows[0].openbalqty;
 			    var netmvqty=0;
 			    $.each(data.rows[0], function( index, value ) {
 				    if(!isNaN(parseInt(value)) && index.indexOf('netmvqty') !== -1){
@@ -356,7 +356,7 @@ $(document).ready(function () {
 
 				$("#accumqty").val(numeral(accumqty).format('0,0.00'));
 
-	            var accumval=0;
+	            var accumval=data.rows[0].openbalval;
 			    var netmvval=0;
 		    
 			    $.each(data.rows[0], function( index, value ) {

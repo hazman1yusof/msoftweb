@@ -282,6 +282,6 @@
 			
 		});
 	</script>
-	<script src="js/material/stocklocEnquiry/stocklocEnquiry.js"></script>
+	<script src="js/material/stocklocEnquiry/stocklocEnquiry.js?v=1.1"></script>
 
 @endsection
