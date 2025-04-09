@@ -48,18 +48,21 @@ $(document).ready(function () {
 		autoOpen: false,
 		open: function( event, ui ) {
 			parent_close_disabled(true);
-			mycurrency.formatOnBlur();
-			mycurrency.formatOn();
 
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 			$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft));
 			$('#clsBnkStatmnt').val($('#closeAmtStamnt').val());
 
+			mycurrency.formatOff();
+			
 			urlParam_2.bankcode = $('#bankcode_').val();
 			urlParam_2.recdate = $('#recdate').val();
 			urlParam_2.clsBnkStatmnt = $('#clsBnkStatmnt').val();
 			urlParam_3.bankcode = $('#bankcode_').val();
 			urlParam_3.recdate = $('#recdate').val();
+
+			mycurrency.formatOnBlur();
+			mycurrency.formatOn();
 
 			myallocation.renewAllo();
 
