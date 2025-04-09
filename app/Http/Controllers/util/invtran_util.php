@@ -484,8 +484,8 @@ class invtran_util extends defaultController{
                     ->where('product.uomcode','=',$value->uomcoderecv)
                     ->update([
                         'qtyonhand' => $newqtyonhand,
-                        'avgcost' => $newAvgCost,
-                        'currprice' => $currprice
+                        // 'avgcost' => $newAvgCost,
+                        // 'currprice' => $currprice
                     ]);
             }
 
@@ -611,8 +611,8 @@ class invtran_util extends defaultController{
                 ->where('product.uomcode','=',$value->uomcode)
                 ->update([
                     'qtyonhand' => $newqtyonhand,
-                    'avgcost' => $newAvgCost,
-                    'currprice' => $currprice
+                    // 'avgcost' => $newAvgCost,
+                    // 'currprice' => $currprice
                 ]);
 
         }
@@ -1253,10 +1253,142 @@ class invtran_util extends defaultController{
                 ->where('product.uomcode','=',$value->uomcode)
                 ->update([
                     'qtyonhand' => $newqtyonhand,
-                    'avgcost' => $newAvgCost,
-                    'currprice' => $currprice
+                    // 'avgcost' => $newAvgCost,
+                    // 'currprice' => $currprice
                 ]);
 
+        }
+    }
+
+    public static function un_posting_TUI($value,$ivtmphd){
+
+        $txndept = $ivtmphd->txndept;
+        $department = DB::table('sysdb.department')
+                        ->where('compcode',session('compcode'))
+                        ->where('deptcode',$txndept)
+                        ->first();
+        $unit_ = $department->sector;
+
+        //1. amik stockloc
+        $stockloc_obj = DB::table('material.StockLoc')
+            ->where('StockLoc.unit',$unit_)
+            ->where('StockLoc.CompCode','=',session('compcode'))
+            ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
+            ->where('StockLoc.ItemCode','=',$value->itemcode)
+            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->trandate))
+            ->where('StockLoc.UomCode','=',$value->uomcode);
+
+        $stockloc_first = $stockloc_obj->first();
+
+        //2.kalu ada stockloc, update 
+        if($stockloc_obj->exists()){
+
+            //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
+            $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
+            $month = defaultController::toMonth($ivtmphd->postdate);
+            $QtyOnHand = $stockloc_first->qtyonhand - $value->txnqty; 
+            $NetMvQty = $stockloc_arr['netmvqty'.$month] - $value->txnqty;
+            $NetMvVal = $stockloc_arr['netmvval'.$month] - round($value->netprice * $value->txnqty,2);
+
+            $stockloc_obj
+                ->update([
+                    'QtyOnHand' => $QtyOnHand,
+                    'NetMvQty'.$month => $NetMvQty, 
+                    'NetMvVal'.$month => $NetMvVal
+                ]);
+
+            //4. tolak expdate, kalu ada batchno
+            $expdate_obj = DB::table('material.stockexp')
+                ->where('compcode',session('compcode'))
+                ->where('unit',$unit_)
+                // ->where('Year','=',defaultController::toYear($ivtmphd->trandate))
+                ->where('DeptCode','=',$ivtmphd->txndept)
+                ->where('ItemCode','=',$value->itemcode)
+                ->where('UomCode','=',$value->uomcode);
+
+            if($value->expdate == NULL){ //ni kalu expdate dia xde @ NULL
+                $expdate_obj
+                    ->where('expdate','=',$value->expdate)
+                    ->orderBy('expdate', 'asc');
+            }else{ // ni kalu expdate dia exist
+                 $expdate_obj
+                    ->where('expdate','<=',$value->expdate)
+                    ->orderBy('expdate', 'asc');
+            }
+
+            if($expdate_obj->exists()){
+                $expdate_first = $expdate_obj->first();
+                $balqty_new = $expdate_first->balqty - $value->txnqty;
+
+                $expdate_obj->update([
+                    'balqty' => $balqty_new
+                ]);
+            }else{ 
+                DB::table('material.stockexp')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'unit' => $unit_,
+                        'Year' => defaultController::toYear($ivtmphd->trandate),
+                        'DeptCode' => $ivtmphd->txndept,
+                        'ItemCode' => $value->itemcode,
+                        'UomCode' => $value->uomcode,
+                        'BatchNo' => $value->batchno,
+                        'expdate' => $value->expdate,
+                        'balqty' => $value->txnqty
+                    ]);
+            }
+
+        }else{
+            //ni utk kalu xde stockloc
+            throw new \Exception("Stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->txndept." | year: ".defaultController::toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcode);
+        }
+
+        //-- 6. posting product -> update qtyonhand, avgcost, currprice --//
+            //1. waktu OUT trandept
+
+        $product_obj = DB::table('material.product')
+            ->where('product.unit',$unit_)
+            ->where('product.compcode','=',session('compcode'))
+            ->where('product.itemcode','=',$value->itemcode)
+            ->where('product.uomcode','=',$value->uomcode);
+
+        if($product_obj->exists()){ // kalu jumpa
+            $product_obj = $product_obj->first();
+            
+            $month = defaultController::toMonth($ivtmphd->trandate);
+            $netprice = $value->netprice;
+            $txnqty = $value->txnqty;
+
+            $OldQtyOnHand = $product_obj->qtyonhand;
+            $currprice = $netprice;
+            $Oldavgcost = $product_obj->avgcost;
+            $OldAmount = $OldQtyOnHand * $Oldavgcost;
+            $NewAmount = $netprice * $txnqty;
+
+            $newqtyonhand = $OldQtyOnHand - $txnqty;
+            // $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+
+            // if($newqtyonhand < 0){
+            //     throw new \Exception("Product itemcode: ".$value->itemcode." uomcode: ".$value->uomcode." will become -ve value : ".$newqtyonhand);
+            // }
+
+            // if(strtoupper($isstype) == "ADJUSTMENT"){
+            //     $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+            // }else{
+            //     $newAvgCost = $Oldavgcost;
+            // }
+
+            // update qtyonhand, avgcost, currprice
+            $product_obj = DB::table('material.product')
+                ->where('product.unit',$unit_)
+                ->where('product.compcode','=',session('compcode'))
+                ->where('product.itemcode','=',$value->itemcode)
+                ->where('product.uomcode','=',$value->uomcode)
+                ->update([
+                    'qtyonhand' => $newqtyonhand,
+                    // 'avgcost' => $newAvgCost,
+                    // 'currprice' => $currprice
+                ]);
         }
     }
 

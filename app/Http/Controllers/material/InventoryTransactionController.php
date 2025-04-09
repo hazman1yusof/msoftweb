@@ -1032,6 +1032,7 @@ class InventoryTransactionController extends defaultController
                     if($ivtmphd->trantype == 'TUO'){
                         invtran_util::un_posting_TUO($value,$ivtmphd);
                     }else if($ivtmphd->trantype == 'TUI'){
+                        invtran_util::un_posting_TUI($value,$ivtmphd);
                         // invtran_util::posting_TUI($value,$ivtmphd);
                     }else{
                         // $trantype_obj = DB::table('material.ivtxntype')
