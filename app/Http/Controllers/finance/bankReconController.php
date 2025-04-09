@@ -241,6 +241,14 @@ class bankReconController extends defaultController
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
 
+        }else{
+            DB::table('finance.cbrechdr')
+                        ->where('compcode',session('compcode'))
+                        ->where('recdate',$recdate_)
+                        ->where('bankcode',$request->bankcode)
+                        ->update([
+                            'openamt' => $request->clsBnkStatmnt
+                        ]);
         }
 
         $cbhdr = DB::table('finance.cbrechdr')

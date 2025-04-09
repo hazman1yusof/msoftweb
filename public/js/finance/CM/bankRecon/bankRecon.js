@@ -57,6 +57,7 @@ $(document).ready(function () {
 
 			urlParam_2.bankcode = $('#bankcode_').val();
 			urlParam_2.recdate = $('#recdate').val();
+			urlParam_2.clsBnkStatmnt = $('#clsBnkStatmnt').val();
 			urlParam_3.bankcode = $('#bankcode_').val();
 			urlParam_3.recdate = $('#recdate').val();
 
