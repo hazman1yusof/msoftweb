@@ -989,8 +989,8 @@ class InventoryTransactionController extends defaultController
                     throw new \Exception("ivtmphd not posted", 500);
                 }
 
-                if($ivtmphd->trantype != 'TUO'){
-                    throw new \Exception("TUO only", 500);
+                if(!in_array($ivtmphd->trantype, ['TUO','TUI'])){
+                    throw new \Exception("TUO or TUI only", 500);
                 }
 
                 DB::table("material.IvTxnHd")
