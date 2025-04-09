@@ -45,7 +45,7 @@ class product_csv implements FromView
         //                         ->whereDate('postdate','<=',$this->to);
         // }
                     
-        $table = $table->get();
+        $table = $table->get()->unique('itemcode');
 
         return view('other.csv.product',compact('table'));
     }
