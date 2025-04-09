@@ -91,7 +91,7 @@ i.fa {
   			<form id="formdata">
 	  			<div class="col-md-12" >
 	  				<label for="recdate">Date</label> 
-						<input id="recdate" name="recdate" type="month" class="form-control input-sm text-uppercase" data-validation="required" disabled>
+						<input id="recdate" name="recdate" type="date" class="form-control input-sm text-uppercase" data-validation="required" disabled>
 					</div>
 	  			<div class="col-md-12" style="padding:15px 15px 5px 15px">
 	  				<label for="closeAmtStamnt">Closing Bank Statement</label> 

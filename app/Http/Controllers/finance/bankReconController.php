@@ -71,7 +71,7 @@ class bankReconController extends defaultController
             return json_encode($responce);
         }
 
-        $recdate_ = Carbon::createFromFormat('Y-m',$request->recdate)->endOfMonth()->format('Y-m-d');
+        $recdate_ = Carbon::createFromFormat('Y-m-d',$request->recdate)->endOfMonth()->format('Y-m-d');
 
         $cbhdr = DB::table('finance.cbrechdr')
                         ->where('compcode',session('compcode'))
@@ -213,7 +213,7 @@ class bankReconController extends defaultController
             return json_encode($responce);
         }
 
-        $recdate_ = Carbon::createFromFormat('Y-m',$request->recdate)->endOfMonth()->format('Y-m-d');
+        $recdate_ = Carbon::createFromFormat('Y-m-d',$request->recdate)->endOfMonth()->format('Y-m-d');
 
         $cbhdr = DB::table('finance.cbrechdr')
                         ->where('compcode',session('compcode'))
@@ -310,7 +310,7 @@ class bankReconController extends defaultController
             return json_encode($responce);
         }
 
-        $recdate_ = Carbon::createFromFormat('Y-m',$request->recdate)->endOfMonth()->format('Y-m-d');
+        $recdate_ = Carbon::createFromFormat('Y-m-d',$request->recdate)->endOfMonth()->format('Y-m-d');
 
         $table = DB::table('finance.cbtran AS cb')
                     ->select('cb.idno','cb.compcode','cb.bankcode','cb.source','cb.trantype','cb.auditno','cb.postdate','cb.year','cb.period','cb.cheqno','cb.amount','cb.remarks','cb.upduser','cb.upddate','cb.bitype','cb.reference','cb.recstatus','cb.refsrc','cb.reftrantype','cb.refauditno','cb.reconstatus')
@@ -387,7 +387,7 @@ class bankReconController extends defaultController
 
         try{
 
-            $recdate_ = Carbon::createFromFormat('Y-m',$request->recdate)->endOfMonth()->format('Y-m-d');
+            $recdate_ = Carbon::createFromFormat('Y-m-d',$request->recdate)->endOfMonth()->format('Y-m-d');
 
             $cbrechdr = DB::table('finance.cbrechdr')
                             ->where('compcode',session('compcode'))
@@ -489,7 +489,7 @@ class bankReconController extends defaultController
 
         try{
 
-            $recdate_ = Carbon::createFromFormat('Y-m',$request->recdate)->endOfMonth()->format('Y-m-d');
+            $recdate_ = Carbon::createFromFormat('Y-m-d',$request->recdate)->endOfMonth()->format('Y-m-d');
 
             $cbrechdr = DB::table('finance.cbrechdr')
                             ->where('compcode',session('compcode'))
