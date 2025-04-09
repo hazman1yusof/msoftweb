@@ -47,6 +47,7 @@ $(document).ready(function () {
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
+			parent_close_disabled(true);
 			mycurrency.formatOnBlur();
 			mycurrency.formatOn();
 

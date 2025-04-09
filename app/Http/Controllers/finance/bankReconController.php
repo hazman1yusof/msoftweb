@@ -221,15 +221,33 @@ class bankReconController extends defaultController
                         ->where('bankcode',$request->bankcode);
 
         if(!$cbhdr->exists()){
-            $responce = new stdClass();
-            $responce->page = 0;
-            $responce->total = 0;
-            $responce->records = 0;
-            $responce->rows = [];
-            return json_encode($responce);
+            // $responce = new stdClass();
+            // $responce->page = 0;
+            // $responce->total = 0;
+            // $responce->records = 0;
+            // $responce->rows = [];
+            // return json_encode($responce);
+
+            $auditno = $this->recno('CM','RECON');
+
+            DB::table('finance.cbrechdr')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'auditno' => $auditno,
+                            'bankcode' => $request->bankcode,
+                            'recdate' => $recdate_,
+                            'openamt' => $request->clsBnkStatmnt,
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+
         }
 
-        $cbhdr = $cbhdr->first();
+        $cbhdr = DB::table('finance.cbrechdr')
+                        ->where('compcode',session('compcode'))
+                        ->where('recdate',$recdate_)
+                        ->where('bankcode',$request->bankcode)
+                        ->first();
 
         $table = DB::table('finance.cbrecdtl AS cbdt')
                     ->select('cbdt.idno','cbdt.compcode','cbdt.auditno','cbdt.docdate','cbdt.year','cbdt.period','cbdt.amount','cbdt.remarks','cbdt.lastuser','cbdt.lastupdate','cbdt.bitype','cbdt.reference','cbdt.stat','cbdt.refsrc','cbdt.reftrantype','cbdt.refauditno','cbdt.recstatus','cbdt.bankcode','cbdt.cheqno',)
