@@ -320,7 +320,7 @@ $(document).ready(function () {
 				$('#bankname').val($('#bankcode_search option:selected').text());
 
 				let recdate = moment(selrowData("#"+dialog_bankcode2.gridname).recdate, 'YYYY-MM-DD');
-				$('#recdate').val(recdate.format('YYYY-MM'));
+				$('#recdate').val(recdate.format('YYYY-MM-DD'));
 				$('#closeAmtStamnt').val(selrowData("#"+dialog_bankcode2.gridname).openamt);
 
 				urlParam.bankcode = $('#bankcode_').val();
