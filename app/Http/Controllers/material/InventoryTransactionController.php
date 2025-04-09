@@ -95,7 +95,9 @@ class InventoryTransactionController extends defaultController
         });
         
         if(!empty($request->filterCol)){
-            $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+            foreach ($request->filterCol as $key => $value) {
+                $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+            }
         }
         
         if(!empty($request->searchCol)){
