@@ -32,7 +32,7 @@ $(document).ready(function () {
 	//////////////////////////////////////////////////////////////
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency =new currencymode(['#clsBnkStatmnt','#closeAmtStamnt','#cashBkBal','#unReconAmt']);
+	var mycurrency =new currencymode(['#clsBnkStatmnt','#closeAmtStamnt','#cashBkBal','#unReconAmt'],false,'0,0.00');
 	var fdl = new faster_detail_load();
 	var myallocation = new Allocation();
 
@@ -73,6 +73,11 @@ $(document).ready(function () {
 		beforeClose: function(event, ui){
 		},
 		close: function( event, ui ) {
+			mycurrency.formatOff();
+			if($('#clsBnkStatmnt').val() != $('#closeAmtStamnt').val()){
+				urlParam.save_amt = $('#clsBnkStatmnt').val();
+				$('#closeAmtStamnt').val($('#clsBnkStatmnt').val());
+			}
 			refreshGrid("#jqGrid", urlParam);
 		},
 	});
@@ -168,6 +173,7 @@ $(document).ready(function () {
 		url:'./bankRecon/form',
 		field:'',
 		oper:oper,
+		save_amt:null
 	};
 		
 	$("#jqGrid").jqGrid({
@@ -212,6 +218,7 @@ $(document).ready(function () {
 		},
 		loadComplete: function(data){
 			mycurrency.formatOff();
+			urlParam.save_amt = null;
 			$('#cashBkBal').val(data.cbrecdtl_sumamt);
 			$('#unReconAmt').val(parseFloat($('#closeAmtStamnt').val()) - parseFloat(data.cbrecdtl_sumamt));
 			calc_jq_height_onchange("jqGrid",false,parseInt($('#panel_default_c').prop('clientHeight'))-180);

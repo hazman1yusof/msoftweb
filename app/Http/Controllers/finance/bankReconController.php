@@ -94,6 +94,18 @@ class bankReconController extends defaultController
             $cbrecdtl_sumamt = $this->init_recon($request,$cbhdr);
         }
 
+        if(!empty($request->save_amt)){
+            DB::table('finance.cbrechdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('bankcode',$request->bankcode)
+                            ->where('recdate',$recdate_)
+                            ->update([
+                                'openamt' => $request->save_amt,
+                                'upduser' => session('username'),
+                                'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            ]);
+        }
+
         $table = DB::table('finance.cbrecdtl AS cbdt')
                     ->select('cbdt.idno','cbdt.compcode','cbdt.auditno','cbdt.docdate','cbdt.year','cbdt.period','cbdt.amount','cbdt.remarks','cbdt.lastuser','cbdt.lastupdate','cbdt.bitype','cbdt.reference','cbdt.stat','cbdt.refsrc','cbdt.reftrantype','cbdt.refauditno','cbdt.recstatus','cbdt.bankcode','cbdt.cheqno',)
                     ->where('cbdt.compcode','=', session('compcode'))

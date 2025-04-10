@@ -629,16 +629,17 @@ function Sequences(trxtype,textfield){
 
 }
 
-function currencymode(arraycurrency,nopoint=false){
+function currencymode(arraycurrency,nopoint=false,currformat = '0,0.0000'){
 	this.array = arraycurrency;
 	this.nopoint = nopoint;
+	this.currformat = currformat;
 	this.formatOn = function(){
 		var self = this;
 		$.each(this.array, function( index, value ) {
 			if(self.nopoint){
 				$(value).val(numeral($(value).val()).format('0,0'));
 			}else{
-				$(value).val(numeral($(value).val()).format('0,0.0000'));
+				$(value).val(numeral($(value).val()).format(currformat));
 			}
 		});
 	}
@@ -676,7 +677,7 @@ function currencymode(arraycurrency,nopoint=false){
 		if(nopoint){
 			$(value).val(numeral($(value).val()).format('0,0'));
 		}else{
-			$(value).val(numeral($(value).val()).format('0,0.0000'));
+			$(value).val(numeral($(value).val()).format(currformat));
 		}
 	}
 
