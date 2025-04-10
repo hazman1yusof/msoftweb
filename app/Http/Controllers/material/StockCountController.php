@@ -988,8 +988,8 @@ class StockCountController extends defaultController
 
         $productcat_obj = DB::table('material.product')
             ->where('product.compcode','=',session('compcode'))
-            ->where('product.itemcode','=',$value->itemcode)
-            ->where('product.uomcode','=',$value->uomcode);
+            ->where('product.itemcode','=',$value->itemcode);
+            // ->where('product.uomcode','=',$value->uomcode);
 
         if(!$productcat_obj->exists()){
             throw new \Exception("productcat error ".$value->itemcode." - ".$value->uomcode, 500);
