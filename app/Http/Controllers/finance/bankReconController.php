@@ -394,6 +394,52 @@ class bankReconController extends defaultController
 
         $paginate = $table->paginate($request->rows);
 
+        foreach ($paginate->items() as $key => $value) {
+            switch($value->source){
+                case 'AP':
+                    if($value->trantype = 'PV' || $value->trantype = 'PV'){
+                        $apacthdr = DB::table('finance.apacthdr as ap')
+                                        ->select('su.Name as suppname')
+                                        ->leftJoin('material.supplier as su', function($join) use ($request){
+                                            $join = $join->on('su.suppcode', '=', 'ap.suppcode')
+                                                        ->where('su.compcode','=',session('compcode'));
+                                        })
+                                        ->where('ap.compcode',session('compcode'))
+                                        ->where('ap.source',$value->source)
+                                        ->where('ap.trantype',$value->trantype)
+                                        ->where('ap.auditno',$value->auditno)
+                                        ->first();
+
+                        $value->reference = $apacthdr->suppname;
+
+                    }
+                    break;
+                case 'PB':
+                    if($value->trantype = 'RC' || $value->trantype = 'RD' || $value->trantype = 'RF'){
+                        
+                    }
+                case 'CM':
+                    if($value->trantype = 'DP'){
+                        $apacthdr = DB::table('finance.apacthdr as ap')
+                                        ->select('su.Name as suppname')
+                                        ->leftJoin('material.supplier as su', function($join) use ($request){
+                                            $join = $join->on('su.suppcode', '=', 'ap.suppcode')
+                                                        ->where('su.compcode','=',session('compcode'));
+                                        })
+                                        ->where('ap.compcode',session('compcode'))
+                                        ->where('ap.source',$value->source)
+                                        ->where('ap.trantype',$value->trantype)
+                                        ->where('ap.auditno',$value->auditno)
+                                        ->first();
+
+                        $value->reference = $apacthdr->suppname;
+                    }
+                default:
+                    return 'error happen..';
+            }
+
+        }
+
         //////////paginate/////////
 
         $responce = new stdClass();
