@@ -542,12 +542,12 @@ class bankReconController extends defaultController
                             'cheqno' => $cbtran->cheqno,
                         ]);
 
-
                         DB::table('finance.cbtran')
                                 ->where('compcode',session('compcode'))
                                 ->where('idno',$value_db)
                                 ->update([
-                                    'reconstatus' => 1
+                                    'reconstatus' => 1,
+                                    'recondate' => $recdate_
                                 ]);
                 }
             }
