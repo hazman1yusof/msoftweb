@@ -324,6 +324,63 @@ class bankReconController extends defaultController
 
         $paginate = $table->paginate($request->rows);
 
+        foreach ($paginate->items() as $key => $value) {
+            switch($value->refsrc){
+                case 'AP':
+                    if($value->reftrantype == 'PV' || $value->reftrantype == 'PV'){
+                        $apacthdr = DB::table('finance.apacthdr as ap')
+                                        ->select('su.Name as suppname')
+                                        ->leftJoin('material.supplier as su', function($join) use ($request){
+                                            $join = $join->on('su.suppcode', '=', 'ap.suppcode')
+                                                        ->where('su.compcode','=',session('compcode'));
+                                        })
+                                        ->where('ap.compcode',session('compcode'))
+                                        ->where('ap.source',$value->refsrc)
+                                        ->where('ap.trantype',$value->reftrantype)
+                                        ->where('ap.auditno',$value->refauditno);
+
+                        if($apacthdr->exists()){
+                            $value->reference = $apacthdr->first()->suppname;
+                        }
+                    }
+                    break;
+                case 'PB':
+                    if($value->reftrantype == 'RC' || $value->reftrantype == 'RD' || $value->reftrantype == 'RF'){
+                        $dbacthdr = DB::table('debtor.dbacthdr as db')
+                                        ->select('dm.Name as name')
+                                        ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
+                                            $join = $join->on('dm.debtorcode', '=', 'db.payercode')
+                                                        ->where('dm.compcode','=',session('compcode'));
+                                        })
+                                        ->where('db.compcode',session('compcode'))
+                                        ->where('db.source',$value->refsrc)
+                                        ->where('db.trantype',$value->reftrantype)
+                                        ->where('db.auditno',$value->refauditno);
+
+                        if($dbacthdr->exists()){
+                            $value->reference = $dbacthdr->first()->name;
+                        }
+                    }
+                case 'CM':
+                    if($value->reftrantype == 'DP'){
+                        $apacthdr = DB::table('finance.apacthdr as ap')
+                                        ->select('su.Name as suppname')
+                                        ->leftJoin('material.supplier as su', function($join) use ($request){
+                                            $join = $join->on('su.suppcode', '=', 'ap.suppcode')
+                                                        ->where('su.compcode','=',session('compcode'));
+                                        })
+                                        ->where('ap.compcode',session('compcode'))
+                                        ->where('ap.source',$value->refsrc)
+                                        ->where('ap.trantype',$value->reftrantype)
+                                        ->where('ap.auditno',$value->refauditno);
+
+                        if($apacthdr->exists()){
+                            $value->reference = $apacthdr->first()->suppname;
+                        }
+                    }
+            }
+        }
+
         //////////paginate/////////
 
         $responce = new stdClass();
