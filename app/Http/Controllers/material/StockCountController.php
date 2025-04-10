@@ -989,18 +989,33 @@ class StockCountController extends defaultController
         $productcat_obj = DB::table('material.product')
             ->where('product.compcode','=',session('compcode'))
             ->where('product.itemcode','=',$value->itemcode)
-            ->where('product.uomcode','=',$value->uomcode)
-            ->first();
+            ->where('product.uomcode','=',$value->uomcode);
+
+        if(!$productcat_obj->exists()){
+            throw new \Exception("productcat error ".$value->itemcode." - ".$value->uomcode, 500);
+        }
+
+        $productcat_obj = $productcat_obj->first();
 
         $category_obj = DB::table('material.category')
             ->where('category.compcode','=',session('compcode'))
-            ->where('category.catcode','=',$productcat_obj->productcat)
-            ->first();
+            ->where('category.catcode','=',$productcat_obj->productcat);
+
+        if(!$category_obj->exists()){
+            throw new \Exception("category error ".$value->itemcode." - ".$value->uomcode, 500);
+        }
+
+        $category_obj = $category_obj->first();
 
         $dept_obj = DB::table('sysdb.department')
             ->where('department.compcode','=',session('compcode'))
-            ->where('department.deptcode','=',$value->srcdept)
-            ->first();
+            ->where('department.deptcode','=',$value->srcdept);
+
+        if(!$dept_obj->exists()){
+            throw new \Exception("department error ".$value->srcdept, 500);
+        }
+
+        $dept_obj = $dept_obj->first();
 
         $draccno = $category_obj->stockacct;
         $drccode = $dept_obj->costcode;

@@ -397,7 +397,7 @@ class bankReconController extends defaultController
         foreach ($paginate->items() as $key => $value) {
             switch($value->source){
                 case 'AP':
-                    if($value->trantype = 'PV' || $value->trantype = 'PV'){
+                    if($value->trantype == 'PV' || $value->trantype == 'PV'){
                         $apacthdr = DB::table('finance.apacthdr as ap')
                                         ->select('su.Name as suppname')
                                         ->leftJoin('material.supplier as su', function($join) use ($request){
@@ -407,19 +407,32 @@ class bankReconController extends defaultController
                                         ->where('ap.compcode',session('compcode'))
                                         ->where('ap.source',$value->source)
                                         ->where('ap.trantype',$value->trantype)
-                                        ->where('ap.auditno',$value->auditno)
-                                        ->first();
+                                        ->where('ap.auditno',$value->auditno);
 
-                        $value->reference = $apacthdr->suppname;
-
+                        if($apacthdr->exists()){
+                            $value->reference = $apacthdr->first()->suppname;
+                        }
                     }
                     break;
                 case 'PB':
-                    if($value->trantype = 'RC' || $value->trantype = 'RD' || $value->trantype = 'RF'){
-                        
+                    if($value->trantype == 'RC' || $value->trantype == 'RD' || $value->trantype == 'RF'){
+                        $dbacthdr = DB::table('debtor.dbacthdr as db')
+                                        ->select('dm.Name as name')
+                                        ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
+                                            $join = $join->on('dm.debtorcode', '=', 'db.payercode')
+                                                        ->where('dm.compcode','=',session('compcode'));
+                                        })
+                                        ->where('db.compcode',session('compcode'))
+                                        ->where('db.source',$value->source)
+                                        ->where('db.trantype',$value->trantype)
+                                        ->where('db.auditno',$value->auditno);
+
+                        if($dbacthdr->exists()){
+                            $value->reference = $dbacthdr->first()->name;
+                        }
                     }
                 case 'CM':
-                    if($value->trantype = 'DP'){
+                    if($value->trantype == 'DP'){
                         $apacthdr = DB::table('finance.apacthdr as ap')
                                         ->select('su.Name as suppname')
                                         ->leftJoin('material.supplier as su', function($join) use ($request){
@@ -429,15 +442,13 @@ class bankReconController extends defaultController
                                         ->where('ap.compcode',session('compcode'))
                                         ->where('ap.source',$value->source)
                                         ->where('ap.trantype',$value->trantype)
-                                        ->where('ap.auditno',$value->auditno)
-                                        ->first();
+                                        ->where('ap.auditno',$value->auditno);
 
-                        $value->reference = $apacthdr->suppname;
+                        if($apacthdr->exists()){
+                            $value->reference = $apacthdr->first()->suppname;
+                        }
                     }
-                default:
-                    return 'error happen..';
             }
-
         }
 
         //////////paginate/////////
