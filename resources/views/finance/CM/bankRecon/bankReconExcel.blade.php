@@ -72,13 +72,21 @@
         <td></td>
     </tr>
     @foreach ($cb_tran1 as $obj)
+        @if($obj->amount < 0)
         <tr>
             <td style="text-align: left">{{$obj->postdate}}</td>
             <td>{{$obj->cheqno}}</td>
             <td>{{$obj->reference}}</td>
             <td>{{$obj->amount}}</td>
         </tr>
+        @endif
     @endforeach
+    <tr>
+        <td></td>
+        <td></td>
+        <td style="font-weight: bold">SUB-TOTAL</td>
+        <td>{{$cb_tran1_minus_tot}}</td>
+    </tr>
     <tr></tr>
     <tr>
         <td></td>
@@ -86,6 +94,23 @@
         <td style="font-weight: bold">ADD: UNCREDITED CHEQUE</td>
         <td></td>
     </tr>
+    @foreach ($cb_tran1 as $obj)
+        @if($obj->amount > 0)
+        <tr>
+            <td style="text-align: left">{{$obj->postdate}}</td>
+            <td>{{$obj->cheqno}}</td>
+            <td>{{$obj->reference}}</td>
+            <td>{{$obj->amount}}</td>
+        </tr>
+        @endif
+    @endforeach
+    <tr>
+        <td></td>
+        <td></td>
+        <td style="font-weight: bold">SUB-TOTAL</td>
+        <td>{{$cb_tran1_plus_tot}}</td>
+    </tr>
+    <tr></tr>
     @foreach ($cb_tran2 as $obj)
         <tr>
             <td style="text-align: left">{{$obj->postdate}}</td>
