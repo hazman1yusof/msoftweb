@@ -86,7 +86,7 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths
                     if($value->reftrantype == 'PV' || $value->reftrantype == 'PV'){
                         $apacthdr = DB::table('finance.apacthdr as ap')
                                         ->select('su.Name as suppname')
-                                        ->leftJoin('material.supplier as su', function($join) use ($request){
+                                        ->leftJoin('material.supplier as su', function($join){
                                             $join = $join->on('su.suppcode', '=', 'ap.suppcode')
                                                         ->where('su.compcode','=',session('compcode'));
                                         })
@@ -104,6 +104,10 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths
                     if($value->reftrantype == 'RC' || $value->reftrantype == 'RD' || $value->reftrantype == 'RF'){
                         $dbacthdr = DB::table('debtor.dbacthdr as db')
                                         ->select('dm.Name as name')
+                                        ->leftJoin('debtor.debtormast as dm', function($join){
+                                            $join = $join->on('dm.debtorcode', '=', 'db.payercode')
+                                                        ->where('dm.compcode','=',session('compcode'));
+                                        })
                                         ->where('db.compcode',session('compcode'))
                                         ->where('db.source',$value->refsrc)
                                         ->where('db.trantype',$value->reftrantype)
@@ -117,7 +121,7 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths
                     if($value->reftrantype == 'DP'){
                         $apacthdr = DB::table('finance.apacthdr as ap')
                                         ->select('su.Name as suppname')
-                                        ->leftJoin('material.supplier as su', function($join) use ($request){
+                                        ->leftJoin('material.supplier as su', function($join){
                                             $join = $join->on('su.suppcode', '=', 'ap.suppcode')
                                                         ->where('su.compcode','=',session('compcode'));
                                         })
@@ -148,7 +152,7 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths
                             ->where('cb.recondate','>=', $cbhdr->recdate)
                             ->get();
         
-        return view('finance.CM.bankRecon.bankReconExcel', compact('cbdtl','db_tot','cr_tot','cb_tran_xrcn','cb_tran1','cb_tran2'));
+        return view('finance.CM.bankRecon.bankReconExcel', compact('cbdtl','db_tot','cr_tot','bs_bal','cb_bal','un_amt','cb_tran1','cb_tran2'));
     }
     
     public function registerEvents(): array
