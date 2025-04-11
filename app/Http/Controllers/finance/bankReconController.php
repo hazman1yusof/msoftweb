@@ -9,7 +9,8 @@ use DB;
 use Auth;
 use Carbon\Carbon;
 use DateTime;
-
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\bankReconExport;
 
 class bankReconController extends defaultController
 {   
@@ -54,6 +55,8 @@ class bankReconController extends defaultController
                 return $this->cbrecdtl_tbl($request);
             case 'cbtran_tbl':
                 return $this->cbtran_tbl($request);
+            case 'print':
+                return $this->print($request);
             default:
                 return 'error happen..';
         }
@@ -66,6 +69,7 @@ class bankReconController extends defaultController
             $responce->page = 0;
             $responce->total = 0;
             $responce->records = 0;
+            $responce->href = 'none';
             $responce->rows = [];
             $responce->cbrecdtl_sumamt = 0;
             return json_encode($responce);
@@ -83,12 +87,14 @@ class bankReconController extends defaultController
             $responce->page = 0;
             $responce->total = 0;
             $responce->records = 0;
+            $responce->href = 'none';
             $responce->rows = [];
             $responce->cbrecdtl_sumamt = 0;
             return json_encode($responce);
         }
 
         $cbhdr = $cbhdr->first();
+        $href = './bankRecon/table?action=print&idno='.$cbhdr->idno;
 
         if($request->oper == 'init'){
             $cbrecdtl_sumamt = $this->init_recon($request,$cbhdr);
@@ -161,6 +167,26 @@ class bankReconController extends defaultController
 
         $paginate = $table->paginate($request->rows);
 
+        $db_tot = DB::table('finance.cbrecdtl AS cbdt')
+                    ->where('cbdt.compcode','=', session('compcode'))
+                    ->where('cbdt.auditno','=', $cbhdr->auditno)
+                    ->where('cbdt.amount','>', 0)
+                    ->sum('amount');
+
+        $cr_tot = DB::table('finance.cbrecdtl AS cbdt')
+                    ->where('cbdt.compcode','=', session('compcode'))
+                    ->where('cbdt.auditno','=', $cbhdr->auditno)
+                    ->where('cbdt.amount','<', 0)
+                    ->sum('amount');
+
+        foreach ($paginate->items() as $key => $value) {
+            if($value->amount < 0){
+                $value->credit = $value->amount;
+            }else{
+                $value->debit = $value->amount;
+            }
+        }
+
         //////////paginate/////////
 
         $responce = new stdClass();
@@ -171,6 +197,9 @@ class bankReconController extends defaultController
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);
+        $responce->db_tot = $db_tot;
+        $responce->cr_tot = $cr_tot;
+        $responce->href = $href;
         $responce->cbrecdtl_sumamt = $cbrecdtl_sumamt;
 
         return json_encode($responce);
@@ -1319,69 +1348,11 @@ class bankReconController extends defaultController
         }
     }
 
-    public function showpdf(Request $request){
-        $auditno = $request->auditno;
-        if(empty($auditno)){
+    public function print(Request $request){
+        $idno = $request->idno;
+        if(empty($idno)){
             abort(404);
         }
-
-        $apacthdr = DB::table('finance.apacthdr as h', 'material.supplier as m', 'finance.bank as b')
-            ->select('h.compcode', 'h.auditno', 'h.trantype', 'h.source','h.doctype', 'h.pvno', 'h.suppcode', 'm.Name as suppname', 'm.Addr1 as addr1', 'm.Addr2 as addr2', 'm.Addr3 as addr3', 'm.TelNo as telno', 'h.actdate', 'h.document', 'h.deptcode', 'h.amount', 'h.outamount', 'h.recstatus', 'h.payto', 'h.category', 'h.remarks', 'h.paymode', 'h.bankcode', 'h.cheqno','b.bankname', 'b.bankaccount as bankaccno')
-            ->leftJoin('material.supplier as m', 'h.payto', '=', 'm.suppcode')
-            ->leftJoin('finance.bank as b', 'h.bankcode', '=', 'b.bankcode')
-            ->where('h.auditno','=',$auditno)
-            ->first();
-            // dd($apacthdr);
-
-        $apactdtl = DB::table('finance.apactdtl as d', 'finance.apacthdr as h', 'material.category as c')
-            ->select('d.compcode','d.source','d.trantype','d.auditno','d.lineno_','d.deptcode','d.category','d.document', 'd.AmtB4GST', 'd.GSTCode', 'd.taxamt AS tot_gst', 'd.amount', 'd.dorecno', 'd.grnno', 'd.idno','d.adddate', 'h.auditno', 'h.remarks AS remarks', 'c.description as desc')
-            // ->leftJoin('finance.apacthdr as h', 'd.auditno', '=', 'h.auditno')
-            // ->leftJoin('material.category as c', 'd.category', '=', 'c.catcode')
-            ->leftJoin('finance.apacthdr as h', function($join) use ($request){
-                        $join = $join->on('d.auditno', '=', 'h.auditno')
-                                    ->where('h.source', '=', 'CM')
-                                    ->where('h.trantype', '=', 'DP')
-                                    ->where('h.compcode','=',session('compcode'));
-                    })
-            ->leftJoin('material.category as c', function($join) use ($request){
-                        $join = $join->on('d.category', '=', 'c.catcode')
-                                ->where('c.compcode','=',session('compcode'));
-                    })
-            ->where('d.auditno','=',$auditno)
-            ->where('d.compcode','=',session('compcode'))
-            ->where('d.recstatus','!=','DELETE')
-            ->where('d.source','=','CM')
-            ->where('d.trantype', '=','DP')
-            ->get();
-
-        $company = DB::table('sysdb.company')
-                    ->where('compcode','=',session('compcode'))
-                    ->first();
-
-        if ($apacthdr->recstatus == "OPEN") {
-            $title = "DRAFT";
-        } elseif ($apacthdr->recstatus == "POSTED"){
-            $title = "DIRECT PAYMENT";
-        }
-            
-        $totamount_expld = explode(".", (float)$apacthdr->amount);
-        
-        // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
-        // $totamt_bm = $totamt_bm_rm." SAHAJA";
-
-        // if(count($totamount_expld) > 1){
-        //     $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
-        //     $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
-        // }
-
-        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
-        $totamt_eng = $totamt_eng_rm." ONLY";
-
-        if(count($totamount_expld) > 1){
-            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
-            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
-        }
-
-        return view('finance.CM.directPayment.directPayment_pdfmake',compact('apacthdr','apactdtl','totamt_eng','company', 'title'));
+        return Excel::download(new bankReconExport($request->idno), 'bankReconExport.xlsx');
     }
 }

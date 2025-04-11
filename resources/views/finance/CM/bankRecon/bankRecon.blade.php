@@ -59,7 +59,7 @@ i.fa {
   	</div>
 	</div>
 
-	<div class="panel panel-default" style="margin: 10px; height: 85vh;" id="panel_default_c">
+	<div class="panel panel-default" style="margin: 10px; height: 88vh;" id="panel_default_c">
   	<div class="panel-body">
   		<div class='col-md-12' style="padding:0 0 15px 0">
 	  		<form id="formdata2">
@@ -80,6 +80,9 @@ i.fa {
 	  				</div>
 	 					<span class="help-block"></span>
 					</div>
+					<a class='pull-right pointer text-primary' style="padding-left: 30px" id='pdfgen1' target="_blank">
+				    <span class='fa fa-print'></span> Print 
+					</a>
 	 			</form>
   			<div class="col-md-4" style="padding-left: 0px;">
   				<label for="bankname">&nbsp;</label> 
@@ -110,6 +113,28 @@ i.fa {
   		<div class='col-md-10' style="padding:0 0 15px 0">
   			<table id="jqGrid" class="table table-striped"></table>
   			<div id="jqGridPager"></div>
+  			<div class='col-md-12'>
+  				<span style="
+							width: 80px;
+							position: absolute;
+							width: 140px;
+							right: 10px;
+							top: 5px;
+						">
+		  			<label for="cr_tot" style="margin:0">Total Credit</label> 
+						<input id="cr_tot" name="cr_tot" type="text" class="form-control input-sm text-uppercase" readonly style="height: 25px;padding: 3px 8px;">
+  				</span>
+  				<span style="
+							width: 80px;
+							position: absolute;
+							width: 140px;
+							right: 160px;
+							top: 5px;
+						">
+  					<label for="db_tot" style="margin:0">Total Debit</label> 
+						<input id="db_tot" name="db_tot" type="text" class="form-control input-sm text-uppercase" readonly style="height: 25px;padding: 3px 8px;">
+  				</span>
+				</div>
   		</div>
   	</div>
 	</div>

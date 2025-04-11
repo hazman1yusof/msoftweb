@@ -2360,13 +2360,18 @@ function computerid_set(computerid){
 	}
 }
 
-function calc_jq_height_onchange(jqgrid,resizeGrid=false,maxHeight=300){
+function calc_jq_height_onchange(jqgrid,resizeGrid=false,maxHeight=300,always_maxHeight = false){
 	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
 	if(scrollHeight<80){
 		scrollHeight = 80;
 	}else if(scrollHeight>maxHeight){
 		scrollHeight = maxHeight;
 	}
+
+	if(always_maxHeight == true){
+		scrollHeight = maxHeight;
+	}
+
 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+10);
 	if(resizeGrid){
 		$('#'+jqgrid).jqGrid('resizeGrid');

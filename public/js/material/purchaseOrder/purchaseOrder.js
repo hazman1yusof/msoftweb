@@ -1343,10 +1343,10 @@ $(document).ready(function () {
 			errorField.length=0;
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
-			if($('#dialogForm input:radio[name=purordhd_prtype]:checked').val() == 'Non-Stock'){
-				$("#jqGrid2 #"+rowid+"_pricecode").val('MS');
-			}else{
+			if($('#dialogForm input:radio[name=purordhd_prtype]:checked').val() == 'Stock'){
 				$("#jqGrid2 #"+rowid+"_pricecode").val('IV');
+			}else{
+				$("#jqGrid2 #"+rowid+"_pricecode").val('MS');
 			}
 
 			dialog_pricecode.on();//start binding event on jqgrid2

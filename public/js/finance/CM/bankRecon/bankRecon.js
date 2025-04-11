@@ -110,6 +110,9 @@ $(document).ready(function () {
 		$('#addReconBtn,#saveReconBtn,#cancelReconBtn').hide();
 		dialog_bankcode1.off();
 		dialog_bankcode2.off();
+		urlParam.recdate = null;
+		urlParam.bankcode = null;
+		$('#pdfgen1').removeAttr('href');
 		refreshGrid("#jqGrid",null,"kosongkan");
 	});
 
@@ -187,7 +190,9 @@ $(document).ready(function () {
 			{label: 'period', name: 'period', hidden:true },
 			{label: 'remarks', name: 'remarks', hidden:true },
 			{label: 'Reference', name: 'reference', width: 100, classes : 'wrap text-uppercase' },
-			{label: 'amount', name: 'amount', width: 20 },
+			{label: 'amount', name: 'amount', width: 20,hidden:true },
+			{label: 'Debit', name: 'debit', width: 20 },
+			{label: 'Credit', name: 'credit', width: 20 },
 			{label: 'lastuser', name: 'lastuser', hidden:true },
 			{label: 'lastupdate', name: 'lastupdate', hidden:true },
 			{label: 'bitype', name: 'bitype', hidden:true },
@@ -221,8 +226,15 @@ $(document).ready(function () {
 			urlParam.save_amt = null;
 			$('#cashBkBal').val(data.cbrecdtl_sumamt);
 			$('#unReconAmt').val(parseFloat($('#closeAmtStamnt').val()) - parseFloat(data.cbrecdtl_sumamt));
-			calc_jq_height_onchange("jqGrid",false,parseInt($('#panel_default_c').prop('clientHeight'))-180);
+			$('#cr_tot').val(data.cr_tot);
+			$('#db_tot').val(data.db_tot);
+			calc_jq_height_onchange("jqGrid",false,parseInt($('#panel_default_c').prop('clientHeight'))-180-40,true);
 			mycurrency.formatOn();
+			if(data.href == 'none'){
+				$('#pdfgen1').removeAttr('href');
+			}else{
+				$('#pdfgen1').attr('href',data.href);
+			}
 		},			
 	});
 		
@@ -437,7 +449,7 @@ $(document).ready(function () {
 			}, 100 );
 		},
 		loadComplete: function(){
-			calc_jq_height_onchange("jqGrid2",false,parseInt($('#dialogForm').prop('clientHeight'))-200);
+			calc_jq_height_onchange("jqGrid2",false,parseInt($('#dialogForm').prop('clientHeight'))-200-40,true);
 		},			
 	});
 
@@ -519,7 +531,7 @@ $(document).ready(function () {
 
 		},
 		loadComplete: function(){
-			calc_jq_height_onchange("jqGrid3",true,parseInt($('#dialogForm').prop('clientHeight'))-200);
+			calc_jq_height_onchange("jqGrid3",true,parseInt($('#dialogForm').prop('clientHeight'))-200-40,true);
 		},			
 	});
 
