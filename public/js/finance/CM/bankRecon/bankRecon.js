@@ -448,8 +448,9 @@ $(document).ready(function () {
 	        	myallocation.retickallotogrid(1);
 			}, 100 );
 		},
-		loadComplete: function(){
+		loadComplete: function(data){
 			calc_jq_height_onchange("jqGrid2",false,parseInt($('#dialogForm').prop('clientHeight'))-200-40,true);
+			$('#all_tot').val(data.all_tot);
 		},			
 	});
 

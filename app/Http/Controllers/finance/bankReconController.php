@@ -410,6 +410,11 @@ class bankReconController extends defaultController
             }
         }
 
+        $all_tot = DB::table('finance.cbrecdtl AS cbdt')
+                    ->where('cbdt.compcode','=', session('compcode'))
+                    ->where('cbdt.auditno','=', $cbhdr->auditno)
+                    ->sum('amount');
+
         //////////paginate/////////
 
         $responce = new stdClass();
@@ -417,6 +422,7 @@ class bankReconController extends defaultController
         $responce->total = $paginate->lastPage();
         $responce->records = $paginate->total();
         $responce->rows = $paginate->items();
+        $responce->all_tot = $all_tot;
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);

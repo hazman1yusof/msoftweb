@@ -177,6 +177,18 @@ i.fa {
 				<span><b>Bank Statement</b></span>
   			<table id="jqGrid2" class="table table-striped"></table>
   			<div id="jqGrid2Pager"></div>
+  			<div class='col-md-12'>
+  				<span style="
+							width: 80px;
+							position: absolute;
+							width: 140px;
+							right: 10px;
+							top: 5px;
+						">
+		  			<label for="all_tot" style="margin:0">Total Amount</label> 
+						<input id="all_tot" name="all_tot" type="text" class="form-control input-sm text-uppercase" readonly style="height: 25px;padding: 3px 8px;">
+  				</span>
+				</div>
 			</div>
 			<div class='col-md-7' id="jqGrid3_c" style="padding:0 0 15px 0">
 				<button id="btn_cbrecdtl_add" type="button" class="btn btn-default" style="
