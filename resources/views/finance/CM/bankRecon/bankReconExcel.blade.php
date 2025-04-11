@@ -1,5 +1,4 @@
 <table>
-    <tr></tr>
     <tr>
         <td style="font-weight: bold">DATE</td>
         <td style="font-weight: bold">CHEQUE NO</td>
@@ -16,6 +15,7 @@
             </tr>
         @endif
     @endforeach
+    <tr></tr>
 
     <tr>
         <td></td>
@@ -35,6 +35,7 @@
             </tr>
         @endif
     @endforeach
+    <tr></tr>
 
     <tr>
         <td></td>
@@ -42,18 +43,21 @@
         <td style="font-weight: bold">TOTAL RECONCILED CHEQUE</td>
         <td style="font-weight: bold">{{$cr_tot}}</td>
     </tr>
+    <tr></tr>
     <tr>
         <td></td>
         <td></td>
         <td style="font-weight: bold">BALANCE AS PER BANK STATEMENT</td>
         <td style="font-weight: bold">{{$bs_bal}}</td>
     </tr>
+    <tr></tr>
     <tr>
         <td></td>
         <td></td>
         <td style="font-weight: bold">BALANCE AS PER CASH BOOK</td>
         <td style="font-weight: bold">{{$cb_bal}}</td>
     </tr>
+    <tr></tr>
     <tr>
         <td></td>
         <td></td>
@@ -75,6 +79,7 @@
             <td>{{$obj->amount}}</td>
         </tr>
     @endforeach
+    <tr></tr>
     <tr>
         <td></td>
         <td></td>
@@ -89,4 +94,5 @@
             <td>{{$obj->amount}}</td>
         </tr>
     @endforeach
+    <tr></tr>
 </table>
