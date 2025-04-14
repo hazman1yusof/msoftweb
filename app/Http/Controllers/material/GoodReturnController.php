@@ -379,17 +379,18 @@ class GoodReturnController extends defaultController
                     }
 
                     //1.amik productcat dari table product
-                    $productcat_obj = DB::table('material.delorddt')
-                        ->select('product.productcat')
-                        ->join('material.product', function($join) use ($request){
-                            $join = $join->on('delorddt.itemcode', '=', 'product.itemcode');
-                            $join = $join->on('delorddt.uomcode', '=', 'product.uomcode');
-                        })
-                        ->where('delorddt.compcode','=',session('compcode'))
-                        ->where('product.groupcode','=','Stock')
-                        ->where('delorddt.idno','=',$value->idno)
-                        ->first();
-                    $productcat = $productcat_obj->productcat;
+                    // $productcat_obj = DB::table('material.delorddt')
+                    //     ->select('product.productcat')
+                    //     ->join('material.product', function($join) use ($request){
+                    //         $join = $join->on('delorddt.itemcode', '=', 'product.itemcode');
+                    //         $join = $join->on('delorddt.uomcode', '=', 'product.uomcode');
+                    //     })
+                    //     ->where('delorddt.compcode','=',session('compcode'))
+                    //     ->where('product.groupcode','=','Stock')
+                    //     ->where('delorddt.idno','=',$value->idno)
+                    //     ->first();
+                    // $productcat = $productcat_obj->productcat;
+                    $productcat = $this->get_productcat($value->itemcode);
                     
                     $value->expdate = $this->null_date($value->expdate);
 
@@ -1049,6 +1050,16 @@ class GoodReturnController extends defaultController
         
         return view('material.goodReturn.goodreturn_pdfmake',compact('delordhd','delorddt','totamt_eng', 'company', 'total_tax', 'total_discamt', 'total_amt','cr_acc','db_acc'));
         
+    }
+
+    public function get_productcat($itemcode){
+        $query = DB::table('material.product')
+                ->select('productcat')
+                ->where('compcode','=',session('compcode'))
+                ->where('itemcode','=',$itemcode)
+                ->first();
+        
+        return $query->productcat;
     }
 }
 
