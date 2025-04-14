@@ -71,8 +71,14 @@
         <td style="font-weight: bold">LESS: UNPRESENTED CHEQUE</td>
         <td></td>
     </tr>
+    @php
+        $cbtot = 0;
+    @endphp
     @foreach ($cb_tran as $obj)
         @if($obj->amount < 0)
+        @php
+            $cbtot = $cbtot + $obj->amount;
+        @endphp
         <tr>
             <td style="text-align: left">{{$obj->postdate}}</td>
             <td>{{$obj->cheqno}}</td>
@@ -85,7 +91,7 @@
         <td></td>
         <td></td>
         <td style="font-weight: bold">SUB-TOTAL</td>
-        <td>{{$cb_tran1_minus_tot}}</td>
+        <td>{{$cbtot}}</td>
     </tr>
     <tr></tr>
     <tr>
@@ -94,8 +100,14 @@
         <td style="font-weight: bold">ADD: UNCREDITED CHEQUE</td>
         <td></td>
     </tr>
+    @php
+        $cbtot = 0;
+    @endphp
     @foreach ($cb_tran as $obj)
         @if($obj->amount > 0)
+        @php
+            $cbtot = $cbtot + $obj->amount;
+        @endphp
         <tr>
             <td style="text-align: left">{{$obj->postdate}}</td>
             <td>{{$obj->cheqno}}</td>
@@ -108,7 +120,7 @@
         <td></td>
         <td></td>
         <td style="font-weight: bold">SUB-TOTAL</td>
-        <td>{{$cb_tran1_plus_tot}}</td>
+        <td>{{$cbtot}}</td>
     </tr>
     <tr></tr>
 </table>
