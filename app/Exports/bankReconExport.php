@@ -23,7 +23,7 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class bankReconExport implements FromView, WithEvents, WithColumnWidths
+class bankReconExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     
     /**
@@ -36,6 +36,13 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths
         $this->comp = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+        ];
     }
     
     public function columnWidths(): array
