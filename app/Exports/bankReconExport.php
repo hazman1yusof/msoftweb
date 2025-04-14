@@ -66,6 +66,15 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths, WithCol
                         ->where('idno',$this->idno)
                         ->first();
 
+        $recdate = Carbon::createFromFormat('Y-m-d',$cbhdr->recdate)->format('d-m-Y');
+        $compname = $this->comp->name;
+        $bank = DB::table('finance.bank')
+                        ->where('compcode',session('compcode'))
+                        ->where('bankcode',$cbhdr->bankcode)
+                        ->first();
+        $bankname = $bank->bankname;
+
+
         $cbdtl = DB::table('finance.cbrecdtl as cbdt')
                     ->where('cbdt.compcode', '=', session('compcode'))
                     ->where('cbdt.auditno','=', $cbhdr->auditno)
@@ -160,7 +169,7 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths, WithCol
 
         $cb_tran = $cb_tran1->merge($cb_tran2);
         
-        return view('finance.CM.bankRecon.bankReconExcel', compact('cbdtl','db_tot','cr_tot','bs_bal','cb_bal','un_amt','cb_tran'));
+        return view('finance.CM.bankRecon.bankReconExcel', compact('recdate','compname','bankname','cbdtl','db_tot','cr_tot','bs_bal','cb_bal','un_amt','cb_tran'));
     }
     
     public function registerEvents(): array

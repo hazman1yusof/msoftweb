@@ -1,5 +1,24 @@
 <table>
     <tr>
+        <td></td>
+        <td></td>
+        <td style="text-align: center">{{$compname}}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td style="text-align: center">BANK RECONCILIATION AS AT {{$recdate}}</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td style="text-align: center">{{$bankname}}</td>
+        <td></td>
+    </tr>
+    <tr></tr>
+    <tr>
         <td style="font-weight: bold">DATE</td>
         <td style="font-weight: bold">CHEQUE NO</td>
         <td style="font-weight: bold">REFERENCE</td>
