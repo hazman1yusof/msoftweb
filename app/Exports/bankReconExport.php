@@ -43,7 +43,7 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths
         return [
             'A' => 15,
             'B' => 20,
-            'C' => 55,
+            'C' => 80,
             'D' => 20,
             'E' => 25,
             'F' => 25,
@@ -144,31 +144,22 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths
                             ->where('cb.postdate','<=', $cbhdr->recdate)
                             ->get();
 
-        $cb_tran1_minus_tot = DB::table('finance.cbtran AS cb')
-                                ->where('cb.compcode',session('compcode'))
-                                ->where('cb.reconstatus','!=', 1)
-                                ->where('cb.bankcode','=', $cbhdr->bankcode)
-                                ->where('cb.postdate','<=', $cbhdr->recdate)
-                                ->where('cb.amount','<', 0)
-                                ->sum('amount');
-
-        $cb_tran1_plus_tot = DB::table('finance.cbtran AS cb')
-                                ->where('cb.compcode',session('compcode'))
-                                ->where('cb.reconstatus','!=', 1)
-                                ->where('cb.bankcode','=', $cbhdr->bankcode)
-                                ->where('cb.postdate','<=', $cbhdr->recdate)
-                                ->where('cb.amount','>', 0)
-                                ->sum('amount');
-
         $cb_tran2 = DB::table('finance.cbtran AS cb')
                             ->where('cb.compcode',session('compcode'))
                             ->where('cb.reconstatus', 1)
                             ->where('cb.bankcode','=', $cbhdr->bankcode)
-                            ->where('cb.postdate','<=', $cbhdr->recdate)
-                            ->where('cb.recondate','>=', $cbhdr->recdate)
+                            ->where('cb.recondate','>', $cbhdr->recdate)
                             ->get();
+
+        $cb_tran = $cb_tran1->merge($cb_tran2);
+
+        $cb_tran1_minus_tot = $cb_tran
+                                ->sum('amount');
+
+        $cb_tran1_plus_tot = $cb_tran
+                                ->sum('amount');
         
-        return view('finance.CM.bankRecon.bankReconExcel', compact('cbdtl','db_tot','cr_tot','bs_bal','cb_bal','un_amt','cb_tran1','cb_tran1_minus_tot','cb_tran1_plus_tot','cb_tran2'));
+        return view('finance.CM.bankRecon.bankReconExcel', compact('cbdtl','db_tot','cr_tot','bs_bal','cb_bal','un_amt','cb_tran','cb_tran1_minus_tot','cb_tran1_plus_tot'));
     }
     
     public function registerEvents(): array
