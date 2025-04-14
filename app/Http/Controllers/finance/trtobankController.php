@@ -56,42 +56,57 @@ class trtobankController extends defaultController
     }
 
     public function maintable(Request $request){
-
+        $scope = $request->scope;
         $table = DB::table('finance.apacthdr AS ap')
-                    ->select('ap.idno','ap.compcode','ap.source','ap.trantype','ap.doctype','ap.auditno','ap.document','ap.suppcode','ap.payto','ap.suppgroup','ap.bankcode','ap.paymode','ap.cheqno','ap.cheqdate','ap.actdate','ap.recdate','ap.category','ap.amount','ap.outamount','ap.remarks','ap.postflag','ap.doctorflag','ap.stat','ap.entryuser','ap.entrytime','ap.upduser','ap.upddate','ap.conversion','ap.srcfrom','ap.srcto','ap.deptcode','ap.reconflg','ap.effectdatefr','ap.effectdateto','ap.frequency','ap.refsource','ap.reftrantype','ap.refauditno','ap.pvno','ap.entrydate','ap.recstatus','ap.adduser','ap.adddate','ap.reference','ap.TaxClaimable','ap.unit','ap.allocdate','ap.postuser','ap.postdate','ap.unallocated','ap.requestby','ap.requestdate','ap.request_remark','ap.supportby','ap.supportdate','ap.support_remark','ap.verifiedby','ap.verifieddate','ap.verified_remark','ap.approvedby','ap.approveddate','ap.approved_remark','ap.cancelby','ap.canceldate','ap.cancelled_remark','ap.bankaccno','ap.commamt','ap.totBankinAmt')
-                    // ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.payto')
+                    ->select(
+                        'ap.idno','ap.compcode','ap.source','ap.trantype','ap.doctype','ap.auditno','ap.document','ap.suppcode','ap.payto','ap.suppgroup','ap.bankcode','ap.paymode','ap.cheqno','ap.cheqdate','ap.actdate','ap.recdate','ap.category','ap.amount','ap.outamount','ap.remarks','ap.postflag','ap.doctorflag','ap.stat','ap.entryuser','ap.entrytime','ap.upduser','ap.upddate','ap.conversion','ap.srcfrom','ap.srcto','ap.deptcode','ap.reconflg','ap.effectdatefr','ap.effectdateto','ap.frequency','ap.refsource','ap.reftrantype','ap.refauditno','ap.pvno','ap.entrydate','ap.recstatus','ap.adduser','ap.adddate','ap.reference','ap.TaxClaimable','ap.unit','ap.allocdate','ap.postuser','ap.postdate','ap.unallocated','ap.requestby','ap.requestdate','ap.request_remark','ap.supportby','ap.supportdate','ap.support_remark','ap.verifiedby','ap.verifieddate','ap.verified_remark','ap.approvedby','ap.approveddate','ap.approved_remark','ap.cancelby','ap.canceldate','ap.cancelled_remark','ap.bankaccno','ap.commamt','ap.totBankinAmt','su.name'
+                    )
+                    ->leftJoin('material.supplier as su', function($join) use ($request){
+                        $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
+                        $join = $join->where('su.compcode', '=', session('compcode'));
+                    })
                     ->where('ap.compcode','=', session('compcode'))
-                    ->where('ap.source','=', 'CM')
-                    ->whereIn('ap.trantype', ['BD','BS','BQ']);
+                    ->where('ap.source','=',$request->source);
+
+        if(!empty($request->filterVal) && in_array('PD',$request->filterVal)){
+            $table = $table->where('ap.trantype','PD');
+        }else{
+            $table = $table->whereIn('ap.trantype',['PD','PV']);
+        }
 
         if(!empty($request->filterCol)){
-            $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+            if($request->filterCol[0] == 'ap.recstatus' && $request->filterVal[0] == 'All2'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('ap.recstatus','=','SUPPORT');
+                        $table->orWhere('ap.recstatus','=','PREPARED');
+                    });
+            }else{
+                $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+            }
+        }
+
+        if(!empty($request->WhereInCol[0])){
+            foreach ($request->WhereInCol as $key => $value) {
+                // $sr = substr(strstr($value,'.'),1);
+                $table = $table->whereIn($value,$request->WhereInVal[$key]);
+            }
         }
 
         if(!empty($request->filterdate)){
-            $table = $table->where('ap.actdate','>=',$request->filterdate[0]);
-            $table = $table->where('ap.actdate','<=',$request->filterdate[1]);
+            $table = $table->where('ap.actdate','>',$request->filterdate[0]);
+            $table = $table->where('ap.actdate','<',$request->filterdate[1]);
         }
 
         if(!empty($request->searchCol)){
-            if($request->searchCol[0] == 'bankcode'){
+            if($request->searchCol[0] == 'apacthdr_document'){
                 $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('ap.bankcode','like',$request->searchVal[0]);
-                    });
-            } else if($request->searchCol[0] == 'payto'){
-                $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('ap.payto','like',$request->searchVal[0]);
-                    });
-            }else if($request->searchCol[0] == 'auditno'){
-                $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('ap.auditno','like',$request->searchVal[0]);
+                        $table->Where('ap.document','like',$request->searchVal[0]);
                     });
             }else{
                 $table = $table->Where(function ($table) use ($request) {
                         $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
                     });
             }
-            
         }
 
         if(!empty($request->sidx)){
@@ -102,8 +117,7 @@ class trtobankController extends defaultController
                 $table = $table->orderBy($request->sidx, $request->sord);
             }else{
                 foreach ($pieces as $key => $value) {
-                    // $value_ = substr_replace($value,"ap.",0,strpos($value,"_")+1);
-                    $value_ = 'ap.'.$value;
+                    $value_ = substr_replace($value,"ap.",0,strpos($value,"_")+1);
                     $pieces_inside = explode(" ", $value_);
                     $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
                 }
@@ -112,7 +126,35 @@ class trtobankController extends defaultController
             $table = $table->orderBy('ap.idno','DESC');
         }
 
+
         $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {
+            // $apactdtl = DB::table('finance.apactdtl')
+            //             ->where('source','=',$value->apacthdr_source)
+            //             ->where('trantype','=',$value->apacthdr_trantype)
+            //             ->where('auditno','=',$value->apacthdr_auditno);
+
+            // if($apactdtl->exists()){
+            //     $value->apactdtl_outamt = $apactdtl->sum('amount');
+            // }else{
+            //     $value->apactdtl_outamt = $value->apacthdr_outamount;
+            // }
+
+            // $apalloc = DB::table('finance.apalloc')
+            //             ->select('allocdate')
+            //             ->where('refsource','=',$value->apacthdr_source)
+            //             ->where('reftrantype','=',$value->apacthdr_trantype)
+            //             ->where('refauditno','=',$value->apacthdr_auditno)
+            //             ->where('recstatus','!=','CANCELLED')
+            //             ->orderBy('idno', 'desc');
+
+            // if($apalloc->exists()){
+            //     $value->apalloc_allocdate = $apalloc->first()->allocdate;
+            // }else{
+            //     $value->apalloc_allocdate = '';
+            // }
+        }
 
         //////////paginate/////////
 
@@ -126,7 +168,6 @@ class trtobankController extends defaultController
         $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
-
     }
 
     public function add(Request $request){

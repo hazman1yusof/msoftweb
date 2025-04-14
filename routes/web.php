@@ -990,6 +990,13 @@ Route::post('/bankInRegistration/form','finance\bankInRegistrationController@for
 Route::post('/bankInRegistrationDetail/form','finance\bankInRegistrationDetailController@form');
 Route::get('/bankInRegistrationDetail/table','finance\bankInRegistrationDetailController@table');
 
+//// Tr to bank ///
+Route::get('/trtobank','finance\trtobankController@show');
+Route::get('/trtobank/table','finance\trtobankController@table');
+Route::post('/trtobank/form','finance\trtobankController@form');
+// Route::post('/bankInRegistrationDetail/form','finance\bankInRegistrationDetailController@form');
+// Route::get('/bankInRegistrationDetail/table','finance\bankInRegistrationDetailController@table');
+
 //// Credit Debit Transaction ///
 Route::get('/creditDebitTrans','finance\CreditDebitTransController@show');
 Route::get('/creditDebitTrans/table','finance\CreditDebitTransController@table');

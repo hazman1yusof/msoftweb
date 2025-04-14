@@ -83,7 +83,7 @@
             <td style="text-align: left">{{$obj->postdate}}</td>
             <td>{{$obj->cheqno}}</td>
             <td>{{$obj->reference}}</td>
-            <td>{{$obj->amount}}</td>
+            <td>{{abs($obj->amount)}}</td>
         </tr>
         @endif
     @endforeach
