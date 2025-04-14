@@ -2134,17 +2134,20 @@ class PaymentVoucherController extends defaultController
                             ->where('compcode',session('compcode'))
                             ->where('source','AP')
                             ->where('trantype','IN')
-                            ->where('auditno',$obj->refauditno)
+                            ->where('auditno',$obj->refauditno);
+
+            if($apacthdr->exists()){
+                $apacthdr = $apacthdr->first();
+
+                $attachment_file = DB::table('finance.attachment')
+                            ->where('compcode',session('compcode'))
+                            ->where('page','invoiceap')
+                            ->where('auditno',$apacthdr->idno)
                             ->first();
 
-            $attachment_file = DB::table('finance.attachment')
-                        ->where('compcode',session('compcode'))
-                        ->where('page','invoiceap')
-                        ->where('auditno',$apacthdr->idno)
-                        ->first();
-
-            if(!empty($attachment_file)){
-                array_push($attachment_files,$attachment_file);
+                if(!empty($attachment_file)){
+                    array_push($attachment_files,$attachment_file);
+                }
             }
         }
 
