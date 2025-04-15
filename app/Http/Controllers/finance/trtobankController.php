@@ -65,24 +65,20 @@ class trtobankController extends defaultController
                         $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
                         $join = $join->where('su.compcode', '=', session('compcode'));
                     })
+                    ->where('ap.source','AP')
+                    ->where('ap.trantype','PD')
                     ->where('ap.compcode','=', session('compcode'))
-                    ->where('ap.source','=',$request->source);
+                    ->where('ap.outamount','>=',0)
+                    ->where('ap.recstatus','APPROVED');
 
-        if(!empty($request->filterVal) && in_array('PD',$request->filterVal)){
-            $table = $table->where('ap.trantype','PD');
-        }else{
-            $table = $table->whereIn('ap.trantype',['PD','PV']);
-        }
+        // if(!empty($request->filterVal) && in_array('PD',$request->filterVal)){
+        //     $table = $table->where('ap.trantype','PD');
+        // }else{
+        //     $table = $table->whereIn('ap.trantype',['PD','PV']);
+        // }
 
         if(!empty($request->filterCol)){
-            if($request->filterCol[0] == 'ap.recstatus' && $request->filterVal[0] == 'All2'){
-                $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('ap.recstatus','=','SUPPORT');
-                        $table->orWhere('ap.recstatus','=','PREPARED');
-                    });
-            }else{
-                $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
-            }
+            $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
         }
 
         if(!empty($request->WhereInCol[0])){

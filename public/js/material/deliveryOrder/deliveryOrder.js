@@ -611,7 +611,9 @@ $(document).ready(function () {
 			dialog_deldept.on();
 			dialog_reqdept.on();
 			dialog_srcdocno.on();
+			$("#saveDetailLabel").attr('disabled',false)
 		}).done(function (data) {
+			$("#saveDetailLabel").attr('disabled',false)
 			hideatdialogForm(false);
 
 			addmore_jqgrid2.state = true;
@@ -1245,16 +1247,16 @@ $(document).ready(function () {
 			//}
 
 			mycurrency2.array.length = 0;
-			mycurrency_np.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']"]);
-			Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtydelivered']"]);
+			// mycurrency_np.array.length = 0;
+			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']","#jqGrid2 input[name='qtydelivered']"]);
+			// Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtydelivered']"]);
 
 			$("input[name='gstpercent']").val('0')//reset gst to 0
 			// mycurrency2.formatOnBlur();//make field to currency on leave cursor
 			// mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 
 			$("#jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
-			$("#jqGrid2 input[name='qtydelivered']").on('blur',{currency: mycurrency_np},calculate_line_totgst_and_totamt);
+			$("#jqGrid2 input[name='qtydelivered']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 			$("#jqGrid2 input[name='qtydelivered']").on('blur',calculate_conversion_factor);
 			$("#jqGrid2 input[name='pouom']").on('blur',remove_noti);
@@ -1409,8 +1411,8 @@ $(document).ready(function () {
 				if(objdata.pricecode.slice(0, objdata.pricecode.search("[<]")) == 'MS'){
 			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount"]);
 				}else{
-			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount"]);
-					Array.prototype.push.apply(mycurrency_np.array, ["#"+ids[i]+"_qtydelivered"]);
+			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount","#"+ids[i]+"_qtydelivered"]);
+					// Array.prototype.push.apply(mycurrency_np.array, ["#"+ids[i]+"_qtydelivered"]);
 				}
 
 				dialog_pricecode.id_optid = ids[i];
@@ -1695,6 +1697,7 @@ $(document).ready(function () {
 
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function(){ //actually saving the header
+		$("#saveDetailLabel").attr('disabled',true);
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
@@ -1711,6 +1714,7 @@ $(document).ready(function () {
 			saveHeader("#formdata",oper,saveParam);
 			unsaved = false;
 		}else{
+			$("#saveDetailLabel").attr('disabled',true)
 			mycurrency.formatOn();
 			dialog_authorise.on();
 			dialog_prdept.on();
@@ -1832,7 +1836,7 @@ $(document).ready(function () {
 		mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 
 		$("#jqGrid2 input[name='qtydelivered'], #jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='perdisc']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt_all);
-		$("#jqGrid2 input[name='qtydelivered']").on('blur',{currency: mycurrency_np},calculate_line_totgst_and_totamt_all);
+		$("#jqGrid2 input[name='qtydelivered']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt_all);
 
 		$("#jqGrid2 input[name='qtydelivered']").on('blur',calculate_conversion_factor);
 		$("#jqGrid2 input[name='pouom']").on('blur',remove_noti);
@@ -2482,8 +2486,8 @@ $(document).ready(function () {
 				}else{
 					mycurrency2.array.length = 0;
 					mycurrency_np.array.length = 0;
-					Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']"]);
-					Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtydelivered']"]);
+					Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']","#jqGrid2 input[name='qtydelivered']"]);
+					// Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtydelivered']"]);
 
 					mycurrency2.formatOnBlur();//make field to currency on leave cursor
 					mycurrency_np.formatOnBlur();

@@ -1,144 +1,104 @@
 @extends('layouts.main')
 
-@section('title', 'Bank In Registration')
+@section('title', 'Payment Voucher/Deposit')
 
 @section('style')
 
 .panel-heading.collapsed .fa-angle-double-up,
 .panel-heading .fa-angle-double-down {
-  display: none;
+ display: none;
 }
 
 .panel-heading.collapsed .fa-angle-double-down,
 .panel-heading .fa-angle-double-up {
-  display: inline-block;
+ display: inline-block;
 }
 
 i.fa {
-  cursor: pointer;
-  float: right;
- <!--  margin-right: 5px; -->
+ cursor: pointer;
+ float: right;
+<!--  margin-right: 5px; -->
 }
 
 .collapsed ~ .panel-body {
-  padding: 0;
+ padding: 0;
 }
 
 .clearfix {
-	overflow: auto;
+   overflow: auto;
 }
-@endsection
 
+.whtspc_wrap{
+	white-space: pre-wrap !important;
+}
+
+#div_print_alloc{
+	display: inline-block;
+	position: absolute;
+	right: 170px;
+	top: 20px;
+}
+#div_print_alloc a{
+	padding-right:10px;
+}
+#div_print_alloc span{
+	float: right;
+    padding-right: 10px;
+}
+.data_info .col-md-2.minuspad-15{
+	width: 16.5% !important;
+}
+div#fail_msg{
+  padding-left: 40px;
+  padding-bottom: 10px;
+  color: darkred;
+}
+
+@endsection
 
 @section('body')
 
-<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
-<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
+	<!-- @include('layouts.default_search_and_table') -->
+	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
+	<input id="ttype_get" name="ttype_get" type="hidden" value="{{Request::get('ttype')}}">
+	<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
-@if (Request::get('scope') == 'ALL')
-	<input id="recstatus_use" name="recstatus_use" type="hidden" value="ALL">
-@else
-	<input id="recstatus_use" name="recstatus_use" type="hidden" value="{{Request::get('scope')}}">
-@endif
-
-<!--***************************** Search + table ******************-->
+	@if (Request::get('scope') == 'ALL')
+		<input id="recstatus_use" name="recstatus_use" type="hidden" value="ALL">
+	@else
+		<input id="recstatus_use" name="recstatus_use" type="hidden" value="{{Request::get('scope')}}">
+	@endif
 	 
-<div class='row'>
-	<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
-		<fieldset>
+	<!--***************************** Search + table ******************-->
+	<div class='row'>
+		<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
+			<fieldset>
 			<input id="getYear" name="getYear" type="hidden"  value="{{Carbon\Carbon::now()->year}}">
 
-			<div class='col-md-12' style="padding:0 0 15px 0;">
+				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
-						<div class="col-md-2">
-						  	<label class="control-label" for="Scol">Search By : </label>  
-						  		<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
-			            </div>
+					  	<div class="col-md-2">
+					  		<label class="control-label" for="Scol">Search By : </label>  
+					  			<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
+		             	</div>
 
-						<div class="col-md-5">
+					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-							<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
-
-							<div id="bankcode_text">
-								<div class='input-group'>
-									<input id="bankcode_search" name="bankcode_search" type="text" maxlength="12" class="form-control input-sm">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('auditno'))){{Request::get('auditno')}}@endif">
+									
+								<div id="creditor_text">
+									<div class='input-group'>
+										<input id="creditor_search" name="creditor_search" type="text" maxlength="12" class="form-control input-sm">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span id="creditor_search_hb" class="help-block"></span>
 								</div>
-								<span id="bankcode_search_hb" class="help-block"></span>
-							</div>
-
-							<div id="creditor_text" style="display:none">
-								<div class='input-group'>
-									<input id="creditor_search" name="creditor_search" type="text" maxlength="12" class="form-control input-sm">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span id="creditor_search_hb" class="help-block"></span>
-							</div>
-
-							<div id="actdate_text" class="form-inline" style="display:none">
-								FROM DATE <input id="actdate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
-								TO <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
-								<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH</button>
-							</div>
-							
 						</div>
-
-			        </div>
+		      </div>
 				</div>
 
-				<!-- <div id="div_for_but_post" class="col-md-10 col-md-offset-2" style="padding-top: 20px; text-align: end;">
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-				</div> -->
-				<div class="col-md-2">
-					<label class="control-label" for="Status">Status</label>  
-					<select id="Status" name="Status" class="form-control input-sm">
-							@if (Request::get('scope') == 'ALL')
-							<option value="All" selected>ALL</option>
-							<option value="OPEN">OPEN</option>
-							<option value="POSTED">POSTED</option>
-							<option value="CANCELLED">CANCELLED</option>
-							@elseif (Request::get('scope') == 'OPEN')
-								<option value="OPEN">OPEN</option>
-							@elseif (Request::get('scope') == 'POSTED')
-								<option value="POSTED">POSTED</option>
-							@elseif (Request::get('scope') == 'CANCEL')
-								<option value="OPEN">OPEN</option>
-							@endif
-				   	</select>
-	      		</div>
-
-				<?php 
-					$scope_use = 'posted';
-
-					if(Request::get('scope') == 'ALL'){
-						$scope_use = 'posted';
-					}else if(Request::get('scope') == 'DELIVERED'){
-						$scope_use = 'delivered';
-					}else if(Request::get('scope') == 'REOPEN'){
-						$scope_use = 'reopen';
-					}else if(Request::get('scope') == 'CANCEL'){
-						$scope_use = 'cancel';
-					}
-				?>
-
-			<div id="div_for_but_post" class="col-md-6 col-md-offset-6" style="padding-top: 20px; text-align: end;">
-				
-				<span id="error_infront" style="color: red"></span>
-				<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
-
-				<button 
-				type="button" 
-					class="btn btn-primary btn-sm" 
-					id="but_post_jq" 
-					data-oper="{{$scope_use}}" 
-					style="display: none;">
-					POSTED
-				</button>
-
-			</div>
-		</fieldset> 
-	</form>
+			</fieldset> 
+		</form>
 
 		<div class="panel panel-default" id="sel_tbl_panel" style="display:none">
     		<div class="panel-heading heading_panel_">List Of Selected Item</div>
@@ -149,204 +109,360 @@ i.fa {
 				</div>
     		</div>
 		</div>
-
+		 
 		<div class="panel panel-default">
-		    <div class="panel-heading">Payment Deposit Header
+		    <div class="panel-heading">Payment Voucher/Deposit Header
 			<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
 			</div>
 		    	<div class="panel-body">
 		    		<div class='col-md-12' style="padding:0 0 15px 0">
             			<table id="jqGrid" class="table table-striped"></table>
-            				<div id="jqGridPager"></div>
+            			<div id="jqGridPager"></div>
         			</div>
 		    	</div>
 		</div>
-
-		<div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
-			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
-				<b>BANK CODE: </b><span id="bankcode_show"></span><br>
-				<b>PAY TO: </b><span id="payto_show"></span>
-
-				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-					<h5>Payment Deposit Detail</h5>
-				</div>				
-			</div>
-			<div id="jqGrid3_panel" class="panel-collapse collapse">
-				<div class="panel-body">
-	    			<div id="" class='col-md-12' style="padding:0 0 15px 0">
-            			<table id="jqGrid3" class="table table-striped"></table>
-            			<div id="jqGridPager3"></div>
-    				</div>
-	    		</div>
-			</div>	
-		</div>
-
-</div>
-
+        
+  </div>
 	<!-- ***************End Search + table ********************* -->
-		<div id="dialogForm" title="Add Form" >
-			<form class='form-horizontal' style='width:100%' id='formdata'>
-				{{ csrf_field() }}
-				<div class='col-md-12'>
-					<div class='panel panel-info'>
-						<div id="detail" class="panel-heading">Bank In Registration Header</div>
-							<div class="panel-body">
 
-								<input id="source" name="source" type="hidden">
-								<input id="trantype" name="trantype" type="hidden">
-								<input id="idno" name="idno" type="hidden">
+	<div id="dialogForm" title="Add Form" >
+		<div class='panel panel-info'>
+			<div class="panel-heading">Payment Voucher/Deposit Header</div>
+			<div class="panel-body" style="position: relative;padding-bottom: 0px;">
+				<form class='form-horizontal' style='width:99%' id='formdata'>
+					{{ csrf_field() }}
+					<input id="auditno" name="auditno" type="hidden">
+					<input id="idno" name="idno" type="hidden">
 
-				    		<div class="form-group">
-				    			<label class="col-md-2 control-label" for="bankcode">Bank Code</label>  
-				  				<div class="col-md-3">
-						 				<div class='input-group'>
-											<input id="bankcode" name="bankcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
-											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-					  				</div>
-					 					<span id='bc' class="help-block"></span>
-                  </div>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="actdate">Doc Date</label>  
+				  			<div class="col-md-2">
+								<input id="actdate" name="actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
 
-					  			<label class="col-md-1 control-label" for="auditno">Auditno</label>  
-				  				<div class="col-md-2">
-										<input id="auditno" name="auditno" type="text" class="form-control input-sm" readonly rdOnly>
-				  				</div>
+						<label class="col-md-2 control-label" for="postdate">Post Date</label>  
+				  			<div class="col-md-2">
+								<input id="postdate" name="postdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
 
-					  			<label class="col-md-2 control-label" for="amount" id="amount_label">Cash Amount</label>  
-				  				<div class="col-md-2">
-										<input id="amount" name="amount" type="text" class="form-control input-sm" data-validation="required">
-				  				</div>
-				    		</div>
 
-				    		<div class="form-group">
-				    			<label class="col-md-2 control-label" for="paymode">Pay Type</label>  
-				  				<div class="col-md-3">
-						 				<select class="form-control input-sm" for="paymode" name="paymode" id="paymode">
-										  <option value="CASH">CASH</option>
-										  <option value="CARD">CARD</option>
-										  <option value="CHEQUE">CHEQUE</option>
-										</select>
-                  </div>
-
-					  			<label class="col-md-1 control-label" for="postdate">Posted Date</label>  
-				  				<div class="col-md-2">
-										<input id="postdate" name="postdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
-				  				</div>
-
-					  			<label class="col-md-2 control-label" for="commamt">Commision Amt</label>  
-				  				<div class="col-md-2">
-										<input id="commamt" name="commamt" type="text" class="form-control input-sm" disabled>
-				  				</div>
-				    		</div>
-
-				    		<div class="form-group">
-				    			<label class="col-md-2 control-label" for="reference">Reference</label>  
-				  				<div class="col-md-6" >
-										<input id="reference" name="reference" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
-				  				</div>
-
-					  			<label class="col-md-2 control-label" for="gst">GST</label>  
-				  				<div class="col-md-2">
-										<input id="gst" name="gst" type="text" class="form-control input-sm" readonly rdOnly>
-				  				</div>
-				    		</div>
-
-				    		<div class="form-group">
-				  				<div id="payer1_div">
-					    			<label class="col-md-2 control-label" for="payer1">Payer</label>  
-					  				<div class="col-md-6" >
-											<input id="payer1" name="payer1" type="text" class="form-control input-sm">
-					  				</div>
-					  			</div>
-
-				  				<div id="payer2_div" style="display:none">
-					    			<label class="col-md-2 control-label" for="payer2">Payer</label>  
-					  				<div class="col-md-6" >
-							 				<div class='input-group'>
-												<input id="payer2" name="payer2" type="text" class="form-control input-sm text-uppercase" data-validation="required">
-												<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-						  				</div>
-						 					<span class="help-block"></span>
-					  				</div>
-					  			</div>
-
-					  			<!-- <label class="col-md-2 control-label" for="netamount">Nett Amount</label>  
-				  				<div class="col-md-2">
-										<input id="netamount" name="netamount" type="text" class="form-control input-sm" readonly rdOnly>
-				  				</div> -->
-				    		</div>
-
-				    		<div class="form-group">
-					  			<label class="col-md-2 control-label" for="unit">Units</label>  
-				  				<div class="col-md-3" >
-						 				<select class="form-control input-sm" for="unit" name="unit" id="unit">
-										  	<option value="ALL" selected>ALL</option>
-						 					@foreach($unit as $unit_obj)
-										  	<option value="{{$unit_obj->sectorcode}}">{{$unit_obj->description}}</option>
-						 					@endforeach
-										</select>
-                  </div>
-
-					  			<label class="col-md-offset-3 col-md-2 control-label" for="dtlamt">Total Detail Amt</label>  
-				  				<div class="col-md-2">
-										<input id="dtlamt" name="dtlamt" type="text" class="form-control input-sm" readonly rdOnly>
-				  				</div>
-				    		</div>
-
-							</div>
+				  		<label class="col-md-2 control-label" for="auditno">Audit No</label>  
+				  			<div class="col-md-2">
+				  				<input id="auditno" name="auditno" type="text" class="form-control input-sm" rdonly>
+				  			</div>	
 					</div>
-				</div>
-			</form>
 
-			<div class='col-md-12'>
-				<div class='panel panel-info'>
-					<div class="panel-heading" style="padding: 15px;">Bank In Registration Detail
-						<div id="allo_search_div" style="display:none;">
-							<input id="alloDate" type="date" class="form-control input-sm" style="position: absolute;
-							  right: 100px;
-							  top: 10px;
-							  width: 200px;display: none;">
-							<input id="alloText" placeholder="Search Here.." type="text" class="form-control input-sm" style="position: absolute;
-							  right: 100px;
-							  top: 10px;
-							  width: 200px;">
-							<select class="form-control" id="alloCol" style="position: absolute;
-						    right: 310px;
-						    top: 10px;
-						    width: 200px;">
-								<option value="trantype" >Type</option>
-								<option value="auditno" >Audit No</option>
-								<option value="recptno" selected>Document</option>
-								<option value="posteddate" >Document Date</option>
-								<option value="reference" >Reference</option>
-							</select>
-							<button id="resetAlloBtn" type="button" class="btn btn-danger" style="position: absolute;
-						    right: 30px;
-						    top: 10px;">
-						  Reset</button>
-							<!-- <button id="searhcAlloBtn" type="button" class="btn btn-primary" style="position: absolute;
-						    right: 50px;
-						    top: 10px;">
-						  Search</button> -->
-						</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="trantype">Transaction Type</label> 
+							<div class="col-md-2">
+							  	<select id="trantype" name=trantype class="form-control" data-validation="required">
+							       <option value="PV">Payment Voucher</option>
+							       <option value="PD">Payment Deposit</option>
+							    </select>
+						  	</div>
+
+						<label class="col-md-2 control-label" for="document">Document No</label>  
+				  			<div class="col-md-2">
+								<input id="document" name="document" type="text" maxlength="30" class="form-control input-sm text-uppercase" rdonly>
+				  			</div>
+
+						<label class="col-md-2 control-label" for="paymode">Paymode</label>	 
+						 	<div class="col-md-2">
+							  	<div class='input-group'>
+									<input id="paymode" name="paymode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					
+					</div>
+
+					<div class="form-group">
+
+						<label class="col-md-2 control-label" for="bankcode" id="bankcode_parent">Bank Code</label>	 
+						 	<div class="col-md-2">
+							  	<div class='input-group'>
+									<input id="bankcode" name="bankcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+									<a class='input-group-addon btn btn-primary' id="bankcode_dh"><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block" ></span>
+						</div>	  	
+
+						<label class="col-md-2 control-label" for="cheqno" id="cheqno_parent">Cheque No</label>	  
+				  			<div class="col-md-2">
+							  	<div class='input-group'>
+									<input id="cheqno" name="cheqno" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+									<a class='input-group-addon btn btn-primary' id="cheqno_dh"><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+
+						<label class="col-md-2 control-label" for="cheqdate" id="cheqdate_parent">Cheque Date</label>  
+				  			<div class="col-md-2" id="cheqdate">
+								<input id="cheqdate" name="cheqdate" type="date" maxlength="12" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
+							
+					</div>
+
+					<!-- <div class="form-group">
+					<label class="col-md-2 control-label" for="recdate">Post Date</label>  
+				  			<div class="col-md-2" id="recdate">
+								<input id="recdate" name="recdate" type="date" maxlength="12" class="form-control input-sm"  value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
+			   		</div> -->
+
+					<hr/>
+
+					<div class="form-group">
+			    		<label class="col-md-2 control-label" for="remarks">Remarks</label> 
+			    			<div class="col-md-8"> 
+			    				<textarea class="form-control input-sm text-uppercase" name="remarks" rows="2" cols="55" maxlength="400" id="remarks" data-validation="required" data-validation-error-msg="Please Enter Value"></textarea>
+			    			</div>
+			   		</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="suppcode">Pay To (In Invoice)</label>	  
+							<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="suppcode" name="suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					
+						<label class="col-md-2 control-label" for="payto">Pay To</label>	  
+							<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="payto" name="payto" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					</div>		  	
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="bankaccno">Bank A/C No</label>  
+				  			<div class="col-md-3">
+								<input id="bankaccno" name="bankaccno" type="text" class="form-control input-sm text-uppercase" maxlength="30">
+				  			</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="amount">Total Amount</label>  
+					  		<div class="col-md-3">
+								<input id="amount" name="amount" maxlength="12" class="form-control input-sm"> 
+		 					</div>
+
+						<label class="col-md-2 control-label" for="pvno">PV No</label>  
+				  			<div class="col-md-3">
+								<input id="pvno" name="pvno" type="text" class="form-control input-sm text-uppercase" maxlength="30" rdonly>
+				  			</div>
 					</div>
 					<div class="panel-body">
-						<form id='formdata2' class='form-vertical' style='width:99%'>
-							
-							<div id="jqGrid2_c" class='col-md-12'>
-								<table id="jqGrid2" class="table table-striped"></table>
-					            <div id="jqGridPager2"></div>
-							</div>
-						</form>
+						<div class="notiH" style="font-size: bold; color: red"><ol></ol></div>
 					</div>
-				</div>
+
+					<!-- <hr/>
+
+					<input type='checkbox' name='checkbox_selection' id='checkbox_selection_'>
+					<label for="checkbox_selection">Online Banking</label>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="prov_prod">Provider Product</label>	  
+							<div class="col-md-2">
+							  	<div class='input-group'>
+									<input id="prov_prod" name="prov_prod" type="text" maxlength="12" class="form-control input-sm text-uppercase" rdonly>
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					
+						<label class="col-md-2 control-label" for="destination">Destination</label>	  
+							<div class="col-md-2">
+							  	<div class='input-group'>
+									<input id="destination" name="destination" type="text" maxlength="12" class="form-control input-sm text-uppercase" rdonly>
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+
+						<label class="col-md-2 control-label" for="purp_of_trans">Purpose of Transfer</label>	  
+							<div class="col-md-2">
+							  	<div class='input-group'>
+									<input id="purp_of_trans" name="purp_of_trans" type="text" maxlength="12" class="form-control input-sm text-uppercase" rdonly>
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>  	
+					</div>		  	 -->
+					
+					<div class="form-group data_info">
+						<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="requestby">Prepared By</label>  
+				  			<input id="requestby" name="requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+
+			  			<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="supportby">Support By</label>
+				  			<input id="supportby" name="supportby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+
+					  <div class="col-md-2 minuspad-15">
+							<label class="control-label" for="verifiedby">Verified By</label>  
+				  			<input id="verifiedby" name="verifiedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+
+			  			<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="approvedby">Approved By</label>
+				  			<input id="approvedby" name="approvedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+
+					  <div class="col-md-2 minuspad-15">
+							<label class="control-label" for="adduser">Add By</label>
+				  			<input id="adduser" name="adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+						
+						<div class="col-md-2 minuspad-15">
+							@if(Request::get('scope') == 'REOPEN')
+							<label class="control-label" for="cancelby">Reject User</label>
+				  			<input id="cancelby" name="cancelby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+				  			@else
+							<label class="control-label" for="upduser">Last User</label>
+				  			<input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+				  			@endif
+			  			</div>
+
+			  			<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="requestdate">Prepared Date</label>  
+				  			<input id="requestdate" name="requestdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+
+			  			<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="supportdate">Support Date</label>
+				  			<input id="supportdate" name="supportdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+
+			  			<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="verifieddate">Verified Date</label>  
+				  			<input id="verifieddate" name="verifieddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+
+			  			<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="approveddate">Approved Date</label>
+				  			<input id="approveddate" name="approveddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+
+						<div class="col-md-2 minuspad-15">
+							<label class="control-label" for="adddate">Add Date</label>
+				  			<input id="adddate" name="adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+			  			</div>
+
+						<div class="col-md-2 minuspad-15">
+							@if(Request::get('scope') == 'REOPEN')
+							<label class="control-label" for="canceldate">Reject Date</label>
+				  			<input id="canceldate" name="canceldate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+				  			@else
+							<label class="control-label" for="upddate">Last Date</label>
+				  			<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+				  			@endif
+			  			</div>
+					</div>
+				</form>
 			</div>
-
 		</div>
+			
 
+		<!-- <div class='panel panel-info' id="pvpd_detail">
+			<div class="panel-heading">Allocation</div>
+				<div class="panel-body">
+					<div id="fail_msg"></div>
+					<form id='formdata2' class='form-vertical' style='width:99%'>
+						<div id="jqGrid2_c" class='col-md-12'>
+							<table id="jqGrid2" class="table table-striped"></table>
+						        <div id="jqGridPager2"></div>
+						</div>
+					</form>
+				</div>
+		</div> -->
+	</div>
 
+	<div id="trtobank_form" title="Transfer to Bank">
+		<form class='form-horizontal' style='width:99%' id='trtobank_formdata'>
+		 	<div class="col-md-4">
+					<label>Bank Code</label>	 
+			  	<div class='input-group'>
+					<input id="bankcode" name="bankcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+					<a class='input-group-addon btn btn-primary' id="bankcode_dh"><span class='fa fa-ellipsis-h'></span></a>
+			  	</div>
+			  	<span class="help-block" ></span>
+			</div>
+		 	<div class="col-md-8">
+					<label>Bank Name</label>	 
+					<input id="bankname" name="bankname" type="text" class="form-control input-sm text-uppercase" >
+		 	</div>
+
+		 	<div class="col-md-4">
+					<label>Cheque No.</label>
+					<input id="cheqno" name="cheqno" type="text" class="form-control input-sm text-uppercase" >
+		 	</div>
+		 	<div class="col-md-4">
+					<label>Post Date</label>	 
+					<input id="postdate" name="postdate" type="date" class="form-control input-sm text-uppercase" >
+		 	</div>
+		 	<div class="col-md-4"></div>
+
+		 	<div class="col-md-12" style="
+				 	padding: 10px;
+			    margin: 15px;
+			    border: solid 1px darkgrey;
+			    border-radius: 5px;
+			    background-color: aliceblue;"
+			>
+		 		<div class="col-md-12">
+					<label>Remarks</label>	 
+					<input id="remarks" name="remarks" type="text" class="form-control input-sm text-uppercase" >
+				</div>
+
+			 	<div class="col-md-3">
+					<label>Pay To (In Invoice)</label>	 
+					<input id="paytoinv" name="paytoinv" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+				</div>
+			 	<div class="col-md-5">
+					<label>&nbsp;</label>	 
+					<input id="paytoinv_desc" name="paytoinv_desc" type="text" class="form-control input-sm text-uppercase" >
+			 	</div>
+			 	<div class="col-md-4" style="height: 60px;">
+					<label>&nbsp;</label>
+				</div>
+				
+			 	<div class="col-md-3">
+					<label>Pay To</label>	 
+					<input id="payto" name="payto" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+				</div>
+			 	<div class="col-md-5">
+					<label>&nbsp;</label>	 
+					<input id="payto_desc" name="payto_desc" type="text" class="form-control input-sm text-uppercase" >
+			 	</div>
+			 	<div class="col-md-2">
+					<label>Amount</label>	 
+					<input id="amount" name="amount" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+			 	</div>
+			 	<div class="col-md-2">
+					<label>Outstanding Amount</label>	 
+					<input id="outamount" name="outamount" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+			 	</div>
+
+		 	</div>
+
+		 	<div class="col-md-12">
+				<label>Reasons</label>	 
+				<input id="reason" name="reason" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+			</div>
+		</form>
+	</div>
+</div>
 @endsection
+
 
 @section('scripts')
 	<script type="text/javascript">
@@ -384,4 +500,8 @@ i.fa {
 		});
 	</script>
 	<script src="js/finance/CM/trtobank/trtobank.js"></script>
+	<script src="plugins/pdfmake/pdfmake.min.js"></script>
+	<script src="plugins/pdfmake/vfs_fonts.js"></script>
+
+	
 @endsection
