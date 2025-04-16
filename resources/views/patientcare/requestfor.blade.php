@@ -9,9 +9,9 @@
         <input id="doctorname_requestFor" name="doctorname_requestFor" type="hidden">
     </form>
     
-    <div class="ui segments">
+    <div id="requestFor" class="ui segments">
         <!-- <div class="ui secondary segment">REQUEST FOR</div> -->
-        <div id="requestFor" class="ui top attached tabular menu">
+        <div class="ui top attached tabular menu">
             <a class="item active" data-tab="otbookReqFor" id="navtab_otbookReqFor">Ward / OT</a>
             <a class="item" data-tab="radReqFor" id="navtab_radReqFor">Radiology</a>
             <a class="item" data-tab="physioReqFor" id="navtab_physioReqFor">Physiotherapy</a>
@@ -192,8 +192,8 @@
             </div>
         </div>
         
-        <div class="ui bottom attached tab raised segment" data-tab="radReqFor">
-            <div id="radiology" class="ui top attached tabular menu">
+        <div id="radiology" class="ui bottom attached tab raised segment" data-tab="radReqFor">
+            <div class="ui top attached tabular menu">
                 <a class="item active" data-tab="radClinicReqFor" id="navtab_radClinicReqFor">Clinical Data</a>
                 <a class="item" data-tab="mriReqFor" id="navtab_mriReqFor">Checklist MRI</a>
             </div>
@@ -1102,6 +1102,5 @@
                 </div>
             </div>
         </div>
-    
     </div>
 </div>

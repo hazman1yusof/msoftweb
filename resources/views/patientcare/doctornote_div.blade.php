@@ -414,8 +414,8 @@
         </div>
         <div class="ui segments">
             <div class="ui secondary segment">REQUEST FOR</div>
-            <div class="ui segment">
-                <div id="doctor_requestFor" class="ui top attached tabular menu">
+            <div id="doctor_requestFor" class="ui segment">
+                <div class="ui top attached tabular menu">
                     <a class="item active" data-tab="otbook">Ward / OT</a>
                     <a class="item" data-tab="rad">Radiology</a>
                     <a class="item" data-tab="physio">Physiotherapy</a>
@@ -581,8 +581,8 @@
                     </div>
                 </div>
                 
-                <div class="ui bottom attached tab raised segment" data-tab="rad">
-                    <div id="doctor_radiology" class="ui top attached tabular menu">
+                <div id="doctor_radiology" class="ui bottom attached tab raised segment" data-tab="rad">
+                    <div class="ui top attached tabular menu">
                         <a class="item active" data-tab="radClinic">Clinical Data</a>
                         <a class="item" data-tab="mri">Checklist MRI</a>
                     </div>
