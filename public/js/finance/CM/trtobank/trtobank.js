@@ -349,6 +349,15 @@ $(document).ready(function () {
 		onSelectRow:function(rowid, selected){
 			$('#error_infront').text('');
 			$("#pdfgen1").attr('href','./paymentVoucher/showpdf?auditno='+selrowData("#jqGrid").auditno+'&trantype='+selrowData("#jqGrid").trantype);
+
+			let rowdata = selrowData("#jqGrid");
+			$('#allocTrantype_show').text('PD');
+			$('#allocDocument_show').text(rowdata.pvno);
+			$('#allocSuppcode_show').text(rowdata.suppcode);
+			$('#allocSuppname_show').text(rowdata.name);
+
+			urlParam2_alloc.idno=selrowData("#jqGrid").idno;
+			refreshGrid("#gridAlloc",urlParam2_alloc);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 				$("#jqGridPager td[title='View Selected Row']").click();
@@ -451,6 +460,48 @@ $(document).ready(function () {
 			$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
 		}
 	}
+
+	var urlParam2_alloc={
+		action:'get_alloc_detail',
+		url:'./apenquiry/table',
+		auditno:''
+	};
+
+	$("#gridAlloc").jqGrid({
+		datatype: "local",
+		colModel: [
+			{ label: 'Src', name: 'source', width: 10, classes: 'wrap'},
+			{ label: 'TT', name: 'trantype', width: 10, classes: 'wrap'},
+			{ label: 'Audit No', name: 'auditno', width: 20, classes: 'wrap',formatter: padzero, unformat: unpadzero},
+			{ label: 'PV No', name: 'pvno', width: 25, classes: 'wrap'},
+			{ label: 'Document No', name: 'document', width: 40, classes: 'wrap', },
+			{ label: 'Supplier Code', name: 'suppcode', width: 70, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Alloc Date', name: 'allocdate', width: 30, classes: 'wrap',  formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Alloc Amount', name: 'allocamount', width: 30, classes: 'wrap',align: 'right', formatter:'currency'},
+			{ label: 'Invoice Amount', name: 'amount', width: 30, classes: 'wrap',align: 'right', formatter:'currency'},
+			{ label: 'Bank Code', name: 'bankcode', width: 60, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Status', name: 'recstatus', width: 25, classes: 'wrap',},
+			{ label: 'Post Date', name: 'postdate', width: 30, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
+		
+		],
+		shrinkToFit: true,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		rowNum: 30,
+		pager: "#jqGridPagerAlloc",
+		loadComplete: function(data){
+		},
+		gridComplete: function(){
+			fdl.set_array().reset();
+		},
+	});
+	jqgrid_label_align_right("#gridAlloc");
+
+	// panel grid Alloc
+	$("#gridAlloc_panel").on("show.bs.collapse", function(){
+		$("#gridAlloc").jqGrid ('setGridWidth', Math.floor($("#gridAlloc_c")[0].offsetWidth-$("#gridAlloc_c")[0].offsetLeft-28));
+	});
 
 	////////////////////selected///////////////
 
@@ -830,6 +881,7 @@ $(document).ready(function () {
 		var field, table, case_;
 		switch(options.colModel.name){
 			case 'suppcode':field=['suppcode','name'];table="material.supplier";case_='suppcode';break;
+			case 'bankcode':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
 			case 'apacthdr_suppcode':field=['suppcode','name'];table="material.supplier";case_='suppcode';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};

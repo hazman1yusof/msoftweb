@@ -114,16 +114,37 @@ div#fail_msg{
 		</div>
 		 
 		<div class="panel panel-default">
-		    <div class="panel-heading">Payment Voucher/Deposit Header
-			<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
+		  <div class="panel-heading">Payment Voucher/Deposit Header
+				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
 			</div>
-		    	<div class="panel-body">
-		    		<div class='col-md-12' style="padding:0 0 15px 0">
-            			<table id="jqGrid" class="table table-striped"></table>
-            			<div id="jqGridPager"></div>
-        			</div>
-		    	</div>
+    	<div class="panel-body">
+    		<div class='col-md-12' style="padding:0 0 15px 0">
+        			<table id="jqGrid" class="table table-striped"></table>
+        			<div id="jqGridPager"></div>
+    			</div>
+    	</div>
 		</div>
+
+		<div class="panel panel-default" style="position: relative;" id="gridAlloc_c">
+				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridAlloc_panel">
+				<b>DOCUMENT NO: </b><span id="allocTrantype_show"></span> - <span id="allocDocument_show"></span><br>
+				<b>CREDITOR NAME: </b><span id="allocSuppcode_show"></span> - <span id="allocSuppname_show"></span>
+
+					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+					<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+						<h5>Allocation</h5>
+					</div>
+				</div>
+				<div id="gridAlloc_panel" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div class='col-md-12' style="padding:0 0 15px 0">
+							<table id="gridAlloc" class="table table-striped"></table>
+							<div id="jqGridPagerAlloc"></div>
+						</div>
+					</div>
+				</div>	
+			</div> 
         
   </div>
 	<!-- ***************End Search + table ********************* -->
