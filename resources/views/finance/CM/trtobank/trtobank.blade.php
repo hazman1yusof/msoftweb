@@ -82,20 +82,12 @@ div#fail_msg{
 					<div class="form-group"> 
 					  	<div class="col-md-2">
 					  		<label class="control-label" for="Scol">Search By : </label>  
-					  			<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
-		             	</div>
+					  		<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
+		          </div>
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-							  	<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('auditno'))){{Request::get('auditno')}}@endif">
-									
-								<div id="creditor_text">
-									<div class='input-group'>
-										<input id="creditor_search" name="creditor_search" type="text" maxlength="12" class="form-control input-sm">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span id="creditor_search_hb" class="help-block"></span>
-								</div>
+							  	<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('auditno'))){{Request::get('auditno')}}@endif">
 						</div>
 		      </div>
 				</div>

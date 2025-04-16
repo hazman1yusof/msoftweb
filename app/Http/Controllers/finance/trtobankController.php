@@ -104,13 +104,13 @@ class trtobankController extends defaultController
         }
 
         if(!empty($request->searchCol)){
-            if($request->searchCol[0] == 'apacthdr_document'){
+            if($request->searchCol[0] == 'name'){
                 $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('ap.document','like',$request->searchVal[0]);
+                        $table->Where('su.name','like',$request->searchVal[0]);
                     });
             }else{
                 $table = $table->Where(function ($table) use ($request) {
-                        $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
+                        $table->Where('ap.'.$request->searchCol[0],'like',$request->searchVal[0]);
                     });
             }
         }

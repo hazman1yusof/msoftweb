@@ -280,12 +280,12 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 		
-			{ label: 'Audit No', name: 'auditno', width: 20, classes: 'wrap', formatter: padzero, unformat: unpadzero},
-			{ label: 'PD No', name: 'pvno', width: 20, classes: 'wrap', hidden:false, formatter: padzero, unformat: unpadzero},
+			{ label: 'Audit No', name: 'auditno', width: 20, classes: 'wrap', formatter: padzero, unformat: unpadzero, canSearch: true},
+			{ label: 'PD No', name: 'pvno', width: 20, classes: 'wrap', hidden:false, formatter: padzero, unformat: unpadzero, canSearch: true},
 			{ label: 'TT', name: 'trantype', width: 10, classes: 'wrap text-uppercase'},
 			{ label: 'doctype', name: 'doctype', width: 10, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'Creditor', name: 'suppcode', width: 25, classes: 'wrap text-uppercase', canSearch: true},
-			{ label: 'Creditor Name', name: 'name', width: 50, classes: 'wrap text-uppercase'},
+			{ label: 'Creditor Name', name: 'name', width: 50, classes: 'wrap text-uppercase', canSearch: true},
 			{ label: 'Document Date', name: 'actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Document No', name: 'document', width: 50, classes: 'wrap text-uppercase', hidden: true},
 			{ label: 'Cheque No', name: 'cheqno', width: 35, classes: 'wrap text-uppercase'},
