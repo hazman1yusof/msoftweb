@@ -125,32 +125,33 @@ $(document).ready(function () {
 		autoOpen: false,
 		open: function (event, ui) {
 			errorField.length=0;
-			$('#trtobank_form [name=postdate]').val(moment().format('YYYY-MM-DD'));
+			$('#trtobank_form [name=postdate]').val('').focus();
 		},
 		close: function(){
 			emptyFormdata(errorField,'#trtobank_formdata');
 		},
 		buttons : [{
 			text: "Submit",id: "submit_post",click: function() {
-				$('button#submit_post').attr('disabled',true);
-				var idno = selrowData('#jqGrid').idno;
-				var obj={};
-				obj.idno = idno;
-				obj._token = $('#_token').val();
-				obj.oper = 'posted';
-				obj.reason = $('#reason').val();
-				obj.postdate = $('#postdate').val();
+				if($('#trtobank_formdata').isValid({requiredFields:''},conf,true)){
+					$('button#submit_post').attr('disabled',true);
+					var idno = selrowData('#jqGrid').idno;
+					var obj={};
+					obj.idno = idno;
+					obj._token = $('#_token').val();
+					obj.oper = 'posted';
+					obj.reason = $('#reason').val();
+					obj.postdate = $('#postdate').val();
 
-				$.post( './trtobank/form', obj , function( data ) {
-				}).fail(function(data) {
-					alert(data.responseText);
-					$('button#submit_post').attr('disabled',false);
-				}).done(function(data){
-					$('button#submit_post').attr('disabled',false);
-					$('#trtobank_form').dialog('close');
-					refreshGrid('#jqGrid', urlParam);
-				});
-
+					$.post( './trtobank/form', obj , function( data ) {
+					}).fail(function(data) {
+						alert(data.responseText);
+						$('button#submit_post').attr('disabled',false);
+					}).done(function(data){
+						$('button#submit_post').attr('disabled',false);
+						$('#trtobank_form').dialog('close');
+						refreshGrid('#jqGrid', urlParam);
+					});
+				}
 			}},{
 			text: "Cancel",click: function() {
 				$(this).dialog('close');
@@ -433,7 +434,6 @@ $(document).ready(function () {
 			oper = 'add';
 			let selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#trtobank_form", "#trtobank_formdata", selRowId, 'view', '');
-			$('#reason').focus();
 		},
 	});
 

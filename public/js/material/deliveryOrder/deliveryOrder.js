@@ -1853,7 +1853,7 @@ $(document).ready(function () {
 
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
 
-	var mycurrency2 =new currencymode([]);
+	var mycurrency2 =new currencymode([],false,'0,0.000000');
 	var mycurrency_np =new currencymode([],true);
 	function calculate_line_totgst_and_totamt(event){
 		var name_from = $(event.currentTarget).attr('name');

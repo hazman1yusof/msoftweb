@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Tranasfer to Bank')
+@section('title', 'Transfer to Bank')
 
 @section('style')
 
@@ -419,10 +419,7 @@ div#fail_msg{
 					<label>Cheque No.</label>
 					<input id="cheqno" name="cheqno" type="text" class="form-control input-sm text-uppercase" readonly>
 		 	</div>
-		 	<div class="col-md-4">
-					<label>Post Date</label>	 
-					<input id="postdate" name="postdate" type="date" class="form-control input-sm text-uppercase">
-		 	</div>
+		 	<div class="col-md-4"></div>
 		 	<div class="col-md-4"></div>
 
 		 	<div class="col-md-12" style="
@@ -468,9 +465,13 @@ div#fail_msg{
 
 		 	</div>
 
+		 	<div class="col-md-4">
+					<label>Post Date</label>	 
+					<input id="postdate" name="postdate" type="date" class="form-control input-sm text-uppercase" data-validation="required">
+		 	</div>
 		 	<div class="col-md-12">
 				<label>Reasons</label>	 
-				<input id="reason" name="reason" type="text" class="form-control input-sm text-uppercase" >
+				<input id="reason" name="reason" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 			</div>
 		</form>
 	</div>
