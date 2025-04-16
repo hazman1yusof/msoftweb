@@ -33,7 +33,7 @@ $(document).ready(function (){
     
     $('#endoscopyNotes .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
-        console.log(tab);
+        // console.log(tab);
         
         switch(tab){
             case 'endoscopyStomach':

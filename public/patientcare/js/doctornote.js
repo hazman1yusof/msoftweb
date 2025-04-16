@@ -17,7 +17,7 @@ var urlParam_AddNotes = {
 
 $(document).ready(function (){
 	
-	$('.menu .item').tab();
+	// $('.menu .item').tab();
 	
 	var fdl = new faster_detail_load();
 	
@@ -504,39 +504,43 @@ $(document).ready(function (){
 	});
 	///////////////////////////////////////////body diagram ends///////////////////////////////////////////
 	
-	// $('#doctor_requestFor .menu .item').on('shown.bs.tab', function (e){
-	// 	let tab = $(this).data('tab');
-	// 	switch(tab){
-	// 		case 'otbook':
-	// 			populate_otbook_getdata();
-	// 			// textarea_init_otbook();
-	// 			break;
-	// 		case 'rad':
-	// 			break;
-	// 		case 'physio':
-	// 			populate_physio_getdata();
-	// 			// textarea_init_physio();
-	// 			break;
-	// 		case 'dressing':
-	// 			populate_dressing_getdata();
-	// 			// textarea_init_dressing();
-	// 			break;
-	// 	}
-	// });
+	$('#doctor_requestFor .top.menu .item').tab({'onVisible': function (){
+		let tab = $(this).data('tab');
+		// console.log(tab);
+		
+		switch(tab){
+			case 'otbook':
+				populate_otbook_getdata();
+				// textarea_init_otbook();
+				break;
+			case 'rad':
+				break;
+			case 'physio':
+				populate_physio_getdata();
+				// textarea_init_physio();
+				break;
+			case 'dressing':
+				populate_dressing_getdata();
+				// textarea_init_dressing();
+				break;
+		}
+	}});
 	
-	// $('#doctor_radiology .menu .item').on('shown.bs.tab', function (e){
-	// 	let tab = $(this).data('tab');
-	// 	switch(tab){
-	// 		case 'radClinic':
-	// 			populate_radClinic_getdata();
-	// 			// textarea_init_radClinic();
-	// 			break;
-	// 		case 'mri':
-	// 			populate_mri_getdata();
-	// 			// textarea_init_mri();
-	// 			break;
-	// 	}
-	// });
+	$('#doctor_radiology .top.menu .item').tab({'onVisible': function (){
+		let tab = $(this).data('tab');
+		// console.log(tab);
+		
+		switch(tab){
+			case 'radClinic':
+				populate_radClinic_getdata();
+				// textarea_init_radClinic();
+				break;
+			case 'mri':
+				populate_mri_getdata();
+				// textarea_init_mri();
+				break;
+		}
+	}});
 	
 });
 

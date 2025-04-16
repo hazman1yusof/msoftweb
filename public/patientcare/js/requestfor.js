@@ -10,7 +10,7 @@ $(document).ready(function (){
     //     populate_requestFor_ptcare(selrowData('#jqGrid'));
     // });
     
-    $('.menu .item').tab();
+    // $('.menu .item').tab();
     
     var fdl = new faster_detail_load();
     
@@ -249,16 +249,44 @@ $(document).ready(function (){
     });
     //////////////////////////////////////////print button ends//////////////////////////////////////////
     
-    // $tabs = $('#requestFor .menu .item');
+    $('#requestFor .top.menu .item').tab({'onVisible': function (){
+        let tab = $(this).data('tab');
+        // console.log(tab);
+        
+        switch(tab){
+            case 'otbookReqFor':
+                populate_otbookReqFor_getdata();
+                // textarea_init_otbookReqFor();
+                break;
+            case 'radReqFor':
+                break;
+            case 'physioReqFor':
+                populate_physioReqFor_getdata();
+                // textarea_init_physioReqFor();
+                break;
+            case 'dressingReqFor':
+                populate_dressingReqFor_getdata();
+                // textarea_init_dressingReqFor();
+                break;
+        }
+    }});
     
-    // $tabs.tab({
-    //     onVisible: function (tabPath){
-    //         console.log("test");
-    //     }
-    // });
+    $('#radiology .top.menu .item').tab({'onVisible': function (){
+        let tab = $(this).data('tab');
+        // console.log(tab);
+        
+        switch(tab){
+            case 'radClinicReqFor':
+                populate_radClinicReqFor_getdata();
+                // textarea_init_radClinicReqFor();
+                break;
+            case 'mriReqFor':
+                populate_mriReqFor_getdata();
+                // textarea_init_mriReqFor();
+                break;
+        }
+    }});
     
-    // $tabs.first().tab('change tab', 'otbookReqFor');
-
     var accomodation_table = $('#accomodation_table').DataTable( {
             "ajax": "pat_mast/get_entry?action=accomodation_table",
             "paging":false,
@@ -1410,55 +1438,6 @@ $('#tab_requestFor').on('shown.bs.collapse', function (){
     populate_physioReqFor_getdata();
     populate_dressingReqFor_getdata();
 });
-
-// $('#requestFor .menu .item').on('shown.bs.tab', function (e){
-//     let tab = $(this).data('tab');
-//     let id = $(this).attr('id');
-//     $("#tab_requestFor").data('curtype',id);
-//     switch(tab){
-//         case 'otbookReqFor':
-//             populate_otbookReqFor_getdata();
-//             // textarea_init_otbookReqFor();
-//             break;
-//         case 'radReqFor':
-//             break;
-//         case 'physioReqFor':
-//             populate_physioReqFor_getdata();
-//             // textarea_init_physioReqFor();
-//             break;
-//         case 'dressingReqFor':
-//             populate_dressingReqFor_getdata();
-//             // textarea_init_dressingReqFor();
-//             break;
-//     }
-// });
-
-// $('#radiology .menu .item').on('shown.bs.tab', function (e){
-//     let tab = $(this).data('tab');
-//     switch(tab){
-//         case 'radClinicReqFor':
-//             populate_radClinicReqFor_getdata();
-//             // textarea_init_radClinicReqFor();
-//             break;
-//         case 'mriReqFor':
-//             populate_mriReqFor_getdata();
-//             // textarea_init_mriReqFor();
-//             break;
-//     }
-// });
-
-// $('#requestFor .menu .item').tab({'onVisible': function (){
-//     console.log("requestFor");
-//     populate_otbookReqFor_getdata();
-//     populate_physioReqFor_getdata();
-//     populate_dressingReqFor_getdata();
-// }});
-
-// $('#radiology .menu .item').tab({'onVisible': function (){
-//     console.log("radiology");
-//     populate_radClinicReqFor_getdata();
-//     populate_mriReqFor_getdata();
-// }});
 
 $("#tab_requestFor").on("hide.bs.collapse", function (){
     // button_state_requestFor('empty');

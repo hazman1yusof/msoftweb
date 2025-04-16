@@ -496,13 +496,13 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction_diet.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction_phys.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/doctornote.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/doctornote.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/nursing.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/dieteticCareNotes.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy_ncase.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/doctornote_main.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/requestfor.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/requestfor.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/admhandover.js') }}"></script>
 
     <script type="text/javascript" src="{{ asset('js/myjs/utility.js') }}"></script>
