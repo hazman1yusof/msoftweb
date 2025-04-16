@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Payment Voucher/Deposit')
+@section('title', 'Tranasfer to Bank')
 
 @section('style')
 
@@ -52,6 +52,9 @@ div#fail_msg{
   padding-left: 40px;
   padding-bottom: 10px;
   color: darkred;
+}
+.ui-dialog-buttonpane {
+    margin-bottom: 5px;
 }
 
 @endsection
@@ -132,7 +135,7 @@ div#fail_msg{
 				<form class='form-horizontal' style='width:99%' id='formdata'>
 					{{ csrf_field() }}
 					<input id="auditno" name="auditno" type="hidden">
-					<input id="idno" name="idno" type="hidden">
+					<!-- <input id="idno" name="idno" type="hidden"> -->
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="actdate">Doc Date</label>  
@@ -388,26 +391,24 @@ div#fail_msg{
 
 	<div id="trtobank_form" title="Transfer to Bank">
 		<form class='form-horizontal' style='width:99%' id='trtobank_formdata'>
+			<input type="hidden" name="idno" id="idno">
 		 	<div class="col-md-4">
 					<label>Bank Code</label>	 
-			  	<div class='input-group'>
-					<input id="bankcode" name="bankcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
-					<a class='input-group-addon btn btn-primary' id="bankcode_dh"><span class='fa fa-ellipsis-h'></span></a>
-			  	</div>
+					<input id="bankcode" name="bankcode" type="text" class="form-control input-sm text-uppercase" readonly>
 			  	<span class="help-block" ></span>
 			</div>
 		 	<div class="col-md-8">
 					<label>Bank Name</label>	 
-					<input id="bankname" name="bankname" type="text" class="form-control input-sm text-uppercase" >
+					<input id="bankname" name="bankname" type="text" class="form-control input-sm text-uppercase" readonly>
 		 	</div>
 
 		 	<div class="col-md-4">
 					<label>Cheque No.</label>
-					<input id="cheqno" name="cheqno" type="text" class="form-control input-sm text-uppercase" >
+					<input id="cheqno" name="cheqno" type="text" class="form-control input-sm text-uppercase" readonly>
 		 	</div>
 		 	<div class="col-md-4">
 					<label>Post Date</label>	 
-					<input id="postdate" name="postdate" type="date" class="form-control input-sm text-uppercase" >
+					<input id="postdate" name="postdate" type="date" class="form-control input-sm text-uppercase">
 		 	</div>
 		 	<div class="col-md-4"></div>
 
@@ -420,16 +421,16 @@ div#fail_msg{
 			>
 		 		<div class="col-md-12">
 					<label>Remarks</label>	 
-					<input id="remarks" name="remarks" type="text" class="form-control input-sm text-uppercase" >
+					<input id="remarks" name="remarks" type="text" class="form-control input-sm text-uppercase" readonly>
 				</div>
 
 			 	<div class="col-md-3">
 					<label>Pay To (In Invoice)</label>	 
-					<input id="paytoinv" name="paytoinv" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+					<input id="suppcode" name="suppcode" type="text" class="form-control input-sm text-uppercase" readonly>
 				</div>
 			 	<div class="col-md-5">
 					<label>&nbsp;</label>	 
-					<input id="paytoinv_desc" name="paytoinv_desc" type="text" class="form-control input-sm text-uppercase" >
+					<input id="name" name="name" type="text" class="form-control input-sm text-uppercase" readonly>
 			 	</div>
 			 	<div class="col-md-4" style="height: 60px;">
 					<label>&nbsp;</label>
@@ -437,26 +438,26 @@ div#fail_msg{
 				
 			 	<div class="col-md-3">
 					<label>Pay To</label>	 
-					<input id="payto" name="payto" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+					<input id="payto" name="payto" type="text" class="form-control input-sm text-uppercase" readonly>
 				</div>
 			 	<div class="col-md-5">
 					<label>&nbsp;</label>	 
-					<input id="payto_desc" name="payto_desc" type="text" class="form-control input-sm text-uppercase" >
+					<input id="payto_desc" name="payto_desc" type="text" class="form-control input-sm text-uppercase" readonly>
 			 	</div>
 			 	<div class="col-md-2">
 					<label>Amount</label>	 
-					<input id="amount" name="amount" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+					<input id="amount" name="amount" type="text" class="form-control input-sm text-uppercase" readonly>
 			 	</div>
 			 	<div class="col-md-2">
 					<label>Outstanding Amount</label>	 
-					<input id="outamount" name="outamount" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+					<input id="outamount" name="outamount" type="text" class="form-control input-sm text-uppercase" readonly>
 			 	</div>
 
 		 	</div>
 
 		 	<div class="col-md-12">
 				<label>Reasons</label>	 
-				<input id="reason" name="reason" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+				<input id="reason" name="reason" type="text" class="form-control input-sm text-uppercase" >
 			</div>
 		</form>
 	</div>

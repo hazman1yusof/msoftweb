@@ -125,10 +125,37 @@ $(document).ready(function () {
 		autoOpen: false,
 		open: function (event, ui) {
 			errorField.length=0;
+			$('#trtobank_form [name=postdate]').val(moment().format('YYYY-MM-DD'));
 		},
 		close: function(){
 			emptyFormdata(errorField,'#trtobank_formdata');
-		}
+		},
+		buttons : [{
+			text: "Submit",id: "submit_post",click: function() {
+				$('button#submit_post').attr('disabled',true);
+				var idno = selrowData('#jqGrid').idno;
+				var obj={};
+				obj.idno = idno;
+				obj._token = $('#_token').val();
+				obj.oper = 'posted';
+				obj.reason = $('#reason').val();
+				obj.postdate = $('#postdate').val();
+
+				$.post( './trtobank/form', obj , function( data ) {
+				}).fail(function(data) {
+					alert(data.responseText);
+					$('button#submit_post').attr('disabled',false);
+				}).done(function(data){
+					$('button#submit_post').attr('disabled',false);
+					$('#trtobank_form').dialog('close');
+					refreshGrid('#jqGrid', urlParam);
+				});
+
+			}},{
+			text: "Cancel",click: function() {
+				$(this).dialog('close');
+			}
+		}]
 	});
 	////////////////////////////////////////end dialog///////////////////////////////////////////
 
@@ -260,11 +287,11 @@ $(document).ready(function () {
 			{ label: 'Creditor', name: 'suppcode', width: 25, classes: 'wrap text-uppercase', canSearch: true},
 			{ label: 'Creditor Name', name: 'name', width: 50, classes: 'wrap text-uppercase'},
 			{ label: 'Document Date', name: 'actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Document No', name: 'document', width: 50, classes: 'wrap text-uppercase', canSearch: true},
+			{ label: 'Document No', name: 'document', width: 50, classes: 'wrap text-uppercase', hidden: true},
 			{ label: 'Cheque No', name: 'cheqno', width: 35, classes: 'wrap text-uppercase'},
 			{ label: 'Department', name: 'deptcode', width: 25, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'Amount', name: 'amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
-			{ label: 'Outamount', name: 'outamount', width: 25 ,hidden:true, classes: 'wrap'},
+			{ label: 'Out Amount', name: 'outamount', width: 25 , classes: 'wrap'},
 			{ label: 'Status', name: 'recstatus', width: 25, classes: 'wrap text-uppercase',},
 			{ label: 'Post Date', name: 'recdate', width: 35,hidden:true},
 			{ label: 'Post Date', name: 'postdate', width: 25, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
@@ -303,7 +330,10 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
 			{ label: 'paymode', name: 'paymode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'bankcode', name: 'bankcode', width: 50, classes: 'wrap text-uppercase', hidden:true},
+			{ label: 'bankname', name: 'bankname', width: 50, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'bankaccno', name: 'bankaccno', width: 40, hidden:'true'},
+			{ label: 'suppcode_desc', name: 'suppcode_desc', width: 40, hidden:'true'},
+			{ label: 'payto_desc', name: 'payto_desc', width: 40, hidden:'true'},
 
 		],
 		autowidth:true,
@@ -392,7 +422,9 @@ $(document).ready(function () {
 		title: "Add New Row",
 		onClickButton: function () {
 			oper = 'add';
-			$("#trtobank_form").dialog("open");
+			let selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			populateFormdata("#jqGrid", "#trtobank_form", "#trtobank_formdata", selRowId, 'view', '');
+			$('#reason').focus();
 		},
 	});
 
