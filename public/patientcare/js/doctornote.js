@@ -506,7 +506,7 @@ $(document).ready(function (){
 	
 	$('#doctor_requestFor .top.menu .item').tab({'onVisible': function (){
 		let tab = $(this).data('tab');
-		console.log(tab);
+		// console.log(tab);
 		
 		switch(tab){
 			case 'otbook':
@@ -528,7 +528,7 @@ $(document).ready(function (){
 	
 	$('#doctor_radiology .top.menu .item').tab({'onVisible': function (){
 		let tab = $(this).data('tab');
-		console.log(tab);
+		// console.log(tab);
 		
 		switch(tab){
 			case 'radClinic':

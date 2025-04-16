@@ -251,7 +251,7 @@ $(document).ready(function (){
     
     $('#requestFor .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
-        console.log(tab);
+        // console.log(tab);
         
         switch(tab){
             case 'otbookReqFor':
@@ -273,7 +273,7 @@ $(document).ready(function (){
     
     $('#radiology .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
-        console.log(tab);
+        // console.log(tab);
         
         switch(tab){
             case 'radClinicReqFor':
