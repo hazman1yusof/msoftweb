@@ -343,6 +343,46 @@
         </div>
     </div>
     
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="endoscopyNotes_panel">
+        <div class="panel-heading clearfix collapsed" id="toggle_endoscopyNotes">
+            <b>NAME: <span id="name_show_endoscopyNotes"></span></b> <br>
+            <b>MRN:</b> <span id="mrn_show_endoscopyNotes"></span> &nbsp;
+            <b>IC NO./PASSPORT:</b> <span id="icpssprt_show_endoscopyNotes"></span> &nbsp;
+            <b>SEX:</b> <span id="sex_show_endoscopyNotes"></span> &nbsp;
+            <b>HEIGHT:</b> <span id="height_show_endoscopyNotes"></span> &nbsp;
+            <b>WEIGHT:</b> <span id="weight_show_endoscopyNotes"></span> &nbsp;
+            <b>DOB:</b> <span id="dob_show_endoscopyNotes"></span> &nbsp;
+            <b>AGE:</b> <span id="age_show_endoscopyNotes"></span> &nbsp;
+            <b>RACE:</b> <span id="race_show_endoscopyNotes"></span> &nbsp;
+            <b>RELIGION:</b> <span id="religion_show_endoscopyNotes"></span> <br>
+            <b>OCCUPATION:</b> <span id="occupation_show_endoscopyNotes"></span> &nbsp;
+            <b>CITIZENSHIP:</b> <span id="citizenship_show_endoscopyNotes"></span> &nbsp;
+            <b>AREA:</b> <span id="area_show_endoscopyNotes"></span> &nbsp;
+            <b>WARD / BED:</b> <span id="ward_show_endoscopyNotes"></span> / <span id="bednum_show_endoscopyNotes"></span> &nbsp;
+            <b>OP ROOM:</b> <span id="oproom_show_endoscopyNotes"></span> <br>
+            <b>DIAGNOSIS:</b> <span id="diagnosis_show_endoscopyNotes"></span> &nbsp;
+            <b>PLANNED PROCEDURE:</b> <span id="procedure_show_endoscopyNotes"></span> &nbsp;
+            <b>UNIT/DISCIPLINE:</b> <span id="unit_show_endoscopyNotes"></span> &nbsp;
+            <b>OPERATION TYPE:</b> <span id="type_show_endoscopyNotes"></span> &nbsp;
+            
+            <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_endoscopyNotes"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_endoscopyNotes"></i>
+            <div style="position: absolute;
+                            padding: 0 0 0 0;
+                            right: 50px;
+                            top: 48px;">
+                <h5><strong>Endoscopy Notes</strong>&nbsp;&nbsp;
+                    <span class="metal"></span></h5>
+            </div>
+        </div>
+        
+        <div id="tab_endoscopyNotes" class="panel-collapse collapse">
+            <div class="panel-body paneldiv">
+                @include('hisdb.endoscopyNotes.endoscopyNotes')
+            </div>
+        </div>
+    </div>
+    
     <!-- @include('patientcare.itemselector') -->
     
     <div id="mdl_item_selector2" title="Select Item" style="display: none;">
@@ -367,6 +407,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ asset('patientcare/assets/fullcalendar-3.7.0/fullcalendar.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('patientcare/assets/trirand/css/trirand/ui.jqgrid-bootstrap.css') }}" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/se/dt-1.11.3/datatables.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -385,6 +426,7 @@
     <script type="text/ecmascript" src="{{ asset('patientcare/assets/trirand/jquery.jqGrid.min.js') }}"></script>
     <script type="text/ecmascript" src="{{ asset('patientcare/assets/fullcalendar-3.7.0/fullcalendar.min.js') }}"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/se/dt-1.11.3/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script type="text/ecmascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
@@ -408,5 +450,8 @@
     <script type="text/javascript" src="js/hisdb/otswab/otswab.js"></script>
     <script type="text/javascript" src="js/hisdb/ottime/ottime.js"></script>
     <script type="text/javascript" src="js/hisdb/otdischarge/otdischarge.js"></script>
+    <script type="text/javascript" src="js/hisdb/endoscopyNotes/endoscopyStomach.js"></script>
+    <script type="text/javascript" src="js/hisdb/endoscopyNotes/endoscopyIntestine.js"></script>
+    <script type="text/javascript" src="js/hisdb/endoscopyNotes/endoscopyNotes.js"></script>
     
 @endsection

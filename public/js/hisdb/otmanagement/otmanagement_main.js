@@ -9,6 +9,7 @@ var urlParam = {
 }
 
 $(document).ready(function () {
+	$('.menu .item').tab();
 	stop_scroll_on();
 	$('#calendar').fullCalendar({
 		// events: events,
@@ -158,6 +159,7 @@ $(document).ready(function () {
 				populate_otswab(selrowData('#jqGrid'));
 				populate_ottime(selrowData('#jqGrid'));
 				populate_otdischarge(selrowData('#jqGrid'));
+				populate_endoscopyNotes(selrowData('#jqGrid'));
 			},
 			ondblClickRow: function (rowid, iRow, iCol, e) {
 			},
@@ -171,6 +173,7 @@ $(document).ready(function () {
 				empty_otswab();
 				empty_ottime();
 				empty_otdischarge();
+				empty_endoscopyNotes();
 				init_editbtn_top();
 			},
 		});
@@ -247,6 +250,7 @@ $(document).ready(function () {
 				populate_otswab(selrowData('#jqGrid'));
 				populate_ottime(selrowData('#jqGrid'));
 				populate_otdischarge(selrowData('#jqGrid'));
+				populate_endoscopyNotes(selrowData('#jqGrid'));
 				$("#jqGrid").data('lastidno',rowid);
 			},
 			ondblClickRow: function (rowid, iRow, iCol, e) {
@@ -261,6 +265,7 @@ $(document).ready(function () {
 				empty_otswab();
 				empty_ottime();
 				empty_otdischarge();
+				empty_endoscopyNotes();
 				init_editbtn_top();
 				if(!$("button#timer_play").hasClass("disabled")){
 					$("#jqGrid").setSelection($("#jqGrid").data('lastidno'));

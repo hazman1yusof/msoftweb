@@ -323,6 +323,11 @@ Route::get('/otdischarge','hisdb\OTDischargeController@show');
 Route::get('/otdischarge/table','hisdb\OTDischargeController@table');
 Route::post('/otdischarge/form','hisdb\OTDischargeController@form');
 
+//// Endoscopy Notes page ////
+Route::get('/endoscopyNotes','hisdb\EndoscopyNotesController@show');
+Route::get('/endoscopyNotes/table','hisdb\EndoscopyNotesController@table');
+Route::post('/endoscopyNotes/form','hisdb\EndoscopyNotesController@form');
+
 //// OT Status setup page ///
 Route::get('/ot_status','hisdb\OTStatusController@show');
 Route::get('/ot_status/table','hisdb\OTStatusController@table');
