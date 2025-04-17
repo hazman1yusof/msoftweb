@@ -951,7 +951,7 @@ $(document).ready(function () {
 			{ label: 'Invoice Amount', name: 'amount', width: 30, classes: 'wrap',align: 'right', formatter:'currency'},
 			{ label: 'Bank Code', name: 'bankcode', width: 60, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Status', name: 'recstatus', width: 25, classes: 'wrap',},
-			{ label: 'Post Date', name: 'postdate', width: 30, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Post Date', name: 'postdate', width: 30, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter,hidden:true},
 		
 		],
 		shrinkToFit: true,
