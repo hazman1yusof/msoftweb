@@ -360,7 +360,7 @@ class trtobankController extends defaultController
                             ->where('compcode',session('compcode'))
                             ->where('idno',$request->idno)
                             ->first();
-                            
+
             if(Carbon::parse($request->postdate)->lt(Carbon::parse($PD_aphdr->postdate))){
                 throw new \Exception('Post Date cant be lower than PD postdate', 500);
             }
@@ -659,7 +659,7 @@ class trtobankController extends defaultController
                             'suppcode' => $PD_aphdr->suppcode,
                             'lastuser' => session('username'),
                             'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'recstatus' => 'OPEN'
+                            'recstatus' => 'POSTED'
                         ]);
 
             DB::table('finance.apacthdr')
