@@ -282,8 +282,8 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 		
-			{ label: 'Audit No', name: 'auditno', width: 20, classes: 'wrap', formatter: padzero, unformat: unpadzero, canSearch: true},
-			{ label: 'PD No', name: 'pvno', width: 20, classes: 'wrap', hidden:false, formatter: padzero, unformat: unpadzero, canSearch: true},
+			{ label: 'Audit No', name: 'auditno', width: 20, classes: 'wrap', formatter: padzero, canSearch: true},
+			{ label: 'PV No', name: 'pvno', width: 20, classes: 'wrap', hidden:false, formatter: padzero, canSearch: true},
 			{ label: 'TT', name: 'trantype', width: 10, classes: 'wrap text-uppercase'},
 			{ label: 'doctype', name: 'doctype', width: 10, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'Creditor', name: 'suppcode', width: 25, classes: 'wrap text-uppercase', canSearch: true},

@@ -406,24 +406,29 @@ div#fail_msg{
 		<form class='form-horizontal' style='width:99%' id='trtobank_formdata'>
 			<input type="hidden" name="idno" id="idno">
 		 	<div class="col-md-4">
-					<label>Bank Code</label>	 
-					<input id="bankcode" name="bankcode" type="text" class="form-control input-sm text-uppercase" readonly>
-			  	<span class="help-block" ></span>
+				<label>Bank Code</label>	 
+				<input id="bankcode" name="bankcode" type="text" class="form-control input-sm text-uppercase" readonly>
 			</div>
 		 	<div class="col-md-8">
-					<label>Bank Name</label>	 
-					<input id="bankname" name="bankname" type="text" class="form-control input-sm text-uppercase" readonly>
+				<label>Bank Name</label>	 
+				<input id="bankname" name="bankname" type="text" class="form-control input-sm text-uppercase" readonly>
 		 	</div>
 
 		 	<div class="col-md-4">
-					<label>Cheque No.</label>
-					<input id="cheqno" name="cheqno" type="text" class="form-control input-sm text-uppercase" readonly>
+				<label>Cheque No.</label>
+				<input id="cheqno" name="cheqno" type="text" class="form-control input-sm text-uppercase" readonly>
 		 	</div>
-		 	<div class="col-md-4"></div>
-		 	<div class="col-md-4"></div>
+		 	<div class="col-md-4">
+				<label>Audit No.</label>
+				<input id="auditno" name="auditno" type="text" class="form-control input-sm text-uppercase" readonly>
+			</div>
+		 	<div class="col-md-4">
+				<label>PV No.</label>
+				<input id="pvno" name="pvno" type="text" class="form-control input-sm text-uppercase" readonly>
+			</div>
 
 		 	<div class="col-md-12" style="
-				 	padding: 10px;
+				padding: 10px;
 			    margin: 15px;
 			    border: solid 1px darkgrey;
 			    border-radius: 5px;
