@@ -125,7 +125,8 @@ $(document).ready(function () {
 		autoOpen: false,
 		open: function (event, ui) {
 			errorField.length=0;
-			$('#trtobank_form [name=postdate]').val('').focus();
+			let mindate = moment(selrowData('#jqGrid').postdate, 'YYYY-MM-DD').format('YYYY-MM-DD');
+			$('#trtobank_form [name=postdate]').val('').attr('min',mindate).focus();
 		},
 		close: function(){
 			emptyFormdata(errorField,'#trtobank_formdata');
@@ -140,7 +141,7 @@ $(document).ready(function () {
 					obj._token = $('#_token').val();
 					obj.oper = 'posted';
 					obj.reason = $('#reason').val();
-					obj.postdate = $('#postdate').val();
+					obj.postdate = $('#trtobank_form [name=postdate]').val();
 
 					$.post( './trtobank/form', obj , function( data ) {
 					}).fail(function(data) {

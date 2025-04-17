@@ -14,34 +14,64 @@
     </object>
     
     <script>
-        var PS_No = '';
-        var EpType = '';
-        var Debtor = '';
-        var Name = '';
-        var Diagnosis = '';
-        var Allergic = '';
-        var IDNumber = '';
-        var MRN = '';
-        var Age = '';
-        var TCA = '';
-        var Clinic = '';
+        var PS_No = '100567';
+        var EpType = 'OP';
+        var Debtor = 'Self-Pay';
+        var Name = 'Hattem Ajwad bin Nasrul';
+        var Diagnosis = 'Diagnosis';
+        var Allergic = 'Allergic';
+        var IDNumber = '390505-05-5051';
+        var MRN = '75013/N597413';
+        var Age = '86';
+        var TCA = 'TCA';
+        var Clinic = 'Clinic';
         
         var pharmacy = [
-            
+            {
+                date:'date',
+                supply:'supply',
+                verify:'verify',
+                fill:'fill',
+                check:'check',
+                dispense:'dispense',
+                remark:'remark',
+            },{
+                date:'date',
+                supply:'supply',
+                verify:'verify',
+                fill:'fill',
+                check:'check',
+                dispense:'dispense',
+                remark:'remark',
+            }
         ];
         
         var medications = [
-            
+            {
+                no:'1',
+                desc:'LATUDA 80MG TABLET',
+                method:'to be swallowed',
+                instruction:'after meal',
+                indication:'Gila',
+                dose:'1',
+                unit:'tab',
+                freq:'1 x daily',
+                duration:'3 Month',
+                qty:'90',
+                unitprice:'2.70',
+                totalprice:'243.00',
+                expiry:'Mar-27'
+            }
         ];
         
-        var Sex = '';
-        var Dates = '';
-        var Address1 = '';
-        var Address2 = '';
-        var Address3 = '';
-        var SpecialistName = '';
-        var Speciality = '';
-        var PrescriptionDate = '';
+        var Sex = 'Male';
+        var Dates = '25/2/2025';
+        var Address1 = 'Tanah Surgo Ayah Abdul';
+        var Address2 = 'Jalan Neraka';
+        var Address3 = '57000 Kuala Lumpur';
+        var SpecialistName = 'Assoc. Prof Dr Tuti Iryani';
+        var Speciality = 'Psychiatrist';
+        var PrescriptionDate = '25-Feb-25';
         
         $(document).ready(function (){
             var docDefinition = {
@@ -51,143 +81,26 @@
                     ]
                 },
                 pageSize: 'A4',
-                pageMargins: [23, 23, 23, 23],
+                pageMargins: [18, 18, 18, 18],
                 // pageOrientation: 'landscape',
                 content: [
                     {
                         style: 'tableLetterhead',
                         table: {
-                            // widths: [90,40], // panjang standard dia 515
+                            widths: ['*','*'], // panjang standard dia 515
                             body: [
                                 [
                                     {
-                                        image: 'letterhead', width: 175, style: 'tableHeader', alignment: 'center'
+                                        image: 'letterhead', height: 30,width: 175, alignment: 'left'
                                     },
                                     {
-                                        image: 'letterhead2', width: 175, style: 'tableHeader', alignment: 'center'
+                                        image: 'letterhead2', width: 175, style: 'tableHeader', alignment: 'right'
                                     },
                                 ],
                             ]
                         },
                         layout: 'noBorders',
                     },
-                    // {
-                    //     image: 'letterhead', width: 175, style: 'tableHeader', colSpan: 5, alignment: 'center'
-                    // },
-                    // [
-                    //     {
-                    //         text: [
-                    //             '\nPRESCRIPTION FORM\n',
-                    //         ],
-                    //         style: 'header',
-                    //         alignment: 'center',
-                    //     },
-                    // ],
-                    // {
-                    //     style: 'tableExample',
-                    //     table: {
-                    //         widths: [45,140,5,40,40,40,40,40,40,40],
-                    //         // headerRows: 5,
-                    //         // keepWithHeaderRows: 5,
-                    //         body: [
-                    //             [
-                    //                 {
-                    //                     text: [
-                    //                         'Patient Detail',
-                    //                     ], colSpan: 2, bold: true, alignment: 'center'
-                    //                 },{},
-                    //                 {
-                    //                     text: [
-                    //                         '',
-                    //                     ], border: [true, false, true, false],
-                    //                 },
-                    //                 { text: 'PS No', bold: true },
-                    //                 { text: PS_No, colSpan: 2 },{},
-                    //                 { text: 'Ep Type', bold: true },
-                    //                 { text: EpType },
-                    //                 { text: 'Debtor', bold: true },
-                    //                 { text: Debtor }
-                    //             ],
-                    //             [
-                    //                 { text: 'Name', bold: true },
-                    //                 { text: Name },
-                    //                 {
-                    //                     text: [
-                    //                         '',
-                    //                     ], border: [true, false, true, false],
-                    //                 },
-                    //                 { text: 'Diagnosis', bold: true },
-                    //                 { text: Diagnosis, colSpan: 3 },{},{},
-                    //                 { text: 'Allergic', bold: true },
-                    //                 { text: Allergic, colSpan: 2 },{},
-                    //             ],
-                    //             [
-                    //                 { text: 'ID Number', bold: true },
-                    //                 { text: IDNumber },
-                    //                 {
-                    //                     text: [
-                    //                         '',
-                    //                     ], colSpan: 8, border: [true, false, false, false],
-                    //                 },{},{},{},{},{},{},{},
-                    //             ],
-                    //             [
-                    //                 { text: 'MRN', bold: true },
-                    //                 { text: MRN },
-                    //                 {
-                    //                     text: [
-                    //                         '',
-                    //                     ], border: [true, false, true, false],
-                    //                 },
-                    //                 { text: 'Main Pharmacy UKMSC', bold: true, colSpan: 7, alignment: 'center' },{},{},{},{},{},{},
-                    //             ],
-                    //             [
-                    //                 { text: 'Age', bold: true },
-                    //                 { text: Age },
-                    //                 {
-                    //                     text: [
-                    //                         '',
-                    //                     ], border: [true, false, true, false],
-                    //                 },
-                    //                 { text: 'TCA', bold: true, alignment: 'center' },
-                    //                 { text: TCA, colSpan: 2 },{},
-                    //                 { text: 'Clinic', bold: true, alignment: 'center' },
-                    //                 { text: Clinic, colSpan: 3 },{},{},
-                    //             ],
-                    //             [
-                    //                 { text: 'Sex', bold: true },
-                    //                 { text: Sex },
-                    //                 {
-                    //                     text: [
-                    //                         '',
-                    //                     ], border: [true, false, true, false],
-                    //                 },
-                    //                 { text: 'Date', bold: true, alignment: 'center' },
-                    //                 { text: 'Supply', bold: true, alignment: 'center' },
-                    //                 { text: 'Verify', bold: true, alignment: 'center' },
-                    //                 { text: 'Fill', bold: true, alignment: 'center' },
-                    //                 { text: 'Check', bold: true, alignment: 'center' },
-                    //                 { text: 'Dispense', bold: true, alignment: 'center' },
-                    //                 { text: 'Remark', bold: true, alignment: 'center' },
-                    //             ],
-                    //             [
-                    //                 { text: 'Date', bold: true },
-                    //                 { text: Dates },
-                    //                 {
-                    //                     text: [
-                    //                         '',
-                    //                     ], border: [true, false, true, false],
-                    //                 },
-                    //                 { text: 'Date', bold: true, alignment: 'center' },
-                    //                 { text: 'Supply', bold: true, alignment: 'center' },
-                    //                 { text: 'Verify', bold: true, alignment: 'center' },
-                    //                 { text: 'Fill', bold: true, alignment: 'center' },
-                    //                 { text: 'Check', bold: true, alignment: 'center' },
-                    //                 { text: 'Dispense', bold: true, alignment: 'center' },
-                    //                 { text: 'Remark', bold: true, alignment: 'center' },
-                    //             ],
-                    //         ]
-                    //     },
-                    // },
                     {
                         columns: [
                             {
@@ -251,65 +164,7 @@
                                     widths: [40,40,40,40,40,40,40],
                                     // headerRows: 5,
                                     // keepWithHeaderRows: 5,
-                                    body: [
-                                        [
-                                            { text: 'PS No', bold: true },
-                                            { text: PS_No, colSpan: 2 },{},
-                                            { text: 'Ep Type', bold: true },
-                                            { text: EpType },
-                                            { text: 'Debtor', bold: true },
-                                            { text: Debtor }
-                                        ],
-                                        [
-                                            { text: 'Diagnosis', bold: true },
-                                            { text: Diagnosis, colSpan: 3 },{},{},
-                                            { text: 'Allergic', bold: true },
-                                            { text: Allergic, colSpan: 2 },{},
-                                        ],
-                                        [
-                                            {
-                                                text: [
-                                                    '',
-                                                ], colSpan: 7, border: [false, false, false, false],
-                                            },{},{},{},{},{},{},
-                                        ],
-                                        [
-                                            {
-                                                text: [
-                                                    '',
-                                                ], colSpan: 7, border: [false, false, false, false],
-                                            },{},{},{},{},{},{},
-                                        ],
-                                        [
-                                            { text: 'Main Pharmacy UKMSC', bold: true, colSpan: 7, alignment: 'center' },{},{},{},{},{},{},
-                                        ],
-                                        [
-                                            { text: 'TCA', bold: true, alignment: 'center' },
-                                            { text: TCA, colSpan: 2 },{},
-                                            { text: 'Clinic', bold: true, alignment: 'center' },
-                                            { text: Clinic, colSpan: 3 },{},{},
-                                        ],
-                                        [
-                                            { text: 'Date', bold: true, alignment: 'center' },
-                                            { text: 'Supply', bold: true, alignment: 'center' },
-                                            { text: 'Verify', bold: true, alignment: 'center' },
-                                            { text: 'Fill', bold: true, alignment: 'center' },
-                                            { text: 'Check', bold: true, alignment: 'center' },
-                                            { text: 'Dispense', bold: true, alignment: 'center' },
-                                            { text: 'Remark', bold: true, alignment: 'center' },
-                                        ],
-                                        @foreach($pharmacy as $obj)
-                                        [
-                                            { text: '{{$obj->date}}' },
-                                            { text: '{{$obj->supply}}' },
-                                            { text: '{{$obj->verify}}' },
-                                            { text: '{{$obj->fill}}' },
-                                            { text: '{{$obj->check}}' },
-                                            { text: '{{$obj->dispense}}' },
-                                            { text: '{{$obj->remark}}' },
-                                        ],
-                                        @endforeach
-                                    ]
+                                    body: make_body1()
                                 },
                             }
                         ],
@@ -321,34 +176,7 @@
                             widths: [20,130,40,40,42,40,40,40,40,40],
                             // headerRows: 5,
                             // keepWithHeaderRows: 5,
-                            body: [
-                                [
-                                    { text: 'No', style: 'tableHeader' },
-                                    { text: 'Medication', style: 'tableHeader' },
-                                    { text: 'Dose', style: 'tableHeader' },
-                                    { text: 'Unit', style: 'tableHeader' },
-                                    { text: 'Frequency', style: 'tableHeader' },
-                                    { text: 'Duration', style: 'tableHeader' },
-                                    { text: 'Qty', style: 'tableHeader' },
-                                    { text: 'Unit Price', style: 'tableHeader', alignment: 'right' },
-                                    { text: 'Total Price', style: 'tableHeader', alignment: 'right' },
-                                    { text: 'Expiry', style: 'tableHeader' },
-                                ],
-                                @foreach($medications as $obj)
-                                [
-                                    { text: '{{$obj->idno}}' },
-                                    { text: '{{$obj->medication}}' },
-                                    { text: '{{$obj->dose}}' },
-                                    { text: '{{$obj->unit}}' },
-                                    { text: '{{$obj->frequency}}' },
-                                    { text: '{{$obj->duration}}' },
-                                    { text: '{{$obj->qty}}' },
-                                    { text: '{{number_format($obj->unitPrice,2)}}', alignment: 'right' },
-                                    { text: '{{number_format($obj->totalPrice,2)}}', alignment: 'right' },
-                                    { text: '{{$obj->expiry}}' },
-                                ],
-                                @endforeach
-                            ]
+                            body: make_body2()
                         },
                     },
                     {
@@ -409,7 +237,7 @@
                     },
                     tableLetterhead: {
                         fontSize: 9,
-                        margin: [80, 15, 0, 0],
+                        margin: [0, -5, 0, -15],
                     },
                     tableExample: {
                         fontSize: 9,
@@ -464,6 +292,116 @@
                 $('#pdfiframe').attr('src',dataURL);
             });
         });
+
+        function make_body1(){
+            let ret_arr = [
+                [
+                    { text: 'PS No', bold: true },
+                    { text: PS_No, colSpan: 2 },{},
+                    { text: 'Ep Type', bold: true },
+                    { text: EpType },
+                    { text: 'Debtor', bold: true },
+                    { text: Debtor }
+                ],
+                [
+                    { text: 'Diagnosis', bold: true },
+                    { text: Diagnosis, colSpan: 3 },{},{},
+                    { text: 'Allergic', bold: true },
+                    { text: Allergic, colSpan: 2 },{},
+                ],
+                [
+                    {
+                        text: [
+                            '',
+                        ], colSpan: 7, border: [false, false, false, false],
+                    },{},{},{},{},{},{},
+                ],
+                [
+                    {
+                        text: [
+                            '',
+                        ], colSpan: 7, border: [false, false, false, false],
+                    },{},{},{},{},{},{},
+                ],
+                [
+                    { text: 'Main Pharmacy UKMSC', bold: true, colSpan: 7, alignment: 'center' },{},{},{},{},{},{},
+                ],
+                [
+                    { text: 'TCA', bold: true, alignment: 'center' },
+                    { text: TCA, colSpan: 2 },{},
+                    { text: 'Clinic', bold: true, alignment: 'center' },
+                    { text: Clinic, colSpan: 3 },{},{},
+                ],
+                [
+                    { text: 'Date', bold: true, alignment: 'center' },
+                    { text: 'Supply', bold: true, alignment: 'center' },
+                    { text: 'Verify', bold: true, alignment: 'center' },
+                    { text: 'Fill', bold: true, alignment: 'center' },
+                    { text: 'Check', bold: true, alignment: 'center' },
+                    { text: 'Dispense', bold: true, alignment: 'center' },
+                    { text: 'Remark', bold: true, alignment: 'center' },
+                ]
+            ];
+
+            pharmacy.forEach(function(e,i){
+                let array = [
+                    { text: e.date, alignment: 'center' },
+                    { text: e.supply, alignment: 'center' },
+                    { text: e.verify, alignment: 'center' },
+                    { text: e.fill, alignment: 'center' },
+                    { text: e.check, alignment: 'center' },
+                    { text: e.dispense, alignment: 'center' },
+                    { text: e.remark, alignment: 'center' }
+                ];
+                ret_arr.push(array);
+            });
+
+            return ret_arr;
+        }
+
+        function make_body2(){
+            let ret_arr = [
+                [
+                    { text: 'No', style: 'tableHeader' },
+                    { text: 'Medication', style: 'tableHeader' },
+                    { text: 'Dose', style: 'tableHeader' },
+                    { text: 'Unit', style: 'tableHeader' },
+                    { text: 'Frequency', style: 'tableHeader' },
+                    { text: 'Duration', style: 'tableHeader' },
+                    { text: 'Qty', style: 'tableHeader' },
+                    { text: 'Unit Price', style: 'tableHeader', alignment: 'right' },
+                    { text: 'Total Price', style: 'tableHeader', alignment: 'right' },
+                    { text: 'Expiry', style: 'tableHeader' },
+                ],[
+                    { text: 'No', style: 'tableHeader' },
+                    { text: 'Medication', style: 'tableHeader' },
+                    { text: 'Dose', style: 'tableHeader' },
+                    { text: 'Unit', style: 'tableHeader' },
+                    { text: 'Frequency', style: 'tableHeader' },
+                    { text: 'Duration', style: 'tableHeader' },
+                    { text: 'Qty', style: 'tableHeader' },
+                    { text: 'Unit Price', style: 'tableHeader', alignment: 'right' },
+                    { text: 'Total Price', style: 'tableHeader', alignment: 'right' },
+                    { text: 'Expiry', style: 'tableHeader' },
+                ]
+                
+            ];
+
+            // medications.forEach(function(e,i){
+            //     let array = [
+            //         { text: e.date, alignment: 'center' },
+            //         { text: e.supply, alignment: 'center' },
+            //         { text: e.verify, alignment: 'center' },
+            //         { text: e.fill, alignment: 'center' },
+            //         { text: e.check, alignment: 'center' },
+            //         { text: e.dispense, alignment: 'center' },
+            //         { text: e.remark, alignment: 'center' }
+            //     ];
+            //     ret_arr.push(array);
+            // });
+
+            return ret_arr;
+        }
         
         // pdfMake.createPdf(docDefinition).getDataUrl(function (dataURL){
         //     console.log(dataURL);

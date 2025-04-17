@@ -19,8 +19,11 @@ class PrescriptionFormController extends defaultController
     }
     
     public function PrescriptionForm_pdf(Request $request){
-        
-        return view('hisdb.PrescriptionForm.PrescriptionForm_pdfmake');
+            
+        $pharmacy=[];
+        $medications=[];
+
+        return view('hisdb.PrescriptionForm.PrescriptionForm_pdfmake',compact('pharmacy','medications'));
         
     }
     

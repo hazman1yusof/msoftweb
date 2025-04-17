@@ -360,6 +360,10 @@ class trtobankController extends defaultController
                             ->where('compcode',session('compcode'))
                             ->where('idno',$request->idno)
                             ->first();
+                            
+            if(Carbon::parse($request->postdate)->lt(Carbon::parse($PD_aphdr->postdate))){
+                throw new \Exception('Post Date cant be lower than PD postdate', 500);
+            }
 
             $supplier = DB::table('material.supplier')
                             ->where('compcode',session('compcode'))
@@ -670,7 +674,7 @@ class trtobankController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
