@@ -44,7 +44,7 @@
                                 
                                 <div class="sixteen wide column">
                                     <div class="ui segments">
-                                        <div class="ui segment" id="jqGrid_otswab_c">
+                                        <div class="ui segment" id="jqGrid_otswab_c" style="padding: 14px 5px;">
                                             <table id="jqGrid_otswab" class="table table-striped"></table>
                                             <div id="jqGridPager_otswab"></div>
                                         </div>
