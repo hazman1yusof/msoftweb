@@ -146,12 +146,12 @@
 							[
 								{text:`{{$key + 1}}. {!!$obj->chggroup!!}`,colSpan: 3,border: [false, false, false, false]},{},{},
 								{text:`{!!$obj->uom!!}`,border: [false, false, false, false]},
-								@if(!empty($obj->expdate))
+								@if(empty($obj->expdate) || $obj->batchno == 'OB')
+								{text:' ',border: [false, false, false, false]},
+								{text:' ',border: [false, false, false, false]},
+								@else
 								{text:'{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}',border: [false, false, false, false]},
 								{text:`{!!$obj->batchno!!}`,border: [false, false, false, false]},
-								@else
-								{text:' ',border: [false, false, false, false]},
-								{text:' ',border: [false, false, false, false]},
 								@endif
 								{text:'{{$obj->quantity}}', alignment: 'right',border: [false, false, false, false]},
 								{text:'{{number_format($obj->unitprice,2)}}', alignment: 'right',border: [false, false, false, false]},
