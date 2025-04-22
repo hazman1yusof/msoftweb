@@ -91,7 +91,7 @@
                                     { text: '{{$dbacthdr->recptno}}' },
                                     { text: 'CASHIER' },
                                     { text: ':' },
-                                    { text: '{{strtoupper($tilldetl->cashier)}}' },
+                                    { text: '{{strtoupper($dbacthdr->entryuser)}}' },
                                 ],
                                 [
                                     { text: 'IC NO' },
