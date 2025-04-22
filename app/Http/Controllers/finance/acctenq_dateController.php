@@ -38,37 +38,63 @@ class acctenq_dateController extends defaultController
         switch($request->action){
             case 'getdata';
                 return $this->getdata($request);
+            case 'openprint';
+                return $this->openprint($request);
             case 'get_auditno_forsrc';
                 return $this->get_auditno_forsrc($request);
         }
     }
 
     public function getdata(Request $request){
-        $gltran = DB::table('finance.gltran')
-                        ->select('source','trantype','auditno','postdate','description','reference','cracc','dracc','amount')
-                        ->where(function($gltran) use ($request){
-                            $gltran->orwhere('dracc','=', $request->glaccount);
-                            $gltran->orwhere('cracc','=', $request->glaccount);
-                        })
-                        ->where('postdate', '>=', $request->fromdate)
-                        ->where('postdate', '<=', $request->todate)
-                        ->orderBy('postdate', 'desc')->get();
 
-        foreach ($gltran as $key => $value) {
+        $responce = new stdClass();
+        if(empty($request->glaccount)){
+            $responce->data = [];
+            return json_encode($responce);
+        }
+
+        $table_ = DB::table('finance.gltran as gl')
+                        ->select('gl.id','gl.source','gl.trantype','gl.auditno','gl.postdate','gl.description','gl.reference','gl.cracc','gl.dracc','gl.amount','glcr.description as acctname_cr','gldr.description as acctname_dr')
+                        ->where(function($table_) use ($request){
+                            $table_->orwhere('gl.dracc','=', $request->glaccount);
+                            $table_->orwhere('gl.cracc','=', $request->glaccount);
+                        })
+                        ->leftJoin('finance.glmasref as glcr', function($join) use ($request){
+                            $join = $join->on('glcr.glaccno', '=', 'gl.cracc')
+                                            ->where('glcr.compcode','=',session('compcode'));
+                        })
+                        ->leftJoin('finance.glmasref as gldr', function($join) use ($request){
+                            $join = $join->on('gldr.glaccno', '=', 'gl.dracc')
+                                            ->where('gldr.compcode','=',session('compcode'));
+                        })
+                        ->where('gl.postdate', '>=', $request->fromdate)
+                        ->where('gl.postdate', '<=', $request->todate)
+                        ->orderBy('gl.postdate', 'desc');
+
+        $count = $table_->count();
+        $table = $table_
+                    ->offset($request->start)
+                    ->limit($request->length)->get();
+
+        foreach ($table as $key => $value) {
+            $value->open = "<i class='fa fa-folder-open-o' </i>";
+            $value->print = "<i class='fa fa-print' </i>";
             if($value->dracc == $request->glaccount){
                 $value->acccode = $value->cracc;
                 $value->cramount = 0;
                 $value->dramount = $value->amount;
+                $value->acctname = $value->acctname_cr;
             }else{
                 $value->acccode = $value->dracc;
                 $value->cramount = $value->amount;
                 $value->dramount = 0;
+                $value->acctname = $value->acctname_dr;
             }
         }
 
-        $responce = new stdClass();
-        $responce->rows = $gltran;
-
+        $responce->data = $table;
+        $responce->recordsTotal = $count;
+        $responce->recordsFiltered = $count;
         return json_encode($responce);
     }
 
@@ -86,6 +112,83 @@ class acctenq_dateController extends defaultController
             $responce->dbacthdr = $dbacthdr;
 
             return json_encode($responce);
+        }
+    }
+
+    public function openprint(Request $request){
+        $gltran = DB::table('finance.gltran')
+                    ->where('compcode',session('compcode'))
+                    ->where('id',$request->id)
+                    ->first();
+
+        switch ($gltran->source) {
+            case 'OE':
+                $url = $this->oe($gltran);
+                break;
+            case 'PB':
+                $url = $this->pb($gltran);
+                break;
+            case 'AP':
+                $url = $this->ap($gltran);
+                break;
+            case 'CM':
+                $url = $this->cm($gltran);
+                break;
+            
+            default:
+                throw new \Exception('source not exists', 500);
+                break;
+        }
+
+        $responce = new stdClass();
+        $responce->url = $url;
+
+        return json_encode($responce);
+    }
+
+    public function oe($gltran){
+        $billsum = DB::table('debtor.billsum')
+                        ->where('compcode',session('compcode'))
+                        ->where('auditno',$gltran->auditno)
+                        ->first();
+
+        $dbacthdr = DB::table('debtor.dbacthdr')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=',$billsum->source)
+                        ->where('trantype','=',$billsum->trantype)
+                        ->where('auditno','=',$billsum->billno)
+                        ->first();
+
+        $url = './SalesOrder/showpdf?idno='.$dbacthdr->idno;
+
+        return $url;
+    }
+
+    public function pb($gltran){
+
+        if($gltran->auditno == 'IN'){
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('invno','=',$invno)
+                            ->first();
+
+            return './SalesOrder/showpdf?idno='.$dbacthdr->idno;
+        }else if($gltran->auditno == 'DN'){
+
+        }else if($gltran->auditno == 'CN'){
+
+        }else if($gltran->auditno == 'RC'){
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('auditno','=',$auditno)
+                            ->first();
+
+            return './receipt/showpdf?auditno='.$dbacthdr->idno;
+
+        }else if($gltran->auditno == 'RD'){
+
+        }else if($gltran->auditno == 'RF'){
+
         }
     }
 }

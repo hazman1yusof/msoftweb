@@ -160,10 +160,13 @@ class GlenquiryController extends defaultController
                         ->where('gltran.period',$request->period)
                         ->where('gltran.drcostcode',$request->costcode)
                         ->where('gltran.dracc',$request->acc);
-                    })->orderBy('gltran.id','desc');
+                    })
+                    ->orderBy('gltran.id','desc');
 
         $count = $table_->count();
-        $table = $table_->get();
+        $table = $table_
+                    ->offset($request->start)
+                    ->limit($request->length)->get();
 
         foreach ($table as $key => $value) {
             if(strtoupper($value->cracc) == strtoupper($request->acc)){

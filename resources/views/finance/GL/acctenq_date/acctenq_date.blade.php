@@ -16,32 +16,32 @@
 	.dataTables_scroll table{
 		background-color: rgba(221, 221, 221, 0.3);
 	}
+	#TableGlmasTran td{
+		padding: 5px !important;
+	}
 	#TableGlmasTran{
 		background-color: rgba(250, 252, 246, 1);
 	}
 	#TableGlmasTran tr:hover{
 		background-color: white !important;
 	}
-	#TableGlmasTran_c td:first-child,.dataTables_scrollHead th:first-child{
+	#TableGlmasTran_c td:first-child,.dataTables_scrollHead th:first-child,#TableGlmasTran_c td:nth-child(2),.dataTables_scrollHead th:nth-child(2){
 		border-top-color:white !important;
 		border-top-style:solid !important;
 		border-top-width:1px !important;
 		border-left-color:white;
 		border-left-style:solid;
 		border-left-width:1px;
-		border-bottom-color:white;
-		border-bottom-style:solid;
-		border-bottom-width:1px;
 		cursor:pointer;
 		background-color: white;
 	}
-	#TableGlmasTran_c tr:hover td:first-child{
+	#TableGlmasTran_c tr:hover td:first-child,#TableGlmasTran_c tr:hover td:nth-child(2){
 		border-style:solid;
 		border-width:1px;
 		border-color:#ddd;
 		background-color:#ddd;
 	}
-	#TableGlmasdtl td:nth-child(2),#TableGlmasdtl th:nth-child(2){
+	#TableGlmasdtl td:nth-child(3),#TableGlmasdtl th:nth-child(3){
 		text-align:right;padding-right: 15px;
 	}
 	.textalignright,#TableGlmasTran_filter { text-align:right !important; }
@@ -102,6 +102,7 @@
 					<thead>
 						<tr>
 							<th> </th>
+							<th> </th>
 							<th>Src</th>
 							<th>TT</th>
 							<th>No</th>
@@ -111,6 +112,7 @@
 							<th>Account Code</th>
 							<th>DR Amount</th>
 							<th>CR Amount</th>
+							<th>id</th>
 						</tr>
 					</thead>
 					<tbody>

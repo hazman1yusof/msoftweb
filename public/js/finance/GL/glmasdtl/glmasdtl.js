@@ -264,6 +264,8 @@ $(document).ready(function () {
 	var DataTable = $('#TableGlmasTran').DataTable({
     	ajax: './glenquiry/table?action=getdata',
     	order: [[ 10, 'desc' ]],
+    	pageLength: 30,
+	    responsive: true,
     	processing: true,
     	serverSide: true,
 		scrollY: 500,
