@@ -63,7 +63,6 @@
                                             
                                             <label class="control-label" for="timeInsert" style="padding-left: 15px; padding-right: 5px;">Time</label>
                                             <input id="timeInsert" name="timeInsert" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information.">
-                                            
                                         </div>
 
                                         <table class="table">
@@ -109,7 +108,7 @@
                                                     <td rowspan="5" style="font-weight: bold;">Sites</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="10%"><label><i>Metacarpal:</i></label></td>
+                                                    <td width="10%"><label for="sitesMetacarpal"><i>Metacarpal:</i></label></td>
                                                     <td>
                                                         <label class="radio-inline">
                                                             <input type="radio" name="sitesMetacarpal" value="R">Right
@@ -120,7 +119,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="10%"><label><i>Basilic:</i></label></td>
+                                                    <td width="10%"><label for="sitesBasilic"><i>Basilic:</i></label></td>
                                                     <td>
                                                         <label class="radio-inline">
                                                             <input type="radio" name="sitesBasilic" value="R">Right
@@ -131,7 +130,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="10%"><label><i>Cephalic:</i></label></td>
+                                                    <td width="10%"><label for="sitesCephalic"><i>Cephalic:</i></label></td>
                                                     <td>
                                                         <label class="radio-inline">
                                                             <input type="radio" name="sitesCephalic" value="R">Right
@@ -142,7 +141,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="10%"><label><i>Mt. Cubital:</i></label></td>
+                                                    <td width="10%"><label for="sitesMCubital"><i>M. Cubital:</i></label></td>
                                                     <td>
                                                         <label class="radio-inline">
                                                             <input type="radio" name="sitesMCubital" value="R">Right
@@ -189,7 +188,6 @@
                                             
                                             <label class="control-label" for="timeRemoval" style="padding-left: 15px; padding-right: 5px;">Time</label>
                                             <input id="timeRemoval" name="timeRemoval" type="time" class="form-control input-sm">
-                                            
                                         </div>
 
                                         <div class="col-md-12" style="padding-bottom: 15px;">
@@ -198,13 +196,10 @@
                                             
                                             <label class="control-label" for="remarksThrombo">Remarks</label>
                                             <textarea id="remarksThrombo" name="remarksThrombo" type="text" class="form-control input-sm"></textarea>
-                                            
                                         </div>
-                                        
                                     </div>
                                 </div>
                             </div>
-                        
                         </div>
                     </div>
                 </div>

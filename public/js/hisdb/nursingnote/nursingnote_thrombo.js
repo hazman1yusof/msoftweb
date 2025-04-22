@@ -153,7 +153,7 @@ $(document).ready(function (){
 					}
 				}
 			},
-			{ label: 'Shift', name: 'shift', width: 100, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
+			{ label: 'Shift', name: 'shift', width: 130, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
 				editoptions: {
 					value: "M:MORNING;E:EVENING;N:NIGHT"
 				}
@@ -234,7 +234,7 @@ $(document).ready(function (){
         groupHeaders: [
             { startColumnName: 'dateAssessment', numberOfColumns: 4, titleText: 'Daily Assessment Record' },
             { startColumnName: 'phlebitisGrade', numberOfColumns: 8, titleText: 'Reason for Removal' },
-            { startColumnName: 'fibrinClot', numberOfColumns: 4, titleText: 'Catherer Removal Status' },
+            { startColumnName: 'fibrinClot', numberOfColumns: 4, titleText: 'Catheter Removal Status' },
 
         ]
     });
@@ -477,7 +477,6 @@ function populate_thrombo_getdata(){
     }).success(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formThrombo",data.thrombo);
-           
             button_state_thrombo('edit');
         }else{
             button_state_thrombo('add');
