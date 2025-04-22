@@ -264,8 +264,10 @@ function saveForm_pivc(callback){
     $.post("./nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').fail(function (data){
-        alert(data.responseText);
-
+        if(data.responseText !== ''){
+            alert(data.responseText);
+        }
+        
         callback();
     }).success(function (data){
         callback();

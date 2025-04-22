@@ -555,8 +555,9 @@ function saveForm_thrombo(callback){
     $.post("./thrombophlebitis/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').fail(function (data){
-        // alert('there is an error');
-        alert(data.responseText);
+        if(data.responseText !== ''){
+            alert(data.responseText);
+        }
 
         callback();
     }).success(function (data){
