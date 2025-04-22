@@ -136,7 +136,7 @@ class acctenq_dateController extends defaultController
                 break;
             
             default:
-                throw new \Exception('source not exists', 500);
+                $url = $this->oth($gltran);
                 break;
         }
 
@@ -167,28 +167,125 @@ class acctenq_dateController extends defaultController
     public function pb($gltran){
 
         if($gltran->auditno == 'IN'){
+
             $dbacthdr = DB::table('debtor.dbacthdr')
                             ->where('compcode',session('compcode'))
-                            ->where('invno','=',$invno)
+                            ->where('source','=','PB')
+                            ->where('trantype','=','IN')
+                            ->where('auditno','=',$gltran->auditno)
                             ->first();
 
             return './SalesOrder/showpdf?idno='.$dbacthdr->idno;
         }else if($gltran->auditno == 'DN'){
 
+            return './DebitNote/showpdf?auditno='.$gltran->auditno;
+
         }else if($gltran->auditno == 'CN'){
 
+            return './CreditNoteAR/showpdf?auditno='.$gltran->auditno;
+
         }else if($gltran->auditno == 'RC'){
+
             $dbacthdr = DB::table('debtor.dbacthdr')
                             ->where('compcode',session('compcode'))
-                            ->where('auditno','=',$auditno)
+                            ->where('source','=','PB')
+                            ->where('trantype','=','RC')
+                            ->where('auditno','=',$gltran->auditno)
+                            ->first();
+
+            return './receipt/showpdf?auditno='.$dbacthdr->idno;
+        }else if($gltran->auditno == 'RD'){
+
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','=','PB')
+                            ->where('trantype','=','RD')
+                            ->where('auditno','=',$gltran->auditno)
+                            ->first();
+
+            return './receipt/showpdf?auditno='.$dbacthdr->idno;
+        }else if($gltran->auditno == 'RF'){
+
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','=','PB')
+                            ->where('trantype','=','RF')
+                            ->where('auditno','=',$gltran->auditno)
                             ->first();
 
             return './receipt/showpdf?auditno='.$dbacthdr->idno;
 
-        }else if($gltran->auditno == 'RD'){
+        }
+    }
 
-        }else if($gltran->auditno == 'RF'){
+    public function ap($gltran){
 
+        if($gltran->auditno == 'IN'){
+
+        }else if($gltran->auditno == 'DN'){
+
+        }else if($gltran->auditno == 'CN'){
+            
+        }else if($gltran->auditno == 'PV'){
+
+            // $apacthdr = DB::table('finance.apacthdr')
+            //                 ->where('compcode',session('compcode'))
+            //                 ->where('source','=','AP')
+            //                 ->where('trantype','=','PV')
+            //                 ->where('auditno','=',$gltran->auditno)
+            //                 ->first();
+
+            return './paymentVoucher/showpdf?auditno='.$gltran->auditno.'&trantype=PV';
+        }else if($gltran->auditno == 'PD'){
+
+            // $apacthdr = DB::table('finance.apacthdr')
+            //                 ->where('compcode',session('compcode'))
+            //                 ->where('source','=','AP')
+            //                 ->where('trantype','=','PD')
+            //                 ->where('auditno','=',$gltran->auditno)
+            //                 ->first();
+
+            return './paymentVoucher/showpdf?auditno='.$gltran->auditno.'&trantype=PD';
+        }
+    }
+
+    public function cm($gltran){
+
+        if($gltran->auditno == 'CA'){
+
+            // $apacthdr = DB::table('finance.apacthdr')
+            //                 ->where('compcode',session('compcode'))
+            //                 ->where('source','=','CM')
+            //                 ->where('trantype','=','CA')
+            //                 ->where('auditno','=',$gltran->auditno)
+            //                 ->first();
+
+            return './creditDebitTrans/showpdf?auditno='.$gltran->auditno;
+
+        }else if($gltran->auditno == 'DA'){
+
+            return './creditDebitTrans/showpdf?auditno='.$gltran->auditno;
+        }else if($gltran->auditno == 'BS'){
+            
+        }else if($gltran->auditno == 'BD'){
+            
+        }else if($gltran->auditno == 'BQ'){
+            
+        }else if($gltran->auditno == 'FT'){
+            
+        }else if($gltran->auditno == 'DP'){
+            
+        }
+    }
+
+    public function oth($gltran){
+
+        if($gltran->trantype == 'DO' && $gltran->auditno == 'GRN'){
+
+            return './deliveryOrder/showpdf?recno='.$gltran->auditno;
+        }else if($gltran->trantype == 'IV' && $gltran->auditno == 'GRN'){
+
+            return './deliveryOrder/showpdf?recno='.$gltran->auditno;
         }
     }
 }

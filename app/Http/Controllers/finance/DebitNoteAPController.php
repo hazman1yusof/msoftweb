@@ -666,8 +666,6 @@ use Carbon\Carbon;
                             'recstatus' => 'ACTIVE'
                         ]);
                 }
-
-
             }
 
         }
