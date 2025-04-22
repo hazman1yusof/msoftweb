@@ -121,6 +121,7 @@ class acctenq_dateController extends defaultController
                     ->where('id',$request->id)
                     ->first();
 
+
         switch ($gltran->source) {
             case 'OE':
                 $url = $this->oe($gltran);
@@ -166,7 +167,7 @@ class acctenq_dateController extends defaultController
 
     public function pb($gltran){
 
-        if($gltran->auditno == 'IN'){
+        if($gltran->trantype == 'IN'){
 
             $dbacthdr = DB::table('debtor.dbacthdr')
                             ->where('compcode',session('compcode'))
@@ -176,15 +177,15 @@ class acctenq_dateController extends defaultController
                             ->first();
 
             return './SalesOrder/showpdf?idno='.$dbacthdr->idno;
-        }else if($gltran->auditno == 'DN'){
+        }else if($gltran->trantype == 'DN'){
 
             return './DebitNote/showpdf?auditno='.$gltran->auditno;
 
-        }else if($gltran->auditno == 'CN'){
+        }else if($gltran->trantype == 'CN'){
 
             return './CreditNoteAR/showpdf?auditno='.$gltran->auditno;
 
-        }else if($gltran->auditno == 'RC'){
+        }else if($gltran->trantype == 'RC'){
 
             $dbacthdr = DB::table('debtor.dbacthdr')
                             ->where('compcode',session('compcode'))
@@ -194,7 +195,7 @@ class acctenq_dateController extends defaultController
                             ->first();
 
             return './receipt/showpdf?auditno='.$dbacthdr->idno;
-        }else if($gltran->auditno == 'RD'){
+        }else if($gltran->trantype == 'RD'){
 
             $dbacthdr = DB::table('debtor.dbacthdr')
                             ->where('compcode',session('compcode'))
@@ -204,7 +205,7 @@ class acctenq_dateController extends defaultController
                             ->first();
 
             return './receipt/showpdf?auditno='.$dbacthdr->idno;
-        }else if($gltran->auditno == 'RF'){
+        }else if($gltran->trantype == 'RF'){
 
             $dbacthdr = DB::table('debtor.dbacthdr')
                             ->where('compcode',session('compcode'))
@@ -220,13 +221,13 @@ class acctenq_dateController extends defaultController
 
     public function ap($gltran){
 
-        if($gltran->auditno == 'IN'){
+        if($gltran->trantype == 'IN'){
 
-        }else if($gltran->auditno == 'DN'){
+        }else if($gltran->trantype == 'DN'){
 
-        }else if($gltran->auditno == 'CN'){
+        }else if($gltran->trantype == 'CN'){
             
-        }else if($gltran->auditno == 'PV'){
+        }else if($gltran->trantype == 'PV'){
 
             // $apacthdr = DB::table('finance.apacthdr')
             //                 ->where('compcode',session('compcode'))
@@ -236,7 +237,7 @@ class acctenq_dateController extends defaultController
             //                 ->first();
 
             return './paymentVoucher/showpdf?auditno='.$gltran->auditno.'&trantype=PV';
-        }else if($gltran->auditno == 'PD'){
+        }else if($gltran->trantype == 'PD'){
 
             // $apacthdr = DB::table('finance.apacthdr')
             //                 ->where('compcode',session('compcode'))
@@ -251,7 +252,7 @@ class acctenq_dateController extends defaultController
 
     public function cm($gltran){
 
-        if($gltran->auditno == 'CA'){
+        if($gltran->trantype == 'CA'){
 
             // $apacthdr = DB::table('finance.apacthdr')
             //                 ->where('compcode',session('compcode'))
@@ -262,28 +263,28 @@ class acctenq_dateController extends defaultController
 
             return './creditDebitTrans/showpdf?auditno='.$gltran->auditno;
 
-        }else if($gltran->auditno == 'DA'){
+        }else if($gltran->trantype == 'DA'){
 
             return './creditDebitTrans/showpdf?auditno='.$gltran->auditno;
-        }else if($gltran->auditno == 'BS'){
+        }else if($gltran->trantype == 'BS'){
             
-        }else if($gltran->auditno == 'BD'){
+        }else if($gltran->trantype == 'BD'){
             
-        }else if($gltran->auditno == 'BQ'){
+        }else if($gltran->trantype == 'BQ'){
             
-        }else if($gltran->auditno == 'FT'){
+        }else if($gltran->trantype == 'FT'){
             
-        }else if($gltran->auditno == 'DP'){
+        }else if($gltran->trantype == 'DP'){
             
         }
     }
 
     public function oth($gltran){
 
-        if($gltran->trantype == 'DO' && $gltran->auditno == 'GRN'){
+        if($gltran->source == 'DO' && $gltran->trantype == 'GRN'){
 
             return './deliveryOrder/showpdf?recno='.$gltran->auditno;
-        }else if($gltran->trantype == 'IV' && $gltran->auditno == 'GRN'){
+        }else if($gltran->source == 'IV' && $gltran->trantype == 'GRN'){
 
             return './deliveryOrder/showpdf?recno='.$gltran->auditno;
         }
