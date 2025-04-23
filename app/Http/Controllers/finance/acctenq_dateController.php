@@ -59,6 +59,8 @@ class acctenq_dateController extends defaultController
 
             if($sortdata == 'gl.cramount' || $sortdata == 'gl.dramount'){
                 $sortdata = 'gl.amount';
+            }elseif ($sortdata == 'gl.open') {
+                $sortdata = 'gl.postdate';
             }
 
             $sortdir = $request->order[0]['dir'];
