@@ -127,7 +127,6 @@ $(document).ready(function () {
 
 	$('#search').click(function(){
 		if($('#searchform').isValid({requiredFields:''},conf,true)){
-			mymodal.show("#TableGlmasTran_c");
 			DataTable.clear().draw();
 		}
 	});
@@ -136,27 +135,33 @@ $(document).ready(function () {
 	var DataTable = $('#TableGlmasTran').DataTable({
     	ajax: './acctenq_date/table?action=getdata',
     	pageLength: 30,
+    	orderMulti: false,
 	    responsive: true,
 		scrollY: 500,
     	processing: true,
     	serverSide: true,
 		paging: true,
 	    columns: [
-	    	{ data: 'open' ,"width": "2%","sClass": "opendetail"},
-	    	{ data: 'print' ,"width": "2%","sClass": "printdetail"},
+	    	{ data: 'open' ,"width": "2%","sClass": "opendetail", orderable: false},
+	    	{ data: 'print' ,"width": "2%","sClass": "printdetail", orderable: false},
 			{ data: 'source',"width": "2%"},
 			{ data: 'trantype',"width": "2%"},
-			{ data: 'auditno',"width": "4%"},
+			{ data: 'auditno',"width": "4%", orderable: false},
 			{ data: 'postdate'},
-			{ data: 'description',"width": "35%"},
-			{ data: 'reference'},
-			{ data: 'acccode'},
+			{ data: 'description',"width": "35%", orderable: false},
+			{ data: 'reference', orderable: false},
+			{ data: 'acccode', orderable: false},
 			{ data: 'dramount', "sClass": "numericCol"},
 			{ data: 'cramount', "sClass": "numericCol"},
-			{ data: 'id'},
+			{ data: 'id',visible:false},
 		],
 		columnDefs: [
-			{targets: 8,
+			{targets: 6,
+	        	createdCell: function (td, cellData, rowData, row, col) {
+					$(td).append(`<span class='help-block'>`+rowData.desc_+`</span>`);
+	   			}
+	   		},
+	   		{targets: 8,
 	        	createdCell: function (td, cellData, rowData, row, col) {
 	        		if(rowData.acctname == null){
 						$(td).append(`<span class='help-block'>-</span>`);
@@ -167,9 +172,10 @@ $(document).ready(function () {
 	   		}
 		],
 		drawCallback: function( settings ) {
-
+			$('#TableGlmasTran_filter').hide();
 		}
 	}).on('preXhr.dt', function ( e, settings, data ) {
+		mymodal.show("#TableGlmasTran_c");
 		data.glaccount = $('#glaccount').val();
 		data.fromdate = $('#fromdate').val();
 		data.todate = $('#todate').val();

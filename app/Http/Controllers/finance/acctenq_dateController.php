@@ -53,6 +53,20 @@ class acctenq_dateController extends defaultController
             return json_encode($responce);
         }
 
+        if(!empty($request->order[0])){
+            $sortid = intval($request->order[0]['column']);
+            $sortdata = 'gl.'.$request->columns[$sortid]['data'];
+
+            if($sortdata == 'gl.cramount' || $sortdata == 'gl.dramount'){
+                $sortdata = 'gl.amount';
+            }
+
+            $sortdir = $request->order[0]['dir'];
+        }else{
+            $sortdata = 'gl.postdate';
+            $sortdir = 'asc';
+        }
+
         $table_ = DB::table('finance.gltran as gl')
                         ->select('gl.id','gl.source','gl.trantype','gl.auditno','gl.postdate','gl.description','gl.reference','gl.cracc','gl.dracc','gl.amount','glcr.description as acctname_cr','gldr.description as acctname_dr')
                         ->where(function($table_) use ($request){
@@ -69,7 +83,7 @@ class acctenq_dateController extends defaultController
                         })
                         ->where('gl.postdate', '>=', $request->fromdate)
                         ->where('gl.postdate', '<=', $request->todate)
-                        ->orderBy('gl.postdate', 'desc');
+                        ->orderBy($sortdata, $sortdir);
 
         $count = $table_->count();
         $table = $table_
@@ -89,6 +103,31 @@ class acctenq_dateController extends defaultController
                 $value->cramount = $value->amount;
                 $value->dramount = 0;
                 $value->acctname = $value->acctname_dr;
+            }
+
+            switch ($value->source) {
+                case 'OE':
+                    $data = $this->oe_data($value);
+                    break;
+                case 'PB':
+                    $data = $this->pb_data($value);
+                    break;
+                case 'AP':
+                    $data = $this->ap_data($value);
+                    break;
+                case 'CM':
+                    $data = $this->cm_data($value);
+                    break;
+                default:
+                    $data = $this->oth_data($value);
+                    break;
+            }
+
+            if(!empty($data)){
+                $value->desc_ = $data->desc;
+                $value->reference = $data->refe;
+            }else{
+                $value->desc_ = ' ';
             }
         }
 
@@ -215,7 +254,6 @@ class acctenq_dateController extends defaultController
                             ->first();
 
             return './receipt/showpdf?auditno='.$dbacthdr->idno;
-
         }
     }
 
@@ -288,5 +326,160 @@ class acctenq_dateController extends defaultController
 
             return './deliveryOrder/showpdf?recno='.$gltran->auditno;
         }
+    }
+
+    public function oe_data($obj){
+        $billsum = DB::table('debtor.billsum as bs')
+                        ->select('bs.chggroup','ch.description')
+                        ->leftJoin('hisdb.chgmast as ch', function($join){
+                            $join = $join->on('ch.chgcode', '=', 'bs.chggroup')
+                                            ->where('ch.compcode','=',session('compcode'));
+                        })
+                        ->where('bs.compcode',session('compcode'))
+                        ->where('bs.auditno',$obj->auditno)
+                        ->first();
+
+        $responce = new stdClass();
+        $responce->desc = $billsum->description;
+        $responce->refe = 'INV-'.$obj->reference;
+
+        return $responce;
+    }
+
+    public function pb_data($obj){
+        $responce = new stdClass();
+
+        if($obj->trantype == 'IN'){
+
+            $dbacthdr = DB::table('debtor.dbacthdr as dbh')
+                            ->select('dbh.payercode','dbm.name')
+                            ->leftJoin('debtor.debtormast as dbm', function($join){
+                                $join = $join->on('dbm.debtorcode', '=', 'dbh.payercode')
+                                                ->where('dbm.compcode','=',session('compcode'));
+                            })
+                            ->where('dbh.compcode',session('compcode'))
+                            ->where('dbh.source','=','PB')
+                            ->where('dbh.trantype','=','IN')
+                            ->where('dbh.auditno','=',$obj->auditno)
+                            ->first();
+
+            $obj->description = $dbacthdr->payercode;
+            $responce->desc = $dbacthdr->name;
+            $responce->refe = str_pad($obj->auditno, 7, "0", STR_PAD_LEFT);
+            return $responce;
+
+        }else if($obj->trantype == 'DN'){
+            $dbacthdr = DB::table('debtor.dbacthdr as dbh')
+                            ->select('dbh.payercode','dbm.name')
+                            ->leftJoin('debtor.debtormast as dbm', function($join){
+                                $join = $join->on('dbm.debtorcode', '=', 'dbh.payercode')
+                                                ->where('dbm.compcode','=',session('compcode'));
+                            })
+                            ->where('dbh.compcode',session('compcode'))
+                            ->where('dbh.source','=','PB')
+                            ->where('dbh.trantype','=','DN')
+                            ->where('dbh.auditno','=',$obj->auditno)
+                            ->first();
+
+            $obj->description = $dbacthdr->payercode;
+            $responce->desc = $dbacthdr->name;
+            $responce->refe = 'DN-'.str_pad($obj->auditno, 7, "0", STR_PAD_LEFT);
+            return $responce;
+
+        }else if($obj->trantype == 'CN'){
+            $dbacthdr = DB::table('debtor.dbacthdr as dbh')
+                            ->select('dbh.payercode','dbm.name')
+                            ->leftJoin('debtor.debtormast as dbm', function($join){
+                                $join = $join->on('dbm.debtorcode', '=', 'dbh.payercode')
+                                                ->where('dbm.compcode','=',session('compcode'));
+                            })
+                            ->where('dbh.compcode',session('compcode'))
+                            ->where('dbh.source','=','PB')
+                            ->where('dbh.trantype','=','CN')
+                            ->where('dbh.auditno','=',$obj->auditno)
+                            ->first();
+
+            $obj->description = $dbacthdr->payercode;
+            $responce->desc = $dbacthdr->name;
+            $responce->refe = 'CN-'.str_pad($obj->auditno, 7, "0", STR_PAD_LEFT);
+            return $responce;
+
+        }else if($obj->trantype == 'RC'){
+            $dbacthdr = DB::table('debtor.dbacthdr as dbh')
+                            ->select('dbh.payercode','dbm.name','dbh.recptno')
+                            ->leftJoin('debtor.debtormast as dbm', function($join){
+                                $join = $join->on('dbm.debtorcode', '=', 'dbh.payercode')
+                                                ->where('dbm.compcode','=',session('compcode'));
+                            })
+                            ->where('dbh.compcode',session('compcode'))
+                            ->where('dbh.source','=','PB')
+                            ->where('dbh.trantype','=','RC')
+                            ->where('dbh.auditno','=',$obj->auditno)
+                            ->first();
+
+            $obj->description = $dbacthdr->payercode;
+            $responce->desc = $dbacthdr->name;
+            $responce->refe = $dbacthdr->recptno;
+            return $responce;
+
+        }else if($obj->trantype == 'RD'){
+            $dbacthdr = DB::table('debtor.dbacthdr as dbh')
+                            ->select('dbh.payercode','dbm.name','dbh.recptno')
+                            ->leftJoin('debtor.debtormast as dbm', function($join){
+                                $join = $join->on('dbm.debtorcode', '=', 'dbh.payercode')
+                                                ->where('dbm.compcode','=',session('compcode'));
+                            })
+                            ->where('dbh.compcode',session('compcode'))
+                            ->where('dbh.source','=','PB')
+                            ->where('dbh.trantype','=','RD')
+                            ->where('dbh.auditno','=',$obj->auditno)
+                            ->first();
+
+            $obj->description = $dbacthdr->payercode;
+            $responce->desc = $dbacthdr->name;
+            $responce->refe = $dbacthdr->recptno;
+            return $responce;
+
+        }else if($obj->trantype == 'RF'){
+            $dbacthdr = DB::table('debtor.dbacthdr as dbh')
+                            ->select('dbh.payercode','dbm.name','dbh.recptno')
+                            ->leftJoin('debtor.debtormast as dbm', function($join){
+                                $join = $join->on('dbm.debtorcode', '=', 'dbh.payercode')
+                                                ->where('dbm.compcode','=',session('compcode'));
+                            })
+                            ->where('dbh.compcode',session('compcode'))
+                            ->where('dbh.source','=','PB')
+                            ->where('dbh.trantype','=','RF')
+                            ->where('dbh.auditno','=',$obj->auditno)
+                            ->first();
+
+            $obj->description = $dbacthdr->payercode;
+            $responce->desc = $dbacthdr->name;
+            $responce->refe = $dbacthdr->recptno;
+            return $responce;
+
+        }
+    }
+    
+    public function ap_data($obj){
+        return 0;
+        
+    }
+    
+    public function cm_data($obj){
+        return 0;
+    }
+    
+    public function oth_data($obj){
+        $responce = new stdClass();
+
+        $exp1 = explode('</br>', $obj->description);
+        $exp2 = explode(' ', $obj->reference);
+
+        $obj->description = $exp1[0];
+        $responce->desc = $exp1[1];
+        $responce->refe = $exp2[0].'-'.$exp2[1];
+
+        return $responce;
     }
 }
