@@ -154,7 +154,7 @@ class SalesOrderDetailController extends defaultController
                             $join = $join->where('pt.compcode', '=', session('compcode'));
                             $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
                             $join = $join->on('pt.uomcode', '=', 'cm.uom');
-                            $join = $join->where('pt.unit', '=', session('unit'));
+                            // $join = $join->where('pt.unit', '=', session('unit'));
                         });
 
         // $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
