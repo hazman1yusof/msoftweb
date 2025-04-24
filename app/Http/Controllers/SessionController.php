@@ -19,8 +19,18 @@ class SessionController extends Controller
 
  	public function create(){
     	$company = company::all();
+        $bgpic_ = DB::table('sysdb.sysparam')
+                        ->where('compcode','all')
+                        ->where('source','def')
+                        ->where('trantype','loginbg');
 
-    	return view('init.login',compact("company"));
+        if(!$bgpic_->exists()){
+            $bgpic = './img/carousel/Supply-Change-Management.jpg';
+        }else{
+            $bgpic = $bgpic_->first()->pvalue1;
+        }
+
+    	return view('init.login',compact("company",'bgpic'));
     }
 
     public function create2(){
