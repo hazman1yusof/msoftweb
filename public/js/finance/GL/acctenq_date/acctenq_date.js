@@ -128,7 +128,14 @@ $(document).ready(function () {
 	$('#search').click(function(){
 		if($('#searchform').isValid({requiredFields:''},conf,true)){
 			DataTable.clear().draw();
+
+			let href = './acctenq_date/table?action=print&glaccount='+$('#glaccount').val()+'&fromdate='+$('#fromdate').val()+'&todate='+$('#todate').val();
+
+			$('#pdfgen1').attr('href',href);
+		}else{
+			$('#pdfgen1').removeAttr('href');
 		}
+
 	});
 	
 

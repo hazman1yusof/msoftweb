@@ -66,7 +66,7 @@
 		<div class='col-md-12' style="padding:0 0 15px 0;">
 			<form id="searchform" name="searchform" class="col-md-12"> 
 			  <div class="col-md-5">
-			  	<label class="control-label" for="glaccount">GL Account</label>  
+			  	<label class="control-label" for="glaccount">GL Account</label>
 	  			<div class='input-group'>
 					<input id="glaccount" name="glaccount" type="text" class="form-control input-sm uppercase" autocomplete="off" data-validation="required"/>
 					<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -89,10 +89,14 @@
 				<button type="button" id="search" class="btn btn-primary" style="position:absolute;top:17px">Search</button>
               </div>
 
+				<a class='pull-right pointer text-primary' style="position: absolute;
+				    right: 40px;
+				    bottom: 0px;" id='pdfgen1' target="_blank">
+			    <span class='fa fa-print'></span> Print 
+				</a>
+
             </form>
             <br/>
-
-			  
 		</div>
 
 		<div class='panel panel-default'>

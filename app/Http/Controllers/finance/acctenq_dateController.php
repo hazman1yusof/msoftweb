@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 use DB;
 use stdClass;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\acctenq_dateExport;
 
 class acctenq_dateController extends defaultController
 {   
@@ -42,6 +44,8 @@ class acctenq_dateController extends defaultController
                 return $this->openprint($request);
             case 'get_auditno_forsrc';
                 return $this->get_auditno_forsrc($request);
+            case 'print':
+                return $this->print($request);
         }
     }
 
@@ -465,7 +469,6 @@ class acctenq_dateController extends defaultController
     
     public function ap_data($obj){
         return 0;
-        
     }
     
     public function cm_data($obj){
@@ -483,5 +486,13 @@ class acctenq_dateController extends defaultController
         $responce->refe = $exp2[0].'-'.$exp2[1];
 
         return $responce;
+    }
+
+    public function print(Request $request){
+        $glaccount = $request->glaccount;
+        if(empty($glaccount)){
+            abort(404);
+        }
+        return Excel::download(new acctenq_dateExport($request->glaccount,$request->fromdate,$request->todate), 'acctenq_dateExport.xlsx');
     }
 }
