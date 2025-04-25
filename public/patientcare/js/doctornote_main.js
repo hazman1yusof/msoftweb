@@ -323,7 +323,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid('setGroupHeaders', {
 		useColSpanStyle: true, 
 		groupHeaders:[
-			{startColumnName: 'reff_rehab', numberOfColumns: 5, titleText: '<em>Referral</em>'},
+			{startColumnName: 'reff_rehab', numberOfColumns: 5, titleText: '<em>Register Dept</em>'},
 		]
 	});
 	addParamField('#jqGrid',true,urlParam,['action']);
