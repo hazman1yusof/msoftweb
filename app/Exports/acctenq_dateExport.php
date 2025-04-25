@@ -123,12 +123,12 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
                     break;
             }
 
-            if(!empty($data)){
-                $value->desc_ = $data->desc;
-                $value->reference = $data->refe;
-            }else{
-                $value->desc_ = ' ';
-            }
+            // if(!empty($data)){
+            //     $value->desc_ = $data->desc;
+            //     $value->reference = $data->refe;
+            // }else{
+            //     $value->desc_ = ' ';
+            // }
         }
 
         // dd($table);
