@@ -212,11 +212,11 @@ $(document).ready(function () {
 		$("#jqGrid").jqGrid({
 			datatype: "local",
 			colModel: [
-				{ label: 'MRN', name: 'MRN', width: 50, formatter: padzero, unformat: unpadzero, checked: true,  },
+				{ label: 'MRN', name: 'MRN', width: 85, formatter: padzero, unformat: unpadzero, checked: true,  },
 				{ label: 'Epis. No', name: 'Episno',align: 'right', hidden:true},
-				{ label: 'Time', name: 'reg_time', width: 50 , formatter: timeFormatter, unformat: timeUNFormatter},
+				{ label: 'Time', name: 'reg_time', width: 85 , formatter: timeFormatter, unformat: timeUNFormatter},
 				{ label: 'Name', name: 'Name', width: 170 ,classes: 'wrap' },
-				{ label: 'Payer', name: 'payer', width: 150,classes: 'wrap' },
+				{ label: 'Payer', name: 'payer', width: 150,classes: 'wrap',formatter: formatterpayer },
 				{ label: 'Dept', name: 'regdept', width: 60  },
 				{ label: 'I/C', name: 'Newic', width: 90  },
 				{ label: 'Rehab', name: 'reff_rehab', width: 50 ,formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
@@ -226,7 +226,7 @@ $(document).ready(function () {
 				{ label: 'RAD', name: 'reff_rad', width: 50 ,formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2 },
 				{ label: 'HP', name: 'telhp', width: 80 },
 				{ label: 'Sex', name: 'Sex', width: 40 },
-				{ label: 'Mode', name: 'pyrmode',classes: 'wrap', width: 60 },
+				{ label: 'Mode', name: 'pyrmode',classes: 'wrap', width: 100 },
 				{ label: 'Discharge', name: 'episstatus', width: 60 ,formatter: formatterstatus_tick2, unformat: UNformatterstatus_tick2},
 				{ label: 'Seen', name: 'doctorstatus',formatter: formatterstatus_tick,hidden: true },
 				{ label: 'idno', name: 'idno', hidden: true, key:true},
@@ -577,4 +577,8 @@ function stop_scroll_on(){
     $('div.paneldiv').on('mouseleave',function(){
         $('body').removeClass('stop-scrolling')
     });
+}
+
+function formatterpayer(cellvalue, option, rowObject){
+	return cellvalue.replace("'",'');
 }
