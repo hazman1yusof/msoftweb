@@ -2505,9 +2505,21 @@ function noIdlingHere() {
     window.addEventListener('wheel', resetTimer, true);
 }
 if (window.frameElement) {
-	let except = ['/wardbook_iframe','/otbook_iframe'];
+	let except = ['wardbook_iframe','otbook_iframe'];
+	let pathname = window.location.pathname;
+	let path_true = true;
+
+	except.forEach(function(e,i){
+		if(path_true == true){
+			if(pathname.includes(e)){
+				path_true = false;
+			}
+		}
+	});
+
 	console.log(window.location.pathname);
-	if(!except.includes(window.location.pathname)){
+	console.log(path_true);
+	if(path_true){
 		noIdlingHere();
 	}
 }

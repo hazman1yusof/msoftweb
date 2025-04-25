@@ -480,8 +480,8 @@
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="{{ asset('js/myjs/utility.js') }}?v=1.1"></script>
-    
+    <script type="text/javascript" src="{{ asset('js/myjs/utility.js') }}?v=1.2"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
     <script type="text/ecmascript" src="{{ asset('patientcare/assets/trirand/i18n/grid.locale-en.js') }}"></script>
     <script type="text/ecmascript" src="{{ asset('patientcare/assets/trirand/jquery.jqGrid.min.js') }}"></script>
