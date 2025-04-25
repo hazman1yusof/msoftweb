@@ -18,7 +18,7 @@
                 <th>Bed Number</th>
                 <th>Ward</th>
                 <th>Room</th>
-                <th>Status</th>
+                <th>Bed Type</th>
                 <th>Bed Type</th>
                 <th>Ward</th>
             </tr>
