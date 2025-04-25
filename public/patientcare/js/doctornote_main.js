@@ -580,5 +580,5 @@ function stop_scroll_on(){
 }
 
 function formatterpayer(cellvalue, option, rowObject){
-	return cellvalue.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+	return cellvalue.replace(/'/g,'');
 }
