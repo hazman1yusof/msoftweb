@@ -105,7 +105,6 @@
     <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css" rel="stylesheet">
-    <script type="text/javascript" src="{{ asset('js/myjs/utility.js') }}"></script>
     <script src="{{ asset('patientcare/js/main.js') }}"></script>
 
     <script type="text/javascript">

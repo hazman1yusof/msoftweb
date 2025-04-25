@@ -2506,6 +2506,7 @@ function noIdlingHere() {
 }
 if (window.frameElement) {
 	let except = ['/wardbook_iframe','/otbook_iframe'];
+	console.log(window.location.pathname);
 	if(!except.includes(window.location.pathname)){
 		noIdlingHere();
 	}
