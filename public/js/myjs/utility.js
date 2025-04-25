@@ -2505,7 +2505,7 @@ function noIdlingHere() {
     window.addEventListener('wheel', resetTimer, true);
 }
 if (window.frameElement) {
-	let except = ['/wardbook_iframe'];
+	let except = ['/wardbook_iframe','/otbook_iframe'];
 	if(!except.includes(window.location.pathname)){
 		noIdlingHere();
 	}
