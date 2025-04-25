@@ -1172,6 +1172,7 @@ class DoctornoteController extends defaultController
         
         $emergency = DB::table('hisdb.episode')
                     ->where('compcode','=',session('compcode'))
+                    ->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET'])
                     ->whereRaw(
                         "(reg_date >= ? AND reg_date <= ?)",
                         [
