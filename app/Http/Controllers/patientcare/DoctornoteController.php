@@ -181,6 +181,7 @@ class DoctornoteController extends defaultController
         $table_patm = $table_patm->leftJoin('hisdb.episode', function ($join) use ($request){
                     $join = $join->on('episode.mrn','=','pat_mast.MRN');
                     $join = $join->where('episode.epistycode','=','OP');
+                    $join = $join->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET']);
                     // $join = $join->where(
                     //         function ($query){
                     //             return $query
