@@ -172,8 +172,9 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
                         ->first();
 
         $responce = new stdClass();
+        $obj->description = $billsum->description;
         $responce->desc = $billsum->description;
-        $responce->refe = 'INV-'.$obj->reference;
+        $obj->reference = 'INV-'.$obj->reference;
 
         return $responce;
     }
@@ -197,7 +198,7 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
 
             $obj->description = $dbacthdr->payercode;
             $responce->desc = $dbacthdr->name;
-            $responce->refe = str_pad($obj->auditno, 7, "0", STR_PAD_LEFT);
+            $obj->reference = str_pad($obj->auditno, 7, "0", STR_PAD_LEFT);
             return $responce;
 
         }else if($obj->trantype == 'DN'){
@@ -215,7 +216,7 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
 
             $obj->description = $dbacthdr->payercode;
             $responce->desc = $dbacthdr->name;
-            $responce->refe = 'DN-'.str_pad($obj->auditno, 7, "0", STR_PAD_LEFT);
+            $obj->reference = 'DN-'.str_pad($obj->auditno, 7, "0", STR_PAD_LEFT);
             return $responce;
 
         }else if($obj->trantype == 'CN'){
@@ -233,7 +234,7 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
 
             $obj->description = $dbacthdr->payercode;
             $responce->desc = $dbacthdr->name;
-            $responce->refe = 'CN-'.str_pad($obj->auditno, 7, "0", STR_PAD_LEFT);
+            $obj->reference = 'CN-'.str_pad($obj->auditno, 7, "0", STR_PAD_LEFT);
             return $responce;
 
         }else if($obj->trantype == 'RC'){
@@ -251,7 +252,7 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
 
             $obj->description = $dbacthdr->payercode;
             $responce->desc = $dbacthdr->name;
-            $responce->refe = $dbacthdr->recptno;
+            $obj->reference = $dbacthdr->recptno;
             return $responce;
 
         }else if($obj->trantype == 'RD'){
@@ -269,7 +270,7 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
 
             $obj->description = $dbacthdr->payercode;
             $responce->desc = $dbacthdr->name;
-            $responce->refe = $dbacthdr->recptno;
+            $obj->reference = $dbacthdr->recptno;
             return $responce;
 
         }else if($obj->trantype == 'RF'){
@@ -287,7 +288,7 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
 
             $obj->description = $dbacthdr->payercode;
             $responce->desc = $dbacthdr->name;
-            $responce->refe = $dbacthdr->recptno;
+            $obj->reference = $dbacthdr->recptno;
             return $responce;
 
         }
