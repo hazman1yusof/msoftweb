@@ -456,6 +456,13 @@ function populate_otbookReqFor_getdata(){
             }else{
                 $("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
             }
+
+            if(!emptyobj_(data.pat_otbook_bed)){
+                $('#ReqFor_bed').val(data.pat_otbook_bed.bednum);
+                $('#ReqFor_ward').val(data.pat_otbook_bed.ward);
+                $('#ReqFor_room').val(data.pat_otbook_bed.room);
+                $('#ReqFor_bedtype').val(data.pat_otbook_bed.bedtype);
+            }
             
             button_state_otbookReqFor('edit');
         }else{

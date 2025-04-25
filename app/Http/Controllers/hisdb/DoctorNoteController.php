@@ -1438,6 +1438,11 @@ class DoctorNoteController extends defaultController
     }
     
     public function get_table_otbook(Request $request){
+
+        $pat_otbook_bed_obj = DB::table('hisdb.bed')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno);
         
         $pat_otbook_obj = DB::table('hisdb.pat_otbook')
                         ->select('idno','compcode','mrn','episno','req_type','op_date','oper_type','adm_type','anaesthetist','diagnosis as ot_diagnosis','diagnosedby as ot_diagnosedby','remarks as ot_remarks','doctorname as ot_doctorname','adduser','adddate','upduser','upddate','lastuser as ot_lastuser','lastupdate','computerid')
@@ -1458,6 +1463,11 @@ class DoctorNoteController extends defaultController
                             ->where('mrn','=',$request->mrn);
         
         $responce = new stdClass();
+
+        if($pat_otbook_bed_obj->exists()){
+            $pat_otbook_bed_obj = $pat_otbook_bed_obj->first();
+            $responce->pat_otbook_bed = $pat_otbook_bed_obj;
+        }
         
         if($pat_otbook_obj->exists()){
             $pat_otbook_obj = $pat_otbook_obj->first();

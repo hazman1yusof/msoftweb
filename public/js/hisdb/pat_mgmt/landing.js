@@ -866,11 +866,6 @@ if($('#epistycode').val() == 'OP'){
 epis_desc_show.load_desc();
 
 function hide_all_panel(){
-
-
-        // $('').collapse('show');
-        // $('').collapse('show');
-    console.log($('div.panel-collapse:not(#tabBio,#tabAddr,#tabEpisode)'));
     $('div.panel-collapse:not(#tabBio,#tabAddr,#tabEpisode)').collapse('hide');
 }
 

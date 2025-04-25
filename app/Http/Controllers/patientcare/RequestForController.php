@@ -112,6 +112,27 @@ class RequestForController extends defaultController
         
         try {
 
+            DB::table('hisdb.pat_otbook')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'req_type' => $request->req_type,
+                        'op_date' => $request->op_date,
+                        'oper_type' => $request->oper_type,
+                        'adm_type' => $request->adm_type,
+                        'anaesthetist' => $request->anaesthetist,
+                        'diagnosis' => $request->ot_diagnosis,
+                        'diagnosedby' => strtoupper($request->ot_diagnosedby),
+                        'remarks' => $request->ot_remarks,
+                        'doctorname'  => strtoupper($request->ot_doctorname),
+                        'adduser'  => strtoupper($request->ot_lastuser),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser' => strtoupper($request->ot_lastuser),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+
             if($request->req_type == 'WARD'){
                 DB::table('hisdb.episode')
                     ->where('mrn','=',$request->mrn)
@@ -152,6 +173,10 @@ class RequestForController extends defaultController
                     ->where('compcode',session('compcode'))
                     ->where('mrn','=',$request->mrn)
                     ->first();
+
+                $bed_obj = DB::table('hisdb.bed')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('bednum','=',$request->ReqFor_bed);
 
                 if($bed_obj->exists()){
                     DB::table('hisdb.bedalloc')
@@ -305,6 +330,11 @@ class RequestForController extends defaultController
     }
     
     public function get_table_otbook(Request $request){
+
+        $pat_otbook_bed_obj = DB::table('hisdb.bed')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno);
         
         $pat_otbook_obj = DB::table('hisdb.pat_otbook')
                         ->select('idno','compcode','mrn','episno','req_type','op_date','oper_type','adm_type','anaesthetist','diagnosis as ot_diagnosis','diagnosedby as ot_diagnosedby','remarks as ot_remarks','doctorname as ot_doctorname','adduser','adddate','upduser','upddate','lastuser as ot_lastuser','lastupdate','computerid')
@@ -324,6 +354,11 @@ class RequestForController extends defaultController
                             ->where('mrn','=',$request->mrn);
         
         $responce = new stdClass();
+
+        if($pat_otbook_bed_obj->exists()){
+            $pat_otbook_bed_obj = $pat_otbook_bed_obj->first();
+            $responce->pat_otbook_bed = $pat_otbook_bed_obj;
+        }
         
         if($pat_otbook_obj->exists()){
             $pat_otbook_obj = $pat_otbook_obj->first();

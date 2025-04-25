@@ -85,11 +85,11 @@
                     },
                     "createdRow": function( row, data, dataIndex ) {
                         $(row).addClass( data['desc_bt'] );
-                        if(data.occup != 'VACANT'){
-                            $(row).addClass('disabled red');
-                        }else{
+                        // if(data.occup != 'VACANT'){
+                        //     $(row).addClass('disabled red');
+                        // }else{
                             $('td', row).eq(3).append(`<input type="checkbox" style="float:right">`);
-                        }
+                        // }
                     },
                     "initComplete": function(settings, json) {
                         let opt_bt = opt_ward = "";
