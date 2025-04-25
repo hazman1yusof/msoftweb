@@ -118,7 +118,7 @@
                 // $('#ReqFor_ward').val(rowdata.ward);
                 // $('#ReqFor_room').val(rowdata.room);
                 // $('#ReqFor_bedtype').val(rowdata.bedtype);
-                window.top.message_parent_wardbook(rowdata);
+                window.parent.message_parent_wardbook(rowdata);
                 $('#accomodation_table tbody tr').removeClass('blue');
                 $('#accomodation_table tbody tr').find('input[type=checkbox]').prop('checked', false);
                 $(this).find('input[type=checkbox]').prop('checked', true);

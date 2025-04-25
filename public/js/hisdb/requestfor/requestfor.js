@@ -242,6 +242,14 @@ $(document).ready(function (){
     });
     //////////////////////////////////////////print button ends//////////////////////////////////////////
     
+    window.message_parent_wardbook = function(data) { // inside the iframe
+        console.log(data);
+        $('#ReqFor_bed').val(data.bednum);
+        $('#ReqFor_ward').val(data.ward);
+        $('#ReqFor_room').val(data.room);
+        $('#ReqFor_bedtype').val(data.bedtype);
+    };
+
 });
 
 var errorField = [];
@@ -1278,15 +1286,6 @@ function toggle_reqfor_reqtype(){
         }
     }
 }
-
-window.message_parent_wardbook = function(data) { // inside the iframe
-    console.log(data);
-    $('#ReqFor_bed').val(data.bednum);
-    $('#ReqFor_ward').val(data.ward);
-    $('#ReqFor_room').val(data.room);
-    $('#ReqFor_bedtype').val(data.bedtype);
-};
-
 // function calc_jq_height_onchange(jqgrid){
 //     let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
 //     if(scrollHeight < 50){

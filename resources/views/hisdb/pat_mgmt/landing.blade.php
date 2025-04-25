@@ -394,6 +394,16 @@
 	<input type="hidden" id="user_billing" value="{{Auth::user()->billing}}">
 	<input type="hidden" id="user_nurse" value="{{Auth::user()->nurse}}">
 	<input type="hidden" id="user_doctor" value="{{Auth::user()->doctor}}">
+
+	<script>
+		window.message_parent_wardbook = function(data) { // inside the iframe
+		    console.log(data);
+		    $('#ReqFor_bed').val(data.bednum);
+		    $('#ReqFor_ward').val(data.ward);
+		    $('#ReqFor_room').val(data.room);
+		    $('#ReqFor_bedtype').val(data.bedtype);
+		};
+	</script>
 	
 	@if (request()->get('curpat') == 'true')
 		
