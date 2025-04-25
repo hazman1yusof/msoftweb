@@ -50,13 +50,13 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
     public function columnWidths(): array
     {
         return [
-            'A' => 15,
-            'B' => 20,
-            'C' => 80,
+            'A' => 10,
+            'B' => 10,
+            'C' => 20,
             'D' => 20,
             'E' => 25,
             'F' => 25,
-            'G' => 25,
+            'G' => 80,
             'H' => 30,
         ];
     }
@@ -87,6 +87,7 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
                         })
                         ->where('gl.postdate', '>=', $this->fromdate)
                         ->where('gl.postdate', '<=', $this->todate)
+                        ->where('gl.compcode', session('compcode'))
                         ->orderBy('gl.postdate', 'asc')
                         ->get();
 
