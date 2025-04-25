@@ -68,6 +68,9 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
         $todate = $this->todate;
         $compname = $this->comp->name;
 
+        // $glmasref = DB::table('finance.gmasref')
+        //                 ->where('compcode')
+
         $table = DB::table('finance.gltran as gl')
                         ->select('gl.id','gl.source','gl.trantype','gl.auditno','gl.postdate','gl.description','gl.reference','gl.drcostcode','gl.crcostcode','gl.cracc','gl.dracc','gl.amount','glcr.description as acctname_cr','gldr.description as acctname_dr')
                         ->where(function($table) use ($glaccount){
@@ -102,30 +105,30 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
                 $value->acctname = $value->acctname_dr;
             }
 
-            // switch ($value->source) {
-            //     case 'OE':
-            //         $data = $this->oe_data($value);
-            //         break;
-            //     case 'PB':
-            //         $data = $this->pb_data($value);
-            //         break;
-            //     case 'AP':
-            //         $data = $this->ap_data($value);
-            //         break;
-            //     case 'CM':
-            //         $data = $this->cm_data($value);
-            //         break;
-            //     default:
-            //         $data = $this->oth_data($value);
-            //         break;
-            // }
+            switch ($value->source) {
+                case 'OE':
+                    $data = $this->oe_data($value);
+                    break;
+                case 'PB':
+                    $data = $this->pb_data($value);
+                    break;
+                case 'AP':
+                    $data = $this->ap_data($value);
+                    break;
+                case 'CM':
+                    $data = $this->cm_data($value);
+                    break;
+                default:
+                    $data = $this->oth_data($value);
+                    break;
+            }
 
-            // if(!empty($data)){
-            //     $value->desc_ = $data->desc;
-            //     $value->reference = $data->refe;
-            // }else{
-            //     $value->desc_ = ' ';
-            // }
+            if(!empty($data)){
+                $value->desc_ = $data->desc;
+                $value->reference = $data->refe;
+            }else{
+                $value->desc_ = ' ';
+            }
         }
 
         // dd($table);
