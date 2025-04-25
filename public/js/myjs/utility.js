@@ -2505,7 +2505,10 @@ function noIdlingHere() {
     window.addEventListener('wheel', resetTimer, true);
 }
 if (window.frameElement) {
-	noIdlingHere();
+	let except = ['/wardbook_iframe'];
+	if(!except.includes(window.location.pathname)){
+		noIdlingHere();
+	}
 }
 
 $(document).ready(function () {
