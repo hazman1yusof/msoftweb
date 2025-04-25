@@ -66,17 +66,36 @@
                     "columns": [
                         {'data': 'desc_bt'},
                         {'data': 'bednum'},
-                        {'data': 'desc_d'},
-                        {'data': 'room'},
-                        {'data': 'occup'},
-                        {'data': 'bedtype'},
                         {'data': 'ward'},
+                        {'data': 'room'},
+                        {'data': 'bedtype'},
+                        {'data': 'occup'},
+                        {'data': 'desc_d'},
                     ],
                     order: [[5, 'asc'],[6, 'asc']],
                     columnDefs: [ {
                         targets: [0,5,6],
-                        visible: false
-                    } ],
+                            visible: false
+                        },{
+                            targets: 2,
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                if(rowData.desc_d == null){
+                                    $(td).append(`<span class='help-block'> </span>`);
+                                }else{
+                                    $(td).append(`<span class='help-block'>`+rowData.desc_d+`</span>`);
+                                }
+                            }
+                        },{
+                            targets: 4,
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                if(rowData.desc_bt == null){
+                                    $(td).append(`<span class='help-block'> </span>`);
+                                }else{
+                                    $(td).append(`<span class='help-block'>`+rowData.desc_bt+`</span>`);
+                                }
+                            }
+                        }
+                    ],
                     rowGroup: {
                         dataSrc: [ "desc_bt" ],
                         startRender: function ( rows, group ) {
