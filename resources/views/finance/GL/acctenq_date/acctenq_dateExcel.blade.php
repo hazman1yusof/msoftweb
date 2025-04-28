@@ -5,8 +5,8 @@
         <td></td>
         <td></td>
         <td></td>
+        <td style="text-align: center" colspan="4">{{$compname}}</td>
         <td></td>
-        <td style="text-align: center">{{$compname}}</td>
         <td></td>
         <td></td>
         <td></td>
@@ -19,8 +19,8 @@
         <td></td>
         <td></td>
         <td></td>
+        <td style="text-align: center" colspan="4">GL TRANSACTION REPORT</td>
         <td></td>
-        <td style="text-align: center">GL TRANSACTION REPORT</td>
         <td></td>
         <td></td>
         <td></td>
@@ -33,8 +33,8 @@
         <td></td>
         <td></td>
         <td></td>
+        <td style="text-align: center" colspan="4">GL Account : {{$glaccount}}</td>
         <td></td>
-        <td style="text-align: center">GL Account : {{$glaccount}}</td>
         <td></td>
         <td></td>
         <td></td>
