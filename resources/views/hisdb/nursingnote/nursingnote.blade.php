@@ -502,19 +502,19 @@
                         </form>
                     </div>
                     <div id="tab-treatment" class="tab-pane fade">
-                        <div class='col-md-4' style="padding-left: 0px; padding-right: 3px;">
+                        <div class='col-md-12' style="padding-left: 0px; padding-right: 3px;">
                             <div class="panel panel-info">
-                                <div class="panel-heading text-center" style="height: 60px;">
-                                    <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 45px; top: 5px;">
+                                <div class="panel-heading text-center">TREATMENT & PROCEDURE
+                                    <!-- <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 45px; top: 5px;">
                                         <h6>TREATMENT &</h6>
                                         <h6>PROCEDURE</h6>
-                                    </div>
+                                    </div> -->
                                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                         id="btn_grp_edit_treatment"
                                         style="position: absolute;
                                                 padding: 0 0 0 0;
                                                 right: 10px;
-                                                top: 15px;">
+                                                top: 5px;">
                                         <button type="button" class="btn btn-default" id="new_treatment">
                                             <span class="fa fa-plus-square-o"></span> New 
                                         </button>
@@ -530,14 +530,14 @@
                                     </div>
                                 </div>
                                 
-                                <div class="panel-body" style="padding: 15px 5px;">
+                                <div class="panel-body">
                                     <form class='form-horizontal' style='width: 99%;' id='formTreatmentP'>
                                         <input id="tr_idno" name="tr_idno" type="hidden">
                                         <input id="tr_adduser" name="tr_adduser" type="hidden">
                                         
-                                        <div class="col-md-3" style="padding: 0 0 0 0;">
+                                        <div class="col-md-3">
                                             <div class="panel panel-info">
-                                                <div class="panel-body" style="padding: 0 0 0 0;">
+                                                <div class="panel-body">
                                                     <table id="tbl_treatment" class="ui celled table" style="width: 100%;">
                                                         <thead>
                                                             <tr>
@@ -554,28 +554,34 @@
                                             </div>
                                         </div>
                                         
-                                        <div class='col-md-9' style="padding-left: 5px; padding-right: 0px;">
+                                        <div class='col-md-9'>
                                             <div class="panel panel-info">
                                                 <!-- <div class="panel-heading text-center">NOTES</div> -->
-                                                <div class="panel-body" style="padding: 2px;">
-                                                    <div class="form-inline col-md-12" style="padding: 10px 15px 10px 0px;">
-                                                        <label class="control-label" for="tr_entereddate">Date</label>
-                                                        <input id="tr_entereddate" name="tr_entereddate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>" required>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label class="col-md-2 control-label" for="tr_entereddate">Date</label>
+                                                        <div class="col-md-3">
+                                                            <input id="tr_entereddate" name="tr_entereddate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." value="<?php echo date("Y-m-d"); ?>" required>
+                                                        </div>
+                                                        
+                                                        <label class="col-md-1 control-label" for="tr_enteredtime">Time</label>
+                                                        <div class="col-md-4">
+                                                            <input id="tr_enteredtime" name="tr_enteredtime" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." required>
+                                                        </div>
                                                     </div>
                                                     
-                                                    <div class="form-inline col-md-12" style="padding: 0px 15px 10px 0px;">
-                                                        <label class="control-label" for="tr_enteredtime">Time</label>
-                                                        <input id="tr_enteredtime" name="tr_enteredtime" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter information." required>
+                                                    <div class="form-group">
+                                                        <label class="col-md-2 control-label" for="treatment_remarks">Notes</label>
+                                                        <div class="col-md-8">
+                                                            <textarea id="treatment_remarks" name="treatment_remarks" type="text" class="form-control input-sm"></textarea>
+                                                        </div>
                                                     </div>
                                                     
-                                                    <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
-														<label for="treatment_remarks">Notes</label>
-														<textarea id="treatment_remarks" name="treatment_remarks" type="text" class="form-control input-sm"></textarea>
-													</div>
-                                                    
-                                                    <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
-                                                        <label for="treatment_adduser">Entered by</label>
-                                                        <input id="treatment_adduser" name="treatment_adduser" type="text" class="form-control input-sm" rdonly>
+                                                    <div class="form-group">
+                                                        <label class="col-md-2 control-label" for="treatment_adduser">Entered by</label>
+                                                        <div class="col-md-8">
+                                                            <input id="treatment_adduser" name="treatment_adduser" type="text" class="form-control input-sm" rdonly>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -584,7 +590,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class='col-md-4' style="padding-left: 3px; padding-right: 3px;">
+                        <div class='col-md-4' style="display: none; padding-left: 3px; padding-right: 3px;">
                             <div class="panel panel-info">
                                 <div class="panel-heading text-center" style="height: 60px;">
                                     <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 45px; top: 15px;">
@@ -665,7 +671,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class='col-md-4' style="padding-left: 3px; padding-right: 0px;">
+                        <div class='col-md-4' style="display: none; padding-left: 3px; padding-right: 0px;">
                             <div class="panel panel-info">
                                 <div class="panel-heading text-center" style="height: 60px;">
                                     <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 45px; top: 15px;">
