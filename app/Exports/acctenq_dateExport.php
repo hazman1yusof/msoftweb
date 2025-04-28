@@ -43,7 +43,9 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
     public function columnFormats(): array
     {
         return [
-            'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
         ];
     }
     
@@ -52,12 +54,16 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
         return [
             'A' => 10,
             'B' => 10,
-            'C' => 20,
-            'D' => 20,
-            'E' => 25,
+            'C' => 15,
+            'D' => 15,
+            'E' => 15,
             'F' => 25,
             'G' => 80,
-            'H' => 30,
+            'H' => 20,
+            'I' => 20,
+            'J' => 20,
+            'K' => 20,
+            'L' => 20,
         ];
     }
     

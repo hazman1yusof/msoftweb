@@ -135,7 +135,7 @@ class ARAgeingDtlExport implements FromView, WithEvents, WithColumnWidths, WithC
                         ->where('dm.compcode', '=', session('compcode'))
                         ->whereBetween('dm.debtorcode', [$debtorcode_from,$debtorcode_to.'%'])
                         ->orderBy('dm.debtorcode', 'ASC')
-                        ->limit(3000)
+                        // ->limit(3000)
                         ->get();
 
         $array_report = [];

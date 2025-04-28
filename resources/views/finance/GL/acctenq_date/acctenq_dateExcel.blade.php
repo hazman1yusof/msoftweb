@@ -11,7 +11,6 @@
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
     </tr>
     <tr>
         <td></td>
@@ -25,7 +24,6 @@
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
     </tr>
     <tr>
         <td></td>
@@ -34,7 +32,6 @@
         <td></td>
         <td></td>
         <td style="text-align: center" colspan="4">GL Account : {{$glaccount}}</td>
-        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -54,7 +51,6 @@
         <td style="font-weight: bold">Credit</td>
         <td style="font-weight: bold">Balance</td>
         <td style="font-weight: bold">Document No</td>
-        <td style="font-weight: bold">Units</td>
     </tr>
     @foreach ($table as $obj)
         <tr>
@@ -68,7 +64,6 @@
             <td>{{$obj->dramount}}</td>
             <td>{{$obj->cramount}}</td>
             <td>{{$obj->cramount}}</td>
-            <td>{{$obj->auditno}}</td>
             <td>{{$obj->auditno}}</td>
         </tr>
     @endforeach
