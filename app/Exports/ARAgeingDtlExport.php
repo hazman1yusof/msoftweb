@@ -23,7 +23,7 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class ARAgeingDtlExport implements FromView, WithEvents, WithColumnWidths
+class ARAgeingDtlExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     
     /**
@@ -72,6 +72,18 @@ class ARAgeingDtlExport implements FromView, WithEvents, WithColumnWidths
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+        ];
     }
     
     public function columnWidths(): array
@@ -123,6 +135,7 @@ class ARAgeingDtlExport implements FromView, WithEvents, WithColumnWidths
                         ->where('dm.compcode', '=', session('compcode'))
                         ->whereBetween('dm.debtorcode', [$debtorcode_from,$debtorcode_to.'%'])
                         ->orderBy('dm.debtorcode', 'ASC')
+                        ->limit(3000)
                         ->get();
 
         $array_report = [];
@@ -260,7 +273,10 @@ class ARAgeingDtlExport implements FromView, WithEvents, WithColumnWidths
         $debtortype = collect($array_report)->unique('debtortycode');
         $debtorcode = collect($array_report)->unique('debtorcode');
 
-        return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel',compact('debtortype','debtorcode','array_report','grouping'));
+        $comp_name = $this->comp->name;
+        $date_at = Carbon::createFromFormat('Y-m-d',$this->date)->format('d-m-Y');
+
+        return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel',compact('debtortype','debtorcode','array_report','grouping','date','date_at','comp_name'));
     }
     
     public function registerEvents(): array

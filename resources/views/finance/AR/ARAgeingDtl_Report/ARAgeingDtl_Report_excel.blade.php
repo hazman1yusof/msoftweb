@@ -1,5 +1,47 @@
 <table>
     <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="text-align: center" colspan="4">{{$comp_name}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="text-align: center" colspan="4">Ageing Details</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="text-align: center" colspan="4">As at : {{$date_at}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
     <tr>
         <td style="font-weight:bold; text-align: left">Code</td>
         <td style="font-weight:bold; text-align: left">Company</td>
@@ -41,9 +83,9 @@
 
                             @foreach ($grouping as $key => $group)
                                 @if($key == $obj_ar->group)
-                                <td>{{number_format($obj_ar->newamt, 2, '.', ',')}}</td>
+                                <td>{{$obj_ar->newamt}}</td>
                                 @else
-                                <td>{{number_format(0.00, 2, '.', ',')}}</td>
+                                <td>{{0.00}}</td>
                                 @endif
                             @endforeach
 
@@ -66,7 +108,7 @@
                         @endif
                     @endforeach
 
-                    <td>{{number_format($total, 2, '.', ',')}}</td>
+                    <td>{{$total}}</td>
                     <td></td>
                 </tr>
             @endif

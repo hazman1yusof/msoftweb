@@ -61,7 +61,7 @@
     <div class="container mycontainer">
         <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 680px;">
             <form method="get" id="genreport" action="./ARAgeingDtl_Report/showExcel">
-                <h4 style="padding-bottom: 30px;">AR AGEING DETAILS</h4>
+                <h4 style="padding-bottom: 30px;">AGEING DETAILS</h4>
                 <!-- <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7> -->
                 
                 <div style="width: 800px;margin: 0 auto;">
@@ -74,7 +74,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <div class="col-md-12" style="padding-top: 10px;">
+                            <div class="col-md-12" style="padding-top: 10px; display: none;">
                                 <label class="control-label" for="Scol">Debtor Type</label>
                                 <div class='input-group'>
                                     <input id="debtortype" name="debtortype" type="text" class="form-control input-sm" autocomplete="off" value="ALL">
@@ -85,7 +85,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <div class="col-md-12" style="padding-top: 10px;">
+                            <div class="col-md-12" style="padding-top: 10px; display: none;">
                                 <label class="control-label" for="Scol">Debtor From</label>
                                 <div class='input-group'>
                                     <input id="debtorcode_from" name="debtorcode_from" type="text" class="form-control input-sm" autocomplete="off" value="">
@@ -96,7 +96,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <div class="col-md-12" style="padding-top: 10px;">
+                            <div class="col-md-12" style="padding-top: 10px; display: none;">
                                 <label class="control-label" for="Scol">Debtor To</label>
                                 <div class='input-group'>
                                     <input id="debtorcode_to" name="debtorcode_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
