@@ -46,7 +46,7 @@
                                 
                                 <label class="col-md-1 control-label" for="morsefallscale_diag">Diagnosis</label>
                                 <div class="col-md-3">
-                                    <textarea id="morsefallscale_diag" name="diag" type="text" class="form-control input-sm" readonly></textarea>
+                                    <textarea id="morsefallscale_diag" name="diag" type="text" class="form-control input-sm"></textarea>
                                 </div>
                                 
                                 <label class="col-md-2 control-label" for="morsefallscale_admdate">Admission Date</label>

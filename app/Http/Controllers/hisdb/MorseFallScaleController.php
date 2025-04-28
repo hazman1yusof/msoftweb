@@ -136,6 +136,38 @@ class MorseFallScaleController extends defaultController
                     'computerid' => session('computerid'),
                 ]);
             
+            $pat_otbook = DB::table('hisdb.pat_otbook')
+                        ->where('mrn','=',$request->mrn_nursNote)
+                        ->where('episno','=',$request->episno_nursNote)
+                        ->where('compcode','=',session('compcode'));
+            
+            if($pat_otbook->exists()){
+                $pat_otbook
+                    ->update([
+                        'diagnosis' => $request->diag,
+                        // 'diagnosedby' => session('username'),
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser' => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            }else{
+                DB::table('hisdb.pat_otbook')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_nursNote,
+                        'episno' => $request->episno_nursNote,
+                        'diagnosis' => $request->diag,
+                        // 'diagnosedby' => session('username'),
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser' => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            }
+            
             DB::commit();
             
         } catch (\Exception $e) {
@@ -199,6 +231,38 @@ class MorseFallScaleController extends defaultController
                     ]);
             }
             
+            $pat_otbook = DB::table('hisdb.pat_otbook')
+                        ->where('mrn','=',$request->mrn_nursNote)
+                        ->where('episno','=',$request->episno_nursNote)
+                        ->where('compcode','=',session('compcode'));
+            
+            if($pat_otbook->exists()){
+                $pat_otbook
+                    ->update([
+                        'diagnosis' => $request->diag,
+                        // 'diagnosedby' => session('username'),
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser' => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            }else{
+                DB::table('hisdb.pat_otbook')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_nursNote,
+                        'episno' => $request->episno_nursNote,
+                        'diagnosis' => $request->diag,
+                        // 'diagnosedby' => session('username'),
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser' => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            }
+            
             $queries = DB::getQueryLog();
             // dump($queries);
             
@@ -216,11 +280,17 @@ class MorseFallScaleController extends defaultController
     
     public function get_table_morsefallscale(Request $request){
         
-        $nursassessment_obj = DB::table('nursing.nursassessment')
-                            ->select('diagnosis')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno);
+        // $nursassessment_obj = DB::table('nursing.nursassessment')
+        //                     ->select('diagnosis')
+        //                     ->where('compcode','=',session('compcode'))
+        //                     ->where('mrn','=',$request->mrn)
+        //                     ->where('episno','=',$request->episno);
+        
+        $pat_otbook_obj = DB::table('hisdb.pat_otbook')
+                        ->select('diagnosis')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno);
         
         $episode_obj = DB::table('hisdb.episode')
                         ->select('reg_date')
@@ -236,10 +306,17 @@ class MorseFallScaleController extends defaultController
         
         $responce = new stdClass();
         
-        if($nursassessment_obj->exists()){
-            $nursassessment_obj = $nursassessment_obj->first();
+        // if($nursassessment_obj->exists()){
+        //     $nursassessment_obj = $nursassessment_obj->first();
             
-            $diagnosis_obj = $nursassessment_obj->diagnosis;
+        //     $diagnosis_obj = $nursassessment_obj->diagnosis;
+        //     $responce->diagnosis = $diagnosis_obj;
+        // }
+        
+        if($pat_otbook_obj->exists()){
+            $pat_otbook_obj = $pat_otbook_obj->first();
+            
+            $diagnosis_obj = $pat_otbook_obj->diagnosis;
             $responce->diagnosis = $diagnosis_obj;
         }
         
