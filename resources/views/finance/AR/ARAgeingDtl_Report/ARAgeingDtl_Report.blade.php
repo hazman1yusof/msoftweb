@@ -74,7 +74,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <div class="col-md-12" style="padding-top: 10px; display: none;">
+                            <div class="col-md-12" style="padding-top: 10px;">
                                 <label class="control-label" for="Scol">Debtor Type</label>
                                 <div class='input-group'>
                                     <input id="debtortype" name="debtortype" type="text" class="form-control input-sm" autocomplete="off" value="ALL">
@@ -85,7 +85,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <div class="col-md-12" style="padding-top: 10px; display: none;">
+                            <div class="col-md-12" style="padding-top: 10px;">
                                 <label class="control-label" for="Scol">Debtor From</label>
                                 <div class='input-group'>
                                     <input id="debtorcode_from" name="debtorcode_from" type="text" class="form-control input-sm" autocomplete="off" value="">
@@ -96,7 +96,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <div class="col-md-12" style="padding-top: 10px; display: none;">
+                            <div class="col-md-12" style="padding-top: 10px;">
                                 <label class="control-label" for="Scol">Debtor To</label>
                                 <div class='input-group'>
                                     <input id="debtorcode_to" name="debtorcode_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
