@@ -12,7 +12,7 @@
         <td></td>
         <td></td>
         <td></td>
-        <td style="text-align: center" colspan="4">Ageing Details</td>
+        <td style="text-align: center" colspan="4">Ageing Summary</td>
         <td></td>
         <td></td>
         <td></td>
