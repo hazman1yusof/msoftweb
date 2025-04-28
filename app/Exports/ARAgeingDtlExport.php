@@ -129,7 +129,7 @@ class ARAgeingDtlExport implements FromView, WithEvents, WithColumnWidths, WithC
                                          ->whereDate('dh.posteddate', '<=', $date)
                                          ->where('dh.compcode', '=', session('compcode'));
                         })->leftJoin('hisdb.pat_mast as pm', function($join){
-                            $join = $join->on('pm.MRN', '=', 'dh.mrn')
+                            $join = $join->on('pm.NewMrn', '=', 'dh.mrn')
                                          ->where('pm.compcode', '=', session('compcode'));
                         })
                         ->where('dm.compcode', '=', session('compcode'))

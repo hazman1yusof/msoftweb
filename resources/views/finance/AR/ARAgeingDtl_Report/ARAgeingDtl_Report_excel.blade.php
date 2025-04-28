@@ -26,6 +26,7 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
     </tr>
     <tr>
         <td></td>
@@ -34,6 +35,7 @@
         <td></td>
         <td></td>
         <td style="text-align: center" colspan="4">As at : {{$date_at}}</td>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -56,6 +58,7 @@
         @endforeach
         <td style="font-weight:bold; text-align: left">Total</td>
         <td style="font-weight:bold; text-align: left">Units</td>
+        <td style="font-weight:bold; text-align: left">MRN</td>
     </tr>      
 
     @foreach ($debtortype as $obj_dt)
@@ -91,6 +94,11 @@
 
                             <td></td>
                             <td>{{$obj_ar->unit}}</td>
+                            @if(!empty($obj_ar->mrn))
+                            <td>{{$obj_ar->mrn}}</td>
+                            @else
+                            <td></td>
+                            @endif
                         </tr>
                     @endif
                 @endforeach
