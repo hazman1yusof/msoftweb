@@ -90,7 +90,7 @@ class arenquiryController extends defaultController
                     'db.auditno AS db_auditno', // search
                     'db.invno AS db_invno', // search
                     'db.recptno AS db_recptno', 
-                    'db.recptno AS db_billno', 
+                    // 'db.recptno AS db_billno', 
                     'db.ponum AS db_ponum',
                     'db.amount AS db_amount',
                     'db.remark AS db_remark',
