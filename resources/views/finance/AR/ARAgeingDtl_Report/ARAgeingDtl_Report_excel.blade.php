@@ -84,15 +84,17 @@
                             <td>{{$obj_ar->doc_no}}</td>
                             <td>{{$obj_ar->posteddate}}</td>
 
+                            @php($total_line = 0)
                             @foreach ($grouping as $key => $group)
                                 @if($key == $obj_ar->group)
+                                @php($total_line += $obj_ar->newamt)
                                 <td>{{$obj_ar->newamt}}</td>
                                 @else
                                 <td>{{0.00}}</td>
                                 @endif
                             @endforeach
 
-                            <td></td>
+                            <td>{{$total_line}}</td>
                             <td>{{$obj_ar->unit}}</td>
                             @if(!empty($obj_ar->mrn))
                             <td>{{$obj_ar->mrn}}</td>
