@@ -49,7 +49,7 @@ class ARAgeingDtl_ReportController extends defaultController
     }
     
     public function showExcel(Request $request){
-        return Excel::download(new ARAgeingDtlExport($request->date,$request->debtortype,$request->debtorcode_from,$request->debtorcode_to,$request->groupOne,$request->groupTwo,$request->groupThree,$request->groupFour,$request->groupFive,$request->groupSix), 'ARAgeingDtlExport.xlsx');
+        return Excel::download(new ARAgeingDtlExport($request->type,$request->date,$request->debtortype,$request->debtorcode_from,$request->debtorcode_to,$request->groupOne,$request->groupTwo,$request->groupThree,$request->groupFour,$request->groupFive,$request->groupSix), 'ARAgeingDtlExport.xlsx');
     }
     
     public function showpdf(Request $request){

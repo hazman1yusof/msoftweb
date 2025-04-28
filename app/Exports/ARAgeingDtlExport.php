@@ -30,9 +30,10 @@ class ARAgeingDtlExport implements FromView, WithEvents, WithColumnWidths, WithC
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($date,$debtortype,$debtorcode_from,$debtorcode_to,$groupOne,$groupTwo,$groupThree,$groupFour,$groupFive,$groupSix)
+    public function __construct($type,$date,$debtortype,$debtorcode_from,$debtorcode_to,$groupOne,$groupTwo,$groupThree,$groupFour,$groupFive,$groupSix)
     {
         
+        $this->type = $type;
         $this->date = Carbon::parse($date)->format('Y-m-d');
         $this->debtortype = $debtortype;
         $this->debtorcode_from = $debtorcode_from;
@@ -109,6 +110,7 @@ class ARAgeingDtlExport implements FromView, WithEvents, WithColumnWidths, WithC
     public function view(): View
     {
 
+        $type = $this->type;
         $date = $this->date;
         $debtortype = $this->debtortype;
         $debtorcode_from = $this->debtorcode_from;
@@ -268,15 +270,18 @@ class ARAgeingDtlExport implements FromView, WithEvents, WithColumnWidths, WithC
             
         }
 
-        // dd($grouping);
-
         $debtortype = collect($array_report)->unique('debtortycode');
         $debtorcode = collect($array_report)->unique('debtorcode');
 
         $comp_name = $this->comp->name;
         $date_at = Carbon::createFromFormat('Y-m-d',$this->date)->format('d-m-Y');
 
-        return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel',compact('debtortype','debtorcode','array_report','grouping','date','date_at','comp_name'));
+        if($this->type == 'detail'){
+            return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel',compact('debtortype','debtorcode','array_report','grouping','date','date_at','comp_name'));
+        }else if($this->type == 'summary'){
+            return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel_summ',compact('debtortype','debtorcode','array_report','grouping','date','date_at','comp_name'));
+        }
+
     }
     
     public function registerEvents(): array

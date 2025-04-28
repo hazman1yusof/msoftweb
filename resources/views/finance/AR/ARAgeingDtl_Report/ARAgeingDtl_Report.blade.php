@@ -110,6 +110,11 @@
                     <div class="col-md-4" style="margin-left: 50px;padding-top: 30px;">
                         <div class="panel panel-default" style="height: 137px;">
                             <div class="panel-body">
+                                <select name="type" id="type" class="form-control input-sm" >
+                                  <option value="detail">Detail</option>
+                                  <option value="summary">Summary</option>
+                                </select>
+                                <fieldset>
                                 <div class='col-md-12 btnform' style="padding: 20px 0px">
                                     <fieldset>
                                         <!-- <legend>Stock Sheet :</legend> -->
@@ -190,5 +195,5 @@
 @endsection
 
 @section('scripts')
-    <script src="js/finance/AR/ARAgeingDtl_Report/ARAgeingDtl_Report.js"></script>
+    <script src="js/finance/AR/ARAgeingDtl_Report/ARAgeingDtl_Report.js?v=1.1"></script>
 @endsection
