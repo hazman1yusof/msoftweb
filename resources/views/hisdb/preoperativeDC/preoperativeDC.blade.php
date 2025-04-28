@@ -61,7 +61,7 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th width="60%">Description</th>
+                                            <th width="40%">Description</th>
                                             <th>Ward</th>
                                             <th>Reception</th>
                                             <th>Theatre</th>
@@ -87,18 +87,18 @@
                                         </tr>
                                         <tr>
                                             <td>3.</td>
-                                            <td>Fasted from
-                                                <div class="form-inline"> &nbsp;
+                                            <td>
+                                                <div class="form-inline">Fasted from &nbsp;
                                                     <div class="form-group">
                                                         <input type="time" class="form-control" id="fasted_time_from" name="fasted_time_from">
-                                                    </div>  &nbsp;
-                                                    <div class="form-group">
+                                                    </div>
+                                                    <!-- <div class="form-group">
                                                         <input type="time" class="form-control" id="fasted_time_until" name="fasted_time_until">
                                                     </div>  &nbsp;
                                                     @ &nbsp;
                                                     <div class="form-group">
                                                         <input type="text" class="form-control" id="fasted_hours" name="fasted_hours">
-                                                    </div> &nbsp;hours
+                                                    </div> &nbsp;hours -->
                                                 </div>
                                             </td>
                                             <td><input type="checkbox" name="fasted_ward" value="1"></td>
@@ -204,8 +204,8 @@
                                         </tr>
                                         <tr>
                                             <td>16.</td>
-                                            <td>Pre Medication Given
-                                                <div class="form-inline"> &nbsp; @  &nbsp;
+                                            <td>
+                                                <div class="form-inline"> Pre Medication Given @  &nbsp;
                                                     <div class="form-group">
                                                         <input type="time" class="form-control" id="premedGiven_hours" name="premedGiven_hours">
                                                     </div> &nbsp;hours
@@ -264,10 +264,26 @@
                                             <td><input type="checkbox" name="medLegalCase_theatre" value="1"></td>
                                             <td><textarea class="form-control input-sm" id="medLegalCase_remarks" name="medLegalCase_remarks"></textarea></td>
                                         </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>Checked by <b>(Staff's Name)</b></td>
+                                            <td><input type="text" name="checkedBy_ward" id="checkedBy_ward"></td>
+                                            <td><input type="text" name="checkedBy_rec" id="checkedBy_rec"></td>
+                                            <td><input type="text" name="checkedBy_theatre" id="checkedBy_theatre"></td>
+                                            <td><textarea class="form-control input-sm" id="checkedBy_remarks" name="checkedBy_remarks"></textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>Date</td>
+                                            <td><input type="date" class="form-control" id="checkedDate_ward" name="checkedDate_ward"></td>
+                                            <td><input type="date" class="form-control" id="checkedDate_rec" name="checkedDate_rec"></td>
+                                            <td><input type="date" class="form-control" id="checkedDate_theatre" name="checkedDate_theatre"></td>
+                                            <td><textarea class="form-control input-sm" id="checkedDate_remarks" name="checkedDate_remarks"></textarea></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                                 
-                                <div class="sixteen wide column">
+                                <div class="sixteen wide column" style="display:none">
                                     <div class="ui segments">
                                         <div class="ui segment">
                                             <div class="ui grid">
@@ -301,47 +317,47 @@
                                     <tbody>
                                         <tr>
                                             <td><b>Blood Test</b></td>
-                                            <td><input type="text" name="bloodTest_1" id="bloodTest_1"></td>
-                                            <td><input type="text" name="bloodTest_2" id="bloodTest_2"></td>
-                                            <td><input type="text" name="bloodTest_3" id="bloodTest_3"></td>
-                                            <td><input type="text" name="bloodTest_4" id="bloodTest_4"></td>
-                                            <td><input type="text" name="bloodTest_doc" id="bloodTest_doc"></td>
+                                            <td><input type="checkbox" name="bloodTest_1" id="bloodTest_1" value="1"></td>
+                                            <td><input type="checkbox" name="bloodTest_2" id="bloodTest_2" value="1"></td>
+                                            <td><input type="checkbox" name="bloodTest_3" id="bloodTest_3" value="1"></td>
+                                            <td><input type="checkbox" name="bloodTest_4" id="bloodTest_4" value="1"></td>
+                                            <td><input type="checkbox" name="bloodTest_doc" id="bloodTest_doc" value="1"></td>
                                             <td><textarea class="form-control input-sm" id="bloodTest_remarks" name="bloodTest_remarks"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td><b>Group And Cross Match</b></td>
-                                            <td><input type="text" name="grpCrossMatch_1" id="grpCrossMatch_1"></td>
-                                            <td><input type="text" name="grpCrossMatch_2" id="grpCrossMatch_2"></td>
-                                            <td><input type="text" name="grpCrossMatch_3" id="grpCrossMatch_3"></td>
-                                            <td><input type="text" name="grpCrossMatch_4" id="grpCrossMatch_4"></td>
-                                            <td><input type="text" name="grpCrossMatch_doc" id="grpCrossMatch_doc"></td>
+                                            <td><input type="checkbox" name="grpCrossMatch_1" id="grpCrossMatch_1" value="1"></td>
+                                            <td><input type="checkbox" name="grpCrossMatch_2" id="grpCrossMatch_2" value="1"></td>
+                                            <td><input type="checkbox" name="grpCrossMatch_3" id="grpCrossMatch_3" value="1"></td>
+                                            <td><input type="checkbox" name="grpCrossMatch_4" id="grpCrossMatch_4" value="1"></td>
+                                            <td><input type="checkbox" name="grpCrossMatch_doc" id="grpCrossMatch_doc" value="1"></td>
                                             <td>Availability:<textarea class="form-control input-sm" id="grpCrossMatch_remarks" name="grpCrossMatch_remarks"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td><b>ECG</b></td>
-                                            <td><input type="text" name="ecg_1" id="ecg_1"></td>
-                                            <td><input type="text" name="ecg_2" id="ecg_2"></td>
-                                            <td><input type="text" name="ecg_3" id="ecg_3"></td>
-                                            <td><input type="text" name="ecg_4" id="ecg_4"></td>
-                                            <td><input type="text" name="ecg_doc" id="ecg_doc"></td>
+                                            <td><input type="checkbox" name="ecg_1" id="ecg_1" value="1"></td>
+                                            <td><input type="checkbox" name="ecg_2" id="ecg_2" value="1"></td>
+                                            <td><input type="checkbox" name="ecg_3" id="ecg_3" value="1"></td>
+                                            <td><input type="checkbox" name="ecg_4" id="ecg_4" value="1"></td>
+                                            <td><input type="checkbox" name="ecg_doc" id="ecg_doc" value="1"></td>
                                             <td><textarea class="form-control input-sm" id="ecg_remarks" name="ecg_remarks"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td><b>XRAY/CT/MRI/ANGIO Films</b></td>
-                                            <td><input type="text" name="xray_1" id="xray_1"></td>
-                                            <td><input type="text" name="xray_2" id="xray_2"></td>
-                                            <td><input type="text" name="xray_3" id="xray_3"></td>
-                                            <td><input type="text" name="xray_4" id="xray_4"></td>
-                                            <td><input type="text" name="xray_doc" id="xray_doc"></td>
+                                            <td><input type="checkbox" name="xray_1" id="xray_1" value="1"></td>
+                                            <td><input type="checkbox" name="xray_2" id="xray_2" value="1"></td>
+                                            <td><input type="checkbox" name="xray_3" id="xray_3" value="1"></td>
+                                            <td><input type="checkbox" name="xray_4" id="xray_4" value="1"></td>
+                                            <td><input type="checkbox" name="xray_doc" id="xray_doc" value="1"></td>
                                             <td><textarea class="form-control input-sm" id="xray_remarks" name="xray_remarks"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td><b>CTG</b></td>
-                                            <td><input type="text" name="ctg_1" id="ctg_1"></td>
-                                            <td><input type="text" name="ctg_2" id="ctg_2"></td>
-                                            <td><input type="text" name="ctg_3" id="ctg_3"></td>
-                                            <td><input type="text" name="ctg_4" id="ctg_4"></td>
-                                            <td><input type="text" name="ctg_doc" id="ctg_doc"></td>
+                                            <td><input type="checkbox" name="ctg_1" id="ctg_1" value="1"></td>
+                                            <td><input type="checkbox" name="ctg_2" id="ctg_2" value="1"></td>
+                                            <td><input type="checkbox" name="ctg_3" id="ctg_3" value="1"></td>
+                                            <td><input type="checkbox" name="ctg_4" id="ctg_4" value="1"></td>
+                                            <td><input type="checkbox" name="ctg_doc" id="ctg_doc" value="1"></td>
                                             <td><textarea class="form-control input-sm" id="ctg_remarks" name="ctg_remarks"></textarea></td>
                                         </tr>
                                         <tr>

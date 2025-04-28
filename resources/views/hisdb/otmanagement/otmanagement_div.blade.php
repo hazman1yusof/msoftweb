@@ -191,7 +191,7 @@
                                         <div class="ui segment" style="height: 480px">
                                             <div class="ui grid">
 
-                                                <div class="sixteen wide column">
+                                                <div class="sixteen wide column" style="display: none;">
                                                     <div class="ui segments">
                                                         <div class="ui segment">
 
@@ -250,7 +250,6 @@
                                                 <div class="sixteen wide column">
                                                     <div class="ui segments">
                                                         <div class="ui segment">
-
                                                             <div class="ui grid">
                                                                 <div class="inline field">
                                                                     <label style="margin:0px; padding: 3px 3px 3px 3px;">Emergency</label>
