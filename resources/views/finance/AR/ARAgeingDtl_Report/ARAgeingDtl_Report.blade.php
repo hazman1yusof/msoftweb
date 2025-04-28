@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'AR Ageing Details')
+@section('title', 'AR Ageing')
 
 @section('css')
     <style>
@@ -61,7 +61,7 @@
     <div class="container mycontainer">
         <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 680px;">
             <form method="get" id="genreport" action="./ARAgeingDtl_Report/showExcel">
-                <h4 style="padding-bottom: 30px;">AGEING DETAILS</h4>
+                <h4 style="padding-bottom: 30px;">AR AGEING</h4>
                 <!-- <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7> -->
                 
                 <div style="width: 800px;margin: 0 auto;">

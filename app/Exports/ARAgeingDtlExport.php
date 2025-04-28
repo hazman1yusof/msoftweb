@@ -77,21 +77,32 @@ class ARAgeingDtlExport implements FromView, WithEvents, WithColumnWidths, WithC
 
     public function columnFormats(): array
     {
-        return [
-            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-        ];
+        if($this->type == 'detail'){
+            return [
+                'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            ];
+        }else if($this->type == 'summary'){
+            return [
+                'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            ];
+        }
     }
     
     public function columnWidths(): array
     {
         return [
             'A' => 15,
-            'B' => 40,
+            'B' => 65,
             'C' => 15,
             'D' => 15,
             'E' => 15,
