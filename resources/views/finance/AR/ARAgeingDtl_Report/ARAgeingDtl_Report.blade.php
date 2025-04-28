@@ -195,5 +195,5 @@
 @endsection
 
 @section('scripts')
-    <script src="js/finance/AR/ARAgeingDtl_Report/ARAgeingDtl_Report.js?v=1.1"></script>
+    <script src="js/finance/AR/ARAgeingDtl_Report/ARAgeingDtl_Report.js?v=1.2"></script>
 @endsection
