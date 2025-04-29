@@ -18,7 +18,7 @@ $(document).ready(function (){
         rdonly('#formMorseFallScale');
         emptyFormdata_div("#formMorseFallScale",['#mrn_nursNote','#episno_nursNote','#doctor_nursNote','#ordcomtt_phar']);
         document.getElementById("idno_morsefallscale").value = "";
-        $("#morsefallscale_diag").attr("readonly", true);
+        // $("#morsefallscale_diag").attr("readonly", true);
         // dialog_mrn_edit.on();
     });
     
@@ -26,7 +26,7 @@ $(document).ready(function (){
         button_state_morsefallscale('wait');
         enableForm('#formMorseFallScale');
         rdonly('#formMorseFallScale');
-        $("#morsefallscale_datetaken,#morsefallscale_diag").attr("readonly", true);
+        $("#morsefallscale_datetaken").attr("readonly", true);
         // dialog_mrn_edit.on();
     });
     
