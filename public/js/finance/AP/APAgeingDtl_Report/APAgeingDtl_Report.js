@@ -17,7 +17,7 @@ $(document).ready(function () {
 	});
 
 	$('#excel').click(function(){
-		window.open('./APAgeingDtl_Report/showExcel?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&date='+$("#date").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val(),  '_blank'); 
+		window.open('./APAgeingDtl_Report/showExcel?type='+$('#type').val()+'&suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&date='+$("#date").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val(),  '_blank'); 
 	});
 
     /////////////////////////////////////dialog handler///////////////////////////////

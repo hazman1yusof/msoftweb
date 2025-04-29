@@ -19,7 +19,7 @@
         <td></td>
         <td></td>
         <td></td>
-        <td style="text-align: center" colspan="4">Ageing Details</td>
+        <td style="text-align: center" colspan="4">AR Ageing {{$type}}</td>
         <td></td>
         <td></td>
         <td></td>
@@ -62,6 +62,7 @@
     </tr>      
 
     @foreach ($debtortype as $obj_dt)
+    <tr>
     <tr>
         <td style="font-weight:bold; text-align: left">{{$obj_dt->debtortycode}}</td>
         <td style="font-weight:bold; text-align: left">{{$obj_dt->description}}</td>

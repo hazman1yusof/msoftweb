@@ -23,16 +23,17 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class APAgeingDtlExport implements FromView, WithEvents, WithColumnWidths
+class APAgeingDtlExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     
     /**
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($date,$suppcode_from,$suppcode_to,$groupOne,$groupTwo,$groupThree,$groupFour,$groupFive,$groupSix)
+    public function __construct($type,$date,$suppcode_from,$suppcode_to,$groupOne,$groupTwo,$groupThree,$groupFour,$groupFive,$groupSix)
     {
         
+        $this->type = $type;
         $this->date = Carbon::parse($date)->format('Y-m-d');
         $this->suppcode_from = $suppcode_from;
         if(empty($suppcode_from)){
@@ -72,6 +73,30 @@ class APAgeingDtlExport implements FromView, WithEvents, WithColumnWidths
             ->where('compcode','=',session('compcode'))
             ->first();
     }
+
+    public function columnFormats(): array
+    {
+        if($this->type == 'detail'){
+            return [
+                'C' => NumberFormat::FORMAT_TEXT,
+                'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            ];
+        }else if($this->type == 'summary'){
+            return [
+                'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            ];
+        }
+    }
     
     public function columnWidths(): array
     {
@@ -95,6 +120,7 @@ class APAgeingDtlExport implements FromView, WithEvents, WithColumnWidths
     
     public function view(): View
     {
+        $type = $this->type;
         $date = $this->date;
         $suppcode_from = $this->suppcode_from;
         $suppcode_to = $this->suppcode_to;
@@ -133,6 +159,7 @@ class APAgeingDtlExport implements FromView, WithEvents, WithColumnWidths
             $days = $interval->format('%a');
             $value->group = $this->assign_grouping($grouping,$days);
             $value->days = $days;
+            $value->auditno_ = $value->source.'-'.$value->trantype.'-'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);;
             
             $alloc_sum = DB::table('finance.apalloc')
                     ->where('compcode', '=', session('compcode'))
@@ -157,7 +184,16 @@ class APAgeingDtlExport implements FromView, WithEvents, WithColumnWidths
         $suppgroup = collect($array_report)->unique('suppgroup');
         $suppcode = collect($array_report)->unique('suppcode');
 
-        return view('finance.AP.APAgeingDtl_Report.APAgeingDtl_Report_excel',compact('array_report', 'suppgroup', 'suppcode', 'array_report', 'grouping'));
+        $comp_name = $this->comp->name;
+        $date_at = Carbon::createFromFormat('Y-m-d',$this->date)->format('d-m-Y');
+        // dd($array_report);
+
+
+        if($this->type == 'detail'){
+            return view('finance.AP.APAgeingDtl_Report.APAgeingDtl_Report_excel',compact('array_report', 'suppgroup', 'suppcode', 'array_report', 'grouping','comp_name','date_at','type'));
+        }else{
+            return view('finance.AP.APAgeingDtl_Report.APAgeingDtl_Report_excel',compact('array_report', 'suppgroup', 'suppcode', 'array_report', 'grouping','comp_name','date_at','type'));
+        }
     }
     
     public function registerEvents(): array

@@ -288,9 +288,9 @@ class ARAgeingDtlExport implements FromView, WithEvents, WithColumnWidths, WithC
         $date_at = Carbon::createFromFormat('Y-m-d',$this->date)->format('d-m-Y');
 
         if($this->type == 'detail'){
-            return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel',compact('debtortype','debtorcode','array_report','grouping','date','date_at','comp_name'));
+            return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel',compact('debtortype','debtorcode','array_report','grouping','date','date_at','comp_name','type'));
         }else if($this->type == 'summary'){
-            return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel_summ',compact('debtortype','debtorcode','array_report','grouping','date','date_at','comp_name'));
+            return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel_summ',compact('debtortype','debtorcode','array_report','grouping','date','date_at','comp_name','type'));
         }
 
     }

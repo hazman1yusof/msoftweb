@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'AP Ageing Details')
+@section('title', 'AP Ageing')
 
 @section('css')
     <style>
@@ -47,7 +47,7 @@
 	<div class="container mycontainer">
 		<div class="jumbotron" style="margin-top: 30px;text-align: center;height: 640px">
 			<form method="get" class='form-horizontal' style='width:99%' id="genreport" action="./APAgeingDtl_Report/showExcel">
-				<h4>AP AGEING DETAILS</h4>
+				<h4>AP AGEING</h4>
 				<h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7>
 
 				<div style="width: 800px;margin: 0 auto;">
@@ -85,9 +85,13 @@
                     <div class="col-md-4" style="margin-left: 50px;padding-top: 50px;">
                         <div class="panel panel-default" style="height: 137px;">
                             <div class="panel-body">
+                                <select name="type" id="type" class="form-control input-sm" >
+                                  <option value="detail">Detail</option>
+                                  <option value="summary">Summary</option>
+                                </select>
                                 <div class='col-md-12 btnform' style="padding: 20px 0px">
 								<fieldset>
-									<button name="pdfgen" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgen">
+									<button name="pdfgen" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgen" style="display: none;">
 										<span class="fa fa-file-pdf-o fa-lg"></span> Generate Report PDF
 									</button>
 									<button name="excel" type="button" class="mybtn btn btn-sm mybtnxls" id="excel">
@@ -164,5 +168,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/finance/AP/APAgeingDtl_Report/APAgeingDtl_Report.js"></script>
+	<script src="js/finance/AP/APAgeingDtl_Report/APAgeingDtl_Report.js?v=1.1"></script>
 @endsection
