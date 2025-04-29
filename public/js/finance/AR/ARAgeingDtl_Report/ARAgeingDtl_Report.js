@@ -114,7 +114,7 @@ $(document).ready(function () {
     dialog_debtorFrom.makedialog(true);
     
     var dialog_debtorTo = new ordialog(
-        'debtorcode_to','debtor.debtormast','#genreport input[name = debtorcode_to]',errorField,
+        'debtorcode_to','debtor.debtormast','#genreport input[name = debtorcode_to]','errorField',
         {
             colModel: [
                 { label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },

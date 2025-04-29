@@ -25,7 +25,15 @@ class APAgeingDtl_ReportController extends defaultController
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new APAgeingDtlExport($request->type,$request->date,$request->suppcode_from,$request->suppcode_to,$request->groupOne,$request->groupTwo,$request->groupThree,$request->groupFour,$request->groupFive,$request->groupSix), 'APAgeingDtl.xlsx');
+
+
+        if($request->type == 'detail'){
+            $filename = 'APAgeingDetail.xlsx';
+        }else{
+            $filename = 'APAgeingSummary.xlsx';
+        }
+
+        return Excel::download(new APAgeingDtlExport($request->type,$request->date,$request->suppcode_from,$request->suppcode_to,$request->groupOne,$request->groupTwo,$request->groupThree,$request->groupFour,$request->groupFive,$request->groupSix), $filename);
     }
     
     public function showpdf(Request $request){

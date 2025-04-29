@@ -1520,11 +1520,11 @@ class PointOfSalesDetailController extends defaultController
                     'source' => $source,
                     'trantype' => $trantype,
                     'chggroup' => $request->chggroup,
-                    'description' => $request->description,
+                    // 'description' => $request->description,
                     'lineno_' => '1',
                     'rowno' => $li,
-                    'mrn' => (!empty($dbacthdr->mrn))?$dbacthdr->mrn:null,
-                    'episno' => (!empty($dbacthdr->episno))?$dbacthdr->episno:null,
+                    // 'mrn' => (!empty($dbacthdr->mrn))?$dbacthdr->mrn:null,
+                    // 'episno' => (!empty($dbacthdr->episno))?$dbacthdr->episno:null,
                     'uom' => $request->uom,
                     'uom_recv' => $request->uom_recv,
                     'taxcode' => $request->taxcode,
@@ -1811,7 +1811,7 @@ class PointOfSalesDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 

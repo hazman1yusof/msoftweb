@@ -192,7 +192,7 @@ class APAgeingDtlExport implements FromView, WithEvents, WithColumnWidths, WithC
         if($this->type == 'detail'){
             return view('finance.AP.APAgeingDtl_Report.APAgeingDtl_Report_excel',compact('array_report', 'suppgroup', 'suppcode', 'array_report', 'grouping','comp_name','date_at','type'));
         }else{
-            return view('finance.AP.APAgeingDtl_Report.APAgeingDtl_Report_excel',compact('array_report', 'suppgroup', 'suppcode', 'array_report', 'grouping','comp_name','date_at','type'));
+            return view('finance.AP.APAgeingDtl_Report.APAgeingDtlsumm_Report_excel',compact('array_report', 'suppgroup', 'suppcode', 'array_report', 'grouping','comp_name','date_at','type'));
         }
     }
     

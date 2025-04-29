@@ -12,7 +12,7 @@
         <td></td>
         <td></td>
         <td></td>
-        <td style="text-align: center" colspan="4">Ageing Summary</td>
+        <td style="text-align: center" colspan="4">AP Ageing {{$type}}</td>
         <td></td>
         <td></td>
         <td></td>
@@ -26,8 +26,9 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
     </tr>
-    <tr>
+    <tr></tr>
     <tr>
         <td style="font-weight:bold; text-align: left">Code</td>
         <td style="font-weight:bold; text-align: left">Company</td>
@@ -44,10 +45,11 @@
     @php
         $grandtotal = 0;
     @endphp
-    @foreach ($debtortype as $obj_dt)
+    @foreach ($suppgroup as $obj_sg)
+    <tr></tr>
     <tr>
-        <td style="font-weight:bold; text-align: left">{{$obj_dt->debtortycode}}</td>
-        <td style="font-weight:bold; text-align: left">{{$obj_dt->description}}</td>
+        <td style="font-weight:bold; text-align: left">{{$obj_sg->suppgroup}}</td>
+        <td style="font-weight:bold; text-align: left">{{$obj_sg->description}}</td>
     </tr>
         @php
             $grouping_type_total = [];
@@ -56,11 +58,11 @@
             }
         @endphp
 
-        @foreach ($debtorcode as $obj_dc)
-            @if($obj_dc->debtortype == $obj_dt->debtortycode)
+        @foreach ($suppcode as $obj_sc)
+            @if($obj_sc->suppgroup == $obj_sg->suppgroup)
                 <tr>
-                    <td style="text-align: left">{{$obj_dc->debtorcode}}</td>
-                    <td style="text-align: left">{{$obj_dc->name}}</td>
+                    <td style="font-weight:bold; text-align: left">{{$obj_sc->suppcode}}</td>
+                    <td style="font-weight:bold; text-align: left">{{$obj_sc->name}}</td>
 
                 @php
                     $grouping_total = [];
@@ -70,7 +72,7 @@
                     }
 
                     foreach ($array_report as $obj_ar) {
-                        if($obj_ar->debtorcode == $obj_dc->debtorcode){
+                        if($obj_ar->suppcode == $obj_sc->suppcode){
                             foreach ($grouping as $key => $value) {
                                 if($obj_ar->group == $key){
                                     $grouping_total[$key] = $grouping_total[$key] + $obj_ar->newamt;
@@ -93,10 +95,9 @@
                 @endforeach
                 <td>{{$total}}</td>
                 </tr>
-                
+
             @endif
         @endforeach
-
     <tr>
         <td ></td>
         <td style="font-weight:bold; text-align: left">SUB TOTAL</td>

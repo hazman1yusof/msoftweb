@@ -1,103 +1,133 @@
 <?php
 
-namespace App\Http\Controllers\finance;
+namespace App\Exports;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\defaultController;
-use stdClass;
 use DB;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithDrawings;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Events\BeforeSheet;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\FromView;
+use Illuminate\Contracts\View\View;
 use DateTime;
 use Carbon\Carbon;
-use App\Exports\ARAgeingDtlExport;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Validator;
+use stdClass;
 
-class ARAgeingDtl_ReportController extends defaultController
+class ARAgeingSummExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     
-    var $table;
-    var $duplicateCode;
-    var $auditno;
+    /**
+    * @return \Illuminate\Support\Collection
+    */
     
-    public function __construct()
+    public function __construct($type,$date,$debtortype,$debtorcode_from,$debtorcode_to,$groupOne,$groupTwo,$groupThree,$groupFour,$groupFive,$groupSix)
     {
-        $this->middleware('auth');
-    }
-    
-    public function show(Request $request)
-    {
-        $comp = DB::table('sysdb.company')->where('compcode','=',session('compcode'))->first();
-        return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report',[
-            'company_name' => $comp->name
-        ]);
-    }
-    
-    public function form(Request $request)
-    {
-        switch($request->oper){
-            case 'add':
-                return $this->defaultAdd($request);
-            case 'edit':
-                return $this->defaultEdit($request);
-            case 'del':
-                return $this->defaultDel($request);
-            case 'depreciation':
-                return $this->depreciation($request);
-            default:
-                return 'error happen..';
-        }
-    }
-    
-    public function showExcel(Request $request){
-
-        if($request->type == 'detail'){
-            $filename = 'ARAgeingDetail.xlsx';
-        }else{
-            $filename = 'ARAgeingSummary.xlsx';
-        }
-
-        return Excel::download(new ARAgeingDtlExport($request->type,$request->date,$request->debtortype,$request->debtorcode_from,$request->debtorcode_to,$request->groupOne,$request->groupTwo,$request->groupThree,$request->groupFour,$request->groupFive,$request->groupSix), $filename);
-    }
-    
-    public function showpdf(Request $request){
         
-        $date = Carbon::parse($request->date)->format('Y-m-d');
-        $date_title = Carbon::parse($request->date)->format('d-m-Y');
-        $debtortype = $request->debtortype;
-        $debtorcode_from = $request->debtorcode_from;
-        if(empty($request->debtorcode_from)){
-            $debtorcode_from = '%';
+        $this->type = $type;
+        $this->date = Carbon::parse($date)->format('Y-m-d');
+        $this->debtortype = $debtortype;
+        $this->debtorcode_from = $debtorcode_from;
+        if(empty($debtorcode_from)){
+            $this->debtorcode_from = '%';
         }
-        $debtorcode_to = $request->debtorcode_to;
+        $this->debtorcode_to = $debtorcode_to;
 
-        $groupOne = $request->groupOne;
-        $groupTwo = $request->groupTwo;
-        $groupThree = $request->groupThree;
-        $groupFour = $request->groupFour;
-        $groupFive = $request->groupFive;
-        $groupSix = $request->groupSix;
+        $this->groupOne = $groupOne;
+        $this->groupTwo = $groupTwo;
+        $this->groupThree = $groupThree;
+        $this->groupFour = $groupFour;
+        $this->groupFive = $groupFive;
+        $this->groupSix = $groupSix;
 
-        $grouping = [];
-        $grouping[0] = 0;
-        if(!empty($groupOne)){
-            $grouping[1] = $groupOne;
+        $this->grouping = [];
+        $this->grouping[0] = 0;
+        if(!empty($this->groupOne)){
+            $this->grouping[1] = $this->groupOne;
         }
-        if(!empty($groupTwo)){
-            $grouping[2] = $groupTwo;
+        if(!empty($this->groupTwo)){
+            $this->grouping[2] = $this->groupTwo;
         }
-        if(!empty($groupThree)){
-            $grouping[3] = $groupThree;
+        if(!empty($this->groupThree)){
+            $this->grouping[3] = $this->groupThree;
         }
-        if(!empty($groupFour)){
-            $grouping[4] = $groupFour;
+        if(!empty($this->groupFour)){
+            $this->grouping[4] = $this->groupFour;
         }
-        if(!empty($groupFive)){
-            $grouping[5] = $groupFive;
+        if(!empty($this->groupFive)){
+            $this->grouping[5] = $this->groupFive;
         }
-        if(!empty($groupSix)){
-            $grouping[6] = $groupSix;
+        if(!empty($this->groupSix)){
+            $this->grouping[6] = $this->groupSix;
         }
-        
+
+        $this->comp = DB::table('sysdb.company')
+            ->where('compcode','=',session('compcode'))
+            ->first();
+    }
+
+    public function columnFormats(): array
+    {
+        if($this->type == 'detail'){
+            return [
+                'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            ];
+        }else if($this->type == 'summary'){
+            return [
+                'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+                'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            ];
+        }
+    }
+    
+    public function columnWidths(): array
+    {
+        return [
+            'A' => 15,
+            'B' => 65,
+            'C' => 15,
+            'D' => 15,
+            'E' => 15,
+            'F' => 15,
+            'G' => 15,
+            'H' => 15,
+            'I' => 15,
+            'J' => 15,
+            'K' => 15,
+            'L' => 15,
+            'M' => 15,
+            'N' => 15,
+        ];
+    }
+    
+    public function view(): View
+    {
+
+        $type = $this->type;
+        $date = $this->date;
+        $debtortype = $this->debtortype;
+        $debtorcode_from = $this->debtorcode_from;
+        $debtorcode_to = $this->debtorcode_to;
+        $grouping = $this->grouping;
+
         $debtormast = DB::table('debtor.debtormast as dm')
                         ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'pm.Name as pm_name','dm.debtortype','dt.debtortycode','dt.description','dm.name')
                         ->join('debtor.debtortype as dt', function($join) use ($debtortype){
@@ -112,12 +142,13 @@ class ARAgeingDtl_ReportController extends defaultController
                                          ->whereDate('dh.posteddate', '<=', $date)
                                          ->where('dh.compcode', '=', session('compcode'));
                         })->leftJoin('hisdb.pat_mast as pm', function($join){
-                            $join = $join->on('pm.MRN', '=', 'dh.mrn')
+                            $join = $join->on('pm.NewMrn', '=', 'dh.mrn')
                                          ->where('pm.compcode', '=', session('compcode'));
                         })
                         ->where('dm.compcode', '=', session('compcode'))
                         ->whereBetween('dm.debtorcode', [$debtorcode_from,$debtorcode_to.'%'])
                         ->orderBy('dm.debtorcode', 'ASC')
+                        // ->limit(3000)
                         ->get();
 
         $array_report = [];
@@ -249,53 +280,77 @@ class ARAgeingDtl_ReportController extends defaultController
             }
             
         }
-        
-        // dd($array_report);
 
         $debtortype = collect($array_report)->unique('debtortycode');
         $debtorcode = collect($array_report)->unique('debtorcode');
-        
-        $title = "AR AGEING DETAILS as at ".$date_title;
-        
-        $company = DB::table('sysdb.company')
-                    ->where('compcode', '=', session('compcode'))
-                    ->first();
-        
-        return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_pdfmake', compact('debtortype','debtorcode','array_report','title','company','grouping'));
-        
+
+        $comp_name = $this->comp->name;
+        $date_at = Carbon::createFromFormat('Y-m-d',$this->date)->format('d-m-Y');
+
+        if($this->type == 'detail'){
+            return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel',compact('debtortype','debtorcode','array_report','grouping','date','date_at','comp_name','type'));
+        }else if($this->type == 'summary'){
+            return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel_summ',compact('debtortype','debtorcode','array_report','grouping','date','date_at','comp_name','type'));
+        }
+
     }
     
-    public function calc_ageing($newamt,$days,$groupOne,$groupTwo,$groupThree,$groupFour,$groupFive,$groupSix){
-        $groupOne = range(1, $groupOne);
-        $groupOne_last = $groupOne[count($groupOne) - 1];
-        $groupOne_text = '1 - '.$groupOne_last.' days';
-        
-        $groupTwo_first = $groupOne_last + 1;
-        $groupTwo = range($groupTwo_first, $groupTwo);
-        $groupTwo_last = $groupTwo[count($groupTwo) - 1];
-        $groupTwo_text = $groupTwo_first.' - '.$groupTwo_last.' days';
-        
-        $groupThree_first = $groupTwo_last + 1;
-        $groupThree = range($groupThree_first, $groupThree);
-        $groupThree_last = $groupThree[count($groupThree) - 1];
-        $groupThree_text = $groupThree_first.' - '.$groupThree_last.' days';
-        
-        $groupFour_first = $groupThree_last + 1;
-        $groupFour = range($groupFour_first, $groupFour);
-        $groupFour_last = $groupFour[count($groupFour) - 1];
-        $groupFour_text = $groupFour_first.' - '.$groupFour_last.' days';
-        
-        $groupFive_first = $groupFour_last + 1;
-        $groupFive = range($groupFive_first, $groupFive);
-        $groupFive_last = $groupFive[count($groupFive) - 1];
-        $groupFive_text = $groupFive_first.' - '.$groupFive_last.' days';
-        
-        $groupSix_first = $groupFive_last + 1;
-        $groupSix = range($groupSix_first, $groupSix);
-        $groupSix_last = $groupSix[count($groupSix) - 1];
-        $groupSix_text = '> '.$groupFive_last.' days';
-        
-        // dd($groupOne_text,$groupTwo_text,$groupThree_text,$groupFour_text,$groupFive_text,$groupSix_text);
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function(AfterSheet $event) {
+                // foreach ($this->break_loop as $value) {
+                //     $event->sheet->setBreak('A'.$value, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
+                // }
+                
+                $event->sheet->getPageSetup()->setPaperSize(9);//A4
+                
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nAR AGEING DETAILS"."\n"
+                .sprintf('DATE %s',Carbon::parse($this->date)->format('d-m-Y'))
+                .sprintf('FROM %s TO %s',$this->debtorcode_from, $this->debtorcode_to)
+                .'&L'
+                .'PRINTED BY : '.session('username')
+                ."\nPAGE : &P/&N"
+                .'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')
+                ."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
+                
+                $event->sheet->getPageMargins()->setTop(1);
+                
+                $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
+                $event->sheet->getStyle('A:H')->getAlignment()->setWrapText(true);
+                $event->sheet->getPageSetup()->setFitToWidth(1);
+                $event->sheet->getPageSetup()->setFitToHeight(0);
+            },
+        ];
+    }
+
+    public function calc_bal($obj){
+        $balance = 0;
+        foreach ($obj->get() as $key => $value){
+            
+            switch ($value->trantype) {
+                 case 'IN': //dr
+                    $balance = $balance + floatval($value->amount);
+                    break;
+                case 'DN': //dr
+                    $balance = $balance + floatval($value->amount);
+                    break;
+                case 'CN': //cr
+                    $balance = $balance - floatval($value->amount);
+                    break;
+                case 'PV': //cr
+                    $balance = $balance - floatval($value->amount);
+                    break;
+                case 'PD': //cr
+                    $balance = $balance - floatval($value->amount);
+                    break;
+                default:
+                    // code...
+                    break;
+            }
+        }
+
+        return $balance;
     }
 
     public function assign_grouping($grouping,$days){
@@ -309,5 +364,4 @@ class ARAgeingDtl_ReportController extends defaultController
 
         return $group;
     }
-    
 }
