@@ -116,7 +116,7 @@ th {
 
 @section('js')
 	<script src="{{ asset('patientcare/assets/DataTables/datatables.min.js') }}"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.semanticui.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
-  <script src="{{ asset('js/other/attachment_upload/attachment_upload.js?v=1.1') }}"></script>
+  <script src="https://cdn.datatables.net/1.10.16/js/dataTables.semanticui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+  <script src="{{ asset('js/other/attachment_upload/attachment_upload.js?v=1.2') }}"></script>
 @endsection

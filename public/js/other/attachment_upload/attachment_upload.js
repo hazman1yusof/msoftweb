@@ -1,9 +1,6 @@
 $(document).ready(function () {
 
-    function formatDate_mom(date,format,returnformat = 'DD-MM-YYYY'){
-        let mom = moment(date, format);
-        return mom.format(returnformat);
-    }
+    
 
     $("#click").on("click",function(){
         $("#file").click();
@@ -144,6 +141,11 @@ function make_download_butt(i,filepath,type,filename){
 
 
     return `<a class='small circular orange basic ui icon button' href="./attachment_download/`+filepath+`?filename=`+filename+`" data-index="`+i+`"><i class="download icon"></i></a>`;
+}
+
+function formatDate_mom(date,format,returnformat = 'DD-MM-YYYY'){
+    let mom = moment(date, format);
+    return mom.format(returnformat);
 }
 
 var DataTable_preview = $('#tablePreview').DataTable({
