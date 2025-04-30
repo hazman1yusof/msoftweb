@@ -98,7 +98,7 @@
 			// 	}
 			// },
 			pageSize: 'A4',
-			pageMargins: [30, 150, 40, 70],
+			pageMargins: [30, 110, 40, 70],
 		  	content: make_pdf(),
 			styles: {
 				header_img: {
@@ -284,7 +284,7 @@ function make_body(){
 		],
     ];
 
-	if(ini_body.length > 5 && make_body_loop == 0){
+	if(ini_body.length > 10 && make_body_loop == 0){
 
     	let arr = [
 			{text:'', style: 'body_row', border: [false, false, false, false]},
@@ -308,8 +308,8 @@ function make_body(){
 	}
 	make_body_loop = make_body_loop + 1;
 
-	if(retval.length<5){
-    	let loop_btm = 5-retval.length;
+	if(retval.length<10){
+    	let loop_btm = 10-retval.length;
 
     	for (var i = (loop_btm+loop_btm); i >= 0; i--) {
     		retval.push([
