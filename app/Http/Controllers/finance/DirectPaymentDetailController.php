@@ -93,10 +93,31 @@ class DirectPaymentDetailController extends defaultController
             $gstcode_obj = $this->check_gstcode($request);
         
             $apacthdr = DB::table("finance.apacthdr")
-                ->where('idno','=',$request->idno)
+                ->where('idno','=',$request->idno_header)
                 ->first();
 
-            $auditno = $request->auditno;
+            if($apacthdr->compcode == 'DD'){
+                $auditno = $this->defaultSysparam('CM','DP');
+
+                if($apacthdr->paymode == 'TT'){
+                    $last_tt = $this->defaultSysparam('CM','TT');
+                }else{
+                    $last_tt = $apacthdr->cheqno;
+                }
+
+                DB::table("finance.apacthdr")
+                    ->where('idno','=',$request->idno_header)
+                    ->update([
+                        'compcode' => session('compcode'),
+                        'auditno' => $auditno,
+                        'cheqno' => $last_tt,
+
+                    ]);
+            }else{
+
+                $auditno = $apacthdr->auditno;
+            }
+
 
             ////1. calculate lineno_ by auditno
             $sqlln = DB::table('finance.apactdtl')->select('lineno_')
@@ -150,7 +171,13 @@ class DirectPaymentDetailController extends defaultController
                   
                 ]);
             DB::commit();
-            return response($totalAmount,200);
+
+            $responce = new stdClass();
+            // $responce->auditno = $auditno;
+            $responce->totalAmount = $totalAmount;
+            $responce->auditno = $auditno;
+
+            echo json_encode($responce);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -268,6 +295,12 @@ class DirectPaymentDetailController extends defaultController
 
         try {
 
+            $apacthdr = DB::table("finance.apacthdr")
+                ->where('idno','=',$request->idno_header)
+                ->first();
+
+            $auditno = $apacthdr->auditno;
+
             foreach ($request->dataobj as $key => $value) {
 
                 $gstcode_obj = $this->check_gstcode2($value);
@@ -292,7 +325,7 @@ class DirectPaymentDetailController extends defaultController
                 ///2. recalculate total amount
                 $totalAmount = DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
-                    ->where('auditno','=',$request->auditno)
+                    ->where('auditno','=',$auditno)
                     ->where('source','=','CM')
                     ->where('trantype','=','DP')
                     ->where('recstatus','!=','DELETE')
@@ -301,9 +334,7 @@ class DirectPaymentDetailController extends defaultController
                 ///3. update total amount to header
                 DB::table('finance.apacthdr')
                     ->where('compcode','=',session('compcode'))
-                    ->where('source','=','CM')
-                    ->where('trantype','=','DP')
-                    ->where('auditno','=',$request->auditno)
+                    ->where('idno','=',$request->idno_header)
                     ->update([
                         'amount' => $totalAmount, 
                     ]);

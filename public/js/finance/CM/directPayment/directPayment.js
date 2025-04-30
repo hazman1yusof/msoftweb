@@ -3,6 +3,10 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 	$("body").show();
+
+	$('body').click(function(){
+		$('#error_infront').hide();
+	})
 	
 	/////////////////////////validation//////////////////////////
 	$.validate({
@@ -219,14 +223,14 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow: function(rowid, selected) {
 			let recstatus = selrowData("#jqGrid").recstatus;
-			if(recstatus=='OPEN'){
-				$('#but_cancel_jq,#but_post_jq').show();			
-			}else if(recstatus=="POSTED"){
-				$('#but_post_jq').hide();
-				$('#but_cancel_jq').show();
-			}else if (recstatus == "CANCELLED"){
-				$('#but_cancel_jq,#but_post_jq').hide();			
-			}
+			// if(recstatus=='OPEN'){
+			// 	$('#but_cancel_jq,#but_post_jq').show();			
+			// }else if(recstatus=="POSTED"){
+			// 	$('#but_post_jq').hide();
+			// 	$('#but_cancel_jq').show();
+			// }else if (recstatus == "CANCELLED"){
+			// 	$('#but_cancel_jq,#but_post_jq').hide();			
+			// }
 			
 			urlParam2.filterVal[1]=selrowData("#jqGrid").auditno;
 			refreshGrid("#jqGrid3",urlParam2);
@@ -720,7 +724,7 @@ $(document).ready(function () {
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules:{required: true},
 				editoptions:{
-					//readonly: "readonly",
+					readonly: "readonly",
 					maxlength: 12,
 					dataInit: function(element) {
 						element.style.textAlign = 'right';
@@ -823,8 +827,11 @@ $(document).ready(function () {
 			})
         },
         aftersavefunc: function (rowid, response, options) {
-        	$('#amount').val(response.responseText);
+        	let resjson = JSON.parse(response.responseText);
+
+        	$('#amount').val(resjson.totalAmount);
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+        	urlParam2.filterVal[1] = resjson.auditno;
         	refreshGrid('#jqGrid2',urlParam2,'add');
 	    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
 	    	errorField.length=0;
@@ -851,7 +858,7 @@ $(document).ready(function () {
 			let editurl = "./directPaymentDetail/form?"+
 				$.param({
 					action: 'directPaymentDetail_save',
-					idno: $('#idno').val(),
+					idno_header: $('#idno').val(),
 					auditno:$('#auditno').val(),
 					amount:data.amount,
 					lineno_:data.lineno_,
@@ -1001,7 +1008,7 @@ $(document).ready(function () {
     			action: 'directPaymentDetail_save',
 				_token: $("#_token").val(),
 				auditno: $('#auditno').val(),
-				idno: $('#idno').val()
+				idno_header: $('#idno').val()
     		}
 
     		$.post( "./directPaymentDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
@@ -1245,7 +1252,7 @@ $(document).ready(function () {
 			tot_gst = 0;
 			amount = amntb4gst;
 		}else{
-			$("#jqGrid2 #"+id_optid+"_tot_gst").prop('disabled',false);
+			$("#jqGrid2 #"+id_optid+"_tot_gst").prop('disabled',true);
 			var tot_gst_real = parseFloat($("#jqGrid2 #"+id_optid+"_tot_gst").val());
 			var tot_gst_rate = parseFloat(amntb4gst * (gstpercent / 100));
 

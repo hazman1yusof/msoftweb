@@ -160,13 +160,14 @@ class DirectPaymentController extends defaultController
 
         try{
 
-            $auditno = $this->defaultSysparam('CM','DP');
+            // $auditno = $this->defaultSysparam('CM','DP');
             // $pvno = $this->defaultSysparam('HIS','PV');
             $amount = 0;
 
             $idno = DB::table('finance.apacthdr')
                     ->insertGetId([
-                        'auditno' => $auditno,
+                        'compcode' => 'DD',
+                        // 'auditno' => $auditno,
                         'bankcode' => strtoupper($request->bankcode),
                         'payto' => strtoupper($request->payto),
                         'actdate' => $request->actdate,
@@ -179,20 +180,19 @@ class DirectPaymentController extends defaultController
                         'cheqdate' => $request->cheqdate,
                         'source' => 'CM',
                         'trantype' => 'DP',
-                        'compcode' => session('compcode'),
                         'unit' => session('unit'),
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'recstatus' => 'OPEN'
                     ]);
 
-            if($request->paymode == 'TT'){
-                $last_tt = $this->defaultSysparam('CM','TT');
-                $array_insert['cheqno'] = $last_tt;
-            }
+            // if($request->paymode == 'TT'){
+                // $last_tt = $this->defaultSysparam('CM','TT');
+                // $array_insert['cheqno'] = $last_tt;
+            // }
 
             $responce = new stdClass();
-            $responce->auditno = $auditno;
+            // $responce->auditno = $auditno;
             $responce->pvno = '';
             $responce->idno = $idno;
             $responce->amount = 0;
