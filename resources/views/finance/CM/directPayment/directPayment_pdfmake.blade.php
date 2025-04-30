@@ -72,7 +72,7 @@
 			        }
 
 				if(currentPage == 1){
-					var logohdr = {image: 'logohdr',style:'header_img',width:350, height:75, alignment: 'center'};
+					var logohdr = {image: 'logohdr',style:'header_img',width:200, alignment: 'center'};
 					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true};
 					var pageno = {text: 'Page: '+currentPage+'/'+pageCount,fontSize:9,alignment: 'right', margin: [0, 0, 50, -8]};
 					retval.push(logohdr);
