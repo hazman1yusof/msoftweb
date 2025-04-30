@@ -671,7 +671,10 @@ class DirectPaymentController extends defaultController
                     })
             ->leftJoin('material.category as c', function($join) use ($request){
                         $join = $join->on('d.category', '=', 'c.catcode')
-                                ->where('c.compcode','=',session('compcode'));
+                                ->where('c.compcode','=',session('compcode'))
+                                ->where('c.source','CR')
+                                ->where('c.cattype','Other')
+                                ->where('c.recstatus','ACTIVE');
                     })
             ->where('d.auditno','=',$auditno)
             ->where('d.compcode','=',session('compcode'))
