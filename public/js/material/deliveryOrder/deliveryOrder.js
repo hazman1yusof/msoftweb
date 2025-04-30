@@ -1310,7 +1310,7 @@ $(document).ready(function () {
         	mycurrency2.formatOff();
 			mycurrency_np.formatOff();
 
-			if(parseInt($('#jqGrid2 input[name="qtydelivered"]').val()) <= 0)return false;
+			if(parseFloat($('#jqGrid2 input[name="qtydelivered"]').val()) <= 0)return false;
 
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			
