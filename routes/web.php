@@ -1616,6 +1616,13 @@ Route::get('/ptcare_previewvideo/{id}','patientcare\PreviewController@previewvid
 Route::get('/ptcare_upload','patientcare\PreviewController@upload');
 Route::post('/ptcare_upload','patientcare\PreviewController@form');
 
+//dari rehab
+
+Route::get('/rehab','rehab\RehabController@index');
+Route::get('/rehab/table','rehab\RehabController@table');
+Route::post('/rehab/form','rehab\RehabController@form');
+// Route::post('/ptcare_doctornote_transaction_save', "rehab\RehabController@transaction_save");
+
 //dari dialysis
 
 Route::get('/dialysis_pat_mast','dialysis\PatmastController@show');
