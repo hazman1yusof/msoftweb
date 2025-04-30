@@ -358,5 +358,5 @@ i.fa {
 			
 		});
 	</script>
-	<script src="js/finance/CM/directPayment/directPayment.js"></script>
+	<script src="js/finance/CM/directPayment/directPayment.js?v=1.1"></script>
 @endsection
