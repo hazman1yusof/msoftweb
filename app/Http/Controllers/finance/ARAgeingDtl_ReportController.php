@@ -46,15 +46,15 @@ class ARAgeingDtl_ReportController extends defaultController
     
     public function form(Request $request)
     {
-        switch($request->oper){
-            case 'add':
-                return $this->defaultAdd($request);
-            case 'edit':
-                return $this->defaultEdit($request);
-            case 'del':
-                return $this->defaultDel($request);
-            case 'depreciation':
-                return $this->depreciation($request);
+        switch($request->action){
+            // case 'add':
+            //     return $this->defaultAdd($request);
+            // case 'edit':
+            //     return $this->defaultEdit($request);
+            // case 'del':
+            //     return $this->defaultDel($request);
+            case 'showExcel':
+                return $this->showExcel($request);
             default:
                 return 'error happen..';
         }
@@ -110,7 +110,7 @@ class ARAgeingDtl_ReportController extends defaultController
 
         // (new InvoicesExport)->queue('invoices.xlsx');
 
-        return back();
+        // return back();
 
         // return Excel::download(new ARAgeingDtlExport($request->type,$request->date,$request->debtortype,$request->debtorcode_from,$request->debtorcode_to,$request->groupOne,$request->groupTwo,$request->groupThree,$request->groupFour,$request->groupFive,$request->groupSix), $filename);
     }

@@ -59,9 +59,9 @@ $(document).ready(function () {
 
 	$('#excelgen1').click(function(){
 		$('#excelgen1').attr('disabled',true);
-        let href = './APAgeingDtl_Report/showExcel?type='+$('#type').val()+'&suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&date='+$("#date").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val();
+        let href = './APAgeingDtl_Report/form?action=showExcel&?type='+$('#type').val()+'&suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&date='+$("#date").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val();
 
-        $.get( href, function( data ) {
+        $.post( href,{_token:$('#_token').val()}, function( data ) {
         }).fail(function(data) {
 			$('#excelgen1').attr('disabled',false);
         }).success(function(data){

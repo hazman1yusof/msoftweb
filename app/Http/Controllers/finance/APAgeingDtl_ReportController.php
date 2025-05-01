@@ -37,6 +37,21 @@ class APAgeingDtl_ReportController extends defaultController
         }
     }
 
+    public function form(Request $request){   
+        switch($request->action){
+            // case 'add':
+            //     return $this->defaultAdd($request);
+            // case 'edit':
+            //     return $this->defaultEdit($request);
+            // case 'del':
+            //     return $this->defaultDel($request);
+            case 'showExcel':
+                return $this->showExcel($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
     public function job_queue(Request $request){
         $responce = new stdClass();
 
@@ -85,7 +100,7 @@ class APAgeingDtl_ReportController extends defaultController
 
         (new APAgeingDtlExport($process,$filename,$request->type,$request->date,$request->suppcode_from,$request->suppcode_to,$request->groupOne,$request->groupTwo,$request->groupThree,$request->groupFour,$request->groupFive,$request->groupSix))->store($process, \config('get_config.ATTACHMENT_UPLOAD'));
 
-        return back();
+        // return back();
 
         // return Excel::download(new APAgeingDtlExport($request->type,$request->date,$request->suppcode_from,$request->suppcode_to,$request->groupOne,$request->groupTwo,$request->groupThree,$request->groupFour,$request->groupFive,$request->groupSix), $filename);
     }
@@ -222,19 +237,6 @@ class APAgeingDtl_ReportController extends defaultController
         }
 
         return $balance;
-    }
-
-    public function form(Request $request){   
-        switch($request->oper){
-            case 'add':
-                return $this->defaultAdd($request);
-            case 'edit':
-                return $this->defaultEdit($request);
-            case 'del':
-                return $this->defaultDel($request);
-            default:
-                return 'error happen..';
-        }
     }
 
     public function assign_grouping($grouping,$days){
