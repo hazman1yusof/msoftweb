@@ -12,6 +12,8 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\BeforeSheet;
@@ -23,16 +25,20 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class ARAgeingDtlExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
+class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumnWidths, WithColumnFormatting
 {
+
+    use Exportable;
     
     /**
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($type,$date,$debtortype,$debtorcode_from,$debtorcode_to,$groupOne,$groupTwo,$groupThree,$groupFour,$groupFive,$groupSix)
+    public function __construct($process,$filename,$type,$date,$debtortype,$debtorcode_from,$debtorcode_to,$groupOne,$groupTwo,$groupThree,$groupFour,$groupFive,$groupSix)
     {
         
+        $this->process = $process;
+        $this->filename = $filename;
         $this->type = $type;
         $this->date = Carbon::parse($date)->format('Y-m-d');
         $this->debtortype = $debtortype;
@@ -120,6 +126,7 @@ class ARAgeingDtlExport implements FromView, WithEvents, WithColumnWidths, WithC
     
     public function view(): View
     {
+        $idno_job_queue = $this->start_job_queue('ARAgeing');
 
         $type = $this->type;
         $date = $this->date;
@@ -287,6 +294,8 @@ class ARAgeingDtlExport implements FromView, WithEvents, WithColumnWidths, WithC
         $comp_name = $this->comp->name;
         $date_at = Carbon::createFromFormat('Y-m-d',$this->date)->format('d-m-Y');
 
+        $this->stop_job_queue($idno_job_queue);
+
         if($this->type == 'detail'){
             return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel',compact('debtortype','debtorcode','array_report','grouping','date','date_at','comp_name','type'));
         }else if($this->type == 'summary'){
@@ -363,5 +372,30 @@ class ARAgeingDtlExport implements FromView, WithEvents, WithColumnWidths, WithC
         }
 
         return $group;
+    }
+
+    public function start_job_queue($page){
+        $idno_job_queue = DB::table('sysdb.job_queue')
+                            ->insertGetId([
+                                'compcode' => session('compcode'),
+                                'page' => $page,
+                                'filename' => $this->filename,
+                                'process' => $this->process,
+                                'adduser' => session('username'),
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'status' => 'PENDING',
+                                'remarks' => 'AR Ageing '.$this->type.' as of '.$this->date.', debtortype: '.$this->debtortype.', debtorcode from:"'.$this->debtorcode_from.'" to "'.$this->debtorcode_to.'"'
+                            ]);
+
+        return $idno_job_queue;
+    }
+
+    public function stop_job_queue($idno_job_queue){
+        DB::table('sysdb.job_queue')
+                ->where('idno',$idno_job_queue)
+                ->update([
+                    'finishdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'status' => 'DONE'
+                ]);
     }
 }

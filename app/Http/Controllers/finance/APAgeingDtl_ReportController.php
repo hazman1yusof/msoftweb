@@ -24,16 +24,68 @@ class APAgeingDtl_ReportController extends defaultController
         return view('finance.AP.APAgeingDtl_Report.APAgeingDtl_Report');
     }
 
-    public function showExcel(Request $request){
+    public function table(Request $request){ 
+        switch($request->action){
+            case 'job_queue':
+                return $this->job_queue($request);
+            case 'download':
+                return $this->download($request);
+            default:
+                return 'error happen..';
+        }
+    }
 
+    public function job_queue(Request $request){
+        $responce = new stdClass();
 
-        if($request->type == 'detail'){
-            $filename = 'APAgeingDetail.xlsx';
-        }else{
-            $filename = 'APAgeingSummary.xlsx';
+        $table_ = DB::table('sysdb.job_queue')
+                        ->where('compcode', session('compcode'))
+                        ->where('page', 'APAgeing')
+                        ->orderBy('idno','desc');
+
+        $count = $table_->count();
+        $table = $table_
+                    ->offset($request->start)
+                    ->limit($request->length)->get();
+
+        foreach ($table as $key => $value) {
+            $value->download = " ";
         }
 
-        return Excel::download(new APAgeingDtlExport($request->type,$request->date,$request->suppcode_from,$request->suppcode_to,$request->groupOne,$request->groupTwo,$request->groupThree,$request->groupFour,$request->groupFive,$request->groupSix), $filename);
+        $responce->data = $table;
+        $responce->recordsTotal = $count;
+        $responce->recordsFiltered = $count;
+        return json_encode($responce);
+    }
+
+    public function download(Request $request){
+        $job_queue = DB::table('sysdb.job_queue')
+                        ->where('idno', $request->idno)
+                        ->first();
+
+        $attachment_path = \config('get_config.ATTACHMENT_PATH');
+
+        $file = $attachment_path."\\uploads\\".$job_queue->process;
+        // dump($file);
+        return Response::download($file,$job_queue->filename);
+    }
+
+    public function showExcel(Request $request){
+
+        if($request->type == 'detail'){
+            $filename = 'APAgeingDetail '.Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d g:i A').'.xlsx';
+        }else{
+            $filename = 'APAgeingSummary '.Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d g:i A').'.xlsx';
+        }
+
+        $bytes = random_bytes(20);
+        $process = bin2hex($bytes).'.xlsx';
+
+        (new APAgeingDtlExport($process,$filename,$request->type,$request->date,$request->suppcode_from,$request->suppcode_to,$request->groupOne,$request->groupTwo,$request->groupThree,$request->groupFour,$request->groupFive,$request->groupSix))->store($process, \config('get_config.ATTACHMENT_UPLOAD'));
+
+        return back();
+
+        // return Excel::download(new APAgeingDtlExport($request->type,$request->date,$request->suppcode_from,$request->suppcode_to,$request->groupOne,$request->groupTwo,$request->groupThree,$request->groupFour,$request->groupFive,$request->groupSix), $filename);
     }
     
     public function showpdf(Request $request){

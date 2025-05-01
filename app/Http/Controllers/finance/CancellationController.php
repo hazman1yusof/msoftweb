@@ -616,7 +616,10 @@ class CancellationController extends defaultController
                 // ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'recstatus' => 'CANCELLED'
+                    'recstatus' => 'CANCELLED',
+                    'cancelby' => session('username'),
+                    'canceldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'cancelled_remark' => $request->cancelled_remark
                 ]);
             
             DB::commit();
@@ -646,7 +649,10 @@ class CancellationController extends defaultController
                 // ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'recstatus' => 'CANCELLED'
+                    'recstatus' => 'CANCELLED',
+                    'cancelby' => session('username'),
+                    'canceldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'cancelled_remark' => $request->cancelled_remark
                 ]);
             
             // 2. Cancel dballoc

@@ -23,6 +23,50 @@ $(document).ready(function () {
             }
         },
     };
+
+    var DataTable = $('#job_queue').DataTable({
+        ajax: './ARAgeingDtl_Report/table?action=job_queue',
+        pageLength: 10,
+        orderMulti: false,
+        responsive: true,
+        scrollY: 500,
+        processing: true,
+        serverSide: true,
+        paging: true,
+        columns: [
+            { data: 'idno' ,visible:false,orderable: false},
+            { data: 'compcode' ,visible:false,orderable: false},
+            { data: 'page' ,visible:false,orderable: false},
+            { data: 'filename',orderable: false},
+            { data: 'process' ,visible:false,orderable: false},
+            { data: 'status' ,orderable: false},
+            { data: 'adduser',orderable: false},
+            { data: 'adddate' ,orderable: false},
+            { data: 'finishdate',orderable: false},
+            { data: 'remarks',orderable: false,visible:false},
+            { data: 'download',orderable: false},
+        ],
+        columnDefs: [
+            {targets: 10,
+                createdCell: function (td, cellData, rowData, row, col) {
+                    if(rowData.status == 'DONE'){
+                        $(td).append(`<a class='btn btn-sm btn-default' target="_blank" href='./ARAgeingDtl_Report/table?action=download&idno=`+rowData.idno+`'><i class='fa fa-download'></i></span>`);
+                    }
+                }
+            },
+        ],
+        drawCallback: function( settings ) {
+            $('#job_queue_filter > label').hide();
+            if(!$('#refresh_dtable').length){
+                $('#job_queue_filter').append(`<button id='refresh_dtable'><i class='fa fa-refresh'></i></button>`);
+                $('#refresh_dtable').click(function(){
+                    DataTable.ajax.reload();
+                });
+            }
+        }
+    }).on('preXhr.dt', function ( e, settings, data ) {
+    }).on('xhr.dt', function ( e, settings, json, xhr ) {
+    });
     
     $("#genreport input[name='debtorcode_from']").change(function(){
         $("#genreportpdf input[name='debtorcode_from']").val($(this).val());
@@ -52,12 +96,26 @@ $(document).ready(function () {
         $("#genreportpdf input[name='groupSix']").val($(this).val());
     });
     
-    $("#pdfgen1").click(function() {
-        window.open('./ARAgeingDtl_Report/showpdf?debtortype='+$('#debtortype').val()+'&debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&date='+$("#date").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val(), '_blank');
-    });
+    // $("#pdfgen1").click(function() {
+    //     window.open('./ARAgeingDtl_Report/showpdf?debtortype='+$('#debtortype').val()+'&debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&date='+$("#date").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val(), '_blank');
+    // });
     
     $("#excelgen1").click(function() {
-        window.open('./ARAgeingDtl_Report/showExcel?type='+$('#type').val()+'&debtortype='+$('#debtortype').val()+'&debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&date='+$("#date").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val(), '_blank');
+        $('#excelgen1').attr('disabled',true);
+        let href = './ARAgeingDtl_Report/showExcel?type='+$('#type').val()+'&debtortype='+$('#debtortype').val()+'&debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&date='+$("#date").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val()
+
+        $.get( href, function( data ) {
+        }).fail(function(data) {
+        }).success(function(data){
+            $('#excelgen1').attr('disabled',true);
+            DataTable.ajax.reload();
+        });
+
+        delay(function(){
+            DataTable.ajax.reload();
+        }, 2000 );
+
+        // window.open('./ARAgeingDtl_Report/showExcel?type='+$('#type').val()+'&debtortype='+$('#debtortype').val()+'&debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&date='+$("#date").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val(), '_blank');
     });
     
     var dialog_debtorFrom = new ordialog(
