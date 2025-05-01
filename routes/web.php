@@ -1623,6 +1623,27 @@ Route::get('/rehab/table','rehab\RehabController@table');
 Route::post('/rehab/form','rehab\RehabController@form');
 // Route::post('/ptcare_doctornote_transaction_save', "rehab\RehabController@transaction_save");
 
+/// occuptherapy
+Route::get('/occupTherapy','rehab\OccupTherapyController@show');
+Route::get('/occupTherapy/table','rehab\OccupTherapyController@table');
+Route::post('/occupTherapy/form','rehab\OccupTherapyController@form');
+
+Route::get('/occupTherapy_mmse','rehab\MMSEController@show');
+Route::get('/occupTherapy_mmse/table','rehab\MMSEController@table');
+Route::post('/occupTherapy_mmse/form','rehab\MMSEController@form');
+
+Route::get('/occupTherapy_moca','rehab\MOCAController@show');
+Route::get('/occupTherapy_moca/table','rehab\MOCAController@table');
+Route::post('/occupTherapy_moca/form','rehab\MOCAController@form');
+
+Route::get('/occupTherapy_barthel','rehab\BarthelController@show');
+Route::get('/occupTherapy_barthel/table','rehab\BarthelController@table');
+Route::post('/occupTherapy_barthel/form','rehab\BarthelController@form');
+
+Route::get('/occupTherapy_upperExtremity','rehab\UpperExtremityController@show');
+Route::get('/occupTherapy_upperExtremity/table','rehab\UpperExtremityController@table');
+Route::post('/occupTherapy_upperExtremity/form','rehab\UpperExtremityController@form');
+
 //dari dialysis
 
 Route::get('/dialysis_pat_mast','dialysis\PatmastController@show');
