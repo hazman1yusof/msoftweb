@@ -10,6 +10,8 @@ use DateTime;
 use Carbon\Carbon;
 use App\Exports\APAgeingDtlExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
+use Response;
 
 class APAgeingDtl_ReportController extends defaultController
 {   

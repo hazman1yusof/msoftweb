@@ -63,6 +63,7 @@ $(document).ready(function () {
 
         $.get( href, function( data ) {
         }).fail(function(data) {
+			$('#excelgen1').attr('disabled',false);
         }).success(function(data){
 			$('#excelgen1').attr('disabled',false);
             DataTable.ajax.reload();
