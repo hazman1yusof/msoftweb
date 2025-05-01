@@ -70,7 +70,7 @@ $(document).ready(function () {
 
         delay(function(){
             DataTable.ajax.reload();
-        }, 2000 ); 
+        }, 4000 ); 
 	});
 
     /////////////////////////////////////dialog handler///////////////////////////////
