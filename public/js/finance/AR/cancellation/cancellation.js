@@ -315,7 +315,7 @@ $(document).ready(function () {
 					case state = 'view':
 						mycurrency.formatOn();
 						$( this ).dialog( "option", "title", "View" );
-						disableForm('#formdata_RC');
+						disableForm('#formdata_RC',['cancel_remark_RC']);
 						disableForm(selrowData('#jqGrid_rc').db_paytype);
 						// $(this).dialog("option", "buttons",butt2);
 						
@@ -376,28 +376,37 @@ $(document).ready(function () {
 							buttons: { confirm: { label: 'Yes', className: 'btn-success' }, cancel: { label: 'No', className: 'btn-danger' } },
 							callback: function (result) {
 								if(result == true){
-									var urlparam={
-										oper: 'cancel_receipt',
-										idno: idno,
-									}
-									
-									var postobj={
-										_token: $('#csrf_token').val(),
-									};
-									
-									$.post( "./cancellation/form?"+$.param(urlparam), $.param(postobj), function( data ) {
-										
-									},'json').fail(function(data) {
-										alert('there is an error');
-									}).success(function(data){
-										$("#dialogForm_RC").dialog('close');
-										
-										if($("#trantype").val() == 'RC'){
-											refreshGrid('#jqGrid_rc', urlParam_rcpt);
-										}else if($("#trantype").val() == 'RD'){
-											refreshGrid('#jqGrid_rd', urlParam_rd);
+
+									if($('#cancel_remark_RC').val() == ''){
+										alert('Please fill on the cancel remark!');
+										$('#cancel_remark_RC').focus();
+									}else{
+										var urlparam={
+											oper: 'cancel_receipt',
+											idno: idno,
 										}
-									});
+										
+										var postobj={
+											_token: $('#csrf_token').val(),
+											cancelled_remark: $('#cancel_remark_RC').val()
+										};
+										
+										$.post( "./cancellation/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+											
+										},'json').fail(function(data) {
+											alert('there is an error');
+										}).success(function(data){
+											$("#dialogForm_RC").dialog('close');
+											
+											if($("#trantype").val() == 'RC'){
+												refreshGrid('#jqGrid_rc', urlParam_rcpt);
+											}else if($("#trantype").val() == 'RD'){
+												refreshGrid('#jqGrid_rd', urlParam_rd);
+											}
+										});
+									}
+
+									
 								}else{
 									// refreshGrid('#jqGrid_rc', urlParam_rcpt);
 								}

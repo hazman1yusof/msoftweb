@@ -285,6 +285,13 @@
                                 <input id="dbacthdr_remark" name="dbacthdr_remark" type="text" class="form-control input-sm text-uppercase">
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1" for="cancel_remark_RC" style="margin-top: 10px;">Cancel Remark</label>
+                            <div class='col-md-11'>
+                                <input id="cancel_remark_RC" name="cancel_remark_RC" type="text" class="form-control input-sm text-uppercase" style="margin-top: 10px;">
+                            </div>
+                        </div>
                         <div class='clearfix'></div>
                         <hr>
                     </div>
@@ -885,5 +892,5 @@
             }
         });
     </script>
-    <script src="js/finance/AR/cancellation/cancellation.js?v=1.1"></script>
+    <script src="js/finance/AR/cancellation/cancellation.js?v=1.2"></script>
 @endsection
