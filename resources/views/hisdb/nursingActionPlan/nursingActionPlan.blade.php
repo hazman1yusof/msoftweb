@@ -49,19 +49,26 @@
                         <div class="panel-body" style="padding-right: 0px;">
                             <form class='form-horizontal' style='width: 99%;' id='formHeader'>
                                     <div class="form-group">
-                                        <label class="col-md-1 control-label" for="reg_date">Date of Admission</label>
+                                        <label class="col-md-2 control-label" for="reg_date">Date of Admission</label>
                                         <div class="col-md-2">
                                             <input id="reg_date" name="reg_date" type="date" class="form-control input-sm" rdonly>
                                         </div>
                                         
-                                        <label class="col-md-1 control-label" for="operation">Operation</label>
-                                        <div class="col-md-3">
-                                            <textarea id="operation" name="operation" type="text" class="form-control input-sm"></textarea>
-                                        </div>
-                                        
-                                        <label class="col-md-1 control-label" for="diagnosis">Diagnosis</label>
-                                        <div class="col-md-3">
+                                        <label class="col-md-2 control-label" for="diagnosis">Diagnosis</label>
+                                        <div class="col-md-4">
                                             <textarea id="diagnosis" name="diagnosis" type="text" class="form-control input-sm"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label" for="op_date">Date of Operation</label>
+                                        <div class="col-md-2">
+                                            <input id="op_date" name="op_date" type="date" class="form-control input-sm">
+                                        </div>
+
+                                        <label class="col-md-2 control-label" for="operation">Operation</label>
+                                        <div class="col-md-4">
+                                            <textarea id="operation" name="operation" type="text" class="form-control input-sm"></textarea>
                                         </div>
                                     </div>
                                 </div>

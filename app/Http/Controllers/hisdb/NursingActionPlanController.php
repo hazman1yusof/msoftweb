@@ -134,6 +134,7 @@ class NursingActionPlanController extends defaultController
                     'mrn' => $request->mrn_nursActionPlan,
                     'episno' => $request->episno_nursActionPlan,
                     'dateofadm' => $request->reg_date,
+                    'op_date' => $request->op_date,
                     'operation' => $request->operation,
                     'diagnosis' => $request->diagnosis,
                     'adduser'  => session('username'),
@@ -170,6 +171,7 @@ class NursingActionPlanController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->update([
                         'dateofadm' => $request->reg_date,
+                        'op_date' => $request->op_date,
                         'operation' => $request->operation,
                         'diagnosis' => $request->diagnosis,
                         'upduser'  => session('username'),
@@ -182,6 +184,7 @@ class NursingActionPlanController extends defaultController
                         'mrn' => $request->mrn_nursActionPlan,
                         'episno' => $request->episno_nursActionPlan,
                         'dateofadm' => $request->reg_date,
+                        'op_date' => $request->op_date,
                         'operation' => $request->operation,
                         'diagnosis' => $request->diagnosis,
                         'adduser'  => session('username'),
