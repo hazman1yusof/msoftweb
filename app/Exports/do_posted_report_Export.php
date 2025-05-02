@@ -23,7 +23,7 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class do_posted_report_Export implements FromView, WithEvents, WithColumnWidths
+class do_posted_report_Export implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     
     /**
@@ -41,6 +41,14 @@ class do_posted_report_Export implements FromView, WithEvents, WithColumnWidths
             ->where('compcode','=',session('compcode'))
             ->first();
     }
+
+    public function columnFormats(): array
+    {
+        return [
+            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+        ];
+    }
     
     public function columnWidths(): array
     {
@@ -50,7 +58,8 @@ class do_posted_report_Export implements FromView, WithEvents, WithColumnWidths
             'C' => 40,
             'D' => 50,
             'E' => 15,
-            'F' => 15,
+            'F' => 20,
+            'G' => 20,
         ];
     }
     
@@ -87,8 +96,7 @@ class do_posted_report_Export implements FromView, WithEvents, WithColumnWidths
 
         }else{
             $delordhd = $delordhd->whereBetween('do_hd.deldept',[$dept_from,$dept_to]);
-        }
-                    
+        }      
 
         $delordhd = $delordhd->where('do_hd.compcode','=',session('compcode'))
                     // ->where('ap.unit',session('unit'))

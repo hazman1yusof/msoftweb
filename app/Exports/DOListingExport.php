@@ -23,7 +23,7 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class DOListingExport implements FromView, WithEvents, WithColumnWidths
+class DOListingExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     
     /**
@@ -39,6 +39,17 @@ class DOListingExport implements FromView, WithEvents, WithColumnWidths
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'Q' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'R' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'S' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'T' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'X' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+        ];
     }
     
     public function columnWidths(): array
@@ -87,14 +98,14 @@ class DOListingExport implements FromView, WithEvents, WithColumnWidths
                         ->leftjoin('material.delorddt as d', function($join){
                             $join = $join->on('d.recno', '=', 'h.recno')
                                         ->where('d.compcode', '=', session('compcode'))
-                                        ->where('d.unit', '=', session('unit'))
+                                        // ->where('d.unit', '=', session('unit'))
                                         ->where('d.recstatus', '!=', 'DELETE');
                         })
                         ->leftjoin('material.product as p', function($join){
                             $join = $join->on('p.itemcode', '=', 'd.itemcode')
                                         ->on('p.uomcode', '=', 'd.uomcode')
                                         ->where('p.compcode', '=', session('compcode'))
-                                        ->where('p.unit', '=', session('unit'))
+                                        // ->where('p.unit', '=', session('unit'))
                                         ->where('p.recstatus', '=', 'ACTIVE');
                         })
                         ->leftjoin('material.supplier as s', function($join){
@@ -103,7 +114,7 @@ class DOListingExport implements FromView, WithEvents, WithColumnWidths
                                         ->where('s.recstatus', '=', 'ACTIVE');
                         })
                         ->where('h.compcode',session('compcode'))
-                        ->where('h.unit',session('unit'))
+                        // ->where('h.unit',session('unit'))
                         ->where('h.recstatus', '!=', 'DELETE')
                         ->where('h.trantype', '=', 'GRN')
                         ->whereBetween('h.trandate', [$datefr, $dateto])
@@ -117,14 +128,14 @@ class DOListingExport implements FromView, WithEvents, WithColumnWidths
                         ->leftjoin('material.delorddt as d', function($join){
                             $join = $join->on('d.recno', '=', 'h.recno')
                                         ->where('d.compcode', '=', session('compcode'))
-                                        ->where('d.unit', '=', session('unit'))
+                                        // ->where('d.unit', '=', session('unit'))
                                         ->where('d.recstatus', '!=', 'DELETE');
                         })
                         ->leftjoin('material.product as p', function($join){
                             $join = $join->on('p.itemcode', '=', 'd.itemcode')
                                         ->on('p.uomcode', '=', 'd.uomcode')
                                         ->where('p.compcode', '=', session('compcode'))
-                                        ->where('p.unit', '=', session('unit'))
+                                        // ->where('p.unit', '=', session('unit'))
                                         ->where('p.recstatus', '=', 'ACTIVE');
                         })
                         ->leftjoin('material.supplier as s', function($join){
@@ -133,7 +144,7 @@ class DOListingExport implements FromView, WithEvents, WithColumnWidths
                                         ->where('s.recstatus', '=', 'ACTIVE');
                         })
                         ->where('h.compcode',session('compcode'))
-                        ->where('h.unit',session('unit'))
+                        // ->where('h.unit',session('unit'))
                         ->where('h.recstatus','=', $Status)
                         ->where('h.trantype', '=', 'GRN')
                         ->whereBetween('h.trandate', [$datefr, $dateto])
