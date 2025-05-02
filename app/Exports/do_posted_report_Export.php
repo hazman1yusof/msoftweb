@@ -100,6 +100,7 @@ class do_posted_report_Export implements FromView, WithEvents, WithColumnWidths,
 
         $delordhd = $delordhd->where('do_hd.compcode','=',session('compcode'))
                     // ->where('ap.unit',session('unit'))
+                    ->where('do_hd.trantype', '=', 'GRN')
                     ->where('do_hd.recstatus', '=', 'POSTED')
                     ->orderBy('do_hd.idno', 'DESC')
                     ->orderBy('do_dt.idno', 'DESC')

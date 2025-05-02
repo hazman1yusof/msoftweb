@@ -26,7 +26,9 @@
         <td style="font-weight:bold;text-align: right">TOTAL AMOUNT</td>
         <td style="font-weight:bold;text-align: left">STATUS</td>
     </tr>
+    @php($fulltot = 0)
     @foreach($DOListing as $obj)
+    @php($fulltot = $fulltot + $obj->totamount)
     <tr>
         <td>{{$obj->prdept}}</td>
         <td>{{$obj->deldept}}</td>
@@ -55,8 +57,35 @@
         <td data-format="0.00" style="text-align: right">{{ $obj->perdisc }}</td>
         <td data-format="0.00" style="text-align: right">{{ $obj->amtdisc }}</td>
         <td data-format="0.00" style="text-align: right">{{ $obj->tot_gst }}</td>
-        <td data-format="0.00" style="text-align: right">{{ $obj->totamount }}</td>
+        <td style="text-align: right">{{ $obj->totamount }}</td>
         <td>{{$obj->recstatus}}</td>
     </tr>
     @endforeach
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="font-weight:bold;text-align: left">TOTAL</td>
+        <td style="text-align: right">{{ $fulltot }}</td>
+        <td></td>
+    </tr>
 </table>
