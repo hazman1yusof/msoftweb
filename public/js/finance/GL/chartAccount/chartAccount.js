@@ -43,8 +43,7 @@ $(document).ready(function () {
 		},'json').done(function(data) {
           	if(!$.isEmptyObject(data.rows)){
 				data.rows.forEach(function(element){
-					$('#yearSearch').append("<option>"+element.pvalue2+"</option>")
-
+					$('#yearSearch').append("<option>"+element.pvalue2+"</option>");
 				});
 			}	
         });
@@ -603,6 +602,7 @@ $(document).ready(function () {
 				
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
+				$('#yearSearch').html('');
 				data.rows.forEach(function(element){	
 					$('#yearSearch').append("<option>"+element.year+"</option>")
 				});

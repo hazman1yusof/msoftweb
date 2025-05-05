@@ -41,7 +41,7 @@ class stockloc_csv implements FromView
         $year = Carbon::createFromFormat('Y-m-d', $this->to)->year;
 
         $table = DB::table('material.stockloc')
-                    ->where('deptcode',$this->deptcode)
+                    // ->where('deptcode',$this->deptcode)
                     ->where('year',$year)
                     ->where('compcode','9B');
 
