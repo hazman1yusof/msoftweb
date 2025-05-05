@@ -303,6 +303,12 @@ class InventoryTransactionController extends defaultController
                 }
             }
 
+            if($array_insert['trantype'] == 'TUO' || $array_insert['trantype'] == 'TUI' ){
+                if(!in_array($array_insert['txndept'], ['FKWSTR','IMP','KHEALTH'])){
+                    throw new \Exception("Wrong txndept for TUI/TUO, please try again",500);
+                }
+            }
+
             $idno = $table->insertGetId($array_insert);
 
             $totalAmount = 0;
