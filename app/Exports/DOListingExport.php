@@ -55,7 +55,7 @@ class DOListingExport implements FromView, WithEvents, WithColumnWidths, WithCol
             'I' => NumberFormat::FORMAT_TEXT,
             'J' => NumberFormat::FORMAT_TEXT,
             'K' => NumberFormat::FORMAT_TEXT,
-            'L' => NumberFormat::FORMAT_TEXT,
+            'L' => NumberFormat::FORMAT_GENERAL,
             'M' => NumberFormat::FORMAT_TEXT,
             'N' => NumberFormat::FORMAT_TEXT,
             'O' => NumberFormat::FORMAT_TEXT,

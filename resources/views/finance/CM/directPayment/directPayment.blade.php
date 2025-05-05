@@ -56,8 +56,8 @@ i.fa {
 			            </div>
 
 						<div class="col-md-5">
-					  		<label class="control-label"></label>  
-							<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+					  	<label class="control-label"></label>  
+							<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('auditno'))){{Request::get('auditno')}}@endif">
 
 							<div id="bankcode_text">
 								<div class='input-group'>
@@ -82,39 +82,50 @@ i.fa {
 							</div>
 							
 						</div>
-
-			        </div>
+					</div>
 				</div>
 
-				<!-- <div id="div_for_but_post" class="col-md-10 col-md-offset-2" style="padding-top: 20px; text-align: end;">
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-				</div> -->
 				<div class="col-md-2">
-					<label class="control-label" for="Status">Status</label>  
-					<select id="Status" name="Status" class="form-control input-sm">
-							@if (Request::get('scope') == 'ALL')
-							<option value="All" selected>ALL</option>
-							<option value="OPEN">OPEN</option>
-							<option value="POSTED">POSTED</option>
+			  	<label class="control-label" for="Status">Status</label>  
+			  	<select id="Status" name="Status" class="form-control input-sm">
+				  	@if (Request::get('scope') == 'ALL')
+				      <option value="All" selected>ALL</option>
+				      <option value="OPEN">OPEN</option>
+				      <option value="CANCELLED">CANCELLED</option>
+				      <option value="PREPARED">PREPARED</option>
+				      <option value="SUPPORT">SUPPORT</option>
+				      <option value="VERIFIED">VERIFIED</option>
+				      <option value="APPROVED">APPROVED</option>
+						@elseif (Request::get('scope') == 'VERIFIED')
+							<option value="PREPARED">PREPARED</option>
+						@elseif (Request::get('scope') == 'APPROVED')
+							<option value="VERIFIED" selected>VERIFIED</option>
+						@elseif (Request::get('scope') == 'REOPEN')
+							<option value="REJECTED" selected>REJECTED</option>
 							<option value="CANCELLED">CANCELLED</option>
-							@elseif (Request::get('scope') == 'OPEN')
-								<option value="OPEN">OPEN</option>
-							@elseif (Request::get('scope') == 'POSTED')
-								<option value="POSTED">POSTED</option>
-							@elseif (Request::get('scope') == 'CANCEL')
-								<option value="OPEN">OPEN</option>
-							@endif
-				   	</select>
-	      		</div>
+						@elseif (Request::get('scope') == 'CANCEL')
+							<option value="OPEN" selected>OPEN</option>
+							<option value="REJECTED">REJECTED</option>
+				      <option value="PREPARED">PREPARED</option>
+				      <option value="SUPPORT">SUPPORT</option>
+				      <option value="VERIFIED">VERIFIED</option>
+				      <option value="APPROVED">APPROVED</option>
+						@endif
+			    </select>
+        </div>
 
-				<?php 
+				
+	      <?php 
 					$scope_use = 'posted';
 
 					if(Request::get('scope') == 'ALL'){
 						$scope_use = 'posted';
-					}else if(Request::get('scope') == 'DELIVERED'){
-						$scope_use = 'delivered';
+					}else if(Request::get('scope') == 'PREPARED'){
+						$scope_use = 'posted';
+					}else if(Request::get('scope') == 'VERIFIED'){
+						$scope_use = 'verify';
+					}else if(Request::get('scope') == 'APPROVED'){
+						$scope_use = 'approved';
 					}else if(Request::get('scope') == 'REOPEN'){
 						$scope_use = 'reopen';
 					}else if(Request::get('scope') == 'CANCEL'){
@@ -139,7 +150,7 @@ i.fa {
 					data-oper="{{$scope_use}}" 
 					style="display: none;">
 					@if (strtoupper(Request::get('scope')) == 'ALL')
-						{{'POSTED'}}
+						{{'PREPARED'}}
 					@else
 						{{Request::get('scope')}}
 					@endif

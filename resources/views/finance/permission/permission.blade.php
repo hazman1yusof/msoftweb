@@ -126,7 +126,7 @@ i.fa {
                 <div class="form-group">
 				   	<label class="col-md-2 control-label" for="password">Password</label>  
 				 		<div class="col-md-3">
-				  			<input id="password" name="password" type="text" maxlength="15" class="form-control input-sm" rdonly>
+				  			<input id="password" name="password" type="password" maxlength="15" class="form-control input-sm" rdonly>
 				  		</div>
 				</div>
 
@@ -228,6 +228,7 @@ i.fa {
 							    <option value="PV">Payment Voucher</option>
 							    <option value="PD">Payment Deposit</option>
 							    <option value="SO">Sales Order</option>
+							    <option value="DP">Direct Payment</option>
 							</select>
 						</div>
                 </div>		

@@ -925,7 +925,7 @@ $("#gridpermissiondtl").jqGrid({
 				 editable: true,
                      edittype: "select",
                      editoptions: {
-                         value: "SO:Sales Order;PV:Payment Voucher;PD:Payment Deposit"
+                         value: "SO:Sales Order;PV:Payment Voucher;PD:Payment Deposit;DP:Direct Payment"
                      }
 			},
 			{ label: 'Department', name: 'dtl_deptcode', width: 200, classes: 'wrap', canSearch: true, editable: true, formatter: showdetail,unformat:un_showdetail,
