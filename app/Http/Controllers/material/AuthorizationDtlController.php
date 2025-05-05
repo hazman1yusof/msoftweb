@@ -254,6 +254,60 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
 
         $queuepd = $queuepd->merge($queuepd_reject);
 
+        $queuedp = DB::table('finance.queuedp as qdp')
+                    ->select('qdp.trantype','prdtl.authorid','apact.auditno','apact.suppcode','supp.Name','apact.actdate','apact.recstatus','apact.amount','apact.adduser')
+                    ->join('finance.permissiondtl as prdtl', function($join) use ($request){
+                        $join = $join
+                            ->where('prdtl.compcode',session('compcode'))
+                            ->where('prdtl.authorid',session('username'))
+                            ->where('prdtl.trantype','DP')
+                            ->where('prdtl.cando','ACTIVE')
+                            ->on('prdtl.recstatus','qdp.trantype');
+                    })
+                    ->join('finance.apacthdr as apact', function($join) use ($request){
+                        $join = $join
+                            ->where('apact.compcode',session('compcode'))
+                            ->where('apact.source','CM')
+                            ->where('apact.trantype','DP')
+                            ->on('apact.auditno','qdp.recno')
+                            ->on('apact.recstatus','qdp.recstatus')
+                            ->where(function ($query) {
+                                $query
+                                    ->on('apact.amount','>=','prdtl.minlimit')
+                                    ->on('apact.amount','<=', 'prdtl.maxlimit');
+                            });
+                    })
+                    ->join('material.supplier as supp', function($join) use ($request){
+                        $join = $join
+                            ->where('supp.compcode',session('compcode'))
+                            ->on('supp.suppcode','apact.suppcode');
+                    })
+                    ->where('qdp.compcode',session('compcode'))
+                    ->where('qdp.trantype','<>','DONE')
+                    ->get();
+
+        $queuedp_reject = DB::table('finance.queuepd as qdp')
+                    ->select('qdp.trantype','apact.adduser','apact.auditno','apact.suppcode','supp.Name','apact.actdate','apact.recstatus','apact.amount','apact.adduser','apact.cancelby','apact.canceldate')
+                    ->join('finance.apacthdr as apact', function($join) use ($request){
+                        $join = $join
+                            ->where('apact.compcode',session('compcode'))
+                            ->where('apact.source','AP')
+                            ->where('apact.trantype','DP')
+                            ->on('apact.auditno','qdp.recno')
+                            ->on('apact.recstatus','qdp.recstatus');
+                    })
+                    ->join('material.supplier as supp', function($join) use ($request){
+                        $join = $join
+                            ->where('supp.compcode',session('compcode'))
+                            ->on('supp.suppcode','apact.suppcode');
+                    })
+                    ->where('qdp.AuthorisedID',session('username'))
+                    ->where('qdp.compcode',session('compcode'))
+                    ->where('qdp.trantype','REOPEN')
+                    ->get();
+
+        $queuedp = $queuedp->merge($queuedp_reject);
+
         $queueso = DB::table('finance.queueso as qso')
                     ->select('qso.trantype','prdtl.authorid','dbact.auditno','dbact.payercode','dbm.name','dbact.adddate','dbact.recstatus','dbact.amount','dbact.adduser')
                     ->join('finance.permissiondtl as prdtl', function($join) use ($request){
@@ -387,6 +441,8 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
         $responce->queuepvv2 = $queuepv->groupBy('trantype');
         $responce->queuepd = $queuepd;
         $responce->queuepdv2 = $queuepd->groupBy('trantype');
+        $responce->queuedp = $queuedp;
+        $responce->queuedpv2 = $queuedp->groupBy('trantype');
         $responce->queueso = $queueso;
         $responce->queueiv = $queueiv;
         $responce->ivreq = $ivreq_posted;
