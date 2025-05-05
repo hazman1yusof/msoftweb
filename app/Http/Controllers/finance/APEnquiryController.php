@@ -297,11 +297,11 @@ class APEnquiryController extends defaultController
                     });
             }else if($request->searchCol[0] == 'apacthdr_auditno'){
                 $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('ap.auditno','<=',$request->wholeword);
+                        $table->Where('ap.auditno','=',$request->wholeword);
                     });
             }else if($request->searchCol[0] == 'apacthdr_pvno'){
                 $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('ap.pvno','<=',$request->wholeword);
+                        $table->Where('ap.pvno','=',$request->wholeword);
                     });
             }else if($request->searchCol[0] == 'apacthdr_trantype'){
                 $table = $table->Where(function ($table) use ($request) {
