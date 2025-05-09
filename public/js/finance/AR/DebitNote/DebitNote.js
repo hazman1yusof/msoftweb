@@ -197,7 +197,7 @@ $(document).ready(function () {
 			{ label: 'Name', name: 'dm_name', width: 50, classes: 'wrap text-uppercase', checked: true },
 			{ label: 'Date', name: 'db_entrydate', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			// { label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true },
-			{ label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', classes: 'wrap text-uppercase', canSearch: true, formatter: padzero, unformat: unpadzero },			
+			{ label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', classes: 'wrap text-uppercase', canSearch: true, },			
 			// { label: 'Debit No', name: 'db_invno', width: 15, canSearch: true, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_unit', width: 15, hidden: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero, hidden: true },
@@ -797,7 +797,7 @@ $(document).ready(function () {
 		let recstatus = rowObject.db_recstatus;
 		
 		if(options.gid == "jqGrid"){
-			if(recstatus != 'POSTED'){
+			if(recstatus == 'OPEN'){
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 			}else{
 				return ' ';
