@@ -3313,7 +3313,8 @@ class SalesOrderController extends defaultController
                             ->where('compcode',session('compcode'))
                             ->where('tillcode',$till_obj->tillcode)
                             ->where('cashier',$till_obj->lastuser)
-                            ->where('opendate','=',$till_obj->upddate);
+                            ->where('opendate','=',$till_obj->upddate)
+                            ->whereNull('closedate');
 
                 $lastrcnumber = $this->defaultTill($till_obj->tillcode,'lastrcnumber');
 
