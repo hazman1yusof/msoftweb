@@ -518,6 +518,8 @@ class DirectPaymentController extends defaultController
                     continue;
                 }
 
+                $pvno = $this->defaultSysparam('HIS','PV');
+
                 $queue = 'finance.queuedp';
                 $trantype = 'VERIFIED';
 
@@ -541,6 +543,7 @@ class DirectPaymentController extends defaultController
                 DB::table('finance.apacthdr')
                     ->where('idno','=',$idno)
                     ->update([
+                        'pvno' => $pvno,
                         'requestby' => session('username'),
                         'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'upduser' => session('username'),
@@ -661,7 +664,7 @@ class DirectPaymentController extends defaultController
                 }
 
                 $apacthdr_get = $apacthdr;
-                $pvno = $this->defaultSysparam('HIS','PV');
+                // $pvno = $this->defaultSysparam('HIS','PV');
 
                 //1st step add cbtran credit
                 DB::table('finance.cbtran')
@@ -924,7 +927,7 @@ class DirectPaymentController extends defaultController
                 DB::table('finance.apacthdr')
                             ->where('idno','=',$idno)
                             ->update([
-                                'pvno' => $pvno,
+                                // 'pvno' => $pvno,
                                 // 'recstatus' => 'POSTED'
                                 'recstatus' => 'APPROVED'
                             ]);
