@@ -1368,10 +1368,10 @@ class DirectPaymentController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->first();
 
-        if ($apacthdr->recstatus == "OPEN") {
-            $title = "DRAFT";
-        } elseif ($apacthdr->recstatus == "POSTED"){
+        if($apacthdr->recstatus == "APPROVED" || $apacthdr->recstatus == "POSTED"){
             $title = "DIRECT PAYMENT";
+        }else{
+            $title = "DRAFT";
         }
             
         $totamount_expld = explode(".", (float)$apacthdr->amount);
