@@ -97,9 +97,17 @@ class ReceiptController extends defaultController
 
             $dbacthdr_amount = $request->dbacthdr_amount;
             if(strtolower($paymode_) == 'cash' && $request->dbacthdr_trantype == "RC"){
-                if(empty($request->dbacthdr_RCFinalbalance) && floatval($request->dbacthdr_amount) > floatval($request->dbacthdr_outamount)){
+                if(empty($request->dbacthdr_outamount)){
+                    $dbacthdr_amount = $dbacthdr_amount;
+                }else if(empty($request->dbacthdr_RCFinalbalance) && floatval($request->dbacthdr_amount) > floatval($request->dbacthdr_outamount)){
                     $dbacthdr_amount = $request->dbacthdr_outamount;
                 }
+            }
+
+            if($request->dbacthdr_payercode == 'ND0001'){
+                $dbacthdr_outamount = 0;
+            }else{
+                $dbacthdr_outamount = $dbacthdr_amount;
             }
 
             $array_insert = [
@@ -128,15 +136,21 @@ class ReceiptController extends defaultController
                 'paytype' => $request->dbacthdr_paytype,
                 'paymode' => $paymode_,
                 'amount' => $dbacthdr_amount,  
-                'outamount' => $dbacthdr_amount,  
+                'outamount' => $dbacthdr_outamount,  
                 'remark' => strtoupper($request->dbacthdr_remark),  
                 'tillcode' => $tillcode,  
                 'tillno' => $tillno,  
                 'recptno' => $recptno,     
                 'deptcode' => $tilldeptcode, 
+                'category' => $request->dbacthdr_category,
+                'categorydept' => $request->dbacthdr_categorydept,
             ];
 
             if($request->dbacthdr_trantype == "RD"){
+                if($request->dbacthdr_payercode == 'ND0001'){
+                    throw new \Exception("ND0001 for receipt non-debtor only");
+                }
+
                 $hdrtypmst = DB::table('debtor.hdrtypmst')
                         ->where('compcode',session('compcode'))
                         ->where('source','PB')
@@ -691,7 +705,13 @@ class ReceiptController extends defaultController
             $dept_obj = $this->gltran_fromdept($dbacthdr_obj->deptcode);
             $debtormast_obj = $this->gltran_fromdebtormast($dbacthdr_obj->payercode);
 
-            if(strtoupper($trantype) == 'RD'){
+            if($dbacthdr_obj->payercode == 'ND0001'){
+                $dept_obj = $this->gltran_fromdept_nd($dbacthdr_obj->categorydept);
+                $cat_obj = $this->gltran_category_nd($dbacthdr_obj->category);
+
+                $crcostcode = $dept_obj->costcode;
+                $cracc = $cat_obj->cosacct;
+            }else if(strtoupper($trantype) == 'RD'){
                 $crcostcode = $debtormast_obj->depccode;
                 $cracc = $debtormast_obj->depglacc;
             }else{
@@ -800,6 +820,27 @@ class ReceiptController extends defaultController
                 ->select('costcode')
                 ->where('compcode','=',session('compcode'))
                 ->where('deptcode','=',$deptcode)
+                ->first();
+
+        return $obj;
+    }
+
+    public function gltran_fromdept_nd($deptcode){
+        $obj = DB::table('sysdb.department')
+                ->select('costcode')
+                ->where('compcode','=',session('compcode'))
+                ->where('deptcode','=',$deptcode)
+                ->first();
+
+        return $obj;
+    }
+
+    public function gltran_category_nd($catcode){
+        $obj = DB::table('material.category')
+                ->select('cosacct')
+                ->where('compcode','=',session('compcode'))
+                ->where('catcode','=',$catcode)
+                ->where('source','=','RC')
                 ->first();
 
         return $obj;

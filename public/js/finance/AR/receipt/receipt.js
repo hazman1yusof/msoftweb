@@ -203,6 +203,18 @@ $(document).ready(function () {
 				}else{
 					$('#dbacthdr_remark').focus();
 				}
+
+				if(data.debtorcode == 'ND0001'){
+					$('#ND0001_case').show();
+					dialog_category.on();
+					dialog_categorydept.on();
+				}else{
+					$('#ND0001_case').hide();
+					dialog_category.off();
+					dialog_categorydept.off();
+					$('#dbacthdr_categorydept').val('');
+					$('#dbacthdr_category').val('');
+				}
 			}
 		  },'urlParam','radio','tab'
 		);
@@ -297,6 +309,78 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dbacthdr_quoteno.makedialog(true);
+
+	var dialog_categorydept = new ordialog(
+		'deptcode','sysdb.department','#dbacthdr_categorydept',errorField,
+		{	colModel:[
+				{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_categorydept.gridname);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					//$('#apacthdr_actdate').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Payer",
+			open: function(){
+				dialog_categorydept.urlParam.filterCol=['recstatus', 'compcode'],
+				dialog_categorydept.urlParam.filterVal=['ACTIVE', 'session.compcode']
+			},
+			close: function(){
+				$('#dbacthdr_category').focus();
+			}
+		  },'urlParam','radio','tab'
+		);
+	dialog_categorydept.makedialog(true);
+
+	var dialog_category = new ordialog(
+		'category','material.category','#dbacthdr_category',errorField,
+		{	colModel:[
+				{label:'category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus','source'],
+				filterVal:['session.compcode','ACTIVE','RC']
+			},
+			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_category.gridname);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					//$('#apacthdr_actdate').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Payer",
+			open: function(){
+				dialog_category.urlParam.filterCol=['recstatus', 'compcode','source'],
+				dialog_category.urlParam.filterVal=['ACTIVE', 'session.compcode','RC']
+			},
+			close: function(){
+				$('#dbacthdr_remark').focus();
+			}
+		  },'urlParam','radio','tab'
+		);
+	dialog_category.makedialog(true);
 
 	var dialog_logindeptcode = new ordialog(
 		'till_dept', 'sysdb.department', '#till_dept', errorField,
@@ -875,6 +959,17 @@ $(document).ready(function () {
 						rdonly('#formdata');
 						disableForm(selrowData('#jqGrid').dbacthdr_paytype);
 						$(this).dialog("option", "buttons",butt2);
+						if(selrowData('#jqGrid').dbacthdr_payercode == 'ND0001'){
+							$('#ND0001_case').show();
+							dialog_category.check();
+							dialog_categorydept.check();
+						}else{
+							$('#ND0001_case').hide();
+							dialog_category.off();
+							dialog_categorydept.off();
+							$('#dbacthdr_categorydept').val('');
+							$('#dbacthdr_category').val('');
+						}
 						
 						// switch(selrowData('#jqGrid').dbacthdr_paytype) {
 						// 	case '#f_tab-card':
@@ -913,6 +1008,13 @@ $(document).ready(function () {
 				emptyFormdata(errorField, '#f_tab-forex');
 				$('.alert').detach();
 				dialog_logindeptcode.off();
+
+				$('#ND0001_case').hide();
+				dialog_category.off();
+				dialog_categorydept.off();
+				$('#dbacthdr_categorydept').val('');
+				$('#dbacthdr_category').val('');
+							
 				// dialog_logintillcode.off();
 				$("#formdata a").off();
 				$("#refresh_jqGrid").click();
@@ -1011,6 +1113,8 @@ $(document).ready(function () {
 			{ label: 'idno', name: 'dbacthdr_idno', key:true, hidden: true },
 			{ label: 'paycard_description', name: 'paycard_description', hidden: true },
 			{ label: 'paybank_description', name: 'paybank_description', hidden: true },
+			{ label: 'dbacthdr_category', name: 'dbacthdr_category', hidden: true },
+			{ label: 'dbacthdr_categorydept', name: 'dbacthdr_categorydept', hidden: true },
 		],
 		autowidth:true,
 		//multiSort: true,

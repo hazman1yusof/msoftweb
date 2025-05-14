@@ -76,7 +76,7 @@
                                 [
                                     { text: 'RECEIVED FROM' },
                                     { text: ':' },
-                                    { text: '({{str_pad($dbacthdr->payercode, 7, "0", STR_PAD_LEFT)}}) {{$dbacthdr->payername}}' },
+                                    { text: '({!!$dbacthdr->payercode!!}) {!!$dbacthdr->payername!!}' },
                                     { text: 'DATE' },
                                     { text: ':' },
                                     @if(!empty($dbacthdr->posteddate))
