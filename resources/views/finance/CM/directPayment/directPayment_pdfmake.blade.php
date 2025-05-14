@@ -313,10 +313,10 @@ function make_body(){
 
     	for (var i = (loop_btm); i >= 0; i--) {
     		retval.push([
-				{text:'12', style: 'body_row', border: [false, false, false, false]},
-				{text:'2', style: 'body_row', border: [false, false, false, false]},
-				{text:'3', style: 'body_row', border: [false, false, false, false]},
-				{text:'4', style: 'body_row', border: [false, false, false, false]},
+				{text:' ', style: 'body_row', border: [false, false, false, false]},
+				{text:' ', style: 'body_row', border: [false, false, false, false]},
+				{text:' ', style: 'body_row', border: [false, false, false, false]},
+				{text:' ', style: 'body_row', border: [false, false, false, false]},
 	    	]);
     	}
     // }
