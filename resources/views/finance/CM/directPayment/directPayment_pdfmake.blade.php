@@ -238,37 +238,37 @@ function make_pdf(){
 
 	];
 
-	if(ini_body.length > 5){
-    	var next_pdf = [
-	  		{
-	  			pageBreak: 'before',
-	            style: 'body_tbl',
-	            table: {
-	                headerRows: 1,
-	            	dontBreakRows: true,
-	                widths: [50,120,'*',60],//panjang standard dia 515
-	                body: make_body()
-	            }
-	        },
-	        // {text:'REMARK: '+ini_header.remarks,alignment: 'left',fontSize:9,style: 'body_remark'},
-	        {
-	            style: 'body_totamt_str',
-	            table: {
-	                widths: [400,'*'],//panjang standard dia 515
-	                body: [
-	                    [
-							{text: 'RINGGIT MALAYSIA: '+ini_header.totamt_str,alignment: 'left', border: [false,true,false,true]},
-							{text: numeral(ini_header.totamt).format('0,0.00'),alignment: 'right', border: [false,true,false,true]},
-						]
-	                ]
-	            },
-	        }
-    	];
+	// if(ini_body.length > 5){
+    // 	var next_pdf = [
+	//   		{
+	//   			pageBreak: 'before',
+	//             style: 'body_tbl',
+	//             table: {
+	//                 headerRows: 1,
+	//             	dontBreakRows: true,
+	//                 widths: [50,120,'*',60],//panjang standard dia 515
+	//                 body: make_body()
+	//             }
+	//         },
+	//         // {text:'REMARK: '+ini_header.remarks,alignment: 'left',fontSize:9,style: 'body_remark'},
+	//         {
+	//             style: 'body_totamt_str',
+	//             table: {
+	//                 widths: [400,'*'],//panjang standard dia 515
+	//                 body: [
+	//                     [
+	// 						{text: 'RINGGIT MALAYSIA: '+ini_header.totamt_str,alignment: 'left', border: [false,true,false,true]},
+	// 						{text: numeral(ini_header.totamt).format('0,0.00'),alignment: 'right', border: [false,true,false,true]},
+	// 					]
+	//                 ]
+	//             },
+	//         }
+    // 	];
 
-    	ret_pdf =  pdf.concat(next_pdf);
-    }else{
+    // 	ret_pdf =  pdf.concat(next_pdf);
+    // }else{
     	ret_pdf = pdf;
-    }
+    // }
 
 	return ret_pdf;
 }
@@ -284,17 +284,17 @@ function make_body(){
 		],
     ];
 
-	if(ini_body.length > 20 && make_body_loop == 0){
+	// if(ini_body.length > 20 && make_body_loop == 0){
 
-    	let arr = [
-			{text:'', style: 'body_row', border: [false, false, false, false]},
-			{text:'', style: 'body_row', border: [false, false, false, false]},
-			{text:'PLEASE REFER TO ATTACHMENT', style: 'body_row', border: [false, false, false, false]},
-			{text:'', style: 'body_row',alignment: 'right', border: [false, false, false, false]},
-    	];
-    	retval.push(arr);
+    // 	let arr = [
+	// 		{text:'', style: 'body_row', border: [false, false, false, false]},
+	// 		{text:'', style: 'body_row', border: [false, false, false, false]},
+	// 		{text:'PLEASE REFER TO ATTACHMENT', style: 'body_row', border: [false, false, false, false]},
+	// 		{text:'', style: 'body_row',alignment: 'right', border: [false, false, false, false]},
+    // 	];
+    // 	retval.push(arr);
 
-	}else{
+	// }else{
 
 	    ini_body.forEach(function(e,i){
 	    	let arr = [
@@ -305,21 +305,21 @@ function make_body(){
 	    	];
 	    	retval.push(arr);
 	    });
-	}
-	make_body_loop = make_body_loop + 1;
+	// }
+	// make_body_loop = make_body_loop + 1;
 
-	if(retval.length<20){
-    	let loop_btm = 20-retval.length;
+	// if(retval.length<20){
+    	let loop_btm = 18-retval.length;
 
-    	for (var i = (loop_btm+loop_btm); i >= 0; i--) {
+    	for (var i = (loop_btm); i >= 0; i--) {
     		retval.push([
-				{text:' ', style: 'body_row', border: [false, false, false, false]},
-				{text:' ', style: 'body_row', border: [false, false, false, false]},
-				{text:' ', style: 'body_row', border: [false, false, false, false]},
-				{text:' ', style: 'body_row', border: [false, false, false, false]},
+				{text:'12', style: 'body_row', border: [false, false, false, false]},
+				{text:'2', style: 'body_row', border: [false, false, false, false]},
+				{text:'3', style: 'body_row', border: [false, false, false, false]},
+				{text:'4', style: 'body_row', border: [false, false, false, false]},
 	    	]);
     	}
-    }
+    // }
 
     return retval;
 }
