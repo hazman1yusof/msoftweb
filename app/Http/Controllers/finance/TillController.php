@@ -418,10 +418,23 @@ class TillController extends defaultController
     }
 
     public function checkifuserlogin(Request $request){
-        $tilldetl = DB::table('debtor.tilldetl')
-                    ->where('compcode',session('compcode'))
-                    ->where('cashier',session('username'))
-                    ->whereNull('closedate');
+
+        $tilldetl = DB::table('debtor.till as t')
+                            ->leftJoin('debtor.tilldetl as td', function($join) use ($request){
+                                $join = $join->where('td.compcode', session('compcode'));
+                                $join = $join->on('td.tillcode', 't.tillcode');
+                                $join = $join->on('td.cashier', 't.lastuser');
+                                $join = $join->on('td.opendate', 't.upddate');
+                                $join = $join->whereNull('closedate');
+                            })
+                            ->where('t.compcode',session('compcode'))
+                            ->where('t.tillstatus','O')
+                            ->where('t.lastuser',session('username'));
+
+        // $tilldetl = DB::table('debtor.tilldetl')
+        //             ->where('compcode',session('compcode'))
+        //             ->where('cashier',session('username'))
+        //             ->whereNull('closedate');
 
         $responce = new stdClass();
         $responce->rows = $tilldetl->get();
