@@ -613,7 +613,8 @@ class bankInRegistrationController extends defaultController
 
     public function check_amount_comm($apacthdr_get){
         if(strtoupper($apacthdr_get->paymode) == 'CARD'){
-            if((floatval($apacthdr_get->amount) + floatval($apacthdr_get->commamt)) != floatval($apacthdr_get->totBankinAmt)){
+            $amt_ = $apacthdr_get->amount + $apacthdr_get->commamt;
+            if($amt_ != $apacthdr_get->totBankinAmt){
                 return true;
             }
         }
