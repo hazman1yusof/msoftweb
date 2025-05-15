@@ -1521,6 +1521,10 @@ Route::get('/till_close','finance\tillController@till_close');
 Route::get('/till/table','finance\tillController@table');
 Route::post('/till/form','finance\tillController@form');
 
+Route::get('/gltb','finance\gltbController@show');
+Route::get('/gltb/table','finance\gltbController@table');
+Route::post('/gltb/form','finance\gltbController@form');
+
 // //// facontrol2 ///
 // Route::get('/facontrol2','finance\facontrolController2@show');
 // Route::get('/facontrol2/table','finance\facontrolController2@table');
