@@ -185,6 +185,48 @@
             </div>
         </div>
     </div>
+
+    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="occupTherapy_panel">
+        <div class="panel-heading clearfix collapsed" id="toggle_occupTherapy">
+            <b>NAME: <span id="name_show_occupTherapy"></span></b><br>
+            MRN: <span id="mrn_show_occupTherapy"></span>
+            SEX: <span id="sex_show_occupTherapy"></span>
+            DOB: <span id="dob_show_occupTherapy"></span>
+            AGE: <span id="age_show_occupTherapy"></span>
+            RACE: <span id="race_show_occupTherapy"></span>
+            RELIGION: <span id="religion_show_occupTherapy"></span><br>
+            OCCUPATION: <span id="occupation_show_occupTherapy"></span>
+            CITIZENSHIP: <span id="citizenship_show_occupTherapy"></span>
+            AREA: <span id="area_show_occupTherapy"></span>
+            
+            <i class="glyphicon glyphicon-chevron-up" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_occupTherapy"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size: 24px; margin: 0 0 0 12px;" data-toggle="collapse" data-target="#tab_occupTherapy"></i>
+            
+            <div style="position: absolute; 
+                        padding: 0 0 0 0; 
+                        right: 0px; 
+                        top: 0px; 
+                        z-index: 1000;">
+                <button class="ui icon tertiary button refreshbtn_occupTherapy">
+                    <i class="sync alternate icon"></i>
+                </button>
+            </div>
+            
+            <div id='occupTherapy_title' style="position: absolute; 
+                            padding: 0 0 0 0; 
+                            right: 50px; 
+                            top: 48px;">
+                <h5><strong>Occupational Therapy</strong>&nbsp;&nbsp;
+                    <span class="metal"></span></h5>
+            </div>
+        </div>
+        
+        <div id="tab_occupTherapy" class="panel-collapse collapse" data-curtype='navtab_occupTherapy'>
+            <div class="panel-body paneldiv" id="tab_occupTherapy_sticky">
+                @include('rehab.occupTherapy')
+            </div>
+        </div>
+    </div>
     
     @include('patientcare.itemselector')
 @endsection
@@ -228,7 +270,10 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy_ncase.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/rehab_main.js?v=1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio.js?v=1') }}"></script>
-    
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy.js?v=1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_cognitive.js?v=1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_barthel.js?v=1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_upperExtremity.js?v=1') }}"></script>
     <!-- <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_main.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_phar.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_disp.js') }}"></script>

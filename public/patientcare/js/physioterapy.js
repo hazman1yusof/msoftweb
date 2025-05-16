@@ -113,7 +113,7 @@ $(document).ready(function () {
 	});
 	
 	$('#tab_phys').on('show.bs.collapse', function (){
-		return check_if_user_selected();
+		// return check_if_user_selected();
 	})
 	
 	$('#tab_phys').on('shown.bs.collapse', function (){
