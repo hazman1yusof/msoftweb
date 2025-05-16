@@ -1,4 +1,4 @@
-<div id="cognitives" class="ui bottom attached tab raised segment" data-tab="cognitive">
+<div id="cognitives" class="ui bottom attached tab raised segment active" data-tab="cognitive">
     <div class="ui top attached tabular menu">
         <a class="item active" data-tab="mmse" id="navtab_mmse">MMSE</a>
         <a class="item" data-tab="moca" id="navtab_moca">MOCA</a>

@@ -14,9 +14,9 @@
                 <a class="item" data-tab="adl" id="navtab_adl">Activity Daily Living</a>
             </div>
             
-            <div class="ui bottom attached tab raised segment active" data-tab="cognitive">
+            <!-- <div class="ui bottom attached tab raised segment active" data-tab="cognitive"> -->
                 @include('rehab.occupTherapy.occupTherapy_cognitive')
-            </div>
+            <!-- </div> -->
             
             <div class="ui bottom attached tab raised segment" data-tab="physical">
                 @include('rehab.occupTherapy.occupTherapy_upperExtremity')

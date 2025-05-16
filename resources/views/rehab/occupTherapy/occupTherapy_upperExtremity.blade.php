@@ -82,16 +82,10 @@
                                         <i class="angle up icon large"></i>
                                         <h4 style="text-align:center;margin-top:3px">RANGE OF MOTION</h4>
                                     </div>
-                                    <div class="ui segment collapse" id="rof">
-                                        <div class="ui form">
-                                            <div class="sixteen wide column">
-                                                <div class="ui segments">
-                                                    <div class="ui segment" id="jqGrid_rof_c" style="padding: 5px 5px 5px 5px;">
-                                                        <table id="jqGrid_rof" class="table table-striped"></table>
-                                                        <div id="jqGridPager_rof"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <div class="ui segment collapse" id="rof" style="overflow: scroll hidden;">
+                                        <div  id="jqGrid_rof_c" style="padding: 5px 5px 5px 5px; width: 2600px;">
+                                            <table id="jqGrid_rof" class="table table-striped"></table>
+                                            <div id="jqGridPager_rof"></div>
                                         </div>
                                     </div>
                                 </div>
