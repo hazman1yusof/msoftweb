@@ -85,15 +85,17 @@
                             <td>{{$obj_ar->document}}</td>
                             <td>{{$obj_ar->postdate}}</td>
 
+                            @php($total_line = 0)
                             @foreach ($grouping as $key => $group)
                                 @if($key == $obj_ar->group)
+                                @php($total_line += $obj_ar->newamt)
                                 <td>{{$obj_ar->newamt}}</td>
                                 @else
                                 <td>0.00</td>
                                 @endif
                             @endforeach
 
-                            <td></td>
+                            <td>{{$total_line}}</td>
                             <td>{{$obj_ar->unit}}</td>
                             <td>{{$obj_ar->auditno_}}</td>
                         </tr>
@@ -115,7 +117,7 @@
 
                     <td>{{$total}}</td>
                     <td></td>
-                            <td></td>
+                    <td></td>
                 </tr>
             @endif
         @endforeach

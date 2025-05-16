@@ -1236,6 +1236,7 @@ class PaymentVoucherController extends defaultController
                                 ->where('doctrantype','=',$apacthdr->trantype)
                                 ->where('docauditno','=',$apacthdr->auditno)
                                 ->get();
+                                
                     foreach($apalloc as $value){ //update reference document
                         $value = (array)$value;
                         

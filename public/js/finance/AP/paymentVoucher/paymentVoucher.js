@@ -719,6 +719,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form,selfoper,saveParam,obj,needrefresh){
+		$("#save,#saveDetailLabel").attr('disabled',true);
 		if(obj==null){
 			obj={};
 		}
@@ -730,12 +731,14 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			
 		},'json').fail(function (data) {
+			$("#save,#saveDetailLabel").attr('disabled',false);
         	myfail_msg.add_fail({
 				id:'response',
 				textfld:"",
 				msg:data.responseText,
 			});
 		}).success(function (data) {
+			$("#save,#saveDetailLabel").attr('disabled',false);
 			hideatdialogForm(false);
 			
 			// if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
@@ -1591,7 +1594,6 @@ $(document).ready(function () {
 								break;
 
 				}
-
 
 				$('#apacthdr_bankcode').focus();
 			},

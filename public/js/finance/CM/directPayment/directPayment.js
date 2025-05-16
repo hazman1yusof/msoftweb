@@ -208,6 +208,31 @@ $(document).ready(function () {
 			{ label: 'Cheq Date', name: 'cheqdate', width: 40, hidden:true},
 			{ label: 'source', name: 'source', width: 40, hidden:true},
 		 	{ label: 'trantype', name: 'trantype', width: 40, hidden:true},
+		 	{ label: 'category', name: 'category', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'adduser', name: 'adduser', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'adddate', name: 'adddate', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'upduser', name: 'upduser', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'upddate', name: 'upddate', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'reopenby', name: 'reopenby', width: 40, hidden: true},
+			{ label: 'requestby', name: 'requestby', width: 90, hidden: true },
+			{ label: 'requestdate', name: 'requestdate', width: 90, hidden: true },
+			{ label: 'cancelby', name: 'cancelby', width: 90, hidden: true },
+			{ label: 'canceldate', name: 'canceldate', width: 90, hidden: true },
+			{ label: 'recommended1by', name: 'recommended1by', width: 90, hidden: true },
+			{ label: 'recommended1date', name: 'recommended1date', width: 90, hidden: true },
+			{ label: 'recommended2by', name: 'recommended2by', width: 90, hidden: true },
+			{ label: 'recommended2date', name: 'recommended2date', width: 90, hidden: true },
+			{ label: 'supportby', name: 'supportby', width: 90, hidden: true },
+			{ label: 'supportdate', name: 'supportdate', width: 40, hidden: true},
+			{ label: 'verifiedby', name: 'verifiedby', width: 90, hidden: true },
+			{ label: 'verifieddate', name: 'verifieddate', width: 90, hidden: true },
+			{ label: 'approvedby', name: 'approvedby', width: 90, hidden: true },
+			{ label: 'approveddate', name: 'approveddate', width: 40, hidden: true},
+			{ label: 'reopendate', name: 'reopendate', width: 40, hidden:true},
+			{ label: 'support_remark', name: 'support_remark', width: 40, hidden:true},
+			{ label: 'verified_remark', name: 'verified_remark', width: 40, hidden:true},
+			{ label: 'approved_remark', name: 'approved_remark', width: 40, hidden:true},
+			{ label: 'cancelled_remark', name: 'cancelled_remark', width: 40, hidden:true},
 		 	
 		],
 		autowidth:true,
@@ -340,7 +365,7 @@ $(document).ready(function () {
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid',true,urlParam);
+	addParamField('#jqGrid',false,urlParam);
 	addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress', 'supplier_name','Checkbox']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
@@ -542,10 +567,12 @@ $(document).ready(function () {
 		refreshGrid('#jqGrid',urlParam);
 	}
 
-	function searchChange(){
+	searchChange(true);
+	function searchChange(once=false){
+		cbselect.empty_sel_tbl();
 		var arrtemp = [$('#Status option:selected').val()];
 		var filter = arrtemp.reduce(function(a,b,c){
-			if(b=='All'){
+			if(b.toUpperCase() == 'ALL'){
 				return a;
 			}else{
 				a.fc = a.fc.concat(a.fct[c]);
@@ -556,6 +583,19 @@ $(document).ready(function () {
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
+
+		if(once){
+			urlParam.searchCol=null;
+			urlParam.searchVal=null;
+			if($('#searchForm [name=Stext]').val().trim() != ''){
+				let searchCol = ['ap.auditno'];
+				let searchVal = ['%'+$('#searchForm [name=Stext]').val().trim()+'%'];
+				urlParam.searchCol=searchCol;
+				urlParam.searchVal=searchVal;
+			}
+			once=false;
+		}
+
 		refreshGrid('#jqGrid',urlParam);
 	}
 
@@ -1046,10 +1086,18 @@ $(document).ready(function () {
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
 		
+		if($('#recstatus_use').val() == 'VERIFIED'){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' onclick='click_selection(checkbox_selection_"+rowObject['apacthdr_idno']+");'>";
+		}else if($('#recstatus_use').val() == 'APPROVED'){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' onclick='click_selection(checkbox_selection_"+rowObject['apacthdr_idno']+");'>";
+		}else if($('#recstatus_use').val() == 'REOPEN' && rowObject['apacthdr_recstatus'] == 'CANCELLED'){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' onclick='click_selection(checkbox_selection_"+rowObject['apacthdr_idno']+");'>";
+		}
+
 		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' onclick='click_selection(checkbox_selection_"+rowObject['apacthdr_idno']+");'>";
 		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
-			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject['apacthdr_idno']+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
 		}else{
 			return ' ';
 		}

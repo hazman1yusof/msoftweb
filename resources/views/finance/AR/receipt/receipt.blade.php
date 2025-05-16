@@ -302,6 +302,31 @@
 				</div>
 			</div>
 		</div>
+
+		<div class='col-md-12' style="margin:0px 0px 12px 0px;display:none" id="ND0001_case" >
+			<label class="control-label col-md-1" for="dbacthdr_categorydept">Department</label> 
+			<div class="col-md-5">
+	  			<div class="">
+		  			<div class='input-group'>
+						<input id="dbacthdr_categorydept" name="dbacthdr_categorydept" type="text" class="form-control input-sm text-uppercase" >
+						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+		  			</div>
+		  			<span class="help-block"></span>
+	  			</div>
+  		</div>
+
+			<label class="control-label col-md-1" for="dbacthdr_category">Category</label>  
+			<div class="col-md-5">
+	  			<div class="">
+		  			<div class='input-group'>
+						<input id="dbacthdr_category" name="dbacthdr_category" type="text" class="form-control input-sm text-uppercase" >
+						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+		  			</div>
+		  			<span class="help-block"></span>
+	  			</div>
+  		</div>
+	  </div>
+
 		<div class='col-md-12'>
 			<div class="form-group">
 				<label class="control-label col-md-1" for="dbacthdr_remark">Remark</label> 
@@ -684,6 +709,6 @@
 @section('scripts')
 	
 	<script src="js/myjs/till_part.js"></script>
-	<script src="js/finance/AR/receipt/receipt.js?v=1.4"></script>
+	<script src="js/finance/AR/receipt/receipt.js?v=1.5"></script>
 	
 @endsection

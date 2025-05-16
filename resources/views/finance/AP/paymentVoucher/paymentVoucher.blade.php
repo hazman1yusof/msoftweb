@@ -104,7 +104,7 @@ div#fail_msg{
 		            </div>
 				</div>
 
-				<div class="col-md-2">
+				  <div class="col-md-2">
 				  	<label class="control-label" for="Status">Status</label>  
 				  	<select id="Status" name="Status" class="form-control input-sm">
 					  	@if (Request::get('scope') == 'ALL')
@@ -152,7 +152,7 @@ div#fail_msg{
 				    </select>
 					</div>
 
-	          <?php 
+	      <?php 
 					$scope_use = 'posted';
 
 					if(Request::get('scope') == 'ALL'){
@@ -595,7 +595,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js?V=1.8"></script>
+	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js?V=1.9"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 

@@ -265,6 +265,6 @@
 
 @section('scripts')
 
-	<script src="js/finance/GL/chartAccount/chartAccount.js"></script>
+	<script src="js/finance/GL/chartAccount/chartAccount.js?v=1.1"></script>
 	
 @endsection

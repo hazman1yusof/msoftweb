@@ -1047,6 +1047,10 @@ abstract class defaultController extends Controller{
         }
     }
 
+    public function rmv_nonascii_char($string){
+        return preg_replace('/[^(\x20-\x7F)\x0A\x0D]*/','', $string);
+    }
+
     public function mypaginate($table,$rows){
         dd($table);
     }

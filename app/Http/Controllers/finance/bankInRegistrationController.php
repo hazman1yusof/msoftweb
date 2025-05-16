@@ -316,7 +316,7 @@ class bankInRegistrationController extends defaultController
                 $apacthdr_get = $apacthdr->first();
 
                 if($this->check_amount_comm($apacthdr_get)){
-                    throw new \Exception('Amunt + commision not equal with total detail', 500);
+                    throw new \Exception('Amount + commision not equal with total detail', 500);
                 }
 
                 $yearperiod = $this->getyearperiod($apacthdr_get->postdate);
@@ -613,7 +613,10 @@ class bankInRegistrationController extends defaultController
 
     public function check_amount_comm($apacthdr_get){
         if(strtoupper($apacthdr_get->paymode) == 'CARD'){
-            if((floatval($apacthdr_get->amount) + floatval($apacthdr_get->commamt)) != floatval($apacthdr_get->totBankinAmt)){
+            $amt_ = $apacthdr_get->amount + $apacthdr_get->commamt;
+            $compare1 = round($apacthdr_get->totBankinAmt,2);
+            $compare2 = round($amt_,2);
+            if(floatval($compare1) != floatval($compare2)){
                 return true;
             }
         }

@@ -227,7 +227,6 @@ class do_util extends defaultController{
                 ->first();
             //utk debit accountcode
             $row_cat = DB::table('material.category')
-                ->select('stockacct')
                 ->where('compcode','=',session('compcode'))
                 ->where('catcode','=',$productcat)
                 ->first();
@@ -235,13 +234,12 @@ class do_util extends defaultController{
             $drcostcode = $row_dept->costcode;
             $dracc = $row_cat->stockacct;
 
-            //utk credit costcode dgn accountocde
-            $row_sysparam = DB::table('sysdb.sysparam')
-                ->select('pvalue1','pvalue2')
-                ->where('compcode','=',session('compcode'))
-                ->where('source','=','AP')
-                ->where('trantype','=','ACC')
-                ->first();
+            if(strtoupper($product_obj->groupcode) == "CONSIGNMENT"){
+                $dracc = $row_cat->ConsignAcct;
+                if(empty($row_cat->ConsignAcct)){
+                    $dracc = $row_cat->stockacct;
+                }
+            }
 
         }else if(strtoupper($product_obj->groupcode) == "ASSET"){
             $facode = DB::table('finance.facode')
@@ -251,14 +249,6 @@ class do_util extends defaultController{
 
             $drcostcode = $facode->glassetccode;
             $dracc = $facode->glasset;
-            
-            //utk credit costcode dgn accountocde
-            $row_sysparam = DB::table('sysdb.sysparam')
-                ->select('pvalue1','pvalue2')
-                ->where('compcode','=',session('compcode'))
-                ->where('source','=','AP')
-                ->where('trantype','=','ACC')
-                ->first();
 
         }else{
             throw new \Exception("Item at delorddt doesn't have groupcode at table product");
@@ -266,9 +256,22 @@ class do_util extends defaultController{
 
         if(strtoupper($product_obj->groupcode) == "STOCK"){
             $source_ = 'IV';
+        }else if(strtoupper($product_obj->groupcode) == "CONSIGNMENT"){
+            $source_ = 'DO';
         }else{
             $source_ = 'DO';
         }
+
+        //utk credit costcode dgn accountocde
+        $row_sysparam = DB::table('sysdb.sysparam')
+            ->select('pvalue1','pvalue2')
+            ->where('compcode','=',session('compcode'))
+            ->where('source','=','AP')
+            ->where('trantype','=','ACC')
+            ->first();
+
+        $crcostcode = $drcostcode; //crcc sama dg drcc
+        $cracc = $row_sysparam->pvalue2;
 
         //1. buat gltran
         DB::table('finance.gltran')
@@ -287,8 +290,8 @@ class do_util extends defaultController{
                 'period' => $yearperiod->period,
                 'drcostcode' => $drcostcode,
                 'dracc' => $dracc,
-                'crcostcode' => $row_sysparam->pvalue1,
-                'cracc' => $row_sysparam->pvalue2,
+                'crcostcode' => $crcostcode,
+                'cracc' => $cracc,
                 'amount' => $value->amount,
                 'idno' => $delordhd_obj->deldept .' '. $delordhd_obj->docno
             ]);
@@ -323,13 +326,13 @@ class do_util extends defaultController{
         }
 
         //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
-        $gltranAmount = defaultController::isGltranExist_($row_sysparam->pvalue1,$row_sysparam->pvalue2,$yearperiod->year,$yearperiod->period);
+        $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
 
         if($gltranAmount!==false){
             DB::table('finance.glmasdtl')
                 ->where('compcode','=',session('compcode'))
-                ->where('costcode','=',$row_sysparam->pvalue1)
-                ->where('glaccount','=',$row_sysparam->pvalue2)
+                ->where('costcode','=',$crcostcode)
+                ->where('glaccount','=',$cracc)
                 ->where('year','=',$yearperiod->year)
                 ->update([
                     'upduser' => session('username'),
@@ -341,8 +344,8 @@ class do_util extends defaultController{
             DB::table('finance.glmasdtl')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'costcode' => $row_sysparam->pvalue1,
-                    'glaccount' => $row_sysparam->pvalue2,
+                    'costcode' => $crcostcode,
+                    'glaccount' => $cracc,
                     'year' => $yearperiod->year,
                     'actamount'.$yearperiod->period => -$value->amount,
                     'adduser' => session('username'),

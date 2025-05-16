@@ -279,7 +279,7 @@
 <script type="text/ecmascript" src="plugins/numeral.min.js"></script>
 <script type="text/ecmascript" src="plugins/moment.js"></script>
 <script type="text/ecmascript" src="plugins/velocity.min.js"></script>
-<script type="text/ecmascript" src="js/other/authdtl_alert/authdtl_alert.js?v=1.6"></script>
+<script type="text/ecmascript" src="js/other/authdtl_alert/authdtl_alert.js?v=1.7"></script>
 <script type="text/ecmascript" src="js/myjs/menu.js?v=1.1"></script>
 
 <script>

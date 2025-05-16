@@ -151,7 +151,7 @@ i.fa {
 		</div>
 
 		<div class="panel panel-default">
-		    <div class="panel-heading">Direct Payment Header
+		    <div class="panel-heading">Bank In Registration
 			<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
 			</div>
 		    	<div class="panel-body">
@@ -383,5 +383,5 @@ i.fa {
 			
 		});
 	</script>
-	<script src="js/finance/CM/bankInRegistration/bankInRegistration.js"></script>
+	<script src="js/finance/CM/bankInRegistration/bankInRegistration.js?v=1.1"></script>
 @endsection

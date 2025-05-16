@@ -146,17 +146,17 @@ class arenquiryController extends defaultController
         
         if(!empty($request->searchCol)){
             if($request->searchCol[0] == 'db_invno'){
-                $table = $table->Where(function ($table) use ($request){
-                        $table->Where('db.invno','like',$request->searchVal[0]);
-                });
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('db.invno','=',$request->wholeword);
+                    });
             }else if($request->searchCol[0] == 'db_mrn'){
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where('db.mrn','like',$request->searchVal[0]);
                 });
             }else if($request->searchCol[0] == 'db_auditno'){
-                $table = $table->Where(function ($table) use ($request){
-                        $table->Where('db.auditno','like',$request->searchVal[0]);
-                });
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('db.auditno','=',$request->wholeword);
+                    });
             }else if($request->searchCol[0] == 'db_trantype'){
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where('db.trantype','like',$request->searchVal[0]);
