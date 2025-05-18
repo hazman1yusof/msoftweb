@@ -1,60 +1,56 @@
 <?php
 
-namespace App\Http\Controllers\finance;
+namespace App\Jobs;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\defaultController;
-use stdClass;
-use DB;
-use DateTime;
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Mail;
 use Carbon\Carbon;
-use Response;
-use App\Jobs\gltb_jobs;
+use DB;
 
-class  gltbController extends defaultController
-{   
+class gltb_jobs implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(){
-        $this->middleware('auth');
+    protected $data;
+    protected $like;
+
+    /**
+     * Create a new job instance.
+     *
+     * @return void
+     */
+    public function __construct($data,$like)
+    {
+        //
+        $this->data = $data;
+        $this->like = $like;
     }
 
-    public function show(Request $request){   
-        return view('other.gtb.gtb');
-    }
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        $data = $this->data;
 
-    public function table(Request $request){ 
-        switch($request->action){
-            case 'gltb_del':
-                return $this->gltb_del($request);
-            case 'gltb_run_dr':
-                gltb_jobs::dispatch($request->action,$request->like);
-                return 'done';
-                // return $this->gltb_run_dr($request);
-            case 'gltb_run_cr':
-                gltb_jobs::dispatch($request->action,$request->like);
-                return 'done';
-                // return $this->gltb_run_cr($request);
-            default:
-                return 'error happen..';
+        if($data == 'gltb_run_dr'){
+            $this->gltb_run_dr();
+        }else{
+            $this->gltb_run_cr();
         }
+        
     }
 
-    public function form(Request $request){   
-        switch($request->action){
-            case 'gltb_run':
-                return $this->gltb_run($request);
-            default:
-                return 'error happen..';
-        }
-    }
-
-    public function gltb_del(Request $request){
-        DB::table('recondb.gltb')->truncate();
-    }
-
-    public function gltb_run_dr(Request $request){
+    public function gltb_run_dr(){
         $glmasref = DB::table('finance.glmasref')
                         ->where('compcode',session('compcode'))
+                        ->where('glaccno','like',$this->like.'%')
                         ->get();
 
         foreach ($glmasref as $glm_obj) {
@@ -74,15 +70,10 @@ class  gltbController extends defaultController
                             ->where('period',$gltrandr_obj->period);
 
                 if($gltb->exists()){
-                    $gltb = $gltb->first();
-                    $newamt = floatval($gltb->amount) + floatval($gltrandr_obj->amount);
+                    $gltb_f = $gltb->first();
+                    $newamt = floatval($gltb_f->amount) + floatval($gltrandr_obj->amount);
 
-                    DB::table('recondb.gltb')
-                            ->where('compcode',session('compcode'))
-                            ->where('costcode',$gltrandr_obj->drcostcode)
-                            ->where('glaccount',$gltrandr_obj->dracc)
-                            ->where('year',$gltrandr_obj->year)
-                            ->where('period',$gltrandr_obj->period)
+                    $gltb
                             ->update([
                                 'amount' => $newamt,
                             ]);
@@ -101,9 +92,10 @@ class  gltbController extends defaultController
         }
     }
 
-    public function gltb_run_cr(Request $request){
+    public function gltb_run_cr(){
         $glmasref = DB::table('finance.glmasref')
                         ->where('compcode',session('compcode'))
+                        ->where('glaccno',$this->like.'%')
                         ->get();
 
         foreach ($glmasref as $glm_obj) {

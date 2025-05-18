@@ -64,6 +64,7 @@
 						<button name="gltb_run_cr" type="button" class="mybtn btn btn-sm" data-btntype='gltb_run_cr'>
 						 RUN GLTB CR
 						</button>
+						<input type="text" id="like">
 						<button name="gltb_del" type="button" class="mybtn btn btn-sm" data-btntype='gltb_del'>
 						 TRUNCATE GLTB
 						</button>
@@ -85,8 +86,9 @@ $(document).ready(function () {
 
 	$('button.mybtn').click(function(){
 		var action = $(this).data('btntype');
+		var like = $('#like').val();
 
-		window.open('./gltb/table?action='+action, '_blank');
+		window.open('./gltb/table?action='+action+'&like='+like, '_blank');
 	});
 });
 		
