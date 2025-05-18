@@ -58,8 +58,11 @@
 				<div class="panel-body" style="padding-left: 35px !important;">
 					<div class='col-md-12 btnform' style="padding:0px">
 					 <fieldset>
-						<button name="gltb_run" type="button" class="mybtn btn btn-sm" data-btntype='gltb_run'>
-						 RUN GLTB
+						<button name="gltb_run_dr" type="button" class="mybtn btn btn-sm" data-btntype='gltb_run_dr'>
+						 RUN GLTB DR
+						</button>
+						<button name="gltb_run_cr" type="button" class="mybtn btn btn-sm" data-btntype='gltb_run_cr'>
+						 RUN GLTB CR
 						</button>
 						<button name="gltb_del" type="button" class="mybtn btn btn-sm" data-btntype='gltb_del'>
 						 TRUNCATE GLTB
