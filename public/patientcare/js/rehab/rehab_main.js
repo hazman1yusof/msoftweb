@@ -155,7 +155,6 @@ $(document).ready(function () {
                 populate_phys(selrowData('#jqGrid'));
                 // populate_ordcom_currpt(selrowData('#jqGrid'));
                 populate_physio(selrowData('#jqGrid'));
-                populate_ordcom_currpt(selrowData('#jqGrid'));
                 populate_occupTherapy(selrowData('#jqGrid'));
                 
                 // if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
@@ -258,9 +257,10 @@ $(document).ready(function () {
                 // refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
                 // refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
                 populate_phys(selrowData('#jqGrid'));
-                populate_ordcom_currpt(selrowData('#jqGrid'));
+                // populate_ordcom_currpt(selrowData('#jqGrid'));
+                populate_physio(selrowData('#jqGrid'));
                 populate_occupTherapy(selrowData('#jqGrid'));
-
+                
                 // if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
                 // 	$('#checkbox_completed').prop('disabled',true);
                 // 	$('#checkbox_completed').prop('checked', true);
