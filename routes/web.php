@@ -1627,6 +1627,31 @@ Route::get('/rehab/table','rehab\RehabController@table');
 Route::post('/rehab/form','rehab\RehabController@form');
 // Route::post('/ptcare_doctornote_transaction_save', "rehab\RehabController@transaction_save");
 
+//// Physiotherapy page ////
+Route::get('/motorScale','rehab\MotorScaleController@show');
+Route::get('/motorScale/table','rehab\MotorScaleController@table');
+Route::post('/motorScale/form','rehab\MotorScaleController@form');
+
+Route::get('/bergBalanceTest','rehab\BergBalanceTestController@show');
+Route::get('/bergBalanceTest/table','rehab\BergBalanceTestController@table');
+Route::post('/bergBalanceTest/form','rehab\BergBalanceTestController@form');
+
+Route::get('/oswestryQuest','rehab\OswestryQuestController@show');
+Route::get('/oswestryQuest/table','rehab\OswestryQuestController@table');
+Route::post('/oswestryQuest/form','rehab\OswestryQuestController@form');
+
+Route::get('/neuroAssessment','rehab\NeuroAssessmentController@show');
+Route::get('/neuroAssessment/table','rehab\NeuroAssessmentController@table');
+Route::post('/neuroAssessment/form','rehab\NeuroAssessmentController@form');
+
+Route::get('/spinalCord','rehab\SpinalCordController@show');
+Route::get('/spinalCord/table','rehab\SpinalCordController@table');
+Route::post('/spinalCord/form','rehab\SpinalCordController@form');
+
+Route::get('/sixMinWalkTest','rehab\SixMinWalkTestController@show');
+Route::get('/sixMinWalkTest/table','rehab\SixMinWalkTestController@table');
+Route::post('/sixMinWalkTest/form','rehab\SixMinWalkTestController@form');
+
 /// occuptherapy
 Route::get('/occupTherapy','rehab\OccupTherapyController@show');
 Route::get('/occupTherapy/table','rehab\OccupTherapyController@table');
