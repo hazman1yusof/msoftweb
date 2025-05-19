@@ -42,8 +42,7 @@
                         <li><a data-toggle="tab" id="navtab_pivc" href="#tab-pivc" data-type='pivc'>PIVC</a></li>
                         <li><a data-toggle="tab" id="navtab_morsefallscale" href="#tab-morsefallscale" data-type='morsefallscale'>Daily Morse Fall Scale Assessment</a></li>
                         <li><a data-toggle="tab" id="navtab_thrombo" href="#tab-thrombo" data-type='thrombo'>Thrombophlebitis</a></li>
-
-                        @endif
+                    @endif
                     @if(request()->get('epistycode') == 'OP')
                         <li><a data-toggle="tab" id="navtab_progress" href="#tab-progress" data-type='progress'>Progress Note</a></li>
                     @endif
@@ -702,7 +701,7 @@
                                     <form class='form-horizontal' style='width: 99%;' id='formInjection'>
                                         <input id="inj_idno" name="inj_idno" type="hidden">
                                         <input id="inj_adduser" name="inj_adduser" type="hidden">
-
+                                        
                                         <div class="col-md-3" style="padding: 0 0 0 0;">
                                             <div class="panel panel-info">
                                                 <div class="panel-body" style="padding: 0 0 0 0;">
@@ -1217,13 +1216,12 @@
                                         </button>
                                     </div>
                                 </div>
-
+                                
                                 <div class="panel-body" style="padding-right: 0px;">
                                     <form class='form-horizontal' style='width: 99%;' id='formBladderHdr'>
                                         <div class='col-md-12'>
                                             <div class="panel panel-info">
                                                 <div class="panel-body">
-                                                    
                                                     <div class="form-group">
                                                         <label class="col-md-2 control-label" for="bladder_ward">Ward</label>
                                                         <div class="col-md-3">
@@ -1235,7 +1233,7 @@
                                                             <input id="bladder_bednum" name="bladder_bednum" type="text" class="form-control input-sm" readonly>
                                                         </div>
                                                     </div>
-
+                                                    
                                                     <!-- <div class="form-group">
                                                         <label class="col-md-1 control-label" for="tot_input">Total Input</label>
                                                         <div class="col-md-2">
@@ -1246,7 +1244,7 @@
                                                         <div class="col-md-2">
                                                             <input id="tot_output" name="tot_output" type="text" class="form-control input-sm" readonly>
                                                         </div>
-
+                                                        
                                                         <label class="col-md-1 control-label" for="balance">Balance</label>
                                                         <div class="col-md-2">
                                                             <input id="balance" name="balance" type="text" class="form-control input-sm" readonly>
@@ -1276,13 +1274,13 @@
                                                                 <div class="col-md-5">
                                                                     <input id="tot_input1" name="tot_input1" type="text" class="form-control input-sm" readonly>
                                                                 </div>
-
+                                                                
                                                                 <label class="col-md-1 control-label">Output:</label>
                                                                 <div class="col-md-5">
                                                                     <input id="tot_output1" name="tot_output1" type="text" class="form-control input-sm" readonly>
                                                                 </div>
                                                             </div>
-
+                                                            
                                                             <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                                 <input id="firstShift" name="firstShift" value="1" type="hidden">
                                                                 <table id="jqGridBladder1" class="table table-striped"></table>
@@ -1292,7 +1290,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            
                                             <!-- 2nd shift (3pm-9pm) -->
                                             <div id="tab-secondShift" class="tab-pane fade">
                                                 <div class='col-md-12'>
@@ -1303,13 +1301,13 @@
                                                                 <div class="col-md-5">
                                                                     <input id="tot_input2" name="tot_input2" type="text" class="form-control input-sm" readonly>
                                                                 </div>
-
+                                                                
                                                                 <label class="col-md-1 control-label">Output:</label>
                                                                 <div class="col-md-5">
                                                                     <input id="tot_output2" name="tot_output2" type="text" class="form-control input-sm" readonly>
                                                                 </div>
                                                             </div>
-
+                                                            
                                                             <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                                 <input id="secondShift" name="secondShift" value="2" type="hidden">
                                                                 <table id="jqGridBladder2" class="table table-striped"></table>
@@ -1319,7 +1317,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            
                                             <!-- 3rd shift (10pm-7am) -->
                                             <div id="tab-thirdShift" class="tab-pane fade">
                                                 <div class='col-md-12'>
@@ -1330,13 +1328,13 @@
                                                                 <div class="col-md-5">
                                                                     <input id="tot_input3" name="tot_input3" type="text" class="form-control input-sm" readonly>
                                                                 </div>
-
+                                                                
                                                                 <label class="col-md-1 control-label">Output:</label>
                                                                 <div class="col-md-5">
                                                                     <input id="tot_output3" name="tot_output3" type="text" class="form-control input-sm" readonly>
                                                                 </div>
                                                             </div>
-
+                                                            
                                                             <div class='col-md-12' style="padding: 0 0 15px 0;">
                                                                 <input id="thirdShift" name="thirdShift" value="3" type="hidden">
                                                                 <table id="jqGridBladder3" class="table table-striped"></table>

@@ -127,7 +127,7 @@
                     <i class="sync alternate icon"></i>
                 </button>
             </div>
-
+            
             <div style="position: absolute; 
                         padding: 0 0 0 0; 
                         right: 50px; 
@@ -185,7 +185,7 @@
             </div>
         </div>
     </div>
-
+    
     <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px;" id="occupTherapy_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_occupTherapy">
             <b>NAME: <span id="name_show_occupTherapy"></span></b><br>
@@ -270,6 +270,12 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy_ncase.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/rehab_main.js?v=1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio.js?v=1') }}"></script>
+    <!-- <script type="text/javascript" src="{{ asset('patientcare/js/rehab/motorScale.js?v=1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/bergBalanceTest.js?v=1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/oswestryQuest.js?v=1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/neuroAssessment.js?v=1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/spinalCord.js?v=1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/sixMinWalking.js?v=1') }}"></script> -->
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy.js?v=1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_cognitive.js?v=1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy_barthel.js?v=1') }}"></script>
