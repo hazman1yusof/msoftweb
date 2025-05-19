@@ -16,16 +16,16 @@ var urlParam_rof = {
 }
 
 //////////////////////////////////parameter for jqGrid_hand url//////////////////////////////////
-// var urlParam_hand = {
-//     action: 'get_table_default',
-//     url: './util/get_table_default',
-//     field: '',
-//     table_name: 'hisdb.ot_upperExtremity_hand',
-//     table_id: 'idno',
-//     filterCol: ['compcode','mrn','episno'],
-//     filterVal: ['session.compcode','',''],
+var urlParam_hand = {
+    action: 'get_table_default',
+    url: './util/get_table_default',
+    field: '',
+    table_name: 'hisdb.ot_upperExtremity_hand',
+    table_id: 'idno',
+    filterCol: ['compcode','mrn','episno'],
+    filterVal: ['session.compcode','',''],
     
-// }
+}
 
 $(document).ready(function (){
 
@@ -61,7 +61,7 @@ $(document).ready(function (){
             saveForm_upperExtremity(function (data){
                 $("#cancel_upperExtremity").data('oper','edit');
                 $("#cancel_upperExtremity").click();
-                $('#datetimeMMSE_tbl').DataTable().ajax.reload();            
+                $('#datetimeUpperExtremity_tbl').DataTable().ajax.reload();            
             });
         }else{
             enableForm('#formOccupTherapyUpperExtremity');
@@ -109,7 +109,7 @@ $(document).ready(function (){
             { label: 'compcode', name: 'compcode', width: 10, hidden: true },
             { label: 'mrn', name: 'mrn', width: 10, hidden: true },
             { label: 'episno', name: 'episno', width: 10, hidden: true },
-            { label: 'Date', name: 'daterof', width: 10, classes: 'wrap', editable: true, 
+            { label: 'Date', name: 'daterof', width: 45, classes: 'wrap', editable: true, 
 				formatter: dateFormatter, unformat: dateUNFormatter, formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' }, 
 				editoptions: {
 					dataInit: function (element){
@@ -127,19 +127,19 @@ $(document).ready(function (){
 					}
 				}
 			},
-            { label: 'Indicate R/L', name: 'dominant', width: 10, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
+            { label: 'Indicate R/L', name: 'dominant', width: 35, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
 				editoptions: {
 					value: "R:RIGHT;L:LEFT"
 				}
 			},
-            { label: 'Ext (0-50)', name: 'shoulder_ext', width: 12, editable: true },
-            { label: 'Flex (0-180)', name: 'shoulder_flex', width: 12, editable: true },
-            { label: 'Add/Abd<br>(0-180)', name: 'shoulder_addAbd', width: 12, editable: true },
-            { label: 'Internal<br>Rotation (0-90)', name: 'shoulder_intRotation', width: 15, editable: true },
-            { label: 'External<br>Rotation (0-90)', name: 'shoulder_extRotation', width: 15, editable: true },
-            { label: 'Ext/Flex<br>(0-160)', name: 'elbow_extFlex', width: 12, editable: true },
-            { label: 'Pronation<br>(0-90)', name: 'forearm_pronation', width: 12, editable: true },
-            { label: 'Supination<br>(0-90)', name: 'forearm_supination', width: 12, editable: true },
+            { label: '<center>Ext<br>(0-50)</center>', name: 'shoulder_ext', width: 30, editable: true },
+            { label: '<center>Flex<br>(0-180)</center>', name: 'shoulder_flex', width: 30, editable: true },
+            { label: '<center>Add/Abd<br>(0-180)</center>', name: 'shoulder_addAbd', width: 30, editable: true },
+            { label: '<center>Internal<br>Rotation (0-90)</center>', name: 'shoulder_intRotation', width: 40, editable: true },
+            { label: '<center>External<br>Rotation (0-90)</center>', name: 'shoulder_extRotation', width: 40, editable: true },
+            { label: '<center>Ext/Flex<br>(0-160)</center>', name: 'elbow_extFlex', width: 30, editable: true },
+            { label: '<center>Pronation<br>(0-90)</center>', name: 'forearm_pronation', width: 30, editable: true },
+            { label: '<center>Supination<br>(0-90)</center>', name: 'forearm_supination', width: 30, editable: true },
             { label: 'adduser', name: 'adduser', width: 50, hidden: true },
             { label: 'adddate', name: 'adddate', width: 50, hidden: true },
             { label: 'upduser', name: 'upduser', hidden: true },
@@ -228,8 +228,8 @@ $(document).ready(function (){
         }
     };
     
-    /////////////////////////////////////////myEditOptions_edit_otswab/////////////////////////////////////////
-    var myEditOptions_edit_otswab = {
+    /////////////////////////////////////////myEditOptions_edit_rof/////////////////////////////////////////
+    var myEditOptions_edit_rof = {
         keys: true,
         extraparam: {
             "_token": $("#_token").val()
@@ -288,7 +288,7 @@ $(document).ready(function (){
         addParams: {
             addRowParams: myEditOptions_add_rof
         },
-        editParams: myEditOptions_edit_otswab
+        editParams: myEditOptions_edit_rof
     }).jqGrid('navButtonAdd', "#jqGridPager_rof", {
         id: "jqGridPagerDelete_rof",
         caption: "", cursor: "pointer", position: "last",
@@ -327,7 +327,255 @@ $(document).ready(function (){
             refreshGrid("#jqGrid_rof", urlParam_rof);
         },
     });
-    ////////////////////////////////////////////////jqGrid ends////////////////////////////////////////////////
+    ////////////////////////////////////////////////jqGrid rof ends////////////////////////////////////////////////
+
+    /////////////////////////////////////////parameter for saving url/////////////////////////////////////////
+    var addmore_jqgridhand = { more:false,state:false,edit:false }
+    
+    //////////////////////////////////////////////jqGrid_hand//////////////////////////////////////////////
+    $("#jqGrid_hand").jqGrid({
+        datatype: "local",
+        editurl: "./occupTherapy_upperExtremity/form",
+        colModel: [
+            { label: 'idno', name: 'idno', width: 10, hidden: true, key: true },
+            { label: 'compcode', name: 'compcode', width: 10, hidden: true },
+            { label: 'mrn', name: 'mrn', width: 10, hidden: true },
+            { label: 'episno', name: 'episno', width: 10, hidden: true },
+            { label: 'Date', name: 'datehand', width: 100, classes: 'wrap', editable: true, 
+				formatter: dateFormatter, unformat: dateUNFormatter, formatoptions: { srcformat: 'Y-m-d', newformat: 'd-m-Y' }, 
+				editoptions: {
+					dataInit: function (element){
+						$(element).datepicker({
+							id: 'datehand_datePicker',
+							dateFormat: 'yy-mm-dd',
+							// minDate: new Date($("#dateInsert").val()),
+							showOn: 'focus',
+							changeMonth: true,
+							changeYear: true,
+							onSelect : function (){
+								$(this).focus();
+							}
+						});
+					}
+				}
+			},
+            { label: 'Indicate R/L', name: 'dominants', width: 100, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
+				editoptions: {
+					value: "R:RIGHT;L:LEFT"
+				}
+			},
+            { label: '<center>Flex<br>(0-90)</center>', name: 'wrist_flex', width: 100, editable: true },
+            { label: '<center>Ext<br>(0-90)</center>', name: 'wrist_ext', width: 100, editable: true },
+            { label: '<center>Ulna/<br>Radial Deviation<br>(0-30)</center>', name: 'wrist_ulna', width: 120, editable: true },
+            { label: '<center>Ext/Flex MP<br>(0-50)</center>', name: 'thumb_extFlexMP', width: 100, editable: true },
+            { label: '<center>Ext/Flex IP<br>(0-80)</center>', name: 'thumb_extFlexIP', width: 100, editable: true },
+            { label: '<center>Ext/Flex CMC<br>(0-15)</center>', name: 'thumb_extFlexCMC', width: 100, editable: true },
+            { label: '<center>Palmar<br>Abduction<br>(0-75)</center>', name: 'thumb_palmar', width: 100, editable: true },
+            { label: '<center>Thumb to tip<br>5th Digit<br>(inches)</center>', name: 'thumb_tip', width: 100, editable: true },
+            { label: '<center>Thumb to base<br>5th Digit<br>(inches)</center>', name: 'thumb_base', width: 100, editable: true },
+            { label: '<center>MCP<br>(0-90)</center>', name: 'index_MCP', width: 100, editable: true },
+            { label: '<center>PIP<br>(0-110)</center>', name: 'index_PIP', width: 100, editable: true },
+            { label: '<center>DIP<br>(0-90)</center>', name: 'index_DIP', width: 100, editable: true },
+            { label: '<center>MCP<br>(0-90)</center>', name: 'middle_MCP', width: 100, editable: true },
+            { label: '<center>PIP<br>(0-110)</center>', name: 'middle_PIP', width: 100, editable: true },
+            { label: '<center>DIP<br>(0-90)</center>', name: 'middle_DIP', width: 100, editable: true },
+            { label: '<center>MCP<br>(0-90)</center>', name: 'ring_MCP', width: 100, editable: true },
+            { label: '<center>PIP<br>(0-110)</center>', name: 'ring_PIP', width: 100, editable: true },
+            { label: '<center>DIP<br>(0-90)</center>', name: 'ring_DIP', width: 100, editable: true },
+            { label: '<center>MCP<br>(0-90)</center>', name: 'little_MCP', width: 100, editable: true },
+            { label: '<center>PIP<br>(0-110)</center>', name: 'little_PIP', width: 100, editable: true },
+            { label: '<center>DIP<br>(0-90)</center>', name: 'little_DIP', width: 100, editable: true },
+            { label: 'adduser', name: 'adduser', width: 50, hidden: true },
+            { label: 'adddate', name: 'adddate', width: 50, hidden: true },
+            { label: 'upduser', name: 'upduser', hidden: true },
+			{ label: 'upddate', name: 'upddate', hidden: true },
+			{ label: 'computerid', name: 'computerid', hidden: true },
+        ],
+        // shrinkToFit: false,
+        autowidth: true,
+        multiSort: false,
+        sortname: 'idno',
+        sortorder: 'desc',
+        viewrecords: true,
+        loadonce: false,
+        width: 7000,
+        height: 200,
+        rowNum: 30,
+        pager: "#jqGridPager_hand",
+        loadComplete: function (){
+            if(addmore_jqgridhand.more == true){$('#jqGrid_hand_iladd').click();}
+            else{
+                $('#jqGrid_hand').jqGrid('setSelection', "1");
+            }
+            $('.ui-pg-button').prop('disabled',true);
+            addmore_jqgridhand.edit = addmore_jqgridhand.more = false; // reset
+        
+        },
+        ondblClickRow: function (rowid, iRow, iCol, e){
+            $("#jqGrid_hand_iledit").click();
+        },
+    });
+    
+    $("#jqGrid_hand").jqGrid('setGroupHeaders', {
+        useColSpanStyle: true,
+        groupHeaders: [
+            { startColumnName: 'wrist_flex', numberOfColumns: 3, titleText: 'Wrist' },
+            { startColumnName: 'thumb_extFlexMP', numberOfColumns: 6, titleText: 'Thumb' },
+            { startColumnName: 'index_MCP', numberOfColumns: 3, titleText: 'Index' },
+            { startColumnName: 'middle_MCP', numberOfColumns: 3, titleText: 'Middle' },
+            { startColumnName: 'ring_MCP', numberOfColumns: 3, titleText: 'Ring' },
+            { startColumnName: 'little_MCP', numberOfColumns: 3, titleText: 'Little' },
+        ]
+    });
+    
+    /////////////////////////////////////////myEditOptions_add_hand/////////////////////////////////////////
+    var myEditOptions_add_hand = {
+        keys: true,
+        extraparam: {
+            "_token": $("#_token").val()
+        },
+        oneditfunc: function (rowid){
+            $("#jqGridPagerDelete_hand,#jqGridPagerRefresh_hand").hide();
+            
+            $("input[name='forearm_supination']").keydown(function (e){ // when click tab at last column in header, auto save
+                var code = e.keyCode || e.which;
+                if (code == '9')$('#jqGrid_hand_ilsave').click();
+                // addmore_jqgridhand.state = true;
+                // $('#jqGrid_hand_ilsave').click();
+            });
+        },
+        aftersavefunc: function (rowid, response, options){
+            addmore_jqgridhand.more = true; // only addmore after save inline
+            // state true maksudnyer ada isi, tak kosong
+            refreshGrid('#jqGrid_hand',urlParam_hand,'add_jqgridhand');
+            errorField.length = 0;
+            $("#jqGridPagerDelete_hand,#jqGridPagerRefresh_hand").show();
+        },
+        errorfunc: function (rowid,response){
+            $('#p_error').text(response.responseText);
+            refreshGrid('#jqGrid_hand',urlParam_hand,'add_jqgridhand');
+        },
+        beforeSaveRow: function (options, rowid){
+            $('#p_error').text('');
+            
+            let data = $('#jqGrid_hand').jqGrid('getRowData', rowid);
+            
+            let editurl = "./occupTherapy_upperExtremity/form?"+
+                $.param({
+                    episno: $('#episno_occupTherapy').val(),
+                    mrn: $('#mrn_occupTherapy').val(),
+                    action: 'addJqgridhand_save',
+                });
+            $("#jqGrid_hand").jqGrid('setGridParam', { editurl: editurl });
+        },
+        afterrestorefunc: function (response){
+            $("#jqGridPagerDelete_hand,#jqGridPagerRefresh_hand").show();
+        },
+        errorTextFormat: function (data){
+            alert(data);
+        }
+    };
+    
+    /////////////////////////////////////////myEditOptions_edit_hand/////////////////////////////////////////
+    var myEditOptions_edit_hand = {
+        keys: true,
+        extraparam: {
+            "_token": $("#_token").val()
+        },
+        oneditfunc: function (rowid){
+            $("#jqGridPagerDelete_hand,#jqGridPagerRefresh_hand").hide();
+            
+            $("input[name='forearm_supination']").keydown(function (e){ // when click tab at last column in header, auto save
+                var code = e.keyCode || e.which;
+                if (code == '9')$('#jqGrid_hand_ilsave').click();
+                // addmore_jqgridhand.state = true;
+                // $('#jqGrid_hand_ilsave').click();
+            });
+        },
+        aftersavefunc: function (rowid, response, options){
+            if(addmore_jqgridhand.state == true)addmore_jqgridhand.more = true; // only addmore after save inline
+            // addmore_jqgridhand.more = true; // only addmore after save inline
+            // state true maksudnyer ada isi, tak kosong
+            refreshGrid('#jqGrid_hand',urlParam_hand,'add_jqgridhand');
+            errorField.length = 0;
+            $("#jqGridPagerDelete_hand,#jqGridPagerRefresh_hand").show();
+        },
+        errorfunc: function (rowid,response){
+            $('#p_error').text(response.responseText);
+            refreshGrid('#jqGrid_hand',urlParam_hand,'add_jqgridhand');
+        },
+        beforeSaveRow: function (options, rowid){
+            $('#p_error').text('');
+            
+            let data = $('#jqGrid_hand').jqGrid ('getRowData', rowid);
+            
+            let editurl = "./occupTherapy_upperExtremity/form?"+
+                $.param({
+                    episno: $('#episno_occupTherapy').val(),
+                    mrn: $('#mrn_occupTherapy').val(),
+                    idno: selrowData('#jqGrid_hand').idno,
+                    action: 'addJqgridhand_edit',
+                });
+            $("#jqGrid_hand").jqGrid('setGridParam', { editurl: editurl });
+        },
+        afterrestorefunc: function (response){
+            $("#jqGridPagerDelete_hand,#jqGridPagerRefresh_hand").show();
+        },
+        errorTextFormat: function (data){
+            alert(data);
+        }
+    };
+    
+    ////////////////////////////////////////////////jqGridPager_hand////////////////////////////////////////////////
+    $("#jqGrid_hand").inlineNav('#jqGridPager_hand', {
+        add: true,
+        edit: true,
+        cancel: true,
+        // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+        restoreAfterSelect: false,
+        addParams: {
+            addRowParams: myEditOptions_add_hand
+        },
+        editParams: myEditOptions_edit_hand
+    }).jqGrid('navButtonAdd', "#jqGridPager_hand", {
+        id: "jqGridPagerDelete_hand",
+        caption: "", cursor: "pointer", position: "last",
+        buttonicon: "glyphicon glyphicon-trash",
+        title: "Delete Selected Row",
+        onClickButton: function (){
+            selRowId = $("#jqGrid_hand").jqGrid('getGridParam', 'selrow');
+            if(!selRowId){
+                alert('Please select row');
+            }else{
+                var result = confirm("Are you sure you want to delete this row?");
+                if(result == true){
+                    param = {
+                        _token: $("#_token").val(),
+                        action: 'addJqgridhand_delete',
+                        idno: selrowData('#jqGrid_hand').idno,
+                    }
+                    $.post("./occupTherapy_upperExtremity/form?"+$.param(param),{oper:'del_jqgridhand'}, function (data){
+                        
+                    }).fail(function (data){
+                        //////////////////errorText(dialog,data.responseText);
+                    }).done(function (data){
+                        refreshGrid("#jqGrid_hand", urlParam_hand);
+                    });
+                }else{
+                    $("#jqGridPagerDelete_hand,#jqGridPagerRefresh_hand").show();
+                }
+            }
+        },
+    }).jqGrid('navButtonAdd', "#jqGridPager_hand", {
+        id: "jqGridPagerRefresh_hand",
+        caption: "", cursor: "pointer", position: "last",
+        buttonicon: "glyphicon glyphicon-refresh",
+        title: "Refresh Table",
+        onClickButton: function (){
+            refreshGrid("#jqGrid_hand", urlParam_hand);
+        },
+    });
+    ////////////////////////////////////////////////jqGrid hand ends////////////////////////////////////////////////
 
     ////////////////////////////////////////upperExtremity starts////////////////////////////////////////
     $('#datetimeUpperExtremity_tbl tbody').on('click', 'tr', function (){
@@ -391,7 +639,7 @@ var datetimeUpperExtremity_tbl = $('#datetimeUpperExtremity_tbl').DataTable({
         { 'data': 'idno', 'width': '5%' },
         { 'data': 'mrn' },
         { 'data': 'episno' },
-        { 'data': 'dateAssess', 'width': '15%' },
+        { 'data': 'dateAssess', 'width': '10%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2], visible: false },
@@ -583,10 +831,12 @@ function getdata_upperExtremity(){
             autoinsert_rowdata("#formOccupTherapyUpperExtremity",data.upperExtremity);
             textarea_init_upperExtremity();
             refreshGrid('#jqGrid_rof',urlParam_rof,'add_jqgridrof');
+            refreshGrid('#jqGrid_hand',urlParam_hand,'add_jqgridhand');
         }else{
             button_state_upperExtremity('add');
             textarea_init_upperExtremity();
             refreshGrid('#jqGrid_rof',urlParam_rof,'add_jqgridrof');
+            refreshGrid('#jqGrid_hand',urlParam_hand,'add_jqgridhand');
         }
     });
 }

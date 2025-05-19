@@ -154,7 +154,9 @@ $(document).ready(function () {
                 refreshGrid("#jqGrid_rof", urlParam_rof);
                 populate_phys(selrowData('#jqGrid'));
                 populate_ordcom_currpt(selrowData('#jqGrid'));
-                
+                populate_mmse_getdata(selrowData('#jqGrid'));
+                populate_moca_getdata(selrowData('#jqGrid'));
+                populate_upperExtremity_getdata(selrowData('#jqGrid'));
                 // if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
                 // 	$('#checkbox_completed').prop('disabled',true);
                 // 	$('#checkbox_completed').prop('checked', true);
@@ -254,7 +256,9 @@ $(document).ready(function () {
                 // refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
                 populate_phys(selrowData('#jqGrid'));
                 populate_ordcom_currpt(selrowData('#jqGrid'));
-                
+                populate_mmse_getdata(selrowData('#jqGrid'));
+                populate_moca_getdata(selrowData('#jqGrid'));
+
                 // if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
                 // 	$('#checkbox_completed').prop('disabled',true);
                 // 	$('#checkbox_completed').prop('checked', true);

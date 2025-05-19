@@ -20,7 +20,7 @@
 
                 <div class="sixteen wide column">
                     <div class="ui grid">
-                        <div class='five wide column' style="padding: 3px 3px 3px 3px;">
+                        <div class='three wide column' style="padding: 3px 3px 3px 3px;">
                             <div class="ui segments">
                                 <div class="ui segment">
                                     <div class="ui grid">
@@ -39,7 +39,7 @@
                             </div>
                         </div>
 
-                        <div class='eleven wide column' style="padding: 3px 3px 3px 3px;">
+                        <div class='thirteen wide column' style="padding: 3px 3px 3px 3px;">
                             <div class="ui segment">
                                 <div class='ui grid' style="padding: 5px 3px 3px 2px;">
                                     <div class="sixteen wide column" style="padding: 10px 0px 0px 3px;">
@@ -75,15 +75,17 @@
                                     </div>
 
                                 </div>
+
                                 
-                                <div class="ui segments">
+
+                                <!-- <div class="ui segments">
                                     <div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#rof">
                                         <i class="angle down icon large"></i>
                                         <i class="angle up icon large"></i>
                                         <h4 style="text-align:center;margin-top:3px">RANGE OF MOTION</h4>
                                     </div>
                                     <div class="ui segment collapse" id="rof" style="overflow: scroll hidden;">
-                                        <div  id="jqGrid_rof_c" style="padding: 5px 5px 5px 5px; width: 2600px;">
+                                        <div id="jqGrid_rof_c" style="padding: 5px 5px 5px 5px; width: 2000px;">
                                             <table id="jqGrid_rof" class="table table-striped"></table>
                                             <div id="jqGridPager_rof"></div>
                                         </div>
@@ -96,20 +98,107 @@
                                         <i class="angle up icon large"></i>
                                         <h4 style="text-align:center;margin-top:3px">HAND</h4>
                                     </div>
-                                </div>
-                                <div class="ui segment collapse" id="hand">
-                                    <div class="ui form">
-                                        <div class="sixteen wide column">
-                                            <div class="ui segments">
-                                                <!-- <div class="ui segment" id="jqGrid_hand_c" style="padding: 14px 5px;">
-                                                    <table id="jqGrid_hand" class="table table-striped"></table>
-                                                    <div id="jqGridPager_hand"></div>
-                                                </div> -->
-                                            </div>
+                                    <div class="ui segment collapse" id="hand" style="overflow: scroll hidden;">
+                                        <div id="jqGrid_hand_c" style="padding: 5px 5px 5px 5px; width: 3200px;">
+                                            <table id="jqGrid_hand" class="table table-striped"></table>
+                                            <div id="jqGridPager_hand"></div>
                                         </div>
                                     </div>
                                 </div>
-                                
+
+                                <div class="ui segments">
+                                    <div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#muscle">
+                                        <i class="angle down icon large"></i>
+                                        <i class="angle up icon large"></i>
+                                        <h4 style="text-align:center;margin-top:3px">MUSCLE STRENGTH</h4>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="ui segments">
+                                    <div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#sensation">
+                                        <i class="angle down icon large"></i>
+                                        <i class="angle up icon large"></i>
+                                        <h4 style="text-align:center;margin-top:3px">SENSATION</h4>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="ui segments">
+                                    <div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#prehensive">
+                                        <i class="angle down icon large"></i>
+                                        <i class="angle up icon large"></i>
+                                        <h4 style="text-align:center;margin-top:3px">PREHENSIVE PATTERN</h4>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="ui segments">
+                                    <div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#skin">
+                                        <i class="angle down icon large"></i>
+                                        <i class="angle up icon large"></i>
+                                        <h4 style="text-align:center;margin-top:3px">SKIN CONDITION/SCARRING</h4>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="ui segments">
+                                    <div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#edema">
+                                        <i class="angle down icon large"></i>
+                                        <i class="angle up icon large"></i>
+                                        <h4 style="text-align:center;margin-top:3px">EDEMA</h4>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="ui segments">
+                                    <div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#functional">
+                                        <i class="angle down icon large"></i>
+                                        <i class="angle up icon large"></i>
+                                        <h4 style="text-align:center;margin-top:3px">FUNCTIONAL ACTIVITIES</h4>
+                                    </div>
+                                    
+                                </div> -->
+
+                            </div>
+                            <div id="upExt" class="ui bottom attached tab raised segment active">
+                                 <div class="ui top attached tabular menu">
+                                    <a class="item active" data-tab="rof"><h5>Range of Motion</h5></a>
+                                    <a class="item" data-tab="hand"><h5>Hand</h5></a>
+                                    <a class="item" data-tab="muscle"><h5>Muscle<br>Strength</h5></a>
+                                    <a class="item" data-tab="sensation"><h5>Sensation</h5></a>
+                                    <a class="item" data-tab="prehensive"><h5>Prehensive Pattern</h5></a>
+                                    <a class="item" data-tab="skin"><h5>Skin Condition/<br>Scarring</h5></a>
+                                    <a class="item" data-tab="edema"><h5>Edema</h5></a>
+                                    <a class="item" data-tab="functional"><h5>Functional<br>Activities</h5></a>
+
+                                </div>
+
+                                <div class="ui bottom attached tab raised segment active" data-tab="rof">
+                                    <div id="jqGrid_rof_c" style="padding: 3px 3px 3px 3px;">
+                                        <table id="jqGrid_rof" class="table table-striped"></table>
+                                        <div id="jqGridPager_rof"></div>
+                                    </div>
+                                </div>
+
+                                <div class="ui bottom attached tab raised segment" data-tab="hand">
+                                    <div id="jqGrid_hand_c" style="padding: 3px 3px 3px 3px;">
+                                        <table id="jqGrid_hand" class="table table-striped"></table>
+                                        <div id="jqGridPager_hand"></div>
+                                    </div>
+                                </div>
+
+                                <div class="ui bottom attached tab raised segment" data-tab="muscle"></div>
+
+                                <div class="ui bottom attached tab raised segment" data-tab="sensation"></div>
+
+                                <div class="ui bottom attached tab raised segment" data-tab="prehensive"></div>
+
+                                <div class="ui bottom attached tab raised segment" data-tab="skin"></div>
+
+                                <div class="ui bottom attached tab raised segment" data-tab="edema"></div>
+
+                                <div class="ui bottom attached tab raised segment" data-tab="functional"></div>
                             </div>
                         </div>
                     </div>
