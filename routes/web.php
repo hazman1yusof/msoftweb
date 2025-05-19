@@ -1648,9 +1648,9 @@ Route::get('/spinalCord','rehab\SpinalCordController@show');
 Route::get('/spinalCord/table','rehab\SpinalCordController@table');
 Route::post('/spinalCord/form','rehab\SpinalCordController@form');
 
-Route::get('/sixMinWalkTest','rehab\SixMinWalkTestController@show');
-Route::get('/sixMinWalkTest/table','rehab\SixMinWalkTestController@table');
-Route::post('/sixMinWalkTest/form','rehab\SixMinWalkTestController@form');
+Route::get('/sixMinWalking','rehab\SixMinWalkingController@show');
+Route::get('/sixMinWalking/table','rehab\SixMinWalkingController@table');
+Route::post('/sixMinWalking/form','rehab\SixMinWalkingController@form');
 
 /// occuptherapy
 Route::get('/occupTherapy','rehab\OccupTherapyController@show');
