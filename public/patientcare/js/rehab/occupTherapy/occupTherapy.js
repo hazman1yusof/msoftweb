@@ -53,7 +53,7 @@ $(document).ready(function (){
                     emptyFormdata_div("#formOccupTherapyUpperExtremity",['#mrn_occupTherapy','#episno_occupTherapy']);
                     $('#datetimeUpperExtremity_tbl tbody tr:eq(0)').click();  // to select first row
                 });
-                $("#jqGrid_rof").jqGrid('setGridWidth', Math.floor($("#jqGrid_rof_c")[0].offsetWidth-$("#jqGrid_rof_c")[0].offsetLeft-60));
+                $("#jqGrid_rof").jqGrid('setGridWidth', Math.floor($("#jqGrid_rof_c")[0].offsetWidth-$("#jqGrid_rof_c")[0].offsetLeft));
 
                 populate_upperExtremity_getdata();
                 break;
@@ -108,6 +108,47 @@ $(document).ready(function (){
                 });
                 
                 populate_moca_getdata();                
+                break;
+        }
+    }});
+
+    $('#upExt .top.menu .item').tab({'onVisible': function (){
+        let tab = $(this).data('tab');
+        // console.log(tab);
+        
+        switch(tab){
+            case 'rof':
+                $("#jqGrid_rof").jqGrid('setGridWidth', Math.floor($("#jqGrid_rof_c")[0].offsetWidth-$("#jqGrid_rof_c")[0].offsetLeft));
+
+                break;
+
+            case 'hand':
+                $("#jqGrid_hand").jqGrid('setGridWidth', Math.floor($("#jqGrid_hand_c")[0].offsetWidth-$("#jqGrid_hand_c")[0].offsetLeft));
+    
+                break;
+
+            case 'muscle':
+                             
+                break;
+
+            case 'sensation':
+                             
+                break;
+
+            case 'prehensive':
+                             
+                break;
+
+            case 'skin':
+                             
+                break;
+
+            case 'edema':
+                             
+                break;
+
+            case 'functional':
+                             
                 break;
         }
     }});
@@ -212,7 +253,8 @@ function autoinsert_rowdata(form,rowData){
 
 $('#tab_occupTherapy').on('shown.bs.collapse', function (){
     SmoothScrollTo('#tab_occupTherapy', 300, 114);
-    $("#jqGrid_rof").jqGrid('setGridWidth', Math.floor($("#jqGrid_rof_c")[0].offsetWidth-$("#jqGrid_rof_c")[0].offsetLeft-58));
+    $("#jqGrid_rof").jqGrid('setGridWidth', Math.floor($("#jqGrid_rof_c")[0].offsetWidth-$("#jqGrid_rof_c")[0].offsetLeft));
+    $("#jqGrid_hand").jqGrid('setGridWidth', Math.floor($("#jqGrid_hand_c")[0].offsetWidth-$("#jqGrid_hand_c")[0].offsetLeft));
 
     // console.log('test');
     populate_mmse_getdata();

@@ -153,7 +153,9 @@ $(document).ready(function () {
                 // refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
                 refreshGrid("#jqGrid_rof", urlParam_rof);
                 populate_phys(selrowData('#jqGrid'));
-                populate_ordcom_currpt(selrowData('#jqGrid'));
+                // populate_ordcom_currpt(selrowData('#jqGrid'));
+                // populate_physio(selrowData('#jqGrid'));
+                populate_occupTherapy(selrowData('#jqGrid'));
                 
                 // if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
                 // 	$('#checkbox_completed').prop('disabled',true);
@@ -181,6 +183,8 @@ $(document).ready(function () {
                 // empty_transaction_diet();
                 empty_transaction_phys();
                 empty_currphys();
+                // empty_physio();
+                empty_occupTherapy();
                 
                 let discharge_btn_data = $('#discharge_btn').data('idno');
                 if(discharge_btn_data == undefined || discharge_btn_data == 'none'){
@@ -253,7 +257,9 @@ $(document).ready(function () {
                 // refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
                 // refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
                 populate_phys(selrowData('#jqGrid'));
-                populate_ordcom_currpt(selrowData('#jqGrid'));
+                // populate_ordcom_currpt(selrowData('#jqGrid'));
+                // populate_physio(selrowData('#jqGrid'));
+                populate_occupTherapy(selrowData('#jqGrid'));
                 
                 // if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
                 // 	$('#checkbox_completed').prop('disabled',true);
@@ -276,6 +282,8 @@ $(document).ready(function () {
                 // empty_transaction_diet();
                 empty_transaction_phys();
                 empty_currphys();
+                // empty_physio();
+                empty_occupTherapy();
                 
                 let discharge_btn_data = $('#discharge_btn').data('idno');
                 if(discharge_btn_data == undefined || discharge_btn_data == 'none'){

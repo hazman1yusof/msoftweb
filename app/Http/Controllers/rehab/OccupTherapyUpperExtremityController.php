@@ -59,6 +59,15 @@ class OccupTherapyUpperExtremityController extends defaultController
             
             case 'addJqgridrof_delete':
                 return $this->del_jqgridrof($request);
+
+            case 'addJqgridhand_save':
+                return $this->add_jqgridhand($request);
+            
+            case 'addJqgridhand_edit':
+                return $this->edit_jqgridhand($request);
+            
+            case 'addJqgridhand_delete':
+                return $this->del_jqgridhand($request);
                 
             default:
                 return 'error happen..';
@@ -284,6 +293,134 @@ class OccupTherapyUpperExtremityController extends defaultController
         try {
             
             DB::table('hisdb.ot_upperExtremity_rof')
+                ->where('idno','=',$request->idno)
+                ->where('compcode','=',session('compcode'))
+                ->delete();
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+    
+    }
+
+    public function add_jqgridhand(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.ot_upperextremity_hand')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'datehand' => $request->datehand,
+                        'dominants' => $request->dominants,
+                        'wrist_flex' => $request->wrist_flex,
+                        'wrist_ext' => $request->wrist_ext,
+                        'wrist_ulna' => $request->wrist_ulna,
+                        'thumb_extFlexMP' => $request->thumb_extFlexMP,
+                        'thumb_extFlexIP' => $request->thumb_extFlexIP,
+                        'thumb_extFlexCMC' => $request->thumb_extFlexCMC,
+                        'thumb_palmar' => $request->thumb_palmar,
+                        'thumb_tip' => $request->thumb_tip,
+                        'thumb_base' => $request->thumb_base,
+                        'index_MCP' => $request->index_MCP,
+                        'index_PIP' => $request->index_PIP,
+                        'index_DIP' => $request->index_DIP,
+                        'middle_MCP' => $request->middle_MCP,
+                        'middle_PIP' => $request->middle_PIP,
+                        'middle_DIP' => $request->middle_DIP,
+                        'ring_MCP' => $request->ring_MCP,
+                        'ring_PIP' => $request->ring_PIP,
+                        'ring_DIP' => $request->ring_DIP,
+                        'little_MCP' => $request->little_MCP,
+                        'little_PIP' => $request->little_PIP,
+                        'little_DIP' => $request->little_DIP,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+    
+    }
+    
+    public function edit_jqgridhand(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.ot_upperextremity_hand')
+                ->where('idno','=',$request->idno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'datehand' => $request->datehand,
+                    'dominants' => $request->dominants,
+                    'wrist_flex' => $request->wrist_flex,
+                    'wrist_ext' => $request->wrist_ext,
+                    'wrist_ulna' => $request->wrist_ulna,
+                    'thumb_extFlexMP' => $request->thumb_extFlexMP,
+                    'thumb_extFlexIP' => $request->thumb_extFlexIP,
+                    'thumb_extFlexCMC' => $request->thumb_extFlexCMC,
+                    'thumb_palmar' => $request->thumb_palmar,
+                    'thumb_tip' => $request->thumb_tip,
+                    'thumb_base' => $request->thumb_base,
+                    'index_MCP' => $request->index_MCP,
+                    'index_PIP' => $request->index_PIP,
+                    'index_DIP' => $request->index_DIP,
+                    'middle_MCP' => $request->middle_MCP,
+                    'middle_PIP' => $request->middle_PIP,
+                    'middle_DIP' => $request->middle_DIP,
+                    'ring_MCP' => $request->ring_MCP,
+                    'ring_PIP' => $request->ring_PIP,
+                    'ring_DIP' => $request->ring_DIP,
+                    'little_MCP' => $request->little_MCP,
+                    'little_PIP' => $request->little_PIP,
+                    'little_DIP' => $request->little_DIP,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+    
+    }
+    
+    public function del_jqgridhand(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.ot_upperextremity_hand')
                 ->where('idno','=',$request->idno)
                 ->where('compcode','=',session('compcode'))
                 ->delete();
