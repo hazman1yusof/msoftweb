@@ -184,6 +184,7 @@ class RefundController extends defaultController
                         ->where('dbacthdr.payercode',$request->payercode)
                         ->where('dbacthdr.compcode',session('compcode'))
                         ->where('dbacthdr.outamount','>',0)
+                        ->where('dbacthdr.recstatus','!=','CANCELLED')
                         ->where('dbacthdr.source','PB')
                         ->whereIn('dbacthdr.trantype',['RD','RC']);
 
