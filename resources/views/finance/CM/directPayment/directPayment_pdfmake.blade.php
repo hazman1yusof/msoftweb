@@ -215,12 +215,13 @@ function make_pdf(){
         {
             style: 'body_sign',
             table: {
-                widths: ['*','*','*','*'],//panjang standard dia 515
+                widths: ['*','*','*','*','*'],//panjang standard dia 515
                 body: [
                 	[
 						{text: 'Prepared by\n\n\n\n\n______________________\n\nName:',bold: true,alignment: 'left'}, 
 						{text: 'Checked By\n\n\n\n\n______________________\n\nName:',bold: true,alignment: 'left'},
 						{text: 'Approved By\n\n\n\n\n______________________\n\nName:',bold: true,alignment: 'left'}, 
+						{text: 'Signatures\n\n\n\n\n______________________\n\nName:',bold: true,alignment: 'left'},
 						{text: 'Signatures\n\n\n\n\n______________________\n\nName:',bold: true,alignment: 'left'},
                 	]
                 ]
