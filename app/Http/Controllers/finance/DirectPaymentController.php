@@ -1374,7 +1374,7 @@ class DirectPaymentController extends defaultController
                     ->first();
 
         // if($apacthdr->recstatus == "APPROVED" || $apacthdr->recstatus == "POSTED"){
-            $title = "DIRECT PAYMENT";
+            $title = "PAYMENT VOUCHER";
         // }else{
         //     $title = "DRAFT";
         // }
