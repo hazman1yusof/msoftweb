@@ -58,15 +58,24 @@
 				<div class="panel-body" style="padding-left: 35px !important;">
 					<div class='col-md-12 btnform' style="padding:0px">
 					 <fieldset>
-						<button name="gltb_run_dr" type="button" class="mybtn btn btn-sm" data-btntype='gltb_run_dr'>
+						<!-- <button name="gltb_run" type="button" class="mybtn btn btn-sm" data-btntype='gltb_run'>
+						 RUN GLTB
+						</button> -->
+						<button name="gltrandr" type="button" class="mybtn btn btn-sm" data-btntype='gltrandr'>
 						 RUN GLTB DR
 						</button>
-						<button name="gltb_run_cr" type="button" class="mybtn btn btn-sm" data-btntype='gltb_run_cr'>
+						<input type="month" id="month">
+
+						<br>
+						<br>
+						<button name="gltrancr" type="button" class="mybtn btn btn-sm" data-btntype='gltrancr'>
 						 RUN GLTB CR
 						</button>
-						<input type="text" id="like">
-						<button name="gltb_del" type="button" class="mybtn btn btn-sm" data-btntype='gltb_del'>
-						 TRUNCATE GLTB
+
+						<br>
+						<br>
+						<button name="glmasdtl" type="button" class="mybtn btn btn-sm" data-btntype='glmasdtl'>
+						 RUN GLMASDTL
 						</button>
 					  </fieldset>
 					</div>
@@ -86,9 +95,9 @@ $(document).ready(function () {
 
 	$('button.mybtn').click(function(){
 		var action = $(this).data('btntype');
-		var like = $('#like').val();
+		var month = $('#month').val();
 
-		window.open('./gltb/table?action='+action+'&like='+like, '_blank');
+		window.open('./gltb/table?action='+action+'&month='+month, '_blank');
 	});
 });
 		
