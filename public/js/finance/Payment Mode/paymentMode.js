@@ -247,6 +247,7 @@ $(document).ready(function () {
 				dialog_glaccount.on();
 				dialog_costcode.on();
 				dialog_cardbank.on();
+				$('#source2').val($('#source_get').val());
 			}
 			if(oper!='add'){
 				dialog_glaccount.check(errorField);

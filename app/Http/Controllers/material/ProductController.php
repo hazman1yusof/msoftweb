@@ -429,6 +429,7 @@ class ProductController extends defaultController
 
                     if($chgmast->exists()){
                         $array_update = [
+                            'description' => strtoupper($request->description),
                             'chgclass' => $request->cm_chgclass,
                             'chggroup' => $request->cm_chggroup,
                             'chgtype' => $request->cm_chgtype,
@@ -563,6 +564,7 @@ class ProductController extends defaultController
 
                     if($chgmast->exists()){
                         $array_update = [
+                            'description' => strtoupper($request->description),
                             'chgclass' => $request->cm_chgclass,
                             'chggroup' => $request->cm_chggroup,
                             'chgtype' => $request->cm_chgtype,

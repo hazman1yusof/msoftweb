@@ -968,9 +968,9 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "./purchaseOrderDetail/form",
 		colModel: [
-		 	{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
-		 	{ label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
-			{ label: 'No', name: 'lineno_', width: 50, frozen:false, classes: 'wrap', editable:false},
+		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
+		 	{ label: 'recno', name: 'recno', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable:false},
 
 			{ label: 'Price Code', name: 'pricecode', width: 80, classes: 'wrap', editable:true,
 					editrules:{required: true, custom:true, custom_func:cust_rules},
@@ -986,7 +986,7 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Item Description', name: 'description', frozen:true, width: 250, classes: 'wrap', editable:false, hidden:true},
+			{ label: 'Item Description', name: 'description', width: 250, classes: 'wrap', editable:false, hidden:false},
 			{ label: 'UOM Code', name: 'uomcode', width: 120, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:

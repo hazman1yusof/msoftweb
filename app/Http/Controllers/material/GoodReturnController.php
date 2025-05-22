@@ -50,6 +50,8 @@ class GoodReturnController extends defaultController
         switch($request->action){
             case 'get_table_default':
                 return $this->get_table_default($request);
+            case 'get_table_default_dtl':
+                return $this->get_table_default_dtl($request);
             default:
                 return 'error happen..';
         }
@@ -104,6 +106,58 @@ class GoodReturnController extends defaultController
             if(!empty($request->fixPost)){
                 $request->sidx = substr_replace($request->sidx, ".", strpos($request->sidx, "_"), strlen("."));
             }
+            
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                    $pieces_inside = explode(" ", $pieces[$i]);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+    }
+
+    public function get_table_default_dtl(Request $request){
+        $delordhd =  DB::table('material.delordhd')
+                        ->where('compcode',session('compcode'))
+                        ->where('idno',$request->idno)
+                        ->first();
+
+
+        $table =  DB::table('material.delorddt as dodt');
+        $table = $table->select('dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode', 'dodt.pouom', 'dodt.suppcode','dodt.trandate',
+        'dodt.deldept','dodt.deliverydate','dodt.qtydelivered','dodt.qtyreturned','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 
+        'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks','t.rate')
+        ->where('dodt.recno',$delordhd->recno);
+
+        $table = $table->leftJoin('material.productmaster AS p', function($join){
+                        $join = $join->on('p.itemcode','=','dodt.itemcode')
+                                     ->where('p.compcode',session('compcode'));
+
+                 });
+
+        $table = $table->leftJoin('hisdb.taxmast AS t', function($join) {
+                        $join = $join->where('t.compcode',session('compcode'))
+                                    ->on('t.taxcode','dodt.taxcode');
+                 });
+
+        if(!empty($request->sidx)){
             
             $pieces = explode(", ", $request->sidx .' '. $request->sord);
             if(count($pieces)==1){

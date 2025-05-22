@@ -332,7 +332,7 @@ $(document).ready(function () {
 				$('#but_reopen_jq').hide();
 			}
 
-			urlParam2.filterVal[0]=selrowData("#jqGrid").delordhd_recno;
+			urlParam2.idno=selrowData("#jqGrid").delordhd_idno;
 			refreshGrid("#jqGrid3",urlParam2);
 			populate_form(selrowData("#jqGrid"));
 
@@ -482,6 +482,7 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 		
 		},'json').fail(function (data) {
+			$("#saveDetailLabel").attr('disabled',false);
 			alert(data.responseText);
 		}).done(function (data) {
 			unsaved = false;
@@ -498,12 +499,12 @@ $(document).ready(function () {
 				$('#delordhd_idno').val(data.idno);//just save idno for edit later
 				$('#delordhd_totamount').val(data.totalAmount);
 
-				urlParam2.filterVal[0]=data.recno; 
+				urlParam2.idno=data.idno; 
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
 			}
 			disableForm('#formdata');
-			
+			$("#saveDetailLabel").attr('disabled',false);
 		});
 	}
 	
@@ -638,18 +639,19 @@ $(document).ready(function () {
 
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
-		action:'get_table_default',
-		url:'util/get_table_default',
-		field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode', 'dodt.pouom', 'dodt.suppcode','dodt.trandate',
-		'dodt.deldept','dodt.deliverydate','dodt.qtydelivered','dodt.qtyreturned','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 
-		'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks','t.rate',],
-		table_name:['material.delorddt AS dodt','material.productmaster AS p','hisdb.taxmast AS t'],
-		table_id:'lineno_',
-		join_type:['LEFT JOIN','LEFT JOIN'],
-		join_onCol:['dodt.itemcode','dodt.taxcode'],
-		join_onVal:['p.itemcode','t.taxcode'],
-		filterCol:['dodt.recno','dodt.compcode','dodt.recstatus'],
-		filterVal:['','session.compcode','<>.DELETE']
+		action:'get_table_default_dtl',
+		url:'./goodReturn/table',
+		idno:null,
+		// field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode', 'dodt.pouom', 'dodt.suppcode','dodt.trandate',
+		// 'dodt.deldept','dodt.deliverydate','dodt.qtydelivered','dodt.qtyreturned','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 
+		// 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks','t.rate',],
+		// table_name:['material.delorddt AS dodt','material.productmaster AS p','hisdb.taxmast AS t'],
+		// table_id:'lineno_',
+		// join_type:['LEFT JOIN','LEFT JOIN'],
+		// join_onCol:['dodt.itemcode','dodt.taxcode'],
+		// join_onVal:['p.itemcode','t.taxcode'],
+		// filterCol:['dodt.recno','dodt.compcode','dodt.recstatus'],
+		// filterVal:['','session.compcode','<>.DELETE']
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
@@ -1185,6 +1187,7 @@ $(document).ready(function () {
 
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function(){ //actually saving the header
+		$("#saveDetailLabel").attr('disabled',true);
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
@@ -1198,6 +1201,7 @@ $(document).ready(function () {
 			saveHeader("#formdata",oper,saveParam);
 			unsaved = false;
 		}else{
+			$("#saveDetailLabel").attr('disabled',false);
 			mycurrency.formatOn();
 			dialog_prdept.on();
 			dialog_suppcode.on();

@@ -3,6 +3,7 @@
 @section('title', 'Payment Mode')
 
 @section('body')
+	<input id="source_get" name="source_get" type="hidden" value="{{$_GET['source']}}">
 	<!-------------------------------- Search + table ---------------------->
 		<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%' onkeydown="return event.key != 'Enter';">
@@ -221,6 +222,6 @@
 					
 		});
 	</script>
-	<script src="js/finance/Payment Mode/paymentMode.js"></script>
+	<script src="js/finance/Payment Mode/paymentMode.js?v=1.1"></script>
 
 @endsection

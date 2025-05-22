@@ -81,11 +81,11 @@ class PurchaseOrderDetailController extends defaultController
         $deldept = $po_hd->deldept;
 
         $table = DB::table('material.purorddt AS podt')
-                ->select('podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode','podt.uomcode','podt.pouom','podt.qtyorder','podt.qtydelivered','podt.qtyoutstand','podt.qtyrequest', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount','podt.rem_but AS remarks_button','podt.remarks', 'podt.unit', 't.rate','s.qtyonhand')
-                // ->leftJoin('material.productmaster AS p', function($join) use ($request){
-                //     $join = $join->on("podt.itemcode", '=', 'p.itemcode');    
-                //     $join = $join->where("p.compcode", '=', session('compcode'));    
-                // })
+                ->select('podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode','podt.uomcode','podt.pouom','podt.qtyorder','podt.qtydelivered','podt.qtyoutstand','podt.qtyrequest', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount','podt.rem_but AS remarks_button','podt.remarks', 'podt.unit', 't.rate','s.qtyonhand','p.description')
+                ->leftJoin('material.product AS p', function($join) use ($request){
+                    $join = $join->on("p.itemcode", '=', 'podt.itemcode');    
+                    $join = $join->where("p.compcode", '=', session('compcode'));    
+                })
                 ->leftJoin('hisdb.taxmast AS t', function($join) use ($request){
                     $join = $join->on("podt.taxcode", '=', 't.taxcode');    
                 })
