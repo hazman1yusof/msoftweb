@@ -33,7 +33,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
     {
         $this->debtorcode_from = $debtorcode_from;
         $this->debtorcode_to = $debtorcode_to;
-        $this->datefr = $datefr;
+        // $this->datefr = $datefr;
         $this->dateto = $dateto;
         $this->dbacthdr_len = 0;
         $this->break_loop = [];
@@ -58,7 +58,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
     
     public function view(): View
     {
-        $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
+        // $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
         $debtorcode_from = $this->debtorcode_from;
         if(empty($this->debtorcode_from)){
@@ -75,7 +75,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     ->where('dh.compcode', '=', session('compcode'))
                     ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
                     ->whereBetween('dh.debtorcode',[$debtorcode_from,$debtorcode_to.'%'])
-                    ->whereBetween('dh.posteddate', [$datefr, $dateto])
+                    ->whereDate('dh.posteddate', '<=', $dateto)
                     ->orderBy('dm.debtorcode', 'ASC')
                     ->distinct('dm.debtorcode');
         
@@ -88,30 +88,30 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
             $dbacthdr = DB::table('debtor.dbacthdr as dh')
                         ->select('dh.idno', 'dh.source', 'dh.trantype', 'pm.Name', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'dh.datesend')
                         ->leftJoin('hisdb.pat_mast as pm', function ($join){
-                            $join = $join->on('pm.MRN', '=', 'dh.mrn')
+                            $join = $join->on('pm.NewMRN', '=', 'dh.mrn')
                                         ->where('pm.compcode', '=', session('compcode'));
                         })
                         ->where('dh.compcode', '=', session('compcode'))
                         ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
                         ->where('debtorcode',$value->debtorcode)
-                        ->whereBetween('dh.posteddate', [$datefr, $dateto])
+                        ->whereDate('dh.posteddate', '<=', $dateto)
                         ->orderBy('dh.posteddate', 'ASC')
                         ->get();
             
-            $calc_openbal = DB::table('debtor.dbacthdr as dh')
-                            ->where('dh.compcode', '=', session('compcode'))
-                            ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-                            ->where('dh.debtorcode', '=', $value->debtorcode)
-                            ->whereDate('dh.posteddate', '<', $datefr);
+            // $calc_openbal = DB::table('debtor.dbacthdr as dh')
+            //                 ->where('dh.compcode', '=', session('compcode'))
+            //                 ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+            //                 ->where('dh.debtorcode', '=', $value->debtorcode)
+            //                 ->whereDate('dh.posteddate', '<', $datefr);
             
-            $openbal = $this->calc_openbal($calc_openbal);
-            $value->openbal = $openbal;
+            // $openbal = $this->calc_openbal($calc_openbal);
+            // $value->openbal = $openbal;
             
             // $value->datesend = '';
             $value->reference = '';
             $value->amount_dr = 0;
             $value->amount_cr = 0;
-            $balance = $openbal;
+            $balance = 0;
             foreach($dbacthdr as $key => $value){
                 $loop = $loop + 1;
                 switch($value->trantype){
@@ -220,7 +220,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                 
                 $event->sheet->getPageSetup()->setPaperSize(9); // A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSTATEMENT LISTING"."\n".sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSTATEMENT LISTING"."\n".sprintf('DATE ',$this->dateto).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 
                 $event->sheet->getPageMargins()->setTop(1);
                 

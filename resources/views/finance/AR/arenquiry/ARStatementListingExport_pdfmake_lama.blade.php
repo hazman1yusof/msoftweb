@@ -88,28 +88,17 @@
                         style: 'tableExample',
                         table: {
                             // headerRows: 1,
-                            widths: [50,50,60,100,60,60,60], // panjang standard dia 515
+                            widths: [50,50,70,110,80,80], // panjang standard dia 515
                             body: [
                                 [
                                     { text: 'Doc Date', style: 'tableHeader' },
                                     { text: 'Date Send', style: 'tableHeader' },
                                     { text: 'Document', style: 'tableHeader' },
                                     { text: 'Reference', style: 'tableHeader' },
-                                    { text: 'Amount DR', style: 'tableHeader', alignment: 'right' },
-                                    { text: 'Amount CR', style: 'tableHeader', alignment: 'right' },
-                                    { text: 'Balance', style: 'tableHeader', alignment: 'right' },
+                                    { text: 'Balance Amt', style: 'tableHeader', alignment: 'right' },
+                                    { text: 'Total', style: 'tableHeader', alignment: 'right' },
                                 ],
-                                [
-                                    { text: ' ' },
-                                    { text: ' ' },
-                                    { text: ' ' },
-                                    { text: 'OPENING BALANCE' },
-                                    { text: ' ' },
-                                    { text: ' ' },
-                                    { text: '{{number_format($debtor->openbal,2)}}', alignment: 'right' },
-                                ],
-                                @php($totalAmount_dr = 0)
-                                @php($totalAmount_cr = 0)
+                                @php($totalAmount = 0)
                                 @foreach ($array_report as $obj)
                                     @if($obj->debtorcode == $debtor->debtorcode)
                                     [
@@ -120,32 +109,18 @@
                                             { text: ' ' },
                                         @endif
                                         { text: '{{$obj->trantype}}/{{str_pad($obj->auditno, 5, "0", STR_PAD_LEFT)}}' },
-                                        { text: '{{$obj->reference}}' },
+                                        { text: '{{$obj->Name}}' },
                                         @if(!empty($obj->amount_dr))
-                                            @php($totalAmount_dr += $obj->amount_dr)
+                                            @php($totalAmount += $obj->amount_dr)
                                             { text: '{{number_format($obj->amount_dr,2)}}', alignment: 'right' },
                                         @else
-                                            { text: ' ' },
+                                            @php($totalAmount -= $obj->amount_cr)
+                                            { text: '-{{number_format($obj->amount_cr,2)}}', alignment: 'right' },
                                         @endif
-                                        @if(!empty($obj->amount_cr))
-                                            @php($totalAmount_cr += $obj->amount_cr)
-                                            { text: '{{number_format($obj->amount_cr,2)}}', alignment: 'right' },
-                                        @else
-                                            { text: ' ' },
-                                        @endif
-                                        { text: '{{number_format($obj->balance,2)}}', alignment: 'right' },
+                                        { text: '{{number_format($totalAmount,2)}}', alignment: 'right' },
                                     ],
                                     @endif
                                 @endforeach
-                                [
-                                    { text: ' ' },
-                                    { text: ' ' },
-                                    { text: ' ' },
-                                    { text: 'TOTAL', bold: true },
-                                    { text: '{{number_format($totalAmount_dr,2)}}', alignment: 'right', bold: true },
-                                    { text: '{{number_format($totalAmount_cr,2)}}', alignment: 'right', bold: true },
-                                    { text: ' ' },
-                                ],
                             ]
                         },
                         layout: 'lightHorizontalLines',

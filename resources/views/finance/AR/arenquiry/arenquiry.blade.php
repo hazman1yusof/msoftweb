@@ -1506,12 +1506,12 @@
 					</div>
 					
 					<div class="form-group">
-						<div class="col-md-6">
+						<!-- <div class="col-md-6">
 							<label class="control-label" for="Scol">From</label>
 							<input id="datefr" name="datefr" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
-						</div>
+						</div> -->
 						<div class="col-md-6">
-							<label class="control-label" for="Scol">To</label>
+							<label class="control-label" for="Scol">DATE</label>
 							<input id="dateto" name="dateto" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 						</div>
 					</div>

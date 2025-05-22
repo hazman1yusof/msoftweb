@@ -24,15 +24,6 @@
         <td style="font-weight: bold;text-align: right">BALANCE</td>
     </tr>
     <tr></tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>OPENING BALANCE</td>
-        <td></td>
-        <td></td>
-        <td data-format="0.00" style="text-align: right">{{number_format($debtor->openbal, 2, '.', ',')}}</td>
-    </tr>
     @php($totalAmount_dr = 0)
     @php($totalAmount_cr = 0)
     @foreach($array_report as $db_obj)

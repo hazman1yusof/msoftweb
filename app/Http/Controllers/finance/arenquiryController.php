@@ -812,9 +812,9 @@ class arenquiryController extends defaultController
         return Excel::download(new ARStatementListingExport($request->debtorcode_from,$request->debtorcode_to,$request->datefr,$request->dateto), 'ARStatementListingExport.xlsx');
     }
     
-    public function showpdf_LAMA(Request $request){
+    public function showpdf(Request $request){
         
-        $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
+        // $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
         $debtorcode_from = $request->debtorcode_from;
         if(empty($request->debtorcode_from)){
@@ -831,7 +831,7 @@ class arenquiryController extends defaultController
                     ->where('dh.compcode', '=', session('compcode'))
                     ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
                     ->whereBetween('dh.debtorcode',[$debtorcode_from,$debtorcode_to.'%'])
-                    ->whereBetween('dh.posteddate', [$datefr, $dateto])
+                    ->whereDate('dh.posteddate', '<=', $dateto)
                     ->orderBy('dm.debtorcode', 'ASC')
                     ->distinct('dm.debtorcode');
         
@@ -842,30 +842,30 @@ class arenquiryController extends defaultController
             $dbacthdr = DB::table('debtor.dbacthdr as dh')
                         ->select('dh.idno', 'dh.source', 'dh.trantype', 'pm.Name', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'dh.datesend')
                         ->leftJoin('hisdb.pat_mast as pm', function ($join){
-                            $join = $join->on('pm.MRN', '=', 'dh.mrn')
+                            $join = $join->on('pm.NewMRN', '=', 'dh.mrn')
                                         ->where('pm.compcode', '=', session('compcode'));
                         })
                         ->where('dh.compcode', '=', session('compcode'))
                         ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
                         ->where('debtorcode',$value->debtorcode)
-                        ->whereBetween('dh.posteddate', [$datefr, $dateto])
+                        ->whereDate('dh.posteddate', '<=', $dateto)
                         ->orderBy('dh.posteddate', 'ASC')
                         ->get();
             
-            $calc_openbal = DB::table('debtor.dbacthdr as dh')
-                            ->where('dh.compcode', '=', session('compcode'))
-                            ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-                            ->where('dh.debtorcode', '=', $value->debtorcode)
-                            ->whereDate('dh.posteddate', '<', $datefr);
+            // $calc_openbal = DB::table('debtor.dbacthdr as dh')
+            //                 ->where('dh.compcode', '=', session('compcode'))
+            //                 ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+            //                 ->where('dh.debtorcode', '=', $value->debtorcode)
+            //                 ->whereDate('dh.posteddate', '<', $datefr);
             
-            $openbal = $this->calc_openbal($calc_openbal);
-            $value->openbal = $openbal;
+            // $openbal = $this->calc_openbal($calc_openbal);
+            // $value->openbal = $openbal;
             
             // $value->datesend = '';
             $value->reference = '';
             $value->amount_dr = 0;
             $value->amount_cr = 0;
-            $balance = $openbal;
+            $balance = 0;
             foreach($dbacthdr as $key => $value){
                 switch($value->trantype){
                     case 'IN':
@@ -961,10 +961,10 @@ class arenquiryController extends defaultController
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.arenquiry.ARStatementListingExport_pdfmake', compact('debtormast','array_report','title','company'));        
+        return view('finance.AR.arenquiry.ARStatementListingExport_pdfmake_lama', compact('debtormast','array_report','title','company'));        
     }
 
-    public function showpdf(Request $request){
+    public function showpdf_xxx(Request $request){
         
         // $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
         // $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
