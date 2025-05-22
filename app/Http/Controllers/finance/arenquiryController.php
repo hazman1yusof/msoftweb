@@ -812,7 +812,7 @@ class arenquiryController extends defaultController
         return Excel::download(new ARStatementListingExport($request->debtorcode_from,$request->debtorcode_to,$request->datefr,$request->dateto), 'ARStatementListingExport.xlsx');
     }
     
-    public function showpdf(Request $request){
+    public function showpdf_LAMA(Request $request){
         
         $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
@@ -961,8 +961,193 @@ class arenquiryController extends defaultController
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.arenquiry.ARStatementListingExport_pdfmake', compact('debtormast','array_report','title','company'));
+        return view('finance.AR.arenquiry.ARStatementListingExport_pdfmake', compact('debtormast','array_report','title','company'));        
+    }
+
+    public function showpdf(Request $request){
         
+        // $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
+        // $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
+        
+        $date = Carbon::parse($request->dateto)->format('Y-m-d');
+        // $debtortype = $this->debtortype;
+        $debtorcode_from = $request->debtorcode_from;
+        if(empty($request->debtorcode_from)){
+            $debtorcode_from = '%';
+        }
+        $debtorcode_to = $request->debtorcode_to;
+        $grouping = [0,30,60,90,120];
+
+        $debtormast = DB::table('debtor.debtormast as dm')
+                        ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'pm.Name as pm_name','dm.debtortype','dt.debtortycode','dt.description','dm.name','dm.address1','dm.address2','dm.address3','dm.address4')
+                        ->join('debtor.debtortype as dt', function($join){
+                            $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
+                                         ->where('dt.compcode', '=', session('compcode'));
+                        })
+                        ->join('debtor.dbacthdr as dh', function($join) use ($date){
+                            $join = $join->on('dh.debtorcode', '=', 'dm.debtorcode')
+                                         ->whereDate('dh.posteddate', '<=', $date)
+                                         ->where('dh.compcode', '=', session('compcode'));
+                        })->leftJoin('hisdb.pat_mast as pm', function($join){
+                            $join = $join->on('pm.NewMrn', '=', 'dh.mrn')
+                                         ->where('pm.compcode', '=', session('compcode'));
+                        })
+                        ->where('dm.compcode', '=', session('compcode'))
+                        ->whereBetween('dm.debtorcode', [$debtorcode_from,$debtorcode_to.'%'])
+                        ->orderBy('dm.debtorcode', 'ASC')
+                        // ->limit(3000)
+                        ->get();
+
+        $array_report = [];
+
+        foreach ($debtormast as $key => $value){
+            $value->remark = '';
+            $value->doc_no = '';
+            $value->newamt = 0;
+
+            $hdr_amount = $value->amount;
+            
+            // to calculate interval (days)
+            $datetime1 = new DateTime($date);
+            $datetime2 = new DateTime($value->posteddate);
+            
+            $interval = $datetime1->diff($datetime2);
+            $days = $interval->format('%a');
+            $value->group = $this->assign_grouping($grouping,$days);
+            $value->days = $days;
+            
+            if($value->trantype == 'IN' || $value->trantype =='DN') {
+                $alloc_sum = DB::table('debtor.dballoc as da')
+                        ->where('da.compcode', '=', session('compcode'))
+                        ->where('da.debtorcode', '=', $value->debtorcode)
+                        ->where('da.refsource', '=', $value->source)
+                        ->where('da.reftrantype', '=', $value->trantype)
+                        ->where('da.refauditno', '=', $value->auditno)
+                        ->where('da.recstatus', '=', "POSTED")
+                        ->whereDate('da.allocdate', '<=', $date)
+                        ->sum('da.amount');
+                
+                $newamt = $hdr_amount - $alloc_sum;
+            }else{
+                $doc_sum = DB::table('debtor.dballoc as da')
+                        ->where('da.compcode', '=', session('compcode'))
+                        ->where('da.debtorcode', '=', $value->debtorcode)
+                        ->where('da.docsource', '=', $value->source)
+                        ->where('da.doctrantype', '=', $value->trantype)
+                        ->where('da.docauditno', '=', $value->auditno)
+                        ->where('da.recstatus', '=', "POSTED")
+                        ->whereDate('da.allocdate', '<=', $date)
+                        ->sum('da.amount');
+                
+                $ref_sum = DB::table('debtor.dballoc as da')
+                        ->where('da.compcode', '=', session('compcode'))
+                        ->where('da.debtorcode', '=', $value->debtorcode)
+                        ->where('da.refsource', '=', $value->source)
+                        ->where('da.reftrantype', '=', $value->trantype)
+                        ->where('da.refauditno', '=', $value->auditno)
+                        ->where('da.recstatus', '=', "POSTED")
+                        ->whereDate('da.allocdate', '<=', $date)
+                        ->sum('da.amount');
+                
+                $newamt = -($hdr_amount - $doc_sum - $ref_sum);
+            }
+            
+            switch ($value->trantype) {
+                case 'IN':
+                    if($value->mrn == '0' || $value->mrn == ''){
+                        $value->remark = $value->remark;
+                    }else{
+                        $value->remark = $value->pm_name;
+                    }
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->invno, 5, "0", STR_PAD_LEFT);
+                    $value->newamt = $newamt;
+                    if(floatval($newamt) != 0.00){
+                        array_push($array_report, $value);
+                    }
+                    break;
+                case 'DN':
+                    $value->remark = $value->remark;
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->newamt = $newamt;
+                    if(floatval($newamt) != 0.00){
+                        array_push($array_report, $value);
+                    }
+                    break;
+                case 'BC':
+                    // $value->remark
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->newamt = $newamt;
+                    if(floatval($newamt) != 0.00){
+                        array_push($array_report, $value);
+                    }
+                    break;
+                case 'RF':
+                    $value->remark = $value->remark;
+                    $value->doc_no = $value->recptno;
+                    $value->newamt = $newamt;
+                    if(floatval($newamt) != 0.00){
+                        array_push($array_report, $value);
+                    }
+                    break;
+                case 'CN':
+                    $value->remark = $value->remark;
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->newamt = $newamt;
+                    if(floatval($newamt) != 0.00){
+                        array_push($array_report, $value);
+                    }
+                    break;
+                case 'RC':
+                    $value->remark = $value->remark;
+                    $value->doc_no = $value->recptno;
+                    $value->newamt = $newamt;
+                    if(floatval($newamt) != 0.00){
+                        array_push($array_report, $value);
+                    }
+                    break;
+                case 'RD':
+                    $value->remark = $value->remark;
+                    $value->doc_no = $value->recptno;
+                    $value->newamt = $newamt;
+                    if(floatval($newamt) != 0.00){
+                        array_push($array_report, $value);
+                    }
+                    break;
+                case 'RT':
+                    // $value->remark
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->newamt = $newamt;
+                    if(floatval($newamt) != 0.00){
+                        array_push($array_report, $value);
+                    }
+                    break;
+                default:
+                    // code...
+                    break;
+            }
+            
+        }
+
+        // $debtortype = collect($array_report)->unique('debtortycode');
+        $debtorcode = collect($array_report)->unique('debtorcode');
+
+        // $comp_name = $this->comp->name;
+        $date_at = Carbon::createFromFormat('Y-m-d',$date)->format('d-m-Y');
+        // dd($array_report);
+        
+        return view('finance.AR.arenquiry.ARStatementListingExport_pdfmake', compact('debtorcode','array_report','grouping','date','date_at'));        
+    }
+
+    public function assign_grouping($grouping,$days){
+        $group = 0;
+
+        foreach ($grouping as $key => $value) {
+            if(!empty($value) && $days >= intval($value)){
+                $group = $key;
+            }
+        }
+
+        return $group;
     }
     
     public function calc_openbal($obj){
