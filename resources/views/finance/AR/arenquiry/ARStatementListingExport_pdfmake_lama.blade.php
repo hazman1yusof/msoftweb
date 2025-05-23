@@ -14,27 +14,6 @@
     </object>
     
     <script>
-        var array_report = [
-            @foreach($array_report as $key => $array_report1)
-            [
-                @foreach($array_report1 as $key2 => $val)
-                    {'{{$key2}}' : `{{$val}}`},
-                @endforeach
-            ],
-            @endforeach
-        ];
-        
-        var title = {
-            @foreach($company as $key => $val)
-                '{{$key}}' : '{{$val}}',
-            @endforeach
-        };
-        
-        var company = {
-            @foreach($company as $key => $val)
-                '{{$key}}' : '{{$val}}',
-            @endforeach
-        };
         
         $(document).ready(function (){
             var docDefinition = {
@@ -44,21 +23,17 @@
                     ]
                 },
                 pageSize: 'A4',
+                pageMargins: [22, 20, 10, 20],
                 content: [
                     {
                         image: 'letterhead', width: 200, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: '\n{{$title}}\n',
+                        text: '\nAR STATEMENT\n',
                         style: 'header',
                         alignment: 'center'
                     },
-                    // {
-                    //     text: '{{$company->name}}\n{{$company->address1}}\n{{$company->address2}}\n{{$company->address3}}\n{{$company->address4}}\n\n\n',
-                    //     alignment: 'center',
-                    //     style: 'comp_header'
-                    // },
-                    @foreach($debtormast as $index => $debtor)
+                    @foreach($debtorcode as $index => $debtor)
                     {
                         style: 'tableExample',
                         table: {
@@ -88,42 +63,56 @@
                         style: 'tableExample',
                         table: {
                             // headerRows: 1,
-                            widths: [50,50,70,110,80,80], // panjang standard dia 515
+                            widths: [80,50,55,55,55,58,55,55], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'Doc Date', style: 'tableHeader' },
-                                    { text: 'Date Send', style: 'tableHeader' },
-                                    { text: 'Document', style: 'tableHeader' },
-                                    { text: 'Reference', style: 'tableHeader' },
-                                    { text: 'Balance Amt', style: 'tableHeader', alignment: 'right' },
-                                    { text: 'Total', style: 'tableHeader', alignment: 'right' },
+                                    { text: 'Document', style: 'tableHeader' ,border: [false, false, false, true]},
+                                    { text: 'Date', style: 'tableHeader' ,border: [false, false, false, true]},
+                                    { text: '1-30 Days', style: 'tableHeader', alignment: 'right' ,border: [false, false, false, true]},
+                                    { text: '31-60 Days', style: 'tableHeader', alignment: 'right' ,border: [false, false, false, true]},
+                                    { text: '61-90 Days', style: 'tableHeader', alignment: 'right' ,border: [false, false, false, true]},
+                                    { text: '91-120 Days', style: 'tableHeader', alignment: 'right' ,border: [false, false, false, true]},
+                                    { text: '>120 Days', style: 'tableHeader', alignment: 'right' ,border: [false, false, false, true]},
+                                    { text: 'Total', style: 'tableHeader', alignment: 'right' ,border: [false, false, false, true]},
                                 ],
-                                @php($totalAmount = 0)
+                                @php($total = 0.00)
                                 @foreach ($array_report as $obj)
                                     @if($obj->debtorcode == $debtor->debtorcode)
+                                    @php($total += $obj->newamt)
                                     [
-                                        { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}' },
-                                        @if(!empty($obj->datesend))
-                                            { text: '{{\Carbon\Carbon::parse($obj->datesend)->format('d/m/Y')}}' },
+                                        { text: '{{$obj->remark}}',colSpan: 6, alignment: 'left',border: [false, false, false, false]},{},{},{},{},{},
+                                        @if(!empty($obj->mrn))
+                                            { text: 'MRN: {{$obj->mrn}}',colSpan: 2, alignment: 'left',border: [false, false, false, false]},{},
                                         @else
-                                            { text: ' ' },
+                                            { text: ' ',colSpan: 2,border: [false, false, false, false]},{},
                                         @endif
-                                        { text: '{{$obj->trantype}}/{{str_pad($obj->auditno, 5, "0", STR_PAD_LEFT)}}' },
-                                        { text: '{{$obj->Name}}' },
-                                        @if(!empty($obj->amount_dr))
-                                            @php($totalAmount += $obj->amount_dr)
-                                            { text: '{{number_format($obj->amount_dr,2)}}', alignment: 'right' },
-                                        @else
-                                            @php($totalAmount -= $obj->amount_cr)
-                                            { text: '-{{number_format($obj->amount_cr,2)}}', alignment: 'right' },
-                                        @endif
-                                        { text: '{{number_format($totalAmount,2)}}', alignment: 'right' },
+                                    ],
+                                    [
+                                        { text: '{{$obj->doc_no}}',border: [false, false, false, true]},
+                                        { text: '{{$obj->posteddate}}',border: [false, false, false, true]},
+
+                                        @php($total_line = 0)
+                                        @foreach ($grouping as $key => $group)
+                                            @if($key == $obj->group)
+                                            @php($total_line += $obj->newamt)
+                                            { text: '{{$obj->newamt}}', alignment: 'right',border: [false, false, false, true]},
+                                            @else
+                                            { text: '0.00', alignment: 'right',border: [false, false, false, true]},
+                                            @endif
+                                        @endforeach
+
+                                        { text: '{{$total_line}}', alignment: 'right',border: [false, false, false, true]},
+
                                     ],
                                     @endif
                                 @endforeach
+                                [
+                                    { text: 'TOTAL', bold:true, alignment: 'right', colSpan:7,border: [false, false, false, true]},{},{},{},{},{},{},
+                                    { text: '{{$total}}', bold:true, alignment: 'right',border: [false, false, false, true]},
+                                ],
                             ]
                         },
-                        layout: 'lightHorizontalLines',
+                        defaultBorder: false,
                     },
                     { text: '', alignment: 'left', fontSize: 9, pageBreak: 'after' },
                     @endforeach

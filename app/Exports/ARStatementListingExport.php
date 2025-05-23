@@ -22,7 +22,7 @@ use Illuminate\Contracts\View\View;
 use DateTime;
 use Carbon\Carbon;
 
-class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
+class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     
     /**
@@ -42,14 +42,22 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     ->where('compcode', '=' ,session('compcode'))
                     ->first();
     }
+
+    public function columnFormats(): array
+    {
+        return [
+            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+        ];
+    }
     
     public function columnWidths(): array
     {
         return [
             'A' => 15,
             'B' => 15,
-            'C' => 12,
-            'D' => 25,
+            'C' => 15,
+            'D' => 55,
             'E' => 15,
             'F' => 15,
             'G' => 15,
