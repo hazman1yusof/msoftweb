@@ -93,7 +93,7 @@
                                             { text: '{{number_format($obj->amount_cr,2)}}', alignment: 'right' },
                                         @endif
                                         { text: '{{number_format($totalAmount,2)}}', alignment: 'right' },
-                                        { text: '{!!$obj->unit!!}', alignment: 'right' },
+                                        { text: `{!!$obj->unit!!}`, alignment: 'right' },
                                     ],
                                     @endif
                                 @endforeach
