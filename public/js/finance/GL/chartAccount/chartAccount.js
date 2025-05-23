@@ -211,7 +211,7 @@ $(document).ready(function () {
 
 			dialog_costcode.on();
 
-			$("input[name='costcode']").keydown(function(e) {//when click tab at last column in header, auto save
+			$("input[name='glaccount']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;
@@ -554,6 +554,9 @@ $(document).ready(function () {
 				dialog_costcode.urlParam.filterCol=['compcode','recstatus'];
 				dialog_costcode.urlParam.filterVal=['session.compcode','ACTIVE'];
 				
+			},
+			close: function(){
+				$("#jqGrid input[name='glaccount']").focus().select();
 			}
 		},'urlParam', 'radio', 'tab'
 	);
