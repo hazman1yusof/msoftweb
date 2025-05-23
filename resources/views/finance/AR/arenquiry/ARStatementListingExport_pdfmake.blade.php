@@ -14,27 +14,6 @@
     </object>
     
     <script>
-        var array_report = [
-            @foreach($array_report as $key => $array_report1)
-            [
-                @foreach($array_report1 as $key2 => $val)
-                    {'{{$key2}}' : `{{$val}}`},
-                @endforeach
-            ],
-            @endforeach
-        ];
-        
-        var title = {
-            @foreach($company as $key => $val)
-                '{{$key}}' : '{{$val}}',
-            @endforeach
-        };
-        
-        var company = {
-            @foreach($company as $key => $val)
-                '{{$key}}' : '{{$val}}',
-            @endforeach
-        };
         
         $(document).ready(function (){
             var docDefinition = {
@@ -53,11 +32,6 @@
                         style: 'header',
                         alignment: 'center'
                     },
-                    // {
-                    //     text: '{{$company->name}}\n{{$company->address1}}\n{{$company->address2}}\n{{$company->address3}}\n{{$company->address4}}\n\n\n',
-                    //     alignment: 'center',
-                    //     style: 'comp_header'
-                    // },
                     @foreach($debtormast as $index => $debtor)
                     {
                         style: 'tableExample',
@@ -110,13 +84,13 @@
                                             { text: ' ' },
                                         @endif
                                         { text: '{{$obj->trantype}}/{{str_pad($obj->auditno, 7, "0", STR_PAD_LEFT)}}' },
-                                        { text: '{{$obj->Name}}' },
+                                        { text: '{{$obj->pm_name}}' },
                                         @if(!empty($obj->amount_dr))
                                             @php($totalAmount += $obj->amount_dr)
                                             { text: '{{number_format($obj->amount_dr,2)}}', alignment: 'right' },
                                         @else
-                                            @php($totalAmount -= $obj->amount_cr)
-                                            { text: '-{{number_format($obj->amount_cr,2)}}', alignment: 'right' },
+                                            @php($totalAmount += $obj->amount_cr)
+                                            { text: '{{number_format($obj->amount_cr,2)}}', alignment: 'right' },
                                         @endif
                                         { text: '{{number_format($totalAmount,2)}}', alignment: 'right' },
                                         { text: '{{$obj->unit}}', alignment: 'right' },

@@ -67,143 +67,175 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
     public function view(): View
     {
         // $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
-        $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
+        $date = Carbon::parse($this->dateto)->format('Y-m-d');
         $debtorcode_from = $this->debtorcode_from;
         if(empty($this->debtorcode_from)){
             $debtorcode_from = '%';
         }
         $debtorcode_to = $this->debtorcode_to;
         
-        $debtormast = DB::table('debtor.dbacthdr as dh')
-                    ->select('dh.debtorcode', 'dm.debtorcode', 'dm.name', 'dm.address1', 'dm.address2', 'dm.address3', 'dm.address4')
-                    ->leftJoin('debtor.debtormast as dm', function($join){
-                        $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
-                                    ->where('dm.compcode', '=', session('compcode'));
-                    })
-                    ->where('dh.compcode', '=', session('compcode'))
-                    ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-                    ->whereBetween('dh.debtorcode',[$debtorcode_from,$debtorcode_to.'%'])
-                    ->whereDate('dh.posteddate', '<=', $dateto)
-                    ->orderBy('dm.debtorcode', 'ASC')
-                    ->distinct('dm.debtorcode');
-        
-        $debtormast = $debtormast->get(['dm.debtorcode', 'dm.name', 'dm.address1', 'dm.address2', 'dm.address3', 'dm.address4']);
+        $debtormast = DB::table('debtor.debtormast as dm')
+                        ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'pm.Name as pm_name','dm.debtortype','dm.name','dm.address1','dm.address2','dm.address3','dm.address4', 'dh.datesend')
+                        // ->join('debtor.debtortype as dt', function($join){
+                        //     $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
+                        //                  ->where('dt.compcode', '=', session('compcode'));
+                        // })
+                        ->join('debtor.dbacthdr as dh', function($join) use ($date){
+                            $join = $join->on('dh.debtorcode', '=', 'dm.debtorcode')
+                                         ->whereDate('dh.posteddate', '<=', $date)
+                                         ->where('dh.compcode', '=', session('compcode'));
+                        })->leftJoin('hisdb.pat_mast as pm', function($join){
+                            $join = $join->on('pm.NewMrn', '=', 'dh.mrn')
+                                         ->where('pm.compcode', '=', session('compcode'));
+                        })
+                        ->where('dm.compcode', '=', session('compcode'))
+                        ->whereBetween('dm.debtorcode', [$debtorcode_from,$debtorcode_to.'%'])
+                        ->orderBy('dm.debtorcode', 'ASC')
+                        // ->limit(3000)
+                        ->get();
         
         $array_report = [];
-        $break_loop = [];
-        $loop = 0;
-        foreach($debtormast as $key => $value){
-            $dbacthdr = DB::table('debtor.dbacthdr as dh')
-                        ->select('dh.idno', 'dh.source', 'dh.trantype', 'pm.Name', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'dh.datesend')
-                        ->leftJoin('hisdb.pat_mast as pm', function ($join){
-                            $join = $join->on('pm.NewMRN', '=', 'dh.mrn')
-                                        ->where('pm.compcode', '=', session('compcode'));
-                        })
-                        ->where('dh.compcode', '=', session('compcode'))
-                        ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-                        ->where('debtorcode',$value->debtorcode)
-                        ->whereDate('dh.posteddate', '<=', $dateto)
-                        ->orderBy('dh.posteddate', 'ASC')
-                        ->get();
+
+        foreach ($debtormast as $key => $value){
+            $value->remark = '';
+            $value->doc_no = '';
+            $value->newamt = 0;
+
+            $hdr_amount = $value->amount;
             
-            // $calc_openbal = DB::table('debtor.dbacthdr as dh')
-            //                 ->where('dh.compcode', '=', session('compcode'))
-            //                 ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-            //                 ->where('dh.debtorcode', '=', $value->debtorcode)
-            //                 ->whereDate('dh.posteddate', '<', $datefr);
+            // to calculate interval (days)
+            // $datetime1 = new DateTime($date);
+            // $datetime2 = new DateTime($value->posteddate);
             
-            // $openbal = $this->calc_openbal($calc_openbal);
-            // $value->openbal = $openbal;
+            // $interval = $datetime1->diff($datetime2);
+            // $days = $interval->format('%a');
+            // $value->group = $this->assign_grouping($grouping,$days);
+            // $value->days = $days;
             
-            // $value->datesend = '';
-            $value->reference = '';
-            $value->amount_dr = 0;
-            $value->amount_cr = 0;
-            $balance = 0;
-            foreach($dbacthdr as $key => $value){
-                $loop = $loop + 1;
-                switch($value->trantype){
-                    case 'IN':
-                        // $value->datesend = $value->datesend;
-                        if($value->mrn == '0' || $value->mrn == ''){
-                            $value->reference = $value->remark;
-                        }else{
-                            $value->reference = $value->Name;
-                        }
-                        $value->amount_dr = $value->amount;
-                        $balance = $balance + floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'DN':
-                        $value->reference = $value->remark;
-                        $value->amount_dr = $value->amount;
-                        $balance = $balance + floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'BC':
-                        // $value->reference
-                        $value->amount_dr = $value->amount;
-                        $balance = $balance + floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'RF':
-                        if($value->mrn == '0' || $value->mrn == ''){
-                            $value->reference = $value->remark;
-                        }else{
-                            $value->reference = $value->Name;
-                        }
-                        $value->amount_dr = $value->amount;
-                        $balance = $balance + floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'CN':
-                        $value->reference = $value->remark;
-                        $value->amount_cr = $value->amount;
-                        $balance = $balance - floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'RC':
-                        $value->reference = $value->recptno;
-                        $value->amount_cr = $value->amount;
-                        $balance = $balance - floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'RD':
-                        $value->reference = $value->recptno;
-                        $value->amount_cr = $value->amount;
-                        $balance = $balance - floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'RT':
-                        // $value->reference
-                        $value->amount_cr = $value->amount;
-                        $balance = $balance - floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    default:
-                        // code...
-                        break;
-                }
+            if($value->trantype == 'IN' || $value->trantype =='DN') {
+                $alloc_sum = DB::table('debtor.dballoc as da')
+                        ->where('da.compcode', '=', session('compcode'))
+                        // ->where('da.debtorcode', '=', $value->debtorcode)
+                        ->where('da.refsource', '=', $value->source)
+                        ->where('da.reftrantype', '=', $value->trantype)
+                        ->where('da.refauditno', '=', $value->auditno)
+                        ->where('da.reflineno', '=', $value->lineno_)
+                        ->where('da.recstatus', '=', "POSTED")
+                        ->whereDate('da.allocdate', '<=', $date)
+                        ->sum('da.amount');
+                
+                $newamt = $hdr_amount - $alloc_sum;
+            }else{
+                $doc_sum = DB::table('debtor.dballoc as da')
+                        ->where('da.compcode', '=', session('compcode'))
+                        // ->where('da.debtorcode', '=', $value->debtorcode)
+                        ->where('da.docsource', '=', $value->source)
+                        ->where('da.doctrantype', '=', $value->trantype)
+                        ->where('da.docauditno', '=', $value->auditno)
+                        ->where('da.recstatus', '=', "POSTED")
+                        ->whereDate('da.allocdate', '<=', $date)
+                        ->sum('da.amount');
+                
+                $ref_sum = DB::table('debtor.dballoc as da')
+                        ->where('da.compcode', '=', session('compcode'))
+                        // ->where('da.debtorcode', '=', $value->debtorcode)
+                        ->where('da.refsource', '=', $value->source)
+                        ->where('da.reftrantype', '=', $value->trantype)
+                        ->where('da.refauditno', '=', $value->auditno)
+                        ->where('da.recstatus', '=', "POSTED")
+                        ->whereDate('da.allocdate', '<=', $date)
+                        ->sum('da.amount');
+                
+                $newamt = -($hdr_amount - $doc_sum - $ref_sum);
             }
-            $loop = $loop + 9;
-            array_push($break_loop, $loop);
+            
+            switch ($value->trantype) {
+                case 'IN':
+                    if($value->mrn == '0' || $value->mrn == ''){
+                        $value->reference = $value->remark;
+                    }else{
+                        $value->reference = $value->pm_name;
+                    }
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->invno, 5, "0", STR_PAD_LEFT);
+                    $value->amount_dr = $value->amount;
+                    if(floatval($newamt) != 0.00){
+                        array_push($array_report, $value);
+                    }
+                    break;
+                case 'DN':
+                    $value->reference = $value->reference;
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->amount_dr = $newamt;
+                    if(floatval($newamt) != 0.00){
+                        array_push($array_report, $value);
+                    }
+                    break;
+                case 'BC':
+                    // $value->remark
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->amount_dr = $newamt;
+                    if(floatval($newamt) != 0.00){
+                        array_push($array_report, $value);
+                    }
+                    break;
+                case 'RF':
+                    if($value->mrn == '0' || $value->mrn == ''){
+                        // $value->reference = $value->remark;
+                        $value->reference = $value->reference;
+                    }else{
+                        $value->reference = $value->pm_name;
+                    }
+                    $value->doc_no = $value->recptno;
+                    $value->amount_dr = $newamt;
+                    if(floatval($newamt) != 0.00){
+                        array_push($array_report, $value);
+                    }
+                    break;
+                case 'CN':
+                    $value->remark = $value->remark;
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->amount_cr = $newamt;
+                    if(floatval($newamt) != 0.00){
+                        array_push($array_report, $value);
+                    }
+                    break;
+                case 'RC':
+                    $value->remark = $value->remark;
+                    $value->doc_no = $value->recptno;
+                    $value->amount_cr = $newamt;
+                    if(floatval($newamt) != 0.00){
+                        array_push($array_report, $value);
+                    }
+                    break;
+                case 'RD':
+                    $value->remark = $value->remark;
+                    $value->doc_no = $value->recptno;
+                    $value->amount_cr = $newamt;
+                    if(floatval($newamt) != 0.00){
+                        array_push($array_report, $value);
+                    }
+                    break;
+                case 'RT':
+                    // $value->remark
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->amount_cr = $newamt;
+                    if(floatval($newamt) != 0.00){
+                        array_push($array_report, $value);
+                    }
+                    break;
+                default:
+                    // code...
+                    break;
+            }
         }
-        
-        $this->break_loop = $break_loop;
         
         $title = "STATEMENT LISTING";
         
         $company = DB::table('sysdb.company')
                     ->where('compcode', '=', session('compcode'))
                     ->first();
+
+        $debtormast = collect($array_report)->unique('debtorcode');
         
         // $totamount_expld = explode(".", (float)$totalAmount);
         

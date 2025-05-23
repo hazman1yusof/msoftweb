@@ -812,7 +812,7 @@ class arenquiryController extends defaultController
         return Excel::download(new ARStatementListingExport($request->debtorcode_from,$request->debtorcode_to,$request->datefr,$request->dateto), 'ARStatementListingExport.xlsx');
     }
     
-    public function showpdf(Request $request){
+    public function showpdf_xxx(Request $request){
         
         // $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
@@ -961,10 +961,10 @@ class arenquiryController extends defaultController
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.arenquiry.ARStatementListingExport_pdfmake', compact('debtormast','array_report','title','company'));        
+        return view('finance.AR.arenquiry.ARStatementListingExport_pdfmake_lama', compact('debtormast','array_report','title','company'));        
     }
 
-    public function showpdf_xxx(Request $request){
+    public function showpdf(Request $request){
         
         // $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
         // $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
@@ -976,14 +976,14 @@ class arenquiryController extends defaultController
             $debtorcode_from = '%';
         }
         $debtorcode_to = $request->debtorcode_to;
-        $grouping = [0,30,60,90,120];
+        // $grouping = [0,30,60,90,120];
 
         $debtormast = DB::table('debtor.debtormast as dm')
-                        ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'pm.Name as pm_name','dm.debtortype','dt.debtortycode','dt.description','dm.name','dm.address1','dm.address2','dm.address3','dm.address4')
-                        ->join('debtor.debtortype as dt', function($join){
-                            $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
-                                         ->where('dt.compcode', '=', session('compcode'));
-                        })
+                        ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'pm.Name as pm_name','dm.debtortype','dm.name','dm.address1','dm.address2','dm.address3','dm.address4', 'dh.datesend')
+                        // ->join('debtor.debtortype as dt', function($join){
+                        //     $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
+                        //                  ->where('dt.compcode', '=', session('compcode'));
+                        // })
                         ->join('debtor.dbacthdr as dh', function($join) use ($date){
                             $join = $join->on('dh.debtorcode', '=', 'dm.debtorcode')
                                          ->whereDate('dh.posteddate', '<=', $date)
@@ -1008,13 +1008,13 @@ class arenquiryController extends defaultController
             $hdr_amount = $value->amount;
             
             // to calculate interval (days)
-            $datetime1 = new DateTime($date);
-            $datetime2 = new DateTime($value->posteddate);
+            // $datetime1 = new DateTime($date);
+            // $datetime2 = new DateTime($value->posteddate);
             
-            $interval = $datetime1->diff($datetime2);
-            $days = $interval->format('%a');
-            $value->group = $this->assign_grouping($grouping,$days);
-            $value->days = $days;
+            // $interval = $datetime1->diff($datetime2);
+            // $days = $interval->format('%a');
+            // $value->group = $this->assign_grouping($grouping,$days);
+            // $value->days = $days;
             
             if($value->trantype == 'IN' || $value->trantype =='DN') {
                 $alloc_sum = DB::table('debtor.dballoc as da')
@@ -1055,20 +1055,20 @@ class arenquiryController extends defaultController
             switch ($value->trantype) {
                 case 'IN':
                     if($value->mrn == '0' || $value->mrn == ''){
-                        $value->remark = $value->remark;
+                        $value->reference = $value->remark;
                     }else{
-                        $value->remark = $value->pm_name;
+                        $value->reference = $value->pm_name;
                     }
                     $value->doc_no = $value->trantype.'/'.str_pad($value->invno, 5, "0", STR_PAD_LEFT);
-                    $value->newamt = $newamt;
+                    $value->amount_dr = $value->amount;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
                     }
                     break;
                 case 'DN':
-                    $value->remark = $value->remark;
+                    $value->reference = $value->reference;
                     $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
-                    $value->newamt = $newamt;
+                    $value->amount_dr = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
                     }
@@ -1076,15 +1076,20 @@ class arenquiryController extends defaultController
                 case 'BC':
                     // $value->remark
                     $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
-                    $value->newamt = $newamt;
+                    $value->amount_dr = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
                     }
                     break;
                 case 'RF':
-                    $value->remark = $value->remark;
+                    if($value->mrn == '0' || $value->mrn == ''){
+                        // $value->reference = $value->remark;
+                        $value->reference = $value->reference;
+                    }else{
+                        $value->reference = $value->pm_name;
+                    }
                     $value->doc_no = $value->recptno;
-                    $value->newamt = $newamt;
+                    $value->amount_dr = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
                     }
@@ -1092,7 +1097,7 @@ class arenquiryController extends defaultController
                 case 'CN':
                     $value->remark = $value->remark;
                     $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
-                    $value->newamt = $newamt;
+                    $value->amount_cr = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
                     }
@@ -1100,7 +1105,7 @@ class arenquiryController extends defaultController
                 case 'RC':
                     $value->remark = $value->remark;
                     $value->doc_no = $value->recptno;
-                    $value->newamt = $newamt;
+                    $value->amount_cr = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
                     }
@@ -1108,7 +1113,7 @@ class arenquiryController extends defaultController
                 case 'RD':
                     $value->remark = $value->remark;
                     $value->doc_no = $value->recptno;
-                    $value->newamt = $newamt;
+                    $value->amount_cr = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
                     }
@@ -1116,7 +1121,7 @@ class arenquiryController extends defaultController
                 case 'RT':
                     // $value->remark
                     $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
-                    $value->newamt = $newamt;
+                    $value->amount_cr = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
                     }
@@ -1125,17 +1130,16 @@ class arenquiryController extends defaultController
                     // code...
                     break;
             }
-            
         }
 
+        $title = "STATEMENT LISTING";
         // $debtortype = collect($array_report)->unique('debtortycode');
-        $debtorcode = collect($array_report)->unique('debtorcode');
+        $debtormast = collect($array_report)->unique('debtorcode');
 
         // $comp_name = $this->comp->name;
         $date_at = Carbon::createFromFormat('Y-m-d',$date)->format('d-m-Y');
-        // dd($array_report);
         
-        return view('finance.AR.arenquiry.ARStatementListingExport_pdfmake', compact('debtorcode','array_report','grouping','date','date_at'));        
+        return view('finance.AR.arenquiry.ARStatementListingExport_pdfmake', compact('debtormast','array_report','title'));        
     }
 
     public function assign_grouping($grouping,$days){

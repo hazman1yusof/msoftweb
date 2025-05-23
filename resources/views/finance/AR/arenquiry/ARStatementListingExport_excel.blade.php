@@ -40,10 +40,10 @@
                 @php($totalAmount += $db_obj->amount_dr)
                 <td style="text-align: right">{{$db_obj->amount_dr}}</td>
             @else
-                @php($totalAmount -= $db_obj->amount_cr)
-                <td style="text-align: right">-{{$db_obj->amount_cr}}</td>
+                @php($totalAmount += $db_obj->amount_cr)
+                <td style="text-align: right">{{$db_obj->amount_cr}}</td>
             @endif
-            <td style="text-align: right">{{$db_obj->balance}}</td>
+            <td style="text-align: right">{{$totalAmount}}</td>
             <td>{{$db_obj->unit}}</td>
         </tr>
         @endif
