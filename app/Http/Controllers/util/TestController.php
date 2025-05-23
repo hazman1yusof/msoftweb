@@ -78,6 +78,8 @@ class TestController extends defaultController
                 return $this->betulkan_stockloc_2025($request);
             case 'netmvval_from_netmvqty':
                 return $this->netmvval_from_netmvqty($request);
+            case 'cr8_acctmaster':
+                return $this->cr8_acctmaster($request);
             // case 'btlkn_imp_3':
             //     return $this->btlkn_imp_3($request);
             // case 'stocktake_imp_dtl':
@@ -5314,7 +5316,46 @@ class TestController extends defaultController
 
             dd('Error'.$e);
         }  
+    }
 
+    public function cr8_acctmaster(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+            $acctmaster = DB::table('recondb.acctmaster')
+                            ->where('compcode','9B')
+                            ->get();
+
+            foreach ($acctmaster as $key => $value) {
+
+                $glmasdtl = DB::table('finance.glmasdtl')
+                            ->where('compcode','9B')
+                            ->where('year',$value->year)
+                            ->where('glaccount',$value->glaccount)
+                            ->where('costcode',$value->costcode);
+
+                if(!$glmasdtl->exists()){
+                    DB::table('finance.glmasdtl')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'costcode' => $value->costcode,
+                            'glaccount' => $value->glaccount,
+                            'year' => $value->year,
+                            'adduser' => 'SYSTEM',
+                            'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
     }
     
 }
