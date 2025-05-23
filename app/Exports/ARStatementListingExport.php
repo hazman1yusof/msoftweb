@@ -115,12 +115,12 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
             if($value->trantype == 'IN' || $value->trantype =='DN') {
                 $alloc_sum = DB::table('debtor.dballoc as da')
                         ->where('da.compcode', '=', session('compcode'))
+                        ->where('da.recstatus', '=', "POSTED")
                         // ->where('da.debtorcode', '=', $value->debtorcode)
                         ->where('da.refsource', '=', $value->source)
                         ->where('da.reftrantype', '=', $value->trantype)
                         ->where('da.refauditno', '=', $value->auditno)
                         ->where('da.reflineno', '=', $value->lineno_)
-                        ->where('da.recstatus', '=', "POSTED")
                         ->whereDate('da.allocdate', '<=', $date)
                         ->sum('da.amount');
                 
@@ -128,21 +128,21 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
             }else{
                 $doc_sum = DB::table('debtor.dballoc as da')
                         ->where('da.compcode', '=', session('compcode'))
+                        ->where('da.recstatus', '=', "POSTED")
                         // ->where('da.debtorcode', '=', $value->debtorcode)
                         ->where('da.docsource', '=', $value->source)
                         ->where('da.doctrantype', '=', $value->trantype)
                         ->where('da.docauditno', '=', $value->auditno)
-                        ->where('da.recstatus', '=', "POSTED")
                         ->whereDate('da.allocdate', '<=', $date)
                         ->sum('da.amount');
                 
                 $ref_sum = DB::table('debtor.dballoc as da')
                         ->where('da.compcode', '=', session('compcode'))
+                        ->where('da.recstatus', '=', "POSTED")
                         // ->where('da.debtorcode', '=', $value->debtorcode)
                         ->where('da.refsource', '=', $value->source)
                         ->where('da.reftrantype', '=', $value->trantype)
                         ->where('da.refauditno', '=', $value->auditno)
-                        ->where('da.recstatus', '=', "POSTED")
                         ->whereDate('da.allocdate', '<=', $date)
                         ->sum('da.amount');
                 
