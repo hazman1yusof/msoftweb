@@ -44,7 +44,7 @@
                 <td style="text-align: right">{{$db_obj->amount_cr}}</td>
             @endif
             <td style="text-align: right">{{$totalAmount}}</td>
-            <td>{{$db_obj->unit}}</td>
+            <td>{!!$db_obj->unit!!}</td>
         </tr>
         @endif
     @endforeach
