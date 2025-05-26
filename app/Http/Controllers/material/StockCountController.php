@@ -236,7 +236,7 @@ class StockCountController extends defaultController
 
             foreach ($request->dataobj as $obj){
 
-                if($obj['vrqty'] == undefined || $obj['vrqty'] == null ){
+                if(!isset($obj['vrqty'])){
                     $obj['vrqty'] == 0;
                 }
 
