@@ -237,14 +237,14 @@ class StockCountController extends defaultController
             foreach ($request->dataobj as $obj){
 
                 if(!isset($obj['vrqty'])){
-                    $obj['vrqty'] == 0;
+                    continue;
                 }
 
                 // if($vrqty != 0 && empty($obj['remark'])){
                 //     throw new \Exception("Remark needed if quantity has variance! itemcode ".$obj['itemcode']." on line no ".$obj['lineno_'], 500);
                 // }
 
-                if($obj['vrqty'] != 0){
+                // if($obj['vrqty'] != 0){
                     DB::table("material.phycntdt")
                         ->where('compcode',session('compcode'))
                         ->where('idno',$obj['idno'])
@@ -257,7 +257,7 @@ class StockCountController extends defaultController
                             'upduser' => session('username'),
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
-                }
+                // }
             }
 
             DB::commit();
