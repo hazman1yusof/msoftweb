@@ -343,7 +343,7 @@ $(document).ready(function () {
 			$('#recnodepan').text(selrowData("#jqGrid").delordhd_recno);//tukar kat depan tu
 			$('#prdeptdepan').text(selrowData("#jqGrid").delordhd_prdept);
 
-			refreshGrid("#jqGrid3",urlParam2);
+			// refreshGrid("#jqGrid3",urlParam2);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").delordhd_recstatus;
