@@ -236,22 +236,28 @@ class StockCountController extends defaultController
 
             foreach ($request->dataobj as $obj){
 
-                if($vrqty != 0 && empty($obj['remark'])){
-                    throw new \Exception("Remark needed if quantity has variance! itemcode ".$obj['itemcode']." on line no ".$obj['lineno_'], 500);
+                if($obj['vrqty'] == undefined || $obj['vrqty'] == null ){
+                    $obj['vrqty'] == 0;
                 }
 
-                DB::table("material.phycntdt")
-                    ->where('compcode',session('compcode'))
-                    ->where('idno',$obj['idno'])
-                    ->update([
-                        'phyqty' => $obj['phyqty'],
-                        'thyqty' => $obj['thyqty'],
-                        'vrqty' => $obj['vrqty'],
-                        // 'dspqty' =>  floatval($obj['phyqty']) - floatval($obj['thyqty']),
-                        'remark' => $obj['remark'],
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
+                // if($vrqty != 0 && empty($obj['remark'])){
+                //     throw new \Exception("Remark needed if quantity has variance! itemcode ".$obj['itemcode']." on line no ".$obj['lineno_'], 500);
+                // }
+
+                if($obj['vrqty'] != 0){
+                    DB::table("material.phycntdt")
+                        ->where('compcode',session('compcode'))
+                        ->where('idno',$obj['idno'])
+                        ->update([
+                            'phyqty' => $obj['phyqty'],
+                            'thyqty' => $obj['thyqty'],
+                            'vrqty' => $obj['vrqty'],
+                            // 'dspqty' =>  floatval($obj['phyqty']) - floatval($obj['thyqty']),
+                            'remark' => $obj['remark'],
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+                }
             }
 
             DB::commit();
