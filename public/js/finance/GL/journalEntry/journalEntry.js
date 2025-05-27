@@ -638,8 +638,7 @@ $(document).ready(function () {
 					{ custom_element:glaccCustomEdit,
 					custom_value:galGridCustomValue },
 			},
-	
-			{ label: 'Description', name: 'description', width: 200, classes: 'wrap', editable: true, edittype:"textarea",editrules:{required: true}},
+			{ label: 'Description', name: 'description', width: 200, classes: 'wrap', editable: true, edittype:"text",editrules:{required: true}},
             { label: 'DR/CR', name: 'drcrsign', width: 60, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
 				editoptions: {
 					value: "DR:DR;CR:CR"

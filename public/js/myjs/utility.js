@@ -461,7 +461,7 @@ function searchClick2(grid,form,urlParam,withscol=true){
 				$('#recnodepan').text("");//tukar kat depan tu
 				$('#reqdeptdepan').text("");
 				refreshGrid("#jqGrid3",null,"kosongkan");
-			}, 500 );
+			}, 1500 );
 		}
 	});
 	if(withscol){

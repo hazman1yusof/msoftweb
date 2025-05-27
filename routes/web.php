@@ -1119,6 +1119,14 @@ Route::get('/arenquiry/form','finance\arenquiryController@form');
 Route::get('/arenquiry/showExcel','finance\arenquiryController@showExcel');
 Route::get('/arenquiry/showpdf','finance\arenquiryController@showpdf');
 
+//// CC Update
+Route::get('/ccupdate','finance\ccupdateController@show');
+Route::get('/ccupdate/table','finance\ccupdateController@table');
+Route::post('/ccupdate/form','finance\ccupdateController@form');
+Route::get('/ccupdate/form','finance\ccupdateController@form');
+Route::get('/ccupdate/showExcel','finance\ccupdateController@showExcel');
+Route::get('/ccupdate/showpdf','finance\ccupdateController@showpdf');
+
 //// Till Enquiry
 Route::get('/tillenquiry','finance\TillEnquiryController@show');
 Route::get('/tillenquiry/table','finance\TillEnquiryController@table');

@@ -337,7 +337,7 @@ i.fa {
 		});
 	</script>
 
-	<script src="js/finance/GL/journalEntry/journalEntry.js"></script>
+	<script src="js/finance/GL/journalEntry/journalEntry.js?v=1.1"></script>
 	<!-- <script src="js/finance/AP/invoiceAP/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
