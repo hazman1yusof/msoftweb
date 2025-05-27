@@ -1135,7 +1135,7 @@ class arenquiryController extends defaultController
 
         $title = "STATEMENT LISTING";
         // $debtortype = collect($array_report)->unique('debtortycode');
-        $debtormast = collect($array_report)->unique('debtorcode');
+        $debtormast = collect($debtormast)->unique('debtorcode');
 
         // $comp_name = $this->comp->name;
         $date_at = Carbon::createFromFormat('Y-m-d',$date)->format('d-m-Y');
