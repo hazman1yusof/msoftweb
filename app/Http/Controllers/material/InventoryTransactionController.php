@@ -1449,6 +1449,7 @@ class InventoryTransactionController extends defaultController
             ->select('ivdt.compcode','ivdt.recno','ivdt.lineno_','ivh.trandate','ivdt.itemcode','p.description', 'ivdt.qtyonhand','ivdt.uomcode', 'ivdt.qtyonhandrecv','ivdt.uomcoderecv','ivdt.txnqty','ivdt.qtyrequest','ivdt.netprice','ivdt.amount','ivdt.expdate','ivdt.batchno')
             ->leftJoin('material.product as p', function($join) use ($request){
                         $join = $join->on('ivdt.itemcode', '=', 'p.itemcode')
+                                ->where("p.recstatus", '=', 'ACTIVE')
                                 ->where('p.compcode','=',session('compcode'));
                     })
             ->leftJoin('material.ivtmphd as ivh', function($join) use ($request){
