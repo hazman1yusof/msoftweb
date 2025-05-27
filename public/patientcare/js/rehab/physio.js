@@ -14,6 +14,7 @@ $(document).ready(function (){
     disableForm('#formOswestryQuest');
     disableForm('#formNeuroAssessment');
     disableForm('#formSpinalCord');
+    disableForm('#formSixMinWalking');
     
     // to format number input to two decimal places (0.00)
     $(".floatNumberField").change(function (){
@@ -114,6 +115,21 @@ $(document).ready(function (){
                 // $('#tbl_spinalCord_date').DataTable().ajax.reload();
                 getdata_spinalCord();
                 break;
+            case 'sixMinWalking':
+                var urlparam_tbl_sixMinWalking = {
+                    action: 'get_datetime_sixMinWalking',
+                    mrn: $("#mrn_physio").val(),
+                    episno: $("#episno_physio").val()
+                }
+                
+                tbl_sixMinWalking_date.ajax.url("./sixMinWalking/table?"+$.param(urlparam_tbl_sixMinWalking)).load(function (data){
+                    emptyFormdata_div("#formSixMinWalking",['#mrn_physio','#episno_physio']);
+                    $('#tbl_sixMinWalking_date tbody tr:eq(0)').click(); // to select first row
+                });
+                
+                // $('#tbl_sixMinWalking_date').DataTable().ajax.reload();
+                getdata_sixMinWalking();
+                break;
         }
     }});
     
@@ -142,11 +158,13 @@ function empty_physio(){
     emptyFormdata_div("#formOswestryQuest");
     emptyFormdata_div("#formNeuroAssessment");
     emptyFormdata_div("#formSpinalCord");
+    emptyFormdata_div("#formSixMinWalking");
     button_state_motorScale('empty');
     button_state_bergBalanceTest('empty');
     button_state_oswestryQuest('empty');
     button_state_neuroAssessment('empty');
     button_state_spinalCord('empty');
+    button_state_sixMinWalking('empty');
     
     // panel header
     $('#name_show_physio').text('');
@@ -171,6 +189,7 @@ function populate_physio(obj){
     emptyFormdata_div("#formOswestryQuest",['#mrn_physio','#episno_physio']);
     emptyFormdata_div("#formNeuroAssessment",['#mrn_physio','#episno_physio']);
     emptyFormdata_div("#formSpinalCord",['#mrn_physio','#episno_physio']);
+    emptyFormdata_div("#formSixMinWalking",['#mrn_physio','#episno_physio']);
     
     // panel header
     $('#name_show_physio').text(obj.Name);
@@ -187,6 +206,7 @@ function populate_physio(obj){
     // formPhysiotherapy
     $('#mrn_physio').val(obj.MRN);
     $("#episno_physio").val(obj.Episno);
+    $("#age_physio").val(dob_age(obj.DOB));
 }
 
 function autoinsert_rowdata(form,rowData){
@@ -218,6 +238,7 @@ $('#tab_physio').on('shown.bs.collapse', function (){
         getdata_oswestryQuest();
         getdata_neuroAssessment();
         getdata_spinalCord();
+        getdata_sixMinWalking();
     }
 });
 
@@ -228,6 +249,7 @@ $('#tab_physio').on('hide.bs.collapse', function (){
     button_state_oswestryQuest('empty');
     button_state_neuroAssessment('empty');
     button_state_spinalCord('empty');
+    button_state_sixMinWalking('empty');
 });
 
 function check_same_usr_edit(data){
