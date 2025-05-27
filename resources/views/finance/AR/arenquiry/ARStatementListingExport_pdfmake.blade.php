@@ -77,13 +77,21 @@
                                 @foreach ($array_report as $obj)
                                     @if($obj->debtorcode == $debtor->debtorcode)
                                     [
-                                        { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}' },
+                                        @if(!empty($obj->posteddate))
+                                            { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}' },
+                                        @else
+                                            { text: ' ' },
+                                        @endif
                                         @if(!empty($obj->datesend))
                                             { text: '{{\Carbon\Carbon::parse($obj->datesend)->format('d/m/Y')}}' },
                                         @else
                                             { text: ' ' },
                                         @endif
-                                        { text: '{{$obj->trantype}}/{{str_pad($obj->auditno, 7, "0", STR_PAD_LEFT)}}' },
+                                        @if(!empty($obj->auditno))
+                                            { text: '{{$obj->trantype}}/{{str_pad($obj->auditno, 7, "0", STR_PAD_LEFT)}}' },
+                                        @else
+                                            { text: ' ' },
+                                        @endif
                                         { text: '{{$obj->pm_name}}' },
                                         @if(!empty($obj->amount_dr))
                                             @php($totalAmount += $obj->amount_dr)

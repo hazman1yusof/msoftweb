@@ -1134,8 +1134,24 @@ class arenquiryController extends defaultController
         }
 
         $title = "STATEMENT LISTING";
-        // $debtortype = collect($array_report)->unique('debtortycode');
+        $array_report_dm = collect($array_report)->unique('debtorcode');
         $debtormast = collect($debtormast)->unique('debtorcode');
+
+        foreach ($debtormast as $db_obj) {
+            $gotdm = $array_report_dm->where('debtorcode',$db_obj->debtorcode);
+            
+            $db_obj->posteddate = '';
+            $db_obj->datesend = '';
+            $db_obj->pm_name = '';
+            $db_obj->auditno = '';
+            $db_obj->amount_dr = 0;
+            $db_obj->amount_cr = 0;
+            $db_obj->unit = '';
+
+            if($gotdm->count() == 0){
+                array_push($array_report,$db_obj);
+            }
+        }
 
         // $comp_name = $this->comp->name;
         $date_at = Carbon::createFromFormat('Y-m-d',$date)->format('d-m-Y');
