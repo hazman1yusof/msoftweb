@@ -410,7 +410,7 @@ use Carbon\Carbon;
 
 
         foreach ($summ_acc as $obj_acc) {
-
+            $obj_acc->amount_add = 0;
             $glmasref = DB::table('finance.glmasref')
                             ->where('compcode',session('compcode'))
                             ->where('recstatus','ACTIVE')

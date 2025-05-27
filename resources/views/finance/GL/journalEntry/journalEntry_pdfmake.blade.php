@@ -72,7 +72,7 @@
                     table: {
                         headerRows: 1,
                         // widths: [80,25,30,23,30,40,40,40,40,40,30],//panjang standard dia 515
-                        widths: [15,40,60,130,40,40,40,40],
+                        widths: [12,35,45,120,60,60,40,40],
 
                         body: [
                             [
@@ -121,8 +121,8 @@
 								{text: '', style: 'tableHeader'}, 
 								{text: '', style: 'tableHeader'},
 								{text: 'Total', style: 'tableHeader'}, 
-								{text: '{{number_format($amtdr,2)}}', style: 'tableHeader', alignment: 'right'}, 
-								{text: '{{number_format($amtcr,2)}}', style: 'tableHeader', alignment: 'right'}, 
+								{text: '{{number_format($amtdr,2)}}', alignment: 'right'}, 
+								{text: '{{number_format($amtcr,2)}}', alignment: 'right'}, 
 								{text: '', style: 'tableHeader'}, 
 								{text: '', style: 'tableHeader'}, 
 
