@@ -211,6 +211,9 @@ $(document).ready(function () {
 			//calc_jq_height_onchange("jqGrid");
 		},
 		onSelectRow:function(rowid, selected){
+			$("#pdfgen1").attr('href','./journalEntry/table?action=showpdf&idno='+selrowData("#jqGrid").gljnlhdr_idno);
+			$("#pdfgen2").attr('href','./journalEntry/table?action=showpdf&idno='+selrowData("#jqGrid").gljnlhdr_idno);
+
 			$('#error_infront').text('');
 			$('#save').hide();
 			let stat = selrowData("#jqGrid").gljnlhdr_recstatus;
@@ -249,6 +252,7 @@ $(document).ready(function () {
 			}
 		},
 		gridComplete: function () {
+
 			$('#but_cancel_jq, #but_post_jq, #but_reopen_jq').hide();
 			if (oper == 'add' || oper == null || $("#jqGrid").data('lastselrow') == undefined) { 
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);

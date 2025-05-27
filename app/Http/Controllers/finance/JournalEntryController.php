@@ -28,6 +28,8 @@ use Carbon\Carbon;
         switch($request->action){
             case 'maintable':
                 return $this->maintable($request);
+            case 'showpdf':
+                return $this->showpdf($request);
             default:
                 return 'error happen..';
         }
@@ -387,4 +389,47 @@ use Carbon\Carbon;
         }
     }
 
+    public function showpdf(Request $request){
+        $idno = $request->idno;
+        if(!$idno){
+            abort(404);
+        }
+
+        $gljnlhdr = DB::table("finance.gljnlhdr")
+                        ->where('compcode',session('compcode'))
+                        ->where('idno',$request->idno)
+                        ->first();
+
+
+        $gljnldtl = DB::table('finance.gljnldtl')
+                        ->where('compcode',session('compcode'))
+                        ->where('auditno',$gljnlhdr->auditno)
+                        ->get();
+
+        $summ_acc = $gljnldtl->unique('glaccount');
+
+
+        foreach ($summ_acc as $obj_acc) {
+            $obj_acc->amount_add = 0;
+        }
+
+
+        foreach ($gljnldtl as $obj_dtl) {
+            foreach ($summ_acc as $obj_acc) {
+                if($obj_acc->glaccount == $obj_dtl->glaccount){
+                    if($obj_dtl->drcrsign == 'DR'){
+                        $obj_acc->amount_add = $obj_acc->amount_add + $obj_dtl->amount;
+                    }else{
+                        $obj_acc->amount_add = $obj_acc->amount_add + $obj_dtl->amount;
+                    }
+                }
+            }
+        }
+
+        // $debtormast = collect($array_report)->unique('debtorcode');
+
+        // dd($gljnlhdr);
+
+        return view('finance.GL.journalEntry.journalEntry_pdfmake',compact('gljnlhdr','gljnldtl','summ_acc')); 
+    }
 }

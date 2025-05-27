@@ -155,6 +155,9 @@ i.fa {
 		 
 		<div class="panel panel-default">
 		    <div class="panel-heading">Journal Entry Header
+				<a class='pull-right pointer text-primary' style="padding-left: 30px" id='pdfgen2' href="" target="_blank">
+					<span class='fa fa-print'></span> Print 
+				</a>
 		    </div>
 		    	<div class="panel-body">
 		    		<div class='col-md-12' style="padding:0 0 15px 0">
