@@ -3644,7 +3644,7 @@ class SalesOrderController extends defaultController
                     'description' => $dbacthdr_obj->remark,
                     'year' => $yearperiod->year,
                     'period' => $yearperiod->period,
-                    'drcostcode' => $dept_obj->costcode,
+                    'drcostcode' => $paymode_obj->ccode,
                     'dracc' => $paymode_obj->glaccno,
                     'crcostcode' => $crcostcode,
                     'cracc' => $cracc,
@@ -3681,7 +3681,7 @@ class SalesOrderController extends defaultController
 
     public function gltran_frompaymode($paymode){
         $obj = DB::table('debtor.paymode')
-                ->select('glaccno')
+                ->select('glaccno','ccode')
                 ->where('compcode','=',session('compcode'))
                 ->where('source','=','AR')
                 ->where('paymode','=',$paymode)
