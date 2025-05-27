@@ -416,7 +416,7 @@ use Carbon\Carbon;
                             ->where('recstatus','ACTIVE')
                             ->where('glaccno',$obj_acc->glaccount)
                             ->first();
-            $obj_acc->description = $glmasref->description;
+            $obj_acc->description2 = $glmasref->description;
         }
 
 

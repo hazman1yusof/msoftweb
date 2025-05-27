@@ -54,6 +54,12 @@
 								{text: 'Year'},
 								{text: ': {{$gljnlhdr->year}}'}
 							],
+                            [
+								{text: ''}, 
+								{text: ''},{},
+								{text: 'Status'},
+								{text: ': {{$gljnlhdr->recstatus}}'}
+							],
                         ]
                     },
 			        layout: 'noBorders',
@@ -146,7 +152,7 @@
 							@foreach ($summ_acc as $acc)
 							[
 								{text:'{{$acc->glaccount}}'}, //cc
-								{text:`{!!$acc->description!!}`}, //cc_desc
+								{text:`{!!$acc->description2!!}`}, //cc_desc
 								@if($acc->drcrsign == 'DR')
 								{text:'{{number_format($acc->amount_add,2)}}', alignment: 'right'},
 								{text:'', alignment: 'right'},
