@@ -88,6 +88,8 @@
 							],
 
 							@php($line=1)
+							@php($amtdr=0)
+							@php($amtcr=0)
 							@foreach ($gljnldtl as $obj)
 							[
 								
@@ -97,9 +99,11 @@
                                 {text:`{!!$obj->description!!}`},
 
                                 @if($obj->drcrsign == 'DR')
+								@php($amtdr+=$obj->amount)
 								{text:'{{number_format($obj->amount,2)}}', alignment: 'right'},
 								{text:'', alignment: 'right'},
                                 @else
+								@php($amtcr+=$obj->amount)
 								{text:'', alignment: 'right'},
 								{text:'{{number_format($obj->amount,2)}}', alignment: 'right'},
                                 @endif
@@ -110,6 +114,19 @@
 
 							@php($line+=1)
 							@endforeach
+
+
+                            [
+								{text: '', style: 'tableHeader'}, 
+								{text: '', style: 'tableHeader'}, 
+								{text: '', style: 'tableHeader'},
+								{text: 'Total', style: 'tableHeader'}, 
+								{text: '{{number_format($amtdr,2)}}', style: 'tableHeader', alignment: 'right'}, 
+								{text: '{{number_format($amtcr,2)}}', style: 'tableHeader', alignment: 'right'}, 
+								{text: '', style: 'tableHeader'}, 
+								{text: '', style: 'tableHeader'}, 
+
+							]
                         ]
                     },
 			        layout: 'lightHorizontalLines',
