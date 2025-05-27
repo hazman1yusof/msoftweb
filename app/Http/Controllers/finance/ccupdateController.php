@@ -131,6 +131,7 @@ class ccupdateController extends defaultController
                     'db.datesend AS db_datesend',
                 )
                 ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
+                ->where('db.recstatus','POSTED')
                 ->where('db.compcode','=',session('compcode'))
                 // ->where('db.recstatus','=','POSTED')
                 ->where('db.source','=','PB');
