@@ -25,7 +25,7 @@
 			    ]
 			},
 			pageSize: 'A4',
-			// pageMargins: [10, 20, 20, 30],
+			pageMargins: [20, 20, 20, 30],
 		  	content: [
                 {
                     image: 'letterhead',width:175, style: 'tableHeader', colSpan: 5, alignment: 'center'
@@ -72,7 +72,7 @@
                     table: {
                         headerRows: 1,
                         // widths: [80,25,30,23,30,40,40,40,40,40,30],//panjang standard dia 515
-                        widths: [12,35,45,120,60,60,40,40],
+                        widths: [12,35,45,150,60,60,40,40],
 
                         body: [
                             [
