@@ -149,19 +149,26 @@
 
                         body: [
 
+							@php($amtdr=0)
+							@php($amtcr=0)
 							@foreach ($summ_acc as $acc)
+							@php($amtdr+=$acc->amount_add_dr)
+							@php($amtcr+=$acc->amount_add_cr)
 							[
 								{text:'{{$acc->glaccount}}'}, //cc
 								{text:`{!!$acc->description2!!}`}, //cc_desc
-								@if($acc->drcrsign == 'DR')
-								{text:'{{number_format($acc->amount_add,2)}}', alignment: 'right'},
-								{text:'', alignment: 'right'},
-                                @else
-								{text:'', alignment: 'right'},
-								{text:'{{number_format($acc->amount_add,2)}}', alignment: 'right'},
-                                @endif
+								{text:'{{number_format($acc->amount_add_dr,2)}}', alignment: 'right'},
+								{text:'{{number_format($acc->amount_add_cr,2)}}', alignment: 'right'},
 							],
 							@endforeach
+
+							[
+								{text: '', style: 'tableHeader'}, 
+								{text: 'Total', style: 'tableHeader'}, 
+								{text: '{{number_format($amtdr,2)}}', alignment: 'right'}, 
+								{text: '{{number_format($amtcr,2)}}', alignment: 'right'}, 
+
+							]
                         ]
                     },
 			        layout: 'noBorders',

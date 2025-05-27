@@ -410,7 +410,8 @@ use Carbon\Carbon;
 
 
         foreach ($summ_acc as $obj_acc) {
-            $obj_acc->amount_add = 0;
+            $obj_acc->amount_add_dr = 0;
+            $obj_acc->amount_add_cr = 0;
             $glmasref = DB::table('finance.glmasref')
                             ->where('compcode',session('compcode'))
                             ->where('recstatus','ACTIVE')
@@ -424,9 +425,9 @@ use Carbon\Carbon;
             foreach ($summ_acc as $obj_acc) {
                 if($obj_acc->glaccount == $obj_dtl->glaccount){
                     if($obj_dtl->drcrsign == 'DR'){
-                        $obj_acc->amount_add = $obj_acc->amount_add + $obj_dtl->amount;
+                        $obj_acc->amount_add_dr = $obj_acc->amount_add_dr + $obj_dtl->amount;
                     }else{
-                        $obj_acc->amount_add = $obj_acc->amount_add + $obj_dtl->amount;
+                        $obj_acc->amount_add_cr = $obj_acc->amount_add_cr + $obj_dtl->amount;
                     }
                 }
             }
