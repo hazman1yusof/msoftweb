@@ -478,12 +478,12 @@ class acctenq_dateController extends defaultController
     public function oth_data($obj){
         $responce = new stdClass();
 
-        $exp1 = explode('</br>', $obj->description);
-        $exp2 = explode(' ', $obj->reference);
+        // $exp1 = explode('</br>', $obj->description);
+        // $exp2 = explode(' ', $obj->reference);
 
-        $obj->description = $exp1[0];
-        $responce->desc = $exp1[1];
-        $responce->refe = $exp2[0].'-'.$exp2[1];
+        $obj->description = $obj->description;
+        $responce->desc = $obj->description;
+        $responce->refe = $obj->reference;
 
         return $responce;
     }
