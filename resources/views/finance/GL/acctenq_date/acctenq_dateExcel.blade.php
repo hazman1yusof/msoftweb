@@ -52,7 +52,13 @@
         <td style="font-weight: bold">Balance</td>
         <td style="font-weight: bold">Document No</td>
     </tr>
+    @php($total = 0)
     @foreach ($table as $obj)
+        @if(!empty($dramount))
+            @php($total = $total + $dramount)
+        @else
+            @php($total = $total - $cramount)
+        @endif
         <tr>
             <td>{{$obj->source}}</td>
             <td>{{$obj->trantype}}</td>
@@ -63,7 +69,7 @@
             <td>{{$obj->description}}</td>
             <td>{{$obj->dramount}}</td>
             <td>{{$obj->cramount}}</td>
-            <td>{{$obj->cramount}}</td>
+            <td>{{$obj->total}}</td>
             <td>{{$obj->auditno}}</td>
         </tr>
     @endforeach
