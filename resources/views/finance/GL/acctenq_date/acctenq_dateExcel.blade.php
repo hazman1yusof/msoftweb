@@ -55,9 +55,9 @@
     @php($total = 0)
     @foreach ($table as $obj)
         @if(!empty($dramount))
-            @php($total = $total + $dramount)
+            @php($total = $total + $obj->dramount)
         @else
-            @php($total = $total - $cramount)
+            @php($total = $total - $obj->cramount)
         @endif
         <tr>
             <td>{{$obj->source}}</td>
