@@ -69,7 +69,7 @@
             <td>{{$obj->description}}</td>
             <td>{{$obj->dramount}}</td>
             <td>{{$obj->cramount}}</td>
-            <td>{{$obj->total}}</td>
+            <td>{{$total}}</td>
             <td>{{$obj->auditno}}</td>
         </tr>
     @endforeach
