@@ -392,11 +392,17 @@ class arenquiryController extends defaultController
                     ->get();
                     // ->whereIn('dc.doctrantype',['RC','RD','RF','CN'])
 
+            foreach($table as $key => $value){
+                $auditno = str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                
+                $value->sysAutoNo = $value->source.'-'.$value->trantype.'-'.$auditno;
+            }
+
             $table2 = DB::table('debtor.dballoc as dc')
                     ->select(
-                        'dc.refsource as source',
-                        'dc.reftrantype as trantype',
-                        'dc.refauditno as auditno',
+                        'dc.docsource as source',
+                        'dc.doctrantype as trantype',
+                        'dc.docauditno as auditno',
                         'dc.doctrantype',
                         'dc.debtorcode',
                         'dc.payercode',
@@ -422,6 +428,12 @@ class arenquiryController extends defaultController
                     ->where('dc.reflineno','=',$dbacthdr->lineno_)
                     ->where('dc.recstatus','=',"POSTED")
                     ->get();
+
+            foreach($table2 as $key => $value){
+                $auditno = str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                
+                $value->sysAutoNo = $value->source.'-'.$value->trantype.'-'.$auditno;
+            }
 
             $table = $table->merge($table2);
             
@@ -1185,7 +1197,7 @@ class arenquiryController extends defaultController
                 $db_obj->amount_dr = 0;
                 $db_obj->amount_cr = 0;
                 $db_obj->unit = '';
-                
+
                 array_push($array_report,$db_obj);
             }
         }
