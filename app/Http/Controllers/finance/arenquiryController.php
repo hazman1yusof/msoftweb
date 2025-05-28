@@ -1006,7 +1006,6 @@ class arenquiryController extends defaultController
         // $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
         
         $date = Carbon::parse($request->dateto)->format('Y-m-d');
-        dd($date);
         // $debtortype = $this->debtortype;
         $debtorcode_from = $request->debtorcode_from;
         if(empty($request->debtorcode_from)){
@@ -1176,16 +1175,17 @@ class arenquiryController extends defaultController
 
         foreach ($debtormast as $db_obj) {
             $gotdm = $array_report_dm->where('debtorcode',$db_obj->debtorcode);
-            
-            $db_obj->posteddate = '';
-            $db_obj->datesend = '';
-            $db_obj->pm_name = '';
-            $db_obj->auditno = '';
-            $db_obj->amount_dr = 0;
-            $db_obj->amount_cr = 0;
-            $db_obj->unit = '';
 
             if($gotdm->count() == 0){
+            
+                $db_obj->posteddate = '';
+                $db_obj->datesend = '';
+                $db_obj->pm_name = '';
+                $db_obj->auditno = '';
+                $db_obj->amount_dr = 0;
+                $db_obj->amount_cr = 0;
+                $db_obj->unit = '';
+                
                 array_push($array_report,$db_obj);
             }
         }
