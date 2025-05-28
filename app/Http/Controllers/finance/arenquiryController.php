@@ -388,28 +388,64 @@ class arenquiryController extends defaultController
                     ->where('dc.docsource','=',$dbacthdr->source)
                     ->where('dc.doctrantype','=',$dbacthdr->trantype)
                     ->where('dc.docauditno','=',$dbacthdr->auditno)
-                    ->where('dc.recstatus','=',"POSTED");
+                    ->where('dc.recstatus','=',"POSTED")
+                    ->get();
                     // ->whereIn('dc.doctrantype',['RC','RD','RF','CN'])
+
+            $table2 = DB::table('debtor.dballoc as dc')
+                    ->select(
+                        'dc.refsource as source',
+                        'dc.reftrantype as trantype',
+                        'dc.refauditno as auditno',
+                        'dc.doctrantype',
+                        'dc.debtorcode',
+                        'dc.payercode',
+                        'dc.amount',
+                        'dc.recptno',
+                        'dc.paymode',
+                        'dc.allocdate',
+                        'dc.mrn',
+                        'dc.episno',
+                        'dc.compcode',
+                        'dc.lineno_',
+                        'dc.idno',
+                    )
+                    ->join('debtor.dbacthdr as da', function ($join) use ($request){
+                        $join = $join->on('dc.refsource', '=', 'da.source')
+                                    ->on('dc.reftrantype', '=', 'da.trantype')
+                                    ->on('dc.refauditno', '=', 'da.auditno');
+                    })
+                    ->where('dc.compcode','=',session('compcode'))
+                    ->where('dc.refsource','=',$dbacthdr->source)
+                    ->where('dc.reftrantype','=',$dbacthdr->trantype)
+                    ->where('dc.refauditno','=',$dbacthdr->auditno)
+                    ->where('dc.reflineno','=',$dbacthdr->lineno_)
+                    ->where('dc.recstatus','=',"POSTED")
+                    ->get();
+
+            $table = $table->merge($table2);
             
             /////////////////paginate/////////////////
-            $paginate = $table->paginate($request->rows);
+            // $paginate = $table->paginate($request->rows);
             
-            foreach($paginate->items() as $key => $value){
+            foreach($table as $key => $value){
                 $auditno = str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
                 
                 $value->sysAutoNo = $value->source.'-'.$value->trantype.'-'.$auditno;
             }
+
+            dd($table);
             
-            $responce = new stdClass();
-            $responce->page = $paginate->currentPage();
-            $responce->total = $paginate->lastPage();
-            $responce->records = $paginate->total();
-            $responce->rows = $paginate->items();
-            $responce->sql = $table->toSql();
-            $responce->sql_bind = $table->getBindings();
-            $responce->sql_query = $this->getQueries($table);
+            // $responce = new stdClass();
+            // $responce->page = $paginate->currentPage();
+            // $responce->total = $paginate->lastPage();
+            // $responce->records = $paginate->total();
+            // $responce->rows = $paginate->items();
+            // $responce->sql = $table->toSql();
+            // $responce->sql_bind = $table->getBindings();
+            // $responce->sql_query = $this->getQueries($table);
             
-            return json_encode($responce);
+            // return json_encode($responce);
             
         }else{ // if trantype = IN/DN
             
