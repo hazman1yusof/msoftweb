@@ -434,18 +434,18 @@ class arenquiryController extends defaultController
                 $value->sysAutoNo = $value->source.'-'.$value->trantype.'-'.$auditno;
             }
 
-            dd($table);
+            // dd($table);
             
-            // $responce = new stdClass();
-            // $responce->page = $paginate->currentPage();
-            // $responce->total = $paginate->lastPage();
-            // $responce->records = $paginate->total();
-            // $responce->rows = $paginate->items();
+            $responce = new stdClass();
+            $responce->page = 1;
+            $responce->total = 1;
+            $responce->records = $table->count();
+            $responce->rows = $table;
             // $responce->sql = $table->toSql();
             // $responce->sql_bind = $table->getBindings();
             // $responce->sql_query = $this->getQueries($table);
             
-            // return json_encode($responce);
+            return json_encode($responce);
             
         }else{ // if trantype = IN/DN
             
