@@ -393,7 +393,7 @@ class arenquiryController extends defaultController
                     // ->whereIn('dc.doctrantype',['RC','RD','RF','CN'])
 
             foreach($table as $key => $value){
-                $auditno = str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                $auditno = str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                 
                 $value->sysAutoNo = $value->source.'-'.$value->trantype.'-'.$auditno;
             }
@@ -430,7 +430,7 @@ class arenquiryController extends defaultController
                     ->get();
 
             foreach($table2 as $key => $value){
-                $auditno = str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                $auditno = str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                 
                 $value->sysAutoNo = $value->source.'-'.$value->trantype.'-'.$auditno;
             }
@@ -439,12 +439,6 @@ class arenquiryController extends defaultController
             
             /////////////////paginate/////////////////
             // $paginate = $table->paginate($request->rows);
-            
-            foreach($table as $key => $value){
-                $auditno = str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
-                
-                $value->sysAutoNo = $value->source.'-'.$value->trantype.'-'.$auditno;
-            }
 
             // dd($table);
             
