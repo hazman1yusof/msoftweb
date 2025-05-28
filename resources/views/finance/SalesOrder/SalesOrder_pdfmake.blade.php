@@ -15,12 +15,6 @@
 </object>
 
 <script>
-	
-	var dbacthdr = {
-		@foreach($dbacthdr as $key => $val) 
-			'{{$key}}' : '{{$val}}',
-		@endforeach 
-	};
 
 	var billsum=[
 		@foreach($billsum as $key => $bilsm)
@@ -123,6 +117,14 @@
 									{text: ''},
 								@endif	
 							],
+							@if(strlen($dbacthdr->remark) > 3)
+							[
+								{text: 'REMARK', alignment: 'right'},
+								{text: ':'},
+								{text: `{{$dbacthdr->remark}}`, colSpan:4},{},{},{}
+							],
+							@endif
+
 						]
 					},
 					layout: 'noBorders',

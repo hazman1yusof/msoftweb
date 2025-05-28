@@ -80,6 +80,8 @@ class TestController extends defaultController
                 return $this->netmvval_from_netmvqty($request);
             case 'cr8_acctmaster':
                 return $this->cr8_acctmaster($request);
+            case 'recondb_ledger':
+                return $this->recondb_ledger($request);
             // case 'btlkn_imp_3':
             //     return $this->btlkn_imp_3($request);
             // case 'stocktake_imp_dtl':
@@ -5356,6 +5358,54 @@ class TestController extends defaultController
 
             dd('Error'.$e);
         }  
+    }
+
+    public function recondb_ledger(Request $request){
+
+        // DB::beginTransaction();
+
+        // try {
+            $ledger = DB::table('recondb.ledger')
+                        ->whereNotNull('postdate')
+                        ->get();
+
+            foreach ($ledger as $obj) {
+                if(!empty($obj->PostDate)){
+                    $exp = explode('/', $obj->PostDate);
+                    $date = '20'.$exp[2].'-'.$exp[1].'-'.$exp[0];
+
+                    DB::table('finance.gltran_copy')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'auditno' => $obj->AuditNo,
+                            'lineno_' => $obj->LineNo,
+                            'source' => $obj->Source,
+                            'trantype' => $obj->TranType,
+                            'reference' => $obj->Reference,
+                            'description' => $obj->Description,
+                            'year' => $obj->Year,
+                            'period' =>$obj->Period,
+                            'drcostcode' => $obj->DrCostCode,
+                            'crcostcode' => $obj->CrCostCode,
+                            'dracc' => $obj->DrAcc,
+                            'cracc' => $obj->CrAcc,
+                            'amount' => $obj->Amount,
+                            // 'idno' => ,
+                            'postdate' => $date,
+                            'adduser' => 'SYSTEM',
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+                }
+            }
+
+
+            // DB::commit();
+        // } catch (Exception $e) {
+        //     DB::rollback();
+        //     report($e);
+
+        //     dd('Error'.$e);
+        // }  
     }
     
 }
