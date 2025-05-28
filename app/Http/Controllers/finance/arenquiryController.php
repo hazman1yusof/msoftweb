@@ -986,7 +986,7 @@ class arenquiryController extends defaultController
                         // })
                         ->join('debtor.dbacthdr as dh', function($join) use ($date){
                             $join = $join->on('dh.debtorcode', '=', 'dm.debtorcode')
-                                         // ->whereDate('dh.posteddate', '<=', $date)
+                                         ->whereDate('dh.posteddate', '<=', $date)
                                          ->where('dh.compcode', '=', session('compcode'));
                         })->leftJoin('hisdb.pat_mast as pm', function($join){
                             $join = $join->on('pm.NewMrn', '=', 'dh.mrn')
