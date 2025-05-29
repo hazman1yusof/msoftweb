@@ -86,5 +86,5 @@ input.uppercase {
 				
 			});
 		</script>
-	<script src="js/finance/GL/GLMaster/GLMaster.js?v=1.2"></script>
+	<script src="js/finance/GL/GLMaster/GLMaster.js?v=1.3"></script>
 @endsection
