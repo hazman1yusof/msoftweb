@@ -187,6 +187,8 @@ function populate_otmgmt_div(obj){
     $('#mrn_otmgmt_div').val(obj.mrn);
     $("#episno_otmgmt_div").val(obj.latest_episno);
     $('#ward').val(obj.ward);
+    
+    $("#tab_otmgmt_div").collapse('hide');
 }
 
 function autoinsert_rowdata(form,rowData){

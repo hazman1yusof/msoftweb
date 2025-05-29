@@ -177,6 +177,8 @@ function populate_otdischarge(obj){
     // form_otdischarge
     $('#mrn_otdischarge').val(obj.mrn);
     $("#episno_otdischarge").val(obj.latest_episno);
+    
+    $("#tab_otdischarge").collapse('hide');
 }
 
 function autoinsert_rowdata(form,rowData){
