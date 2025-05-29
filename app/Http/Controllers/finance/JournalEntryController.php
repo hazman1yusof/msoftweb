@@ -415,9 +415,14 @@ use Carbon\Carbon;
             $glmasref = DB::table('finance.glmasref')
                             ->where('compcode',session('compcode'))
                             ->where('recstatus','ACTIVE')
-                            ->where('glaccno',$obj_acc->glaccount)
-                            ->first();
-            $obj_acc->description2 = $glmasref->description;
+                            ->where('glaccno',$obj_acc->glaccount);
+
+            if($glmasref->exists()){
+                $obj_acc->description2 = $glmasref->first()->description;
+            }else{
+                $obj_acc->description2 = '';
+            }
+
         }
 
 
