@@ -880,7 +880,8 @@ function populate_triage_currpt(obj){
 	emptyFormdata(errorField,"#formTriageInfo");
 	tri_color_set();
 	changeTextInputColor();
-	//panel header
+	
+	// panel header
 	$('#name_show_triage').text(obj.Name);
 	$('#mrn_show_triage').text(("0000000" + obj.MRN).slice(-7));
 	$('#sex_show_triage').text(if_none(obj.Sex).toUpperCase());
@@ -891,21 +892,22 @@ function populate_triage_currpt(obj){
 	$('#occupation_show_triage').text(if_none(obj.OccupCode).toUpperCase());
 	$('#citizenship_show_triage').text(if_none(obj.Citizencode).toUpperCase());
 	$('#area_show_triage').text(if_none(obj.AreaCode).toUpperCase());
-
+	
 	$("#mrn_ti").val(obj.MRN);
 	$("#episno_ti").val(obj.Episno);
 	$("#age_show_triage").val(dob_age(obj.DOB));
-
+	
 	// table examination
 	// urlParam_ExamTriage.filterVal[0] = obj.MRN;
 	// urlParam_ExamTriage.filterVal[1] = obj.Episno;
 	// urlParam_ExamTriage.filterVal[2] = 'TRIAGE';
-
-	//table additional info
+	
+	// table additional info
 	// urlParam_AddNotesTriage.filterVal[0] = obj.MRN;
 	// urlParam_AddNotesTriage.filterVal[1] = obj.Episno;
 	// urlParam_AddNotesTriage.filterVal[2] = 'TRIAGE';
 	
+	$("#tab_triage").collapse('hide');
 }
 
 function autoinsert_rowdata(form,rowData){

@@ -384,8 +384,8 @@ function empty_currphys(){
 function populate_phys(obj){
 	emptyFormdata_div("#formphys",['#mrn_phys','#episno_phys']);
 	$('.ui.checkbox.box').checkbox('set unchecked');
-
-	//panel header
+	
+	// panel header
 	$('#name_show_phys').text(obj.Name);
 	$('#mrn_show_phys').text(("0000000" + obj.MRN).slice(-7));
 	$('#sex_show_phys').text(if_none(obj.Sex).toUpperCase());
@@ -398,13 +398,14 @@ function populate_phys(obj){
 	$('#area_show_phys').text(if_none(obj.AreaCode).toUpperCase());
 	$('#stats_rehab').text(obj.stats_rehab.toUpperCase());
 	$('#stats_physio').text(obj.stats_physio.toUpperCase());
-
-	//formphys
+	
+	// formphys
 	$('#mrn_phys').val(obj.MRN);
 	$("#episno_phys").val(obj.Episno);
 	
 	populate_phys_ncase(obj);
-
+	
+	$("#tab_phys").collapse('hide');
 }
 
 function autoinsert_rowdata_phys(form,rowData){
