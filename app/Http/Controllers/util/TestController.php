@@ -82,6 +82,8 @@ class TestController extends defaultController
                 return $this->cr8_acctmaster($request);
             case 'recondb_ledger':
                 return $this->recondb_ledger($request);
+            case 'display_glmasref_xde':
+                return $this->display_glmasref_xde($request);
             // case 'btlkn_imp_3':
             //     return $this->btlkn_imp_3($request);
             // case 'stocktake_imp_dtl':
@@ -5406,6 +5408,29 @@ class TestController extends defaultController
 
         //     dd('Error'.$e);
         // }  
+    }
+
+    public function display_glmasref_xde(Request $request){
+        $glmasdtl = DB::table('finance.glmasdtl')
+                        ->where('compcode',session('compcode'))
+                        ->where('year','2025')
+                        ->get();
+
+        $glmasdtl = collect($glmasdtl)->unique('glaccount');
+
+        $notin=[];
+        foreach ($glmasdtl as $obj) {
+            $glmasref = DB::table('finance.glmasref')
+                        ->where('compcode',session('compcode'))
+                        ->where('glaccno',$obj->glaccount)
+                        ->exists();
+
+            if(!$glmasref){
+                array_push($notin, $obj->glaccount);
+            }
+        }
+
+        dd($notin);
     }
     
 }
