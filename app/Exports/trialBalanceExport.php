@@ -119,11 +119,10 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
         //                 ->get();
 
         $glmasref_ = DB::table('finance.glmasref as glrf')
-                        ->select('glrf.glaccno','glrf.description','glrf.accgroup')
+                        ->select('glrf.glaccno','glrf.description','glrf.acttype')
                         ->where('glrf.compcode',session('compcode'))
-                        ->where('glrf.accgroup','<>','H')
+                        ->where('glrf.acttype','<>','H')
                         ->orderBy('glrf.glaccno')
-                        // ->where('glrf.glaccno',10010001)
                         ->get();
 
         // dd($glmasref_);

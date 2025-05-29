@@ -39,7 +39,7 @@
         @endif
         <tr>
             <td>{{$obj_ar['glaccno']}}</td>
-            <td>{{$obj_ar['accgroup']}}</td>
+            <td>{{$obj_ar['acttype']}}</td>
             <td>{{$obj_ar['description']}}</td>
             <td style="text-align: right">{{$obj_ar['tot_openbalance']}}</td>
             @foreach ($array_month as $month)
