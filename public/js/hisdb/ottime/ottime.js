@@ -183,6 +183,8 @@ function populate_ottime(obj){
     // form_ottime
     $('#mrn_ottime').val(obj.mrn);
     $("#episno_ottime").val(obj.latest_episno);
+    
+    $("#tab_ottime").collapse('hide');
 }
 
 function autoinsert_rowdata(form,rowData){

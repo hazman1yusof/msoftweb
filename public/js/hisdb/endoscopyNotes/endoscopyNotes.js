@@ -126,6 +126,8 @@ function populate_endoscopyNotes(obj){
     // formEndoscopyNotes
     $('#mrn_endoscopyNotes').val(obj.mrn);
     $("#episno_endoscopyNotes").val(obj.latest_episno);
+    
+    $("#tab_endoscopyNotes").collapse('hide');
 }
 
 function autoinsert_rowdata(form,rowData){

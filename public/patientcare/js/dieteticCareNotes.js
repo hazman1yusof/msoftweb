@@ -387,11 +387,10 @@ function button_state_dieteticCareNotes(state){
 
 //screen current patient//
 function populate_dieteticCareNotes_currpt(obj){
-
 	emptyFormdata_div("#formDieteticCareNotes");
 	emptyFormdata_div("#formDieteticCareNotes_fup");
-
-	//panel header
+	
+	// panel header
 	$('#name_show_dieteticCareNotes').text(obj.Name);
 	$('#mrn_show_dieteticCareNotes').text(("0000000" + obj.MRN).slice(-7));
 	$('#sex_show_dieteticCareNotes').text(if_none(obj.Sex).toUpperCase());
@@ -403,12 +402,14 @@ function populate_dieteticCareNotes_currpt(obj){
 	$('#citizenship_show_dieteticCareNotes').text(if_none(obj.Citizencode).toUpperCase());
 	$('#area_show_dieteticCareNotes').text(if_none(obj.AreaCode).toUpperCase());
 	$('#stats_diet').text(obj.stats_diet.toUpperCase());
-
-	//formDieteticCareNotes
+	
+	// formDieteticCareNotes
 	$('#mrn_dieteticCareNotes,#mrn_dieteticCareNotes_fup').val(obj.MRN);
 	$("#episno_dieteticCareNotes,#episno_dieteticCareNotes_fup").val(obj.Episno);
-
+	
 	$('#stats_diet').show();
+	
+	$("#tab_diet").collapse('hide');
 }
 
 function autoinsert_rowdata_dieteticCareNotes(form,rowData){

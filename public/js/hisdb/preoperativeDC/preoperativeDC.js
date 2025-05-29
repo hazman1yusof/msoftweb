@@ -180,6 +180,8 @@ function populate_preoperativeDC(obj){
     // form_preoperativeDC
     $('#mrn_preoperativeDC').val(obj.mrn);
     $("#episno_preoperativeDC").val(obj.latest_episno);
+    
+    $("#tab_preoperativeDC").collapse('hide');
 }
 
 function autoinsert_rowdata(form,rowData){

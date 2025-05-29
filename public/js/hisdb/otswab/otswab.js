@@ -556,6 +556,8 @@ function populate_otswab(obj){
 	urlParam_otswab.filterVal[2] = obj.latest_episno;
     // urlParam_otswab.mrn = obj.mrn;
     // urlParam_otswab.episno = obj.latest_episno;
+    
+    $("#tab_otswab").collapse('hide');
 }
 
 function autoinsert_rowdata(form,rowData){

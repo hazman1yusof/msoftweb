@@ -318,6 +318,8 @@ function populate_oper_team(obj){
     // form_oper_team
     $('#mrn_oper_team').val(obj.mrn);
     $("#episno_oper_team").val(obj.latest_episno);
+    
+    $("#tab_oper_team").collapse('hide');
 }
 
 function autoinsert_rowdata(form,rowData){

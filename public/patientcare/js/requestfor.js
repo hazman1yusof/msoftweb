@@ -551,6 +551,8 @@ function populate_requestFor_ptcare(obj){
     $('#preg_requestFor').val(obj.pregnant);
     $('#ic_requestFor').val(obj.Newic);
     $('#doctorname_requestFor').val(obj.doctorname);
+    
+    $("#tab_requestFor").collapse('hide');
 }
 
 function populate_otbookReqFor_getdata(){
