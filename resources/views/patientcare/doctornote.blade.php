@@ -504,7 +504,7 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy_ncase.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/doctornote_main.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/requestfor.js?v=1.3') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/requestfor.js?v=1.4') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/admhandover.js') }}"></script>
 
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_main.js') }}"></script>
@@ -518,7 +518,7 @@
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_diet.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_oth.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/hisdb/ordcom/ordcom_pkg.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/nursingnote.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/nursingnote.js?v=1.1') }}"></script>
 @endsection
 
 
