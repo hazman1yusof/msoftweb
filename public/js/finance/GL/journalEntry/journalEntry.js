@@ -1116,18 +1116,18 @@ $(document).ready(function () {
 				}
 			}
 		},{
-			title:"Select DO No",
+			title:"Select Account No",
 			open: function(){
 				dialog_glacc.urlParam.table_name = ['finance.glmasdtl as glm', 'finance.glmasref as glms']
 				dialog_glacc.urlParam.fixPost = "true";
 				dialog_glacc.urlParam.table_id = "none_";
 				dialog_glacc.urlParam.filterCol = ['glm.compcode', 'glm.recstatus','glm.costcode', 'glm.year'];
-				dialog_glacc.urlParam.filterVal = ['on.glms.compcode', 'ACTIVE',$("#jqGrid2 input[name='costcode']").val(),$('#gljnlhdr_year').val()];
+				dialog_glacc.urlParam.filterVal = ['session.compcode', 'ACTIVE',$("#jqGrid2 input[name='costcode']").val(),$('#gljnlhdr_year').val()];
 				dialog_glacc.urlParam.join_type = ['LEFT JOIN'];
 				dialog_glacc.urlParam.join_onCol = ['glm.glaccount'];
 				dialog_glacc.urlParam.join_onVal = ['glms.glaccno'];
-				// dialog_glacc.urlParam.join_filterCol = [['s.uomcode on =','s.compcode =','p.recstatus =']];
-				// dialog_glacc.urlParam.join_filterVal = [['p.uomcode','session.compcode','ACTIVE']];
+				dialog_glacc.urlParam.join_filterCol = [['glms.compcode =']];
+				dialog_glacc.urlParam.join_filterVal = [['session.compcode']];
 			}
 		},'urlParam','radio','tab'
 	);

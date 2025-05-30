@@ -5363,51 +5363,15 @@ class TestController extends defaultController
     }
 
     public function recondb_ledger(Request $request){
-
-        // DB::beginTransaction();
-
-        // try {
-            $ledger = DB::table('recondb.ledger')
-                        ->whereNotNull('postdate')
+        $arconvert = DB::table('recondb.arconvert')
+                        ->where('idno',32)
                         ->get();
 
-            foreach ($ledger as $obj) {
-                if(!empty($obj->PostDate)){
-                    $exp = explode('/', $obj->PostDate);
-                    $date = '20'.$exp[2].'-'.$exp[1].'-'.$exp[0];
+        foreach ($arconvert as $obj) {
+            $newamt = str_replace(',', '', $obj->amount);
+            dump($newamt);
+        }
 
-                    DB::table('finance.gltran_copy')
-                        ->insert([
-                            'compcode' => session('compcode'),
-                            'auditno' => $obj->AuditNo,
-                            'lineno_' => $obj->LineNo,
-                            'source' => $obj->Source,
-                            'trantype' => $obj->TranType,
-                            'reference' => $obj->Reference,
-                            'description' => $obj->Description,
-                            'year' => $obj->Year,
-                            'period' =>$obj->Period,
-                            'drcostcode' => $obj->DrCostCode,
-                            'crcostcode' => $obj->CrCostCode,
-                            'dracc' => $obj->DrAcc,
-                            'cracc' => $obj->CrAcc,
-                            'amount' => $obj->Amount,
-                            // 'idno' => ,
-                            'postdate' => $date,
-                            'adduser' => 'SYSTEM',
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
-                }
-            }
-
-
-            // DB::commit();
-        // } catch (Exception $e) {
-        //     DB::rollback();
-        //     report($e);
-
-        //     dd('Error'.$e);
-        // }  
     }
 
     public function display_glmasref_xde(Request $request){
