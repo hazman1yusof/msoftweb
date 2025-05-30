@@ -111,6 +111,7 @@ class ChartAccountController extends defaultController
                     'costcode' => $request->costcode,
                     'glaccount' => $request->glaccount,
                     'year' => $request->year,
+                    'recstatus' => 'ACTIVE',
                     // 'computerid' => session('computerid'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -139,6 +140,7 @@ class ChartAccountController extends defaultController
                     'costcode' => strtoupper($request->costcode),
                     'glaccount' => $request->glaccount,
                     'year' => $request->year,
+                    'recstatus' => 'ACTIVE',
                     'lastcomputerid' => session('computerid'),
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -186,6 +188,7 @@ class ChartAccountController extends defaultController
                     'bdgamount10' => $request->bdgamount10,
                     'bdgamount11' => $request->bdgamount11,
                     'bdgamount12' => $request->bdgamount12,
+                    'recstatus' => 'ACTIVE',
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
