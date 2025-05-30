@@ -59,6 +59,7 @@
         <td style="font-weight:bold; text-align: left">Total</td>
         <td style="font-weight:bold; text-align: left">Units</td>
         <td style="font-weight:bold; text-align: left">MRN</td>
+        <td style="font-weight:bold; text-align: left">adduser</td>
     </tr>      
 
     @foreach ($debtortype as $obj_dt)
@@ -102,6 +103,7 @@
                             @else
                             <td></td>
                             @endif
+                            <td>{{$obj_ar->adduser}}</td>
                         </tr>
                     @endif
                 @endforeach

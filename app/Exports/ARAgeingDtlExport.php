@@ -190,6 +190,9 @@ class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
                 
                 $newamt = $hdr_amount - $alloc_sum;
             }else{
+
+                $hdr_amount = -$hdr_amount;
+
                 $doc_sum = DB::table('debtor.dballoc as da')
                         ->where('da.compcode', '=', session('compcode'))
                         ->where('da.recstatus', '=', "POSTED")
@@ -210,7 +213,7 @@ class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
                         ->whereDate('da.allocdate', '<=', $date)
                         ->sum('da.amount');
                 
-                $newamt = -($hdr_amount - $doc_sum - $ref_sum);
+                $newamt = -($hdr_amount - (-$doc_sum) - (-$ref_sum));
             }
             
             switch ($value->trantype) {
