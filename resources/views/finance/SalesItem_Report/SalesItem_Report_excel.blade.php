@@ -27,10 +27,10 @@
                     <td>{{$obj->chgcode}}</td>
                     <td>{{$obj->cm_desc}}</td>
                     <td>{{$obj->quantity}}</td>
-                    <td data-format="0.00" style="text-align: right">{{number_format($obj->amount, 2, '.', ',')}}</td>
-                    <td data-format="0.00" style="text-align: right">{{number_format($obj->costprice, 2, '.', ',')}}</td>
-                    <td data-format="0.00" style="text-align: right">{{number_format($obj->taxamount, 2, '.', ',')}}</td>
-                    <td data-format="0.00" style="text-align: right">{{$obj->amount+$obj->taxamount}}</td>
+                    <td style="text-align: right">{{$obj->amount}}</td>
+                    <td style="text-align: right">{{$obj->costprice}}</td>
+                    <td style="text-align: right">{{$obj->taxamount}}</td>
+                    <td style="text-align: right">{{$obj->amount+$obj->taxamount}}</td>
                 </tr>
                 @php($amt += $obj->amount)
                 @php($cpr += $obj->costprice)
@@ -44,10 +44,10 @@
                 <td></td>
                 <td></td>
                 <td style="font-weight:bold">TOTAL</td>
-                <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($amt, 2, '.', ',')}}</td>
-                <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($cpr, 2, '.', ',')}}</td>
-                <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($tax, 2, '.', ',')}}</td>
-                <td data-format="0.00" style="text-align: right; font-weight:bold">{{$tot}}</td>
+                <td style="text-align: right; font-weight:bold">{{$amt}}</td>
+                <td style="text-align: right; font-weight:bold">{{$cpr}}</td>
+                <td style="text-align: right; font-weight:bold">{{$tax}}</td>
+                <td style="text-align: right; font-weight:bold">{{$tot}}</td>
             </table>
         @php($totalAmount += $tot)
     @endforeach
