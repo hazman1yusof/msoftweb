@@ -220,7 +220,13 @@ class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
                     }else{
                         $value->remark = $value->pm_name;
                     }
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->invno, 5, "0", STR_PAD_LEFT);
+
+                    if(!empty($value->invno)){
+                        $value->doc_no = $value->trantype.'/'.str_pad($value->invno, 7, "0", STR_PAD_LEFT);
+                    }else{
+                        $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
+                    }
+
                     $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
@@ -228,7 +234,7 @@ class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
                     break;
                 case 'DN':
                     $value->remark = $value->remark;
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                     $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
@@ -236,7 +242,7 @@ class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
                     break;
                 case 'BC':
                     // $value->remark
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                     $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
@@ -252,7 +258,7 @@ class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
                     break;
                 case 'CN':
                     $value->remark = $value->remark;
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                     $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
@@ -276,7 +282,7 @@ class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
                     break;
                 case 'RT':
                     // $value->remark
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                     $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
