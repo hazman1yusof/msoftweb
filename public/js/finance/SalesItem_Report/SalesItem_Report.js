@@ -15,7 +15,7 @@ $(document).ready(function () {
 	});
 	
 	$("#excelgen1").click(function() {
-		window.location='./SalesItem_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&deptcode='+$("#deptcode").val();
+		window.open('./SalesItem_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&deptcode='+$("#deptcode").val(), '_blank');
 	});
 
 	var dialog_deptcode = new ordialog(
