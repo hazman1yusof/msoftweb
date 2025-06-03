@@ -22,7 +22,7 @@ use Illuminate\Contracts\View\View;
 use DateTime;
 use Carbon\Carbon;
 
-class SalesItemExport implements FromView, WithEvents, WithColumnWidths
+class SalesItemExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     
     /**
@@ -40,6 +40,17 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths
                     ->where('compcode','=',session('compcode'))
                     ->first();
     }
+
+    public function columnFormats(): array
+    {
+        return [
+            'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+        ];
+    }
     
     public function columnWidths(): array
     {
@@ -52,7 +63,6 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths
             'F' => 12,
             'G' => 12,
             'H' => 12,
-           
         ];
     }
     
