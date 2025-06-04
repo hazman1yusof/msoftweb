@@ -2388,13 +2388,15 @@ class SalesOrderController extends defaultController
         if($stockloc->exists()){
             $qoh_quan = $stockloc->first()->qtyonhand;
             $new_qoh = floatval($qoh_quan) - floatval($curr_quan);
+            $new_val = floatval($curr_netprice) * floatval($curr_quan);
+            $new_val = round($new_val, 2);
 
             $stockloc_first = $stockloc->first();
             $stockloc_arr = (array)$stockloc_first;
 
             $month = defaultController::toMonth(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
             $NetMvQty = floatval($stockloc_arr['netmvqty'.$month]) - floatval($curr_quan);
-            $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) - floatval(floatval($curr_netprice) * floatval($curr_quan));
+            $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) - floatval($new_val);
 
             $stockloc
                 ->update([
@@ -2455,7 +2457,6 @@ class SalesOrderController extends defaultController
                         break;
                     }
                 }
-
             }else{
                 //3.kalu xde Stock Expiry, buat baru
                 $BalQty = -$curr_quan;
@@ -2495,7 +2496,7 @@ class SalesOrderController extends defaultController
             'productcat' => $product->first()->productcat,
             'issdept' => $dbacthdr->deptcode,
             'reqdept' => $dbacthdr->deptcode,
-            'amount' => floatval(floatval($curr_netprice) * floatval($curr_quan)),
+            'amount' => round(floatval($curr_netprice) * floatval($curr_quan), 2),
             'trantype' => 'DS',
             'trandate' => Carbon::now("Asia/Kuala_Lumpur"),
             'trxaudno' => $billsum_obj->auditno,
