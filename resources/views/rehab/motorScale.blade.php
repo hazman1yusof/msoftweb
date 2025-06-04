@@ -64,49 +64,49 @@
                                     <tr>
                                         <td>1. Supine to side lying</td>
                                         <td>
-                                            <input type="radio" name="supineToSideLie" value="0" class="calc_movementScore">
+                                            <input type="radio" name="sideLie" value="0" class="calc_movementScore">
                                         </td>
                                         <td>
-                                            <input type="radio" name="supineToSideLie" value="1" class="calc_movementScore">
+                                            <input type="radio" name="sideLie" value="1" class="calc_movementScore">
                                         </td>
                                         <td>
-                                            <input type="radio" name="supineToSideLie" value="2" class="calc_movementScore">
+                                            <input type="radio" name="sideLie" value="2" class="calc_movementScore">
                                         </td>
                                         <td>
-                                            <input type="radio" name="supineToSideLie" value="3" class="calc_movementScore">
+                                            <input type="radio" name="sideLie" value="3" class="calc_movementScore">
                                         </td>
                                         <td>
-                                            <input type="radio" name="supineToSideLie" value="4" class="calc_movementScore">
+                                            <input type="radio" name="sideLie" value="4" class="calc_movementScore">
                                         </td>
                                         <td>
-                                            <input type="radio" name="supineToSideLie" value="5" class="calc_movementScore">
+                                            <input type="radio" name="sideLie" value="5" class="calc_movementScore">
                                         </td>
                                         <td>
-                                            <input type="radio" name="supineToSideLie" value="6" class="calc_movementScore">
+                                            <input type="radio" name="sideLie" value="6" class="calc_movementScore">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>2. Supine to sitting over side of bed</td>
                                         <td>
-                                            <input type="radio" name="supineToSitOverBed" value="0" class="calc_movementScore">
+                                            <input type="radio" name="sitOverBed" value="0" class="calc_movementScore">
                                         </td>
                                         <td>
-                                            <input type="radio" name="supineToSitOverBed" value="1" class="calc_movementScore">
+                                            <input type="radio" name="sitOverBed" value="1" class="calc_movementScore">
                                         </td>
                                         <td>
-                                            <input type="radio" name="supineToSitOverBed" value="2" class="calc_movementScore">
+                                            <input type="radio" name="sitOverBed" value="2" class="calc_movementScore">
                                         </td>
                                         <td>
-                                            <input type="radio" name="supineToSitOverBed" value="3" class="calc_movementScore">
+                                            <input type="radio" name="sitOverBed" value="3" class="calc_movementScore">
                                         </td>
                                         <td>
-                                            <input type="radio" name="supineToSitOverBed" value="4" class="calc_movementScore">
+                                            <input type="radio" name="sitOverBed" value="4" class="calc_movementScore">
                                         </td>
                                         <td>
-                                            <input type="radio" name="supineToSitOverBed" value="5" class="calc_movementScore">
+                                            <input type="radio" name="sitOverBed" value="5" class="calc_movementScore">
                                         </td>
                                         <td>
-                                            <input type="radio" name="supineToSitOverBed" value="6" class="calc_movementScore">
+                                            <input type="radio" name="sitOverBed" value="6" class="calc_movementScore">
                                         </td>
                                     </tr>
                                     <tr>
