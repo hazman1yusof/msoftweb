@@ -73,14 +73,14 @@ class ItemMovReportController extends defaultController
                         ->select('p.description','s.idno','s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit')
                         ->join('material.product as p', function($join){
                                 $join = $join->on('p.itemcode', '=', 's.itemcode');
-                                $join = $join->on('p.uomcode', '=', 's.uomcode');
+                                // $join = $join->on('p.uomcode', '=', 's.uomcode');
                                 $join = $join->where('p.compcode', '=', session('compcode'));
-                                $join = $join->where('p.unit', '=', session('unit'));
+                                // $join = $join->where('p.unit', '=', session('unit'));
                             })
-                        ->where('s.compcode',session('compcode'))
-                        ->where('s.unit',session('unit'));
+                        ->where('s.compcode',session('compcode'));
+                        // ->where('s.unit',session('unit'));
 
-        $stockloc = $stockloc->whereBetween('s.deptcode',[$dept_from.'%',$dept_to.'%']);
+        $stockloc = $stockloc->where('s.deptcode',$dept_from);
 
         $stockloc = $stockloc->where('s.year', $this->toYear($date_to));
 
@@ -169,16 +169,18 @@ class ItemMovReportController extends defaultController
                         ->select('p.description','s.idno','s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit')
                         ->join('material.product as p', function($join){
                                 $join = $join->on('p.itemcode', '=', 's.itemcode');
-                                $join = $join->on('p.uomcode', '=', 's.uomcode');
+                                // $join = $join->on('p.uomcode', '=', 's.uomcode');
                                 $join = $join->where('p.compcode', '=', session('compcode'));
-                                $join = $join->where('p.unit', '=', session('unit'));
+                                // $join = $join->where('p.unit', '=', session('unit'));
                             })
-                        ->where('s.compcode',session('compcode'))
-                        ->where('s.unit',session('unit'));
+                        ->where('s.compcode',session('compcode'));
+                        // ->where('s.unit',session('unit'));
 
-        $stockloc = $stockloc->whereBetween('s.deptcode',[$dept_from.'%',$dept_to.'%']);
+        $stockloc = $stockloc->where('s.deptcode',$dept_from);
 
         $stockloc = $stockloc->where('s.year', $this->toYear($date_to));
+
+        // dd($stockloc->get());
 
         $ivdspdt_array=[];
         foreach ($stockloc->get() as $key => $value) {
@@ -224,10 +226,12 @@ class ItemMovReportController extends defaultController
                 array_push($ivdspdt_array,$topush);
             }
         }
+        // dd($ivdspdt_array);
 
         usort($ivdspdt_array, function($a, $b){
             return floatval($a['disp_qty']) > floatval($b['disp_qty']);
         });
+
 
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
