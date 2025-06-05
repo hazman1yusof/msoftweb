@@ -5391,7 +5391,7 @@ class TestController extends defaultController
                         ->exists();
 
             if(!$glmasref){
-                array_push($notin, $obj->glaccount);
+                array_push($notin, $obj->glaccount.' - '.$obj->actamount5);
             }
         }
 
