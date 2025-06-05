@@ -3427,6 +3427,9 @@ $(document).ready(function (){
 		},
 		gridComplete: function (rowid){
 			startEdit();
+			$("#gridManAlloc_c input[type='checkbox']").off('click');
+			$("#gridAlloc_c input[type='text'][rowid]").off('click');
+			
 			$("#gridManAlloc_c input[type='checkbox']").on('click', function (){
 				var idno = $(this).attr("rowid");
 				var rowdata = $("#gridManAlloc").jqGrid ('getRowData', idno);
@@ -3593,7 +3596,7 @@ $(document).ready(function (){
 			$("#AlloBalance").val(this.alloBalance);
 			if(this.alloBalance < 0){
 				$("#AlloBalance").addClass( "error" ).removeClass( "valid" );
-				alert("Balance cannot in negative values");
+				// alert("Balance cannot in negative values");
 			}else{
 				$("#AlloBalance").addClass( "valid" ).removeClass( "error" );
 			}

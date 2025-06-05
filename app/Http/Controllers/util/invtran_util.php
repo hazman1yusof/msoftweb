@@ -34,14 +34,19 @@ class invtran_util extends defaultController{
             ->where('department.deptcode','=',$ivtmphd->txndept)
             ->first();
 
+        $sndrcv_obj = DB::table('sysdb.department')
+            ->where('department.compcode','=',session('compcode'))
+            ->where('department.deptcode','=',$ivtmphd->sndrcv)
+            ->first();
+
         if(strtoupper($ivtmphd->trantype) == 'TUI'){
             $draccno = $category_obj->stockacct;
             $drccode = $dept_obj->costcode;
             $craccno = $category_obj->expacct;
-            $crccode = $dept_obj->costcode;
+            $crccode = $sndrcv_obj->costcode;
         }else if(strtoupper($ivtmphd->trantype) == 'TUO'){
             $draccno = $category_obj->adjacct;
-            $drccode = $dept_obj->costcode;
+            $drccode = $sndrcv_obj->costcode;
             $craccno = $category_obj->stockacct;
             $crccode = $dept_obj->costcode;
         }else if(strtoupper($trantype_obj->isstype) == 'TRANSFER'){
