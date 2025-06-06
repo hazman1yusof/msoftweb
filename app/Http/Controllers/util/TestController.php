@@ -5429,7 +5429,7 @@ class TestController extends defaultController
                 DB::table('debtor.dballoc')
                         ->where('idno',$obj->idno)
                         ->update([
-                            'allocstats' => 'DEACTIVE'
+                            'allocsts' => 'DEACTIVE'
                         ]);
             }
 
