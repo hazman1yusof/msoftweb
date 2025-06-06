@@ -84,6 +84,8 @@ class TestController extends defaultController
                 return $this->recondb_ledger($request);
             case 'display_glmasref_xde':
                 return $this->display_glmasref_xde($request);
+            case 'betulkan_dbacthdr':
+                return $this->betulkan_dbacthdr($request);
             // case 'btlkn_imp_3':
             //     return $this->btlkn_imp_3($request);
             // case 'stocktake_imp_dtl':
@@ -5396,6 +5398,48 @@ class TestController extends defaultController
         }
 
         dd($notin);
+    }
+
+    public function betulkan_dbacthdr(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+            $dballoc = DB::table('debtor.dballoc')
+                            ->where('compcode',session('compcode'))
+                            ->where('docsource','pb')
+                            ->where('doctrantype','rc')
+                            ->where('docauditno','590966')
+                            ->get();
+
+            foreach ($dballoc as $obj) {
+                $dbacthdr_ = DB::table('debtor.dbacthdr')
+                                ->where('compcode',session('compcode'))
+                                ->where('source',$obj->refsource)
+                                ->where('trantype',$obj->reftrantype)
+                                ->where('auditno',$obj->refauditno)
+                                ->first();
+
+                DB::table('debtor.dbacthdr')
+                        ->where('idno',$dbacthdr_->idno)
+                        ->update([
+                            'outamount' => $dbacthdr_->amount
+                        ]);
+
+                DB::table('debtor.dballoc')
+                        ->where('idno',$obj->idno)
+                        ->update([
+                            'allocstacsts' => 'DEACTIVE'
+                        ]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
     }
     
 }
