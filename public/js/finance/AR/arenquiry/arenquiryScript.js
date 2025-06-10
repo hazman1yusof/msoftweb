@@ -794,7 +794,7 @@ $(document).ready(function (){
 				$('#reprint_receipt').hide();
 			}
 
-			if(((selrowData("#jqGrid").db_trantype == 'RC') || (selrowData("#jqGrid").db_trantype == 'RD') ) && ((selrowData("#jqGrid").db_outamount > 0))){
+			if(((selrowData("#jqGrid").db_trantype == 'RC') || (selrowData("#jqGrid").db_trantype == 'RD') || (selrowData("#jqGrid").db_trantype == 'CN') ) && ((selrowData("#jqGrid").db_outamount > 0))){
 				$('#allocate').show();
 			}else{
 				$('#allocate').hide();
