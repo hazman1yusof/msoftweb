@@ -118,7 +118,7 @@ class stockBalance_basic_xlsExport implements FromView, WithEvents, WithColumnWi
                                 // $join = $join->on('p.uomcode', '=', 's.uomcode');
                                 $join = $join->where('p.compcode', '=', session('compcode'));
                                 $join = $join->where('p.groupcode', '=', 'STOCK');
-                                // $join = $join->on('p.unit', '=', 's.unit');
+                                $join = $join->on('p.unit', '=', 's.unit');
                             })
                         ->leftjoin('sysdb.department as d', function($join){
                             $join = $join->on('d.deptcode', '=', 's.deptcode');
