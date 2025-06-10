@@ -5785,12 +5785,14 @@ class TestController extends defaultController
         try {
 
             $product = DB::table('recondb.temp_product')
+                            ->whereIn('unit',['KHEALTH','IMP',"W'HOUSE"])
                             ->get();
 
             $x = 1;
             foreach ($product as $obj) {
                 $exists = DB::table('material.product')
                                 ->where('itemcode',$obj->itemcode)
+                                ->where('unit',$obj->unit)
                                 ->where('compcode',session('compcode'))
                                 ->exists();
 
@@ -5809,7 +5811,7 @@ class TestController extends defaultController
                                 'qtyonhand' => $obj->qtyonhand,
                                 'adduser' => 'SYSTEM_AR',
                                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                                'recstatus' => 'DEACTIVE',
+                                'recstatus' => 'ACTIVE',
                                 'generic' => $obj->generic,
                                 'Consignment' => 0,
                             ]);
