@@ -887,7 +887,7 @@ function populate_triage_currpt(obj){
 	$('#sex_show_triage').text(if_none(obj.Sex).toUpperCase());
 	$('#dob_show_triage').text(dob_chg(obj.DOB));
 	$('#age_show_triage').text(dob_age(obj.DOB)+' (YRS)');
-	$('#race_show_triage').text(if_none(obj.RaceCode).toUpperCase());
+	$('#race_show_triage').text(if_none(obj.raceDesc).toUpperCase());
 	$('#religion_show_triage').text(if_none(obj.religion).toUpperCase());
 	$('#occupation_show_triage').text(if_none(obj.OccupCode).toUpperCase());
 	$('#citizenship_show_triage').text(if_none(obj.Citizencode).toUpperCase());

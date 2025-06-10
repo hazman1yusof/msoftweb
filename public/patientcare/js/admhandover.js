@@ -122,7 +122,7 @@ function populate_admhandover_currpt(obj){
 	$('#sex_show_admHandover').text(if_none(obj.Sex).toUpperCase());
 	$('#dob_show_admHandover').text(dob_chg(obj.DOB));
 	$('#age_show_admHandover').text(dob_age(obj.DOB)+' (YRS)');
-	$('#race_show_admHandover').text(if_none(obj.RaceCode).toUpperCase());
+	$('#race_show_admHandover').text(if_none(obj.raceDesc).toUpperCase());
 	$('#religion_show_admHandover').text(if_none(obj.religion).toUpperCase());
 	$('#occupation_show_admHandover').text(if_none(obj.OccupCode).toUpperCase());
 	$('#citizenship_show_admHandover').text(if_none(obj.Citizencode).toUpperCase());
