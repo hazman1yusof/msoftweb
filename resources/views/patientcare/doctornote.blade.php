@@ -68,7 +68,7 @@
         <div class="eleven wide tablet eleven wide computer right floated column" style="margin:0px;"  id="jqgrid_div">
             <div class="ui teal segment jqgridsegment" style="padding-bottom: 40px;" id="jqgrid_c">
                 
-                <div class="if_tablet left floated" style="display:none;">
+                <div class="if_tablet left floated" style="display: none;">
                     <div class="ui calendar" id="button_calendar">
                         <button class="ui teal mini icon button">
                             <i class="calendar alternate outline icon"></i> Select date
@@ -417,7 +417,7 @@
         </div>
     </div>
 
-    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="phys_panel">
+    <div class="panel panel-default" style="z-index: 100; position: relative; margin: 10px 0px 10px 0px; display: none;" id="phys_panel">
         <div class="panel-heading clearfix collapsed" role="tab" id="toggle_phys">
 
         <b>NAME: <span id="name_show_phys"></span></b><br>
@@ -503,7 +503,7 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/dieteticCareNotes.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy_ncase.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/doctornote_main.js?v=1.1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/doctornote_main.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/requestfor.js?v=1.4') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/admhandover.js') }}"></script>
 
