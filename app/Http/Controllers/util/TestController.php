@@ -5460,7 +5460,9 @@ class TestController extends defaultController
                         ->where('period','5')
                         ->where('source','iv')
                         ->update([
-                            'compcode'=>'xx'
+                            'compcode'=>'xx',
+                            'upduser' =>'SYSTEM_AR',
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
 
             DB::table('finance.gltran')
@@ -5469,7 +5471,9 @@ class TestController extends defaultController
                         ->where('period','5')
                         ->where('source','do')
                         ->update([
-                            'compcode'=>'xx'
+                            'compcode'=>'xx',
+                            'upduser' =>'SYSTEM_AR',
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
 
             $glmasdtl = DB::table('finance.glmasdtl')
@@ -5736,7 +5740,7 @@ class TestController extends defaultController
                         'source' => 'IV',
                         'trantype' => 'CB',
                         'reference' => $obj->itemcode,
-                        'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'postdate' => '2025-05-01',
                         'description' => 'Monthly Opening and Closing Stock Update', //suppliercode + suppliername
                         'year' => 2025,
                         'period' => 5,
