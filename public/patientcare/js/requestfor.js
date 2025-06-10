@@ -537,7 +537,7 @@ function populate_requestFor_ptcare(obj){
     $('#sex_show_requestFor').text(if_none(obj.Sex).toUpperCase());
     $('#dob_show_requestFor').text(dob_chg(obj.DOB));
     $('#age_show_requestFor').text(dob_age(obj.DOB)+' (YRS)');
-    $('#race_show_requestFor').text(if_none(obj.RaceCode).toUpperCase());
+    $('#race_show_requestFor').text(if_none(obj.raceDesc).toUpperCase());
     $('#religion_show_requestFor').text(if_none(obj.religion).toUpperCase());
     $('#occupation_show_requestFor').text(if_none(obj.OccupCode).toUpperCase());
     $('#citizenship_show_requestFor').text(if_none(obj.Citizencode).toUpperCase());
