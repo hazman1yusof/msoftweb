@@ -54,8 +54,8 @@ class TestController extends defaultController
             //     return $this->set_class($request);
             // case 'set_stockloc_unit':
             //     return $this->set_stockloc_unit($request);
-            case 'update_imp_ivdspdt_negetive': //dah xperlu
-                return $this->update_imp_ivdspdt_negetive($request);
+            case 'netmv_stockloc_btlkn': //dah xperlu
+                return $this->netmv_stockloc_btlkn($request);
             case 'ivtxndt_10s_peritem':
                 return $this->ivtxndt_10s_peritem($request);
             case 'ivtxndt_10s':
@@ -5777,6 +5777,18 @@ class TestController extends defaultController
         }
 
         dd($totamt_stock);
+    }
+
+    public function netmv_stockloc_btlkn(Request $request){
+
+        $stockloc = DB::table('material.stockloc')
+                        ->where('compcode','9b')
+                        ->where('year','2025')
+                        ->whereIn('itemcode',['KW001413','KW001414','KW001415','KW001416','KW001417','KW001418','KW001419','KW001420','KW001421','KW001422','KW001423','KW001424','KW001425','KW001426','KW001427','KW001428','KW001429','KW001430','KW001431','KW001432','KW001433','KW001434','KW001435','KW001436','KW001437','KW001438','KW001445','KW001446','KW001451','KW001452','KW001453','KW001454'])
+                        ->update([
+                            'netmvqty5' => 0,
+                            'netmvval5' => 0
+                        ]);
     }
 
     public function create_prod_kaluxde(Request $request){
