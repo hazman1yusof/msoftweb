@@ -197,16 +197,18 @@ function populate_physio(obj){
     $('#sex_show_physio').text(if_none(obj.Sex).toUpperCase());
     $('#dob_show_physio').text(dob_chg(obj.DOB));
     $('#age_show_physio').text(dob_age(obj.DOB)+' (YRS)');
-    $('#race_show_physio').text(if_none(obj.raceDesc).toUpperCase());
-    $('#religion_show_physio').text(if_none(obj.religionDesc).toUpperCase());
-    $('#occupation_show_physio').text(if_none(obj.occupDesc).toUpperCase());
-    $('#citizenship_show_physio').text(if_none(obj.cityDesc).toUpperCase());
-    $('#area_show_physio').text(if_none(obj.areaDesc).toUpperCase());
+    $('#race_show_physio').text(if_none(obj.RaceCode).toUpperCase());
+    $('#religion_show_physio').text(if_none(obj.religion).toUpperCase());
+    $('#occupation_show_physio').text(if_none(obj.OccupCode).toUpperCase());
+    $('#citizenship_show_physio').text(if_none(obj.Citizencode).toUpperCase());
+    $('#area_show_physio').text(if_none(obj.AreaCode).toUpperCase());
     
     // formPhysiotherapy
     $('#mrn_physio').val(obj.MRN);
     $("#episno_physio").val(obj.Episno);
     $("#age_physio").val(dob_age(obj.DOB));
+    
+    $("#tab_physio").collapse('hide');
 }
 
 function autoinsert_rowdata(form,rowData){
@@ -231,15 +233,30 @@ function autoinsert_rowdata(form,rowData){
 
 $('#tab_physio').on('shown.bs.collapse', function (){
     SmoothScrollTo('#tab_physio', 300, 114);
+    $('#physioTabs .top.menu .item').tab('change tab','motorScale');
     
-    if($('#mrn_physio').val() != ''){
-        getdata_motorScale();
-        getdata_bergBalanceTest();
-        getdata_oswestryQuest();
-        getdata_neuroAssessment();
-        getdata_spinalCord();
-        getdata_sixMinWalking();
+    // to load first tab
+    var urlparam_tbl_motorScale = {
+        action: 'get_datetime_motorScale',
+        mrn: $("#mrn_physio").val(),
+        episno: $("#episno_physio").val()
     }
+    
+    tbl_motorScale_date.ajax.url("./motorScale/table?"+$.param(urlparam_tbl_motorScale)).load(function (data){
+        emptyFormdata_div("#formMotorScale",['#mrn_physio','#episno_physio']);
+        $('#tbl_motorScale_date tbody tr:eq(0)').click(); // to select first row
+    });
+    
+    getdata_motorScale();
+    
+    // if($('#mrn_physio').val() != ''){
+    //     getdata_motorScale();
+    //     getdata_bergBalanceTest();
+    //     getdata_oswestryQuest();
+    //     getdata_neuroAssessment();
+    //     getdata_spinalCord();
+    //     getdata_sixMinWalking();
+    // }
 });
 
 $('#tab_physio').on('hide.bs.collapse', function (){

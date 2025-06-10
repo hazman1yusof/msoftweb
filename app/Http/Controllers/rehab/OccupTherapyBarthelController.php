@@ -152,43 +152,65 @@ class OccupTherapyBarthelController extends defaultController
         DB::beginTransaction();
         
         try {
-            
-            DB::table('hisdb.ot_barthel')
-                ->where('mrn','=',$request->mrn)
-                ->where('episno','=',$request->episno)
-                ->where('compcode','=',session('compcode'))
-                ->update([
-                    'dateAssessment' => $request->dateAssessment,
-                    'timeAssessment' => $request->timeAssessment,
-                    'chairBedTrf' => $request->chairBedTrf,
-                    'ambulation' => $request->ambulation,
-                    'ambulationWheelchair' => $request->ambulationWheelchair,
-                    'stairClimbing' => $request->stairClimbing,
-                    'toiletTrf' => $request->toiletTrf,
-                    'bowelControl' => $request->bowelControl,
-                    'bladderControl' => $request->bladderControl,
-                    'bathing' => $request->bathing,
-                    'dressing' => $request->dressing,
-                    'personalHygiene' => $request->personalHygiene,
-                    'feeding' => $request->feeding,
-                    'tot_score' => $request->tot_score,
-                    'interpretation' => $request->interpretation,
-                    'prediction' => $request->prediction,
-                    'upduser'  => session('username'),
-                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'lastuser'  => session('username'),
-                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'computerid' => session('computerid'),
-                ]);
-            
-            // $queries = DB::getQueryLog();
-            // dump($queries);
+        
+            if(!empty($request->idno_barthel)){
+                DB::table('hisdb.ot_barthel')                    
+                ->where('idno','=',$request->idno_barthel)
+                    ->update([
+                        'dateAssessment' => $request->dateAssessment,
+                        'timeAssessment' => $request->timeAssessment,
+                        'chairBedTrf' => $request->chairBedTrf,
+                        'ambulation' => $request->ambulation,
+                        'ambulationWheelchair' => $request->ambulationWheelchair,
+                        'stairClimbing' => $request->stairClimbing,
+                        'toiletTrf' => $request->toiletTrf,
+                        'bowelControl' => $request->bowelControl,
+                        'bladderControl' => $request->bladderControl,
+                        'bathing' => $request->bathing,
+                        'dressing' => $request->dressing,
+                        'personalHygiene' => $request->personalHygiene,
+                        'feeding' => $request->feeding,
+                        'tot_score' => $request->tot_score,
+                        'interpretation' => $request->interpretation,
+                        'prediction' => $request->prediction,
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastcomputerid' => session('computerid'),
+                    ]);
+            }else{
+                DB::table('hisdb.ot_barthel')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'dateAssessment' => $request->dateAssessment,
+                        'timeAssessment' => $request->timeAssessment,
+                        'chairBedTrf' => $request->chairBedTrf,
+                        'ambulation' => $request->ambulation,
+                        'ambulationWheelchair' => $request->ambulationWheelchair,
+                        'stairClimbing' => $request->stairClimbing,
+                        'toiletTrf' => $request->toiletTrf,
+                        'bowelControl' => $request->bowelControl,
+                        'bladderControl' => $request->bladderControl,
+                        'bathing' => $request->bathing,
+                        'dressing' => $request->dressing,
+                        'personalHygiene' => $request->personalHygiene,
+                        'feeding' => $request->feeding,
+                        'tot_score' => $request->tot_score,
+                        'interpretation' => $request->interpretation,
+                        'prediction' => $request->prediction,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            }
+
+            $queries = DB::getQueryLog();
             
             DB::commit();
-            
-            $responce = new stdClass();
-            
-            return json_encode($responce);
+
             
         } catch (\Exception $e) {
             
@@ -203,15 +225,17 @@ class OccupTherapyBarthelController extends defaultController
     public function get_table_barthel(Request $request){
         
         $barthel_obj = DB::table('hisdb.ot_barthel')
-                                ->where('compcode','=',session('compcode'))
-                                ->where('mrn','=',$request->mrn)
-                                ->where('episno','=',$request->episno);
+                        ->where('compcode','=',session('compcode'))
+                        ->where('idno','=',$request->idno);
         
         $responce = new stdClass();
         
         if($barthel_obj->exists()){
             $barthel_obj = $barthel_obj->first();
+            $date = Carbon::createFromFormat('Y-m-d', $barthel_obj->dateAssessment)->format('Y-m-d');
+
             $responce->barthel = $barthel_obj;
+            $responce->date = $date;
         }
         
         return json_encode($responce);

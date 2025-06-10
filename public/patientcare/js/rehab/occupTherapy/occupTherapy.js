@@ -12,7 +12,9 @@ $(document).ready(function (){
     disableForm('#formOccupTherapyMMSE');
     disableForm('#formOccupTherapyMOCA');
     disableForm('#formOccupTherapyBarthel');
-    
+    disableForm('#formOccupTherapyUpperExtremity');
+    disableForm('#formSensation');
+
     // to format number input to two decimal places (0.00)
     $(".floatNumberField").change(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
@@ -35,11 +37,21 @@ $(document).ready(function (){
     $('#occupTherapy .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
         // console.log(tab);
-        
+
         switch(tab){
             case 'cognitive':
-                // getdata_mmse();
-                // getdata_moca();
+                var urlparam_datetimeMMSE_tbl = {
+                    action: 'get_table_datetimeMMSE',
+                    mrn: $("#mrn_occupTherapy").val(),
+                    episno: $("#episno_occupTherapy").val()
+                }
+                
+                datetimeMMSE_tbl.ajax.url("./occupTherapy_cognitive/table?"+$.param(urlparam_datetimeMMSE_tbl)).load(function (data){
+                    emptyFormdata_div("#formOccupTherapyMMSE",['#mrn_occupTherapy','#episno_occupTherapy']);
+                    $('#datetimeMMSE_tbl tbody tr:eq(0)').click();  // to select first row
+                });
+                
+                populate_mmse_getdata();
                 break;
                 
             case 'physical':
@@ -50,7 +62,7 @@ $(document).ready(function (){
                 }
                 
                 datetimeUpperExtremity_tbl.ajax.url("./occupTherapy_upperExtremity/table?"+$.param(urlparam_datetimeUpperExtremity_tbl)).load(function (data){
-                    emptyFormdata_div("#formOccupTherapyUpperExtremity",['#mrn_occupTherapy','#episno_occupTherapy']);
+                    emptyFormdata_div("#formOccupTherapyUpperExtremity",['#mrn_occupTherapy','#episno_occupTherapy','#idno_sensation']);
                     $('#datetimeUpperExtremity_tbl tbody tr:eq(0)').click();  // to select first row
                 });
                 $("#jqGrid_rof").jqGrid('setGridWidth', Math.floor($("#jqGrid_rof_c")[0].offsetWidth-$("#jqGrid_rof_c")[0].offsetLeft));
@@ -132,7 +144,7 @@ $(document).ready(function (){
                 break;
 
             case 'sensation':
-                             
+                populate_sensation_getdata();               
                 break;
 
             case 'prehensive':
@@ -177,11 +189,13 @@ function empty_occupTherapy(){
     emptyFormdata_div("#formOccupTherapyMOCA");
     emptyFormdata_div("#formOccupTherapyBarthel");
     emptyFormdata_div("#formOccupTherapyUpperExtremity");
+    emptyFormdata_div("#formSensation");
 
     button_state_mmse('empty');
     button_state_moca('empty');
     button_state_barthel('empty');
     button_state_upperExtremity('empty');
+    button_state_sensation('empty');
     
     // panel header
     $('#name_show_occupTherapy').text('');
@@ -208,27 +222,27 @@ function populate_occupTherapy(obj){
     emptyFormdata_div("#formOccupTherapyMMSE",['#mrn_occupTherapy','#episno_occupTherapy']);
     emptyFormdata_div("#formOccupTherapyMOCA",['#mrn_occupTherapy','#episno_occupTherapy']);
     emptyFormdata_div("#formOccupTherapyBarthel",['#mrn_occupTherapy','#episno_occupTherapy']);
-    emptyFormdata_div("#formOccupTherapyUpperExtremity",['#mrn_occupTherapy','#episno_occupTherapy']);
+    emptyFormdata_div("#formOccupTherapyUpperExtremity",['#mrn_occupTherapy','#episno_occupTherapy','#idno_upperExtremity']);
+    emptyFormdata_div("#formSensation",['#mrn_occupTherapy','#episno_occupTherapy','#idno_sensation']);
     
     // panel header
-    $('#name_show_occupTherapy').text(obj.pat_name);
-    $('#mrn_show_occupTherapy').text(("0000000" + obj.mrn).slice(-7));
-    $('#icpssprt_show_occupTherapy').text(obj.icnum);
-    $('#sex_show_occupTherapy').text(if_none(obj.Sex).toUpperCase());
-    $('#height_show_occupTherapy').text(obj.height+' (CM)');
-    $('#weight_show_occupTherapy').text(obj.weight+' (KG)');
-    $('#dob_show_occupTherapy').text(dob_chg(obj.DOB));
-    $('#age_show_occupTherapy').text(dob_age(obj.DOB)+' (YRS)');
-    $('#race_show_occupTherapy').text(if_none(obj.RaceCode).toUpperCase());
-    $('#religion_show_occupTherapy').text(if_none(obj.Religion).toUpperCase());
-    $('#occupation_show_occupTherapy').text(if_none(obj.OccupCode).toUpperCase());
-    $('#citizenship_show_occupTherapy').text(if_none(obj.Citizencode).toUpperCase());
-    $('#area_show_occupTherapy').text(if_none(obj.AreaCode).toUpperCase());
-    $('#ward_show_occupTherapy').text(obj.ward);
+    $('#name_show_occupTherapy').text(obj.Name);
+	$('#mrn_show_occupTherapy').text(("0000000" + obj.MRN).slice(-7));
+	$('#sex_show_occupTherapy').text(if_none(obj.Sex).toUpperCase());
+	$('#dob_show_occupTherapy').text(dob_chg(obj.DOB));
+	$('#age_show_occupTherapy').text(dob_age(obj.DOB)+' (YRS)');
+	$('#race_show_occupTherapy').text(if_none(obj.RaceCode).toUpperCase());
+	$('#religion_show_occupTherapy').text(if_none(obj.religion).toUpperCase());
+	$('#occupation_show_occupTherapy').text(if_none(obj.OccupCode).toUpperCase());
+	$('#citizenship_show_occupTherapy').text(if_none(obj.Citizencode).toUpperCase());
+	$('#area_show_occupTherapy').text(if_none(obj.AreaCode).toUpperCase());
    
     // formOccupTherapy
-    $('#mrn_occupTherapy').val(obj.mrn);
-    $("#episno_occupTherapy").val(obj.latest_episno);
+    $('#mrn_occupTherapy').val(obj.MRN);
+    $("#episno_occupTherapy").val(obj.Episno);
+
+    $("#tab_occupTherapy").collapse('hide');
+
 }
 
 function autoinsert_rowdata(form,rowData){
@@ -253,19 +267,33 @@ function autoinsert_rowdata(form,rowData){
 
 $('#tab_occupTherapy').on('shown.bs.collapse', function (){
     SmoothScrollTo('#tab_occupTherapy', 300, 114);
+
+    $('#occupTherapy .top.menu .item').tab('change tab','cognitive');
+    $('#cognitives .top.menu .item').tab('change tab','mmse');
+
+    var urlparam_datetimeMMSE_tbl = {
+        action: 'get_table_datetimeMMSE',
+        mrn: $("#mrn_occupTherapy").val(),
+        episno: $("#episno_occupTherapy").val()
+    }
+    
+    datetimeMMSE_tbl.ajax.url("./occupTherapy_cognitive/table?"+$.param(urlparam_datetimeMMSE_tbl)).load(function (data){
+        emptyFormdata_div("#formOccupTherapyMMSE",['#mrn_occupTherapy','#episno_occupTherapy']);
+        $('#datetimeMMSE_tbl tbody tr:eq(0)').click();  // to select first row
+    });
+    
+    populate_mmse_getdata();
+    
     $("#jqGrid_rof").jqGrid('setGridWidth', Math.floor($("#jqGrid_rof_c")[0].offsetWidth-$("#jqGrid_rof_c")[0].offsetLeft));
     $("#jqGrid_hand").jqGrid('setGridWidth', Math.floor($("#jqGrid_hand_c")[0].offsetWidth-$("#jqGrid_hand_c")[0].offsetLeft));
-
-    // console.log('test');
-    populate_mmse_getdata();
-    populate_moca_getdata();
-    populate_barthel_getdata();
-    populate_upperExtremity_getdata();
-
-    // if($('#mrn_occupTherapy').val() != ''){
-    //     getdata_mmse();
-    //     getdata_endoscopyIntestine();
-    // }
+   
+    if($('#mrn_occupTherapy').val() != ''){
+        populate_mmse_getdata();
+        populate_moca_getdata();
+        populate_barthel_getdata();
+        populate_upperExtremity_getdata();
+        populate_sensation_getdata();
+    }
 });
 
 $('#tab_occupTherapy').on('hide.bs.collapse', function (){
@@ -275,11 +303,13 @@ $('#tab_occupTherapy').on('hide.bs.collapse', function (){
     disableForm('#formOccupTherapyMOCA');
     disableForm('#formOccupTherapyBarthel');
     disableForm('#formOccupTherapyUpperExtremity');
+    disableForm('#formSensation');
 
     button_state_mmse('empty');
     button_state_moca('empty');
     button_state_barthel('empty');
     button_state_upperExtremity('empty');
+    button_state_sensation('empty');
 
 });
 

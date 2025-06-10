@@ -9,7 +9,6 @@ $(document).ready(function (){
     disableForm('#formOccupTherapyBarthel');
     
     $("#new_barthel").click(function (){
-        $('#cancel_barthel').data('oper','add');
         button_state_barthel('wait');
         enableForm('#formOccupTherapyBarthel');
         rdonly('#formOccupTherapyBarthel');
@@ -32,7 +31,6 @@ $(document).ready(function (){
             saveForm_barthel(function (data){
                 $("#cancel_barthel").data('oper','edit');
                 $("#cancel_barthel").click();
-                $('#datetimeBarthel_tbl').DataTable().ajax.reload();            
             });
         }else{
             enableForm('#formOccupTherapyBarthel');
@@ -41,11 +39,9 @@ $(document).ready(function (){
     });
     
     $("#cancel_barthel").click(function (){
-        // emptyFormdata_div("#formOccupTherapyBarthel",['#mrn_occupTherapy','#episno_occupTherapy']);
         disableForm('#formOccupTherapyBarthel');
         button_state_barthel($(this).data('oper'));
-        // getdata_barthel();
-        // dialog_mrn_edit.off();
+        $('#datetimeBarthel_tbl').DataTable().ajax.reload();            
     });
 
     //////////////////////////////////////barthel ends//////////////////////////////////////
@@ -212,8 +208,8 @@ function button_state_barthel(state){
         case 'edit':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
             $('#cancel_barthel').data('oper','edit');
-            $("#edit_barthel").attr('disabled',false);
-            $('#save_barthel,#cancel_barthel,#new_barthel').attr('disabled',true);
+            $("#edit_barthel,#new_barthel").attr('disabled',false);
+            $('#save_barthel,#cancel_barthel').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
@@ -248,8 +244,6 @@ function saveForm_barthel(callback){
     var saveParam = {
         action: 'save_table_barthel',
         oper: oper,
-        mrn: $('#mrn_occupTherapy').val(),
-        episno: $("#episno_occupTherapy").val(),
     }
     
     if(oper == 'add'){
@@ -262,8 +256,8 @@ function saveForm_barthel(callback){
     
     var postobj = {
         _token: $('#_token').val(),
-        // sex_edit: $('#sex_edit').val(),
-        // idtype_edit: $('#idtype_edit').val()
+        mrn: $('#mrn_occupTherapy').val(),
+        episno: $("#episno_occupTherapy").val(),
     };
     
     values = $("#formOccupTherapyBarthel").serializeArray();
@@ -300,15 +294,14 @@ function saveForm_barthel(callback){
         
     },'json').done(function (data){
         callback(data);
-        button_state_barthel('edit');
     }).fail(function (data){
         callback(data);
-        button_state_barthel($(this).data('oper'));
     });
 }
 
 function populate_barthel_getdata(){
     // console.log('populate');
+    disableForm('#formOccupTherapyBarthel');
     emptyFormdata(errorField,"#formOccupTherapyBarthel",["#mrn_occupTherapy","#episno_occupTherapy"]);
 
     var saveParam = {
@@ -327,8 +320,8 @@ function populate_barthel_getdata(){
         alert('there is an error');
     }).done(function (data){
         if(!$.isEmptyObject(data)){
-            button_state_barthel('edit');
             autoinsert_rowdata("#formOccupTherapyBarthel",data.barthel);
+            button_state_barthel('edit');
         }else{
             button_state_barthel('add');
         }

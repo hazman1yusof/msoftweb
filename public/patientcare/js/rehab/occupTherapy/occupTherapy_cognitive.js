@@ -8,10 +8,8 @@ $(document).ready(function (){
     //////////////////////////////////////mmse starts//////////////////////////////////////
 
     disableForm('#formOccupTherapyMMSE');
-    // disableForm('#formOccupTherapyMOCA');
     
     $("#new_mmse").click(function (){
-        $('#cancel_mmse').data('oper','add');
         button_state_mmse('wait');
         enableForm('#formOccupTherapyMMSE');
         rdonly('#formOccupTherapyMMSE');
@@ -34,29 +32,17 @@ $(document).ready(function (){
             saveForm_mmse(function (data){
                 $("#cancel_mmse").data('oper','edit');
                 $("#cancel_mmse").click();
-                $('#datetimeMMSE_tbl').DataTable().ajax.reload();            
             });
         }else{
             enableForm('#formOccupTherapyMMSE');
             rdonly('#formOccupTherapyMMSE');
         }
-        // if($('#formOccupTherapyMMSE').isValid({requiredFields: ''}, conf, true)){
-        //     saveForm_mmse(function (data){
-        //         // emptyFormdata_div("#formOccupTherapyMMSE",['#mrn_occupTherapy','#episno_occupTherapy']);
-        //         disableForm('#formOccupTherapyMMSE');
-        //     });
-        // }else{
-        //     enableForm('#formOccupTherapyMMSE');
-        //     rdonly('#formOccupTherapyMMSE');
-        // }
     });
     
     $("#cancel_mmse").click(function (){
-        // emptyFormdata_div("#formOccupTherapyMMSE",['#mrn_occupTherapy','#episno_occupTherapy']);
         disableForm('#formOccupTherapyMMSE');
         button_state_mmse($(this).data('oper'));
-        // getdata_mmse();
-        // dialog_mrn_edit.off();
+        $('#datetimeMMSE_tbl').DataTable().ajax.reload(); 
     });
 
     //////////////////////////////////////mmse ends//////////////////////////////////////
@@ -66,13 +52,12 @@ $(document).ready(function (){
     disableForm('#formOccupTherapyMOCA');
     
     $("#new_moca").click(function (){
-        $('#cancel_moca').data('oper','add');
         button_state_moca('wait');
         enableForm('#formOccupTherapyMOCA');
         rdonly('#formOccupTherapyMOCA');
         emptyFormdata_div("#formOccupTherapyMOCA",['#mrn_occupTherapy','#episno_occupTherapy']);
 
-        document.getElementById("idno_mmse").value = "";
+        document.getElementById("idno_moca").value = "";
     });
     
     $("#edit_moca").click(function (){
@@ -86,31 +71,20 @@ $(document).ready(function (){
     $("#save_moca").click(function (){
         disableForm('#formOccupTherapyMOCA');
         if($('#formOccupTherapyMOCA').isValid({requiredFields: ''}, conf, true)){
-            saveForm_mmse(function (data){
+            saveForm_moca(function (data){
                 $("#cancel_moca").data('oper','edit');
                 $("#cancel_moca").click();
-                $('#datetimeMOCA_tbl').DataTable().ajax.reload();            
             });
         }else{
             enableForm('#formOccupTherapyMOCA');
             rdonly('#formOccupTherapyMOCA');
         }
-        // if($('#formOccupTherapyMOCA').isValid({requiredFields: ''}, conf, true)){
-        //     saveForm_mmse(function (data){
-        //         // emptyFormdata_div("#formOccupTherapyMOCA",['#mrn_occupTherapy','#episno_occupTherapy']);
-        //         disableForm('#formOccupTherapyMOCA');
-        //     });
-        // }else{
-        //     enableForm('#formOccupTherapyMOCA');
-        //     rdonly('#formOccupTherapyMOCA');
-        // }
     });
     
     $("#cancel_moca").click(function (){
-        // emptyFormdata_div("#formOccupTherapyMOCA",['#mrn_occupTherapy','#episno_occupTherapy']);
         disableForm('#formOccupTherapyMOCA');
         button_state_moca($(this).data('oper'));
-        // getdata_mmse();
+        $('#datetimeMOCA_tbl').DataTable().ajax.reload();            
     });
 
     //////////////////////////////////////mmse ends//////////////////////////////////////
@@ -163,8 +137,8 @@ $(document).ready(function (){
         var postobj={
             _token: $('#_token').val(),
             idno: data.idno,
-            // mrn: data.mrn,
-            // episno: data.episno,
+            mrn: data.mrn,
+            episno: data.episno,
             // date:data.date
 
         };
@@ -345,8 +319,8 @@ function button_state_mmse(state){
         case 'edit':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
             $('#cancel_mmse').data('oper','edit');
-            $("#edit_mmse").attr('disabled',false);
-            $('#save_mmse,#cancel_mmse,#new_mmse').attr('disabled',true);
+            $("#new_mmse,#edit_mmse").attr('disabled',false);
+            $('#save_mmse,#cancel_mmse').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
@@ -373,8 +347,8 @@ function button_state_moca(state){
         case 'edit':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
             $('#cancel_moca').data('oper','edit');
-            $("#edit_moca").attr('disabled',false);
-            $('#save_moca,#cancel_moca,#new_moca').attr('disabled',true);
+            $("#new_moca,#edit_moca").attr('disabled',false);
+            $('#save_moca,#cancel_moca').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
@@ -408,9 +382,7 @@ function saveForm_mmse(callback){
     let oper = $("#cancel_mmse").data('oper');
     var saveParam = {
         action: 'save_table_mmse',
-        oper: oper,
-        mrn: $('#mrn_occupTherapy').val(),
-        episno: $("#episno_occupTherapy").val(),
+        oper: oper
     }
     
     if(oper == 'add'){
@@ -423,8 +395,8 @@ function saveForm_mmse(callback){
     
     var postobj = {
         _token: $('#_token').val(),
-        // sex_edit: $('#sex_edit').val(),
-        // idtype_edit: $('#idtype_edit').val()
+        mrn: $('#mrn_occupTherapy').val(),
+        episno: $("#episno_occupTherapy").val(),
     };
     
     values = $("#formOccupTherapyMMSE").serializeArray();
@@ -460,11 +432,11 @@ function saveForm_mmse(callback){
     $.post("./occupTherapy_cognitive/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
     },'json').done(function (data){
+       
         callback(data);
-        button_state_mmse('edit');
     }).fail(function (data){
+        alert(data.responseText);
         callback(data);
-        button_state_mmse($(this).data('oper'));
     });
 }
 
@@ -473,8 +445,6 @@ function saveForm_moca(callback){
     var saveParam = {
         action: 'save_table_moca',
         oper: oper,
-        mrn: $('#mrn_occupTherapy').val(),
-        episno: $("#episno_occupTherapy").val(),
     }
     
     if(oper == 'add'){
@@ -487,8 +457,8 @@ function saveForm_moca(callback){
     
     var postobj = {
         _token: $('#_token').val(),
-        // sex_edit: $('#sex_edit').val(),
-        // idtype_edit: $('#idtype_edit').val()
+        mrn: $('#mrn_occupTherapy').val(),
+        episno: $("#episno_occupTherapy").val(),
     };
     
     values = $("#formOccupTherapyMOCA").serializeArray();
@@ -525,15 +495,17 @@ function saveForm_moca(callback){
         
     },'json').done(function (data){
         callback(data);
-        button_state_moca('edit');
     }).fail(function (data){
+        if(data.responseText !== ''){
+            alert(data.responseText);
+        }
         callback(data);
-        button_state_moca($(this).data('oper'));
     });
 }
 
 function populate_mmse_getdata(){
     // console.log('populate');
+    disableForm('#formOccupTherapyMMSE');
     emptyFormdata(errorField,"#formOccupTherapyMMSE",["#mrn_occupTherapy","#episno_occupTherapy"]);
 
     var saveParam = {
@@ -552,8 +524,8 @@ function populate_mmse_getdata(){
         alert('there is an error');
     }).done(function (data){
         if(!$.isEmptyObject(data)){
-            button_state_mmse('edit');
             autoinsert_rowdata("#formOccupTherapyMMSE",data.mmse);
+            button_state_mmse('edit');
         }else{
             button_state_mmse('add');
         }
@@ -590,6 +562,7 @@ function getdata_mmse(){
 
 function populate_moca_getdata(){
     // console.log('populate');
+    disableForm('#formOccupTherapyMOCA');
     emptyFormdata(errorField,"#formOccupTherapyMOCA",["#mrn_occupTherapy","#episno_occupTherapy"]);
 
     var saveParam = {
@@ -608,8 +581,8 @@ function populate_moca_getdata(){
         alert('there is an error');
     }).done(function (data){
         if(!$.isEmptyObject(data)){
-            button_state_moca('edit');
             autoinsert_rowdata("#formOccupTherapyMOCA",data.moca);
+            button_state_moca('edit');
         }else{
             button_state_moca('add');
         }
