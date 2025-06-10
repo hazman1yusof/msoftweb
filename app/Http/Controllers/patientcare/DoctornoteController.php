@@ -181,8 +181,8 @@ class DoctornoteController extends defaultController
         $table_patm = $table_patm->leftJoin('hisdb.episode', function ($join) use ($request){
                     $join = $join->on('episode.mrn','=','pat_mast.MRN');
                     $join = $join->where('episode.epistycode','=','OP');
-                    $join = $join->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET']);
-                    // $join = $join->whereIn('episode.regdept',['A&E','XRAY','DIET']);
+                    // $join = $join->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET']);
+                    $join = $join->whereIn('episode.regdept',['A&E','XRAY','DIET']);
                     // $join = $join->where(
                     //         function ($query){
                     //             return $query
@@ -1173,8 +1173,8 @@ class DoctornoteController extends defaultController
         
         $emergency = DB::table('hisdb.episode')
                     ->where('compcode','=',session('compcode'))
-                    ->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET'])
-                    // ->whereIn('episode.regdept',['A&E','XRAY','DIET'])
+                    // ->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET'])
+                    ->whereIn('episode.regdept',['A&E','XRAY','DIET'])
                     ->whereRaw(
                         "(reg_date >= ? AND reg_date <= ?)",
                         [
