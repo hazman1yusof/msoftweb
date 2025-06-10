@@ -96,8 +96,8 @@ class TestController extends defaultController
                 return $this->gltran_step4($request);
             case 'create_prod_kaluxde':
                 return $this->create_prod_kaluxde($request);
-            // case 'stocktake_imp_dtl':
-            //     return $this->stocktake_imp_dtl($request);
+            case 'stockloc_total':
+                return $this->stockloc_total($request);
             // case 'betulkan_uom_kh_stockloc':
             //     return $this->betulkan_uom_kh_stockloc($request);
             // case 'betulkan_uom_kh_product':
@@ -5474,6 +5474,7 @@ class TestController extends defaultController
 
             $glmasdtl = DB::table('finance.glmasdtl')
                             ->where('compcode','9b')
+                            ->where('year','2025')
                             ->where('glaccount','20010052')
                             ->get();
 
@@ -5497,7 +5498,7 @@ class TestController extends defaultController
                         'dracc' => '20010041',
                         'crcostcode' => $obj->costcode,
                         'cracc' => '20010040',
-                        'amount' => $obj->openbalval + $obj->actamount1 + $obj->actamount2 + $obj->actamount3 + $obj->actamount4,
+                        'amount' => $obj->actamount4,
                     ]);
 
                 $x = $x + 1; 
@@ -5548,7 +5549,11 @@ class TestController extends defaultController
                         ->first();
 
                     $drcostcode = $row_dept->costcode;
-                    $dracc = '20010042';
+                    if(strtoupper($product_obj->groupcode) == "STOCK"){
+                        $dracc = '20010042';
+                    }else{
+                        $dracc = $row_cat->stockacct;
+                    }
 
                     if(strtoupper($product_obj->groupcode) == "CONSIGNMENT"){
                         $dracc = $row_cat->ConsignAcct;
@@ -5633,7 +5638,7 @@ class TestController extends defaultController
                                               ->whereDate('ivhd.trandate','>=','2025-05-01')
                                               ->whereDate('ivhd.trandate','<=','2025-05-31')
                                               ->where('ivhd.source','iv')
-                                              ->whereIn('ivhd.trantype',['tui','tuo','ai','ao'])
+                                              ->whereIn('ivhd.trantype',['tui','tuo'])
                                               ->where('ivhd.compcode','9b');
                             })
                             ->get();
@@ -5662,16 +5667,6 @@ class TestController extends defaultController
                     $crccode=$dept_obj->costcode; 
                     $craccno='20010026'; 
 
-                }else if($obj->trantype=='AI'){
-                    $drccode=$obj->drccode;
-                    $draccno=$obj->draccno;
-                    $crccode=$obj->crccode;
-                    $craccno=$obj->craccno;
-                }else if($obj->trantype=='AO'){
-                    $drccode=$obj->drccode;
-                    $draccno=$obj->draccno;
-                    $crccode=$obj->crccode;
-                    $craccno=$obj->craccno;
                 }
 
                 DB::table('finance.gltran')
@@ -5713,6 +5708,7 @@ class TestController extends defaultController
 
             $stockloc = DB::table('material.stockloc')
                             ->where('compcode','9b')
+                            ->where('year','2025')
                             // ->where('glaccount','20010052')
                             ->whereIn('unit',["W'HOUSE",'IMP','khealth'])
                             ->get();
@@ -5750,7 +5746,7 @@ class TestController extends defaultController
                         'dracc' => '20010052',
                         'crcostcode' => $dept_obj->costcode,
                         'cracc' => '20010050',
-                        'amount' => $obj->netmvval1 + $obj->netmvval2 + $obj->netmvval3 + $obj->netmvval4 + $obj->netmvval5,
+                        'amount' => $obj->openbalval + $obj->netmvval1 + $obj->netmvval2 + $obj->netmvval3 + $obj->netmvval4 + $obj->netmvval5,
                     ]);
                 $x = $x + 1;
 
@@ -5763,6 +5759,24 @@ class TestController extends defaultController
 
             dd('Error'.$e);
         }  
+    }
+
+    public function stockloc_total(Request $request){
+
+        $stockloc = DB::table('material.stockloc')
+                        ->where('compcode','9b')
+                        ->where('year','2025')
+                        ->where('stocktxntype','tr')
+                        ->whereIn('unit',["W'HOUSE",'IMP','khealth'])
+                        ->get();
+
+        $totamt_stock = 0;
+        foreach ($stockloc as $obj) {
+            $amount = $obj->netmvval5;
+            $totamt_stock = $totamt_stock + $amount;
+        }
+
+        dd($totamt_stock);
     }
 
     public function create_prod_kaluxde(Request $request){
