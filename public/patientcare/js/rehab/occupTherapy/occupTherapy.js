@@ -267,6 +267,10 @@ function autoinsert_rowdata(form,rowData){
 
 $('#tab_occupTherapy').on('shown.bs.collapse', function (){
     SmoothScrollTo('#tab_occupTherapy', 300, 114);
+
+    $('#occupTherapy .top.menu .item').tab('change tab','cognitive');
+    $('#cognitives .top.menu .item').tab('change tab','mmse');
+
     var urlparam_datetimeMMSE_tbl = {
         action: 'get_table_datetimeMMSE',
         mrn: $("#mrn_occupTherapy").val(),
