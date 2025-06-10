@@ -94,8 +94,8 @@ class TestController extends defaultController
                 return $this->gltran_step3($request);
             case 'gltran_step4':
                 return $this->gltran_step4($request);
-            // case 'btlkn_imp_3':
-            //     return $this->btlkn_imp_3($request);
+            case 'create_prod_kaluxde':
+                return $this->create_prod_kaluxde($request);
             // case 'stocktake_imp_dtl':
             //     return $this->stocktake_imp_dtl($request);
             // case 'betulkan_uom_kh_stockloc':
@@ -5539,12 +5539,12 @@ class TestController extends defaultController
                     $row_dept = DB::table('sysdb.department')
                         ->select('costcode')
                         ->where('compcode','=',session('compcode'))
-                        ->where('deptcode','=',$delordhd_obj->deldept)
+                        ->where('deptcode','=',$obj->deldept)
                         ->first();
                     //utk debit accountcode
                     $row_cat = DB::table('material.category')
                         ->where('compcode','=',session('compcode'))
-                        ->where('catcode','=',$productcat)
+                        ->where('catcode','=',$product_obj->productcat)
                         ->first();
 
                     $drcostcode = $row_dept->costcode;
@@ -5600,14 +5600,14 @@ class TestController extends defaultController
                         'trantype' => $obj->trantype,
                         'reference' => $obj->deldept .' '. str_pad($obj->docno,7,"0",STR_PAD_LEFT),
                         'description' => $obj->itemcode, 
-                        'postdate' => Carbon::createFromFormat($obj->postdate,'Y-m-d H:i:s')->format('Y-m-d'),
+                        'postdate' => $obj->postdate,
                         'year' => '2025',
                         'period' => '5',
                         'drcostcode' => $drcostcode,
                         'dracc' => $dracc,
                         'crcostcode' => $crcostcode,
                         'cracc' => $cracc,
-                        'amount' => $value->amount,
+                        'amount' => $obj->amount,
                         'idno' => $obj->deldept .' '. $obj->docno
                     ]);
             }
@@ -5685,7 +5685,7 @@ class TestController extends defaultController
                             'trantype' => $obj->trantype,
                             'reference' => $obj->txndept .' '. $obj->docno,
                             'description' => $obj->sndrcv,
-                            'postdate' => Carbon::createFromFormat($obj->trandate,'Y-m-d H:i:s')->format('Y-m-d'),
+                            'postdate' => $obj->trandate,
                             'year' => '2025',
                             'period' => '5',
                             'drcostcode' => $drccode,
@@ -5713,19 +5713,24 @@ class TestController extends defaultController
 
             $stockloc = DB::table('material.stockloc')
                             ->where('compcode','9b')
-                            ->where('glaccount','20010052')
+                            // ->where('glaccount','20010052')
                             ->whereIn('unit',["W'HOUSE",'IMP','khealth'])
                             ->get();
 
             $x = 1;
-            foreach ($glmasdtl as $obj) {
+            foreach ($stockloc as $obj) {
                 $amount = $obj->netmvval1 + $obj->netmvval2 + $obj->netmvval3 + $obj->netmvval4 + $obj->netmvval5; 
 
 
                 $dept_obj = DB::table('sysdb.department')
                     ->where('department.compcode','=',session('compcode'))
-                    ->where('department.deptcode','=',$obj->deptcode)
-                    ->first();
+                    ->where('department.deptcode','=',$obj->deptcode);
+
+                if(!$dept_obj->exists()){
+                    dd($obj->deptcode.' not exists');
+                }
+
+                $dept_obj = $dept_obj->first();
 
                 DB::table('finance.gltran')
                     ->insert([
@@ -5745,9 +5750,58 @@ class TestController extends defaultController
                         'dracc' => '20010052',
                         'crcostcode' => $dept_obj->costcode,
                         'cracc' => '2001000',
-                        'amount' => $obj->actamount1 + $obj->actamount2 + $obj->actamount3 + $obj->actamount4,
+                        'amount' => $obj->netmvval1 + $obj->netmvval2 + $obj->netmvval3 + $obj->netmvval4,
                     ]);
                 $x = $x + 1;
+
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
+    }
+
+    public function create_prod_kaluxde(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $product = DB::table('recondb.temp_product')
+                            ->get();
+
+            $x = 1;
+            foreach ($product as $obj) {
+                $exists = DB::table('material.product')
+                                ->where('itemcode',$obj->itemcode)
+                                ->where('compcode',session('compcode'))
+                                ->exists();
+
+                if(!$exists){
+                    DB::table('material.product')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'unit' => $obj->unit,
+                                'itemcode' => $obj->itemcode,
+                                'description' => $obj->description,
+                                'uomcode' => $obj->uomcode,
+                                'groupcode' => $obj->groupcode,
+                                'productcat' => $obj->productcat,
+                                'avgcost' => $obj->avgcost,
+                                'currprice' => $obj->currprice,
+                                'qtyonhand' => $obj->qtyonhand,
+                                'adduser' => 'SYSTEM_AR',
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'recstatus' => 'DEACTIVE',
+                                'generic' => $obj->generic,
+                                'Consignment' => 0,
+                            ]);
+
+                    dump($obj->itemcode.' - '.$obj->description);
+                }
 
             }
 
