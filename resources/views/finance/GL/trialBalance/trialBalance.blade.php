@@ -135,9 +135,9 @@
                             <div class='col-md-12 btnform' style="padding: 20px 0px;">
                                 <fieldset>
                                     <legend>Generate :</legend>
-                                    <button name="SuppListSum_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="summary_pdf">
+                                    <!-- <button name="SuppListSum_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="summary_pdf">
                                         <span class="fa fa-file-pdf-o fa-lg"></span> Generate Report PDF
-                                    </button>
+                                    </button> -->
                                     <button name="SuppListSum_excel" type="button" class="mybtn btn btn-sm mybtnxls" id="summary_excel">
                                         <span class="fa fa-file-excel-o fa-lg"></span> Generate Report Excel
                                     </button>

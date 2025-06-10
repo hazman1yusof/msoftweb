@@ -86,6 +86,14 @@ class TestController extends defaultController
                 return $this->display_glmasref_xde($request);
             case 'betulkan_dbacthdr':
                 return $this->betulkan_dbacthdr($request);
+            case 'gltran_step1':
+                return $this->gltran_step1($request);
+            case 'gltran_step2':
+                return $this->gltran_step2($request);
+            case 'gltran_step3':
+                return $this->gltran_step3($request);
+            case 'gltran_step4':
+                return $this->gltran_step4($request);
             // case 'btlkn_imp_3':
             //     return $this->btlkn_imp_3($request);
             // case 'stocktake_imp_dtl':
@@ -5442,4 +5450,313 @@ class TestController extends defaultController
         }  
     }
     
+    public function gltran_step1(Request $request){
+        DB::beginTransaction();
+
+        try {
+            DB::table('finance.gltran')
+                        ->where('compcode','9b')
+                        ->where('year','2025')
+                        ->where('period','5')
+                        ->where('source','iv')
+                        ->update([
+                            'compcode'=>'xx'
+                        ]);
+
+            DB::table('finance.gltran')
+                        ->where('compcode','9b')
+                        ->where('year','2025')
+                        ->where('period','5')
+                        ->where('source','do')
+                        ->update([
+                            'compcode'=>'xx'
+                        ]);
+
+            $glmasdtl = DB::table('finance.glmasdtl')
+                            ->where('compcode','9b')
+                            ->where('glaccount','20010052')
+                            ->get();
+
+            $x = 1;
+            foreach ($glmasdtl as $obj) {
+                DB::table('finance.gltran')
+                    ->insert([
+                        'compcode' => '9B',
+                        'adduser' => 'system_ar96',
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'auditno' => '250501',
+                        'lineno_' => $x,
+                        'source' => 'IV',
+                        'trantype' => 'OB',
+                        // 'reference' => $obj->document,
+                        'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'description' => 'Opening Stock', //suppliercode + suppliername
+                        'year' => 2025,
+                        'period' => 5,
+                        'drcostcode' => $obj->costcode,
+                        'dracc' => '20010041',
+                        'crcostcode' => $obj->costcode,
+                        'cracc' => '20010042',
+                        'amount' => $obj->actamount1 + $obj->actamount2 + $obj->actamount3 + $obj->actamount4,
+                    ]);
+
+                $x = $x + 1; 
+
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
+    }
+
+    public function gltran_step2(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $delorddt = DB::table('material.delorddt as dt')
+                            ->select('dt.recno','dt.lineno_','dt.pricecode','dt.itemcode','dt.uomcode','dt.pouom','dt.suppcode','dt.trandate','dh.deldept','dt.deliverydate','dt.qtytag','dt.unitprice','dt.amtdisc','dt.perdisc','dt.prortdisc','dt.amtslstax','dt.perslstax','dt.netunitprice','dt.remarks','dt.qtyorder','dt.qtydelivered','dt.qtyoutstand','dt.productcat','dt.draccno','dt.drccode','dt.craccno','dt.crccode','dt.source','dt.updtime','dt.polineno','dt.itemmargin','dt.amount','dt.deluser','dt.deldate','dt.recstatus','dt.taxcode','dt.totamount','dt.qtyreturned','dh.postdate','dh.trantype','dh.docno')
+                            ->where('dt.compcode','9b')
+                            ->join('material.delordhd as dh', function($join) use ($request){
+                                $join = $join->on('dh.recno', '=', 'dt.recno')
+                                              ->whereDate('dh.postdate','>=','2025-05-01')
+                                              ->whereDate('dh.postdate','<=','2025-05-31')
+                                              ->where('dh.compcode','9b');
+                            })
+                            ->get();
+
+            foreach ($delorddt as $obj) {
+                $product_obj = DB::table('material.product')
+                        ->where('compcode','=', '9b')
+                        // ->where('unit','=', $unit_)
+                        ->where('itemcode','=', $obj->itemcode)
+                        ->first();
+
+                if(strtoupper($product_obj->groupcode) == "STOCK" || strtoupper($product_obj->groupcode) == "OTHERS" || strtoupper($product_obj->groupcode) == "CONSIGNMENT" ){
+                    $row_dept = DB::table('sysdb.department')
+                        ->select('costcode')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('deptcode','=',$delordhd_obj->deldept)
+                        ->first();
+                    //utk debit accountcode
+                    $row_cat = DB::table('material.category')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('catcode','=',$productcat)
+                        ->first();
+
+                    $drcostcode = $row_dept->costcode;
+                    $dracc = '20010042';
+
+                    if(strtoupper($product_obj->groupcode) == "CONSIGNMENT"){
+                        $dracc = $row_cat->ConsignAcct;
+                        if(empty($row_cat->ConsignAcct)){
+                            $dracc = $row_cat->stockacct;
+                        }
+                    }
+
+                }else if(strtoupper($product_obj->groupcode) == "ASSET"){
+                    $facode = DB::table('finance.facode')
+                        ->where('compcode','=', $value->compcode)
+                        ->where('assetcode','=', $product_obj->productcat)
+                        ->first();
+
+                    $drcostcode = $facode->glassetccode;
+                    $dracc = $facode->glasset;
+
+                }else{
+                    throw new \Exception("Item at delorddt doesn't have groupcode at table product");
+                }
+
+                if(strtoupper($product_obj->groupcode) == "STOCK"){
+                    $source_ = 'IV';
+                }else if(strtoupper($product_obj->groupcode) == "CONSIGNMENT"){
+                    $source_ = 'DO';
+                }else{
+                    $source_ = 'DO';
+                }
+
+                //utk credit costcode dgn accountocde
+                $row_sysparam = DB::table('sysdb.sysparam')
+                    ->select('pvalue1','pvalue2')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=','AP')
+                    ->where('trantype','=','ACC')
+                    ->first();
+
+                $crcostcode = $drcostcode; //crcc sama dg drcc
+                $cracc = $row_sysparam->pvalue2;
+
+                DB::table('finance.gltran')
+                    ->insert([
+                        'compcode' => '9b',
+                        'adduser' => 'system_ar96',
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'auditno' => $obj->recno,
+                        'lineno_' => $obj->lineno_,
+                        'source' => $source_, //kalau stock 'IV', lain dari stock 'DO'
+                        'trantype' => $obj->trantype,
+                        'reference' => $obj->deldept .' '. str_pad($obj->docno,7,"0",STR_PAD_LEFT),
+                        'description' => $obj->itemcode, 
+                        'postdate' => Carbon::createFromFormat($obj->postdate,'Y-m-d H:i:s')->format('Y-m-d'),
+                        'year' => '2025',
+                        'period' => '5',
+                        'drcostcode' => $drcostcode,
+                        'dracc' => $dracc,
+                        'crcostcode' => $crcostcode,
+                        'cracc' => $cracc,
+                        'amount' => $value->amount,
+                        'idno' => $obj->deldept .' '. $obj->docno
+                    ]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
+    }
+
+    public function gltran_step3(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $ivtxndt = DB::table('material.ivtxndt as ivdt')
+                            ->select('ivdt.compcode','ivdt.recno','ivdt.lineno_','ivdt.itemcode','ivdt.uomcode','ivdt.uomcoderecv','ivdt.txnqty','ivdt.netprice','ivdt.adduser','ivdt.adddate','ivdt.upduser','ivdt.upddate','ivdt.productcat','ivdt.draccno','ivdt.drccode','ivdt.craccno','ivdt.crccode','ivdt.updtime','ivdt.expdate','ivdt.remarks','ivdt.qtyonhand','ivdt.qtyonhandrecv','ivdt.batchno','ivdt.amount','ivdt.deptcode','ivdt.gstamount','ivdt.totamount','ivdt.recstatus','ivdt.reopen','ivdt.unit','ivdt.vrqty','ivhd.trandate','ivhd.source','ivhd.trantype','ivhd.txndept','ivhd.docno','ivhd.sndrcv')
+                            ->where('ivdt.compcode','9b')
+                            ->join('material.IvTxnHd as ivhd', function($join) use ($request){
+                                $join = $join->on('ivhd.recno', '=', 'ivdt.recno')
+                                              ->whereDate('ivhd.trandate','>=','2025-05-01')
+                                              ->whereDate('ivhd.trandate','<=','2025-05-31')
+                                              ->where('ivhd.source','iv')
+                                              ->whereIn('ivhd.trantype',['tui','tuo','ai','ao'])
+                                              ->where('ivhd.compcode','9b');
+                            })
+                            ->get();
+
+            foreach ($ivtxndt as $obj) {
+
+                $dept_obj = DB::table('sysdb.department')
+                    ->where('department.compcode','=',session('compcode'))
+                    ->where('department.deptcode','=',$obj->txndept)
+                    ->first();
+
+                $sndrcv_obj = DB::table('sysdb.department')
+                    ->where('department.compcode','=',session('compcode'))
+                    ->where('department.deptcode','=',$obj->sndrcv)
+                    ->first();
+
+                if($obj->trantype=='TUI'){
+                    $drccode=$dept_obj->costcode; 
+                    $draccno='20010026'; 
+                    $crccode=$sndrcv_obj->costcode;
+                    $craccno='20010026'; 
+
+                }else if($obj->trantype=='TUO'){
+                    $drccode=$sndrcv_obj->costcode ;
+                    $draccno='2001002'; 
+                    $crccode=$dept_obj->costcode; 
+                    $craccno='20010026'; 
+
+                }else if($obj->trantype=='AI'){
+                    $drccode=$obj->drccode;
+                    $draccno=$obj->draccno;
+                    $crccode=$obj->crccode;
+                    $craccno=$obj->craccno;
+                }else if($obj->trantype=='AO'){
+                    $drccode=$obj->drccode;
+                    $draccno=$obj->draccno;
+                    $crccode=$obj->crccode;
+                    $craccno=$obj->craccno;
+                }
+
+                DB::table('finance.gltran')
+                        ->insert([
+                            'compcode' => '9b',
+                            'adduser' => 'system_ar96',
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'auditno' => $obj->recno,
+                            'lineno_' => $obj->lineno_,
+                            'source' => $obj->source,
+                            'trantype' => $obj->trantype,
+                            'reference' => $obj->txndept .' '. $obj->docno,
+                            'description' => $obj->sndrcv,
+                            'postdate' => Carbon::createFromFormat($obj->trandate,'Y-m-d H:i:s')->format('Y-m-d'),
+                            'year' => '2025',
+                            'period' => '5',
+                            'drcostcode' => $drccode,
+                            'dracc' => $draccno,
+                            'crcostcode' => $crccode,
+                            'cracc' => $craccno,
+                            'amount' => $obj->amount,
+                            'idno' => $obj->itemcode
+                        ]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
+    }
+
+    public function gltran_step4(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $stockloc = DB::table('material.stockloc')
+                            ->where('compcode','9b')
+                            ->where('glaccount','20010052')
+                            ->whereIn('unit',["W'HOUSE",'IMP','khealth'])
+                            ->get();
+
+            $x = 1;
+            foreach ($glmasdtl as $obj) {
+                $amount = $obj->netmvval1 + $obj->netmvval2 + $obj->netmvval3 + $obj->netmvval4 + $obj->netmvval5; 
+
+
+                $dept_obj = DB::table('sysdb.department')
+                    ->where('department.compcode','=',session('compcode'))
+                    ->where('department.deptcode','=',$obj->deptcode)
+                    ->first();
+
+                DB::table('finance.gltran')
+                    ->insert([
+                        'compcode' => '9B',
+                        'adduser' => 'system_ar96',
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'auditno' => '250501',
+                        'lineno_' => $x,
+                        'source' => 'IV',
+                        'trantype' => 'CB',
+                        'reference' => $obj->itemcode,
+                        'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'description' => 'Monthly Opening and Closing Stock Update', //suppliercode + suppliername
+                        'year' => 2025,
+                        'period' => 5,
+                        'drcostcode' => $dept_obj->costcode,
+                        'dracc' => '20010052',
+                        'crcostcode' => $dept_obj->costcode,
+                        'cracc' => '2001000',
+                        'amount' => $obj->actamount1 + $obj->actamount2 + $obj->actamount3 + $obj->actamount4,
+                    ]);
+                $x = $x + 1;
+
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
+    }
 }
