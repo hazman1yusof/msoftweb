@@ -5496,8 +5496,8 @@ class TestController extends defaultController
                         'drcostcode' => $obj->costcode,
                         'dracc' => '20010041',
                         'crcostcode' => $obj->costcode,
-                        'cracc' => '20010042',
-                        'amount' => $obj->actamount1 + $obj->actamount2 + $obj->actamount3 + $obj->actamount4,
+                        'cracc' => '20010040',
+                        'amount' => $obj->openbalval + $obj->actamount1 + $obj->actamount2 + $obj->actamount3 + $obj->actamount4,
                     ]);
 
                 $x = $x + 1; 
@@ -5749,8 +5749,8 @@ class TestController extends defaultController
                         'drcostcode' => $dept_obj->costcode,
                         'dracc' => '20010052',
                         'crcostcode' => $dept_obj->costcode,
-                        'cracc' => '2001000',
-                        'amount' => $obj->netmvval1 + $obj->netmvval2 + $obj->netmvval3 + $obj->netmvval4,
+                        'cracc' => '20010050',
+                        'amount' => $obj->netmvval1 + $obj->netmvval2 + $obj->netmvval3 + $obj->netmvval4 + $obj->netmvval5,
                     ]);
                 $x = $x + 1;
 

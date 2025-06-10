@@ -222,6 +222,7 @@ $(document).ready(function () {
 		url:'./SalesOrder/table',
 		source:$('#db_source').val(),
 		trantype:$('#db_trantype').val(),
+		scope:$('#scope').val(),
 	}
 
 	var saveParam = {

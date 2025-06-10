@@ -141,6 +141,13 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 							  	<option value="POSTED">POSTED</option>
 								  <option value="Cancelled">CANCELLED</option>
 								  <option value="RECOMPUTED">RECOMPUTED</option>
+							  @elseif (Request::get('scope') == 'history')
+						      <option value="All" selected>ALL</option>
+						      <option value="OPEN">OPEN</option>
+						      <option value="PREPARED">PREPARED</option>
+							  	<option value="POSTED">POSTED</option>
+								  <option value="Cancelled">CANCELLED</option>
+								  <option value="RECOMPUTED">RECOMPUTED</option>
 							  @elseif (Request::get('scope') == 'RECOMPUTED')
 									<option value="POSTED">POSTED</option>
 							  @elseif (Request::get('scope') == 'DELIVERED')
@@ -261,7 +268,12 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 		</div>
 
     <div class="panel panel-default">
-			<div class="panel-heading">Sales Order Data Entry Header
+			<div class="panel-heading">
+				@if(strtoupper(Request::get('scope')) == 'HISTORY')
+					Sales Order - <span style="font-weight: bold;color: darkred;">History</span>
+				@else
+					Sales Order Data Entry Header
+				@endif
 				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print Sales Invoice</a>
 			</div>
 			

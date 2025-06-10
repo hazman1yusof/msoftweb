@@ -145,6 +145,12 @@ class SalesOrderController extends defaultController
     }
 
     public function maintable(Request $request){
+
+        if($request->scope == 'history'){
+            $compcode = 'xx';
+        }else{
+            $compcode = session('compcode');
+        }
         
         $table = DB::table('debtor.dbacthdr AS db')
                     ->select(
@@ -189,7 +195,7 @@ class SalesOrderController extends defaultController
                         'db.pointofsales AS db_pointofsales',
                         'db.doctorcode AS db_doctorcode'
                     )
-                    ->where('db.compcode',session('compcode'))
+                    ->where('db.compcode',$compcode)
                     ->where('db.source','PB')
                     ->where('db.trantype','IN')
                     ->whereNotNull('db.deptcode')
@@ -1843,7 +1849,7 @@ class SalesOrderController extends defaultController
             })
             ->where('h.idno','=',$idno)
             // ->where('h.mrn','=','0')
-            ->where('h.compcode','=',session('compcode'))
+            // ->where('h.compcode','=',session('compcode'))
             ->first();
 
         if($dbacthdr->recstatus == 'CANCELLED'){
