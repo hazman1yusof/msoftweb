@@ -5490,7 +5490,7 @@ class TestController extends defaultController
                         'source' => 'IV',
                         'trantype' => 'OB',
                         // 'reference' => $obj->document,
-                        'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'postdate' => '2025-05-01',
                         'description' => 'Opening Stock', //suppliercode + suppliername
                         'year' => 2025,
                         'period' => 5,
@@ -5525,6 +5525,7 @@ class TestController extends defaultController
                                 $join = $join->on('dh.recno', '=', 'dt.recno')
                                               ->whereDate('dh.postdate','>=','2025-05-01')
                                               ->whereDate('dh.postdate','<=','2025-05-31')
+                                              ->whereIn('dh.deldept',['IMP','KHEALTH','FKWSTR'])
                                               ->where('dh.compcode','9b');
                             })
                             ->get();
@@ -5557,9 +5558,6 @@ class TestController extends defaultController
 
                     if(strtoupper($product_obj->groupcode) == "CONSIGNMENT"){
                         $dracc = $row_cat->ConsignAcct;
-                        if(empty($row_cat->ConsignAcct)){
-                            $dracc = $row_cat->stockacct;
-                        }
                     }
 
                 }else if(strtoupper($product_obj->groupcode) == "ASSET"){
@@ -5710,7 +5708,7 @@ class TestController extends defaultController
                             ->where('compcode','9b')
                             ->where('year','2025')
                             // ->where('glaccount','20010052')
-                            ->whereIn('unit',["W'HOUSE",'IMP','khealth'])
+                            ->whereIn('deptcode',["FKWSTR",'IMP','khealth'])
                             ->get();
 
             $x = 1;
