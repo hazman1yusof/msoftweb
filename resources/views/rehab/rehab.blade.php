@@ -268,7 +268,7 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction_phys.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy_ncase.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/rehab_main.js?v=1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/rehab_main.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio.js?v=1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/motorScale.js?v=1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/bergBalanceTest.js?v=1') }}"></script>
