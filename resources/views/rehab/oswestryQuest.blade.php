@@ -49,7 +49,7 @@
                             <div class='eight wide column' style="padding-right: 0px;">
                                 <table class="ui striped table">
                                     <tbody>
-                                        <tr height="250px">
+                                        <tr height="310px">
                                             <th scope="row">1</th>
                                             <td>
                                                 PAIN INTENSITY<br>
@@ -109,7 +109,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr height="250px">
+                                        <tr height="310px">
                                             <th scope="row">2</th>
                                             <td>
                                                 PERSONAL CARE (e.g. Washing, Dressing)<br>
@@ -169,7 +169,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr height="290px">
+                                        <tr height="330px">
                                             <th scope="row">3</th>
                                             <td>
                                                 LIFTING<br>
@@ -229,7 +229,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr height="280px">
+                                        <tr height="300px">
                                             <th scope="row">4</th>
                                             <td>
                                                 WALKING<br>
@@ -289,7 +289,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr height="320px">
+                                        <tr height="340px">
                                             <th scope="row">5</th>
                                             <td>
                                                 SITTING<br>
@@ -356,7 +356,7 @@
                             <div class='eight wide column' style="padding-left: 0px;">
                                 <table class="ui striped table">
                                     <tbody>
-                                        <tr height="250px">
+                                        <tr height="310px">
                                             <th scope="row">6</th>
                                             <td>
                                                 STANDING<br>
@@ -416,7 +416,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr height="250px">
+                                        <tr height="310px">
                                             <th scope="row">7</th>
                                             <td>
                                                 SLEEPING<br>
@@ -476,7 +476,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr height="290px">
+                                        <tr height="330px">
                                             <th scope="row">8</th>
                                             <td>
                                                 SOCIAL LIFE<br>
@@ -536,7 +536,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr height="280px">
+                                        <tr height="300px">
                                             <th scope="row">9</th>
                                             <td>
                                                 TRAVELLING<br>
@@ -596,7 +596,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr height="320px">
+                                        <tr height="340px">
                                             <th scope="row">10</th>
                                             <td>
                                                 EMPLOYMENT / HOMEMAKING<br>
