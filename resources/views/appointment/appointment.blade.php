@@ -494,6 +494,7 @@
     <script type="text/ecmascript" src="{{ asset('patientcare/assets/form-validator/jquery.form-validator.min.js') }}/"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/appointment/appointment.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/userfile.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction_diet.js') }}"></script>
@@ -503,7 +504,6 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/dieteticCareNotes.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy_ncase.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/doctornote_main.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/requestfor.js?v=1.5') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/admhandover.js?v=1.1') }}"></script>
 
