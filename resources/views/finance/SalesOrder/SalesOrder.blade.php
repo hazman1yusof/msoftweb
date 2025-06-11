@@ -68,10 +68,23 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 	padding: 2px !important;
 }
 
+.curr_td{
+	display: block;
+  color: darkgreen;
+  font-size: 11px;
+}
+
+.orig_td{
+	display: block;
+  color: darkred;
+  font-size: 11px;
+}
+
 @endsection
 
 @section('body')
 
+	<input id="session_compcode" session_compcode="deptcode" type="hidden" value="{{Session::get('compcode')}}">
 	<input id="deptcode" name="deptcode" type="hidden" value="{{Session::get('deptcode')}}">
 	<input id="reqdept" name="reqdept" type="hidden" value="{{Session::get('reqdept')}}">
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
@@ -1072,7 +1085,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 			});
 		</script>
 
-		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.27"></script>
+		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.28"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

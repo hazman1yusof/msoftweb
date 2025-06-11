@@ -154,6 +154,7 @@ class SalesOrderController extends defaultController
         
         $table = DB::table('debtor.dbacthdr AS db')
                     ->select(
+                        'db.compcode AS db_compcode',
                         'db.debtorcode AS db_debtorcode',
                         'db.payercode AS db_payercode',
                         'dm.name AS dm_name', 
@@ -195,9 +196,9 @@ class SalesOrderController extends defaultController
                         'db.pointofsales AS db_pointofsales',
                         'db.doctorcode AS db_doctorcode'
                     )
-                    ->where('db.compcode',$compcode)
+                    ->whereIn('db.compcode',[session('compcode'),'xx'])
                     ->where('db.source','PB')
-                    ->where('db.trantype','IN')
+                    ->whereIn('db.trantype',['IN','RD'])
                     ->whereNotNull('db.deptcode')
                     ->where('db.pointofsales','0');
         

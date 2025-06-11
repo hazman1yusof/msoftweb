@@ -5721,8 +5721,8 @@ class TestController extends defaultController
 
 
                 $dept_obj = DB::table('sysdb.department')
-                    ->where('department.compcode','=',session('compcode'))
-                    ->where('department.deptcode','=',$obj->deptcode);
+                    ->where('compcode','=',session('compcode'))
+                    ->where('deptcode','=',$obj->deptcode);
 
                 if(!$dept_obj->exists()){
                     dd($obj->deptcode.' not exists');
