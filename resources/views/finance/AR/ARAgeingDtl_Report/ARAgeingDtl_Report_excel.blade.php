@@ -12,6 +12,7 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
     </tr>
     <tr>
         <td></td>
@@ -27,6 +28,7 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
     </tr>
     <tr>
         <td></td>
@@ -35,6 +37,7 @@
         <td></td>
         <td></td>
         <td style="text-align: center" colspan="4">As at : {{$date_at}}</td>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -59,7 +62,8 @@
         <td style="font-weight:bold; text-align: left">Total</td>
         <td style="font-weight:bold; text-align: left">Units</td>
         <td style="font-weight:bold; text-align: left">MRN</td>
-        <td style="font-weight:bold; text-align: left">adduser</td>
+        <td style="font-weight:bold; text-align: left">Add User</td>
+        <td style="font-weight:bold; text-align: left">Poliklinik</td>
     </tr>      
 
     @foreach ($debtortype as $obj_dt)
@@ -104,6 +108,7 @@
                             <td></td>
                             @endif
                             <td>{{$obj_ar->adduser}}</td>
+                            <td>{{$obj_ar->tillcode}}</td>
                         </tr>
                     @endif
                 @endforeach
@@ -122,6 +127,7 @@
                     @endforeach
 
                     <td>{{$total}}</td>
+                    <td></td>
                     <td></td>
                 </tr>
             @endif
