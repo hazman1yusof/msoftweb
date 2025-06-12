@@ -69,6 +69,9 @@
                                                     <input type="text" class="form-control" name="lapCounter9" style="width: 50px; margin-right: 0px;">
                                                     <input type="text" class="form-control" name="lapCounter10" style="width: 50px;">
                                                 </div>
+                                            </div>
+                                            
+                                            <div class="inline fields" style="margin-left: 85px;">
                                                 <div class="field">
                                                     <input type="text" class="form-control" name="lapCounter11" style="width: 50px; margin-right: 0px;">
                                                     <input type="text" class="form-control" name="lapCounter12" style="width: 50px; margin-right: 0px;">
@@ -188,6 +191,9 @@
                                                         <label for="suppOxygenNo">No</label>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            
+                                            <div class="inline fields" style="margin-left: 228px;">
                                                 <div class="field">
                                                     <div class="ui radio checkbox">
                                                         <input type="radio" id="suppOxygenYes" name="suppOxygen" value="1">
@@ -203,7 +209,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="padding: 5px 150px;">
+                                        <td style="padding: 5px 50px;">
                                             <table class="ui table">
                                                 <tbody>
                                                     <tr>
@@ -329,9 +335,9 @@
                                             <div class="inline fields">
                                                 <label>Number of laps:</label>
                                                 <div class="field">
-                                                    <input type="number" class="form-control" name="lapsNo"> (X60 meters) + final partial lap:
-                                                    <input type="number" class="form-control" name="partialLaps"> meters =
-                                                    <input type="number" class="form-control" name="lapsTot">
+                                                    <input type="number" class="form-control" name="lapsNo" style="width: 130px;"> (X60 meters) + final partial lap:
+                                                    <input type="number" class="form-control" name="partialLaps" style="width: 130px;"> meters =
+                                                    <input type="number" class="form-control" name="lapsTot" style="width: 130px;">
                                                 </div>
                                             </div>
                                         </td>

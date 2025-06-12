@@ -49,7 +49,7 @@
                             <div class='eight wide column' style="padding-right: 0px;">
                                 <table class="ui striped table">
                                     <tbody>
-                                        <tr height="290px">
+                                        <tr height="300px">
                                             <th scope="row">1</th>
                                             <td>
                                                 SITTING TO STANDING<br>
@@ -101,7 +101,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr height="300px">
+                                        <tr height="340px">
                                             <th scope="row">2</th>
                                             <td>
                                                 STANDING UNSUPPORTED<br>
@@ -257,7 +257,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr height="270px">
+                                        <tr height="330px">
                                             <th scope="row">5</th>
                                             <td>
                                                 TRANSFERS<br>
@@ -309,7 +309,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr height="270px">
+                                        <tr height="290px">
                                             <th scope="row">6</th>
                                             <td>
                                                 STANDING UNSUPPORTED WITH EYES CLOSED<br>
@@ -420,7 +420,7 @@
                             <div class='eight wide column' style="padding-left: 0px;">
                                 <table class="ui striped table">
                                     <tbody>
-                                        <tr height="290px">
+                                        <tr height="300px">
                                             <th scope="row">8</th>
                                             <td>
                                                 REACHING FORWARD WITH OUTSTRETCHED ARM WHILE STANDING<br>
@@ -472,7 +472,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr height="300px">
+                                        <tr height="340px">
                                             <th scope="row">9</th>
                                             <td>
                                                 PICK UP OBJECT FROM THE FLOOR FROM A STANDING POSITION<br>
@@ -628,7 +628,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr height="270px">
+                                        <tr height="330px">
                                             <th scope="row">12</th>
                                             <td>
                                                 PLACING ALTERNATE FOOT ON STEP OR STOOL WHILE STANDING UNSUPPORTED<br>
@@ -680,7 +680,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr height="270px">
+                                        <tr height="290px">
                                             <th scope="row">13</th>
                                             <td>
                                                 STANDING UNSUPPORTED ONE FOOT IN FRONT<br>
