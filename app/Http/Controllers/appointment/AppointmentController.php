@@ -181,7 +181,7 @@ class AppointmentController extends defaultController
         $table_patm = $table_patm->leftJoin('hisdb.episode', function ($join) use ($request){
                     $join = $join->on('episode.mrn','=','pat_mast.MRN');
                     $join = $join->where('episode.epistycode','=','OP');
-                    $join = $join->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET']);
+                    // $join = $join->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET']);
                     $join = $join->where('episode.admsrccode', '=', 'APPT');
                     // $join = $join->where(
                     //         function ($query){
@@ -1178,7 +1178,7 @@ class AppointmentController extends defaultController
         
         $emergency = DB::table('hisdb.episode')
                     ->where('compcode','=',session('compcode'))
-                    ->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET'])
+                    // ->whereIn('episode.regdept',['A&E','PHY','XRAY','DIET'])
                     ->where('episode.admsrccode', '=', 'APPT')
                     ->whereRaw(
                         "(reg_date >= ? AND reg_date <= ?)",
