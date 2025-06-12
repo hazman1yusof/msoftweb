@@ -1178,7 +1178,7 @@ class AppointmentController extends defaultController
         
         $emergency = DB::table('hisdb.episode')
                     ->where('compcode','=',session('compcode'))
-                    ->whereNot('episode.regdept',['TH2','EYE'])
+                    ->whereIn('episode.regdept',['TH2','EYE'])
                     ->where('episode.admsrccode', '=', 'APPT')
                     ->whereRaw(
                         "(reg_date >= ? AND reg_date <= ?)",
