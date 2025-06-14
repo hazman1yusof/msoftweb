@@ -24,8 +24,8 @@
             @endif
             <td style="text-align: left">{{$obj->debtorcode}}</td>
             <td>{{str_pad($obj->auditno, 8, "0", STR_PAD_LEFT)}}</td>
-            <td data-format="0.00" style="text-align: right">{{number_format($obj->amount, 2, '.', ',')}}</td>
-            <td data-format="0.00" style="text-align: right">{{number_format($obj->outamount, 2, '.', ',')}}</td>
+            <td style="text-align: right">{{$obj->amount}}</td>
+            <td style="text-align: right">{{$obj->outamount}}</td>
             <td style="text-align: left">{{$obj->mrn}}</td>
             <td>{{$obj->deptcode}}</td>
         </tr>
@@ -47,7 +47,7 @@
         <!-- <td></td> -->
         <td></td>
         <td></td>
-        <td data-format="0.00" style="text-align: right">{{number_format($tot_selfPaid, 2, '.', ',')}}</td>
+        <td style="text-align: right">{{$tot_selfPaid, 2}}</td>
         <td></td>
         <td></td>
         <td></td>
@@ -82,8 +82,8 @@
             @endif
             <td style="text-align: left">{{$obj->debtorcode}}</td>
             <td>{{str_pad($obj->auditno, 8, "0", STR_PAD_LEFT)}}</td>
-            <td data-format="0.00" style="text-align: right">{{number_format($obj->amount, 2, '.', ',')}}</td>
-            <td data-format="0.00" style="text-align: right">{{number_format($obj->outamount, 2, '.', ',')}}</td>
+            <td style="text-align: right">{{$obj->amount}}</td>
+            <td style="text-align: right">{{$obj->outamount}}</td>
             <td style="text-align: left">{{$obj->mrn}}</td>
             <td>{{$obj->deptcode}}</td>
         </tr>
@@ -105,7 +105,7 @@
         <!-- <td></td> -->
         <td></td>
         <td></td>
-        <td data-format="0.00" style="text-align: right">{{number_format($tot_panel, 2, '.', ',')}}</td>
+        <td style="text-align: right">{{$tot_panel}}</td>
         <td></td>
         <td></td>
         <td></td>

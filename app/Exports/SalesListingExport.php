@@ -22,7 +22,7 @@ use Illuminate\Contracts\View\View;
 use DateTime;
 use Carbon\Carbon;
 
-class SalesListingExport implements FromView, WithEvents, WithColumnWidths
+class SalesListingExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     
     /**
@@ -39,17 +39,25 @@ class SalesListingExport implements FromView, WithEvents, WithColumnWidths
                     ->where('compcode','=',session('compcode'))
                     ->first();
     }
+
+    public function columnFormats(): array
+    {
+        return [
+            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+        ];
+    }
     
     public function columnWidths(): array
     {
         return [
             'A' => 15,
             'B' => 15,
-            'C' => 30,
+            'C' => 40,
             'D' => 18,
             'E' => 15,
             'F' => 15,
-            'G' => 10,
+            'G' => 20,
             'H' => 15,
         ];
     }
@@ -91,28 +99,18 @@ class SalesListingExport implements FromView, WithEvents, WithColumnWidths
         // dd($dbacthdr_1);
         
         $array_report = [];
-        // foreach($dbacthdr_1 as $key => $value){
-        //     $value->type = '';
-        //     $value->name = '';
-        //     // array_push($array_report, $value);
-            
-        //     // $debtormast = DB::table('debtor.debtormast')
-        //     //             ->where('compcode','=',session('compcode'))
-        //     //             ->where('debtorcode','=',$value->debtorcode)
-        //     //             ->first();
-            
-        //     // dd($debtormast);
-            
-        //     if($debtormast->dm_debtortype == 'PT' || $debtormast->dm_debtortype == 'PR'){
-        //         $value->type = 'SELF PAID';
-        //         $value->name = $debtormast->name;
-        //         array_push($array_report, $value);
-        //     }else{
-        //         $value->type = 'PANEL';
-        //         $value->name = $debtormast->name;
-        //         array_push($array_report, $value);
-        //     }
-        // }
+        foreach($dbacthdr as $obj){
+
+            if($debtormast->dm_debtortype == 'PT' || $debtormast->dm_debtortype == 'PR'){
+                $value->type = 'SELF PAID';
+                $value->name = $debtormast->name;
+                array_push($array_report, $value);
+            }else{
+                $value->type = 'PANEL';
+                $value->name = $debtormast->name;
+                array_push($array_report, $value);
+            }
+        }
         // dd($array_report);
         
         $totalAmount = $dbacthdr->sum('amount');
