@@ -98,19 +98,19 @@ class SalesListingExport implements FromView, WithEvents, WithColumnWidths, With
         
         // dd($dbacthdr_1);
         
-        $array_report = [];
-        foreach($dbacthdr as $obj){
+        // $array_report = [];
+        // foreach($dbacthdr as $obj){
 
-            if($debtormast->dm_debtortype == 'PT' || $debtormast->dm_debtortype == 'PR'){
-                $value->type = 'SELF PAID';
-                $value->name = $debtormast->name;
-                array_push($array_report, $value);
-            }else{
-                $value->type = 'PANEL';
-                $value->name = $debtormast->name;
-                array_push($array_report, $value);
-            }
-        }
+        //     if($obj->dm_debtortype == 'PT' || $obj->dm_debtortype == 'PR'){
+        //         $value->type = 'SELF PAID';
+        //         $value->name = $debtormast->name;
+        //         array_push($array_report, $value);
+        //     }else{
+        //         $value->type = 'PANEL';
+        //         $value->name = $debtormast->name;
+        //         array_push($array_report, $value);
+        //     }
+        // }
         // dd($array_report);
         
         $totalAmount = $dbacthdr->sum('amount');
