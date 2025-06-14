@@ -5529,7 +5529,7 @@ class TestController extends defaultController
                                 $join = $join->on('dh.recno', '=', 'dt.recno')
                                               ->whereDate('dh.postdate','>=','2025-05-01')
                                               ->whereDate('dh.postdate','<=','2025-05-31')
-                                              ->whereIn('dh.deldept',['IMP','KHEALTH','FKWSTR'])
+                                              // ->whereIn('dh.deldept',['IMP','KHEALTH','FKWSTR'])
                                               ->where('dh.compcode','9b');
                             })
                             ->get();

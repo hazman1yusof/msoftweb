@@ -77,16 +77,16 @@ class SalesListingExport implements FromView, WithEvents, WithColumnWidths
                     ->orderBy('dh.posteddate','ASC')
                     ->get();
         
-        // dd($dbacthdr);
+        dd($dbacthdr);
         
-        $dbacthdr_1 = DB::table('debtor.dbacthdr')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('source','=','PB')
-                    ->where('trantype','=','IN')
-                    ->where('recstatus','=','POSTED')
-                    ->whereBetween('posteddate',[$datefr, $dateto])
-                    ->orderBy('posteddate','ASC')
-                    ->get();
+        // $dbacthdr_1 = DB::table('debtor.dbacthdr')
+        //             ->where('compcode','=',session('compcode'))
+        //             ->where('source','=','PB')
+        //             ->where('trantype','=','IN')
+        //             ->where('recstatus','=','POSTED')
+        //             ->whereBetween('posteddate',[$datefr, $dateto])
+        //             ->orderBy('posteddate','ASC')
+        //             ->get();
         
         // dd($dbacthdr_1);
         
@@ -96,14 +96,14 @@ class SalesListingExport implements FromView, WithEvents, WithColumnWidths
             $value->name = '';
             // array_push($array_report, $value);
             
-            $debtormast = DB::table('debtor.debtormast')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('debtorcode','=',$value->debtorcode)
-                        ->first();
+            // $debtormast = DB::table('debtor.debtormast')
+            //             ->where('compcode','=',session('compcode'))
+            //             ->where('debtorcode','=',$value->debtorcode)
+            //             ->first();
             
             // dd($debtormast);
             
-            if($debtormast->debtortype == 'PT' || $debtormast->debtortype == 'PR'){
+            if($debtormast->dm_debtortype == 'PT' || $debtormast->dm_debtortype == 'PR'){
                 $value->type = 'SELF PAID';
                 $value->name = $debtormast->name;
                 array_push($array_report, $value);
