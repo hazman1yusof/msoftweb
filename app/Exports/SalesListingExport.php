@@ -77,7 +77,7 @@ class SalesListingExport implements FromView, WithEvents, WithColumnWidths
                     ->orderBy('dh.posteddate','ASC')
                     ->get();
         
-        dd($dbacthdr);
+        // dd($dbacthdr);
         
         // $dbacthdr_1 = DB::table('debtor.dbacthdr')
         //             ->where('compcode','=',session('compcode'))
@@ -91,28 +91,28 @@ class SalesListingExport implements FromView, WithEvents, WithColumnWidths
         // dd($dbacthdr_1);
         
         $array_report = [];
-        foreach($dbacthdr_1 as $key => $value){
-            $value->type = '';
-            $value->name = '';
-            // array_push($array_report, $value);
+        // foreach($dbacthdr_1 as $key => $value){
+        //     $value->type = '';
+        //     $value->name = '';
+        //     // array_push($array_report, $value);
             
-            // $debtormast = DB::table('debtor.debtormast')
-            //             ->where('compcode','=',session('compcode'))
-            //             ->where('debtorcode','=',$value->debtorcode)
-            //             ->first();
+        //     // $debtormast = DB::table('debtor.debtormast')
+        //     //             ->where('compcode','=',session('compcode'))
+        //     //             ->where('debtorcode','=',$value->debtorcode)
+        //     //             ->first();
             
-            // dd($debtormast);
+        //     // dd($debtormast);
             
-            if($debtormast->dm_debtortype == 'PT' || $debtormast->dm_debtortype == 'PR'){
-                $value->type = 'SELF PAID';
-                $value->name = $debtormast->name;
-                array_push($array_report, $value);
-            }else{
-                $value->type = 'PANEL';
-                $value->name = $debtormast->name;
-                array_push($array_report, $value);
-            }
-        }
+        //     if($debtormast->dm_debtortype == 'PT' || $debtormast->dm_debtortype == 'PR'){
+        //         $value->type = 'SELF PAID';
+        //         $value->name = $debtormast->name;
+        //         array_push($array_report, $value);
+        //     }else{
+        //         $value->type = 'PANEL';
+        //         $value->name = $debtormast->name;
+        //         array_push($array_report, $value);
+        //     }
+        // }
         // dd($array_report);
         
         $totalAmount = $dbacthdr->sum('amount');
