@@ -113,19 +113,19 @@ class SalesListingExport implements FromView, WithEvents, WithColumnWidths, With
         // }
         // dd($array_report);
         
-        $totalAmount = $dbacthdr->sum('amount');
+        // $totalAmount = $dbacthdr->sum('amount');
         
-        $totamount_expld = explode(".", (float)$totalAmount);
+        // $totamount_expld = explode(".", (float)$totalAmount);
         
-        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
-        $totamt_eng = $totamt_eng_rm." ONLY";
+        // $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
+        // $totamt_eng = $totamt_eng_rm." ONLY";
         
-        if(count($totamount_expld) > 1){
-            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
-            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
-        }
+        // if(count($totamount_expld) > 1){
+        //     $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+        //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
+        // }
         
-        return view('finance.AR.SalesListing_Report.SalesListing_Report_excel',compact('dbacthdr','array_report','totalAmount','totamt_eng'));
+        return view('finance.AR.SalesListing_Report.SalesListing_Report_excel',compact('dbacthdr'));
     }
     
     public function registerEvents(): array

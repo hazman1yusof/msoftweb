@@ -114,11 +114,3 @@
     <tr></tr>
     <tr></tr>
 </table>
-<!-- <table>
-    <tr>
-        <td style="font-weight: bold">GRAND TOTAL:</td>
-        <td></td>
-        <td></td>
-        <td data-format="0.00" style="font-weight: bold; text-align: right;">{{number_format($totalAmount, 2, '.', ',')}}</td>
-    </tr>
-</table> -->
