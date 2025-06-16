@@ -217,12 +217,12 @@ use Carbon\Carbon;
             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
         ];
 
-        foreach ($field as $key => $value) {
-            if($value == 'remarks' || $value == 'document' || $value == 'outamt' || $value == 'outamount'){
-                continue;
-            }
-            $array_update[$value] = $request[$request->field[$key]];
-        }
+        // foreach ($field as $key => $value) {
+        //     if($value == 'remarks' || $value == 'document' || $value == 'outamt' || $value == 'outamount'){
+        //         continue;
+        //     }
+        //     $array_update[$value] = $request[$request->field[$key]];
+        // }
 
         try {
             //////////where//////////
