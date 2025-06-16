@@ -1678,12 +1678,14 @@ Route::post('/occupTherapy_barthel/form','rehab\OccupTherapyBarthelController@fo
 Route::get('/occupTherapy_upperExtremity/table','rehab\OccupTherapyUpperExtremityController@table');
 Route::post('/occupTherapy_upperExtremity/form','rehab\OccupTherapyUpperExtremityController@form');
 
+Route::get('/occupTherapy_notes/table','rehab\OccupTherapyNotesController@table');
+Route::post('/occupTherapy_notes/form','rehab\OccupTherapyNotesController@form');
+
 //dari appointment
 
 Route::get('/appointment','appointment\AppointmentController@index');
 Route::get('/appointment/table','appointment\AppointmentController@table');
 Route::post('/appointment/form','appointment\AppointmentController@form');
-// Route::post('/ptcare_doctornote_transaction_save', "rehab\RehabController@transaction_save");
 
 //dari dialysis
 
