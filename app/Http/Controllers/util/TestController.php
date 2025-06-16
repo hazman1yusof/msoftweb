@@ -6037,6 +6037,17 @@ class TestController extends defaultController
         return $obj;
     }
 
+    public function gltran_frompaymode($paymode){
+        $obj = DB::table('debtor.paymode')
+                ->select('glaccno')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=','AR')
+                ->where('paymode','=',$paymode)
+                ->first();
+
+        return $obj;
+    }
+
     public function gltran_poliklinik(Request $request){
         DB::beginTransaction();
 
@@ -6124,7 +6135,7 @@ class TestController extends defaultController
 
                 $dept_obj = $this->gltran_fromdept($dbacthdr_obj->deptcode);
                 $debtormast_obj = $this->gltran_fromdebtormast($dbacthdr_obj->payercode);
-
+                $paymode_obj = $this->gltran_frompaymode($dbacthdr_obj->paymode);
                 
                 $crcostcode = $debtormast_obj->depccode;
                 $cracc = $debtormast_obj->depglacc;
