@@ -179,7 +179,7 @@ $(document).ready(function () {
 			{ label: 'Doc Date', name: 'gljnlhdr_docdate', width: 20, classes: 'wrap text-uppercase', formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Different', name: 'gljnlhdr_different', width: 20, classes: 'wrap text-uppercase',align: 'right', formatter:'currency'},
 			{ label: 'Status', name: 'gljnlhdr_recstatus', width: 20, classes: 'wrap text-uppercase',},
-			// { label: ' ', name: 'Checkbox',sortable:false, width: 15,align: "center", formatter: formatterCheckbox },	
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 5,align: "center", formatter: formatterCheckbox },	
 			{ label: 'adduser', name: 'gljnlhdr_adduser', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'adddate', name: 'gljnlhdr_adddate', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upduser', name: 'gljnlhdr_upduser', width: 90, hidden:true, classes: 'wrap'},
@@ -373,22 +373,23 @@ $(document).ready(function () {
 	}
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
+	// $("#but_post_single_jq").click(function(){
+	// 	$("#but_post_single_jq").attr('disabled',true);
+	// 	var idno = selrowData('#jqGrid').gljnlhdr_idno;
+	// 	var obj={};
+	// 	obj.idno = idno;
+	// 	obj._token = $('#_token').val();
+	// 	obj.oper = 'posted';
 
-		var idno = selrowData('#jqGrid').gljnlhdr_idno;
-		var obj={};
-		obj.idno = idno;
-		obj._token = $('#_token').val();
-		obj.oper = $(this).data('oper')+'_single';
-
-		$.post( './journalEntry/form', obj , function( data ) {
-			refreshGrid('#jqGrid', urlParam);
-		}).fail(function(data) {
-			$('#error_infront').text(data.responseText);
-		}).success(function(data){
-			
-		});
-	});
+	// 	$.post( './journalEntry/form', obj , function( data ) {
+	// 		refreshGrid('#jqGrid', urlParam);
+	// 	}).fail(function(data) {
+	// 		$('#error_infront').text(data.responseText);
+	// 		$("#but_post_single_jq").attr('disabled',false);
+	// 	}).success(function(data){
+	// 		$("#but_post_single_jq").attr('disabled',false);
+	// 	});
+	// });
 
 	$("#but_post_jq").click(function(){
 		var idno_array = [];
@@ -396,7 +397,7 @@ $(document).ready(function () {
 		let ids = $('#jqGrid_selection').jqGrid ('getDataIDs');
 		for (var i = 0; i < ids.length; i++) {
 			var data = $('#jqGrid_selection').jqGrid('getRowData',ids[i]);
-	    	idno_array.push(data.gljnlhdr_auditno);
+	    	idno_array.push(data.gljnlhdr_idno);
 	    }
 	    
 		var obj={};
@@ -1194,6 +1195,21 @@ $(document).ready(function () {
 					
 			});
 		}
+	}
+
+	function formatterCheckbox(cellvalue, options, rowObject){
+		let idno = cbselect.idno;
+		let recstatus = cbselect.recstatus;
+		
+		if(options.gid != "jqGrid"){
+			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+		}
+
+		if(rowObject.gljnlhdr_recstatus == "OPEN"){
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+		}
+
+		return ' ';
 	}
 
 });

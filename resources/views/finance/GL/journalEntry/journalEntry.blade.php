@@ -115,30 +115,23 @@ i.fa {
 				<div id="div_for_but_post" class="col-md-8 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<span id="error_infront" style="color: red"></span>
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
-					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
+					<!-- <button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button> -->
+
 					<button 
 					type="button" 
 						class="btn btn-primary btn-sm" 
 						id="but_post_jq" 
 						data-oper="posted" 
 						style="display: none;">
-						@if (strtoupper(Request::get('scope')) == 'ALL')
-							{{'POST'}}
-						@else
-							{{Request::get('scope').' ALL'}}
-						@endif
+						POSTED
 					</button>
 
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
-						@if (strtoupper(Request::get('scope')) == 'ALL')
-							{{'POST'}}
-						@else
-							{{Request::get('scope')}}
-						@endif
-					</button>
+					<!-- <button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
+						POST
+					</button> -->
 
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
+					<!-- <button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
+					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button> -->
 				</div>
 			</fieldset> 
 		</form>
@@ -340,7 +333,7 @@ i.fa {
 		});
 	</script>
 
-	<script src="js/finance/GL/journalEntry/journalEntry.js?v=1.3"></script>
+	<script src="js/finance/GL/journalEntry/journalEntry.js?v=1.4"></script>
 	<!-- <script src="js/finance/AP/invoiceAP/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
