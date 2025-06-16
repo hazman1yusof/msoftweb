@@ -1613,6 +1613,10 @@ Route::get('/ptcare_nursing','patientcare\NursingController@show');
 Route::get('/ptcare_nursing/table','patientcare\NursingController@table');
 Route::post('/ptcare_nursing/form','patientcare\NursingController@form');
 
+Route::get('/ptcare_nursingAppt','patientcare\NursingApptController@show');
+Route::get('/ptcare_nursingAppt/table','patientcare\NursingApptController@table');
+Route::post('/ptcare_nursingAppt/form','patientcare\NursingApptController@form');
+
 Route::get('/ptcare_preview','patientcare\PreviewController@preview');
 Route::get('/ptcare_preview/data','patientcare\PreviewController@previewdata');
 Route::get('/ptcare_localpreview','patientcare\WebserviceController@localpreview');
@@ -1674,12 +1678,14 @@ Route::post('/occupTherapy_barthel/form','rehab\OccupTherapyBarthelController@fo
 Route::get('/occupTherapy_upperExtremity/table','rehab\OccupTherapyUpperExtremityController@table');
 Route::post('/occupTherapy_upperExtremity/form','rehab\OccupTherapyUpperExtremityController@form');
 
+Route::get('/occupTherapy_notes/table','rehab\OccupTherapyNotesController@table');
+Route::post('/occupTherapy_notes/form','rehab\OccupTherapyNotesController@form');
+
 //dari appointment
 
 Route::get('/appointment','appointment\AppointmentController@index');
 Route::get('/appointment/table','appointment\AppointmentController@table');
 Route::post('/appointment/form','appointment\AppointmentController@form');
-// Route::post('/ptcare_doctornote_transaction_save', "rehab\RehabController@transaction_save");
 
 //dari dialysis
 

@@ -188,7 +188,7 @@
 
         <div id="tab_triage" class="panel-collapse collapse">
             <div class="panel-body paneldiv">
-                @include('patientcare.nursing')
+                @include('patientcare.nursingAppt')
             </div>
         </div>
     </div>
@@ -500,7 +500,7 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction_diet.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction_phys.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/doctornote.js?v=1.3') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/nursing.js?v=1.3') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/nursingAppt.js?v=1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/dieteticCareNotes.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy_ncase.js') }}"></script>
