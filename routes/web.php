@@ -1613,6 +1613,10 @@ Route::get('/ptcare_nursing','patientcare\NursingController@show');
 Route::get('/ptcare_nursing/table','patientcare\NursingController@table');
 Route::post('/ptcare_nursing/form','patientcare\NursingController@form');
 
+Route::get('/ptcare_nursingAppt','patientcare\NursingApptController@show');
+Route::get('/ptcare_nursingAppt/table','patientcare\NursingApptController@table');
+Route::post('/ptcare_nursingAppt/form','patientcare\NursingApptController@form');
+
 Route::get('/ptcare_preview','patientcare\PreviewController@preview');
 Route::get('/ptcare_preview/data','patientcare\PreviewController@previewdata');
 Route::get('/ptcare_localpreview','patientcare\WebserviceController@localpreview');
