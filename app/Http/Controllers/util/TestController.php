@@ -5867,7 +5867,7 @@ class TestController extends defaultController
                             ->where('auditno',$auditno)
                             ->first();
 
-            $auditno = $this->recno('PB','RD');
+            $auditno = $this->defaultSysparam('PB','RD');
 
             $patmast = DB::table('hisdb.pat_mast')
                             ->where('compcode',session('compcode'))
