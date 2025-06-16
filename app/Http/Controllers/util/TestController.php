@@ -54,8 +54,8 @@ class TestController extends defaultController
             //     return $this->set_class($request);
             // case 'set_stockloc_unit':
             //     return $this->set_stockloc_unit($request);
-            case 'netmv_stockloc_btlkn': //dah xperlu
-                return $this->netmv_stockloc_btlkn($request);
+            case 'gltran_poliklinik': //dah xperlu
+                return $this->gltran_poliklinik($request);
             case 'ivtxndt_10s_peritem':
                 return $this->ivtxndt_10s_peritem($request);
             case 'ivtxndt_10s':
@@ -2299,31 +2299,6 @@ class TestController extends defaultController
 
             dd('Error'.$e);
         }
-    }
-
-    public function gltran_fromdept($deptcode,$catcode){
-
-        // $ccode_obj = DB::table("sysdb.department")
-        //             ->where('compcode','=',session('compcode'))
-        //             ->where('deptcode','=',$deptcode)
-        //             ->first();
-
-        $ccode_obj = DB::table("sysdb.sysparam")
-                    ->where('compcode','=',session('compcode'))
-                    ->where('source','=','AP')
-                    ->where('trantype','=','ACC')
-                    ->first();
-
-        // $draccno_obj = DB::table("material.category")
-        //                 ->where('compcode','=',session('compcode'))
-        //                 ->where('catcode','=',$catcode)
-        //                 ->where('source','=','CR')
-        //                 ->first();
-        
-        $responce = new stdClass();
-        $responce->drcostcode = $ccode_obj->pvalue1;
-        $responce->draccno = $ccode_obj->pvalue2;
-        return $responce;
     }
 
     public function gltran_fromsupp($suppcode){
@@ -6029,6 +6004,101 @@ class TestController extends defaultController
                     ]);
 
             DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
+    }
+
+    public function gltran_fromdept($deptcode){
+        $obj = DB::table('sysdb.department')
+                ->select('costcode')
+                ->where('compcode','=',session('compcode'))
+                ->where('deptcode','=',$deptcode)
+                ->first();
+
+        return $obj;
+    }
+
+    public function gltran_fromdebtormast($payercode){
+        $obj = DB::table('debtor.debtormast')
+                ->select('actdebglacc','actdebccode','depccode','depglacc')
+                ->where('compcode','=',session('compcode'))
+                ->where('debtorcode','=',$payercode);
+
+        if(!$obj->exists()){
+            dd($payercode);
+        }else{
+            $obj = $obj->first();
+        }
+
+        return $obj;
+    }
+
+    public function gltran_poliklinik(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $poliklinik = DB::table('recondb.poliklinik')
+                                // ->where('compcode',session('compcode'))
+                                ->where('source','PB')
+                                ->where('trantype','IN')
+                                ->get();
+
+            foreach ($poliklinik as $dbacthdr_obj) {
+
+                $posteddate = Carbon::createFromFormat('d/m/Y',$dbacthdr_obj->date)->format('Y-m-d');
+
+                $yearperiod = defaultController::getyearperiod_($posteddate);
+
+                $dept_obj = $this->gltran_fromdept($dbacthdr_obj->tillcode);
+                $debtormast_obj = $this->gltran_fromdebtormast($dbacthdr_obj->payercode);
+
+                $drcostcode = $debtormast_obj->actdebccode;
+                $dracc = $debtormast_obj->actdebglacc;
+                $crcostcode = $dept_obj->costcode;
+                $cracc = '10020540';
+
+                $gltran = DB::table('finance.gltran')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('source','=','PB')
+                            ->where('trantype','=',$dbacthdr_obj->trantype)
+                            ->where('auditno','=',$dbacthdr_obj->auditno)
+                            ->where('lineno_','=',1);
+
+                if($gltran->exists()){
+                    throw new \Exception("gltran already exists",500);
+                }
+
+                //1. buat gltran
+                DB::table('finance.gltran')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'auditno' => $dbacthdr_obj->auditno,
+                        'lineno_' => 1,
+                        'source' => 'PB',
+                        'trantype' => $dbacthdr_obj->trantype,
+                        'reference' => $dbacthdr_obj->reference,
+                        'description' => $dbacthdr_obj->oldmrn,
+                        'year' => $yearperiod->year,
+                        'period' => $yearperiod->period,
+                        'drcostcode' => $drcostcode,
+                        'dracc' => $dracc,
+                        'crcostcode' => $crcostcode,
+                        'cracc' => $cracc,
+                        'amount' => $dbacthdr_obj->amount,
+                        'postdate' => $posteddate,
+                        'adduser' => 'SYSTEM',
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'idno' => null
+                    ]);
+            }
+
+            DB::commit();
+
         } catch (Exception $e) {
             DB::rollback();
             report($e);
