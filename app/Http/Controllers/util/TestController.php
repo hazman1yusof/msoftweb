@@ -6170,7 +6170,7 @@ class TestController extends defaultController
                         'crcostcode' => $crcostcode,
                         'cracc' => $cracc,
                         'amount' => $dbacthdr_obj->amount,
-                        'postdate' => $posteddate,
+                        'postdate' => $dbacthdr_obj->posteddate,
                         'adduser' => 'SYSTEM',
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'idno' => null
