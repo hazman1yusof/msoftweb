@@ -115,7 +115,6 @@ use Carbon\Carbon;
         $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
-
     }
 
     public function form(Request $request)
@@ -188,7 +187,6 @@ use Carbon\Carbon;
 
             return response($e->getMessage(), 500);
         }
-
     }
 
     public function edit(Request $request){
@@ -250,51 +248,80 @@ use Carbon\Carbon;
         try {
 
 
-            foreach ($request->idno_array as $auditno){
+            foreach ($request->idno_array as $idno){
 
-                $apacthdr = DB::table('finance.apacthdr')
+                $gljnlhdr = DB::table('finance.gljnlhdr')
                     ->where('compcode','=',session('compcode'))
-                    ->where('source','=','AP')
-                    ->where('trantype','=','IN')
-                    ->where('auditno','=',$auditno)
+                    ->where('idno','=',$idno)
                     ->first();
 
-                $apactdtl = DB::table('finance.apactdtl')
+                DB::table('finance.gljnlhdr')
                     ->where('compcode','=',session('compcode'))
-                    ->where('source','=',$apacthdr->source)
-                    ->where('trantype','=',$apacthdr->trantype)
-                    ->where('auditno','=', $auditno);
-
-                $yearperiod = defaultController::getyearperiod_($apacthdr->postdate);
-                    if($yearperiod->status == 'C'){
-                        throw new \Exception('Auditno: '.$apacthdr->auditno.' Period already close, year: '.$yearperiod->year.' month: '.$yearperiod->period.' status: '.$yearperiod->status, 500);
-                    }
-                $this->check_outamt($apacthdr,$apactdtl);
-
-                $this->gltran($auditno);
-
-                if($apactdtl->exists()){ 
-                    foreach ($apactdtl->get() as $value) {
-                        DB::table('material.delordhd')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('recstatus','=','POSTED')
-                            ->where('delordno','=',$value->document)
-                            ->update(['invoiceno'=>$apacthdr->document]);
-                    }
-                }
-
-                DB::table('finance.apacthdr')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('source','=','AP')
-                    ->where('trantype','=','IN')
-                    ->where('auditno','=',$auditno)
+                    ->where('idno','=',$idno)
                     ->update([
                         'recstatus' => 'POSTED',
-                        'recdate' => $apacthdr->postdate,
-                        'postuser' => session('username'),
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser' => session('username'),
+                        'lastdate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
+
+                $yearperiod = defaultController::getyearperiod_(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+
+                $gljnldtl = DB::table('finance.gljnldtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('auditno','=',$gljnlhdr->auditno)
+                    ->where('source','=','GL')
+                    ->where('trantype','=','JNL')
+                    ->get();
+
+                foreach ($gljnldtl as $obj) {
+
+                    if($obj->drcrsign == 'DR'){
+                        //DR
+                        DB::table('finance.gltran')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'adduser' => session('username'),
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'auditno' => $obj->auditno,
+                                'lineno_' => $obj->lineno_,
+                                'source' => $obj->source,
+                                'trantype' => $obj->trantype,
+                                'reference' => $gljnlhdr->description,
+                                'description' => $obj->description, 
+                                'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'year' => $yearperiod->year,
+                                'period' => $yearperiod->period,
+                                'drcostcode' => $obj->costcode,
+                                'dracc' => $obj->glaccount,
+                                // 'crcostcode' => $crcostcode,
+                                // 'cracc' => $cracc,
+                                'amount' => $obj->amount
+                            ]);
+                    }else if($obj->drcrsign == 'CR'){
+                        //CR
+                        DB::table('finance.gltran')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'adduser' => session('username'),
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'auditno' => $obj->auditno,
+                                'lineno_' => $obj->lineno_,
+                                'source' => $obj->source,
+                                'trantype' => $obj->trantype,
+                                'reference' => $gljnlhdr->description,
+                                'description' => $obj->description, 
+                                'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'year' => $yearperiod->year,
+                                'period' => $yearperiod->period,
+                                // 'drcostcode' => $obj->costcode,
+                                // 'dracc' => $obj->glaccount,
+                                'crcostcode' => $obj->costcode,
+                                'cracc' => $obj->glaccount,
+                                'amount' => $obj->amount
+                            ]);
+                    }
+                }
             }
 
             DB::commit();
