@@ -98,6 +98,8 @@ class TestController extends defaultController
                 return $this->create_prod_kaluxde($request);
             case 'stockloc_total':
                 return $this->stockloc_total($request);
+            case 'dbacthistory':
+                return $this->dbacthistory($request);
             // case 'betulkan_uom_kh_stockloc':
             //     return $this->betulkan_uom_kh_stockloc($request);
             // case 'betulkan_uom_kh_product':
@@ -5842,6 +5844,105 @@ class TestController extends defaultController
                 }
 
             }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
+    }
+
+    public function dbacthistory(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $auditno = $request->auditno;
+
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','PB')
+                            ->where('trantype','RD')
+                            ->where('auditno',$auditno)
+                            ->first();
+
+            DB::table('recondb.dbacthistory')
+                    ->insert([
+                        'compcode' => $dbacthdr->compcode,
+                        'source' => $dbacthdr->source,
+                        'trantype' => $dbacthdr->trantype,
+                        'auditno' => $dbacthdr->auditno,
+                        'lineno_' => $dbacthdr->lineno_,
+                        'amount' => $dbacthdr->amount,
+                        'outamount' => $dbacthdr->outamount,
+                        'recstatus' => $dbacthdr->recstatus,
+                        'entrydate' => $dbacthdr->entrydate,
+                        'entrytime' => $dbacthdr->entrytime,
+                        'entryuser' => $dbacthdr->entryuser,
+                        'reference' => $dbacthdr->reference,
+                        'recptno' => $dbacthdr->recptno,
+                        'paymode' => $dbacthdr->paymode,
+                        'tillcode' => $dbacthdr->tillcode,
+                        'tillno' => $dbacthdr->tillno,
+                        'debtortype' => $dbacthdr->debtortype,
+                        'debtorcode' => $dbacthdr->debtorcode,
+                        'payercode' => $dbacthdr->payercode,
+                        'billdebtor' => $dbacthdr->billdebtor,
+                        'remark' => $dbacthdr->remark,
+                        'mrn' => $dbacthdr->mrn,
+                        'episno' => $dbacthdr->episno,
+                        'authno' => $dbacthdr->authno,
+                        'expdate' => $dbacthdr->expdate,
+                        'adddate' => $dbacthdr->adddate,
+                        'adduser' => $dbacthdr->adduser,
+                        'upddate' => $dbacthdr->upddate,
+                        'upduser' => $dbacthdr->upduser,
+                        'deldate' => $dbacthdr->deldate,
+                        'deluser' => $dbacthdr->deluser,
+                        'epistype' => $dbacthdr->epistype,
+                        'cbflag' => $dbacthdr->cbflag,
+                        'conversion' => $dbacthdr->conversion,
+                        'payername' => $dbacthdr->payername,
+                        'hdrtype' => $dbacthdr->hdrtype,
+                        'currency' => $dbacthdr->currency,
+                        'rate' => $dbacthdr->rate,
+                        'unit' => $dbacthdr->unit,
+                        'invno' => $dbacthdr->invno,
+                        'paytype' => $dbacthdr->paytype,
+                        'bankcharges' => $dbacthdr->bankcharges,
+                        'RCCASHbalance' => $dbacthdr->RCCASHbalance,
+                        'RCOSbalance' => $dbacthdr->RCOSbalance,
+                        'RCFinalbalance' => $dbacthdr->RCFinalbalance,
+                        'PymtDescription' => $dbacthdr->PymtDescription,
+                        'orderno' => $dbacthdr->orderno,
+                        'ponum' => $dbacthdr->ponum,
+                        'podate' => $dbacthdr->podate,
+                        'termdays' => $dbacthdr->termdays,
+                        'termmode' => $dbacthdr->termmode,
+                        'deptcode' => $dbacthdr->deptcode,
+                        'posteddate' => $dbacthdr->posteddate,
+                        'approvedby' => $dbacthdr->approvedby,
+                        'approveddate' => $dbacthdr->approveddate,
+                        'approved_remark' => $dbacthdr->approved_remark,
+                        'unallocated' => $dbacthdr->unallocated,
+                        'datesend' => $dbacthdr->datesend,
+                        'quoteno' => $dbacthdr->quoteno,
+                        'preparedby' => $dbacthdr->preparedby,
+                        'prepareddate' => $dbacthdr->prepareddate,
+                        'cancelby' => $dbacthdr->cancelby,
+                        'canceldate' => $dbacthdr->canceldate,
+                        'cancelled_remark' => $dbacthdr->cancelled_remark,
+                        'pointofsales' => $dbacthdr->pointofsales,
+                        'doctorcode' => $dbacthdr->doctorcode,
+                        'LHDNStatus' => $dbacthdr->LHDNStatus,
+                        'LHDNSubID' => $dbacthdr->LHDNSubID,
+                        'LHDNCodeNo' => $dbacthdr->LHDNCodeNo,
+                        'LHDNDocID' => $dbacthdr->LHDNDocID,
+                        'LHDNSubBy' => $dbacthdr->LHDNSubBy,
+                        'category' => $dbacthdr->category,
+                        'categorydept' => $dbacthdr->categorydept,
+                    ]);
 
             DB::commit();
         } catch (Exception $e) {
