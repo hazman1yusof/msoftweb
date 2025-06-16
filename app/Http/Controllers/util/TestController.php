@@ -5596,6 +5596,12 @@ class TestController extends defaultController
                 $crcostcode = $drcostcode; //crcc sama dg drcc
                 $cracc = $row_sysparam->pvalue2;
 
+                if($obj->trantype == 'GRT'){
+                    $amount = -$obj->amount;
+                }else{
+                    $amount = $obj->amount;
+                }
+
                 DB::table('finance.gltran')
                     ->insert([
                         'compcode' => '9b',
@@ -5614,7 +5620,7 @@ class TestController extends defaultController
                         'dracc' => $dracc,
                         'crcostcode' => $crcostcode,
                         'cracc' => $cracc,
-                        'amount' => $obj->amount,
+                        'amount' => $amount,
                         'idno' => $obj->deldept .' '. $obj->docno
                     ]);
             }
@@ -5637,6 +5643,7 @@ class TestController extends defaultController
                             ->where('ivdt.compcode','9b')
                             ->join('material.IvTxnHd as ivhd', function($join) use ($request){
                                 $join = $join->on('ivhd.recno', '=', 'ivdt.recno')
+                                              ->on('ivhd.trantype', '=', 'ivdt.trantype')
                                               ->whereDate('ivhd.trandate','>=','2025-05-01')
                                               ->whereDate('ivhd.trandate','<=','2025-05-31')
                                               ->where('ivhd.source','iv')
@@ -5755,7 +5762,7 @@ class TestController extends defaultController
 
             }
 
-            DB::commit();
+            // DB::commit();
         } catch (Exception $e) {
             DB::rollback();
             report($e);
