@@ -31,6 +31,7 @@
                                                 <th class="scope">mrn</th>
                                                 <th class="scope">episno</th>
                                                 <th class="scope">Date</th>
+                                                <th class="scope">dt</th>
                                                 <th class="scope">Entered By</th>
                                                 <th class="scope">a_idno</th>
                                                 <th class="scope">s_idno</th>
@@ -131,6 +132,13 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            
+                                            <div class="inline fields">
+                                                <label>Impression</label>
+                                                <div class="field">
+                                                    <textarea rows="6" cols="50" id="neuroAssessment_impressionBC" name="impressionBC"></textarea>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -214,6 +222,13 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                                
+                                                <div class="inline fields">
+                                                    <label>Impression</label>
+                                                    <div class="field">
+                                                        <textarea rows="6" cols="50" id="neuroAssessment_impressionSens" name="impressionSens"></textarea>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -230,14 +245,14 @@
                                                     <label for="romAffectedSide">a) Affected Side</label>
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="romAffectedSide" value="R" id="affectedSideR">
-                                                            <label for="affectedSideR">R</label>
+                                                            <input type="radio" name="romAffectedSide" value="R" id="romAffectedSideR">
+                                                            <label for="romAffectedSideR">R</label>
                                                         </div>
                                                     </div>
                                                     <div class="field">
                                                         <div class="ui radio checkbox">
-                                                            <input type="radio" name="romAffectedSide" value="L" id="affectedSideL">
-                                                            <label for="affectedSideL">L</label>
+                                                            <input type="radio" name="romAffectedSide" value="L" id="romAffectedSideL">
+                                                            <label for="romAffectedSideL">L</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -663,9 +678,18 @@
                                                 </table>
                                                 
                                                 <div class="inline fields">
-                                                    <label>b) Sound Side</label>
+                                                    <label for="romSoundSide">b) Sound Side</label>
                                                     <div class="field">
-                                                        <input name="romSoundSide" type="text">
+                                                        <div class="ui radio checkbox">
+                                                            <input type="radio" name="romSoundSide" value="R" id="romSoundSideR">
+                                                            <label for="romSoundSideR">R</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="field">
+                                                        <div class="ui radio checkbox">
+                                                            <input type="radio" name="romSoundSide" value="L" id="romSoundSideL">
+                                                            <label for="romSoundSideL">L</label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 
@@ -1088,6 +1112,13 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                                
+                                                <div class="inline fields">
+                                                    <label>Impression</label>
+                                                    <div class="field">
+                                                        <textarea rows="6" cols="50" id="neuroAssessment_impressionROM" name="impressionROM"></textarea>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1119,6 +1150,15 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            
+                                            <div class="sixteen wide column">
+                                                <div class="inline fields">
+                                                    <label>Impression</label>
+                                                    <div class="field">
+                                                        <textarea rows="6" cols="50" id="neuroAssessment_impressionMAS" name="impressionMAS"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1133,7 +1173,7 @@
                                                 <table class="ui striped table">
                                                     <thead>
                                                         <tr>
-                                                            <th></th>
+                                                            <th width="30%"></th>
                                                             <th>RT</th>
                                                             <th>LT</th>
                                                         </tr>
@@ -1142,50 +1182,59 @@
                                                         <tr>
                                                             <td>BTR</td>
                                                             <td>
-                                                                <input type="text" class="form-control" name="btrRT">
+                                                                <input type="checkbox" name="btrRT" value="1">
                                                             </td>
                                                             <td>
-                                                                <input type="text" class="form-control" name="btrLT">
+                                                                <input type="checkbox" name="btrLT" value="1">
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>TTR</td>
                                                             <td>
-                                                                <input type="text" class="form-control" name="ttrRT">
+                                                                <input type="checkbox" name="ttrRT" value="1">
                                                             </td>
                                                             <td>
-                                                                <input type="text" class="form-control" name="ttrLT">
+                                                                <input type="checkbox" name="ttrLT" value="1">
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>KTR</td>
                                                             <td>
-                                                                <input type="text" class="form-control" name="ktrRT">
+                                                                <input type="checkbox" name="ktrRT" value="1">
                                                             </td>
                                                             <td>
-                                                                <input type="text" class="form-control" name="ktrLT">
+                                                                <input type="checkbox" name="ktrLT" value="1">
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>ATR</td>
                                                             <td>
-                                                                <input type="text" class="form-control" name="atrRT">
+                                                                <input type="checkbox" name="atrRT" value="1">
                                                             </td>
                                                             <td>
-                                                                <input type="text" class="form-control" name="atrLT">
+                                                                <input type="checkbox" name="atrLT" value="1">
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>Babinsky</td>
                                                             <td>
-                                                                <input type="text" class="form-control" name="babinskyRT">
+                                                                <input type="checkbox" name="babinskyRT" value="1">
                                                             </td>
                                                             <td>
-                                                                <input type="text" class="form-control" name="babinskyLT">
+                                                                <input type="checkbox" name="babinskyLT" value="1">
                                                             </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                                
+                                                <div class="sixteen wide column">
+                                                    <div class="inline fields">
+                                                        <label>Impression</label>
+                                                        <div class="field">
+                                                            <textarea rows="6" cols="50" id="neuroAssessment_impressionDTR" name="impressionDTR"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1199,9 +1248,18 @@
                                         <div class="ui grid">
                                             <div class="sixteen wide column">
                                                 <div class="inline fields">
-                                                    <label>a) Affected Side</label>
+                                                    <label for="affectedSide">a) Affected Side</label>
                                                     <div class="field">
-                                                        <input name="affectedSide" type="text">
+                                                        <div class="ui radio checkbox">
+                                                            <input type="radio" name="affectedSide" value="R" id="affectedSideR">
+                                                            <label for="affectedSideR">R</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="field">
+                                                        <div class="ui radio checkbox">
+                                                            <input type="radio" name="affectedSide" value="L" id="affectedSideL">
+                                                            <label for="affectedSideL">L</label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 
@@ -1402,9 +1460,18 @@
                                                 </table>
                                                 
                                                 <div class="inline fields">
-                                                    <label>b) Sound Side</label>
+                                                    <label for="soundSide">b) Sound Side</label>
                                                     <div class="field">
-                                                        <input name="soundSide" type="text">
+                                                        <div class="ui radio checkbox">
+                                                            <input type="radio" name="soundSide" value="R" id="soundSideR">
+                                                            <label for="soundSideR">R</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="field">
+                                                        <div class="ui radio checkbox">
+                                                            <input type="radio" name="soundSide" value="L" id="soundSideL">
+                                                            <label for="soundSideL">L</label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 
@@ -1603,6 +1670,15 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                                
+                                                <div class="sixteen wide column">
+                                                    <div class="inline fields">
+                                                        <label>Impression</label>
+                                                        <div class="field">
+                                                            <textarea rows="6" cols="50" id="neuroAssessment_impressionMP" name="impressionMP"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1614,53 +1690,118 @@
                                     <div class="ui secondary segment">COORDINATION</div>
                                     <div class="ui segment">
                                         <div class="ui grid">
-                                            <div class="ten wide column" style="margin: auto;">
-                                                <div class="ui form">
+                                            
+                                            <div class="sixteen wide column">
+                                                <table class="ui celled striped table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col"></th>
+                                                            <th scope="col">R</th>
+                                                            <th scope="col">L</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Finger Nose Test</td>
+                                                            <td>
+                                                                <div class="inline fields">
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" id="fingerTestR_poor" name="fingerTestR" value="Poor">
+                                                                            <label for="fingerTestR_poor">Poor</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" id="fingerTestR_fair" name="fingerTestR" value="Fair">
+                                                                            <label for="fingerTestR_fair">Fair</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" id="fingerTestR_good" name="fingerTestR" value="Good">
+                                                                            <label for="fingerTestR_good">Good</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="inline fields">
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" id="fingerTestL_poor" name="fingerTestL" value="Poor">
+                                                                            <label for="fingerTestL_poor">Poor</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" id="fingerTestL_fair" name="fingerTestL" value="Fair">
+                                                                            <label for="fingerTestL_fair">Fair</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" id="fingerTestL_good" name="fingerTestL" value="Good">
+                                                                            <label for="fingerTestL_good">Good</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Heel Shin Test</td>
+                                                            <td>
+                                                                <div class="inline fields">
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" id="heelTestR_poor" name="heelTestR" value="Poor">
+                                                                            <label for="heelTestR_poor">Poor</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" id="heelTestR_fair" name="heelTestR" value="Fair">
+                                                                            <label for="heelTestR_fair">Fair</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" id="heelTestR_good" name="heelTestR" value="Good">
+                                                                            <label for="heelTestR_good">Good</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div class="inline fields">
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" id="heelTestL_poor" name="heelTestL" value="Poor">
+                                                                            <label for="heelTestL_poor">Poor</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" id="heelTestL_fair" name="heelTestL" value="Fair">
+                                                                            <label for="heelTestL_fair">Fair</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="field">
+                                                                        <div class="ui radio checkbox">
+                                                                            <input type="radio" id="heelTestL_good" name="heelTestL" value="Good">
+                                                                            <label for="heelTestL_good">Good</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                
+                                                <div class="inline fields">
+                                                    <label>Impression</label>
                                                     <div class="field">
-                                                        <div class="inline fields">
-                                                            <label for="fingerTest">Finger Nose Test</label>
-                                                            <div class="field">
-                                                                <div class="ui radio checkbox">
-                                                                    <input type="radio" id="fingerTest_poor" name="fingerTest" value="Poor">
-                                                                    <label for="fingerTest_poor">Poor</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="field">
-                                                                <div class="ui radio checkbox">
-                                                                    <input type="radio" id="fingerTest_fair" name="fingerTest" value="Fair">
-                                                                    <label for="fingerTest_fair">Fair</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="field">
-                                                                <div class="ui radio checkbox">
-                                                                    <input type="radio" id="fingerTest_good" name="fingerTest" value="Good">
-                                                                    <label for="fingerTest_good">Good</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="field">
-                                                        <div class="inline fields">
-                                                            <label for="heelTest">Heel Shin Test</label>
-                                                            <div class="field">
-                                                                <div class="ui radio checkbox">
-                                                                    <input type="radio" id="heelTest_poor" name="heelTest" value="Poor">
-                                                                    <label for="heelTest_poor">Poor</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="field">
-                                                                <div class="ui radio checkbox">
-                                                                    <input type="radio" id="heelTest_fair" name="heelTest" value="Fair">
-                                                                    <label for="heelTest_fair">Fair</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="field">
-                                                                <div class="ui radio checkbox">
-                                                                    <input type="radio" id="heelTest_good" name="heelTest" value="Good">
-                                                                    <label for="heelTest_good">Good</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        <textarea rows="6" cols="50" id="neuroAssessment_impressionCoord" name="impressionCoord"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1796,7 +1937,7 @@
                                                 <div class="inline fields">
                                                     <label>Impression</label>
                                                     <div class="field">
-                                                        <textarea rows="6" cols="50" id="neuroAssessment_impression" name="impression"></textarea>
+                                                        <textarea rows="6" cols="50" id="neuroAssessment_impressionFA" name="impressionFA"></textarea>
                                                     </div>
                                                 </div>
                                             </div>

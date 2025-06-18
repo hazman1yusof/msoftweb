@@ -93,6 +93,12 @@ $(document).ready(function (){
         $('#tbl_neuroAssessment_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
+        if(check_same_usr_edit(data)){
+            button_state_neuroAssessment('edit');
+        }else{
+            button_state_neuroAssessment('add');
+        }
+        
         // getdata_neuroAssessment();
         $("#idno_neuroAssessment").val(data.n_idno);
         $("#idno_romaffectedside").val(data.a_idno);
@@ -123,9 +129,9 @@ $(document).ready(function (){
                 autoinsert_rowdata("#formNeuroAssessment",data.romaffectedside);
                 autoinsert_rowdata("#formNeuroAssessment",data.romsoundside);
                 autoinsert_rowdata("#formNeuroAssessment",data.musclepower);
-                button_state_neuroAssessment('edit');
+                // button_state_neuroAssessment('edit');
             }else{
-                button_state_neuroAssessment('add');
+                // button_state_neuroAssessment('add');
             }
             
             // textarea_init_neuroAssessment();
@@ -174,15 +180,16 @@ var tbl_neuroAssessment_date = $('#tbl_neuroAssessment_date').DataTable({
         { 'data': 'mrn' },
         { 'data': 'episno' },
         { 'data': 'entereddate', 'width': '25%' },
+        { 'data': 'dt' },
         { 'data': 'adduser', 'width': '50%' },
         { 'data': 'a_idno' },
         { 'data': 's_idno' },
         { 'data': 'm_idno' },
     ],
     columnDefs: [
-        { targets: [0, 1, 2, 4, 5, 6, 7], visible: false },
+        { targets: [0, 1, 2, 4, 6, 7, 8], visible: false },
     ],
-    order: [[3, 'desc']],
+    order: [[4, 'desc']],
     "drawCallback": function (settings){
         $(this).find('tbody tr')[0].click();
     }
@@ -324,7 +331,7 @@ function saveForm_neuroAssessment(callback){
 }
 
 function textarea_init_neuroAssessment(){
-    $('textarea#neuroAssessment_objective,textarea#neuroAssessment_impression,textarea#neuroAssessment_summary').each(function (){
+    $('textarea#neuroAssessment_objective,textarea#neuroAssessment_impressionBC,textarea#neuroAssessment_impressionSens,textarea#neuroAssessment_impressionROM,textarea#neuroAssessment_impressionMAS,textarea#neuroAssessment_impressionDTR,textarea#neuroAssessment_impressionMP,textarea#neuroAssessment_impressionCoord,textarea#neuroAssessment_impressionFA,textarea#neuroAssessment_summary').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{

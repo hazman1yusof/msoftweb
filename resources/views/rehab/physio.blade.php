@@ -16,7 +16,7 @@
     <div class="ui segment" style="padding: 10px 10px 30px 30px;">
         <form id="formPhysiotherapy" class="ui form">
             <div class="ui grid">
-                <input type="hidden" name="curr_user" id="curr_user_physio" value="{{ Auth::user()->username }}">
+                <!-- <input type="hidden" name="curr_user" id="curr_user_physio" value="{{ Auth::user()->username }}"> -->
                 <input id="mrn_physio" name="mrn_physio" type="hidden">
                 <input id="episno_physio" name="episno_physio" type="hidden">
                 <input id="age_physio" name="episno_physio" type="hidden">
