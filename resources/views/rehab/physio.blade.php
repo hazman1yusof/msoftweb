@@ -16,6 +16,7 @@
     <div class="ui segment" style="padding: 10px 10px 30px 30px;">
         <form id="formPhysiotherapy" class="ui form">
             <div class="ui grid">
+                <input type="hidden" name="curr_user" id="curr_user_physio" value="{{ Auth::user()->username }}">
                 <input id="mrn_physio" name="mrn_physio" type="hidden">
                 <input id="episno_physio" name="episno_physio" type="hidden">
                 <input id="age_physio" name="episno_physio" type="hidden">
@@ -24,16 +25,16 @@
         
         <div id="physioTabs" class="ui segment">
             <div class="ui top attached tabular menu">
-                <a class="item active" data-tab="motorScale" id="navtab_motorScale">Motor Assessment<br>Scale</a>
+                <a class="item active" data-tab="sixMinWalking" id="navtab_sixMinWalking">6-Minute Walking<br>Test</a>
                 <a class="item" data-tab="bergBalanceTest" id="navtab_bergBalanceTest">Berg Balance Positions<br>and Tests</a>
                 <a class="item" data-tab="oswestryQuest" id="navtab_oswestryQuest">Oswestry Low Back<br>Disability Questionnaire</a>
                 <a class="item" data-tab="neuroAssessment" id="navtab_neuroAssessment">Neurological Physiotherapy<br>Assessment</a>
+                <a class="item" data-tab="motorScale" id="navtab_motorScale">Motor Assessment<br>Scale</a>
                 <a class="item" data-tab="spinalCord" id="navtab_spinalCord">Spinal Cord<br>Injury</a>
-                <a class="item" data-tab="sixMinWalking" id="navtab_sixMinWalking">6-Minute Walking<br>Test</a>
             </div>
             
-            <div class="ui bottom attached tab raised segment active" data-tab="motorScale">
-                @include('rehab.motorScale')
+            <div class="ui bottom attached tab raised segment active" data-tab="sixMinWalking">
+                @include('rehab.sixMinWalking')
             </div>
             
             <div class="ui bottom attached tab raised segment" data-tab="bergBalanceTest">
@@ -48,12 +49,12 @@
                 @include('rehab.neuroAssessment')
             </div>
             
-            <div class="ui bottom attached tab raised segment" data-tab="spinalCord">
-                @include('rehab.spinalCord')
+            <div class="ui bottom attached tab raised segment" data-tab="motorScale">
+                @include('rehab.motorScale')
             </div>
             
-            <div class="ui bottom attached tab raised segment" data-tab="sixMinWalking">
-                @include('rehab.sixMinWalking')
+            <div class="ui bottom attached tab raised segment" data-tab="spinalCord">
+                @include('rehab.spinalCord')
             </div>
         </div>
     </div>
