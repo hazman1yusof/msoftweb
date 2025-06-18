@@ -3673,7 +3673,7 @@ $(document).ready(function (){
 			text: "Generate Excel", click: function (){
 				// window.open('./arenquiry/showExcel?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
 				window.location='./arenquiry/showExcel?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
-			}
+			},classes: "ARStatementDialog_xls_btn"
 		},{
 			text: "Cancel", click: function (){
 				$(this).dialog('close');

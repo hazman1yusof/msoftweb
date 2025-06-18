@@ -203,6 +203,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                 case 'RC':
                     $value->remark = $value->remark;
                     $value->doc_no = $value->recptno;
+                    $value->reference = $value->recptno;
                     $value->amount_cr = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
