@@ -93,6 +93,12 @@ $(document).ready(function (){
         $('#tbl_oswestryQuest_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
+        if(check_same_usr_edit(data)){
+            button_state_oswestryQuest('edit');
+        }else{
+            button_state_oswestryQuest('add');
+        }
+        
         $('#formOswestryQuest span#oswestryQuest_disabilityLevel').text('');
         
         // getdata_oswestryQuest();
@@ -117,9 +123,9 @@ $(document).ready(function (){
             if(!$.isEmptyObject(data.oswestryquest)){
                 autoinsert_rowdata("#formOswestryQuest",data.oswestryquest);
                 $('#formOswestryQuest span#oswestryQuest_disabilityLevel').text(data.oswestryquest.disabilityLevel);
-                button_state_oswestryQuest('edit');
+                // button_state_oswestryQuest('edit');
             }else{
-                button_state_oswestryQuest('add');
+                // button_state_oswestryQuest('add');
             }
             
             // textarea_init_oswestryQuest();
@@ -168,12 +174,13 @@ var tbl_oswestryQuest_date = $('#tbl_oswestryQuest_date').DataTable({
         { 'data': 'mrn' },
         { 'data': 'episno' },
         { 'data': 'entereddate', 'width': '25%' },
+        { 'data': 'dt' },
         { 'data': 'adduser', 'width': '50%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2, 4], visible: false },
     ],
-    order: [[3, 'desc']],
+    order: [[4, 'desc']],
     "drawCallback": function (settings){
         $(this).find('tbody tr')[0].click();
     }
