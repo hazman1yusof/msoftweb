@@ -304,7 +304,7 @@ $(document).ready(function () {
 			{label: 'source', name: 'source', width: 90, hidden: true},
 			{label: 'Payment Mode', name: 'paymode', width: 90, classes: 'wrap', canSearch: true,},
 			{label: 'Description', name: 'description', width: 100, canSearch: true, checked:true,classes: 'wrap'}, 
-			{label: 'Payment Type', name: 'paytype', width: 90, classes: 'wrap'},
+			{label: 'Payment Type', name: 'paytype', width: 90, classes: 'wrap', formatter:formatuppercase},
 			{label: 'Cost Code', name: 'ccode', width: 90, hidden: true, classes: 'wrap'}, 
 			{label: 'GL Account', name: 'glaccno', width: 30, hidden: true, classes: 'wrap'},
 			{label: 'Dr. Payment', name: 'drpayment', width: 30, classes: 'wrap', formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
@@ -425,5 +425,9 @@ $(document).ready(function () {
 		}else{
 			return '0';
 		}
+	}
+
+	function formatuppercase(cellvalue, option, rowObject) {
+		return cellvalue.toUpperCase();
 	}
 });

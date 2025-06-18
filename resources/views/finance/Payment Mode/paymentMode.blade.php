@@ -50,21 +50,21 @@
 				  <div class="col-md-8">
 					    <table>
 	                     	<tr>
-		                        <td><label class="radio-inline"><input type="radio" name="paytype" value='Bank Draft' checked>Bank Draft</label></td>
-		                        <td><label class="radio-inline"><input type="radio" name="paytype" value='Cash'>Cash</label></td>
-		                        <td><label class="radio-inline"><input type="radio" name="paytype" value='Cheque'>Cheque</label></td>
+		                        <td><label class="radio-inline"><input type="radio" name="paytype" value='BANK DRAFT' checked>Bank Draft</label></td>
+		                        <td><label class="radio-inline"><input type="radio" name="paytype" value='CASH'>Cash</label></td>
+		                        <td><label class="radio-inline"><input type="radio" name="paytype" value='CHEQUE'>Cheque</label></td>
 							</tr>
 								
 				 			<tr>
-		                        <td><label class="radio-inline"><input type="radio" name="paytype" value='Tele Transfer'>Tele Transfer</label></td>
-		                        <td><label class="radio-inline"><input type="radio" name="paytype" value='Bank'>Bank</label></td>
-		                        <td><label class="radio-inline"><input type="radio" name="paytype" value='Card'>Card</label></td>
+		                        <td><label class="radio-inline"><input type="radio" name="paytype" value='TELE TRANSFER'>Tele Transfer</label></td>
+		                        <td><label class="radio-inline"><input type="radio" name="paytype" value='BANK'>Bank</label></td>
+		                        <td><label class="radio-inline"><input type="radio" name="paytype" value='CARD'>Card</label></td>
 							</tr>
 		                            
 		                    <tr>
-		                        <td><label class="radio-inline"><input type="radio" name="paytype" value='Credit Note'>Credit Note</label></td>
-		                    	<td> <label class="radio-inline"><input type="radio" name="paytype" value='Debit Note'>Debit Note</label></td>
-		                    	<td> <label class="radio-inline"><input type="radio" name="paytype" value='Forex'>Forex</label></td>
+		                        <td><label class="radio-inline"><input type="radio" name="paytype" value='CREDIT NOTE'>Credit Note</label></td>
+		                    	<td> <label class="radio-inline"><input type="radio" name="paytype" value='DEBIT NOTE'>Debit Note</label></td>
+		                    	<td> <label class="radio-inline"><input type="radio" name="paytype" value='FOREX'>Forex</label></td>
 		                    </tr>
 	                    </table>
                   </div>
@@ -222,6 +222,6 @@
 					
 		});
 	</script>
-	<script src="js/finance/Payment Mode/paymentMode.js?v=1.1"></script>
+	<script src="js/finance/Payment Mode/paymentMode.js?v=1.2"></script>
 
 @endsection
