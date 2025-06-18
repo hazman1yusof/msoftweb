@@ -35,7 +35,7 @@
                 <td></td>
             @endif
             <td>{{$db_obj->trantype}}/{{str_pad($db_obj->auditno, 7, "0", STR_PAD_LEFT)}}</td>
-            <td style="text-align: left">{{$db_obj->reference}}</td>
+            <td style="text-align: left">{!!$db_obj->reference!!}</td>
             @if(!empty($db_obj->amount_dr))
                 @php($totalAmount += $db_obj->amount_dr)
                 <td style="text-align: right">{{$db_obj->amount_dr}}</td>
@@ -45,6 +45,7 @@
             @endif
             <td style="text-align: right">{{$totalAmount}}</td>
             <td>{!!$db_obj->unit!!}</td>
+            <td>{!!$db_obj->real_reference!!}</td>
         </tr>
         @endif
     @endforeach

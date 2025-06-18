@@ -50,10 +50,10 @@ class TestController extends defaultController
             //     return $this->insert_phst($request);
             // case 'debtortype_xde':
             //     return $this->debtortype_xde($request);
-            // case 'set_class':
-            //     return $this->set_class($request);
-            // case 'set_stockloc_unit':
-            //     return $this->set_stockloc_unit($request);
+            case 'stockloc_JTR_header':
+                return $this->stockloc_JTR_header($request);
+            case 'stockloc_JTR':
+                return $this->stockloc_JTR($request);
             case 'gltran_poliklinik': //dah xperlu
                 return $this->gltran_poliklinik($request);
             case 'gltran_dbacthistory':
@@ -3194,8 +3194,23 @@ class TestController extends defaultController
     //     }
     // }
 
-    public function stockloc_JTR_header(){
-        $request_no = $this->request_no('JTR','IMP');
+    public function stockloc_JTR_header(Request $request){
+        $dept = $request->dept;
+
+        if($dept == 'IMP'){
+            $dept='IMP';
+            $unit='IMP';
+        }else if($dept == 'FKWSTR'){
+            $dept='FKWSTR';
+            $unit="W'HOUSE";
+        }else if($dept == 'KHEALTH'){
+            $dept='KHEALTH';
+            $unit='KHEALTH';
+        }else{
+            dd('no dept');
+        }
+
+        $request_no = $this->request_no('JTR',$dept);
         $recno = $this->recno('IV','IT');
 
         DB::table("material.ivtxnhd")
@@ -3204,7 +3219,7 @@ class TestController extends defaultController
                         'recno' => $recno,
                         'source' => 'IV',
                         // 'reference' => ,
-                        'txndept' => 'IMP',
+                        'txndept' => $dept,
                         'trantype' => 'JTR',
                         'docno' => $request_no,
                         // 'srcdocno' => ,
@@ -3226,7 +3241,7 @@ class TestController extends defaultController
                         // 'updtime' => ,
                         // 'postedby' => 'system',
                         // 'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'unit' => 'IMP',
+                        'unit' => $unit,
                         // 'requestby' => ,
                         // 'requestdate' => ,
                         // 'supportby' => ,
@@ -3247,10 +3262,27 @@ class TestController extends defaultController
     }
 
     public function stockloc_JTR(Request $request){
-        $dept='IMP';
-        $month=12;
-        $year=2024;
+        $dept = $request->dept;
+
+        if($dept == 'IMP'){
+            $dept='IMP';
+            $unit='IMP';
+        }else if($dept == 'FKWSTR'){
+            $dept='FKWSTR';
+            $unit="W'HOUSE";
+        }else if($dept == 'KHEALTH'){
+            $dept='KHEALTH';
+            $unit='KHEALTH';
+        }else{
+            dd('no dept');
+        }
+
+        $month=5;
+        $year=2025;
         $recno=$request->recno;
+        if(empty($recno) || !isset($request->recno)){
+            dd('no recno');
+        }
 
         DB::beginTransaction();
 
@@ -3260,12 +3292,13 @@ class TestController extends defaultController
                             ->select('s.idno','s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit','p.avgcost')
                             ->join('material.product as p', function($join){
                                 $join = $join->on('p.itemcode', '=', 's.itemcode')
+                                              ->where('p.avgcost','!=',0)
                                               ->where('p.compcode','9B');
                             })
                             ->where('s.compcode','9B')
                             ->where('s.deptcode',$dept)
                             ->where('s.year',$year)
-                            // ->where('s.itemcode',$itemcode)
+                            // ->where('s.itemcode','KW001303')
                             ->get();
 
             $x=0;
@@ -3293,7 +3326,7 @@ class TestController extends defaultController
                                 // 'upduser' => $value->upduser, 
                                 // 'upddate' => $value->upddate, 
                                 'TranType' => 'JTR',
-                                'deptcode'  => 'IMP',
+                                'deptcode'  => $dept,
                                 // 'productcat' => $productcat, 
                                 // 'draccno' => $draccno, 
                                 // 'drccode' => $drccode, 
@@ -3306,7 +3339,7 @@ class TestController extends defaultController
                                 // 'amount' => $value->amount, 
                                 'trandate' => Carbon::now("Asia/Kuala_Lumpur"),
                                 // 'sndrcv' => $ivtmphd->sndrcv,
-                                'unit' => 'IMP',
+                                'unit' => $dept,
                             ]);
 
                     $NetMvVal = $array_obj['netmvval'.$month] + $variance;

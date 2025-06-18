@@ -401,7 +401,9 @@ abstract class defaultController extends Controller{
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);
 
-        return json_encode($responce);
+        // dd(json_encode($responce, JSON_INVALID_UTF8_SUBSTITUTE));
+
+        return json_encode($responce, JSON_INVALID_UTF8_SUBSTITUTE);
     }
 
     public function get_value_default(Request $request){
@@ -417,7 +419,7 @@ abstract class defaultController extends Controller{
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);
 
-        return json_encode($responce);
+        return json_encode($responce, JSON_INVALID_UTF8_SUBSTITUTE);
     }
 
     public function defaultAdd(Request $request){
