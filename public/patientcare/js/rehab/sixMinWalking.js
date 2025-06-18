@@ -400,7 +400,7 @@ function check_same_usr_edit(data){
     
     if(adduser == undefined){
         return false;
-    }else if(adduser.toUpperCase() != $('#curr_user_physio').val().toUpperCase()){
+    }else if(adduser.toUpperCase() != $('#curr_user').val().toUpperCase()){
         return false;
     }
     
