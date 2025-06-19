@@ -1640,9 +1640,9 @@ Route::post('/rehab/form','rehab\RehabController@form');
 // Route::post('/ptcare_doctornote_transaction_save', "rehab\RehabController@transaction_save");
 
 //// Physiotherapy page ////
-Route::get('/motorScale','rehab\MotorScaleController@show');
-Route::get('/motorScale/table','rehab\MotorScaleController@table');
-Route::post('/motorScale/form','rehab\MotorScaleController@form');
+Route::get('/sixMinWalking','rehab\SixMinWalkingController@show');
+Route::get('/sixMinWalking/table','rehab\SixMinWalkingController@table');
+Route::post('/sixMinWalking/form','rehab\SixMinWalkingController@form');
 
 Route::get('/bergBalanceTest','rehab\BergBalanceTestController@show');
 Route::get('/bergBalanceTest/table','rehab\BergBalanceTestController@table');
@@ -1652,17 +1652,21 @@ Route::get('/oswestryQuest','rehab\OswestryQuestController@show');
 Route::get('/oswestryQuest/table','rehab\OswestryQuestController@table');
 Route::post('/oswestryQuest/form','rehab\OswestryQuestController@form');
 
+Route::get('/posturalAssessment','rehab\PosturalAssessmentController@show');
+Route::get('/posturalAssessment/table','rehab\PosturalAssessmentController@table');
+Route::post('/posturalAssessment/form','rehab\PosturalAssessmentController@form');
+
 Route::get('/neuroAssessment','rehab\NeuroAssessmentController@show');
 Route::get('/neuroAssessment/table','rehab\NeuroAssessmentController@table');
 Route::post('/neuroAssessment/form','rehab\NeuroAssessmentController@form');
 
+Route::get('/motorScale','rehab\MotorScaleController@show');
+Route::get('/motorScale/table','rehab\MotorScaleController@table');
+Route::post('/motorScale/form','rehab\MotorScaleController@form');
+
 Route::get('/spinalCord','rehab\SpinalCordController@show');
 Route::get('/spinalCord/table','rehab\SpinalCordController@table');
 Route::post('/spinalCord/form','rehab\SpinalCordController@form');
-
-Route::get('/sixMinWalking','rehab\SixMinWalkingController@show');
-Route::get('/sixMinWalking/table','rehab\SixMinWalkingController@table');
-Route::post('/sixMinWalking/form','rehab\SixMinWalkingController@form');
 
 /// occuptherapy
 Route::get('/occupTherapy','rehab\OccupTherapyController@show');
