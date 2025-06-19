@@ -5,7 +5,7 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    textarea_init_motorScale();
+    // textarea_init_motorScale();
     
     var fdl = new faster_detail_load();
     
@@ -92,6 +92,12 @@ $(document).ready(function (){
         $('#tbl_motorScale_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
+        if(check_same_usr_edit(data)){
+            button_state_motorScale('edit');
+        }else{
+            button_state_motorScale('add');
+        }
+        
         // getdata_motorScale();
         $("#idno_motorScale").val(data.idno);
         
@@ -113,12 +119,12 @@ $(document).ready(function (){
         }).done(function (data){
             if(!$.isEmptyObject(data.motorscale)){
                 autoinsert_rowdata("#formMotorScale",data.motorscale);
-                button_state_motorScale('edit');
+                // button_state_motorScale('edit');
             }else{
-                button_state_motorScale('add');
+                // button_state_motorScale('add');
             }
             
-            textarea_init_motorScale();
+            // textarea_init_motorScale();
         });
     });
     ////////////////////////////////////////motorScale ends////////////////////////////////////////
@@ -149,12 +155,13 @@ var tbl_motorScale_date = $('#tbl_motorScale_date').DataTable({
         { 'data': 'mrn' },
         { 'data': 'episno' },
         { 'data': 'entereddate', 'width': '25%' },
+        { 'data': 'dt' },
         { 'data': 'adduser', 'width': '50%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2, 4], visible: false },
     ],
-    order: [[3, 'desc']],
+    order: [[4, 'desc']],
     "drawCallback": function (settings){
         $(this).find('tbody tr')[0].click();
     }
@@ -336,7 +343,7 @@ function getdata_motorScale(){
             button_state_motorScale('add');
         }
         
-        textarea_init_motorScale();
+        // textarea_init_motorScale();
     });
 }
 

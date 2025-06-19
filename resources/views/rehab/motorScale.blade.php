@@ -29,6 +29,7 @@
                                                 <th class="scope">mrn</th>
                                                 <th class="scope">episno</th>
                                                 <th class="scope">Date</th>
+                                                <th class="scope">dt</th>
                                                 <th class="scope">Entered By</th>
                                             </tr>
                                         </thead>

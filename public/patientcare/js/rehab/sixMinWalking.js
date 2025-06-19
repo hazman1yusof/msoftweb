@@ -91,6 +91,12 @@ $(document).ready(function (){
         $('#tbl_sixMinWalking_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
+        if(check_same_usr_edit(data)){
+            button_state_sixMinWalking('edit');
+        }else{
+            button_state_sixMinWalking('add');
+        }
+        
         // getdata_sixMinWalking();
         $("#idno_sixMinWalking").val(data.idno);
         
@@ -112,9 +118,9 @@ $(document).ready(function (){
         }).done(function (data){
             if(!$.isEmptyObject(data.sixminwalk)){
                 autoinsert_rowdata("#formSixMinWalking",data.sixminwalk);
-                button_state_sixMinWalking('edit');
+                // button_state_sixMinWalking('edit');
             }else{
-                button_state_sixMinWalking('add');
+                // button_state_sixMinWalking('add');
             }
             
             // $("#sixMinWalking_patName").val(data.patName);
@@ -146,12 +152,13 @@ var tbl_sixMinWalking_date = $('#tbl_sixMinWalking_date').DataTable({
         { 'data': 'mrn' },
         { 'data': 'episno' },
         { 'data': 'entereddate', 'width': '25%' },
+        { 'data': 'dt' },
         { 'data': 'adduser', 'width': '50%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2, 4], visible: false },
     ],
-    order: [[3, 'desc']],
+    order: [[4, 'desc']],
     "drawCallback": function (settings){
         $(this).find('tbody tr')[0].click();
     }

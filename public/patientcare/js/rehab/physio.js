@@ -9,12 +9,12 @@ $(document).ready(function (){
     
     var fdl = new faster_detail_load();
     
-    disableForm('#formMotorScale');
+    disableForm('#formSixMinWalking');
     disableForm('#formBergBalanceTest');
     disableForm('#formOswestryQuest');
     disableForm('#formNeuroAssessment');
+    disableForm('#formMotorScale');
     disableForm('#formSpinalCord');
-    disableForm('#formSixMinWalking');
     
     // to format number input to two decimal places (0.00)
     $(".floatNumberField").change(function (){
@@ -37,23 +37,23 @@ $(document).ready(function (){
     
     $('#physioTabs .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
-        console.log(tab);
+        // console.log(tab);
         
         switch(tab){
-            case 'motorScale':
-                var urlparam_tbl_motorScale = {
-                    action: 'get_datetime_motorScale',
+            case 'sixMinWalking':
+                var urlparam_tbl_sixMinWalking = {
+                    action: 'get_datetime_sixMinWalking',
                     mrn: $("#mrn_physio").val(),
                     episno: $("#episno_physio").val()
                 }
                 
-                tbl_motorScale_date.ajax.url("./motorScale/table?"+$.param(urlparam_tbl_motorScale)).load(function (data){
-                    emptyFormdata_div("#formMotorScale",['#mrn_physio','#episno_physio']);
-                    $('#tbl_motorScale_date tbody tr:eq(0)').click(); // to select first row
+                tbl_sixMinWalking_date.ajax.url("./sixMinWalking/table?"+$.param(urlparam_tbl_sixMinWalking)).load(function (data){
+                    emptyFormdata_div("#formSixMinWalking",['#mrn_physio','#episno_physio']);
+                    $('#tbl_sixMinWalking_date tbody tr:eq(0)').click(); // to select first row
                 });
                 
-                // $('#tbl_motorScale_date').DataTable().ajax.reload();
-                getdata_motorScale();
+                // $('#tbl_sixMinWalking_date').DataTable().ajax.reload();
+                getdata_sixMinWalking();
                 break;
             case 'bergBalanceTest':
                 var urlparam_tbl_bergBalanceTest = {
@@ -100,6 +100,21 @@ $(document).ready(function (){
                 // $('#tbl_neuroAssessment_date').DataTable().ajax.reload();
                 getdata_neuroAssessment();
                 break;
+            case 'motorScale':
+                var urlparam_tbl_motorScale = {
+                    action: 'get_datetime_motorScale',
+                    mrn: $("#mrn_physio").val(),
+                    episno: $("#episno_physio").val()
+                }
+                
+                tbl_motorScale_date.ajax.url("./motorScale/table?"+$.param(urlparam_tbl_motorScale)).load(function (data){
+                    emptyFormdata_div("#formMotorScale",['#mrn_physio','#episno_physio']);
+                    $('#tbl_motorScale_date tbody tr:eq(0)').click(); // to select first row
+                });
+                
+                // $('#tbl_motorScale_date').DataTable().ajax.reload();
+                getdata_motorScale();
+                break;
             case 'spinalCord':
                 var urlparam_tbl_spinalCord = {
                     action: 'get_datetime_spinalCord',
@@ -114,21 +129,6 @@ $(document).ready(function (){
                 
                 // $('#tbl_spinalCord_date').DataTable().ajax.reload();
                 getdata_spinalCord();
-                break;
-            case 'sixMinWalking':
-                var urlparam_tbl_sixMinWalking = {
-                    action: 'get_datetime_sixMinWalking',
-                    mrn: $("#mrn_physio").val(),
-                    episno: $("#episno_physio").val()
-                }
-                
-                tbl_sixMinWalking_date.ajax.url("./sixMinWalking/table?"+$.param(urlparam_tbl_sixMinWalking)).load(function (data){
-                    emptyFormdata_div("#formSixMinWalking",['#mrn_physio','#episno_physio']);
-                    $('#tbl_sixMinWalking_date tbody tr:eq(0)').click(); // to select first row
-                });
-                
-                // $('#tbl_sixMinWalking_date').DataTable().ajax.reload();
-                getdata_sixMinWalking();
                 break;
         }
     }});
@@ -153,18 +153,18 @@ conf = {
 
 function empty_physio(){
     emptyFormdata_div("#formPhysiotherapy");
-    emptyFormdata_div("#formMotorScale");
+    emptyFormdata_div("#formSixMinWalking");
     emptyFormdata_div("#formBergBalanceTest");
     emptyFormdata_div("#formOswestryQuest");
     emptyFormdata_div("#formNeuroAssessment");
+    emptyFormdata_div("#formMotorScale");
     emptyFormdata_div("#formSpinalCord");
-    emptyFormdata_div("#formSixMinWalking");
-    button_state_motorScale('empty');
+    button_state_sixMinWalking('empty');
     button_state_bergBalanceTest('empty');
     button_state_oswestryQuest('empty');
     button_state_neuroAssessment('empty');
+    button_state_motorScale('empty');
     button_state_spinalCord('empty');
-    button_state_sixMinWalking('empty');
     
     // panel header
     $('#name_show_physio').text('');
@@ -184,12 +184,12 @@ function empty_physio(){
 }
 
 function populate_physio(obj){
-    emptyFormdata_div("#formMotorScale",['#mrn_physio','#episno_physio']);
+    emptyFormdata_div("#formSixMinWalking",['#mrn_physio','#episno_physio']);
     emptyFormdata_div("#formBergBalanceTest",['#mrn_physio','#episno_physio']);
     emptyFormdata_div("#formOswestryQuest",['#mrn_physio','#episno_physio']);
     emptyFormdata_div("#formNeuroAssessment",['#mrn_physio','#episno_physio']);
+    emptyFormdata_div("#formMotorScale",['#mrn_physio','#episno_physio']);
     emptyFormdata_div("#formSpinalCord",['#mrn_physio','#episno_physio']);
-    emptyFormdata_div("#formSixMinWalking",['#mrn_physio','#episno_physio']);
     
     // panel header
     $('#name_show_physio').text(obj.Name);
@@ -233,40 +233,40 @@ function autoinsert_rowdata(form,rowData){
 
 $('#tab_physio').on('shown.bs.collapse', function (){
     SmoothScrollTo('#tab_physio', 300, 114);
-    $('#physioTabs .top.menu .item').tab('change tab','motorScale');
+    $('#physioTabs .top.menu .item').tab('change tab','sixMinWalking');
     
     // to load first tab
-    var urlparam_tbl_motorScale = {
-        action: 'get_datetime_motorScale',
+    var urlparam_tbl_sixMinWalking = {
+        action: 'get_datetime_sixMinWalking',
         mrn: $("#mrn_physio").val(),
         episno: $("#episno_physio").val()
     }
     
-    tbl_motorScale_date.ajax.url("./motorScale/table?"+$.param(urlparam_tbl_motorScale)).load(function (data){
-        emptyFormdata_div("#formMotorScale",['#mrn_physio','#episno_physio']);
-        $('#tbl_motorScale_date tbody tr:eq(0)').click(); // to select first row
+    tbl_sixMinWalking_date.ajax.url("./sixMinWalking/table?"+$.param(urlparam_tbl_sixMinWalking)).load(function (data){
+        emptyFormdata_div("#formSixMinWalking",['#mrn_physio','#episno_physio']);
+        $('#tbl_sixMinWalking_date tbody tr:eq(0)').click(); // to select first row
     });
     
-    getdata_motorScale();
+    getdata_sixMinWalking();
     
     // if($('#mrn_physio').val() != ''){
-    //     getdata_motorScale();
+    //     getdata_sixMinWalking();
     //     getdata_bergBalanceTest();
     //     getdata_oswestryQuest();
     //     getdata_neuroAssessment();
+    //     getdata_motorScale();
     //     getdata_spinalCord();
-    //     getdata_sixMinWalking();
     // }
 });
 
 $('#tab_physio').on('hide.bs.collapse', function (){
     emptyFormdata_div("#formPhysiotherapy",['#mrn_physio','#episno_physio']);
-    button_state_motorScale('empty');
+    button_state_sixMinWalking('empty');
     button_state_bergBalanceTest('empty');
     button_state_oswestryQuest('empty');
     button_state_neuroAssessment('empty');
+    button_state_motorScale('empty');
     button_state_spinalCord('empty');
-    button_state_sixMinWalking('empty');
 });
 
 function check_same_usr_edit(data){

@@ -2877,9 +2877,14 @@ class SalesOrderController extends defaultController
         $row_cat = DB::table('material.category')
             ->select('stockacct','cosacct')
             ->where('compcode','=',session('compcode'))
-            ->where('catcode','=',$product_obj->productcat)
-            ->first();
+            ->where('catcode','=',$product_obj->productcat);
 
+        if(!$row_cat->exists()){
+            throw new \Exception("category doesnt exists: ".$product_obj->productcat." for itemcode: ".$ivdspdt->itemcode);
+        }else{
+            $row_cat = $row_cat->first();
+        }
+            
         $drcostcode = $row_dept->costcode;
         $dracc = $row_cat->cosacct;
         $crcostcode = $row_dept->costcode;

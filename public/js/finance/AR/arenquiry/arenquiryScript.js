@@ -3320,6 +3320,7 @@ $(document).ready(function (){
 		width: 9/10 * $(window).width(),
 		modal: true,
 		open: function (){
+			$('button[classes=allocateDialog_save_btn]').show();
 			dialog_allodebtor.on();
 			$("#gridManAlloc").jqGrid ('setGridWidth', Math.floor($("#gridManAlloc_c")[0].offsetWidth-$("#gridManAlloc_c")[0].offsetLeft));
 			grid = '#jqGrid';
@@ -3347,6 +3348,7 @@ $(document).ready(function (){
 		buttons:
 			[{
 				text: "Save", click: function (){
+					$('button[classes=allocateDialog_save_btn]').hide();
 					if(parseFloat($("#AlloBalance").val()) < 0){
 						alert("Balance cannot in negative values");
 					}else if(myallocation.allo_error.length > 0){
@@ -3370,16 +3372,18 @@ $(document).ready(function (){
 						$.post(saveParam.url+'?'+$.param(saveParam), obj, function (data){
 							
 						}).fail(function (data){
+							$('button[classes=allocateDialog_save_btn]').show();
 						}).success(function (data){
+							$('button[classes=allocateDialog_save_btn]').show();
 							refreshGrid('#jqGrid', urlParam);
 							$('#allocateDialog').dialog('close');
 						});
 					}
-				}
+				},classes: "allocateDialog_save_btn"
 			},{
 				text: "Cancel", click: function (){
 					$(this).dialog('close');
-				}
+				},classes: "allocateDialog_cancel_btn"
 			}],
 	});
 	
@@ -3658,16 +3662,22 @@ $(document).ready(function (){
 			parent_close_disabled(false);
 		},
 		buttons:
-		[{
-			text: "Generate PDF", click: function (){
-				window.open('./arenquiry/showpdf?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
-				// window.location='./arenquiry/showpdf?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
-			}
-		},{
+		[
+		// 	{
+		// 	text: "Generate PDF", click: function (){
+		// 		window.open('./arenquiry/showpdf?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
+		// 		// window.location='./arenquiry/showpdf?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
+		// 	}
+		// },
+		{
 			text: "Generate Excel", click: function (){
-				// window.open('./arenquiry/showExcel?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
-				window.location='./arenquiry/showExcel?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
-			}
+
+				// $('button[classes=ARStatementDialog_xls_btn]').hide();
+				// $('button[classes=ARStatementDialog_xls_btn]').parent().prepend(`<i class="fa fa-circle-o-notch fa-spin fa-fw"></i>`);
+
+				window.open('./arenquiry/showExcel?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_self');
+				// window.location='./arenquiry/showExcel?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
+			},classes: "ARStatementDialog_xls_btn"
 		},{
 			text: "Cancel", click: function (){
 				$(this).dialog('close');
@@ -3685,9 +3695,6 @@ $(document).ready(function (){
 			colModel: [
 				{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Debtor Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{ label: 'debtortype', name: 'debtortype', hidden: true },
-				{ label: 'actdebccode', name: 'actdebccode', hidden: true },
-				{ label: 'actdebglacc', name: 'actdebglacc', hidden: true },
 			],
 			urlParam: {
 				filterCol: ['compcode','recstatus'],
@@ -3738,9 +3745,6 @@ $(document).ready(function (){
 			colModel: [
 				{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Debtor Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{ label: 'debtortype', name: 'debtortype', hidden: true },
-				{ label: 'actdebccode', name: 'actdebccode', hidden: true },
-				{ label: 'actdebglacc', name: 'actdebglacc', hidden: true },
 			],
 			urlParam: {
 				filterCol: ['compcode','recstatus'],

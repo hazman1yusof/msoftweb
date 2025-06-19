@@ -28,6 +28,7 @@
                                                 <th class="scope">mrn</th>
                                                 <th class="scope">episno</th>
                                                 <th class="scope">Date</th>
+                                                <th class="scope">dt</th>
                                                 <th class="scope">Entered By</th>
                                             </tr>
                                         </thead>
@@ -56,28 +57,7 @@
                                             <div class="inline fields">
                                                 <label>Lap counter:</label>
                                                 <div class="field" style="padding-right: 25px;">
-                                                    <input type="text" class="form-control" name="lapCounter1" style="width: 50px; margin-right: 0px;">
-                                                    <input type="text" class="form-control" name="lapCounter2" style="width: 50px; margin-right: 0px;">
-                                                    <input type="text" class="form-control" name="lapCounter3" style="width: 50px; margin-right: 0px;">
-                                                    <input type="text" class="form-control" name="lapCounter4" style="width: 50px; margin-right: 0px;">
-                                                    <input type="text" class="form-control" name="lapCounter5" style="width: 50px;">
-                                                </div>
-                                                <div class="field" style="padding-right: 25px;">
-                                                    <input type="text" class="form-control" name="lapCounter6" style="width: 50px; margin-right: 0px;">
-                                                    <input type="text" class="form-control" name="lapCounter7" style="width: 50px; margin-right: 0px;">
-                                                    <input type="text" class="form-control" name="lapCounter8" style="width: 50px; margin-right: 0px;">
-                                                    <input type="text" class="form-control" name="lapCounter9" style="width: 50px; margin-right: 0px;">
-                                                    <input type="text" class="form-control" name="lapCounter10" style="width: 50px;">
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="inline fields" style="margin-left: 85px;">
-                                                <div class="field">
-                                                    <input type="text" class="form-control" name="lapCounter11" style="width: 50px; margin-right: 0px;">
-                                                    <input type="text" class="form-control" name="lapCounter12" style="width: 50px; margin-right: 0px;">
-                                                    <input type="text" class="form-control" name="lapCounter13" style="width: 50px; margin-right: 0px;">
-                                                    <input type="text" class="form-control" name="lapCounter14" style="width: 50px; margin-right: 0px;">
-                                                    <input type="text" class="form-control" name="lapCounter15" style="width: 50px;">
+                                                    <input type="text" class="form-control" name="lapCounter" style="width: 300px;">
                                                 </div>
                                             </div>
                                         </td>
@@ -100,7 +80,7 @@
                                     <tr>
                                         <td>
                                             <div class="inline fields">
-                                                <label>Walk #</label>
+                                                <!-- <label>Walk #</label>
                                                 <div class="field">
                                                     <input type="text" class="form-control" name="walk">
                                                 </div>
@@ -108,9 +88,9 @@
                                                 <label style="margin-left: 25px;">Tech ID:</label>
                                                 <div class="field">
                                                     <input type="text" class="form-control" name="techID">
-                                                </div>
+                                                </div> -->
                                                 
-                                                <label style="margin-left: 25px;">Date:</label>
+                                                <label>Date:</label>
                                                 <div class="field">
                                                     <input type="date" class="form-control" name="entereddate">
                                                 </div>
@@ -146,6 +126,12 @@
                                                 
                                                 <label>Height:</label>
                                                 <div class="field">
+                                                    <div class="ui right labeled input">
+                                                        <input type="number" class="form-control" name="heightCM" style="height: 38px;">
+                                                        <div class="ui basic label">cm</div>
+                                                    </div>
+                                                </div>
+                                                <div class="field" style="display: none;">
                                                     <input type="number" class="form-control" name="heightFT" style="width: 90px; margin-right: 0px;"> ft
                                                     <input type="number" class="form-control" name="heightIN" style="width: 90px;"> in,
                                                     <input type="number" class="form-control" name="heightMETERS" style="width: 90px;"> meters
@@ -158,19 +144,28 @@
                                             <div class="inline fields">
                                                 <label>Weight:</label>
                                                 <div class="field">
-                                                    <input type="number" class="form-control" name="weightLBS" style="width: 90px; margin-right: 0px;"> lbs,
-                                                    <input type="number" class="form-control" name="weightKG" style="width: 90px;"> kg
+                                                    <!-- <input type="number" class="form-control" name="weightLBS" style="width: 90px; margin-right: 0px;"> lbs,
+                                                    <input type="number" class="form-control" name="weightKG" style="width: 90px;"> kg -->
+                                                    <div class="ui right labeled input">
+                                                        <input type="number" class="form-control" name="weightKG" style="height: 38px;">
+                                                        <div class="ui basic label">kg</div>
+                                                    </div>
                                                 </div>
                                                 
                                                 <label style="margin-left: 40px;">Blood pressure:</label>
                                                 <div class="field">
-                                                    <input type="number" class="form-control" name="bpsys1" style="width: 90px; margin-right: 0px;"> /
-                                                    <input type="number" class="form-control" name="bpdias2" style="width: 90px;">
+                                                    <!-- <input type="number" class="form-control" name="bpsys1" style="width: 90px; margin-right: 0px;"> /
+                                                    <input type="number" class="form-control" name="bpdias2" style="width: 90px;"> -->
+                                                    <div class="ui right labeled input">
+                                                        <input type="number" class="form-control" name="bpsys1" style="height: 38px;">
+                                                        <input type="number" class="form-control" name="bpdias2" style="height: 38px;">
+                                                        <div class="ui basic label">mmHg</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr style="display: none;">
                                         <td>
                                             <div class="inline fields">
                                                 <label>Medications taken before the test (dose and time):</label>
@@ -181,7 +176,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr style="display: none;">
                                         <td>
                                             <div class="inline fields">
                                                 <label>Supplemental oxygen during the test:</label>
@@ -228,6 +223,11 @@
                                                         <td><input type="number" class="form-control" name="endTestHR" style="width: 185px;"></td>
                                                     </tr>
                                                     <tr>
+                                                        <td>Borg Scale</td>
+                                                        <td><input type="number" class="form-control" name="baselineBorgScale" style="width: 185px;"></td>
+                                                        <td><input type="number" class="form-control" name="endTestBorgScale" style="width: 185px;"></td>
+                                                    </tr>
+                                                    <tr style="display: none;">
                                                         <td>Dyspnea</td>
                                                         <td><input type="text" class="form-control" name="baselineDyspnea" style="width: 185px;"></td>
                                                         <td>
@@ -241,7 +241,7 @@
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    <tr>
+                                                    <tr style="display: none;">
                                                         <td>Fatigue</td>
                                                         <td><input type="text" class="form-control" name="baselineFatigue" style="width: 185px;"></td>
                                                         <td>
@@ -330,7 +330,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr style="display: none;">
                                         <td>
                                             <div class="inline fields">
                                                 <label>Number of laps:</label>
@@ -355,13 +355,13 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr style="display: none;">
                                         <td>
                                             <div class="inline fields">
-                                                <label>Perfected distance:</label>
+                                                <label>Predicted distance:</label>
                                                 <div class="field">
                                                     <div class="ui right labeled input">
-                                                        <input type="number" class="form-control" name="perfDistance" style="height: 38px;">
+                                                        <input type="number" class="form-control" name="predictDistance" style="height: 38px;">
                                                         <div class="ui basic label">meters</div>
                                                     </div>
                                                 </div>
