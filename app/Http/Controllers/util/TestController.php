@@ -6224,26 +6224,31 @@ class TestController extends defaultController
         DB::beginTransaction();
 
         try {
-            $cbtran = DB::table('finance.cbtran as cb')
-                        ->select('cb.idno','cb.postdate','db.posteddate','db.entrydate')
-                        ->join('debtor.dbacthdr as db', function($join){
+            $dbacthdr = DB::table('debtor.dbacthdr as db')
+                        ->select('db.idno as db_idno','cb.idno as cb_idno','cb.postdate','db.posteddate','db.entrydate')
+                        ->join('finance.cbtran as cb', function($join){
                             $join = $join
-                                        ->where('db.compcode',session('compcode'))
+                                        ->where('cb.compcode',session('compcode'))
                                         ->on('db.source','cb.source')
                                         ->on('db.trantype','cb.trantype')
                                         ->on('db.auditno','cb.auditno');
                         })
-                        ->where('cb.compcode',session('compcode'))
-                        ->where('cb.bankcode','MBBUKMM')
-                        ->where('cb.reconstatus','1')
-                        ->whereDate('cb.postdate','>','2025-05-31')
+                        ->where('db.compcode',session('compcode'))
+                        ->whereDate('db.posteddate','>=','2025-05-01')
+                        ->whereColumn('db.posteddate','!=','db.entrydate')
                         ->get();
 
-            foreach ($cbtran as $obj) {
-                DB::table('finance.cbtran as cb')
-                    ->where('idno',$obj->idno)
+            foreach ($dbacthdr as $obj) {
+                DB::table('finance.cbtran')
+                    ->where('idno',$obj->cb_idno)
                     ->update([
                         'postdate' => $obj->entrydate
+                    ]);
+
+                DB::table('debtor.dbacthdr')
+                    ->where('idno',$obj->db_idno)
+                    ->update([
+                        'posteddate' => $obj->entrydate
                     ]);
             }
 
