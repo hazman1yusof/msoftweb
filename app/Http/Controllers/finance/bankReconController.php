@@ -206,6 +206,9 @@ class bankReconController extends defaultController
     }
 
     public function init_recon(Request $request,$cbhdr){
+
+        $mmyy = Carbon::createFromFormat('Y-m-d',$request->recdate)->endOfMonth()->format('my');
+
         $cbrecdtl_sumamt = DB::table('finance.cbrecdtl')
                             ->where('compcode',session('compcode'))
                             ->where('auditno',$cbhdr->auditno)
@@ -213,7 +216,7 @@ class bankReconController extends defaultController
 
         $bankstmt = DB::table('finance.bankstmt')
                                 ->where('compcode',session('compcode'))
-                                ->where('mmyy',$cbhdr->recdate)
+                                ->where('mmyy',$mmyy)
                                 ->where('bankcode',$cbhdr->bankcode);
 
         if($bankstmt->exists()){
@@ -231,7 +234,7 @@ class bankReconController extends defaultController
                 ->insert([
                     'compcode' => session('compcode'),
                     'bankcode' => $cbhdr->bankcode,
-                    'mmyy' => $cbhdr->recdate,
+                    'mmyy' => $mmyy,
                     'currentbal' => $cbrecdtl_sumamt,
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),

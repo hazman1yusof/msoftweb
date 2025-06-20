@@ -5682,7 +5682,7 @@ class TestController extends defaultController
 
                 }else if($obj->trantype=='TUO'){
                     $drccode=$sndrcv_obj->costcode ;
-                    $draccno='2001002'; 
+                    $draccno='20010026'; 
                     $crccode=$dept_obj->costcode; 
                     $craccno='20010026'; 
 
