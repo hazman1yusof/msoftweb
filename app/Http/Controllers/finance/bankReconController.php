@@ -443,12 +443,15 @@ class bankReconController extends defaultController
             return json_encode($responce);
         }
 
-        $recdate_ = Carbon::createFromFormat('Y-m-d',$request->recdate)->endOfMonth()->format('Y-m-d');
+        $from_ = Carbon::createFromFormat('Y-m-d',$request->recdate)->startOfMonth()->format('Y-m-d');
+        $to_ = Carbon::createFromFormat('Y-m-d',$request->recdate)->endOfMonth()->format('Y-m-d');
 
         $table = DB::table('finance.cbtran AS cb')
                     ->select('cb.idno','cb.compcode','cb.bankcode','cb.source','cb.trantype','cb.auditno','cb.postdate','cb.year','cb.period','cb.cheqno','cb.amount','cb.remarks','cb.upduser','cb.upddate','cb.bitype','cb.reference','cb.recstatus','cb.refsrc','cb.reftrantype','cb.refauditno','cb.reconstatus')
                     ->where('cb.compcode','=', session('compcode'))
                     ->where('cb.reconstatus','!=', 1)
+                    // ->where('cb.postdate','>=', $from_)
+                    // ->where('cb.postdate','<=', $to_)
                     ->where('cb.bankcode','=', $request->bankcode);
 
         if(!empty($request->filterCol)){
