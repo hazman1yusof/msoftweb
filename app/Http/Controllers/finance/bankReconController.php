@@ -222,7 +222,7 @@ class bankReconController extends defaultController
         if($bankstmt->exists()){
             DB::table('finance.bankstmt')
                     ->where('compcode',session('compcode'))
-                    ->where('mmyy',$cbhdr->recdate)
+                    ->where('mmyy',$mmyy)
                     ->where('bankcode',$cbhdr->bankcode)
                     ->update([
                         'currentbal' => $cbrecdtl_sumamt
