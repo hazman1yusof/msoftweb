@@ -92,6 +92,12 @@ $(document).ready(function (){
         $('#tbl_bergBalanceTest_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
+        if(check_same_usr_edit(data)){
+            button_state_bergBalanceTest('edit');
+        }else{
+            button_state_bergBalanceTest('add');
+        }
+        
         // getdata_bergBalanceTest();
         $("#idno_bergBalanceTest").val(data.idno);
         
@@ -113,9 +119,9 @@ $(document).ready(function (){
         }).done(function (data){
             if(!$.isEmptyObject(data.bergtest)){
                 autoinsert_rowdata("#formBergBalanceTest",data.bergtest);
-                button_state_bergBalanceTest('edit');
+                // button_state_bergBalanceTest('edit');
             }else{
-                button_state_bergBalanceTest('add');
+                // button_state_bergBalanceTest('add');
             }
             
             // textarea_init_bergBalanceTest();
@@ -149,12 +155,13 @@ var tbl_bergBalanceTest_date = $('#tbl_bergBalanceTest_date').DataTable({
         { 'data': 'mrn' },
         { 'data': 'episno' },
         { 'data': 'entereddate', 'width': '25%' },
+        { 'data': 'dt' },
         { 'data': 'adduser', 'width': '50%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2, 4], visible: false },
     ],
-    order: [[3, 'desc']],
+    order: [[4, 'desc']],
     "drawCallback": function (settings){
         $(this).find('tbody tr')[0].click();
     }

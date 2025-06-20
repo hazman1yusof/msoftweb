@@ -105,6 +105,7 @@ class ClientProgressNoteController extends defaultController
                     'progressnote' => $request->progressnote,
                     'plan' => $plan,
                     'doctorcode'  => $doctorcode,
+                    // 'doctorcode'  => session('username'),
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'lastuser'  => session('username'),
@@ -187,6 +188,7 @@ class ClientProgressNoteController extends defaultController
                         'progressnote' => $request->progressnote,
                         'plan' => $plan,
                         'doctorcode'  => $doctorcode,
+                        // 'doctorcode'  => session('username'),
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
@@ -235,6 +237,7 @@ class ClientProgressNoteController extends defaultController
         $episode_obj = DB::table('hisdb.episode as e')
                         ->select('e.mrn','e.episno','e.admdoctor','p.datetaken','p.timetaken','p.doctorcode','p.adduser','d.doctorname as docname','doc.doctorname')
                         ->leftJoin('hisdb.patprogressnote as p', function ($join) use ($request){
+                            $join = $join->on('p.doctorcode','=','e.admdoctor');
                             $join = $join->on('p.mrn','=','e.mrn');
                             $join = $join->on('p.episno','=','e.episno');
                             $join = $join->on('p.compcode','=','e.compcode');

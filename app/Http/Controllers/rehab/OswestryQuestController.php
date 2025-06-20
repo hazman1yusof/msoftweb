@@ -253,6 +253,7 @@ class OswestryQuestController extends defaultController
                 }else{
                     $date['entereddate'] =  '-';
                 }
+                $date['dt'] = $value->entereddate; // for sorting
                 $date['adduser'] = $value->adduser;
                 
                 array_push($data,$date);

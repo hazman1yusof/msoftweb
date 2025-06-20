@@ -28,6 +28,7 @@
                                                 <th class="scope">mrn</th>
                                                 <th class="scope">episno</th>
                                                 <th class="scope">Date</th>
+                                                <th class="scope">dt</th>
                                                 <th class="scope">Entered By</th>
                                             </tr>
                                         </thead>
@@ -78,10 +79,10 @@
                                                         <td></td>
                                                         <td style="text-align: right;">C2</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrC2" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrC2" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprC2" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprC2" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -89,10 +90,10 @@
                                                         <td></td>
                                                         <td style="text-align: right;">C3</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrC3" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrC3" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprC3" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprC3" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -100,10 +101,10 @@
                                                         <td></td>
                                                         <td style="text-align: right;">C4</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrC4" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrC4" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprC4" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprC4" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -112,15 +113,15 @@
                                                         <td>
                                                             <div class="inline fields"> C5
                                                                 <div class="field" style="padding-left: 5px; padding-right: 0px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorR uer" name="motorRC5" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorR uer" name="motorRC5" style="width: 100px;">
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrC5" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrC5" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprC5" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprC5" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -129,15 +130,15 @@
                                                         <td>
                                                             <div class="inline fields"> C6
                                                                 <div class="field" style="padding-left: 5px; padding-right: 0px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorR uer" name="motorRC6" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorR uer" name="motorRC6" style="width: 100px;">
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrC6" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrC6" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprC6" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprC6" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -146,15 +147,15 @@
                                                         <td>
                                                             <div class="inline fields"> C7
                                                                 <div class="field" style="padding-left: 5px; padding-right: 0px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorR uer" name="motorRC7" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorR uer" name="motorRC7" style="width: 100px;">
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrC7" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrC7" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprC7" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprC7" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -163,15 +164,15 @@
                                                         <td>
                                                             <div class="inline fields"> C8
                                                                 <div class="field" style="padding-left: 5px; padding-right: 0px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorR uer" name="motorRC8" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorR uer" name="motorRC8" style="width: 100px;">
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrC8" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrC8" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprC8" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprC8" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -180,15 +181,15 @@
                                                         <td>
                                                             <div class="inline fields"> T1
                                                                 <div class="field" style="padding-left: 5px; padding-right: 0px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorR uer" name="motorRT1" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorR uer" name="motorRT1" style="width: 100px;">
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrT1" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrT1" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprT1" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprT1" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -199,10 +200,10 @@
                                                         <!-- <td></td> -->
                                                         <td style="text-align: right;">T2</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrT2" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrT2" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprT2" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprT2" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -210,10 +211,10 @@
                                                         <!-- <td></td> -->
                                                         <td style="text-align: right;">T3</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrT3" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrT3" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprT3" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprT3" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -221,10 +222,10 @@
                                                         <!-- <td></td> -->
                                                         <td style="text-align: right;">T4</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrT4" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrT4" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprT4" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprT4" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -232,10 +233,10 @@
                                                         <!-- <td></td> -->
                                                         <td style="text-align: right;">T5</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrT5" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrT5" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprT5" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprT5" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -243,10 +244,10 @@
                                                         <!-- <td></td> -->
                                                         <td style="text-align: right;">T6</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrT6" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrT6" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprT6" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprT6" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -254,10 +255,10 @@
                                                         <!-- <td></td> -->
                                                         <td style="text-align: right;">T7</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrT7" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrT7" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprT7" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprT7" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -265,10 +266,10 @@
                                                         <!-- <td></td> -->
                                                         <td style="text-align: right;">T8</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrT8" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrT8" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprT8" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprT8" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -276,10 +277,10 @@
                                                         <!-- <td></td> -->
                                                         <td style="text-align: right;">T9</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrT9" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrT9" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprT9" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprT9" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -287,10 +288,10 @@
                                                         <!-- <td></td> -->
                                                         <td style="text-align: right;">T10</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrT10" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrT10" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprT10" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprT10" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -298,10 +299,10 @@
                                                         <!-- <td></td> -->
                                                         <td style="text-align: right;">T11</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrT11" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrT11" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprT11" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprT11" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -309,10 +310,10 @@
                                                         <!-- <td></td> -->
                                                         <td style="text-align: right;">T12</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrT12" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrT12" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprT12" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprT12" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -320,10 +321,10 @@
                                                         <!-- <td></td> -->
                                                         <td style="text-align: right;">L1</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrL1" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrL1" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprL1" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprL1" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -332,15 +333,15 @@
                                                         <td>
                                                             <div class="inline fields"> L2
                                                                 <div class="field" style="padding-left: 5px; padding-right: 0px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorR ler" name="motorRL2" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorR ler" name="motorRL2" style="width: 100px;">
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrL2" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrL2" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprL2" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprL2" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -349,15 +350,15 @@
                                                         <td>
                                                             <div class="inline fields"> L3
                                                                 <div class="field" style="padding-left: 5px; padding-right: 0px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorR ler" name="motorRL3" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorR ler" name="motorRL3" style="width: 100px;">
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrL3" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrL3" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprL3" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprL3" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -366,15 +367,15 @@
                                                         <td>
                                                             <div class="inline fields"> L4
                                                                 <div class="field" style="padding-left: 5px; padding-right: 0px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorR ler" name="motorRL4" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorR ler" name="motorRL4" style="width: 100px;">
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrL4" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrL4" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprL4" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprL4" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -383,15 +384,15 @@
                                                         <td>
                                                             <div class="inline fields"> L5
                                                                 <div class="field" style="padding-left: 5px; padding-right: 0px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorR ler" name="motorRL5" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorR ler" name="motorRL5" style="width: 100px;">
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrL5" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrL5" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprL5" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprL5" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -400,15 +401,15 @@
                                                         <td>
                                                             <div class="inline fields"> S1
                                                                 <div class="field" style="padding-left: 5px; padding-right: 0px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorR ler" name="motorRS1" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorR ler" name="motorRS1" style="width: 100px;">
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrS1" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrS1" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprS1" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprS1" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -416,10 +417,10 @@
                                                         <td></td>
                                                         <td style="text-align: right;">S2</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrS2" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrS2" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprS2" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprS2" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -427,10 +428,10 @@
                                                         <td></td>
                                                         <td style="text-align: right;">S3</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrS3" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrS3" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprS3" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprS3" style="width: 100px;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -438,25 +439,25 @@
                                                             <div class="inline fields">
                                                                 <label style="margin-right: 5px;">(VAC) Voluntary Anal Contraction (Yes/No)</label>
                                                                 <div class="field" style="padding-right: 0px;">
-                                                                    <input type="text" class="form-control" name="vac" size="8" style="border: 2px solid black;">
-                                                                    <!-- <div class="ui radio checkbox">
+                                                                    <!-- <input type="text" class="form-control" name="vac" size="8" style="border: 2px solid black;"> -->
+                                                                    <div class="ui radio checkbox">
                                                                         <input type="radio" name="vac" value="1" id="vac_yes">
                                                                         <label for="vac_yes">Yes</label>
                                                                     </div>
                                                                     <div class="ui radio checkbox">
                                                                         <input type="radio" name="vac" value="0" id="vac_no">
                                                                         <label for="vac_no">No</label>
-                                                                    </div> -->
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <!-- <td></td> -->
                                                         <td style="text-align: right;">S4-5</td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltr" name="ltrS4" style="width: 100px; border: 2px solid black;">
+                                                            <input type="text" class="form-control calc_spinalCord ltr" name="ltrS4" style="width: 100px; border: 2px solid black;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppr" name="pprS4" style="width: 100px; border: 2px solid black;">
+                                                            <input type="text" class="form-control calc_spinalCord ppr" name="pprS4" style="width: 100px; border: 2px solid black;">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -502,10 +503,10 @@
                                                 <tbody>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlC2" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlC2" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplC2" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplC2" style="width: 100px;">
                                                         </td>
                                                         <td style="text-align: left;">C2</td>
                                                         <td></td>
@@ -513,10 +514,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlC3" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlC3" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplC3" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplC3" style="width: 100px;">
                                                         </td>
                                                         <td style="text-align: left;">C3</td>
                                                         <td></td>
@@ -524,10 +525,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlC4" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlC4" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplC4" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplC4" style="width: 100px;">
                                                         </td>
                                                         <td style="text-align: left;">C4</td>
                                                         <td></td>
@@ -535,15 +536,15 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlC5" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlC5" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplC5" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplC5" style="width: 100px;">
                                                         </td>
                                                         <td>
                                                             <div class="inline fields">
                                                                 <div class="field" style="padding-left: 0px; padding-right: 5px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorL uel" name="motorLC5" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorL uel" name="motorLC5" style="width: 100px;">
                                                                 </div> C5
                                                             </div>
                                                         </td>
@@ -552,15 +553,15 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlC6" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlC6" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplC6" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplC6" style="width: 100px;">
                                                         </td>
                                                         <td>
                                                             <div class="inline fields">
                                                                 <div class="field" style="padding-left: 0px; padding-right: 5px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorL uel" name="motorLC6" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorL uel" name="motorLC6" style="width: 100px;">
                                                                 </div> C6
                                                             </div>
                                                         </td>
@@ -569,15 +570,15 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlC7" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlC7" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplC7" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplC7" style="width: 100px;">
                                                         </td>
                                                         <td>
                                                             <div class="inline fields">
                                                                 <div class="field" style="padding-left: 0px; padding-right: 5px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorL uel" name="motorLC7" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorL uel" name="motorLC7" style="width: 100px;">
                                                                 </div> C7
                                                             </div>
                                                         </td>
@@ -586,15 +587,15 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlC8" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlC8" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplC8" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplC8" style="width: 100px;">
                                                         </td>
                                                         <td>
                                                             <div class="inline fields">
                                                                 <div class="field" style="padding-left: 0px; padding-right: 5px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorL uel" name="motorLC8" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorL uel" name="motorLC8" style="width: 100px;">
                                                                 </div> C8
                                                             </div>
                                                         </td>
@@ -603,15 +604,15 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlT1" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlT1" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplT1" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplT1" style="width: 100px;">
                                                         </td>
                                                         <td>
                                                             <div class="inline fields">
                                                                 <div class="field" style="padding-left: 0px; padding-right: 5px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorL uel" name="motorLT1" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorL uel" name="motorLT1" style="width: 100px;">
                                                                 </div> T1
                                                             </div>
                                                         </td>
@@ -620,10 +621,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlT2" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlT2" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplT2" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplT2" style="width: 100px;">
                                                         </td>
                                                         <td style="text-align: left;">T2</td>
                                                         <td colspan="2" rowspan="12">
@@ -676,10 +677,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlT3" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlT3" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplT3" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplT3" style="width: 100px;">
                                                         </td>
                                                         <td style="text-align: left;">T3</td>
                                                         <!-- <td></td> -->
@@ -687,10 +688,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlT4" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlT4" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplT4" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplT4" style="width: 100px;">
                                                         </td>
                                                         <td style="text-align: left;">T4</td>
                                                         <!-- <td></td> -->
@@ -698,10 +699,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlT5" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlT5" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplT5" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplT5" style="width: 100px;">
                                                         </td>
                                                         <td style="text-align: left;">T5</td>
                                                         <!-- <td></td> -->
@@ -709,10 +710,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlT6" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlT6" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplT6" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplT6" style="width: 100px;">
                                                         </td>
                                                         <td style="text-align: left;">T6</td>
                                                         <!-- <td></td> -->
@@ -720,10 +721,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlT7" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlT7" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplT7" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplT7" style="width: 100px;">
                                                         </td>
                                                         <td style="text-align: left;">T7</td>
                                                         <!-- <td></td> -->
@@ -731,10 +732,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlT8" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlT8" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplT8" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplT8" style="width: 100px;">
                                                         </td>
                                                         <td style="text-align: left;">T8</td>
                                                         <!-- <td></td> -->
@@ -742,10 +743,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlT9" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlT9" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplT9" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplT9" style="width: 100px;">
                                                         </td>
                                                         <td style="text-align: left;">T9</td>
                                                         <!-- <td></td> -->
@@ -753,10 +754,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlT10" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlT10" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplT10" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplT10" style="width: 100px;">
                                                         </td>
                                                         <td style="text-align: left;">T10</td>
                                                         <!-- <td></td> -->
@@ -764,10 +765,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlT11" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlT11" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplT11" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplT11" style="width: 100px;">
                                                         </td>
                                                         <td style="text-align: left;">T11</td>
                                                         <!-- <td></td> -->
@@ -775,10 +776,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlT12" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlT12" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplT12" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplT12" style="width: 100px;">
                                                         </td>
                                                         <td style="text-align: left;">T12</td>
                                                         <!-- <td></td> -->
@@ -786,10 +787,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlL1" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlL1" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplL1" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplL1" style="width: 100px;">
                                                         </td>
                                                         <td style="text-align: left;">L1</td>
                                                         <!-- <td></td> -->
@@ -797,15 +798,15 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlL2" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlL2" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplL2" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplL2" style="width: 100px;">
                                                         </td>
                                                         <td>
                                                             <div class="inline fields">
                                                                 <div class="field" style="padding-left: 0px; padding-right: 5px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorL lel" name="motorLL2" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorL lel" name="motorLL2" style="width: 100px;">
                                                                 </div> L2
                                                             </div>
                                                         </td>
@@ -814,15 +815,15 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlL3" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlL3" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplL3" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplL3" style="width: 100px;">
                                                         </td>
                                                         <td>
                                                             <div class="inline fields">
                                                                 <div class="field" style="padding-left: 0px; padding-right: 5px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorL lel" name="motorLL3" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorL lel" name="motorLL3" style="width: 100px;">
                                                                 </div> L3
                                                             </div>
                                                         </td>
@@ -831,15 +832,15 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlL4" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlL4" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplL4" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplL4" style="width: 100px;">
                                                         </td>
                                                         <td>
                                                             <div class="inline fields">
                                                                 <div class="field" style="padding-left: 0px; padding-right: 5px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorL lel" name="motorLL4" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorL lel" name="motorLL4" style="width: 100px;">
                                                                 </div> L4
                                                             </div>
                                                         </td>
@@ -848,15 +849,15 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlL5" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlL5" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplL5" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplL5" style="width: 100px;">
                                                         </td>
                                                         <td>
                                                             <div class="inline fields">
                                                                 <div class="field" style="padding-left: 0px; padding-right: 5px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorL lel" name="motorLL5" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorL lel" name="motorLL5" style="width: 100px;">
                                                                 </div> L5
                                                             </div>
                                                         </td>
@@ -865,15 +866,15 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlS1" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlS1" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplS1" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplS1" style="width: 100px;">
                                                         </td>
                                                         <td>
                                                             <div class="inline fields">
                                                                 <div class="field" style="padding-left: 0px; padding-right: 5px;">
-                                                                    <input type="number" class="form-control calc_spinalCord motorL lel" name="motorLS1" style="width: 100px;">
+                                                                    <input type="text" class="form-control calc_spinalCord motorL lel" name="motorLS1" style="width: 100px;">
                                                                 </div> S1
                                                             </div>
                                                         </td>
@@ -882,10 +883,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlS2" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlS2" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplS2" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplS2" style="width: 100px;">
                                                         </td>
                                                         <td style="text-align: left;">S2</td>
                                                         <td></td>
@@ -893,10 +894,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlS3" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlS3" style="width: 100px;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplS3" style="width: 100px;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplS3" style="width: 100px;">
                                                         </td>
                                                         <td style="text-align: left;">S3</td>
                                                         <td></td>
@@ -904,24 +905,24 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ltl" name="ltlS4" style="width: 100px; border: 2px solid black;">
+                                                            <input type="text" class="form-control calc_spinalCord ltl" name="ltlS4" style="width: 100px; border: 2px solid black;">
                                                         </td>
                                                         <td>
-                                                            <input type="number" class="form-control calc_spinalCord ppl" name="pplS4" style="width: 100px; border: 2px solid black;">
+                                                            <input type="text" class="form-control calc_spinalCord ppl" name="pplS4" style="width: 100px; border: 2px solid black;">
                                                         </td>
                                                         <td style="text-align: left;">S4-5</td>
                                                         <td colspan="2" style="padding: 7px 0;">
                                                             <div class="inline fields">
                                                                 <div class="field" style="padding-left: 0px;">
-                                                                    <input type="text" class="form-control" name="dap" size="8" style="border: 2px solid black;">
-                                                                    <!-- <div class="ui radio checkbox">
+                                                                    <!-- <input type="text" class="form-control" name="dap" size="8" style="border: 2px solid black;"> -->
+                                                                    <div class="ui radio checkbox">
                                                                         <input type="radio" name="dap" value="1" id="dap_yes">
                                                                         <label for="dap_yes">Yes</label>
                                                                     </div>
                                                                     <div class="ui radio checkbox">
                                                                         <input type="radio" name="dap" value="0" id="dap_no">
                                                                         <label for="dap_no">No</label>
-                                                                    </div> -->
+                                                                    </div>
                                                                 </div>
                                                                 <label style="margin-right: 5px;">(DAP) Deep Anal Pressure (Yes/No)</label>
                                                             </div>
@@ -960,7 +961,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class='sixteen wide column'>
+                                <div class='sixteen wide column' style="display: none;">
                                     <div class="ui segments">
                                         <div class="ui secondary segment">MOTOR SUBSCORES</div>
                                         <div class="ui segment">
