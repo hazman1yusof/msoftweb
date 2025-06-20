@@ -48,8 +48,8 @@ class TestController extends defaultController
             //     return $this->load_discipline($request);
             // case 'insert_phst':
             //     return $this->insert_phst($request);
-            // case 'debtortype_xde':
-            //     return $this->debtortype_xde($request);
+            case 'update_gltran_posteddate':
+                return $this->update_gltran_posteddate($request);
             case 'stockloc_JTR_header':
                 return $this->stockloc_JTR_header($request);
             case 'stockloc_JTR':
@@ -6207,6 +6207,43 @@ class TestController extends defaultController
                         'adduser' => 'SYSTEM',
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'idno' => null
+                    ]);
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
+    }
+
+    public function update_gltran_posteddate(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $cbtran = DB::table('finance.cbtran as cb')
+                        ->select('cb.idno','cb.postdate','db.posteddate','db.entrydate')
+                        ->join('debtor.dbacthdr as db', function($join){
+                            $join = $join
+                                        ->where('db.compcode',session('compcode'))
+                                        ->on('db.source','cb.source')
+                                        ->on('db.trantype','cb.trantype')
+                                        ->on('db.auditno','cb.auditno');
+                        })
+                        ->where('cb.compcode',session('compcode'))
+                        ->where('cb.bankcode','MBBUKMM')
+                        ->where('cb.reconstatus','1')
+                        ->whereDate('cb.postdate','>','2025-05-31')
+                        ->get();
+
+            foreach ($cbtran as $obj) {
+                DB::table('finance.cbtran as cb')
+                    ->where('idno',$obj->idno)
+                    ->update([
+                        'postdate' => $obj->entrydate
                     ]);
             }
 
