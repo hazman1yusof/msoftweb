@@ -33,7 +33,7 @@
                 @else
                 <td  data-format="@">{{$obj->itemcode}}</td>
                 @endif
-                <td>{{preg_replace("/[^A-Za-z0-9 ]/", '', $obj->description)}}</td>
+                <td>{!!preg_replace("/[^A-Za-z0-9 ]/", '', $obj->description)!!}</td>
                 <td>{{$obj->batchno}}</td>
                 <td>{{$expdate}}</td>
                 <td>{{$obj->uomcode}}</td>
