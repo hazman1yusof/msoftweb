@@ -48,8 +48,8 @@ class TestController extends defaultController
             //     return $this->load_discipline($request);
             // case 'insert_phst':
             //     return $this->insert_phst($request);
-            case 'update_gltran_posteddate':
-                return $this->update_gltran_posteddate($request);
+            case 'bankrecon_cbtran':
+                return $this->bankrecon_cbtran($request);
             case 'stockloc_JTR_header':
                 return $this->stockloc_JTR_header($request);
             case 'stockloc_JTR':
@@ -6250,6 +6250,96 @@ class TestController extends defaultController
                     ->update([
                         'posteddate' => $obj->entrydate
                     ]);
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
+    }
+
+    public function bankrecon_cbtran(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $bankrecadd = DB::table('recondb.bankrecadd')
+                        ->get();
+
+            foreach ($bankrecadd as $obj) {
+                $cbtran = DB::table('finance.cbtran')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$obj->source)
+                            ->where('trantype',$obj->trantype)
+                            ->where('auditno',$obj->auditno);
+
+                if(!$cbtran->exists()){
+
+                    $explode = explode('/', $obj->date);
+                    $newdate = $explode[2].'-'.$explode[1].'-'.$explode[0];
+                    $year = intval($explode[2]);
+                    $period = intval($explode[1]);
+
+                    DB::table('finance.cbtran')
+                        ->insert([  
+                            'compcode' => session('compcode'), 
+                            'bankcode' => 'MBBUKMM', 
+                            'source' => $obj->source, 
+                            'trantype' => $obj->trantype, 
+                            'auditno' => $obj->auditno, 
+                            'postdate' => $newdate,
+                            'year' => $year, 
+                            'period' => $period, 
+                            'cheqno' => $obj->cheqno, 
+                            'amount' => $obj->amount, 
+                            'remarks' => $obj->remark, 
+                            'upduser' => 'SYSTEM_BR', 
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                            // 'reference' => 'Receipt Payment :'. ' ' .$request->dbacthdr_payername, 
+                            'recstatus' => 'ACTIVE' 
+                        ]);
+                }
+            }
+
+             $bankrecsubtract = DB::table('recondb.bankrecsubtract')
+                        ->get();
+
+            foreach ($bankrecsubtract as $obj) {
+                $cbtran = DB::table('finance.cbtran')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$obj->source)
+                            ->where('trantype',$obj->trantype)
+                            ->where('auditno',$obj->auditno);
+
+                if(!$cbtran->exists()){
+
+                    $explode = explode('/', $obj->date);
+                    $newdate = $explode[2].'-'.$explode[1].'-'.$explode[0];
+                    $year = intval($explode[2]);
+                    $period = intval($explode[1]);
+
+                    DB::table('finance.cbtran')
+                        ->insert([  
+                            'compcode' => session('compcode'), 
+                            'bankcode' => 'MBBUKMM', 
+                            'source' => $obj->source, 
+                            'trantype' => $obj->trantype, 
+                            'auditno' => $obj->auditno, 
+                            'postdate' => $newdate,
+                            'year' => $year, 
+                            'period' => $period, 
+                            'cheqno' => $obj->cheqno, 
+                            'amount' => $obj->amount, 
+                            'remarks' => $obj->remark, 
+                            'upduser' => 'SYSTEM_BR', 
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                            // 'reference' => 'Receipt Payment :'. ' ' .$request->dbacthdr_payername, 
+                            'recstatus' => 'ACTIVE' 
+                        ]);
+                }
             }
 
             DB::commit();
