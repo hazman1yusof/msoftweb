@@ -138,7 +138,11 @@
                                     @else
                                         { text: 'Bill No {{str_pad($obj->refauditno, 8, "0", STR_PAD_LEFT)}}' },
                                     @endif
+                                    @if(!empty($obj->pm_name))
+                                    { text: `{{$obj->pm_name}}` },
+                                    @else
                                     { text: `{{$obj->name}}` },
+                                    @endif
                                     @if($obj->mrn == '0')
                                         { text: ' ' },
                                     @else
