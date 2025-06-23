@@ -92,6 +92,12 @@ $(document).ready(function (){
         $('#tbl_spinalCord_date tbody tr').removeClass('active');
         $(this).addClass('active');
         
+        if(check_same_usr_edit(data)){
+            button_state_spinalCord('edit');
+        }else{
+            button_state_spinalCord('add');
+        }
+        
         // getdata_spinalCord();
         $("#idno_spinalCord").val(data.idno);
         
@@ -113,9 +119,9 @@ $(document).ready(function (){
         }).done(function (data){
             if(!$.isEmptyObject(data.spinalcord)){
                 autoinsert_rowdata("#formSpinalCord",data.spinalcord);
-                button_state_spinalCord('edit');
+                // button_state_spinalCord('edit');
             }else{
-                button_state_spinalCord('add');
+                // button_state_spinalCord('add');
             }
             
             // textarea_init_spinalCord();
@@ -244,12 +250,13 @@ var tbl_spinalCord_date = $('#tbl_spinalCord_date').DataTable({
         { 'data': 'mrn' },
         { 'data': 'episno' },
         { 'data': 'entereddate', 'width': '25%' },
+        { 'data': 'dt' },
         { 'data': 'adduser', 'width': '50%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2, 4], visible: false },
     ],
-    order: [[3, 'desc']],
+    order: [[4, 'desc']],
     "drawCallback": function (settings){
         $(this).find('tbody tr')[0].click();
     }

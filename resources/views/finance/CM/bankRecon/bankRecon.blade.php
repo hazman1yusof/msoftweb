@@ -143,7 +143,7 @@ i.fa {
 	<!-- ***************End Search + table ********************* -->
 		<div id="dialogForm" title="Add Form" >
 			<div class='col-md-12' style="padding:0px">
-  				<label for="clsBnkStatmnt">Closing Bank Statement</label> 
+  				<label for="clsBnkStatmnt">Closing Bank Statement  <span style="padding-left: 20px;">Date: <span id="spanrecdate"></span></span></label> 
 					<input id="clsBnkStatmnt" name="clsBnkStatmnt" type="text" class="form-control input-sm text-uppercase" style="width: 30%;margin-bottom: 10px;">
 
 					<select class="form-control" id="alloState" style="width: 140px;
@@ -249,5 +249,5 @@ i.fa {
 			
 		});
 	</script>
-	<script src="js/finance/CM/bankRecon/bankRecon.js"></script>
+	<script src="js/finance/CM/bankRecon/bankRecon.js?v=1.1"></script>
 @endsection

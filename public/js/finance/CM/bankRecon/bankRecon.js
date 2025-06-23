@@ -69,10 +69,13 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid2", urlParam_2);
 			refreshGrid("#jqGrid3", urlParam_3);
 
+			$('#spanrecdate').text($('#recdate').val());
+
 		},
 		beforeClose: function(event, ui){
 		},
 		close: function( event, ui ) {
+			parent_close_disabled(false);
 			mycurrency.formatOff();
 			if($('#clsBnkStatmnt').val() != $('#closeAmtStamnt').val()){
 				urlParam.save_amt = $('#clsBnkStatmnt').val();

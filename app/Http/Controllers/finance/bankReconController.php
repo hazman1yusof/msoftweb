@@ -206,6 +206,9 @@ class bankReconController extends defaultController
     }
 
     public function init_recon(Request $request,$cbhdr){
+
+        $mmyy = Carbon::createFromFormat('Y-m-d',$request->recdate)->endOfMonth()->format('my');
+
         $cbrecdtl_sumamt = DB::table('finance.cbrecdtl')
                             ->where('compcode',session('compcode'))
                             ->where('auditno',$cbhdr->auditno)
@@ -213,13 +216,13 @@ class bankReconController extends defaultController
 
         $bankstmt = DB::table('finance.bankstmt')
                                 ->where('compcode',session('compcode'))
-                                ->where('mmyy',$cbhdr->recdate)
+                                ->where('mmyy',$mmyy)
                                 ->where('bankcode',$cbhdr->bankcode);
 
         if($bankstmt->exists()){
             DB::table('finance.bankstmt')
                     ->where('compcode',session('compcode'))
-                    ->where('mmyy',$cbhdr->recdate)
+                    ->where('mmyy',$mmyy)
                     ->where('bankcode',$cbhdr->bankcode)
                     ->update([
                         'currentbal' => $cbrecdtl_sumamt
@@ -231,7 +234,7 @@ class bankReconController extends defaultController
                 ->insert([
                     'compcode' => session('compcode'),
                     'bankcode' => $cbhdr->bankcode,
-                    'mmyy' => $cbhdr->recdate,
+                    'mmyy' => $mmyy,
                     'currentbal' => $cbrecdtl_sumamt,
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -440,12 +443,14 @@ class bankReconController extends defaultController
             return json_encode($responce);
         }
 
-        $recdate_ = Carbon::createFromFormat('Y-m-d',$request->recdate)->endOfMonth()->format('Y-m-d');
+        // $from_ = Carbon::createFromFormat('Y-m-d',$request->recdate)->startOfMonth()->format('Y-m-d');
+        // $to_ = Carbon::createFromFormat('Y-m-d',$request->recdate)->endOfMonth()->format('Y-m-d');
 
         $table = DB::table('finance.cbtran AS cb')
                     ->select('cb.idno','cb.compcode','cb.bankcode','cb.source','cb.trantype','cb.auditno','cb.postdate','cb.year','cb.period','cb.cheqno','cb.amount','cb.remarks','cb.upduser','cb.upddate','cb.bitype','cb.reference','cb.recstatus','cb.refsrc','cb.reftrantype','cb.refauditno','cb.reconstatus')
                     ->where('cb.compcode','=', session('compcode'))
                     ->where('cb.reconstatus','!=', 1)
+                    ->where('cb.postdate','<=', $request->recdate)
                     ->where('cb.bankcode','=', $request->bankcode);
 
         if(!empty($request->filterCol)){
