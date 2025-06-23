@@ -91,12 +91,12 @@
         <td></td>
     </tr>
     @php
-        $cbtot = 0;
+        $cbtot1 = 0;
     @endphp
     @foreach ($cb_tran as $obj)
         @if($obj->amount < 0)
         @php
-            $cbtot = $cbtot + $obj->amount;
+            $cbtot1 = $cbtot1 + $obj->amount;
         @endphp
         <tr>
             <td style="text-align: left">{{$obj->postdate}}</td>
@@ -113,7 +113,7 @@
         <td></td>
         <td></td>
         <td style="font-weight: bold">SUB-TOTAL</td>
-        <td>{{$cbtot}}</td>
+        <td>{{$cbtot1}}</td>
     </tr>
     <tr></tr>
     <tr>
@@ -123,12 +123,12 @@
         <td></td>
     </tr>
     @php
-        $cbtot = 0;
+        $cbtot2 = 0;
     @endphp
     @foreach ($cb_tran as $obj)
         @if($obj->amount > 0)
         @php
-            $cbtot = $cbtot + $obj->amount;
+            $cbtot2 = $cbtot2 + $obj->amount;
         @endphp
         <tr>
             <td style="text-align: left">{{$obj->postdate}}</td>
@@ -145,7 +145,14 @@
         <td></td>
         <td></td>
         <td style="font-weight: bold">SUB-TOTAL</td>
-        <td>{{$cbtot}}</td>
+        <td>{{$cbtot2}}</td>
+    </tr>
+    <tr></tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td style="font-weight: bold">CLOSING BALANCE</td>
+        <td>{{$bs_bal + $cbtot1 + $cbtot2}}</td>
     </tr>
     <tr></tr>
 </table>
