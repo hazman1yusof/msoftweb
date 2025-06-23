@@ -101,7 +101,7 @@
         <tr>
             <td style="text-align: left">{{$obj->postdate}}</td>
             <td>{{$obj->cheqno}}</td>
-            <td>{{$obj->reference}}</td>
+            <td>@if(!empty($obj->reference)){{$obj->reference}}@else{{$obj->remarks}}@endif</td>
             <td>{{abs($obj->amount)}}</td>
             <td>{{$obj->source}}</td>
             <td>{{$obj->trantype}}</td>
