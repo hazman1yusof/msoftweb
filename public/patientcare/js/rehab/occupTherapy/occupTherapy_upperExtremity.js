@@ -11,7 +11,7 @@ var urlParam_rof = {
     table_name: 'hisdb.ot_upperExtremity_rof',
     table_id: 'idno',
     filterCol: ['mrn','episno','idno_rof'],
-    filterVal: ['','',$("#idno_rof").val()],
+    filterVal: ['','',$("#formROF :input[name='idno_rof']").val()],
     
 }
 
@@ -23,7 +23,7 @@ var urlParam_hand = {
     table_name: 'hisdb.ot_upperExtremity_hand',
     table_id: 'idno',
     filterCol: ['mrn','episno','idno_hand'],
-    filterVal: ['','',$("#idno_hand").val()],
+    filterVal: ['','',$("#formHand :input[name='idno_hand']").val()],
     
 }
 
@@ -74,6 +74,135 @@ $(document).ready(function (){
 
     //////////////////////////////////////upperExtremity ends//////////////////////////////////////
 
+    //////////////////////////////////////rof starts//////////////////////////////////////
+
+    disableForm('#formROF');
+    
+    $("#new_rof").click(function (){
+        console.log($("#idno_rof").val());
+        $('#cancel_rof').data('oper','add');
+        button_state_rof('wait');
+        enableForm('#formROF');
+        rdonly('#formROF');
+        emptyFormdata_div("#formROF",['#mrn_occupTherapy','#episno_occupTherapy','#idno_rof','#rof_impressions']);
+
+        document.getElementById("idno_rof").value = "";
+        document.getElementById("idno_upperExtremity").value = "";
+
+    });
+    
+    $("#edit_rof").click(function (){
+        button_state_rof('wait');
+        enableForm('#formROF');
+        rdonly('#formROF');
+    });
+    
+    $("#save_rof").click(function (){
+        disableForm('#formROF');
+        if($('#formROF').isValid({requiredFields: ''}, conf, true)){
+            saveForm_rof(function (data){
+                $("#cancel_rof").data('oper','edit');
+                $("#cancel_rof").click();          
+            });
+        }else{
+            enableForm('#formROF');
+            rdonly('#formROF');
+        }
+    });
+    
+    $("#cancel_rof").click(function (){
+        // emptyFormdata_div("#formROF",['#mrn_occupTherapy','#episno_occupTherapy','#idno_rof']);
+        disableForm('#formROF');
+        button_state_rof($(this).data('oper'));
+    });
+    //////////////////////////////////////rof ends//////////////////////////////////////
+
+    //////////////////////////////////////hand starts//////////////////////////////////////
+
+    disableForm('#formHand');
+    
+    $("#new_hand").click(function (){
+        console.log($("#idno_hand").val());
+        $('#cancel_hand').data('oper','add');
+        button_state_hand('wait');
+        enableForm('#formHand');
+        rdonly('#formHand');
+        emptyFormdata_div("#formHand",['#mrn_occupTherapy','#episno_occupTherapy','#idno_hand','#hand_impressions']);
+
+        document.getElementById("idno_hand").value = "";
+        document.getElementById("idno_upperExtremity").value = "";
+
+    });
+    
+    $("#edit_hand").click(function (){
+        button_state_hand('wait');
+        enableForm('#formHand');
+        rdonly('#formHand');
+    });
+    
+    $("#save_hand").click(function (){
+        disableForm('#formHand');
+        if($('#formHand').isValid({requiredFields: ''}, conf, true)){
+            saveForm_rof(function (data){
+                $("#cancel_hand").data('oper','edit');
+                $("#cancel_hand").click();          
+            });
+        }else{
+            enableForm('#formHand');
+            rdonly('#formHand');
+        }
+    });
+    
+    $("#cancel_hand").click(function (){
+        // emptyFormdata_div("#formHand",['#mrn_occupTherapy','#episno_occupTherapy','#idno_hand']);
+        disableForm('#formHand');
+        button_state_hand($(this).data('oper'));
+    });
+    //////////////////////////////////////hand ends//////////////////////////////////////
+
+    //////////////////////////////////////strength starts//////////////////////////////////////
+
+    disableForm('#formStrength');
+    
+    $("#new_strength").click(function (){
+        console.log($("#idno_strength").val());
+        $('#cancel_strength').data('oper','add');
+        button_state_strength('wait');
+        enableForm('#formStrength');
+        rdonly('#formStrength');
+        emptyFormdata_div("#formStrength",['#mrn_occupTherapy','#episno_occupTherapy','#idno_strength']);
+
+        document.getElementById("idno_strength").value = "";
+        document.getElementById("idno_upperExtremity").value = "";
+
+    });
+    
+    $("#edit_strength").click(function (){
+        button_state_strength('wait');
+        enableForm('#formStrength');
+        rdonly('#formStrength');
+    });
+    
+    $("#save_strength").click(function (){
+        disableForm('#formStrength');
+        if($('#formStrength').isValid({requiredFields: ''}, conf, true)){
+            saveForm_strength(function (data){
+                $("#cancel_strength").data('oper','edit');
+                $("#cancel_strength").click();          
+            });
+        }else{
+            enableForm('#formStrength');
+            rdonly('#formStrength');
+        }
+    });
+    
+    $("#cancel_strength").click(function (){
+        // emptyFormdata_div("#formStrength",['#mrn_occupTherapy','#episno_occupTherapy','#idno_strength']);
+        disableForm('#formStrength');
+        button_state_strength($(this).data('oper'));
+    });
+    //////////////////////////////////////strength ends//////////////////////////////////////
+
     //////////////////////////////////////sensation starts//////////////////////////////////////
 
     disableForm('#formSensation');
@@ -122,13 +251,16 @@ $(document).ready(function (){
     disableForm('#formPrehensive');
     
     $("#new_prehensive").click(function (){
+        console.log($("#idno_prehensive").val());
         $('#cancel_prehensive').data('oper','add');
         button_state_prehensive('wait');
         enableForm('#formPrehensive');
         rdonly('#formPrehensive');
-        emptyFormdata_div("#formPrehensive",['#mrn_occupTherapy','#episno_occupTherapy']);
+        emptyFormdata_div("#formPrehensive",['#mrn_occupTherapy','#episno_occupTherapy','#idno_prehensive']);
 
         document.getElementById("idno_prehensive").value = "";
+        document.getElementById("idno_upperExtremity").value = "";
+
     });
     
     $("#edit_prehensive").click(function (){
@@ -151,11 +283,139 @@ $(document).ready(function (){
     });
     
     $("#cancel_prehensive").click(function (){
-        // emptyFormdata_div("#formPrehensive",['#mrn_occupTherapy','#episno_occupTherapy']);
+        // emptyFormdata_div("#formPrehensive",['#mrn_occupTherapy','#episno_occupTherapy','#idno_prehensive]);
         disableForm('#formPrehensive');
         button_state_prehensive($(this).data('oper'));
     });
     //////////////////////////////////////prehensive ends//////////////////////////////////////
+
+    //////////////////////////////////////skin starts//////////////////////////////////////
+
+    disableForm('#formSkin');
+    
+    $("#new_skin").click(function (){
+        console.log($("#idno_skin").val());
+        $('#cancel_skin').data('oper','add');
+        button_state_skin('wait');
+        enableForm('#formSkin');
+        rdonly('#formSkin');
+        emptyFormdata_div("#formSkin",['#mrn_occupTherapy','#episno_occupTherapy','#idno_skin']);
+
+        document.getElementById("idno_skin").value = "";
+        document.getElementById("idno_upperExtremity").value = "";
+    });
+    
+    $("#edit_skin").click(function (){
+        button_state_skin('wait');
+        enableForm('#formSkin');
+        rdonly('#formSkin');
+    });
+    
+    $("#save_skin").click(function (){
+        disableForm('#formSkin');
+        if($('#formSkin').isValid({requiredFields: ''}, conf, true)){
+            saveForm_skin(function (data){
+                $("#cancel_skin").data('oper','edit');
+                $("#cancel_skin").click();          
+            });
+        }else{
+            enableForm('#formSkin');
+            rdonly('#formSkin');
+        }
+    });
+    
+    $("#cancel_skin").click(function (){
+        // emptyFormdata_div("#formSkin",['#mrn_occupTherapy','#episno_occupTherapy','#idno_skin']);
+        disableForm('#formSkin');
+        button_state_skin($(this).data('oper'));
+    });
+    //////////////////////////////////////skin ends//////////////////////////////////////
+
+    //////////////////////////////////////edema starts//////////////////////////////////////
+
+    disableForm('#formEdema');
+    
+    $("#new_edema").click(function (){
+        console.log($("#idno_edema").val());
+        $('#cancel_edema').data('oper','add');
+        button_state_edema('wait');
+        enableForm('#formEdema');
+        rdonly('#formEdema');
+        emptyFormdata_div("#formEdema",['#mrn_occupTherapy','#episno_occupTherapy','#idno_edema']);
+
+        document.getElementById("idno_edema").value = "";
+        document.getElementById("idno_upperExtremity").value = "";
+
+    });
+    
+    $("#edit_edema").click(function (){
+        button_state_edema('wait');
+        enableForm('#formEdema');
+        rdonly('#formEdema');
+    });
+    
+    $("#save_edema").click(function (){
+        disableForm('#formEdema');
+        if($('#formEdema').isValid({requiredFields: ''}, conf, true)){
+            saveForm_edema(function (data){
+                $("#cancel_edema").data('oper','edit');
+                $("#cancel_edema").click();          
+            });
+        }else{
+            enableForm('#formEdema');
+            rdonly('#formEdema');
+        }
+    });
+    
+    $("#cancel_edema").click(function (){
+        // emptyFormdata_div("#formEdema",['#mrn_occupTherapy','#episno_occupTherapy','#idno_edema']);
+        disableForm('#formEdema');
+        button_state_edema($(this).data('oper'));
+    });
+    //////////////////////////////////////edema ends//////////////////////////////////////
+
+    //////////////////////////////////////functional starts//////////////////////////////////////
+
+    disableForm('#formFunctional');
+    
+    $("#new_functional").click(function (){
+        console.log($("#idno_func").val());
+        $('#cancel_functional').data('oper','add');
+        button_state_func('wait');
+        enableForm('#formFunctional');
+        rdonly('#formFunctional');
+        emptyFormdata_div("#formFunctional",['#mrn_occupTherapy','#episno_occupTherapy','#idno_func']);
+
+        document.getElementById("idno_func").value = "";
+        document.getElementById("idno_upperExtremity").value = "";
+
+    });
+    
+    $("#edit_functional").click(function (){
+        button_state_func('wait');
+        enableForm('#formFunctional');
+        rdonly('#formFunctional');
+    });
+    
+    $("#save_functional").click(function (){
+        disableForm('#formFunctional');
+        if($('#formFunctional').isValid({requiredFields: ''}, conf, true)){
+            saveForm_func(function (data){
+                $("#cancel_functional").data('oper','edit');
+                $("#cancel_functional").click();          
+            });
+        }else{
+            enableForm('#formFunctional');
+            rdonly('#formFunctional');
+        }
+    });
+    
+    $("#cancel_functional").click(function (){
+        // emptyFormdata_div("#formFunctional",['#mrn_occupTherapy','#episno_occupTherapy','#idno_func']);
+        disableForm('#formFunctional');
+        button_state_func($(this).data('oper'));
+    });
+    //////////////////////////////////////functional ends//////////////////////////////////////
     
     // to format number input to two decimal places (0.00)
     $(".floatNumberField").change(function (){
@@ -680,12 +940,17 @@ $(document).ready(function (){
             $(this).addClass('selected');
         }
         
-        emptyFormdata_div("#formOccupTherapyUpperExtremity",['#mrn_occupTherapy','#episno_occupTherapy','#idno_upperExtremity','#idno_sensation']);
+        emptyFormdata_div("#formOccupTherapyUpperExtremity",['#mrn_occupTherapy','#episno_occupTherapy','#idno_upperExtremity']);
+        emptyFormdata_div("#formROF",['#mrn_occupTherapy','#episno_occupTherapy','#idno_rof','#rof_impressions']);
+
         $('#datetimeUpperExtremity_tbl tbody tr').removeClass('active');
         $(this).addClass('active');
         
-        $("#idno_upperExtremity,#idno_rof,#idno_hand,#idno_prehensive,#idno_skin,#idno_edema,#idno_func").val(data.idno);
-        $("#formSensation :input[name='idno_sensation']").val(data.idno);
+        $("#formOccupTherapyUpperExtremity :input[name='idno_upperExtremity'],#formROF :input[name='idno_rof'],#formHand :input[name='idno_hand'],#formStrength :input[name='idno_strength'],#formSensation :input[name='idno_sensation'],#formSkin :input[name='idno_skin'],#formEdema :input[name='idno_edema'],#formFunctional :input[name='idno_func']").val(data.idno);
+       
+        $("#formROF :input[name='rof_impressions']").val('ROF');
+        $("#formHand :input[name='hand_impressions']").val('hand');
+
         //// jqGrid_rof
         urlParam_rof.filterVal[0] = data.mrn;
         urlParam_rof.filterVal[1] = data.episno;
@@ -693,7 +958,7 @@ $(document).ready(function (){
 
         refreshGrid('#jqGrid_rof',urlParam_rof,'add_jqgridrof');
 
-         //// jqGrid_hand
+        //// jqGrid_hand
         urlParam_hand.filterVal[0] = data.mrn;
         urlParam_hand.filterVal[1] = data.episno;
         urlParam_hand.filterVal[2] = data.idno;
@@ -796,6 +1061,118 @@ function button_state_upperExtremity(state){
     }
 }
 
+button_state_hand('empty');
+function button_state_hand(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_occupTherapy").removeAttr('data-toggle');
+            $('#cancel_hand').data('oper','add');
+            $('#new_hand,#save_hand,#cancel_hand,#edit_hand').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $('#cancel_hand').data('oper','add');
+            $("#new_hand").attr('disabled',false);
+            $('#save_hand,#cancel_hand,#edit_hand').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $('#cancel_hand').data('oper','edit');
+            $("#edit_hand").attr('disabled',false);
+            $('#save_hand,#cancel_hand,#new_hand').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $("#save_hand,#cancel_hand").attr('disabled',false);
+            $('#edit_hand,#new_hand').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_rof('empty');
+function button_state_rof(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_occupTherapy").removeAttr('data-toggle');
+            $('#cancel_rof').data('oper','add');
+            $('#new_rof,#save_rof,#cancel_rof,#edit_rof').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $('#cancel_rof').data('oper','add');
+            $("#new_rof").attr('disabled',false);
+            $('#save_rof,#cancel_rof,#edit_rof').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $('#cancel_rof').data('oper','edit');
+            $("#edit_rof").attr('disabled',false);
+            $('#save_rof,#cancel_rof,#new_rof').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $("#save_rof,#cancel_rof").attr('disabled',false);
+            $('#edit_rof,#new_rof').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_rof('empty');
+function button_state_rof(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_occupTherapy").removeAttr('data-toggle');
+            $('#cancel_rof').data('oper','add');
+            $('#new_rof,#save_rof,#cancel_rof,#edit_rof').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $('#cancel_rof').data('oper','add');
+            $("#new_rof").attr('disabled',false);
+            $('#save_rof,#cancel_rof,#edit_rof').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $('#cancel_rof').data('oper','edit');
+            $("#edit_rof").attr('disabled',false);
+            $('#save_rof,#cancel_rof,#new_rof').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $("#save_rof,#cancel_rof").attr('disabled',false);
+            $('#edit_rof,#new_rof').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_strength('empty');
+function button_state_strength(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_occupTherapy").removeAttr('data-toggle');
+            $('#cancel_strength').data('oper','add');
+            $('#new_strength,#save_strength,#cancel_strength,#edit_strength').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $('#cancel_strength').data('oper','add');
+            $("#new_strength").attr('disabled',false);
+            $('#save_strength,#cancel_strength,#edit_strength').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $('#cancel_strength').data('oper','edit');
+            $("#edit_strength").attr('disabled',false);
+            $('#save_strength,#cancel_strength,#new_strength').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $("#save_strength,#cancel_strength").attr('disabled',false);
+            $('#edit_strength,#new_strength').attr('disabled',true);
+            break;
+    }
+}
+
 button_state_sensation('empty');
 function button_state_sensation(state){
     switch(state){
@@ -848,6 +1225,90 @@ function button_state_prehensive(state){
             $("#toggle_occupTherapy").attr('data-toggle','collapse');
             $("#save_prehensive,#cancel_prehensive").attr('disabled',false);
             $('#edit_prehensive,#new_prehensive').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_skin('empty');
+function button_state_skin(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_occupTherapy").removeAttr('data-toggle');
+            $('#cancel_skin').data('oper','add');
+            $('#new_skin,#save_skin,#cancel_skin,#edit_skin').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $('#cancel_skin').data('oper','add');
+            $("#new_skin").attr('disabled',false);
+            $('#save_skin,#cancel_skin,#edit_skin').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $('#cancel_skin').data('oper','edit');
+            $("#edit_skin").attr('disabled',false);
+            $('#save_skin,#cancel_skin,#new_skin').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $("#save_skin,#cancel_skin").attr('disabled',false);
+            $('#edit_skin,#new_skin').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_edema('empty');
+function button_state_edema(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_occupTherapy").removeAttr('data-toggle');
+            $('#cancel_edema').data('oper','add');
+            $('#new_edema,#save_edema,#cancel_edema,#edit_edema').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $('#cancel_edema').data('oper','add');
+            $("#new_edema").attr('disabled',false);
+            $('#save_edema,#cancel_edema,#edit_edema').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $('#cancel_edema').data('oper','edit');
+            $("#edit_edema").attr('disabled',false);
+            $('#save_edema,#cancel_edema,#new_edema').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $("#save_edema,#cancel_edema").attr('disabled',false);
+            $('#edit_edema,#new_edema').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_func('empty');
+function button_state_func(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_occupTherapy").removeAttr('data-toggle');
+            $('#cancel_functional').data('oper','add');
+            $('#new_functional,#save_functional,#cancel_functional,#edit_functional').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $('#cancel_functional').data('oper','add');
+            $("#new_functional").attr('disabled',false);
+            $('#save_functional,#cancel_functional,#edit_functional').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $('#cancel_functional').data('oper','edit');
+            $("#edit_functional").attr('disabled',false);
+            $('#save_functional,#cancel_functional,#new_functional').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_occupTherapy").attr('data-toggle','collapse');
+            $("#save_functional,#cancel_functional").attr('disabled',false);
+            $('#edit_functional,#new_functional').attr('disabled',true);
             break;
     }
 }
@@ -935,6 +1396,217 @@ function saveForm_upperExtremity(callback){
     });
 }
 
+function saveForm_rof(callback){
+    let oper = $("#cancel_rof").data('oper');
+    var saveParam = {
+        action: 'save_table_impressions',
+        oper: oper,
+        mrn: $('#mrn_occupTherapy').val(),
+        episno: $("#episno_occupTherapy").val(),
+        // tabName: $("#rof_impressions").val(),
+        // idno_rof: $("#idno_rof").val(),
+    }
+    
+    if(oper == 'add'){
+        saveParam.sel_date = $('#sel_date').val();
+    }else if(oper == 'edit'){
+        // var row = docnote_date_tbl.row('.active').data();
+        saveParam.sel_date = $('#sel_date').val();
+        // saveParam.recordtime = row.recordtime;
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formROF").serializeArray();
+    
+    values = values.concat(
+        $('#formROF input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formROF input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formROF input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formROF select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+
+    values.push({
+        name: 'idno_rof',
+        value: $('#formROF input[name=idno_rof]').val()
+    });
+
+    values.push({
+        name: 'tabName',
+        value: $('#formROF input[name=tabName]').val()
+    });
+    
+    $.post("./occupTherapy_upperExtremity/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        callback(data);
+    });
+}
+
+function saveForm_hand(callback){
+    let oper = $("#cancel_hand").data('oper');
+    var saveParam = {
+        action: 'save_table_impressions',
+        oper: oper,
+        mrn: $('#mrn_occupTherapy').val(),
+        episno: $("#episno_occupTherapy").val(),
+        tabName: $("#hand_impressions").val(),
+        // idno_hand: $("#idno_hand").val(),
+    }
+    
+    if(oper == 'add'){
+        saveParam.sel_date = $('#sel_date').val();
+    }else if(oper == 'edit'){
+        // var row = docnote_date_tbl.row('.active').data();
+        saveParam.sel_date = $('#sel_date').val();
+        // saveParam.recordtime = row.recordtime;
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formHand").serializeArray();
+    
+    values = values.concat(
+        $('#formHand input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formHand input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formHand input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formHand select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+
+    values.push({
+        name: 'idno_hand',
+        value: $('#formHand input[name=idno_hand]').val()
+    })
+    
+    $.post("./occupTherapy_upperExtremity/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        callback(data);
+    });
+}
+
+function saveForm_strength(callback){
+    let oper = $("#cancel_strength").data('oper');
+    var saveParam = {
+        action: 'save_table_strength',
+        oper: oper,
+        mrn: $('#mrn_occupTherapy').val(),
+        episno: $("#episno_occupTherapy").val(),
+        // idno_strength: $("#idno_strength").val(),
+    }
+    
+    if(oper == 'add'){
+        saveParam.sel_date = $('#sel_date').val();
+    }else if(oper == 'edit'){
+        // var row = docnote_date_tbl.row('.active').data();
+        saveParam.sel_date = $('#sel_date').val();
+        // saveParam.recordtime = row.recordtime;
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formStrength").serializeArray();
+    
+    values = values.concat(
+        $('#formStrength input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formStrength input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formStrength input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formStrength select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+
+    values.push({
+        name: 'idno_strength',
+        value: $('#formStrength input[name=idno_strength]').val()
+    });
+    
+    $.post("./occupTherapy_upperExtremity/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        callback(data);
+    });
+}
+
 function saveForm_sensation(callback){
     let oper = $("#cancel_sensation").data('oper');
     var saveParam = {
@@ -992,7 +1664,7 @@ function saveForm_sensation(callback){
     values.push({
         name: 'idno_sensation',
         value: $('#formSensation input[name=idno_sensation]').val()
-    })
+    });
     
     $.post("./occupTherapy_upperExtremity/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
@@ -1010,6 +1682,7 @@ function saveForm_prehensive(callback){
         oper: oper,
         mrn: $('#mrn_occupTherapy').val(),
         episno: $("#episno_occupTherapy").val(),
+        // idno_prehensive: $("#idno_prehensive").val(),
     }
     
     if(oper == 'add'){
@@ -1055,6 +1728,12 @@ function saveForm_prehensive(callback){
             return {"name": this.name, "value": this.value}
         }).get()
     );
+
+    values.push({
+        name: 'idno_prehensive',
+        value: $('#formPrehensive input[name=idno_prehensive]').val()
+    });
+    
     
     $.post("./occupTherapy_upperExtremity/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
@@ -1064,6 +1743,216 @@ function saveForm_prehensive(callback){
     }).fail(function (data){
         callback(data);
         button_state_prehensive($(this).data('oper'));
+    });
+}
+
+function saveForm_skin(callback){
+    let oper = $("#cancel_skin").data('oper');
+    var saveParam = {
+        action: 'save_table_skin',
+        oper: oper,
+        mrn: $('#mrn_occupTherapy').val(),
+        episno: $("#episno_occupTherapy").val(),
+        // idno_skin: $("#idno_skin").val(),
+    }
+    
+    if(oper == 'add'){
+        saveParam.sel_date = $('#sel_date').val();
+    }else if(oper == 'edit'){
+        // var row = docnote_date_tbl.row('.active').data();
+        saveParam.sel_date = $('#sel_date').val();
+        // saveParam.recordtime = row.recordtime;
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formPrehensive").serializeArray();
+    
+    values = values.concat(
+        $('#formSkin input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formSkin input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formSkin input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formSkin select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+
+    values.push({
+        name: 'idno_skin',
+        value: $('#formSkin input[name=idno_skin]').val()
+    });
+    
+    $.post("./occupTherapy_upperExtremity/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+        button_state_skin('edit');
+    }).fail(function (data){
+        callback(data);
+        button_state_skin($(this).data('oper'));
+    });
+}
+
+function saveForm_edema(callback){
+    let oper = $("#cancel_edema").data('oper');
+    var saveParam = {
+        action: 'save_table_edema',
+        oper: oper,
+        mrn: $('#mrn_occupTherapy').val(),
+        episno: $("#episno_occupTherapy").val(),
+        // idno_edema: $("#idno_edema").val(),
+    }
+    
+    if(oper == 'add'){
+        saveParam.sel_date = $('#sel_date').val();
+    }else if(oper == 'edit'){
+        // var row = docnote_date_tbl.row('.active').data();
+        saveParam.sel_date = $('#sel_date').val();
+        // saveParam.recordtime = row.recordtime;
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formEdema").serializeArray();
+    
+    values = values.concat(
+        $('#formEdema input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formEdema input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formEdema input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formEdema select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+
+    values.push({
+        name: 'idno_edema',
+        value: $('#formEdema input[name=idno_edema]').val()
+    });
+    
+    $.post("./occupTherapy_upperExtremity/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+        button_state_edema('edit');
+    }).fail(function (data){
+        callback(data);
+        button_state_edema($(this).data('oper'));
+    });
+}
+
+function saveForm_func(callback){
+    let oper = $("#cancel_functional").data('oper');
+    var saveParam = {
+        action: 'save_table_func',
+        oper: oper,
+        mrn: $('#mrn_occupTherapy').val(),
+        episno: $("#episno_occupTherapy").val(),
+        // idno_func: $("#idno_func").val(),
+    }
+    
+    if(oper == 'add'){
+        saveParam.sel_date = $('#sel_date').val();
+    }else if(oper == 'edit'){
+        // var row = docnote_date_tbl.row('.active').data();
+        saveParam.sel_date = $('#sel_date').val();
+        // saveParam.recordtime = row.recordtime;
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formFunctional").serializeArray();
+    
+    values = values.concat(
+        $('#formFunctional input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formFunctional input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formFunctional input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formFunctional select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+
+     values.push({
+        name: 'idno_func',
+        value: $('#formFunctional input[name=idno_func]').val()
+    });
+    
+    $.post("./occupTherapy_upperExtremity/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+        button_state_func('edit');
+    }).fail(function (data){
+        callback(data);
+        button_state_func($(this).data('oper'));
     });
 }
 
@@ -1098,6 +1987,95 @@ function populate_upperExtremity_getdata(){
     });
 }
 
+function populate_rof_getdata(){
+    // console.log('populate');
+    emptyFormdata(errorField,"#formROF",["#mrn_occupTherapy","#episno_occupTherapy",'#idno_rof','#rof_impressions']);
+
+    var saveParam = {
+        action: 'get_table_impressions',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        mrn: $('#mrn_occupTherapy').val(),
+        episno: $("#episno_occupTherapy").val(),
+        idno_imp: $("#formROF :input[name='idno_rof']").val(),
+        tabName: $("#rof_impressions").val()
+    };
+    
+    $.post("./occupTherapy_upperExtremity/form?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').fail(function (data){
+        alert('there is an error');
+    }).done(function (data){
+        if(!$.isEmptyObject(data)){
+            autoinsert_rowdata("#formROF",data.impressions);
+            button_state_rof('edit');
+        }else{
+            button_state_rof('add');
+        }
+    });
+}
+
+function populate_hand_getdata(){
+    // console.log('populate');
+    emptyFormdata(errorField,"#formHand",["#mrn_occupTherapy","#episno_occupTherapy",'#idno_hand','#hand_impressions']);
+
+    var saveParam = {
+        action: 'get_table_impressions',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        mrn: $('#mrn_occupTherapy').val(),
+        episno: $("#episno_occupTherapy").val(),
+        idno_imp: $("#idno_hand").val(),
+        tabName: $("#hand_impressions").val()
+    };
+    
+    $.post("./occupTherapy_upperExtremity/form?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').fail(function (data){
+        alert('there is an error');
+    }).done(function (data){
+        if(!$.isEmptyObject(data)){
+            autoinsert_rowdata("#formHand",data.impressions);
+            button_state_hand('edit');
+        }else{
+            button_state_hand('add');
+        }
+    });
+}
+
+function populate_strength_getdata(){
+    // console.log('populate');
+    emptyFormdata(errorField,"#formStrength",["#mrn_occupTherapy","#episno_occupTherapy",'#idno_strength']);
+
+    var saveParam = {
+        action: 'get_table_strength',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        mrn: $('#mrn_occupTherapy').val(),
+        episno: $("#episno_occupTherapy").val(),
+        idno_strength: $("#idno_strength").val(),
+    };
+    
+    $.post("./occupTherapy_upperExtremity/form?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').fail(function (data){
+        alert('there is an error');
+    }).done(function (data){
+        if(!$.isEmptyObject(data)){
+            autoinsert_rowdata("#formStrength",data.strength);
+            button_state_strength('edit');
+        }else{
+            button_state_strength('add');
+        }
+    });
+}
+
 function populate_sensation_getdata(){
     // console.log('populate');
     emptyFormdata(errorField,"#formSensation",["#mrn_occupTherapy","#episno_occupTherapy",'#idno_sensation']);
@@ -1129,7 +2107,7 @@ function populate_sensation_getdata(){
 
 function populate_prehensive_getdata(){
     // console.log('populate');
-    emptyFormdata(errorField,"#formPrehensive",["#mrn_occupTherapy","#episno_occupTherapy"]);
+    emptyFormdata(errorField,"#formPrehensive",["#mrn_occupTherapy","#episno_occupTherapy",'#idno_prehensive']);
 
     var saveParam = {
         action: 'get_table_prehensive',
@@ -1138,7 +2116,8 @@ function populate_prehensive_getdata(){
     var postobj = {
         _token: $('#_token').val(),
         mrn: $('#mrn_occupTherapy').val(),
-        episno: $("#episno_occupTherapy").val()
+        episno: $("#episno_occupTherapy").val(),
+        idno_prehensive: $("#idno_prehensive").val(),
     };
     
     $.post("./occupTherapy_upperExtremity/form?"+$.param(saveParam), $.param(postobj), function (data){
@@ -1151,6 +2130,93 @@ function populate_prehensive_getdata(){
             autoinsert_rowdata("#formPrehensive",data.prehensive);
         }else{
             button_state_prehensive('add');
+        }
+    });
+}
+
+function populate_skin_getdata(){
+    // console.log('populate');
+    emptyFormdata(errorField,"#formSkin",["#mrn_occupTherapy","#episno_occupTherapy",'#idno_skin']);
+
+    var saveParam = {
+        action: 'get_table_skin',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        mrn: $('#mrn_occupTherapy').val(),
+        episno: $("#episno_occupTherapy").val(),
+        idno_skin: $("#idno_skin").val(),
+    };
+    
+    $.post("./occupTherapy_upperExtremity/form?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').fail(function (data){
+        alert('there is an error');
+    }).done(function (data){
+        if(!$.isEmptyObject(data)){
+            button_state_skin('edit');
+            autoinsert_rowdata("#formSkin",data.skin);
+        }else{
+            button_state_skin('add');
+        }
+    });
+}
+
+function populate_edema_getdata(){
+    // console.log('populate');
+    emptyFormdata(errorField,"#formEdema",["#mrn_occupTherapy","#episno_occupTherapy","#idno_edema"]);
+
+    var saveParam = {
+        action: 'get_table_edema',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        mrn: $('#mrn_occupTherapy').val(),
+        episno: $("#episno_occupTherapy").val(),
+        idno_edema: $("#idno_edema").val(),
+    };
+    
+    $.post("./occupTherapy_upperExtremity/form?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').fail(function (data){
+        alert('there is an error');
+    }).done(function (data){
+        if(!$.isEmptyObject(data)){
+            button_state_edema('edit');
+            autoinsert_rowdata("#formEdema",data.edema);
+        }else{
+            button_state_edema('add');
+        }
+    });
+}
+
+function populate_func_getdata(){
+    // console.log('populate');
+    emptyFormdata(errorField,"#formFunctional",["#mrn_occupTherapy","#episno_occupTherapy","#idno_func"]);
+
+    var saveParam = {
+        action: 'get_table_func',
+    }
+    
+    var postobj = {
+        _token: $('#_token').val(),
+        mrn: $('#mrn_occupTherapy').val(),
+        episno: $("#episno_occupTherapy").val(),
+        idno_func:$("#idno_func").val(),
+    };
+    
+    $.post("./occupTherapy_upperExtremity/form?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').fail(function (data){
+        alert('there is an error');
+    }).done(function (data){
+        if(!$.isEmptyObject(data)){
+            button_state_func('edit');
+            autoinsert_rowdata("#formFunctional",data.func);
+        }else{
+            button_state_func('add');
         }
     });
 }

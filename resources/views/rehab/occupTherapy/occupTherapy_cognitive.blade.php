@@ -1,4 +1,4 @@
-<div id="cognitives" class="ui bottom attached tab raised segment active" data-tab="cognitive">
+<div id="cognitives" class="ui bottom attached tab raised segment" data-tab="cognitive">
     <div class="ui top attached tabular menu">
         <a class="item active" data-tab="mmse" id="navtab_mmse">MMSE</a>
         <a class="item" data-tab="moca" id="navtab_moca">MOCA</a>
@@ -345,7 +345,7 @@
                                                     </div>
                                                     <div class="field">
                                                         <label for="education" style="padding-left: 15px; padding-right: 5px;">Education</label>
-                                                        <input id="education" name="education" type="number" class="form-control input-sm">
+                                                        <input id="education" name="education" type="text" class="form-control input-sm">
                                                     </div>                                          
                                                 </div>
                                             </div>
@@ -498,7 +498,7 @@
                                                             <div class="ui form">
                                                                 <div class="field">
                                                                     <div class="ui right labeled input">
-                                                                        <input type="number" name="tot_moca" id="tot_moca" rdonly>
+                                                                        <input type="number" name="tot_moca" id="tot_moca">
                                                                         <div class="ui basic label">/30</div>
                                                                     </div>
                                                                 </div>

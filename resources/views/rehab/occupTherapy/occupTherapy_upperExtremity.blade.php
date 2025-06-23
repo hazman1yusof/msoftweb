@@ -51,8 +51,9 @@
 
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 20px 14px 14px;">
                                                 <label>Occupational Therapist</label>
-                                                <input type="text" id="occupTherapist" name="occupTherapist">
+                                                <input type="text" id="occupTherapist" name="occupTherapist" rdonly>
                                             </div>
+                                            
                                         </div>
 
                                         <div class="ui grid">
@@ -81,7 +82,7 @@
                                 <div class="ui top attached tabular menu">
                                 <a class="item active" data-tab="rof"><h5>Range of Motion</h5></a>
                                 <a class="item" data-tab="hand"><h5>Hand</h5></a>
-                                <a class="item" data-tab="muscle"><h5>Muscle<br>Strength</h5></a>
+                                <a class="item" data-tab="strength"><h5>Muscle<br>Strength</h5></a>
                                 <a class="item" data-tab="sensation"><h5>Sensation</h5></a>
                                 <a class="item" data-tab="prehensive"><h5>Prehensive Pattern</h5></a>
                                 <a class="item" data-tab="skin"><h5>Skin Condition/<br>Scarring</h5></a>
@@ -91,22 +92,308 @@
                             </div>
 
                             <div class="ui bottom attached tab raised segment active" data-tab="rof">
-                                <div id="jqGrid_rof_c" style="padding: 3px 3px 3px 3px;">
-                                    <input id="idno_rof" name="idno_rof" type="hidden">
-                                    <table id="jqGrid_rof" class="table table-striped"></table>
-                                    <div id="jqGridPager_rof"></div>
+                                <div class="ui segments" style="position: relative;">
+                                    <div class="ui secondary segment bluecloudsegment" style="height: 50px;">
+                                        <div class="ui small blue icon buttons" id="btn_grp_edit_rof" style="position: absolute;
+                                            padding: 0 0 0 0;
+                                            right: 40px;
+                                            top: 9px;
+                                            z-index: 2;">
+                                            <button class="ui button" id="new_rof"><span class="fa fa-plus-square-o"></span>New</button>
+                                            <button class="ui button" id="edit_rof"><span class="fa fa-edit fa-lg"></span>Edit</button>
+                                            <button class="ui button" id="save_rof"><span class="fa fa-save fa-lg"></span>Save</button>
+                                            <button class="ui button" id="cancel_rof"><span class="fa fa-ban fa-lg"></span>Cancel</button>
+                                            <!-- <button class="ui button" id="rof_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
+                                        </div>
+                                    </div>
+                                    <div class="ui segment">
+                                        <div class="ui grid">
+                                            <form id="formROF" class="floated ui form sixteen wide column">
+                                                <input id="idno_rof" name="idno_rof" type="text">
+                                                <input id="rof_impressions" name="rof_impressions" type="text" value="ROF">
+
+                                                <div class="sixteen wide column">
+                                                    
+                                                    <div id="jqGrid_rof_c" style="padding: 3px 3px 3px 3px;">
+                                                        <!-- <input id="idno_rof" name="idno_rof" type="hidden"> -->
+                                                        <table id="jqGrid_rof" class="table table-striped"></table>
+                                                        <div id="jqGridPager_rof"></div>
+                                                    </div>
+
+                                                    <table class="ui celled table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="2">IMPRESSIONS</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="sixteen wide">
+                                                                    <div class="ui form">
+                                                                        <textarea id="impressions" name="impressions" rows="6"></textarea>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="ui bottom attached tab raised segment" data-tab="hand">
-                                <div id="jqGrid_hand_c" style="padding: 3px 3px 3px 3px;">
-                                    <input id="idno_hand" name="idno_hand" type="hidden">
-                                    <table id="jqGrid_hand" class="table table-striped"></table>
-                                    <div id="jqGridPager_hand"></div>
+                                <div class="ui segments" style="position: relative;">
+                                    <div class="ui secondary segment bluecloudsegment" style="height: 50px;">
+                                        <div class="ui small blue icon buttons" id="btn_grp_edit_hand" style="position: absolute;
+                                            padding: 0 0 0 0;
+                                            right: 40px;
+                                            top: 9px;
+                                            z-index: 2;">
+                                            <button class="ui button" id="new_hand"><span class="fa fa-plus-square-o"></span>New</button>
+                                            <button class="ui button" id="edit_hand"><span class="fa fa-edit fa-lg"></span>Edit</button>
+                                            <button class="ui button" id="save_hand"><span class="fa fa-save fa-lg"></span>Save</button>
+                                            <button class="ui button" id="cancel_hand"><span class="fa fa-ban fa-lg"></span>Cancel</button>
+                                            <!-- <button class="ui button" id="hand_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
+                                        </div>
+                                    </div>
+                                    <div class="ui segment">
+                                        <div class="ui grid">
+                                            <form id="formHand" class="floated ui form sixteen wide column">
+                                                <input id="idno_hand" name="idno_hand" type="hidden">
+                                                <input id="hand_impressions" name="hand_impressions" type="hidden" value="hand">
+
+                                                <div class="sixteen wide column">
+                                                    <div id="jqGrid_hand_c" style="padding: 3px 3px 3px 3px;">
+                                                        <!-- <input id="idno_hand" name="idno_hand" type="hidden"> -->
+                                                        <table id="jqGrid_hand" class="table table-striped"></table>
+                                                        <div id="jqGridPager_hand"></div>
+                                                    </div>
+                                                </div>
+
+                                                <table class="ui celled table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="2">IMPRESSIONS</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="sixteen wide">
+                                                                <div class="ui form">
+                                                                    <textarea id="impressions" name="impressions" rows="6"></textarea>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="ui bottom attached tab raised segment" data-tab="muscle"></div>
+                            <div class="ui bottom attached tab raised segment" data-tab="strength">
+                                <div class="ui segments" style="position: relative;">
+                                    <div class="ui secondary segment bluecloudsegment" style="height: 50px;">
+                                        <div class="ui small blue icon buttons" id="btn_grp_edit_strength" style="position: absolute;
+                                            padding: 0 0 0 0;
+                                            right: 40px;
+                                            top: 9px;
+                                            z-index: 2;">
+                                            <button class="ui button" id="new_strength"><span class="fa fa-plus-square-o"></span>New</button>
+                                            <button class="ui button" id="edit_strength"><span class="fa fa-edit fa-lg"></span>Edit</button>
+                                            <button class="ui button" id="save_strength"><span class="fa fa-save fa-lg"></span>Save</button>
+                                            <button class="ui button" id="cancel_strength"><span class="fa fa-ban fa-lg"></span>Cancel</button>
+                                            <!-- <button class="ui button" id="strength_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
+                                        </div>
+                                    </div>
+
+                                    <div class="ui segment">
+                                        <div class="ui grid">
+                                            <form id="formStrength" class="floated ui form sixteen wide column">
+                                                <input id="idno_strength" name="idno_strength" type="text">
+                                                <div class="sixteen wide column">
+                                                    <table class="ui celled table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="2">MUSCLE STRENGTH</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="eight wide">
+                                                                    <div class="ui field">
+                                                                        <label>
+                                                                            <input type="checkbox" name="mmt" id="mmt" value="1">    
+                                                                            Oxford Manual Muscle Testing
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="eight wide">
+                                                                    <div class="ui field">
+                                                                        <label>
+                                                                            <input type="checkbox" name="jamar" id="jamar" value="1">
+                                                                            Jamar Dynamometer
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                        </tbody>
+                                                    </table>
+
+                                                    <table class="ui celled table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="2">GRIP STRENGTH</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="eight wide">
+                                                                    <div class="ui form">
+                                                                        <textarea id="mmt_grip" name="mmt_grip" rows="6"></textarea>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="eight wide">
+                                                                    <div class="inline fields">
+                                                                        <div class="field">
+                                                                            <label for="jamarGripDate" style="padding-left: 10px;">Date: </label>
+                                                                            <input id="jamarGripDate" name="jamarGripDate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" data-validation="required" data-validation-error-msg-required="Please enter information.">
+                                                                        </div>                                         
+                                                                    </div>
+                                                                    <table class="table;border border-white">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <label>Rt Hand: </label>
+                                                                                    <div class="ui right labeled input" style="margin:0px; padding: 0px 0px 0px 10px;">
+                                                                                        <input type="text" onKeyPress="if(this.value.length==6) return false;" id="jamarGrip_rt" name="jamarGrip_rt">
+                                                                                        <div class="ui basic label">kg</div>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                             <tr>
+                                                                                <td>
+                                                                                    <label>Lt Hand: </label>
+                                                                                    <div class="ui right labeled input" style="margin:0px; padding: 0px 0px 0px 10px;">
+                                                                                        <input type="text" onKeyPress="if(this.value.length==6) return false;" id="jamarGrip_lt" name="jamarGrip_lt">
+                                                                                        <div class="ui basic label">kg</div>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                    <table class="ui celled table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="2">PINCH STRENGTH</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="eight wide">
+                                                                    <div class="ui form">
+                                                                        <textarea id="mmt_pinch" name="mmt_pinch" rows="12"></textarea>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="eight wide">
+                                                                    <div class="inline fields">
+                                                                        <div class="field">
+                                                                            <label for="jamarPinchDate" style="padding-left: 10px;">Date: </label>
+                                                                            <input id="jamarPinchDate" name="jamarPinchDate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" data-validation="required" data-validation-error-msg-required="Please enter information.">
+                                                                        </div>                                         
+                                                                    </div>
+                                                                    <table class="table small;border border-white">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th></th>
+                                                                                <th>Rt Hand</th>
+                                                                                <th>Lt Hand</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>Lateral</td>
+                                                                                <td>
+                                                                                    <div class="ui mini right labeled input" style="padding-right: 5px;">
+                                                                                        <input type="text" id="jamarPinch_lateral_rt" name="jamarPinch_lateral_rt" size="15">
+                                                                                        <div class="ui basic label">kg</div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div class="ui mini right labeled input">
+                                                                                        <input type="text" id="jamarPinch_lateral_lt" name="jamarPinch_lateral_lt" size="15">
+                                                                                        <div class="ui basic label">kg</div>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Pad</td>
+                                                                                <td>
+                                                                                    <div class="ui mini right labeled input" style="padding-right: 5px;">
+                                                                                        <input type="text" id="jamarPinch_pad_rt" name="jamarPinch_pad_rt" size="15">
+                                                                                        <div class="ui basic label">kg</div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div class="ui mini right labeled input">
+                                                                                        <input type="text" id="jamarPinch_pad_lt" name="jamarPinch_pad_lt" size="15">
+                                                                                        <div class="ui basic label">kg</div>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>3-Jaw Chuck</td>
+                                                                                <td>
+                                                                                    <div class="ui mini right labeled input" style="padding-right: 5px;">
+                                                                                        <input type="text" id="jamarPinch_jaw_rt" name="jamarPinch_jaw_rt" size="15">
+                                                                                        <div class="ui basic label">kg</div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div class="ui mini right labeled input">
+                                                                                        <input type="text" id="jamarPinch_jaw_lt" name="jamarPinch_jaw_lt" size="15">
+                                                                                        <div class="ui basic label">kg</div>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                    <table class="ui celled table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="2">IMPRESSIONS</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="sixteen wide">
+                                                                    <div class="ui form">
+                                                                        <textarea id="impressions" name="impressions" rows="6"></textarea>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="ui bottom attached tab raised segment" data-tab="sensation">
                                 <div class="ui segments" style="position: relative;">
@@ -155,56 +442,56 @@
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_sharpIntact_rt" id="sens_sharpIntact_rt">
+                                                                                <input type="checkbox" name="sens_sharpIntact_rt" id="sens_sharpIntact_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_sharpIntact_lt" id="sens_sharpIntact_lt">
+                                                                                <input type="checkbox" name="sens_sharpIntact_lt" id="sens_sharpIntact_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_dullIntact_rt" id="sens_dullIntact_rt">
+                                                                                <input type="checkbox" name="sens_dullIntact_rt" id="sens_dullIntact_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_dullIntact_lt" id="sens_dullIntact_lt">
+                                                                                <input type="checkbox" name="sens_dullIntact_lt" id="sens_dullIntact_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_lightIntact_rt" id="sens_lightIntact_rt">
+                                                                                <input type="checkbox" name="sens_lightIntact_rt" id="sens_lightIntact_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_lightIntact_lt" id="sens_lightIntact_lt">
+                                                                                <input type="checkbox" name="sens_lightIntact_lt" id="sens_lightIntact_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_deepIntact_rt" id="sens_deepIntact_rt">
+                                                                                <input type="checkbox" name="sens_deepIntact_rt" id="sens_deepIntact_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_deepIntact_lt" id="sens_deepIntact_lt">
+                                                                                <input type="checkbox" name="sens_deepIntact_lt" id="sens_deepIntact_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
@@ -222,56 +509,56 @@
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_sharpImpaired_rt" id="sens_sharpImpaired_rt">
+                                                                                <input type="checkbox" name="sens_sharpImpaired_rt" id="sens_sharpImpaired_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_sharpImpaired_lt" id="sens_sharpImpaired_lt">
+                                                                                <input type="checkbox" name="sens_sharpImpaired_lt" id="sens_sharpImpaired_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_dullImpaired_rt" id="sens_dullImpaired_rt">
+                                                                                <input type="checkbox" name="sens_dullImpaired_rt" id="sens_dullImpaired_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_dullImpaired_lt" id="sens_dullImpaired_lt">
+                                                                                <input type="checkbox" name="sens_dullImpaired_lt" id="sens_dullImpaired_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_lightImpaired_rt" id="sens_lightImpaired_rt">
+                                                                                <input type="checkbox" name="sens_lightImpaired_rt" id="sens_lightImpaired_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_lightImpaired_lt" id="sens_lightImpaired_lt">
+                                                                                <input type="checkbox" name="sens_lightImpaired_lt" id="sens_lightImpaired_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_deepImpaired_rt" id="sens_deepImpaired_rt">
+                                                                                <input type="checkbox" name="sens_deepImpaired_rt" id="sens_deepImpaired_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_deepImpaired_lt" id="sens_deepImpaired_lt">
+                                                                                <input type="checkbox" name="sens_deepImpaired_lt" id="sens_deepImpaired_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
@@ -289,56 +576,56 @@
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_sharpAbsent_rt" id="sens_sharpAbsent_rt">
+                                                                                <input type="checkbox" name="sens_sharpAbsent_rt" id="sens_sharpAbsent_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_sharpAbsent_lt" id="sens_sharpAbsent_lt">
+                                                                                <input type="checkbox" name="sens_sharpAbsent_lt" id="sens_sharpAbsent_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_dullAbsent_rt" id="sens_dullAbsent_rt">
+                                                                                <input type="checkbox" name="sens_dullAbsent_rt" id="sens_dullAbsent_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_dullAbsent_lt" id="sens_dullAbsent_lt">
+                                                                                <input type="checkbox" name="sens_dullAbsent_lt" id="sens_dullAbsent_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_lightAbsent_rt" id="sens_lightAbsent_rt">
+                                                                                <input type="checkbox" name="sens_lightAbsent_rt" id="sens_lightAbsent_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_lightAbsent_lt" id="sens_lightAbsent_lt">
+                                                                                <input type="checkbox" name="sens_lightAbsent_lt" id="sens_lightAbsent_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_deepAbsent_rt" id="sens_deepAbsent_rt">
+                                                                                <input type="checkbox" name="sens_deepAbsent_rt" id="sens_deepAbsent_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <div class="ui form">
                                                                             <div class="field">
-                                                                                <input type="text" name="sens_deepAbsent_lt" id="sens_deepAbsent_lt">
+                                                                                <input type="checkbox" name="sens_deepAbsent_lt" id="sens_deepAbsent_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
@@ -351,6 +638,23 @@
                                                                     </td>
                                                                 </tr>
                                                             </thead>
+                                                        </table>
+
+                                                        <table class="ui celled table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th colspan="2">IMPRESSIONS</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="sixteen wide">
+                                                                        <div class="ui form">
+                                                                            <textarea id="impressions" name="impressions" rows="6"></textarea>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -436,6 +740,23 @@
                                                             </tbody>
                                                             
                                                         </table>
+
+                                                        <table class="ui celled table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th colspan="2">IMPRESSIONS</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="sixteen wide">
+                                                                        <div class="ui form">
+                                                                            <textarea id="impressions" name="impressions" rows="6"></textarea>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 </div>
                                             </form>
@@ -470,6 +791,23 @@
                                                             <textarea id="skinCondition" name="skinCondition" rows="6" cols="50"></textarea>
                                                         </div>
                                                     </div>
+
+                                                    <table class="ui celled table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="2">IMPRESSIONS</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="sixteen wide">
+                                                                    <div class="ui form">
+                                                                        <textarea id="impressions" name="impressions" rows="6"></textarea>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </form>
                                         </div>
@@ -525,7 +863,7 @@
                                                                     <td style="margin: 0px; padding: 3px 14px 14px 80px;"><input type="checkbox" id="edema_new1_rt" name="edema_new1_rt" value="1"></td>
                                                                     <td style="margin: 0px; padding: 3px 14px 14px 80px;"><input type="checkbox" id="edema_new1_lt" name="edema_new1_lt" value="1"></td>
                                                                 </tr>
-                                                                <tr>
+                                                                <!-- <tr>
                                                                     <td style="margin: 0px; padding: 3px 14px 14px 200px;"><input type="text" id="edema_new2" name="edema_new2"></td>
                                                                     <td style="margin: 0px; padding: 3px 14px 14px 80px;"><input type="checkbox" id="edema_new2_rt" name="edema_new2_rt" value="1"></td>
                                                                     <td style="margin: 0px; padding: 3px 14px 14px 80px;"><input type="checkbox" id="edema_new2_lt" name="edema_new2_lt" value="1"></td>
@@ -539,10 +877,27 @@
                                                                     <td style="margin: 0px; padding: 3px 14px 14px 200px;"><input type="text" id="edema_new4" name="edema_new4"></td>
                                                                     <td style="margin: 0px; padding: 3px 14px 14px 80px;"><input type="checkbox" id="edema_new4_rt" name="edema_new4_rt" value="1"></td>
                                                                     <td style="margin: 0px; padding: 3px 14px 14px 80px;"><input type="checkbox" id="edema_new4_lt" name="edema_new4_lt" value="1"></td>
-                                                                </tr>
+                                                                </tr> -->
                                                                 
                                                             </tbody>
                                                             
+                                                        </table>
+
+                                                        <table class="ui celled table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th colspan="2">IMPRESSIONS</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="sixteen wide">
+                                                                        <div class="ui form">
+                                                                            <textarea id="impressions" name="impressions" rows="6"></textarea>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -621,6 +976,23 @@
                                                                 </tr>
                                                             </tbody>
                                                             
+                                                        </table>
+
+                                                        <table class="ui celled table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th colspan="2">IMPRESSIONS</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="sixteen wide">
+                                                                        <div class="ui form">
+                                                                            <textarea id="impressions" name="impressions" rows="6"></textarea>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
                                                         </table>
                                                     </div>
                                                 </div>

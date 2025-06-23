@@ -172,9 +172,9 @@ class OccupTherapyCognitiveController extends defaultController
                         'tot_mmse' => $request->tot_mmse,
                         'assess_lvl' => strtoupper($request->assess_lvl),
                         'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'computerid' => session('computerid'),
                     ]);
             
@@ -226,9 +226,9 @@ class OccupTherapyCognitiveController extends defaultController
                         'tot_mmse' => $request->tot_mmse,
                         'assess_lvl' => strtoupper($request->assess_lvl),
                         'upduser'  => session('username'),
-                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'lastcomputerid' => session('computerid'),
                     ]);
             }else{
@@ -259,7 +259,7 @@ class OccupTherapyCognitiveController extends defaultController
                         'tot_mmse' => $request->tot_mmse,
                         'assess_lvl' => strtoupper($request->assess_lvl),
                         'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'computerid' => session('computerid'),
                     ]);
             }
@@ -291,7 +291,7 @@ class OccupTherapyCognitiveController extends defaultController
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'dateAssessment' => $request->dateAssessment,
-                        'education' => $request->education,
+                        'education' => strtoupper($request->education),
                         'visuospatial' => $request->visuospatial,
                         'naming' => $request->naming,
                         'attention1' => $request->attention1,
@@ -304,9 +304,9 @@ class OccupTherapyCognitiveController extends defaultController
                         'orientation' => $request->orientation,
                         'tot_moca' => $request->tot_moca,
                         'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'computerid' => session('computerid'),
                     ]);
             
@@ -343,7 +343,7 @@ class OccupTherapyCognitiveController extends defaultController
                     ->where('idno','=',$request->idno_moca)
                     ->update([
                         'dateAssessment' => $request->dateAssessment,
-                        'education' => $request->education,
+                        'education' => strtoupper($request->education),
                         'visuospatial' => $request->visuospatial,
                         'naming' => $request->naming,
                         'attention1' => $request->attention1,
@@ -356,9 +356,9 @@ class OccupTherapyCognitiveController extends defaultController
                         'orientation' => $request->orientation,
                         'tot_moca' => $request->tot_moca,
                         'upduser'  => session('username'),
-                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'computerid' => session('computerid'),
                     ]);
             }else{
@@ -373,7 +373,7 @@ class OccupTherapyCognitiveController extends defaultController
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'dateAssessment' => $request->dateAssessment,
-                        'education' => $request->education,
+                        'education' => strtoupper($request->education),
                         'visuospatial' => $request->visuospatial,
                         'naming' => $request->naming,
                         'attention1' => $request->attention1,
@@ -386,7 +386,7 @@ class OccupTherapyCognitiveController extends defaultController
                         'orientation' => $request->orientation,
                         'tot_moca' => $request->tot_moca,
                         'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'computerid' => session('computerid'),
                     ]);
             }

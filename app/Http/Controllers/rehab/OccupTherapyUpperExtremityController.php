@@ -47,6 +47,25 @@ class OccupTherapyUpperExtremityController extends defaultController
                     default:
                         return 'error happen..';
                 }
+            case 'save_table_impressions':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add_impressions($request);
+                    case 'edit':
+                        return $this->edit_impressions($request);
+                    default:
+                        return 'error happen..';
+                }
+
+            case 'save_table_strength':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add_strength($request);
+                    case 'edit':
+                        return $this->edit_strength($request);
+                    default:
+                        return 'error happen..';
+                }
 
             case 'save_table_sensation':
                 switch($request->oper){
@@ -67,15 +86,60 @@ class OccupTherapyUpperExtremityController extends defaultController
                     default:
                         return 'error happen..';
                 }
-            
+
+            case 'save_table_skin':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add_skin($request);
+                    case 'edit':
+                        return $this->edit_skin($request);
+                    default:
+                        return 'error happen..';
+                }
+
+            case 'save_table_edema':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add_edema($request);
+                    case 'edit':
+                        return $this->edit_edema($request);
+                    default:
+                        return 'error happen..';
+                }
+
+            case 'save_table_func':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add_func($request);
+                    case 'edit':
+                        return $this->edit_func($request);
+                    default:
+                        return 'error happen..';
+                }
+
             case 'get_table_upperExtremity':
                 return $this->get_table_upperExtremity($request);
+
+            case 'get_table_impressions':
+                return $this->get_table_impressions($request);
+
+            case 'get_table_strength':
+                return $this->get_table_strength($request);
 
             case 'get_table_sensation':
                 return $this->get_table_sensation($request);
 
             case 'get_table_prehensive':
                 return $this->get_table_prehensive($request);
+
+            case 'get_table_skin':
+                return $this->get_table_skin($request);
+
+            case 'get_table_edema':
+                return $this->get_table_edema($request);
+
+            case 'get_table_func':
+                return $this->get_table_func($request);
 
             case 'addJqgridrof_save':
                 return $this->add_jqgridrof($request);
@@ -148,13 +212,13 @@ class OccupTherapyUpperExtremityController extends defaultController
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'dateAssess' => $request->dateAssess,
-                        'occupTherapist' => $request->occupTherapist,
+                        'occupTherapist' => session('username'),
                         'handDominant' => $request->handDominant,
                         'diagnosis' => $request->diagnosis,
                         'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'computerid' => session('computerid'),
                     ]);
             
@@ -190,13 +254,12 @@ class OccupTherapyUpperExtremityController extends defaultController
                 DB::table('hisdb.ot_upperextremity')
                     ->where('idno','=',$request->idno_upperExtremity)
                     ->update([
-                        'occupTherapist' => $request->occupTherapist,
                         'handDominant' => $request->handDominant,
                         'diagnosis' => $request->diagnosis,
                         'upduser'  => session('username'),
-                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'lastcomputerid' => session('computerid'),
                     ]);
             
@@ -212,11 +275,11 @@ class OccupTherapyUpperExtremityController extends defaultController
                             'mrn' => $request->mrn,
                             'episno' => $request->episno,
                             'dateAssess' => $request->dateAssess,
-                            'occupTherapist' => $request->occupTherapist,
+                            'occupTherapist' => session('username'),
                             'handDominant' => $request->handDominant,
                             'diagnosis' => $request->diagnosis,
                             'adduser'  => session('username'),
-                            'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                            'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                             'computerid' => session('computerid'),
                         ]);
                 
@@ -225,6 +288,202 @@ class OccupTherapyUpperExtremityController extends defaultController
             $queries = DB::getQueryLog();
             
             DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+
+    public function add_impressions(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+
+            if(!empty($request->rof_impressions)&&($request->idno_rof)){ // to check either tab rof or hand
+                $tabName = $request->rof_impressions; 
+                $idno_imp = $request->idno_rof;
+            } else if(!empty($request->hand_impressions)&&($request->idno_hand)){
+                $tabName = $request->hand_impressions; 
+                $idno_imp = $request->idno_hand;
+            }
+            
+            DB::table('hisdb.ot_upperextremity_imp')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'idno_imp' => $idno_imp,
+                        'tabName' => $tabName,
+                        'impressions' => $request->impressions,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid'),
+                    ]);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+        
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit_impressions(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+
+            if(!empty($request->rof_impressions)&&($request->idno_rof)){ // to check either tab rof or hand
+                $tabName = $request->rof_impressions; 
+                $idno_imp = $request->idno_rof;
+            } else if(!empty($request->hand_impressions)&&($request->idno_hand)){
+                $tabName = $request->hand_impressions; 
+                $idno_imp = $request->idno_hand;
+            }
+            
+            DB::table('hisdb.ot_upperextremity_imp')
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('idno_imp','=',$idno_imp)
+                ->where('tabName','=',$tabName)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'impressions' => $request->impressions,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastcomputerid' => session('computerid'),
+                ]);
+            
+            // $queries = DB::getQueryLog();
+            // dump($queries);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+
+    public function add_strength(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.ot_upperextremity_strength')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'idno_strength' => $request->idno_strength,
+                        'mmt' => $request->mmt,
+                        'jamar' => $request->jamar,
+                        'mmt_grip' => $request->mmt_grip,
+                        'jamarGripDate' => $request->jamarGripDate,
+                        'jamarGrip_rt' => $request->jamarGrip_rt,
+                        'jamarGrip_lt' => $request->jamarGrip_lt,
+                        'mmt_pinch' => $request->mmt_pinch,
+                        'jamarPinchDate' => $request->jamarPinchDate,
+                        'jamarPinch_lateral_rt' => $request->jamarPinch_lateral_rt,
+                        'jamarPinch_pad_rt' => $request->jamarPinch_pad_rt,
+                        'jamarPinch_jaw_rt' => $request->jamarPinch_jaw_rt,
+                        'jamarPinch_lateral_lt' => $request->jamarPinch_lateral_lt,
+                        'jamarPinch_pad_lt' => $request->jamarPinch_pad_lt,
+                        'jamarPinch_jaw_lt' => $request->jamarPinch_jaw_lt,
+                        'impressions' => $request->impressions,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid'),
+                    ]);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+        
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit_strength(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.ot_upperextremity_strength')
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('idno_strength','=',$request->idno_strength)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'mmt' => $request->mmt,
+                    'jamar' => $request->jamar,
+                    'mmt_grip' => $request->mmt_grip,
+                    'jamarGripDate' => $request->jamarGripDate,
+                    'jamarGrip_rt' => $request->jamarGrip_rt,
+                    'jamarGrip_lt' => $request->jamarGrip_lt,
+                    'mmt_pinch' => $request->mmt_pinch,
+                    'jamarPinchDate' => $request->jamarPinchDate,
+                    'jamarPinch_lateral_rt' => $request->jamarPinch_lateral_rt,
+                    'jamarPinch_pad_rt' => $request->jamarPinch_pad_rt,
+                    'jamarPinch_jaw_rt' => $request->jamarPinch_jaw_rt,
+                    'jamarPinch_lateral_lt' => $request->jamarPinch_lateral_lt,
+                    'jamarPinch_pad_lt' => $request->jamarPinch_pad_lt,
+                    'jamarPinch_jaw_lt' => $request->jamarPinch_jaw_lt,
+                    'impressions' => $request->impressions,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastcomputerid' => session('computerid'),
+                ]);
+            
+            // $queries = DB::getQueryLog();
+            // dump($queries);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
             
         } catch (\Exception $e) {
             
@@ -276,9 +535,9 @@ class OccupTherapyUpperExtremityController extends defaultController
                         'sens_deepAbsent_lt' => $request->sens_deepAbsent_lt,
                         'sens_stereoAbsent' => $request->sens_stereoAbsent,
                         'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'computerid' => session('computerid'),
                     ]);
             
@@ -338,9 +597,9 @@ class OccupTherapyUpperExtremityController extends defaultController
                     'sens_deepAbsent_lt' => $request->sens_deepAbsent_lt,
                     'sens_stereoAbsent' => $request->sens_stereoAbsent,
                     'upduser'  => session('username'),
-                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastuser'  => session('username'),
-                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastcomputerid' => session('computerid'),
                 ]);
             
@@ -374,6 +633,7 @@ class OccupTherapyUpperExtremityController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
+                        'idno_sensation' => $request->idno_sensation,
                         'sens_sharpIntact_rt' => $request->sens_sharpIntact_rt,
                         'sens_sharpIntact_lt' => $request->sens_sharpIntact_lt,
                         'sens_dullIntact_rt' => $request->sens_dullIntact_rt,
@@ -402,9 +662,9 @@ class OccupTherapyUpperExtremityController extends defaultController
                         'sens_deepAbsent_lt' => $request->sens_deepAbsent_lt,
                         'sens_stereoAbsent' => $request->sens_stereoAbsent,
                         'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'computerid' => session('computerid'),
                     ]);
             
@@ -433,6 +693,7 @@ class OccupTherapyUpperExtremityController extends defaultController
             DB::table('hisdb.ot_upperextremity_prehensive')
                 ->where('mrn','=',$request->mrn)
                 ->where('episno','=',$request->episno)
+                ->where('idno_sensation','=',$request->idno_sensation)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'sens_sharpIntact_rt' => $request->sens_sharpIntact_rt,
@@ -463,9 +724,270 @@ class OccupTherapyUpperExtremityController extends defaultController
                     'sens_deepAbsent_lt' => $request->sens_deepAbsent_lt,
                     'sens_stereoAbsent' => $request->sens_stereoAbsent,
                     'upduser'  => session('username'),
-                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastuser'  => session('username'),
-                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastcomputerid' => session('computerid'),
+                ]);
+            
+            // $queries = DB::getQueryLog();
+            // dump($queries);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+
+    public function add_skin(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.ot_upperextremity_skin')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'idno_skin' => $request->idno_skin,
+                        'skinCondition' => $request->skinCondition,
+                        'impressions' => $request->impressions,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid'),
+                    ]);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+        
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit_skin(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.ot_upperextremity_skin')
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('idno_skin','=',$request->idno_skin)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'skinCondition' => $request->skinCondition,
+                    'impressions' => $request->impressions,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastcomputerid' => session('computerid'),
+                ]);
+            
+            // $queries = DB::getQueryLog();
+            // dump($queries);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+
+    public function add_edema(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.ot_upperextremity_edema')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'idno_edema' => $request->idno_edema,
+                        'edema_noted_rt' => $request->edema_noted_rt,
+                        'edema_noted_lt' => $request->edema_noted_lt,
+                        'edema_new1' => $request->edema_new1,
+                        'edema_new1_rt' => $request->edema_new1_rt,
+                        'edema_new1_lt' => $request->edema_new1_lt,
+                        'impressions' => $request->impressions,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid'),
+                    ]);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+        
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit_edema(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.ot_upperextremity_edema')
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('idno_edema','=',$request->idno_edema)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'edema_noted_rt' => $request->edema_noted_rt,
+                    'edema_noted_lt' => $request->edema_noted_lt,
+                    'edema_new1' => $request->edema_new1,
+                    'edema_new1_rt' => $request->edema_new1_rt,
+                    'edema_new1_lt' => $request->edema_new1_lt,
+                    'impressions' => $request->impressions,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastcomputerid' => session('computerid'),
+                ]);
+            
+            // $queries = DB::getQueryLog();
+            // dump($queries);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+
+    public function add_func(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.ot_upperextremity_func')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'idno_func' => $request->idno_func,
+                        'func_writing_rt' => $request->func_writing_rt,
+                        'func_writing_lt' => $request->func_writing_lt,
+                        'func_pickCoins_rt' => $request->func_pickCoins_rt,
+                        'func_pickCoins_lt' => $request->func_pickCoins_lt,
+                        'func_pickPins_rt' => $request->func_pickPins_rt,
+                        'func_pickPins_lt' => $request->func_pickPins_lt,
+                        'func_button_rt' => $request->func_button_rt,
+                        'func_button_lt' => $request->func_button_lt,
+                        'func_feedSpoon_rt' => $request->func_feedSpoon_rt,
+                        'func_feedSpoon_lt' => $request->func_feedSpoon_lt,
+                        'func_feedHand_rt' => $request->func_feedHand_rt,
+                        'func_feedHand_lt' => $request->func_feedHand_lt,
+                        'impressions' => $request->impressions,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid'),
+                    ]);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+        
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit_func(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.ot_upperextremity_func')
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('idno_func','=',$request->idno_func)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'func_writing_rt' => $request->func_writing_rt,
+                    'func_writing_lt' => $request->func_writing_lt,
+                    'func_pickCoins_rt' => $request->func_pickCoins_rt,
+                    'func_pickCoins_lt' => $request->func_pickCoins_lt,
+                    'func_pickPins_rt' => $request->func_pickPins_rt,
+                    'func_pickPins_lt' => $request->func_pickPins_lt,
+                    'func_button_rt' => $request->func_button_rt,
+                    'func_button_lt' => $request->func_button_lt,
+                    'func_feedSpoon_rt' => $request->func_feedSpoon_rt,
+                    'func_feedSpoon_lt' => $request->func_feedSpoon_lt,
+                    'func_feedHand_rt' => $request->func_feedHand_rt,
+                    'func_feedHand_lt' => $request->func_feedHand_lt,
+                    'impressions' => $request->impressions,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastcomputerid' => session('computerid'),
                 ]);
             
@@ -508,6 +1030,49 @@ class OccupTherapyUpperExtremityController extends defaultController
         
     }
 
+    public function get_table_impressions(Request $request){
+        
+        // $idno_upperExtremity = $request->idno_upperExtremity;
+        // dd($idno_upperExtremity);
+        $impressions_obj = DB::table('hisdb.ot_upperextremity_imp')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('mrn','=',$request->mrn)
+                                ->where('episno','=',$request->episno)
+                                ->where('tabName','=',$request->tabName)
+                                ->where('idno_imp','=',$request->idno_imp);
+        
+        $responce = new stdClass();
+        
+        if($impressions_obj->exists()){
+            $impressions_obj = $impressions_obj->first();
+            $responce->impressions = $impressions_obj;
+        }
+        
+        return json_encode($responce);
+        
+    }
+
+    public function get_table_strength(Request $request){
+        
+        // $idno_upperExtremity = $request->idno_upperExtremity;
+        // dd($idno_upperExtremity);
+        $strength_obj = DB::table('hisdb.ot_upperextremity_strength')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('mrn','=',$request->mrn)
+                                ->where('episno','=',$request->episno)
+                                ->where('idno_strength','=',$request->idno_strength);
+        
+        $responce = new stdClass();
+        
+        if($strength_obj->exists()){
+            $strength_obj = $strength_obj->first();
+            $responce->strength = $strength_obj;
+        }
+        
+        return json_encode($responce);
+        
+    }
+
     public function get_table_sensation(Request $request){
         
         // $idno_upperExtremity = $request->idno_upperExtremity;
@@ -523,6 +1088,90 @@ class OccupTherapyUpperExtremityController extends defaultController
         if($sensation_obj->exists()){
             $sensation_obj = $sensation_obj->first();
             $responce->sensation = $sensation_obj;
+        }
+        
+        return json_encode($responce);
+        
+    }
+
+    public function get_table_prehensive(Request $request){
+        
+        // $idno_upperExtremity = $request->idno_upperExtremity;
+        // dd($idno_upperExtremity);
+        $prehensive_obj = DB::table('hisdb.ot_upperextremity_prehensive')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('mrn','=',$request->mrn)
+                                ->where('episno','=',$request->episno)
+                                ->where('idno_prehensive','=',$request->idno_prehensive);
+        
+        $responce = new stdClass();
+        
+        if($prehensive_obj->exists()){
+            $prehensive_obj = $prehensive_obj->first();
+            $responce->prehensive = $prehensive_obj;
+        }
+        
+        return json_encode($responce);
+        
+    }
+
+    public function get_table_skin(Request $request){
+        
+        // $idno_upperExtremity = $request->idno_upperExtremity;
+        // dd($idno_upperExtremity);
+        $skin_obj = DB::table('hisdb.ot_upperextremity_skin')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('mrn','=',$request->mrn)
+                                ->where('episno','=',$request->episno)
+                                ->where('idno_skin','=',$request->idno_skin);
+        
+        $responce = new stdClass();
+        
+        if($skin_obj->exists()){
+            $skin_obj = $skin_obj->first();
+            $responce->skin = $skin_obj;
+        }
+        
+        return json_encode($responce);
+        
+    }
+
+    public function get_table_edema(Request $request){
+        
+        // $idno_upperExtremity = $request->idno_upperExtremity;
+        // dd($idno_upperExtremity);
+        $edema_obj = DB::table('hisdb.ot_upperextremity_edema')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('mrn','=',$request->mrn)
+                                ->where('episno','=',$request->episno)
+                                ->where('idno_edema','=',$request->idno_edema);
+        
+        $responce = new stdClass();
+        
+        if($edema_obj->exists()){
+            $edema_obj = $edema_obj->first();
+            $responce->edema = $edema_obj;
+        }
+        
+        return json_encode($responce);
+        
+    }
+
+    public function get_table_func(Request $request){
+        
+        // $idno_upperExtremity = $request->idno_upperExtremity;
+        // dd($idno_upperExtremity);
+        $func_obj = DB::table('hisdb.ot_upperextremity_func')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('mrn','=',$request->mrn)
+                                ->where('episno','=',$request->episno)
+                                ->where('idno_func','=',$request->idno_func);
+        
+        $responce = new stdClass();
+        
+        if($func_obj->exists()){
+            $func_obj = $func_obj->first();
+            $responce->func = $func_obj;
         }
         
         return json_encode($responce);
@@ -552,9 +1201,9 @@ class OccupTherapyUpperExtremityController extends defaultController
                         'forearm_pronation' => $request->forearm_pronation,
                         'forearm_supination' => $request->forearm_supination,
                         'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'computerid' => session('computerid'),
                     ]);
             
@@ -591,9 +1240,9 @@ class OccupTherapyUpperExtremityController extends defaultController
                     'forearm_pronation' => $request->forearm_pronation,
                     'forearm_supination' => $request->forearm_supination,
                     'upduser'  => session('username'),
-                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastuser'  => session('username'),
-                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastcomputerid' => session('computerid'),
                 ]);
             
@@ -668,9 +1317,9 @@ class OccupTherapyUpperExtremityController extends defaultController
                         'little_PIP' => $request->little_PIP,
                         'little_DIP' => $request->little_DIP,
                         'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'computerid' => session('computerid'),
                     ]);
             
@@ -720,9 +1369,9 @@ class OccupTherapyUpperExtremityController extends defaultController
                     'little_PIP' => $request->little_PIP,
                     'little_DIP' => $request->little_DIP,
                     'upduser'  => session('username'),
-                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastuser'  => session('username'),
-                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastcomputerid' => session('computerid'),
                 ]);
             

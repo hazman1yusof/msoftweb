@@ -223,24 +223,24 @@ function findTotalMMSE(){
 
 ///////////////////////calculate tot moca////////////////////////////
 function findTotalMOCA(){
-    var edu = parseInt($('#education').val());
+    // var edu = parseInt($('#education').val());
     var arr = document.getElementsByClassName('amountMOCA');
     var tot = 0;
 
-    if (edu <= 12){
-        for(var i=0;i<arr.length;i++){
-            if(!isNaN(parseInt(arr[i].value))){
-                tot += parseInt(arr[i].value);
-            }
-        }
-        document.getElementById('tot_moca').value = tot+1;
-    } else {
+    // if (edu <= 12){
+    //     for(var i=0;i<arr.length;i++){
+    //         if(!isNaN(parseInt(arr[i].value))){
+    //             tot += parseInt(arr[i].value);
+    //         }
+    //     }
+    //     document.getElementById('tot_moca').value = tot+1;
+    // } else {
         for(var i=0;i<arr.length;i++){
             if(parseInt(arr[i].value))
                 tot += parseInt(arr[i].value);
         }
         document.getElementById('tot_moca').value = tot;
-    }
+    // }
 
 }
 
@@ -253,7 +253,7 @@ var datetimeMMSE_tbl = $('#datetimeMMSE_tbl').DataTable({
         { 'data': 'idno', 'width': '5%' },
         { 'data': 'mrn' },
         { 'data': 'episno' },
-        { 'data': 'dateofexam', 'width': '20%' },
+        { 'data': 'dateofexam', 'width': '10%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2], visible: false },
@@ -274,7 +274,7 @@ var datetimeMOCA_tbl = $('#datetimeMOCA_tbl').DataTable({
         { 'data': 'idno', 'width': '5%' },
         { 'data': 'mrn' },
         { 'data': 'episno' },
-        { 'data': 'dateAssessment', 'width': '20%' },
+        { 'data': 'dateAssessment', 'width': '10%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2], visible: false },

@@ -31,7 +31,6 @@
                                                     <th class="scope">mrn</th>
                                                     <th class="scope">episno</th>
                                                     <th class="scope">Date</th>
-                                                    <th class="scope">Time</th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -49,10 +48,10 @@
                                                 <label for="dateAssessment" style="padding-right: 5px;">Date</label>
                                                 <input id="dateAssessment" name="dateAssessment" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" data-validation="required" data-validation-error-msg-required="Please enter information.">
                                             </div>
-                                            <div class="field">
+                                            <!-- <div class="field">
                                                 <label for="timeAssessment" style="padding-left: 15px; padding-right: 5px;">Time</label>
                                                 <input id="timeAssessment" name="timeAssessment" type="time" class="form-control input-sm">
-                                            </div>                                          
+                                            </div> -->
                                         </div>
                                     </div>
 
@@ -677,7 +676,7 @@
                                                 <td colspan="2">
                                                     <div class="ui form">
                                                         <div class="field">
-                                                            <input type="text" name="prediction" id="prediction" rdonly>
+                                                            <textarea name="prediction" id="prediction" rows="4" cols="50" readonly=""></textarea>
                                                         </div>
                                                     </div>
                                                 </td>

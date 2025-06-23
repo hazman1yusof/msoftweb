@@ -79,11 +79,11 @@ class OccupTherapyBarthelController extends defaultController
                 $date['idno'] = $value->idno;
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
-                if(!empty($value->timeAssessment)){
-                    $date['timeAssessment'] =  Carbon::createFromFormat('H:i:s', $value->timeAssessment)->format('h:i A');
-                }else{
-                    $date['timeAssessment'] =  '-';
-                }
+                // if(!empty($value->timeAssessment)){
+                //     $date['timeAssessment'] =  Carbon::createFromFormat('H:i:s', $value->timeAssessment)->format('h:i A');
+                // }else{
+                //     $date['timeAssessment'] =  '-';
+                // }
                 
                 array_push($data,$date);
             }
@@ -109,7 +109,7 @@ class OccupTherapyBarthelController extends defaultController
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'dateAssessment' => $request->dateAssessment,
-                        'timeAssessment' => $request->timeAssessment,
+                        // 'timeAssessment' => $request->timeAssessment,
                         'chairBedTrf' => $request->chairBedTrf,
                         'ambulation' => $request->ambulation,
                         'ambulationWheelchair' => $request->ambulationWheelchair,
@@ -153,12 +153,18 @@ class OccupTherapyBarthelController extends defaultController
         
         try {
         
+            $barthel = DB::table('hisdb.ot_barthel')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno)
+                            ->where('dateAssessment','=',$request->dateAssessment);
+
             if(!empty($request->idno_barthel)){
                 DB::table('hisdb.ot_barthel')                    
                 ->where('idno','=',$request->idno_barthel)
                     ->update([
                         'dateAssessment' => $request->dateAssessment,
-                        'timeAssessment' => $request->timeAssessment,
+                        // 'timeAssessment' => $request->timeAssessment,
                         'chairBedTrf' => $request->chairBedTrf,
                         'ambulation' => $request->ambulation,
                         'ambulationWheelchair' => $request->ambulationWheelchair,
@@ -180,13 +186,17 @@ class OccupTherapyBarthelController extends defaultController
                         'lastcomputerid' => session('computerid'),
                     ]);
             }else{
+                if($barthel->exists()){
+                    return response('Date already exist.');
+                }
+
                 DB::table('hisdb.ot_barthel')
                     ->insert([
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
                         'dateAssessment' => $request->dateAssessment,
-                        'timeAssessment' => $request->timeAssessment,
+                        // 'timeAssessment' => $request->timeAssessment,
                         'chairBedTrf' => $request->chairBedTrf,
                         'ambulation' => $request->ambulation,
                         'ambulationWheelchair' => $request->ambulationWheelchair,

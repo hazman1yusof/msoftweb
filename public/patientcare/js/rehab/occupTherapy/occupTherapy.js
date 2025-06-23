@@ -9,11 +9,19 @@ $(document).ready(function (){
     
     var fdl = new faster_detail_load();
     
+    disableForm('#formOccupTherapyNotes');
     disableForm('#formOccupTherapyMMSE');
     disableForm('#formOccupTherapyMOCA');
     disableForm('#formOccupTherapyBarthel');
     disableForm('#formOccupTherapyUpperExtremity');
+    disableForm('#formROF');
+    disableForm('#formHand');
+    disableForm('#formStrength');
     disableForm('#formSensation');
+    disableForm('#formPrehensive');
+    disableForm('#formSkin');
+    disableForm('#formEdema');
+    disableForm('#formFunctional');
 
     // to format number input to two decimal places (0.00)
     $(".floatNumberField").change(function (){
@@ -39,6 +47,21 @@ $(document).ready(function (){
         // console.log(tab);
 
         switch(tab){
+            case 'notes':
+                var urlparam_datetimeNotes_tbl = {
+                    action: 'get_table_datetimeNotes',
+                    mrn: $("#mrn_occupTherapy").val(),
+                    episno: $("#episno_occupTherapy").val()
+                }
+                
+                datetimeNotes_tbl.ajax.url("./occupTherapy_notes/table?"+$.param(urlparam_datetimeNotes_tbl)).load(function (data){
+                    emptyFormdata_div("#occupTherapy_notes",['#mrn_occupTherapy','#episno_occupTherapy']);
+                    $('#datetimeNotes_tbl tbody tr:eq(0)').click();  // to select first row
+                });
+                
+                populate_notes_getdata();
+                break;
+
             case 'cognitive':
                 var urlparam_datetimeMMSE_tbl = {
                     action: 'get_table_datetimeMMSE',
@@ -62,7 +85,8 @@ $(document).ready(function (){
                 }
                 
                 datetimeUpperExtremity_tbl.ajax.url("./occupTherapy_upperExtremity/table?"+$.param(urlparam_datetimeUpperExtremity_tbl)).load(function (data){
-                    emptyFormdata_div("#formOccupTherapyUpperExtremity",['#mrn_occupTherapy','#episno_occupTherapy','#idno_sensation']);
+                    emptyFormdata_div("#formOccupTherapyUpperExtremity",['#mrn_occupTherapy','#episno_occupTherapy','#idno_upperExtremity']);
+                    emptyFormdata_div("#formROF",['#mrn_occupTherapy','#episno_occupTherapy','#idno_rof','#rof_impressions']);
                     $('#datetimeUpperExtremity_tbl tbody tr:eq(0)').click();  // to select first row
                 });
                 $("#jqGrid_rof").jqGrid('setGridWidth', Math.floor($("#jqGrid_rof_c")[0].offsetWidth-$("#jqGrid_rof_c")[0].offsetLeft));
@@ -131,16 +155,19 @@ $(document).ready(function (){
         switch(tab){
             case 'rof':
                 $("#jqGrid_rof").jqGrid('setGridWidth', Math.floor($("#jqGrid_rof_c")[0].offsetWidth-$("#jqGrid_rof_c")[0].offsetLeft));
-
+                emptyFormdata_div("#formROF",['#mrn_occupTherapy','#episno_occupTherapy','#idno_rof','#rof_impressions']);
+                populate_rof_getdata();
                 break;
 
             case 'hand':
                 $("#jqGrid_hand").jqGrid('setGridWidth', Math.floor($("#jqGrid_hand_c")[0].offsetWidth-$("#jqGrid_hand_c")[0].offsetLeft));
-    
+                populate_hand_getdata();
                 break;
 
-            case 'muscle':
-                             
+            case 'strength':
+                emptyFormdata_div("#formStrength",['#mrn_occupTherapy','#episno_occupTherapy','#idno_strength']);
+
+                populate_strength_getdata();  
                 break;
 
             case 'sensation':
@@ -148,19 +175,19 @@ $(document).ready(function (){
                 break;
 
             case 'prehensive':
-                             
+                populate_prehensive_getdata();             
                 break;
 
             case 'skin':
-                             
+                populate_skin_getdata();             
                 break;
 
             case 'edema':
-                             
+                populate_edema_getdata();             
                 break;
 
             case 'functional':
-                             
+                populate_func_getdata();             
                 break;
         }
     }});
@@ -185,18 +212,34 @@ conf = {
 
 function empty_occupTherapy(){
     emptyFormdata_div("#formOccupTherapy");
+    emptyFormdata_div("#formOccupTherapyNotes");
     emptyFormdata_div("#formOccupTherapyMMSE");
     emptyFormdata_div("#formOccupTherapyMOCA");
     emptyFormdata_div("#formOccupTherapyBarthel");
     emptyFormdata_div("#formOccupTherapyUpperExtremity");
+    emptyFormdata_div("#formROF");
+    emptyFormdata_div("#formHand");
+    emptyFormdata_div("#formStrength");
     emptyFormdata_div("#formSensation");
+    emptyFormdata_div("#formPrehensive");
+    emptyFormdata_div("#formSkin");
+    emptyFormdata_div("#formEdema");
+    emptyFormdata_div("#formFunctional");
 
+    button_state_notes('empty');
     button_state_mmse('empty');
     button_state_moca('empty');
     button_state_barthel('empty');
     button_state_upperExtremity('empty');
+    button_state_rof('empty');
+    button_state_hand('empty');
+    button_state_strength('empty');
     button_state_sensation('empty');
-    
+    button_state_prehensive('empty');
+    button_state_skin('empty');
+    button_state_edema('empty');
+    button_state_func('empty');
+
     // panel header
     $('#name_show_occupTherapy').text('');
     $('#mrn_show_occupTherapy').text('');
@@ -219,12 +262,20 @@ function empty_occupTherapy(){
 }
 
 function populate_occupTherapy(obj){
+    emptyFormdata_div("#formOccupTherapyNotes",['#mrn_occupTherapy','#episno_occupTherapy']);
     emptyFormdata_div("#formOccupTherapyMMSE",['#mrn_occupTherapy','#episno_occupTherapy']);
     emptyFormdata_div("#formOccupTherapyMOCA",['#mrn_occupTherapy','#episno_occupTherapy']);
     emptyFormdata_div("#formOccupTherapyBarthel",['#mrn_occupTherapy','#episno_occupTherapy']);
     emptyFormdata_div("#formOccupTherapyUpperExtremity",['#mrn_occupTherapy','#episno_occupTherapy','#idno_upperExtremity']);
+    emptyFormdata_div("#formROF",['#mrn_occupTherapy','#episno_occupTherapy','#idno_rof','#rof_impressions']);
+    emptyFormdata_div("#formHand",['#mrn_occupTherapy','#episno_occupTherapy','#idno_hand','#hand_impressions']);
+    emptyFormdata_div("#formStrength",['#mrn_occupTherapy','#episno_occupTherapy','#idno_strength']);
     emptyFormdata_div("#formSensation",['#mrn_occupTherapy','#episno_occupTherapy','#idno_sensation']);
-    
+    emptyFormdata_div("#formPrehensive",['#mrn_occupTherapy','#episno_occupTherapy','#idno_prehensive']);
+    emptyFormdata_div("#formSkin",['#mrn_occupTherapy','#episno_occupTherapy','#idno_skin']);
+    emptyFormdata_div("#formEdema",['#mrn_occupTherapy','#episno_occupTherapy','#idno_edema']);
+    emptyFormdata_div("#formFunctional",['#mrn_occupTherapy','#episno_occupTherapy','#idno_func']);
+
     // panel header
     $('#name_show_occupTherapy').text(obj.Name);
 	$('#mrn_show_occupTherapy').text(("0000000" + obj.MRN).slice(-7));
@@ -268,49 +319,71 @@ function autoinsert_rowdata(form,rowData){
 $('#tab_occupTherapy').on('shown.bs.collapse', function (){
     SmoothScrollTo('#tab_occupTherapy', 300, 114);
 
-    $('#occupTherapy .top.menu .item').tab('change tab','cognitive');
-    $('#cognitives .top.menu .item').tab('change tab','mmse');
+    $('#occupTherapy .top.menu .item').tab('change tab','notes');
 
-    var urlparam_datetimeMMSE_tbl = {
-        action: 'get_table_datetimeMMSE',
+    var urlparam_datetimeNotes_tbl = {
+        action: 'get_table_datetimeNotes',
         mrn: $("#mrn_occupTherapy").val(),
         episno: $("#episno_occupTherapy").val()
     }
     
-    datetimeMMSE_tbl.ajax.url("./occupTherapy_cognitive/table?"+$.param(urlparam_datetimeMMSE_tbl)).load(function (data){
-        emptyFormdata_div("#formOccupTherapyMMSE",['#mrn_occupTherapy','#episno_occupTherapy']);
-        $('#datetimeMMSE_tbl tbody tr:eq(0)').click();  // to select first row
+    datetimeNotes_tbl.ajax.url("./occupTherapy_notes/table?"+$.param(urlparam_datetimeNotes_tbl)).load(function (data){
+        emptyFormdata_div("#formOccupTherapyUpperExtremity",['#mrn_occupTherapy','#episno_occupTherapy','#idno_upperExtremity','#idno_rof','#rof_impressions']);
+        $('#datetimeNotes_tbl tbody tr:eq(0)').click();  // to select first row
     });
     
-    populate_mmse_getdata();
+    populate_notes_getdata();
     
     $("#jqGrid_rof").jqGrid('setGridWidth', Math.floor($("#jqGrid_rof_c")[0].offsetWidth-$("#jqGrid_rof_c")[0].offsetLeft));
     $("#jqGrid_hand").jqGrid('setGridWidth', Math.floor($("#jqGrid_hand_c")[0].offsetWidth-$("#jqGrid_hand_c")[0].offsetLeft));
    
     if($('#mrn_occupTherapy').val() != ''){
+        populate_notes_getdata();
         populate_mmse_getdata();
         populate_moca_getdata();
         populate_barthel_getdata();
         populate_upperExtremity_getdata();
+        populate_rof_getdata();
+        populate_hand_getdata();
+        populate_strength_getdata();
         populate_sensation_getdata();
+        populate_prehensive_getdata();
+        populate_skin_getdata();
+        populate_edema_getdata();
+        populate_func_getdata();
     }
 });
 
 $('#tab_occupTherapy').on('hide.bs.collapse', function (){
-    emptyFormdata_div("#formOccupTherapy",['#mrn_occupTherapy','#episno_occupTherapy']);
-
+    emptyFormdata_div("#formOccupTherapy",['#mrn_occupTherapy','#episno_occupTherapy','#idno_upperExtremity','#formROF :input[name="idno_rof"]','#rof_impressions']);
+    
+    disableForm('#formOccupTherapyNotes');
     disableForm('#formOccupTherapyMMSE');
     disableForm('#formOccupTherapyMOCA');
     disableForm('#formOccupTherapyBarthel');
     disableForm('#formOccupTherapyUpperExtremity');
+    disableForm('#formROF');
+    disableForm('#formHand');
+    disableForm('#formStrength');
     disableForm('#formSensation');
+    disableForm('#formPrehensive')
+    disableForm('#formSkin')
+    disableForm('#formEdema')
+    disableForm('#formFunctional')
 
+    button_state_notes('empty');
     button_state_mmse('empty');
     button_state_moca('empty');
     button_state_barthel('empty');
     button_state_upperExtremity('empty');
+    button_state_rof('empty');
+    button_state_hand('empty');
+    button_state_strength('empty');
     button_state_sensation('empty');
-
+    button_state_prehensive('empty');
+    button_state_skin('empty');
+    button_state_edema('empty');
+    button_state_func('empty');
 });
 
 function check_same_usr_edit(data){

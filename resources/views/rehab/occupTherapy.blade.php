@@ -9,12 +9,17 @@
         
         <div id="occupTherapy" class="ui segment">
             <div class="ui top attached tabular menu">
-                <a class="item active" data-tab="cognitive" id="navtab_cognitive">Cognitive</a>
+                <a class="item active" data-tab="notes" id="navtab_notes">Notes</a>
+                <a class="item" data-tab="cognitive" id="navtab_cognitive">Cognitive</a>
                 <a class="item" data-tab="physical" id="navtab_physical">Physical</a>
                 <a class="item" data-tab="adl" id="navtab_adl">Activity Daily Living</a>
             </div>
+
+            <div class="ui bottom attached tab raised segment active" data-tab="notes">
+                @include('rehab.occupTherapy.occupTherapy_notes')
+            </div>
             
-            <!-- <div class="ui bottom attached tab raised segment active" data-tab="cognitive"> -->
+            <!-- <div class="ui bottom attached tab raised segment" data-tab="cognitive"> -->
                 @include('rehab.occupTherapy.occupTherapy_cognitive')
             <!-- </div> -->
             
