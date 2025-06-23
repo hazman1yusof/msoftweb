@@ -953,14 +953,20 @@ class ReceiptController extends defaultController
         }
         
         $dballoc = DB::table('debtor.dballoc as a', 'debtor.debtormast as m')
-                    ->select('a.compcode', 'a.source', 'a.trantype', 'a.auditno', 'a.lineno_', 'a.docsource', 'a.doctrantype', 'a.docauditno', 'a.refsource', 'a.reftrantype', 'a.refauditno', 'a.refamount', 'a.reflineno', 'a.recptno', 'a.mrn', 'a.episno', 'a.allocsts', 'a.amount', 'a.tillcode', 'a.debtortype', 'a.debtorcode', 'a.payercode', 'a.paymode', 'a.allocdate', 'a.remark', 'a.balance', 'a.recstatus', 'm.debtorcode', 'm.name','pm.name as pm_name')
+                    ->select('a.compcode', 'a.source', 'a.trantype', 'a.auditno', 'a.lineno_', 'a.docsource', 'a.doctrantype', 'a.docauditno', 'a.refsource', 'a.reftrantype', 'a.refauditno', 'a.refamount', 'a.reflineno', 'a.recptno', 'db.mrn', 'a.episno', 'a.allocsts', 'a.amount', 'a.tillcode', 'a.debtortype', 'a.debtorcode', 'a.payercode', 'a.paymode', 'a.allocdate', 'a.remark', 'a.balance', 'a.recstatus', 'm.debtorcode', 'm.name','pm.name as pm_name')
                     ->leftjoin('hisdb.pat_mast as pm', function($join) use ($request){
-                        $join = $join->on('pm.newmrn', '=', 'a.mrn')
+                        $join = $join->on('pm.newmrn', '=', 'db.mrn')
                                     ->where('pm.compcode','=',session('compcode'));
                     })
                     ->leftjoin('debtor.debtormast as m', function($join) use ($request){
                         $join = $join->on('m.debtorcode', '=', 'a.debtorcode')
                                     ->where('m.compcode','=',session('compcode'));
+                    })
+                    ->leftjoin('debtor.dbacthdr as db', function($join) use ($request){
+                        $join = $join->on('db.auditno', '=', 'a.refauditno')
+                                    ->on('db.source', '=', 'a.refsource')
+                                    ->on('db.trantype', '=', 'a.reftrantype')
+                                    ->where('db.compcode','=',session('compcode'));
                     })
                     ->where('a.compcode',session('compcode'))
                     ->where('a.docauditno','=',$auditno)
