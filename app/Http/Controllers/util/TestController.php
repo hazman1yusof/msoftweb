@@ -46,8 +46,8 @@ class TestController extends defaultController
             //     return $this->chgmast_invflag_tukar_dari_product($request);
             // case 'load_discipline':
             //     return $this->load_discipline($request);
-            // case 'insert_phst':
-            //     return $this->insert_phst($request);
+            case 'cbtran_todel':
+                return $this->cbtran_todel($request);
             case 'bankrecon_cbtran':
                 return $this->bankrecon_cbtran($request);
             case 'stockloc_JTR_header':
@@ -6304,7 +6304,7 @@ class TestController extends defaultController
                 }
             }
 
-             $bankrecsubtract = DB::table('recondb.bankrecsubtract')
+            $bankrecsubtract = DB::table('recondb.bankrecsubtract')
                         ->get();
 
             foreach ($bankrecsubtract as $obj) {
@@ -6350,5 +6350,42 @@ class TestController extends defaultController
 
             dd('Error'.$e);
         }  
+    }
+
+    public function cbtran_todel(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $todel = DB::table('recondb.cbtran_todel')
+                        ->get();
+
+            foreach ($todel as $obj) {
+                $cbtran = DB::table('finance.cbtran')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$obj->source)
+                            ->where('trantype',$obj->trantype)
+                            ->where('auditno',$obj->auditno);
+
+                if($cbtran->exists()){
+                    DB::table('finance.cbtran')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$obj->source)
+                            ->where('trantype',$obj->trantype)
+                            ->where('auditno',$obj->auditno)
+                            ->update([
+                                'compcode' => 'xx'
+                            ]);
+                    dump('del: '.$obj->auditno);
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
     }
 }

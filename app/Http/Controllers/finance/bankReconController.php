@@ -520,7 +520,11 @@ class bankReconController extends defaultController
 
                         if($apacthdr->exists()){
                             $value->reference = $apacthdr->first()->suppname;
+                        }else{
+                            $value->reference = $value->remarks;
                         }
+                    }else{
+                        $value->reference = $value->remarks;
                     }
                     break;
                 case 'PB':
@@ -538,7 +542,11 @@ class bankReconController extends defaultController
 
                         if($dbacthdr->exists()){
                             $value->reference = $dbacthdr->first()->name;
+                        }else{
+                            $value->reference = $value->remarks;
                         }
+                    }else{
+                        $value->reference = $value->remarks;
                     }
                 case 'CM':
                     if($value->trantype == 'DP'){
@@ -555,8 +563,17 @@ class bankReconController extends defaultController
 
                         if($apacthdr->exists()){
                             $value->reference = $apacthdr->first()->suppname;
+                        }else{
+                            $value->reference = $value->remarks;
+                        }
+                    }else{
+                        if(!empty($value->remarks)){
+                            $value->reference = $value->remarks;
+                        }else{
+                            $value->reference = $value->reference;
                         }
                     }
+
             }
         }
 

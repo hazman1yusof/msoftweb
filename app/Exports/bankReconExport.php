@@ -157,7 +157,7 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths, WithCol
                             ->where('cb.compcode',session('compcode'))
                             ->where('cb.reconstatus','!=', 1)
                             ->where('cb.bankcode','=', $cbhdr->bankcode)
-                            // ->where('cb.postdate','<=', $cbhdr->recdate)
+                            ->where('cb.postdate','<=', $cbhdr->recdate)
                             ->get();
 
         $cb_tran2 = DB::table('finance.cbtran AS cb')
@@ -165,6 +165,7 @@ class bankReconExport implements FromView, WithEvents, WithColumnWidths, WithCol
                             ->where('cb.reconstatus', 1)
                             ->where('cb.bankcode','=', $cbhdr->bankcode)
                             ->where('cb.recondate','>', $cbhdr->recdate)
+                            ->where('cb.postdate','<=', $cbhdr->recdate)
                             ->get();
 
         $cb_tran = $cb_tran1->merge($cb_tran2);
