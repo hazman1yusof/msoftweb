@@ -48,7 +48,7 @@
             <td style="text-align: right">{{$totalAmount}}</td>
             <td>{!!$db_obj->unit!!}</td>
             <td>{!!$db_obj->real_reference!!}</td>
-            @if($db_obj->trantype == 'IN'))
+            @if($db_obj->trantype == 'IN')
             <td>{{$db_obj->tillcode}}</td>
             @endif
         </tr>
