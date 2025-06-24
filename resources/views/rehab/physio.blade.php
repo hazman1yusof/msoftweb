@@ -27,6 +27,7 @@
             <div class="ui top attached tabular menu">
                 <a class="item active" data-tab="sixMinWalking" id="navtab_sixMinWalking">6-Minute Walking<br>Test</a>
                 <a class="item" data-tab="bergBalanceTest" id="navtab_bergBalanceTest">Berg Balance Positions<br>and Tests</a>
+                <a class="item" data-tab="posturalAssessment" id="navtab_posturalAssessment">Postural<br>Assessment</a>
                 <a class="item" data-tab="oswestryQuest" id="navtab_oswestryQuest">Oswestry Low Back<br>Disability Questionnaire</a>
                 <a class="item" data-tab="neuroAssessment" id="navtab_neuroAssessment">Neurological Physiotherapy<br>Assessment</a>
                 <a class="item" data-tab="motorScale" id="navtab_motorScale">Motor Assessment<br>Scale</a>
@@ -39,6 +40,10 @@
             
             <div class="ui bottom attached tab raised segment" data-tab="bergBalanceTest">
                 @include('rehab.bergBalanceTest')
+            </div>
+            
+            <div class="ui bottom attached tab raised segment" data-tab="posturalAssessment">
+                @include('rehab.posturalAssessment')
             </div>
             
             <div class="ui bottom attached tab raised segment" data-tab="oswestryQuest">
