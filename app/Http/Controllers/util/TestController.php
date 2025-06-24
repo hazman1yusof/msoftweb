@@ -46,8 +46,8 @@ class TestController extends defaultController
             //     return $this->chgmast_invflag_tukar_dari_product($request);
             case 'grtstatus':
                 return $this->grtstatus($request);
-            case 'migratepoli':
-                return $this->migratepoli($request);
+            case 'gltran_jnl':
+                return $this->gltran_jnl($request);
             case 'bankrecon_cbtran':
                 return $this->bankrecon_cbtran($request);
             case 'stockloc_JTR_header':
@@ -6425,38 +6425,35 @@ class TestController extends defaultController
         }
     }
 
-    public function grtstatus(Request $request){
+    public function gltran_jnl(Request $request){
         DB::beginTransaction();
 
         try {
-            $grt = DB::table('material.delordhd')
+            $gljnlhdr = DB::table('finance.gljnlhdr')
                         ->where('compcode',session('compcode'))
-                        ->where('trantype','grt')
+                        ->where('docdate','>=','2025-05-01')
+                        ->where('docdate','<=','2025-05-31')
                         ->where('recstatus','POSTED')
                         ->get();
 
-            foreach ($grt as $obj) {
-                $grn = DB::table('material.delordhd')
+            foreach ($gljnlhdr as $obj) {
+                $gltran = DB::table('finance.gltran')
                         ->where('compcode',session('compcode'))
-                        ->where('trantype','grn')
-                        ->where('prdept',$obj->prdept)
-                        ->where('docno',$obj->srcdocno);
+                        ->where('trantype','JNL')
+                        ->where('source','GL')
+                        ->where('auditno',$obj->auditno);
 
-                if($grn->exists()){
-                    $purord = DB::table('material.purordhd')
+                if($gltran->exists()){
+                        DB::table('finance.gltran')
                             ->where('compcode',session('compcode'))
-                            ->where('prdept',$grn->prdept)
-                            ->where('purordno',$grn->srcdocno);
-
-                    if($purord->exists()){
-                        DB::table('material.purordhd')
-                            ->where('compcode',session('compcode'))
-                            ->where('prdept',$grn->prdept)
-                            ->where('purordno',$grn->srcdocno)
+                            ->where('trantype','JNL')
+                            ->where('source','GL')
+                            ->where('auditno',$obj->auditno)
                             ->update([
-                                'recstatus' => 'PARTIAL'
+                                'postdate' => $obj->postdate,
+                                'year' => '2025',
+                                'period' => '5'
                             ]);
-                    }
                 }
             }
 
