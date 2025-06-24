@@ -142,9 +142,8 @@ class Unallocated_receiptExport implements FromView, ShouldQueue, WithEvents, Wi
                 
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nAR AGEING DETAILS"."\n"
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nUNALLOCATED RECEIPT"."\n"
                 .sprintf('DATE %s',Carbon::parse($this->date)->format('d-m-Y'))
-                .sprintf('FROM %s TO %s',$this->debtorcode_from, $this->debtorcode_to)
                 .'&L'
                 .'PRINTED BY : '.session('username')
                 ."\nPAGE : &P/&N"
