@@ -265,7 +265,7 @@ use Carbon\Carbon;
                         'lastdate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
-                $yearperiod = defaultController::getyearperiod_(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+                $yearperiod = defaultController::getyearperiod_($gljnlhdr->docdate);
 
                 $gljnldtl = DB::table('finance.gljnldtl')
                     ->where('compcode','=',session('compcode'))

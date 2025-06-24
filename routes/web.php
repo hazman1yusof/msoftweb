@@ -505,6 +505,14 @@ Route::get('/goodReturn/form','material\GoodReturnController@form');
 Route::post('/goodReturnDetail/form','material\GoodReturnDetailController@form');
 Route::get('/goodReturn/showpdf','material\GoodReturnController@showpdf');
 
+//// good Return setup page ///
+Route::get('/goodReturnCredit','material\GoodReturnCreditController@show');
+Route::get('/goodReturnCredit/table','material\GoodReturnCreditController@table');
+Route::post('/goodReturnCredit/form','material\GoodReturnCreditController@form');
+Route::get('/goodReturnCredit/form','material\GoodReturnCreditController@form');
+Route::post('/goodReturnCreditDetail/form','material\GoodReturnCreditDetailController@form');
+Route::get('/goodReturnCredit/showpdf','material\GoodReturnCreditController@showpdf');
+
 //// sequence material setup ///
 Route::get('/sequence','material\SequenceController@show');
 Route::get('/sequence/table','material\SequenceController@table');

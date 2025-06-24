@@ -396,8 +396,10 @@ class AuthorizationDtlController extends defaultController // DONT DELETE THIS C
                             ->on('dept.deptcode','ivhd.txndept');
                     })
                     ->where('qiv.compcode',session('compcode'))
-                    ->where('qiv.trantype','<>','DONE')
-                    ->get();
+                    ->where('qiv.trantype','<>','DONE');
+                    // ->get();
+
+        dd($this->getQueries($queueiv));
 
         $queueiv_reject = DB::table('material.queueiv as qiv')
                     ->select('qiv.trantype','ivhd.adduser','ivhd.recno','ivhd.txndept as deptcode','dept.description as deptcode_desc','ivhd.adddate','ivhd.recstatus','ivhd.amount','ivhd.adduser','ivhd.cancelby','ivhd.canceldate')

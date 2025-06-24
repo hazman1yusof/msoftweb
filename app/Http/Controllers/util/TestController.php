@@ -44,10 +44,10 @@ class TestController extends defaultController
         switch($request->action){
             // case 'chgmast_invflag_tukar_dari_product':
             //     return $this->chgmast_invflag_tukar_dari_product($request);
-            // case 'load_discipline':
-            //     return $this->load_discipline($request);
-            case 'cbtran_todel':
-                return $this->cbtran_todel($request);
+            case 'grtstatus':
+                return $this->grtstatus($request);
+            case 'migratepoli':
+                return $this->migratepoli($request);
             case 'bankrecon_cbtran':
                 return $this->bankrecon_cbtran($request);
             case 'stockloc_JTR_header':
@@ -6376,6 +6376,87 @@ class TestController extends defaultController
                                 'compcode' => 'xx'
                             ]);
                     dump('del: '.$obj->auditno);
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function migratepoli(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $migratepoli = DB::table('recondb.migratepoli')
+                        ->get();
+
+            foreach ($migratepoli as $obj) {
+                $cbtran = DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$obj->source)
+                            ->where('trantype',$obj->trantype)
+                            ->where('auditno',$obj->auditno);
+
+                if($cbtran->exists()){
+                    DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$obj->source)
+                            ->where('trantype',$obj->trantype)
+                            ->where('auditno',$obj->auditno)
+                            ->update([
+                                'tillcode' => $obj->poliklinik
+                            ]);
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function grtstatus(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $grt = DB::table('material.delordhd')
+                        ->where('compcode',session('compcode'))
+                        ->where('trantype','grt')
+                        ->where('recstatus','POSTED')
+                        ->get();
+
+            foreach ($grt as $obj) {
+                $grn = DB::table('material.delordhd')
+                        ->where('compcode',session('compcode'))
+                        ->where('trantype','grn')
+                        ->where('prdept',$obj->prdept)
+                        ->where('docno',$obj->srcdocno);
+
+                if($grn->exists()){
+                    $purord = DB::table('material.purordhd')
+                            ->where('compcode',session('compcode'))
+                            ->where('prdept',$grn->prdept)
+                            ->where('purordno',$grn->srcdocno);
+
+                    if($purord->exists()){
+                        DB::table('material.purordhd')
+                            ->where('compcode',session('compcode'))
+                            ->where('prdept',$grn->prdept)
+                            ->where('purordno',$grn->srcdocno)
+                            ->update([
+                                'recstatus' => 'PARTIAL'
+                            ]);
+                    }
                 }
             }
 
