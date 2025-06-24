@@ -43,7 +43,7 @@
         <td style="font-weight: bold">Src</td>
         <td style="font-weight: bold">Type</td>
         <td style="font-weight: bold">Post Date</td>
-        <td style="font-weight: bold">Double Entry </br>Cost Code</td>
+        <td style="font-weight: bold">Double Entry Cost Code</td>
         <td style="font-weight: bold">Double Entry Acct</td>
         <td style="font-weight: bold">Cost Code</td>
         <td style="font-weight: bold">Reference</td>

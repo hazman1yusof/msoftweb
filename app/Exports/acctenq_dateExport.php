@@ -64,6 +64,7 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
             'J' => 20,
             'K' => 20,
             'L' => 20,
+            'M' => 20,
         ];
     }
     
