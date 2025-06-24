@@ -90,7 +90,7 @@ class Unallocated_receiptExport implements FromView, ShouldQueue, WithEvents, Wi
                         ->where('db.source', 'PB')
                         ->where('db.trantype', 'RC')
                         ->whereDate('db.posteddate','<=',$date)
-                        ->orderBy('db.debtorcode', 'ASC')
+                        ->orderBy('db.posteddate', 'ASC')
                         ->get();
 
         foreach ($dbacthdr as $obj){
