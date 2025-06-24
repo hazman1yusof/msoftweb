@@ -43,8 +43,9 @@
         <td style="font-weight: bold">Src</td>
         <td style="font-weight: bold">Type</td>
         <td style="font-weight: bold">Post Date</td>
-        <td style="font-weight: bold">Cost Code</td>
+        <td style="font-weight: bold">Double Entry </br>Cost Code</td>
         <td style="font-weight: bold">Double Entry Acct</td>
+        <td style="font-weight: bold">Cost Code</td>
         <td style="font-weight: bold">Reference</td>
         <td style="font-weight: bold">Description</td>
         <td style="font-weight: bold">Debit</td>
@@ -65,6 +66,7 @@
             <td>{{$obj->postdate}}</td>
             <td>{{$obj->costcode}}</td>
             <td>{{$obj->acccode}}</td>
+            <td>{{$obj->costcode_}}</td>
             <td>{{$obj->reference}}</td>
             <td>{{$obj->description}}</td>
             <td>{{$obj->dramount}}</td>
