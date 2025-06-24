@@ -1224,6 +1224,13 @@ Route::post('/ARAgeingDtl_Report/form','finance\ARAgeingDtl_ReportController@for
 Route::get('/ARAgeingDtl_Report/showExcel','finance\ARAgeingDtl_ReportController@showExcel');
 Route::get('/ARAgeingDtl_Report/showpdf','finance\ARAgeingDtl_ReportController@showpdf');
 
+//// Unallocated Receipt -- Report
+Route::get('/unallocated_receipt','finance\unallocated_receiptController@show');
+Route::get('/unallocated_receipt/table','finance\unallocated_receiptController@table');
+Route::post('/unallocated_receipt/form','finance\unallocated_receiptController@form');
+Route::get('/unallocated_receipt/showExcel','finance\unallocated_receiptController@showExcel');
+Route::get('/unallocated_receipt/showpdf','finance\unallocated_receiptController@showpdf');
+
 //// Debtor List -- Report
 Route::get('/DebtorList_Report','finance\DebtorList_ReportController@show');
 Route::get('/DebtorList_Report/table','finance\DebtorList_ReportController@table');

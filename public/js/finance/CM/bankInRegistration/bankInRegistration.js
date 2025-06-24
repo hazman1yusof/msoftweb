@@ -881,11 +881,19 @@ $(document).ready(function () {
 			$.each(this.arrayAllo, function( index, obj ) {
 				let amt = parseFloat(obj.obj.refamount).toFixed(4);
 				let com = parseFloat(obj.obj.commamt).toFixed(4);
+				if(obj.obj.reftype.toUpperCase() == 'RF'){
 
-				$("#jqGrid2").jqGrid('setRowData', obj.idno ,{commamt:com});
+					$("#jqGrid2").jqGrid('setRowData', obj.idno ,{commamt:com});
 
-				totalcom = parseFloat(totalcom) + parseFloat(com);
-				totalallo = parseFloat(totalallo) + parseFloat(amt);
+					totalcom = parseFloat(totalcom) - parseFloat(com);
+					totalallo = parseFloat(totalallo) - parseFloat(amt);
+				}else{
+
+					$("#jqGrid2").jqGrid('setRowData', obj.idno ,{commamt:com});
+
+					totalcom = parseFloat(totalcom) + parseFloat(com);
+					totalallo = parseFloat(totalallo) + parseFloat(amt);
+				}
 			});
 			$('#dtlamt').val(totalallo);
 			// $('#commamt').val(totalcom);
