@@ -153,7 +153,9 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
             switch ($value->trantype) {
                 case 'IN':
                     if($value->mrn == '0' || $value->mrn == ''){
-                        $value->reference = $value->remark;
+                        if(!empty($value->payername)){
+                            $value->reference = $value->payername;
+                        }
                     }else{
                         $value->reference = $value->pm_name;
                     }
