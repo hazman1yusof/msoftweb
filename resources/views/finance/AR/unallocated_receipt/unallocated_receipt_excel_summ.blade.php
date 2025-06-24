@@ -39,7 +39,7 @@
         <td>{{$obj->posteddate}}</td>
         <td>{{$obj->recptno}}</td>
         <td>{{$obj->payercode}}</td>
-        <td>{{$obj->payername}}</td>
+        <td>{{$obj->dm_name}}</td>
         <td>{{$obj->amount}}</td>
         <td>{{$obj->pamt}}</td>
     </tr>
