@@ -18,10 +18,12 @@
         <td style="font-weight: bold;text-align: left">DOC DATE</td>
         <td style="font-weight: bold;text-align: left">DATE SEND</td>
         <td style="font-weight: bold;text-align: left">DOCUMENT</td>
-        <td style="font-weight: bold;text-align: left">REFERENCE</td>
+        <td style="font-weight: bold;text-align: left">REMARK</td>
         <td style="font-weight: bold;text-align: right">BALANCE AMOUNT</td>
         <td style="font-weight: bold;text-align: right">TOTAL</td>
         <td style="font-weight: bold;text-align: right">UNIT</td>
+        <td style="font-weight: bold;text-align: right">REFERENCE</td>
+        <td style="font-weight: bold;text-align: right">POLIKLINIK</td>
     </tr>
     <tr></tr>
     @php($totalAmount = 0)
@@ -46,6 +48,9 @@
             <td style="text-align: right">{{$totalAmount}}</td>
             <td>{!!$db_obj->unit!!}</td>
             <td>{!!$db_obj->real_reference!!}</td>
+            @if($db_obj->trantype == 'IN'))
+            <td>{{$db_obj->tillcode}}</td>
+            @endif
         </tr>
         @endif
     @endforeach

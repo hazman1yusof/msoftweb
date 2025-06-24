@@ -6425,6 +6425,51 @@ class TestController extends defaultController
         }
     }
 
+    public function grtstatus(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $grt = DB::table('material.delordhd')
+                        ->where('compcode',session('compcode'))
+                        ->where('trantype','grt')
+                        ->where('recstatus','POSTED')
+                        ->get();
+
+            foreach ($grt as $obj) {
+                $grn = DB::table('material.delordhd')
+                        ->where('compcode',session('compcode'))
+                        ->where('trantype','grn')
+                        ->where('prdept',$obj->prdept)
+                        ->where('docno',$obj->srcdocno);
+
+                if($grn->exists()){
+                    $purord = DB::table('material.purordhd')
+                            ->where('compcode',session('compcode'))
+                            ->where('prdept',$grn->prdept)
+                            ->where('purordno',$grn->srcdocno);
+
+                    if($purord->exists()){
+                        DB::table('material.purordhd')
+                            ->where('compcode',session('compcode'))
+                            ->where('prdept',$grn->prdept)
+                            ->where('purordno',$grn->srcdocno)
+                            ->update([
+                                'recstatus' => 'PARTIAL'
+                            ]);
+                    }
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
     public function gltran_jnl(Request $request){
         DB::beginTransaction();
 
@@ -6455,6 +6500,37 @@ class TestController extends defaultController
                                 'period' => '5'
                             ]);
                 }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function nama_pbin(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $arconvert = DB::table('recondb.arconvert')
+                        ->where('oldmrn','=','')
+                        ->where('source','PB')
+                        ->where('trantype','IN')
+                        ->get();
+
+            foreach ($arconvert as $obj) {
+                DB::table('debtor.dbacthdr')
+                    ->where('compcode',session('compcode'))
+                    ->where('source',$obj->source)
+                    ->where('trantype',$obj->trantype)
+                    ->where('auditno',$obj->auditno)
+                    ->update([
+                        'payername' => $obj->name
+                    ]);
             }
 
             DB::commit();
