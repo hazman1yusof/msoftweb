@@ -93,34 +93,28 @@ class Unallocated_receiptExport implements FromView, ShouldQueue, WithEvents, Wi
                         ->orderBy('db.debtorcode', 'ASC')
                         ->get();
 
-        // dd($dbacthdr);
-
         foreach ($dbacthdr as $obj){
             $pamt = $obj->amount;
 
-            $dballocdoc = DB::table('debtor.dballoc')
-                            ->select(DB::raw('SUM(amount) AS sum'))
+            $doc_sum = DB::table('debtor.dballoc')
                             ->where('compcode', '=', session('compcode'))
+                            ->where('recstatus', 'POSTED')
                             ->where('docsource', 'PB')
                             ->where('doctrantype', 'RC')
                             ->where('docauditno', 'RC')
-                            ->where('recstatus', 'POSTED')
                             ->whereDate('allocdate','<=',$date)
-                            ->first();
+                            ->sum('amount');
 
-            $pamt = $pamt - $dballocdoc->sum;
-
-            $dballocref = DB::table('debtor.dballoc')
-                            ->select(DB::raw('SUM(amount) AS sum'))
+            $ref_sum = DB::table('debtor.dballoc')
                             ->where('compcode', '=', session('compcode'))
+                            ->where('recstatus', 'POSTED')
                             ->where('refsource', 'PB')
                             ->where('reftrantype', 'RC')
                             ->where('refauditno', 'RC')
-                            ->where('recstatus', 'POSTED')
                             ->whereDate('allocdate','<=',$date)
-                            ->first();
+                            ->sum('amount');
 
-            $pamt = $pamt - $dballocref->sum;
+            $pamt = $pamt - $doc_sum - $ref_sum;
             $obj->pamt = $pamt;
         }
 
