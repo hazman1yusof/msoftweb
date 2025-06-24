@@ -316,7 +316,7 @@ function saveForm_posturalAssessment(callback){
 }
 
 function textarea_init_posturalAssessment(){
-    $('textarea#posturalAssessment_totalScore').each(function (){
+    $('textarea#anteriorPosteriorRmk,textarea#lateralRmk').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{

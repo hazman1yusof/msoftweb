@@ -272,7 +272,7 @@
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio.js?v=1.3') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/sixMinWalking.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/bergBalanceTest.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/posturalAssessment.js?v=1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/posturalAssessment.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/oswestryQuest.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/neuroAssessment.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/motorScale.js?v=1.1') }}"></script>
