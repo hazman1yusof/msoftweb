@@ -21,9 +21,9 @@
         <td style="font-weight: bold;text-align: left">REMARK</td>
         <td style="font-weight: bold;text-align: right">BALANCE AMOUNT</td>
         <td style="font-weight: bold;text-align: right">TOTAL</td>
-        <td style="font-weight: bold;text-align: right">UNIT</td>
-        <td style="font-weight: bold;text-align: right">REFERENCE</td>
-        <td style="font-weight: bold;text-align: right">POLIKLINIK</td>
+        <td style="font-weight: bold;text-align: left">UNIT</td>
+        <td style="font-weight: bold;text-align: left">REFERENCE</td>
+        <td style="font-weight: bold;text-align: left">POLIKLINIK</td>
     </tr>
     <tr></tr>
     @php($totalAmount = 0)
