@@ -98,19 +98,19 @@ class Unallocated_receiptExport implements FromView, ShouldQueue, WithEvents, Wi
 
             $doc_sum = DB::table('debtor.dballoc')
                             ->where('compcode', '=', session('compcode'))
-                            ->where('recstatus', 'POSTED')
-                            ->where('docsource', 'PB')
-                            ->where('doctrantype', 'RC')
-                            ->where('docauditno', 'RC')
-                            ->whereDate('allocdate','<=',$date)
+                            ->where('recstatus', '=', 'POSTED')
+                            ->where('docsource', '=', $value->source)
+                            ->where('doctrantype', '=', $value->trantype)
+                            ->where('docauditno', '=', $value->auditno)
+                            ->whereDate('allocdate', '=','<=',$date)
                             ->sum('amount');
 
             $ref_sum = DB::table('debtor.dballoc')
                             ->where('compcode', '=', session('compcode'))
-                            ->where('recstatus', 'POSTED')
-                            ->where('refsource', 'PB')
-                            ->where('reftrantype', 'RC')
-                            ->where('refauditno', 'RC')
+                            ->where('recstatus', '=', 'POSTED')
+                            ->where('refsource', '=', $value->source)
+                            ->where('reftrantype', '=', $value->trantype)
+                            ->where('refauditno', '=', $value->auditno)
                             ->whereDate('allocdate','<=',$date)
                             ->sum('amount');
 
