@@ -62,7 +62,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
             'F' => 15,
             'G' => 15,
             'H' => 55,
-            'H' => 15,
+            'I' => 15,
         ];
     }
     
