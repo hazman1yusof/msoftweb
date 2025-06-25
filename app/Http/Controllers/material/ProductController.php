@@ -225,7 +225,7 @@ class ProductController extends defaultController
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
 
-        return json_encode($responce);
+        return json_encode($responce, JSON_INVALID_UTF8_SUBSTITUTE);
     }
 
     public function get_charges_from_product(Request $request){
@@ -239,7 +239,7 @@ class ProductController extends defaultController
 
         $responce = new stdClass();
         $responce->chgmast = $chgmast;
-        return json_encode($responce);
+        return json_encode($responce, JSON_INVALID_UTF8_SUBSTITUTE);
     }
 
     public function get_product_detail(Request $request){

@@ -46,7 +46,11 @@
                 <td style="text-align: right">{{$db_obj->amount_cr}}</td>
             @endif
             <td style="text-align: right">{{$totalAmount}}</td>
-            <td>{!!$db_obj->unit!!}</td>
+            @if(strtoupper($db_obj->unit) == 'POLIS15')
+            <td>POLIKLINIK</td>
+            @else
+            <td>{{$db_obj->unit}}</td>
+            @endif
             <td>{!!$db_obj->real_reference!!}</td>
             @if($db_obj->trantype == 'IN')
             <td>{{$db_obj->tillcode}}</td>

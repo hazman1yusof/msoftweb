@@ -84,7 +84,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                         // })
                         ->join('debtor.dbacthdr as dh', function($join) use ($date){
                             $join = $join->on('dh.debtorcode', '=', 'dm.debtorcode')
-                                         // ->whereDate('dh.posteddate', '<=', $date)
+                                         ->whereDate('dh.posteddate', '<=', $date)
                                          ->where('dh.compcode', '=', session('compcode'))
                                          ->where('dh.recstatus', '=', 'POSTED');
                         })->leftJoin('hisdb.pat_mast as pm', function($join){
@@ -96,6 +96,8 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                         ->orderBy('dm.debtorcode', 'ASC')
                         // ->limit(3000)
                         ->get();
+
+        // dd($this->getQueries($debtormast));
         
         $array_report = [];
 
@@ -242,6 +244,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     ->first();
 
         $debtormast = collect($array_report)->unique('debtorcode');
+        // dd($array_report);
         
         // $totamount_expld = explode(".", (float)$totalAmount);
         
@@ -266,7 +269,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                 
                 $event->sheet->getPageSetup()->setPaperSize(9); // A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSTATEMENT LISTING"."\n".sprintf('DATE ',$this->dateto).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
+                // $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSTATEMENT LISTING"."\n".sprintf('DATE ',$this->dateto).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 
                 $event->sheet->getPageMargins()->setTop(1);
                 
