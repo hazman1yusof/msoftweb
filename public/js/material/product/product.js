@@ -224,7 +224,6 @@ $(document).ready(function () {
 	);
 	dialog_uomcode.makedialog();
 
-
 	var dialog_uomcode_addnew = new ordialog(
 		'dialog_uomcode_addnew','material.uom','#uomcodeAddNew',errorField,
 		{	colModel:[
@@ -1002,7 +1001,7 @@ $(document).ready(function () {
 			{ label: 'Product Category', name: 'productcat', width: 40, sorttype: 'text', classes: 'wrap' ,canSearch: true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Charge', name: 'chgflag', width: 25, formatter:formatter, unformat:unformat, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'  },
 			{ label: 'Supplier Code', name: 'suppcode',  hidden:true, width: 40, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Generic', name: 'generic', width: 40, sorttype: 'text', classes: 'wrap',},
+			{ label: 'Generic', name: 'generic', width: 40, sorttype: 'text', classes: 'wrap',canSearch: true},
 			{ label: 'actavgcost', name: 'actavgcost', width: 50, hidden:true },
 			{ label: 'bonqty', name: 'bonqty', width: 50, hidden:true },
 			{ label: 'rpkitem', name: 'rpkitem', width: 50, hidden:true },
