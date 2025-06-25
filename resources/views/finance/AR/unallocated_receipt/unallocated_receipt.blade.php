@@ -99,6 +99,14 @@
                         <div class="col-md-12">
                             <label class="control-label" for="Scol">As of Date</label>
                             <input id="date" name="date" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+
+                            <br>
+                            <label class="control-label" for="Scol">Unit</label>
+                            <select name="unit" id="unit" class="form-control input-sm" >
+                              <option value="ALL" selected>ALL</option>
+                              <option value="IMP">IMP</option>
+                              <option value="KHEALTH">KHEALTH</option>
+                            </select>
                         </div>
                     </div>
                 </div>

@@ -375,6 +375,11 @@ $(document).ready(function () {
 				$('#jqGrid').data('inputfocus','');
 				$('#customer_search_hb').text('');
 				removeValidationClass(['#customer_search']);
+			}else if($('#jqGrid').data('inputfocus') == 'patmast_search'){
+				$("#patmast_search").focus();
+				$('#jqGrid').data('inputfocus','');
+				$('#patmast_search_hb').text('');
+				removeValidationClass(['#patmast_search']);
 			}else if($('#jqGrid').data('inputfocus') == 'department_search'){
 				$("#department_search").focus();
 				$('#jqGrid').data('inputfocus','');
@@ -722,24 +727,29 @@ $(document).ready(function () {
 	function whenchangetodate() {
 		customer_search.off();
 		department_search.off();
+		patmast_search.off();
 		$('#customer_search,#docuDate_from,#docuDate_to,#department_search').val('');
 		$('#customer_search_hb').text('');
 		$('#department_search_hb').text('');
 		urlParam.filterdate = null;
 		removeValidationClass(['#customer_search,#department_search']);
 		if($('#Scol').val()=='db_entrydate'){
-			$("input[name='Stext'], #customer_text, #department_text").hide("fast");
+			$("input[name='Stext'], #customer_text, #department_text,#patmast_text").hide("fast");
 			$("#docuDate_text").show("fast");
 		} else if($('#Scol').val() == 'db_payercode'){
-			$("input[name='Stext'],#docuDate_text,#department_text").hide("fast");
+			$("input[name='Stext'],#docuDate_text,#department_text,#patmast_text").hide("fast");
 			$("#customer_text").show("fast");
 			customer_search.on();
+		} else if($('#Scol').val() == 'db_mrn'){
+			$("input[name='Stext'],#docuDate_text,#department_text,#customer_text").hide("fast");
+			$("#patmast_text").show("fast");
+			patmast_search.on();
 		} else if($('#Scol').val() == 'db_deptcode'){
-			$("input[name='Stext'],#docuDate_text,#customer_text").hide("fast");
+			$("input[name='Stext'],#docuDate_text,#customer_text,#patmast_text").hide("fast");
 			$("#department_text").show("fast");
 			department_search.on();
 		} else {
-			$("#customer_text,#docuDate_text,#department_text").hide("fast");
+			$("#customer_text,#docuDate_text,#department_text,#patmast_text").hide("fast");
 			$("input[name='Stext']").show("fast");
 			$("input[name='Stext']").velocity({ width: "100%" });
 		}
@@ -828,6 +838,50 @@ $(document).ready(function () {
 	);
 	customer_search.makedialog(true);
 	$('#customer_search').on('keyup',ifnullsearch);
+
+	var patmast_search = new ordialog(
+		'patmast_search', 'hisdb.pat_mast', '#patmast_search', 'errorField',
+		{
+			colModel: [
+				{ label: 'MRN', name: 'newmrn', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+						filterCol:['compcode'],
+						filterVal:['session.compcode']
+					},
+			ondblClickRow: function () {
+				let data = selrowData('#' + patmast_search.gridname).newmrn;
+
+				if($('#Scol').val() == 'db_mrn'){
+					urlParam.searchCol=["db.mrn"];
+					urlParam.searchVal=[data];
+				}
+				// }else if($('#Scol').val() == 'db_payercode'){
+				// 	urlParam.searchCol=["db.payercode"];
+				// 	urlParam.searchVal=[data];
+				// }
+				refreshGrid('#jqGrid', urlParam);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					// $('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title: "Select Customer",
+			open: function () {
+				patmast_search.urlParam.filterCol = ['compcode'];
+				patmast_search.urlParam.filterVal = ['session.compcode'];
+			}
+		},'urlParam','radio','tab'
+	);
+	patmast_search.makedialog(true);
+	$('#patmast_search').on('keyup',ifnullsearch);
 
 	var department_search = new ordialog(
 		'department_search', 'sysdb.department', '#department_search', 'errorField',

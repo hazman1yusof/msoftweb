@@ -32,6 +32,7 @@
         <td style="font-weight:bold; text-align: left">Name</td>
         <td style="font-weight:bold; text-align: right">Amount</td>
         <td style="font-weight:bold; text-align: right">Outstanding</td>
+        <td style="font-weight:bold; text-align: left">Unit</td>
     </tr>     
     @foreach ($dbacthdr as $obj)
     @if($obj->pamt != 0)
@@ -42,6 +43,7 @@
         <td>{{$obj->dm_name}}</td>
         <td>{{$obj->amount}}</td>
         <td>{{$obj->pamt}}</td>
+        <td>{{$obj->unit}}</td>
     </tr>
     @endif
     @endforeach

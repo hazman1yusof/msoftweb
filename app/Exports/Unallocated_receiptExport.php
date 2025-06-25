@@ -34,12 +34,13 @@ class Unallocated_receiptExport implements FromView, ShouldQueue, WithEvents, Wi
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($process,$filename,$date)
+    public function __construct($process,$filename,$date,$unit)
     {
         
         $this->process = $process;
         $this->filename = $filename;
         $this->date = Carbon::parse($date)->format('Y-m-d');
+        $this->unit = $unit;
 
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
@@ -58,19 +59,12 @@ class Unallocated_receiptExport implements FromView, ShouldQueue, WithEvents, Wi
     {
         return [
             'A' => 15,
-            'B' => 15,
+            'B' => 20,
             'C' => 15,
             'D' => 65,
             'E' => 15,
             'F' => 15,
             'G' => 15,
-            'H' => 15,
-            'I' => 15,
-            'J' => 15,
-            'K' => 15,
-            'L' => 15,
-            'M' => 15,
-            'N' => 15,
         ];
     }
     
@@ -79,6 +73,7 @@ class Unallocated_receiptExport implements FromView, ShouldQueue, WithEvents, Wi
         $idno_job_queue = $this->start_job_queue('unallocated_receipt');
 
         $date = $this->date;
+        $unit = $this->unit;
 
         $dbacthdr = DB::table('debtor.dbacthdr as db')
                         ->select('db.idno','db.compcode','db.source','db.trantype','db.auditno','db.lineno_','db.amount','db.outamount','db.recstatus','db.entrydate','db.entrytime','db.entryuser','db.reference','db.recptno','db.paymode','db.tillcode','db.tillno','db.debtortype','db.debtorcode','db.payercode','db.billdebtor','db.remark','db.mrn','db.episno','db.authno','db.expdate','db.adddate','db.adduser','db.upddate','db.upduser','db.deldate','db.deluser','db.epistype','db.cbflag','db.conversion','db.payername','db.hdrtype','db.currency','db.rate','db.unit','db.invno','db.paytype','db.bankcharges','db.RCCASHbalance','db.RCOSbalance','db.RCFinalbalance','db.PymtDescription','db.orderno','db.ponum','db.podate','db.termdays','db.termmode','db.deptcode','db.posteddate','db.approvedby','db.approveddate','db.approved_remark','db.unallocated','db.datesend','db.quoteno','db.preparedby','db.prepareddate','db.cancelby','db.canceldate','db.cancelled_remark','db.pointofsales','db.doctorcode','db.LHDNStatus','db.LHDNSubID','db.LHDNCodeNo','db.LHDNDocID','db.LHDNSubBy','db.category','db.categorydept','dm.name as dm_name')
@@ -90,8 +85,13 @@ class Unallocated_receiptExport implements FromView, ShouldQueue, WithEvents, Wi
                         ->where('db.source', 'PB')
                         ->where('db.trantype', 'RC')
                         ->whereDate('db.posteddate','<=',$date)
-                        ->orderBy('db.posteddate', 'ASC')
-                        ->get();
+                        ->orderBy('db.posteddate', 'ASC');
+
+        if($unit != 'ALL'){
+            $dbacthdr = $dbacthdr->where('db.unit', $unit);
+        }
+
+        $dbacthdr = $dbacthdr->get();
 
         foreach ($dbacthdr as $obj){
             $pamt = $obj->amount;

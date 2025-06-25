@@ -70,7 +70,7 @@ $(document).ready(function () {
     
     $("#excelgen1").click(function() {
         $('#excelgen1').attr('disabled',true);
-        let href = './unallocated_receipt/form?action=showExcel&type='+$('#type').val()+'&debtortype='+$('#debtortype').val()+'&debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&date='+$("#date").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val()
+        let href = './unallocated_receipt/form?action=showExcel&date='+$("#date").val()+'&unit='+$("#unit").val()
 
         $.post( href,{_token:$('#_token').val()}, function( data ) {
         }).fail(function(data) {

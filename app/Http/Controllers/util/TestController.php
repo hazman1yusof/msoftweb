@@ -44,8 +44,8 @@ class TestController extends defaultController
         switch($request->action){
             // case 'chgmast_invflag_tukar_dari_product':
             //     return $this->chgmast_invflag_tukar_dari_product($request);
-            case 'grtstatus':
-                return $this->grtstatus($request);
+            case 'cbdtl_':
+                return $this->cbdtl_($request);
             case 'gltran_jnl':
                 return $this->gltran_jnl($request);
             case 'bankrecon_cbtran':
@@ -6543,4 +6543,38 @@ class TestController extends defaultController
             dd('Error'.$e);
         }
     }
+
+    public function cbdtl_(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $cbdtl = DB::table('finance.cbdtl')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','CM')
+                            ->whereIn('trantype',['BS','BD','BQ'])
+                            ->get();
+
+            foreach ($cbdtl as $obj) {
+                DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source',$obj->refsrc)
+                            ->where('trantype',$obj->reftrantype)
+                            ->where('auditno',$obj->refauditno)
+                            ->update([
+                                'cbflag' => 1
+                            ]);
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+
 }

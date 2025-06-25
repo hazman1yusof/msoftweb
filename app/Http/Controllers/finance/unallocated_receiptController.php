@@ -99,7 +99,7 @@ class unallocated_receiptController extends defaultController
         $bytes = random_bytes(20);
         $process = bin2hex($bytes).'.xlsx';
 
-        (new Unallocated_receiptExport($process,$filename,$request->date))->store($process, \config('get_config.ATTACHMENT_UPLOAD'));
+        (new Unallocated_receiptExport($process,$filename,$request->date,$request->unit))->store($process, \config('get_config.ATTACHMENT_UPLOAD'));
 
     }
 }
