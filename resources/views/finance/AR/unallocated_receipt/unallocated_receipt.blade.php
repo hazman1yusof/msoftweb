@@ -58,8 +58,9 @@
 @endsection
 
 @section('body')
+    <input id="ttype" name="ttype" type="hidden" value="{{Request::get('ttype')}}">
     <input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
-    <h4 style="text-align: center;">Unallocated Receipt</h4>
+    <h4 style="text-align: center;">Unallocated @if(Request::get('ttype') == 'RC'){{'RECEIPT'}}@else{{'DEPOSIT'}}@endif</h4>
     <div class="col-md-6">
         <div class='panel panel-default'>
             <div class='panel-body'>
@@ -106,6 +107,7 @@
                               <option value="ALL" selected>ALL</option>
                               <option value="IMP">IMP</option>
                               <option value="KHEALTH">KHEALTH</option>
+                              <option value="FKWSTR">FKWSTR</option>
                             </select>
                         </div>
                     </div>

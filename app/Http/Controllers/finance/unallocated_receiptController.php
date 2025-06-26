@@ -60,9 +60,15 @@ class unallocated_receiptController extends defaultController
     public function job_queue(Request $request){
         $responce = new stdClass();
 
+        if($request->ttype == 'RC'){
+            $page = 'unallocated_receipt';
+        }else{
+            $page = 'unallocated_deposit';
+        }
+
         $table_ = DB::table('sysdb.job_queue')
                         ->where('compcode', session('compcode'))
-                        ->where('page', 'unallocated_receipt')
+                        ->where('page', $page)
                         ->orderBy('idno','desc');
 
         $count = $table_->count();
@@ -96,10 +102,16 @@ class unallocated_receiptController extends defaultController
 
         $filename = 'Unallocated_receipt '.Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d g:i A').'.xlsx';
 
+        if($request->ttype == 'RC'){
+            $page = 'unallocated_receipt';
+        }else{
+            $page = 'unallocated_deposit';
+        }
+
         $bytes = random_bytes(20);
         $process = bin2hex($bytes).'.xlsx';
 
-        (new Unallocated_receiptExport($process,$filename,$request->date,$request->unit))->store($process, \config('get_config.ATTACHMENT_UPLOAD'));
+        (new Unallocated_receiptExport($process,$page,$filename,$request->date,$request->unit))->store($process, \config('get_config.ATTACHMENT_UPLOAD'));
 
     }
 }

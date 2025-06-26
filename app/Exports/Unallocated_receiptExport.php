@@ -34,11 +34,12 @@ class Unallocated_receiptExport implements FromView, ShouldQueue, WithEvents, Wi
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($process,$filename,$date,$unit)
+    public function __construct($process,$page,$filename,$date,$unit)
     {
         
         $this->process = $process;
         $this->filename = $filename;
+        $this->page = $page;
         $this->date = Carbon::parse($date)->format('Y-m-d');
         $this->unit = $unit;
 
@@ -70,7 +71,7 @@ class Unallocated_receiptExport implements FromView, ShouldQueue, WithEvents, Wi
     
     public function view(): View
     {
-        $idno_job_queue = $this->start_job_queue('unallocated_receipt');
+        $idno_job_queue = $this->start_job_queue($this->page);
 
         $date = $this->date;
         $unit = $this->unit;

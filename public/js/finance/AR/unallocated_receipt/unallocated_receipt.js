@@ -25,7 +25,7 @@ $(document).ready(function () {
     };
 
     var DataTable = $('#job_queue').DataTable({
-        ajax: './unallocated_receipt/table?action=job_queue',
+        ajax: './unallocated_receipt/table?action=job_queue&ttype='+$("#ttype").val(),
         pageLength: 10,
         orderMulti: false,
         responsive: true,
@@ -70,7 +70,7 @@ $(document).ready(function () {
     
     $("#excelgen1").click(function() {
         $('#excelgen1').attr('disabled',true);
-        let href = './unallocated_receipt/form?action=showExcel&date='+$("#date").val()+'&unit='+$("#unit").val()
+        let href = './unallocated_receipt/form?action=showExcel&date='+$("#date").val()+'&unit='+$("#unit").val()+'&ttype='+$("#ttype").val()
 
         $.post( href,{_token:$('#_token').val()}, function( data ) {
         }).fail(function(data) {
