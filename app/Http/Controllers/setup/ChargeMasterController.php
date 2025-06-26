@@ -312,7 +312,7 @@ class ChargeMasterController extends defaultController
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
 
-        return json_encode($responce);
+        return json_encode($responce, JSON_INVALID_UTF8_SUBSTITUTE);
     }
     
     public function add(Request $request){
@@ -738,7 +738,7 @@ class ChargeMasterController extends defaultController
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);
-        return json_encode($responce);
+        return json_encode($responce, JSON_INVALID_UTF8_SUBSTITUTE);
     }
 
     public function add_pkgmast(Request $request){
