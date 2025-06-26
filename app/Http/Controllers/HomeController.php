@@ -400,7 +400,7 @@ class HomeController extends Controller
         $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='ItemNonPhar' targeturl='./itemEnquiry?Class=Non-Pharmacy'>Non-Pharmacy</a></li>";
 
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Enquiry' class=''><b>Report</b></a></li>";
-        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='DO_posted_report' targeturl='./DO_posted_report'>DO Posted List</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='DO_posted_report' targeturl='./DO_posted_report'>DO List</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Asset' class='clickable' programid='tui_tuo_report' targeturl='./tui_tuo_report'>TUI/TUO Posted List</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Sales' class='clickable' programid='SalesOrder_Report' targeturl='./SalesOrder_Report'>Sales</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Sales by Item' class='clickable' programid='SalesItem_Report' targeturl='./SalesItem_Report'>Sales by Item</a></li>";
