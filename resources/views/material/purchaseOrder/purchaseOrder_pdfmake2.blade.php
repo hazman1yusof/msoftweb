@@ -44,22 +44,22 @@
 	                        body: [
 	                            [
 									{text: 'SUPPLIER',bold: true}, 
-									{text: `: {!!$supplier->Name!!}`},
+									{text: `: {!!str_replace('`', '', $supplier->Name)!!}`},
 									{text: 'PURCHASE ORDER NO',bold: true}, 
 									{text: ': {{$purordhd->prdept}}-{{str_pad($purordhd->purordno, 5, '0', STR_PAD_LEFT)}}'},
 								],[
 									{text: ''}, 
-									{text: `: {!!$supplier->Addr1!!}`},
+									{text: `: {!!str_replace('`', '', $supplier->Addr1)!!}`},
 									{text: 'PURCHASE ORDER DATE',bold: true}, 
 									{text: ': {{\Carbon\Carbon::createFromFormat('Y-m-d',$purordhd->purdate)->format('d-m-Y')}}'},
 								],[
 									{text: ''}, 
-									{text: `: {!!$supplier->Addr2!!}`},
+									{text: `: {!!str_replace('`', '', $supplier->Addr2)!!}`},
 									{text: 'PAGE',bold: true}, 
 									{text: ': '+currentPage+' / '+pageCount},
 								],[
 									{text: ''}, 
-									{text: `: {!!$supplier->Addr3!!}`},
+									{text: `: {!!str_replace('`', '', $supplier->Addr3)!!}`},
 									{text: ''}, 
 									{text: ''},
 								],
