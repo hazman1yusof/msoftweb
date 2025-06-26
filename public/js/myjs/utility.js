@@ -378,7 +378,7 @@ function addmore(addmore,grid,oper){
 	if(oper == 'add' && addmore){
 		delay(function(){
 			$(pager+" td[title='Add New Row']").click();
-		}, 2000 );
+		}, 1100 );
 	}
 }
 
@@ -446,7 +446,7 @@ function searchClick(grid,form,urlParam){
 		if(code != '9'){
 			delay(function(){
 				search(grid,$(form+' [name=Stext]').val(),$(form+' input:radio[name=dcolr]:checked').val(),urlParam);
-			}, 2000 );
+			}, 1100 );
 		}
 	}
 }
@@ -461,7 +461,7 @@ function searchClick2(grid,form,urlParam,withscol=true){
 				$('#recnodepan').text("");//tukar kat depan tu
 				$('#reqdeptdepan').text("");
 				refreshGrid("#jqGrid3",null,"kosongkan");
-			}, 2000 );
+			}, 1100 );
 		}
 	});
 	if(withscol){
@@ -489,7 +489,7 @@ function searchClick3(grid,form,urlParam){
 		if(code != '9'){
 			delay(function(){
 				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-			}, 2000 );
+			}, 1100 );
 		}
 	}
 }
@@ -1154,13 +1154,13 @@ function setactdate(target,cantmorethantoday = false){
 			delay(function(){
 				text_error1(currentTarget);
 				$(currentTarget).data('error','Date not in accounting period setup');
-			}, 2000 );
+			}, 1100 );
 		}else if(!permission){
 			alert('Accounting Period Has been Closed');
 			delay(function(){
 				text_error1(currentTarget);
 				$(currentTarget).data('error','Accounting Period Has been Closed');
-			}, 2000 );
+			}, 1100 );
 		}else{
 			text_success1(currentTarget)
 			$(currentTarget).data('error','none');
@@ -1452,7 +1452,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				obj.urlParam.searchVal=searchVal;
 				obj.urlParam.wholeword=Dtext;
 				refreshGrid("#"+obj.gridname,obj.urlParam);
-			},2000);
+			},1100);
 		}else if(event.type=="change" && Dtext != ''){
 			obj.urlParam.searchCol=searchCol;
 			obj.urlParam.searchVal=searchVal;

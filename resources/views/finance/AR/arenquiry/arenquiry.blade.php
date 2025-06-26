@@ -1554,5 +1554,5 @@
 			}
 		});
 	</script>
-	<script src="js/finance/AR/arenquiry/arenquiryScript.js?v=1.9"></script>
+	<script src="js/finance/AR/arenquiry/arenquiryScript.js?v=1.10"></script>
 @endsection

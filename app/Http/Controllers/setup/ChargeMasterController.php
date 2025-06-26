@@ -300,9 +300,13 @@ class ChargeMasterController extends defaultController
         }
 
 
+        dd($this->getQueries($table));
+
+
         //////////paginate/////////
         // $mypaginate = $this->mypaginate($table,$request->rows);
         $paginate = $table->paginate($request->rows);
+
 
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();

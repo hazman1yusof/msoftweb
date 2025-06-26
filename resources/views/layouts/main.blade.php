@@ -298,7 +298,7 @@
 
 
 	@yield('body')
-	<script src="{{ asset('js/myjs/utility.js?v=1.7') }}"></script>
+	<script src="{{ asset('js/myjs/utility.js?v=1.8') }}"></script>
 
 	@yield('scripts')
 	<!-- <script src="religionScript.js"></script> example yielded scripts-->

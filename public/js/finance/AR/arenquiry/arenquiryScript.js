@@ -645,7 +645,7 @@ $(document).ready(function (){
 		multiSort: true,
 		height: 400,
 		scroll: true,
-		rowNum: 9,
+		rowNum: 30,
 		pager: "#pagerAllo",
 		onSelectRow: function (rowid){
 		},
@@ -3289,8 +3289,9 @@ $(document).ready(function (){
 			ondblClickRow: function (){
 				let data = selrowData('#'+dialog_allodebtor.gridname);
 				$('#AlloDebtor').val(data.debtorcode);
-				urlParamAllo.filterVal[0] = data.debtorcode;
-				refreshGrid("#gridAllo",urlParamAllo);
+				myallocation.renewAllo($('#AlloAmt').val());
+				urlParamManAlloc.filterVal[0] = data.debtorcode;
+				refreshGrid("#gridManAlloc",urlParamManAlloc);
 			},
 			gridComplete: function (obj){
 				var gridname = '#'+obj.gridname;
@@ -3305,8 +3306,10 @@ $(document).ready(function (){
 		},{
 			title: "Select MRN",
 			open: function (){
-				dialog_payercode.urlParam.filterCol = ['compcode','recstatus'],
-				dialog_payercode.urlParam.filterVal = ['session.compcode','ACTIVE']
+				dialog_allodebtor.urlParam.filterCol = ['compcode','recstatus'],
+				dialog_allodebtor.urlParam.filterVal = ['session.compcode','ACTIVE']
+			},
+			close:function(){
 			}
 		},'urlParam','radio','tab'
 	);
@@ -3348,7 +3351,7 @@ $(document).ready(function (){
 		buttons:
 			[{
 				text: "Save", click: function (){
-					$('button[classes=allocateDialog_save_btn]').hide();
+					$('button[classes=allocateDialog_save_btn],button[classes=allocateDialog_save_btn]').hide();
 					if(parseFloat($("#AlloBalance").val()) < 0){
 						alert("Balance cannot in negative values");
 					}else if(myallocation.allo_error.length > 0){
@@ -3372,9 +3375,10 @@ $(document).ready(function (){
 						$.post(saveParam.url+'?'+$.param(saveParam), obj, function (data){
 							
 						}).fail(function (data){
-							$('button[classes=allocateDialog_save_btn]').show();
+							alert('error');
+							// $('button[classes=allocateDialog_save_btn]').show();
 						}).success(function (data){
-							$('button[classes=allocateDialog_save_btn]').show();
+							// $('button[classes=allocateDialog_save_btn]').show();
 							refreshGrid('#jqGrid', urlParam);
 							$('#allocateDialog').dialog('close');
 						});
@@ -3403,7 +3407,7 @@ $(document).ready(function (){
 	$("#gridManAlloc").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'idno', name: 'idno', width: 40, hidden: true },
+			{ label: 'idno', name: 'idno', width: 40, hidden: true, key:true },
 			{ label: 'Document No', name: 'auditno', width: 40 },
 			{ label: 'Document Date', name: 'entrydate', width: 50 },
 			{ label: 'MRN', name: 'mrn', width: 50 },
@@ -3421,9 +3425,10 @@ $(document).ready(function (){
 		autowidth: true,
 		viewrecords: true,
 		multiSort: true,
+		loadonce: false,
 		height: 400,
-		scroll: true,
-		rowNum: 9,
+		scroll: false,
+		rowNum: 100,
 		pager: "#pagerManAlloc",
 		onSelectRow: function (rowid){
 		},

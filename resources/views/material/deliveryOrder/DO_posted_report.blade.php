@@ -59,7 +59,7 @@
 
 @section('body')
     <div class="container mycontainer">
-        <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 350px;">
+        <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 450px;">
             <form method="get" id="genreport">
                 <h4>DO Posted Report</h4>
                 <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7>
@@ -97,6 +97,20 @@
                                     <span class="help-block"></span>
                                 </div>
                             </div>
+
+                            <div class="form-group" >
+                                <div class="col-md-6" style="margin-top: 10px;">
+                                    <label class="control-label" for="Scol">Status</label> 
+                                    <select name="recstatus" id="recstatus" class="form-control input-sm" >
+                                      <option value="ALL">ALL</option>
+                                      <option value="POSTED" selected>POSTED</option>
+                                      <option value="OPEN">OPEN</option>
+                                      <option value="CANCELLED">CANCELLED</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
                         </div> 
                     </div>
                     
@@ -227,7 +241,7 @@
             dept_to.makedialog(true);
         });
         $("#excelgen1").click(function() {
-            window.location='./deliveryOrder/table?action=do_posted_report'+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&dept_from='+$("#dept_from").val()+'&dept_to='+$("#dept_to").val();
+            window.open('./deliveryOrder/table?action=do_posted_report'+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&dept_from='+$("#dept_from").val()+'&dept_to='+$("#dept_to").val()+'&recstatus='+$("#recstatus").val(), "_blank");
         });
     </script>
 @endsection

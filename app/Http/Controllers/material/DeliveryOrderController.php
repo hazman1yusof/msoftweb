@@ -1366,7 +1366,7 @@ class DeliveryOrderController extends defaultController
     }
 
     public function do_posted_report(Request $request){
-        return Excel::download(new do_posted_report_Export($request->datefr,$request->dateto,$request->dept_from,$request->dept_to), 'Posted_DO.xlsx');
+        return Excel::download(new do_posted_report_Export($request->datefr,$request->dateto,$request->dept_from,$request->dept_to,$request->recstatus), 'Posted_DO.xlsx');
     }
 }
 

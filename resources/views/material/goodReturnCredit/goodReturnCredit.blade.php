@@ -186,10 +186,10 @@ i.fa {
 							<input id="referral" name="referral" type="hidden">
 
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="delordhd_prdept">Department</label>	 
+								<label class="col-md-2 control-label" for="delordhd_deldept">Store Dept</label>	 
 								<div class="col-md-4">
 									<div class='input-group'>
-										<input id="delordhd_prdept" name="delordhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+										<input id="delordhd_deldept" name="delordhd_deldept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -207,10 +207,10 @@ i.fa {
 							</div>
 
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="delordhd_suppcode">Customer</label>	 
+								<label class="col-md-2 control-label" for="delordhd_customer">Customer</label>	 
 								<div class="col-md-4">
 									<div class='input-group'>
-										<input id="delordhd_suppcode" name="delordhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+										<input id="delordhd_customer" name="delordhd_customer" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>

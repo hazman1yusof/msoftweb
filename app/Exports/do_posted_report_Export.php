@@ -30,13 +30,14 @@ class do_posted_report_Export implements FromView, WithEvents, WithColumnWidths,
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($datefr,$dateto,$dept_from,$dept_to)
+    public function __construct($datefr,$dateto,$dept_from,$dept_to,$recstatus)
     {
 
         $this->datefr = $datefr;
         $this->dateto = $dateto;
         $this->dept_from = $dept_from;
         $this->dept_to = $dept_to;
+        $this->recstatus = $recstatus;
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
@@ -69,10 +70,10 @@ class do_posted_report_Export implements FromView, WithEvents, WithColumnWidths,
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
         $dept_from = $this->dept_from;
         $dept_to = $this->dept_to;
+        $recstatus = $this->recstatus;
 
         $delordhd = DB::table('material.delordhd as do_hd')
                     ->select('do_hd.idno','do_hd.compcode','do_hd.recno','do_hd.prdept','do_hd.trantype','do_hd.docno','do_hd.delordno','do_hd.invoiceno','do_hd.suppcode','do_hd.srcdocno','do_hd.deldept','do_hd.subamount','do_hd.amtdisc','do_hd.perdisc','do_hd.totamount','do_hd.deliverydate','do_hd.trandate','do_hd.trantime','do_hd.respersonid','do_hd.checkpersonid','do_hd.checkdate','do_hd.postedby','do_hd.recstatus','do_hd.remarks','do_hd.adduser','do_hd.adddate','do_hd.upduser','do_hd.upddate','do_hd.reason','do_hd.rtnflg','do_hd.reqdept','do_hd.credcode','do_hd.impflg','do_hd.allocdate','do_hd.postdate','do_hd.deluser','do_hd.taxclaimable','do_hd.TaxAmt','do_hd.prortdisc','do_hd.cancelby','do_hd.canceldate','do_hd.reopenby','do_hd.reopendate','do_hd.unit','do_hd.postflag','su.Name as suppcode_desc','dp.description as deldept_desc','do_dt.lineno_','do_dt.pricecode','do_dt.itemcode','pr.description as itemcode_desc','do_dt.uomcode','do_dt.amount','do_dt.pouom','do_dt.unitprice','do_dt.remarks','do_dt.expdate','do_dt.batchno','do_dt.qtydelivered')
-                    ->whereBetween('do_hd.trandate', [$datefr, $dateto])
                     ->leftjoin('material.delorddt as do_dt', function($join) {
                         $join = $join->on('do_dt.recno', '=', 'do_hd.recno');
                         $join = $join->where('do_dt.recstatus', '!=', 'DELETE');
@@ -98,13 +99,27 @@ class do_posted_report_Export implements FromView, WithEvents, WithColumnWidths,
             $delordhd = $delordhd->whereBetween('do_hd.deldept',[$dept_from,$dept_to]);
         }      
 
-        $delordhd = $delordhd->where('do_hd.compcode','=',session('compcode'))
+        $delordhd = $delordhd
+                    ->whereDate('do_hd.trandate','>=',$datefr)
+                    ->whereDate('do_hd.trandate','<=',$dateto)
+                    ->where('do_hd.compcode','=',session('compcode'))
                     // ->where('ap.unit',session('unit'))
-                    ->where('do_hd.trantype', '=', 'GRN')
-                    ->where('do_hd.recstatus', '=', 'POSTED')
+                    ->where('do_hd.trantype', '=', 'GRN');
+
+        if($recstatus != 'ALL'){
+            $delordhd = $delordhd
                     ->orderBy('do_hd.idno', 'DESC')
                     ->orderBy('do_dt.idno', 'DESC')
                     ->get();
+
+        }else{
+            $delordhd = $delordhd
+                    ->where('do_hd.recstatus', '=', $recstatus)
+                    ->orderBy('do_hd.idno', 'DESC')
+                    ->orderBy('do_dt.idno', 'DESC')
+                    ->get();
+                    
+        }
 
         // dd($this->getQueries($delordhd));
 
