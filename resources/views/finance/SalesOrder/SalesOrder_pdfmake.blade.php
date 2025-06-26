@@ -99,7 +99,7 @@
 								{text: '{{$dbacthdr->cust_address1}}\n{{$dbacthdr->cust_address2}}\n{{$dbacthdr->cust_address3}}\n{{$dbacthdr->cust_address4}}'},
 								{text: 'ADDRESS', alignment: 'right'},
 								{text: ':'},
-								{text: `{!!strtoupper($dbacthdr->pm_address1)!!}\n{!!strtoupper($dbacthdr->pm_address2)!!}\n{!!strtoupper($dbacthdr->pm_address3)!!}\n{{strtoupper($dbacthdr->pm_postcode)}}`},
+								{text: `{!!strtoupper(str_replace('`', '', $dbacthdr->pm_address1))!!}\n{!!strtoupper(str_replace('`', '', $dbacthdr->pm_address2))!!}\n{!!strtoupper(str_replace('`', '', $dbacthdr->pm_address3))!!}\n{{strtoupper(str_replace('`', '', $dbacthdr->pm_postcode))}}`},
 							],
 							[
 								{text: 'CREDIT TERM', alignment: 'right'},
