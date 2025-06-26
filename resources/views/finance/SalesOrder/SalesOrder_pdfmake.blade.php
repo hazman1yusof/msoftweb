@@ -161,7 +161,7 @@
 								{text:'{{number_format($obj->amount,2)}}', alignment: 'right',border: [false, false, false, false]},
 							],
 							[
-								{text:`{!!preg_replace('/[[:^print:]]/', '', $obj->chgmast_desc)!!}`,colSpan: 10, margin: [0, -5, 0, 0],border: [false, false, false, false]},{},{},{},{},{},{},{},{},{}
+								{text:`{!!preg_replace('`', '', $obj->chgmast_desc)!!}`,colSpan: 10, margin: [0, -5, 0, 0],border: [false, false, false, false]},{},{},{},{},{},{},{},{},{}
 							],
 							@endforeach
 						]
