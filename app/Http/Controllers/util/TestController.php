@@ -44,8 +44,8 @@ class TestController extends defaultController
         switch($request->action){
             // case 'chgmast_invflag_tukar_dari_product':
             //     return $this->chgmast_invflag_tukar_dari_product($request);
-            case 'cbdtl_':
-                return $this->cbdtl_($request);
+            case 'allocation_btlkn':
+                return $this->allocation_btlkn($request);
             case 'gltran_jnl':
                 return $this->gltran_jnl($request);
             case 'bankrecon_cbtran':
@@ -6576,5 +6576,39 @@ class TestController extends defaultController
         }
     }
 
+    public function allocation_btlkn(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $dballoc = DB::table('debtor.dballoc')
+                        ->where('compcode',session('compcode'))
+                        ->where('docsource','pb')
+                        ->where('doctrantype','rc')
+                        ->where('docauditno','590966')
+                        ->get();
+
+            $auditno = [];
+            foreach ($dballoc as $obj) {
+                if (in_array($obj->refauditno, $auditno)) {
+                    DB::table('debtor.dballoc')
+                        ->where('compcode',session('compcode'))
+                        ->where('idno',$obj->idno)
+                        ->update([
+                            'compcode' => 'xx'
+                        ]);
+                }else{
+                    array_push($auditno,$obj->refauditno);
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
 
 }

@@ -84,7 +84,7 @@ i.fa {
 	            </div>
 
 	            <div class="col-md-2">
-			  		<label class="control-label" for="trandept">Purchase Dept</label> 
+			  		<label class="control-label" for="trandept">Department</label> 
 						<select id='trandept' class="form-control input-sm">
 				      		<option value="All" selected>ALL</option>
 						</select>
@@ -178,7 +178,7 @@ i.fa {
 			<div class="panel-heading">Good Return Credit Header
 					<a class='pull-right pointer text-primary' id='pdfgen2'><span class='fa fa-print'></span> Print </a>
 					</div>
-				<div class="panel-body" style="position: relative;">
+				<div class="panel-body" style="position: relative;padding-bottom: 0px;">
 					<form class='form-horizontal' style='width:99%' id='formdata'>
 							{{ csrf_field() }}
 							<input id="delordhd_trantype" name="delordhd_trantype" type="hidden" value='GRT'>
@@ -186,7 +186,7 @@ i.fa {
 							<input id="referral" name="referral" type="hidden">
 
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="delordhd_prdept">Purchase Department</label>	 
+								<label class="col-md-2 control-label" for="delordhd_prdept">Department</label>	 
 								<div class="col-md-4">
 									<div class='input-group'>
 										<input id="delordhd_prdept" name="delordhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
@@ -195,14 +195,10 @@ i.fa {
 									<span class="help-block"></span>
 								</div>
 
-						  		<label class="col-md-1 control-label" for="delordhd_srcdocno">GRN No</label>  
-						  		<div class="col-md-2"> 
-						  			<div class='input-group'>
-						  				<input id="delordhd_srcdocno" name="delordhd_srcdocno" type="text" class="form-control input-sm text-uppercase">
-						  				<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-						  			</div>
-									<span class="help-block"></span>
-						  		</div>
+					  		<label class="col-md-1 control-label" for="delordhd_recno">Record No</label>  
+					  		<div class="col-md-2">
+					  			<input id="delordhd_recno" name="delordhd_recno" type="text" class="form-control input-sm" rdonly>
+					  		</div>
 
 						  		<label class="col-md-1 control-label" for="delordhd_docno">GRT No</label>  
 						  		<div class="col-md-2"> 
@@ -211,7 +207,7 @@ i.fa {
 							</div>
 
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="delordhd_suppcode">Supplier Code</label>	 
+								<label class="col-md-2 control-label" for="delordhd_suppcode">Customer</label>	 
 								<div class="col-md-4">
 									<div class='input-group'>
 										<input id="delordhd_suppcode" name="delordhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
@@ -220,142 +216,101 @@ i.fa {
 									<span class="help-block"></span>
 								</div>
 
-								<label class="col-md-1 control-label" for="delordhd_delordno">DO No</label>  
-						  		<div class="col-md-2">
-						  			<input id="delordhd_delordno" name="delordhd_delordno" type="text" class="form-control input-sm text-uppercase">
-						  		</div>
-
-						  		<label class="col-md-1 control-label" for="delordhd_recno">Record No</label>  
-						  		<div class="col-md-2">
-						  			<input id="delordhd_recno" name="delordhd_recno" type="text" class="form-control input-sm" rdonly>
-						  		</div>
-						  	</div>
-
-						  	<div class="form-group">
-								<label class="col-md-2 control-label" for="delordhd_deldept">Delivery Department</label>
-								<div class="col-md-4">
-									<div class='input-group'>
-										<input id="delordhd_deldept" name="delordhd_deldept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-
-									<span class="help-block"></span>
-								</div>
-
-								<label class="col-md-1 control-label" for="delordhd_credcode">Creditor</label>	  
-								<div class="col-md-2">
-									<div class='input-group'>
-										<input id="delordhd_credcode" name="delordhd_credcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-
-									<span class="help-block"></span>
-								</div>
-
-								<label class="col-md-1 control-label" for="delordhd_invoiceno">Invoice No</label>  
-						  		<div class="col-md-2">
-									<input id="delordhd_invoiceno" name="delordhd_invoiceno" type="text" maxlength="10" class="form-control input-sm" rdonly>
-						  		</div>
-						  	</div>
-
-
-						  	<hr/>
-
-						  	<div class="form-group">		
-						  		<label class="col-md-2 control-label" for="delordhd_trandate">Returned Date</label>  
-						  		<div class="col-md-2">
-									<input id="delordhd_trandate" name="delordhd_trandate" type="date" maxlength="10" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" min="{{Carbon\Carbon::now()->subDays(20)->format('Y-m-d')}}" 
-										max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
-						  		</div>
-
-						  		<label class="col-md-2 control-label" for="delordhd_trantime">Returned Time</label>  
-					  			<div class="col-md-2">
-									<input id="delordhd_trantime" name="delordhd_trantime" type="time" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('h:i a')}}">
+								<label class="col-md-1 control-label" for="delordhd_mrn">HUKM MRN</label>  
+					  		<div class="col-md-2"> 
+					  			<div class='input-group'>
+					  				<input id="delordhd_mrn" name="delordhd_mrn" type="text" class="form-control input-sm text-uppercase">
+					  				<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  			</div>
+								<span class="help-block"></span>
+					  		</div>
 
-					  			<label class="col-md-2 control-label" for="delordhd_deliverydate">Entered Date</label>  
-						  			<div class="col-md-2">
-									<input id="delordhd_deliverydate" name="delordhd_deliverydate" type="date" maxlength="10" class="form-control input-sm"  value="{{Carbon\Carbon::now()->format('Y-m-d')}}" >
-						  		</div>
+								<label class="col-md-1 control-label" for="delordhd_delordno">CN No</label>  
+					  		<div class="col-md-2">
+					  			<input id="delordhd_delordno" name="delordhd_delordno" type="text" class="form-control input-sm text-uppercase" rdonly>
+					  		</div>
+						  </div>
+
+						  <hr/>
+
+					  	<div class="form-group">		
+					  		<label class="col-md-2 control-label" for="delordhd_trandate">Returned Date</label>  
+					  		<div class="col-md-2">
+								<input id="delordhd_trandate" name="delordhd_trandate" type="date" maxlength="10" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" min="{{Carbon\Carbon::now()->subDays(20)->format('Y-m-d')}}" 
+									max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+					  		</div>
+
+					  		<label class="col-md-2 control-label" for="delordhd_trantime">Returned Time</label>  
+				  			<div class="col-md-2">
+								<input id="delordhd_trantime" name="delordhd_trantime" type="time" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('h:i a')}}">
+				  			</div>
+
+				  			<label class="col-md-2 control-label" for="delordhd_deliverydate">Entered Date</label>  
+					  			<div class="col-md-2">
+								<input id="delordhd_deliverydate" name="delordhd_deliverydate" type="date" maxlength="10" class="form-control input-sm"  value="{{Carbon\Carbon::now()->format('Y-m-d')}}" >
+					  		</div>
 							</div>
 
 							<hr/>
 
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="delordhd_subamount">Sub Amount</label>  
-						  			<div class="col-md-2">
-										<input id="delordhd_subamount" name="delordhd_subamount" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.0000" rdonly>
-						  			</div>
-						  		<label class="col-md-2 control-label" for="delordhd_amtdisc">Amount Discount</label>	  
-						  			<div class="col-md-2">
-										<input id="delordhd_amtdisc" name="delordhd_amtdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.0000">
-						  			</div>
+				  			<div class="col-md-2">
+									<input id="delordhd_subamount" name="delordhd_subamount" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.0000" rdonly>
+				  			</div>
+					  		<label class="col-md-2 control-label" for="delordhd_amtdisc">Amount Discount</label>	  
+				  			<div class="col-md-2">
+									<input id="delordhd_amtdisc" name="delordhd_amtdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.0000">
+				  			</div>
 								<label class="col-md-2 control-label" for="delordhd_totamount">Total Amount</label>  
-						  			<div class="col-md-2">
+					  			<div class="col-md-2">
 										<input id="delordhd_totamount" name="delordhd_totamount" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.0000" rdonly>
-						  			</div>
+					  			</div>
 							</div>
 
 							<div class="form-group">
 						  		
 							 	<label class="col-md-2 control-label" for="delordhd_TaxAmt">GST Amount</label>  
-							  	<div class="col-md-2">
-										<input id="delordhd_TaxAmt" name="delordhd_TaxAmt" maxlength="12" class="form-control input-sm"  data-sanitize="numberFormat" data-sanitize-number-format="0,0.0000"  rdonly>  <!--data-validation-allowing="float" -->
-				 				</div>
+						  	<div class="col-md-2">
+									<input id="delordhd_TaxAmt" name="delordhd_TaxAmt" maxlength="12" class="form-control input-sm"  data-sanitize="numberFormat" data-sanitize-number-format="0,0.0000"  rdonly>  <!--data-validation-allowing="float" -->
+			 					</div>
 
 				 				<label class="col-md-2 control-label" for="delordhd_taxclaimable">Tax Claim</label>  
-								  <div class="col-md-2">
+							  <div class="col-md-2">
 									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" data-validation-error-msg="Please Enter Value" value='CLAIMABLE'>Yes</label>
 									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" data-validation-error-msg="Please Enter Value" value='NON-CLAIMABLE' selected>No</label>
-								  </div>
-								<!-- 
-							  <label class="col-md-2 control-label" for="delordhd_recstatus">Record Status</label>  
-							  <div class="col-md-2">
-								<input id="delordhd_recstatus" name="delordhd_recstatus" type="text" class="form-control input-sm" rdonly>
-							  </div> -->
+							  </div>
+
 							</div>	
 
 							<hr/>
 
-							<!-- <div class="form-group">
-							  <label class="col-md-2 control-label" for="delordhd_respersonid">Certified By</label> 
-							  <div class="col-md-2">
-									<div class='input-group'>
-										<input id="delordhd_respersonid" name="delordhd_respersonid" type="text" maxlength="12" class="form-control input-sm text-uppercase">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-
-									<span class="help-block"></span>
-							  </div> 
-							</div> -->
-
 							<div class="form-group">
 					    		<label class="col-md-2 control-label" for="delordhd_remarks">Remarks</label> 
-					    		<div class="col-md-5"> 
-					    		<textarea class="form-control input-sm text-uppercase" name="delordhd_remarks" rows="2" cols="55" maxlength="400" id="delordhd_remarks" ></textarea>
-					    		</div>
-					    	
-					   		</div>
+				    		<div class="col-md-5"> 
+				    		<textarea class="form-control input-sm text-uppercase" name="delordhd_remarks" rows="2" cols="55" maxlength="400" id="delordhd_remarks" ></textarea>
+				    		</div>
+					   	</div>
 
 							<div class="form-group data_info">
-							<div class="col-md-6 minuspad-13">
+								<div class="col-md-6 minuspad-13">
 									<label class="control-label" for="delordhd_upduser">Last Entered By</label>  
-						  			<input id="delordhd_upduser" name="delordhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-					  			<div class="col-md-6 minuspad-13">
+						  		<input id="delordhd_upduser" name="delordhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  		</div>
+					  		<div class="col-md-6 minuspad-13">
 									<label class="control-label" for="delordhd_upddate">Last Entered Date</label>
-						  			<input id="delordhd_upddate" name="delordhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-					    		<div class="col-md-6 minuspad-13">
+						  		<input id="delordhd_upddate" name="delordhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  		</div>
+					    	<div class="col-md-6 minuspad-13">
 									<label class="control-label" for="delordhd_adduser">Check By</label>  
-						  			<input id="delordhd_adduser" name="delordhd_adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-					  			<div class="col-md-6 minuspad-13">
+						  		<input id="delordhd_adduser" name="delordhd_adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  		</div>
+					  		<div class="col-md-6 minuspad-13">
 									<label class="control-label" for="delordhd_adddate">Check Date</label>
-						  			<input id="delordhd_adddate" name="delordhd_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
-						    	
+						  		<input id="delordhd_adddate" name="delordhd_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+					  		</div>
 							</div>
+
 					</form>
 				</div>
 			</div>

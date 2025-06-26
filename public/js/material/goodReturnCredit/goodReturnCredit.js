@@ -25,8 +25,6 @@ $(document).ready(function () {
 		},
 	};
 
-	
-
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency =new currencymode(['#amount']);
 	var radbuts=new checkradiobutton(['delordhd_taxclaimable']);
@@ -1626,6 +1624,47 @@ $(document).ready(function () {
 		},'urlParam', 'radio', 'tab'
 	);
 	dialog_suppcode.makedialog();
+
+	var dialog_mrn = new ordialog(
+		'dialog_mrn', 'hisdb.pat_mast', '#delordhd_mrn', 'errorField',
+		{
+			colModel: [
+				{ label: 'HUKM MRN', name: 'NewMrn', width: 200, classes: 'pointer', canSearch: true},
+				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				{ label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
+				{ label: 'idno', name: 'idno', hidden:true},
+				{ label: 'newmrn', name: 'newmrn', hidden:true},
+				{ label: 'address1', name: 'address1', hidden:true},
+				{ label: 'address2', name: 'address2', hidden:true},
+				{ label: 'address3', name: 'address3', hidden:true},
+				{ label: 'postcode', name: 'postcode', hidden:true},
+			],
+			urlParam: {
+				filterCol:['compcode','ACTIVE'],
+				filterVal:['session.compcode','1']
+			},
+			ondblClickRow: function () {
+				$('#delordhd_remarks').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#db_termdays').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		}, {
+			title: "Select MRN",
+			open: function(){
+				dialog_mrn.urlParam.filterCol=['compcode', 'ACTIVE'];
+				dialog_mrn.urlParam.filterVal=['session.compcode', '1'];
+			}
+		},'none','radio','tab'
+	);
+	dialog_mrn.makedialog();
 
 	var dialog_credcode = new ordialog(
 		'credcode','material.supplier','#delordhd_credcode',errorField,
