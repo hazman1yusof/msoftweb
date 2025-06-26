@@ -428,7 +428,7 @@
 									{text: '{{$SO_obj->dbacthdr->cust_address1}}\n{{$SO_obj->dbacthdr->cust_address2}}\n{{$SO_obj->dbacthdr->cust_address3}}\n{{$SO_obj->dbacthdr->cust_address4}}'},
 									{text: 'ADDRESS', alignment: 'right'},
 									{text: ':'},
-									{text: `{!!strtoupper($SO_obj->dbacthdr->pm_address1)!!}\n{!!strtoupper($SO_obj->dbacthdr->pm_address2)!!}\n{!!strtoupper($SO_obj->dbacthdr->pm_address3)!!}\n{{strtoupper($SO_obj->dbacthdr->pm_postcode)}}`},
+									{text: `{!!strtoupper(str_replace('`', '', $SO_obj->dbacthdr->pm_address1))!!}\n{!!strtoupper(str_replace('`', '', $SO_obj->dbacthdr->pm_address2))!!}\n{!!strtoupper(str_replace('`', '', $SO_obj->dbacthdr->pm_address3))!!}\n{{strtoupper(str_replace('`', '', $SO_obj->dbacthdr->pm_postcode))}}`},
 								],
 								[
 									{text: 'CREDIT TERM', alignment: 'right'},
