@@ -2001,6 +2001,8 @@ class SalesOrderController extends defaultController
             $obj->chgmast_desc = str_replace('`', '', $obj->chgmast_desc);
         }
 
+        dd($billsum);
+
         // $chgmast = DB::table('debtor.billsum AS b', 'hisdb.chgmast as m')
         //     ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus', 'm.description as chgmast_desc')
         //     ->leftJoin('hisdb.chgmast as m', 'b.description', '=', 'm.description')
