@@ -59,7 +59,8 @@ class GoodReturnController extends defaultController
 
     public function get_table_default(Request $request){
         $table =  DB::table('material.delordhd');
-        $table = $table->select($this->fixPost($request->field,"_"));
+        $table = $table->select($this->fixPost($request->field,"_"))
+                    ->whereNotNull('delordhd.cnno');
 
         $table = $table->leftJoin('material.supplier', function($join) use ($request){
                         $join = $join->where('supplier.SuppCode','=','delordhd.suppcode')

@@ -105,7 +105,7 @@ class SalesOrderDetailController extends defaultController
         $entrydate = $request->entrydate;
         $billtype_obj = $this->billtype_obj_get($request);
 
-        switch ($priceuse) {
+        switch ($billtype_obj->billtype->price) {
             case 'PRICE1':
                 $cp_fld = 'amt1';
                 break;
@@ -386,7 +386,7 @@ class SalesOrderDetailController extends defaultController
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);
 
-        return json_encode($responce);
+        return json_encode($responce, JSON_INVALID_UTF8_SUBSTITUTE);
     }
 
     public function get_itemcode_price_2(Request $request){

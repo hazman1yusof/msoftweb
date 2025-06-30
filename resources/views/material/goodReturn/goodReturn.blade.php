@@ -270,7 +270,7 @@ i.fa {
 
 						  		<label class="col-md-2 control-label" for="delordhd_trantime">Returned Time</label>  
 					  			<div class="col-md-2">
-									<input id="delordhd_trantime" name="delordhd_trantime" type="time" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('h:i a')}}">
+									<input id="delordhd_trantime" name="delordhd_trantime" type="time" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('h:i:s')}}">
 					  			</div>
 
 					  			<label class="col-md-2 control-label" for="delordhd_deliverydate">Entered Date</label>  
@@ -306,7 +306,7 @@ i.fa {
 				 				<label class="col-md-2 control-label" for="delordhd_taxclaimable">Tax Claim</label>  
 								  <div class="col-md-2">
 									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" data-validation-error-msg="Please Enter Value" value='CLAIMABLE'>Yes</label>
-									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" data-validation-error-msg="Please Enter Value" value='NON-CLAIMABLE' selected>No</label>
+									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" data-validation-error-msg="Please Enter Value" value='NON-CLAIMABLE' selected >No</label>
 								  </div>
 								<!-- 
 							  <label class="col-md-2 control-label" for="delordhd_recstatus">Record Status</label>  

@@ -189,7 +189,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="delordhd_deldept">Store Dept</label>	 
 								<div class="col-md-4">
 									<div class='input-group'>
-										<input id="delordhd_deldept" name="delordhd_deldept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+										<input id="delordhd_deldept" name="delordhd_deldept" type="text" maxlength="222" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -202,34 +202,47 @@ i.fa {
 
 						  		<label class="col-md-1 control-label" for="delordhd_docno">GRT No</label>  
 						  		<div class="col-md-2"> 
-										<input id="delordhd_docno" name="delordhd_docno" type="text" maxlength="12" class="form-control input-sm" rdonly >
+										<input id="delordhd_docno" name="delordhd_docno" type="text" maxlength="22" class="form-control input-sm" rdonly >
 									</div>
 							</div>
-
+							
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="delordhd_customer">Customer</label>	 
+								<label class="col-md-2 control-label" for="delordhd_debtorcode">Customer</label>	 
 								<div class="col-md-4">
 									<div class='input-group'>
-										<input id="delordhd_customer" name="delordhd_customer" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+										<input id="delordhd_debtorcode" name="delordhd_debtorcode" type="text" maxlength="22" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
 								</div>
 
-								<label class="col-md-1 control-label" for="delordhd_mrn">HUKM MRN</label>  
-					  		<div class="col-md-2"> 
-					  			<div class='input-group'>
-					  				<input id="delordhd_mrn" name="delordhd_mrn" type="text" class="form-control input-sm text-uppercase">
-					  				<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-					  			</div>
-								<span class="help-block"></span>
-					  		</div>
+								<label class="col-md-1 control-label" for="delordhd_hdrtype">Bill Type</label>  
+								<div class="col-md-2"> 
+									<div class='input-group'>
+										<input id="delordhd_hdrtype" name="delordhd_hdrtype" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>	
 
 								<label class="col-md-1 control-label" for="delordhd_delordno">CN No</label>  
 					  		<div class="col-md-2">
 					  			<input id="delordhd_delordno" name="delordhd_delordno" type="text" class="form-control input-sm text-uppercase" rdonly>
 					  		</div>
 						  </div>
+
+							<div class="form-group">
+
+								<input id="delordhd_mrn" name="delordhd_mrn" type="hidden">
+								<label class="col-md-2 control-label" for="pm_newmrn">HUKM MRN</label>  
+					  		<div class="col-md-4"> 
+					  			<div class='input-group'>
+					  				<input id="pm_newmrn" name="pm_newmrn" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value"> 
+					  				<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					  			</div>
+								<span class="help-block"></span>
+					  		</div>
+							</div>
 
 						  <hr/>
 

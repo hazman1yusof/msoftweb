@@ -214,7 +214,6 @@ class CreditNoteARController extends defaultController
         $responce->sql_query = $this->getQueries($table);
         
         return json_encode($responce);
-
     }
 
     public function get_alloc_when_edit(Request $request){
@@ -279,8 +278,7 @@ class CreditNoteARController extends defaultController
         $responce = new stdClass();
         $responce->rows = $return_array;
         
-        return json_encode($responce);
-        
+        return json_encode($responce);        
     }
     
     public function get_alloc_table(Request $request){
@@ -331,8 +329,7 @@ class CreditNoteARController extends defaultController
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
         
-        return json_encode($responce);
-        
+        return json_encode($responce);        
     }
     
     public function form(Request $request)

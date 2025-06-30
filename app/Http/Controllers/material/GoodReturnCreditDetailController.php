@@ -21,7 +21,7 @@ class GoodReturnCreditDetailController extends defaultController
     {   
         switch($request->oper){
             case 'add':
-                // return $this->add($request);
+                return $this->add($request);
             case 'edit':
                 // return $this->edit($request);
             case 'edit_all':
@@ -86,25 +86,82 @@ class GoodReturnCreditDetailController extends defaultController
 
     public function add(Request $request){
 
-        $draccno = $this->get_draccno($request->itemcode);
-        $drccode = $this->get_drccode($request->deldept);
-        $craccno = $this->get_craccno();
-        $crccode = $this->get_crccode();
-
-        $recno = $request->recno;
-        $suppcode = $request->suppcode;
-        $trandate = $request->trandate;
-        $deldept = $request->deldept;
-        $deliverydate = $request->deliverydate;
-
         DB::beginTransaction();
 
         try {
+
+            $delordhd = DB::table('material.delordhd')
+                            ->where('compcode','DD')
+                            ->where('idno',$request->doidno);
+
+            if($delordhd->exists()){
+                $delordhd = $delordhd->first();
+                $request_no = $this->request_no('GRT', $delordhd->deldept);
+                $recno = $this->recno('IV','IT');
+                $compcode = session('compcode');
+
+                $cnno = $this->recno('PB','CN');
+                
+                $array_insert = [
+                    'source' => 'PB',
+                    'trantype' => 'CN',
+                    'auditno' => $cnno,
+                    'compcode' => session('compcode'),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'OPEN',
+                    'lineno_' => 1,
+                    // 'invno' => $invno,
+                    'deptcode' => $delordhd->deldept,
+                    'unit' => session('unit'),
+                    'debtorcode' => $delordhd->debtorcode,
+                    'payercode' => $delordhd->debtorcode,
+                    'entrydate' => $delordhd->trandate,
+                    'entrytime' => $delordhd->trantime,
+                    'entryuser' => session('username'),
+                    'hdrtype' => $delordhd->hdrtype,
+                    'mrn' => $delordhd->mrn,
+                    // 'billno' => $invno,
+                    // 'episno' => (!empty($request->db_mrn))?$pat_mast->Episno:null,
+                    //'termdays' => strtoupper($request->db_termdays),
+                    // 'termmode' => strtoupper($request->db_termmode),
+                    // 'orderno' => strtoupper($request->db_orderno),
+                    // 'ponum' => strtoupper($request->db_ponum),
+                    'remark' => $delordhd->remarks,
+                    // 'approvedby' => $request->db_approvedby,
+                    // 'approveddate' => $request->db_approveddate,
+                    // 'reference' => $request->db_reference,
+                    // 'paymode' => $delordhd->paymode,
+                    // 'unallocated' => $request->db_unallocated,   
+                ];
+
+                DB::table("debtor.dbacthdr")->insert($array_insert);
+
+                DB::table("material.delordhd")
+                        ->where('compcode','DD')
+                        ->where('idno',$request->doidno)
+                        ->update([
+                            'compcode' => session('compcode'),
+                            'docno' => $request_no,
+                            'recno' => $recno,
+                            'cnno' => $cnno
+                        ]);
+            }else{
+
+                $delordhd = DB::table('material.delordhd')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno',$request->doidno)
+                            ->first();
+
+                $recno = $delordhd->recno;
+                $cnno = $delordhd->cnno;
+            }
+
             ////1. calculate lineno_ by recno
-            $sqlln = DB::table('material.delorddt')->select('lineno_')
-                        ->where('compcode','=',session('compcode'))
+            $sqlln = DB::table('material.delorddt')
+                        // ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$recno)
-                        ->count('lineno_');
+                        ->max('lineno_');
 
             $li=intval($sqlln)+1;
 
@@ -114,32 +171,32 @@ class GoodReturnCreditDetailController extends defaultController
                     'compcode' => session('compcode'),
                     'recno' => $recno,
                     'lineno_' => $li,
-                    'pricecode' => $request->pricecode,
+                    // 'pricecode' => $request->pricecode,
                     'itemcode' => $request->itemcode,
                     'uomcode' => $request->uomcode,
-                    'pouom' => $request->pouom,
-                    'suppcode' => $request->suppcode,
-                    'trandate' => $request->trandate,
-                    'deldept' => $request->deldept,
-                    'deliverydate' => $request->deliverydate,
+                    'pouom' => $request->uomcode,
+                    // 'suppcode' => $delordhd->suppcode,
+                    'trandate' => $delordhd->trandate,
+                    'deldept' => $delordhd->deldept,
+                    // 'deliverydate' => $request->deliverydate,
                     'unitprice' => $request->unitprice, 
                     'taxcode' => $request->taxcode,
                     'perdisc' => $request->perdisc,
                     'amtdisc' => $request->amtdisc,
                     'amtslstax' => $request->tot_gst,
-                    'netunitprice' => $request->netunitprice,
-                    'qtydelivered' => $request->qtydelivered,
+                    'netunitprice' => $request->unitprice,
+                    // 'qtydelivered' => $request->qtydelivered,
                     'qtyreturned' => $request->qtyreturned,
-                    'amount' => $request->amount,
+                    'amount' => $request->totamount,
                     'totamount' => $request->totamount,
-                    'draccno' => $draccno,
-                    'drccode' => $drccode,
-                    'craccno' => $craccno,
-                    'crccode' => $crccode, 
+                    // 'draccno' => $draccno,
+                    // 'drccode' => $drccode,
+                    // 'craccno' => $craccno,
+                    // 'crccode' => $crccode, 
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate' => $this->chgDate($request->expdate), 
-                    'batchno' => $request->batchno, 
+                    // 'expdate' => $this->chgDate($request->expdate), 
+                    // 'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
                     'remarks' => $request->remarks
                 ]);
@@ -166,6 +223,18 @@ class GoodReturnCreditDetailController extends defaultController
                     'totamount' => $totalAmount, 
                     'subamount'=> $totalAmount, 
                     'TaxAmt' => $tot_gst
+                ]);
+
+            ///4. then update to header
+
+            DB::table('debtor.dbacthdr')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','PB')
+                ->where('trantype','CN')
+                ->where('auditno',$cnno)
+                ->update([
+                    'amount' => $totalAmount, 
+                    'outamount' => $totalAmount, 
                 ]);
 
             echo $totalAmount;
@@ -332,6 +401,11 @@ class GoodReturnCreditDetailController extends defaultController
 
         try {
 
+            $delordhd = DB::table('material.delordhd')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('recno',$request->recno)
+                            ->first();
+
             ///1. update detail
             DB::table('material.delorddt')
                 ->where('compcode','=',session('compcode'))
@@ -365,6 +439,16 @@ class GoodReturnCreditDetailController extends defaultController
                     'totamount' => $totalAmount, 
                     'subamount'=> $totalAmount, 
                     'TaxAmt' => $tot_gst
+                ]);
+
+            DB::table('debtor.dbacthdr')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','PB')
+                ->where('trantype','CN')
+                ->where('auditno',$delordhd->cnno)
+                ->update([
+                    'amount' => $totalAmount, 
+                    'outamount' => $totalAmount, 
                 ]);
 
             echo $totalAmount;
