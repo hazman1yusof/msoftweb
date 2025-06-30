@@ -57,7 +57,7 @@
                     image: 'letterhead',width:200, height:40, style: 'tableHeader', colSpan: 5, alignment: 'center'
                 },
 				{
-                    text: 'GOOD RETURN / CREDIT NOTE',
+                    text: 'GOOD RETURN NOTE',
                     style: 'header',
                     alignment: 'center'
 				},
@@ -65,24 +65,24 @@
                     style: 'tableExample',
                     table: {
                         headerRows: 1,
-                        widths: [80, '*',5,94,'*'],//panjang standard dia 515
+                        widths: [80, '*',220,94,'*'],//panjang standard dia 515
 
                         body: [
                             [
-								{text: 'Code '}, 
-								{text: ': {{$delordhd->debtorcode}}'},{},
-								{text: 'Goods Return Note No. '},
-								{text: ': {{$delordhd->deldept}}-{{str_pad($delordhd->docno, 7, "0", STR_PAD_LEFT)}}'}
+								{text: 'Received  Department '}, 
+								{text: ': {{$delordhd->deldept}}'},{},
+								{text: 'Goods Received Note No. '},
+								{text: ': {{str_pad($delordhd->docno, 7, "0", STR_PAD_LEFT)}}'}
 							],
                             [
-								{text: 'Name. '}, 
-								{text: ': {{$delordhd->name}}'}, {},
-								{text: 'Credit Note No. '},
-								{text: ': {{$delordhd->cnno}}'}
+								{text: 'DO/Inv No. '}, 
+								{text: ': {{$delordhd->delordno}}'}, {},
+								{text: 'Purchase Order No. '},
+								{text: ': {{str_pad($delordhd->srcdocno, 7, "0", STR_PAD_LEFT)}}'}
 							],
                             [
-								{text: 'Address'}, 
-								{text: `: {{$delordhd->address1}}\n{{$delordhd->address2}}\n{{$delordhd->address3}}\n{{$delordhd->address4}}`}, {},
+								{text: 'Supplier '}, 
+								{text: ': {{$delordhd->suppcode}}'}, {},
 
 								@if(!empty($delordhd->trandate))
 								{text: 'Received Date : '},
@@ -96,7 +96,7 @@
 								@endif
 							],
                             [
-								{text: 'Recstatus'}, 
+								{text: 'Status '}, 
 								{text: ': {{$delordhd->recstatus}}'}, {},
 
 								@if(!empty($delordhd->trantime))
