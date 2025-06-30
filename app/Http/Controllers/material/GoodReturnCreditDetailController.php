@@ -99,7 +99,6 @@ class GoodReturnCreditDetailController extends defaultController
                 $request_no = $this->request_no('GRT', $delordhd->deldept);
                 $recno = $this->recno('IV','IT');
                 $compcode = session('compcode');
-
                 $cnno = $this->recno('PB','CN');
                 
                 $array_insert = [

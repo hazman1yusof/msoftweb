@@ -575,6 +575,7 @@ class GoodReturnCreditController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('source','IV')
                         ->where('trantype','GRT')
+                        ->where('recno',$delordhd_obj->recno)
                         ->first();
 
                     //amik yearperiod dari delordhd
@@ -619,8 +620,8 @@ class GoodReturnCreditController extends defaultController
                             'postdate' => $ivtxnhd_obj->trandate,
                             'year' => $yearperiod->year,
                             'period' => $yearperiod->period,
-                            'drcostcode' => $row_sysparam->pvalue1,
-                            'dracc' => $row_sysparam->pvalue2,
+                            'drcostcode' => $dept_obj->costcode,
+                            'dracc' => $category_obj->expacct,
                             'crcostcode' => $row_dept->costcode,
                             'cracc' => $row_cat->stockacct,
                             'amount' => $value->amount,
@@ -1039,6 +1040,27 @@ class GoodReturnCreditController extends defaultController
                 ->first();
         
         return $query->productcat;
+    }
+
+    public function gltran_fromdept($deptcode){
+        $obj = DB::table('sysdb.department')
+                ->select('costcode')
+                ->where('compcode','=',session('compcode'))
+                ->where('deptcode','=',$deptcode)
+                ->first();
+
+        return $obj;
+    }
+
+    public function gltran_fromcategory($category){
+        $obj = DB::table('material.category')
+                ->select('expacct')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=','CR')
+                ->where('catcode','=',$category)
+                ->first();
+
+        return $obj;
     }
 
     public function init_glmastdtl($dbcc,$dbacc,$crcc,$cracc,$yearperiod,$amount){
