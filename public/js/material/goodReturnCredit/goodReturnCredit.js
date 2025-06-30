@@ -4,6 +4,9 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 	$("body").show();
+	$('body').click(function(){
+		$('#error_infront').text('');
+	});
 	/////////////////////////////////////////validation//////////////////////////
 	$.validate({
 		modules : 'sanitize',

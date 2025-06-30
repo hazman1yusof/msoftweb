@@ -227,6 +227,10 @@ class InventoryTransactionDetailController extends defaultController
                 }
             }
 
+            if($request->amount == 'NaN'){
+                $request->amount = 0.00;
+            }
+
             $add_array = [
                     'compcode' => session('compcode'),
                     'recno' => $recno,
@@ -382,6 +386,10 @@ class InventoryTransactionDetailController extends defaultController
                 }
             }
 
+            if($request->amount == 'NaN'){
+                $request->amount = 0.00;
+            }
+
             ///1. update detail
             DB::table('material.ivtmpdt')
                 ->where('compcode','=',session('compcode'))
@@ -534,6 +542,10 @@ class InventoryTransactionDetailController extends defaultController
                             throw new \Exception('stockloc doesnt exists');
                         }
                     }
+                }
+
+                if($value['amount'] == 'NaN'){
+                    $value['amount'] = 0.00;
                 }
 
                 $upd_array = [

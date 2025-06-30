@@ -235,8 +235,8 @@ class GoodReturnCreditDetailController extends defaultController
                     // 'upddate' => ,
                     // 'deluser' => ,
                     // 'deldate' => ,
-                    // 'GSTCode' => ,
-                    // 'AmtB4GST' => ,
+                    'GSTCode' => $request->taxcode,
+                    'AmtB4GST' => $request->totamount,
                     'unit' => session('unit'),
                     // 'tot_gst' => ,
                 ]);

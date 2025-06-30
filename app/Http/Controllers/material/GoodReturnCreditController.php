@@ -379,6 +379,9 @@ class GoodReturnCreditController extends defaultController
                     ->where('compcode', '=' ,session('compcode'))
                     ->first();
 
+                $recno = $delordhd_obj->recno;
+                $cnno = substr($delordhd_obj->cnno,3);
+
                     //2. pastu letak dkt ivtxnhd
                 DB::table('material.ivtxnhd')
                     ->insert([
@@ -392,8 +395,8 @@ class GoodReturnCreditController extends defaultController
                         // 'srcdocno'=>$delordhd_obj->srcdocno, 
                         // 'sndrcv'=>$delordhd_obj->suppcode, 
                         // 'sndrcvtype'=>'Supplier', 
-                        'trandate'=>Carbon::now("Asia/Kuala_Lumpur"), 
-                        'trantime'=>Carbon::now("Asia/Kuala_Lumpur"), 
+                        'trandate'=>$delordhd_obj->trandate, 
+                        'trantime'=>$delordhd_obj->trantime, 
                         'datesupret'=>$delordhd_obj->deliverydate, 
                         // 'respersonid'=>$delordhd_obj->checkpersonid, 
                         'recstatus'=>$delordhd_obj->recstatus, 
@@ -409,47 +412,25 @@ class GoodReturnCreditController extends defaultController
                     ->where('delorddt.recstatus','!=','DELETE')
                     ->get();
 
+                $debtorobj = DB::table('debtor.debtormast')
+                            ->where('compcode',session('compcode'))
+                            ->where('debtorcode',$delordhd_obj->debtorcode)
+                            ->first();
+
+                $deldeptobj = DB::table('sysdb.department')
+                            ->where('compcode',session('compcode'))
+                            ->where('deptcode',$delordhd_obj->deldept)
+                            ->first();
+
+                //amik yearperiod dari delordhd
+                $yearperiod = $this->getyearperiod($delordhd_obj->trandate);
+
                     //2. start looping untuk delorddt
                 foreach ($delorddt_obj as $value) {
                     if($value->qtyreturned <= 0){
                         continue;
                     }
-
-                    //1.amik productcat dari table product
-                    // $productcat_obj = DB::table('material.delorddt')
-                    //     ->select('product.productcat')
-                    //     ->join('material.product', function($join) use ($request){
-                    //         $join = $join->on('delorddt.itemcode', '=', 'product.itemcode');
-                    //         $join = $join->on('delorddt.uomcode', '=', 'product.uomcode');
-                    //     })
-                    //     ->where('delorddt.compcode','=',session('compcode'))
-                    //     ->where('product.groupcode','=','Stock')
-                    //     ->where('delorddt.idno','=',$value->idno)
-                    //     ->first();
-                    // $productcat = $productcat_obj->productcat;
                     $productcat = $this->get_productcat($value->itemcode);
-                    
-                    // $value->expdate = $this->null_date($value->expdate);
-
-                    //3. dapatkan uom conversion factor untuk dapatkan txnqty dgn netprice
-                    // $convfactorPOUOM_obj = DB::table('material.delorddt')
-                    //     ->select('uom.convfactor')
-                    //     ->join('material.uom','delorddt.pouom','=','uom.uomcode')
-                    //     ->where('delorddt.compcode','=',session('compcode'))
-                    //     ->where('delorddt.recno','=',$value->recno)
-                    //     ->where('delorddt.lineno_','=',$value->lineno_)
-                    //     ->first();
-                    // $convfactorPOUOM = $convfactorPOUOM_obj->convfactor;
-
-                    // $convfactorUOM_obj = DB::table('material.delorddt')
-                    //     ->select('uom.convfactor')
-                    //     ->join('material.uom','delorddt.uomcode','=','uom.uomcode')
-                    //     ->where('delorddt.compcode','=',session('compcode'))
-                    //     ->where('delorddt.recno','=',$value->recno)
-                    //     ->where('delorddt.lineno_','=',$value->lineno_)
-                    //     ->first();
-                    // $convfactorUOM = $convfactorUOM_obj->convfactor;
-
                     $txnqty = $value->qtyreturned;
                     $netprice = $value->netunitprice;
 
@@ -469,16 +450,16 @@ class GoodReturnCreditController extends defaultController
                             'upduser' => $value->upduser, 
                             'upddate' => $value->upddate, 
                             'productcat' => $productcat, 
-                            'draccno' => $value->draccno, 
-                            'drccode' => $value->drccode, 
-                            'craccno' => $value->craccno, 
-                            'crccode' => $value->crccode, 
-                            'expdate' => $value->expdate, 
+                            // 'draccno' => $value->draccno, 
+                            // 'drccode' => $value->drccode, 
+                            // 'craccno' => $value->craccno, 
+                            // 'crccode' => $value->crccode, 
+                            // 'expdate' => $value->expdate, 
                             'remarks' => strtoupper($value->remarks), 
                             // 'qtyonhand' => 0, 
-                            'batchno' => $value->batchno, 
+                            // 'batchno' => $value->batchno, 
                             'amount' => $value->amount, 
-                            'trandate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                            'trandate' => $delordhd_obj->trandate, 
                             'trantype' => $delordhd_obj->trantype,
                             'deptcode' => $value->deldept, 
                             'gstamount' => $value->amtslstax, 
@@ -515,17 +496,6 @@ class GoodReturnCreditController extends defaultController
                     //3.kalu xde stockloc, create stockloc baru
 
                     }
-
-                    //--- 4. posting stock enquiry ---//
-                    //1. amik Stock Expiry
-                    // $stockexp_obj = DB::table('material.stockexp')
-                    //     ->where('stockexp.compcode','=',session('compcode'))
-                    //     ->where('stockexp.deptcode','=',$value->deldept)
-                    //     ->where('stockexp.itemcode','=',$value->itemcode)
-                    //     ->where('stockexp.expdate','=',$value->expdate)
-                    //     ->where('stockexp.year','=', defaultController::toYear($value->trandate))
-                    //     ->where('stockexp.uomcode','=',$value->uomcode)
-                    //     ->where('stockexp.batchno','=',$value->batchno);
 
                     $expdate_obj = DB::table('material.stockexp')
                         ->where('compcode',session('compcode'))
@@ -569,7 +539,6 @@ class GoodReturnCreditController extends defaultController
                                 // 'currprice' => $currprice
                             ]);
                     }
-
                     //--- 6. posting GL ---//
 
                     //amik ivtxnhd
@@ -580,16 +549,10 @@ class GoodReturnCreditController extends defaultController
                         ->where('recno',$delordhd_obj->recno)
                         ->first();
 
-                    //amik yearperiod dari delordhd
-                    $yearperiod = $this->getyearperiod($ivtxnhd_obj->trandate);
-
                     //amik department,category dgn sysparam pvalue1 dgn pvalue2
                     //utk debit costcode
-                    $row_dept = DB::table('sysdb.department')
-                        ->select('costcode')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('deptcode','=',$ivtxnhd_obj->txndept)
-                        ->first();
+                    
+
                     //utk debit accountcode
                     $row_cat = DB::table('material.category')
                         ->select('stockacct')
@@ -604,42 +567,7 @@ class GoodReturnCreditController extends defaultController
                         ->where('trantype','=','ACC')
                         ->first();
 
-                    $category_obj = $this->gltran_fromcategory($value->category);
-                    $dept_obj = $this->gltran_fromdept($value->deptcode);
-
-                    //1. buat gltran
-                    DB::table('finance.gltran')
-                        ->insert([
-                            'compcode' => $value->compcode,
-                            'adduser' => $value->adduser,
-                            'adddate' => $value->adddate,
-                            'auditno' => $value->recno,
-                            'lineno_' => $value->lineno_,
-                            'source' => 'IV',
-                            'trantype' => $delordhd_obj->trantype,
-                            'reference' => $ivtxnhd_obj->txndept .' '. $ivtxnhd_obj->docno,
-                            'description' => $ivtxnhd_obj->sndrcv,
-                            'postdate' => $ivtxnhd_obj->trandate,
-                            'year' => $yearperiod->year,
-                            'period' => $yearperiod->period,
-                            'drcostcode' => $dept_obj->costcode,
-                            'dracc' => $category_obj->expacct,
-                            'crcostcode' => $row_dept->costcode,
-                            'cracc' => $row_cat->stockacct,
-                            'amount' => $value->amount,
-                            'idno' => $value->itemcode
-                        ]);
-
-                    $this->init_glmastdtl(
-                            $row_sysparam->pvalue1,//drcostcode
-                            $row_sysparam->pvalue2,//dracc
-                            $row_dept->costcode,//crcostcode
-                            $row_cat->stockacct,//cracc
-                            $yearperiod,
-                            $value->amount
-                        );
-
-                    //1. gltran CN
+                    //1. buat gltran grt
                     DB::table('finance.gltran')
                         ->insert([
                             'compcode' => $value->compcode,
@@ -656,7 +584,7 @@ class GoodReturnCreditController extends defaultController
                             'period' => $yearperiod->period,
                             'drcostcode' => $row_sysparam->pvalue1,
                             'dracc' => $row_sysparam->pvalue2,
-                            'crcostcode' => $row_dept->costcode,
+                            'crcostcode' => $deldeptobj->costcode,
                             'cracc' => $row_cat->stockacct,
                             'amount' => $value->amount,
                             'idno' => $value->itemcode
@@ -665,8 +593,50 @@ class GoodReturnCreditController extends defaultController
                     $this->init_glmastdtl(
                             $row_sysparam->pvalue1,//drcostcode
                             $row_sysparam->pvalue2,//dracc
-                            $row_dept->costcode,//crcostcode
+                            $deldeptobj->costcode,//crcostcode
                             $row_cat->stockacct,//cracc
+                            $yearperiod,
+                            $value->amount
+                        );
+
+                    $chgmast = DB::table('hisdb.chgmast')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('chgcode',$value->itemcode)
+                                    ->first();
+
+                    $chgtype=DB::table('hisdb.chgtype')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('chgtype',$chgmast->chgtype)
+                                    ->first();
+
+                    //1. gltran CN
+                    DB::table('finance.gltran')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'auditno' => $cnno,
+                            'lineno_' => $value->lineno_,
+                            'source' => 'PB',
+                            'trantype' => 'CN',
+                            'reference' => $delordhd_obj->cnno,
+                            'description' => $delordhd_obj->remarks,
+                            'postdate' => $delordhd_obj->trandate,
+                            'year' => $yearperiod->year,
+                            'period' => $yearperiod->period,
+                            'drcostcode' => $deldeptobj->costcode,
+                            'dracc' => $chgtype->opacccode,
+                            'crcostcode' => $debtorobj->actdebccode,
+                            'cracc' => $debtorobj->actdebglacc,
+                            'amount' => $value->amount,
+                            'idno' => $value->itemcode
+                        ]);
+
+                    $this->init_glmastdtl(
+                            $deldeptobj->costcode,//drcostcode
+                            $chgtype->opacccode,//dracc
+                            $debtorobj->actdebccode,//crcostcode
+                            $debtorobj->actdebglacc,//cracc
                             $yearperiod,
                             $value->amount
                         );
@@ -791,17 +761,37 @@ class GoodReturnCreditController extends defaultController
 
                 DB::table('material.delordhd')
                     ->where('trantype','=','GRT')
-                    ->where('recno','=',$delordhd_obj->recno)
+                    ->where('recno','=',$recno)
                     ->where('compcode','=',session('compcode'))
                     ->update([
                         'postedby' => session('username'),
-                        'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'postdate' => $delordhd_obj->trandate, 
                         'recstatus' => 'POSTED' 
                     ]);
 
                 DB::table('material.delorddt')
-                    ->where('recno','=',$delordhd_obj->recno)
+                    ->where('recno','=',$recno)
                     ->where('compcode','=',session('compcode'))
+                    ->where('recstatus','!=','DELETE')
+                    ->update([
+                        'recstatus' => 'POSTED' 
+                    ]);
+
+                DB::table('debtor.dbacthdr')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','PB')
+                    ->where('trantype','CN')
+                    ->where('auditno',$cnno)
+                    ->update([
+                        'posteddate' => $delordhd_obj->trandate, 
+                        'recstatus' => 'POSTED', 
+                    ]);
+
+                DB::table('debtor.dbactdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','PB')
+                    ->where('trantype','CN')
+                    ->where('auditno',$cnno)
                     ->where('recstatus','!=','DELETE')
                     ->update([
                         'recstatus' => 'POSTED' 
