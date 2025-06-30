@@ -300,7 +300,7 @@ class ChargeMasterController extends defaultController
         }
 
 
-        dd($this->getQueries($table));
+        // dd($this->getQueries($table));
 
 
         //////////paginate/////////
