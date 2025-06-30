@@ -225,9 +225,9 @@ i.fa {
 									<span class="help-block"></span>
 								</div>	
 
-								<label class="col-md-1 control-label" for="delordhd_delordno">CN No</label>  
+								<label class="col-md-1 control-label" for="delordhd_cnno">CN No</label>  
 					  		<div class="col-md-2">
-					  			<input id="delordhd_delordno" name="delordhd_delordno" type="text" class="form-control input-sm text-uppercase" rdonly>
+					  			<input id="delordhd_cnno" name="delordhd_cnno" type="text" class="form-control input-sm text-uppercase" rdonly>
 					  		</div>
 						  </div>
 
@@ -242,6 +242,15 @@ i.fa {
 					  			</div>
 								<span class="help-block"></span>
 					  		</div>
+
+					  		<label class="col-md-1 control-label" for="delordhd_paymode">Paymode</label>  
+								<div class="col-md-2"> 
+									<div class='input-group'>
+										<input id="delordhd_paymode" name="delordhd_paymode" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
 							</div>
 
 						  <hr/>

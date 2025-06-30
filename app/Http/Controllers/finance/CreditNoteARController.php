@@ -395,6 +395,7 @@ class CreditNoteARController extends defaultController
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'OPEN',
                     'lineno_' => 1,
+                    'recptno' => 'CN-'.$auditno,
                     // 'invno' => $invno,
                     'deptcode' => strtoupper($request->db_deptcode),
                     'unit' => session('unit'),

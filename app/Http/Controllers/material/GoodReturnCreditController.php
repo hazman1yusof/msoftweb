@@ -59,7 +59,7 @@ class GoodReturnCreditController extends defaultController
 
     public function get_table_default(Request $request){
         $table =  DB::table('material.delordhd as do');
-        $table = $table->select('do.idno as delordhd_idno','do.compcode as delordhd_compcode','do.recno as delordhd_recno','do.prdept as delordhd_prdept','do.trantype as delordhd_trantype','do.docno as delordhd_docno','do.delordno as delordhd_delordno','do.invoiceno as delordhd_invoiceno','do.suppcode as delordhd_suppcode','do.srcdocno as delordhd_srcdocno','do.po_recno as delordhd_po_recno','do.deldept as delordhd_deldept','do.subamount as delordhd_subamount','do.amtdisc as delordhd_amtdisc','do.perdisc as delordhd_perdisc','do.totamount as delordhd_totamount','do.deliverydate as delordhd_deliverydate','do.trandate as delordhd_trandate','do.trantime as delordhd_trantime','do.respersonid as delordhd_respersonid','do.checkpersonid as delordhd_checkpersonid','do.checkdate as delordhd_checkdate','do.postedby as delordhd_postedby','do.recstatus as delordhd_recstatus','do.remarks as delordhd_remarks','do.adduser as delordhd_adduser','do.adddate as delordhd_adddate','do.upduser as delordhd_upduser','do.upddate as delordhd_upddate','do.reason as delordhd_reason','do.rtnflg as delordhd_rtnflg','do.reqdept as delordhd_reqdept','do.credcode as delordhd_credcode','do.impflg as delordhd_impflg','do.allocdate as delordhd_allocdate','do.postdate as delordhd_postdate','do.deluser as delordhd_deluser','do.taxclaimable as delordhd_taxclaimable','do.TaxAmt as delordhd_TaxAmt','do.prortdisc as delordhd_prortdisc','do.cancelby as delordhd_cancelby','do.canceldate as delordhd_canceldate','do.reopenby as delordhd_reopenby','do.reopendate as delordhd_reopendate','do.unit as delordhd_unit','do.postflag as delordhd_postflag','do.debtorcode as delordhd_debtorcode','do.mrn as delordhd_mrn','do.cnno as delordhd_cnno','pm.newmrn as pm_newmrn','do.hdrtype as delordhd_hdrtype')
+        $table = $table->select('do.idno as delordhd_idno','do.compcode as delordhd_compcode','do.recno as delordhd_recno','do.prdept as delordhd_prdept','do.trantype as delordhd_trantype','do.docno as delordhd_docno','do.delordno as delordhd_delordno','do.invoiceno as delordhd_invoiceno','do.suppcode as delordhd_suppcode','do.srcdocno as delordhd_srcdocno','do.po_recno as delordhd_po_recno','do.deldept as delordhd_deldept','do.subamount as delordhd_subamount','do.amtdisc as delordhd_amtdisc','do.perdisc as delordhd_perdisc','do.totamount as delordhd_totamount','do.deliverydate as delordhd_deliverydate','do.trandate as delordhd_trandate','do.trantime as delordhd_trantime','do.respersonid as delordhd_respersonid','do.checkpersonid as delordhd_checkpersonid','do.checkdate as delordhd_checkdate','do.postedby as delordhd_postedby','do.recstatus as delordhd_recstatus','do.remarks as delordhd_remarks','do.adduser as delordhd_adduser','do.adddate as delordhd_adddate','do.upduser as delordhd_upduser','do.upddate as delordhd_upddate','do.reason as delordhd_reason','do.rtnflg as delordhd_rtnflg','do.reqdept as delordhd_reqdept','do.credcode as delordhd_credcode','do.impflg as delordhd_impflg','do.allocdate as delordhd_allocdate','do.postdate as delordhd_postdate','do.deluser as delordhd_deluser','do.taxclaimable as delordhd_taxclaimable','do.TaxAmt as delordhd_TaxAmt','do.prortdisc as delordhd_prortdisc','do.cancelby as delordhd_cancelby','do.canceldate as delordhd_canceldate','do.reopenby as delordhd_reopenby','do.reopendate as delordhd_reopendate','do.unit as delordhd_unit','do.postflag as delordhd_postflag','do.debtorcode as delordhd_debtorcode','do.mrn as delordhd_mrn','do.cnno as delordhd_cnno','pm.newmrn as pm_newmrn','do.hdrtype as delordhd_hdrtype','do.paymode as delordhd_paymode')
                     ->where('do.compcode',session('compcode'))
                     ->where('do.trantype','GRT')
                     ->whereNotNull('do.cnno');
@@ -179,10 +179,11 @@ class GoodReturnCreditController extends defaultController
 
 
         $table =  DB::table('material.delorddt as dodt');
-        $table = $table->select('dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode', 'dodt.pouom', 'dodt.suppcode','dodt.trandate',
+        $table = $table->select('dodt.idno','dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode', 'dodt.pouom', 'dodt.suppcode','dodt.trandate',
         'dodt.deldept','dodt.deliverydate','dodt.qtydelivered','dodt.qtyreturned','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 
         'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks','t.rate')
-        ->where('dodt.recno',$delordhd->recno);
+        ->where('dodt.recno',$delordhd->recno)
+        ->where('dodt.recstatus','!=','DELETE');
 
         $table = $table->leftJoin('material.productmaster AS p', function($join){
                         $join = $join->on('p.itemcode','=','dodt.itemcode')
@@ -279,6 +280,7 @@ class GoodReturnCreditController extends defaultController
                 'taxclaimable' => $request->delordhd_taxclaimable,
                 'debtorcode' => $request->delordhd_debtorcode,
                 'hdrtype' => $request->delordhd_hdrtype,
+                'paymode' => $request->delordhd_paymode,
                 'mrn' => $request->delordhd_mrn,
                 'cnno' => $cnno
             ];
@@ -385,7 +387,7 @@ class GoodReturnCreditController extends defaultController
                         'reference'=>$delordhd_obj->delordno, 
                         'source'=>'IV', 
                         'txndept'=>$delordhd_obj->deldept, 
-                        'trantype'=>'GRT' 
+                        'trantype'=>'GRT',
                         'docno'=>$delordhd_obj->docno, 
                         // 'srcdocno'=>$delordhd_obj->srcdocno, 
                         // 'sndrcv'=>$delordhd_obj->suppcode, 

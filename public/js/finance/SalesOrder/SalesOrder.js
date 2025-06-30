@@ -777,7 +777,7 @@ $(document).ready(function () {
 		urlParam.filterVal = filter.fv;
 		urlParam.WhereInCol = null;
 		urlParam.WhereInVal = null;
-
+		
 		if(once){
 			urlParam.searchCol=null;
 			urlParam.searchVal=null;
@@ -790,6 +790,14 @@ $(document).ready(function () {
 				urlParam.filterVal=null;
 			}
 			once=false;
+		}
+
+		if($('#customer_text').is(":visible")){
+			urlParam.searchCol=["db.debtorcode"];
+			urlParam.searchVal=[$('#customer_search').val()];
+		}else if($('#patmast_text').is(":visible")){
+			urlParam.searchCol=["db.mrn"];
+			urlParam.searchVal=[$('#patmast_search').val()];
 		}
 
 		refreshGrid('#jqGrid',urlParam);
