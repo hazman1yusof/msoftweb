@@ -913,9 +913,14 @@ class GoodReturnCreditController extends defaultController
             abort(404);
         }
         
-        $delordhd = DB::table('material.delordhd')
-            ->where('compcode','=',session('compcode'))
-            ->where('recno','=',$recno)
+        $delordhd = DB::table('material.delordhd as do')
+            ->select('do.compcode','do.recno','do.prdept','do.trantype','do.docno','do.delordno','do.invoiceno','do.suppcode','do.srcdocno','do.po_recno','do.deldept','do.subamount','do.amtdisc','do.perdisc','do.totamount','do.deliverydate','do.trandate','do.trantime','do.respersonid','do.checkpersonid','do.checkdate','do.postedby','do.recstatus','do.remarks','do.adduser','do.adddate','do.upduser','do.upddate','do.reason','do.rtnflg','do.reqdept','do.credcode','do.impflg','do.allocdate','do.postdate','do.deluser','do.taxclaimable','do.TaxAmt','do.prortdisc','do.cancelby','do.canceldate','do.reopenby','do.reopendate','do.unit','do.postflag','do.debtorcode','do.mrn','do.cnno','do.hdrtype','do.paymode','dm.name','dm.address1','dm.address2','dm.address3','dm.address4')
+            ->where('do.compcode','=',session('compcode'))
+            ->where('do.recno','=',$recno)
+            ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
+                        $join = $join->on('dm.debtorcode', '=', 'do.debtorcode')
+                                ->where('dm.compcode','=',session('compcode'));
+                    })
             ->first();
 
         $delorddt = DB::table('material.delorddt AS dodt')
@@ -929,6 +934,7 @@ class GoodReturnCreditController extends defaultController
                                 ->where('u.compcode','=',session('compcode'));
                     })
             ->where('dodt.compcode','=',session('compcode'))
+            ->where('dodt.recstatus','!=','DELETE')
             ->where('dodt.qtyreturned','!=',0)
             ->where('dodt.recno','=',$recno)
             ->get();
@@ -963,6 +969,7 @@ class GoodReturnCreditController extends defaultController
                    ->where('gl.source','IV')
                    ->where('gl.trantype',$delordhd->trantype)
                    ->first();
+            // dd($gltran);
 
             $drkey = $gltran->drcostcode.'_'.$gltran->dracc;
             $crkey = $gltran->crcostcode.'_'.$gltran->cracc;
