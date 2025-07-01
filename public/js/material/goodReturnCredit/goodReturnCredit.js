@@ -75,13 +75,13 @@ $(document).ready(function () {
 					$("#pg_jqGridPager2 table").hide();
 					break;
 			}if(oper!='add'){
-				dialog_paymodeAR.check(errorField);
+				// dialog_paymodeAR.check(errorField);
 				dialog_CustomerSO.check(errorField);
 				dialog_deldept.check(errorField);
 				dialog_mrn.check(errorField);
 				dialog_billtypeSO.check(errorField);
 			}if(oper=='add'){
-				dialog_paymodeAR.on();
+				// dialog_paymodeAR.on();
 				dialog_CustomerSO.on();
 				dialog_deldept.on();
 				dialog_mrn.on();
@@ -108,7 +108,7 @@ $(document).ready(function () {
 			// $('.alert').detach();
 			$('.my-alert').detach();
 			// $("#formdata a").off();
-			dialog_paymodeAR.off();
+			// dialog_paymodeAR.off();
 			dialog_CustomerSO.off();
 			dialog_deldept.off();
 			dialog_mrn.off();
@@ -1153,7 +1153,7 @@ $(document).ready(function () {
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
-		dialog_paymodeAR.off();
+		// dialog_paymodeAR.off();
 		dialog_CustomerSO.off();
 		dialog_deldept.off();
 		dialog_mrn.off();
@@ -1164,7 +1164,7 @@ $(document).ready(function () {
 		}else{
 			$("#saveDetailLabel").attr('disabled',false);
 			mycurrency.formatOn();
-			dialog_paymodeAR.on();
+			// dialog_paymodeAR.on();
 			dialog_CustomerSO.on();
 			dialog_deldept.on();
 			dialog_mrn.on();
@@ -1176,7 +1176,7 @@ $(document).ready(function () {
 	$("#saveHeaderLabel").click(function(){
 		emptyFormdata(errorField,'#formdata2');
 		hideatdialogForm(true);
-		dialog_paymodeAR.on();
+		// dialog_paymodeAR.on();
 		dialog_CustomerSO.on();
 		dialog_deldept.on();
 		dialog_mrn.on();
@@ -1513,43 +1513,43 @@ $(document).ready(function () {
 	);
 	dialog_mrn.makedialog();
 
-	var dialog_paymodeAR = new ordialog(
-		'delordhd_paymode','debtor.paymode',"#delordhd_paymode",errorField,
-		{
-			colModel: [
-				{ label:'Paymode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true },
-				{ label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true },
-				{ label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true },
-			],
-			urlParam: {
-				filterCol:['compcode','recstatus', 'source', 'paytype'],
-				filterVal:['session.compcode','ACTIVE', 'AR', 'Credit Note']
-			},
-			ondblClickRow:function(){
-				$('#db_remark').focus();
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#db_remark').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-		},{
-			title:"Select Paymode",
-			open: function(){
-				dialog_paymodeAR.urlParam.filterCol=['compcode','recstatus', 'source', 'paytype'],
-				dialog_paymodeAR.urlParam.filterVal=['session.compcode','ACTIVE', 'AR', 'Credit Note'];
-				},
-			close: function(obj_){
-				$("#delordhd_remarks").focus().select();
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_paymodeAR.makedialog(true);
+	// var dialog_paymodeAR = new ordialog(
+	// 	'delordhd_paymode','debtor.paymode',"#delordhd_paymode",errorField,
+	// 	{
+	// 		colModel: [
+	// 			{ label:'Paymode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true },
+	// 			{ label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true },
+	// 			{ label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true },
+	// 		],
+	// 		urlParam: {
+	// 			filterCol:['compcode','recstatus', 'source', 'paytype'],
+	// 			filterVal:['session.compcode','ACTIVE', 'AR', 'Credit Note']
+	// 		},
+	// 		ondblClickRow:function(){
+	// 			$('#db_remark').focus();
+	// 		},
+	// 		gridComplete: function(obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 				$(gridname+' tr#1').click();
+	// 				$(gridname+' tr#1').dblclick();
+	// 				$('#db_remark').focus();
+	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 				$('#'+obj.dialogname).dialog('close');
+	// 			}
+	// 		}
+	// 	},{
+	// 		title:"Select Paymode",
+	// 		open: function(){
+	// 			dialog_paymodeAR.urlParam.filterCol=['compcode','recstatus', 'source', 'paytype'],
+	// 			dialog_paymodeAR.urlParam.filterVal=['session.compcode','ACTIVE', 'AR', 'Credit Note'];
+	// 			},
+	// 		close: function(obj_){
+	// 			$("#delordhd_remarks").focus().select();
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// dialog_paymodeAR.makedialog(true);
 
 	var dialog_chggroup = new ordialog(
 		'itemcode',['material.stockloc AS s','material.product AS p','hisdb.chgmast AS c'],"#jqGrid2 input[name='itemcode']",errorField,

@@ -280,7 +280,7 @@ class GoodReturnCreditController extends defaultController
                 'taxclaimable' => $request->delordhd_taxclaimable,
                 'debtorcode' => $request->delordhd_debtorcode,
                 'hdrtype' => $request->delordhd_hdrtype,
-                'paymode' => $request->delordhd_paymode,
+                // 'paymode' => $request->delordhd_paymode,
                 'mrn' => $request->delordhd_mrn,
                 'cnno' => $cnno
             ];

@@ -243,14 +243,14 @@ i.fa {
 								<span class="help-block"></span>
 					  		</div>
 
-					  		<label class="col-md-1 control-label" for="delordhd_paymode">Paymode</label>  
+					  		<!-- <label class="col-md-1 control-label" for="delordhd_paymode">Paymode</label>  
 								<div class="col-md-2"> 
 									<div class='input-group'>
 										<input id="delordhd_paymode" name="delordhd_paymode" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
-								</div>
+								</div> -->
 							</div>
 
 						  <hr/>

@@ -131,7 +131,7 @@ class GoodReturnCreditDetailController extends defaultController
                     // 'approvedby' => $request->db_approvedby,
                     // 'approveddate' => $request->db_approveddate,
                     // 'reference' => $request->db_reference,
-                    'paymode' => $delordhd->paymode,
+                    // 'paymode' => $delordhd->paymode,
                     // 'unallocated' => $request->db_unallocated,   
                 ];
 
@@ -217,7 +217,7 @@ class GoodReturnCreditDetailController extends defaultController
                     'mrn' => $delordhd->mrn,
                     // 'episno' => ,
                     // 'billno' => ,
-                    'paymode' => $delordhd->paymode,
+                    // 'paymode' => $delordhd->paymode,
                     // 'allocauditno' => ,
                     // 'alloclineno' => ,
                     // 'alloctnauditno' => ,
