@@ -1,55 +1,52 @@
-
-<div class="ui secondary segment bluecloudsegment" id="rehab_segment" style="
-    padding: 30px !important; ">
-
-	<div class="inline field" style="position:absolute;top: 10px; left: 10px;">
+<div class="ui secondary segment bluecloudsegment" id="rehab_segment" style="padding: 30px !important;">
+	<div class="inline field" style="position: absolute; top: 10px; left: 10px;">
 		<div class="ui checkbox rehab box">
-	      <input type="checkbox" class="hidden" name="Rehabilitation" value="Rehabilitation">
-	      <label>Rehabilitation</label>
-	    </div>
-		<div class="ui checkbox phys box">
-	      <input type="checkbox" class="hidden" name="Physioteraphy" value="Physioteraphy">
-	      <label>Physioteraphy</label>
-	    </div>
-
-		<div class="ui checkbox toggle right aligned referdiet box" style="padding-left:80px">
-		  <input type="checkbox" class="hidden" name="referdiet" value="referdiet">
-		  <label>Refer to Dietician</label>
+			<input type="checkbox" class="hidden" name="Rehabilitation" value="Rehabilitation">
+			<label>Rehabilitation</label>
 		</div>
-
+		<div class="ui checkbox phys box">
+			<input type="checkbox" class="hidden" name="Physioteraphy" value="Physioteraphy">
+			<label>Physioteraphy</label>
+		</div>
+		
+		<div class="ui checkbox toggle right aligned referdiet box" style="padding-left: 80px;">
+			<input type="checkbox" class="hidden" name="referdiet" value="referdiet">
+			<label>Refer to Dietician</label>
+		</div>
+		
 		<a class="ui orange disabled label" id="stats_rehab" style="display: none;"></a>
 		<a class="ui orange disabled label" id="stats_physio" style="display: none;"></a>
 	</div>
-
-	<div class="ui small blue icon buttons" id="btn_grp_edit_phys_ncase" style="position: absolute;
-				padding: 0 0 0 0;
-				right: 40px;
-				top: 14px;
+	
+	<div class="ui small blue icon buttons" id="btn_grp_edit_phys_ncase" style="position: absolute; 
+				padding: 0 0 0 0; 
+				right: 40px; 
+				top: 14px; 
 				z-index: 2;">
-	  <button class="ui button" id="new_phys_ncase"><span class="fa fa-plus-square-o"></span> New</button>
-	  <button class="ui button" id="edit_phys_ncase"><span class="fa fa-edit fa-lg"></span> Edit</button>
-	  <button class="ui button" id="save_phys_ncase"><span class="fa fa-save fa-lg"></span> Save</button>
-	  <button class="ui button" id="cancel_phys_ncase"><span class="fa fa-ban fa-lg"></span> Cancel</button>
+		<button class="ui button" id="new_phys_ncase"><span class="fa fa-plus-square-o"></span>New</button>
+		<button class="ui button" id="edit_phys_ncase"><span class="fa fa-edit fa-lg"></span>Edit</button>
+		<button class="ui button" id="save_phys_ncase"><span class="fa fa-save fa-lg"></span>Save</button>
+		<button class="ui button" id="cancel_phys_ncase"><span class="fa fa-ban fa-lg"></span>Cancel</button>
 	</div>
-
+	
 	<!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-		id="btn_grp_edit_phys_ncase"
-		style="position: absolute;
-				padding: 0 0 0 0;
-				right: 40px;
-				top: 10px;
+		id="btn_grp_edit_phys_ncase" 
+		style="position: absolute; 
+				padding: 0 0 0 0; 
+				right: 40px; 
+				top: 10px; 
 				z-index: 2;">
 		<button type="button" class="btn btn-default" id="new_phys_ncase">
-			<span class="fa fa-plus-square-o"></span> New
+			<span class="fa fa-plus-square-o"></span> New 
 		</button>
 		<button type="button" class="btn btn-default" id="edit_phys_ncase">
-			<span class="fa fa-edit fa-lg"></span> Edit
+			<span class="fa fa-edit fa-lg"></span> Edit 
 		</button>
 		<button type="button" class="btn btn-default" data-oper='add' id="save_phys_ncase">
-			<span class="fa fa-save fa-lg"></span> Save
+			<span class="fa fa-save fa-lg"></span> Save 
 		</button>
 		<button type="button" class="btn btn-default" id="cancel_phys_ncase">
-			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
 		</button>
 	</div> -->
 </div>
@@ -63,20 +60,20 @@
 			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_mcond">
 				<i class="angle down icon large"></i>
 				<i class="angle up icon large"></i>
-				<h4 style="text-align:center;margin-top:3px">MEDICAL CONDITION</h4>
+				<h4 style="text-align: center; margin-top: 3px;">MEDICAL CONDITION</h4>
 			</div>
 			<div class="ui segment collapse" id="phys_mcond">
 				<div class="ui form">
 					<table class="ui celled table">
-					  	<thead>
-						    <tr>
-						    	<th width="5%">No.</th>
-						    	<th width="60%">Medical Condition</th>
-						    	<th width="12%">Answer</th>
-						    	<th width="28%">Details</th>
-						  	</tr>
+						<thead>
+							<tr>
+								<th width="5%">No.</th>
+								<th width="60%">Medical Condition</th>
+								<th width="12%">Answer</th>
+								<th width="28%">Details</th>
+							</tr>
 						</thead>
-					  	<tbody>
+						<tbody>
 							<tr>
 								<td data-label="no">1</td>
 								<td data-label="con">Have you ever had a heart attack, coronary revascularization surgery or a stroke</td>
@@ -677,14 +674,14 @@
 									</div>
 								</td>
 							</tr>
-					  	</tbody>
+						</tbody>
 					</table>
-
+					
 					<input id="risk_phys_ncase" name="risk" type="hidden">
 					<div class="three ui buttons">
-					  <button class="ui toggle button low" type="button" data-risk='low'>Low Risk</button>
-					  <button class="ui toggle button moderate" type="button" data-risk='moderate'>Moderate Risk</button>
-					  <button class="ui toggle button high" type="button" data-risk='high'>High Risk</button>
+						<button class="ui toggle button low" type="button" data-risk='low'>Low Risk</button>
+						<button class="ui toggle button moderate" type="button" data-risk='moderate'>Moderate Risk</button>
+						<button class="ui toggle button high" type="button" data-risk='high'>High Risk</button>
 					</div>
 				</div>
 			</div>
@@ -693,12 +690,12 @@
 		<div class="ui segments">
 			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_hist">
 				<i class="angle down icon large"></i>
-				<i class="angle up icon large"></i> 
-				<h4 style="text-align:center;margin-top:3px">HISTORY</h4>
+				<i class="angle up icon large"></i>
+				<h4 style="text-align: center; margin-top: 3px;">HISTORY</h4>
 			</div>
 			<div class="ui segment collapse" id="phys_hist">
 				<div class="ui form">
-					<div class="field"><textarea rows="6" cols="50" name="history" ></textarea></div>
+					<div class="field"><textarea rows="6" cols="50" name="history"></textarea></div>
 				</div>
 			</div>
 		</div>
@@ -707,31 +704,31 @@
 			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_post_rehab">
 				<i class="angle down icon large"></i>
 				<i class="angle up icon large"></i>
-				<!-- <h4 style="text-align:center;margin-top:3px">POSTURAL ASSESSMENT (REHAB)</h4> -->
-				<h4 style="text-align:center;margin-top:3px">PAIN BEHAVIOUR</h4>
+				<!-- <h4 style="text-align: center; margin-top: 3px;">POSTURAL ASSESSMENT (REHAB)</h4> -->
+				<h4 style="text-align: center; margin-top: 3px;">PAIN BEHAVIOUR</h4>
 			</div>
 			<div class="ui segment collapse" id="phys_post_rehab">
 				<div class="ui grid">
 					<div class="thirteen wide column">
-						<div class="ui four cards" >
+						<div class="ui four cards">
 							<a class="ui card bodydia_ncase" data-type='BF_REHAB'>
 								<div class="image">
-							      <img src="{{ asset('patientcare/img/bodydia1.png') }}" >
+									<img src="{{ asset('patientcare/img/bodydia1.png') }}" >
 							    </div>
 							</a>
 							<a class="ui card bodydia_ncase" data-type='BR_REHAB'>
 								<div class="image">
-							      <img src="{{ asset('patientcare/img/bodydia2.png') }}">
+									<img src="{{ asset('patientcare/img/bodydia2.png') }}">
 							    </div>
 							</a>
 							<a class="ui card bodydia_ncase" data-type='BL_REHAB'>
 								<div class="image">
-							      <img src="{{ asset('patientcare/img/bodydia3.png') }}">
+									<img src="{{ asset('patientcare/img/bodydia3.png') }}">
 							    </div>
 							</a>
 							<a class="ui card bodydia_ncase" data-type='BB_REHAB'>
 								<div class="image">
-							      <img src="{{ asset('patientcare/img/bodydia4.png') }}">
+									<img src="{{ asset('patientcare/img/bodydia4.png') }}">
 							    </div>
 							</a>
 						</div>
@@ -777,7 +774,7 @@
 			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_post_physio">
 				<i class="angle down icon large"></i>
 				<i class="angle up icon large"></i>
-				<h4 style="text-align:center;margin-top:3px">POSTURAL ASSESSMENT (PHYSIO)</h4>
+				<h4 style="text-align: center; margin-top: 3px;">POSTURAL ASSESSMENT (PHYSIO)</h4>
 			</div>
 			<div class="ui segment collapse" id="phys_post_physio">
 				@include('rehab.posturalAssessmt_div')
@@ -788,26 +785,26 @@
 			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_elec">
 				<i class="angle down icon large"></i>
 				<i class="angle up icon large"></i>
-				<h4 style="text-align:center;margin-top:3px">ELECTROCARDIOGRAM (EKG) NOTES</h4>
+				<h4 style="text-align: center; margin-top: 3px;">ELECTROCARDIOGRAM (EKG) NOTES</h4>
 			</div>
 			<div class="ui segment collapse" id="phys_elec">
 				<div class="ui form">
 					<div class="field">
 						<label>ECG Interpretation</label>
-						<textarea rows="6" cols="50" name="electrodg" ></textarea>
+						<textarea rows="6" cols="50" name="electrodg"></textarea>
 					</div>
 					
 					<p>Stress Test Interpretation</p>
 					<div class="inline field">
 						<label>Protocol</label>
 						<input type="text" name="protocol" placeholder="Protocol">
-						<label style="padding-left:20px">Equipment</label>
+						<label style="padding-left: 20px;">Equipment</label>
 						<input type="text" name="equipment" placeholder="Equipment">
 					</div>
 					
 					<div class="field">
 						<label>Recommendation</label>
-						<textarea rows="6" cols="50" name="recommendation" ></textarea>
+						<textarea rows="6" cols="50" name="recommendation"></textarea>
 					</div>
 				</div>
 			</div>
@@ -816,7 +813,7 @@
 		<div class="ui segments">
 			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_findings">
 				<i class="angle down icon large"></i>
-				<i class="angle up icon large"></i> 
+				<i class="angle up icon large"></i>
 				<h4 style="text-align: center; margin-top: 3px;">RELEVANT FINDING(S)</h4>
 			</div>
 			<div class="ui segment collapse" id="phys_findings">
@@ -829,7 +826,7 @@
 		<div class="ui segments">
 			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_treatment">
 				<i class="angle down icon large"></i>
-				<i class="angle up icon large"></i> 
+				<i class="angle up icon large"></i>
 				<h4 style="text-align: center; margin-top: 3px;">TREATMENT</h4>
 			</div>
 			<div class="ui segment collapse" id="phys_treatment">
@@ -870,6 +867,32 @@
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="ui segments">
+			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_perkeso">
+				<i class="angle down icon large"></i>
+				<i class="angle up icon large"></i>
+				<h4 style="text-align: center; margin-top: 3px;">PERKESO</h4>
+			</div>
+			<div class="ui segment collapse" id="phys_perkeso">
+				<div class="ui form">
+					@include('patientcare.physioterapy_perkeso')
+				</div>
+			</div>
+		</div>
+		
+		<div class="ui segments">
+			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_notes">
+				<i class="angle down icon large"></i>
+				<i class="angle up icon large"></i>
+				<h4 style="text-align: center; margin-top: 3px;">NOTES</h4>
+			</div>
+			<div class="ui segment collapse" id="phys_notes">
+				<div class="ui form">
+					<div class="field"><textarea rows="6" cols="50" name="addNotes"></textarea></div>
 				</div>
 			</div>
 		</div>

@@ -21,13 +21,13 @@ $(document).ready(function () {
 	$("button.refreshbtn_phys").click(function(){
 		populate_phys(selrowData('#jqGrid'));
 	});
-
+	
 	$('a.ui.card.bodydia').click(function(){
 		let mrn = $('#mrn_phys').val();
 		let episno = $("#episno_phys").val();
 		let type = $(this).data('type');
 		let istablet = $(window).width() <= 1024;
-
+		
 		if(mrn.trim() == '' || episno.trim() == '' || type.trim() == ''){
 			alert('Please choose Patient First');
 		}else if($('#save_phys').prop('disabled')){
@@ -40,14 +40,13 @@ $(document).ready(function () {
 			}else{
 				var win = window.open('http://localhost:8443/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=phys', '_blank');
 			}
-
+			
 			if (win) {
 			    win.focus();
 			} else {
 			    alert('Please allow popups for this website');
 			}
 		}
-		
 	});
 	
 	$('.ui.checkbox.rehab').checkbox({
@@ -153,6 +152,11 @@ $(document).ready(function () {
 			if(!$.isEmptyObject(data.patrehab_ncase)){
 				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehab_ncase);
 				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.neuroassessment);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.romaffectedside);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.romsoundside);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.musclepower);
+				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.patrehabperkeso);
 				button_state_phys_ncase('edit');
 			}else{
 				autoinsert_rowdata_phys_ncase("#formphys_ncase",data.pat_physio);

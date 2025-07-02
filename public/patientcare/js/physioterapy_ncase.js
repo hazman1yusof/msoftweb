@@ -71,14 +71,14 @@ $(document).ready(function () {
 		// dialog_mrn_edit.off();
 
 	});
-
+	
 	button_state_phys_ncase('empty');
-
+	
 	$('a.ui.card.bodydia_ncase').click(function(){
 		let mrn = $('#mrn_phys').val();
 		let type = $(this).data('type');
 		let istablet = $(window).width() <= 1024;
-
+		
 		if(mrn.trim() == '' || type.trim() == ''){
 			alert('Please choose Patient First');
 		}else if($('#save_phys_ncase').prop('disabled')){
@@ -91,14 +91,40 @@ $(document).ready(function () {
 			}else{
 				var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno=&type='+type+'&from=rehab', '_blank');
 			}
-
+			
 			if (win) {
 			    win.focus();
 			} else {
 			    alert('Please allow popups for this website');
 			}
 		}
+	});
+	
+	$('a.ui.card.bodydia_perkeso').click(function (){
+		let mrn = $('#mrn_phys').val();
+		let episno = $('#episno_phys').val();
+		let type = $(this).data('type');
+		let istablet = $(window).width() <= 1024;
 		
+		if(mrn.trim() == '' || type.trim() == ''){
+			alert('Please choose Patient First');
+		}else if($('#save_phys_ncase').prop('disabled')){
+			alert('Edit this patient first');
+		}else{
+			if(istablet){
+				let filename = type+'_'+mrn+'_.pdf';
+				let url = $('#urltodiagram').val() + filename;
+				var win = window.open(url, '_blank');
+			}else{
+				var win = window.open('http://localhost:8443/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=rehab', '_blank');
+			}
+			
+			if(win){
+				win.focus();
+			}else{
+				alert('Please allow popups for this website');
+			}
+		}
 	});
 	
 });
