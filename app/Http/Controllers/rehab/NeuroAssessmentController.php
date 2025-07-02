@@ -83,11 +83,11 @@ class NeuroAssessmentController extends defaultController
                     'objective' => $request->objective,
                     'painscore' => $request->painscore,
                     'painType' => $request->painType,
-                    'severity' => $request->severity,
-                    'irritability' => $request->irritability,
+                    'severityBC' => $request->severityBC,
+                    'irritabilityBC' => $request->irritabilityBC,
                     'painLocation' => $request->painLocation,
                     'subluxation' => $request->subluxation,
-                    'palpation' => $request->palpation,
+                    'palpationBC' => $request->palpationBC,
                     'impressionBC' => $request->impressionBC,
                     'superficialR' => $request->superficialR,
                     'superficialL' => $request->superficialL,
@@ -645,11 +645,11 @@ class NeuroAssessmentController extends defaultController
                         'objective' => $request->objective,
                         'painscore' => $request->painscore,
                         'painType' => $request->painType,
-                        'severity' => $request->severity,
-                        'irritability' => $request->irritability,
+                        'severityBC' => $request->severityBC,
+                        'irritabilityBC' => $request->irritabilityBC,
                         'painLocation' => $request->painLocation,
                         'subluxation' => $request->subluxation,
-                        'palpation' => $request->palpation,
+                        'palpationBC' => $request->palpationBC,
                         'impressionBC' => $request->impressionBC,
                         'superficialR' => $request->superficialR,
                         'superficialL' => $request->superficialL,
@@ -1180,11 +1180,11 @@ class NeuroAssessmentController extends defaultController
                         'objective' => $request->objective,
                         'painscore' => $request->painscore,
                         'painType' => $request->painType,
-                        'severity' => $request->severity,
-                        'irritability' => $request->irritability,
+                        'severityBC' => $request->severityBC,
+                        'irritabilityBC' => $request->irritabilityBC,
                         'painLocation' => $request->painLocation,
                         'subluxation' => $request->subluxation,
-                        'palpation' => $request->palpation,
+                        'palpationBC' => $request->palpationBC,
                         'impressionBC' => $request->impressionBC,
                         'superficialR' => $request->superficialR,
                         'superficialL' => $request->superficialL,
@@ -1793,7 +1793,8 @@ class NeuroAssessmentController extends defaultController
                                 })
                                 ->where('n.compcode','=',session('compcode'))
                                 ->where('n.mrn','=',$request->mrn)
-                                ->where('n.episno','=',$request->episno);
+                                ->where('n.episno','=',$request->episno)
+                                ->where('n.perkeso','=',null);
         
         if($neuroassessment_obj->exists()){
             $neuroassessment_obj = $neuroassessment_obj->get();
