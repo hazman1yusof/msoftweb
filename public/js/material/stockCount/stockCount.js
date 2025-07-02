@@ -770,6 +770,7 @@ $(document).ready(function () {
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
 
 			var jqgrid2_data = [];
+			mycurrency2.formatOff();
 			mycurrency_np.formatOff();
 		    for (var i = 0; i < ids.length; i++) {
 
@@ -780,9 +781,9 @@ $(document).ready(function () {
 		    		'idno' : data.idno,
 		    		'lineno_' : data.lineno_,
 		    		'itemcode' : data.itemcode,
-		    		'thyqty' : $("#jqGrid2 #"+ids[i]+"_thyqty").val(),
-		    		'phyqty' : $("#jqGrid2 #"+ids[i]+"_phyqty").val(),
-		    		'vrqty' : $("#jqGrid2 #"+ids[i]+"_vrqty").val(),
+		    		'thyqty' : numeral().unformat($("#jqGrid2 #"+ids[i]+"_thyqty").val()),
+		    		'phyqty' : numeral().unformat($("#jqGrid2 #"+ids[i]+"_phyqty").val()),
+		    		'vrqty' : numeral().unformat($("#jqGrid2 #"+ids[i]+"_vrqty").val()),
 		    		'remark' : $("#jqGrid2 #"+ids[i]+"_remark").val(),
 		    	}
 
