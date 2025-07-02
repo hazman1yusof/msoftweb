@@ -1,17 +1,61 @@
 <table>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3" style="font-weight: bold;text-align: center">{{$company->name}}</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3" style="font-weight: bold;text-align: center">{{$company->address1}}</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3" style="font-weight: bold;text-align: center">{{$company->address2}}</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3" style="font-weight: bold;text-align: center">{{$company->address3}}</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3" style="font-weight: bold;text-align: center">{{$company->address4}}</td>
+    </tr>
+    <tr></tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3" style="font-weight: bold;text-align: center">STATEMENT OF ACCOUNT</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3" style="font-weight: bold;text-align: center">AS AT DATE: {{$date_asof}}</td>
+    </tr>
     <tr></tr>
     @foreach($debtormast as $index => $debtor)
     <tr>
-        <td style="font-weight: bold">CODE</td>
-        <td colspan="3" style="font-weight: bold">:  {{$debtor->debtorcode}}</td>
+        <td colspan="2">{{$debtor->name}}</td>
+        <td></td><td></td>
+        <td colspan="3">CREDIT TERM: {{$debtor->creditterm}} </td>
     </tr>
     <tr>
-        <td style="font-weight: bold">NAME</td>
-        <td colspan="3" style="font-weight: bold">:  {{$debtor->name}}</td>
+        <td></td><td></td>
+        <td></td><td></td>
+        <td colspan="3">CREDIT LIMIT: {{$debtor->creditlimit}} </td>
     </tr>
     <tr>
-        <td style="font-weight: bold">ADDRESS</td>
-        <td colspan="5" style="font-weight: bold">:  {{$debtor->address1}} {{$debtor->address2}} {{$debtor->address3}} {{$debtor->address4}}</td>
+        <td></td><td></td>
+        <td></td><td></td>
+        <td colspan="3">DEBTOR CODE: {{$debtor->debtorcode}} </td>
+    </tr>
+    <tr>
+        <td></td><td></td>
+        <td></td><td></td>
+        <td colspan="3">DATE PRINTED: {{$datenow}} </td>
     </tr>
     <tr></tr>
     <tr>
@@ -73,4 +117,21 @@
     <tr></tr>
     <div style="page-break-after: always" />
     @endforeach
+    <tr></tr>
+    <tr>
+        <td></td>
+        <td>Note:-</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td colspan="4">    If you do not agree with the above balance please inform us in writing within 14 days.</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td colspan="4">    Any payment received after the close of the month will appear in next month's statement.</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td colspan="4">    Cheque payment is valid only when cleared by our bank.</td>
+    </tr>
 </table>
