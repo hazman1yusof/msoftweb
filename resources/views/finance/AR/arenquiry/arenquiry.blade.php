@@ -63,6 +63,24 @@
 		border-color: #e7e7e7;
 	}
 	<!-- end RC/RD -->
+	
+	<!-- start RC/RD cancel -->
+	#alloText_cancel{width:9%;}#alloText_cancel{width:60%;}#alloCol_cancel{width: 30%;}
+	#alloCol_cancel, #alloText_cancel{
+		display: inline-block;
+		height: 70%;
+		padding: 4px 12px 4px 12px;
+	}
+	#alloSearch_cancel{
+		border-style: solid;
+		border-width: 0px 1px 1px 1px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		border-radius: 0px 0px 5px 5px;
+		background-color: #f8f8f8;
+		border-color: #e7e7e7;
+	}
+	<!-- end RC/RD -->
 @endsection
 
 @section('body')
@@ -149,7 +167,10 @@
 				<a class='pull-right pointer text-primary' style="padding-left: 30px;" id='reprint_receipt' href="" target="_blank">
 					Reprint Receipt
 				</a>
-				<a class='pull-right pointer text-primary' style="padding-left: 30px;" id='allocate'>
+				<a class='pull-right pointer text-primary' style="padding-left: 30px;display:none" id='allocate_cancel'>
+					Cancel Allocation
+				</a>
+				<a class='pull-right pointer text-primary' style="padding-left: 30px;display:none" id='allocate'>
 					Allocate
 				</a>
 				<a class='pull-right pointer text-primary' style="padding-left: 30px;" id='ar_statement'>
@@ -1477,6 +1498,68 @@
 			</select>
 		</div>
 	</div>
+
+	<div id="allocateDialog_cancel" title="Cancel Allocation">
+		<form id='formallo_cancel'>
+			<input id="ALLoidno_cancel" type="hidden" class="form-control input-sm" readonly>
+			<input id="AlloAuditno_cancel" type="hidden" class="form-control input-sm" readonly>
+			<div class='col-md-9'>
+				<div class="col-md-6">
+					<label class="control-label">Document Type</label>
+					<input id="AlloDtype_cancel" type="text" class="form-control input-sm" readonly>
+					<span class="help-block" id="AlloDtype2_cancel"></span>
+				</div>
+				
+				<div class="col-md-6">
+					<label class="control-label">Document No.</label>
+					<input id="AlloDno_cancel" type="text" class="form-control input-sm" readonly>
+				</div>
+				
+				<div class="col-md-12">
+					<label class="control-label">Payer</label>
+					<input id="AlloPayer_cancel" type="text" class="form-control input-sm" readonly>
+					<span class="help-block" id="AlloPayer2_cancel"></span>
+				</div>
+				
+				<div class="col-md-6">
+					<label class="control-label">Document Amount</label>
+					<input id="AlloAmt_cancel" type="text" class="form-control input-sm" readonly>
+				</div>
+				
+				<div class="col-md-6">
+					<label class="control-label">Document O/S</label>
+					<input id="AlloOutamt_cancel" type="text" class="form-control input-sm" readonly>
+				</div>
+			</div>
+			
+			<div class='col-md-3'>
+				<div class="col-md-12"><hr>
+					<label class="control-label">Balance After Allocate</label>
+					<input id="AlloBalance_cancel" type="text" class="form-control input-sm" readonly>
+				</div>
+			</div>
+		</form>
+		
+		<div class='col-md-12' id='gridManAlloc_cancel_c' style="padding:0">
+			<hr>
+			<table id="gridManAlloc_cancel" class="table table-striped"></table>
+			<div id="pagerManAlloc_cancel"></div>
+		</div>
+		
+		<div class="col-md-10 col-md-offset-1" id="alloSearch_cancel">
+			<label class="control-label" id='alloLabel_cancel'>Search</label>
+			<input id="alloText_cancel" type="text" class="form-control input-sm">
+			<select class="form-control" id="alloCol_cancel">
+				<option value="invno" >Invoice No</option>
+				<option value="auditno" >Audit No</option>
+				<option value="mrn" >MRN</option>
+				<option value="recptno" >Document No</option>
+				<option value="newic" >New IC</option>
+				<option value="staffid" >Staff ID</option>
+				<option value="batchno" >Batch No</option>
+			</select>
+		</div>
+	</div>
 	
 	<div id="ARStatementDialog" title="Statement">
 		<div class="panel panel-default">
@@ -1554,5 +1637,6 @@
 			}
 		});
 	</script>
-	<script src="js/finance/AR/arenquiry/arenquiryScript.js?v=1.11"></script>
+	<script src="js/finance/AR/arenquiry/arenquiryScript.js?v=1.12"></script>
+	<script src="js/finance/AR/arenquiry/allocateDialog_cancel.js?v=1"></script>
 @endsection

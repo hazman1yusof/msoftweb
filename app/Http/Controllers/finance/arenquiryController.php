@@ -44,13 +44,14 @@ class arenquiryController extends defaultController
                 return $this->get_debtorcode_outamount($request);
             case 'get_outamount':
                 return $this->get_outamount($request);
+            case 'cancel_allocate':
+                return $this->cancel_allocate($request);
             default:
                 return 'error happen..';
         }
     }
     
-    public function form(Request $request)
-    {
+    public function form(Request $request){
         switch($request->action){
             case 'add_Tracking':
                 return $this->add_Tracking($request);
@@ -60,6 +61,8 @@ class arenquiryController extends defaultController
                 return $this->edit_all_Tracking($request);
             case 'del_Tracking':
                 return $this->del_Tracking($request);
+            case 'cancel_allocate_form':
+                return $this->cancel_allocate_form($request);
             default:
                 return 'error happen..';
         }
@@ -132,6 +135,7 @@ class arenquiryController extends defaultController
                 ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
                 ->where('db.compcode','=',session('compcode'))
                 // ->where('db.recstatus','=','POSTED')
+                ->where('db.trantype','=','RC')
                 ->where('db.source','=','PB');
                 // ->where('db.trantype','=','IN','DN',);
         
@@ -262,8 +266,7 @@ class arenquiryController extends defaultController
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);
         
-        return json_encode($responce);
-        
+        return json_encode($responce);        
     }
     
     public function tracking(Request $request){
@@ -287,8 +290,7 @@ class arenquiryController extends defaultController
         $responce->rows = $paginate->items();
         $responce->sql_query = $this->getQueries($table);
         
-        return json_encode($responce);
-        
+        return json_encode($responce);        
     }
     
     public function populate_rc(Request $request){
@@ -319,8 +321,7 @@ class arenquiryController extends defaultController
         $responce = new stdClass();
         $responce->rows = $table->first();
         
-        return json_encode($responce);
-        
+        return json_encode($responce);        
     }
     
     public function populate_rf(Request $request){
@@ -352,8 +353,112 @@ class arenquiryController extends defaultController
         $responce = new stdClass();
         $responce->rows = $table->first();
         
-        return json_encode($responce);
+        return json_encode($responce);        
+    }
+    
+    public function cancel_allocate(Request $request){
         
+       $dbacthdr = DB::table('debtor.dbacthdr')
+                    ->where('compcode',session('compcode'))
+                    ->where('idno','=',$request->idno)
+                    ->first();
+        
+        // if trantype = RC/RD/RF/CN
+        // if($dbacthdr->trantype == 'RC' || 'RD' || 'RF' || 'CN'){
+        if($dbacthdr->trantype == 'RC' || $dbacthdr->trantype =='RD' || $dbacthdr->trantype =='RF' || $dbacthdr->trantype =='CN'){
+            
+            $table = DB::table('debtor.dballoc as dc')
+                    ->select(
+                        'dc.refsource as source',
+                        'dc.reftrantype as trantype',
+                        'dc.refauditno as auditno',
+                        'dc.doctrantype',
+                        'dc.debtorcode',
+                        'dc.payercode',
+                        'dc.amount',
+                        'dc.recptno',
+                        'dc.paymode',
+                        'dc.allocdate',
+                        'dc.mrn',
+                        'dc.episno',
+                        'dc.compcode',
+                        'dc.lineno_',
+                        'dc.idno',
+                    )
+                    ->join('debtor.dbacthdr as da', function ($join) use ($request){
+                        $join = $join->on('dc.docsource', '=', 'da.source')
+                                    ->on('dc.doctrantype', '=', 'da.trantype')
+                                    ->on('dc.docauditno', '=', 'da.auditno');
+                    })
+                    ->where('dc.compcode','=',session('compcode'))
+                    ->where('dc.docsource','=',$dbacthdr->source)
+                    ->where('dc.doctrantype','=',$dbacthdr->trantype)
+                    ->where('dc.docauditno','=',$dbacthdr->auditno)
+                    ->where('dc.recstatus','=',"POSTED")
+                    ->get();
+                    // ->whereIn('dc.doctrantype',['RC','RD','RF','CN'])
+
+            foreach($table as $key => $value){
+                $auditno = str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
+                
+                $value->sysAutoNo = $value->source.'-'.$value->trantype.'-'.$auditno;
+            }
+
+            $table2 = DB::table('debtor.dballoc as dc')
+                    ->select(
+                        'dc.docsource as source',
+                        'dc.doctrantype as trantype',
+                        'dc.docauditno as auditno',
+                        'dc.doctrantype',
+                        'dc.debtorcode',
+                        'dc.payercode',
+                        'dc.amount',
+                        'dc.recptno',
+                        'dc.paymode',
+                        'dc.allocdate',
+                        'dc.mrn',
+                        'dc.episno',
+                        'dc.compcode',
+                        'dc.lineno_',
+                        'dc.idno',
+                    )
+                    ->join('debtor.dbacthdr as da', function ($join) use ($request){
+                        $join = $join->on('dc.refsource', '=', 'da.source')
+                                    ->on('dc.reftrantype', '=', 'da.trantype')
+                                    ->on('dc.refauditno', '=', 'da.auditno');
+                    })
+                    ->where('dc.compcode','=',session('compcode'))
+                    ->where('dc.refsource','=',$dbacthdr->source)
+                    ->where('dc.reftrantype','=',$dbacthdr->trantype)
+                    ->where('dc.refauditno','=',$dbacthdr->auditno)
+                    ->where('dc.reflineno','=',$dbacthdr->lineno_)
+                    ->where('dc.recstatus','=',"POSTED")
+                    ->get();
+
+            foreach($table2 as $key => $value){
+                $auditno = str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
+                
+                $value->sysAutoNo = $value->source.'-'.$value->trantype.'-'.$auditno;
+            }
+
+            $table = $table->merge($table2);
+            
+            /////////////////paginate/////////////////
+            // $paginate = $table->paginate($request->rows);
+
+            // dd($table);
+            
+            $responce = new stdClass();
+            $responce->page = 1;
+            $responce->total = 1;
+            $responce->records = $table->count();
+            $responce->rows = $table;
+            // $responce->sql = $table->toSql();
+            // $responce->sql_bind = $table->getBindings();
+            // $responce->sql_query = $this->getQueries($table);
+            
+            return json_encode($responce);
+        }
     }
     
     public function get_alloc(Request $request){
@@ -509,7 +614,6 @@ class arenquiryController extends defaultController
             return json_encode($responce);
             
         }
-        
     }
     
     public function get_table_dtl(Request $request){
@@ -534,7 +638,6 @@ class arenquiryController extends defaultController
         $responce->sql_bind = $table->getBindings();
         
         return json_encode($responce);
-        
     }
     
     public function get_debtorcode_outamount(Request $request){
@@ -556,8 +659,7 @@ class arenquiryController extends defaultController
             $responce->result = 'false';
         }
         
-        return json_encode($responce);
-        
+        return json_encode($responce); 
     }
     
     public function get_outamount(Request $request){
@@ -573,7 +675,6 @@ class arenquiryController extends defaultController
         $responce->outamount = $outamount;
         
         return json_encode($responce);
-        
     }
     
     public function add_Tracking(Request $request){
@@ -620,7 +721,6 @@ class arenquiryController extends defaultController
             return response($e->getMessage(), 500);
             
         }
-        
     }
     
     public function edit_Tracking(Request $request){
@@ -663,7 +763,6 @@ class arenquiryController extends defaultController
             return response($e->getMessage(), 500);
             
         }
-        
     }
     
     public function edit_all_Tracking(Request $request){
@@ -711,7 +810,6 @@ class arenquiryController extends defaultController
             return response('Error'.$e, 500);
             
         }
-        
     }
     
     public function del_Tracking(Request $request){
@@ -742,8 +840,91 @@ class arenquiryController extends defaultController
                     'datesend' => null,
                 ]);
             
-        }
+        }        
+    }
+
+    public function cancel_allocate_form(Request $request){
+
+        DB::beginTransaction();
         
+        try{
+            
+            $receipt = DB::table('debtor.dbacthdr')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','PB')
+                        ->where('idno',$request->idno);
+                        // ->where('trantype',$request->trantype)
+                        // ->where('payercode',$request->payercode)
+                        // ->where('auditno',$request->auditno);
+            
+            if($receipt->exists()){
+                $receipt_first = $receipt->first();
+            }else{
+                throw new \Exception("Error no receipt");
+            }
+            
+            $outamt_bal = 0;
+            foreach ($request->allo as $key => $value) {
+                $dballoc = DB::table('debtor.dballoc')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno',$value['obj']['idno']);
+                
+                if($dballoc->exists()){
+                    $dballoc_first = $dballoc->first();
+                    
+                    $dballoc->update([
+                        'recstatus' => 'CANCELLED'
+                    ]);
+                    
+                    $outamt_bal+=floatval($dballoc_first->amount);
+
+                    $dbacthdr_rev1 = DB::table('debtor.dbacthdr')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('source',$dballoc_first->refsource)
+                                    ->where('trantype',$dballoc_first->reftrantype)
+                                    ->where('auditno',$dballoc_first->refauditno)
+                                    ->first();
+
+                    DB::table('debtor.dbacthdr')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('source',$dballoc_first->refsource)
+                                    ->where('trantype',$dballoc_first->reftrantype)
+                                    ->where('auditno',$dballoc_first->refauditno)
+                                    ->update([
+                                        'outamount' => $dbacthdr_rev1->outamount + $dballoc_first->amount
+                                    ]);
+
+
+                    $dbacthdr_rev2 = DB::table('debtor.dbacthdr')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('source',$dballoc_first->docsource)
+                                    ->where('trantype',$dballoc_first->doctrantype)
+                                    ->where('auditno',$dballoc_first->docauditno)
+                                    ->first();
+
+                    DB::table('debtor.dbacthdr')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('source',$dballoc_first->docsource)
+                                    ->where('trantype',$dballoc_first->doctrantype)
+                                    ->where('auditno',$dballoc_first->docauditno)  
+                                    ->update([
+                                        'outamount' => $dbacthdr_rev2->outamount + $dballoc_first->amount
+                                    ]);
+
+                }else{
+                    throw new \Exception("Error no dballoc");
+                }
+            }
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage().$e, 500);
+            
+        }
     }
     
     public function allocate(Request $request){

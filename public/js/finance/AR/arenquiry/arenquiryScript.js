@@ -1,6 +1,8 @@
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow = 0;
+var errorField = [];
+var fdl = new faster_detail_load();
 
 $(document).ready(function (){
 	$("body").show();
@@ -15,7 +17,6 @@ $(document).ready(function (){
 		},
 	});
 	
-	var errorField = [];
 	conf = {
 		onValidate: function ($form){
 			if(errorField.length > 0){
@@ -31,7 +32,6 @@ $(document).ready(function (){
 	//////////////////////////////////////currency//////////////////////////////////////
 	var mycurrency = new currencymode(['#db_outamount', '#db_amount', "#formdata_DN input[name='db_amount']", "#formdata_CN input[name='db_amount']", "#formdata_CN input[name='tot_alloc']"]);
 	var mycurrency2 = new currencymode(['#db_outamount', '#db_amount']);
-	var fdl = new faster_detail_load();
 	
 	////////////////////////for handling amount based on trantype////////////////////////
 	//////////////////////////////////////RC STARTS//////////////////////////////////////
@@ -799,6 +799,13 @@ $(document).ready(function (){
 			}else{
 				$('#allocate').hide();
 			}
+
+			if(((selrowData("#jqGrid").db_trantype == 'RC') || (selrowData("#jqGrid").db_trantype == 'RD') || (selrowData("#jqGrid").db_trantype == 'CN') ) && ((selrowData("#jqGrid").db_outamount != selrowData("#jqGrid").db_amount))){
+				$('#allocate_cancel').show();
+			}else{
+				$('#allocate_cancel').hide();
+			}
+
 			$('#CN_debtorcode_show, #DN_debtorcode_show, #IN_debtorcode_show, #alloc_debtorcode_show, #track_debtorcode_show,#DF_debtorcode_show').text(selrowData("#jqGrid").db_debtorcode);
 			$('#CN_debtorname_show, #DN_debtorname_show, #IN_debtorname_show, #alloc_debtorname_show, #track_debtorname_show,#df_debtorname_show').text(selrowData("#jqGrid").dm_name);
 			$('#CN_docno_show, #DN_docno_show, #IN_docno_show, #alloc_docno_show, #track_docno_show,#DF_docno_show').text(selrowData("#jqGrid").db_recptno);
@@ -2454,59 +2461,6 @@ $(document).ready(function (){
 	///////////////////////add field into param, refresh grid if needed///////////////////////
 	addParamField('#jqGrid', true, urlParam);
 	
-	//////////////////////////////////formatter checkdetail//////////////////////////////////
-	function showdetail(cellvalue, options, rowObject){
-		var field, table, case_;
-		switch(options.colModel.name){
-			// jqgrid depan
-			case 'db_debtorcode': field = ['debtorcode','name'];table = "debtor.debtormast";case_ = 'db_debtorcode';break;
-			case 'db_mrn': field = ['MRN','name'];table = "hisdb.pat_mast";case_ = 'db_mrn';break;
-			case 'db_deptcode': field = ['deptcode','description'];table = "sysdb.department";case_ = 'db_deptcode';break;
-			
-			// jqGridAlloc
-			case 'debtorcode': field = ['debtorcode','name'];table = "debtor.debtormast";case_ = 'debtorcode';break;
-			case 'payercode': field = ['debtorcode','name'];table = "debtor.debtormast";case_ = 'payercode';break;
-			case 'paymode': field = ['paymode','description'];table = "debtor.paymode";case_ = 'paymode';break;
-			case 'mrn': field = ['MRN','name'];table = "hisdb.pat_mast";case_ = 'mrn';break;
-			
-			// CN
-			case 'deptcode': field = ['deptcode','description'];table = "sysdb.department";case_ = 'Department CN';break;
-			case 'category': field = ['catcode','description'];table = "material.category";case_ = 'Category CN';break;
-			case 'GSTCode': field = ['taxcode','description'];table = "hisdb.taxmast";case_ = 'GST Code CN';break;
-			
-			// DN
-			case 'deptcode': field = ['deptcode','description'];table = "sysdb.department";case_ = 'Department DN';break;
-			case 'category': field = ['catcode','description'];table = "material.category";case_ = 'Category DN';break;
-			case 'GSTCode': field = ['taxcode','description'];table = "hisdb.taxmast";case_ = 'GST Code DN';break;
-			
-			// IN
-			case 'chggroup': 
-					if(cellvalue.length <= 3){
-						field = ['grpcode','description'];table = "hisdb.chggroup";case_ = 'chggroup';break;
-					}else{
-						field = ['chgcode','description'];table = "hisdb.chgmast";case_ = 'chggroup';break;
-					}
-			case 'uom': field = ['uomcode','description'];table = "material.uom";case_ = 'uom';break;
-			case 'taxcode': field = ['taxcode','description'];table = "hisdb.taxmast";case_ = 'taxcode';break;
-			
-			// RC RF
-			case 'dbacthdr_payercode': field = ['debtorcode','name'];table = "debtor.debtormast";case_ = 'dbacthdr_payercode';break;
-			case 'dbacthdr_trantype': field = ['trantype','description'];table = "sysdb.sysparam";case_ = 'dbacthdr_trantype';break;
-			
-			// tracking
-			case 'trxcode': return cellvalue;
-
-			//DF
-			case 'chgcode': field = ['chgcode','description'];table = "hisdb.chgmast";case_ = 'chgmast';break;
-			case 'drcode': field = ['doctorcode','doctorname'];table = "hisdb.doctor";case_ = 'doctor';break;
-
-		}
-		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
-		
-		fdl.get_array('arenquiry',options,param,case_,cellvalue);
-		if(cellvalue == null)cellvalue = " ";
-		return cellvalue;
-	}
 	
 	////////////////////////////////////////cust_rules////////////////////////////////////////
 	function cust_rules(value, name){
@@ -4085,4 +4039,58 @@ function init_jq2(oper){
 		$('#jqGridPager2_Alloc').hide();
 		// $("#jqGrid2_Alloc input[name='allocamount']").attr('readonly','readonly');
 	}
+}
+
+//////////////////////////////////formatter checkdetail//////////////////////////////////
+function showdetail(cellvalue, options, rowObject){
+	var field, table, case_;
+	switch(options.colModel.name){
+		// jqgrid depan
+		case 'db_debtorcode': field = ['debtorcode','name'];table = "debtor.debtormast";case_ = 'db_debtorcode';break;
+		case 'db_mrn': field = ['MRN','name'];table = "hisdb.pat_mast";case_ = 'db_mrn';break;
+		case 'db_deptcode': field = ['deptcode','description'];table = "sysdb.department";case_ = 'db_deptcode';break;
+		
+		// jqGridAlloc
+		case 'debtorcode': field = ['debtorcode','name'];table = "debtor.debtormast";case_ = 'debtorcode';break;
+		case 'payercode': field = ['debtorcode','name'];table = "debtor.debtormast";case_ = 'payercode';break;
+		case 'paymode': field = ['paymode','description'];table = "debtor.paymode";case_ = 'paymode';break;
+		case 'mrn': field = ['MRN','name'];table = "hisdb.pat_mast";case_ = 'mrn';break;
+		
+		// CN
+		case 'deptcode': field = ['deptcode','description'];table = "sysdb.department";case_ = 'Department CN';break;
+		case 'category': field = ['catcode','description'];table = "material.category";case_ = 'Category CN';break;
+		case 'GSTCode': field = ['taxcode','description'];table = "hisdb.taxmast";case_ = 'GST Code CN';break;
+		
+		// DN
+		case 'deptcode': field = ['deptcode','description'];table = "sysdb.department";case_ = 'Department DN';break;
+		case 'category': field = ['catcode','description'];table = "material.category";case_ = 'Category DN';break;
+		case 'GSTCode': field = ['taxcode','description'];table = "hisdb.taxmast";case_ = 'GST Code DN';break;
+		
+		// IN
+		case 'chggroup': 
+				if(cellvalue.length <= 3){
+					field = ['grpcode','description'];table = "hisdb.chggroup";case_ = 'chggroup';break;
+				}else{
+					field = ['chgcode','description'];table = "hisdb.chgmast";case_ = 'chggroup';break;
+				}
+		case 'uom': field = ['uomcode','description'];table = "material.uom";case_ = 'uom';break;
+		case 'taxcode': field = ['taxcode','description'];table = "hisdb.taxmast";case_ = 'taxcode';break;
+		
+		// RC RF
+		case 'dbacthdr_payercode': field = ['debtorcode','name'];table = "debtor.debtormast";case_ = 'dbacthdr_payercode';break;
+		case 'dbacthdr_trantype': field = ['trantype','description'];table = "sysdb.sysparam";case_ = 'dbacthdr_trantype';break;
+		
+		// tracking
+		case 'trxcode': return cellvalue;
+
+		//DF
+		case 'chgcode': field = ['chgcode','description'];table = "hisdb.chgmast";case_ = 'chgmast';break;
+		case 'drcode': field = ['doctorcode','doctorname'];table = "hisdb.doctor";case_ = 'doctor';break;
+
+	}
+	var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+	
+	fdl.get_array('arenquiry',options,param,case_,cellvalue);
+	if(cellvalue == null)cellvalue = " ";
+	return cellvalue;
 }
