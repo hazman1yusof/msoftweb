@@ -135,7 +135,6 @@ class arenquiryController extends defaultController
                 ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
                 ->where('db.compcode','=',session('compcode'))
                 // ->where('db.recstatus','=','POSTED')
-                ->where('db.trantype','=','RC')
                 ->where('db.source','=','PB');
                 // ->where('db.trantype','=','IN','DN',);
         
