@@ -169,6 +169,7 @@ class ARAgeingDtl_ReportController extends defaultController
                                          ->where('dh.compcode', '=', session('compcode'));
                         })->leftJoin('hisdb.pat_mast as pm', function($join){
                             $join = $join->on('pm.MRN', '=', 'dh.mrn')
+                                         ->where('pm.NewMrn', '<>', '')
                                          ->where('pm.compcode', '=', session('compcode'));
                         })
                         ->where('dm.compcode', '=', session('compcode'))
