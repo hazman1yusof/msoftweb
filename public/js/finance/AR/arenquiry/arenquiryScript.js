@@ -3289,7 +3289,7 @@ $(document).ready(function (){
 			ondblClickRow: function (){
 				let data = selrowData('#'+dialog_allodebtor.gridname);
 				$('#AlloDebtor').val(data.debtorcode);
-				myallocation.renewAllo($('#AlloAmt').val());
+				myallocation.renewAllo($('#AlloOutamt').val());
 				urlParamManAlloc.filterVal[0] = data.debtorcode;
 				refreshGrid("#gridManAlloc",urlParamManAlloc);
 			},
