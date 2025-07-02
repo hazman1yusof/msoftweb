@@ -90,6 +90,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                                          ->where('dh.recstatus', '=', 'POSTED');
                         })->leftJoin('hisdb.pat_mast as pm', function($join){
                             $join = $join->on('pm.NewMrn', '=', 'dh.mrn')
+                                        ->where('pm.NewMrn', '<>', '')
                                          ->where('pm.compcode', '=', session('compcode'));
                         })
                         ->where('dm.compcode', '=', session('compcode'))
