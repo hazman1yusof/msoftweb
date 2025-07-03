@@ -6621,7 +6621,6 @@ class TestController extends defaultController
                             $join = $join->on('s.itemcode','p.itemcode')
                                           ->on('s.uomcode','p.uomcode')
                                           ->on('p.qtyonhand','!=','s.qtyonhand')
-                                          ->where('s.qtyonhand','0')
                                           ->where('s.unit',"w'house")
                                           ->where('s.deptcode','FKWSTR')
                                           ->where('s.year','2025')
