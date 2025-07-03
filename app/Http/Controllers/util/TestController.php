@@ -6097,7 +6097,6 @@ class TestController extends defaultController
                 $posteddate = Carbon::createFromFormat('d/m/y',$dbacthdr_obj->date)->format('Y-m-d');
 
                 $yearperiod = defaultController::getyearperiod_($posteddate);
-                dd($posteddate);
 
                 $dept_obj = $this->gltran_fromdept($dbacthdr_obj->tillcode);
                 $debtormast_obj = $this->gltran_fromdebtormast($dbacthdr_obj->payercode);
