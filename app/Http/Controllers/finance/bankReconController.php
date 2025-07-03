@@ -566,6 +566,8 @@ class bankReconController extends defaultController
                         }else{
                             $value->reference = $value->remarks;
                         }
+                    }else if($value->trantype == 'BD' || $value->trantype == 'BS' || $value->trantype == 'BQ'){
+                        $value->reference = $value->reference;
                     }else{
                         if(!empty($value->remarks)){
                             $value->reference = $value->remarks;
