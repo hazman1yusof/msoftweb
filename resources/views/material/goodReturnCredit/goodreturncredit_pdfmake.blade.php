@@ -15,22 +15,6 @@
 </object>
 
 <script>
-	
-	var delordhd = {
-		@foreach($delordhd as $key => $val) 
-			'{{$key}}' : '{{$val}}',
-		@endforeach 
-	};
-
-	var delorddt=[
-		@foreach($delorddt as $key => $dodt)
-		[
-			@foreach($dodt as $key2 => $val)
-				{'{{$key2}}' : `{!!str_replace('`', '', $val)!!}`},
-			@endforeach
-		],
-		@endforeach 
-	];
 
 	var company = {
 		@foreach($company as $key => $val) 
