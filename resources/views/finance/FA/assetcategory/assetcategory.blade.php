@@ -279,6 +279,6 @@
 		});
 	</script>
 
-	<script src="js/finance/FA/assetcategory/assetcategoryScript.js"></script>
+	<script src="js/finance/FA/assetcategory/assetcategoryScript.js?v=1.1"></script>
 	
 @endsection

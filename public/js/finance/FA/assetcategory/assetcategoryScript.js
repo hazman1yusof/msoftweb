@@ -134,6 +134,8 @@ $.jgrid.defaults.responsive = true;
 			table_name:'finance.facode',
 			table_id:'assetcode',
 			sort_idno: true,
+			filterCol:['compcode'],
+			filterVal:['session.compcode'],
 		}
 
 		/////////////////////parameter for saving url////////////////////////////////////////////////
