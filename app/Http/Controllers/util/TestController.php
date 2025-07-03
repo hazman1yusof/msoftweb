@@ -6094,7 +6094,7 @@ class TestController extends defaultController
 
             foreach ($poliklinik as $dbacthdr_obj) {
 
-                $posteddate = Carbon::createFromFormat('d/m/Y',$dbacthdr_obj->date)->format('Y-m-d');
+                $posteddate = Carbon::createFromFormat('d/m/y',$dbacthdr_obj->date)->format('Y-m-d');
 
                 $yearperiod = defaultController::getyearperiod_($posteddate);
                 dd($posteddate);
