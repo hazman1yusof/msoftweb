@@ -6628,6 +6628,11 @@ class TestController extends defaultController
                         })
                         ->get();
 
+        foreach ($product as $obj) {
+            $diff = intval($obj->qty_p) - intval($obj->qty_s);
+            $obj->diff = $diff;
+        }
+
         dd($product);
     }
 
