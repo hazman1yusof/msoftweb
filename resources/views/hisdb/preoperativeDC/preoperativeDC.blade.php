@@ -317,47 +317,47 @@
                                     <tbody>
                                         <tr>
                                             <td><b>Blood Test</b></td>
-                                            <td><input type="checkbox" name="bloodTest_1" id="bloodTest_1" value="1"></td>
-                                            <td><input type="checkbox" name="bloodTest_2" id="bloodTest_2" value="1"></td>
-                                            <td><input type="checkbox" name="bloodTest_3" id="bloodTest_3" value="1"></td>
-                                            <td><input type="checkbox" name="bloodTest_4" id="bloodTest_4" value="1"></td>
-                                            <td><input type="checkbox" name="bloodTest_doc" id="bloodTest_doc" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="bloodTest_1" id="bloodTest_1" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="bloodTest_2" id="bloodTest_2" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="bloodTest_3" id="bloodTest_3" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="bloodTest_4" id="bloodTest_4" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="bloodTest_doc" id="bloodTest_doc" value="1"></td>
                                             <td><textarea class="form-control input-sm" id="bloodTest_remarks" name="bloodTest_remarks"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td><b>Group And Cross Match</b></td>
-                                            <td><input type="checkbox" name="grpCrossMatch_1" id="grpCrossMatch_1" value="1"></td>
-                                            <td><input type="checkbox" name="grpCrossMatch_2" id="grpCrossMatch_2" value="1"></td>
-                                            <td><input type="checkbox" name="grpCrossMatch_3" id="grpCrossMatch_3" value="1"></td>
-                                            <td><input type="checkbox" name="grpCrossMatch_4" id="grpCrossMatch_4" value="1"></td>
-                                            <td><input type="checkbox" name="grpCrossMatch_doc" id="grpCrossMatch_doc" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="grpCrossMatch_1" id="grpCrossMatch_1" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="grpCrossMatch_2" id="grpCrossMatch_2" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="grpCrossMatch_3" id="grpCrossMatch_3" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="grpCrossMatch_4" id="grpCrossMatch_4" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="grpCrossMatch_doc" id="grpCrossMatch_doc" value="1"></td>
                                             <td>Availability:<textarea class="form-control input-sm" id="grpCrossMatch_remarks" name="grpCrossMatch_remarks"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td><b>ECG</b></td>
-                                            <td><input type="checkbox" name="ecg_1" id="ecg_1" value="1"></td>
-                                            <td><input type="checkbox" name="ecg_2" id="ecg_2" value="1"></td>
-                                            <td><input type="checkbox" name="ecg_3" id="ecg_3" value="1"></td>
-                                            <td><input type="checkbox" name="ecg_4" id="ecg_4" value="1"></td>
-                                            <td><input type="checkbox" name="ecg_doc" id="ecg_doc" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="ecg_1" id="ecg_1" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="ecg_2" id="ecg_2" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="ecg_3" id="ecg_3" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="ecg_4" id="ecg_4" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="ecg_doc" id="ecg_doc" value="1"></td>
                                             <td><textarea class="form-control input-sm" id="ecg_remarks" name="ecg_remarks"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td><b>XRAY/CT/MRI/ANGIO Films</b></td>
-                                            <td><input type="checkbox" name="xray_1" id="xray_1" value="1"></td>
-                                            <td><input type="checkbox" name="xray_2" id="xray_2" value="1"></td>
-                                            <td><input type="checkbox" name="xray_3" id="xray_3" value="1"></td>
-                                            <td><input type="checkbox" name="xray_4" id="xray_4" value="1"></td>
-                                            <td><input type="checkbox" name="xray_doc" id="xray_doc" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="xray_1" id="xray_1" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="xray_2" id="xray_2" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="xray_3" id="xray_3" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="xray_4" id="xray_4" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="xray_doc" id="xray_doc" value="1"></td>
                                             <td><textarea class="form-control input-sm" id="xray_remarks" name="xray_remarks"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td><b>CTG</b></td>
-                                            <td><input type="checkbox" name="ctg_1" id="ctg_1" value="1"></td>
-                                            <td><input type="checkbox" name="ctg_2" id="ctg_2" value="1"></td>
-                                            <td><input type="checkbox" name="ctg_3" id="ctg_3" value="1"></td>
-                                            <td><input type="checkbox" name="ctg_4" id="ctg_4" value="1"></td>
-                                            <td><input type="checkbox" name="ctg_doc" id="ctg_doc" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="ctg_1" id="ctg_1" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="ctg_2" id="ctg_2" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="ctg_3" id="ctg_3" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="ctg_4" id="ctg_4" value="1"></td>
+                                            <td style="text-align:center; vertical-align:middle;"><input type="checkbox" name="ctg_doc" id="ctg_doc" value="1"></td>
                                             <td><textarea class="form-control input-sm" id="ctg_remarks" name="ctg_remarks"></textarea></td>
                                         </tr>
                                         <tr>

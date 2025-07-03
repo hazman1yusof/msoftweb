@@ -34,10 +34,14 @@
                             <input class="form-control input-sm" id="txt_epis_no" name="txt_epis_no" placeholder="" type="text" readonly>
                         </div>
                         <div class="col-sm-1">
+                            <small for="txt_epis_iPesakit">IPESAKIT</small>
+                            <input class="form-control input-sm" id="txt_epis_iPesakit" name="txt_epis_iPesakit" placeholder="" type="text" readonly>
+                        </div>
+                        <div class="col-sm-1">
                             <small for="txt_epis_type">TYPE: </small>
                             <input id="txt_epis_type" name="txt_epis_type" placeholder="" type="text" class="form-control input-sm" readonly>
                         </div>
-                        <div class="col-sm-7">
+                        <div class="col-sm-6">
                             <small for="txt_epis_type">NAME: </small>
                             <br/><big id="txt_epis_name" class="epis_name_big"></big></b>
                         </div>

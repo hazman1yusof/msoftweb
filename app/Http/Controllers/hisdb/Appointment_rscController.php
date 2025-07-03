@@ -222,7 +222,9 @@ class Appointment_rscController extends defaultController
                     'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastuser'    => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
-                    'type'        => 'OT'
+                    'type'        => 'OT',
+                    'iPesakit'    => $request->iPesakit,
+                    'cArm'        => $request->cArm,
                 ]);
 
             DB::commit();
@@ -357,7 +359,10 @@ class Appointment_rscController extends defaultController
                     'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastuser'    => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
-                    'type'        => $request->Class2
+                    'type'        => $request->Class2,
+                    'iPesakit'    => $request->iPesakit,
+                    'cArm'        => $request->cArm,
+
                 ]);
 
             }else{
@@ -383,7 +388,9 @@ class Appointment_rscController extends defaultController
                     'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastuser'    => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
-                    'type'        => $request->Class2
+                    'type'        => $request->Class2,
+                    'iPesakit'    => $request->iPesakit,
+                    'cArm'        => $request->cArm,
                 ]);
             }
 
@@ -468,7 +475,9 @@ class Appointment_rscController extends defaultController
                             'surgeon'   => strtoupper($request->surgeon),
                             'computerid'   => $request->computerid,
                             'lastuser'    => session('username'),
-                            'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
+                            'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                            'iPesakit'    => $request->iPesakit,
+                            'cArm'        => $request->cArm,
                         ]);
                 }else{
                     DB::table('hisdb.apptbook')
@@ -491,7 +500,9 @@ class Appointment_rscController extends defaultController
                             'remarks'     => $request->remarks,
                             'computerid'   => $request->computerid,
                             'lastuser'    => session('username'),
-                            'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
+                            'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                            'iPesakit'    => $request->iPesakit,
+                            'cArm'        => $request->cArm,
                         ]);
                 }
             }
@@ -536,6 +547,7 @@ class Appointment_rscController extends defaultController
 
         $array_insert['first_visit_date'] = Carbon::createFromFormat('d/m/Y', $request->first_visit_date);
         $array_insert['last_visit_date'] = Carbon::createFromFormat('d/m/Y', $request->last_visit_date);
+        $array_insert['iPesakit'] = $request->iPesakit;
 
 
         try {
@@ -595,6 +607,7 @@ class Appointment_rscController extends defaultController
 
         array_pull($array_update, 'first_visit_date');
         array_pull($array_update, 'last_visit_date');
+        array_pull($array_update, 'iPesakit');
 
         try {
 

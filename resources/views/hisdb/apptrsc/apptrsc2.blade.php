@@ -278,6 +278,10 @@ button#btn_icd,button#btn_mma{
 								<div class="col-md-3">
 									<input type="text" class="form-control input-sm" placeholder="I/C No." id="icnum" name="icnum" maxlength="12"  readonly value="@if(!empty($pat_info)){{$pat_info->newic}} @endif">
 								</div>
+								<label for="iPesakit" class="col-md-2 control-label">iPesakit</label>
+								<div class="col-md-3">
+									<input type="text" class="form-control input-sm" placeholder="iPesakit" id="iPesakit" name="iPesakit">
+								</div>
 							</div>
 							<div class="form-group">
 								<label for="start" class="col-md-2 control-label">Resource Date</label>
@@ -305,6 +309,8 @@ button#btn_icd,button#btn_mma{
 									<select name="status" id="status" class="form-control input-sm" data-validation="required">
 										<option value="attend">Attend</option>	
 										<option value="notattend">Not Attend</option>
+										<option value="decline">Decline</option>	
+										<option value="postponed">Postponed</option>
 									</select>	
 								</div>
 							</div>
@@ -312,6 +318,16 @@ button#btn_icd,button#btn_mma{
 								<label for="telhp" class="col-md-2 control-label">Tel Hp</label>
 								<div class="col-md-3">
 									<input type="text" class="form-control input-sm phone-group" placeholder="Telephone Hp" id="telhp" name="telhp" value="@if(!empty($pat_info)){{$pat_info->telhp}} @endif">	
+								</div>
+		
+								<label class="col-md-2 control-label" for="cArm">Need C-Arm</label>
+								<div class="col-md-3">
+									<label class="radio-inline">
+										<input type="radio" id="carmY" name="cArm" value="1">Yes
+									</label>
+									<label class="radio-inline">
+										<input type="radio" id="carmN" name="cArm" value="0">No
+									</label>
 								</div>
 								<!-- <label for="Doctor" class="col-md-2 control-label">Case</label>
 								<div class="col-md-3">

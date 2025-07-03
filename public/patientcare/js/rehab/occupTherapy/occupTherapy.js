@@ -87,9 +87,11 @@ $(document).ready(function (){
                 datetimeUpperExtremity_tbl.ajax.url("./occupTherapy_upperExtremity/table?"+$.param(urlparam_datetimeUpperExtremity_tbl)).load(function (data){
                     emptyFormdata_div("#formOccupTherapyUpperExtremity",['#mrn_occupTherapy','#episno_occupTherapy','#idno_upperExtremity']);
                     emptyFormdata_div("#formROF",['#mrn_occupTherapy','#episno_occupTherapy','#idno_rof','#rof_impressions']);
+                    emptyFormdata_div("#formHand",['#mrn_occupTherapy','#episno_occupTherapy','#idno_hand','#hand_impressions']);
                     $('#datetimeUpperExtremity_tbl tbody tr:eq(0)').click();  // to select first row
                 });
                 $("#jqGrid_rof").jqGrid('setGridWidth', Math.floor($("#jqGrid_rof_c")[0].offsetWidth-$("#jqGrid_rof_c")[0].offsetLeft));
+                $("#jqGrid_hand").jqGrid('setGridWidth', Math.floor($("#jqGrid_hand_c")[0].offsetWidth-$("#jqGrid_hand_c")[0].offsetLeft));
 
                 populate_upperExtremity_getdata();
                 break;
@@ -151,42 +153,46 @@ $(document).ready(function (){
     $('#upExt .top.menu .item').tab({'onVisible': function (){
         let tab = $(this).data('tab');
         // console.log(tab);
-        
         switch(tab){
             case 'rof':
-                $("#jqGrid_rof").jqGrid('setGridWidth', Math.floor($("#jqGrid_rof_c")[0].offsetWidth-$("#jqGrid_rof_c")[0].offsetLeft));
                 emptyFormdata_div("#formROF",['#mrn_occupTherapy','#episno_occupTherapy','#idno_rof','#rof_impressions']);
+                $("#jqGrid_rof").jqGrid('setGridWidth', Math.floor($("#jqGrid_rof_c")[0].offsetWidth-$("#jqGrid_rof_c")[0].offsetLeft));
                 populate_rof_getdata();
                 break;
 
             case 'hand':
+                emptyFormdata_div("#formHand",['#mrn_occupTherapy','#episno_occupTherapy','#idno_hand','#hand_impressions']);
                 $("#jqGrid_hand").jqGrid('setGridWidth', Math.floor($("#jqGrid_hand_c")[0].offsetWidth-$("#jqGrid_hand_c")[0].offsetLeft));
                 populate_hand_getdata();
                 break;
 
             case 'strength':
                 emptyFormdata_div("#formStrength",['#mrn_occupTherapy','#episno_occupTherapy','#idno_strength']);
-
                 populate_strength_getdata();  
                 break;
 
             case 'sensation':
+                emptyFormdata_div("#formStrength",['#mrn_occupTherapy','#episno_occupTherapy','#idno_sensation']);
                 populate_sensation_getdata();               
                 break;
 
             case 'prehensive':
-                populate_prehensive_getdata();             
+                emptyFormdata_div("#formStrength",['#mrn_occupTherapy','#episno_occupTherapy','#idno_prehensive']);
+                populate_prehensive_getdata();
                 break;
 
             case 'skin':
+                emptyFormdata_div("#formStrength",['#mrn_occupTherapy','#episno_occupTherapy','#formSkin']);
                 populate_skin_getdata();             
                 break;
 
             case 'edema':
+                emptyFormdata_div("#formStrength",['#mrn_occupTherapy','#episno_occupTherapy','#idno_edema']);
                 populate_edema_getdata();             
                 break;
 
             case 'functional':
+                emptyFormdata_div("#formStrength",['#mrn_occupTherapy','#episno_occupTherapy','#idno_func']);
                 populate_func_getdata();             
                 break;
         }
