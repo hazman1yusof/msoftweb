@@ -6631,6 +6631,27 @@ class TestController extends defaultController
         foreach ($product as $obj) {
             $diff = intval($obj->qty_p) - intval($obj->qty_s);
             $obj->diff = $diff;
+
+            $ivtxndt = DB::table('material.ivtxndt')
+                        ->where('trantype','PHYCNT')
+                        ->where('compcode',session('compcode'))
+                        ->where('recno','5204211')
+                        ->where('itemcode',$obj->itemcode)
+                        ->first();
+
+            $real = $ivtxndt->txnqty - $diff;
+            $realamt = $real * $ivtxndt->netprice;
+
+            DB::table('material.ivtxndt')
+                        ->where('trantype','PHYCNT')
+                        ->where('compcode',session('compcode'))
+                        ->where('recno','5204211')
+                        ->where('itemcode',$obj->itemcode)
+                        ->update([
+                            'txnqty' => $real,
+                            'amount' => $realamt,
+                            'totamount' => $realamt
+                        ]);
         }
 
         dd($product);
