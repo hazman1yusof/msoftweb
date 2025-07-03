@@ -6612,49 +6612,65 @@ class TestController extends defaultController
     }
 
     public function qtyonhandxsama(Request $request){
-        $product = DB::table('material.product as p')
-                        ->select('p.itemcode','p.qtyonhand as qty_p','s.qtyonhand as qty_s')
-                        ->where('p.qtyonhand','!=','s.qtyonhand')
-                        ->where('p.compcode',session('compcode'))
-                        ->where('p.unit',"w'house")
-                        ->join('material.stockloc as s', function($join) use ($request){
-                            $join = $join->on('s.itemcode','p.itemcode')
-                                          ->on('s.uomcode','p.uomcode')
-                                          ->on('p.qtyonhand','!=','s.qtyonhand')
-                                          ->where('s.unit',"w'house")
-                                          ->where('s.deptcode','FKWSTR')
-                                          ->where('s.year','2025')
-                                          ->where('s.compcode',session('compcode'));
-                        })
-                        ->get();
+        DB::beginTransaction();
 
-        foreach ($product as $obj) {
-            $diff = intval($obj->qty_p) - intval($obj->qty_s);
-            $obj->diff = $diff;
+        try {
+            $product = DB::table('material.product as p')
+                            ->select('p.itemcode','p.qtyonhand as qty_p','s.qtyonhand as qty_s')
+                            ->where('p.qtyonhand','!=','s.qtyonhand')
+                            ->where('p.compcode',session('compcode'))
+                            ->where('p.unit',"w'house")
+                            ->join('material.stockloc as s', function($join) use ($request){
+                                $join = $join->on('s.itemcode','p.itemcode')
+                                              ->on('s.uomcode','p.uomcode')
+                                              ->on('p.qtyonhand','!=','s.qtyonhand')
+                                              ->where('s.unit',"w'house")
+                                              ->where('s.deptcode','FKWSTR')
+                                              ->where('s.year','2025')
+                                              ->where('s.compcode',session('compcode'));
+                            })
+                            ->get();
 
-            $ivtxndt = DB::table('material.ivtxndt')
-                        ->where('trantype','PHYCNT')
-                        ->where('compcode',session('compcode'))
-                        ->where('recno','5204211')
-                        ->where('itemcode',$obj->itemcode)
-                        ->first();
+            foreach ($product as $obj) {
+                $diff = intval($obj->qty_p) - intval($obj->qty_s);
+                $obj->diff = $diff;
 
-            $real = $ivtxndt->txnqty - $diff;
-            $realamt = $real * $ivtxndt->netprice;
+                $ivtxndt = DB::table('material.ivtxndt')
+                            ->where('trantype','PHYCNT')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno','5204211')
+                            ->where('itemcode',$obj->itemcode);
 
-            DB::table('material.ivtxndt')
-                        ->where('trantype','PHYCNT')
-                        ->where('compcode',session('compcode'))
-                        ->where('recno','5204211')
-                        ->where('itemcode',$obj->itemcode)
-                        ->update([
-                            'txnqty' => $real,
-                            'amount' => $realamt,
-                            'totamount' => $realamt
-                        ]);
+                if(!$ivtxndt->exists()){
+                    throw new \Exception("ivtxndt xde: ".$obj->itemcode);
+                }
+                
+                $ivtxndt =  $ivtxndt->first();
+
+                $real = $ivtxndt->txnqty - $diff;
+                $realamt = $real * $ivtxndt->netprice;
+
+                DB::table('material.ivtxndt')
+                            ->where('trantype','PHYCNT')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno','5204211')
+                            ->where('itemcode',$obj->itemcode)
+                            ->update([
+                                'txnqty' => $real,
+                                'amount' => $realamt,
+                                'totamount' => $realamt
+                            ]);
+            }
+
+            DB::commit();
+            dd($product);
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
         }
-
-        dd($product);
     }
 
 }
