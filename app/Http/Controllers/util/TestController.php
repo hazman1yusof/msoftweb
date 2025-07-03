@@ -44,8 +44,8 @@ class TestController extends defaultController
         switch($request->action){
             // case 'chgmast_invflag_tukar_dari_product':
             //     return $this->chgmast_invflag_tukar_dari_product($request);
-            case 'allocation_btlkn':
-                return $this->allocation_btlkn($request);
+            case 'qtyonhandxsama':
+                return $this->qtyonhandxsama($request);
             case 'gltran_jnl':
                 return $this->gltran_jnl($request);
             case 'bankrecon_cbtran':
@@ -6609,6 +6609,26 @@ class TestController extends defaultController
 
             dd('Error'.$e);
         }
+    }
+
+    public function qtyonhandxsama(Request $request){
+        $product = DB::table('material.product as p')
+                        ->select('p.itemcode','p.qtyonhand as qty_p','s.qtyonhand as qty_s')
+                        ->where('p.qtyonhand','!=','s.qtyonhand')
+                        ->where('p.compcode',session('compcode'))
+                        ->where('p.unit',"w'house")
+                        ->join('material.stockloc as s', function($join) use ($request){
+                            $join = $join->on('s.itemcode','p.itemcode')
+                                          ->on('s.uomcode','p.uomcode')
+                                          ->on('p.qtyonhand','!=','s.qtyonhand')
+                                          ->where('s.unit',"w'house")
+                                          ->where('s.deptcode','FKWSTR')
+                                          ->where('s.year','2025')
+                                          ->where('s.compcode',session('compcode'));
+                        })
+                        ->get();
+
+        dd($product);
     }
 
 }
