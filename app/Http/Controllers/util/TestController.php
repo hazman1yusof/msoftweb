@@ -6635,31 +6635,30 @@ class TestController extends defaultController
                 $diff = intval($obj->qty_p) - intval($obj->qty_s);
                 $obj->diff = $diff;
 
-                $ivtxndt = DB::table('material.ivtxndt')
-                            ->where('trantype','PHYCNT')
-                            ->where('compcode',session('compcode'))
-                            ->where('recno','5204211')
-                            ->where('itemcode',$obj->itemcode);
+                // $ivtxndt = DB::table('material.ivtxndt')
+                //             ->where('trantype','PHYCNT')
+                //             ->where('compcode',session('compcode'))
+                //             ->where('recno','5204211')
+                //             ->where('itemcode',$obj->itemcode);
 
-                if(!$ivtxndt->exists()){
-                    throw new \Exception("ivtxndt xde: ".$obj->itemcode);
-                }
-                
-                $ivtxndt =  $ivtxndt->first();
+                // if(!$ivtxndt->exists()){
+                //     throw new \Exception("ivtxndt xde: ".$obj->itemcode);
+                // }
+                // $ivtxndt =  $ivtxndt->first();
 
-                $real = $ivtxndt->txnqty - $diff;
-                $realamt = $real * $ivtxndt->netprice;
+                // $real = $ivtxndt->txnqty - $diff;
+                // $realamt = $real * $ivtxndt->netprice;
 
-                DB::table('material.ivtxndt')
-                            ->where('trantype','PHYCNT')
-                            ->where('compcode',session('compcode'))
-                            ->where('recno','5204211')
-                            ->where('itemcode',$obj->itemcode)
-                            ->update([
-                                'txnqty' => $real,
-                                'amount' => $realamt,
-                                'totamount' => $realamt
-                            ]);
+                // DB::table('material.ivtxndt')
+                //             ->where('trantype','PHYCNT')
+                //             ->where('compcode',session('compcode'))
+                //             ->where('recno','5204211')
+                //             ->where('itemcode',$obj->itemcode)
+                //             ->update([
+                //                 'txnqty' => $real,
+                //                 'amount' => $realamt,
+                //                 'totamount' => $realamt
+                //             ]);
             }
 
             DB::commit();
