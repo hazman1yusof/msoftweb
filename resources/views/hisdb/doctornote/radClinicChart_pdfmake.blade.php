@@ -45,14 +45,20 @@
                                         text: [
                                             'Patient Name (Capitals)',
                                             { text: '\u200B\t\u200B\t{{strtoupper($pat_radiology->Name)}}' },
-                                        ], colSpan: 7, alignment: 'left'
-                                    },{},{},{},{},{},{},
+                                        ], colSpan: 5, alignment: 'left'
+                                    },{},{},{},{},
                                     {
                                         text: [
                                             'Race',
                                             { text: '\u200B\t\u200B\t{{$pat_radiology->RaceCode}}' },
-                                        ], colSpan: 4, alignment: 'left'
-                                    },{},{},{},
+                                        ], colSpan: 3, alignment: 'left'
+                                    },{},{},
+                                    {
+                                        text: [
+                                            'iPesakit',
+                                            { text: '\u200B\t\u200B\t{{$pat_radiology->iPesakit}}' },
+                                        ], colSpan: 3, alignment: 'left'
+                                    },{},{},
                                 ],
                                 [
                                     {
@@ -92,31 +98,31 @@
                                         text: [
                                             'Patient Condition',
                                             { text: '\u200B\t[√] Walking [  ] On Wheelchair [  ] Strecher' },
-                                        ], colSpan: 4, alignment: 'left'
+                                        ], colSpan: 3, alignment: 'left'
                                     },
                                     @elseif($pat_radiology->pt_condition == 'wheelchair')
                                     {
                                         text: [
                                             'Patient Condition',
                                             { text: '\u200B\t[  ] Walking [√] On Wheelchair [  ] Strecher' },
-                                        ], colSpan: 4, alignment: 'left'
+                                        ], colSpan: 3, alignment: 'left'
                                     },
                                     @elseif($pat_radiology->pt_condition == 'strecher')
                                     {
                                         text: [
                                             'Patient Condition',
                                             { text: '\u200B\t[  ] Walking [  ] On Wheelchair [√] Strecher' },
-                                        ], colSpan: 4, alignment: 'left'
+                                        ], colSpan: 3, alignment: 'left'
                                     },
                                     @else
                                     {
                                         text: [
                                             'Patient Condition',
                                             { text: '\u200B\t[  ] Walking [  ] On Wheelchair [  ] Strecher' },
-                                        ], colSpan: 4, alignment: 'left'
+                                        ], colSpan: 3, alignment: 'left'
                                     },
                                     @endif
-                                    {},{},{},
+                                    {},{},
                                     @if($pat_radiology->newcaseP == '1' || $pat_radiology->followupP == '1')
                                     {
                                         text: [
@@ -140,12 +146,28 @@
                                     },
                                     @endif
                                     {},{},
+                                    @if(!empty($pat_radiology->LMP))
+                                    {
+                                        text: [
+                                            'LMP',
+                                            { text: '\n\n{{\Carbon\Carbon::createFromFormat('Y-m-d',$pat_radiology->LMP)->format('d-m-Y')}}' },
+                                        ], colSpan: 2, alignment: 'left'
+                                    },
+                                    @else
+                                    {
+                                        text: [
+                                            'LMP',
+                                            { text: '' },
+                                        ], colSpan: 2, alignment: 'left'
+                                    },
+                                    @endif
+                                    {},
                                     {
                                         text: [
                                             'Asthma / Allergy',
                                             { text: `\n\n{!!str_replace('`', '', $pat_radiology->allergyh)!!}` },
-                                        ], colSpan: 4, alignment: 'left'
-                                    },{},{},{},
+                                        ], colSpan: 3, alignment: 'left'
+                                    },{},{},
                                 ],
                                 [
                                     { text: 'Examination', colSpan: 11, border: [true, true, true, false] },

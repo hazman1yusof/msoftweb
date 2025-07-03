@@ -40,8 +40,8 @@
                         <form id="formOccupTherapyUpperExtremity" class="floated ui form sixteen wide column">
                             <input id="idno_upperExtremity" name="idno_upperExtremity" type="hidden">
                             <div class="ui segment">
-                                <div class='ui grid' style="padding: 5px 3px 3px 2px;">
-                                    <div class="sixteen wide column" style="padding: 10px 0px 0px 3px;">
+                                <div class='ui grid'>
+                                    <div class="sixteen wide column">
 
                                         <div class="ui grid">
                                             <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
@@ -73,13 +73,12 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </form>
 
                         <div id="upExt" class="ui bottom attached tab raised segment active" style="padding: 10px 3px 3px 3px;">
-                                <div class="ui top attached tabular menu">
+                            <div class="ui top attached tabular menu">
                                 <a class="item active" data-tab="rof"><h5>Range of Motion</h5></a>
                                 <a class="item" data-tab="hand"><h5>Hand</h5></a>
                                 <a class="item" data-tab="strength"><h5>Muscle<br>Strength</h5></a>
@@ -93,8 +92,8 @@
 
                             <div class="ui bottom attached tab raised segment active" data-tab="rof">
                                 <div class="ui segments" style="position: relative;">
-                                    <div class="ui secondary segment bluecloudsegment" style="height: 50px;">
-                                        <div class="ui small blue icon buttons" id="btn_grp_edit_rof" style="position: absolute;
+                                    <div class="ui secondary segment" style="height: 50px;">
+                                        <div class="ui small green icon buttons" id="btn_grp_edit_rof" style="position: absolute;
                                             padding: 0 0 0 0;
                                             right: 40px;
                                             top: 9px;
@@ -109,13 +108,12 @@
                                     <div class="ui segment">
                                         <div class="ui grid">
                                             <form id="formROF" class="floated ui form sixteen wide column">
-                                                <input id="idno_rof" name="idno_rof" type="text">
-                                                <input id="rof_impressions" name="rof_impressions" type="text" value="ROF">
+                                                <input id="idno_rof" name="idno_rof" type="hidden">
+                                                <input id="rof_impressions" name="rof_impressions" type="hidden" value="ROF">
 
                                                 <div class="sixteen wide column">
                                                     
                                                     <div id="jqGrid_rof_c" style="padding: 3px 3px 3px 3px;">
-                                                        <!-- <input id="idno_rof" name="idno_rof" type="hidden"> -->
                                                         <table id="jqGrid_rof" class="table table-striped"></table>
                                                         <div id="jqGridPager_rof"></div>
                                                     </div>
@@ -145,8 +143,8 @@
 
                             <div class="ui bottom attached tab raised segment" data-tab="hand">
                                 <div class="ui segments" style="position: relative;">
-                                    <div class="ui secondary segment bluecloudsegment" style="height: 50px;">
-                                        <div class="ui small blue icon buttons" id="btn_grp_edit_hand" style="position: absolute;
+                                    <div class="ui secondary segment" style="height: 50px;">
+                                        <div class="ui small green icon buttons" id="btn_grp_edit_hand" style="position: absolute;
                                             padding: 0 0 0 0;
                                             right: 40px;
                                             top: 9px;
@@ -166,7 +164,6 @@
 
                                                 <div class="sixteen wide column">
                                                     <div id="jqGrid_hand_c" style="padding: 3px 3px 3px 3px;">
-                                                        <!-- <input id="idno_hand" name="idno_hand" type="hidden"> -->
                                                         <table id="jqGrid_hand" class="table table-striped"></table>
                                                         <div id="jqGridPager_hand"></div>
                                                     </div>
@@ -196,8 +193,8 @@
 
                             <div class="ui bottom attached tab raised segment" data-tab="strength">
                                 <div class="ui segments" style="position: relative;">
-                                    <div class="ui secondary segment bluecloudsegment" style="height: 50px;">
-                                        <div class="ui small blue icon buttons" id="btn_grp_edit_strength" style="position: absolute;
+                                    <div class="ui secondary segment" style="height: 50px;">
+                                        <div class="ui small green icon buttons" id="btn_grp_edit_strength" style="position: absolute;
                                             padding: 0 0 0 0;
                                             right: 40px;
                                             top: 9px;
@@ -213,7 +210,7 @@
                                     <div class="ui segment">
                                         <div class="ui grid">
                                             <form id="formStrength" class="floated ui form sixteen wide column">
-                                                <input id="idno_strength" name="idno_strength" type="text">
+                                                <input id="idno_strength" name="idno_strength" type="hidden">
                                                 <div class="sixteen wide column">
                                                     <table class="ui celled table">
                                                         <thead>
@@ -261,7 +258,7 @@
                                                                     <div class="inline fields">
                                                                         <div class="field">
                                                                             <label for="jamarGripDate" style="padding-left: 10px;">Date: </label>
-                                                                            <input id="jamarGripDate" name="jamarGripDate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" data-validation="required" data-validation-error-msg-required="Please enter information.">
+                                                                            <input id="jamarGripDate" name="jamarGripDate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
                                                                         </div>                                         
                                                                     </div>
                                                                     <table class="table;border border-white">
@@ -308,7 +305,7 @@
                                                                     <div class="inline fields">
                                                                         <div class="field">
                                                                             <label for="jamarPinchDate" style="padding-left: 10px;">Date: </label>
-                                                                            <input id="jamarPinchDate" name="jamarPinchDate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" data-validation="required" data-validation-error-msg-required="Please enter information.">
+                                                                            <input id="jamarPinchDate" name="jamarPinchDate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>">
                                                                         </div>                                         
                                                                     </div>
                                                                     <table class="table small;border border-white">
@@ -397,8 +394,8 @@
 
                             <div class="ui bottom attached tab raised segment" data-tab="sensation">
                                 <div class="ui segments" style="position: relative;">
-                                    <div class="ui secondary segment bluecloudsegment" style="height: 50px;">
-                                        <div class="ui small blue icon buttons" id="btn_grp_edit_sensation" style="position: absolute;
+                                    <div class="ui secondary segment" style="height: 50px;">
+                                        <div class="ui small green icon buttons" id="btn_grp_edit_sensation" style="position: absolute;
                                             padding: 0 0 0 0;
                                             right: 40px;
                                             top: 9px;
@@ -439,56 +436,56 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <th scope="row">Intact</th>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_sharpIntact_rt" id="sens_sharpIntact_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_sharpIntact_lt" id="sens_sharpIntact_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_dullIntact_rt" id="sens_dullIntact_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_dullIntact_lt" id="sens_dullIntact_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_lightIntact_rt" id="sens_lightIntact_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_lightIntact_lt" id="sens_lightIntact_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_deepIntact_rt" id="sens_deepIntact_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_deepIntact_lt" id="sens_deepIntact_lt" value="1">
@@ -506,56 +503,56 @@
 
                                                                 <tr>
                                                                     <th scope="row">Impaired</th>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_sharpImpaired_rt" id="sens_sharpImpaired_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_sharpImpaired_lt" id="sens_sharpImpaired_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_dullImpaired_rt" id="sens_dullImpaired_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_dullImpaired_lt" id="sens_dullImpaired_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_lightImpaired_rt" id="sens_lightImpaired_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_lightImpaired_lt" id="sens_lightImpaired_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_deepImpaired_rt" id="sens_deepImpaired_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_deepImpaired_lt" id="sens_deepImpaired_lt" value="1">
@@ -573,56 +570,56 @@
 
                                                                 <tr>
                                                                     <th scope="row">Absent</th>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_sharpAbsent_rt" id="sens_sharpAbsent_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_sharpAbsent_lt" id="sens_sharpAbsent_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_dullAbsent_rt" id="sens_dullAbsent_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_dullAbsent_lt" id="sens_dullAbsent_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_lightAbsent_rt" id="sens_lightAbsent_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_lightAbsent_lt" id="sens_lightAbsent_lt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_deepAbsent_rt" id="sens_deepAbsent_rt" value="1">
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="text-align:center; vertical-align:middle;">
                                                                         <div class="ui form">
                                                                             <div class="field">
                                                                                 <input type="checkbox" name="sens_deepAbsent_lt" id="sens_deepAbsent_lt" value="1">
@@ -667,8 +664,8 @@
 
                             <div class="ui bottom attached tab raised segment" data-tab="prehensive">
                                 <div class="ui segments" style="position: relative;">
-                                    <div class="ui secondary segment bluecloudsegment" style="height: 50px;">
-                                        <div class="ui small blue icon buttons" id="btn_grp_edit_prehensive" style="position: absolute;
+                                    <div class="ui secondary segment" style="height: 50px;">
+                                        <div class="ui small green icon buttons" id="btn_grp_edit_prehensive" style="position: absolute;
                                             padding: 0 0 0 0;
                                             right: 40px;
                                             top: 9px;
@@ -767,8 +764,8 @@
 
                             <div class="ui bottom attached tab raised segment" data-tab="skin">
                                 <div class="ui segments" style="position: relative;">
-                                    <div class="ui secondary segment bluecloudsegment" style="height: 50px;">
-                                        <div class="ui small blue icon buttons" id="btn_grp_edit_skin" style="position: absolute;
+                                    <div class="ui secondary segment" style="height: 50px;">
+                                        <div class="ui small green icon buttons" id="btn_grp_edit_skin" style="position: absolute;
                                             padding: 0 0 0 0;
                                             right: 40px;
                                             top: 9px;
@@ -818,8 +815,8 @@
 
                             <div class="ui bottom attached tab raised segment" data-tab="edema">
                                 <div class="ui segments" style="position: relative;">
-                                    <div class="ui secondary segment bluecloudsegment" style="height: 50px;">
-                                        <div class="ui small blue icon buttons" id="btn_grp_edit_edema" style="position: absolute;
+                                    <div class="ui secondary segment" style="height: 50px;">
+                                        <div class="ui small green icon buttons" id="btn_grp_edit_edema" style="position: absolute;
                                             padding: 0 0 0 0;
                                             right: 40px;
                                             top: 9px;
@@ -909,8 +906,8 @@
 
                             <div class="ui bottom attached tab raised segment" data-tab="functional">
                                 <div class="ui segments" style="position: relative;">
-                                    <div class="ui secondary segment bluecloudsegment" style="height: 50px;">
-                                        <div class="ui small blue icon buttons" id="btn_grp_edit_functional" style="position: absolute;
+                                    <div class="ui secondary segment" style="height: 50px;">
+                                        <div class="ui small green icon buttons" id="btn_grp_edit_functional" style="position: absolute;
                                             padding: 0 0 0 0;
                                             right: 40px;
                                             top: 9px;

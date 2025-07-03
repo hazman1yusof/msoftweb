@@ -534,6 +534,7 @@ class OccupTherapyUpperExtremityController extends defaultController
                         'sens_deepAbsent_rt' => $request->sens_deepAbsent_rt,
                         'sens_deepAbsent_lt' => $request->sens_deepAbsent_lt,
                         'sens_stereoAbsent' => $request->sens_stereoAbsent,
+                        'impressions' => $request->impressions,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'lastuser'  => session('username'),
@@ -596,6 +597,7 @@ class OccupTherapyUpperExtremityController extends defaultController
                     'sens_deepAbsent_rt' => $request->sens_deepAbsent_rt,
                     'sens_deepAbsent_lt' => $request->sens_deepAbsent_lt,
                     'sens_stereoAbsent' => $request->sens_stereoAbsent,
+                    'impressions' => $request->impressions,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastuser'  => session('username'),
@@ -633,34 +635,22 @@ class OccupTherapyUpperExtremityController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
-                        'idno_sensation' => $request->idno_sensation,
-                        'sens_sharpIntact_rt' => $request->sens_sharpIntact_rt,
-                        'sens_sharpIntact_lt' => $request->sens_sharpIntact_lt,
-                        'sens_dullIntact_rt' => $request->sens_dullIntact_rt,
-                        'sens_dullIntact_lt' => $request->sens_dullIntact_lt,
-                        'sens_lightIntact_rt' => $request->sens_lightIntact_rt,
-                        'sens_lightIntact_lt' => $request->sens_lightIntact_lt,
-                        'sens_deepIntact_rt' => $request->sens_deepIntact_rt,
-                        'sens_deepIntact_lt' => $request->sens_deepIntact_lt,
-                        'sens_stereoIntact' => $request->sens_stereoIntact,
-                        'sens_sharpImpaired_rt' => $request->sens_sharpImpaired_rt,
-                        'sens_sharpImpaired_lt' => $request->sens_sharpImpaired_lt,
-                        'sens_dullImpaired_rt' => $request->sens_dullImpaired_rt,
-                        'sens_dullImpaired_lt' => $request->sens_dullImpaired_lt,
-                        'sens_lightImpaired_rt' => $request->sens_lightImpaired_rt,
-                        'sens_lightImpaired_lt' => $request->sens_lightImpaired_lt,
-                        'sens_deepImpaired_rt' => $request->sens_deepImpaired_rt,
-                        'sens_deepImpaired_lt' => $request->sens_deepImpaired_lt,
-                        'sens_stereoImpaired' => $request->sens_stereoImpaired,
-                        'sens_sharpAbsent_rt' => $request->sens_sharpAbsent_rt,
-                        'sens_sharpAbsent_lt' => $request->sens_sharpAbsent_lt,
-                        'sens_dullAbsent_rt' => $request->sens_dullAbsent_rt,
-                        'sens_dullAbsent_lt' => $request->sens_dullAbsent_lt,
-                        'sens_lightAbsent_rt' => $request->sens_lightAbsent_rt,
-                        'sens_lightAbsent_lt' => $request->sens_lightAbsent_lt,
-                        'sens_deepAbsent_rt' => $request->sens_deepAbsent_rt,
-                        'sens_deepAbsent_lt' => $request->sens_deepAbsent_lt,
-                        'sens_stereoAbsent' => $request->sens_stereoAbsent,
+                        'idno_prehensive' => $request->idno_prehensive,
+                        'prehensive_hook_rt' => $request->prehensive_hook_rt,
+                        'prehensive_hook_lt' => $request->prehensive_hook_lt,
+                        'prehensive_lateral_rt' => $request->prehensive_lateral_rt,
+                        'prehensive_lateral_lt' => $request->prehensive_lateral_lt,
+                        'prehensive_tip_rt' => $request->prehensive_tip_rt,
+                        'prehensive_tip_lt' => $request->prehensive_tip_lt,
+                        'prehensive_cylindrical_rt' => $request->prehensive_cylindrical_rt,
+                        'prehensive_cylindrical_lt' => $request->prehensive_cylindrical_lt,
+                        'prehensive_pad_rt' => $request->prehensive_pad_rt,
+                        'prehensive_pad_lt' => $request->prehensive_pad_lt,
+                        'prehensive_jaw_rt' => $request->prehensive_jaw_rt,
+                        'prehensive_jaw_lt' => $request->prehensive_jaw_lt,
+                        'prehensive_spherical_rt' => $request->prehensive_spherical_rt,
+                        'prehensive_spherical_lt' => $request->prehensive_spherical_lt,
+                        'impressions' => $request->impressions,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'lastuser'  => session('username'),
@@ -693,36 +683,24 @@ class OccupTherapyUpperExtremityController extends defaultController
             DB::table('hisdb.ot_upperextremity_prehensive')
                 ->where('mrn','=',$request->mrn)
                 ->where('episno','=',$request->episno)
-                ->where('idno_sensation','=',$request->idno_sensation)
+                ->where('idno_prehensive','=',$request->idno_prehensive)
                 ->where('compcode','=',session('compcode'))
                 ->update([
-                    'sens_sharpIntact_rt' => $request->sens_sharpIntact_rt,
-                    'sens_sharpIntact_lt' => $request->sens_sharpIntact_lt,
-                    'sens_dullIntact_rt' => $request->sens_dullIntact_rt,
-                    'sens_dullIntact_lt' => $request->sens_dullIntact_lt,
-                    'sens_lightIntact_rt' => $request->sens_lightIntact_rt,
-                    'sens_lightIntact_lt' => $request->sens_lightIntact_lt,
-                    'sens_deepIntact_rt' => $request->sens_deepIntact_rt,
-                    'sens_deepIntact_lt' => $request->sens_deepIntact_lt,
-                    'sens_stereoIntact' => $request->sens_stereoIntact,
-                    'sens_sharpImpaired_rt' => $request->sens_sharpImpaired_rt,
-                    'sens_sharpImpaired_lt' => $request->sens_sharpImpaired_lt,
-                    'sens_dullImpaired_rt' => $request->sens_dullImpaired_rt,
-                    'sens_dullImpaired_lt' => $request->sens_dullImpaired_lt,
-                    'sens_lightImpaired_rt' => $request->sens_lightImpaired_rt,
-                    'sens_lightImpaired_lt' => $request->sens_lightImpaired_lt,
-                    'sens_deepImpaired_rt' => $request->sens_deepImpaired_rt,
-                    'sens_deepImpaired_lt' => $request->sens_deepImpaired_lt,
-                    'sens_stereoImpaired' => $request->sens_stereoImpaired,
-                    'sens_sharpAbsent_rt' => $request->sens_sharpAbsent_rt,
-                    'sens_sharpAbsent_lt' => $request->sens_sharpAbsent_lt,
-                    'sens_dullAbsent_rt' => $request->sens_dullAbsent_rt,
-                    'sens_dullAbsent_lt' => $request->sens_dullAbsent_lt,
-                    'sens_lightAbsent_rt' => $request->sens_lightAbsent_rt,
-                    'sens_lightAbsent_lt' => $request->sens_lightAbsent_lt,
-                    'sens_deepAbsent_rt' => $request->sens_deepAbsent_rt,
-                    'sens_deepAbsent_lt' => $request->sens_deepAbsent_lt,
-                    'sens_stereoAbsent' => $request->sens_stereoAbsent,
+                    'prehensive_hook_rt' => $request->prehensive_hook_rt,
+                    'prehensive_hook_lt' => $request->prehensive_hook_lt,
+                    'prehensive_lateral_rt' => $request->prehensive_lateral_rt,
+                    'prehensive_lateral_lt' => $request->prehensive_lateral_lt,
+                    'prehensive_tip_rt' => $request->prehensive_tip_rt,
+                    'prehensive_tip_lt' => $request->prehensive_tip_lt,
+                    'prehensive_cylindrical_rt' => $request->prehensive_cylindrical_rt,
+                    'prehensive_cylindrical_lt' => $request->prehensive_cylindrical_lt,
+                    'prehensive_pad_rt' => $request->prehensive_pad_rt,
+                    'prehensive_pad_lt' => $request->prehensive_pad_lt,
+                    'prehensive_jaw_rt' => $request->prehensive_jaw_rt,
+                    'prehensive_jaw_lt' => $request->prehensive_jaw_lt,
+                    'prehensive_spherical_rt' => $request->prehensive_spherical_rt,
+                    'prehensive_spherical_lt' => $request->prehensive_spherical_lt,
+                    'impressions' => $request->impressions,
                     'upduser'  => session('username'),
                     'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastuser'  => session('username'),
@@ -1032,8 +1010,6 @@ class OccupTherapyUpperExtremityController extends defaultController
 
     public function get_table_impressions(Request $request){
         
-        // $idno_upperExtremity = $request->idno_upperExtremity;
-        // dd($idno_upperExtremity);
         $impressions_obj = DB::table('hisdb.ot_upperextremity_imp')
                                 ->where('compcode','=',session('compcode'))
                                 ->where('mrn','=',$request->mrn)
@@ -1054,8 +1030,6 @@ class OccupTherapyUpperExtremityController extends defaultController
 
     public function get_table_strength(Request $request){
         
-        // $idno_upperExtremity = $request->idno_upperExtremity;
-        // dd($idno_upperExtremity);
         $strength_obj = DB::table('hisdb.ot_upperextremity_strength')
                                 ->where('compcode','=',session('compcode'))
                                 ->where('mrn','=',$request->mrn)
@@ -1075,8 +1049,6 @@ class OccupTherapyUpperExtremityController extends defaultController
 
     public function get_table_sensation(Request $request){
         
-        // $idno_upperExtremity = $request->idno_upperExtremity;
-        // dd($idno_upperExtremity);
         $sensation_obj = DB::table('hisdb.ot_upperextremity_sensation')
                                 ->where('compcode','=',session('compcode'))
                                 ->where('mrn','=',$request->mrn)
@@ -1096,8 +1068,6 @@ class OccupTherapyUpperExtremityController extends defaultController
 
     public function get_table_prehensive(Request $request){
         
-        // $idno_upperExtremity = $request->idno_upperExtremity;
-        // dd($idno_upperExtremity);
         $prehensive_obj = DB::table('hisdb.ot_upperextremity_prehensive')
                                 ->where('compcode','=',session('compcode'))
                                 ->where('mrn','=',$request->mrn)
@@ -1117,8 +1087,6 @@ class OccupTherapyUpperExtremityController extends defaultController
 
     public function get_table_skin(Request $request){
         
-        // $idno_upperExtremity = $request->idno_upperExtremity;
-        // dd($idno_upperExtremity);
         $skin_obj = DB::table('hisdb.ot_upperextremity_skin')
                                 ->where('compcode','=',session('compcode'))
                                 ->where('mrn','=',$request->mrn)
@@ -1138,8 +1106,6 @@ class OccupTherapyUpperExtremityController extends defaultController
 
     public function get_table_edema(Request $request){
         
-        // $idno_upperExtremity = $request->idno_upperExtremity;
-        // dd($idno_upperExtremity);
         $edema_obj = DB::table('hisdb.ot_upperextremity_edema')
                                 ->where('compcode','=',session('compcode'))
                                 ->where('mrn','=',$request->mrn)
@@ -1159,8 +1125,6 @@ class OccupTherapyUpperExtremityController extends defaultController
 
     public function get_table_func(Request $request){
         
-        // $idno_upperExtremity = $request->idno_upperExtremity;
-        // dd($idno_upperExtremity);
         $func_obj = DB::table('hisdb.ot_upperextremity_func')
                                 ->where('compcode','=',session('compcode'))
                                 ->where('mrn','=',$request->mrn)

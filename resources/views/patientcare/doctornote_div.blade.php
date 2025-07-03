@@ -583,7 +583,7 @@
                 
                 <div id="doctor_radiology" class="ui bottom attached tab raised segment" data-tab="rad">
                     <div class="ui top attached tabular menu">
-                        <a class="item active" data-tab="radClinic">Clinical Data</a>
+                        <a class="item active" data-tab="radClinic">Radiology Form</a>
                         <a class="item" data-tab="mri">Checklist MRI</a>
                     </div>
                     
@@ -607,6 +607,11 @@
                                     <form id="formRadClinic" class="floated ui form sixteen wide column">
                                         <div class='ui grid' style="padding: 15px 30px;">
                                             <div class="sixteen wide column centered grid" style="padding: 14px 14px 0px 150px;">
+                                                <div class="inline field">
+                                                    <label>iPesakit</label>
+                                                    <input type="text" id="rad_iPesakit" name="iPesakit">
+                                                </div>
+                                                
                                                 <div class="inline field">
                                                     <label>Weight</label>
                                                     <div class="ui right labeled input">
@@ -652,15 +657,20 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                
+                                                <div class="inline field">
+                                                    <label>LMP</label>
+                                                    <input type="date" id="rad_LMP" name="LMP">
+                                                </div>
                                             </div>
                                             
-                                            <div class="four wide column" style="padding: 0px 14px 14px 150px;">
+                                            <div class="four wide column" style="padding: 14px 14px 14px 150px;">
                                                 <div class="field">
                                                     <label>Asthma/Allergy</label>
                                                 </div>
                                             </div>
                                             
-                                            <div class="twelve wide column" style="padding-top: 0px;">
+                                            <div class="twelve wide column">
                                                 <div class="field eight wide column">
                                                     <textarea id="rad_allergy" name="rad_allergy" type="text" rows="5"></textarea>
                                                 </div>

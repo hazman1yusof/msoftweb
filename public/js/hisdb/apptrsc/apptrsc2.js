@@ -561,12 +561,16 @@ $(document).ready(function () {
 								+event.pat_name+' - '
 								+event.case_desc+' - '
 								+remarks_;
+				
 				element.attr('title',mytitle)
 				element.tooltip();
 
 				element.bind('dblclick', function() {
+
 					lastelement = element;
 					oper = 'edit';
+					// let cArm = document.querySelector('input[name="cArm"]:checked');
+					let cArm = $('input[name = "cArm"]:checked').val();
 					$('#doctor').val(event.loccode);
 					$('#mrn').val(event.mrn);
 					$('#icnum').val(event.icnum);
@@ -594,7 +598,14 @@ $(document).ready(function () {
 					$('#anaesthetist').val(event.anaesthetist);
 					$('#surgeon').val(event.surgeon);
 					$('#lastupdate').val(event.lastupdate);
+					$('#iPesakit').val(event.iPesakit);
+					if(cArm == '1'){
+						$("input[name=cArm][value='1']").prop("checked",true);
+					}else{
+						$("input[name=cArm][value='0']").prop("checked",false);
+					}
 					$('#delete_but,#new_episode').show();
+					console.log(cArm);
 					
 					$("#dialogForm").dialog('open');
 				});
@@ -1126,7 +1137,7 @@ $(document).ready(function () {
  	function save_patient_apptrsc(oper,idno,mrn="nothing",apptbook_idno){
  		var saveParam={
             action:'save_patient',
-            field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','OccupCode','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date'],
+            field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','OccupCode','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date','iPesakit'],
             oper:oper,
             table_name:'hisdb.pat_mast',
             table_id:'idno',

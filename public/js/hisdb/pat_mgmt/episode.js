@@ -179,6 +179,7 @@ function populate_episode(rowid,rowdata){
     $('#txt_epis_date').val(moment().format('DD/MM/YYYY'));
     $('#txt_epis_time').val(moment().format('hh:mm:ss'));
     $('#btn_epis_payer').data('mrn',$(this).data("mrn"));
+    $('#txt_epis_iPesakit').val(rowdata.iPesakit);
 
     $('#cmb_epis_pregnancy').prop("disabled", false);
     if(rowdata.Sex == "M"){
@@ -590,7 +591,7 @@ function populate_episode_by_mrn_episno(mrn,episno,form){
             $('#txt_epis_time').val(episdata.reg_time);
             $('#txt_epis_no').val(episdata.episno);
             $('#txt_epis_type').val(episdata.epistycode);
-
+            $('#txt_epis_iPesakit').val(episdata.iPesakit);
 
             $('#txt_epis_dept').val(episdata.reg_desc);
             $('#hid_epis_dept').val(episdata.regdept);

@@ -1349,6 +1349,7 @@ function populate_radClinic_getdata(){
 		// $("#rad_pregnant").val($('#preg_doctorNote').val());
 		if(!emptyobj_(data.rad_allergy))$("#rad_allergy").val(data.rad_allergy);
 		// $("#radClinic_doctorname").val($('#doctorname_doctorNote').val());
+		if(!emptyobj_(data.iPesakit))$("#rad_iPesakit").val(data.iPesakit);
 		
 		pregnant = document.getElementById("pregnant");
 		not_pregnant = document.getElementById("not_pregnant");
@@ -1392,6 +1393,7 @@ function get_default_radClinic(){
 		// $("#rad_pregnant").val($('#preg_doctorNote').val());
 		if(!emptyobj_(data.rad_allergy))$("#rad_allergy").val(data.rad_allergy);
 		// $("#radClinic_doctorname").val($('#doctorname_doctorNote').val());
+		if(!emptyobj_(data.iPesakit))$("#rad_iPesakit").val(data.iPesakit);
 		
 		pregnant = document.getElementById("pregnant");
 		not_pregnant = document.getElementById("not_pregnant");

@@ -489,8 +489,10 @@ class RequestForController extends defaultController
             if($pat_radiology->exists()){
                 $pat_radiology
                     ->update([
+                        'iPesakit' => $request->iPesakit,
                         'weight' => $request->rad_weight,
                         'pt_condition' => $request->pt_condition,
+                        'LMP' => $request->LMP,
                         'xray' => $request->xray,
                         'xray_date' => $request->xray_date,
                         'xray_remark' => $request->xray_remark,
@@ -531,8 +533,10 @@ class RequestForController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
+                        'iPesakit' => $request->iPesakit,
                         'weight' => $request->rad_weight,
                         'pt_condition' => $request->pt_condition,
+                        'LMP' => $request->LMP,
                         'xray' => $request->xray,
                         'xray_date' => $request->xray_date,
                         'xray_remark' => $request->xray_remark,
@@ -568,6 +572,14 @@ class RequestForController extends defaultController
                         'computerid' => session('computerid'),
                     ]);
             }
+            
+            DB::table('hisdb.pat_mast')
+                ->where('MRN','=',$request->mrn)
+                // ->where('Episno','=',$request->episno)
+                ->where('CompCode','=',session('compcode'))
+                ->update([
+                    'iPesakit' => $request->iPesakit,
+                ]);
             
             // DB::table('hisdb.episode')
             //     ->where('mrn','=',$request->mrn)
@@ -713,8 +725,10 @@ class RequestForController extends defaultController
             if($pat_radiology->exists()){
                 $pat_radiology
                     ->update([
+                        'iPesakit' => $request->iPesakit,
                         'weight' => $request->rad_weight,
                         'pt_condition' => $request->pt_condition,
+                        'LMP' => $request->LMP,
                         'xray' => $request->xray,
                         'xray_date' => $request->xray_date,
                         'xray_remark' => $request->xray_remark,
@@ -755,8 +769,10 @@ class RequestForController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
+                        'iPesakit' => $request->iPesakit,
                         'weight' => $request->rad_weight,
                         'pt_condition' => $request->pt_condition,
+                        'LMP' => $request->LMP,
                         'xray' => $request->xray,
                         'xray_date' => $request->xray_date,
                         'xray_remark' => $request->xray_remark,
@@ -792,6 +808,14 @@ class RequestForController extends defaultController
                         'computerid' => session('computerid'),
                     ]);
             }
+            
+            DB::table('hisdb.pat_mast')
+                ->where('MRN','=',$request->mrn)
+                // ->where('Episno','=',$request->episno)
+                ->where('CompCode','=',session('compcode'))
+                ->update([
+                    'iPesakit' => $request->iPesakit,
+                ]);
             
             // DB::table('hisdb.episode')
             //     ->where('mrn','=',$request->mrn)
@@ -837,7 +861,7 @@ class RequestForController extends defaultController
     public function get_table_radClinic(Request $request){
         
         $pat_radiology_obj = DB::table('hisdb.pat_radiology as pr')
-                            ->select('pr.compcode','pr.mrn','pr.episno','pr.weight as rad_weight','pr.pt_condition','pr.xray','pr.xray_date','pr.xray_remark','pr.mri','pr.mri_date','pr.mri_remark','pr.angio','pr.angio_date','pr.angio_remark','pr.ultrasound','pr.ultrasound_date','pr.ultrasound_remark','pr.ct','pr.ct_date','pr.ct_remark','pr.fluroscopy','pr.fluroscopy_date','pr.fluroscopy_remark','pr.mammogram','pr.mammogram_date','pr.mammogram_remark','pr.bmd','pr.bmd_date','pr.bmd_remark','pr.clinicaldata','pr.doctorname as radClinic_doctorname','pr.rad_note','pr.radiologist as radClinic_radiologist','pr.adduser','pr.adddate','pr.upduser','pr.upddate','pr.lastuser as radClinic_lastuser','pr.lastupdate','pr.computerid')
+                            ->select('pr.compcode','pr.mrn','pr.episno','pr.iPesakit as pr_iPesakit','pr.weight as rad_weight','pr.pt_condition','pr.LMP','pr.xray','pr.xray_date','pr.xray_remark','pr.mri','pr.mri_date','pr.mri_remark','pr.angio','pr.angio_date','pr.angio_remark','pr.ultrasound','pr.ultrasound_date','pr.ultrasound_remark','pr.ct','pr.ct_date','pr.ct_remark','pr.fluroscopy','pr.fluroscopy_date','pr.fluroscopy_remark','pr.mammogram','pr.mammogram_date','pr.mammogram_remark','pr.bmd','pr.bmd_date','pr.bmd_remark','pr.clinicaldata','pr.doctorname as radClinic_doctorname','pr.rad_note','pr.radiologist as radClinic_radiologist','pr.adduser','pr.adddate','pr.upduser','pr.upddate','pr.lastuser as radClinic_lastuser','pr.lastupdate','pr.computerid')
                             // ->leftJoin('nursing.nursassessment as na', function ($join) use ($request){
                             //     $join = $join->on('na.mrn', '=', 'pr.mrn')
                             //                 ->on('na.episno', '=', 'pr.episno')
@@ -877,6 +901,11 @@ class RequestForController extends defaultController
         //                     ->where('compcode','=',session('compcode'))
         //                     ->where('mrn','=',$request->mrn)
         //                     ->where('episno','=',$request->episno);
+        
+        $patmast_obj = DB::table('hisdb.pat_mast')
+                        ->select('iPesakit')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn','=',$request->mrn);
         
         $responce = new stdClass();
         
@@ -918,6 +947,13 @@ class RequestForController extends defaultController
         //     $rad_weight = $nursassessment_obj->vs_weight;
         //     $responce->rad_weight = $rad_weight;
         // }
+        
+        if($patmast_obj->exists()){
+            $patmast_obj = $patmast_obj->first();
+            
+            $iPesakit = $patmast_obj->iPesakit;
+            $responce->iPesakit = $iPesakit;
+        }
         
         return json_encode($responce);
         
