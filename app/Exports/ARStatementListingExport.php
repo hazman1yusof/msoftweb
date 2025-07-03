@@ -166,7 +166,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                         $value->reference = $value->pm_name;
                     }
                     $value->doc_no = $value->trantype.'/'.str_pad($value->invno, 5, "0", STR_PAD_LEFT);
-                    $value->amount_dr = $value->amount;
+                    $value->amount_dr = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
                     }
