@@ -239,7 +239,7 @@
                             </div>
                             <div id="tab-radReqFor" class="tab-pane fade">
                                 <ul class="nav nav-tabs" id="jqGridRequestFor_rad_tabs">
-                                    <li class="active"><a data-toggle="tab" id="navtab_radClinicReqFor" href="#tab-radClinicReqFor" aria-expanded="true" data-type='RADCLINIC_REQFOR'>Clinical Data</a></li>
+                                    <li class="active"><a data-toggle="tab" id="navtab_radClinicReqFor" href="#tab-radClinicReqFor" aria-expanded="true" data-type='RADCLINIC_REQFOR'>Radiology Form</a></li>
                                     <li><a data-toggle="tab" id="navtab_mriReqFor" href="#tab-mriReqFor" data-type='MRI_REQFOR'>Checklist MRI</a></li>
                                 </ul>
                                 <div class="tab-content" style="padding: 10px 5px;">
@@ -279,6 +279,13 @@
                                                             <div class="panel panel-info">
                                                                 <div class="panel-body">
                                                                     <div class="form-group">
+                                                                        <label class="col-md-2 control-label" for="radReqFor_iPesakit">iPesakit</label>
+                                                                        <div class="col-md-2">
+                                                                            <input id="radReqFor_iPesakit" name="iPesakit" type="text" class="form-control input-sm">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-group">
                                                                         <label class="col-md-2 control-label" for="radReqFor_weight">Weight</label>
                                                                         <div class="col-md-2">
                                                                             <div class="input-group">
@@ -312,6 +319,13 @@
                                                                             <label class="radio-inline">
                                                                                 <input type="radio" id="not_pregnantReqFor" name="rad_pregnant" value="0">No
                                                                             </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-2 control-label" for="radReqFor_LMP">LMP</label>
+                                                                        <div class="col-md-2">
+                                                                            <input id="radReqFor_LMP" name="LMP" type="date" class="form-control input-sm">
                                                                         </div>
                                                                     </div>
                                                                     

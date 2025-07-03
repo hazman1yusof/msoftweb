@@ -652,7 +652,7 @@
                             </div>
                             <div id="tab-rad_dn" class="tab-pane fade">
                                 <ul class="nav nav-tabs" id="jqGridDoctorNote_rad_tabs">
-                                    <li class="active"><a data-toggle="tab" id="navtab_radClinic" href="#tab-radClinic" aria-expanded="true" data-type='RADCLINIC'>Clinical Data</a></li>
+                                    <li class="active"><a data-toggle="tab" id="navtab_radClinic" href="#tab-radClinic" aria-expanded="true" data-type='RADCLINIC'>Radiology Form</a></li>
                                     <li><a data-toggle="tab" id="navtab_mri" href="#tab-mri" data-type='MRI'>Checklist MRI</a></li>
                                 </ul>
                                 <div class="tab-content" style="padding: 10px 5px;">
@@ -692,6 +692,13 @@
                                                             <div class="panel panel-info">
                                                                 <div class="panel-body">
                                                                     <div class="form-group">
+                                                                        <label class="col-md-2 control-label" for="rad_iPesakit">iPesakit</label>
+                                                                        <div class="col-md-2">
+                                                                            <input id="rad_iPesakit" name="iPesakit" type="text" class="form-control input-sm">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-group">
                                                                         <label class="col-md-2 control-label" for="rad_weight">Weight</label>
                                                                         <div class="col-md-2">
                                                                             <div class="input-group">
@@ -725,6 +732,13 @@
                                                                             <label class="radio-inline">
                                                                                 <input type="radio" id="not_pregnant" name="rad_pregnant" value="0">No
                                                                             </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-2 control-label" for="rad_LMP">LMP</label>
+                                                                        <div class="col-md-2">
+                                                                            <input id="rad_LMP" name="LMP" type="date" class="form-control input-sm">
                                                                         </div>
                                                                     </div>
                                                                     

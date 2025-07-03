@@ -1598,8 +1598,10 @@ class DoctorNoteController extends defaultController
             if($pat_radiology->exists()){
                 $pat_radiology
                     ->update([
+                        'iPesakit' => $request->iPesakit,
                         'weight' => $request->rad_weight,
                         'pt_condition' => $request->pt_condition,
+                        'LMP' => $request->LMP,
                         'xray' => $request->xray,
                         'xray_date' => $request->xray_date,
                         'xray_remark' => $request->xray_remark,
@@ -1640,8 +1642,10 @@ class DoctorNoteController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
+                        'iPesakit' => $request->iPesakit,
                         'weight' => $request->rad_weight,
                         'pt_condition' => $request->pt_condition,
+                        'LMP' => $request->LMP,
                         'xray' => $request->xray,
                         'xray_date' => $request->xray_date,
                         'xray_remark' => $request->xray_remark,
@@ -1677,6 +1681,14 @@ class DoctorNoteController extends defaultController
                         'computerid' => session('computerid'),
                     ]);
             }
+            
+            DB::table('hisdb.pat_mast')
+                ->where('MRN','=',$request->mrn)
+                // ->where('Episno','=',$request->episno)
+                ->where('CompCode','=',session('compcode'))
+                ->update([
+                    'iPesakit' => $request->iPesakit,
+                ]);
             
             // DB::table('hisdb.episode')
             //     ->where('mrn','=',$request->mrn)
@@ -1810,8 +1822,10 @@ class DoctorNoteController extends defaultController
             if($pat_radiology->exists()){
                 $pat_radiology
                     ->update([
+                        'iPesakit' => $request->iPesakit,
                         'weight' => $request->rad_weight,
                         'pt_condition' => $request->pt_condition,
+                        'LMP' => $request->LMP,
                         'xray' => $request->xray,
                         'xray_date' => $request->xray_date,
                         'xray_remark' => $request->xray_remark,
@@ -1852,8 +1866,10 @@ class DoctorNoteController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
+                        'iPesakit' => $request->iPesakit,
                         'weight' => $request->rad_weight,
                         'pt_condition' => $request->pt_condition,
+                        'LMP' => $request->LMP,
                         'xray' => $request->xray,
                         'xray_date' => $request->xray_date,
                         'xray_remark' => $request->xray_remark,
@@ -1890,6 +1906,14 @@ class DoctorNoteController extends defaultController
                     ]);
             }
             
+            DB::table('hisdb.pat_mast')
+                ->where('MRN','=',$request->mrn)
+                // ->where('Episno','=',$request->episno)
+                ->where('CompCode','=',session('compcode'))
+                ->update([
+                    'iPesakit' => $request->iPesakit,
+                ]);
+            
             // DB::table('hisdb.episode')
             //     ->where('mrn','=',$request->mrn)
             //     ->where('episno','=',$request->episno)
@@ -1922,7 +1946,7 @@ class DoctorNoteController extends defaultController
     public function get_table_radClinic(Request $request){
         
         $pat_radiology_obj = DB::table('hisdb.pat_radiology as pr')
-                            ->select('pr.compcode','pr.mrn','pr.episno','pr.weight as rad_weight','pr.pt_condition','pr.xray','pr.xray_date','pr.xray_remark','pr.mri','pr.mri_date','pr.mri_remark','pr.angio','pr.angio_date','pr.angio_remark','pr.ultrasound','pr.ultrasound_date','pr.ultrasound_remark','pr.ct','pr.ct_date','pr.ct_remark','pr.fluroscopy','pr.fluroscopy_date','pr.fluroscopy_remark','pr.mammogram','pr.mammogram_date','pr.mammogram_remark','pr.bmd','pr.bmd_date','pr.bmd_remark','pr.clinicaldata','pr.doctorname as radClinic_doctorname','pr.rad_note','pr.radiologist as radClinic_radiologist','pr.adduser','pr.adddate','pr.upduser','pr.upddate','pr.lastuser as radClinic_lastuser','pr.lastupdate','pr.computerid')
+                            ->select('pr.compcode','pr.mrn','pr.episno','pr.iPesakit as pr_iPesakit','pr.weight as rad_weight','pr.pt_condition','pr.LMP','pr.xray','pr.xray_date','pr.xray_remark','pr.mri','pr.mri_date','pr.mri_remark','pr.angio','pr.angio_date','pr.angio_remark','pr.ultrasound','pr.ultrasound_date','pr.ultrasound_remark','pr.ct','pr.ct_date','pr.ct_remark','pr.fluroscopy','pr.fluroscopy_date','pr.fluroscopy_remark','pr.mammogram','pr.mammogram_date','pr.mammogram_remark','pr.bmd','pr.bmd_date','pr.bmd_remark','pr.clinicaldata','pr.doctorname as radClinic_doctorname','pr.rad_note','pr.radiologist as radClinic_radiologist','pr.adduser','pr.adddate','pr.upduser','pr.upddate','pr.lastuser as radClinic_lastuser','pr.lastupdate','pr.computerid')
                             // ->leftJoin('nursing.nursassessment as na', function ($join) use ($request){
                             //     $join = $join->on('na.mrn', '=', 'pr.mrn')
                             //                 ->on('na.episno', '=', 'pr.episno')
@@ -1962,6 +1986,11 @@ class DoctorNoteController extends defaultController
         //                     ->where('compcode','=',session('compcode'))
         //                     ->where('mrn','=',$request->mrn)
         //                     ->where('episno','=',$request->episno);
+        
+        $patmast_obj = DB::table('hisdb.pat_mast')
+                        ->select('iPesakit')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn','=',$request->mrn);
         
         $responce = new stdClass();
         
@@ -2003,6 +2032,13 @@ class DoctorNoteController extends defaultController
         //     $rad_weight = $nursassessment_obj->vs_weight;
         //     $responce->rad_weight = $rad_weight;
         // }
+        
+        if($patmast_obj->exists()){
+            $patmast_obj = $patmast_obj->first();
+            
+            $iPesakit = $patmast_obj->iPesakit;
+            $responce->iPesakit = $iPesakit;
+        }
         
         return json_encode($responce);
         
@@ -3037,7 +3073,7 @@ class DoctorNoteController extends defaultController
         }
         
         $pat_radiology = DB::table('hisdb.pat_radiology as r')
-                        ->select('r.idno','r.compcode','r.mrn','r.episno','r.weight','r.pt_condition','r.xray','r.xray_date','r.xray_remark','r.mri','r.mri_date','r.mri_remark','r.angio','r.angio_date','r.angio_remark','r.ultrasound','r.ultrasound_date','r.ultrasound_remark','r.ct','r.ct_date','r.ct_remark','r.fluroscopy','r.fluroscopy_date','r.fluroscopy_remark','r.mammogram','r.mammogram_date','r.mammogram_remark','r.bmd','r.bmd_date','r.bmd_remark','r.clinicaldata','r.doctorname','r.rad_note','r.radiologist','r.adduser','r.adddate','r.upduser','r.upddate','r.lastuser','r.lastupdate','r.computerid','pm.Name','pm.Address1','pm.Address2','pm.Address3','pm.Postcode','pm.telhp','pm.Newic','pm.Sex','pm.RaceCode','ep.reg_date','ep.newcaseP','ep.newcaseNP','ep.followupP','ep.followupNP','b.ward as EpWard','his.allergyh')
+                        ->select('r.idno','r.compcode','r.mrn','r.episno','r.iPesakit as r_iPesakit','r.weight','r.pt_condition','r.LMP','r.xray','r.xray_date','r.xray_remark','r.mri','r.mri_date','r.mri_remark','r.angio','r.angio_date','r.angio_remark','r.ultrasound','r.ultrasound_date','r.ultrasound_remark','r.ct','r.ct_date','r.ct_remark','r.fluroscopy','r.fluroscopy_date','r.fluroscopy_remark','r.mammogram','r.mammogram_date','r.mammogram_remark','r.bmd','r.bmd_date','r.bmd_remark','r.clinicaldata','r.doctorname','r.rad_note','r.radiologist','r.adduser','r.adddate','r.upduser','r.upddate','r.lastuser','r.lastupdate','r.computerid','pm.iPesakit','pm.Name','pm.Address1','pm.Address2','pm.Address3','pm.Postcode','pm.telhp','pm.Newic','pm.Sex','pm.RaceCode','ep.reg_date','ep.newcaseP','ep.newcaseNP','ep.followupP','ep.followupNP','b.ward as EpWard','his.allergyh')
                         ->leftjoin('hisdb.pat_mast as pm', function ($join){
                             $join = $join->on('pm.MRN','=','r.mrn');
                             $join = $join->on('pm.Episno','=','r.episno');
