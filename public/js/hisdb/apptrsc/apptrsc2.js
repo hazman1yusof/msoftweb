@@ -579,10 +579,10 @@ $(document).ready(function () {
 					$('#icnum').val(event.icnum);
 					$('#patname').val(event.pat_name);
 					$('#apptdatefr_day').val(event.start.format('YYYY-MM-DD'));
-					if(event.start != '' || event.start != undefined || event.start != null){
+					if(event.start != null){
 						$('#start_time').val(event.start.format('HH:mm:ss'));
 					}
-					if(event.end != '' || event.end != undefined || event.end != null){
+					if(event.end != null){
 						$('#end_time').val(event.end.format('HH:mm:ss'));
 					}
 					$('#telh').val(event.telno);
@@ -602,13 +602,12 @@ $(document).ready(function () {
 					$('#surgeon').val(event.surgeon);
 					$('#lastupdate').val(event.lastupdate);
 					$('#iPesakit').val(event.iPesakit);
-					if(cArm == '1'){
+					if(event.cArm == '1'){
 						$("input[name=cArm][value='1']").prop("checked",true);
 					}else{
 						$("input[name=cArm][value='0']").prop("checked",false);
 					}
 					$('#delete_but,#new_episode').show();
-					console.log(cArm);
 					
 					$("#dialogForm").dialog('open');
 				});

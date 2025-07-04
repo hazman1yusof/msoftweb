@@ -394,6 +394,21 @@ class Appointment_rscController extends defaultController
                 ]);
             }
 
+            if(!empty($request->iPesakit)){
+                $pat_mast = DB::table('hisdb.pat_mast')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn',$request->mrn)
+                                ->first();
+                if($pat_mast->iPesakit != $request->iPesakit){
+                    DB::table('hisdb.pat_mast')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn',$request->mrn)
+                            ->update([
+                                'iPesakit'  => $request->iPesakit
+                            ]);
+                }
+            }
+
 
             DB::commit();
 
@@ -402,9 +417,6 @@ class Appointment_rscController extends defaultController
 
             return response('Error'.$e, 500);
         }
-
-        
-        
     }
 
     public function editEvent(Request $request){
@@ -505,6 +517,21 @@ class Appointment_rscController extends defaultController
                             'cArm'        => $request->cArm,
                         ]);
                 }
+
+                if(!empty($request->iPesakit)){
+                    $pat_mast = DB::table('hisdb.pat_mast')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('mrn',$request->mrn)
+                                    ->first();
+                    if($pat_mast->iPesakit != $request->iPesakit){
+                        DB::table('hisdb.pat_mast')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn',$request->mrn)
+                                ->update([
+                                    'iPesakit'  => $request->iPesakit
+                                ]);
+                    }
+                }
             }
 
             DB::commit();
@@ -514,8 +541,6 @@ class Appointment_rscController extends defaultController
 
             return response('Error'.$e, 500);
         }
-
-        
     }
 
     public function delEvent(Request $request){

@@ -737,14 +737,14 @@ $(document).ready(function (){
             { label: 'idno_hand', name: 'idno_hand', hidden: true },
 
         ],
-        // shrinkToFit: false,
-        autowidth: true,
+        shrinkToFit: false,
+        autowidth: false,
         multiSort: false,
         sortname: 'idno',
         sortorder: 'desc',
         viewrecords: true,
         loadonce: false,
-        width: 1300,
+        width: 1800,
         height: 200,
         rowNum: 30,
         pager: "#jqGridPager_hand",
@@ -755,7 +755,7 @@ $(document).ready(function (){
             }
             $('.ui-pg-button').prop('disabled',true);
             addmore_jqgridhand.edit = addmore_jqgridhand.more = false; // reset
-        calc_jq_height_onchange("jqGrid_hand");
+        // calc_jq_height_onchange("jqGrid_hand");
         },
         ondblClickRow: function (rowid, iRow, iCol, e){
             $("#jqGrid_hand_iledit").click();
