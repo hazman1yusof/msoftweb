@@ -107,6 +107,13 @@
                                                     <div class="panel panel-info">
                                                         <div class="panel-body">
                                                             <div class="form-group">
+                                                                <label class="col-md-3 control-label" for="otReqFor_iPesakit">iPesakit</label>
+                                                                <div class="col-md-2">
+                                                                    <input id="otReqFor_iPesakit" name="iPesakit" type="text" class="form-control input-sm">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
                                                                 <label class="col-md-3 control-label" for="req_type">Type</label>
                                                                 <div class="col-md-6">
                                                                     <label class="radio-inline">
@@ -117,7 +124,7 @@
                                                                     </label>
                                                                 </div>
                                                             </div>
-
+                                                            
                                                             <div class="form-row">
                                                                 <label class="col-md-3 control-label" for="req_type"></label>
                                                                 <div class="form-group col-md-2" style="margin-left: 2px;">

@@ -593,6 +593,8 @@ function populate_otbookReqFor_getdata(){
             button_state_otbookReqFor('add');
         }
         
+        if(!emptyobj_(data.iPesakit))$("#otReqFor_iPesakit").val(data.iPesakit);
+        
         // textarea_init_otbookReqFor();
         toggle_reqfor_reqtype();
     });
@@ -631,6 +633,8 @@ function get_default_otbookReqFor(){
             // by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
             $("#otReqFor_doctorname").val($('#doctorname_requestFor').val());
         }
+        
+        if(!emptyobj_(data.iPesakit))$("#otReqFor_iPesakit").val(data.iPesakit);
         
         // textarea_init_otbookReqFor();
         toggle_reqfor_reqtype();

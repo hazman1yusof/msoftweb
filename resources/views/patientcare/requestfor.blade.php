@@ -45,6 +45,11 @@
                                         <div class="ui segment">
                                             <div class="ui grid">
                                                 <div class="sixteen wide column centered grid" style="padding: 14px 14px 0px 150px;">
+                                                    <div class="inline field">
+                                                        <label>iPesakit</label>
+                                                        <input type="text" id="otReqFor_iPesakit" name="iPesakit">
+                                                    </div>
+                                                    
                                                     <div class="inline fields">
                                                         <label for="req_type">Type</label>
                                                         <div class="field">
@@ -60,7 +65,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
+                                                    
                                                     <div class="ui grid">
                                                         <div class="field two wide column" style="margin: 0px;">
                                                             <label>Bed</label>

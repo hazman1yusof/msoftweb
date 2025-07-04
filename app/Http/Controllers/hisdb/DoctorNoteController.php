@@ -350,7 +350,7 @@ class DoctorNoteController extends defaultController
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
                 ]);
-
+            
             DB::table('nursing.admhandover')
                 ->where('mrn','=',$request->mrn_doctorNote)
                 ->where('episno','=',$request->episno_doctorNote)
@@ -614,7 +614,7 @@ class DoctorNoteController extends defaultController
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
                 ]);
-
+            
             DB::table('nursing.admhandover')
                 ->where('mrn','=',$request->mrn_doctorNote)
                 ->where('episno','=',$request->episno_doctorNote)
@@ -1318,6 +1318,7 @@ class DoctorNoteController extends defaultController
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
+                    'iPesakit' => $request->iPesakit,
                     'req_type' => $request->req_type,
                     'op_date' => $request->op_date,
                     'oper_type' => $request->oper_type,
@@ -1342,6 +1343,14 @@ class DoctorNoteController extends defaultController
                     'reff_ed' => '1',
                     'lastuser'  => strtoupper($request->ot_lastuser),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
+            
+            DB::table('hisdb.pat_mast')
+                ->where('MRN','=',$request->mrn)
+                // ->where('Episno','=',$request->episno)
+                ->where('CompCode','=',session('compcode'))
+                ->update([
+                    'iPesakit' => $request->iPesakit,
                 ]);
             
             DB::commit();
@@ -1370,6 +1379,7 @@ class DoctorNoteController extends defaultController
             if($pat_otbook->exists()){
                 $pat_otbook
                     ->update([
+                        'iPesakit' => $request->iPesakit,
                         'req_type' => $request->req_type,
                         'op_date' => $request->op_date,
                         'oper_type' => $request->oper_type,
@@ -1391,6 +1401,7 @@ class DoctorNoteController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
+                        'iPesakit' => $request->iPesakit,
                         'req_type' => $request->req_type,
                         'op_date' => $request->op_date,
                         'oper_type' => $request->oper_type,
@@ -1418,6 +1429,14 @@ class DoctorNoteController extends defaultController
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
             
+            DB::table('hisdb.pat_mast')
+                ->where('MRN','=',$request->mrn)
+                // ->where('Episno','=',$request->episno)
+                ->where('CompCode','=',session('compcode'))
+                ->update([
+                    'iPesakit' => $request->iPesakit,
+                ]);
+            
             $queries = DB::getQueryLog();
             // dump($queries);
             
@@ -1438,14 +1457,14 @@ class DoctorNoteController extends defaultController
     }
     
     public function get_table_otbook(Request $request){
-
+        
         $pat_otbook_bed_obj = DB::table('hisdb.bed')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno);
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
         
         $pat_otbook_obj = DB::table('hisdb.pat_otbook')
-                        ->select('idno','compcode','mrn','episno','req_type','op_date','oper_type','adm_type','anaesthetist','diagnosis as ot_diagnosis','diagnosedby as ot_diagnosedby','remarks as ot_remarks','doctorname as ot_doctorname','adduser','adddate','upduser','upddate','lastuser as ot_lastuser','lastupdate','computerid')
+                        ->select('idno','compcode','mrn','episno','iPesakit as p_iPesakit','req_type','op_date','oper_type','adm_type','anaesthetist','diagnosis as ot_diagnosis','diagnosedby as ot_diagnosedby','remarks as ot_remarks','doctorname as ot_doctorname','adduser','adddate','upduser','upddate','lastuser as ot_lastuser','lastupdate','computerid')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);
@@ -1462,8 +1481,13 @@ class DoctorNoteController extends defaultController
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn);
         
+        $patmast_obj = DB::table('hisdb.pat_mast')
+                        ->select('iPesakit')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn','=',$request->mrn);
+        
         $responce = new stdClass();
-
+        
         if($pat_otbook_bed_obj->exists()){
             $pat_otbook_bed_obj = $pat_otbook_bed_obj->first();
             $responce->pat_otbook_bed = $pat_otbook_bed_obj;
@@ -1482,6 +1506,13 @@ class DoctorNoteController extends defaultController
         if($nurshistory_obj->exists()){
             $nurshistory_obj = $nurshistory_obj->first();
             $responce->nurshistory = $nurshistory_obj;
+        }
+        
+        if($patmast_obj->exists()){
+            $patmast_obj = $patmast_obj->first();
+            
+            $iPesakit = $patmast_obj->iPesakit;
+            $responce->iPesakit = $iPesakit;
         }
         
         return json_encode($responce);

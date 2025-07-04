@@ -925,6 +925,8 @@ function populate_otbook_getdata(){
 			button_state_otbook('add');
 		}
 		
+		if(!emptyobj_(data.iPesakit))$("#ot_iPesakit").val(data.iPesakit);
+		
 		// textarea_init_otbook();
 		toggle_reqtype();
 	});
@@ -963,6 +965,8 @@ function get_default_otbook(){
 			// by default, baca admdoctor first. Lepastu baca from db sebab maybe key in diff name.
 			$("#ot_doctorname").val($('#doctorname_doctorNote').val());
 		}
+		
+		if(!emptyobj_(data.iPesakit))$("#ot_iPesakit").val(data.iPesakit);
 		
 		// textarea_init_otbook();
 		toggle_reqtype();
