@@ -111,28 +111,29 @@ class RequestForController extends defaultController
         DB::beginTransaction();
         
         try {
-
+            
             DB::table('hisdb.pat_otbook')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn,
-                        'episno' => $request->episno,
-                        'req_type' => $request->req_type,
-                        'op_date' => $request->op_date,
-                        'oper_type' => $request->oper_type,
-                        'adm_type' => $request->adm_type,
-                        'anaesthetist' => $request->anaesthetist,
-                        'diagnosis' => $request->ot_diagnosis,
-                        'diagnosedby' => strtoupper($request->ot_diagnosedby),
-                        'remarks' => $request->ot_remarks,
-                        'doctorname'  => strtoupper($request->ot_doctorname),
-                        'adduser'  => strtoupper($request->ot_lastuser),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser' => strtoupper($request->ot_lastuser),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'computerid' => session('computerid'),
-                    ]);
-
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'iPesakit' => $request->iPesakit,
+                    'req_type' => $request->req_type,
+                    'op_date' => $request->op_date,
+                    'oper_type' => $request->oper_type,
+                    'adm_type' => $request->adm_type,
+                    'anaesthetist' => $request->anaesthetist,
+                    'diagnosis' => $request->ot_diagnosis,
+                    'diagnosedby' => strtoupper($request->ot_diagnosedby),
+                    'remarks' => $request->ot_remarks,
+                    'doctorname'  => strtoupper($request->ot_doctorname),
+                    'adduser'  => strtoupper($request->ot_lastuser),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser' => strtoupper($request->ot_lastuser),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
             if($request->req_type == 'WARD'){
                 DB::table('hisdb.episode')
                     ->where('mrn','=',$request->mrn)
@@ -148,7 +149,7 @@ class RequestForController extends defaultController
                         'lastuser'  => strtoupper($request->ot_lastuser),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
-
+                
                 DB::table('hisdb.queue') 
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno)
@@ -162,22 +163,22 @@ class RequestForController extends defaultController
                         'lastuser'  => strtoupper($request->ot_lastuser),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
-
+                
                 $episode = DB::table('hisdb.episode')
-                    ->where('compcode',session('compcode'))
-                    ->where('mrn','=',$request->mrn)
-                    ->where('episno','=',$request->episno)
-                    ->first();
-
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno)
+                            ->first();
+                
                 $patmast = DB::table('hisdb.pat_mast')
-                    ->where('compcode',session('compcode'))
-                    ->where('mrn','=',$request->mrn)
-                    ->first();
-
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->first();
+                
                 $bed_obj = DB::table('hisdb.bed')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('bednum','=',$request->ReqFor_bed);
-
+                            ->where('compcode','=',session('compcode'))
+                            ->where('bednum','=',$request->ReqFor_bed);
+                
                 if($bed_obj->exists()){
                     DB::table('hisdb.bedalloc')
                         ->insert([  
@@ -195,7 +196,7 @@ class RequestForController extends defaultController
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'computerid' => session('computerid')
                         ]);
-
+                    
                     DB::table('hisdb.bed')
                         ->where('compcode','=',session('compcode'))
                         ->where('bednum','=',$request->ReqFor_bed)
@@ -211,14 +212,13 @@ class RequestForController extends defaultController
                             'newic' => $patmast->Newic
                         ]);
                 }
-                    
             }else if($request->req_type == 'OT'){
-            
                 // DB::table('hisdb.pat_otbook')
                 //     ->insert([
                 //         'compcode' => session('compcode'),
                 //         'mrn' => $request->mrn,
                 //         'episno' => $request->episno,
+                //         'iPesakit' => $request->iPesakit,
                 //         'req_type' => $request->req_type,
                 //         'op_date' => $request->op_date,
                 //         'oper_type' => $request->oper_type,
@@ -235,6 +235,14 @@ class RequestForController extends defaultController
                 //         'computerid' => session('computerid'),
                 //     ]);
             }
+            
+            DB::table('hisdb.pat_mast')
+                ->where('MRN','=',$request->mrn)
+                // ->where('Episno','=',$request->episno)
+                ->where('CompCode','=',session('compcode'))
+                ->update([
+                    'iPesakit' => $request->iPesakit,
+                ]);
             
             DB::commit();
             
@@ -262,6 +270,7 @@ class RequestForController extends defaultController
             if($pat_otbook->exists()){
                 $pat_otbook
                     ->update([
+                        'iPesakit' => $request->iPesakit,
                         'req_type' => $request->req_type,
                         'op_date' => $request->op_date,
                         'oper_type' => $request->oper_type,
@@ -283,6 +292,7 @@ class RequestForController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn,
                         'episno' => $request->episno,
+                        'iPesakit' => $request->iPesakit,
                         'req_type' => $request->req_type,
                         'op_date' => $request->op_date,
                         'oper_type' => $request->oper_type,
@@ -310,6 +320,14 @@ class RequestForController extends defaultController
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
             
+            DB::table('hisdb.pat_mast')
+                ->where('MRN','=',$request->mrn)
+                // ->where('Episno','=',$request->episno)
+                ->where('CompCode','=',session('compcode'))
+                ->update([
+                    'iPesakit' => $request->iPesakit,
+                ]);
+            
             $queries = DB::getQueryLog();
             // dump($queries);
             
@@ -330,14 +348,14 @@ class RequestForController extends defaultController
     }
     
     public function get_table_otbook(Request $request){
-
+        
         $pat_otbook_bed_obj = DB::table('hisdb.bed')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('mrn','=',$request->mrn)
-                        ->where('episno','=',$request->episno);
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
         
         $pat_otbook_obj = DB::table('hisdb.pat_otbook')
-                        ->select('idno','compcode','mrn','episno','req_type','op_date','oper_type','adm_type','anaesthetist','diagnosis as ot_diagnosis','diagnosedby as ot_diagnosedby','remarks as ot_remarks','doctorname as ot_doctorname','adduser','adddate','upduser','upddate','lastuser as ot_lastuser','lastupdate','computerid')
+                        ->select('idno','compcode','mrn','episno','iPesakit as p_iPesakit','req_type','op_date','oper_type','adm_type','anaesthetist','diagnosis as ot_diagnosis','diagnosedby as ot_diagnosedby','remarks as ot_remarks','doctorname as ot_doctorname','adduser','adddate','upduser','upddate','lastuser as ot_lastuser','lastupdate','computerid')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno);
@@ -353,8 +371,13 @@ class RequestForController extends defaultController
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn);
         
+        $patmast_obj = DB::table('hisdb.pat_mast')
+                        ->select('iPesakit')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn','=',$request->mrn);
+        
         $responce = new stdClass();
-
+        
         if($pat_otbook_bed_obj->exists()){
             $pat_otbook_bed_obj = $pat_otbook_bed_obj->first();
             $responce->pat_otbook_bed = $pat_otbook_bed_obj;
@@ -373,6 +396,13 @@ class RequestForController extends defaultController
         if($nurshistory_obj->exists()){
             $nurshistory_obj = $nurshistory_obj->first();
             $responce->nurshistory = $nurshistory_obj;
+        }
+        
+        if($patmast_obj->exists()){
+            $patmast_obj = $patmast_obj->first();
+            
+            $iPesakit = $patmast_obj->iPesakit;
+            $responce->iPesakit = $iPesakit;
         }
         
         return json_encode($responce);

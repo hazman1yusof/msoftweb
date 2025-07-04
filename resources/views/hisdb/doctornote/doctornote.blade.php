@@ -543,6 +543,13 @@
                                                     <div class="panel panel-info">
                                                         <div class="panel-body">
                                                             <div class="form-group">
+                                                                <label class="col-md-3 control-label" for="ot_iPesakit">iPesakit</label>
+                                                                <div class="col-md-2">
+                                                                    <input id="ot_iPesakit" name="iPesakit" type="text" class="form-control input-sm">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
                                                                 <label class="col-md-3 control-label" for="req_type">Type</label>
                                                                 <div class="col-md-6">
                                                                     <label class="radio-inline">
