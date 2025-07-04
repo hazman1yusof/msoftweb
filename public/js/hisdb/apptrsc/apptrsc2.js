@@ -201,6 +201,8 @@ $(document).ready(function () {
 				{ label: 'p_CompCode', name: 'p_CompCode', width: 200, classes: 'pointer', hidden: true },
 				{ label: 'e_compcode', name: 'e_compcode', width: 200, classes: 'pointer', hidden: true },
 				{ label: 'd_compcode', name: 'd_compcode', width: 200, classes: 'pointer', hidden: true },
+				{ label: 'p_iPesakit', name: 'p_iPesakit', width: 200, classes: 'pointer', hidden: false },
+
 			],
 			urlParam: {
 				fixPost: "true",
@@ -219,6 +221,7 @@ $(document).ready(function () {
 				$("#addForm input[name='telh']").val(data['p_telh'].trim());
 				$("#addForm input[name='telhp']").val(data['p_telhp'].trim());
 				$("#addForm input[name='doctorname']").val(data['d_doctorname'].trim());
+				$("#addForm input[name='iPesakit']").val(data['p_iPesakit']);
 				$(dialog_mrn.textfield).parent().next().text(" ");
 			}
 		},
