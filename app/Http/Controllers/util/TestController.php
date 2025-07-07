@@ -5749,7 +5749,7 @@ class TestController extends defaultController
                             'description' => $obj->sndrcv,
                             'postdate' => $obj->trandate,
                             'year' => '2025',
-                            'period' => '5',
+                            'period' => $period,
                             'drcostcode' => $drccode,
                             'dracc' => $draccno,
                             'crcostcode' => $crccode,
