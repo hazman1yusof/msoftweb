@@ -28,6 +28,15 @@
                             <div class="ui grid">
                                 <table class="ui very basic table" style="padding-top: 15px; padding-bottom: 15px;">
                                     <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="form-inline"> iPesakit <span style="margin-left: 41px;"> :  &nbsp;
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" id="preop_iPesakit" name="iPesakit">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
                                         <!-- <tr>
                                             <td>
                                                 <div class="form-inline"> Reg. No <span style="margin-left: 41px;"> :  &nbsp;
