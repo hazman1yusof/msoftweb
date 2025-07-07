@@ -209,6 +209,7 @@
 								</div>
 							</div> 
 							<div class="col-md-12">
+								<button type="button" id="print" class="pull-right btn btn-default" style="margin-left: 10px;">Print</button>
 								<button type="button" id="search" class="pull-right btn btn-primary" >Search</button>
 	              			</div>
         				</div>
