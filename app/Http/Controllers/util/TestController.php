@@ -44,8 +44,8 @@ class TestController extends defaultController
         switch($request->action){
             // case 'chgmast_invflag_tukar_dari_product':
             //     return $this->chgmast_invflag_tukar_dari_product($request);
-            case 'qtyonhandxsama':
-                return $this->qtyonhandxsama($request);
+            case 'allocation_btlkn':
+                return $this->allocation_btlkn($request);
             case 'gltran_jnl':
                 return $this->gltran_jnl($request);
             case 'bankrecon_cbtran':
