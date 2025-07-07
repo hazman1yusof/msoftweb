@@ -13,6 +13,7 @@ use App\Http\Controllers\defaultController;
 
 class PreoperativeController extends defaultController
 {
+    
     public function __construct()
     {
         $this->middleware('auth');
@@ -36,7 +37,6 @@ class PreoperativeController extends defaultController
         DB::enableQueryLog();
         switch($request->action){
             case 'save_table_preoperative':
-            
                 switch($request->oper){
                     case 'add':
                         return $this->add($request);
@@ -61,97 +61,97 @@ class PreoperativeController extends defaultController
         try {
             
             DB::table('nursing.otpreop')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_preoperative,
-                        'episno' => $request->episno_preoperative,
-                        'patID' => $request->patID,
-                        'use2iden' => $request->use2iden,
-                        'pat_ward' => $request->pat_ward,
-                        'pat_ot' => $request->pat_ot,
-                        'pat_remark' => $request->pat_remark,
-                        'consentSurgery' => $request->consentSurgery,
-                        'consentAnaesth' => $request->consentAnaesth,
-                        'consentTransf' => $request->consentTransf,
-                        'consentPhoto' => $request->consentPhoto,
-                        'checkForm' => $request->checkForm,
-                        'checkPat' => $request->checkPat,
-                        'checkList' => $request->checkList,
-                        'consent_ward' => $request->consent_ward,
-                        'consent_ot' => $request->consent_ot,
-                        'consent_remark' => $request->consent_remark,
-                        'checkSide_left' => $request->checkSide_left,
-                        'checkSide_right' => $request->checkSide_right,
-                        'checkSide_na' => $request->checkSide_na,
-                        'checkSide_ward' => $request->checkSide_ward,
-                        'checkSide_ot' => $request->checkSide_ot,
-                        'checkSide_remark' => $request->checkSide_remark,
-                        'opSite_mark' => $request->opSite_mark,
-                        'opSite_na' => $request->opSite_na,
-                        'opSite_ward' => $request->opSite_ward,
-                        'opSite_ot' => $request->opSite_ot,
-                        'opSite_remark' => $request->opSite_remark,
-                        'lastmeal_date' => $request->lastmeal_date,
-                        'lastmeal_time' => $request->lastmeal_time,
-                        'lastmeal_ward' => $request->lastmeal_ward,
-                        'lastmeal_ot' => $request->lastmeal_ot,
-                        'lastmeal_remark' => $request->lastmeal_remark,
-                        'checkItem_na' => $request->checkItem_na,
-                        'checkItem_ward' => $request->checkItem_ward,
-                        'checkItem_ot' => $request->checkItem_ot,
-                        'checkItem_remark' => $request->checkItem_remark,
-                        'allergies' => $request->allergies,
-                        'allergies_ward' => $request->allergies_ward,
-                        'allergies_ot' => $request->allergies_ot,
-                        'allergies_remark' => $request->allergies_remark,
-                        'implantAvailable' => $request->implantAvailable,
-                        'implant_ward' => $request->implant_ward,
-                        'implant_ot' => $request->implant_ot,
-                        'implant_remark' => $request->implant_remark,
-                        'premed_na' => $request->premed_na,
-                        'premed_ward' => $request->premed_ward,
-                        'premed_ot' => $request->premed_ot,
-                        'premed_remark' => $request->premed_remark,
-                        'blood_na' => $request->blood_na,
-                        'blood_ward' => $request->blood_ward,
-                        'blood_ot' => $request->blood_ot,
-                        'blood_remark' => $request->blood_remark,
-                        'casenotes_na' => $request->casenotes_na,
-                        'casenotes_ward' => $request->casenotes_ward,
-                        'casenotes_ot' => $request->casenotes_ot,
-                        'casenotes_remark' => $request->casenotes_remark,
-                        'oldnotes_na' => $request->oldnotes_na,
-                        'oldnotes_ward' => $request->oldnotes_ward,
-                        'oldnotes_ot' => $request->oldnotes_ot,
-                        'oldnotes_remark' => $request->oldnotes_remark,
-                        'imaging_na' => $request->imaging_na,
-                        'imaging_ward' => $request->imaging_ward,
-                        'imaging_ot' => $request->imaging_ot,
-                        'imaging_remark' => $request->imaging_remark,
-                        'bpsys1' => $request->bpsys1,
-                        'bpdias' => $request->bpdias,
-                        'pulse' => $request->pulse,
-                        'temperature' => $request->temperature,
-                        'vs_ward' => $request->vs_ward,
-                        'vs_ot' => $request->vs_ot,
-                        'vs_remark' => $request->vs_remark,
-                        'others_na' => $request->others_na,
-                        'others_ward' => $request->others_ward,
-                        'others_ot' => $request->others_ot,
-                        'others_remark' => $request->others_remark,
-                        'importantIssues' => $request->importantIssues,
-                        'info_temperature' => $request->info_temperature,
-                        'info_humidity' => $request->info_humidity,
-                        'info_otroom' => $request->info_otroom,
-                        'info_anaesthetist' => $request->info_anaesthetist,
-                        'info_surgeon' => $request->info_surgeon,
-                        'info_asstsurgeon' => $request->info_asstsurgeon,
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'computerid' => session('computerid'),
-                    ]);
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_preoperative,
+                    'episno' => $request->episno_preoperative,
+                    'patID' => $request->patID,
+                    'use2iden' => $request->use2iden,
+                    'pat_ward' => $request->pat_ward,
+                    'pat_ot' => $request->pat_ot,
+                    'pat_remark' => $request->pat_remark,
+                    'consentSurgery' => $request->consentSurgery,
+                    'consentAnaesth' => $request->consentAnaesth,
+                    'consentTransf' => $request->consentTransf,
+                    'consentPhoto' => $request->consentPhoto,
+                    'checkForm' => $request->checkForm,
+                    'checkPat' => $request->checkPat,
+                    'checkList' => $request->checkList,
+                    'consent_ward' => $request->consent_ward,
+                    'consent_ot' => $request->consent_ot,
+                    'consent_remark' => $request->consent_remark,
+                    'checkSide_left' => $request->checkSide_left,
+                    'checkSide_right' => $request->checkSide_right,
+                    'checkSide_na' => $request->checkSide_na,
+                    'checkSide_ward' => $request->checkSide_ward,
+                    'checkSide_ot' => $request->checkSide_ot,
+                    'checkSide_remark' => $request->checkSide_remark,
+                    'opSite_mark' => $request->opSite_mark,
+                    'opSite_na' => $request->opSite_na,
+                    'opSite_ward' => $request->opSite_ward,
+                    'opSite_ot' => $request->opSite_ot,
+                    'opSite_remark' => $request->opSite_remark,
+                    'lastmeal_date' => $request->lastmeal_date,
+                    'lastmeal_time' => $request->lastmeal_time,
+                    'lastmeal_ward' => $request->lastmeal_ward,
+                    'lastmeal_ot' => $request->lastmeal_ot,
+                    'lastmeal_remark' => $request->lastmeal_remark,
+                    'checkItem_na' => $request->checkItem_na,
+                    'checkItem_ward' => $request->checkItem_ward,
+                    'checkItem_ot' => $request->checkItem_ot,
+                    'checkItem_remark' => $request->checkItem_remark,
+                    'allergies' => $request->allergies,
+                    'allergies_ward' => $request->allergies_ward,
+                    'allergies_ot' => $request->allergies_ot,
+                    'allergies_remark' => $request->allergies_remark,
+                    'implantAvailable' => $request->implantAvailable,
+                    'implant_ward' => $request->implant_ward,
+                    'implant_ot' => $request->implant_ot,
+                    'implant_remark' => $request->implant_remark,
+                    'premed_na' => $request->premed_na,
+                    'premed_ward' => $request->premed_ward,
+                    'premed_ot' => $request->premed_ot,
+                    'premed_remark' => $request->premed_remark,
+                    'blood_na' => $request->blood_na,
+                    'blood_ward' => $request->blood_ward,
+                    'blood_ot' => $request->blood_ot,
+                    'blood_remark' => $request->blood_remark,
+                    'casenotes_na' => $request->casenotes_na,
+                    'casenotes_ward' => $request->casenotes_ward,
+                    'casenotes_ot' => $request->casenotes_ot,
+                    'casenotes_remark' => $request->casenotes_remark,
+                    'oldnotes_na' => $request->oldnotes_na,
+                    'oldnotes_ward' => $request->oldnotes_ward,
+                    'oldnotes_ot' => $request->oldnotes_ot,
+                    'oldnotes_remark' => $request->oldnotes_remark,
+                    'imaging_na' => $request->imaging_na,
+                    'imaging_ward' => $request->imaging_ward,
+                    'imaging_ot' => $request->imaging_ot,
+                    'imaging_remark' => $request->imaging_remark,
+                    'bpsys1' => $request->bpsys1,
+                    'bpdias' => $request->bpdias,
+                    'pulse' => $request->pulse,
+                    'temperature' => $request->temperature,
+                    'vs_ward' => $request->vs_ward,
+                    'vs_ot' => $request->vs_ot,
+                    'vs_remark' => $request->vs_remark,
+                    'others_na' => $request->others_na,
+                    'others_ward' => $request->others_ward,
+                    'others_ot' => $request->others_ot,
+                    'others_remark' => $request->others_remark,
+                    'importantIssues' => $request->importantIssues,
+                    'info_temperature' => $request->info_temperature,
+                    'info_humidity' => $request->info_humidity,
+                    'info_otroom' => $request->info_otroom,
+                    'info_anaesthetist' => $request->info_anaesthetist,
+                    'info_surgeon' => $request->info_surgeon,
+                    'info_asstsurgeon' => $request->info_asstsurgeon,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
             
             DB::commit();
             
@@ -294,84 +294,101 @@ class PreoperativeController extends defaultController
         try {
             
             DB::table('nursing.otpreop')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_preoperative,
-                        'episno' => $request->episno_preoperative,
-                        // PATIENT PROFILE
-                        // 'regno' => $request->regno,
-                        'diagnosis' => $request->diagnosis,
-                        'operation' => $request->operation,
-                        'checkby' => $request->checkby,
-                        'entereddate' => $request->entereddate,
-                        'contactperson' => $request->contactperson,
-                        // PRE-TRANSFER CHECK
-                        'patName' => $request->patName,
-                        'identitytag' => $request->identitytag,
-                        'pat_ward' => $request->pat_ward,
-                        'pat_ot' => $request->pat_ot,
-                        'pat_remark' => $request->pat_remark,
-                        'consentSurgery' => $request->consentSurgery,
-                        'consentAnaesth' => $request->consentAnaesth,
-                        'consentTransf' => $request->consentTransf,
-                        'consent_ward' => $request->consent_ward,
-                        'consent_ot' => $request->consent_ot,
-                        'consent_remark' => $request->consent_remark,
-                        'checkSide_left' => $request->checkSide_left,
-                        'checkSide_right' => $request->checkSide_right,
-                        'checkSide_na' => $request->checkSide_na,
-                        'checkSide_ward' => $request->checkSide_ward,
-                        'checkSide_ot' => $request->checkSide_ot,
-                        'checkSide_remark' => $request->checkSide_remark,
-                        'opSite_mark' => $request->opSite_mark,
-                        'opSite_na' => $request->opSite_na,
-                        'opSite_ward' => $request->opSite_ward,
-                        'opSite_ot' => $request->opSite_ot,
-                        'opSite_remark' => $request->opSite_remark,
-                        'lastmeal_date' => $request->lastmeal_date,
-                        'lastmeal_time' => $request->lastmeal_time,
-                        'lastmeal_ward' => $request->lastmeal_ward,
-                        'lastmeal_ot' => $request->lastmeal_ot,
-                        'lastmeal_remark' => $request->lastmeal_remark,
-                        'checkItem_ward' => $request->checkItem_ward,
-                        'checkItem_ot' => $request->checkItem_ot,
-                        'checkItem_remark' => $request->checkItem_remark,
-                        'premed_ward' => $request->premed_ward,
-                        'premed_ot' => $request->premed_ot,
-                        'premed_remark' => $request->premed_remark,
-                        'blood_ward' => $request->blood_ward,
-                        'blood_ot' => $request->blood_ot,
-                        'blood_remark' => $request->blood_remark,
-                        'casenotes' => $request->casenotes,
-                        'oldnotes' => $request->oldnotes,
-                        'xrays' => $request->xrays,
-                        'casenotes_ward' => $request->casenotes_ward,
-                        'casenotes_ot' => $request->casenotes_ot,
-                        'casenotes_remark' => $request->casenotes_remark,
-                        'bpsys1' => $request->bpsys1,
-                        'bpdias' => $request->bpdias,
-                        'pulse' => $request->pulse,
-                        'vs_ward' => $request->vs_ward,
-                        'vs_ot' => $request->vs_ot,
-                        'vs_remark' => $request->vs_remark,
-                        'preopvisit_ward' => $request->preopvisit_ward,
-                        'preopvisit_ot' => $request->preopvisit_ot,
-                        'preopvisit_remark' => $request->preopvisit_remark,
-                        'wardnurse' => $request->wardnurse,
-                        'otnurse' => $request->otnurse,
-                        'lmp' => $request->lmp,
-                        // INFORMATION ON OPERATING ROOM
-                        'info_otroom' => $request->info_otroom,
-                        'info_anaesthetist' => $request->info_anaesthetist,
-                        'info_surgeon' => $request->info_surgeon,
-                        'starttime' => $request->starttime,
-                        'endtime' => $request->endtime,
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'computerid' => session('computerid'),
-                    ]);
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_preoperative,
+                    'episno' => $request->episno_preoperative,
+                    // PATIENT PROFILE
+                    'iPesakit' => $request->iPesakit,
+                    // 'regno' => $request->regno,
+                    'diagnosis' => $request->diagnosis,
+                    'operation' => $request->operation,
+                    'checkby' => $request->checkby,
+                    'entereddate' => $request->entereddate,
+                    'contactperson' => $request->contactperson,
+                    // PRE-TRANSFER CHECK
+                    'patName' => $request->patName,
+                    'identitytag' => $request->identitytag,
+                    'pat_ward' => $request->pat_ward,
+                    'pat_ot' => $request->pat_ot,
+                    'pat_remark' => $request->pat_remark,
+                    'consentSurgery' => $request->consentSurgery,
+                    'consentAnaesth' => $request->consentAnaesth,
+                    'consentTransf' => $request->consentTransf,
+                    'consent_ward' => $request->consent_ward,
+                    'consent_ot' => $request->consent_ot,
+                    'consent_remark' => $request->consent_remark,
+                    'checkSide_left' => $request->checkSide_left,
+                    'checkSide_right' => $request->checkSide_right,
+                    'checkSide_na' => $request->checkSide_na,
+                    'checkSide_ward' => $request->checkSide_ward,
+                    'checkSide_ot' => $request->checkSide_ot,
+                    'checkSide_remark' => $request->checkSide_remark,
+                    'opSite_mark' => $request->opSite_mark,
+                    'opSite_na' => $request->opSite_na,
+                    'opSite_ward' => $request->opSite_ward,
+                    'opSite_ot' => $request->opSite_ot,
+                    'opSite_remark' => $request->opSite_remark,
+                    'lastmeal_date' => $request->lastmeal_date,
+                    'lastmeal_time' => $request->lastmeal_time,
+                    'lastmeal_ward' => $request->lastmeal_ward,
+                    'lastmeal_ot' => $request->lastmeal_ot,
+                    'lastmeal_remark' => $request->lastmeal_remark,
+                    'checkItem_ward' => $request->checkItem_ward,
+                    'checkItem_ot' => $request->checkItem_ot,
+                    'checkItem_remark' => $request->checkItem_remark,
+                    'premed_ward' => $request->premed_ward,
+                    'premed_ot' => $request->premed_ot,
+                    'premed_remark' => $request->premed_remark,
+                    'blood_ward' => $request->blood_ward,
+                    'blood_ot' => $request->blood_ot,
+                    'blood_remark' => $request->blood_remark,
+                    'casenotes' => $request->casenotes,
+                    'oldnotes' => $request->oldnotes,
+                    'xrays' => $request->xrays,
+                    'casenotes_ward' => $request->casenotes_ward,
+                    'casenotes_ot' => $request->casenotes_ot,
+                    'casenotes_remark' => $request->casenotes_remark,
+                    'bpsys1' => $request->bpsys1,
+                    'bpdias' => $request->bpdias,
+                    'pulse' => $request->pulse,
+                    'vs_ward' => $request->vs_ward,
+                    'vs_ot' => $request->vs_ot,
+                    'vs_remark' => $request->vs_remark,
+                    'preopvisit_ward' => $request->preopvisit_ward,
+                    'preopvisit_ot' => $request->preopvisit_ot,
+                    'preopvisit_remark' => $request->preopvisit_remark,
+                    'wardnurse' => $request->wardnurse,
+                    'otnurse' => $request->otnurse,
+                    'lmp' => $request->lmp,
+                    // INFORMATION ON OPERATING ROOM
+                    'info_otroom' => $request->info_otroom,
+                    'info_anaesthetist' => $request->info_anaesthetist,
+                    'info_surgeon' => $request->info_surgeon,
+                    'starttime' => $request->starttime,
+                    'endtime' => $request->endtime,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            if(!empty($request->iPesakit)){
+                $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('CompCode',session('compcode'))
+                            ->where('MRN',$request->mrn_preoperative)
+                            ->first();
+                
+                if($pat_mast->iPesakit != $request->iPesakit){
+                    DB::table('hisdb.pat_mast')
+                        ->where('CompCode',session('compcode'))
+                        ->where('MRN',$request->mrn_preoperative)
+                        ->update([
+                            'iPesakit' => $request->iPesakit,
+                        ]);
+                }
+            }
             
             DB::commit();
             
@@ -401,6 +418,7 @@ class PreoperativeController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     // PATIENT PROFILE
+                    'iPesakit' => $request->iPesakit,
                     // 'regno' => $request->regno,
                     'diagnosis' => $request->diagnosis,
                     'operation' => $request->operation,
@@ -475,6 +493,22 @@ class PreoperativeController extends defaultController
                     'computerid' => session('computerid'),
                 ]);
             
+            if(!empty($request->iPesakit)){
+                $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('CompCode',session('compcode'))
+                            ->where('MRN',$request->mrn_preoperative)
+                            ->first();
+                
+                if($pat_mast->iPesakit != $request->iPesakit){
+                    DB::table('hisdb.pat_mast')
+                        ->where('CompCode',session('compcode'))
+                        ->where('MRN',$request->mrn_preoperative)
+                        ->update([
+                            'iPesakit' => $request->iPesakit,
+                        ]);
+                }
+            }
+            
             // $queries = DB::getQueryLog();
             // dump($queries);
             
@@ -514,11 +548,23 @@ class PreoperativeController extends defaultController
                     ->where('ot.mrn','=',$request->mrn)
                     ->where('ot.episno','=',$request->episno);
         
+        $patmast_obj = DB::table('hisdb.pat_mast')
+                        ->select('iPesakit')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn','=',$request->mrn);
+        
         $responce = new stdClass();
         
         if($preop_obj->exists()){
             $preop_obj = $preop_obj->first();
             $responce->preop = $preop_obj;
+        }
+        
+        if($patmast_obj->exists()){
+            $patmast_obj = $patmast_obj->first();
+            
+            $iPesakit = $patmast_obj->iPesakit;
+            $responce->iPesakit = $iPesakit;
         }
         
         return json_encode($responce);

@@ -755,7 +755,7 @@ $(document).ready(function (){
             }
             $('.ui-pg-button').prop('disabled',true);
             addmore_jqgridhand.edit = addmore_jqgridhand.more = false; // reset
-        // calc_jq_height_onchange("jqGrid_hand");
+            calc_jq_height_onchange("jqGrid_hand");
         },
         ondblClickRow: function (rowid, iRow, iCol, e){
             $("#jqGrid_hand_iledit").click();
@@ -2266,23 +2266,13 @@ function textarea_init_upperExtremity(){
     });
 }
 
-// function calc_jq_height_onchange(jqgrid){
-// 	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
-// 	if(scrollHeight<50){
-// 		scrollHeight = 50;
-// 	}else if(scrollHeight>300){
-// 		scrollHeight = 300;
-// 	}
-// 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+1);
-// }
-
 function calc_jq_height_onchange(jqgrid){
 	let offsetWidth = $('#'+jqgrid+'>tbody').prop('offsetWidth');
 	if(offsetWidth<50){
 		offsetWidth = 50;
-	}else if(offsetWidth>1300){
-		offsetWidth = 1300;
+	}else if(offsetWidth>1800){
+		offsetWidth = 1800;
 	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('width',offsetWidth+1);
-    $('#gview_'+jqgrid+' > div.ui-jqgrid-hdiv').css('width',offsetWidth+1);
+	// $('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('width',offsetWidth+1);
+    // $('#gview_'+jqgrid+' > div.ui-jqgrid-hdiv').css('width',offsetWidth+1);
 }

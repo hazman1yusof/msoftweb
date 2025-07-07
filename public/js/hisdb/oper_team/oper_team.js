@@ -453,11 +453,12 @@ function getdata_oper_team(){
         if(!$.isEmptyObject(data)){
             button_state_oper_team('edit');
             autoinsert_rowdata("#form_oper_team",data.otteam);
-            textare_init_oper_team();
+            if(!emptyobj_(data.iPesakit))$("#operteam_iPesakit").val(data.iPesakit);
         }else{
             button_state_oper_team('add');
-            textare_init_oper_team();
         }
+        
+        textare_init_oper_team();
     });
 }
 

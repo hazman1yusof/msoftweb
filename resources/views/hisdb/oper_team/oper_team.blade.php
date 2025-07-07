@@ -19,6 +19,15 @@
                 <input id="mrn_oper_team" name="mrn_oper_team" type="hidden">
                 <input id="episno_oper_team" name="episno_oper_team" type="hidden">
                 
+                <div class="sixteen wide column">
+                    <div class="ui segment">
+                        <div class="inline fields">
+                            <label>iPesakit</label>
+                            <div class="field"><input type="text" class="form-control" id="operteam_iPesakit" name="iPesakit"></div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="eight wide column">
                     <div class="ui segments">
                         <h5>BEFORE INDUCTION OF ANAESTHESIA</h5>

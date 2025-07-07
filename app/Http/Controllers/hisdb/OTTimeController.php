@@ -52,8 +52,127 @@ class OTTimeController extends defaultController
                 return 'error happen..';
         }
     }
-    
+
     public function add(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.ottime')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_ottime,
+                        'episno' => $request->episno_ottime,
+                        'ottimeDate' => $request->ottimeDate,
+                        'case' => $request->case,
+                        'dept' => $request->dept,
+                        'vendor' => $request->vendor,
+                        'arrive_time' => $request->arrive_time,
+                        'arrive_date' => $request->arrive_date,
+                        'in_time' => $request->in_time,
+                        'in_date' => $request->in_date,
+                        'start_time' => $request->start_time,
+                        'start_date' => $request->start_date,
+                        'end_time' => $request->end_time,
+                        'end_date' => $request->end_date,
+                        'recovery_time' => $request->recovery_time,
+                        'recovery_date' => $request->recovery_date,
+                        'depart_time' => $request->depart_time,
+                        'depart_date' => $request->depart_date,
+                        'type_anaesth' => $request->type_anaesth,
+                        'anaesth' => $request->anaesth,
+                        'diagnosis' => $request->diagnosis,
+                        'procedure' => $request->procedure,
+                        'scrubperson' => $request->scrubperson,
+                        'gaNurse' => $request->gaNurse,
+                        'circulateperson' => $request->circulateperson,
+                        'remarks' => $request->remarks,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid'),
+                    ]);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+
+    public function edit(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.ottime')
+                ->where('mrn','=',$request->mrn_ottime)
+                ->where('episno','=',$request->episno_ottime)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'ottimeDate' => $request->ottimeDate,
+                    'case' => $request->case,
+                    'dept' => $request->dept,
+                    'vendor' => $request->vendor,
+                    'arrive_time' => $request->arrive_time,
+                    'arrive_date' => $request->arrive_date,
+                    'in_time' => $request->in_time,
+                    'in_date' => $request->in_date,
+                    'start_time' => $request->start_time,
+                    'start_date' => $request->start_date,
+                    'end_time' => $request->end_time,
+                    'end_date' => $request->end_date,
+                    'recovery_time' => $request->recovery_time,
+                    'recovery_date' => $request->recovery_date,
+                    'depart_time' => $request->depart_time,
+                    'depart_date' => $request->depart_date,
+                    'type_anaesth' => $request->type_anaesth,
+                    'anaesth' => $request->anaesth,
+                    'diagnosis' => $request->diagnosis,
+                    'procedure' => $request->procedure,
+                    'scrubperson' => $request->scrubperson,
+                    'gaNurse' => $request->gaNurse,
+                    'circulateperson' => $request->circulateperson,
+                    'remarks' => $request->remarks,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            // $queries = DB::getQueryLog();
+            // dump($queries);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function add_lama(Request $request){
         
         DB::beginTransaction();
         
@@ -111,7 +230,7 @@ class OTTimeController extends defaultController
         
     }
     
-    public function edit(Request $request){
+    public function edit_lama(Request $request){
         
         DB::beginTransaction();
         

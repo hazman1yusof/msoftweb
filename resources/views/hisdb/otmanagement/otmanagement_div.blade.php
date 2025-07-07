@@ -1,4 +1,5 @@
 <div class="ui segments" style="position: relative;">
+    <input type="hidden" id="urltodiagram" value="url('/upload/pdf/')">
     <div class="ui secondary segment bluecloudsegment">
         OPERATION RECORD
         <div class="ui small blue icon buttons" id="btn_grp_edit_otmgmt_div" style="position: absolute;
@@ -117,7 +118,7 @@
 
                                 <div class="ten wide column">
                                     <div class="ui segments">
-                                        <div class="ui segment" style="height: 480px">
+                                        <div class="ui segment">
                                         
                                             <!-- <div class="ui grid">
                                                 <div class="row" style="padding-left: 30px;">
@@ -181,7 +182,19 @@
                                                     <textarea id="specimen" name="specimen" rows="4"></textarea>
                                                 </div>
                                             </div>
-                                            
+
+                                            <div class="ui grid">
+                                                <div class="field sixteen wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
+                                                    <label>Drawing</label>
+                                                    <div class="ui cards">
+                                                        <a class="ui card oper_rec" data-type='drawing'>
+                                                            <div class="image">
+                                                                <img src="{{ asset('img/oper_rec.png') }}">
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

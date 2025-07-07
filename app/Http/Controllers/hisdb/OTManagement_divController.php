@@ -87,7 +87,7 @@ class OTManagement_divController extends defaultController
                         'scrubnurse' => $request->scrubnurse,
                         'consultant' => $request->consultant,
                         'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'e_yes' => $request->e_yes,
                         'e_no' => $request->e_no,
                         'general' => $request->general,
@@ -110,7 +110,18 @@ class OTManagement_divController extends defaultController
                     // 'procedure' => $request->procedure,
                     'diagnosis' => $request->diagnosis,
                     'lastuser'  => session('username'),
-                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                ]);
+
+            DB::table('nursing.ottime')
+                ->where('mrn','=',$request->mrn_otmgmt_div)
+                ->where('episno','=', $request->episno_otmgmt_div)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'procedure' => $request->natureoper,
+                    'diagnosis' => $request->diagnosis,
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
             
             DB::commit();
@@ -168,7 +179,7 @@ class OTManagement_divController extends defaultController
                             'scrubnurse' => $request->scrubnurse,
                             'consultant' => $request->consultant,
                             'adduser'  => session('username'),
-                            'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                            'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                             'e_yes' => $request->e_yes,
                             'e_no' => $request->e_no,
                             'general' => $request->general,
@@ -191,8 +202,20 @@ class OTManagement_divController extends defaultController
                         // 'procedure' => $request->procedure,
                         'diagnosis' => $request->diagnosis,
                         'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
+
+                DB::table('nursing.ottime')
+                    ->where('mrn','=',$request->mrn_otmgmt_div)
+                    ->where('episno','=', $request->episno_otmgmt_div)
+                    ->where('compcode','=',session('compcode'))
+                    ->update([
+                        'procedure' => $request->natureoper,
+                        'diagnosis' => $request->diagnosis,
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+
             }else{
                 $otmanage
                     ->update([
@@ -218,7 +241,7 @@ class OTManagement_divController extends defaultController
                         'scrubnurse' => $request->scrubnurse,
                         'consultant' => $request->consultant,
                         'upduser'  => session('username'),
-                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
                         'e_yes' => $request->e_yes,
                         'e_no' => $request->e_no,
                         'general' => $request->general,
@@ -241,7 +264,18 @@ class OTManagement_divController extends defaultController
                         // 'procedure' => $request->procedure,
                         'diagnosis' => $request->diagnosis,
                         'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    ]);
+
+                DB::table('nursing.ottime')
+                    ->where('mrn','=',$request->mrn_otmgmt_div)
+                    ->where('episno','=', $request->episno_otmgmt_div)
+                    ->where('compcode','=',session('compcode'))
+                    ->update([
+                        'procedure' => $request->natureoper,
+                        'diagnosis' => $request->diagnosis,
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
             }
             
