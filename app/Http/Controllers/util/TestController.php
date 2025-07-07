@@ -5462,30 +5462,15 @@ class TestController extends defaultController
     
     public function gltran_step1(Request $request){
         DB::beginTransaction();
+        $period = $request->period;
+        if(empty($period)){
+            dd('no PERIOD');
+        }
+        $day_start = Carbon::createFromFormat('Y-m-d','2025-'.$period.'-01')->startOfMonth()->format('Y-m-d');
+        $day_end = Carbon::createFromFormat('Y-m-d','2025-'.$period.'-01')->endOfMonth()->format('Y-m-d');
+        $auditno = Carbon::createFromFormat('Y-m-d','2025-'.$period.'-01')->startOfMonth()->format('ymd');
 
         try {
-            DB::table('finance.gltran')
-                        ->where('compcode','9b')
-                        ->where('year','2025')
-                        ->where('period','5')
-                        ->where('source','iv')
-                        ->update([
-                            'compcode'=>'xx',
-                            'upduser' =>'SYSTEM_AR',
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
-
-            DB::table('finance.gltran')
-                        ->where('compcode','9b')
-                        ->where('year','2025')
-                        ->where('period','5')
-                        ->where('source','do')
-                        ->update([
-                            'compcode'=>'xx',
-                            'upduser' =>'SYSTEM_AR',
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
-
             $glmasdtl = DB::table('finance.glmasdtl')
                             ->where('compcode','9b')
                             ->where('year','2025')
@@ -5494,25 +5479,28 @@ class TestController extends defaultController
 
             $x = 1;
             foreach ($glmasdtl as $obj) {
+                $obj_ = (array)$obj;
+                $amount = $obj_['actamount'.$period];
+
                 DB::table('finance.gltran')
                     ->insert([
                         'compcode' => '9B',
                         'adduser' => 'system_ar96',
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'auditno' => '250501',
+                        'auditno' => $auditno,
                         'lineno_' => $x,
                         'source' => 'IV',
                         'trantype' => 'OB',
                         // 'reference' => $obj->document,
-                        'postdate' => '2025-05-01',
+                        'postdate' => $day_start,
                         'description' => 'Opening Stock', //suppliercode + suppliername
                         'year' => 2025,
-                        'period' => 5,
+                        'period' => $period,
                         'drcostcode' => $obj->costcode,
                         'dracc' => '20010041',
                         'crcostcode' => $obj->costcode,
                         'cracc' => '20010040',
-                        'amount' => $obj->actamount4,
+                        'amount' => $amount,
                     ]);
 
                 $x = $x + 1; 
@@ -5529,20 +5517,54 @@ class TestController extends defaultController
     }
 
     public function gltran_step2(Request $request){
-        DB::beginTransaction();
+        // DB::beginTransaction();
+        $period = $request->period;
+        if(empty($period)){
+            dd('no PERIOD');
+        }
+        $day_start = Carbon::createFromFormat('Y-m-d','2025-'.$period.'-01')->startOfMonth()->format('Y-m-d');
+        $day_end = Carbon::createFromFormat('Y-m-d','2025-'.$period.'-01')->endOfMonth()->format('Y-m-d');
 
         try {
+
+            DB::table('finance.gltran')
+                        ->where('compcode','9b')
+                        ->where('year','2025')
+                        ->where('period',$period)
+                        ->where('source','iv')
+                        ->whereIn('trantype',['GRN','GRT'])
+                        ->update([
+                            'compcode'=>'xx',
+                            'upduser' =>'SYSTEM_AR',
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+
+            DB::table('finance.gltran')
+                        ->where('compcode','9b')
+                        ->where('year','2025')
+                        ->where('period',$period)
+                        ->where('source','do')
+                        ->whereIn('trantype',['GRN','GRT'])
+                        ->update([
+                            'compcode'=>'xx',
+                            'upduser' =>'SYSTEM_AR',
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+
             $delorddt = DB::table('material.delorddt as dt')
                             ->select('dt.recno','dt.lineno_','dt.pricecode','dt.itemcode','dt.uomcode','dt.pouom','dt.suppcode','dt.trandate','dh.deldept','dt.deliverydate','dt.qtytag','dt.unitprice','dt.amtdisc','dt.perdisc','dt.prortdisc','dt.amtslstax','dt.perslstax','dt.netunitprice','dt.remarks','dt.qtyorder','dt.qtydelivered','dt.qtyoutstand','dt.productcat','dt.draccno','dt.drccode','dt.craccno','dt.crccode','dt.source','dt.updtime','dt.polineno','dt.itemmargin','dt.amount','dt.deluser','dt.deldate','dt.recstatus','dt.taxcode','dt.totamount','dt.qtyreturned','dh.postdate','dh.trantype','dh.docno')
                             ->where('dt.compcode','9b')
-                            ->join('material.delordhd as dh', function($join) use ($request){
+                            ->join('material.delordhd as dh', function($join) use ($day_start,$day_end){
                                 $join = $join->on('dh.recno', '=', 'dt.recno')
-                                              ->whereDate('dh.postdate','>=','2025-05-01')
-                                              ->whereDate('dh.postdate','<=','2025-05-31')
+                                              ->where('dh.recstatus','POSTED')
+                                              ->whereDate('dh.postdate','>=',$day_start)
+                                              ->whereDate('dh.postdate','<=',$day_end)
                                               // ->whereIn('dh.deldept',['IMP','KHEALTH','FKWSTR'])
                                               ->where('dh.compcode','9b');
                             })
                             ->get();
+
+            // dd($this->getQueries($delorddt));
 
             foreach ($delorddt as $obj) {
                 $product_obj = DB::table('material.product')
@@ -5625,7 +5647,7 @@ class TestController extends defaultController
                         'description' => $obj->itemcode, 
                         'postdate' => $obj->postdate,
                         'year' => '2025',
-                        'period' => '5',
+                        'period' => $period,
                         'drcostcode' => $drcostcode,
                         'dracc' => $dracc,
                         'crcostcode' => $crcostcode,
@@ -5646,16 +5668,37 @@ class TestController extends defaultController
 
     public function gltran_step3(Request $request){
         DB::beginTransaction();
+        $period = $request->period;
+        if(empty($period)){
+            dd('no PERIOD');
+        }
+
+        $day_start = Carbon::createFromFormat('Y-m-d','2025-'.$period.'-01')->startOfMonth()->format('Y-m-d');
+        $day_end = Carbon::createFromFormat('Y-m-d','2025-'.$period.'-01')->endOfMonth()->format('Y-m-d');
 
         try {
+
+            DB::table('finance.gltran')
+                        ->where('compcode','9b')
+                        ->where('year','2025')
+                        ->where('period',$period)
+                        ->where('source','iv')
+                        ->where('trantype','TUI')
+                        ->where('trantype','TUO')
+                        ->update([
+                            'compcode'=>'xx',
+                            'upduser' =>'SYSTEM_AR',
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+
             $ivtxndt = DB::table('material.ivtxndt as ivdt')
                             ->select('ivdt.compcode','ivdt.recno','ivdt.lineno_','ivdt.itemcode','ivdt.uomcode','ivdt.uomcoderecv','ivdt.txnqty','ivdt.netprice','ivdt.adduser','ivdt.adddate','ivdt.upduser','ivdt.upddate','ivdt.productcat','ivdt.draccno','ivdt.drccode','ivdt.craccno','ivdt.crccode','ivdt.updtime','ivdt.expdate','ivdt.remarks','ivdt.qtyonhand','ivdt.qtyonhandrecv','ivdt.batchno','ivdt.amount','ivdt.deptcode','ivdt.gstamount','ivdt.totamount','ivdt.recstatus','ivdt.reopen','ivdt.unit','ivdt.vrqty','ivhd.trandate','ivhd.source','ivhd.trantype','ivhd.txndept','ivhd.docno','ivhd.sndrcv')
                             ->where('ivdt.compcode','9b')
-                            ->join('material.IvTxnHd as ivhd', function($join) use ($request){
+                            ->join('material.IvTxnHd as ivhd', function($join) use ($day_start,$day_end){
                                 $join = $join->on('ivhd.recno', '=', 'ivdt.recno')
                                               ->on('ivhd.trantype', '=', 'ivdt.trantype')
-                                              ->whereDate('ivhd.trandate','>=','2025-05-01')
-                                              ->whereDate('ivhd.trandate','<=','2025-05-31')
+                                              ->whereDate('ivhd.trandate','>=',$day_start)
+                                              ->whereDate('ivhd.trandate','<=',$day_end)
                                               ->where('ivhd.source','iv')
                                               ->whereIn('ivhd.trantype',['tui','tuo'])
                                               ->where('ivhd.compcode','9b');
@@ -5671,8 +5714,13 @@ class TestController extends defaultController
 
                 $sndrcv_obj = DB::table('sysdb.department')
                     ->where('department.compcode','=',session('compcode'))
-                    ->where('department.deptcode','=',$obj->sndrcv)
-                    ->first();
+                    ->where('department.deptcode','=',$obj->sndrcv);
+
+                if(!$sndrcv_obj->exists()){
+                    dd('dept sndrcv not exist : '.$obj->sndrcv);
+                }
+
+                $sndrcv_obj = $sndrcv_obj->first();
 
                 if($obj->trantype=='TUI'){
                     $drccode=$dept_obj->costcode; 
@@ -5720,8 +5768,9 @@ class TestController extends defaultController
         }  
     }
 
-    public function gltran_step4(Request $request){
+    public function gltran_step4(Request $request){//ni buat dkt python
         DB::beginTransaction();
+        dd('buat dkt python');
 
         try {
 
