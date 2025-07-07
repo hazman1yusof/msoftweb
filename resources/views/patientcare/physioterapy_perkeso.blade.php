@@ -106,18 +106,10 @@
             </div>
             
             <div class="sixteen wide column">
-                <div class="ui segments">
-                    <div class="ui segment">
-                        <div class="ui grid">
-                            <div class="sixteen wide column">
-                                <div class="inline fields">
-                                    <label>SUBJECTIVE AX</label>
-                                    <div class="field">
-                                        <textarea rows="4" cols="50" name="subjective"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="ui segment">
+                    <div class="inline fields">
+                        <label>SUBJECTIVE AX</label>
+                        <div class="field"><textarea rows="4" cols="50" name="subjective"></textarea></div>
                     </div>
                 </div>
             </div>
@@ -176,42 +168,24 @@
             </div>
             
             <div class="sixteen wide column">
-                <div class="ui segments">
-                    <div class="ui segment">
-                        <div class="ui grid">
-                            <div class="sixteen wide column">
-                                <div class="inline fields">
-                                    <label>PATIENT EXPECTATION</label>
-                                    <div class="field">
-                                        <textarea rows="4" cols="50" name="patExpectation"></textarea>
-                                    </div>
-                                </div>
-                                
-                                <div class="inline fields">
-                                    <label>FAMILY EXPECTATION</label>
-                                    <div class="field">
-                                        <textarea rows="4" cols="50" name="familyExpectation"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="ui segment">
+                    <div class="inline fields">
+                        <label>PATIENT EXPECTATION</label>
+                        <div class="field"><textarea rows="4" cols="50" name="patExpectation"></textarea></div>
+                    </div>
+                    
+                    <div class="inline fields">
+                        <label>FAMILY EXPECTATION</label>
+                        <div class="field"><textarea rows="4" cols="50" name="familyExpectation"></textarea></div>
                     </div>
                 </div>
             </div>
             
             <div class="sixteen wide column">
-                <div class="ui segments">
-                    <div class="ui segment">
-                        <div class="ui grid">
-                            <div class="sixteen wide column">
-                                <div class="inline fields">
-                                    <label>OBJECTIVE AX</label>
-                                    <div class="field">
-                                        <textarea rows="4" cols="50" name="objective"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="ui segment">
+                    <div class="inline fields">
+                        <label>OBJECTIVE AX</label>
+                        <div class="field"><textarea rows="4" cols="50" name="objective"></textarea></div>
                     </div>
                 </div>
             </div>
@@ -1474,39 +1448,23 @@
     </div>
     
     <div class="sixteen wide column">
-        <div class="ui segments">
-            <div class="ui segment">
-                <div class="ui grid">
-                    <div class="sixteen wide column">
-                        <div class="field"><textarea rows="6" cols="50" name="summaryInitRmk"></textarea></div>
-                        
-                        <div class="inline fields">
-                            <label>SUMMARY INITIAL & PROGRESS ASSESSMENT</label>
-                            <div class="field" style="padding-left: 50px;">
-                                <input name="summaryInitial" type="text">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="ui segment">
+            <div class="field"><textarea rows="6" cols="50" name="summaryInitRmk"></textarea></div>
+            
+            <div class="inline fields">
+                <label>SUMMARY INITIAL & PROGRESS ASSESSMENT</label>
+                <div class="field" style="padding-left: 50px;"><input name="summaryInitial" type="text"></div>
             </div>
         </div>
     </div>
     
     <div class="sixteen wide column">
-        <div class="ui segments">
-            <div class="ui segment">
-                <div class="ui grid">
-                    <div class="sixteen wide column">
-                        <div class="field"><textarea rows="6" cols="50" name="summaryFinalRmk"></textarea></div>
-                        
-                        <div class="inline fields">
-                            <label>SUMMARY FINAL ASSESSMENT</label>
-                            <div class="field" style="padding-left: 50px;">
-                                <input name="summaryFinal" type="text">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="ui segment">
+            <div class="field"><textarea rows="6" cols="50" name="summaryFinalRmk"></textarea></div>
+            
+            <div class="inline fields">
+                <label>SUMMARY FINAL ASSESSMENT</label>
+                <div class="field" style="padding-left: 50px;"><input name="summaryFinal" type="text"></div>
             </div>
         </div>
     </div>
