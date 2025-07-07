@@ -6632,8 +6632,8 @@ class TestController extends defaultController
             $dballoc = DB::table('debtor.dballoc')
                         ->where('compcode',session('compcode'))
                         ->where('docsource','pb')
-                        ->where('doctrantype','rc')
-                        ->where('docauditno','590966')
+                        ->where('doctrantype','cn')
+                        ->where('docauditno','5200070')
                         ->get();
 
             $auditno = [];
