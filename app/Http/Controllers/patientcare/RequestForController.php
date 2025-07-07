@@ -236,13 +236,21 @@ class RequestForController extends defaultController
                 //     ]);
             }
             
-            DB::table('hisdb.pat_mast')
-                ->where('MRN','=',$request->mrn)
-                // ->where('Episno','=',$request->episno)
-                ->where('CompCode','=',session('compcode'))
-                ->update([
-                    'iPesakit' => $request->iPesakit,
-                ]);
+            if(!empty($request->iPesakit)){
+                $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('CompCode',session('compcode'))
+                            ->where('MRN',$request->mrn)
+                            ->first();
+                
+                if($pat_mast->iPesakit != $request->iPesakit){
+                    DB::table('hisdb.pat_mast')
+                        ->where('CompCode',session('compcode'))
+                        ->where('MRN',$request->mrn)
+                        ->update([
+                            'iPesakit' => $request->iPesakit,
+                        ]);
+                }
+            }
             
             DB::commit();
             
@@ -320,13 +328,21 @@ class RequestForController extends defaultController
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
             
-            DB::table('hisdb.pat_mast')
-                ->where('MRN','=',$request->mrn)
-                // ->where('Episno','=',$request->episno)
-                ->where('CompCode','=',session('compcode'))
-                ->update([
-                    'iPesakit' => $request->iPesakit,
-                ]);
+            if(!empty($request->iPesakit)){
+                $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('CompCode',session('compcode'))
+                            ->where('MRN',$request->mrn)
+                            ->first();
+                
+                if($pat_mast->iPesakit != $request->iPesakit){
+                    DB::table('hisdb.pat_mast')
+                        ->where('CompCode',session('compcode'))
+                        ->where('MRN',$request->mrn)
+                        ->update([
+                            'iPesakit' => $request->iPesakit,
+                        ]);
+                }
+            }
             
             $queries = DB::getQueryLog();
             // dump($queries);
@@ -603,13 +619,21 @@ class RequestForController extends defaultController
                     ]);
             }
             
-            DB::table('hisdb.pat_mast')
-                ->where('MRN','=',$request->mrn)
-                // ->where('Episno','=',$request->episno)
-                ->where('CompCode','=',session('compcode'))
-                ->update([
-                    'iPesakit' => $request->iPesakit,
-                ]);
+            if(!empty($request->iPesakit)){
+                $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('CompCode',session('compcode'))
+                            ->where('MRN',$request->mrn)
+                            ->first();
+                
+                if($pat_mast->iPesakit != $request->iPesakit){
+                    DB::table('hisdb.pat_mast')
+                        ->where('CompCode',session('compcode'))
+                        ->where('MRN',$request->mrn)
+                        ->update([
+                            'iPesakit' => $request->iPesakit,
+                        ]);
+                }
+            }
             
             // DB::table('hisdb.episode')
             //     ->where('mrn','=',$request->mrn)
@@ -839,13 +863,21 @@ class RequestForController extends defaultController
                     ]);
             }
             
-            DB::table('hisdb.pat_mast')
-                ->where('MRN','=',$request->mrn)
-                // ->where('Episno','=',$request->episno)
-                ->where('CompCode','=',session('compcode'))
-                ->update([
-                    'iPesakit' => $request->iPesakit,
-                ]);
+            if(!empty($request->iPesakit)){
+                $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('CompCode',session('compcode'))
+                            ->where('MRN',$request->mrn)
+                            ->first();
+                
+                if($pat_mast->iPesakit != $request->iPesakit){
+                    DB::table('hisdb.pat_mast')
+                        ->where('CompCode',session('compcode'))
+                        ->where('MRN',$request->mrn)
+                        ->update([
+                            'iPesakit' => $request->iPesakit,
+                        ]);
+                }
+            }
             
             // DB::table('hisdb.episode')
             //     ->where('mrn','=',$request->mrn)
