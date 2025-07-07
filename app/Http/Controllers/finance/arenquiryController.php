@@ -132,7 +132,10 @@ class arenquiryController extends defaultController
                     'db.RCFinalbalance AS db_RCFinalbalance',
                     'db.datesend AS db_datesend',
                 )
-                ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
+                ->leftjoin('debtor.debtormast as dm', function ($join){
+                    $join = $join->on('dm.debtorcode', '=', 'db.debtorcode')
+                                ->where('dm.compcode','=',session('compcode'));
+                })
                 ->where('db.compcode','=',session('compcode'))
                 // ->where('db.recstatus','=','POSTED')
                 ->where('db.source','=','PB');

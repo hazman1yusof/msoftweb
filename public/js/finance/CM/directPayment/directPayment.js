@@ -347,7 +347,7 @@ $(document).ready(function () {
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2",urlParam2);
 
-			if(selrowData("#jqGrid").recstatus == 'POSTED'){
+			if(selrowData("#jqGrid").recstatus == 'APPROVED'){
 				disableForm('#formdata');
 				$("#pg_jqGridPager2 table").hide();
 			}
