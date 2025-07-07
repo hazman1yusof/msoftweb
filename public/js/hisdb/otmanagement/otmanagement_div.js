@@ -77,6 +77,35 @@ $(document).ready(function () {
         let duration = endTime.diff(startTime,'hours');
         $("#hoursutilized").val(duration);
     });
+
+    //////////////////////////////////////////body diagram starts//////////////////////////////////////////
+    $('a.ui.card.oper_rec').click(function (){
+        let mrn = $('#mrn_otmgmt_div').val();
+        let episno = $('#episno_otmgmt_div').val();
+        let type = $(this).data('type');
+        let istablet = $(window).width() <= 1024;
+        
+        if(mrn.trim() == '' || episno.trim() == '' || type.trim() == ''){
+            alert('Please choose Patient First');
+        }else if($('#save_otmgmt_div').prop('disabled')){
+            alert('Edit this patient first');
+        }else{
+            if(istablet){
+                let filename = type+'_'+mrn+'_'+episno+'.pdf';
+                let url = $('#urltodiagram').val() + filename;
+                var win = window.open(url, '_blank');
+            }else{
+                var win = window.open('http://localhost:8080/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=otmgmt_div', '_blank');
+            }
+            
+            if(win){
+                win.focus();
+            }else{
+                alert('Please allow popups for this website');
+            }
+        }
+    });
+    ///////////////////////////////////////////body diagram ends///////////////////////////////////////////
     
 });
 

@@ -9,7 +9,7 @@ $(document).ready(function (){
     
     var fdl = new faster_detail_load();
     
-    $('#callPtTime,#ppkWardTime,#receptionTime,#patientOTtime,#incisionstart,#incisionend,#ptOutTime,#wardCallTime,#ptWardTime')
+    $('#arrive_time,#in_time,#start_time,#end_time,#recovery_time,#depart_time')
         .calendar({
             type: 'time',
             formatter: {
@@ -270,7 +270,7 @@ function saveForm_ottime(callback){
 }
 
 function textare_init_ottime(){
-    $('textarea#hlthcareAsst,textarea#otCleanedBy,textarea#remarks').each(function (){
+    $('textarea#hlthcareAsst,textarea#otCleanedBy,textarea#remarks,textarea#vendor,textarea#type_anaesth,textarea#anaesth,textarea#diagnosis,textarea#procedure').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{

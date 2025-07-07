@@ -201,7 +201,7 @@ $(document).ready(function () {
 				{ label: 'p_CompCode', name: 'p_CompCode', width: 200, classes: 'pointer', hidden: true },
 				{ label: 'e_compcode', name: 'e_compcode', width: 200, classes: 'pointer', hidden: true },
 				{ label: 'd_compcode', name: 'd_compcode', width: 200, classes: 'pointer', hidden: true },
-				{ label: 'p_iPesakit', name: 'p_iPesakit', width: 200, classes: 'pointer', hidden: false },
+				{ label: 'p_iPesakit', name: 'p_iPesakit', width: 200, classes: 'pointer', hidden: true },
 
 			],
 			urlParam: {
@@ -572,7 +572,6 @@ $(document).ready(function () {
 
 					lastelement = element;
 					oper = 'edit';
-					// let cArm = document.querySelector('input[name="cArm"]:checked');
 					let cArm = $('input[name = "cArm"]:checked').val();
 					$('#doctor').val(event.loccode);
 					$('#mrn').val(event.mrn);
@@ -605,7 +604,7 @@ $(document).ready(function () {
 					if(event.cArm == '1'){
 						$("input[name=cArm][value='1']").prop("checked",true);
 					}else{
-						$("input[name=cArm][value='0']").prop("checked",false);
+						$("input[name=cArm][value='0']").prop("checked",true);
 					}
 					$('#delete_but,#new_episode').show();
 					
