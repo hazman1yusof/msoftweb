@@ -19,6 +19,15 @@
                     <div class="sixteen wide column" style="padding: 0px 14px 14px 30px;">
                         <table class="ui striped table">
                             <tbody>
+                                <tr>
+                                    <td colspan="2">
+                                        <div class="field">
+                                            <label>iPesakit : </label>
+                                            <input type="text" class="form-control" id="endoscopyIntestine_iPesakit" name="iPesakit">
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                </tr>
                                 <!-- <tr>
                                     <td>
                                         <div class="field">

@@ -152,11 +152,13 @@ function autoinsert_rowdata(form,rowData){
 
 $('#tab_endoscopyNotes').on('shown.bs.collapse', function (){
     SmoothScrollTo('#tab_endoscopyNotes', 300, 114);
+    $('#endoscopyNotes .top.menu .item').tab('change tab','endoscopyStomach');
+    getdata_endoscopyStomach();
     
-    if($('#mrn_endoscopyNotes').val() != ''){
-        getdata_endoscopyStomach();
-        getdata_endoscopyIntestine();
-    }
+    // if($('#mrn_endoscopyNotes').val() != ''){
+    //     getdata_endoscopyStomach();
+    //     getdata_endoscopyIntestine();
+    // }
 });
 
 $('#tab_endoscopyNotes').on('hide.bs.collapse', function (){

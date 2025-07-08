@@ -18,6 +18,13 @@
                 <div class='ui grid sixteen wide column' style="padding: 15px 30px;">
                     <div class="sixteen wide column" style="padding: 0px 14px 14px 30px;">
                         <div class="inline fields">
+                            <label>iPesakit</label>
+                            <div class="field">
+                                <input id="endoscopyStomach_iPesakit" name="iPesakit" type="text" style="width: 650px;">
+                            </div>
+                        </div>
+                        
+                        <div class="inline fields">
                             <label>REFERRED BY</label>
                             <div class="field">
                                 <input id="endoscopyStomach_referredBy" name="referredBy" type="text" style="width: 650px; text-transform: uppercase;">
