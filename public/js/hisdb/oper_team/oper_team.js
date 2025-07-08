@@ -450,14 +450,14 @@ function getdata_oper_team(){
     },'json').fail(function (data){
         alert('there is an error');
     }).done(function (data){
-        if(!$.isEmptyObject(data)){
+        if(!$.isEmptyObject(data.otteam)){
             button_state_oper_team('edit');
             autoinsert_rowdata("#form_oper_team",data.otteam);
-            if(!emptyobj_(data.iPesakit))$("#operteam_iPesakit").val(data.iPesakit);
         }else{
             button_state_oper_team('add');
         }
         
+        if(!emptyobj_(data.iPesakit))$("#operteam_iPesakit").val(data.iPesakit);
         textare_init_oper_team();
     });
 }

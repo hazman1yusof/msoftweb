@@ -379,6 +379,7 @@ class OperTeamController extends defaultController
     public function get_table_oper_team(Request $request){
         
         $otteam_obj = DB::table('nursing.otteam')
+                    ->select('idno','compcode','mrn','episno','iPesakit as i_Pesakit','confirmedPt','opSite_mark','opSite_na','machine_check','machine_na','pulseoximeter','monitor_on','monitor_na','allergy_remark','ptAllergy','difficultAirway','difficultAirway_na','bloodloss','gxmgsh','gxmgsh_na','ivAccess','apparatus_check','otTable_check','whiteboard','introTeam','bsi_confirmedPt','antibioProphy','antibioProphy_na','displayImg','displayImg_na','briefSurgeon','surgeonReview_remark','anaesthReview','scrubnurseReview','perfusionistReview','surgeonStart','procedure_hdr','checkin','periodicUpdate','shoutOut','preclosure','finalProcedure','finalCount','specimenlabel','specimenlabel_na','issuesAddressed','specialinstruction','relative_remark','informRelative','coordinator','adduser','adddate','upduser','upddate','lastuser','lastupdate','computerid')
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);

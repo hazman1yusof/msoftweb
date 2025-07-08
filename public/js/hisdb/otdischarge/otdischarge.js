@@ -309,14 +309,15 @@ function getdata_otdischarge(){
     },'json').fail(function (data){
         alert('there is an error');
     }).done(function (data){
-        if(!$.isEmptyObject(data)){
+        if(!$.isEmptyObject(data.otdischarge)){
             button_state_otdischarge('edit');
             autoinsert_rowdata("#form_otdischarge",data.otdischarge);
-            textare_init_otdischarge();
         }else{
             button_state_otdischarge('add');
-            textare_init_otdischarge();
         }
+        
+        if(!emptyobj_(data.iPesakit))$("#predischg_iPesakit").val(data.iPesakit);
+        textare_init_otdischarge();
     });
 }
 

@@ -314,6 +314,7 @@ class OTSwabController extends defaultController
     public function get_table_otswab(Request $request){
         
         $otswab_obj = DB::table('nursing.otswab')
+                    ->select('idno','compcode','mrn','episno','iPesakit as i_Pesakit','startdate','starttime','enddate','endtime','basicset','supplemntryset','issuesOccured','actualOper','specimenSent','scrubNurse1','scrubNurse1Start','scrubNurse1End','scrubNurse2','scrubNurse2Start','scrubNurse2End','scrubNurse3','scrubNurse3Start','scrubNurse3End','circulateNurse1','circulateNurse1Start','circulateNurse1End','circulateNurse2','circulateNurse2Start','circulateNurse2End','circulateNurse3','circulateNurse3Start','circulateNurse3End','adduser','adddate','upduser','upddate','lastuser','lastupdate','computerid')
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);

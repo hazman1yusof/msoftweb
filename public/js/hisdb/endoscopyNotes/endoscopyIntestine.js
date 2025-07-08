@@ -259,14 +259,15 @@ function getdata_endoscopyIntestine(){
     },'json').fail(function (data){
         alert('there is an error');
     }).done(function (data){
-        if(!$.isEmptyObject(data)){
+        if(!$.isEmptyObject(data.endoscopyintestine)){
             button_state_endoscopyIntestine('edit');
             autoinsert_rowdata("#formEndoscopyIntestine",data.endoscopyintestine);
-            textarea_init_endoscopyIntestine();
         }else{
             button_state_endoscopyIntestine('add');
-            textarea_init_endoscopyIntestine();
         }
+        
+        $("#endoscopyIntestine_iPesakit").val(data.iPesakit);
+        textarea_init_endoscopyIntestine();
     });
 }
 
