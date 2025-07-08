@@ -389,7 +389,7 @@ class arenquiryController extends defaultController
                     )
                     ->join('debtor.dbacthdr as da', function ($join) use ($request){
                         $join = $join
-                                    ->where('dc.compcode', session('compcode'))
+                                    ->where('da.compcode', session('compcode'))
                                     ->on('dc.docsource', '=', 'da.source')
                                     ->on('dc.doctrantype', '=', 'da.trantype')
                                     ->on('dc.docauditno', '=', 'da.auditno');
@@ -428,7 +428,7 @@ class arenquiryController extends defaultController
                     )
                     ->join('debtor.dbacthdr as da', function ($join) use ($request){
                         $join = $join
-                                    ->where('dc.compcode', session('compcode'))
+                                    ->where('da.compcode', session('compcode'))
                                     ->on('dc.refsource', '=', 'da.source')
                                     ->on('dc.reftrantype', '=', 'da.trantype')
                                     ->on('dc.refauditno', '=', 'da.auditno');
@@ -497,7 +497,7 @@ class arenquiryController extends defaultController
                     )
                     ->join('debtor.dbacthdr as da', function ($join) use ($request){
                         $join = $join
-                                    ->where('dc.compcode', session('compcode'))
+                                    ->where('da.compcode', session('compcode'))
                                     ->on('dc.docsource', '=', 'da.source')
                                     ->on('dc.doctrantype', '=', 'da.trantype')
                                     ->on('dc.docauditno', '=', 'da.auditno');
@@ -536,7 +536,7 @@ class arenquiryController extends defaultController
                     )
                     ->join('debtor.dbacthdr as da', function ($join) use ($request){
                         $join = $join
-                                    ->where('dc.compcode', session('compcode'))
+                                    ->where('da.compcode', session('compcode'))
                                     ->on('dc.refsource', '=', 'da.source')
                                     ->on('dc.reftrantype', '=', 'da.trantype')
                                     ->on('dc.refauditno', '=', 'da.auditno');
@@ -594,7 +594,7 @@ class arenquiryController extends defaultController
                     )
                     ->join('debtor.dbacthdr as da', function ($join) use ($request){
                         $join = $join
-                                    ->where('dc.compcode', session('compcode'))
+                                    ->where('da.compcode', session('compcode'))
                                     ->on('dc.refsource', '=', 'da.source')
                                     ->on('dc.reftrantype', '=', 'da.trantype')
                                     ->on('dc.refauditno', '=', 'da.auditno');
