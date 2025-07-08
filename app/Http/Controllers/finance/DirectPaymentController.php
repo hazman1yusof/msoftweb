@@ -186,6 +186,7 @@ class DirectPaymentController extends defaultController
                         'suppcode' => strtoupper($request->payto),
                         'actdate' => $request->actdate,
                         'recdate' => $request->actdate,
+                        'postdate' => $request->actdate,
                         'amount' => $amount,
                         'paymode' => strtoupper($request->paymode),
                         'cheqno' => $request->cheqno,
@@ -659,7 +660,7 @@ class DirectPaymentController extends defaultController
 
                 $authorise_use = $authorise->first();
 
-                $yearperiod = defaultController::getyearperiod_($apacthdr->recdate);
+                $yearperiod = defaultController::getyearperiod_($apacthdr->actdate);
                 if($yearperiod->status == 'C'){
                     throw new \Exception('Auditno: '.$apacthdr->auditno.' Period already close, Year: '.$yearperiod->year.' Month: '.$yearperiod->period, 500);
                 }

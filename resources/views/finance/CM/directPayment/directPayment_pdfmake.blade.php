@@ -41,7 +41,7 @@
 	var ini_body=[
 			@foreach ($apactdtl as $obj)
 			{
-				date:`{{\Carbon\Carbon::parse($obj->adddate)->format('d/m/Y')}}`,
+				date:`{{\Carbon\Carbon::parse($apacthdr->recdate)->format('d/m/Y')}}`,
 				docno:`{!!strtoupper($obj->document)!!}`,
 				remarks:`{!!strtoupper($obj->remarks)!!}`,
 				amt:`{{$obj->amount}}`,

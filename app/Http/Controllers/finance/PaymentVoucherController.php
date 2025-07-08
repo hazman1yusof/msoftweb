@@ -374,7 +374,7 @@ class PaymentVoucherController extends defaultController
                     'source' => 'AP',
                     'auditno' => $auditno,
                     'trantype' => $request->apacthdr_trantype,
-                    'actdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'actdate' => $request->apacthdr_postdate,
                     'recdate' => $request->apacthdr_postdate,
                     'postdate' => $request->apacthdr_postdate,
                     // 'pvno' => $pvno,
