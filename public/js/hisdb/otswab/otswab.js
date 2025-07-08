@@ -691,14 +691,14 @@ function getdata_otswab(){
     },'json').fail(function (data){
         alert('there is an error');
     }).done(function (data){
-        if(!$.isEmptyObject(data)){
+        if(!$.isEmptyObject(data.otswab)){
             button_state_otswab('edit');
             autoinsert_rowdata("#form_otswab",data.otswab);
-            if(!emptyobj_(data.iPesakit))$("#otswab_iPesakit").val(data.iPesakit);
         }else{
             button_state_otswab('add');
         }
         
+        if(!emptyobj_(data.iPesakit))$("#otswab_iPesakit").val(data.iPesakit);
         // textare_init_otswab();
         refreshGrid('#jqGrid_otswab',urlParam_otswab,'add_jqgrid');
     });
