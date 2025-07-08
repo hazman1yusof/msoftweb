@@ -388,7 +388,9 @@ class arenquiryController extends defaultController
                         'dc.idno',
                     )
                     ->join('debtor.dbacthdr as da', function ($join) use ($request){
-                        $join = $join->on('dc.docsource', '=', 'da.source')
+                        $join = $join
+                                    ->on('dc.compcode', session('compcode'))
+                                    ->on('dc.docsource', '=', 'da.source')
                                     ->on('dc.doctrantype', '=', 'da.trantype')
                                     ->on('dc.docauditno', '=', 'da.auditno');
                     })
@@ -425,7 +427,9 @@ class arenquiryController extends defaultController
                         'dc.idno',
                     )
                     ->join('debtor.dbacthdr as da', function ($join) use ($request){
-                        $join = $join->on('dc.refsource', '=', 'da.source')
+                        $join = $join
+                                    ->on('dc.compcode', session('compcode'))
+                                    ->on('dc.refsource', '=', 'da.source')
                                     ->on('dc.reftrantype', '=', 'da.trantype')
                                     ->on('dc.refauditno', '=', 'da.auditno');
                     })
