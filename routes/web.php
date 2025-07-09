@@ -1665,6 +1665,10 @@ Route::get('/bergBalanceTest','rehab\BergBalanceTestController@show');
 Route::get('/bergBalanceTest/table','rehab\BergBalanceTestController@table');
 Route::post('/bergBalanceTest/form','rehab\BergBalanceTestController@form');
 
+Route::get('/musculoAssessment','rehab\MusculoAssessmentController@show');
+Route::get('/musculoAssessment/table','rehab\MusculoAssessmentController@table');
+Route::post('/musculoAssessment/form','rehab\MusculoAssessmentController@form');
+
 Route::get('/posturalAssessment','rehab\PosturalAssessmentController@show');
 Route::get('/posturalAssessment/table','rehab\PosturalAssessmentController@table');
 Route::post('/posturalAssessment/form','rehab\PosturalAssessmentController@form');
@@ -1672,6 +1676,10 @@ Route::post('/posturalAssessment/form','rehab\PosturalAssessmentController@form'
 Route::get('/oswestryQuest','rehab\OswestryQuestController@show');
 Route::get('/oswestryQuest/table','rehab\OswestryQuestController@table');
 Route::post('/oswestryQuest/form','rehab\OswestryQuestController@form');
+
+Route::get('/cardiorespAssessment','rehab\CardiorespAssessmentController@show');
+Route::get('/cardiorespAssessment/table','rehab\CardiorespAssessmentController@table');
+Route::post('/cardiorespAssessment/form','rehab\CardiorespAssessmentController@form');
 
 Route::get('/neuroAssessment','rehab\NeuroAssessmentController@show');
 Route::get('/neuroAssessment/table','rehab\NeuroAssessmentController@table');
