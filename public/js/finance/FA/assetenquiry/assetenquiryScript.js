@@ -305,9 +305,9 @@ $(document).ready(function () {
 		datatype: "local",
 		 colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true},
-			{ label: 'Type', name: 'assettype', width: 10, classes: 'wrap',canSearch: true, formatter: showdetail, unformat:un_showdetail},		
-			{ label: 'Category', name: 'assetcode', width: 5, classes: 'wrap', canSearch: true},		
-			{ label: 'Asset No', name: 'assetno', width: 12, canSearch: true, classes: 'wrap'},
+			{ label: 'Type', name: 'assettype', width: 6, classes: 'wrap',canSearch: true},		
+			{ label: 'Category', name: 'assetcode', width: 10, classes: 'wrap', canSearch: true,formatter: showdetail, unformat:un_showdetail},		
+			{ label: 'Asset No', name: 'assetno', width: 11, canSearch: true, classes: 'wrap'},
 			{ label: 'Item Code', name: 'itemcode', width: 8, classes: 'wrap',hidden:true},
 			{ label: 'Description', name: 'description_show', width: 28, classes: 'wrap'},
 			{ label: 'Description', name: 'description', canSearch: true,checked:true,hidden:true},
