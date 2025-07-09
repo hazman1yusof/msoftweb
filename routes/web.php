@@ -1418,6 +1418,8 @@ Route::get('/doctornote/radClinic_chart','hisdb\DoctorNoteController@radClinic_c
 Route::get('/doctornote/mri_chart','hisdb\DoctorNoteController@mri_chart');
 Route::get('/doctornote/physio_chart','hisdb\DoctorNoteController@physio_chart');
 Route::get('/doctornote/dressing_chart','hisdb\DoctorNoteController@dressing_chart');
+Route::get('/doctornote/preContrast_chart','hisdb\DoctorNoteController@preContrast_chart');
+Route::get('/doctornote/consentForm_chart','hisdb\DoctorNoteController@consentForm_chart');
 
 //// Request For page ///
 Route::get('/requestfor','hisdb\RequestForController@show');
