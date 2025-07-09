@@ -111,6 +111,7 @@ $(document).ready(function () {
 			refreshGrid("#jqGridTillDetl",urlParamTillDetl);
 			populate_summary();
 			$("#pdfgen1").attr('href','./tillenquiry/showpdf?tillno='+selrowData("#jqGrid").tillno+'&tillcode='+selrowData("#jqGrid").tillcode);
+			$("#print_excel").attr('href','./tillenquiry/table?action=showExcel&tillno='+selrowData("#jqGrid").tillno+'&tillcode='+selrowData("#jqGrid").tillcode);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridPager td[title='View Selected Row']").click();

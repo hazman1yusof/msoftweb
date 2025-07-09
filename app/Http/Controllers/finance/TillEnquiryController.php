@@ -8,6 +8,8 @@ use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
+use App\Exports\TillEnquiryExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TillEnquiryController extends defaultController
 {
@@ -22,9 +24,7 @@ class TillEnquiryController extends defaultController
         return view('finance.AR.tillenquiry.tillenquiry');
     }
     
-    public function table(Request $request)
-    {
-        DB::enableQueryLog();
+    public function table(Request $request){
         switch($request->action){
             case 'maintable':
                 return $this->maintable($request);
@@ -32,13 +32,14 @@ class TillEnquiryController extends defaultController
                 return $this->get_tilldetl($request);
             case 'get_tillclose':
                 return $this->get_tillclose($request);
+            case 'showExcel':
+                return $this->showExcel($request);
             default:
                 return 'error happen..';
         }
     }
     
-    public function form(Request $request)
-    {
+    public function form(Request $request){
         switch($request->oper){
             case 'add':
                 return $this->add($request);
@@ -110,7 +111,6 @@ class TillEnquiryController extends defaultController
         $responce->sql_query = $this->getQueries($table);
         
         return json_encode($responce);
-        
     }
     
     public function get_tilldetl(Request $request){
@@ -156,7 +156,6 @@ class TillEnquiryController extends defaultController
         $responce->sql_bind = $table->getBindings();
         
         return json_encode($responce);
-        
     }
     
     public function get_tillclose(Request $request){
@@ -264,8 +263,7 @@ class TillEnquiryController extends defaultController
         $responce->sum_all = $sum_all;
         
         return json_encode($responce);
-        // return view('finance.AR.till.till_close',compact('till','tilldetl','sum_cash','sum_chq','sum_card','sum_bank','sum_all'));
-        
+        // return view('finance.AR.till.till_close',compact('till','tilldetl','sum_cash','sum_chq','sum_card','sum_bank','sum_all')); 
     }
     
     public function showpdf(Request $request){
@@ -500,7 +498,16 @@ class TillEnquiryController extends defaultController
         // } else {
         //     return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
         // }
-        
+    }
+
+    public function showExcel(Request $request){
+        $tillno = $request->tillno;
+        $tillcode = $request->tillcode;
+        if(empty($tillno) || empty($tillcode)){
+            abort(404);
+        }
+
+        return Excel::download(new TillEnquiryExport($tillno,$tillcode), 'TillEnquiryExport.xlsx');
     }
     
 }
