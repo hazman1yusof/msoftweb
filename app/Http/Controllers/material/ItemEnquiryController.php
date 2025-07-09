@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 use DB;
 use Carbon\Carbon;
+use App\Exports\ItemEnquiryExport;
 use stdClass;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ItemEnquiryController extends defaultController
 {   
@@ -53,6 +55,8 @@ class ItemEnquiryController extends defaultController
                 return $this->dialogForm_SalesOrder($request);
             case 'open_detail':
                 return $this->open_detail($request);
+            case 'print_excel':
+                return $this->print_excel($request);
             default:
                 return 'error happen..';
         }
@@ -188,6 +192,11 @@ class ItemEnquiryController extends defaultController
         // dd($merged);
 
         return json_encode($responce);
+    }
+
+    public function print_excel(Request $request){
+
+        return Excel::download(new ItemEnquiryExport($request->itemcode,$request->deptcode,$request->uomcode,$request->trandate_from,$request->trandate_to), 'ItemEnquiryExport.xlsx');
     }
 
     public function dialogForm_SalesOrder(Request $request){

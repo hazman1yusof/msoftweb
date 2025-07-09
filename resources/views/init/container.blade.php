@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="plugins/bootstrap-3.3.5-dist/css/bootstrap.min.css"> 
 	<link rel="stylesheet" href="plugins/jasny-bootstrap/css/jasny-bootstrap.min.css"> 
 	<link rel="stylesheet" href="plugins/jquery-ui-1.11.4.custom/jquery-ui.css">
+  <link rel="stylesheet" href="{{ asset('plugins/css/trirand/ui.jqgrid-bootstrap.css') }}" />
 	<link rel="stylesheet" href="css/container.css?v=1.2">
 
 	<script type="text/javascript">
@@ -84,8 +85,11 @@
 
 				<ul class="nav navbar-nav navbar-right" style="margin-top: 8px;color: #999">
 					<li><h4 style="font-size: 15px">&nbsp;Department :&nbsp;</h4></li>
-					<li>
-						<input type='text' class="form-control" id="session_deptcode" readonly value="{{$dept_desc}}">
+					<li style="max-width: 200px;">
+						<div class='input-group'>
+							<input id="session_deptcode" name="session_deptcode" type="text" class="form-control" value="{{$dept_desc}}" readonly>
+							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+				  	</div>
 					</li>
 				</ul>
 
@@ -274,6 +278,8 @@
 <script type="text/ecmascript" src="plugins/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
 <script type="text/ecmascript" src="plugins/jasny-bootstrap/js/jasny-bootstrap.min.js"></script>
 <script type="text/ecmascript" src="plugins/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+<script type="text/ecmascript" src="{{ asset('plugins/trirand/i18n/grid.locale-en.js') }}"></script>
+<script type="text/ecmascript" src="{{ asset('plugins/trirand/jquery.jqGrid.min.js') }}"></script>
 <script type="text/ecmascript" src="plugins/AccordionMenu/dist/metisMenu.min.js"></script>    
 <script type="text/ecmascript" src="plugins/jquery.dialogextend.js"></script>
 <script type="text/ecmascript" src="plugins/numeral.min.js"></script>
@@ -281,8 +287,12 @@
 <script type="text/ecmascript" src="plugins/velocity.min.js"></script>
 <script type="text/ecmascript" src="js/other/authdtl_alert/authdtl_alert.js?v=1.7"></script>
 <script type="text/ecmascript" src="js/myjs/menu.js?v=1.1"></script>
+<script src="{{ asset('js/myjs/utility.js?v=1.8') }}"></script>
+
 
 <script>
+$.jgrid.defaults.responsive = true;
+$.jgrid.defaults.styleUI = 'Bootstrap';
 	$(document).ready(function(){
     Menu.init_menu();
     Menu.init_announce();
@@ -292,15 +302,51 @@
     });
 
     // Menu.init_card();
-    $("#session_unit").change(function(){
-    	$.post( '/sessionUnit', {_token:$('#_token').val(), unit:$(this).val()}, function( data ) {
+		var session_deptcode = new ordialog(
+			'session_deptcode', 'sysdb.department', '#session_deptcode', 'errorField',
+			{
+				colModel: [
+					{ label: 'Department ID', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+					{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+					{ label: 'Sector', name: 'sector', width: 200, classes: 'pointer' },
+				],
+				urlParam: {
+							filterCol:['compcode','recstatus'],
+							filterVal:['session.compcode','ACTIVE']
+						},
+				ondblClickRow: function () {
+					let data = selrowData('#' + session_deptcode.gridname);
+					window.location.replace('./sessionUnit?deptcode='+data.deptcode);
+
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						// $('#'+obj.dialogname).dialog('close');
+					}
+				}
+			},{
+				title: "Select Creditor",
+				open: function () {
+					session_deptcode.urlParam.filterCol = ['compcode','recstatus'];
+					session_deptcode.urlParam.filterVal = ['session.compcode','ACTIVE'];
+				}
+			},'urlParam','radio','tab'
+		);
+		session_deptcode.makedialog(true);
+
+    // $("#session_deptcode").change(function(){
+    // 	$.post( '/sessionUnit', {_token:$('#_token').val(), unit:$(this).val()}, function( data ) {
 				
-			}).fail(function(data) {
+		// 	}).fail(function(data) {
 				
-			}).success(function(data){
+		// 	}).success(function(data){
 				
-			});
-	  });
+		// 	});
+	  // });
 
 		var timeoutId;
 		$("#myNavmenu").hover(function() {

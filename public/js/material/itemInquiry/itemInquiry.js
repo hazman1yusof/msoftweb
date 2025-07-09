@@ -607,6 +607,10 @@ $(document).ready(function () {
 		populateSummary($('#itemcodedtl').val(),$('#uomcodedtl').val(),$('#deptcodedtl').val());
 	});
 
+	$('#print').click(function(){
+		window.open('./itemEnquiry/table?action=print_excel&itemcode='+$('#itemcodedtl').val()+'&deptcode='+$("#deptcodedtl").val()+'&uomcode='+$("#uomcodedtl").val()+'&trandate_from='+$("#datefrom").val()+'&trandate_to='+$("#dateto").val(), '_blank');
+	});
+
 	// set_yearperiod();
 	// function set_yearperiod(){
 	// 	param={

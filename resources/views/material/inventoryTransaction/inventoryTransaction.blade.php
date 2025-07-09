@@ -310,7 +310,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 									    </select>
 						  			</div>
 
-						  		<label class="col-md-2 control-label" for="sndrcv">Receiver</label>	  
+						  		<label class="col-md-2 control-label" for="sndrcv" id="sndrcv_label">Receiver</label>	  
 									<div class="col-md-2" id="sndrcv_parent">
 										  <div class='input-group'>
 											<input id="sndrcv" name="sndrcv" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
@@ -450,7 +450,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 			
 		});
 	</script>
-	<script src="js/material/inventoryTransaction/inventoryTransaction.js?v=1.23"></script>
+	<script src="js/material/inventoryTransaction/inventoryTransaction.js?v=1.24"></script>
 	<!-- <script src="js/material/inventoryTransaction/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

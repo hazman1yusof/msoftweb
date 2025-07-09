@@ -43,21 +43,23 @@
         <td colspan="3">CREDIT TERM: {{$debtor->creditterm}} </td>
     </tr>
     <tr>
-        <td></td><td></td>
+        <td colspan="2">{{$debtor->address1}}</td>
         <td></td><td></td>
         <td colspan="3">CREDIT LIMIT: {{$debtor->creditlimit}} </td>
     </tr>
     <tr>
-        <td></td><td></td>
+        <td colspan="2">{{$debtor->address2}}</td>
         <td></td><td></td>
         <td colspan="3">DEBTOR CODE: {{$debtor->debtorcode}} </td>
     </tr>
     <tr>
-        <td></td><td></td>
+        <td colspan="2">{{$debtor->address3}}</td>
         <td></td><td></td>
         <td colspan="3">DATE PRINTED: {{$datenow}} </td>
     </tr>
-    <tr></tr>
+    <tr>
+        <td colspan="2">{{$debtor->address4}}</td>
+    </tr>
     <tr>
         <td style="font-weight: bold;text-align: left">DOC DATE</td>
         <td style="font-weight: bold;text-align: left">DATE SEND</td>

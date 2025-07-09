@@ -200,8 +200,9 @@ $(document).ready(function (){
             
             let editurl = "./otswab/form?"+
                 $.param({
-                    episno: $('#episno_otswab').val(),
                     mrn: $('#mrn_otswab').val(),
+                    episno: $('#episno_otswab').val(),
+                    iPesakit: $('#otswab_iPesakit').val(),
                     action: 'addJqgrid_save',
                 });
             $("#jqGrid_otswab").jqGrid('setGridParam', { editurl: editurl });
@@ -255,9 +256,10 @@ $(document).ready(function (){
             
             let editurl = "./otswab/form?"+
                 $.param({
-                    episno: $('#episno_otswab').val(),
-                    mrn: $('#mrn_otswab').val(),
                     idno: selrowData('#jqGrid_otswab').idno,
+                    mrn: $('#mrn_otswab').val(),
+                    episno: $('#episno_otswab').val(),
+                    iPesakit: $('#otswab_iPesakit').val(),
                     action: 'addJqgrid_edit',
                 });
             $("#jqGrid_otswab").jqGrid('setGridParam', { editurl: editurl });
@@ -689,16 +691,16 @@ function getdata_otswab(){
     },'json').fail(function (data){
         alert('there is an error');
     }).done(function (data){
-        if(!$.isEmptyObject(data)){
+        if(!$.isEmptyObject(data.otswab)){
             button_state_otswab('edit');
             autoinsert_rowdata("#form_otswab",data.otswab);
-            // textare_init_otswab();
-            refreshGrid('#jqGrid_otswab',urlParam_otswab,'add_jqgrid');
         }else{
             button_state_otswab('add');
-            // textare_init_otswab();
-            refreshGrid('#jqGrid_otswab',urlParam_otswab,'add_jqgrid');
         }
+        
+        if(!emptyobj_(data.iPesakit))$("#otswab_iPesakit").val(data.iPesakit);
+        // textare_init_otswab();
+        refreshGrid('#jqGrid_otswab',urlParam_otswab,'add_jqgrid');
     });
 }
 

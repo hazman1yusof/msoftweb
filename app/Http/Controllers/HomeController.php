@@ -25,8 +25,8 @@ class HomeController extends Controller
         $unit_user = '';
         if($user->dept != ''){
             $unit_user_ = DB::table('sysdb.department')
-                ->where('compcode','=',$user->compcode)
-                ->where('deptcode','=',$user->dept)
+                ->where('compcode',session('compcode'))
+                ->where('deptcode',session('deptcode'))
                 ->first();
             $unit_user = $unit_user_->sector;
         }
@@ -302,7 +302,7 @@ class HomeController extends Controller
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Inv Transaction' class=''><b>Inventory Transaction</b></a></li>";
         $menu.="<li><a style='padding-left:21px' title='Inventory Request' class='clickable' programid='InvReqDataEntry' targeturl='./inventoryRequest?scope=ALL'>Inventory Request</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Inventory Transaction' class='clickable' programid='invtran' targeturl='./inventoryTransaction?scope=ALL'>Inventory Transaction</a></li>";
-        $menu.="<li><a style='padding-left:21px' title='Transafer(TUI/TUO)' class='clickable' programid='transfer_TUI_TUO' targeturl='./inventoryTransaction?scope=ALL&ttype=TUO'>Transafer(TUI/TUO)</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Transfer (TUI/TUO)' class='clickable' programid='transfer_TUI_TUO' targeturl='./inventoryTransaction?scope=ALL&ttype=TUO'>Transfer (TUI/TUO)</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Good Return In' class='clickable' programid='goodReturnIn' targeturl='./inventoryTransaction?scope=ALL&ttype=GRI'>Good Return In</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Adjusment(AI/AO)' class='clickable' programid='adjustmenAIAO' targeturl='./inventoryTransaction?scope=ALL&ttype=AI'>Adjusment(AI/AO)</a></li>";
 
@@ -385,7 +385,7 @@ class HomeController extends Controller
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Inv Transaction' class=''><b>Inventory Transaction</b></a></li>";
         $menu.="<li><a style='padding-left:21px' title='Inventory Request' class='clickable' programid='InvReqDataEntry' targeturl='./inventoryRequest?scope=ALL'>Inventory Request</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Inventory Transaction' class='clickable' programid='invtran' targeturl='./inventoryTransaction?scope=ALL'>Inventory Transaction</a></li>";
-        $menu.="<li><a style='padding-left:21px' title='Transafer(TUI/TUO)' class='clickable' programid='transfer_TUI_TUO' targeturl='./inventoryTransaction?scope=ALL&ttype=TUO'>Transafer(TUI/TUO)</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Transfer (TUI/TUO)' class='clickable' programid='transfer_TUI_TUO' targeturl='./inventoryTransaction?scope=ALL&ttype=TUO'>Transfer (TUI/TUO)</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Good Return In' class='clickable' programid='goodReturnIn' targeturl='./inventoryTransaction?scope=ALL&ttype=GRI'>Good Return In</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Adjusment(AI/AO)' class='clickable' programid='adjustmenAIAO' targeturl='./inventoryTransaction?scope=ALL&ttype=AI'>Adjusment(AI/AO)</a></li>";
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Product' class=''><b>Product</b></a></li>";
@@ -448,7 +448,7 @@ class HomeController extends Controller
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Inv Transaction' class=''><b>Inventory Transaction</b></a></li>";
         $menu.="<li><a style='padding-left:21px' title='Inventory Request' class='clickable' programid='InvReqDataEntry' targeturl='./inventoryRequest?scope=ALL'>Inventory Request</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Inventory Transaction' class='clickable' programid='invtran' targeturl='./inventoryTransaction?scope=ALL'>Inventory Transaction</a></li>";
-        $menu.="<li><a style='padding-left:21px' title='Transafer(TUI/TUO)' class='clickable' programid='transfer_TUI_TUO' targeturl='./inventoryTransaction?scope=ALL&ttype=TUO'>Transafer(TUI/TUO)</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Transfer (TUI/TUO)' class='clickable' programid='transfer_TUI_TUO' targeturl='./inventoryTransaction?scope=ALL&ttype=TUO'>Transfer (TUI/TUO)</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Good Return In' class='clickable' programid='goodReturnIn' targeturl='./inventoryTransaction?scope=ALL&ttype=GRI'>Good Return In</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Adjusment(AI/AO)' class='clickable' programid='adjustmenAIAO' targeturl='./inventoryTransaction?scope=ALL&ttype=AI'>Adjusment(AI/AO)</a></li>";
 
@@ -521,7 +521,7 @@ class HomeController extends Controller
         $menu.="<li style='background:lightgray'><a style='padding-left:9px' title='Inv Transaction' class=''><b>Inventory Transaction</b></a></li>";
         $menu.="<li><a style='padding-left:21px' title='Inventory Request' class='clickable' programid='InvReqDataEntry' targeturl='./inventoryRequest?scope=ALL'>Inventory Request</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Inventory Transaction' class='clickable' programid='invtran' targeturl='./inventoryTransaction?scope=ALL'>Inventory Transaction</a></li>";
-        $menu.="<li><a style='padding-left:21px' title='Transafer(TUI/TUO)' class='clickable' programid='transfer_TUI_TUO' targeturl='./inventoryTransaction?scope=ALL&ttype=TUO'>Transafer(TUI/TUO)</a></li>";
+        $menu.="<li><a style='padding-left:21px' title='Transfer (TUI/TUO)' class='clickable' programid='transfer_TUI_TUO' targeturl='./inventoryTransaction?scope=ALL&ttype=TUO'>Transfer (TUI/TUO)</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Good Return In' class='clickable' programid='goodReturnIn' targeturl='./inventoryTransaction?scope=ALL&ttype=GRI'>Good Return In</a></li>";
         $menu.="<li><a style='padding-left:21px' title='Adjusment(AI/AO)' class='clickable' programid='adjustmenAIAO' targeturl='./inventoryTransaction?scope=ALL&ttype=AI'>Adjusment(AI/AO)</a></li>";
 

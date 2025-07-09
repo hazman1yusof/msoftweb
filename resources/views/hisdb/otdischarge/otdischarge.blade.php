@@ -20,6 +20,15 @@
                 <input id="episno_otdischarge" name="episno_otdischarge" type="hidden">
                 
                 <div class="sixteen wide column">
+                    <div class="ui segment">
+                        <div class="inline fields">
+                            <label>iPesakit</label>
+                            <div class="field"><input type="text" class="form-control" id="predischg_iPesakit" name="iPesakit"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sixteen wide column">
                     <div class="ui segments">
                         <div class="ui segment">
                             <div class="ui grid">

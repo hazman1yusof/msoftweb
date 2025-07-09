@@ -14,7 +14,7 @@ use Session;
 class SessionController extends Controller
 {
     public function __construct(){
-    	$this->middleware('guest', ['except'=>'destroy']);
+    	// $this->middleware('guest', ['except'=>'destroy']);
     }
 
  	public function create(){
@@ -196,5 +196,32 @@ class SessionController extends Controller
     	$company = company::all();
         return redirect('/home');
         // return view('init.login',compact("company"));
+    }
+
+    public function changeSessionUnit(Request $request){
+
+        // dd('asd');
+        $dept = DB::table('sysdb.department')
+                    ->where('deptcode','=',$request->deptcode)
+                    ->where('compcode','=',session('compcode'));
+
+        if($dept->exists()){
+            $dept = $dept->first();
+
+            $sector = DB::table('sysdb.sector')
+                    ->where('sectorcode','=',$dept->sector)
+                    ->where('compcode','=',session('compcode'));
+
+            if($sector->exists()){
+                $request->session()->put('deptcode', $request->deptcode);
+                $request->session()->put('unit', $dept->sector);
+            }
+        }
+
+        // $user = User::where('username',session('username'))
+        //             ->where('compcode',session('compcode'))
+        //             ->first();
+
+        return back();
     }
 }

@@ -323,17 +323,18 @@ function getdata_preoperative(){
     
     $.post("./preoperative/form?"+$.param(urlparam), $.param(postobj), function (data){
         
-    },'json').fail(function(data) {
+    },'json').fail(function (data){
         alert('there is an error');
     }).done(function (data){
-        if(!$.isEmptyObject(data)){
+        if(!$.isEmptyObject(data.preop)){
             button_state_preoperative('edit');
             autoinsert_rowdata("#form_preoperative",data.preop);
-            textare_init_preoperative();
         }else{
             button_state_preoperative('add');
-            textare_init_preoperative();
         }
+        
+        if(!emptyobj_(data.iPesakit))$("#preop_iPesakit").val(data.iPesakit);
+        textare_init_preoperative();
     });
 }
 

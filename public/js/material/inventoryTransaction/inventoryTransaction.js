@@ -507,6 +507,7 @@ $(document).ready(function () {
 	function case_tui_tuo(ttype){
 		if(ttype.toUpperCase() == 'TUI'){
 			
+			$('#sndrcv_label').text("Sender");
 			$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
 			$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
 			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
@@ -555,6 +556,7 @@ $(document).ready(function () {
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 		}else if(ttype.toUpperCase() == 'TUO'){
 			
+			$('#sndrcv_label').text("Receiver");
 			$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
 			$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
 			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
