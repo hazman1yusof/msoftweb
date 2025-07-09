@@ -511,7 +511,7 @@ class GoodReturnCreditController extends defaultController
 
                         $expdate_first = $expdate_obj->first();
                         $txnqty_ = $txnqty;
-                        $balqty = $expdate_first + $txnqty;
+                        $balqty = $expdate_first->balqty + $txnqty;
 
                         DB::table('material.stockexp')
                             ->where('idno','=',$expdate_first->idno)
