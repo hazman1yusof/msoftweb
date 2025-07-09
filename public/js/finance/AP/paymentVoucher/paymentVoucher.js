@@ -4,7 +4,6 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 var mycurrency =new currencymode(['#apacthdr_outamount', '#apacthdr_amount']);
 $(document).ready(function () {
-    $('#apacthdr_actdate').attr('disabled', 'disabled');
 
 	/////////////////////////////////////////validation//////////////////////////
 	$.validate({
@@ -78,7 +77,7 @@ $(document).ready(function () {
 					break;
 				}
 				if(oper!='view'){
-					backdated.set_backdate($('#apacthdr_actdate').val());
+					// backdated.set_backdate($('#apacthdr_actdate').val());
 					dialog_bankcode.on();
 					dialog_paymode.on();
 					dialog_cheqno.on();
@@ -130,44 +129,44 @@ $(document).ready(function () {
 
 	///////////////////////////////////backdated////////////////////////////////////////////////
 
-	var backdated = new func_backdated('#apacthdr_actdate');
-	backdated.getdata();
+	// var backdated = new func_backdated('#apacthdr_actdate');
+	// backdated.getdata();
 
-	function func_backdated(target){
-		this.sequence_data;
-		this.target=target;
-		this.param={
-			action:'get_value_default',
-			url:"util/get_value_default",
-			field: ['*'],
-			table_name:'material.sequence',
-			table_id:'idno',
-			filterCol:['trantype', 'trantype'],
-			filterVal:['PV', 'PD'],
-		}
+	// function func_backdated(target){
+	// 	this.sequence_data;
+	// 	this.target=target;
+	// 	this.param={
+	// 		action:'get_value_default',
+	// 		url:"util/get_value_default",
+	// 		field: ['*'],
+	// 		table_name:'material.sequence',
+	// 		table_id:'idno',
+	// 		filterCol:['trantype', 'trantype'],
+	// 		filterVal:['PV', 'PD'],
+	// 	}
 
-		this.getdata = function(){
-			var self=this;
-			$.get( this.param.url+"?"+$.param(this.param), function( data ) {
+	// 	this.getdata = function(){
+	// 		var self=this;
+	// 		$.get( this.param.url+"?"+$.param(this.param), function( data ) {
 				
-			},'json').done(function(data) {
-				if(!$.isEmptyObject(data.rows)){
-					self.sequence_data = data.rows;
-				}
-			});
-			return this;
-		}
+	// 		},'json').done(function(data) {
+	// 			if(!$.isEmptyObject(data.rows)){
+	// 				self.sequence_data = data.rows;
+	// 			}
+	// 		});
+	// 		return this;
+	// 	}
 
-		this.set_backdate = function(dept){
-			$.each(this.sequence_data, function( index, value ) {
-				if(value.dept == dept){
-					var backday =  value.backday;
-					var backdate = moment().subtract(backday, 'days').format('YYYY-MM-DD');
-					$('#apacthdr_actdate').attr('min',backdate);
-				}
-			});
-		}
-	}
+	// 	this.set_backdate = function(dept){
+	// 		$.each(this.sequence_data, function( index, value ) {
+	// 			if(value.dept == dept){
+	// 				var backday =  value.backday;
+	// 				var backdate = moment().subtract(backday, 'days').format('YYYY-MM-DD');
+	// 				$('#apacthdr_actdate').attr('min',backdate);
+	// 			}
+	// 		});
+	// 	}
+	// }
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var recstatus_filter = [['OPEN','POSTED']];
@@ -713,7 +712,6 @@ $(document).ready(function () {
 		}else{
 			if(nkreturn)return true;
 		}
-
 	}
 	//////////////////////////////////////////////////////
 

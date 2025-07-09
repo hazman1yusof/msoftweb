@@ -660,7 +660,7 @@ class DirectPaymentController extends defaultController
 
                 $authorise_use = $authorise->first();
 
-                $yearperiod = defaultController::getyearperiod_($apacthdr->actdate);
+                $yearperiod = defaultController::getyearperiod_($apacthdr->recdate);
                 if($yearperiod->status == 'C'){
                     throw new \Exception('Auditno: '.$apacthdr->auditno.' Period already close, Year: '.$yearperiod->year.' Month: '.$yearperiod->period, 500);
                 }
@@ -676,7 +676,7 @@ class DirectPaymentController extends defaultController
                         'source' => $apacthdr_get->source, 
                         'trantype' => $apacthdr_get->trantype, 
                         'auditno' => $apacthdr_get->auditno, 
-                        'postdate' => $apacthdr_get->actdate, 
+                        'postdate' => $apacthdr_get->recdate, 
                         'year' => $yearperiod->year, 
                         'period' => $yearperiod->period, 
                         'cheqno' => $apacthdr_get->cheqno, 
@@ -763,7 +763,7 @@ class DirectPaymentController extends defaultController
                                     'dracc' => $dracc,
                                     'cracc' => $cracc,
                                     'amount' => $apactdtl->AmtB4GST,
-                                    'postdate' => $apacthdr_get->actdate,
+                                    'postdate' => $apacthdr_get->recdate,
                                     'adduser' => session('username'),
                                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                                 ]);
