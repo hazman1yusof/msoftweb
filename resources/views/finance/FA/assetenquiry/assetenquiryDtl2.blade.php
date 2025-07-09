@@ -34,7 +34,7 @@
 	</div>
 
 	<div id="jqGridEnquiryDtl2_panel" class="panel-collapse collapse">
-		<div class="panel-body">
+		<div class="panel-body paneldiv">
 			<div class='col-md-12' style="padding:0 0 15px 0">
 				<form class='form-horizontal' style='width:99%' id='formEnquiryDtl2'>
 					{{ csrf_field() }}

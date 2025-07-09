@@ -84,9 +84,9 @@ div#fail_msg{
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-							  	<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('auditno'))){{Request::get('auditno')}}@endif">
+							  	<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('auditno'))){{Request::get('auditno')}}@endif">
 									
-								<div id="creditor_text">
+								<div id="creditor_text" style="display:none" >
 									<div class='input-group'>
 										<input id="creditor_search" name="creditor_search" type="text" maxlength="12" class="form-control input-sm">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -595,7 +595,7 @@ div#fail_msg{
 			
 		});
 	</script>
-	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js?V=1.10"></script>
+	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js?V=1.11"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 

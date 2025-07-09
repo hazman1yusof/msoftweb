@@ -66,6 +66,11 @@
 		display: block;
 		max-width: 60%;
 	}
+	.paneldiv{
+		/* padding-top: 5px !important; */
+		overflow-y: auto;
+		height: calc(100vh - 90px);
+	}
 @endsection
 
 @section('body')
@@ -168,7 +173,7 @@
 				<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid2_panel"></i>
 				<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGrid2_panel"></i>
 				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 10px;">
-					<h5>Asset Movement Header</h5>
+					<h5>Asset Movement</h5>
 				</div>
 
 				<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 

@@ -11,7 +11,8 @@ $(document).ready(function () {
 			requiredFields: ''
 		},
 	});
-	
+	stop_scroll_on();
+
 	var errorField=[];
 	conf = {
 		onValidate : function($form) {
@@ -788,8 +789,8 @@ $(document).ready(function () {
 		width: 1150,
 		height: 200,
 		rowNum: 30,
-		sortname: 'auditno',
-        sortorder:'desc',
+		sortname: 'trandate desc, trantype desc',
+        // sortorder:'desc',
 		pager: "#jqGridPager2",
 		onSelectRow:function(rowid, selected){
 			// populate_form_movementAE(selrowData("#jqGrid_trf"));
@@ -818,16 +819,16 @@ $(document).ready(function () {
     });
 
 	//////////////////////////////////////////start pager jqgrid2 ASSET MOVEMENT HEADER/////////////////////////////////////////////
-	$("#jqGrid2").inlineNav('#jqGridPager2',{	
-		add:false,
-		edit:false,
-		cancel: false,
-		restoreAfterSelect: false,
-		addParams: { 
-			addRowParams: myEditOptions_jqGrid2
-		},
-		editParams: myEditOptions_jqGrid2
-	});
+	// $("#jqGrid2").inlineNav('#jqGridPager2',{	
+	// 	add:false,
+	// 	edit:false,
+	// 	cancel: false,
+	// 	restoreAfterSelect: false,
+	// 	// addParams: { 
+	// 	// 	addRowParams: myEditOptions_jqGrid2
+	// 	// },
+	// 	// editParams: myEditOptions_jqGrid2
+	// });
 
 	/////////////////////////////////// end pagergrid2 /////////////////////////////////////////////////////
 
@@ -1221,6 +1222,18 @@ $(document).ready(function () {
 		}
 	}
 });
+
+
+function stop_scroll_on(){
+	$('div.paneldiv').on('mouseenter',function(){
+		SmoothScrollTo('#'+$('div.mainpanel[aria-expanded=true]').parent('div.panel.panel-default').attr('id'), 300,undefined,30);
+		$('body').addClass('stop-scrolling');
+	});
+
+	$('div.paneldiv').on('mouseleave',function(){
+		$('body').removeClass('stop-scrolling')
+	});
+}
 
 // function calc_jq_height_onchange(jqgrid){
 // 	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');

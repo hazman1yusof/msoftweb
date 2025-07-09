@@ -248,12 +248,12 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 		
-			{ label: 'Audit No', name: 'apacthdr_auditno', width: 20, classes: 'wrap', formatter: padzero, unformat: unpadzero},
-			{ label: 'PV No', name: 'apacthdr_pvno', width: 20, classes: 'wrap', hidden:false, formatter: padzero, unformat: unpadzero},
+			{ label: 'Audit No', name: 'apacthdr_auditno', width: 20, classes: 'wrap', formatter: padzero, unformat: unpadzero, canSearch: true},
+			{ label: 'PV No', name: 'apacthdr_pvno', width: 20, classes: 'wrap', hidden:false, formatter: padzero, unformat: unpadzero, checked: true, canSearch: true},
 			{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap text-uppercase'},
 			{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'Creditor', name: 'apacthdr_suppcode', width: 60, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', checked: true, hidden: true},
+			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', hidden: true},
 			{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap text-uppercase', canSearch: true},
 			{ label: 'Cheque No', name: 'apacthdr_cheqno', width: 35, classes: 'wrap text-uppercase'},

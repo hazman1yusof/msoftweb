@@ -175,6 +175,14 @@ class PaymentVoucherController extends defaultController
                 $table = $table->Where(function ($table) use ($request) {
                         $table->Where('ap.document','like',$request->searchVal[0]);
                     });
+            }else if($request->searchCol[0] == 'apacthdr_auditno'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('ap.auditno','like',$request->searchVal[0]);
+                    });
+            }else if($request->searchCol[0] == 'apacthdr_pvno'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('ap.pvno','like',$request->searchVal[0]);
+                    });
             }else{
                 $table = $table->Where(function ($table) use ($request) {
                         $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
