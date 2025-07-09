@@ -25,8 +25,8 @@ class HomeController extends Controller
         $unit_user = '';
         if($user->dept != ''){
             $unit_user_ = DB::table('sysdb.department')
-                ->where('compcode','=',$user->compcode)
-                ->where('deptcode','=',$user->dept)
+                ->where('compcode',session('compcode'))
+                ->where('deptcode',session('deptcode'))
                 ->first();
             $unit_user = $unit_user_->sector;
         }
