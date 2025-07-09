@@ -307,7 +307,7 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', hidden: true},
 			{ label: 'Type', name: 'assettype', width: 10, classes: 'wrap',canSearch: true, formatter: showdetail, unformat:un_showdetail},		
 			{ label: 'Category', name: 'assetcode', width: 10, classes: 'wrap', canSearch: true, formatter: showdetail, unformat:un_showdetail},		
-			{ label: 'Asset No', name: 'assetno', width: 6, classes: 'wrap'},
+			{ label: 'Asset No', name: 'assetno', width: 6, canSearch: true, classes: 'wrap'},
 			{ label: 'Item Code', name: 'itemcode', width: 8, classes: 'wrap',hidden:true},
 			{ label: 'Description', name: 'description_show', width: 30, classes: 'wrap'},
 			{ label: 'Description', name: 'description', canSearch: true,checked:true,hidden:true},
