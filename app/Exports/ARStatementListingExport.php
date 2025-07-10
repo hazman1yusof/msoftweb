@@ -96,8 +96,9 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                         ->where('dm.compcode', '=', session('compcode'));
 
                         if($debtorcode_from != $debtorcode_to){
-
                             $debtormast = $debtormast->whereBetween('dm.debtorcode', [$debtorcode_from,$debtorcode_to.'%']);
+                        }else{
+                            $debtormast = $debtormast->where('dm.debtorcode', $debtorcode_from);
                         }
 
                         $debtormast = $debtormast->
