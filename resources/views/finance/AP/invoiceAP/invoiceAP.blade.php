@@ -487,7 +487,7 @@ i.fa {
 		});
 	</script>
 
-	<script src="js/finance/AP/invoiceAP/invoiceAP.js?v=1.5"></script>
+	<script src="js/finance/AP/invoiceAP/invoiceAP.js?v=1.6"></script>
 	<script src="js/finance/AP/invoiceAP/pdfgen.js"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

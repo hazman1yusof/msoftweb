@@ -471,6 +471,7 @@ $(document).ready(function () {
 	// });
 
 	$("#but_post_jq").click(function(){
+		$("#but_post_jq").attr('disabled',true);
 		var idno_array = [];
 	
 		let ids = $('#jqGrid_selection').jqGrid ('getDataIDs');
@@ -488,8 +489,10 @@ $(document).ready(function () {
 			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
+			$("#but_post_jq").attr('disabled',false);
 			$('#error_infront').text(data.responseText);
 		}).success(function(data){
+			$("#but_post_jq").attr('disabled',false);
 			
 		});
 	});
