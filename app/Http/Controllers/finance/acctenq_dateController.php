@@ -355,6 +355,7 @@ class acctenq_dateController extends defaultController
 
     public function pb_data($obj){
         $responce = new stdClass();
+        $responce->desc = '';
 
         if($obj->trantype == 'IN'){
 
