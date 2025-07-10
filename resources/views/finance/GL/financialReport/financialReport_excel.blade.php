@@ -33,15 +33,15 @@
             <td style="font-weight:bold;text-align: left;">{{$obj_ar['description']}}</td>
             @foreach ($array_month as $month)
                 @if($obj_ar['revsign'] == 'Y')
-                <td style="text-align: right;">{{abs($obj_ar['tot_arr']['sum_desc'.$month])}}</td>
-                @else
                 <td style="text-align: right;">{{$obj_ar['tot_arr']['sum_desc'.$month] * -1}}</td>
+                @else
+                <td style="text-align: right;">{{$obj_ar['tot_arr']['sum_desc'.$month]}}</td>
                 @endif
             @endforeach
             @if($obj_ar['revsign'] == 'Y')
-            <td style="text-align: right;">{{abs($obj_ar['tot_arr']['ytd'])}}</td>
-            @else
             <td style="text-align: right;">{{$obj_ar['tot_arr']['ytd'] * -1}}</td>
+            @else
+            <td style="text-align: right;">{{$obj_ar['tot_arr']['ytd']}}</td>
             @endif
             </tr>
         @elseif($obj_ar['rowdef'] == 'D')
@@ -49,15 +49,15 @@
             <td style="text-align: left;">{{$obj_ar['description']}}</td>
             @foreach ($array_month as $month)
                 @if($obj_ar['revsign'] == 'Y')
-                <td style="text-align: right;">{{abs($obj_ar['tot_actamount'.$month])}}</td>
-                @else
                 <td style="text-align: right;">{{$obj_ar['tot_actamount'.$month] * -1}}</td>
+                @else
+                <td style="text-align: right;">{{$obj_ar['tot_actamount'.$month]}}</td>
                 @endif
             @endforeach
             @if($obj_ar['revsign'] == 'Y')
-            <td style="text-align: right;">{{abs($obj_ar['tot_ytd'])}}</td>
-            @else
             <td style="text-align: right;">{{$obj_ar['tot_ytd'] * -1}}</td>
+            @else
+            <td style="text-align: right;">{{$obj_ar['tot_ytd']}}</td>
             @endif
             </tr>
         @endif
