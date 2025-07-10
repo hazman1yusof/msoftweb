@@ -130,12 +130,12 @@ class acctenq_dateController extends defaultController
                     break;
             }
 
-            // if(!empty($data)){
-            //     $value->desc_ = $data->desc;
+            if(!empty($data)){
+                $value->desc_ = $data->desc;
             //     $value->reference = $data->refe;
-            // }else{
-            //     $value->desc_ = ' ';
-            // }
+            }else{
+                $value->desc_ = ' ';
+            }
         }
 
         $responce->data = $table;
