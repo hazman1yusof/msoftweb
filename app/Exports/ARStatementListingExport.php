@@ -101,7 +101,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                             $debtormast = $debtormast->where('dm.debtorcode', $debtorcode_from);
                         }
 
-                        $debtormast = $debtormast->
+                        $debtormast = $debtormast
                                         ->orderBy('dm.debtorcode', 'ASC')
                                         ->get();
 
