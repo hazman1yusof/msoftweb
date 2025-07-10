@@ -158,7 +158,7 @@
                                             <div class="inline fields">
                                                 <!-- <label>ADDITIONAL NOTES:</label> -->
                                                 <div class="field">
-                                                    <textarea rows="5" cols="60" id="neuroAssessment_additionalNotes" name="additionalNotes"></textarea>
+                                                    <textarea rows="5" cols="60" id="cardiorespAssessment_additionalNotes" name="additionalNotes"></textarea>
                                                 </div>
                                             </div>
                                         </td>

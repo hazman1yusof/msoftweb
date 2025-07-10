@@ -316,7 +316,7 @@ function saveForm_cardiorespAssessment(callback){
 }
 
 function textarea_init_cardiorespAssessment(){
-    $('textarea#cardiorespAssessment_subjectiveAssessmt,textarea#cardiorespAssessment_objectiveAssessmt,textarea#cardiorespAssessment_analysis,textarea#cardiorespAssessment_intervention,textarea#cardiorespAssessment_homeEducation,textarea#cardiorespAssessment_evaluation,textarea#cardiorespAssessment_review,textarea#neuroAssessment_additionalNotes').each(function (){
+    $('textarea#cardiorespAssessment_subjectiveAssessmt,textarea#cardiorespAssessment_objectiveAssessmt,textarea#cardiorespAssessment_analysis,textarea#cardiorespAssessment_intervention,textarea#cardiorespAssessment_homeEducation,textarea#cardiorespAssessment_evaluation,textarea#cardiorespAssessment_review,textarea#cardiorespAssessment_additionalNotes').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
