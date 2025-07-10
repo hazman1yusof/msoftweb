@@ -133,13 +133,10 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
-                foreach ($this->break_loop as $value) {
-                    $event->sheet->setBreak('A'.$value, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
-                }
                 
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nAR AGEING SUMMARY"."\n".sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nFIXED ASSET REPORT"."\n".sprintf('AS OF DATE %s',$this->datefrom).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 
                 $event->sheet->getPageMargins()->setTop(1);
                 

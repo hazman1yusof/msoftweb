@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Item Movement Report')
+@section('title', 'Fixed Asset Report')
 
 @section('style')
 	body{

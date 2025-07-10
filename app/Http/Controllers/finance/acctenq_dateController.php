@@ -367,12 +367,15 @@ class acctenq_dateController extends defaultController
                             ->where('dbh.compcode',session('compcode'))
                             ->where('dbh.source','=','PB')
                             ->where('dbh.trantype','=','IN')
-                            ->where('dbh.auditno','=',$obj->auditno)
-                            ->first();
+                            ->where('dbh.auditno','=',$obj->auditno);
+                            
+            if($dbacthdr->exists()){
+                $dbacthdr = $dbacthdr->first();
+                $obj->description = $dbacthdr->payercode;
+                $responce->desc = $dbacthdr->name;
+            }
 
-            $obj->description = $dbacthdr->payercode;
-            $responce->desc = $dbacthdr->name;
-            $responce->refe = str_pad($obj->auditno, 7, "0", STR_PAD_LEFT);
+            $obj->reference = str_pad($obj->auditno, 7, "0", STR_PAD_LEFT);
             return $responce;
 
         }else if($obj->trantype == 'DN'){
@@ -385,12 +388,15 @@ class acctenq_dateController extends defaultController
                             ->where('dbh.compcode',session('compcode'))
                             ->where('dbh.source','=','PB')
                             ->where('dbh.trantype','=','DN')
-                            ->where('dbh.auditno','=',$obj->auditno)
-                            ->first();
+                            ->where('dbh.auditno','=',$obj->auditno);
 
-            $obj->description = $dbacthdr->payercode;
-            $responce->desc = $dbacthdr->name;
-            $responce->refe = 'DN-'.str_pad($obj->auditno, 7, "0", STR_PAD_LEFT);
+            if($dbacthdr->exists()){
+                $dbacthdr = $dbacthdr->first();
+                $obj->description = $dbacthdr->payercode;
+                $responce->desc = $dbacthdr->name;
+            }
+
+            $obj->reference = 'DN-'.str_pad($obj->auditno, 7, "0", STR_PAD_LEFT);
             return $responce;
 
         }else if($obj->trantype == 'CN'){
@@ -403,12 +409,15 @@ class acctenq_dateController extends defaultController
                             ->where('dbh.compcode',session('compcode'))
                             ->where('dbh.source','=','PB')
                             ->where('dbh.trantype','=','CN')
-                            ->where('dbh.auditno','=',$obj->auditno)
-                            ->first();
+                            ->where('dbh.auditno','=',$obj->auditno);
 
-            $obj->description = $dbacthdr->payercode;
-            $responce->desc = $dbacthdr->name;
-            $responce->refe = 'CN-'.str_pad($obj->auditno, 7, "0", STR_PAD_LEFT);
+            if($dbacthdr->exists()){
+                $dbacthdr = $dbacthdr->first();
+                $obj->description = $dbacthdr->payercode;
+                $responce->desc = $dbacthdr->name;
+            }
+
+            $obj->reference = 'CN-'.str_pad($obj->auditno, 7, "0", STR_PAD_LEFT);
             return $responce;
 
         }else if($obj->trantype == 'RC'){
@@ -421,12 +430,15 @@ class acctenq_dateController extends defaultController
                             ->where('dbh.compcode',session('compcode'))
                             ->where('dbh.source','=','PB')
                             ->where('dbh.trantype','=','RC')
-                            ->where('dbh.auditno','=',$obj->auditno)
-                            ->first();
+                            ->where('dbh.auditno','=',$obj->auditno);
 
-            $obj->description = $dbacthdr->payercode;
-            $responce->desc = $dbacthdr->name;
-            $responce->refe = $dbacthdr->recptno;
+            if($dbacthdr->exists()){
+                $dbacthdr = $dbacthdr->first();
+                $obj->description = $dbacthdr->payercode;
+                $responce->desc = $dbacthdr->name;
+                $obj->reference = $dbacthdr->recptno;
+            }
+
             return $responce;
 
         }else if($obj->trantype == 'RD'){
@@ -439,12 +451,15 @@ class acctenq_dateController extends defaultController
                             ->where('dbh.compcode',session('compcode'))
                             ->where('dbh.source','=','PB')
                             ->where('dbh.trantype','=','RD')
-                            ->where('dbh.auditno','=',$obj->auditno)
-                            ->first();
+                            ->where('dbh.auditno','=',$obj->auditno);
 
-            $obj->description = $dbacthdr->payercode;
-            $responce->desc = $dbacthdr->name;
-            $responce->refe = $dbacthdr->recptno;
+            if($dbacthdr->exists()){
+                $dbacthdr = $dbacthdr->first();
+                $obj->description = $dbacthdr->payercode;
+                $responce->desc = $dbacthdr->name;
+                $obj->reference = $dbacthdr->recptno;
+            }
+
             return $responce;
 
         }else if($obj->trantype == 'RF'){
@@ -457,12 +472,15 @@ class acctenq_dateController extends defaultController
                             ->where('dbh.compcode',session('compcode'))
                             ->where('dbh.source','=','PB')
                             ->where('dbh.trantype','=','RF')
-                            ->where('dbh.auditno','=',$obj->auditno)
-                            ->first();
+                            ->where('dbh.auditno','=',$obj->auditno);
 
-            $obj->description = $dbacthdr->payercode;
-            $responce->desc = $dbacthdr->name;
-            $responce->refe = $dbacthdr->recptno;
+            if($dbacthdr->exists()){
+                $dbacthdr = $dbacthdr->first();
+                $obj->description = $dbacthdr->payercode;
+                $responce->desc = $dbacthdr->name;
+                $obj->reference = $dbacthdr->recptno;
+            }
+
             return $responce;
 
         }
