@@ -67,6 +67,7 @@
                             <li><a data-toggle="tab" id="navtab_radReqFor" href="#tab-radReqFor" data-type='RAD_REQFOR'>Radiology</a></li>
                             <li><a data-toggle="tab" id="navtab_physioReqFor" href="#tab-physioReqFor" data-type='PHYSIO_REQFOR'>Physiotherapy</a></li>
                             <li><a data-toggle="tab" id="navtab_dressingReqFor" href="#tab-dressingReqFor" data-type='DRESSING_REQFOR'>Dressing</a></li>
+                            
                         </ul>
                         <div class="tab-content" style="padding: 10px 5px;">
                             <div id="tab-otbookReqFor" class="active in tab-pane fade">
@@ -248,6 +249,8 @@
                                 <ul class="nav nav-tabs" id="jqGridRequestFor_rad_tabs">
                                     <li class="active"><a data-toggle="tab" id="navtab_radClinicReqFor" href="#tab-radClinicReqFor" aria-expanded="true" data-type='RADCLINIC_REQFOR'>Radiology Form</a></li>
                                     <li><a data-toggle="tab" id="navtab_mriReqFor" href="#tab-mriReqFor" data-type='MRI_REQFOR'>Checklist MRI</a></li>
+                                    <li><a data-toggle="tab" id="navtab_preContrastReqFor" href="#tab-preContrastReqFor" data-type='PRECONTRAST_REQFOR'>Pre-Contrast Questionnaire</a></li>
+                                    <li><a data-toggle="tab" id="navtab_consentReqFor" href="#tab-consentReqFor" data-type='CONSENT_REQFOR'>Consent Form</a></li>
                                 </ul>
                                 <div class="tab-content" style="padding: 10px 5px;">
                                     <div id="tab-radClinicReqFor" class="active in tab-pane fade">
@@ -796,6 +799,12 @@
                                                 </div>
                                             </div>
                                         </form>
+                                    </div>
+                                    <div id="tab-preContrastReqFor" class="tab-pane fade">
+                                        @include('hisdb.requestfor.preContrast')
+                                    </div>
+                                    <div id="tab-consentReqFor" class="tab-pane fade">
+                                        @include('hisdb.requestfor.consentForm')
                                     </div>
                                 </div>
                             </div>

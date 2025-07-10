@@ -13,6 +13,7 @@ $(document).ready(function (){
     disableForm('#formBergBalanceTest');
     disableForm('#formPosturalAssessment');
     disableForm('#formOswestryQuest');
+    disableForm('#formCardiorespAssessment');
     disableForm('#formNeuroAssessment');
     disableForm('#formMotorScale');
     disableForm('#formSpinalCord');
@@ -101,6 +102,21 @@ $(document).ready(function (){
                 // $('#tbl_oswestryQuest_date').DataTable().ajax.reload();
                 getdata_oswestryQuest();
                 break;
+            case 'cardiorespAssessment':
+                var urlparam_tbl_cardiorespAssessment = {
+                    action: 'get_datetime_cardiorespAssessment',
+                    mrn: $("#mrn_physio").val(),
+                    episno: $("#episno_physio").val()
+                }
+                
+                tbl_cardiorespAssessment_date.ajax.url("./cardiorespAssessment/table?"+$.param(urlparam_tbl_cardiorespAssessment)).load(function (data){
+                    emptyFormdata_div("#formCardiorespAssessment",['#mrn_physio','#episno_physio']);
+                    $('#tbl_cardiorespAssessment_date tbody tr:eq(0)').click(); // to select first row
+                });
+                
+                // $('#tbl_cardiorespAssessment_date').DataTable().ajax.reload();
+                getdata_cardiorespAssessment();
+                break;
             case 'neuroAssessment':
                 var urlparam_tbl_neuroAssessment = {
                     action: 'get_datetime_neuroAssessment',
@@ -173,6 +189,7 @@ function empty_physio(){
     emptyFormdata_div("#formBergBalanceTest");
     emptyFormdata_div("#formPosturalAssessment");
     emptyFormdata_div("#formOswestryQuest");
+    emptyFormdata_div("#formCardiorespAssessment");
     emptyFormdata_div("#formNeuroAssessment");
     emptyFormdata_div("#formMotorScale");
     emptyFormdata_div("#formSpinalCord");
@@ -180,6 +197,7 @@ function empty_physio(){
     button_state_bergBalanceTest('empty');
     button_state_posturalAssessment('empty');
     button_state_oswestryQuest('empty');
+    button_state_cardiorespAssessment('empty');
     button_state_neuroAssessment('empty');
     button_state_motorScale('empty');
     button_state_spinalCord('empty');
@@ -206,6 +224,7 @@ function populate_physio(obj){
     emptyFormdata_div("#formBergBalanceTest",['#mrn_physio','#episno_physio']);
     emptyFormdata_div("#formPosturalAssessment",['#mrn_physio','#episno_physio']);
     emptyFormdata_div("#formOswestryQuest",['#mrn_physio','#episno_physio']);
+    emptyFormdata_div("#formCardiorespAssessment",['#mrn_physio','#episno_physio']);
     emptyFormdata_div("#formNeuroAssessment",['#mrn_physio','#episno_physio']);
     emptyFormdata_div("#formMotorScale",['#mrn_physio','#episno_physio']);
     emptyFormdata_div("#formSpinalCord",['#mrn_physio','#episno_physio']);
@@ -273,6 +292,7 @@ $('#tab_physio').on('shown.bs.collapse', function (){
     //     getdata_bergBalanceTest();
     //     getdata_posturalAssessment();
     //     getdata_oswestryQuest();
+    //     getdata_cardiorespAssessment();
     //     getdata_neuroAssessment();
     //     getdata_motorScale();
     //     getdata_spinalCord();
@@ -285,6 +305,7 @@ $('#tab_physio').on('hide.bs.collapse', function (){
     button_state_bergBalanceTest('empty');
     button_state_posturalAssessment('empty');
     button_state_oswestryQuest('empty');
+    button_state_cardiorespAssessment('empty');
     button_state_neuroAssessment('empty');
     button_state_motorScale('empty');
     button_state_spinalCord('empty');

@@ -219,6 +219,86 @@ $(document).ready(function (){
         button_state_dressingReqFor($(this).data('oper'));
     });
     ////////////////////////////////////////////dressing ends////////////////////////////////////////////
+
+    ///////////////////////////////////////////preContrast starts///////////////////////////////////////////
+    disableForm('#formPreContrastReqFor');
+    
+    $("#new_preContrastReqFor").click(function (){
+        $('#cancel_preContrastReqFor').data('oper','add');
+        button_state_preContrastReqFor('wait');
+        enableForm('#formPreContrastReqFor');
+        rdonly('#formPreContrastReqFor');
+        emptyFormdata_div("#formPreContrastReqFor",['#mrn_requestFor','#episno_requestFor']);
+    });
+    
+    $("#edit_preContrastReqFor").click(function (){
+        button_state_preContrastReqFor('wait');
+        enableForm('#formPreContrastReqFor');
+        rdonly('#formPreContrastReqFor');
+    });
+    
+    $("#save_preContrastReqFor").click(function (){
+        disableForm('#formPreContrastReqFor');
+        if($('#formPreContrastReqFor').isValid({requiredFields: ''}, conf, true)){
+            saveForm_preContrastReqFor(function (data){
+                // emptyFormdata_div("#formPreContrastReqFor",['#mrn_requestFor','#episno_requestFor']);
+                // disableForm('#formPreContrastReqFor');
+                $('#cancel_preContrastReqFor').data('oper','edit');
+                $("#cancel_preContrastReqFor").click();
+                populate_preContrastReqFor_getdata();
+            });
+        }else{
+            enableForm('#formPreContrastReqFor');
+            rdonly('#formPreContrastReqFor');
+        }
+    });
+    
+    $("#cancel_preContrastReqFor").click(function (){
+        // emptyFormdata_div("#formPreContrastReqFor",['#mrn_requestFor','#episno_requestFor']);
+        disableForm('#formPreContrastReqFor');
+        button_state_preContrastReqFor($(this).data('oper'));
+    });
+    ////////////////////////////////////////////preContrast ends////////////////////////////////////////////
+
+    ///////////////////////////////////////////consentForm starts///////////////////////////////////////////
+    disableForm('#formConsentFormReqFor');
+    
+    $("#new_consentFormReqFor").click(function (){
+        $('#cancel_consentFormReqFor').data('oper','add');
+        button_state_consentFormReqFor('wait');
+        enableForm('#formConsentFormReqFor');
+        rdonly('#formConsentFormReqFor');
+        emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+    });
+    
+    $("#edit_consentFormReqFor").click(function (){
+        button_state_consentFormReqFor('wait');
+        enableForm('#formConsentFormReqFor');
+        rdonly('#formConsentFormReqFor');
+    });
+    
+    $("#save_consentFormReqFor").click(function (){
+        disableForm('#formConsentFormReqFor');
+        if($('#formConsentFormReqFor').isValid({requiredFields: ''}, conf, true)){
+            saveForm_consentFormReqFor(function (data){
+                // emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+                // disableForm('#formConsentFormReqFor');
+                $('#cancel_consentFormReqFor').data('oper','edit');
+                $("#cancel_consentFormReqFor").click();
+                populate_consentFormReqFor_getdata();
+            });
+        }else{
+            enableForm('#formConsentFormReqFor');
+            rdonly('#formConsentFormReqFor');
+        }
+    });
+    
+    $("#cancel_consentFormReqFor").click(function (){
+        // emptyFormdata_div("#formConsentFormReqFor",['#mrn_requestFor','#episno_requestFor']);
+        disableForm('#formConsentFormReqFor');
+        button_state_consentFormReqFor($(this).data('oper'));
+    });
+    ////////////////////////////////////////////consentForm ends////////////////////////////////////////////
     
     /////////////////////////////////////////print button starts/////////////////////////////////////////
     $("#otbookReqFor_chart").click(function (){
@@ -239,6 +319,14 @@ $(document).ready(function (){
     
     $("#dressingReqFor_chart").click(function (){
         window.open('./doctornote/dressing_chart?mrn='+$('#mrn_requestFor').val()+'&episno='+$("#episno_requestFor").val(), '_blank');
+    });
+
+    $("#preContrastReqFor_chart").click(function (){
+        window.open('./doctornote/preContrast_chart?mrn='+$('#mrn_requestFor').val()+'&episno='+$("#episno_requestFor").val()+'&age='+$("#age_requestFor").val(), '_blank');
+    });
+
+    $("#consentFormReqFor_chart").click(function (){
+        window.open('./doctornote/consentForm_chart?mrn='+$('#mrn_requestFor').val()+'&episno='+$("#episno_requestFor").val(), '_blank');
     });
     //////////////////////////////////////////print button ends//////////////////////////////////////////
     
@@ -404,6 +492,62 @@ function button_state_dressingReqFor(state){
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $("#save_dressingReqFor,#cancel_dressingReqFor").attr('disabled',false);
             $('#edit_dressingReqFor,#new_dressingReqFor').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_preContrastReqFor('empty');
+function button_state_preContrastReqFor(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_requestFor").removeAttr('data-toggle');
+            $('#cancel_preContrastReqFor').data('oper','add');
+            $('#new_preContrastReqFor,#save_preContrastReqFor,#cancel_preContrastReqFor,#edit_preContrastReqFor,#preContrastReqFor_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_preContrastReqFor').data('oper','add');
+            $("#new_preContrastReqFor").attr('disabled',false);
+            $('#save_preContrastReqFor,#cancel_preContrastReqFor,#edit_preContrastReqFor').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_preContrastReqFor').data('oper','edit');
+            $("#edit_preContrastReqFor,#preContrastReqFor_chart").attr('disabled',false);
+            $('#save_preContrastReqFor,#cancel_preContrastReqFor,#new_preContrastReqFor').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $("#save_preContrastReqFor,#cancel_preContrastReqFor").attr('disabled',false);
+            $('#edit_preContrastReqFor,#new_preContrastReqFor').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_consentFormReqFor('empty');
+function button_state_consentFormReqFor(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_requestFor").removeAttr('data-toggle');
+            $('#cancel_consentFormReqFor').data('oper','add');
+            $('#new_consentFormReqFor,#save_consentFormReqFor,#cancel_consentFormReqFor,#edit_consentFormReqFor,#consentFormReqFor_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_consentFormReqFor').data('oper','add');
+            $("#new_consentFormReqFor").attr('disabled',false);
+            $('#save_consentFormReqFor,#cancel_consentFormReqFor,#edit_consentFormReqFor').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $('#cancel_consentFormReqFor').data('oper','edit');
+            $("#edit_consentFormReqFor,#consentFormReqFor_chart").attr('disabled',false);
+            $('#save_consentFormReqFor,#cancel_consentFormReqFor,#new_consentFormReqFor').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_requestFor").attr('data-toggle','collapse');
+            $("#save_consentFormReqFor,#cancel_consentFormReqFor").attr('disabled',false);
+            $('#edit_consentFormReqFor,#new_consentFormReqFor').attr('disabled',true);
             break;
     }
 }
@@ -834,6 +978,70 @@ function populate_dressingReqFor_getdata(){
     });
 }
 
+function populate_preContrastReqFor_getdata(){
+    disableForm('#formPreContrastReqFor');
+    emptyFormdata(errorField,"#formPreContrastReqFor",["#mrn_requestFor","#episno_requestFor"]);
+    
+    var saveParam = {
+        action: 'get_table_preContrast',
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        // idno: $("#idno_dressing").val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val()
+    };
+    
+    $.get("./doctornote/table?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').fail(function (data){
+        alert('there is an error');
+    }).success(function (data){
+        if(!$.isEmptyObject(data)){
+            autoinsert_rowdata("#formPreContrastReqFor",data.pat_preContrast);
+            
+            button_state_preContrastReqFor('edit');
+        }else{
+            button_state_preContrastReqFor('add');
+        }
+        
+        textarea_init_preContrastReqFor();
+    });
+}
+
+function populate_consentFormReqFor_getdata(){
+    disableForm('#formConsentFormReqFor');
+    emptyFormdata(errorField,"#formConsentFormReqFor",["#mrn_requestFor","#episno_requestFor"]);
+    
+    var saveParam = {
+        action: 'get_table_consentForm',
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        // idno: $("#idno_dressing").val(),
+        mrn: $("#mrn_requestFor").val(),
+        episno: $("#episno_requestFor").val()
+    };
+    
+    $.get("./doctornote/table?"+$.param(saveParam), $.param(postobj), function (data){
+        
+    },'json').fail(function (data){
+        alert('there is an error');
+    }).success(function (data){
+        if(!$.isEmptyObject(data)){
+            autoinsert_rowdata("#formConsentFormReqFor",data.pat_consentForm);
+            
+            button_state_consentFormReqFor('edit');
+        }else{
+            button_state_consentFormReqFor('add');
+        }
+        $("#patientName").val($('#ptname_requestFor').val());
+        textarea_init_consentFormReqFor();
+    });
+}
+
 function autoinsert_rowdata(form,rowData){
     $.each(rowData, function (index, value){
         var input = $(form+" [name='"+index+"']");
@@ -1121,6 +1329,113 @@ function saveForm_dressingReqFor(callback){
     });
 }
 
+function saveForm_preContrastReqFor(callback){
+    var saveParam = {
+        action: 'save_preContrast',
+        oper: $("#cancel_preContrastReqFor").data('oper'),
+        mrn: $('#mrn_requestFor').val(),
+        episno: $("#episno_requestFor").val(),
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formPreContrastReqFor").serializeArray();
+    
+    values = values.concat(
+        $('#formPreContrastReqFor input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formPreContrastReqFor input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formPreContrastReqFor input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formPreContrastReqFor select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    $.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').fail(function (data){
+        callback(data);
+    }).success(function (data){
+        callback(data);
+    });
+}
+
+function saveForm_consentFormReqFor(callback){
+    var saveParam = {
+        action: 'save_consentForm',
+        oper: $("#cancel_consentFormReqFor").data('oper'),
+        mrn: $('#mrn_requestFor').val(),
+        episno: $("#episno_requestFor").val(),
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formConsentFormReqFor").serializeArray();
+    
+    values = values.concat(
+        $('#formConsentFormReqFor input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formConsentFormReqFor input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formConsentFormReqFor input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formConsentFormReqFor select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    $.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').fail(function (data){
+        callback(data);
+    }).success(function (data){
+        callback(data);
+    });
+}
+
+
 var ajaxurl;
 $('#jqGridRequestFor_panel').on('shown.bs.collapse', function (){
     SmoothScrollTo("#jqGridRequestFor_panel", 500);
@@ -1134,6 +1449,8 @@ $('#jqGridRequestFor_panel').on('shown.bs.collapse', function (){
     populate_physioReqFor_getdata();
     populate_dressingReqFor_getdata();
     populate_mriReqFor_getdata();
+    populate_preContrastReqFor_getdata();
+    populate_consentFormReqFor_getdata();
 });
 
 $('#jqGridRequestFor_panel_tabs.nav-tabs a').on('shown.bs.tab', function (e){
@@ -1169,6 +1486,14 @@ $('#jqGridRequestFor_rad_tabs.nav-tabs a').on('shown.bs.tab', function (e){
             populate_mriReqFor_getdata();
             // textarea_init_mriReqFor();
             break;
+        case 'PRECONTRAST_REQFOR':
+            populate_preContrastReqFor_getdata();
+            // textarea_init_dressingReqFor();
+            break;
+        case 'CONSENT_REQFOR':
+            populate_consentFormReqFor_getdata();
+            // textarea_init_dressingReqFor();
+            break;
     }
 });
 
@@ -1180,6 +1505,8 @@ $("#jqGridRequestFor_panel").on("hide.bs.collapse", function (){
     disableForm('#formMRIReqFor');
     disableForm('#formPhysioReqFor');
     disableForm('#formDressingReqFor');
+    disableForm('#formPreContrastReqFor');
+    disableForm('#formConsentFormReqFor');
 });
 
 function textarea_init_otbookReqFor(){
@@ -1252,6 +1579,40 @@ function textarea_init_physioReqFor(){
 
 function textarea_init_dressingReqFor(){
     $('textarea#ReqFor_solution').each(function (){
+        if(this.value.trim() == ''){
+            this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }else{
+            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        }else{
+            this.style.height = (40) + 'px';
+        }
+    });
+}
+
+function textarea_init_preContrastReqFor(){
+    $('textarea#examination').each(function (){
+        if(this.value.trim() == ''){
+            this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }else{
+            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        }else{
+            this.style.height = (40) + 'px';
+        }
+    });
+}
+
+function textarea_init_consentFormReqFor(){
+    $('textarea#address').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{

@@ -55,6 +55,10 @@ class DoctorNoteController extends defaultController
                 return $this->get_table_physio($request);
             case 'get_table_dressing':
                 return $this->get_table_dressing($request);
+            case 'get_table_preContrast':
+                return $this->get_table_preContrast($request);
+            case 'get_table_consentForm':
+                return $this->get_table_consentForm($request);
             case 'dialog_icd':
                 return $this->dialog_icd($request);
             case 'get_bp_graph':
@@ -162,6 +166,26 @@ class DoctorNoteController extends defaultController
                         return $this->add_dressing($request);
                     case 'edit':
                         return $this->edit_dressing($request);
+                    default:
+                        return 'error happen..';
+                }
+
+            case 'save_preContrast':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add_preContrast($request);
+                    case 'edit':
+                        return $this->edit_preContrast($request);
+                    default:
+                        return 'error happen..';
+                }
+
+            case 'save_consentForm':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add_consentForm($request);
+                    case 'edit':
+                        return $this->edit_consentForm($request);
                     default:
                         return 'error happen..';
                 }
@@ -2811,6 +2835,301 @@ class DoctorNoteController extends defaultController
         return json_encode($responce);
         
     }
+
+    public function add_preContrast(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.pat_precontrastq')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'examination' => $request->examination,
+                    'hisAllergy' => $request->hisAllergy,
+                    'feverAllergic' => $request->feverAllergic,
+                    'prevReactContrast' => $request->prevReactContrast,
+                    'prevReactDrug' => $request->prevReactDrug,
+                    'asthma' => $request->asthma,
+                    'heartDisease' => $request->heartDisease,
+                    'veryOldYoung' => $request->veryOldYoung,
+                    'poorCondition' => $request->poorCondition,
+                    'dehydrated' => $request->dehydrated,
+                    'seriousMedCondition' => $request->seriousMedCondition,
+                    'prevContrastExam' => $request->prevContrastExam,
+                    'consentProcedure' => $request->consentProcedure,
+                    'LMP' => $request->LMP,
+                    'renalFunction' => $request->renalFunction,
+                    'docName' => $request->docName,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit_preContrast(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            $pat_preContrast = DB::table('hisdb.pat_precontrastq')
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno)
+                            ->where('compcode','=',session('compcode'));
+            
+            if($pat_preContrast->exists()){
+                $pat_preContrast
+                    ->update([
+                        'examination' => $request->examination,
+                        'hisAllergy' => $request->hisAllergy,
+                        'feverAllergic' => $request->feverAllergic,
+                        'prevReactContrast' => $request->prevReactContrast,
+                        'prevReactDrug' => $request->prevReactDrug,
+                        'asthma' => $request->asthma,
+                        'heartDisease' => $request->heartDisease,
+                        'veryOldYoung' => $request->veryOldYoung,
+                        'poorCondition' => $request->poorCondition,
+                        'dehydrated' => $request->dehydrated,
+                        'seriousMedCondition' => $request->seriousMedCondition,
+                        'prevContrastExam' => $request->prevContrastExam,
+                        'consentProcedure' => $request->consentProcedure,
+                        'LMP' => $request->LMP,
+                        'renalFunction' => $request->renalFunction,
+                        'docName' => $request->docName,
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser' => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastcomputerid' => session('computerid'),
+                    ]);
+            }else{
+                DB::table('hisdb.pat_precontrastq')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'examination' => $request->examination,
+                        'hisAllergy' => $request->hisAllergy,
+                        'feverAllergic' => $request->feverAllergic,
+                        'prevReactContrast' => $request->prevReactContrast,
+                        'prevReactDrug' => $request->prevReactDrug,
+                        'asthma' => $request->asthma,
+                        'heartDisease' => $request->heartDisease,
+                        'veryOldYoung' => $request->veryOldYoung,
+                        'poorCondition' => $request->poorCondition,
+                        'dehydrated' => $request->dehydrated,
+                        'seriousMedCondition' => $request->seriousMedCondition,
+                        'prevContrastExam' => $request->prevContrastExam,
+                        'consentProcedure' => $request->consentProcedure,
+                        'LMP' => $request->LMP,
+                        'renalFunction' => $request->renalFunction,
+                        'docName' => $request->docName,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser' => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid'),
+                    ]);
+            }
+            
+            $queries = DB::getQueryLog();
+            // dump($queries);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function get_table_preContrast(Request $request){
+        
+        $pat_preContrast_obj = DB::table('hisdb.pat_precontrastq')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
+        
+        $responce = new stdClass();
+        
+        if($pat_preContrast_obj->exists()){
+            $pat_preContrast_obj = $pat_preContrast_obj->first();
+            $responce->pat_preContrast = $pat_preContrast_obj;
+        }
+        
+        return json_encode($responce);
+        
+    }
+
+    public function add_consentForm(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.pat_consent')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'guardianName' => $request->guardianName,
+                    'address' => $request->address,
+                    'procedureName' => $request->procedureName,
+                    'guardianType' => $request->guardianType,
+                    'patientName' => $request->patientName,
+                    'procedureRadName' => $request->procedureRadName,
+                    'doctorName' => $request->doctorName,
+                    'dateConsentGuardian' => $request->dateConsentGuardian,
+                    'guardianSignType' => $request->guardianSignType,
+                    'guardianSign' => $request->guardianSign,
+                    'relationship' => $request->relationship,
+                    'guardianICNum' => $request->guardianICNum,
+                    'guardianSignTypeDoc' => $request->guardianSignTypeDoc,
+                    'dateConsentDoc' => $request->dateConsentDoc,
+                    'doctorSign' => $request->doctorSign,
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function edit_consentForm(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            $pat_consent = DB::table('hisdb.pat_consent')
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno)
+                            ->where('compcode','=',session('compcode'));
+            
+            if($pat_consent->exists()){
+                $pat_consent
+                    ->update([
+                        'guardianName' => $request->guardianName,
+                        'address' => $request->address,
+                        'procedureName' => $request->procedureName,
+                        'guardianType' => $request->guardianType,
+                        'patientName' => $request->patientName,
+                        'procedureRadName' => $request->procedureRadName,
+                        'doctorName' => $request->doctorName,
+                        'dateConsentGuardian' => $request->dateConsentGuardian,
+                        'guardianSign' => $request->guardianSign,
+                        'guardianSignType' => $request->guardianSignType,
+                        'relationship' => $request->relationship,
+                        'guardianICNum' => $request->guardianICNum,
+                        'guardianSignTypeDoc' => $request->guardianSignTypeDoc,
+                        'dateConsentDoc' => $request->dateConsentDoc,
+                        'doctorSign' => $request->doctorSign,
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser' => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastcomputerid' => session('computerid'),
+                    ]);
+            }else{
+                DB::table('hisdb.pat_consent')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'guardianName' => $request->guardianName,
+                        'address' => $request->address,
+                        'procedureName' => $request->procedureName,
+                        'guardianType' => $request->guardianType,
+                        'patientName' => $request->patientName,
+                        'procedureRadName' => $request->procedureRadName,
+                        'doctorName' => $request->doctorName,
+                        'dateConsentGuardian' => $request->dateConsentGuardian,
+                        'guardianSign' => $request->guardianSign,
+                        'guardianSignType' => $request->guardianSignType,
+                        'relationship' => $request->relationship,
+                        'guardianICNum' => $request->guardianICNum,
+                        'guardianSignTypeDoc' => $request->guardianSignTypeDoc,
+                        'dateConsentDoc' => $request->dateConsentDoc,
+                        'doctorSign' => $request->doctorSign,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser' => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid'),
+                    ]);
+            }
+            
+            $queries = DB::getQueryLog();
+            // dump($queries);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function get_table_consentForm(Request $request){
+        
+        $pat_consentForm_obj = DB::table('hisdb.pat_consent')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
+        
+        $responce = new stdClass();
+        
+        if($pat_consentForm_obj->exists()){
+            $pat_consentForm_obj = $pat_consentForm_obj->first();
+            $responce->pat_consentForm = $pat_consentForm_obj;
+        }
+        
+        return json_encode($responce);
+        
+    }
     
     public function dialog_icd(Request $request){
         
@@ -3277,6 +3596,65 @@ class DoctorNoteController extends defaultController
                     ->first();
         
         return view('hisdb.doctornote.dressingChart_pdfmake',compact('dressing'));
+        
+    }
+
+    public function preContrast_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        if(!$mrn || !$episno){
+            abort(404);
+        }
+        
+        $preContrast = DB::table('hisdb.pat_precontrastq as p')
+                ->select('p.mrn','p.episno','p.examination','p.hisAllergy','p.feverAllergic','p.prevReactContrast','p.prevReactDrug','p.asthma','p.heartDisease','p.veryOldYoung','p.poorCondition','p.dehydrated','p.seriousMedCondition','p.prevContrastExam','p.consentProcedure','p.LMP','p.renalFunction','p.docName','pm.Name','pm.Newic')
+                ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                    $join = $join->on('pm.MRN','=','p.mrn');
+                    $join = $join->on('pm.Episno','=','p.episno');
+                    $join = $join->where('pm.compcode','=',session('compcode'));
+                })
+                ->where('p.compcode','=',session('compcode'))
+                ->where('p.mrn','=',$mrn)
+                ->where('p.episno','=',$episno)
+                ->first();
+        // dd($preContrast);
+        $age = $request->age;
+
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        return view('hisdb.doctornote.preContrastChart_pdfmake',compact('preContrast','age'));
+        
+    }
+
+    public function consentForm_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        if(!$mrn || !$episno){
+            abort(404);
+        }
+        
+        $consentForm = DB::table('hisdb.pat_consent as p')
+                ->select('p.mrn','p.episno','p.guardianName','p.address','p.procedureName','p.guardianType','p.patientName','p.procedureRadName','p.doctorName','p.dateConsentGuardian','p.guardianSign','p.guardianSignType','p.relationship','p.guardianICNum','p.guardianSignTypeDoc','p.dateConsentDoc','p.doctorSign','pm.Name','pm.Newic')
+                ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                    $join = $join->on('pm.MRN','=','p.mrn');
+                    $join = $join->on('pm.Episno','=','p.episno');
+                    $join = $join->where('pm.compcode','=',session('compcode'));
+                })
+                ->where('p.compcode','=',session('compcode'))
+                ->where('p.mrn','=',$mrn)
+                ->where('p.episno','=',$episno)
+                ->first();
+        // dd($consentForm);
+
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        return view('hisdb.doctornote.consentFormChart_pdfmake',compact('consentForm'));
         
     }
     
