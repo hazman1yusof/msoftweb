@@ -43,20 +43,36 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
     public function columnFormats(): array
     {
         return [
-            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'L' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'M' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'N' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'O' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1
         ];
     }
     
     public function columnWidths(): array
     {
         return [
-            'A' => 20,
-            'B' => 70,
+            'A' => 15,
+            'B' => 40,
             'C' => 15,
             'D' => 15,
             'E' => 15,
             'F' => 15,
+            'G' => 15,
+            'H' => 15,
+            'I' => 15,
+            'K' => 15,
+            'K' => 15,
+            'L' => 15,
+            'M' => 15,
+            'N' => 15,
+            'O' => 15
         ];
     }
     
@@ -89,6 +105,9 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
                                     ->get();
 
         foreach ($faregister as $obj) {
+
+            $obj->purdate = Carbon::parse($obj->purdate)->format('d-m-Y');
+            $obj->startdepdate = Carbon::parse($obj->startdepdate)->format('d-m-Y');
 
             $obj->dispcost = 0.00;
             if($obj->recstatus == 'DEACTIVE'){

@@ -51,9 +51,10 @@
                 },
                 pageSize: 'A4',
                 pageOrientation: 'landscape',
+                pageMargins: [10, 10, 10, 10],
                 content: [
                     {
-                        image: 'letterhead', width: 200, height: 40, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead', width: 150, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
                         text: '\nDAFTAR ASET TETAP (INVENTORI)\n',
@@ -84,9 +85,12 @@
                             body: [
                                 [
                                     {
-                                        text: 'Kategori: {{strtoupper($faregister->category_description)}}',
-                                        colSpan: 6, alignment: 'left'
-                                    },{},{},{},{},{},
+                                        text: 'Kategori:',
+                                        colSpan: 1, alignment: 'left'
+                                    },{
+                                        text: '{{strtoupper($faregister->category_description)}}',
+                                        colSpan: 5, alignment: 'left'
+                                    },{},{},{},{},
                                     {
                                         text: 'Kos Dan Tarikh Dibeli/Diterima: RM {{number_format($faregister->origcost,2)}} & {{\Carbon\Carbon::parse($faregister->delorddate)->format('d/m/Y')}}',
                                         colSpan: 5, alignment: 'left'
@@ -94,9 +98,12 @@
                                 ],
                                 [
                                     {
-                                        text: 'Jenis: {{strtoupper($faregister->type_description)}}',
-                                        colSpan: 6, alignment: 'left'
-                                    },{},{},{},{},{},
+                                        text: 'Jenis:',
+                                        colSpan: 1, alignment: 'left'
+                                    },{
+                                        text: '{{strtoupper($faregister->type_description)}}',
+                                        colSpan: 5, alignment: 'left'
+                                    },{},{},{},{},
                                     {
                                         text: 'No. Pesanan Rasmi: {{$faregister->invno}}',
                                         colSpan: 5, alignment: 'left'
@@ -104,9 +111,12 @@
                                 ],
                                 [
                                     {
-                                        text: 'Jenama Dan Model: {{$faregister->brand}} {{$faregister->model}}',
-                                        colSpan: 6, alignment: 'left'
-                                    },{},{},{},{},{},
+                                        text: 'Jenama Dan Model:',
+                                        colSpan: 1, alignment: 'left'
+                                    },{
+                                        text: '{{$faregister->brand}} {{$faregister->model}}',
+                                        colSpan: 5, alignment: 'left'
+                                    },{},{},{},{},
                                     {
                                         text: 'Pembekal: {{strtoupper($faregister->supplier_name)}}',
                                         colSpan: 5, alignment: 'left'
@@ -114,9 +124,12 @@
                                 ],
                                 [
                                     {
-                                        text: 'Jenis Dan No. Enjin: {{$faregister->engineno}}',
-                                        colSpan: 6, alignment: 'left'
-                                    },{},{},{},{},{},
+                                        text: 'Jenis Dan No. Enjin:',
+                                        colSpan: 1, alignment: 'left'
+                                    },{
+                                        text: '{{$faregister->engineno}}',
+                                        colSpan: 5, alignment: 'left'
+                                    },{},{},{},{},
                                     {
                                         text: 'No. Rujukan Fail: ',
                                         colSpan: 5, alignment: 'left'
@@ -124,9 +137,12 @@
                                 ],
                                 [
                                     {
-                                        text: 'No. Casis / Siri Pembuat: {{$faregister->casisno}} {{$faregister->serialno}}',
-                                        colSpan: 6, alignment: 'left'
-                                    },{},{},{},{},{},
+                                        text: 'No. Casis / Siri Pembuat:',
+                                        colSpan: 1, alignment: 'left'
+                                    },{
+                                        text: '{{$faregister->casisno}} {{$faregister->serialno}}',
+                                        colSpan: 5, alignment: 'left'
+                                    },{},{},{},{},
                                     {
                                         text: ' ',
                                         colSpan: 5, rowSpan: 3
@@ -134,15 +150,18 @@
                                 ],
                                 [
                                     {
-                                        text: 'No. Siri Pendaftaran: ',
-                                        colSpan: 6, alignment: 'left'
+                                        text: 'No. Siri Pendaftaran:',
+                                        colSpan: 1, alignment: 'left'
+                                    },{
+                                        text: '',
+                                        colSpan: 5, alignment: 'left'
                                     },{},{},{},{},{},{},{},{},{},{},
                                 ],
                                 [
                                     {
                                         border: [false, false, false, false],
                                         text: [
-                                            '\n\n\n\n ________________________________ \n\n',
+                                            '\n\n\n\n _________________________________________ \n\n',
                                             'T/tangan Pegawai Bertanggungjawab \n\n',
                                         ], colSpan: 3,
                                     },{},{},
@@ -243,13 +262,13 @@
                 ],
                 styles: {
                     header: {
-                        fontSize: 14,
+                        fontSize: 12,
                         bold: true,
-                        margin: [0, 0, 0, 10]
+                        margin: [0, 0, 0, 5]
                     },
                     tableExample: {
                         fontSize: 9,
-                        margin: [0, 5, 0, 15]
+                        margin: [0, 5, 0, 10]
                     },
                     tableHeader: {
                         bold: true,
@@ -259,7 +278,7 @@
                 },
                 images: {
                     letterhead: {
-                        url: "{{asset('/img/MSLetterHead.jpg')}}",
+                        url: "{{asset('/img/letterheadukm.png')}}",
                         headers: {
                             myheader: '123',
                             myotherheader: 'abc',

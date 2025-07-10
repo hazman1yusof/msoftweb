@@ -5475,6 +5475,19 @@ class TestController extends defaultController
         $auditno = Carbon::createFromFormat('Y-m-d','2025-'.$period.'-01')->startOfMonth()->format('ymd');
 
         try {
+
+            DB::table('finance.gltran')
+                        ->where('compcode','9b')
+                        ->where('year','2025')
+                        ->where('period',$period)
+                        ->where('source','IV')
+                        ->where('trantype','OB')
+                        ->update([
+                            'compcode'=>'xx',
+                            'upduser' =>'SYSTEM_AR',
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+
             $glmasdtl = DB::table('finance.glmasdtl')
                             ->where('compcode','9b')
                             ->where('year','2025')
@@ -5501,9 +5514,9 @@ class TestController extends defaultController
                         'year' => 2025,
                         'period' => $period,
                         'drcostcode' => $obj->costcode,
-                        'dracc' => '20010041',
+                        'dracc' => '20010040',
                         'crcostcode' => $obj->costcode,
-                        'cracc' => '20010040',
+                        'cracc' => '20010041',
                         'amount' => $amount,
                     ]);
 
