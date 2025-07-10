@@ -75,7 +75,6 @@ class financialReportExport_units implements WithMultipleSheets
 
         $department = DB::table('sysdb.department')
                             ->where('compcode',session('compcode'))
-                            ->where('deptcode','POLISA')
                             ->get();
 
         // dump($department->where('sector',"MRS"));
