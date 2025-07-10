@@ -1221,12 +1221,17 @@ $(document).ready(function () {
 			});
 		}
 	}
+
+	$('#jqGridEnquiryDtl2_panel').on('shown.bs.collapse', function () {
+		SmoothScrollTo('#'+$('div.mainpanel[aria-expanded=true]').parent('div.panel.panel-default').attr('id'), 300,0,undefined);
+	});
+
 });
 
 
 function stop_scroll_on(){
 	$('div.paneldiv').on('mouseenter',function(){
-		SmoothScrollTo('#'+$('div.mainpanel[aria-expanded=true]').parent('div.panel.panel-default').attr('id'), 300,undefined,30);
+		SmoothScrollTo('#'+$('div.mainpanel[aria-expanded=true]').parent('div.panel.panel-default').attr('id'), 300,0,undefined);
 		$('body').addClass('stop-scrolling');
 	});
 

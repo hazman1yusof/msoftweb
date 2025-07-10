@@ -19,7 +19,10 @@
 	float: right;
 	<!--  margin-right: 5px; -->
 	}
-
+	.stop-scrolling {
+	    padding-right: 16px;
+	    overflow: hidden;
+	}
 	.panel-heading div i {
 			position: relative;
 			line-height: 1;

@@ -93,11 +93,16 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                                          // ->where('pm.NewMrn', '<>', '')
                                          ->where('pm.compcode', '=', session('compcode'));
                         })
-                        ->where('dm.compcode', '=', session('compcode'))
-                        ->whereBetween('dm.debtorcode', [$debtorcode_from,$debtorcode_to.'%'])
-                        ->orderBy('dm.debtorcode', 'ASC')
-                        // ->limit(3000)
-                        ->get();
+                        ->where('dm.compcode', '=', session('compcode'));
+
+                        if($debtorcode_from != $debtorcode_to){
+
+                            $debtormast = $debtormast->whereBetween('dm.debtorcode', [$debtorcode_from,$debtorcode_to.'%']);
+                        }
+
+                        $debtormast = $debtormast->
+                                        ->orderBy('dm.debtorcode', 'ASC')
+                                        ->get();
 
         // dd($this->getQueries($debtormast));
         
