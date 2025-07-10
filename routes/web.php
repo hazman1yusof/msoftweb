@@ -1505,6 +1505,11 @@ Route::get('/assetcategory/table','finance\assetcategoryController@table');
 Route::post('/assetcategory/form','finance\assetcategoryController@form');
 
 /// Fixed Asset Enquiry /// 
+Route::get('/assetreport','finance\assetreportController@show');
+Route::get('/assetreport/table','finance\assetreportController@table');
+Route::post('/assetreport/form','finance\assetreportController@form');
+
+/// Fixed Asset Enquiry /// 
 Route::get('/assetenquiry','finance\assetenquiryController@show');
 Route::get('/assetenquiry/table','finance\assetenquiryController@table');
 Route::post('/assetenquiry/form','finance\assetenquiryController@form');

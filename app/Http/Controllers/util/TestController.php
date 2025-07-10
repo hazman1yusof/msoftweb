@@ -5395,9 +5395,13 @@ class TestController extends defaultController
     }
 
     public function display_glmasref_xde(Request $request){
+        if(empty($request->period)){
+            dd('no request period');
+        }
+        $period = $request->period;
         $glmasdtl = DB::table('finance.glmasdtl')
                         ->where('compcode',session('compcode'))
-                        ->where('actamount5','<>',0)
+                        ->where('actamount'.$period,'<>',0)
                         ->where('year','2025')
                         ->get();
 
