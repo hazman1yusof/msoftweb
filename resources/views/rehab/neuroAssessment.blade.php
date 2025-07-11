@@ -19,6 +19,7 @@
                 <input id="idno_romaffectedside" name="idno_romaffectedside" type="hidden">
                 <input id="idno_romsoundside" name="idno_romsoundside" type="hidden">
                 <input id="idno_musclepower" name="idno_musclepower" type="hidden">
+                <input id="neuroAssessment_type" name="type" value="neuro" type="hidden">
                 <div class="ui grid">
                     <div class='four wide column'>
                         <div class="ui segments">
