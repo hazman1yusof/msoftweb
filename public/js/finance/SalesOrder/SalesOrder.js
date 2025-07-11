@@ -245,7 +245,7 @@ $(document).ready(function () {
 			{ label: 'Debtor Code', name: 'db_payercode', width: 14, canSearch: true },
 			{ label: 'Debtor Name', name: 'dm_name', width: 28, canSearch: true, classes: 'wrap',checked:true },
 			{ label: 'Document Date', name: 'db_entrydate', width: 12, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
-			{ label: 'db_posteddate', name: 'db_posteddate', width: 12, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'Posted Date', name: 'db_posteddate', width: 12, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right', formatter: padzero, unformat: unpadzero,canSearch: true, selected:true},
 			{ label: 'Invoice No', name: 'db_invno', width: 10, align: 'right', canSearch: true, formatter: padzero, unformat: unpadzero },
 			// { label: 'Sector', name: 'db_unit', width: 15, canSearch: true, classes: 'wrap' },

@@ -1093,7 +1093,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 			});
 		</script>
 
-		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.31"></script>
+		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.32"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	
