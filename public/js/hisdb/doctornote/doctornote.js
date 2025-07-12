@@ -304,6 +304,86 @@ $(document).ready(function (){
 	});
 	////////////////////////////////////////////dressing ends////////////////////////////////////////////
 	
+	///////////////////////////////////////////preContrast starts///////////////////////////////////////////
+    disableForm('#formPreContrast');
+    
+    $("#new_preContrast").click(function (){
+        $('#cancel_preContrast').data('oper','add');
+        button_state_preContrast('wait');
+        enableForm('#formPreContrast');
+        rdonly('#formPreContrast');
+        emptyFormdata_div("#formPreContrast",['#mrn_doctorNote','#episno_doctorNote']);
+    });
+    
+    $("#edit_preContrast").click(function (){
+        button_state_preContrast('wait');
+        enableForm('#formPreContrast');
+        rdonly('#formPreContrast');
+    });
+    
+    $("#save_preContrast").click(function (){
+        disableForm('#formPreContrast');
+        if($('#formPreContrast').isValid({requiredFields: ''}, conf, true)){
+            saveForm_preContrast(function (data){
+                // emptyFormdata_div("#formPreContrast",['#mrn_doctorNote','#episno_doctorNote']);
+                // disableForm('#formPreContrast');
+                $('#cancel_preContrast').data('oper','edit');
+                $("#cancel_preContrast").click();
+                populate_preContrast_getdata();
+            });
+        }else{
+            enableForm('#formPreContrast');
+            rdonly('#formPreContrast');
+        }
+    });
+    
+    $("#cancel_preContrast").click(function (){episno_doctorNote
+        // emptyFormdata_div("#formPreContrast",['#mrn_doctorNote','#episno_doctorNote']);
+        disableForm('#formPreContrast');
+        button_state_preContrast($(this).data('oper'));
+    });
+    ////////////////////////////////////////////preContrast ends////////////////////////////////////////////
+
+    ///////////////////////////////////////////consentForm starts///////////////////////////////////////////
+    disableForm('#formConsentForm');
+    
+    $("#new_consentForm").click(function (){
+        $('#cancel_consentForm').data('oper','add');
+        button_state_consentForm('wait');
+        enableForm('#formConsentForm');
+        rdonly('#formConsentForm');
+        emptyFormdata_div("#formConsentForm",['#mrn_doctorNote','#episno_doctorNote']);
+    });
+    
+    $("#edit_consentForm").click(function (){
+        button_state_consentForm('wait');
+        enableForm('#formConsentForm');
+        rdonly('#formConsentForm');
+    });
+    
+    $("#save_consentForm").click(function (){
+        disableForm('#formConsentForm');
+        if($('#formConsentForm').isValid({requiredFields: ''}, conf, true)){
+            saveForm_consentForm(function (data){
+                // emptyFormdata_div("#formConsentForm",['#mrn_doctorNote','#episno_doctorNote']);
+                // disableForm('#formConsentForm');
+                $('#cancel_consentForm').data('oper','edit');
+                $("#cancel_consentForm").click();
+                populate_consentForm_getdata();
+            });
+        }else{
+            enableForm('#formConsentForm');
+            rdonly('#formConsentForm');
+        }
+    });
+    
+    $("#cancel_consentForm").click(function (){
+        // emptyFormdata_div("#formConsentForm",['#mrn_doctorNote','#episno_doctorNote']);
+        disableForm('#formConsentForm');
+        button_state_consentForm($(this).data('oper'));
+    });
+    ////////////////////////////////////////////consentForm ends////////////////////////////////////////////
+
 	/////////////////////////////////////////print button starts/////////////////////////////////////////
 	$("#otbook_chart").click(function (){
 		window.open('./doctornote/otbook_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
@@ -324,6 +404,14 @@ $(document).ready(function (){
 	$("#dressing_chart").click(function (){
 		window.open('./doctornote/dressing_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
 	});
+
+	$("#preContrast_chart").click(function (){
+        window.open('./doctornote/preContrast_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&age='+$("#age_doctorNote").val(), '_blank');
+    });
+
+    $("#consentForm_chart").click(function (){
+        window.open('./doctornote/consentForm_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+    });
 	//////////////////////////////////////////print button ends//////////////////////////////////////////
 	
 	// to format number input to two decimal places (0.00)
@@ -1043,6 +1131,62 @@ function button_state_dressing(state){
 	}
 }
 
+button_state_preContrast('empty');
+function button_state_preContrast(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_doctorNote").removeAttr('data-toggle');
+            $('#cancel_preContrast').data('oper','add');
+            $('#new_preContrast,#save_preContrast,#cancel_preContrast,#edit_preContrast,#preContrast_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_doctorNote").attr('data-toggle','collapse');
+            $('#cancel_preContrast').data('oper','add');
+            $("#new_preContrast").attr('disabled',false);
+            $('#save_preContrast,#cancel_preContrast,#edit_preContrast').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_doctorNote").attr('data-toggle','collapse');
+            $('#cancel_preContrast').data('oper','edit');
+            $("#edit_preContrast,#preContrast_chart").attr('disabled',false);
+            $('#save_preContrast,#cancel_preContrast,#new_preContrast').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_doctorNote").attr('data-toggle','collapse');
+            $("#save_preContrast,#cancel_preContrast").attr('disabled',false);
+            $('#edit_preContrast,#new_preContrast').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_consentForm('empty');
+function button_state_consentForm(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_doctorNote").removeAttr('data-toggle');
+            $('#cancel_consentForm').data('oper','add');
+            $('#new_consentForm,#save_consentForm,#cancel_consentForm,#edit_consentForm,#consentForm_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_doctorNote").attr('data-toggle','collapse');
+            $('#cancel_consentForm').data('oper','add');
+            $("#new_consentForm").attr('disabled',false);
+            $('#save_consentForm,#cancel_consentForm,#edit_consentForm').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_doctorNote").attr('data-toggle','collapse');
+            $('#cancel_consentForm').data('oper','edit');
+            $("#edit_consentForm,#consentForm_chart").attr('disabled',false);
+            $('#save_consentForm,#cancel_consentForm,#new_consentForm').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_doctorNote").attr('data-toggle','collapse');
+            $("#save_consentForm,#cancel_consentForm").attr('disabled',false);
+            $('#edit_consentForm,#new_consentForm').attr('disabled',true);
+            break;
+    }
+}
+
 var dateParam_docnote,doctornote_docnote,curr_obj;
 //screen bedmanagement//
 function populate_doctorNote(obj,rowdata){
@@ -1620,6 +1764,70 @@ function populate_dressing_getdata(){
 	});
 }
 
+function populate_preContrast_getdata(){
+    disableForm('#formPreContrast');
+    emptyFormdata(errorField,"#formPreContrast",["#mrn_doctorNote","#episno_doctorNote"]);
+    
+    var saveParam = {
+        action: 'get_table_preContrast',
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        mrn: $("#mrn_doctorNote").val(),
+        episno: $("#episno_doctorNote").val()
+    };
+    
+    $.get("./doctornote/table?"+$.param(saveParam), $.param(postobj), function (data){
+
+	},'json').fail(function (data){
+		alert('there is an error');
+	}).success(function (data){
+		if(!$.isEmptyObject(data)){
+			autoinsert_rowdata("#formPreContrast",data.pat_preContrast);
+            
+            button_state_preContrast('edit');
+		}else{
+			button_state_preContrast('add');
+		}
+		
+		textarea_init_preContrast();
+	});
+
+}
+
+function populate_consentForm_getdata(){
+    disableForm('#formConsentForm');
+    emptyFormdata(errorField,"#formConsentForm",["#mrn_doctorNote","#episno_doctorNote"]);
+    
+    var saveParam = {
+        action: 'get_table_consentForm',
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        mrn: $("#mrn_doctorNote").val(),
+        episno: $("#episno_doctorNote").val()
+    };
+    
+    $.get("./doctornote/table?"+$.param(saveParam), $.param(postobj), function (data){
+
+	},'json').fail(function (data){
+		alert('there is an error');
+	}).success(function (data){
+		if(!$.isEmptyObject(data)){
+			autoinsert_rowdata("#formConsentForm",data.pat_consentForm);
+            
+            button_state_consentForm('edit');
+		}else{
+			button_state_consentForm('add');
+		}
+		
+		$("#patientName").val($('#ptname_doctorNote').val());
+        textarea_init_consentForm();
+	});
+}
+
 function on_toggling_curr_past(obj = curr_obj){
 	var addnotes = document.getElementById("addnotes");
 	
@@ -2042,6 +2250,112 @@ function saveForm_refLetter(callback){
 	});
 }
 
+function saveForm_preContrast(callback){
+    var saveParam = {
+        action: 'save_preContrast',
+        oper: $("#cancel_preContrast").data('oper'),
+        mrn: $('#mrn_doctorNote').val(),
+        episno: $("#episno_doctorNote").val(),
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formPreContrast").serializeArray();
+    
+    values = values.concat(
+        $('#formPreContrast input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formPreContrast input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formPreContrast input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formPreContrast select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    $.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').fail(function (data){
+		callback(data);
+	}).success(function (data){
+		callback(data);
+	});
+}
+
+function saveForm_consentForm(callback){
+    var saveParam = {
+        action: 'save_consentForm',
+        oper: $("#cancel_consentForm").data('oper'),
+        mrn: $('#mrn_doctorNote').val(),
+        episno: $("#episno_doctorNote").val(),
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formConsentForm").serializeArray();
+    
+    values = values.concat(
+        $('#formConsentForm input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formConsentForm input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formConsentForm input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formConsentForm select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    $.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').fail(function (data){
+		callback(data);
+	}).success(function (data){
+		callback(data);
+	});
+}
+
 // function getdata_refLetter(){
 //     var urlparam = {
 //         action: 'get_table_refLetter',
@@ -2130,6 +2444,8 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function (){
 	populate_physio_getdata();
 	populate_dressing_getdata();
 	populate_mri_getdata();
+	populate_preContrast_getdata();
+    populate_consentForm_getdata();
 });
 
 $('#jqGridDoctorNote_panel_tabs.nav-tabs a').on('shown.bs.tab', function (e){
@@ -2165,6 +2481,12 @@ $('#jqGridDoctorNote_rad_tabs.nav-tabs a').on('shown.bs.tab', function (e){
 			populate_mri_getdata();
 			// textarea_init_mri();
 			break;
+		case 'PRECONTRAST':
+			populate_preContrast_getdata();
+			break;
+		case 'CONSENT':
+			populate_consentForm_getdata();
+			break;
 	}
 });
 
@@ -2176,6 +2498,8 @@ $("#jqGridDoctorNote_panel").on("hide.bs.collapse", function (){
 	disableForm('#formMRI');
 	disableForm('#formPhysio');
 	disableForm('#formDressing');
+	disableForm('#formPreContrast');
+    disableForm('#formConsentForm');
 });
 
 // to reload date table on radio btn click
@@ -2472,6 +2796,40 @@ function textarea_init_dressing(){
 			this.style.height = (40) + 'px';
 		}
 	});
+}
+
+function textarea_init_preContrast(){
+    $('textarea#examination').each(function (){
+        if(this.value.trim() == ''){
+            this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }else{
+            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        }else{
+            this.style.height = (40) + 'px';
+        }
+    });
+}
+
+function textarea_init_consentForm(){
+    $('textarea#address').each(function (){
+        if(this.value.trim() == ''){
+            this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }else{
+            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        }else{
+            this.style.height = (40) + 'px';
+        }
+    });
 }
 
 $("#formOTBook input[name=req_type]").on('click', function (){

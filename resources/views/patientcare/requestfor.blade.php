@@ -201,6 +201,9 @@
             <div class="ui top attached tabular menu">
                 <a class="item active" data-tab="radClinicReqFor" id="navtab_radClinicReqFor">Radiology Form</a>
                 <a class="item" data-tab="mriReqFor" id="navtab_mriReqFor">Checklist MRI</a>
+                <a class="item" data-tab="preContrastReqFor" id="navtab_preContrastReqFor">Pre-Contrast Questionnaire</a>
+                <a class="item" data-tab="consentReqFor" id="navtab_consentReqFor">Consent Form</a>
+
             </div>
             
             <div class="ui bottom attached tab raised segment active" data-tab="radClinicReqFor">
@@ -895,6 +898,14 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="ui bottom attached tab raised segment" data-tab="preContrastReqFor">
+                @include('patientcare.preContrastReqFor')
+            </div>
+
+            <div class="ui bottom attached tab raised segment" data-tab="consentReqFor">
+                @include('patientcare.consentFormReqFor')
             </div>
         </div>
         

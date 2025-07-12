@@ -1435,7 +1435,6 @@ function saveForm_consentFormReqFor(callback){
     });
 }
 
-
 var ajaxurl;
 $('#jqGridRequestFor_panel').on('shown.bs.collapse', function (){
     SmoothScrollTo("#jqGridRequestFor_panel", 500);
