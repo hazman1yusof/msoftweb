@@ -227,6 +227,7 @@ class PointOfSalesController extends defaultController
             }else if($request->searchCol[0] == 'da_recptno'){
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where('da.recptno','like',$request->searchVal[0]);
+                        $table->orWhere('db.recptno','like',$request->searchVal[0]);
                 });
             }else{
                 $table = $table->Where(function ($table) use ($request){
