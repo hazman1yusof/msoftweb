@@ -81,9 +81,9 @@
                         
                         <div class="col-md-5" style="margin-top: 4px;">
                             <label class="control-label"></label>
-                            <input style="display:none" name="Stext" type="search" placeholder="Search Here ..." class="form-control text-uppercase" tabindex="2">
+                            <input name="Stext" type="search" placeholder="Search Here ..." class="form-control text-uppercase" tabindex="2">
                             
-                            <div id="customer_text">
+                            <div id="customer_text" style="display:none">
                                 <div class='input-group'>
                                     <input id="customer_search" name="customer_search" type="text" maxlength="12" class="form-control input-sm">
                                     <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -892,5 +892,5 @@
             }
         });
     </script>
-    <script src="js/finance/AR/cancellation/cancellation.js?v=1.2"></script>
+    <script src="js/finance/AR/cancellation/cancellation.js?v=1.3"></script>
 @endsection

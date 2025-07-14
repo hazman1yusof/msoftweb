@@ -782,7 +782,7 @@ $(document).ready(function () {
 			{ label: 'Audit No', name: 'db_auditno', width: 10, align: 'right', classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 8, formatter: padzero5, unformat: unpadzero, hidden: true },
-			{ label: 'Document No', name: 'db_recptno', width: 15, align: 'right' },
+			{ label: 'Document No', name: 'db_recptno', width: 15, align: 'right', canSearch: true,checked:true},
 			{ label: 'Date', name: 'db_entrydate', width: 12, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'Paymode', name: 'db_paymode', width: 20, classes: 'wrap text-uppercase', formatter: showdetail, unformat: un_showdetail },
 			{ label: 'Amount', name: 'db_amount', width: 10, classes: 'wrap', align: 'right', formatter: 'currency' },
@@ -1524,7 +1524,7 @@ $(document).ready(function () {
 	//////////////////////////////////////////////////end//////////////////////////////////////////////////
 	
 	/////////////////////////////handle searching, its radio button and toggle/////////////////////////////
-	populateSelect('#jqGrid_rc','#searchForm');
+	populateSelect2('#jqGrid_rc','#searchForm');
 	
 	//////////////////////////////add field into param, refresh grid if needed//////////////////////////////
 	addParamField('#jqGrid_rc', true, urlParam_rcpt);

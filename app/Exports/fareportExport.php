@@ -46,7 +46,7 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
             'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'L' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'M' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
@@ -67,7 +67,7 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
             'G' => 15,
             'H' => 15,
             'I' => 15,
-            'K' => 15,
+            'J' => 15,
             'K' => 15,
             'L' => 15,
             'M' => 15,
@@ -93,6 +93,7 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
                         $join = $join->where('fc.compcode', '=', session('compcode'))
                                      ->on('fc.assetcode', '=', 'fa.assetcode');
                     })
+                    ->where('fa.purdate', '<=', $datefrom)
                     ->where('fa.compcode', '=', session('compcode'));
 
         if($catfr == $catto){
@@ -105,18 +106,8 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
                                     ->get();
 
         foreach ($faregister as $obj) {
-
             $obj->purdate = Carbon::parse($obj->purdate)->format('d-m-Y');
             $obj->startdepdate = Carbon::parse($obj->startdepdate)->format('d-m-Y');
-
-            $obj->dispcost = 0.00;
-            if($obj->recstatus == 'DEACTIVE'){
-                if($obj->trantype == 'WOF' || $obj->trantype == 'DIS'){
-                    $obj->dispcost = $obj->origcost;
-                }
-            }
-
-            $obj->closecost = $obj->origcost - $obj->dispcost;
 
             $opendepr = DB::table('finance.fatran')
                             ->where('compcode',session('compcode'))
@@ -135,8 +126,35 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
 
             $obj->opendepr = $opendepr;
             $obj->adddepr = $adddepr;
+
+            $obj->dispcost = 0.00;
             $obj->dispdepr = 0.00;
-            $obj->closedepr = $opendepr + $adddepr - 0.00;
+
+            $fatran = DB::table('finance.fatran')
+                            ->where('compcode',session('compcode'))
+                            ->where('assetno',$obj->assetno)
+                            ->where('trantype',$obj->trantype)
+                            ->orderBy('idno','desc');
+
+            $obj->skip=0;
+            if($fatran->exists()){
+                $fatran = $fatran->first();
+                if(Carbon::parse($fatran->trandate)->lt(Carbon::parse($fdoydate))){
+                    $obj->skip=1;
+                }
+
+                if($obj->recstatus == 'DEACTIVE'){
+                    if($obj->trantype == 'WOF' || $obj->trantype == 'DIS'){
+                        if(Carbon::parse($fatran->trandate)->lte(Carbon::parse($fdoydate))){
+                            $obj->dispcost = $obj->origcost;
+                            $obj->dispdepr = $opendepr + $adddepr;
+                        }
+                    }
+                }
+            }
+
+            $obj->closecost = $obj->origcost - $obj->dispcost;
+            $obj->closedepr = $opendepr + $adddepr - $obj->dispdepr;
             $obj->nbvamt = $obj->closecost - $obj->closedepr;
         }
         

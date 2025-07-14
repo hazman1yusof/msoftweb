@@ -94,7 +94,6 @@ class CancellationController extends defaultController
                     'db.paytype AS db_paytype',
                     'db.tillcode AS db_tillcode',
                     'db.tillno AS db_tillno',
-                    'db.recptno AS db_recptno',
                     'db.paymode AS db_paymode',
                     'db.unallocated AS db_unallocated',
                 )
@@ -133,6 +132,10 @@ class CancellationController extends defaultController
             }else if($request->searchCol[0] == 'db_debtorcode'){
                 $table = $table->Where(function ($table) use ($request) {
                         $table->Where('db.debtorcode','like',$request->searchVal[0]);
+                });
+            }else if($request->searchCol[0] == 'db_recptno'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('db.recptno','like',$request->searchVal[0]);
                 });
             }else{
                 $table = $table->Where(function ($table) use ($request) {

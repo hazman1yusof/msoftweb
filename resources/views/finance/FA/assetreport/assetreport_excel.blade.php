@@ -79,14 +79,14 @@
                 @php($tot_nbvamt=$tot_nbvamt + $obj->nbvamt)
 
                 <tr>
-                    <td>{{$obj->itemcode}}</td>
+                    <td>{{$obj->assetno}}</td>
                     <td>{{$obj->description}}</td>
                     <td>{{$obj->purdate}}</td>
                     <td>{{$obj->purprice}}</td>
                     <td>{{$obj->startdepdate}}</td>
                     <td>{{$obj->deptcode}}</td>
 
-                    @if(\Carbon\Carbon::parse($obj->startdepdate)->lt(\Carbon\Carbon::parse($fdoydate)))
+                    @if(\Carbon\Carbon::parse($obj->purdate)->lt(\Carbon\Carbon::parse($fdoydate)))
                     @php($tot_opencost=$tot_opencost + $obj->origcost)
                     <td>{{$obj->origcost}}</td>
                     <td>0.00</td>

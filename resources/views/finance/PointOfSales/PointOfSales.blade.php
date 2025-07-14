@@ -42,12 +42,35 @@ div#fail_msg,div#fail_msg_r,div#fail_msg_r2{
 	width: 24.7% !important
 }
 
+table#jqGrid td{
+	position: relative;
+}
+
+.curr_td{
+	display: block;
+  color: darkgreen;
+  font-size: 11px;
+  position: absolute;
+  right: 12px;
+  bottom: 5px;
+}
+
+.orig_td{
+	display: block;
+  color: darkred;
+  font-size: 11px;
+  position: absolute;
+  right: 12px;
+  bottom: 5px;
+}
+
 #more {display: none;}
 
 @endsection
 
 @section('body')
 
+	<input id="session_compcode" session_compcode="deptcode" type="hidden" value="{{Session::get('compcode')}}">
 	<input id="deptcode" name="deptcode" type="hidden" value="{{Session::get('deptcode')}}">
 	<input id="reqdept" name="reqdept" type="hidden" value="{{Session::get('reqdept')}}">
 	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
@@ -76,9 +99,9 @@ div#fail_msg,div#fail_msg_r,div#fail_msg_r2{
 
 						  	<div class="col-md-5">
 						  		<label class="control-label"></label>
-								<input style="display: none;" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('auditno'))){{Request::get('auditno')}}@endif">
+								<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2" value="@if(!empty(Request::get('auditno'))){{Request::get('auditno')}}@endif">
 
-								<div id="customer_text">
+								<div id="customer_text" style="display: none;">
 									<div class='input-group'>
 										<input id="customer_search" name="customer_search" type="text" maxlength="12" class="form-control input-sm">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -1113,7 +1136,7 @@ div#fail_msg,div#fail_msg_r,div#fail_msg_r2{
 		</script>
 
 		<script src="js/myjs/till_part.js"></script>
-		<script src="js/finance/PointOfSales/PointOfSales.js?v=1.8"></script>
+		<script src="js/finance/PointOfSales/PointOfSales.js?v=1.9"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

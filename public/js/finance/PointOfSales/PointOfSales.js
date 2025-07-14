@@ -237,10 +237,11 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
-			{ label: 'Debtor Code', name: 'db_payercode', width: 35, canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Debtor Code', name: 'db_payercode', width: 24, canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Customer', name: 'dm_name', width: 40, canSearch: false, classes: 'wrap', hidden:true},
 			{ label: 'Document Date', name: 'db_entrydate', width: 12, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right', formatter: padzero, unformat: unpadzero,canSearch: true},
+			{ label: 'Receipt No.', name: 'da_recptno', width: 12, align: 'right',canSearch: true,checked:true},
 			{ label: 'Invoice No', name: 'db_invno', width: 10, align: 'right', canSearch: true, formatter: padzero, unformat: unpadzero },
 			// { label: 'Sector', name: 'db_unit', width: 15, canSearch: true, classes: 'wrap' },
 			// { label: 'Quotation No', name: 'db_quoteno', width: 10, align: 'right', formatter: padzero5, unformat: unpadzero },
@@ -385,6 +386,17 @@ $(document).ready(function () {
 			});
 		},
 		loadComplete:function(data){
+
+			let rowsdata = data.rows;
+
+			rowsdata.forEach(function(e,i){
+				if(e.db_compcode != $('#session_compcode').val()){
+					$('table#jqGrid tr#'+e.db_idno).addClass('history_tr');
+					$('table#jqGrid tr#'+e.db_idno+' td[aria-describedby=jqGrid_db_payercode]').append('<span class="orig_td">Original</span>');
+				}else{
+					$('table#jqGrid tr#'+e.db_idno+' td[aria-describedby=jqGrid_db_payercode]').append('<span class="curr_td">Current</span>');
+				}
+			});
 		},
 		beforeRequest: function(){
 			refreshGrid("#jqGrid2", urlParam, 'kosongkan');
@@ -457,7 +469,7 @@ $(document).ready(function () {
 	});
 
 	//////////handle searching, its radio button and toggle /////////////////////////////////////////////
-	populateSelect('#jqGrid', '#searchForm');
+	populateSelect2('#jqGrid', '#searchForm');
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid', false, urlParam,['Checkbox']);

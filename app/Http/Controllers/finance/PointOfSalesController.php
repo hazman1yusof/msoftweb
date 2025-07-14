@@ -143,9 +143,10 @@ class PointOfSalesController extends defaultController
     }
     
     public function maintable(Request $request){
-        
+
         $table = DB::table('debtor.dbacthdr AS db')
                 ->select(
+                    'db.compcode AS db_compcode',
                     'db.debtorcode AS db_debtorcode',
                     'db.payercode AS db_payercode',
                     'dm.name AS dm_name', 
@@ -185,12 +186,20 @@ class PointOfSalesController extends defaultController
                     'db.cancelled_remark AS db_cancelled_remark',
                     'db.approved_remark AS db_approved_remark',
                     'db.upddate AS db_upddate',
-                    'db.pointofsales AS db_pointofsales'
+                    'db.pointofsales AS db_pointofsales',
+                    'da.recptno AS da_recptno'
                 )
-                ->where('db.compcode',session('compcode'))
+                ->whereIn('db.compcode',[session('compcode'),'xx'])
                 ->where('db.source','PB')
                 ->where('db.trantype','IN')
                 ->where('db.pointofsales','1');
+
+        $table = $table->leftJoin('debtor.dballoc as da', function ($join) use ($request){
+                $join = $join->where('da.compcode', '=', session('compcode'));
+                $join = $join->on('da.refsource', '=', 'db.source');
+                $join = $join->on('da.reftrantype', '=', 'db.trantype');
+                $join = $join->on('da.refauditno', '=', 'db.auditno');
+        });
         
         $table = $table->join('debtor.debtormast as dm', function ($join) use ($request){
                 $join = $join->where('dm.compcode', '=', session('compcode'));
@@ -210,6 +219,14 @@ class PointOfSalesController extends defaultController
             if($request->searchCol[0] == 'db_invno'){
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where('db.invno','like',$request->searchVal[0]);
+                });
+            }else if($request->searchCol[0] == 'db_auditno'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('db.auditno','like',$request->searchVal[0]);
+                });
+            }else if($request->searchCol[0] == 'da_recptno'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('da.recptno','like',$request->searchVal[0]);
                 });
             }else{
                 $table = $table->Where(function ($table) use ($request){
