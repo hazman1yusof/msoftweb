@@ -37,6 +37,9 @@ $(document).ready(function () {
 			sortname:'assetcode',
 			sortorder:'asc',
 			ondblClickRow: function () {
+				let data=selrowData('#'+catfr_dialog.gridname);
+
+				$("#catto").val(data['assetcode']);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -54,6 +57,7 @@ $(document).ready(function () {
 				catfr_dialog.urlParam.filterVal=['ACTIVE','session.compcode'];//, 'session.unit'
 			},
 			close: function(obj_){
+				$("#catto").focus().select();
 			},
 			after_check: function(data,self,id,fail,errorField){
 				let value = $(id).val();

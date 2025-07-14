@@ -43,6 +43,7 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
     public function columnFormats(): array
     {
         return [
+            'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
@@ -93,7 +94,8 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
                         $join = $join->where('fc.compcode', '=', session('compcode'))
                                      ->on('fc.assetcode', '=', 'fa.assetcode');
                     })
-                    ->where('fa.purdate', '<=', $datefrom)
+                    ->where('fa.trandate', '<=', $datefrom)
+                    // ->where('fa.assetno', 'cm00115')
                     ->where('fa.compcode', '=', session('compcode'));
 
         if($catfr == $catto){
@@ -104,6 +106,8 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
             $faregister = $faregister
                                     ->orderBy('fa.assetcode', 'ASC')
                                     ->get();
+
+        // dd($faregister);
 
         foreach ($faregister as $obj) {
             $obj->purdate = Carbon::parse($obj->purdate)->format('d-m-Y');
@@ -139,13 +143,16 @@ class fareportExport implements FromView, WithEvents, WithColumnWidths, WithColu
             $obj->skip=0;
             if($fatran->exists()){
                 $fatran = $fatran->first();
+
+                // dd($fatran);
+
                 if(Carbon::parse($fatran->trandate)->lt(Carbon::parse($fdoydate))){
                     $obj->skip=1;
                 }
 
                 if($obj->recstatus == 'DEACTIVE'){
                     if($obj->trantype == 'WOF' || $obj->trantype == 'DIS'){
-                        if(Carbon::parse($fatran->trandate)->lte(Carbon::parse($fdoydate))){
+                        if(Carbon::parse($fatran->trandate)->lte(Carbon::parse($datefrom))){
                             $obj->dispcost = $obj->origcost;
                             $obj->dispdepr = $opendepr + $adddepr;
                         }
