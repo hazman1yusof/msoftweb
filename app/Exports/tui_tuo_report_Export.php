@@ -23,7 +23,7 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class tui_tuo_report_Export implements FromView, WithEvents, WithColumnWidths
+class tui_tuo_report_Export implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     
     /**
@@ -38,6 +38,14 @@ class tui_tuo_report_Export implements FromView, WithEvents, WithColumnWidths
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+        ];
     }
     
     public function columnWidths(): array
@@ -81,6 +89,7 @@ class tui_tuo_report_Export implements FromView, WithEvents, WithColumnWidths
                     ->where('iv_hd.compcode','=',session('compcode'))
                     // ->where('ap.unit',session('unit'))
                     ->where('iv_hd.recstatus', '=', 'POSTED')
+                    ->where('iv_hd.txndept', '=', session('deptcode'))
                     ->orWhere(function ($ivtmphd){
                         $ivtmphd
                             ->where('iv_hd.trantype', '=', 'TUI')
