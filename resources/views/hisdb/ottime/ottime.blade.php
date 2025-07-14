@@ -28,6 +28,14 @@
                                     <table class="ui very basic table" style="padding-top: 15px; padding-bottom: 15px;">
                                         <tbody>
                                             <tr>
+                                                <td>iPesakit</td>
+                                                <td>
+                                                    <div class="field five wide column">
+                                                        <input type="text" class="form-control" id="ottime_iPesakit" name="iPesakit">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td>DATE</td>
                                                 <td>
                                                     <div class="field five wide column">
