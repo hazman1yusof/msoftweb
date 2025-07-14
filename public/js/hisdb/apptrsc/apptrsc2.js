@@ -497,9 +497,14 @@ $(document).ready(function () {
 
 					var temp = $('#resourcecode').val();
 					var start = $(".fc-myCustomButton-button").data("start");
+					var diagnosis = $('#diagnosis').val();
+					var procedure = $('#procedure').val();
+					console.log(diagnosis+procedure);
 
 					$('#dialogForm #doctor').val(temp);
 					$('#apptdatefr_day').val(moment(start).format('YYYY-MM-DD'));
+					$('#diagnosis').text('');
+					$('#procedure').text('');
 					
 					$("#dialogForm").dialog("open");
             	}

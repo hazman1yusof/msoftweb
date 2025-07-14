@@ -331,7 +331,7 @@ function saveForm_neuroAssessment(callback){
 }
 
 function textarea_init_neuroAssessment(){
-    $('textarea#neuroAssessment_objective,textarea#neuroAssessment_impressionBC,textarea#neuroAssessment_impressionSens,textarea#neuroAssessment_impressionROM,textarea#neuroAssessment_impressionMAS,textarea#neuroAssessment_impressionDTR,textarea#neuroAssessment_impressionMP,textarea#neuroAssessment_impressionCoord,textarea#neuroAssessment_impressionFA,textarea#neuroAssessment_summary').each(function (){
+    $('textarea#neuroAssessment_objective,textarea#neuroAssessment_impressionBC,textarea#neuroAssessment_impressionSens,textarea#neuroAssessment_impressionROM,textarea#neuroAssessment_impressionMAS,textarea#neuroAssessment_impressionDTR,textarea#neuroAssessment_impressionSMP,textarea#neuroAssessment_impressionCoord,textarea#neuroAssessment_impressionFA,textarea#neuroAssessment_summary').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{

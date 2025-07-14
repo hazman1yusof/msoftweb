@@ -548,7 +548,7 @@
                         <div class="inline fields">
                             <label>Impression</label>
                             <div class="field">
-                                <textarea rows="6" cols="50" id="neuroAssessment_impressionMP" name="impressionMP"></textarea>
+                                <textarea rows="6" cols="50" id="neuroAssessment_impressionSMP" name="impressionSMP"></textarea>
                             </div>
                         </div>
                     </div>
