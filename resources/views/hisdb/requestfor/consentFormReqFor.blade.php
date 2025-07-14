@@ -1,31 +1,33 @@
- <form class='form-horizontal' style='width: 99%;' id='formConsentForm'>
+ <form class='form-horizontal' style='width: 99%;' id='formConsentFormReqFor'>
     <div class='col-md-12'>
         <div class="panel panel-default">
             <div class="panel-heading text-center" style="position: sticky; top: 0px; z-index: 3; height: 40px;">
                 <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-                    id="btn_grp_edit_consentForm" 
+                    id="btn_grp_edit_consentFormReqFor" 
                     style="position: absolute; 
                             padding: 0 0 0 0; 
                             right: 40px; 
                             top: 5px;">
-                    <button type="button" class="btn btn-default" id="new_consentForm">
+                    <button type="button" class="btn btn-default" id="new_consentFormReqFor">
                         <span class="fa fa-plus-square-o"></span> New 
                     </button>
-                    <button type="button" class="btn btn-default" id="edit_consentForm">
+                    <button type="button" class="btn btn-default" id="edit_consentFormReqFor">
                         <span class="fa fa-edit fa-lg"></span> Edit 
                     </button>
-                    <button type="button" class="btn btn-default" data-oper='add' id="save_consentForm">
+                    <button type="button" class="btn btn-default" data-oper='add' id="save_consentFormReqFor">
                         <span class="fa fa-save fa-lg"></span> Save 
                     </button>
-                    <button type="button" class="btn btn-default" id="cancel_consentForm">
+                    <button type="button" class="btn btn-default" id="cancel_consentFormReqFor">
                         <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel 
                     </button>
-                    <button type="button" class="btn btn-default" id="consentForm_chart">
+                    <button type="button" class="btn btn-default" id="consentFormReqFor_chart">
                         <span class="fa fa-print fa-lg"></span> Print 
                     </button>
                 </div>
             </div>
-                        
+            
+            <!-- <button class="btn btn-default btn-sm" type="button" id="consentFormReqFor_chart" style="float: right; margin: 10px 40px 10px 0px;">Print</button> -->
+            
             <div class="panel-body">
                 <div class='col-md-12'>
                     <div class="panel panel-info">

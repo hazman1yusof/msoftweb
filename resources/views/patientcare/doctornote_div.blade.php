@@ -590,6 +590,8 @@
                     <div class="ui top attached tabular menu">
                         <a class="item active" data-tab="radClinic">Radiology Form</a>
                         <a class="item" data-tab="mri">Checklist MRI</a>
+                        <a class="item" data-tab="preContrast">Pre-Contrast Questionnaire</a>
+                        <a class="item" data-tab="consent">Consent Form</a>
                     </div>
                     
                     <div class="ui bottom attached tab raised segment active" data-tab="radClinic">
@@ -1284,6 +1286,14 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="ui bottom attached tab raised segment" data-tab="preContrast">
+                        @include('patientcare.preContrast')
+                    </div>
+
+                    <div class="ui bottom attached tab raised segment" data-tab="consent">
+                        @include('patientcare.consentForm')
                     </div>
                 </div>
                 

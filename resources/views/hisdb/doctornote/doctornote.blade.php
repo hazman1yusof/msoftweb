@@ -661,6 +661,8 @@
                                 <ul class="nav nav-tabs" id="jqGridDoctorNote_rad_tabs">
                                     <li class="active"><a data-toggle="tab" id="navtab_radClinic" href="#tab-radClinic" aria-expanded="true" data-type='RADCLINIC'>Radiology Form</a></li>
                                     <li><a data-toggle="tab" id="navtab_mri" href="#tab-mri" data-type='MRI'>Checklist MRI</a></li>
+                                    <li><a data-toggle="tab" id="navtab_preContrast" href="#tab-preContrast" data-type='PRECONTRAST'>Pre-Contrast Questionnaire</a></li>
+                                    <li><a data-toggle="tab" id="navtab_consent" href="#tab-consent" data-type='CONSENT'>Consent Form</a></li>
                                 </ul>
                                 <div class="tab-content" style="padding: 10px 5px;">
                                     <div id="tab-radClinic" class="active in tab-pane fade">
@@ -1209,6 +1211,12 @@
                                                 </div>
                                             </div>
                                         </form>
+                                    </div>
+                                    <div id="tab-preContrast" class="tab-pane fade">
+                                        @include('hisdb.doctornote.preContrast')
+                                    </div>
+                                    <div id="tab-consent" class="tab-pane fade">
+                                        @include('hisdb.doctornote.consentForm')
                                     </div>
                                 </div>
                             </div>

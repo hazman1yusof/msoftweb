@@ -275,6 +275,86 @@ $(document).ready(function (){
 		button_state_dressing($(this).data('oper'));
 	});
 	////////////////////////////////////////////dressing ends////////////////////////////////////////////
+
+	///////////////////////////////////////////preContrast starts///////////////////////////////////////////
+    disableForm('#formPreContrast');
+    
+    $("#new_preContrast").click(function (){
+        $('#cancel_preContrast').data('oper','add');
+        button_state_preContrast('wait');
+        enableForm('#formPreContrast');
+        rdonly('#formPreContrast');
+        emptyFormdata_div("#formPreContrast",['#mrn_doctorNote','#episno_doctorNote']);
+    });
+    
+    $("#edit_preContrast").click(function (){
+        button_state_preContrast('wait');
+        enableForm('#formPreContrast');
+        rdonly('#formPreContrast');
+    });
+    
+    $("#save_preContrast").click(function (){
+        disableForm('#formPreContrast');
+        if($('#formPreContrast').isValid({requiredFields: ''}, conf, true)){
+            saveForm_preContrast(function (data){
+                // emptyFormdata_div("#formPreContrast",['#mrn_doctorNote','#episno_doctorNote']);
+                // disableForm('#formPreContrast');
+                $('#cancel_preContrast').data('oper','edit');
+                $("#cancel_preContrast").click();
+                populate_preContrast_getdata();
+            });
+        }else{
+            enableForm('#formPreContrast');
+            rdonly('#formPreContrast');
+        }
+    });
+    
+    $("#cancel_preContrast").click(function (){episno_doctorNote
+        // emptyFormdata_div("#formPreContrast",['#mrn_doctorNote','#episno_doctorNote']);
+        disableForm('#formPreContrast');
+        button_state_preContrast($(this).data('oper'));
+    });
+    ////////////////////////////////////////////preContrast ends////////////////////////////////////////////
+
+    ///////////////////////////////////////////consentForm starts///////////////////////////////////////////
+    disableForm('#formConsentForm');
+    
+    $("#new_consentForm").click(function (){
+        $('#cancel_consentForm').data('oper','add');
+        button_state_consentForm('wait');
+        enableForm('#formConsentForm');
+        rdonly('#formConsentForm');
+        emptyFormdata_div("#formConsentForm",['#mrn_doctorNote','#episno_doctorNote']);
+    });
+    
+    $("#edit_consentForm").click(function (){
+        button_state_consentForm('wait');
+        enableForm('#formConsentForm');
+        rdonly('#formConsentForm');
+    });
+    
+    $("#save_consentForm").click(function (){
+        disableForm('#formConsentForm');
+        if($('#formConsentForm').isValid({requiredFields: ''}, conf, true)){
+            saveForm_consentForm(function (data){
+                // emptyFormdata_div("#formConsentForm",['#mrn_doctorNote','#episno_doctorNote']);
+                // disableForm('#formConsentForm');
+                $('#cancel_consentForm').data('oper','edit');
+                $("#cancel_consentForm").click();
+                populate_consentForm_getdata();
+            });
+        }else{
+            enableForm('#formConsentForm');
+            rdonly('#formConsentForm');
+        }
+    });
+    
+    $("#cancel_consentForm").click(function (){
+        // emptyFormdata_div("#formConsentForm",['#mrn_doctorNote','#episno_doctorNote']);
+        disableForm('#formConsentForm');
+        button_state_consentForm($(this).data('oper'));
+    });
+    ////////////////////////////////////////////consentForm ends////////////////////////////////////////////
 	
 	/////////////////////////////////////////print button starts/////////////////////////////////////////
 	$("#otbook_chart").click(function (){
@@ -296,6 +376,14 @@ $(document).ready(function (){
 	$("#dressing_chart").click(function (){
 		window.open('./doctornote/dressing_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
 	});
+
+	$("#preContrast_chart").click(function (){
+        window.open('./doctornote/preContrast_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val()+'&age='+$("#age_doctorNote").val(), '_blank');
+    });
+
+    $("#consentForm_chart").click(function (){
+        window.open('./doctornote/consentForm_chart?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+    });
 	//////////////////////////////////////////print button ends//////////////////////////////////////////
 	
 	// to format number input to two decimal places (0.00)
@@ -539,6 +627,12 @@ $(document).ready(function (){
 				populate_mri_getdata();
 				// textarea_init_mri();
 				break;
+			case 'preContrast':
+                populate_preContrast_getdata();
+                break;
+            case 'consent':
+                populate_consentForm_getdata();
+                break;
 		}
 	}});
 	
@@ -570,7 +664,7 @@ function disableOtherFields(){
 	// 	return fieldsNotToBeDisabled.indexOf($(this).attr("name"))<0;
 	// }).prop("disabled", true);
 	
-	$('#remarks, #clinicnote, #pmh, #drugh, #allergyh, #socialh, #fmh, #followuptime, #followupdate, #examination, #diagfinal, #icdcode, #plan_, #height, #weight, #bp_sys1, #bp_dias2, #pulse, #temperature, #respiration').prop('disabled',true);
+	$('#remarks, #clinicnote, #pmh, #drugh, #allergyh, #socialh, #fmh, #followuptime, #followupdate, #examination, #diagfinal, #icdcode, #plan_, #height, #weight, #bp_sys1, #bp_dias2, #pulse, #temperature, #respiration,').prop('disabled',true);
 }
 
 // to enable fields when choose current
@@ -687,7 +781,7 @@ function button_state_otbook(state){
 		case 'empty':
 			$("#toggle_doctorNote").removeAttr('data-toggle');
 			$('#cancel_otbook').data('oper','add');
-			$('#new_otbook,#save_otbook,#cancel_otbook,#edit_otbook').attr('disabled',true);
+			$('#new_otbook,#save_otbook,#cancel_otbook,#edit_otbook,#otbook_chart').attr('disabled',true);
 			break;
 		case 'add':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
@@ -698,7 +792,7 @@ function button_state_otbook(state){
 		case 'edit':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$('#cancel_otbook').data('oper','edit');
-			$("#edit_otbook").attr('disabled',false);
+			$("#edit_otbook,#otbook_chart").attr('disabled',false);
 			$('#save_otbook,#cancel_otbook,#new_otbook').attr('disabled',true);
 			break;
 		case 'wait':
@@ -715,7 +809,7 @@ function button_state_radClinic(state){
 		case 'empty':
 			$("#toggle_doctorNote").removeAttr('data-toggle');
 			$('#cancel_radClinic').data('oper','add');
-			$('#new_radClinic,#save_radClinic,#cancel_radClinic,#edit_radClinic').attr('disabled',true);
+			$('#new_radClinic,#save_radClinic,#cancel_radClinic,#edit_radClinic,#radClinic_chart').attr('disabled',true);
 			break;
 		case 'add':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
@@ -726,7 +820,7 @@ function button_state_radClinic(state){
 		case 'edit':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$('#cancel_radClinic').data('oper','edit');
-			$("#edit_radClinic").attr('disabled',false);
+			$("#edit_radClinic,#radClinic_chart").attr('disabled',false);
 			$('#save_radClinic,#cancel_radClinic,#new_radClinic').attr('disabled',true);
 			break;
 		case 'wait':
@@ -743,7 +837,7 @@ function button_state_mri(state){
 		case 'empty':
 			$("#toggle_doctorNote").removeAttr('data-toggle');
 			$('#cancel_mri').data('oper','add');
-			$('#new_mri,#save_mri,#cancel_mri,#edit_mri,#accept_mri').attr('disabled',true);
+			$('#new_mri,#save_mri,#cancel_mri,#edit_mri,#accept_mri,#mri_chart').attr('disabled',true);
 			break;
 		case 'add':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
@@ -754,7 +848,7 @@ function button_state_mri(state){
 		case 'edit':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$('#cancel_mri').data('oper','edit');
-			$("#edit_mri,#accept_mri").attr('disabled',false);
+			$("#edit_mri,#accept_mri,#mri_chart").attr('disabled',false);
 			$('#save_mri,#cancel_mri,#new_mri').attr('disabled',true);
 			break;
 		case 'wait':
@@ -771,7 +865,7 @@ function button_state_physio(state){
 		case 'empty':
 			$("#toggle_doctorNote").removeAttr('data-toggle');
 			$('#cancel_physio').data('oper','add');
-			$('#new_physio,#save_physio,#cancel_physio,#edit_physio').attr('disabled',true);
+			$('#new_physio,#save_physio,#cancel_physio,#edit_physio,#physio_chart').attr('disabled',true);
 			break;
 		case 'add':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
@@ -782,7 +876,7 @@ function button_state_physio(state){
 		case 'edit':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$('#cancel_physio').data('oper','edit');
-			$("#edit_physio").attr('disabled',false);
+			$("#edit_physio,#physio_chart").attr('disabled',false);
 			$('#save_physio,#cancel_physio,#new_physio').attr('disabled',true);
 			break;
 		case 'wait':
@@ -799,7 +893,7 @@ function button_state_dressing(state){
 		case 'empty':
 			$("#toggle_doctorNote").removeAttr('data-toggle');
 			$('#cancel_dressing').data('oper','add');
-			$('#new_dressing,#save_dressing,#cancel_dressing,#edit_dressing').attr('disabled',true);
+			$('#new_dressing,#save_dressing,#cancel_dressing,#edit_dressing,#dressing_chart').attr('disabled',true);
 			break;
 		case 'add':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
@@ -810,7 +904,7 @@ function button_state_dressing(state){
 		case 'edit':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$('#cancel_dressing').data('oper','edit');
-			$("#edit_dressing").attr('disabled',false);
+			$("#edit_dressing,#dressing_chart").attr('disabled',false);
 			$('#save_dressing,#cancel_dressing,#new_dressing').attr('disabled',true);
 			break;
 		case 'wait':
@@ -819,6 +913,62 @@ function button_state_dressing(state){
 			$('#edit_dressing,#new_dressing').attr('disabled',true);
 			break;
 	}
+}
+
+button_state_preContrast('empty');
+function button_state_preContrast(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_doctorNote").removeAttr('data-toggle');
+            $('#cancel_preContrast').data('oper','add');
+            $('#new_preContrast,#save_preContrast,#cancel_preContrast,#edit_preContrast,#preContrast_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_doctorNote").attr('data-toggle','collapse');
+            $('#cancel_preContrast').data('oper','add');
+            $("#new_preContrast").attr('disabled',false);
+            $('#save_preContrast,#cancel_preContrast,#edit_preContrast').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_doctorNote").attr('data-toggle','collapse');
+            $('#cancel_preContrast').data('oper','edit');
+            $("#edit_preContrast,#preContrast_chart").attr('disabled',false);
+            $('#save_preContrast,#cancel_preContrast,#new_preContrast').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_doctorNote").attr('data-toggle','collapse');
+            $("#save_preContrast,#cancel_preContrast").attr('disabled',false);
+            $('#edit_preContrast,#new_preContrast').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_consentForm('empty');
+function button_state_consentForm(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_doctorNote").removeAttr('data-toggle');
+            $('#cancel_consentForm').data('oper','add');
+            $('#new_consentForm,#save_consentForm,#cancel_consentForm,#edit_consentForm,#consentForm_chart').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_doctorNote").attr('data-toggle','collapse');
+            $('#cancel_consentForm').data('oper','add');
+            $("#new_consentForm").attr('disabled',false);
+            $('#save_consentForm,#cancel_consentForm,#edit_consentForm').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_doctorNote").attr('data-toggle','collapse');
+            $('#cancel_consentForm').data('oper','edit');
+            $("#edit_consentForm,#consentForm_chart").attr('disabled',false);
+            $('#save_consentForm,#cancel_consentForm,#new_consentForm').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_doctorNote").attr('data-toggle','collapse');
+            $("#save_consentForm,#cancel_consentForm").attr('disabled',false);
+            $('#edit_consentForm,#new_consentForm').attr('disabled',true);
+            break;
+    }
 }
 
 function empty_currDoctorNote(){
@@ -1254,31 +1404,64 @@ function populate_dressing_getdata(){
 	});
 }
 
-function populate_admhandover_getdata(){
-	emptyFormdata(errorField,"#formAdmhandover",["#mrn_doctorNote","#episno_doctorNote"]);
-	
-	var saveParam = {
-		action: 'get_table_admhandover',
-	}
-	
-	var postobj = {
-		_token: $('#_token').val(),
-		mrn: $("#mrn_doctorNote").val(),
-		episno: $("#episno_doctorNote").val()
-	};
-	
-	$.get("./ptcare_admhandover/table?"+$.param(saveParam), $.param(postobj), function (data){
-		
-	},'json').done(function (data){
-		if(!$.isEmptyObject(data)){
-			autoinsert_rowdata("#formAdmhandover",data.admhandover);
-			autoinsert_rowdata("#formAdmhandover",data.episode);
-			autoinsert_rowdata("#formAdmhandover",data.nurshistory);
-			autoinsert_rowdata("#formAdmhandover",data.pathealth);
+function populate_preContrast_getdata(){
+    disableForm('#formPreContrast');
+    emptyFormdata(errorField,"#formPreContrast",["#mrn_doctorNote","#episno_doctorNote"]);
+    
+    var saveParam = {
+        action: 'get_table_preContrast',
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        mrn: $("#mrn_doctorNote").val(),
+        episno: $("#episno_doctorNote").val()
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
 
-		}else{
-		}
-	});
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data)){
+            autoinsert_rowdata("#formPreContrast",data.pat_preContrast);
+            
+            button_state_preContrast('edit');
+        }else{
+            button_state_preContrast('add');
+        }
+        
+        textarea_init_preContrast();
+
+    });
+}
+
+function populate_consentForm_getdata(){
+    disableForm('#formConsentForm');
+    emptyFormdata(errorField,"#formConsentForm",["#mrn_doctorNote","#episno_doctorNote"]);
+    
+    var saveParam = {
+        action: 'get_table_consentForm',
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        mrn: $("#mrn_doctorNote").val(),
+        episno: $("#episno_doctorNote").val()
+    };
+    
+    $.get("./ptcare_requestfor/table?"+$.param(saveParam), $.param(postobj), function (data){
+
+    },'json').done(function (data){
+        if(!$.isEmptyObject(data)){
+            autoinsert_rowdata("#formConsentForm",data.pat_consentForm);
+            
+            button_state_consentForm('edit');
+        }else{
+            button_state_consentForm('add');
+        }
+        $("#patientName").val($('#ptname_doctorNote').val());
+        textarea_init_consentForm();
+
+    });
 }
 
 function on_toggling_curr_past(obj = curr_obj){
@@ -1876,6 +2059,112 @@ function saveForm_dressing(callback){
 	});
 }
 
+function saveForm_preContrast(callback){
+    var saveParam = {
+        action: 'save_preContrast',
+        oper: $("#cancel_preContrast").data('oper'),
+        mrn: $('#mrn_doctorNote').val(),
+        episno: $("#episno_doctorNote").val(),
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formPreContrast").serializeArray();
+    
+    values = values.concat(
+        $('#formPreContrast input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formPreContrast input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formPreContrast input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formPreContrast select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        callback(data);
+    });
+}
+
+function saveForm_consentForm(callback){
+    var saveParam = {
+        action: 'save_consentForm',
+        oper: $("#cancel_consentForm").data('oper'),
+        mrn: $('#mrn_doctorNote').val(),
+        episno: $("#episno_doctorNote").val(),
+    }
+    
+    var postobj = {
+        _token: $('#csrf_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
+    };
+    
+    values = $("#formConsentForm").serializeArray();
+    
+    values = values.concat(
+        $('#formConsentForm input[type=checkbox]:not(:checked)').map(
+        function (){
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formConsentForm input[type=checkbox]:checked').map(
+        function (){
+            return {"name": this.name, "value": 1}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formConsentForm input[type=radio]:checked').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    values = values.concat(
+        $('#formConsentForm select').map(
+        function (){
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+    
+    $.post("./ptcare_requestfor/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+        
+    },'json').done(function (data){
+        callback(data);
+    }).fail(function (data){
+        callback(data);
+    });
+}
+
 var docnote_date_tbl = $('#docnote_date_tbl').DataTable({
 	"ajax": "",
 	"sDom": "",
@@ -1921,7 +2210,8 @@ $('#tab_doctornote').on('shown.bs.collapse', function (){
 	populate_mri_getdata();
 	populate_physio_getdata();
 	populate_dressing_getdata();
-	populate_admhandover_getdata();
+	populate_preContrast_getdata();
+    populate_consentForm_getdata();
 });
 
 $('#tab_doctornote').on('hide.bs.collapse', function (){
@@ -1931,8 +2221,8 @@ $('#tab_doctornote').on('hide.bs.collapse', function (){
 	disableForm('#formMRI');
 	disableForm('#formPhysio');
 	disableForm('#formDressing');
-	disableForm('#formAdmhandover');
-
+	disableForm('#formPreContrast');
+    disableForm('#formConsentForm');
 });
 
 // to reload date table on radio btn click
@@ -2093,6 +2383,40 @@ function textarea_init_dressing(){
 			this.style.height = (40) + 'px';
 		}
 	});
+}
+
+function textarea_init_preContrast(){
+    $('textarea#examination').each(function (){
+        if(this.value.trim() == ''){
+            this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }else{
+            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        }else{
+            this.style.height = (40) + 'px';
+        }
+    });
+}
+
+function textarea_init_consentForm(){
+    $('textarea#address').each(function (){
+        if(this.value.trim() == ''){
+            this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }else{
+            this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+        }
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        }else{
+            this.style.height = (40) + 'px';
+        }
+    });
 }
 
 $("#formOTBook input[name=req_type]").on('click', function (){

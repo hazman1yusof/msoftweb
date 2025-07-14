@@ -5,7 +5,7 @@ var editedRow = 0;
 
 $(document).ready(function (){
     
-    // textare_init_ottime();
+    // textarea_init_ottime();
     
     var fdl = new faster_detail_load();
     
@@ -269,7 +269,7 @@ function saveForm_ottime(callback){
     });
 }
 
-function textare_init_ottime(){
+function textarea_init_ottime(){
     $('textarea#hlthcareAsst,textarea#otCleanedBy,textarea#remarks,textarea#vendor,textarea#type_anaesth,textarea#anaesth,textarea#diagnosis,textarea#procedure').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
@@ -315,14 +315,15 @@ function getdata_ottime(){
     },'json').fail(function (data){
         alert('there is an error');
     }).done(function (data){
-        if(!$.isEmptyObject(data)){
+        if(!$.isEmptyObject(data.ottime)){
             button_state_ottime('edit');
             autoinsert_rowdata("#form_ottime",data.ottime);
-            // textare_init_ottime();
         }else{
             button_state_ottime('add');
-            // textare_init_ottime();
         }
+        
+        if(!emptyobj_(data.iPesakit))$("#ottime_iPesakit").val(data.iPesakit);
+        // textarea_init_ottime();
     });
 }
 

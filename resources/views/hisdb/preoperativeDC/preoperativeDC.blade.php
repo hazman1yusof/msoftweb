@@ -24,7 +24,15 @@
                         <div class="ui secondary segment">PRE OPERATIVE CHECKLIST (DAYCARE)</div>
                         <div class="ui segment">
                             <div class="ui grid">
-
+                                <div class="sixteen wide column">
+                                    <div class="ui segment">
+                                        <div class="inline fields">
+                                            <label>iPesakit</label>
+                                            <div class="field"><input type="text" class="form-control" id="preopDC_iPesakit" name="iPesakit"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                                 <div class="sixteen wide column">
                                     <div class="ui segments">
                                         <div class="ui segment">

@@ -294,7 +294,11 @@
                                 [
                                     { text: 'c)' },
                                     { text: 'LMP (in female of reproductive age group)'},
-                                    { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$preContrast->LMP)->format('d-m-Y')}}', colSpan: 2},{},
+                                    @if(!empty($preContrast->LMP))
+                                        { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$preContrast->LMP)->format('d-m-Y')}}', colSpan: 2},{},
+                                    @else
+                                        { text: '-', colSpan: 2, alignment: 'center'},{},
+                                    @endif
                                 ],
                                 [
                                     { text: 'd)' },

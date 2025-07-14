@@ -1,7 +1,7 @@
 <div class="ui grid">
     <div class="sixteen wide column">
         <div class="ui grid">
-            <input id="phy_perkeso" name="perkeso" value="1" type="hidden">
+            <input id="phy_type" name="type" value="perkeso" type="hidden">
             
             <div class="sixteen wide column">
                 <table class="ui celled table">

@@ -67,7 +67,8 @@ class NeuroAssessmentController extends defaultController
                                 ->where('compcode','=',session('compcode'))
                                 ->where('mrn','=',$request->mrn)
                                 ->where('episno','=',$request->episno)
-                                ->where('entereddate','=',$request->entereddate);
+                                ->where('entereddate','=',$request->entereddate)
+                                ->where('type','=','neurological');
             
             if($neuroassessment->exists()){
                 // throw new \Exception('Date already exist.', 500);
@@ -79,6 +80,7 @@ class NeuroAssessmentController extends defaultController
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
+                    'type' => $request->type,
                     'entereddate' => $request->entereddate,
                     'objective' => $request->objective,
                     'painscore' => $request->painscore,
@@ -162,6 +164,7 @@ class NeuroAssessmentController extends defaultController
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
+                    'type' => $request->type,
                     'entereddate' => $request->entereddate,
                     'romAffectedSide' => $request->romAffectedSide,
                     'aShlderFlxInitP' => $request->aShlderFlxInitP,
@@ -332,6 +335,7 @@ class NeuroAssessmentController extends defaultController
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
+                    'type' => $request->type,
                     'entereddate' => $request->entereddate,
                     'romSoundSide' => $request->romSoundSide,
                     'sShlderFlxInitP' => $request->sShlderFlxInitP,
@@ -503,6 +507,7 @@ class NeuroAssessmentController extends defaultController
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
+                    'type' => $request->type,
                     'entereddate' => $request->entereddate,
                     'affectedSide' => $request->affectedSide,
                     'aShlderFlxInit' => $request->aShlderFlxInit,
@@ -624,7 +629,8 @@ class NeuroAssessmentController extends defaultController
                                 ->where('compcode','=',session('compcode'))
                                 ->where('mrn','=',$request->mrn)
                                 ->where('episno','=',$request->episno)
-                                ->where('entereddate','=',$request->entereddate);
+                                ->where('entereddate','=',$request->entereddate)
+                                ->where('type','=','neurological');
             
             if(!empty($request->idno_neuroAssessment)){
                 if($neuroassessment->exists()){
@@ -1778,23 +1784,26 @@ class NeuroAssessmentController extends defaultController
                                     $join = $join->on('a.episno','=','n.episno');
                                     $join = $join->on('a.compcode','=','n.compcode');
                                     $join = $join->on('a.entereddate','=','n.entereddate');
+                                    $join = $join->where('a.type','=','neurological');
                                 })
                                 ->join('hisdb.phy_romsoundside as s', function ($join) use ($request){
                                     $join = $join->on('s.mrn','=','n.mrn');
                                     $join = $join->on('s.episno','=','n.episno');
                                     $join = $join->on('s.compcode','=','n.compcode');
                                     $join = $join->on('s.entereddate','=','n.entereddate');
+                                    $join = $join->where('s.type','=','neurological');
                                 })
                                 ->join('hisdb.phy_musclepower as m', function ($join) use ($request){
                                     $join = $join->on('m.mrn','=','n.mrn');
                                     $join = $join->on('m.episno','=','n.episno');
                                     $join = $join->on('m.compcode','=','n.compcode');
                                     $join = $join->on('m.entereddate','=','n.entereddate');
+                                    $join = $join->where('m.type','=','neurological');
                                 })
                                 ->where('n.compcode','=',session('compcode'))
                                 ->where('n.mrn','=',$request->mrn)
                                 ->where('n.episno','=',$request->episno)
-                                ->where('n.perkeso','=',null);
+                                ->where('n.type','=','neurological');
         
         if($neuroassessment_obj->exists()){
             $neuroassessment_obj = $neuroassessment_obj->get();

@@ -801,10 +801,10 @@
                                         </form>
                                     </div>
                                     <div id="tab-preContrastReqFor" class="tab-pane fade">
-                                        @include('hisdb.requestfor.preContrast')
+                                        @include('hisdb.requestfor.preContrastReqFor')
                                     </div>
                                     <div id="tab-consentReqFor" class="tab-pane fade">
-                                        @include('hisdb.requestfor.consentForm')
+                                        @include('hisdb.requestfor.consentFormReqFor')
                                     </div>
                                 </div>
                             </div>

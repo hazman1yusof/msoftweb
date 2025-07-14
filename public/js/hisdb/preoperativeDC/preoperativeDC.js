@@ -1,33 +1,33 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
-var editedRow=0;
+var editedRow = 0;
 
-$(document).ready(function () {
-
-    textare_init_preoperativeDC();
+$(document).ready(function (){
+    
+    textarea_init_preoperativeDC();
     
     var fdl = new faster_detail_load();
     
     disableForm('#form_preoperativeDC');
     
-    $("#new_preoperativeDC").click(function(){
+    $("#new_preoperativeDC").click(function (){
         $('#cancel_preoperativeDC').data('oper','add');
         button_state_preoperativeDC('wait');
         enableForm('#form_preoperativeDC');
         rdonly('#form_preoperativeDC');
-        // emptyFormdata_div("#form_preoperativeDC",['#mrn_preoperativeDC','#episno_preoperativeDC']);        
+        // emptyFormdata_div("#form_preoperativeDC",['#mrn_preoperativeDC','#episno_preoperativeDC']);
     });
     
-    $("#edit_preoperativeDC").click(function(){
+    $("#edit_preoperativeDC").click(function (){
         button_state_preoperativeDC('wait');
         enableForm('#form_preoperativeDC');
-        rdonly('#form_preoperativeDC');        
+        rdonly('#form_preoperativeDC');
     });
     
-    $("#save_preoperativeDC").click(function(){
-        if( $('#form_preoperativeDC').isValid({requiredFields: ''}, conf, true) ) {
-            saveForm_preoperativeDC(function(data){
+    $("#save_preoperativeDC").click(function (){
+        if($('#form_preoperativeDC').isValid({requiredFields: ''}, conf, true)){
+            saveForm_preoperativeDC(function (data){
                 // emptyFormdata_div("#form_preoperativeDC",['#mrn_preoperativeDC','#episno_preoperativeDC']);
                 disableForm('#form_preoperativeDC');
             });
@@ -35,37 +35,36 @@ $(document).ready(function () {
             enableForm('#form_preoperativeDC');
             rdonly('#form_preoperativeDC');
         }
-        
     });
     
-    $("#cancel_preoperativeDC").click(function(){
+    $("#cancel_preoperativeDC").click(function (){
         // emptyFormdata_div("#form_preoperativeDC",['#mrn_preoperativeDC','#episno_preoperativeDC']);
         disableForm('#form_preoperativeDC');
         button_state_preoperativeDC($(this).data('oper'));
-        getdata_preoperativeDC();        
+        getdata_preoperativeDC();
     });
     
     // to format number input to two decimal places (0.00)
-    $(".floatNumberField").change(function() {
+    $(".floatNumberField").change(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
     });
     
     // to limit to two decimal places (onkeypress)
-    $(document).on('keydown', 'input[pattern]', function(e){
+    $(document).on('keydown', 'input[pattern]', function (e){
         var input = $(this);
         var oldVal = input.val();
         var regex = new RegExp(input.attr('pattern'), 'g');
         
-        setTimeout(function(){
+        setTimeout(function (){
             var newVal = input.val();
             if(!regex.test(newVal)){
                 input.val(oldVal);
             }
         }, 0);
     });
-
+    
     // to calculate hours utilized
-    $("#fasted_time_from,#fasted_time_until").on('change',function() {
+    $("#fasted_time_from,#fasted_time_until").on('change',function (){
         var startTime = moment($('#fasted_time_from').val(),'hh:mm:ss');
         var endTime = moment($('#fasted_time_until').val(),'hh:mm:ss');
         
@@ -77,12 +76,12 @@ $(document).ready(function () {
 
 var errorField = [];
 conf = {
-    modules : 'logic',
+    modules: 'logic',
     language: {
         requiredFields: 'You have not answered all required fields'
     },
-    onValidate: function ($form) {
-        if (errorField.length > 0) {
+    onValidate: function ($form){
+        if(errorField.length > 0){
             return {
                 element: $(errorField[0]),
                 message: ''
@@ -185,12 +184,12 @@ function populate_preoperativeDC(obj){
 }
 
 function autoinsert_rowdata(form,rowData){
-    $.each(rowData, function( index, value ) {
-        var input=$(form+" [name='"+index+"']");
+    $.each(rowData, function (index, value){
+        var input = $(form+" [name='"+index+"']");
         if(input.is("[type=radio]")){
             $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
         }else if(input.is("[type=checkbox]")){
-            if(value==1){
+            if(value == 1){
                 $(form+" [name='"+index+"']").prop('checked', true);
             }
         }else if(input.is("textarea")){
@@ -206,9 +205,9 @@ function autoinsert_rowdata(form,rowData){
 
 function saveForm_preoperativeDC(callback){
     let oper = $("#cancel_preoperativeDC").data('oper');
-    var saveParam={
-        action:'save_table_preoperativeDC',
-        oper:oper,
+    var saveParam = {
+        action: 'save_table_preoperativeDC',
+        oper: oper,
     }
     
     if(oper == 'add'){
@@ -217,62 +216,62 @@ function saveForm_preoperativeDC(callback){
         saveParam.sel_date = $('#sel_date').val();
     }
     
-    var postobj={
-        _token : $('#_token').val(),
-        // sex_edit : $('#sex_edit').val(),
-        // idtype_edit : $('#idtype_edit').val()
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
     };
     
     values = $("#form_preoperativeDC").serializeArray();
     
     values = values.concat(
         $('#form_preoperativeDC input[type=checkbox]:not(:checked)').map(
-        function() {
+        function (){
             return {"name": this.name, "value": 0}
         }).get()
     );
     
     values = values.concat(
         $('#form_preoperativeDC input[type=checkbox]:checked').map(
-        function() {
+        function (){
             return {"name": this.name, "value": 1}
         }).get()
     );
     
     values = values.concat(
         $('#form_preoperativeDC input[type=radio]:checked').map(
-        function() {
+        function (){
             return {"name": this.name, "value": this.value}
         }).get()
     );
     
     values = values.concat(
         $('#form_preoperativeDC select').map(
-        function() {
+        function (){
             return {"name": this.name, "value": this.value}
         }).get()
     );
     
-    $.post( "./preoperativeDC/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post("./preoperativeDC/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
-    },'json').done(function(data) {
+    },'json').done(function (data){
         callback(data);
         button_state_preoperativeDC('edit');
-    }).fail(function(data){
+    }).fail(function (data){
         callback(data);
         button_state_preoperativeDC($(this).data('oper'));
     });
 }
 
-function textare_init_preoperativeDC(){
-    $('textarea#idBracelet_remarks,textarea#operSite_remarks,textarea#fasted_remarks,textarea#consentValid_remarks,textarea#consentAnaest_remarks,textarea#otGown_remarks,textarea#shaving_remarks,textarea#bowelPrep_remarks,textarea#bladder_remarks,textarea#dentures_remarks,textarea#lensImpSpec_remarks,textarea#nailVarnish_remarks,textarea#hairClips_remarks,textarea#valuables_remarks,textarea#ivFluids_remarks,textarea#premedGiven_remarks,textarea#medChart_remarks,textarea#caseNote_remarks,textarea#oldNotes_remarks,textarea#ptBelongings_remarks,textarea#allergies_remarks,textarea#medLegalCase_remarks,textarea#checkedBy_remarks,textarea#checkedDate_remarks,textarea#bloodTest_remarks,textarea#grpCrossMatch_remarks,textarea#ecg_remarks,textarea#xray_remarks,textarea#ctg_remarks,textarea#others_remarks,textarea#completedBy_remarks').each(function () {
+function textarea_init_preoperativeDC(){
+    $('textarea#idBracelet_remarks,textarea#operSite_remarks,textarea#fasted_remarks,textarea#consentValid_remarks,textarea#consentAnaest_remarks,textarea#otGown_remarks,textarea#shaving_remarks,textarea#bowelPrep_remarks,textarea#bladder_remarks,textarea#dentures_remarks,textarea#lensImpSpec_remarks,textarea#nailVarnish_remarks,textarea#hairClips_remarks,textarea#valuables_remarks,textarea#ivFluids_remarks,textarea#premedGiven_remarks,textarea#medChart_remarks,textarea#caseNote_remarks,textarea#oldNotes_remarks,textarea#ptBelongings_remarks,textarea#allergies_remarks,textarea#medLegalCase_remarks,textarea#checkedBy_remarks,textarea#checkedDate_remarks,textarea#bloodTest_remarks,textarea#grpCrossMatch_remarks,textarea#ecg_remarks,textarea#xray_remarks,textarea#ctg_remarks,textarea#others_remarks,textarea#completedBy_remarks').each(function (){
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
             this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }
-    }).off().on('input', function () {
-        if(this.scrollHeight>40){
+    }).off().on('input', function (){
+        if(this.scrollHeight > 40){
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + 'px';
         }else{
@@ -281,7 +280,7 @@ function textare_init_preoperativeDC(){
     });
 }
 
-$('#tab_preoperativeDC').on('shown.bs.collapse', function () {
+$('#tab_preoperativeDC').on('shown.bs.collapse', function (){
     SmoothScrollTo('#tab_preoperativeDC', 300,114);
     
     if($('#mrn_preoperativeDC').val() != ''){
@@ -289,36 +288,37 @@ $('#tab_preoperativeDC').on('shown.bs.collapse', function () {
     }
 });
 
-$('#tab_preoperativeDC').on('hide.bs.collapse', function () {
+$('#tab_preoperativeDC').on('hide.bs.collapse', function (){
     emptyFormdata_div("#form_preoperativeDC",['#mrn_preoperativeDC','#episno_preoperativeDC']);
     button_state_preoperativeDC('empty');
 });
 
 function getdata_preoperativeDC(){
-    var urlparam={
-        action:'get_table_preoperativeDC',
+    var urlparam = {
+        action: 'get_table_preoperativeDC',
     }
     
-    var postobj={
-        _token : $('#_token').val(),
-        mrn:$('#mrn_preoperativeDC').val(),
-        episno:$("#episno_preoperativeDC").val()
+    var postobj = {
+        _token: $('#_token').val(),
+        mrn: $('#mrn_preoperativeDC').val(),
+        episno: $("#episno_preoperativeDC").val()
     };
     
-    $.post( "./preoperativeDC/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+    $.post("./preoperativeDC/form?"+$.param(urlparam), $.param(postobj), function (data){
         
-    },'json').fail(function(data) {
+    },'json').fail(function (data){
         alert('there is an error');
-    }).done(function(data){
-        if(!$.isEmptyObject(data)){
+    }).done(function (data){
+        if(!$.isEmptyObject(data.preopdc)){
             button_state_preoperativeDC('edit');
             // autoinsert_rowdata("#form_preoperativeDC",data.otmanage);
             autoinsert_rowdata("#form_preoperativeDC",data.preopdc);
-            textare_init_preoperativeDC();
         }else{
             button_state_preoperativeDC('add');
-            textare_init_preoperativeDC();
         }
+        
+        if(!emptyobj_(data.iPesakit))$("#preopDC_iPesakit").val(data.iPesakit);
+        textarea_init_preoperativeDC();
     });
 }
 
