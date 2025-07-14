@@ -443,12 +443,12 @@
     <!-- <script type="text/javascript" src="{{ asset('patientcare/js/doctornote_main.js') }}"></script> -->
     <script type="text/javascript" src="js/myjs/utility.js"></script>
     <script type="text/javascript" src="js/hisdb/otmanagement/otmanagement_main.js"></script>
-    <script type="text/javascript" src="js/hisdb/otmanagement/otmanagement_div.js?v=1.1"></script>
+    <script type="text/javascript" src="js/hisdb/otmanagement/otmanagement_div.js?v=1.2"></script>
     <script type="text/javascript" src="js/hisdb/preoperative/preoperative.js?v=1.1"></script>
-    <script type="text/javascript" src="js/hisdb/preoperativeDC/preoperativeDC.js?v=1.1"></script>
+    <script type="text/javascript" src="js/hisdb/preoperativeDC/preoperativeDC.js?v=1.2"></script>
     <script type="text/javascript" src="js/hisdb/oper_team/oper_team.js?v=1.1"></script>
     <script type="text/javascript" src="js/hisdb/otswab/otswab.js?v=1.1"></script>
-    <script type="text/javascript" src="js/hisdb/ottime/ottime.js?v=1.1"></script>
+    <script type="text/javascript" src="js/hisdb/ottime/ottime.js?v=1.2"></script>
     <script type="text/javascript" src="js/hisdb/otdischarge/otdischarge.js?v=1.1"></script>
     <script type="text/javascript" src="js/hisdb/endoscopyNotes/endoscopyStomach.js"></script>
     <script type="text/javascript" src="js/hisdb/endoscopyNotes/endoscopyIntestine.js"></script>
