@@ -191,7 +191,7 @@ class PointOfSalesController extends defaultController
                 )
                 ->whereIn('db.compcode',[session('compcode'),'xx'])
                 ->where('db.source','PB')
-                ->where('db.trantype','IN')
+                ->whereIn('db.trantype',['IN','RC','RD'])
                 ->where('db.pointofsales','1');
 
         $table = $table->leftJoin('debtor.dballoc as da', function ($join) use ($request){

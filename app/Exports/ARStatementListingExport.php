@@ -37,6 +37,34 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         $this->dateto = $dateto;
         $this->dbacthdr_len = 0;
         $this->break_loop = [];
+
+        $this->groupOne = 30;
+        $this->groupTwo = 60;
+        $this->groupThree = 90;
+        $this->groupFour = 120;
+        // $this->groupFive = $groupFive;
+        // $this->groupSix = $groupSix;
+
+        $this->grouping = [];
+        $this->grouping[0] = 0;
+        if(!empty($this->groupOne)){
+            $this->grouping[1] = $this->groupOne;
+        }
+        if(!empty($this->groupTwo)){
+            $this->grouping[2] = $this->groupTwo;
+        }
+        if(!empty($this->groupThree)){
+            $this->grouping[3] = $this->groupThree;
+        }
+        if(!empty($this->groupFour)){
+            $this->grouping[4] = $this->groupFour;
+        }
+        // if(!empty($this->groupFive)){
+        //     $this->grouping[5] = $this->groupFive;
+        // }
+        // if(!empty($this->groupSix)){
+        //     $this->grouping[6] = $this->groupSix;
+        // }
         
         $this->comp = DB::table('sysdb.company')
                     ->where('compcode', '=' ,session('compcode'))
@@ -76,6 +104,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
             $debtorcode_from = '%';
         }
         $debtorcode_to = $this->debtorcode_to;
+        $grouping = $this->grouping;
         
         $debtormast = DB::table('debtor.debtormast as dm')
                         ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.reference as real_reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'pm.Name as pm_name','dm.debtortype','dm.name','dm.address1','dm.address2','dm.address3','dm.address4','dm.creditterm','dm.creditlimit','dh.datesend')
@@ -117,13 +146,13 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
             $hdr_amount = $value->amount;
             
             // to calculate interval (days)
-            // $datetime1 = new DateTime($date);
-            // $datetime2 = new DateTime($value->posteddate);
+            $datetime1 = new DateTime($date);
+            $datetime2 = new DateTime($value->posteddate);
             
-            // $interval = $datetime1->diff($datetime2);
-            // $days = $interval->format('%a');
-            // $value->group = $this->assign_grouping($grouping,$days);
-            // $value->days = $days;
+            $interval = $datetime1->diff($datetime2);
+            $days = $interval->format('%a');
+            $value->group = $this->assign_grouping($grouping,$days);
+            $value->days = $days;
             
             if($value->trantype == 'IN' || $value->trantype =='DN') {
                 $alloc_sum = DB::table('debtor.dballoc as da')
@@ -173,6 +202,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     }
                     $value->doc_no = $value->trantype.'/'.str_pad($value->invno, 5, "0", STR_PAD_LEFT);
                     $value->amount_dr = $newamt;
+                    $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
                     }
@@ -181,6 +211,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     $value->reference = $value->reference;
                     $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
                     $value->amount_dr = $newamt;
+                    $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
                     }
@@ -189,6 +220,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     // $value->remark
                     $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
                     $value->amount_dr = $newamt;
+                    $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
                     }
@@ -202,6 +234,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     }
                     $value->doc_no = $value->recptno;
                     $value->amount_dr = $newamt;
+                    $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
                     }
@@ -210,6 +243,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     $value->remark = $value->remark;
                     $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
                     $value->amount_cr = $newamt;
+                    $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
                     }
@@ -219,6 +253,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     $value->doc_no = $value->recptno;
                     $value->reference = $value->recptno;
                     $value->amount_cr = $newamt;
+                    $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
                     }
@@ -228,6 +263,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     $value->doc_no = $value->recptno;
                     $value->reference = $value->recptno;
                     $value->amount_cr = $newamt;
+                    $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
                     }
@@ -236,6 +272,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     // $value->remark
                     $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
                     $value->amount_cr = $newamt;
+                    $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
                         array_push($array_report, $value);
                     }
@@ -266,7 +303,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('debtormast','array_report','title','company','date_asof','datenow'));
+        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('debtormast','array_report','grouping','title','company','date_asof','datenow'));
     }
     
     public function registerEvents(): array
@@ -338,6 +375,18 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
     public function getQueries($builder){
         $addSlashes = str_replace('?', "'?'", $builder->toSql());
         return vsprintf(str_replace('?', '%s', $addSlashes), $builder->getBindings());
+    }
+
+    public function assign_grouping($grouping,$days){
+        $group = 0;
+
+        foreach ($grouping as $key => $value) {
+            if(!empty($value) && $days >= intval($value)){
+                $group = $key;
+            }
+        }
+
+        return $group;
     }
     
     public function calc_openbal($obj){
