@@ -1,67 +1,62 @@
 
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
-var editedRow=0;
+var editedRow = 0;
 
-$(document).ready(function () {
+$(document).ready(function (){
     
     var fdl = new faster_detail_load();
     
     disableForm('#form_otmgmt_div');
     
-    $("#new_otmgmt_div").click(function(){
+    $("#new_otmgmt_div").click(function (){
         $('#cancel_otmgmt_div').data('oper','add');
         button_state_otmgmt_div('wait');
         enableForm('#form_otmgmt_div');
         rdonly('#form_otmgmt_div');
         // emptyFormdata_div("#form_otmgmt_div",['#mrn_otmgmt_div','#episno_otmgmt_div']);
         // dialog_mrn_edit.on();
-        
     });
     
-    $("#edit_otmgmt_div").click(function(){
+    $("#edit_otmgmt_div").click(function (){
         button_state_otmgmt_div('wait');
         enableForm('#form_otmgmt_div');
         rdonly('#form_otmgmt_div');
         // dialog_mrn_edit.on();
-        
     });
     
-    $("#save_otmgmt_div").click(function(){
-        if( $('#form_otmgmt_div').isValid({requiredFields: ''}, conf, true) ) {
-            saveForm_otmgmt_div(function(data){
+    $("#save_otmgmt_div").click(function (){
+        if($('#form_otmgmt_div').isValid({requiredFields: ''}, conf, true)){
+            saveForm_otmgmt_div(function (data){
                 // emptyFormdata_div("#form_otmgmt_div",['#mrn_otmgmt_div','#episno_otmgmt_div']);
                 disableForm('#form_otmgmt_div');
-                
             });
         }else{
             enableForm('#form_otmgmt_div');
             rdonly('#form_otmgmt_div');
         }
-        
     });
     
-    $("#cancel_otmgmt_div").click(function(){
+    $("#cancel_otmgmt_div").click(function (){
         // emptyFormdata_div("#form_otmgmt_div",['#mrn_otmgmt_div','#episno_otmgmt_div']);
         disableForm('#form_otmgmt_div');
         button_state_otmgmt_div($(this).data('oper'));
         getdata_otmgmt();
         // dialog_mrn_edit.off();
-        
     });
     
     // to format number input to two decimal places (0.00)
-    $(".floatNumberField").change(function() {
+    $(".floatNumberField").change(function (){
         $(this).val(parseFloat($(this).val()).toFixed(2));
     });
     
     // to limit to two decimal places (onkeypress)
-    $(document).on('keydown', 'input[pattern]', function(e){
+    $(document).on('keydown', 'input[pattern]', function (e){
         var input = $(this);
         var oldVal = input.val();
         var regex = new RegExp(input.attr('pattern'), 'g');
         
-        setTimeout(function(){
+        setTimeout(function (){
             var newVal = input.val();
             if(!regex.test(newVal)){
                 input.val(oldVal);
@@ -70,14 +65,14 @@ $(document).ready(function () {
     });
     
     // to calculate hours utilized
-    $("#timestarted,#timeended").on('change',function() {
+    $("#timestarted,#timeended").on('change',function (){
         var startTime = moment($('#timestarted').val(),'hh:mm:ss');
         var endTime = moment($('#timeended').val(),'hh:mm:ss');
         
         let duration = endTime.diff(startTime,'hours');
         $("#hoursutilized").val(duration);
     });
-
+    
     //////////////////////////////////////////body diagram starts//////////////////////////////////////////
     $('a.ui.card.oper_rec').click(function (){
         let mrn = $('#mrn_otmgmt_div').val();
@@ -111,12 +106,12 @@ $(document).ready(function () {
 
 var errorField = [];
 conf = {
-    modules : 'logic',
+    modules: 'logic',
     language: {
         requiredFields: 'You have not answered all required fields'
     },
-    onValidate: function ($form) {
-        if (errorField.length > 0) {
+    onValidate: function ($form){
+        if(errorField.length > 0){
             return {
                 element: $(errorField[0]),
                 message: ''
@@ -221,12 +216,12 @@ function populate_otmgmt_div(obj){
 }
 
 function autoinsert_rowdata(form,rowData){
-    $.each(rowData, function( index, value ) {
-        var input=$(form+" [name='"+index+"']");
+    $.each(rowData, function (index, value){
+        var input = $(form+" [name='"+index+"']");
         if(input.is("[type=radio]")){
             $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
         }else if(input.is("[type=checkbox]")){
-            if(value==1){
+            if(value == 1){
                 $(form+" [name='"+index+"']").prop('checked', true);
             }
         }else if(input.is("textarea")){
@@ -242,9 +237,9 @@ function autoinsert_rowdata(form,rowData){
 
 function saveForm_otmgmt_div(callback){
     let oper = $("#cancel_otmgmt_div").data('oper');
-    var saveParam={
-        action:'save_table_otmgmt_div',
-        oper:oper,
+    var saveParam = {
+        action: 'save_table_otmgmt_div',
+        oper: oper,
     }
     
     if(oper == 'add'){
@@ -255,54 +250,54 @@ function saveForm_otmgmt_div(callback){
         // saveParam.recordtime = row.recordtime;
     }
     
-    var postobj={
-        _token : $('#_token').val(),
-        // sex_edit : $('#sex_edit').val(),
-        // idtype_edit : $('#idtype_edit').val()
+    var postobj = {
+        _token: $('#_token').val(),
+        // sex_edit: $('#sex_edit').val(),
+        // idtype_edit: $('#idtype_edit').val()
     };
     
     values = $("#form_otmgmt_div").serializeArray();
     
     values = values.concat(
         $('#form_otmgmt_div input[type=checkbox]:not(:checked)').map(
-        function() {
+        function (){
             return {"name": this.name, "value": 0}
         }).get()
     );
     
     values = values.concat(
         $('#form_otmgmt_div input[type=checkbox]:checked').map(
-        function() {
+        function (){
             return {"name": this.name, "value": 1}
         }).get()
     );
     
     values = values.concat(
         $('#form_otmgmt_div input[type=radio]:checked').map(
-        function() {
+        function (){
             return {"name": this.name, "value": this.value}
         }).get()
     );
     
     values = values.concat(
         $('#form_otmgmt_div select').map(
-        function() {
+        function (){
             return {"name": this.name, "value": this.value}
         }).get()
     );
     
-    $.post( "./otmanagement_div/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post("./otmanagement_div/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
         
-    },'json').done(function(data) {
+    },'json').done(function (data){
         callback(data);
         button_state_otmgmt_div('edit');
-    }).fail(function(data){
+    }).fail(function (data){
         callback(data);
         button_state_otmgmt_div($(this).data('oper'));
     });
 }
 
-$('#tab_otmgmt_div').on('shown.bs.collapse', function () {
+$('#tab_otmgmt_div').on('shown.bs.collapse', function (){
     SmoothScrollTo('#tab_otmgmt_div', 300,114);
     
     if($('#mrn_otmgmt_div').val() != ''){
@@ -310,34 +305,34 @@ $('#tab_otmgmt_div').on('shown.bs.collapse', function () {
     }
 });
 
-$('#tab_otmgmt_div').on('hide.bs.collapse', function () {
+$('#tab_otmgmt_div').on('hide.bs.collapse', function (){
     emptyFormdata_div("#form_otmgmt_div",['#mrn_otmgmt_div','#episno_otmgmt_div']);
     button_state_otmgmt_div('empty');
 });
 
 function getdata_otmgmt(){
-    var urlparam={
-        action:'get_table_otmanage',
+    var urlparam = {
+        action: 'get_table_otmanage',
     }
     
-    var postobj={
-        _token : $('#_token').val(),
-        mrn:$('#mrn_otmgmt_div').val(),
-        episno:$("#episno_otmgmt_div").val()
+    var postobj = {
+        _token: $('#_token').val(),
+        mrn: $('#mrn_otmgmt_div').val(),
+        episno: $("#episno_otmgmt_div").val()
     };
     
-    $.post( "./otmanagement_div/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+    $.post("./otmanagement_div/form?"+$.param(urlparam), $.param(postobj), function (data){
         
-    },'json').fail(function(data) {
+    },'json').fail(function (data){
         alert('there is an error');
-    }).done(function(data){
-        if(!$.isEmptyObject(data)){
+    }).done(function (data){
+        if(!$.isEmptyObject(data.otmanage)){
             button_state_otmgmt_div('edit');
             autoinsert_rowdata("#form_otmgmt_div",data.otmanage);
-            autoinsert_rowdata("#form_otmgmt_div",data.apptbook);
-            autoinsert_rowdata("#form_otmgmt_div",data.episode);
-            $('#timestarted').val(data.start);
-            $('#timeended').val(data.end).change();
+            // autoinsert_rowdata("#form_otmgmt_div",data.apptbook);
+            // autoinsert_rowdata("#form_otmgmt_div",data.episode);
+            // $('#timestarted').val(data.start);
+            // $('#timeended').val(data.end).change();
             // $('#form_otmgmt_div textarea#procedure').val(data.apptbook.procedure);
             // $('#form_otmgmt_div textarea#diagnosis').val(data.apptbook.diagnosis);
         }else{
@@ -345,6 +340,12 @@ function getdata_otmgmt(){
             // $('#form_otmgmt_div textarea#procedure').val(data.apptbook.procedure);
             // $('#form_otmgmt_div textarea#diagnosis').val(data.apptbook.diagnosis);
         }
+        
+        autoinsert_rowdata("#form_otmgmt_div",data.apptbook);
+        autoinsert_rowdata("#form_otmgmt_div",data.episode);
+        $('#timestarted').val(data.start);
+        $('#timeended').val(data.end).change();
+        if(!emptyobj_(data.iPesakit))$("#operRec_iPesakit").val(data.iPesakit);
     });
 }
 

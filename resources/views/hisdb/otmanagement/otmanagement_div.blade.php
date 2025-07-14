@@ -19,7 +19,16 @@
             <div class="ui grid">
                 <input id="mrn_otmgmt_div" name="mrn_otmgmt_div" type="hidden">
                 <input id="episno_otmgmt_div" name="episno_otmgmt_div" type="hidden">
-
+                
+                <div class="sixteen wide column">
+                    <div class="ui segment">
+                        <div class="inline fields">
+                            <label>iPesakit</label>
+                            <div class="field"><input type="text" class="form-control" id="operRec_iPesakit" name="iPesakit"></div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="eight wide column">
                     <div class="ui segments">
                         <div class="ui secondary segment">PATIENT PARTICULARS</div>
