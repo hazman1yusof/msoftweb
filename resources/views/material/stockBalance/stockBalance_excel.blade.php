@@ -38,7 +38,7 @@
                     @else
                     <td  data-format="@">{{$obj->itemcode}}</td>
                     @endif
-                    <td>{{$obj->description}}</td>
+                    <td>{!!preg_replace("/[^A-Za-z0-9 ]/", '', $obj->description)!!}</td>
                     <td>{{$obj->uomcode}}</td>
                     <td>{{$obj->open_balval}}</td>
                     <td>{{$obj->open_balqty}}</td>
