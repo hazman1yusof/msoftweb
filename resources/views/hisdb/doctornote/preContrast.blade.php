@@ -226,9 +226,9 @@
                     </div>
                     <div class="panel panel-info">
                         <div class="panel-body">
-                            <div class="form-group">
+                            <div class="form-group" style="padding-left: 350px">
                                 <label class="col-md-2 control-label" for="docName">Requesting Doctor</label>
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                     <input id="docName" name="docName" type="text" class="form-control input-sm">
                                 </div>
                             </div>

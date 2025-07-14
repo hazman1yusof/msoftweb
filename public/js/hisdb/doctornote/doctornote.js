@@ -997,7 +997,7 @@ function button_state_otbook(state){
 		case 'empty':
 			$("#toggle_doctorNote").removeAttr('data-toggle');
 			$('#cancel_otbook').data('oper','add');
-			$('#new_otbook,#save_otbook,#cancel_otbook,#edit_otbook').attr('disabled',true);
+			$('#new_otbook,#save_otbook,#cancel_otbook,#edit_otbook,#otbook_chart').attr('disabled',true);
 			break;
 		case 'add':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
@@ -1008,7 +1008,7 @@ function button_state_otbook(state){
 		case 'edit':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$('#cancel_otbook').data('oper','edit');
-			$("#edit_otbook").attr('disabled',false);
+			$("#edit_otbook,#otbook_chart").attr('disabled',false);
 			$('#save_otbook,#cancel_otbook,#new_otbook').attr('disabled',true);
 			break;
 		case 'wait':
@@ -1025,7 +1025,7 @@ function button_state_radClinic(state){
 		case 'empty':
 			$("#toggle_doctorNote").removeAttr('data-toggle');
 			$('#cancel_radClinic').data('oper','add');
-			$('#new_radClinic,#save_radClinic,#cancel_radClinic,#edit_radClinic').attr('disabled',true);
+			$('#new_radClinic,#save_radClinic,#cancel_radClinic,#edit_radClinic,#radClinic_chart').attr('disabled',true);
 			break;
 		case 'add':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
@@ -1036,7 +1036,7 @@ function button_state_radClinic(state){
 		case 'edit':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$('#cancel_radClinic').data('oper','edit');
-			$("#edit_radClinic").attr('disabled',false);
+			$("#edit_radClinic,#radClinic_chart").attr('disabled',false);
 			$('#save_radClinic,#cancel_radClinic,#new_radClinic').attr('disabled',true);
 			break;
 		case 'wait':
@@ -1053,7 +1053,7 @@ function button_state_mri(state){
 		case 'empty':
 			$("#toggle_doctorNote").removeAttr('data-toggle');
 			$('#cancel_mri').data('oper','add');
-			$('#new_mri,#save_mri,#cancel_mri,#edit_mri,#accept_mri').attr('disabled',true);
+			$('#new_mri,#save_mri,#cancel_mri,#edit_mri,#accept_mri,#mri_chart').attr('disabled',true);
 			break;
 		case 'add':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
@@ -1064,7 +1064,7 @@ function button_state_mri(state){
 		case 'edit':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$('#cancel_mri').data('oper','edit');
-			$("#edit_mri,#accept_mri").attr('disabled',false);
+			$("#edit_mri,#accept_mri,#mri_chart").attr('disabled',false);
 			$('#save_mri,#cancel_mri,#new_mri').attr('disabled',true);
 			break;
 		case 'wait':
@@ -1081,7 +1081,7 @@ function button_state_physio(state){
 		case 'empty':
 			$("#toggle_doctorNote").removeAttr('data-toggle');
 			$('#cancel_physio').data('oper','add');
-			$('#new_physio,#save_physio,#cancel_physio,#edit_physio').attr('disabled',true);
+			$('#new_physio,#save_physio,#cancel_physio,#edit_physio,#physio_chart').attr('disabled',true);
 			break;
 		case 'add':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
@@ -1092,7 +1092,7 @@ function button_state_physio(state){
 		case 'edit':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$('#cancel_physio').data('oper','edit');
-			$("#edit_physio").attr('disabled',false);
+			$("#edit_physio,#physio_chart").attr('disabled',false);
 			$('#save_physio,#cancel_physio,#new_physio').attr('disabled',true);
 			break;
 		case 'wait':
@@ -1109,7 +1109,7 @@ function button_state_dressing(state){
 		case 'empty':
 			$("#toggle_doctorNote").removeAttr('data-toggle');
 			$('#cancel_dressing').data('oper','add');
-			$('#new_dressing,#save_dressing,#cancel_dressing,#edit_dressing').attr('disabled',true);
+			$('#new_dressing,#save_dressing,#cancel_dressing,#edit_dressing,#dressing_chart').attr('disabled',true);
 			break;
 		case 'add':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
@@ -1120,7 +1120,7 @@ function button_state_dressing(state){
 		case 'edit':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$('#cancel_dressing').data('oper','edit');
-			$("#edit_dressing").attr('disabled',false);
+			$("#edit_dressing,#dressing_chart").attr('disabled',false);
 			$('#save_dressing,#cancel_dressing,#new_dressing').attr('disabled',true);
 			break;
 		case 'wait':

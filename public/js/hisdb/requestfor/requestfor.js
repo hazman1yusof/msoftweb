@@ -362,7 +362,7 @@ function button_state_otbookReqFor(state){
         case 'empty':
             $("#toggle_requestFor").removeAttr('data-toggle');
             $('#cancel_otbookReqFor').data('oper','add');
-            $('#new_otbookReqFor,#save_otbookReqFor,#cancel_otbookReqFor,#edit_otbookReqFor').attr('disabled',true);
+            $('#new_otbookReqFor,#save_otbookReqFor,#cancel_otbookReqFor,#edit_otbookReqFor,#otbookReqFor_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_requestFor").attr('data-toggle','collapse');
@@ -373,7 +373,7 @@ function button_state_otbookReqFor(state){
         case 'edit':
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $('#cancel_otbookReqFor').data('oper','edit');
-            $("#edit_otbookReqFor").attr('disabled',false);
+            $("#edit_otbookReqFor,#otbookReqFor_chart").attr('disabled',false);
             $('#save_otbookReqFor,#cancel_otbookReqFor,#new_otbookReqFor').attr('disabled',true);
             break;
         case 'wait':
@@ -390,7 +390,7 @@ function button_state_radClinicReqFor(state){
         case 'empty':
             $("#toggle_requestFor").removeAttr('data-toggle');
             $('#cancel_radClinicReqFor').data('oper','add');
-            $('#new_radClinicReqFor,#save_radClinicReqFor,#cancel_radClinicReqFor,#edit_radClinicReqFor').attr('disabled',true);
+            $('#new_radClinicReqFor,#save_radClinicReqFor,#cancel_radClinicReqFor,#edit_radClinicReqFor,#radClinicReqFor_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_requestFor").attr('data-toggle','collapse');
@@ -401,7 +401,7 @@ function button_state_radClinicReqFor(state){
         case 'edit':
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $('#cancel_radClinicReqFor').data('oper','edit');
-            $("#edit_radClinicReqFor").attr('disabled',false);
+            $("#edit_radClinicReqFor,#radClinicReqFor_chart").attr('disabled',false);
             $('#save_radClinicReqFor,#cancel_radClinicReqFor,#new_radClinicReqFor').attr('disabled',true);
             break;
         case 'wait':
@@ -418,7 +418,7 @@ function button_state_mriReqFor(state){
         case 'empty':
             $("#toggle_requestFor").removeAttr('data-toggle');
             $('#cancel_mriReqFor').data('oper','add');
-            $('#new_mriReqFor,#save_mriReqFor,#cancel_mriReqFor,#edit_mriReqFor,#accept_mriReqFor').attr('disabled',true);
+            $('#new_mriReqFor,#save_mriReqFor,#cancel_mriReqFor,#edit_mriReqFor,#accept_mriReqFor,#mriReqFor_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_requestFor").attr('data-toggle','collapse');
@@ -429,7 +429,7 @@ function button_state_mriReqFor(state){
         case 'edit':
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $('#cancel_mriReqFor').data('oper','edit');
-            $("#edit_mriReqFor,#accept_mriReqFor").attr('disabled',false);
+            $("#edit_mriReqFor,#accept_mriReqFor,#mriReqFor_chart").attr('disabled',false);
             $('#save_mriReqFor,#cancel_mriReqFor,#new_mriReqFor').attr('disabled',true);
             break;
         case 'wait':
@@ -446,7 +446,7 @@ function button_state_physioReqFor(state){
         case 'empty':
             $("#toggle_requestFor").removeAttr('data-toggle');
             $('#cancel_physioReqFor').data('oper','add');
-            $('#new_physioReqFor,#save_physioReqFor,#cancel_physioReqFor,#edit_physioReqFor').attr('disabled',true);
+            $('#new_physioReqFor,#save_physioReqFor,#cancel_physioReqFor,#edit_physioReqFor,#physioReqFor_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_requestFor").attr('data-toggle','collapse');
@@ -457,7 +457,7 @@ function button_state_physioReqFor(state){
         case 'edit':
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $('#cancel_physioReqFor').data('oper','edit');
-            $("#edit_physioReqFor").attr('disabled',false);
+            $("#edit_physioReqFor,#physioReqFor_chart").attr('disabled',false);
             $('#save_physioReqFor,#cancel_physioReqFor,#new_physioReqFor').attr('disabled',true);
             break;
         case 'wait':
@@ -474,7 +474,7 @@ function button_state_dressingReqFor(state){
         case 'empty':
             $("#toggle_requestFor").removeAttr('data-toggle');
             $('#cancel_dressingReqFor').data('oper','add');
-            $('#new_dressingReqFor,#save_dressingReqFor,#cancel_dressingReqFor,#edit_dressingReqFor').attr('disabled',true);
+            $('#new_dressingReqFor,#save_dressingReqFor,#cancel_dressingReqFor,#edit_dressingReqFor,#dressingReqFor_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_requestFor").attr('data-toggle','collapse');
@@ -485,7 +485,7 @@ function button_state_dressingReqFor(state){
         case 'edit':
             $("#toggle_requestFor").attr('data-toggle','collapse');
             $('#cancel_dressingReqFor').data('oper','edit');
-            $("#edit_dressingReqFor").attr('disabled',false);
+            $("#edit_dressingReqFor,#dressingReqFor_chart").attr('disabled',false);
             $('#save_dressingReqFor,#cancel_dressingReqFor,#new_dressingReqFor').attr('disabled',true);
             break;
         case 'wait':
