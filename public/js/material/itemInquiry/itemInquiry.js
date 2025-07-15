@@ -670,11 +670,11 @@ $(document).ready(function () {
 
 		switch(row.trantype){
 			case 'DS' :
-				if(row.mrn != '-' && row.episno != '-'){
-					src = './reprintBill?viewonly=viewonly&auditno='+row.recno+'&lineno_='+row.lineno_;
-				}else{
+				// if(row.mrn != '-' && row.episno != '-'){
+				// 	src = './reprintBill?viewonly=viewonly&auditno='+row.recno+'&lineno_='+row.lineno_;
+				// }else{
 					src = './SalesOrder?scope=ALL&viewonly=viewonly&auditno='+row.recno;
-				}
+				// }
 				break;
 			case 'GRN' :
 				src = './deliveryOrder?scope=ALL&viewonly=viewonly&recno='+row.recno;
