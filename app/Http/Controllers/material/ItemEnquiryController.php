@@ -98,7 +98,7 @@ class ItemEnquiryController extends defaultController
 
         //yg ni ivdspdt
         $det_mov_deptcode_ivdspdt = DB::table('material.ivdspdt as d')
-            ->select('d.adddate','d.trandate','d.trantype','d.reqdept as deptcode','d.txnqty', 'd.upduser','d.recno as d_recno','d.lineno_', 'd.updtime', 'd.recno as docno', 'd.uomcode', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'd.updtime as trantime','t.crdbfl', 't.description', 'd.mrn', 'd.episno','b.billno as recno','b.debtorcode as sndrcv')
+            ->select('d.adddate','d.trandate','d.trantype','d.reqdept as deptcode','d.txnqty', 'd.upduser','d.recno as d_recno','d.lineno_', 'd.updtime', 'd.recno as docno', 'd.uomcode', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'd.updtime as trantime','t.crdbfl', 't.description', 'd.mrn', 'd.episno','b.billno as recno','h.debtorcode as sndrcv')
             ->leftJoin('material.ivtxntype as t', function($join){
                     $join = $join->on('t.trantype', '=', 'd.trantype')
                                  ->where('t.compcode','=',session('compcode'));
@@ -108,6 +108,12 @@ class ItemEnquiryController extends defaultController
                                  ->where('b.trantype', 'IN')
                                  ->on('b.auditno', 'd.recno')
                                  ->where('b.compcode','=',session('compcode'));
+                })
+            ->leftJoin('debtor.dbacthdr as h', function($join){
+                    $join = $join->where('h.compcode','=',session('compcode'))
+                                 ->where('h.source', 'PB')
+                                 ->where('h.trantype', 'IN')
+                                 ->on('h.auditno', 'b.billno');
                 })
             ->where('d.compcode','=',session('compcode'))
             ->where('d.itemcode','=',$request->itemcode)
