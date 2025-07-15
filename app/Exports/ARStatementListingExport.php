@@ -46,18 +46,24 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         // $this->groupSix = $groupSix;
 
         $this->grouping = [];
+        $this->grouping_tot = [];
         $this->grouping[0] = 0;
+        $this->grouping_tot[0] = 0;
         if(!empty($this->groupOne)){
             $this->grouping[1] = $this->groupOne;
+            $this->grouping_tot[1] = 0;
         }
         if(!empty($this->groupTwo)){
             $this->grouping[2] = $this->groupTwo;
+            $this->grouping_tot[2] = 0;
         }
         if(!empty($this->groupThree)){
             $this->grouping[3] = $this->groupThree;
+            $this->grouping_tot[3] = 0;
         }
         if(!empty($this->groupFour)){
             $this->grouping[4] = $this->groupFour;
+            $this->grouping_tot[4] = 0;
         }
         // if(!empty($this->groupFive)){
         //     $this->grouping[5] = $this->groupFive;
@@ -74,8 +80,12 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
     public function columnFormats(): array
     {
         return [
+            'B' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
         ];
     }
     
@@ -85,7 +95,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
             'A' => 15,
             'B' => 15,
             'C' => 15,
-            'D' => 55,
+            'D' => 35,
             'E' => 15,
             'F' => 15,
             'G' => 15,
@@ -105,6 +115,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         }
         $debtorcode_to = $this->debtorcode_to;
         $grouping = $this->grouping;
+        $grouping_tot = $this->grouping_tot;
         
         $debtormast = DB::table('debtor.debtormast as dm')
                         ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.reference as real_reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'pm.Name as pm_name','dm.debtortype','dm.name','dm.address1','dm.address2','dm.address3','dm.address4','dm.creditterm','dm.creditlimit','dh.datesend')
@@ -281,6 +292,8 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     // code...
                     break;
             }
+
+            $grouping_tot[$value->group] = $grouping_tot[$value->group] + $newamt;
         }
         
         $title = "STATEMENT LISTING";
@@ -303,9 +316,8 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
 
-        // dd(count($grouping));
         
-        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('debtormast','array_report','grouping','title','company','date_asof','datenow'));
+        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('debtormast','array_report','grouping','grouping_tot','title','company','date_asof','datenow'));
     }
     
     public function registerEvents(): array

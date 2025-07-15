@@ -116,7 +116,7 @@
             </tr>
             @endif
         @endforeach
-
+        <tr></tr>
         <tr>
             <td></td>
             @foreach ($grouping as $key => $group)
@@ -129,21 +129,15 @@
             <td style="font-weight:bold; text-align: left">Total</td>
         </tr>
 
-        @foreach($array_report as $db_obj)
-            <tr>
-                @php($total_line = 0)
-                <td></td>
-                @foreach ($grouping as $key => $group)
-                    @if($key == $db_obj->group)
-                    @php($total_line += $db_obj->newamt)
-                    <td>{{$db_obj->newamt}}</td>
-                    @else
-                    <td>{{0.00}}</td>
-                    @endif
-                @endforeach
-                <td>{{$total_line}}</td>
-            </tr>
+        <tr>
+            <td></td>
+            @php($total_line = 0)
+        @foreach ($grouping_tot as $key => $val)
+            @php($total_line = $total_line + $val)
+            <td>{{$val}}</td>
         @endforeach
+            <td>{{$total_line}}</td>
+        </tr>
 
         <tr></tr>
         <div style="page-break-after: always" />
