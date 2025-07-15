@@ -782,7 +782,7 @@ $(document).ready(function () {
 			urlParam.searchCol=null;
 			urlParam.searchVal=null;
 			if($('#searchForm [name=Stext]').val().trim() != ''){
-				let searchCol = ['auditno'];
+				let searchCol = ['db_auditno'];
 				let searchVal = ['%'+$('#searchForm [name=Stext]').val().trim()+'%'];
 				urlParam.searchCol=searchCol;
 				urlParam.searchVal=searchVal;
