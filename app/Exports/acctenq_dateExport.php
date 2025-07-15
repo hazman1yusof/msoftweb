@@ -105,7 +105,9 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
                 $value->cramount = 0;
                 $value->dramount = $value->amount;
                 $value->acctname = $value->acctname_cr;
-            }else{
+            }
+
+            if($value->cracc == $this->glaccount){
                 $value->acccode = $value->dracc;
                 $value->costcode = $value->drcostcode;
                 $value->costcode_ = $value->crcostcode;
