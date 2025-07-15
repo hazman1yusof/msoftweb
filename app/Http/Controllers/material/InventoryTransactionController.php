@@ -700,6 +700,7 @@ class InventoryTransactionController extends defaultController
 
         try {
 
+            $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno){
                 //-- 1. transfer from ivtmphd to ivtxnhd --//
                 $ivtmphd = DB::table('material.ivtmphd')

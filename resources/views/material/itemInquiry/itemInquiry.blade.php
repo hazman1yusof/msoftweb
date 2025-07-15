@@ -231,7 +231,7 @@
 						<th>Unit Cost</th>
 						<th>Trans Amount</th>
 						<th>Balance Amount</th>
-						<th>Document No</th>
+						<th>Record No</th>
 						<th>MRN</th>
 						<th>Episode</th>
 						<th>User Id</th>
@@ -295,7 +295,7 @@
 			
 		});
 	</script>
-	<script src="js/material/itemInquiry/itemInquiry.js?v=1.1"></script>
+	<script src="js/material/itemInquiry/itemInquiry.js?v=1.2"></script>
 	<script src="plugins/datatables/js/jquery.datatables.min.js"></script>
 
 @endsection

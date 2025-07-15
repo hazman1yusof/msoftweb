@@ -397,7 +397,8 @@ $(document).ready(function () {
 			{ data: 'netprice', className: "text-right"},
 			{ data: 'amount', className: "text-right"},
 			{ data: 'balance', className: "text-right"},
-			{ data: 'docno', sClass: "text-right docno"},
+			// { data: 'docno', sClass: "text-right docno"},
+			{ data: 'recno', sClass: "text-right recno"},
 			{ data: 'mrn', className: "text-right"},
 			{ data: 'episno', className: "text-right"},
 			{ data: 'adduser'},
@@ -665,6 +666,7 @@ $(document).ready(function () {
 		var tr = $(this).parent('tr');
 		var row = DataTable.row(tr).data();
 		let src = null;
+		let pdf = null;
 
 		switch(row.trantype){
 			case 'DS' :
@@ -677,11 +679,19 @@ $(document).ready(function () {
 			case 'GRN' :
 				src = './deliveryOrder?scope=ALL&viewonly=viewonly&recno='+row.recno;
 				break;
+			case 'TUI' :
+				pdf = './inventoryTransaction/showpdf?recno='+row.recno;
+				break;
+			case 'TUO' :
+				pdf = './inventoryTransaction/showpdf?recno='+row.recno;
+				break;
 		}
 
 		if(src != null){
 			$('iframe#open_detail_iframe').attr('src',src);
 			$("#open_detail_dialog").dialog("open");
+		}else if(pdf != null){
+			window.open(pdf, '_blank')
 		}
 	});
 

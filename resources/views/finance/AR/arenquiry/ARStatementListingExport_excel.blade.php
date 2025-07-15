@@ -132,8 +132,8 @@
         @foreach($array_report as $db_obj)
             <tr>
                 @php($total_line = 0)
+                <td></td>
                 @foreach ($grouping as $key => $group)
-                    <td></td>
                     @if($key == $db_obj->group)
                     @php($total_line += $db_obj->newamt)
                     <td>{{$db_obj->newamt}}</td>

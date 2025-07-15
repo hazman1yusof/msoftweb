@@ -293,6 +293,7 @@ class DeliveryOrderController extends defaultController
         DB::beginTransaction();
 
         try{
+            $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno){
                 //--- 1. copy delordhd masuk dalam ivtxnhd ---//
 
@@ -557,6 +558,7 @@ class DeliveryOrderController extends defaultController
 
         try{
 
+            $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno){
 
                 $delordhd = DB::table('material.delordhd')

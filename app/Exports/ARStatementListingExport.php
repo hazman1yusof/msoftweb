@@ -302,6 +302,8 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         //     $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
+
+        // dd(count($grouping));
         
         return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('debtormast','array_report','grouping','title','company','date_asof','datenow'));
     }
