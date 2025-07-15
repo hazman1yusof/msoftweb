@@ -366,7 +366,7 @@ $(document).ready(function (){
 	//////////////////////////////////////////parameter for jqgrid2 url//////////////////////////////////////////
 	var urlParam2 = {
 		action: 'get_table_dtl',
-		url: 'reportFormatDetail/table',
+		url: './reportFormatDetail/table',
 		rptname: '',
 	};
 	
@@ -725,7 +725,7 @@ $(document).ready(function (){
 				idno: selrowData('#jqGrid2').idno,
 			}
 			
-			$.post( "/reportFormatDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function (data){
+			$.post( "./reportFormatDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function (data){
 			}).fail(function (data){
 				// alert(dialog,data.responseText);
 			}).done(function (data){
