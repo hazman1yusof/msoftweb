@@ -77,11 +77,11 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
         // $glmasref = DB::table('finance.gmasref')
         //                 ->where('compcode')
 
-        $table = DB::table('finance.gltran as gl')
+        $table1 = DB::table('finance.gltran as gl')
                         ->select('gl.id','gl.source','gl.trantype','gl.auditno','gl.postdate','gl.description','gl.reference','gl.drcostcode','gl.crcostcode','gl.cracc','gl.dracc','gl.amount','glcr.description as acctname_cr','gldr.description as acctname_dr')
                         ->where(function($table) use ($glaccount){
-                            $table->orwhere('gl.dracc','=', $glaccount);
-                            $table->orwhere('gl.cracc','=', $glaccount);
+                            $table->where('gl.dracc','=', $glaccount);
+                            // $table->orwhere('gl.cracc','=', $glaccount);
                         })
                         ->leftJoin('finance.glmasref as glcr', function($join){
                             $join = $join->on('glcr.glaccno', '=', 'gl.cracc')
@@ -97,6 +97,28 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
                         ->orderBy('gl.postdate', 'asc')
                         ->get();
 
+        $table2 = DB::table('finance.gltran as gl')
+                        ->select('gl.id','gl.source','gl.trantype','gl.auditno','gl.postdate','gl.description','gl.reference','gl.drcostcode','gl.crcostcode','gl.cracc','gl.dracc','gl.amount','glcr.description as acctname_cr','gldr.description as acctname_dr')
+                        ->where(function($table) use ($glaccount){
+                            $table->where('gl.cracc','=', $glaccount);
+                            // $table->orwhere('gl.cracc','=', $glaccount);
+                        })
+                        ->leftJoin('finance.glmasref as glcr', function($join){
+                            $join = $join->on('glcr.glaccno', '=', 'gl.cracc')
+                                            ->where('glcr.compcode','=',session('compcode'));
+                        })
+                        ->leftJoin('finance.glmasref as gldr', function($join){
+                            $join = $join->on('gldr.glaccno', '=', 'gl.dracc')
+                                            ->where('gldr.compcode','=',session('compcode'));
+                        })
+                        ->where('gl.postdate', '>=', $this->fromdate)
+                        ->where('gl.postdate', '<=', $this->todate)
+                        ->where('gl.compcode', session('compcode'))
+                        ->orderBy('gl.postdate', 'asc')
+                        ->get();
+
+        $table = $table1->merge($table2);
+
         foreach ($table as $key => $value) {
             if($value->dracc == $this->glaccount){
                 $value->acccode = $value->cracc;
@@ -105,9 +127,7 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
                 $value->cramount = 0;
                 $value->dramount = $value->amount;
                 $value->acctname = $value->acctname_cr;
-            }
-
-            if($value->cracc == $this->glaccount){
+            }else{
                 $value->acccode = $value->dracc;
                 $value->costcode = $value->drcostcode;
                 $value->costcode_ = $value->crcostcode;
