@@ -261,7 +261,7 @@ class SalesOrderController extends defaultController
                 });
             }else if($request->searchCol[0] == 'db_auditno'){
                 $table = $table->Where(function ($table) use ($request){
-                        $table->Where('db.auditno',$request->searchVal[0]);
+                        $table->Where('db.auditno',$request->wholeword);
                 });
             }else{
                 $table = $table->Where(function ($table) use ($request){
