@@ -27,6 +27,7 @@
             <div class="ui top attached tabular menu">
                 <a class="item active" data-tab="sixMinWalking" id="navtab_sixMinWalking">6-Minute<br>Walking<br>Test</a>
                 <a class="item" data-tab="bergBalanceTest" id="navtab_bergBalanceTest">Berg Balance<br>Positions<br>and Tests</a>
+                <a class="item" data-tab="musculoAssessment" id="navtab_musculoAssessment">Musculoskeletal<br>Assessment</a>
                 <a class="item" data-tab="posturalAssessment" id="navtab_posturalAssessment">Postural<br>Assessment</a>
                 <a class="item" data-tab="oswestryQuest" id="navtab_oswestryQuest">Oswestry<br>Low Back<br>Disability<br>Questionnaire</a>
                 <a class="item" data-tab="cardiorespAssessment" id="navtab_cardiorespAssessment">Cardiorespiratory<br>Assessment</a>
@@ -41,6 +42,10 @@
             
             <div class="ui bottom attached tab raised segment" data-tab="bergBalanceTest">
                 @include('rehab.bergBalanceTest')
+            </div>
+            
+            <div class="ui bottom attached tab raised segment" data-tab="musculoAssessment">
+                @include('rehab.musculoAssessment')
             </div>
             
             <div class="ui bottom attached tab raised segment" data-tab="posturalAssessment">
