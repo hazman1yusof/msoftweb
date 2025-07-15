@@ -786,8 +786,9 @@ $(document).ready(function () {
 				let searchVal = ['%'+$('#searchForm [name=Stext]').val().trim()+'%'];
 				urlParam.searchCol=searchCol;
 				urlParam.searchVal=searchVal;
-				urlParam.filterCol=null;
-				urlParam.filterVal=null;
+				urlParam.wholeword=searchVal;
+				urlParam.filterCol = filter.fc;
+				urlParam.filterVal = filter.fv;
 			}
 			once=false;
 		}
