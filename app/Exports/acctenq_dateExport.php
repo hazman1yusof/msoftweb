@@ -77,11 +77,11 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
         // $glmasref = DB::table('finance.gmasref')
         //                 ->where('compcode')
 
-        $table1 = DB::table('finance.gltran as gl')
+        $table = DB::table('finance.gltran as gl')
                         ->select('gl.id','gl.source','gl.trantype','gl.auditno','gl.postdate','gl.description','gl.reference','gl.drcostcode','gl.crcostcode','gl.cracc','gl.dracc','gl.amount','glcr.description as acctname_cr','gldr.description as acctname_dr')
                         ->where(function($table) use ($glaccount){
-                            $table->where('gl.dracc','=', $glaccount);
-                            // $table->orwhere('gl.cracc','=', $glaccount);
+                            $table->orwhere('gl.dracc','=', $glaccount);
+                            $table->orwhere('gl.cracc','=', $glaccount);
                         })
                         ->leftJoin('finance.glmasref as glcr', function($join){
                             $join = $join->on('glcr.glaccno', '=', 'gl.cracc')
@@ -97,29 +97,9 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
                         ->orderBy('gl.postdate', 'asc')
                         ->get();
 
-        $table2 = DB::table('finance.gltran as gl')
-                        ->select('gl.id','gl.source','gl.trantype','gl.auditno','gl.postdate','gl.description','gl.reference','gl.drcostcode','gl.crcostcode','gl.cracc','gl.dracc','gl.amount','glcr.description as acctname_cr','gldr.description as acctname_dr')
-                        ->where(function($table) use ($glaccount){
-                            $table->where('gl.cracc','=', $glaccount);
-                            // $table->orwhere('gl.cracc','=', $glaccount);
-                        })
-                        ->leftJoin('finance.glmasref as glcr', function($join){
-                            $join = $join->on('glcr.glaccno', '=', 'gl.cracc')
-                                            ->where('glcr.compcode','=',session('compcode'));
-                        })
-                        ->leftJoin('finance.glmasref as gldr', function($join){
-                            $join = $join->on('gldr.glaccno', '=', 'gl.dracc')
-                                            ->where('gldr.compcode','=',session('compcode'));
-                        })
-                        ->where('gl.postdate', '>=', $this->fromdate)
-                        ->where('gl.postdate', '<=', $this->todate)
-                        ->where('gl.compcode', session('compcode'))
-                        ->orderBy('gl.postdate', 'asc')
-                        ->get();
-
-        $table = $table1->merge($table2);
-
+        $same_acc = [];
         foreach ($table as $key => $value) {
+
             if($value->dracc == $this->glaccount){
                 $value->acccode = $value->cracc;
                 $value->costcode = $value->crcostcode;
@@ -134,6 +114,10 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
                 $value->cramount = $value->amount;
                 $value->dramount = 0;
                 $value->acctname = $value->acctname_dr;
+            }
+
+            if($value->dracc == $value->cracc){
+                array_push($same_acc, clone $value);
             }
 
             switch ($value->source) {
@@ -153,16 +137,13 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
                     $data = $this->oth_data($value);
                     break;
             }
-
-            // if(!empty($data)){
-            //     $value->desc_ = $data->desc;
-            //     $value->reference = $data->refe;
-            // }else{
-            //     $value->desc_ = ' ';
-            // }
         }
 
-        // dd($table);
+        foreach ($same_acc as $obj) {
+            $obj->cramount = $value->amount;
+            $obj->dramount = 0;
+            $table = $table->merge([$obj]);
+        }
 
         return view('finance.GL.acctenq_date.acctenq_dateExcel', compact('table','glaccount','compname','fromdate','todate'));
     }
