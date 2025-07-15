@@ -470,7 +470,7 @@ $(document).ready(function () {
 							obj.dept = obj.deptcode;
 							obj.qtyin = numeral(obj.txnqty).format('0,0');
 							obj.qtyout = '';
-						}else if (obj.crdbfl.toUpperCase() == 'OUT'){
+						}else if (obj.crdbfl.toUpperCase() == 'OUT'){ //salesorder
 							accumamt = accumamt - ret_parsefloat(obj.amount);
 							accumqty = accumqty - parseInt(obj.txnqty);
 							obj.balquan = numeral(accumqty).format('0,0');
