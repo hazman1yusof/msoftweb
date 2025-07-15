@@ -11,6 +11,7 @@ $(document).ready(function (){
     
     disableForm('#formSixMinWalking');
     disableForm('#formBergBalanceTest');
+    disableForm('#formMusculoAssessment');
     disableForm('#formPosturalAssessment');
     disableForm('#formOswestryQuest');
     disableForm('#formCardiorespAssessment');
@@ -71,6 +72,21 @@ $(document).ready(function (){
                 
                 // $('#tbl_bergBalanceTest_date').DataTable().ajax.reload();
                 getdata_bergBalanceTest();
+                break;
+            case 'musculoAssessment':
+                var urlparam_tbl_musculoAssessment = {
+                    action: 'get_datetime_musculoAssessment',
+                    mrn: $("#mrn_physio").val(),
+                    episno: $("#episno_physio").val()
+                }
+                
+                tbl_musculoAssessment_date.ajax.url("./musculoAssessment/table?"+$.param(urlparam_tbl_musculoAssessment)).load(function (data){
+                    emptyFormdata_div("#formMusculoAssessment",['#mrn_physio','#episno_physio']);
+                    $('#tbl_musculoAssessment_date tbody tr:eq(0)').click(); // to select first row
+                });
+                
+                // $('#tbl_musculoAssessment_date').DataTable().ajax.reload();
+                getdata_musculoAssessment();
                 break;
             case 'posturalAssessment':
                 var urlparam_tbl_posturalAssessment = {
@@ -187,6 +203,7 @@ function empty_physio(){
     emptyFormdata_div("#formPhysiotherapy");
     emptyFormdata_div("#formSixMinWalking");
     emptyFormdata_div("#formBergBalanceTest");
+    emptyFormdata_div("#formMusculoAssessment");
     emptyFormdata_div("#formPosturalAssessment");
     emptyFormdata_div("#formOswestryQuest");
     emptyFormdata_div("#formCardiorespAssessment");
@@ -195,6 +212,7 @@ function empty_physio(){
     emptyFormdata_div("#formSpinalCord");
     button_state_sixMinWalking('empty');
     button_state_bergBalanceTest('empty');
+    button_state_musculoAssessment('empty');
     button_state_posturalAssessment('empty');
     button_state_oswestryQuest('empty');
     button_state_cardiorespAssessment('empty');
@@ -222,6 +240,7 @@ function empty_physio(){
 function populate_physio(obj){
     emptyFormdata_div("#formSixMinWalking",['#mrn_physio','#episno_physio']);
     emptyFormdata_div("#formBergBalanceTest",['#mrn_physio','#episno_physio']);
+    emptyFormdata_div("#formMusculoAssessment",['#mrn_physio','#episno_physio']);
     emptyFormdata_div("#formPosturalAssessment",['#mrn_physio','#episno_physio']);
     emptyFormdata_div("#formOswestryQuest",['#mrn_physio','#episno_physio']);
     emptyFormdata_div("#formCardiorespAssessment",['#mrn_physio','#episno_physio']);
@@ -290,6 +309,7 @@ $('#tab_physio').on('shown.bs.collapse', function (){
     // if($('#mrn_physio').val() != ''){
     //     getdata_sixMinWalking();
     //     getdata_bergBalanceTest();
+    //     getdata_musculoAssessment();
     //     getdata_posturalAssessment();
     //     getdata_oswestryQuest();
     //     getdata_cardiorespAssessment();
@@ -303,6 +323,7 @@ $('#tab_physio').on('hide.bs.collapse', function (){
     emptyFormdata_div("#formPhysiotherapy",['#mrn_physio','#episno_physio']);
     button_state_sixMinWalking('empty');
     button_state_bergBalanceTest('empty');
+    button_state_musculoAssessment('empty');
     button_state_posturalAssessment('empty');
     button_state_oswestryQuest('empty');
     button_state_cardiorespAssessment('empty');

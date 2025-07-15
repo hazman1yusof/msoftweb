@@ -84,7 +84,7 @@
                                     <tr>
                                         <td style="padding: 11px 150px;">
                                             <div class="ui card">
-                                                <a class="ui card bodydia_cardio" data-type='BB_CARDIO'>
+                                                <a class="ui card bodydia_cardio" data-type='DIAG_CARDIO'>
                                                     <div class="image">
                                                         <img src="{{ asset('patientcare/img/bodydiagcardio.png') }}">
                                                     </div>
