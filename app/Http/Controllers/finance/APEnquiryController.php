@@ -250,7 +250,10 @@ class APEnquiryController extends defaultController
                         'ap.unallocated AS apacthdr_unallocated'
                         
                     )
-                    ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
+                    ->leftjoin('material.supplier as su', function ($join){
+                        $join = $join->on('su.SuppCode', '=', 'ap.suppcode')
+                                    ->where('su.compcode','=',session('compcode'));
+                    })
                     ->where('ap.compcode','=', session('compcode'))
                     ->where('ap.source','=','AP');
                     
@@ -334,29 +337,29 @@ class APEnquiryController extends defaultController
 
         $paginate = $table->paginate($request->rows);
 
-        foreach ($paginate->items() as $key => $value) {
-            $apactdtl = DB::table('finance.apactdtl')
-                        ->where('source','=',$value->apacthdr_source)
-                        ->where('trantype','=',$value->apacthdr_trantype)
-                        ->where('auditno','=',$value->apacthdr_auditno);
+        // foreach ($paginate->items() as $key => $value) {
+            // $apactdtl = DB::table('finance.apactdtl')
+            //             ->where('source','=',$value->apacthdr_source)
+            //             ->where('trantype','=',$value->apacthdr_trantype)
+            //             ->where('auditno','=',$value->apacthdr_auditno);
 
-            if($apactdtl->exists()){
-                $value->apactdtl_outamt = $apactdtl->sum('amount');
-            }else{
-                $value->apactdtl_outamt = $value->apacthdr_outamount;
-            }
+            // if($apactdtl->exists()){
+            //     $value->apactdtl_outamt = $apactdtl->sum('amount');
+            // }else{
+            //     $value->apactdtl_outamt = $value->apacthdr_outamount;
+            // }
 
-            $apalloc = DB::table('finance.apalloc')
-                        ->where('source','=',$value->apacthdr_source)
-                        ->where('trantype','=',$value->apacthdr_trantype)
-                        ->where('auditno','=',$value->apacthdr_auditno);
+            // $apalloc = DB::table('finance.apalloc')
+            //             ->where('source','=',$value->apacthdr_source)
+            //             ->where('trantype','=',$value->apacthdr_trantype)
+            //             ->where('auditno','=',$value->apacthdr_auditno);
 
-            if($apalloc->exists()){
-                $value->unallocated = false;
-            }else{
-                $value->unallocated = true;
-            }
-        }
+            // if($apalloc->exists()){
+            //     $value->unallocated = false;
+            // }else{
+            //     $value->unallocated = true;
+            // }
+        // }
 
         //////////paginate/////////
 

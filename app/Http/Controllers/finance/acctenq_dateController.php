@@ -97,6 +97,7 @@ class acctenq_dateController extends defaultController
                     ->offset($request->start)
                     ->limit($request->length)->get();
 
+        $same_acc = [];
         foreach ($table as $key => $value) {
             $value->open = "<i class='fa fa-folder-open-o' </i>";
             $value->print = "<i class='fa fa-print' </i>";
@@ -110,6 +111,10 @@ class acctenq_dateController extends defaultController
                 $value->cramount = $value->amount;
                 $value->dramount = 0;
                 $value->acctname = $value->acctname_dr;
+            }
+
+            if($value->dracc == $value->cracc){
+                array_push($same_acc, clone $value);
             }
 
             switch ($value->source) {
@@ -136,6 +141,12 @@ class acctenq_dateController extends defaultController
             }else{
                 $value->desc_ = ' ';
             }
+        }
+
+        foreach ($same_acc as $obj) {
+            $obj->cramount = $obj->amount;
+            $obj->dramount = 0;
+            $table = $table->merge([$obj]);
         }
 
         $responce->data = $table;
