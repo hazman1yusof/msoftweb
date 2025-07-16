@@ -2686,7 +2686,7 @@ class PointOfSalesController extends defaultController
             })
             ->where('h.idno','=',$idno)
             // ->where('h.mrn','=','0')
-            ->where('h.compcode','=',session('compcode'))
+            ->whereIn('h.compcode',[session('compcode'),'xx'])
             ->first();
 
         $receipt = DB::table('debtor.dballoc as a')
@@ -2696,7 +2696,7 @@ class PointOfSalesController extends defaultController
                 $join = $join->where("h.trantype", '=', 'RC');
                 $join = $join->on("h.auditno", '=', 'a.docauditno');
             })
-            ->where("a.compcode", '=', session('compcode'))
+            ->whereIn('a.compcode',[session('compcode'),'xx'])
             ->where("a.refsource", '=', 'PB')
             ->where("a.reftrantype", '=', 'IN')
             ->where("a.refauditno", '=', $dbacthdr->auditno);
@@ -2740,7 +2740,7 @@ class PointOfSalesController extends defaultController
             ->where('b.source','=',$dbacthdr->source)
             ->where('b.trantype','=',$dbacthdr->trantype)
             ->where('b.billno','=',$dbacthdr->auditno)
-            ->where('b.compcode','=',session('compcode'))
+            ->whereIn('b.compcode',[session('compcode'),'xx'])
             ->get();
 
         // dd($billsum);

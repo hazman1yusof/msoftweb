@@ -845,6 +845,8 @@ abstract class defaultController extends Controller{
                     $responce->year = $year;
                     $responce->period = $period;
                     $responce->status = $status;
+                    $responce->datefr = $arrvalue['datefr'.$x];
+                    $responce->dateto = $arrvalue['dateto'.$x];
                     return $responce;
                 }
             }
@@ -875,6 +877,8 @@ abstract class defaultController extends Controller{
                     $responce->year = $year;
                     $responce->period = $period;
                     $responce->status = $status;
+                    $responce->datefr = $arrvalue['datefr'.$x];
+                    $responce->dateto = $arrvalue['dateto'.$x];
                     return $responce;
                 }
             }

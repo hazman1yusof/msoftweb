@@ -26,6 +26,9 @@
 	  <form method="post" id="depreciation" action="./fadepricate/form">
 	  	{{ csrf_field() }}
 	  	<input type="hidden" name="oper" value="depreciation">
+	  	<input type="hidden" name="year" value="{{$facontrol->year}}">
+	  	<input type="hidden" name="period" value="{{$facontrol->period}}">
+
 	  	<button type="submit" class="btn btn-primary btn-lg">Start Depreciation Process</button>
 	  </form>
 	</div>
@@ -36,6 +39,16 @@
 
 @section('scripts')
 
-	<script src="js/finance/FA/fadepricate/fadepricate.js"></script>
+	<script>
+		
+		$(document).ready(function () {
+			$("body").show();
+
+			$('#submit').click(function(){
+				$('#submit').attr('disabled',true);
+			});
+
+		});
+	</script>
 
 @endsection

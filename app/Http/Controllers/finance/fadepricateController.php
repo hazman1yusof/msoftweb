@@ -17,6 +17,7 @@ class fadepricateController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
+        $this->auditno;
     }
 
     public function show(Request $request)
@@ -47,16 +48,25 @@ class fadepricateController extends defaultController
 
         try {
 
+            $year = $request->year;
+            $period = $request->period;
+
             //1. check facontrol
-            $facontrol_obj = DB::table('finance.facontrol')->where('compcode','=',session('compcode'));
+            $facontrol_obj = DB::table('finance.facontrol')
+                            ->where('compcode','=',session('compcode'));
 
             if($facontrol_obj->exists()){
                 //2.baca semua faregister
+
+
+                $yearperiod = defaultController::getyearperiod_($year.'-'.$period.'-01');
+                $dateto = $yearperiod->dateto;
+
                 $faregister_obj = DB::table('finance.faregister')
                                     ->where('compcode','=',session('compcode'))
                                     ->where('recstatus','=','ACTIVE')
                                     ->whereNotNull('startdepdate')
-                                    ->where('startdepdate','<=',Carbon::now("Asia/Kuala_Lumpur"));
+                                    ->where('startdepdate','<=',$dateto);
                                     
                 if($faregister_obj->exists()){
 
@@ -97,7 +107,7 @@ class fadepricateController extends defaultController
 
                             //kira process_date
                             $facontrol = $facontrol_obj->first();
-                            $process_date = Carbon::create($facontrol->year, $facontrol->period)->lastOfMonth()->format('Y-m-d');
+                            $process_date = $dateto;
 
                             //6. buat fatran
                             $this->fainface(
@@ -146,7 +156,7 @@ class fadepricateController extends defaultController
 
             $queries = DB::getQueryLog();
 
-            DB::commit();
+            // DB::commit();
 
             return back();
 
@@ -156,7 +166,6 @@ class fadepricateController extends defaultController
             
             return response('Error'.$e, 500);
         }
-
     }
 
     public function fainface(Request $request,$faregister,$amount,$process_date){
@@ -171,6 +180,7 @@ class fadepricateController extends defaultController
 
             //plus 1 sysparam
             $auditno = $sysparam->pvalue1 + 1;
+            $this->auditno = $auditno;
 
             $sysparam_obj->update([
                 'pvalue1' => $auditno,
