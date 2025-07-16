@@ -210,27 +210,27 @@ class arenquiryController extends defaultController
         $paginate = $table->paginate($request->rows);
         
         foreach($paginate->items() as $key => $value){
-            $dbactdtl = DB::table('debtor.dbactdtl')
-                        ->where('source','=',$value->db_source)
-                        ->where('trantype','=',$value->db_trantype)
-                        ->where('auditno','=',$value->db_auditno);
+            // $dbactdtl = DB::table('debtor.dbactdtl')
+            //             ->where('source','=',$value->db_source)
+            //             ->where('trantype','=',$value->db_trantype)
+            //             ->where('auditno','=',$value->db_auditno);
             
-            if($dbactdtl->exists()){
-                $value->dbactdtl_outamt = $dbactdtl->sum('amount');
-            }else{
-                $value->dbactdtl_outamt = $value->db_outamount;
-            }
+            // if($dbactdtl->exists()){
+            //     $value->dbactdtl_outamt = $dbactdtl->sum('amount');
+            // }else{
+            //     $value->dbactdtl_outamt = $value->db_outamount;
+            // }
             
-            $dballoc = DB::table('debtor.dballoc')
-                        ->where('docsource','=',$value->db_source)
-                        ->where('doctrantype','=',$value->db_trantype)
-                        ->where('docauditno','=',$value->db_auditno);
+            // $dballoc = DB::table('debtor.dballoc')
+            //             ->where('docsource','=',$value->db_source)
+            //             ->where('doctrantype','=',$value->db_trantype)
+            //             ->where('docauditno','=',$value->db_auditno);
             
-            if($dballoc->exists()){
-                $value->unallocated = false;
-            }else{
-                $value->unallocated = true;
-            }
+            // if($dballoc->exists()){
+            //     $value->unallocated = false;
+            // }else{
+            //     $value->unallocated = true;
+            // }
             
             if($value->db_trantype == 'RC'){
                 $till = DB::table('debtor.till')
