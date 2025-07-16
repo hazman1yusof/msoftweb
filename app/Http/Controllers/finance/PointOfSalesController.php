@@ -2689,22 +2689,52 @@ class PointOfSalesController extends defaultController
             ->whereIn('h.compcode',[session('compcode'),'xx'])
             ->first();
 
-        $receipt = DB::table('debtor.dballoc as a')
-            ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate', 'h.entrytime','h.hdrtype','h.recptno','h.doctorcode','h.reference','h.paymode','h.payername','h.doctorcode','h.RCCASHbalance')
-            ->join('debtor.dbacthdr as h', function($join) use ($request,$dbacthdr){
-                $join = $join->where("h.source", '=', 'PB');
-                $join = $join->where("h.trantype", '=', 'RC');
-                $join = $join->on("h.auditno", '=', 'a.docauditno');
-            })
-            ->whereIn('a.compcode',[session('compcode'),'xx'])
-            ->where("a.refsource", '=', 'PB')
-            ->where("a.reftrantype", '=', 'IN')
-            ->where("a.refauditno", '=', $dbacthdr->auditno);
+        if($dbacthdr->trantype == 'RC'){
+
+            $receipt = DB::table('debtor.dballoc as a')
+                ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate', 'h.entrytime','h.hdrtype','h.recptno','h.doctorcode','h.reference','h.paymode','h.payername','h.doctorcode','h.RCCASHbalance','a.refsource','a.reftrantype','a.refauditno')
+                ->join('debtor.dbacthdr as h', function($join) use ($request,$dbacthdr){
+                    $join = $join->where("h.source", '=', 'PB');
+                    $join = $join->where("h.trantype", '=', 'RC');
+                    $join = $join->on("h.auditno", '=', 'a.docauditno');
+                })
+                ->whereIn('a.compcode',[session('compcode'),'xx'])
+                ->where("a.docsource", '=', 'PB')
+                ->where("a.doctrantype", '=', 'RC')
+                ->where("a.docauditno", '=', $dbacthdr->auditno);
+        }else{
+
+            $receipt = DB::table('debtor.dballoc as a')
+                ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate', 'h.entrytime','h.hdrtype','h.recptno','h.doctorcode','h.reference','h.paymode','h.payername','h.doctorcode','h.RCCASHbalance')
+                ->join('debtor.dbacthdr as h', function($join) use ($request,$dbacthdr){
+                    $join = $join->where("h.source", '=', 'PB');
+                    $join = $join->where("h.trantype", '=', 'RC');
+                    $join = $join->on("h.auditno", '=', 'a.docauditno');
+                })
+                ->whereIn('a.compcode',[session('compcode'),'xx'])
+                ->where("a.refsource", '=', 'PB')
+                ->where("a.reftrantype", '=', 'IN')
+                ->where("a.refauditno", '=', $dbacthdr->auditno);
+        }
 
         if(!$receipt->exists()){
             abort(403, 'No Payment');
         }else{
             $receipt = $receipt->get();
+        }
+
+
+        if($dbacthdr->trantype == 'RC'){
+
+            $source = $receipt[0]->refsource;
+            $trantype = $receipt[0]->reftrantype;
+            $auditno = $receipt[0]->refauditno;
+
+        }else{
+
+            $source = $dbacthdr->source;
+            $trantype = $dbacthdr->trantype;
+            $auditno = $dbacthdr->auditno;
         }
 
         $billsum = DB::table('debtor.billsum AS b')
@@ -2737,9 +2767,9 @@ class PointOfSalesController extends defaultController
                 $join = $join->on('iv.uomcode', '=', 'b.uom');
                 $join = $join->where('iv.compcode', '=', session('compcode'));
             })
-            ->where('b.source','=',$dbacthdr->source)
-            ->where('b.trantype','=',$dbacthdr->trantype)
-            ->where('b.billno','=',$dbacthdr->auditno)
+            ->where('b.source','=',$source)
+            ->where('b.trantype','=',$trantype)
+            ->where('b.billno','=',$auditno)
             ->whereIn('b.compcode',[session('compcode'),'xx'])
             ->get();
 
