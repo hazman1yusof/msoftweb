@@ -2325,7 +2325,7 @@
                                         <div class="inline fields">
                                             <label>Therapist name</label>
                                             <div class="field">
-                                                <input name="therapistNameInit" type="text">
+                                                <input name="therapistNameInit1" type="text">
                                             </div>
                                         </div>
                                     </td>
@@ -2333,7 +2333,7 @@
                                         <div class="inline fields">
                                             <label>Therapist name</label>
                                             <div class="field">
-                                                <input name="therapistNameProg" type="text">
+                                                <input name="therapistNameProg1" type="text">
                                             </div>
                                         </div>
                                     </td>
@@ -2341,7 +2341,33 @@
                                         <div class="inline fields">
                                             <label>Therapist name</label>
                                             <div class="field">
-                                                <input name="therapistNameFin" type="text">
+                                                <input name="therapistNameFin1" type="text">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="inline fields">
+                                            <label>Therapist name</label>
+                                            <div class="field">
+                                                <input name="therapistNameInit2" type="text">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="inline fields">
+                                            <label>Therapist name</label>
+                                            <div class="field">
+                                                <input name="therapistNameProg2" type="text">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="inline fields">
+                                            <label>Therapist name</label>
+                                            <div class="field">
+                                                <input name="therapistNameFin2" type="text">
                                             </div>
                                         </div>
                                     </td>
