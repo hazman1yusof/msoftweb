@@ -140,10 +140,12 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
         }
 
         foreach ($same_acc as $obj) {
-            $obj->cramount = $value->amount;
+            $obj->cramount = $obj->amount;
             $obj->dramount = 0;
             $table = $table->merge([$obj]);
         }
+
+        dd($same_acc);
 
         return view('finance.GL.acctenq_date.acctenq_dateExcel', compact('table','glaccount','compname','fromdate','todate'));
     }
