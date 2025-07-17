@@ -63,6 +63,7 @@
         <tr>
             <td style="font-weight: bold;text-align: left">DOC DATE</td>
             <td style="font-weight: bold;text-align: left">DATE SEND</td>
+            <td style="font-weight: bold;text-align: left">AUDIT NO</td>
             <td style="font-weight: bold;text-align: left">DOCUMENT</td>
             <td style="font-weight: bold;text-align: left">REMARK</td>
             <td style="font-weight: bold;text-align: right">BALANCE AMOUNT</td>
@@ -82,7 +83,8 @@
                 @else
                     <td></td>
                 @endif
-                <td>{{$db_obj->trantype}}/{{str_pad($db_obj->auditno, 7, "0", STR_PAD_LEFT)}}</td>
+                <td data-format="@">{{str_pad($db_obj->auditno, 7, "0", STR_PAD_LEFT)}}</td>
+                <td data-format="@">{{$db_obj->doc_no}}</td>
 
                 @if(is_numeric($db_obj->reference))
                 <td  data-format="0">{!!$db_obj->reference!!}</td>

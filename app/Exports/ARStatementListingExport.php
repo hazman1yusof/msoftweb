@@ -81,7 +81,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
     {
         return [
             'B' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'C' => NumberFormat::FORMAT_GENERAL,
             'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
@@ -95,12 +95,13 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
             'A' => 15,
             'B' => 15,
             'C' => 15,
-            'D' => 35,
-            'E' => 15,
+            'D' => 15,
+            'E' => 35,
             'F' => 15,
             'G' => 15,
-            'H' => 18,
-            'I' => 15,
+            'H' => 15,
+            'I' => 18,
+            'J' => 15,
         ];
     }
     
@@ -211,7 +212,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     }else{
                         $value->reference = $value->pm_name;
                     }
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->invno, 5, "0", STR_PAD_LEFT);
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->invno, 7, "0", STR_PAD_LEFT);
                     $value->amount_dr = $newamt;
                     $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
@@ -220,7 +221,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     break;
                 case 'DN':
                     $value->reference = $value->reference;
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                     $value->amount_dr = $newamt;
                     $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
@@ -229,7 +230,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     break;
                 case 'BC':
                     // $value->remark
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                     $value->amount_dr = $newamt;
                     $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
@@ -252,7 +253,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     break;
                 case 'CN':
                     $value->remark = $value->remark;
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                     $value->amount_cr = $newamt;
                     $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
@@ -281,7 +282,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     break;
                 case 'RT':
                     // $value->remark
-                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->doc_no = $value->trantype.'/'.str_pad($value->auditno, 7, "0", STR_PAD_LEFT);
                     $value->amount_cr = $newamt;
                     $value->newamt = $newamt;
                     if(floatval($newamt) != 0.00){
