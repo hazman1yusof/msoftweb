@@ -171,8 +171,10 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
         ];
     }
 
-
     public function oe_data($obj){
+        $responce = new stdClass();
+        $obj->reference = 'INV-'.$obj->reference;
+
         $billsum = DB::table('debtor.billsum as bs')
                         ->select('bs.chggroup','ch.description')
                         ->leftJoin('hisdb.chgmast as ch', function($join){
@@ -180,13 +182,14 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
                                             ->where('ch.compcode','=',session('compcode'));
                         })
                         ->where('bs.compcode',session('compcode'))
-                        ->where('bs.auditno',$obj->auditno)
-                        ->first();
+                        ->where('bs.auditno',$obj->auditno);
 
-        $responce = new stdClass();
-        $obj->description = $billsum->description;
-        $responce->desc = $billsum->description;
-        $obj->reference = 'INV-'.$obj->reference;
+        if($billsum->exists()){
+            $billsum = $billsum->first();
+            $obj->description = $billsum->description;
+            $responce->desc = $billsum->description;
+            $obj->reference = 'INV-'.$obj->reference;
+        }
 
         return $responce;
     }
