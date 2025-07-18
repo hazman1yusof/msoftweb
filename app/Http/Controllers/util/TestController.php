@@ -42,8 +42,8 @@ class TestController extends defaultController
 
     public function table(Request $request){  
         switch($request->action){
-            case 'faregister_dept':
-                return $this->faregister_dept($request);
+            case 'gltran_fa_load':
+                return $this->gltran_fa_load($request);
             case 'allocation_btlkn':
                 return $this->allocation_btlkn($request);
             case 'gltran_jnl':
@@ -5700,8 +5700,7 @@ class TestController extends defaultController
                         ->where('year','2025')
                         ->where('period',$period)
                         ->where('source','iv')
-                        ->where('trantype','TUI')
-                        ->where('trantype','TUO')
+                        ->whereIn('trantype',['tui','tuo'])
                         ->update([
                             'compcode'=>'xx',
                             'upduser' =>'SYSTEM_AR',
@@ -6761,6 +6760,48 @@ class TestController extends defaultController
                             'deptcode' => $faregister_->deptcode
                         ]);
                 }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function gltran_fa_load(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $gltran_fa = DB::table('recondb.gltran_fa')
+                        ->get();
+
+            foreach ($gltran_fa as $obj) {
+                DB::table('finance.gltran')
+                    ->insert([
+                        'compcode' => $obj->compcode,
+                        'auditno' => $obj->auditno,
+                        'lineno_' => $obj->lineno_,
+                        'source' => $obj->source,
+                        'trantype' => $obj->trantype,
+                        'reference' => $obj->reference,
+                        'description' => $obj->description,
+                        'year' => $obj->year,
+                        'period' => $obj->period,
+                        'drcostcode' => $obj->drcostcode,
+                        'crcostcode' => $obj->crcostcode,
+                        'dracc' => $obj->dracc,
+                        'cracc' => $obj->cracc,
+                        'amount' => $obj->amount,
+                        'idno' => $obj->idno,
+                        'postdate' => $obj->postdate,
+                        'adduser' => 'system_1807',
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
             }
 
             DB::commit();
