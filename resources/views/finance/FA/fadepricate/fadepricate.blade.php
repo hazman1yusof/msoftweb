@@ -3,6 +3,7 @@
 @section('title', 'Fa Depreciation ')
 
 @section('body')
+<input type="hidden" id="callback" value="{{Session::get('success')}}">
 <div class="container">
 	<div class="jumbotron" style="margin-top: 50px;text-align: center;">
 	  <h2>Fixed Asset Depreciation process</h2>
@@ -23,13 +24,16 @@
 
 	  <br>
 	  <br>
-	  <form method="post" id="depreciation" action="./fadepricate/form">
+
+	  <span id="error_infront" style="color: red">{{Session::get('error')}}</span>
+	  <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw" id="loading" style="display: none;"></i>
+	  <form method="post" id="depreciation" action="./fadepricate/form" style="padding-top: 10px;">
 	  	{{ csrf_field() }}
 	  	<input type="hidden" name="oper" value="depreciation">
 	  	<input type="hidden" name="year" value="{{$facontrol->year}}">
 	  	<input type="hidden" name="period" value="{{$facontrol->period}}">
 
-	  	<button type="submit" class="btn btn-primary btn-lg">Start Depreciation Process</button>
+	  	<button id="submit" type="submit" class="btn btn-primary btn-lg" disabled>Start Depreciation Process</button>
 	  </form>
 	</div>
 </div>
@@ -42,9 +46,15 @@
 	<script>
 		
 		$(document).ready(function () {
-			$("body").show();
+			if($('#callback').val() != 'success'){
+				$('#submit').attr('disabled',false);
+			}else{
+				$('#submit').text("Depreciation Process Finish");
+			}
 
-			$('#submit').click(function(){
+			$('#depreciation').submit(function(){
+				$('#loading').show();
+				$('#submit').text("Processing Depreciation...");
 				$('#submit').attr('disabled',true);
 			});
 

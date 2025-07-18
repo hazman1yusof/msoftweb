@@ -42,8 +42,8 @@ class TestController extends defaultController
 
     public function table(Request $request){  
         switch($request->action){
-            // case 'chgmast_invflag_tukar_dari_product':
-            //     return $this->chgmast_invflag_tukar_dari_product($request);
+            case 'faregister_dept':
+                return $this->faregister_dept($request);
             case 'allocation_btlkn':
                 return $this->allocation_btlkn($request);
             case 'gltran_jnl':
@@ -6729,6 +6729,41 @@ class TestController extends defaultController
 
             DB::commit();
             dd($product);
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function faregister_dept(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $faregister = DB::table('finance.faregister')
+                        ->where('compcode',session('compcode'))
+                        ->get();
+
+            foreach ($faregister as $obj) {
+                $faregister_ = DB::table('recondb.faregister_dept')
+                                    ->where('assetno',$obj->assetno);
+
+                if($faregister_->exists()){
+                    $faregister_ = $faregister_->first();
+
+                    DB::table('finance.faregister')
+                        ->where('compcode',session('compcode'))
+                        ->where('assetno',$obj->assetno)
+                        ->update([
+                            'deptcode' => $faregister_->deptcode
+                        ]);
+                }
+            }
+
+            DB::commit();
 
         } catch (Exception $e) {
             DB::rollback();

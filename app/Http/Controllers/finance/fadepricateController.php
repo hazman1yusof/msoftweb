@@ -44,7 +44,6 @@ class fadepricateController extends defaultController
 
     public function depreciation(Request $request){
         DB::beginTransaction();
-        DB::enableQueryLog();
 
         try {
 
@@ -83,11 +82,16 @@ class fadepricateController extends defaultController
                             $facode = $facode_obj->first();
 
                             $cost = $faregister->currentcost;
-                            $lstyear = $faregister->lstytddep;
-                            $ytd = $faregister->cuytddep;
+                            $residualvalue = $faregister->residualvalue;
+                            // $lstyear = $faregister->lstytddep;
+                            // $ytd = $faregister->cuytddep;
 
-                            $accum_costdisp = 0;
-                            $accum_dep = 0;
+                            $accum_dep = DB::table('finance.fatran')
+                                        ->where('compcode','=',session('compcode'))
+                                        ->where('assetcode','=',$faregister->assetcode)
+                                        ->where('assetno','=',$faregister->assetno)
+                                        ->where('trantype','=','DEP')
+                                        ->sum('amount');
 
                             $fatrans = DB::table('finance.fatran')
                                         ->where('compcode','=',session('compcode'))
@@ -96,35 +100,49 @@ class fadepricateController extends defaultController
                                         ->where('trantype','=','DIS')
                                         ->get();
 
+
+                            $accum_costdisp = 0;
                             foreach ($fatrans as $fatran) {
                                 $accum_costdisp = $accum_costdisp + $fatran->amount;
                             }
 
                             //4. cost - dis * (rate / 100 / 12)
                             $cost = $cost - $accum_costdisp;
-                            $accum_dep = $cost * $facode->rate / 100 /12;
-                            // dd($accum_dep);
+                            $depr = $cost * $facode->rate / 100 /12;
 
-                            //kira process_date
-                            $facontrol = $facontrol_obj->first();
-                            $process_date = $dateto;
+                            $accum_after = $accum_dep + $depr;
+                            if($cost - $accum_after < $residualvalue){
+                                $cost_minus_resvalue = $cost - $residualvalue;
+                                $last_depr = $cost_minus_resvalue - $accum_dep;
+
+                                $depr = $last_depr;
+
+                                DB::table('finance.faregister')
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('recstatus','=','ACTIVE')
+                                    ->where('assetcode','=',$faregister->assetcode)
+                                    ->where('assetno','=',$faregister->assetno)
+                                    ->update([
+                                        'recstatus' => 'DEACTIVE',
+                                        'trantype' => 'FUL'
+                                    ]);
+                            }
 
                             //6. buat fatran
                             $this->fainface(
                                 $request,
                                 $faregister,
-                                $accum_dep,
-                                $process_date
+                                $depr,
+                                $dateto
                             );
 
                             //6. buat fatran
                             $this->gltran(
                                 $request,
                                 $faregister,
-                                $accum_dep,
-                                $process_date
+                                $depr,
+                                $dateto
                             );
-
                         }
 
                     }
@@ -154,17 +172,15 @@ class fadepricateController extends defaultController
 
             }
 
-            $queries = DB::getQueryLog();
+            DB::commit();
 
-            // DB::commit();
-
-            return back();
+            return back()->with('success', 'success');
 
         } catch (\Exception $e) {
 
             DB::rollback();
             
-            return response('Error'.$e, 500);
+            return back()->with('error', $e->getMessage());
         }
     }
 
@@ -214,13 +230,23 @@ class fadepricateController extends defaultController
         $row_dept = DB::table('sysdb.department')
             ->select('costcode')
             ->where('compcode','=',session('compcode'))
-            ->where('deptcode','=',$faregister->deptcode)
-            ->first();
+            ->where('deptcode','=',$faregister->deptcode);
+
+        if(!$row_dept->exists()){
+            throw new \Exception("Department not Exists : ".$faregister->deptcode);
+        }else{
+            $row_dept = $row_dept->first();
+        }
 
         $facode = DB::table('finance.facode')
             ->where('compcode','=', session('compcode'))
-            ->where('assetcode','=', $faregister->assetcode)
-            ->first();
+            ->where('assetcode','=', $faregister->assetcode);
+
+        if(!$facode->exists()){
+            throw new \Exception("facode not Exists : ".$faregister->assetcode);
+        }else{
+            $facode = $facode->first();
+        }
 
         $drcostcode = $row_dept->costcode;
         $dracc = $facode->gldep;
