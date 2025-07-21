@@ -22,7 +22,7 @@ use Illuminate\Contracts\View\View;
 use DateTime;
 use Carbon\Carbon;
 
-class DailyBillCollectionExport implements FromView, WithEvents, WithColumnWidths
+class DailyBillCollectionExport implements FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     
     /**
@@ -40,20 +40,34 @@ class DailyBillCollectionExport implements FromView, WithEvents, WithColumnWidth
                     ->first();
     }
     
+    public function columnFormats(): array
+    {
+        return [
+            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'L' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+        ];
+    }
+
     public function columnWidths(): array
     {
         return [
             'A' => 12,
-            'B' => 15,
-            'C' => 25,
-            'D' => 13,
-            'E' => 10,
+            'B' => 12,
+            'C' => 15,
+            'D' => 25,
+            'E' => 13,
             'F' => 10,
             'G' => 10,
             'H' => 10,
             'I' => 10,
-            'J' => 15,
-            'K' => 15,
+            'J' => 10,
+            'K' => 10,
+            'L' => 15,
+            'M' => 15,
         ];
     }
     
@@ -62,102 +76,113 @@ class DailyBillCollectionExport implements FromView, WithEvents, WithColumnWidth
         $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
         
-        $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
-                    ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'dm.debtorcode as dm_debtorcode', 'dm.name as dm_name')
+        $dbacthdr = DB::table('debtor.dbacthdr as dh')
+                    ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.paymode as dh_paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'dm.debtorcode as dm_debtorcode', 'dm.name as dm_name','db.paymode','db.amount as db_amount','db.recptno','pm.paytype as pm_paytype','db.docsource','db.doctrantype','db.docauditno','dh2.amount as amount_dh2','dh2.recptno as recptno_dh2','pmt.name as pmt_name')
                     ->leftJoin('debtor.debtormast as dm', function($join){
                         $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
                                     ->where('dm.compcode', '=', session('compcode'));
+                    })->leftJoin('hisdb.pat_mast as pmt', function($join){
+                        $join = $join->where('pmt.compcode', '=', session('compcode'))
+                                    ->on('pmt.newmrn', '=', 'dh.mrn');
+                    })->leftJoin('debtor.dballoc as db', function($join) use ($datefr, $dateto){
+                        $join = $join->where('db.compcode', '=', session('compcode'))
+                                    ->on('db.refsource', '=', 'dh.source')
+                                    ->on('db.reftrantype', '=', 'dh.trantype')
+                                    ->on('db.refauditno', '=', 'dh.auditno')
+                                    ->whereDate('db.allocdate', '>=', $datefr)
+                                    ->whereDate('db.allocdate', '<=', $dateto)
+                                    ->where('db.recstatus', '=', 'POSTED');
+                                    // ->whereBetween('db.allocdate', [$datefr, $dateto]);
+                    })->leftJoin('debtor.dbacthdr as dh2', function($join) use ($datefr, $dateto){
+                        $join = $join->where('dh2.compcode', '=', session('compcode'))
+                                    ->on('dh2.source', '=', 'db.docsource')
+                                    ->on('dh2.trantype', '=', 'db.doctrantype')
+                                    ->on('dh2.auditno', '=', 'db.docauditno')
+                                    ->whereDate('dh2.posteddate', '>=', $datefr)
+                                    ->whereDate('dh2.posteddate', '<=', $dateto)
+                                    ->where('dh2.recstatus', '=', 'POSTED');
+                                    // ->whereBetween('db.allocdate', [$datefr, $dateto]);
+                    })->leftJoin('debtor.paymode as pm', function($join){
+                        $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                    ->where('pm.source', '=', 'AR')
+                                    ->where('pm.compcode', '=', session('compcode'));
                     })
                     ->where('dh.compcode','=',session('compcode'))
                     ->where('dh.source', '=', 'PB')
                     ->where('dh.trantype', '=', 'IN')
-                    ->whereBetween('dh.posteddate', [$datefr, $dateto])
+                    ->where('dh.recstatus', '=', 'POSTED')
+                    ->whereDate('dh.posteddate', '>=', $datefr)
+                    ->whereDate('dh.posteddate', '<=', $dateto)
+                    // ->whereBetween('dh.posteddate', [$datefr, $dateto])
                     ->orderBy('dh.posteddate','ASC')
                     ->get();
-        
-        $array_report = [];
-        foreach ($dbacthdr as $key => $value){
-            $value->card_amount = 0;
-            $value->cheque_amount = 0;
-            $value->cash_amount = 0;
-            $value->tt_amount = 0;
-            $value->cn_amount = 0;
-            array_push($array_report, $value);
-            
-            $dbacthdr_ex = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
-                            ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'dm.debtorcode as dm_debtorcode', 'dm.name as dm_name')
-                            ->leftJoin('debtor.debtormast as dm', function($join){
-                                $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
-                                            ->where('dm.compcode', '=', session('compcode'));
-                            })
-                            ->where('dh.payercode', '=', $value->payercode)
-                            ->where('dh.posteddate', '=', $value->posteddate)
-                            ->where('dh.compcode','=',session('compcode'))
-                            ->where('dh.source', '=', 'PB')
-                            ->whereIn('dh.trantype',['RC','RD','CN']);
-            
-            if($dbacthdr_ex->exists()){
-                foreach ($dbacthdr_ex->get() as $dbacthdr_exkey => $dbacthdr_exvalue) {
-                    $dbacthdr_exvalue->card_amount = 0;
-                    $dbacthdr_exvalue->cheque_amount = 0;
-                    $dbacthdr_exvalue->cash_amount = 0;
-                    $dbacthdr_exvalue->tt_amount = 0;
-                    $dbacthdr_exvalue->cn_amount = 0;
-                    switch ($dbacthdr_exvalue->trantype) {
-                        case 'CN':
-                            $dbacthdr_exvalue->cn_amount = $dbacthdr_exvalue->amount;
-                            array_push($array_report, $dbacthdr_exvalue);
-                            break;
-                        case 'RC':
-                            switch ($dbacthdr_exvalue->paytype) {
-                                case '#F_TAB-CARD':
-                                    $dbacthdr_exvalue->card_amount = $dbacthdr_exvalue->amount;
-                                    // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
-                                    break;
-                                case '#F_TAB-CHEQUE':
-                                    $dbacthdr_exvalue->cheque_amount = $dbacthdr_exvalue->amount;
-                                    // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
-                                    break;
-                                case '#F_TAB-CASH':
-                                    $dbacthdr_exvalue->cash_amount = $dbacthdr_exvalue->amount;
-                                    // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
-                                    break;
-                                case '#F_TAB-DEBIT':
-                                    $dbacthdr_exvalue->tt_amount = $dbacthdr_exvalue->amount;
-                                    // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
-                                    break;
-                            }
-                            array_push($array_report, $dbacthdr_exvalue);
-                            break;
-                        case 'RD':
-                            switch ($dbacthdr_exvalue->paytype) {
-                                case '#F_TAB-CARD':
-                                    $dbacthdr_exvalue->card_amount = $dbacthdr_exvalue->amount;
-                                    // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
-                                    break;
-                                case '#F_TAB-CHEQUE':
-                                    $dbacthdr_exvalue->cheque_amount = $dbacthdr_exvalue->amount;
-                                    // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
-                                    break;
-                                case '#F_TAB-CASH':
-                                    $dbacthdr_exvalue->cash_amount = $dbacthdr_exvalue->amount;
-                                    // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
-                                    break;
-                                case '#F_TAB-DEBIT':
-                                    $dbacthdr_exvalue->tt_amount = $dbacthdr_exvalue->amount;
-                                    // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
-                                    break;
-                            }
-                            array_push($array_report, $dbacthdr_exvalue);
-                            break;
-                        default:
-                            // code...
-                            break;
-                    }
+
+        // dd($dbacthdr);
+
+        $main_db = collect($dbacthdr)->unique(function ($item) {
+            return $item->source.$item->trantype.$item->auditno;
+        });
+
+        $dbacthdr_arex = [];
+        $dbacthdr_ex = DB::table('debtor.dbacthdr as dh')
+                        ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.paymode as dh_paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'dm.debtorcode as dm_debtorcode', 'dm.name as dm_name','pm.paytype as pm_paytype','dh.recptno')
+                        ->leftJoin('debtor.debtormast as dm', function($join){
+                            $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
+                                        ->where('dm.compcode', '=', session('compcode'));
+                        })->leftJoin('hisdb.pat_mast as pmt', function($join){
+                            $join = $join->where('pmt.compcode', '=', session('compcode'))
+                                        ->on('pmt.newmrn', '=', 'dh.mrn');
+                        })->leftJoin('debtor.paymode as pm', function($join){
+                            $join = $join->on('pm.paymode', '=', 'dh.paymode')
+                                        ->where('pm.source', '=', 'AR')
+                                        ->where('pm.compcode', '=', session('compcode'));
+                        })
+                        ->where('dh.compcode', '=', session('compcode'))
+                        ->where('dh.source', '=', 'PB')
+                        ->whereIn('dh.trantype', ['RC','RD','CN'])
+                        ->whereDate('dh.posteddate', '>=', $datefr)
+                        ->whereDate('dh.posteddate', '<=', $dateto)
+                        ->where('dh.recstatus', '=', 'POSTED')
+                        ->get();
+
+        foreach ($dbacthdr_ex as $obj) {
+                $dballoc_sum = DB::table('debtor.dballoc as db')
+                                // ->select('db.source','db.trantype','db.auditno','db.lineno_','db.docsource','db.doctrantype','db.docauditno','db.refsource','db.reftrantype','db.refauditno','db.refamount','db.reflineno','db.recptno','db.mrn','db.episno','db.allocsts','db.amount','db.outamount','db.tillcode','db.debtortype','db.debtorcode','db.payercode','db.paymode','db.allocdate','db.remark','pm.paytype as pm_paytype')
+                                // ->leftJoin('debtor.paymode as pm', function($join){
+                                //         $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                //                     ->where('pm.source', '=', 'AR')
+                                //                     ->where('pm.compcode', '=', session('compcode'));
+                                //     })
+                                ->where('db.compcode',session('compcode'))
+                                ->where('db.docsource',$obj->source)
+                                ->where('db.doctrantype',$obj->trantype)
+                                ->where('db.docauditno',$obj->auditno)
+                                ->whereDate('db.allocdate', '<=', $dateto)
+                                ->where('db.recstatus', '=', 'POSTED')
+                                ->sum('amount');
+
+                $amount_minus = $obj->amount - $dballoc_sum;
+
+                if($amount_minus > 0){
+                    $obj->amount_minus = $amount_minus;
+                    array_push($dbacthdr_arex, $obj);
                 }
-            }
+
         }
-        
+
+        // dd($dbacthdr_arex);
+
+        // foreach ($main_db_ex as $obj_m) {
+        //     if
+        // }
+
+        // if(count($dbacthdr_ex_ar) > 0){
+        //     $main_db_ex = collect($dbacthdr_ex_ar)->unique(function ($item) {
+        //         return $item->source.$item->trantype.$item->auditno;
+        //     });
+        // }
+
+        // dd($dbacthdr);
         $title = "DAILY BILL AND COLLECTION";
         
         $company = DB::table('sysdb.company')
@@ -174,7 +199,7 @@ class DailyBillCollectionExport implements FromView, WithEvents, WithColumnWidth
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.DailyBillCollection_Report.DailyBillCollection_Report_excel',compact('array_report','title','company'));
+        return view('finance.AR.DailyBillCollection_Report.DailyBillCollection_Report_excel',compact('main_db','dbacthdr','dbacthdr_arex','title','company'));
     }
     
     public function registerEvents(): array

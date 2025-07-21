@@ -83,9 +83,9 @@
 								<div class='col-md-12 btnform' style="padding: 20px 0px">
 									<fieldset>
 										<!-- <legend>Stock Sheet :</legend> -->
-										<button name="DailyBillCollection_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgen1">
+										<!-- <button name="DailyBillCollection_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgen1">
 											<span class="fa fa-file-pdf-o fa-lg"></span> Generate Report PDF
-										</button>
+										</button> -->
 										<button name="DailyBillCollection_xls" type="button" class="mybtn btn btn-sm mybtnxls" id="excelgen1">
 											<span class="fa fa-file-excel-o fa-lg"></span> Generate Report Excel
 										</button>
@@ -136,5 +136,26 @@
 @endsection
 
 @section('scripts')
-	<script src="js/finance/AR/DailyBillCollection_Report/DailyBillCollection_Report.js"></script>
+	<!-- <script src="js/finance/AR/DailyBillCollection_Report/DailyBillCollection_Report.js"></script> -->
+	<script>
+		$(document).ready(function () {
+    
+		    $("#genreport input[name='datefr']").change(function(){
+		        $("#genreportpdf input[name='datefr']").val($(this).val());
+		    });
+		    $("#genreport input[name='dateto']").change(function(){
+		        $("#genreportpdf input[name='dateto']").val($(this).val());
+		    });
+		    
+		    $("#pdfgen1").click(function() {
+		        window.open('./DailyBillCollection_Report/showpdf?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
+		    });
+		    
+		    $("#excelgen1").click(function() {
+		        window.open('./DailyBillCollection_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
+		        // window.location='./DailyBillCollection_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
+		    });
+		    
+		});
+	</script>
 @endsection
