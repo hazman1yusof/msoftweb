@@ -61,7 +61,7 @@
                                             <div class="inline fields">
                                                 <label>DATE:</label>
                                                 <div class="field">
-                                                    <input type="date" class="form-control" name="entereddate">
+                                                    <input type="date" class="form-control" id="musculoAssessment_entereddate" name="entereddate">
                                                 </div>
                                             </div>
                                         </td>

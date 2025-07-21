@@ -1665,6 +1665,7 @@ Route::post('/rehab/form','rehab\RehabController@form');
 Route::get('/sixMinWalking','rehab\SixMinWalkingController@show');
 Route::get('/sixMinWalking/table','rehab\SixMinWalkingController@table');
 Route::post('/sixMinWalking/form','rehab\SixMinWalkingController@form');
+Route::get('/sixMinWalking/sixminwalking_chart','rehab\SixMinWalkingController@sixminwalking_chart');
 
 Route::get('/bergBalanceTest','rehab\BergBalanceTestController@show');
 Route::get('/bergBalanceTest/table','rehab\BergBalanceTestController@table');
