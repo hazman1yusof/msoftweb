@@ -92,7 +92,7 @@
                                                 
                                                 <label>Date:</label>
                                                 <div class="field">
-                                                    <input type="date" class="form-control" name="entereddate">
+                                                    <input type="date" class="form-control" id="sixMinWalking_entereddate" name="entereddate">
                                                 </div>
                                             </div>
                                         </td>
