@@ -1693,6 +1693,7 @@ Route::post('/neuroAssessment/form','rehab\NeuroAssessmentController@form');
 Route::get('/motorScale','rehab\MotorScaleController@show');
 Route::get('/motorScale/table','rehab\MotorScaleController@table');
 Route::post('/motorScale/form','rehab\MotorScaleController@form');
+Route::get('/motorScale/motorscale_chart','rehab\MotorScaleController@motorscale_chart');
 
 Route::get('/spinalCord','rehab\SpinalCordController@show');
 Route::get('/spinalCord/table','rehab\SpinalCordController@table');
