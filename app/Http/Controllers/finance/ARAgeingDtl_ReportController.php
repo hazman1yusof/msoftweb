@@ -106,7 +106,7 @@ class ARAgeingDtl_ReportController extends defaultController
         $bytes = random_bytes(20);
         $process = bin2hex($bytes).'.xlsx';
 
-        (new ARAgeingDtlExport($process,$filename,$request->type,$request->date,$request->debtortype,$request->debtorcode_from,$request->debtorcode_to,$request->groupOne,$request->groupTwo,$request->groupThree,$request->groupFour,$request->groupFive,$request->groupSix))->store($process, \config('get_config.ATTACHMENT_UPLOAD'));
+        (new ARAgeingDtlExport($process,$filename,$request->type,$request->date,$request->debtortype,$request->debtorcode_from,$request->debtorcode_to,$request->groupOne,$request->groupTwo,$request->groupThree,$request->groupFour,$request->groupFive,$request->groupSix,$request->groupby))->store($process, \config('get_config.ATTACHMENT_UPLOAD'));
 
         // (new InvoicesExport)->queue('invoices.xlsx');
 

@@ -34,7 +34,7 @@ class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($process,$filename,$type,$date,$debtortype,$debtorcode_from,$debtorcode_to,$groupOne,$groupTwo,$groupThree,$groupFour,$groupFive,$groupSix)
+    public function __construct($process,$filename,$type,$date,$debtortype,$debtorcode_from,$debtorcode_to,$groupOne,$groupTwo,$groupThree,$groupFour,$groupFive,$groupSix,$groupby)
     {
         
         $this->process = $process;
@@ -54,6 +54,7 @@ class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
         $this->groupFour = $groupFour;
         $this->groupFive = $groupFive;
         $this->groupSix = $groupSix;
+        $this->groupby = $groupby;
 
         $this->grouping = [];
         $this->grouping[0] = 0;
@@ -107,7 +108,7 @@ class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
     public function columnWidths(): array
     {
         return [
-            'A' => 15,
+            'A' => 22,
             'B' => 65,
             'C' => 15,
             'D' => 15,
@@ -134,9 +135,10 @@ class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
         $debtorcode_from = $this->debtorcode_from;
         $debtorcode_to = $this->debtorcode_to;
         $grouping = $this->grouping;
+        $groupby = $this->groupby;
 
         $debtormast = DB::table('debtor.debtormast as dm')
-                        ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'pm.Name as pm_name','dm.debtortype','dt.debtortycode','dt.description','dm.name')
+                        ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'pm.Name as pm_name','dm.debtortype','dt.debtortycode','dt.description','dm.name','st.description as unit_desc')
                         ->join('debtor.debtortype as dt', function($join) use ($debtortype){
                             $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
                                          ->where('dt.compcode', '=', session('compcode'));
@@ -149,6 +151,10 @@ class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
                                          ->whereDate('dh.posteddate', '<=', $date)
                                          ->where('dh.recstatus', 'POSTED')
                                          ->where('dh.compcode', '=', session('compcode'));
+                        })
+                        ->join('sysdb.sector as st', function($join) use ($date){
+                            $join = $join->on('st.sectorcode', '=', 'dh.unit')
+                                         ->where('st.compcode', '=', session('compcode'));
                         })->leftJoin('hisdb.pat_mast as pm', function($join){
                             $join = $join->on('pm.NewMrn', '=', 'dh.mrn')
                                          ->where('pm.compcode', '=', session('compcode'));
@@ -296,7 +302,11 @@ class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
             
         }
 
-        $debtortype = collect($array_report)->unique('debtortycode');
+        if($groupby == 'debtortype'){
+            $debtortype = collect($array_report)->unique('debtortycode');
+        }else if($groupby == 'unit'){
+            $debtortype = collect($array_report)->unique('unit');
+        }
         $debtorcode = collect($array_report)->unique('debtorcode');
 
         $comp_name = $this->comp->name;
@@ -304,10 +314,18 @@ class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
 
         $this->stop_job_queue($idno_job_queue);
 
-        if($this->type == 'detail'){
-            return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel',compact('debtortype','debtorcode','array_report','grouping','date','date_at','comp_name','type'));
-        }else if($this->type == 'summary'){
-            return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel_summ',compact('debtortype','debtorcode','array_report','grouping','date','date_at','comp_name','type'));
+        if($groupby == 'debtortype'){
+            if($this->type == 'detail'){
+                return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel',compact('debtortype','debtorcode','array_report','grouping','date','date_at','comp_name','type','groupby'));
+            }else if($this->type == 'summary'){
+                return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel_summ',compact('debtortype','debtorcode','array_report','grouping','date','date_at','comp_name','type','groupby'));
+            }
+        }else if($groupby == 'unit'){
+            if($this->type == 'detail'){
+                return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel_unit',compact('debtortype','debtorcode','array_report','grouping','date','date_at','comp_name','type','groupby'));
+            }else if($this->type == 'summary'){
+                return view('finance.AR.ARAgeingDtl_Report.ARAgeingDtl_Report_excel_unit_summ',compact('debtortype','debtorcode','array_report','grouping','date','date_at','comp_name','type','groupby'));
+            }
         }
 
     }

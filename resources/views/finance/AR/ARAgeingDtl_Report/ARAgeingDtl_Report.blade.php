@@ -144,13 +144,17 @@
                               <option value="summary">Summary</option>
                             </select>
                             <fieldset>
-                            <div class='col-md-12 btnform' style="padding: 20px 0px">
+                            <div class='col-md-12 btnform' style="padding: 20px 0px 5px 0px">
                                 <fieldset>
-                                    <button name="ARAgeingDtl_xls" type="button" class="mybtn btn btn-sm mybtnxls" id="excelgen1">
+                                    <button name="ARAgeingDtl_xls" type="button" class="mybtn btn btn-sm mybtnxls" id="excelgen1" style="margin-bottom: 0;">
                                         <span class="fa fa-file-excel-o fa-lg"></span> Start Report Excel Job
                                     </button>
                                 </fieldset>
                             </div>
+                            <input type="radio" id="sortbydt" name="groupby" value="debtortype" checked>
+                            <label for="sortbydt">By Debtor Type</label>
+                            <input type="radio" id="sortbyu" name="groupby" value="unit">
+                            <label for="sortbyu">By Units</label>
                         </div>
                     </div>
                 </div>
