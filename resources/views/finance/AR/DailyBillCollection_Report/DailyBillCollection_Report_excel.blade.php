@@ -132,7 +132,6 @@
         @php($rowcount++)
     @endforeach
 
-    @if(!empty($dbacthdr_arex))
     <tr>
         <td></td>
         <td></td>
@@ -148,5 +147,4 @@
         <td style="font-weight:bold">=SUM(L2:L{{$rowcount}})</td>
         <td></td>
     </tr>
-    @endif
 </table>
