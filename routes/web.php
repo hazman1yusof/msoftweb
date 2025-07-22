@@ -1670,6 +1670,7 @@ Route::get('/sixMinWalking/sixminwalking_chart','rehab\SixMinWalkingController@s
 Route::get('/bergBalanceTest','rehab\BergBalanceTestController@show');
 Route::get('/bergBalanceTest/table','rehab\BergBalanceTestController@table');
 Route::post('/bergBalanceTest/form','rehab\BergBalanceTestController@form');
+Route::get('/bergBalanceTest/bergbalancetest_chart','rehab\BergBalanceTestController@bergbalancetest_chart');
 
 Route::get('/musculoAssessment','rehab\MusculoAssessmentController@show');
 Route::get('/musculoAssessment/table','rehab\MusculoAssessmentController@table');
@@ -1682,6 +1683,7 @@ Route::post('/posturalAssessment/form','rehab\PosturalAssessmentController@form'
 Route::get('/oswestryQuest','rehab\OswestryQuestController@show');
 Route::get('/oswestryQuest/table','rehab\OswestryQuestController@table');
 Route::post('/oswestryQuest/form','rehab\OswestryQuestController@form');
+Route::get('/oswestryQuest/oswestryquest_chart','rehab\OswestryQuestController@oswestryquest_chart');
 
 Route::get('/cardiorespAssessment','rehab\CardiorespAssessmentController@show');
 Route::get('/cardiorespAssessment/table','rehab\CardiorespAssessmentController@table');
