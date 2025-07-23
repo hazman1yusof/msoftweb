@@ -82,8 +82,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="padding: 11px 150px;">
-                                            <div class="ui card">
+                                        <td>
+                                            <label>LUNG CHART:</label>
+                                            <div class="ui card" style="margin: 14px 150px;">
                                                 <a class="ui card bodydia_cardio" data-type='DIAG_CARDIO'>
                                                     <div class="image">
                                                         <img src="{{ asset('patientcare/img/bodydiagcardio.png') }}">
