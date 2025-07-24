@@ -883,7 +883,7 @@ $(document).ready(function (){
 			$("#jqGrid").data('lastselrow',rowid);
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e){
-			$("#jqGridPager td[title='Update Card']").click();
+			$("#jqGridPager td[title='Update Paymode']").click();
 		},
 		gridComplete: function (){
 			enabledPill();
@@ -978,9 +978,9 @@ $(document).ready(function (){
 			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "Update Card", cursor: "pointer", position: "last",
+		caption: "Update Paymode", cursor: "pointer", position: "last",
 		buttonicon: "",
-		title: "Update Card",
+		title: "Update Paymode",
 		onClickButton: function (){
 			$('#dialogForm_updcc').dialog('open');
 		},
@@ -1055,8 +1055,10 @@ $(document).ready(function (){
 				{ label: 'Paytype', name: 'paytype', width: 200, classes: 'pointer', hidden: true },
 			],
 			urlParam: {
-				filterCol: ['compcode','recstatus','source','paytype'],
-				filterVal: ['session.compcode','ACTIVE','AR','CARD']
+				filterCol: ['compcode','recstatus','source'],
+				filterVal: ['session.compcode','ACTIVE','AR'],
+				WhereInCol:['paytype'],
+        		WhereInVal:[['CARD','CASH']]
 			},
 			ondblClickRow: function (){
 				// $('#db_remark').focus();
@@ -1074,8 +1076,10 @@ $(document).ready(function (){
 		},{
 			title: "Select Paymode",
 			open: function (){
-				dialog_paymode_updcc.urlParam.filterCol = ['recstatus','compcode','source','paytype'];
-				dialog_paymode_updcc.urlParam.filterVal = ['ACTIVE','session.compcode','AR','CARD'];
+				dialog_paymode_updcc.urlParam.filterCol = ['recstatus','compcode','source'];
+				dialog_paymode_updcc.urlParam.filterVal = ['ACTIVE','session.compcode','AR'];
+				dialog_paymode_updcc.urlParam.WhereInCol = ['paytype'];
+				dialog_paymode_updcc.urlParam.WhereInVal = [['CARD','CASH']];
 			}
 		},'urlParam','radio','tab'
 	);

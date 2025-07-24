@@ -140,7 +140,7 @@ class ccupdateController extends defaultController
         $table = $table->join('debtor.paymode as pm', function($join) use ($request){
                     $join = $join->where('pm.compcode',session('compcode'))
                                 ->where('pm.source','AR')
-                                ->where('pm.paytype','CARD')
+                                ->whereIn('pm.paytype',['CASH','CARD'])
                                 ->on('pm.paymode','db.paymode');
                 });
         
@@ -806,7 +806,7 @@ class ccupdateController extends defaultController
             $paymode = DB::table('debtor.paymode')
                         ->where('compcode','=',session('compcode'))
                         ->where('source','=','AR')
-                        ->where('paytype','=','CARD')
+                        // ->where('paytype','=','CARD')
                         ->where('paymode','=',$request->paymode)
                         ->first();
 
