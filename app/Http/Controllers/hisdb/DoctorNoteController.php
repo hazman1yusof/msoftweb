@@ -1090,6 +1090,7 @@ class DoctorNoteController extends defaultController
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'computerid' => session('computerid'),
+                    'reftype' => $request->reftype,
                 ]);
             
             DB::commit();
@@ -1144,6 +1145,8 @@ class DoctorNoteController extends defaultController
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'computerid' => session('computerid'),
+                        'reftype' => $request->reftype,
+
                     ]);
             }
             
@@ -1285,7 +1288,8 @@ class DoctorNoteController extends defaultController
         $patreferral_obj = DB::table('hisdb.patreferral')
                             ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
-                            ->where('episno','=',$request->episno);
+                            ->where('episno','=',$request->episno)
+                            ->where('reftype', '=','Psychiatrist');
         
         if($episode_obj->exists()){
             $episode_obj = $episode_obj->first();
@@ -3373,7 +3377,7 @@ class DoctorNoteController extends defaultController
         }
         
         $patreferral = DB::table('hisdb.patreferral as ptrf')
-                        ->select('ptrf.idno','ptrf.compcode','ptrf.mrn','ptrf.episno','ptrf.adduser','ptrf.adddate','ptrf.upduser','ptrf.upddate','ptrf.computerid','ptrf.refdate','ptrf.refaddress','ptrf.refdoc','ptrf.reftitle','ptrf.refdiag','ptrf.refplan','ptrf.refprescription','pm.Name','pm.Newic')
+                        ->select('ptrf.idno','ptrf.compcode','ptrf.mrn','ptrf.episno','ptrf.adduser','ptrf.adddate','ptrf.upduser','ptrf.upddate','ptrf.computerid','ptrf.refdate','ptrf.refaddress','ptrf.refdoc','ptrf.reftitle','ptrf.refdiag','ptrf.refplan','ptrf.refprescription','ptrf.reftype','pm.Name','pm.Newic')
                         ->leftJoin('hisdb.pat_mast as pm', function ($join) use ($request){
                             $join = $join->on('pm.MRN', '=', 'ptrf.mrn')
                                         ->where('pm.compcode','=',session('compcode'));
@@ -3381,6 +3385,7 @@ class DoctorNoteController extends defaultController
                         ->where('ptrf.compcode','=',session('compcode'))
                         ->where('ptrf.mrn','=',$mrn)
                         ->where('ptrf.episno','=',$episno)
+                        ->where('ptrf.reftype','=','Psychiatrist')
                         ->first();
         
         $company = DB::table('sysdb.company')

@@ -1291,7 +1291,9 @@ function populate_refLetter(obj){
 		action: 'get_table_refLetter',
 		mrn: $('#mrn_doctorNote').val(),
 		episno: $("#episno_doctorNote").val(),
-		recorddate: $('#recorddate_doctorNote').val()
+		recorddate: $('#recorddate_doctorNote').val(),
+		reftype: 'Psychiatrist'
+
 	}
 	
 	var postobj = {
@@ -2203,6 +2205,7 @@ function saveForm_refLetter(callback){
 		oper: $("#cancel_refLetter").data('oper'),
 		mrn: $('#mrn_doctorNote').val(),
 		episno: $("#episno_doctorNote").val(),
+		// reftype: 'Psychiatrist'
 	}
 	
 	var postobj = {
@@ -2240,6 +2243,11 @@ function saveForm_refLetter(callback){
 			return {"name": this.name, "value": this.value}
 		}).get()
 	);
+
+	values.push({
+        name: 'reftype',
+        value: $('#form_refLetter input[name=reftype]').val()
+    });
 	
 	$.post("./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
 		

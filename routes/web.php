@@ -1400,6 +1400,7 @@ Route::get('/thrombophlebitis/table','hisdb\ThrombophlebitisController@table');
 Route::get('/clientprogressnote','hisdb\ClientProgressNoteController@show');
 Route::get('/clientprogressnote/table','hisdb\ClientProgressNoteController@table');
 Route::post('/clientprogressnote/form','hisdb\ClientProgressNoteController@form');
+Route::get('/clientprogressnote/refLetterClientProgNote_chart','hisdb\ClientProgressNoteController@refLetterClientProgNote_chart');
 
 //// Client Progress Note (Doctor Note (Referral)) page ///
 Route::get('/clientprogressnoteref','hisdb\ClientProgressNoteRefController@show');

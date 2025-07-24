@@ -1499,6 +1499,7 @@
             
             <div class="panel-body">
                 <form class='form-horizontal' style='width: 99%;' id='form_refLetter'>
+                    <input id="reftype" name="reftype" type="hidden" value="Psychiatrist">
                     <!-- <input id="idno_refLetter" name="idno_refLetter" type="hidden"> -->
                     <!-- <input id="mrn_refLetter" name="mrn_refLetter" type="hidden"> -->
                     <!-- <input id="episno_refLetter" name="episno_refLetter" type="hidden"> -->

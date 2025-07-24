@@ -57,6 +57,98 @@ $(document).ready(function (){
 		$('#clientprognote_date_tbl tbody tr:eq(0)').click(); // to select first row
 	});
 	
+	///////////////////////////////////////////Referral Letter///////////////////////////////////////////
+	var oper_refletterClientProgNote = '';
+	// var oper_refletterClientProgNote = 'add';
+	$("#dialogFormRefClientProgNote")
+		.dialog({
+			width: 9/10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function (event, ui){
+				parent_close_disabled(true);
+				disableForm('#form_refLetterClientProgNote');
+				disableForm('#form_docNoteRefClientProgNote');
+				textarea_init_clientProgNote();
+				switch(oper_refletterClientProgNote) {
+					case state = 'add':
+						// $(this).dialog("option", "title", "Add");
+						enableForm('#form_refLetterClientProgNote');
+						rdonly('#form_refLetterClientProgNote');
+						break;
+					case state = 'edit':
+						// $(this).dialog("option", "title", "Edit");
+						enableForm('#form_refLetterClientProgNote');
+						rdonly('#form_refLetterClientProgNote');
+						break;
+					case state = 'view':
+						// $(this).dialog("option", "title", "View");
+						disableForm('#form_refLetterClientProgNote');
+						rdonly("#form_refLetterClientProgNote");
+						// $(this).dialog("option", "buttons", butt2);
+						break;
+				}
+				if(oper_refletterClientProgNote != 'view'){
+					
+				}
+				if(oper_refletterClientProgNote != 'add'){
+					
+				}
+			},
+			close: function (event, ui){
+				parent_close_disabled(false);
+				emptyFormdata(errorField,'#form_refLetterClientProgNote');
+				emptyFormdata(errorField,'#form_docNoteRefClientProgNote');
+				dialog_icd_ref.off();
+				// $('.alert').detach();
+				$('.my-alert').detach();
+				if(oper_refletterClientProgNote == 'view'){
+					// $(this).dialog("option", "buttons", butt1);
+				}
+			},
+		});
+	
+	$("#referLetterClientProgNote").click(function (){
+		// oper_refletterClientProgNote = 'add';
+		$("#dialogFormRefClientProgNote").dialog("open");
+		populate_refLetterClientProgNote();
+	});
+	
+	$("#new_refLetterClientProgNote").click(function (){
+		$('#cancel_refLetterClientProgNote').data('oper','add');
+		button_state_refLetterClientProgNote('wait');
+		enableForm('#form_refLetterClientProgNote');
+		rdonly('#form_refLetterClientProgNote');
+		// emptyFormdata_div("#form_refLetterClientProgNote",['#mrn_clientProgNote','#episno_clientProgNote']);
+	});
+	
+	$("#edit_refLetterClientProgNote").click(function (){
+		button_state_refLetterClientProgNote('wait');
+		enableForm('#form_refLetterClientProgNote');
+		rdonly('#form_refLetterClientProgNote');
+	});
+	
+	$("#save_refLetterClientProgNote").click(function (){
+		disableForm('#form_refLetterClientProgNote');
+		if($('#form_refLetterClientProgNote').isValid({requiredFields: ''}, conf, true)){
+			saveForm_refLetterClientProgNote(function (data){
+				// emptyFormdata_div("#form_refLetterClientProgNote",['#mrn_clientProgNote','#episno_clientProgNote']);
+				// disableForm('#form_refLetterClientProgNote');
+				$('#cancel_refLetterClientProgNote').data('oper','edit');
+				$("#cancel_refLetterClientProgNote").click();
+			});
+		}else{
+			enableForm('#form_refLetterClientProgNote');
+			rdonly('#form_refLetterClientProgNote');
+		}
+	});
+	
+	$("#cancel_refLetterClientProgNote").click(function (){
+		// emptyFormdata_div("#form_refLetterClientProgNote",['#mrn_clientProgNote','#episno_clientProgNote']);
+		disableForm('#form_refLetterClientProgNote');
+		button_state_refLetterClientProgNote($(this).data('oper'));
+	});
+	
 });
 
 var errorField = [];
@@ -114,6 +206,35 @@ function button_state_clientProgNote(state){
 	}
 }
 
+// button_state_refLetterClientProgNote('empty');
+function button_state_refLetterClientProgNote(state){
+	switch(state){
+		case 'empty':
+			$("#toggle_refLetterClientProgNote").removeAttr('data-toggle');
+			$('#cancel_refLetterClientProgNote').data('oper','add');
+			$('#new_refLetterClientProgNote,#save_refLetterClientProgNote,#cancel_refLetterClientProgNote,#edit_refLetterClientProgNote').attr('disabled',true);
+			$('#refLetterClientProgNote_chart').attr('disabled',false);
+			break;
+		case 'add':
+			$("#toggle_refLetterClientProgNote").attr('data-toggle','collapse');
+			$('#cancel_refLetterClientProgNote').data('oper','add');
+			$("#new_refLetterClientProgNote,#refLetterClientProgNote_chart").attr('disabled',false);
+			$('#save_refLetterClientProgNote,#cancel_refLetterClientProgNote,#edit_refLetterClientProgNote').attr('disabled',true);
+			break;
+		case 'edit':
+			$("#toggle_refLetterClientProgNote").attr('data-toggle','collapse');
+			$('#cancel_refLetterClientProgNote').data('oper','edit');
+			$("#edit_refLetterClientProgNote,#refLetterClientProgNote_chart").attr('disabled',false);
+			$('#save_refLetterClientProgNote,#cancel_refLetterClientProgNote,#new_refLetterClientProgNote').attr('disabled',true);
+			break;
+		case 'wait':
+			$("#toggle_refLetterClientProgNote").attr('data-toggle','collapse');
+			$("#save_refLetterClientProgNote,#cancel_refLetterClientProgNote,#refLetterClientProgNote_chart").attr('disabled',false);
+			$('#edit_refLetterClientProgNote,#new_refLetterClientProgNote').attr('disabled',true);
+			break;
+	}
+}
+
 var dateParam_clientprognote,doctornote_clientprognote,curr_obj_clientprognote;
 //screen current patient//
 function populate_clientProgNote_currpt(obj){
@@ -164,6 +285,66 @@ function populate_clientProgNote_currpt(obj){
     // });
 }
 
+function populate_refLetterClientProgNote(obj){
+	// emptyFormdata(errorField,"#form_refLetterClientProgNote");
+	emptyFormdata(errorField,"#form_docNoteRefClientProgNote");
+	
+	$("#pt_mrnClientProgNote").text($('#mrn_clientProgNote').val());
+	$("#pt_nameClientProgNote").text($('#ptname_clientProgNote').val());
+	
+	// $("#refLetterClientProgNote_chart").attr('href','./clientprogressnote/refLetterClientProgNote_chart?mrn='+$('#mrn_clientProgNote').val()+'&episno='+$("#episno_clientProgNote").val());
+	
+	$("#refLetterClientProgNote_chart").click(function (){
+		// window.location='./clientprogressnote/refLetterClientProgNote_chart?mrn='+$('#mrn_clientProgNote').val()+'&episno='+$("#episno_clientProgNote").val();
+		window.open('./clientprogressnote/refLetterClientProgNote_chart?mrn='+$('#mrn_clientProgNote').val()+'&episno='+$("#episno_clientProgNote").val(), '_blank');
+	});
+	
+	var urlparam = {
+		action: 'get_table_refLetterClientProgNote',
+		mrn: $('#mrn_clientProgNote').val(),
+		episno: $("#episno_clientProgNote").val(),
+		datetime: $('#datetime_clientProgNote').val(),
+		reftype: 'ClientProgNote'
+	}
+	
+	var postobj = {
+		_token: $('#csrf_token').val(),
+		mrn: $('#mrn_clientProgNote').val(),
+		episno: $("#episno_clientProgNote").val()
+	};
+	
+	$.post("./clientprogressnote/form?"+$.param(urlparam), $.param(postobj), function (data){
+		
+	},'json').fail(function (data){
+		alert('there is an error');
+	}).done(function (data){
+		if(!$.isEmptyObject(data.patreferral)){
+			button_state_refLetterClientProgNote('edit');
+			if(!emptyobj_(data.patreferral))autoinsert_rowdata("#form_refLetterClientProgNote",data.patreferral);
+			
+			if(!$.isEmptyObject(data.patreferral.reftitle)){
+				$('#form_refLetterClientProgNote textarea[name=reftitle]').text(data.patreferral.reftitle); // from patreferral
+			}else{
+				$('#form_refLetterClientProgNote textarea[name=reftitle]').text(data.sys_reftitle); // from sysparam
+			}
+		}else{
+			button_state_refLetterClientProgNote('add');
+			$('#form_refLetterClientProgNote textarea[name=reftitle]').text(data.sys_reftitle);
+		}
+		$("#refadduserClientProgNote").val(data.adduser);
+		
+		if(!emptyobj_(data.episode))autoinsert_rowdata("#form_docNoteRefClientProgNote",data.episode);
+		if(!emptyobj_(data.pathealth))autoinsert_rowdata("#form_docNoteRefClientProgNote",data.pathealth);
+		if(!emptyobj_(data.pathistory))autoinsert_rowdata("#form_docNoteRefClientProgNote",data.pathistory);
+		// if(!emptyobj_(data.patexam))autoinsert_rowdata("#form_docNoteRefClientProgNote",data.patexam);
+		if(!emptyobj_(data.episdiag))autoinsert_rowdata("#form_docNoteRefClientProgNote",data.episdiag);
+		if(!emptyobj_(data.patprogressnote))autoinsert_rowdata("#form_docNoteRefClientProgNote",data.patprogressnote);
+		// if(!emptyobj_(data.pathealth))$('#form_docNoteRefClientProgNote span#doctorcode').text(data.pathealth.doctorcode);
+		textarea_init_doctornote_ref();
+		
+	});
+}
+
 function autoinsert_rowdata(form,rowData){
 	$.each(rowData, function (index, value){
 		var input = $(form+" [name='"+index+"']");
@@ -191,7 +372,8 @@ function saveForm_clientProgNote(callback){
 	
 	var saveParam = {
 		action: 'save_table_clientprognote',
-		oper: $("#cancel_clientProgNote").data('oper')
+		oper: $("#cancel_clientProgNote").data('oper'),
+
 	}
 	
 	var postobj = {
@@ -230,6 +412,64 @@ function saveForm_clientProgNote(callback){
 		}).get()
 	);
 	
+	$.post("./clientprogressnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
+		
+	},'json').fail(function (data){
+		callback(data);
+	}).success(function (data){
+		callback(data);
+	});
+}
+
+function saveForm_refLetterClientProgNote(callback){
+	var saveParam = {
+		action: 'save_refLetterClientProgNote',
+		oper: $("#cancel_refLetterClientProgNote").data('oper'),
+		mrn: $('#mrn_clientProgNote').val(),
+		episno: $("#episno_clientProgNote").val(),
+	}
+	
+	var postobj = {
+		_token: $('#csrf_token').val(),
+		// sex_edit: $('#sex_edit').val(),
+		// idtype_edit: $('#idtype_edit').val()
+	};
+	
+	values = $("#form_refLetterClientProgNote").serializeArray();
+	
+	values = values.concat(
+		$('#form_refLetterClientProgNote input[type=checkbox]:not(:checked)').map(
+		function (){
+			return {"name": this.name, "value": 0}
+		}).get()
+	);
+	
+	values = values.concat(
+		$('#form_refLetterClientProgNote input[type=checkbox]:checked').map(
+		function (){
+			return {"name": this.name, "value": 1}
+		}).get()
+	);
+	
+	values = values.concat(
+		$('#form_refLetterClientProgNote input[type=radio]:checked').map(
+		function (){
+			return {"name": this.name, "value": this.value}
+		}).get()
+	);
+	
+	values = values.concat(
+		$('#form_refLetterClientProgNote select').map(
+		function (){
+			return {"name": this.name, "value": this.value}
+		}).get()
+	);
+	
+	values.push({
+        name: 'reftype',
+        value: $('#form_refLetterClientProgNote input[name=reftype]').val()
+    });
+
 	$.post("./clientprogressnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values), function (data){
 		
 	},'json').fail(function (data){
@@ -379,7 +619,7 @@ function sticky_clientprognotetbl(on){
 }
 
 function textarea_init_clientProgNote(){
-	$('textarea#clientProgNote_progressnote,textarea#clientProgNote_plan').each(function (){
+	$('textarea#clientProgNote_progressnote,textarea#clientProgNote_plan,textare#clientProgNote_progressnoteRef').each(function (){
 		if(this.value.trim() == ''){
 			this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
 		}else{

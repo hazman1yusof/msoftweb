@@ -155,7 +155,6 @@
                     nobold:{
                         bold: false
                     },
-                   
                 },
                 images: {
                     letterhead: {
