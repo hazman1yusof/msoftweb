@@ -39,9 +39,21 @@
             <td>{{$obj->srcdocno}}</td>
             <td>{{$obj->sndrcvtype}}</td>
             <td>{{$obj->sndrcv}}</td>
+            @if(empty($obj->trandate))
+            <td></td>
+            @else
             <td>{{Carbon\Carbon::parse($obj->trandate)->format('d/m/Y')}}</td>
+            @endif
+            @if(empty($obj->datesupret))
+            <td></td>
+            @else
             <td>{{Carbon\Carbon::parse($obj->datesupret)->format('d/m/Y')}}</td>
+            @endif
+            @if(empty($obj->dateactret))
+            <td></td>
+            @else
             <td>{{Carbon\Carbon::parse($obj->dateactret)->format('d/m/Y')}}</td>
+            @endif
             <td>{{$obj->trantime}}</td>
             <td>{{$obj->ivreqno}}</td>
             <td>{{$obj->amount}}</td>
@@ -49,9 +61,17 @@
             <td>{{$obj->remarks}}</td>
             <td>POSTED</td>
             <td>{{$obj->adduser}}</td>
+            @if(empty($obj->adddate))
+            <td></td>
+            @else
             <td>{{Carbon\Carbon::parse($obj->adddate)->format('d/m/Y')}}</td>
+            @endif
             <td>{{$obj->upduser}}</td>
+            @if(empty($obj->upddate))
+            <td></td>
+            @else
             <td>{{Carbon\Carbon::parse($obj->upddate)->format('d/m/Y')}}</td>
+            @endif
             <td>{{$obj->updtime}}</td>
             <td>{{$obj->unit}}</td>
             <td></td>

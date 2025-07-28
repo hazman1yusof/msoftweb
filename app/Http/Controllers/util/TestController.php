@@ -3396,7 +3396,7 @@ class TestController extends defaultController
         $responce->close_balval = $close_balval;
         $responce->avgcost = $array_obj['avgcost'];
         $responce->actua_balval = $actual_balval;
-        $responce->variance = $actual_balval - $close_balval;
+        $responce->variance =  - $close_balval - $actual_balval;
         return $responce;
     }
 

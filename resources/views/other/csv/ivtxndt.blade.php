@@ -35,16 +35,28 @@
             <td>{{$obj->txnqty}}</td>
             <td>{{$obj->netprice}}</td>
             <td>{{$obj->adduser}}</td>
+            @if(empty($obj->adddate))
+            <td></td>
+            @else
             <td>{{Carbon\Carbon::parse($obj->adddate)->format('d/m/Y')}}</td>
+            @endif
             <td>{{$obj->upduser}}</td>
+            @if(empty($obj->upddate))
+            <td></td>
+            @else
             <td>{{Carbon\Carbon::parse($obj->upddate)->format('d/m/Y')}}</td>
+            @endif
             <td>{{$obj->productcat}}</td>
             <td>{{$obj->draccno}}</td>
             <td>{{$obj->drccode}}</td>
             <td>{{$obj->craccno}}</td>
             <td>{{$obj->crccode}}</td>
             <td>{{$obj->updtime}}</td>
+            @if(empty($obj->expdate))
+            <td></td>
+            @else
             <td>{{Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}</td>
+            @endif
             <td>{{$obj->remarks}}</td>
             <td>{{$obj->qtyonhand}}</td>
             <td>{{$obj->batchno}}</td>
