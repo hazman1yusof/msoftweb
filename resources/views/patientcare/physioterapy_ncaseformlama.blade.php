@@ -56,18 +56,13 @@
 		<input id="referdiet_ncase" name="referdiet" type="hidden" value="no">
 		<input id="category_phys_ncase" name="category" type="hidden">
 		
-		<div id="physioNcaseTabs" class="ui segment">
-			<div class="ui top attached tabular menu">
-				<a class="item active" data-tab="physMedCond" id="navtab_physMedCond">MEDICAL CONDITION</a>
-				<a class="item" data-tab="physHistory" id="navtab_physHistory">HISTORY</a>
-				<a class="item" data-tab="physPainBehaviour" id="navtab_physPainBehaviour">PAIN BEHAVIOUR</a>
-				<a class="item" data-tab="physRelFind" id="navtab_physRelFind">RELEVANT FINDING(S)</a>
-				<a class="item" data-tab="physTreatment" id="navtab_physTreatment">TREATMENT</a>
-				<a class="item" data-tab="physPerkeso" id="navtab_physPerkeso">PERKESO</a>
-				<a class="item" data-tab="physNotes" id="navtab_physNotes">NOTES</a>
+		<div class="ui segments">
+			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_mcond">
+				<i class="angle down icon large"></i>
+				<i class="angle up icon large"></i>
+				<h4 style="text-align: center; margin-top: 3px;">MEDICAL CONDITION</h4>
 			</div>
-			
-			<div class="ui bottom attached tab raised segment active" data-tab="physMedCond">
+			<div class="ui segment collapse" id="phys_mcond">
 				<div class="ui form">
 					<table class="ui celled table">
 						<thead>
@@ -690,36 +685,51 @@
 					</div>
 				</div>
 			</div>
-			
-			<div class="ui bottom attached tab raised segment" data-tab="physHistory">
+		</div>
+		
+		<div class="ui segments">
+			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_hist">
+				<i class="angle down icon large"></i>
+				<i class="angle up icon large"></i>
+				<h4 style="text-align: center; margin-top: 3px;">HISTORY</h4>
+			</div>
+			<div class="ui segment collapse" id="phys_hist">
 				<div class="ui form">
 					<div class="field"><textarea rows="6" cols="50" name="history"></textarea></div>
 				</div>
 			</div>
-			
-			<div class="ui bottom attached tab raised segment" data-tab="physPainBehaviour">
+		</div>
+		
+		<div class="ui segments">
+			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_post_rehab">
+				<i class="angle down icon large"></i>
+				<i class="angle up icon large"></i>
+				<!-- <h4 style="text-align: center; margin-top: 3px;">POSTURAL ASSESSMENT (REHAB)</h4> -->
+				<h4 style="text-align: center; margin-top: 3px;">PAIN BEHAVIOUR</h4>
+			</div>
+			<div class="ui segment collapse" id="phys_post_rehab">
 				<div class="ui grid">
 					<div class="thirteen wide column">
 						<div class="ui four cards">
 							<a class="ui card bodydia_ncase" data-type='BF_REHAB'>
 								<div class="image">
 									<img src="{{ asset('patientcare/img/bodydia1.png') }}" >
-								</div>
+							    </div>
 							</a>
 							<a class="ui card bodydia_ncase" data-type='BR_REHAB'>
 								<div class="image">
 									<img src="{{ asset('patientcare/img/bodydia2.png') }}">
-								</div>
+							    </div>
 							</a>
 							<a class="ui card bodydia_ncase" data-type='BL_REHAB'>
 								<div class="image">
 									<img src="{{ asset('patientcare/img/bodydia3.png') }}">
-								</div>
+							    </div>
 							</a>
 							<a class="ui card bodydia_ncase" data-type='BB_REHAB'>
 								<div class="image">
 									<img src="{{ asset('patientcare/img/bodydia4.png') }}">
-								</div>
+							    </div>
 							</a>
 						</div>
 					</div>
@@ -727,94 +737,35 @@
 					<div class="three wide column">
 						<div class="ui form">
 							<div class="field">
-								<label>VAS</label>
-								<input type="text" name="vas_ncase" placeholder="VAS">
+							    <label>VAS</label>
+							    <input type="text" name="vas_ncase" placeholder="VAS">
 							</div>
 							<div class="field">
-								<label>Aggravating Factors</label>
-								<input type="text" name="aggr_ncase" placeholder="Aggravating Factors">
+							    <label>Aggravating Factors</label>
+							    <input type="text" name="aggr_ncase" placeholder="Aggravating Factors">
 							</div>
 							<div class="field">
-								<label>Easing Factors</label>
-								<input type="text" name="easing_ncase" placeholder="Easing Factors">
+							    <label>Easing Factors</label>
+							    <input type="text" name="easing_ncase" placeholder="Easing Factors">
 							</div>
 							<div class="field">
-								<label>Type Of Pain</label>
-								<input type="text" name="pain_ncase" placeholder="Type Of Pain">
+							    <label>Type Of Pain</label>
+							    <input type="text" name="pain_ncase" placeholder="Type Of Pain">
 							</div>
 							<div class="field">
-								<label>24 Hours Behaviour</label>
-								<input type="text" name="behaviour_ncase" placeholder="24 Hours Behaviour">
+							    <label>24 Hours Behaviour</label>
+							    <input type="text" name="behaviour_ncase" placeholder="24 Hours Behaviour">
 							</div>
 							<div class="field">
-								<label>Irritability</label>
-								<input type="text" name="irritability_ncase" placeholder="Irritability">
+							    <label>Irritability</label>
+							    <input type="text" name="irritability_ncase" placeholder="Irritability">
 							</div>
 							<div class="field">
-								<label>Severity</label>
-								<input type="text" name="severity_ncase" placeholder="Severity">
+							    <label>Severity</label>
+							    <input type="text" name="severity_ncase" placeholder="Severity">
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-			
-			<div class="ui bottom attached tab raised segment" data-tab="physRelFind">
-				<div class="ui form">
-					<div class="field"><textarea rows="6" cols="50" name="findings"></textarea></div>
-				</div>
-			</div>
-			
-			<div class="ui bottom attached tab raised segment" data-tab="physTreatment">
-				<div class="ui form ui grid">
-					<div class="five wide column grouped fields">
-						<div class="sixteen wide column field">
-							<div class="ui checkbox">
-								<input type="checkbox" name="tr_physio" id="Physio_tr_physio" value="1">
-								<label for="Physio_tr_physio">Physiotherapy</label>
-							</div>
-						</div>
-						<div class="sixteen wide column field">
-							<div class="ui checkbox">
-								<input type="checkbox" name="tr_occuptherapy" id="Physio_tr_occuptherapy" value="1">
-								<label for="Physio_tr_occuptherapy">Occupational Therapy</label>
-							</div>
-						</div>
-					</div>
-					<div class="five wide column grouped fields">
-						<div class="sixteen wide column field">
-							<div class="ui checkbox">
-								<input type="checkbox" name="tr_respiphysio" id="Physio_tr_respiphysio" value="1">
-								<label for="Physio_tr_respiphysio">Respiratory Physiotherapy</label>
-							</div>
-						</div>
-						<div class="sixteen wide column field">
-							<div class="ui checkbox">
-								<input type="checkbox" name="tr_neuro" id="Physio_tr_neuro" value="1">
-								<label for="Physio_tr_neuro">Neuro Rehab</label>
-							</div>
-						</div>
-					</div>
-					<div class="five wide column grouped fields">
-						<div class="sixteen wide column field">
-							<div class="ui checkbox">
-								<input type="checkbox" name="tr_splint" id="Physio_tr_splint" value="1">
-								<label for="Physio_tr_splint">Splinting</label>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<div class="ui bottom attached tab raised segment" data-tab="physPerkeso">
-				<div class="ui form">
-					@include('patientcare.physioterapy_perkeso')
-				</div>
-			</div>
-			
-			<div class="ui bottom attached tab raised segment" data-tab="physNotes">
-				<div class="ui form">
-					<div class="field"><textarea rows="6" cols="50" name="addNotes"></textarea></div>
 				</div>
 			</div>
 		</div>
@@ -1290,6 +1241,93 @@
 						<label>Recommendation</label>
 						<textarea rows="6" cols="50" name="recommendation"></textarea>
 					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="ui segments">
+			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_findings">
+				<i class="angle down icon large"></i>
+				<i class="angle up icon large"></i>
+				<h4 style="text-align: center; margin-top: 3px;">RELEVANT FINDING(S)</h4>
+			</div>
+			<div class="ui segment collapse" id="phys_findings">
+				<div class="ui form">
+					<div class="field"><textarea rows="6" cols="50" name="findings"></textarea></div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="ui segments">
+			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_treatment">
+				<i class="angle down icon large"></i>
+				<i class="angle up icon large"></i>
+				<h4 style="text-align: center; margin-top: 3px;">TREATMENT</h4>
+			</div>
+			<div class="ui segment collapse" id="phys_treatment">
+				<div class="ui form ui grid">
+					<div class="five wide column grouped fields">
+						<div class="sixteen wide column field">
+							<div class="ui checkbox">
+								<input type="checkbox" name="tr_physio" id="Physio_tr_physio" value="1">
+								<label for="Physio_tr_physio">Physiotherapy</label>
+							</div>
+						</div>
+						<div class="sixteen wide column field">
+							<div class="ui checkbox">
+								<input type="checkbox" name="tr_occuptherapy" id="Physio_tr_occuptherapy" value="1">
+								<label for="Physio_tr_occuptherapy">Occupational Therapy</label>
+							</div>
+						</div>
+					</div>
+					<div class="five wide column grouped fields">
+						<div class="sixteen wide column field">
+							<div class="ui checkbox">
+								<input type="checkbox" name="tr_respiphysio" id="Physio_tr_respiphysio" value="1">
+								<label for="Physio_tr_respiphysio">Respiratory Physiotherapy</label>
+							</div>
+						</div>
+						<div class="sixteen wide column field">
+							<div class="ui checkbox">
+								<input type="checkbox" name="tr_neuro" id="Physio_tr_neuro" value="1">
+								<label for="Physio_tr_neuro">Neuro Rehab</label>
+							</div>
+						</div>
+					</div>
+					<div class="five wide column grouped fields">
+						<div class="sixteen wide column field">
+							<div class="ui checkbox">
+								<input type="checkbox" name="tr_splint" id="Physio_tr_splint" value="1">
+								<label for="Physio_tr_splint">Splinting</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="ui segments">
+			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_perkeso">
+				<i class="angle down icon large"></i>
+				<i class="angle up icon large"></i>
+				<h4 style="text-align: center; margin-top: 3px;">PERKESO</h4>
+			</div>
+			<div class="ui segment collapse" id="phys_perkeso">
+				<div class="ui form">
+					@include('patientcare.physioterapy_perkeso')
+				</div>
+			</div>
+		</div>
+		
+		<div class="ui segments">
+			<div class="ui secondary segment collapsed" data-toggle="collapse" data-target="#phys_notes">
+				<i class="angle down icon large"></i>
+				<i class="angle up icon large"></i>
+				<h4 style="text-align: center; margin-top: 3px;">NOTES</h4>
+			</div>
+			<div class="ui segment collapse" id="phys_notes">
+				<div class="ui form">
+					<div class="field"><textarea rows="6" cols="50" name="addNotes"></textarea></div>
 				</div>
 			</div>
 		</div>
