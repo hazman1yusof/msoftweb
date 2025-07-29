@@ -190,12 +190,12 @@ class arenquiryController extends defaultController
                         $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
                 });
             }
-        }
 
-        if($request->searchCol[0] == 'db_mrn'){
-            $table = $table->whereIn('db.compcode',['xx',session('compcode')]);
-        }else{
-            $table = $table->where('db.compcode','=',session('compcode'));
+            if($request->searchCol[0] == 'db_mrn'){
+                $table = $table->whereIn('db.compcode',['xx',session('compcode')]);
+            }else{
+                $table = $table->where('db.compcode','=',session('compcode'));
+            }
         }
         
         if(!empty($request->sidx)){
