@@ -61,7 +61,7 @@ class JTRController extends defaultController
         }
 
         $year = $yearmonth[0];
-        $month = $yearmonth[1];
+        $month = intval($yearmonth[1]);
 
         DB::beginTransaction();
 
@@ -71,7 +71,7 @@ class JTRController extends defaultController
 
             DB::table("material.ivtxnhd")
                         ->insert([
-                            'compcode' => '9B',
+                            'compcode' => session('compcode'),
                             'recno' => $recno,
                             'source' => 'IV',
                             // 'reference' => ,
@@ -81,7 +81,7 @@ class JTRController extends defaultController
                             // 'srcdocno' => ,
                             // 'sndrcvtype' => ,
                             // 'sndrcv' => ,
-                            'trandate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'trandate' => $year.'-'.$month.'-01',
                             // 'datesupret' => ,
                             // 'dateactret' => ,
                             'trantime' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -119,9 +119,9 @@ class JTRController extends defaultController
                             ->join('material.product as p', function($join){
                                 $join = $join->on('p.itemcode', '=', 's.itemcode')
                                               ->where('p.avgcost','!=',0)
-                                              ->where('p.compcode','9B');
+                                              ->where('p.compcode',session('compcode'));
                             })
-                            ->where('s.compcode','9B')
+                            ->where('s.compcode',session('compcode'))
                             ->where('s.deptcode',$dept)
                             ->where('s.year',$year)
                             ->where('s.itemcode','KW-BETASERC')
@@ -132,21 +132,21 @@ class JTRController extends defaultController
                 $array_obj = (array)$obj;
 
                 $get_bal = $this->get_bal($array_obj,$month);
-                dd($get_bal);
+                // dd($get_bal);
                 $variance = floatval($get_bal->variance);
 
                 if($variance != 0){
                     $x = $x + 1;
                     DB::table('material.ivtxndt')
                             ->insert([
-                                'compcode' => '9B', 
+                                'compcode' => session('compcode'), 
                                 'recno' => $recno, 
                                 'lineno_' => $x, 
                                 'itemcode' => $obj->itemcode, 
                                 'uomcode' => $obj->uomcode,
                                 // 'uomcoderecv' => $value->uomcoderecv,  
                                 'txnqty' => 0, 
-                                'netprice' => $variance, 
+                                'netprice' => round($variance, 2), 
                                 'adduser' => 'system', 
                                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                                 // 'upduser' => $value->upduser, 
@@ -162,13 +162,14 @@ class JTRController extends defaultController
                                 // 'qtyonhand' => $value->qtyonhand,
                                 // 'qtyonhandrecv' => $value->qtyonhandrecv,  
                                 // 'batchno' => $value->batchno, 
-                                // 'amount' => $value->amount, 
-                                'trandate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'amount' => round($variance, 2), 
+                                'trandate' => $year.'-'.$month.'-01',
                                 // 'sndrcv' => $ivtmphd->sndrcv,
                                 'unit' => $dept,
                             ]);
 
-                    $NetMvVal = $array_obj['netmvval'.$month] + $variance;
+                    $NetMvVal = $array_obj['netmvval'.$month] - $variance;//crdbfl out
+
                     DB::table('material.StockLoc')
                                     // ->where('StockLoc.unit','=',$unit_)
                                     ->where('StockLoc.CompCode','=',session('compcode'))
@@ -185,7 +186,85 @@ class JTRController extends defaultController
                 }
             }
 
-            // DB::commit();
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function cancel(Request $request){
+        $recno = $request->recno;
+
+        DB::beginTransaction();
+
+        try {
+
+            $ivtxnhd =  DB::table("material.ivtxnhd")
+                            ->where('compcode',session('compcode'))
+                            ->where('recno',$recno)
+                            ->where('source','IV')
+                            ->where('trantype','JTR')
+                            ->first();
+
+            $trandate = $ivtxnhd->trandate;
+            $yearmonth = explode('-', $trandate);
+            $year = $yearmonth[0];
+            $month = intval($yearmonth[1]);
+            $dept = $ivtxnhd->txndept;
+
+            $ivtxndt = DB::table('material.ivtxndt')
+                        ->where('compcode',session('compcode'))
+                        ->where('recno',$recno)
+                        ->where('TranType','JTR')
+                        ->get();
+
+            foreach ($ivtxndt as $obj) {
+                $stockloc = DB::table('material.stockloc')
+                            ->where('compcode','9B')
+                            ->where('deptcode',$dept)
+                            ->where('itemcode',$obj->itemcode)
+                            ->where('uomcode',$obj->uomcode)
+                            ->where('year',$year)
+                            ->get();
+
+                $stockloc = (array)$stockloc[0];
+
+                $variance = $obj->netprice;
+                $NetMvVal = $stockloc['netmvval'.$month] - $variance;
+                DB::table('material.stockloc')
+                            ->where('compcode','9B')
+                            ->where('deptcode',$dept)
+                            ->where('itemcode',$obj->itemcode)
+                            ->where('uomcode',$obj->uomcode)
+                            ->where('year',$year)
+                            ->update([
+                                'NetMvVal'.$month => $NetMvVal
+                            ]);
+            }
+
+            DB::table("material.ivtxnhd")
+                    ->where('compcode',session('compcode'))
+                    ->where('recno',$recno)
+                    ->where('source','IV')
+                    ->where('trantype','JTR')
+                    ->update([
+                        'recstatus' => 'CANCELLED',
+                        'compcode' => 'CC'
+                    ]);
+
+             DB::table('material.ivtxndt')
+                    ->where('compcode',session('compcode'))
+                    ->where('recno',$recno)
+                    ->where('TranType','JTR')
+                    ->update([
+                        'recstatus' => 'CANCELLED',
+                        'compcode' => 'CC'
+                    ]);
+
+            DB::commit();
 
         } catch (Exception $e) {
             DB::rollback();
@@ -220,7 +299,7 @@ class JTRController extends defaultController
         $responce->close_balval = $close_balval;
         $responce->avgcost = $array_obj['avgcost'];
         $responce->actua_balval = $actual_balval;
-        $responce->variance =  - $close_balval - $actual_balval;
+        $responce->variance =  $close_balval - $actual_balval;
         return $responce;
     }
 }

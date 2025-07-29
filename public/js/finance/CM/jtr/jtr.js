@@ -186,7 +186,39 @@ $(document).ready(function () {
 			oper='add';
 			$( "#dialogForm" ).dialog( "open" );
 		},
-	});
+	}).jqGrid('navButtonAdd', "#jqGridPager", {
+		id: "jqGridPagerTracking_Delete",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-trash",
+		title: "Delete Selected Row",
+		onClickButton: function (){
+			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			if(!selRowId){
+				bootbox.alert('Please select row');
+			}else{
+				bootbox.confirm({
+					message: "Are you sure you want to delete this row? RECNO: "+selrowData('#jqGrid').recno,
+					buttons: {
+						confirm: { label: 'Yes', className: 'btn-success' }, cancel: { label: 'No', className: 'btn-danger' }
+					},
+					callback: function (result){
+						if(result == true){
+							param = {
+								idno: selrowData('#jqGrid').idno,
+								recno: selrowData('#jqGrid').recno,
+							}
+							$.post("./jtr/form?"+$.param(param), {oper: 'cancel', _token: $("#_token").val()}, function (data){
+							}).fail(function (data){
+								//////////////////errorText(dialog,data.responseText);
+							}).done(function (data){
+								refreshGrid("#jqGrid", urlParam);
+							});
+						}
+					}
+				});
+			}
+		},
+	})
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 	
