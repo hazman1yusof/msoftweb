@@ -1637,6 +1637,6 @@
 			}
 		});
 	</script>
-	<script src="js/finance/AR/arenquiry/arenquiryScript.js?v=1.15"></script>
+	<script src="js/finance/AR/arenquiry/arenquiryScript.js?v=1.16"></script>
 	<script src="js/finance/AR/arenquiry/allocateDialog_cancel.js?v=1"></script>
 @endsection
