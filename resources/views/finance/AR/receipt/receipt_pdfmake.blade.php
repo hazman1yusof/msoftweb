@@ -137,7 +137,7 @@
                                         @if($dbacthdr->trantype == 'RF')
                                             { text: '{{str_pad($obj->recptno, 8, "0", STR_PAD_LEFT)}} dated {{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}' },
                                         @else
-                                            { text: 'Inv No {{str_pad($obj->invno, 8, "0", STR_PAD_LEFT)}} dated {{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}' },
+                                            { text: 'Inv No {{str_pad($obj->invno, 8, "0", STR_PAD_LEFT)}} dated {{\Carbon\Carbon::parse($obj->entrydate)->format('d/m/Y')}}' },
                                         @endif
                                     @else
                                         @if($dbacthdr->trantype == 'RF')
