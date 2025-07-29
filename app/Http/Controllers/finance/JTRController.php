@@ -233,7 +233,7 @@ class JTRController extends defaultController
                 $stockloc = (array)$stockloc[0];
 
                 $variance = $obj->netprice;
-                $NetMvVal = $stockloc['netmvval'.$month] + $variance;
+                $NetMvVal = $stockloc['netmvval'.$month] - $variance;
                 DB::table('material.stockloc')
                             ->where('compcode','9B')
                             ->where('deptcode',$dept)
