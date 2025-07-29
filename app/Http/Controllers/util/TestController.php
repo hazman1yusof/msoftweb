@@ -3372,8 +3372,6 @@ class TestController extends defaultController
 
             dd('Error'.$e);
         }
-
-
     }
 
     public function get_bal($array_obj,$period){

@@ -239,6 +239,11 @@ Route::get('/computerid/table','setup\ComputeridController@table');
 Route::post('/computerid/form','setup\ComputeridController@form');
 
 //// receipt AR setup page ///
+Route::get('/jtr','finance\JTRController@show');
+Route::get('/jtr/table','finance\JTRController@table');
+Route::post('/jtr/form','finance\JTRController@form');
+
+//// receipt AR setup page ///
 Route::get('/receipt','finance\ReceiptController@show');
 Route::get('/receipt/table','finance\ReceiptController@table');
 Route::post('/receipt/form','finance\ReceiptController@form');
