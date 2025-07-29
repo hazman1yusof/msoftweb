@@ -4,6 +4,10 @@ namespace App\Http\Controllers\finance;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
+use stdClass;
+use DB;
+use DateTime;
+use Carbon\Carbon;
 
 class JTRController extends defaultController
 {   
@@ -41,7 +45,21 @@ class JTRController extends defaultController
     public function posted(Request $request){
         $yearmonth = explode('-', $request->yearmonth);
 
-        $dept = $request->dept;
+        $dept = $request->deptcode;
+
+        if($dept == 'IMP'){
+            $dept='IMP';
+            $unit='IMP';
+        }else if($dept == 'FKWSTR'){
+            $dept='FKWSTR';
+            $unit="W'HOUSE";
+        }else if($dept == 'KHEALTH'){
+            $dept='KHEALTH';
+            $unit='KHEALTH';
+        }else{
+            dd('wrong dept');
+        }
+
         $year = $yearmonth[0];
         $month = $yearmonth[1];
 
@@ -106,7 +124,7 @@ class JTRController extends defaultController
                             ->where('s.compcode','9B')
                             ->where('s.deptcode',$dept)
                             ->where('s.year',$year)
-                            // ->where('s.itemcode','KW001303')
+                            ->where('s.itemcode','KW-BETASERC')
                             ->get();
 
             $x=0;
@@ -114,7 +132,7 @@ class JTRController extends defaultController
                 $array_obj = (array)$obj;
 
                 $get_bal = $this->get_bal($array_obj,$month);
-                // dump($get_bal);
+                dd($get_bal);
                 $variance = floatval($get_bal->variance);
 
                 if($variance != 0){
@@ -174,5 +192,35 @@ class JTRController extends defaultController
 
             dd('Error'.$e);
         }
+    }
+
+    public function get_bal($array_obj,$period){
+        $open_balqty = $array_obj['openbalqty'];
+        $close_balqty = $array_obj['openbalqty'];
+        $open_balval = $array_obj['openbalval'];
+        $close_balval = $array_obj['openbalval'];
+        $until = intval($period) - 1;
+
+        for ($from = 1; $from <= $until; $from++) { 
+            $open_balqty = $open_balqty + $array_obj['netmvqty'.$from];
+            $open_balval = $open_balval + $array_obj['netmvval'.$from];
+        }
+
+        for ($from = 1; $from <= intval($period); $from++) { 
+            $close_balqty = $close_balqty + $array_obj['netmvqty'.$from];
+            $close_balval = $close_balval + $array_obj['netmvval'.$from];
+        }
+
+        $actual_balval = $array_obj['avgcost'] * $close_balqty;
+
+        $responce = new stdClass();
+        $responce->open_balqty = $open_balqty;
+        $responce->open_balval = $open_balval;
+        $responce->close_balqty = $close_balqty;
+        $responce->close_balval = $close_balval;
+        $responce->avgcost = $array_obj['avgcost'];
+        $responce->actua_balval = $actual_balval;
+        $responce->variance =  - $close_balval - $actual_balval;
+        return $responce;
     }
 }
