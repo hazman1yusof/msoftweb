@@ -158,7 +158,7 @@ class arenquiryController extends defaultController
             }else if($request->searchCol[0] == 'db_mrn'){
                 $table = $table->Where(function ($table) use ($request){
                         $table->Where('db.mrn','like',$request->searchVal[0]);
-                        $table->orWhere('db.debtorcode',$request->searchVal[0]);
+                        $table->orWhere('db.debtorcode',$request->wholeword);
                 });
             }else if($request->searchCol[0] == 'db_auditno'){
                 $table = $table->Where(function ($table) use ($request) {
