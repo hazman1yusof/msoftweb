@@ -940,7 +940,7 @@ class ReceiptController extends defaultController
                         $join = $join->on('p.MRN', '=', 'd.mrn')
                                     ->where('p.compcode','=',session('compcode'));
                     })
-                    ->where('d.compcode',session('compcode'))
+                    // ->where('d.compcode',session('compcode'))
                     ->where('d.idno','=',$idno)
                     ->first();
 
