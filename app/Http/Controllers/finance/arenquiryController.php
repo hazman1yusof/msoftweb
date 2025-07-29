@@ -136,7 +136,7 @@ class arenquiryController extends defaultController
                     $join = $join->on('dm.debtorcode', '=', 'db.debtorcode')
                                 ->where('dm.compcode','=',session('compcode'));
                 })
-                ->where('db.compcode','=',session('compcode'))
+                // ->where('db.compcode','=',session('compcode'))
                 // ->where('db.recstatus','=','POSTED')
                 ->where('db.source','=','PB');
                 // ->where('db.trantype','=','IN','DN',);
@@ -189,6 +189,12 @@ class arenquiryController extends defaultController
                         $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
                 });
             }
+        }
+
+        if($request->searchCol[0] == 'db_mrn'){
+            $table = $table->whereIn('db.compcode',['xx',session('compcode')]);
+        }else{
+            $table = $table->where('db.compcode','=',session('compcode'));
         }
         
         if(!empty($request->sidx)){
