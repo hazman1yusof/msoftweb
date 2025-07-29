@@ -6834,14 +6834,21 @@ class TestController extends defaultController
             foreach ($dbacthdr as $obj) {
                 $pat_mast = DB::table('hisdb.pat_mast')
                                 ->where('compcode',session('compcode'))
-                                ->where('mrn',$obj->mrn)
-                                ->first();
+                                ->where('mrn',$obj->mrn);
 
-                DB::table('debtor.dbacthdr')
-                    ->where('idno',$obj->idno)
-                    ->update([
-                        'mrn'=>$pat_mast->NewMrn
-                    ]);
+                if($pat_mast->exists()){
+
+                    $pat_mast = $pat_mast->first();
+
+                    DB::table('debtor.dbacthdr')
+                        ->where('idno',$obj->idno)
+                        ->update([
+                            'mrn'=>$pat_mast->NewMrn
+                        ]);
+                }else{
+                    dump($obj->mrn);
+                }
+
             }
 
             DB::commit();
