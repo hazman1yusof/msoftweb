@@ -1719,6 +1719,7 @@ Route::post('/occupTherapy_upperExtremity/form','rehab\OccupTherapyUpperExtremit
 
 Route::get('/occupTherapy_notes/table','rehab\OccupTherapyNotesController@table');
 Route::post('/occupTherapy_notes/form','rehab\OccupTherapyNotesController@form');
+Route::get('/occupTherapy_notes/notes_chart','rehab\OccupTherapyNotesController@notes_chart');
 
 //dari appointment
 
