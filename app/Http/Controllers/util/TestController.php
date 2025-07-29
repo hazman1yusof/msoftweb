@@ -3277,8 +3277,8 @@ class TestController extends defaultController
             dd('no dept');
         }
 
-        $month=5;
-        $year=2025;
+        $month=$request->month;
+        $year=$request->year;
         $recno=$request->recno;
         if(empty($recno) || !isset($request->recno)){
             dd('no recno');
