@@ -962,8 +962,8 @@ class ReceiptController extends defaultController
                     ->leftjoin('debtor.dbacthdr as db', function($join) use ($request){
                         $join = $join->on('db.auditno', '=', 'a.refauditno')
                                     ->on('db.source', '=', 'a.refsource')
-                                    ->on('db.trantype', '=', 'a.reftrantype')
-                                    ->where('db.compcode','=',session('compcode'));
+                                    ->on('db.trantype', '=', 'a.reftrantype');
+                                    // ->where('db.compcode','=',session('compcode'));
                     })
                     ->leftjoin('debtor.debtormast as m', function($join) use ($request){
                         $join = $join->on('m.debtorcode', '=', 'a.debtorcode')
@@ -973,7 +973,7 @@ class ReceiptController extends defaultController
                         $join = $join->on('pm.newmrn', '=', 'db.mrn')
                                     ->where('pm.compcode','=',session('compcode'));
                     })
-                    ->where('a.compcode',session('compcode'))
+                    // ->where('a.compcode',session('compcode'))
                     ->where('a.docauditno','=',$auditno)
                     ->where('a.docsource','=',$dbacthdr->source)
                     ->where('a.doctrantype','=',$dbacthdr->trantype)
