@@ -124,7 +124,7 @@ class JTRController extends defaultController
                             ->where('s.compcode',session('compcode'))
                             ->where('s.deptcode',$dept)
                             ->where('s.year',$year)
-                            ->where('s.itemcode','KW-BETASERC')
+                            // ->where('s.itemcode','KW-BETASERC')
                             ->get();
 
             $x=0;
