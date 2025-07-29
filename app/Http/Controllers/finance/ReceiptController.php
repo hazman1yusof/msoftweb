@@ -163,9 +163,14 @@ class ReceiptController extends defaultController
                 }
                 $hdrtypmst = $hdrtypmst->first(); 
 
+                $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn',$request->dbacthdr_mrn)
+                            ->first();
+
                 $array_insert_RD = [
                     'hdrtype' => $request->dbacthdr_hdrtype,
-                    'mrn' => $request->dbacthdr_mrn,
+                    'mrn' => $pat_mast->NewMrn,
                     'quoteno' => $request->dbacthdr_quoteno
                 ];
 
