@@ -3283,6 +3283,12 @@ class TestController extends defaultController
         if(empty($recno) || !isset($request->recno)){
             dd('no recno');
         }
+        if(empty($month) || !isset($request->month)){
+            dd('no month');
+        }
+        if(empty($year) || !isset($request->year)){
+            dd('no year');
+        }
 
         DB::beginTransaction();
 
