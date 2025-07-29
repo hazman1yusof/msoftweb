@@ -3352,8 +3352,8 @@ $(document).ready(function (){
 		table_name: 'debtor.dbacthdr',
 		table_id: 'idno',
 		sort_idno: true,
-		filterCol: ['payercode','source','recstatus','outamount'],
-		filterVal: ['','PB','POSTED','>.0'],
+		filterCol: ['payercode','source','recstatus','outamount','compcode'],
+		filterVal: ['','PB','POSTED','>.0','session.compcode'],
 		WhereInCol: ['trantype'],
 		WhereInVal: [['DN','IN']]
 	}
