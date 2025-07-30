@@ -42,8 +42,8 @@ class TestController extends defaultController
 
     public function table(Request $request){  
         switch($request->action){
-            case 'gltran_fa_load':
-                return $this->gltran_fa_load($request);
+            case 'netmvqty_betulkan':
+                return $this->netmvqty_betulkan($request);
             case 'allocation_btlkn':
                 return $this->allocation_btlkn($request);
             case 'gltran_jnl':
@@ -5395,7 +5395,6 @@ class TestController extends defaultController
             $newamt = str_replace(',', '', $obj->amount);
             dump($newamt);
         }
-
     }
 
     public function display_glmasref_xde(Request $request){
@@ -6898,6 +6897,71 @@ class TestController extends defaultController
                 }
 
                 array_push($dbl, $obj->refauditno);
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function netmvqty_betulkan(Request $request){
+        DB::beginTransaction();
+        $dept = 'fkwstr';
+        $year = 2025;
+        $month = 7;
+        $itemcode = ['KW000136','KW000158','KW000342','KW001013','KW001377'];
+
+        try {
+
+            $stockloc = DB::table('material.stockloc as s')
+                            ->select('s.idno','s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit','p.avgcost')
+                            ->join('material.product as p', function($join){
+                                $join = $join->on('p.itemcode', '=', 's.itemcode')
+                                              ->where('p.avgcost','!=',0)
+                                              ->where('p.compcode',session('compcode'));
+                            })
+                            ->where('s.compcode',session('compcode'))
+                            ->where('s.deptcode',$dept)
+                            ->where('s.year',$year)
+                            ->whereIn('s.itemcode',$itemcode)
+                            ->get();
+
+            $x=1;
+            foreach ($stockloc as $obj) {
+                $array_obj = (array)$obj;
+                $qtyonhand = $array_obj['qtyonhand'];
+
+                $open_balqty = $array_obj['openbalqty'];
+
+                $until = intval($month);
+
+
+                for ($from = 1; $from <= $until; $from++) { 
+                    $open_balqty = $open_balqty + $array_obj['netmvqty'.$from];
+                }
+
+                if($open_balqty != $qtyonhand){
+                    dump($x.' - '.$array_obj['itemcode'].' qtyonhand:'.$qtyonhand.' real:'.$open_balqty);
+                    $x = $x + 1;
+                    $var = $qtyonhand-$open_balqty;
+
+                    $netmvqty7 = $array_obj['netmvqty7'] + $var;
+
+
+                    DB::table('material.stockloc as s')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno',$array_obj['idno'])
+                            ->update([
+                                'netmvqty7' => $netmvqty7
+                            ]);
+                }
+
+
             }
 
             DB::commit();
