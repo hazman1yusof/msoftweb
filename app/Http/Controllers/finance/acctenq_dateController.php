@@ -87,6 +87,7 @@ class acctenq_dateController extends defaultController
                             $join = $join->on('gldr.glaccno', '=', 'gl.dracc')
                                             ->where('gldr.compcode','=',session('compcode'));
                         })
+                        ->where('gl.amount','!=','0')
                         ->where('gl.compcode', session('compcode'))
                         ->where('gl.postdate', '>=', $request->fromdate)
                         ->where('gl.postdate', '<=', $request->todate)
