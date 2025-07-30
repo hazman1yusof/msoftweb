@@ -98,8 +98,8 @@ class TestController extends defaultController
                 return $this->create_prod_kaluxde($request);
             case 'stockloc_total':
                 return $this->stockloc_total($request);
-            case 'rd_mrn_tukar':
-                return $this->rd_mrn_tukar($request);
+            case 'dballoc_2bl_betulkn':
+                return $this->dballoc_2bl_betulkn($request);
             // case 'betulkan_uom_kh_stockloc':
             //     return $this->betulkan_uom_kh_stockloc($request);
             // case 'betulkan_uom_kh_product':
@@ -6847,6 +6847,57 @@ class TestController extends defaultController
                     dump($obj->mrn);
                 }
 
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function dballoc_2bl_betulkn(Request $request){
+        DB::beginTransaction();
+
+        $auditno = ['0077489','0077490','0077491','0077492','0077493','0077494','0077495','0077496','0077497','0077498','0077499','0077500','0077501','0077502','0077503','0077504','0077505','0077506','0077507','0077508','0077509','0077510','0077511','0077512','0077513','0077514','0077515','0077516','0077517','0077518','0077519','0077520','0077521','0077522','0077523','0077524','0077525','0077526','0077527','0077528','0077529','0077530','0077531'];
+
+        try {
+
+            $dballoc = DB::table('debtor.dballoc')
+                            ->where('compcode',session('compcode'))
+                            ->where('refsource','PB')
+                            ->where('reftrantype','IN')
+                            ->whereIn('refauditno',$auditno)
+                            ->get();
+
+            $dbl=[];
+            foreach ($dballoc as $obj) {
+                // dump($obj);
+                $dballoc2 = DB::table('debtor.dballoc')
+                            ->where('compcode',session('compcode'))
+                            ->where('refsource','PB')
+                            ->where('reftrantype','IN')
+                            ->where('refauditno',$obj->refauditno)
+                            ->orderBy('adddate','desc')
+                            ->first();
+
+                if(!in_array($obj->refauditno, $dbl)){
+                    DB::table('debtor.dballoc')
+                            // ->where('compcode',session('compcode'))
+                            // ->where('refsource','PB')
+                            // ->where('reftrantype','IN')
+                            // ->where('refauditno',$obj->refauditno)
+                            ->where('idno',$dballoc2->idno)
+                            // ->first();
+                            ->update([
+                                'compcode' => 'XX'
+                            ]);
+                }
+
+                array_push($dbl, $obj->refauditno);
             }
 
             DB::commit();
