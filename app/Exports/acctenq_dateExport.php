@@ -91,6 +91,7 @@ class acctenq_dateExport implements FromView, WithEvents, WithColumnWidths, With
                             $join = $join->on('gldr.glaccno', '=', 'gl.dracc')
                                             ->where('gldr.compcode','=',session('compcode'));
                         })
+                        ->where('gl.amount','!=','0')
                         ->where('gl.postdate', '>=', $this->fromdate)
                         ->where('gl.postdate', '<=', $this->todate)
                         ->where('gl.compcode', session('compcode'))
