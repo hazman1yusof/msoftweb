@@ -134,9 +134,17 @@
                                 @foreach ($dballoc as $obj)
                                 [
                                     @if(!empty($obj->allocdate))
-                                        { text: 'Bill No {{str_pad($obj->refauditno, 8, "0", STR_PAD_LEFT)}} dated {{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}' },
+                                        @if($dbacthdr->trantype == 'RF')
+                                            { text: '{{str_pad($obj->recptno, 8, "0", STR_PAD_LEFT)}} dated {{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}' },
+                                        @else
+                                            { text: 'Inv No {{str_pad($obj->invno, 8, "0", STR_PAD_LEFT)}} dated {{\Carbon\Carbon::parse($obj->entrydate)->format('d/m/Y')}}' },
+                                        @endif
                                     @else
-                                        { text: 'Bill No {{str_pad($obj->refauditno, 8, "0", STR_PAD_LEFT)}}' },
+                                        @if($dbacthdr->trantype == 'RF')
+                                            { text: '{{str_pad($obj->recptno, 8, "0", STR_PAD_LEFT)}} dated {{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}' },
+                                        @else
+                                            { text: 'Inv No {{str_pad($obj->invno, 8, "0", STR_PAD_LEFT)}}' },
+                                        @endif
                                     @endif
                                     @if(!empty($obj->pm_name))
                                     { text: `{!!$obj->pm_name!!}` },

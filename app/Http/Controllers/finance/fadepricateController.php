@@ -81,7 +81,8 @@ class fadepricateController extends defaultController
                             //3. amik facode utk tahu rate
                             $facode = $facode_obj->first();
 
-                            $cost = $faregister->currentcost;
+                            // $cost = $faregister->currentcost;
+                            $cost = $faregister->purprice;
                             $residualvalue = $faregister->residualvalue;
                             // $lstyear = $faregister->lstytddep;
                             // $ytd = $faregister->cuytddep;

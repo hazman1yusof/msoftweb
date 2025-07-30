@@ -98,8 +98,8 @@ class TestController extends defaultController
                 return $this->create_prod_kaluxde($request);
             case 'stockloc_total':
                 return $this->stockloc_total($request);
-            case 'dbacthistory':
-                return $this->dbacthistory($request);
+            case 'rd_mrn_tukar':
+                return $this->rd_mrn_tukar($request);
             // case 'betulkan_uom_kh_stockloc':
             //     return $this->betulkan_uom_kh_stockloc($request);
             // case 'betulkan_uom_kh_product':
@@ -3277,11 +3277,17 @@ class TestController extends defaultController
             dd('no dept');
         }
 
-        $month=5;
-        $year=2025;
+        $month=$request->month;
+        $year=$request->year;
         $recno=$request->recno;
         if(empty($recno) || !isset($request->recno)){
             dd('no recno');
+        }
+        if(empty($month) || !isset($request->month)){
+            dd('no month');
+        }
+        if(empty($year) || !isset($request->year)){
+            dd('no year');
         }
 
         DB::beginTransaction();
@@ -3366,8 +3372,6 @@ class TestController extends defaultController
 
             dd('Error'.$e);
         }
-
-
     }
 
     public function get_bal($array_obj,$period){
@@ -6802,6 +6806,47 @@ class TestController extends defaultController
                         'adduser' => 'system_1807',
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function rd_mrn_tukar(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                            // ->where('compcode',session('compcode'))
+                            ->where('source','PB')
+                            ->where('trantype','RD')
+                            ->get();
+
+            foreach ($dbacthdr as $obj) {
+                $pat_mast = DB::table('hisdb.pat_mast')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn',$obj->mrn);
+
+                if($pat_mast->exists()){
+
+                    $pat_mast = $pat_mast->first();
+
+                    DB::table('debtor.dbacthdr')
+                        ->where('idno',$obj->idno)
+                        ->update([
+                            'mrn'=>$pat_mast->NewMrn
+                        ]);
+                }else{
+                    dump($obj->mrn);
+                }
+
             }
 
             DB::commit();
