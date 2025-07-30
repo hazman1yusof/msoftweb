@@ -6914,7 +6914,7 @@ class TestController extends defaultController
         $dept = 'fkwstr';
         $year = 2025;
         $month = 7;
-        $itemcode = ['KW000136','KW000158','KW000342','KW001013','KW001377'];
+        $itemcode = ['KW000136','KW000158','KW000342','KW001013','KW001377','KW001171','KW001404','KW000244','KW000361'];
 
         try {
 
