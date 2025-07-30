@@ -1710,12 +1710,16 @@ Route::post('/occupTherapy/form','rehab\OccupTherapyController@form');
 
 Route::get('/occupTherapy_cognitive/table','rehab\OccupTherapyCognitiveController@table');
 Route::post('/occupTherapy_cognitive/form','rehab\OccupTherapyCognitiveController@form');
+Route::get('/occupTherapy_cognitive/mmse_chart','rehab\OccupTherapyCognitiveController@mmse_chart');
+Route::get('/occupTherapy_cognitive/moca_chart','rehab\OccupTherapyCognitiveController@moca_chart');
 
 Route::get('/occupTherapy_barthel/table','rehab\OccupTherapyBarthelController@table');
 Route::post('/occupTherapy_barthel/form','rehab\OccupTherapyBarthelController@form');
+Route::get('/occupTherapy_barthel/barthel_chart','rehab\OccupTherapyBarthelController@barthel_chart');
 
 Route::get('/occupTherapy_upperExtremity/table','rehab\OccupTherapyUpperExtremityController@table');
 Route::post('/occupTherapy_upperExtremity/form','rehab\OccupTherapyUpperExtremityController@form');
+Route::get('/occupTherapy_upperExtremity/upperExtremity_chart','rehab\OccupTherapyUpperExtremityController@upperExtremity_chart');
 
 Route::get('/occupTherapy_notes/table','rehab\OccupTherapyNotesController@table');
 Route::post('/occupTherapy_notes/form','rehab\OccupTherapyNotesController@form');
