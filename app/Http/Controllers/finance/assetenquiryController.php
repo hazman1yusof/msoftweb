@@ -55,7 +55,37 @@ class assetenquiryController extends defaultController
     }
 
     public function get_table(Request $request){
-        $table = $this->defaultGetter($request);
+        // $table = $this->defaultGetter($request);
+
+        $table = DB::table('finance.faregister as fa')
+                    ->select('fa.idno','fa.compcode','fa.assetcode','fa.assettype','fa.assetno','fa.assetlineno','fa.description','fa.serialno','fa.lotno','fa.casisno','fa.engineno','fa.deptcode','fa.loccode','fa.suppcode','fa.purordno','fa.delordno','fa.delorddate','fa.dolineno','fa.itemcode','fa.invno','fa.invdate','fa.purdate','fa.purprice','fa.origcost','fa.insval','fa.qty','fa.startdepdate','fa.currentcost','fa.lstytddep','fa.cuytddep','fa.recstatus','fa.individualtag','fa.statdate','fa.trantype','fa.trandate','fa.lstdepdate','fa.nprefid','fa.adduser','fa.adddate','fa.upduser','fa.upddate','fa.regtype','fa.nbv','fa.method','fa.currdeptcode','fa.currloccode','fa.condition','fa.expdate','fa.brand','fa.model','fa.equipmentname','fa.trackingno','fa.bem_no','fa.ppmschedule','fa.lastcomputerid','fc.residualvalue','fc.rate')
+                    ->leftJoin('finance.facode as fc', function ($join){
+                        $join = $join->on('fc.assetcode','=','fa.assetcode')
+                                    ->where('fc.compcode','=',session('compcode'));
+                    })
+                    ->where('fa.compcode',session('compcode'));
+
+        if(!empty($request->searchCol)){
+            $table = $table->Where(function ($table) use ($request){
+                    $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
+            });
+        }
+        
+        if(!empty($request->sidx)){
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            
+            if(count($pieces) == 1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                foreach($pieces as $key => $value){
+                    $value_ = substr_replace($value,"db.",0,strpos($value,"_")+1);
+                    $pieces_inside = explode(" ", $value_);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('db.idno','DESC');
+        }
 
         $paginate = $table->paginate($request->rows);
 

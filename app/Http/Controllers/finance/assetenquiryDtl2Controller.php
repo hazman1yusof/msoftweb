@@ -237,10 +237,15 @@ class assetenquiryDtl2Controller extends defaultController
 
     public function get_table_EnquiryDtl2(Request $request){
 
-        $EnquiryDtl2_obj = DB::table('finance.faregister')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('delordno','=',$request->delordno)
-                    ->where('assetno','=',$request->assetno);
+        $EnquiryDtl2_obj = DB::table('finance.faregister as fa')
+                    ->select('fa.idno','fa.compcode','fa.assetcode','fa.assettype','fa.assetno','fa.assetlineno','fa.description','fa.serialno','fa.lotno','fa.casisno','fa.engineno','fa.deptcode','fa.loccode','fa.suppcode','fa.purordno','fa.delordno','fa.delorddate','fa.dolineno','fa.itemcode','fa.invno','fa.invdate','fa.purdate','fa.purprice','fa.origcost','fa.insval','fa.qty','fa.startdepdate','fa.currentcost','fa.lstytddep','fa.cuytddep','fa.recstatus','fa.individualtag','fa.statdate','fa.trantype','fa.trandate','fa.lstdepdate','fa.nprefid','fa.adduser','fa.adddate','fa.upduser','fa.upddate','fa.regtype','fa.nbv','fa.method','fa.currdeptcode','fa.currloccode','fa.condition','fa.expdate','fa.brand','fa.model','fa.equipmentname','fa.trackingno','fa.bem_no','fa.ppmschedule','fa.lastcomputerid','fc.residualvalue as rvalue','fc.rate')
+                    ->leftJoin('finance.facode as fc', function ($join){
+                        $join = $join->on('fc.assetcode','=','fa.assetcode')
+                                    ->where('fc.compcode','=',session('compcode'));
+                    })
+                    ->where('fa.compcode','=',session('compcode'))
+                    ->where('fa.delordno','=',$request->delordno)
+                    ->where('fa.assetno','=',$request->assetno);
 
         $faregister_obj = DB::table('finance.faregister')
                     ->where('compcode','=',session('compcode'))
