@@ -210,7 +210,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                             $value->reference = $value->payername;
                         }
                     }else{
-                        $value->reference = $value->pm_name;
+                        $value->reference = preg_replace("/[^a-zA-Z0-9]+/", "", $value->pm_name);
                     }
                     $value->doc_no = $value->trantype.'/'.str_pad($value->invno, 7, "0", STR_PAD_LEFT);
                     $value->amount_dr = $newamt;
@@ -242,7 +242,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                         // $value->reference = $value->remark;
                         $value->reference = $value->reference;
                     }else{
-                        $value->reference = $value->pm_name;
+                        $value->reference = preg_replace("/[^a-zA-Z0-9]+/", "", $value->pm_name);
                     }
                     $value->doc_no = $value->recptno;
                     $value->amount_dr = $newamt;
