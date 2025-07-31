@@ -147,9 +147,9 @@
                                         @endif
                                     @endif
                                     @if(!empty($obj->pm_name))
-                                    { text: `{!!$obj->pm_name!!}` },
+                                    { text: `{!!str_replace('`', '', $obj->pm_name)!!}` },
                                     @else
-                                    { text: `{!!$obj->name!!}` },
+                                    { text: `{!!str_replace('`', '', $obj->name)!!}` },
                                     @endif
                                     @if($obj->mrn == '0')
                                         { text: ' ' },
