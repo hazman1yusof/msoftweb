@@ -908,6 +908,11 @@ class ReceiptController extends defaultController
         if(!$idno){
             abort(404);
         }
+
+        $no_compcode=false;
+        if(isset($request->scol) && strtoupper($request->scol)=='DB_MRN'){
+            $no_compcode=true;
+        }
         
         $tilldetl = DB::table('debtor.tilldetl')
                     ->where('compcode',session('compcode'))
@@ -939,10 +944,14 @@ class ReceiptController extends defaultController
                     ->leftjoin('hisdb.pat_mast as p', function($join) use ($request){
                         $join = $join->on('p.MRN', '=', 'd.mrn')
                                     ->where('p.compcode','=',session('compcode'));
-                    })
-                    // ->where('d.compcode',session('compcode'))
-                    ->where('d.idno','=',$idno)
-                    ->first();
+                    });
+
+        if(!$no_compcode){
+            $dbacthdr = $dbacthdr->where('d.compcode',session('compcode'));
+        }
+
+        $dbacthdr = $dbacthdr->where('d.idno','=',$idno)
+                             ->first();
 
         $auditno = $dbacthdr->auditno;
         
@@ -959,11 +968,13 @@ class ReceiptController extends defaultController
         
         $dballoc = DB::table('debtor.dballoc as a', 'debtor.debtormast as m')
                     ->select('a.compcode', 'a.source', 'a.trantype', 'a.auditno', 'a.lineno_', 'a.docsource', 'a.doctrantype', 'a.docauditno', 'a.refsource', 'a.reftrantype', 'a.refauditno', 'a.refamount', 'a.reflineno', 'a.recptno', 'db.mrn', 'a.episno', 'a.allocsts', 'a.amount', 'a.tillcode', 'a.debtortype', 'a.debtorcode', 'a.payercode', 'a.paymode', 'a.allocdate', 'a.remark', 'a.balance', 'a.recstatus', 'm.debtorcode', 'm.name','pm.name as pm_name','db.invno','db.entrydate')
-                    ->leftjoin('debtor.dbacthdr as db', function($join) use ($request){
+                    ->leftjoin('debtor.dbacthdr as db', function($join) use ($request,$no_compcode){
                         $join = $join->on('db.auditno', '=', 'a.refauditno')
                                     ->on('db.source', '=', 'a.refsource')
                                     ->on('db.trantype', '=', 'a.reftrantype');
-                                    // ->where('db.compcode','=',session('compcode'));
+                                    if(!$no_compcode){
+                                        $join = $join->where('db.compcode','=',session('compcode'));
+                                    }
                     })
                     ->leftjoin('debtor.debtormast as m', function($join) use ($request){
                         $join = $join->on('m.debtorcode', '=', 'a.debtorcode')
@@ -972,9 +983,14 @@ class ReceiptController extends defaultController
                     ->leftjoin('hisdb.pat_mast as pm', function($join) use ($request){
                         $join = $join->on('pm.newmrn', '=', 'db.mrn')
                                     ->where('pm.compcode','=',session('compcode'));
-                    })
+                    });
                     // ->where('a.compcode',session('compcode'))
-                    ->where('a.docauditno','=',$auditno)
+
+        if(!$no_compcode){
+            $dballoc = $dballoc->where('a.compcode',session('compcode'));
+        }
+
+        $dballoc = $dballoc->where('a.docauditno','=',$auditno)
                     ->where('a.docsource','=',$dbacthdr->source)
                     ->where('a.doctrantype','=',$dbacthdr->trantype)
                     ->where('a.recstatus', '!=', 'CANCELLED')
