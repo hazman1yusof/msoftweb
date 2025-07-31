@@ -712,7 +712,7 @@ class InventoryTransactionController extends defaultController
                 }
 
                 if($ivtmphd->amount <= 0){
-                    throw new \Exception("Header Amount is 0.00", 500);
+                    // throw new \Exception("Header Amount is 0.00", 500);
                 }
 
                 DB::table('material.queueiv')
