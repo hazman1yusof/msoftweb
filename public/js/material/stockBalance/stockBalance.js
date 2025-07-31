@@ -38,6 +38,9 @@ $(document).ready(function () {
 			sortname:'sectorcode',
 			sortorder:'asc',
 			ondblClickRow: function () {
+				let data=selrowData('#'+unit_from.gridname);
+
+				$("#unit_to").val(data['sectorcode']);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -125,6 +128,9 @@ $(document).ready(function () {
 			sortname:'deptcode',
 			sortorder:'asc',
 			ondblClickRow: function () {
+				let data=selrowData('#'+dept_from.gridname);
+
+				$("#dept_to").val(data['deptcode']);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -232,6 +238,9 @@ $(document).ready(function () {
 			sortname:'s_itemcode',
 			sortorder:'asc',
 			ondblClickRow: function () {
+				let data=selrowData('#'+dialog_itemcodefrom.gridname);
+
+				$("#item_to").val(data['s_itemcode']);
 	
 			},
 			gridComplete: function(obj){
