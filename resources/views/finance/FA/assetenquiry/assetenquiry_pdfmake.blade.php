@@ -122,7 +122,7 @@
                                         text: 'Jenama Dan Model',
                                         colSpan: 1, alignment: 'left'
                                     },{
-                                        text: '{{$faregister->brand}} {{$faregister->model}}',
+                                        text: '{{$faregister->description}}',
                                         colSpan: 5, alignment: 'left',bold:true
                                     },{},{},{},{},
                                     {
@@ -152,7 +152,7 @@
                                         text: 'No. Casis / Siri Pembuat',
                                         colSpan: 1, alignment: 'left'
                                     },{
-                                        text: '{{$faregister->casisno}} ',
+                                        text: '{{$faregister->casisno}} - {{$faregister->serialno}}',
                                         colSpan: 5, alignment: 'left',bold:true
                                     },{},{},{},{},
                                     {
@@ -165,7 +165,7 @@
                                         text: 'No. Siri Pendaftaran',
                                         colSpan: 1, alignment: 'left'
                                     },{
-                                        text: '{{$faregister->serialno}}',
+                                        text: '{{$faregister->assetno}}',
                                         colSpan: 5, alignment: 'left',bold:true
                                     },{},{},{},{},{},{},{},{},{},
                                 ],
@@ -299,10 +299,10 @@
 
         function make_body(){
             var loc = [
-                    {text:'Lokasi'},{},{},{},{},{},{},{},{},{},{}
+                    {text:'Lokasi'},{text:faregister.loccode},{},{},{},{},{},{},{},{},{}
                 ];
             var date = [
-                    {text:'Tarikh'},{},{},{},{},{},{},{},{},{},{}
+                    {text:'Tarikh'},{text:faregister.trandate},{},{},{},{},{},{},{},{},{}
                 ];
             var sign = [
                     {text:'Tandatangan Penjaga Aset'},{},{},{},{},{},{},{},{},{},{}
@@ -310,7 +310,7 @@
 
             var retval = [];
 
-            let x=1;
+            let x=2;
             curloccode.forEach(function(e,i){
                 let obj_loc = {
                     text:e.curloccode,

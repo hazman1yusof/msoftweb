@@ -285,6 +285,7 @@ class assetenquiryController extends defaultController
                         $join = $join->on('l.loccode','=','ft.curloccode')
                                     ->where('l.compcode','=',session('compcode'));
                     })
+                    ->where('ft.trantype','TRF')
                     ->where('ft.compcode',session('compcode'))
                     ->where('ft.assetno',$assetno)
                     ->orderBy('ft.trandate','ASC')
