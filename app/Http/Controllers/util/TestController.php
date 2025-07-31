@@ -5100,10 +5100,13 @@ class TestController extends defaultController
 
             $itemcode=$request->itemcode;
             $deptcode=$request->deptcode;
-            $month=$request->month;
+            $period=intval($request->period);
+
+            $day_start = Carbon::createFromFormat('Y-m-d','2025-'.$period.'-01')->startOfMonth()->format('Y-m-d');
+            $day_end = Carbon::createFromFormat('Y-m-d','2025-'.$period.'-01')->endOfMonth()->format('Y-m-d');
 
             $stockloc = DB::table('material.stockloc')
-                        ->where('compcode','9B')
+                        ->where('compcode',session('compcode'))
                         ->where('itemcode',$itemcode)
                         ->where('deptcode',$deptcode)
                         ->where('year','2025')
@@ -5119,25 +5122,25 @@ class TestController extends defaultController
                 //                 ->first();
 
                 $ivdspdt = DB::table('material.ivdspdt')
-                            ->where('compcode','9B')
+                            ->where('compcode',session('compcode'))
                             ->where('itemcode',$value->itemcode)
-                            ->where('trandate','>=','2025-03-01')
-                            ->where('trandate','<=','2025-03-31')
+                            ->where('trandate','>=',$day_start)
+                            ->where('trandate','<=',$day_end)
                             ->sum('txnqty');
                 $minus = $ivdspdt;
 
                 $ivtxndt = DB::table('material.ivtxndt')
-                            ->where('compcode','9B')
+                            ->where('compcode',session('compcode'))
                             ->where('itemcode',$value->itemcode)
-                            ->where('trandate','>=','2025-03-01')
-                            ->where('trandate','<=','2025-03-31')
+                            ->where('trandate','>=',$day_start)
+                            ->where('trandate','<=',$day_end)
                             ->get();
 
                 $add = 0;
                 $add2 = 0;
                 foreach ($ivtxndt as $key => $value) {
                     $ivtxntype = DB::table('material.ivtxntype')
-                                        ->where('compcode','9B')
+                                        ->where('compcode',session('compcode'))
                                         ->where('trantype',$value->trantype)
                                         ->first();
 
@@ -5155,10 +5158,10 @@ class TestController extends defaultController
                 $all = $add - $minus;
 
                 $ivdspdt2 = DB::table('material.ivdspdt')
-                            ->where('compcode','9B')
+                            ->where('compcode',session('compcode'))
                             ->where('itemcode',$value->itemcode)
-                            ->where('trandate','>=','2025-03-01')
-                            ->where('trandate','<=','2025-03-31')
+                            ->where('trandate','>=',$day_start)
+                            ->where('trandate','<=',$day_end)
                             ->sum('amount');
                 $minus2 = $ivdspdt2;
 
@@ -5170,14 +5173,17 @@ class TestController extends defaultController
                 // dump($netmvqty11);
 
                 DB::table('material.stockloc')
-                            ->where('compcode','9B')
+                            ->where('compcode',session('compcode'))
                             ->where('itemcode',$itemcode)
                             ->where('deptcode',$deptcode)
                             ->where('year','2025')
                             ->update([
-                                'netmvqty3' => $all,
-                                'netmvval3' => $all2
+                                'netmvqty'.$period => $all,
+                                'netmvval'.$period => $all2
                             ]);
+
+                dump('netmvqty'.$period.' => '.$all);
+                dump('netmvval'.$period.' => '.$all2);
             }
 
             DB::commit();
@@ -6915,7 +6921,7 @@ class TestController extends defaultController
         $dept = 'fkwstr';
         $year = 2025;
         $month = 7;
-        $itemcode = ['KW000136','KW000158','KW000342','KW001013','KW001377','KW001171','KW001404','KW000244','KW000361','KW000136'];
+        $itemcode = ['KW000136','KW000158','KW000342','KW001013','KW001377','KW001171','KW001404','KW000244','KW000361'];
 
         try {
 
