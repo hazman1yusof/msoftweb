@@ -15,36 +15,6 @@
     
     <script>
         
-        var dbacthdr = {
-            @foreach($dbacthdr as $key => $val)
-                '{{$key}}' : `{{$val}}`,
-            @endforeach
-        };
-        
-        var title = {
-            @foreach($company as $key => $val)
-                '{{$key}}' : `{{$val}}`,
-            @endforeach
-        };
-        
-        var dballoc=[
-            @foreach($dballoc as $key => $alloc)
-            [
-                @foreach($alloc as $key2 => $val)
-                    {'{{$key2}}' : `{{$val}}`},
-                @endforeach
-            ],
-            @endforeach
-        ];
-        
-        var company = {
-            @foreach($company as $key => $val)
-                '{{$key}}' : '{{$val}}',
-            @endforeach
-        };
-        
-        var totamt_eng = '{{$totamt_eng}}';
-        
         $(document).ready(function () {
             var docDefinition = {
                 footer: function(currentPage, pageCount) {
