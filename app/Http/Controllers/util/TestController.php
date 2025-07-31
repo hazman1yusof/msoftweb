@@ -5412,13 +5412,14 @@ class TestController extends defaultController
 
         $notin=[];
         foreach ($glmasdtl as $obj) {
+            $obj_ = (array)$obj;
             $glmasref = DB::table('finance.glmasref')
                         ->where('compcode',session('compcode'))
                         ->where('glaccno',$obj->glaccount)
                         ->exists();
 
             if(!$glmasref){
-                array_push($notin, $obj->glaccount.' - '.$obj->actamount5);
+                array_push($notin, $obj->glaccount.' - '.$obj_['actamount'.$period]);
             }
         }
 
@@ -6914,7 +6915,7 @@ class TestController extends defaultController
         $dept = 'fkwstr';
         $year = 2025;
         $month = 7;
-        $itemcode = ['KW000136','KW000158','KW000342','KW001013','KW001377','KW001171','KW001404','KW000244','KW000361'];
+        $itemcode = ['KW000136','KW000158','KW000342','KW001013','KW001377','KW001171','KW001404','KW000244','KW000361','KW000136'];
 
         try {
 

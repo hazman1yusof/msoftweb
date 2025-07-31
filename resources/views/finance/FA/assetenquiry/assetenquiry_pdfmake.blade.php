@@ -75,73 +75,81 @@
                         },
                         layout: 'noBorders',
                     },
-                    { text: 'BUTIR-BUTIR HARTA', alignment: 'center', fontSize: 12, bold: true },
+                    { text: 'BUTIR-BUTIR HARTA', alignment: 'center', fontSize: 10, bold: true },
                     {
                         style: 'tableExample',
                         table: {
-                            widths: ['*','*','*','*','*','*','*','*','*','*','*'],
+                            widths: [88,63,63,63,63,63,63,63,63,63,63],
                             // headerRows: 5,
                             // keepWithHeaderRows: 5,
                             body: [
                                 [
                                     {
-                                        text: 'Kategori:',
+                                        text: 'Kategori',
                                         colSpan: 1, alignment: 'left'
                                     },{
                                         text: '{{strtoupper($faregister->category_description)}}',
-                                        colSpan: 5, alignment: 'left'
+                                        colSpan: 5, alignment: 'left',bold:true
                                     },{},{},{},{},
                                     {
-                                        text: 'Kos Dan Tarikh Dibeli/Diterima: RM {{number_format($faregister->origcost,2)}} & {{\Carbon\Carbon::parse($faregister->delorddate)->format('d/m/Y')}}',
-                                        colSpan: 5, alignment: 'left'
-                                    },{},{},{},{},
+                                        text: 'Kos Dan Tarikh Dibeli/Diterima',
+                                        colSpan: 2, alignment: 'left'
+                                    },{},{
+                                        text: 'RM {{number_format($faregister->origcost,2)}} & {{\Carbon\Carbon::parse($faregister->delorddate)->format('d/m/Y')}}',colSpan: 3, alignment: 'left',bold:true
+                                    },{},{},
                                 ],
                                 [
                                     {
-                                        text: 'Jenis:',
+                                        text: 'Jenis',
                                         colSpan: 1, alignment: 'left'
                                     },{
                                         text: '{{strtoupper($faregister->type_description)}}',
-                                        colSpan: 5, alignment: 'left'
+                                        colSpan: 5, alignment: 'left',bold:true
                                     },{},{},{},{},
                                     {
-                                        text: 'No. Pesanan Rasmi: {{$faregister->invno}}',
-                                        colSpan: 5, alignment: 'left'
-                                    },{},{},{},{},
+                                        text: 'No. Pesanan Rasmi',
+                                        colSpan: 2, alignment: 'left'
+                                    },{},{
+                                        text: '{{$faregister->invno}}',colSpan: 3, alignment: 'left',bold:true
+                                    },{},{},
                                 ],
                                 [
                                     {
-                                        text: 'Jenama Dan Model:',
+                                        text: 'Jenama Dan Model',
                                         colSpan: 1, alignment: 'left'
                                     },{
                                         text: '{{$faregister->brand}} {{$faregister->model}}',
-                                        colSpan: 5, alignment: 'left'
+                                        colSpan: 5, alignment: 'left',bold:true
                                     },{},{},{},{},
                                     {
-                                        text: 'Pembekal: {{strtoupper($faregister->supplier_name)}}',
-                                        colSpan: 5, alignment: 'left'
-                                    },{},{},{},{},
+                                        text: 'Pembekal',
+                                        colSpan: 2, alignment: 'left'
+                                    },{},{ 
+                                        text: '{{strtoupper($faregister->supplier_name)}}',colSpan: 3, alignment: 'left',bold:true
+                                    },{},{},
                                 ],
                                 [
                                     {
-                                        text: 'Jenis Dan No. Enjin:',
+                                        text: 'Jenis Dan No. Enjin',
                                         colSpan: 1, alignment: 'left'
                                     },{
                                         text: '{{$faregister->engineno}}',
-                                        colSpan: 5, alignment: 'left'
+                                        colSpan: 5, alignment: 'left',bold:true
                                     },{},{},{},{},
                                     {
                                         text: 'No. Rujukan Fail: ',
-                                        colSpan: 5, alignment: 'left'
-                                    },{},{},{},{},
+                                        colSpan: 2, alignment: 'left'
+                                    },{},{
+                                        text: 'Fail 21',colSpan: 3, alignment: 'left',bold:true
+                                    },{},{},
                                 ],
                                 [
                                     {
-                                        text: 'No. Casis / Siri Pembuat:',
+                                        text: 'No. Casis / Siri Pembuat',
                                         colSpan: 1, alignment: 'left'
                                     },{
                                         text: '{{$faregister->casisno}} {{$faregister->serialno}}',
-                                        colSpan: 5, alignment: 'left'
+                                        colSpan: 5, alignment: 'left',bold:true
                                     },{},{},{},{},
                                     {
                                         text: ' ',
@@ -150,12 +158,12 @@
                                 ],
                                 [
                                     {
-                                        text: 'No. Siri Pendaftaran:',
+                                        text: 'No. Siri Pendaftaran',
                                         colSpan: 1, alignment: 'left'
                                     },{
-                                        text: '',
-                                        colSpan: 5, alignment: 'left'
-                                    },{},{},{},{},{},{},{},{},{},{},
+                                        text: '12323',
+                                        colSpan: 5, alignment: 'left',bold:true
+                                    },{},{},{},{},{},{},{},{},{},
                                 ],
                                 [
                                     {
@@ -176,25 +184,12 @@
                     { text: 'PENEMPATAN', alignment: 'center', fontSize: 9, bold: true },
                     {
                         style: 'tableExample',
-                        table: make_table(),
-                        // table: {
-                        //     headerRows: 1,
-                        //     widths: ['*','*','*'], // panjang standard dia 515
-                        //     body: [
-                        //         [
-                        //             { text: 'LOKASI', style: 'tableHeader' },
-                        //             { text: 'TARIKH', style: 'tableHeader' },
-                        //             { text: 'TANDATANGAN PENJAGA ASET', style: 'tableHeader' },
-                        //         ],
-                        //         @foreach ($movement as $obj)
-                        //         [
-                        //             { text: '{{$obj->loc_description}}' },
-                        //             { text: '{{\Carbon\Carbon::parse($obj->trandate)->format('d/m/Y')}}' },
-                        //             { text: ' ' },
-                        //         ],
-                        //         @endforeach
-                        //     ]
-                        // },
+                        table: {
+                            widths: [88,63,63,63,63,63,63,63,63,63,63],
+                            // headerRows: 5,
+                            // keepWithHeaderRows: 5,
+                            body: make_body()
+                        }
                     },
                     {
                         style: 'tableExample',
@@ -262,12 +257,12 @@
                 ],
                 styles: {
                     header: {
-                        fontSize: 12,
+                        fontSize: 10,
                         bold: true,
                         margin: [0, 0, 0, 5]
                     },
                     tableExample: {
-                        fontSize: 9,
+                        fontSize: 7,
                         margin: [0, 5, 0, 10]
                     },
                     tableHeader: {
@@ -298,53 +293,30 @@
             });
         });
         
-        function make_table(){
-            var width = [50,'*'];
-            curloccode.forEach(function (e,i){
-                width.push('*');
-            });
-            var body = [[{ text: 'Lokasi', style: 'tableHeader' }],[{ text: 'Tarikh', style: 'tableHeader' }],[{ text: 'Tandantangan Penjaga Aset', style: 'tableHeader' }]];
-            
-            movement.forEach(function (e,i){
-                let arr1 = [
-                    [{ text: e.loc_description }],
-                    [{ text: e.trandate }],
-                    [{ text: '' }]
+        function make_body(){
+            var retval = [
+                [
+                    {text:'Lokasi'},{},{},{},{},{},{},{},{},{},{}
+                ],
+                [
+                    {text:'Tarikh'},{},{},{},{},{},{},{},{},{},{}
+                ],
+                [
+                    {text:'Tandatangan Penjaga Aset'},{},{},{},{},{},{},{},{},{},{}
                 ]
+            ]
+
+            curloccode.forEach(function(e,i){
                 
-                body.push(arr1);
             });
-            
-            var ret_obj = {
-                // headerRows: 1,
-                widths: width,
-                body: body,
-            };
-            
-            return ret_obj;
+
+            return retval;
         }
         
         function make_header(){
             
         }
-        
-        // pdfMake.createPdf(docDefinition).getDataUrl(function (dataURL){
-        //     console.log(dataURL);
-        //     document.getElementById('pdfPreview').data = dataURL;
-        // });
-        
-        // jsreport.serverUrl = 'http://localhost:5488'
-        // async function preview(){
-        //     const report = await jsreport.render({
-        //         template: {
-        //             name: 'mc'
-        //         },
-        //         data: mydata
-        //     });
-        //     document.getElementById('pdfPreview').data = await report.toObjectURL()
-        // }
-        
-        // preview().catch(console.error)
+    
     </script>
     
     <body style="margin: 0px;">
