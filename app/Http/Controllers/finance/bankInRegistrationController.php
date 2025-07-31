@@ -388,6 +388,7 @@ class bankInRegistrationController extends defaultController
                 }else if($apacthdr_get->trantype == 'BS'){
                     $paymode_get = DB::table('debtor.paymode')
                                     ->where('compcode', session('compcode'))
+                                    ->where('source', 'AR')
                                     ->where('paytype', 'CASH')
                                     ->first();
                     $crcostcode = $paymode_get->ccode;
@@ -396,6 +397,7 @@ class bankInRegistrationController extends defaultController
                 }else if($apacthdr_get->trantype == 'BQ'){
                     $paymode_get = DB::table('debtor.paymode')
                                     ->where('compcode', session('compcode'))
+                                    ->where('source', 'AR')
                                     ->where('paytype', 'CHEQUE')
                                     ->first();
                     $crcostcode = $paymode_get->ccode;
