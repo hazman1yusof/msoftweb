@@ -71,11 +71,11 @@
 								<div class="form-group row">
 									<label class="col-md-2 control-label" for="currdeptcode">Current Department</label>
 										<div class="col-md-3">
-											<input id="currdeptcode" name="currdeptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+											<input id="currdeptcode" name="currdeptcode" type="text" class="form-control input-sm text-uppercase"  frozeOnEdit>
 										</div>
 									<label class="col-md-2 control-label" for="currloccode">Current Location</label>
 										<div class="col-md-3">
-											<input id="currloccode" name="currloccode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+											<input id="currloccode" name="currloccode" type="text" class="form-control input-sm text-uppercase" frozeOnEdit>
 										</div>
 								</div>
 								

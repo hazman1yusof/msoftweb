@@ -16,7 +16,7 @@
     <script>
         var faregister = {
             @foreach($faregister as $key => $val)
-                '{{$key}}' : '{{$val}}',
+                '{{$key}}' : `{{$val}}`,
             @endforeach
         };
         
@@ -31,8 +31,12 @@
         ];
         
         var curloccode = [
-            @foreach($curloccode as $key => $val)
-                '{{$val}}',
+            @foreach($curloccode as $objcc)
+            {
+                @foreach($objcc as $key => $val)
+                    '{{$key}}' : `{{$val}}`,
+                @endforeach
+            },
             @endforeach
         ];
         
@@ -140,7 +144,7 @@
                                         text: 'No. Rujukan Fail: ',
                                         colSpan: 2, alignment: 'left'
                                     },{},{
-                                        text: 'Fail 21',colSpan: 3, alignment: 'left',bold:true
+                                        text: '{{$faregister->lotno}}',colSpan: 3, alignment: 'left',bold:true
                                     },{},{},
                                 ],
                                 [
@@ -148,7 +152,7 @@
                                         text: 'No. Casis / Siri Pembuat',
                                         colSpan: 1, alignment: 'left'
                                     },{
-                                        text: '{{$faregister->casisno}} {{$faregister->serialno}}',
+                                        text: '{{$faregister->casisno}} ',
                                         colSpan: 5, alignment: 'left',bold:true
                                     },{},{},{},{},
                                     {
@@ -161,7 +165,7 @@
                                         text: 'No. Siri Pendaftaran',
                                         colSpan: 1, alignment: 'left'
                                     },{
-                                        text: '12323',
+                                        text: '{{$faregister->serialno}}',
                                         colSpan: 5, alignment: 'left',bold:true
                                     },{},{},{},{},{},{},{},{},{},
                                 ],
@@ -292,23 +296,36 @@
                 $('#pdfiframe').attr('src',dataURL);
             });
         });
-        
-        function make_body(){
-            var retval = [
-                [
-                    {text:'Lokasi'},{},{},{},{},{},{},{},{},{},{}
-                ],
-                [
-                    {text:'Tarikh'},{},{},{},{},{},{},{},{},{},{}
-                ],
-                [
-                    {text:'Tandatangan Penjaga Aset'},{},{},{},{},{},{},{},{},{},{}
-                ]
-            ]
 
+        function make_body(){
+            var loc = [
+                    {text:'Lokasi'},{},{},{},{},{},{},{},{},{},{}
+                ];
+            var date = [
+                    {text:'Tarikh'},{},{},{},{},{},{},{},{},{},{}
+                ];
+            var sign = [
+                    {text:'Tandatangan Penjaga Aset'},{},{},{},{},{},{},{},{},{},{}
+                ];
+
+            var retval = [];
+
+            let x=1;
             curloccode.forEach(function(e,i){
-                
+                let obj_loc = {
+                    text:e.curloccode,
+                }
+                let obj_date = {
+                    text:e.trandate,
+                }
+                loc[x]=obj_loc;
+                date[x]=obj_date;
+                x = x + 1;
             });
+
+            retval[0]=loc;
+            retval[1]=date;
+            retval[2]=sign;
 
             return retval;
         }

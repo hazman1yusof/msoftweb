@@ -298,10 +298,12 @@ class assettransfer2Controller extends defaultController
         try {
 
             $transferFA = DB::table('finance.faregister')
+                ->where('compcode',session('compcode'))
                 ->where('idno','=',$request->idno_fr);
 
             if($transferFA->exists()){
                 DB::table('finance.facompnt')
+                ->where('compcode',session('compcode'))
                     ->where('idno','=',$request->idno_fc)
                     ->update([
                         'deptcode' => $request->newdeptcode,

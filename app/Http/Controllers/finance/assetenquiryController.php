@@ -287,8 +287,10 @@ class assetenquiryController extends defaultController
                     })
                     ->where('ft.compcode',session('compcode'))
                     ->where('ft.assetno',$assetno)
-                    ->pluck('ft.curloccode')
-                    ->toArray();
+                    ->orderBy('ft.trandate','ASC')
+                    ->get();
+                    // ->pluck('ft.curloccode')
+                    // ->toArray();
         // dd($curloccode);
         
         $company = DB::table('sysdb.company')
