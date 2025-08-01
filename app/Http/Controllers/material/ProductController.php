@@ -56,7 +56,7 @@ class ProductController extends defaultController
             case 'edit':
                 return $this->edit($request);
             case 'del':
-                return $this->defaultDel($request);
+                return $this->del($request);
             default:
                 return 'error happen..';
         }
@@ -584,7 +584,7 @@ class ProductController extends defaultController
                             // 'costcode' => $request->cm_costcode, 
                             // 'revcode' => $request->cm_revcode, 
                             // 'seqno' => $request->cm_seqno,
-
+                            'recstatus' => 'ACTIVE',
                             'upduser' => session('username'),
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'lastcomputerid' => session('computerid'),
@@ -635,6 +635,53 @@ class ProductController extends defaultController
                 // $responce = new stdClass();
                 // $responce->sql = $table->toSql();
                 // $responce->sql_bind = $table->getBindings();
+
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollback();
+                return response($e->getMessage(), 500);
+            }
+        // }
+    }
+
+    public function del(Request $request){   
+        // if(strtoupper($request->Class) == 'ASSET'){
+            DB::beginTransaction();
+            try {
+
+                //1. update product 
+                $table = DB::table('material.product')->where('idno','=',$request->idno);
+                $array_update = [
+                    'recstatus' => 'DEACTIVE',
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastcomputerid' => session('computerid'),
+                ];
+                $table->update($array_update);
+
+                if($request->chgflag == 1){
+
+                    //2. update chgmast 
+                    $chgmast = DB::table('hisdb.chgmast')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('unit','=',session('unit'))
+                                ->where('chgcode','=',$request->itemcode)
+                                ->where('uom','=',$request->uomcode);
+
+                    if($chgmast->exists()){
+                        $array_update = [
+                            'deluser' => session('username'),
+                            'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'recstatus' => 'DEACTIVE',
+                            'computerid' => session('computerid')
+                        ];
+                        $chgmast->update($array_update);
+                    }
+                }
+
+                $responce = new stdClass();
+                $responce->sql = $table->toSql();
+                $responce->sql_bind = $table->getBindings();
 
                 DB::commit();
             } catch (\Exception $e) {
