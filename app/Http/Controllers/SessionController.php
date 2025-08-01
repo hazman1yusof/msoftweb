@@ -222,6 +222,6 @@ class SessionController extends Controller
         //             ->where('compcode',session('compcode'))
         //             ->first();
 
-        return back();
+        return redirect('/home');
     }
 }
