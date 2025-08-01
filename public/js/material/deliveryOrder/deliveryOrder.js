@@ -2621,7 +2621,7 @@ $(document).ready(function () {
 					dialog_itemcode.urlParam.table_id = "none_";
 					dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode', 's.unit'];
 					dialog_itemcode.urlParam.filterVal = ['on.p.compcode', moment($('#delordhd_deliverydate').val()).year(), $('#delordhd_deldept').val(),'session.unit'];
-					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
+					dialog_itemcode.urlParam.join_type = ['JOIN','LEFT JOIN','LEFT JOIN'];
 					dialog_itemcode.urlParam.join_onCol = ['s.itemcode','p.taxcode','u.uomcode'];
 					dialog_itemcode.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
 					dialog_itemcode.urlParam.join_filterCol = [['p.uomcode on =','p.compcode =','p.recstatus =','p.unit =']];
@@ -2631,8 +2631,8 @@ $(document).ready(function () {
 					dialog_itemcode.urlParam.table_name = ['material.product AS p','hisdb.taxmast AS t','material.uom AS u'];
 					dialog_itemcode.urlParam.fixPost = "true";
 					dialog_itemcode.urlParam.table_id = "none_";
-					dialog_itemcode.urlParam.filterCol = ['p.compcode', 'p.groupcode'];
-					dialog_itemcode.urlParam.filterVal = ['session.compcode',  '<>.Stock'];
+					dialog_itemcode.urlParam.filterCol = ['p.compcode', 'p.groupcode','p.recstatus'];
+					dialog_itemcode.urlParam.filterVal = ['session.compcode',  '<>.Stock','ACTIVE'];
 					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN'];
 					dialog_itemcode.urlParam.join_onCol = ['p.taxcode','u.uomcode'];
 					dialog_itemcode.urlParam.join_onVal = ['t.taxcode','p.uomcode'];

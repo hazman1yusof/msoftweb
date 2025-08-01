@@ -3126,8 +3126,8 @@ $(document).ready(function () {
 				dialog_salesorder.urlParam.join_type = ['LEFT JOIN'];
 				dialog_salesorder.urlParam.join_onCol = ['d.mrn'];
 				dialog_salesorder.urlParam.join_onVal = ['p.newmrn'];
-				dialog_itemcode.urlParam.join_filterCol = [['p.compcode =']];
-				dialog_itemcode.urlParam.join_filterVal = [['session.compcode']];
+				dialog_salesorder.urlParam.join_filterCol = [['p.compcode =']];
+				dialog_salesorder.urlParam.join_filterVal = [['session.compcode']];
 			},
 			close: function(){
 				$('#purordhd_remarks').focus();
@@ -3339,7 +3339,7 @@ $(document).ready(function () {
 					dialog_itemcode.urlParam.table_id = "none_";
 					dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode', 's.unit'];
 					dialog_itemcode.urlParam.filterVal = ['on.p.compcode', moment($('#purordhd_purreqdt').val()).year(), $('#purordhd_deldept').val(),'session.unit'];
-					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
+					dialog_itemcode.urlParam.join_type = ['JOIN','LEFT JOIN','LEFT JOIN'];
 					dialog_itemcode.urlParam.join_onCol = ['s.itemcode','p.taxcode','u.uomcode'];
 					dialog_itemcode.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
 					dialog_itemcode.urlParam.join_filterCol = [['p.uomcode on =','p.compcode =','p.recstatus =','p.unit =']];

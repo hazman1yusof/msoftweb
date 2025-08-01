@@ -149,7 +149,15 @@ abstract class defaultController extends Controller{
                                     if($pieces[1] == 'on'){
                                         $join = $join->on($pieces[0],$pieces[2],$request->join_filterVal[$key][$key2]);
                                     }else{
-                                        $join = $join->where($pieces[0],$pieces[2],$request->join_filterVal[$key][$key2]);
+
+                                        $in_pieces = explode(".", $request->join_filterVal[$key][$key2], 2);
+                                        if($in_pieces[0] == 'session'){
+                                            $join = $join->where($pieces[0],'=',session($in_pieces[1]));
+                                        }else{
+                                            $join = $join->where($pieces[0],'=',$request->join_filterVal[$key][$key2]);
+                                        }
+
+                                        // $join = $join->where($pieces[0],$pieces[2],$request->join_filterVal[$key][$key2]);
                                     }
                                 }
                             }
