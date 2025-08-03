@@ -64,6 +64,8 @@ class InventoryTransactionController extends defaultController
                 return $this->reopen($request);
             case 'cancel':
                 return $this->cancel($request);
+            case 'cancel_posted':
+                return $this->cancel_posted($request);
             default:
                 return 'error happen..';
         }
@@ -397,6 +399,7 @@ class InventoryTransactionController extends defaultController
 
         try {
 
+            $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno){
                 //-- 1. transfer from ivtmphd to ivtxnhd --//
                 $ivtmphd = DB::table('material.ivtmphd')
@@ -455,6 +458,7 @@ class InventoryTransactionController extends defaultController
 
         try {
 
+            $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno){
                 //-- 1. transfer from ivtmphd to ivtxnhd --//
                 $ivtmphd = DB::table('material.ivtmphd')
@@ -523,6 +527,7 @@ class InventoryTransactionController extends defaultController
 
         try {
 
+            $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno){
                 //-- 1. transfer from ivtmphd to ivtxnhd --//
                 $ivtmphd = DB::table('material.ivtmphd')
@@ -591,6 +596,7 @@ class InventoryTransactionController extends defaultController
 
         try {
 
+            $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno){
                 //-- 1. transfer from ivtmphd to ivtxnhd --//
                 $ivtmphd = DB::table('material.ivtmphd')
@@ -641,6 +647,7 @@ class InventoryTransactionController extends defaultController
 
         try{
 
+            $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno){
                 $ivtmphd = DB::table('material.ivtmphd')
                             ->where('idno','=',$idno)
@@ -712,7 +719,7 @@ class InventoryTransactionController extends defaultController
                 }
 
                 if($ivtmphd->amount <= 0){
-                    // throw new \Exception("Header Amount is 0.00", 500);
+                    throw new \Exception("Header Amount is 0.00", 500);
                 }
 
                 DB::table('material.queueiv')
@@ -986,6 +993,7 @@ class InventoryTransactionController extends defaultController
 
         try {
 
+            $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno){
                 //-- 1. transfer from ivtmphd to ivtxnhd --//
                 $ivtmphd = DB::table('material.ivtmphd')
@@ -1129,6 +1137,7 @@ class InventoryTransactionController extends defaultController
 
         try {
 
+            $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno){
                 $ivtmphd = DB::table('material.ivtmphd')
                             ->where('idno','=',$idno)
@@ -1155,6 +1164,146 @@ class InventoryTransactionController extends defaultController
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                         'recstatus' => 'CANCELLED' 
+                    ]);
+
+
+            }
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function cancel_posted(Request $request){ 
+
+        DB::beginTransaction();
+
+        try {
+
+            $request->idno_array = array_unique($request->idno_array);
+            foreach ($request->idno_array as $idno){
+                $ivtmphd = DB::table('material.ivtmphd')
+                            ->where('idno','=',$idno)
+                            ->first();
+
+                if(!in_array($ivtmphd->recstatus, ['POSTED'])){
+                    continue;
+                }
+
+                DB::table("material.IvTxnHd")
+                    ->where('compcode',$ivtmphd->compcode)
+                    ->where('RecNo',$ivtmphd->recno)
+                    ->update([
+                        'CompCode' => 'XX',
+                        'RecStatus' => 'CANCELLED',
+                    ]);
+
+                //-- 2. transfer from ivtmpdt to ivtxndt --//
+                $ivtmpdt_obj = DB::table('material.ivtmpdt')
+                        ->where('ivtmpdt.compcode','=',session('compcode'))
+                        ->where('ivtmpdt.recno','=',$ivtmphd->recno)
+                        ->where('ivtmpdt.recstatus','!=','DELETE')
+                        ->get();
+
+                foreach ($ivtmpdt_obj as $value) {
+                    if($value->txnqty == 0){
+                        continue;
+                    }
+
+                    $obj_acc = invtran_util::get_acc($value,$ivtmphd);
+
+                    $craccno = $obj_acc->craccno;
+                    $crccode = $obj_acc->crccode;
+                    $draccno = $obj_acc->draccno;
+                    $drccode = $obj_acc->drccode;
+
+
+                    DB::table("material.ivtxndt")
+                        ->where('compcode',session('compcode'))
+                        ->where('recno',$value->recno)
+                        ->update([
+                            'CompCode' => 'XX',
+                            'RecStatus' => 'CANCELLED',
+                        ]);
+
+                    //-- 4. posting stockloc OUT --//
+
+                    if($ivtmphd->trantype == 'TUO'){
+                        invtran_util::un_posting_TUO($value,$ivtmphd);
+                    }else if($ivtmphd->trantype == 'TUI'){
+                        invtran_util::un_posting_TUI($value,$ivtmphd);
+                        // invtran_util::posting_TUI($value,$ivtmphd);
+                    }else{
+                        $trantype_obj = DB::table('material.ivtxntype')
+                            ->where('ivtxntype.compcode','=',session('compcode'))
+                            ->where('ivtxntype.trantype','=',$ivtmphd->trantype)
+                            ->first();
+
+                        if(strtoupper($trantype_obj->isstype) == 'TRANSFER'){
+                            $retval = invtran_util::un_posting_for_transfer($value,$ivtmphd);
+                        
+                        }else if(strtoupper($trantype_obj->isstype) == 'ADJUSTMENT' || strtoupper($trantype_obj->isstype) == 'LOAN' || strtoupper($trantype_obj->isstype) == 'ISSUE'|| strtoupper($trantype_obj->isstype) == 'WRITE-OFF'){
+                            switch (strtoupper($trantype_obj->crdbfl)) {
+                                case 'IN':
+                                    invtran_util::un_posting_for_adjustment_in($value,$ivtmphd,$trantype_obj->isstype);
+                                    break;
+                                case 'OUT':
+                                    invtran_util::un_posting_for_adjustment_out($value,$ivtmphd,$trantype_obj->isstype);
+                                    break;
+                                default:
+                                    # code...
+                                    break;
+                            }
+                        }
+                    }
+
+                    //--- 7. posting GL ---//
+
+                    //amik yearperiod
+                    $yearperiod = $this->getyearperiod($ivtmphd->trandate);
+     
+                    //1. buat gltran
+
+                    
+                    DB::table('finance.gltran')
+                        ->where('compcode',session('compcode'))
+                        ->where('auditno',$value->recno)
+                        ->where('lineno_',$value->lineno_)
+                        ->update([
+                            'compcode' => 'XX'
+                        ]);
+
+                    $this->init_glmastdtl_del(
+                            $drccode,//drcostcode
+                            $draccno,//dracc
+                            $crccode,//crcostcode
+                            $craccno,//cracc
+                            $yearperiod,
+                            $value->amount
+                    );
+
+                }
+
+                //--- 8. change recstatus to posted ---//
+
+                DB::table('material.ivtmphd')
+                    ->where('recno','=',$ivtmphd->recno)
+                    ->where('compcode','=',session('compcode'))
+                    ->update([
+                        'postedby' => session('username'),
+                        'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'recstatus' => 'OPEN' 
+                    ]);
+
+                DB::table('material.ivtmpdt')
+                    ->where('recno','=',$ivtmphd->recno)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recstatus','!=','DELETE')
+                    ->update([
+                        'recstatus' => 'OPEN' 
                     ]);
 
 

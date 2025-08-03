@@ -204,7 +204,7 @@
 
 @section('scripts')
 
-	<script src="js/finance/GL/glmasdtl/glmasdtl.js"></script>
+	<script src="js/finance/GL/glmasdtl/glmasdtl.js?v=1.1"></script>
 	<script src="plugins/datatables/js/jquery.datatables.min.js"></script>
 	
 @endsection

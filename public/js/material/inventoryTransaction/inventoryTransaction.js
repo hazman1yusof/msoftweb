@@ -4,6 +4,9 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 	$("body").show();
+	$('body').click(function(){
+		$('#error_infront').text('');
+	});
 	/////////////////////////////////////////validation//////////////////////////
 	$.validate({
 		modules : 'sanitize',
@@ -1679,6 +1682,10 @@ $(document).ready(function () {
 			}
 		}else if($('#scope').val() == 'CANCEL'){
 			if(recstatus == "OPEN"){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}
+		}else if($('#scope').val() == 'CANCEL_POSTED'){
+			if(recstatus == "POSTED"){
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 			}
 		}else if($('#scope').val() == 'REOPEN_TUO'){

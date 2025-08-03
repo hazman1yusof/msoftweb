@@ -623,6 +623,87 @@ class invtran_util extends defaultController{
         }
 	}
 
+    public static function un_posting_for_adjustment_in($value,$ivtmphd,$isstype){
+        //1. amik stockloc
+        $stockloc_obj = DB::table('material.StockLoc')
+            // ->where('StockLoc.unit',session('unit'))
+            ->where('StockLoc.CompCode','=',session('compcode'))
+            ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
+            ->where('StockLoc.ItemCode','=',$value->itemcode)
+            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->trandate))
+            ->where('StockLoc.UomCode','=',$value->uomcode);
+
+        $stockloc_first = $stockloc_obj->first();
+
+        //2.kalu ada stockloc, update 
+        if($stockloc_obj->exists()){
+
+            //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
+            $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
+            $month = defaultController::toMonth(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+            $QtyOnHand = $stockloc_first->qtyonhand - $value->txnqty; 
+            $NetMvQty = $stockloc_arr['netmvqty'.$month] - $value->txnqty;
+            $NetMvVal = $stockloc_arr['netmvval'.$month] - round($value->netprice * $value->txnqty,2);
+
+            $stockloc_obj
+                ->update([
+                    'QtyOnHand' => $QtyOnHand,
+                    'NetMvQty'.$month => $NetMvQty, 
+                    'NetMvVal'.$month => $NetMvVal
+                ]);
+
+            //4. tolak expdate, kalu ada batchno
+            $this->betulkan_stockexp($value->itemcode,$QtyOnHand,$ivtmphd->txndept);
+
+        }else{
+            //ni utk kalu xde stockloc
+            throw new \Exception("Stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->txndept." | year: ".defaultController::toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcode);
+        }
+
+        //-- 6. posting product -> update qtyonhand, avgcost, currprice --//
+            //1. waktu OUT trandept
+
+        $product_obj = DB::table('material.product')
+            // ->where('product.unit',session('unit'))
+            ->where('product.compcode','=',session('compcode'))
+            ->where('product.itemcode','=',$value->itemcode)
+            ->where('product.uomcode','=',$value->uomcode);
+
+        if($product_obj->exists()){ // kalu jumpa
+            $product_obj = $product_obj->first();
+            
+            // $month = defaultController::toMonth($ivtmphd->trandate);
+            // $netprice = $value->netprice;
+            $txnqty = $value->txnqty;
+
+            $OldQtyOnHand = $product_obj->qtyonhand;
+            // $currprice = $netprice;
+            // $Oldavgcost = $product_obj->avgcost;
+            // $OldAmount = $OldQtyOnHand * $Oldavgcost;
+            // $NewAmount = $netprice * $txnqty;
+
+            $newqtyonhand = $OldQtyOnHand - $txnqty;
+            // $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+            // if(strtoupper($isstype) == "ADJUSTMENT"){
+            //     $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+            // }else{
+            //     $newAvgCost = $Oldavgcost;
+            // }
+
+            // update qtyonhand, avgcost, currprice
+            $product_obj = DB::table('material.product')
+                // ->where('product.unit',session('unit'))
+                ->where('product.compcode','=',session('compcode'))
+                ->where('product.itemcode','=',$value->itemcode)
+                ->where('product.uomcode','=',$value->uomcode)
+                ->update([
+                    'qtyonhand' => $newqtyonhand,
+                    // 'avgcost' => $newAvgCost,
+                    // 'currprice' => $currprice
+                ]);
+        }
+    }
+
 	public static function posting_for_adjustment_out($value,$ivtmphd,$isstype){
 		//1. amik stockloc
         $stockloc_obj = DB::table('material.StockLoc')
@@ -805,6 +886,87 @@ class invtran_util extends defaultController{
 
         }
 	}
+
+    public static function un_posting_for_adjustment_out($value,$ivtmphd,$isstype){
+        //1. amik stockloc
+        $stockloc_obj = DB::table('material.StockLoc')
+            // ->where('StockLoc.unit',session('unit'))
+            ->where('StockLoc.CompCode','=',session('compcode'))
+            ->where('StockLoc.DeptCode','=',$ivtmphd->txndept)
+            ->where('StockLoc.ItemCode','=',$value->itemcode)
+            ->where('StockLoc.Year','=', defaultController::toYear($ivtmphd->trandate))
+            ->where('StockLoc.UomCode','=',$value->uomcode);
+
+        $stockloc_first = $stockloc_obj->first();
+
+        //2.kalu ada stockloc, update 
+        if($stockloc_obj->exists()){
+
+            //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
+            $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
+            $month = defaultController::toMonth(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+            $QtyOnHand = $stockloc_first->qtyonhand + $value->txnqty; 
+            $NetMvQty = $stockloc_arr['netmvqty'.$month] + $value->txnqty;
+            $NetMvVal = $stockloc_arr['netmvval'.$month] + round($value->netprice * $value->txnqty,2);
+
+            $stockloc_obj
+                ->update([
+                    'QtyOnHand' => $QtyOnHand,
+                    'NetMvQty'.$month => $NetMvQty, 
+                    'NetMvVal'.$month => $NetMvVal
+                ]);
+
+            //4. tolak expdate, kalu ada batchno
+            invtran_util::betulkan_stockexp($value->itemcode,$QtyOnHand,$ivtmphd->txndept);
+
+        }else{
+            //ni utk kalu xde stockloc
+            throw new \Exception("Stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->txndept." | year: ".defaultController::toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcode);
+        }
+
+        //-- 6. posting product -> update qtyonhand, avgcost, currprice --//
+            //1. waktu OUT trandept
+
+        $product_obj = DB::table('material.product')
+            // ->where('product.unit',session('unit'))
+            ->where('product.compcode','=',session('compcode'))
+            ->where('product.itemcode','=',$value->itemcode)
+            ->where('product.uomcode','=',$value->uomcode);
+
+        if($product_obj->exists()){ // kalu jumpa
+            $product_obj = $product_obj->first();
+            
+            // $month = defaultController::toMonth($ivtmphd->trandate);
+            // $netprice = $value->netprice;
+            $txnqty = $value->txnqty;
+
+            $OldQtyOnHand = $product_obj->qtyonhand;
+            // $currprice = $netprice;
+            // $Oldavgcost = $product_obj->avgcost;
+            // $OldAmount = $OldQtyOnHand * $Oldavgcost;
+            // $NewAmount = $netprice * $txnqty;
+
+            $newqtyonhand = $OldQtyOnHand + $txnqty;
+            // $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+            // if(strtoupper($isstype) == "ADJUSTMENT"){
+            //     $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+            // }else{
+            //     $newAvgCost = $Oldavgcost;
+            // }
+
+            // update qtyonhand, avgcost, currprice
+            $product_obj = DB::table('material.product')
+                // ->where('product.unit',session('unit'))
+                ->where('product.compcode','=',session('compcode'))
+                ->where('product.itemcode','=',$value->itemcode)
+                ->where('product.uomcode','=',$value->uomcode)
+                ->update([
+                    'qtyonhand' => $newqtyonhand,
+                    // 'avgcost' => $newAvgCost,
+                    // 'currprice' => $currprice
+                ]);
+        }
+    }
 
     public static function posting_TUO($value,$ivtmphd){
 
@@ -1397,7 +1559,98 @@ class invtran_util extends defaultController{
         }
     }
 
+    public static function betulkan_stockexp($itemcode,$qtyonhand,$deptcode){
 
+        $stockexp = DB::table('material.stockexp')
+                        ->where('itemcode',$itemcode)
+                        ->where('compcode',session('compcode'))
+                        ->where('deptcode',$deptcode);
+
+        if($stockexp->exists()){
+            $balqty = $stockexp->sum('balqty');
+            $qtyonhand = $qtyonhand;
+
+            if($balqty != $qtyonhand){
+
+                if($qtyonhand>$balqty){
+                    $var = $qtyonhand - $balqty;
+
+                    $stockexp_chg = DB::table('material.stockexp')
+                                        ->where('compcode',session('compcode'))
+                                        ->where('itemcode',$itemcode)
+                                        ->where('deptcode',$deptcode)
+                                        ->orderBy('idno','desc')
+                                        ->first();
+
+                    DB::table('material.stockexp')
+                                ->where('idno',$stockexp_chg->idno)
+                                ->where('compcode',session('compcode'))
+                                ->where('itemcode',$itemcode)
+                                ->update([
+                                    'balqty' => $stockexp_chg->balqty + $var
+                                ]);
+
+                    $chg = $stockexp_chg->balqty + $var;
+
+                }else if($qtyonhand<$balqty){
+                    $stockexp_chg = DB::table('material.stockexp')
+                                        ->where('compcode',session('compcode'))
+                                        ->where('itemcode',$itemcode)
+                                        ->where('deptcode',$deptcode)
+                                        ->orderBy('idno','desc')
+                                        ->get();
+
+                    $baki = $qtyonhand;
+                    $zerorise = 0;
+                    foreach ($stockexp_chg as $obj) {
+                        $baki = $baki - $obj->balqty;
+                        if($zerorise == 1){
+                            DB::table('material.stockexp')
+                                ->where('idno',$obj->idno)
+                                ->where('compcode',session('compcode'))
+                                ->where('itemcode',$itemcode)
+                                ->update([
+                                    'balqty' => 0
+                                ]);
+
+                        }else{
+                            if($baki == 0){
+                                $zerorise = 1;
+                                // DB::table('material.stockexp')
+                                //     ->where('idno',$obj->idno)
+                                //     ->where('compcode','9B')
+                                //     ->where('itemcode',$itemcode)
+                                //     ->update([
+                                //         'balqty' => 0
+                                //     ]);
+
+                                // continue;
+                            }else if($baki > 0){
+                                // DB::table('material.stockexp')
+                                //     ->where('idno',$obj->idno)
+                                //     ->where('compcode','9B')
+                                //     ->where('itemcode',$itemcode)
+                                //     ->update([
+                                //         'balqty' => 0
+                                //     ]);
+                            }else if($baki < 0){
+                                DB::table('material.stockexp')
+                                    ->where('idno',$obj->idno)
+                                    ->where('compcode','9B')
+                                    ->where('itemcode',$itemcode)
+                                    ->update([
+                                        'balqty' => $baki + $obj->balqty
+                                    ]);
+                                $chg = $baki + $obj->balqty;
+
+                                $zerorise = 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }        
+    }
 }
 
 ?>

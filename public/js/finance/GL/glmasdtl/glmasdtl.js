@@ -207,7 +207,8 @@ $(document).ready(function () {
 		rowData = $("#jqGrid").jqGrid ('getRowData', selrow);
 		$.each(rowData, function( index, value ) {
 			if(value){
-				$('#TableGlmasdtl #'+index+' span').text(numeral(value).format('0,0.00'))
+				// $('#TableGlmasdtl #'+index+' span').text(numeral(value).format('0,0.00'))
+				$('#TableGlmasdtl #'+index+' span').text(value);
 			}else{
 				$('#TableGlmasdtl #'+index+' span').text("0.00");
 			}

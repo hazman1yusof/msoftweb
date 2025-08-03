@@ -99,6 +99,9 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 						@elseif (Request::get('scope') == 'CANCEL')
 							<option value="OPEN">OPEN</option>
 							<option value="CANCELLED">CANCELLED</option>
+						@elseif (Request::get('scope') == 'CANCEL_POSTED')
+							<option value="POSTED">POSTED</option>
+							<option value="CANCELLED">CANCELLED</option>
 						@endif
 				    </select>
 	      </div>
@@ -138,6 +141,8 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 						$scope_use = 'un_posted_tuo';
 					}else if(Request::get('scope') == 'CANCEL'){
 						$scope_use = 'cancel';
+					}else if(Request::get('scope') == 'CANCEL_POSTED'){
+						$scope_use = 'cancel_posted';
 					}
 				?>
 
