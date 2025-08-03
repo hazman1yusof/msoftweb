@@ -132,8 +132,8 @@ class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
         $type = $this->type;
         $date = $this->date;
         $debtortype = $this->debtortype;
-        $debtorcode_from = $this->debtorcode_from;
-        $debtorcode_to = $this->debtorcode_to;
+        $debtorcode_from = strtoupper($this->debtorcode_from);
+        $debtorcode_to = strtoupper($this->debtorcode_to);
         $grouping = $this->grouping;
         $groupby = $this->groupby;
 
@@ -159,11 +159,17 @@ class ARAgeingDtlExport implements FromView, ShouldQueue, WithEvents, WithColumn
                             $join = $join->on('pm.NewMrn', '=', 'dh.mrn')
                                          ->where('pm.compcode', '=', session('compcode'));
                         })
-                        ->where('dm.compcode', '=', session('compcode'))
-                        ->whereBetween('dm.debtorcode', [$debtorcode_from,$debtorcode_to.'%'])
-                        ->orderBy('dm.debtorcode', 'ASC')
-                        // ->limit(3000)
-                        ->get();
+                        ->where('dm.compcode', '=', session('compcode'));
+
+                        if($debtorcode_from == $debtorcode_to){
+                            $debtormast = $debtormast->where('dm.debtorcode',$debtorcode_from);
+                        }else{
+                            $debtormast = $debtormast->whereBetween('dm.debtorcode', [$debtorcode_from,$debtorcode_to.'%']);
+                        }
+
+                        $debtormast = $debtormast
+                            ->orderBy('dm.debtorcode', 'ASC')
+                            ->get();
 
         $array_report = [];
 

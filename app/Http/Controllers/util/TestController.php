@@ -50,8 +50,8 @@ class TestController extends defaultController
                 return $this->check_qtyonhand_versus_netmvqty($request);
             case 'bill_vs_mrn':
                 return $this->bill_vs_mrn($request);
-            // case 'stockloc_JTR_header':
-            //     return $this->stockloc_JTR_header($request);
+            case 'check_product_chgmast_stockloc_xsama_uom':
+                return $this->check_product_chgmast_stockloc_xsama_uom($request);
             // case 'stockloc_JTR':
             //     return $this->stockloc_JTR($request);
             // case 'gltran_poliklinik': //dah xperlu
@@ -7338,7 +7338,7 @@ class TestController extends defaultController
 
                 if($stockloc->exists()){
                     $stockloc = $stockloc->first();
-                    dump('stockloc UOM : '.$stockloc->uomcode);
+                    dump($p_obj->itemcode.' - '.$p_obj->uomcode.' => stockloc UOM : '.$stockloc->uomcode);
                 }
 
                 $chgmast = DB::table('material.chgmast')
@@ -7348,7 +7348,7 @@ class TestController extends defaultController
 
                 if($chgmast->exists()){
                     $chgmast = $chgmast->first();
-                    dump('chgmast UOM : '.$chgmast->uom);
+                    dump($p_obj->itemcode.' - '.$p_obj->uomcode.' => chgmast UOM : '.$chgmast->uom);
                 }
             }
 
