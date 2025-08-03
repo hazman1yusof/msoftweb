@@ -75,8 +75,8 @@
     <tr></tr>
     <tr>
         <td>{{$pnl_acc['glaccount']}}</td>
+        <td></td>
         <td>{{$pnl_acc['description']}}</td>
-        <td>{{$pnl_acc['acttype']}}</td>
         <td>{{$pnl_acc['openbalance']}}</td>
         @foreach ($array_month as $month)
             @if($pnl_acc['actamount'.$month] == 0)
