@@ -7326,7 +7326,7 @@ class TestController extends defaultController
 
             $product = DB::table('material.product')
                             ->where('compcode',session('compcode'))
-                            ->where('unit',$unit);
+                            ->where('unit',$unit)
                             ->get();
 
             foreach ($product as $p_obj) {
