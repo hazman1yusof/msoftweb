@@ -189,6 +189,26 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
             array_push($glmasref,$arr_glrf);
         }
 
+        $sysparam = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','GL')
+                        ->where('trantype','PNL')
+                        ->first();
+
+        $pnl_acc = DB::table('finance.glmasdtl as gldt')
+                            ->select('gldt.glaccount','gldt.openbalance','gldt.actamount1','gldt.actamount2','gldt.actamount3','gldt.actamount4','gldt.actamount5','gldt.actamount6','gldt.actamount7','gldt.actamount8','gldt.actamount9','gldt.actamount10','gldt.actamount11','gldt.actamount12','glrf.description','glrf.acttype')
+                            ->leftJoin('finance.glmasref as glrf', function($join) use ($yearfrom,$yearto){
+                                $join = $join->where('glrf.compcode', session('compcode'))
+                                             ->on('glrf.glaccno','=','gldt.glaccount');
+                            })
+                            ->where('gldt.costcode','=',$sysparam->pvalue1)
+                            ->where('gldt.glaccount','=',$sysparam->pvalue2)
+                            ->where('gldt.year', $yearfrom)
+                            ->where('gldt.compcode',session('compcode'))
+                            ->get();
+
+        $pnl_acc = (array)$pnl_acc[0];
+
         // dd($glmasref);
 
         // $glmasref_coll = collect($glmasdtl)->unique('glaccno');
@@ -211,7 +231,7 @@ class trialBalanceExport implements FromView, WithEvents, WithColumnWidths,Shoul
         $title3 = 'FROM '.$this->monthfrom_name.' '.$this->yearfrom.' TO '.$this->monthto_name.' '.$this->yearto;
         $title4 = 'PRINTED BY: '.session('username').' on '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i');
 
-        return view('finance.GL.trialBalance.trialBalance_excel',compact('glmasref','array_month','array_month_name','alphabet','title1','title2','title3','title4'));
+        return view('finance.GL.trialBalance.trialBalance_excel',compact('glmasref','array_month','array_month_name','alphabet','title1','title2','title3','title4','pnl_acc'));
     }
     
     public function registerEvents(): array{

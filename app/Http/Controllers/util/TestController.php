@@ -7329,6 +7329,7 @@ class TestController extends defaultController
                             ->where('unit',$unit)
                             ->get();
 
+            $x = 1;
             foreach ($product as $p_obj) {
                 $stockloc = DB::table('material.stockloc')
                                 ->where('compcode',session('compcode'))
@@ -7339,6 +7340,15 @@ class TestController extends defaultController
                 if($stockloc->exists()){
                     $stockloc = $stockloc->first();
                     dump($p_obj->itemcode.' - '.$p_obj->uomcode.' => stockloc UOM : '.$stockloc->uomcode);
+
+                    $ivtxndt = DB::table('material.ivtxndt')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno','5204211')
+                            ->where('itemcode',$obj->itemcode);
+
+                    if($ivtxndt->exists()){
+                        dump($p_obj->itemcode.' - '.$p_obj->uomcode.' => ada dkt PHYCNT : '.$ivtxndt->uomcode);
+                    }
                 }
 
                 $chgmast = DB::table('material.chgmast')

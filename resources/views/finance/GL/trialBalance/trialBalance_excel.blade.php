@@ -73,4 +73,22 @@
         <td>=SUM({{$alphabet[$index]}}4:{{$alphabet[$index]}}{{$totline}})</td>
     </tr>
     <tr></tr>
+    <tr>
+        <td>{{$pnl_acc['glaccount']}}</td>
+        <td>{{$pnl_acc['description']}}</td>
+        <td>{{$pnl_acc['acttype']}}</td>
+        <td>{{$pnl_acc['openbalance']}}</td>
+        @foreach ($array_month as $month)
+            @if($pnl_acc['actamount'.$month] == 0)
+                <td style="text-align: right"></td>
+                <td style="text-align: right"></td>
+            @elseif($pnl_acc['actamount'.$month] < 0)
+                <td style="text-align: right"></td>
+                <td style="text-align: right">{{abs($pnl_acc['actamount'.$month])}}</td>
+            @else
+                <td style="text-align: right">{{abs($pnl_acc['actamount'.$month])}}</td>
+                <td style="text-align: right"></td>
+            @endif
+        @endforeach
+    </tr>
 </table>
