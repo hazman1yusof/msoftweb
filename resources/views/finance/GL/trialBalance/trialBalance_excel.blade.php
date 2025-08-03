@@ -78,7 +78,9 @@
         <td></td>
         <td>{{$pnl_acc['description']}}</td>
         <td>{{$pnl_acc['openbalance']}}</td>
+        @php($tot_pnl_acc=0)
         @foreach ($array_month as $month)
+            @php($tot_pnl_acc = $tot_pnl_acc + $pnl_acc['actamount'.$month])
             @if($pnl_acc['actamount'.$month] == 0)
                 <td style="text-align: right"></td>
                 <td style="text-align: right"></td>
@@ -90,5 +92,6 @@
                 <td style="text-align: right"></td>
             @endif
         @endforeach
+        <td style="font-weight:bold;">{{$tot_pnl_acc}}</td>
     </tr>
 </table>
