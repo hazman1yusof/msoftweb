@@ -46,10 +46,10 @@ class TestController extends defaultController
                 return $this->check_netmvqty_netmvval_allitem($request);
             case 'btlkan_thqty_stocktake':
                 return $this->btlkan_thqty_stocktake($request);
-            // case 'gltran_jnl':
-            //     return $this->gltran_jnl($request);
-            // case 'bankrecon_cbtran':
-            //     return $this->bankrecon_cbtran($request);
+            case 'check_qtyonhand_versus_netmvqty':
+                return $this->check_qtyonhand_versus_netmvqty($request);
+            case 'bill_vs_mrn':
+                return $this->bill_vs_mrn($request);
             // case 'stockloc_JTR_header':
             //     return $this->stockloc_JTR_header($request);
             // case 'stockloc_JTR':
@@ -7286,7 +7286,11 @@ class TestController extends defaultController
                             ->get();
 
             foreach ($stockloc as $obj) {
-                
+                $qtyonhand = $obj->qtyonhand;
+                $real_qtyonhand = $obj->openbalqty + $obj->netmvqty1 + $obj->netmvqty2 + $obj->netmvqty3 + $obj->netmvqty4 + $obj->netmvqty5 + $obj->netmvqty6 + $obj->netmvqty7 + $obj->netmvqty8 + $obj->netmvqty9 + $obj->netmvqty10 + $obj->netmvqty11 + $obj->netmvqty12;
+                if($qtyonhand != $real_qtyonhand){
+                    dump($obj->itemcode);
+                }
             }
 
             DB::commit();
@@ -7303,17 +7307,99 @@ class TestController extends defaultController
         DB::beginTransaction();
 
         try {
-            $deptcode=$request->deptcode;
-            $year=2025;
 
-            $stockloc = DB::table('material.stockloc')
+            $year=2025;
+            $dept = $request->dept;
+
+            if($dept == 'IMP'){
+                $dept='IMP';
+                $unit='IMP';
+            }else if($dept == 'FKWSTR'){
+                $dept='FKWSTR';
+                $unit="W'HOUSE";
+            }else if($dept == 'KHEALTH'){
+                $dept='KHEALTH';
+                $unit='KHEALTH';
+            }else{
+                dd('no dept');
+            }
+
+            $product = DB::table('material.product')
                             ->where('compcode',session('compcode'))
-                            ->where('s.deptcode',$deptcode)
-                            ->where('s.year',$year)
+                            ->where('unit',$unit);
                             ->get();
 
-            foreach ($stockloc as $obj) {
-                
+            foreach ($product as $p_obj) {
+                $stockloc = DB::table('material.stockloc')
+                                ->where('compcode',session('compcode'))
+                                ->where('itemcode',$p_obj->itemcode)
+                                ->where('deptcode',$dept)
+                                ->where('uomcode','!=',$p_obj->uomcode);
+
+                if($stockloc->exists()){
+                    $stockloc = $stockloc->first();
+                    dump('stockloc UOM : '.$stockloc->uomcode);
+                }
+
+                $chgmast = DB::table('material.chgmast')
+                                ->where('compcode',session('compcode'))
+                                ->where('chgcode',$p_obj->itemcode)
+                                ->where('uom','!=',$p_obj->uomcode);
+
+                if($chgmast->exists()){
+                    $chgmast = $chgmast->first();
+                    dump('chgmast UOM : '.$chgmast->uom);
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function bill_vs_mrn(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $bill_vs_mrn = DB::table('recondb.bill_vs_mrn')
+                            ->get();
+
+            foreach ($bill_vs_mrn as $obj) {
+                $dbacthdr = DB::table('debtor.dbacthdr')
+                                ->where('compcode',session('compcode'))
+                                ->where('source','PB')
+                                ->where('trantype','IN')
+                                ->where('auditno',$obj->auditno)
+                                ->update([
+                                    'mrn' => $obj->mrn
+                                ]);
+
+                $pat_mast = DB::table('hisdb.pat_mast')
+                                ->where('compcode',session('compcode'))
+                                ->where('newmrn',$obj->mrn);
+
+                if(!$pat_mast->exists()){
+                    $mrn_ = $this->recno('HIS','MRN');
+                    DB::table('hisdb.pat_mast')
+                        ->insert([
+                            'CompCode' => session('compcode'),
+                            'MRN' => $mrn_,
+                            'Name' => strtoupper($obj->name),
+                            'Reg_Date' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'Active' => 1,
+                            'AddUser' => 'SYSTEM',
+                            'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'LastUser' => 'SYSTEM',
+                            'NewMrn' => strtoupper($obj->mrn),
+                            'PatClass' => 'HIS'
+                        ]);
+                }
             }
 
             DB::commit();
