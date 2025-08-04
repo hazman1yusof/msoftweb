@@ -52,14 +52,14 @@ class TestController extends defaultController
                 return $this->bill_vs_mrn($request);
             case 'check_product_chgmast_stockloc_xsama_uom':
                 return $this->check_product_chgmast_stockloc_xsama_uom($request);
-            // case 'stockloc_JTR':
-            //     return $this->stockloc_JTR($request);
-            // case 'gltran_poliklinik': //dah xperlu
-            //     return $this->gltran_poliklinik($request);
-            // case 'gltran_dbacthistory':
-            //     return $this->gltran_dbacthistory($request);
-            // case 'ivtxndt_10s':
-            //     return $this->ivtxndt_10s($request);
+            case 'compare_stocktake_csv':
+                return $this->compare_stocktake_csv($request);
+            case 'compare_product_csv':
+                return $this->compare_product_csv($request);
+            case 'compare_product_np_csv':
+                return $this->compare_product_np_csv($request);
+            case 'chk_phycntdt_xde_ivtxndt':
+                return $this->chk_phycntdt_xde_ivtxndt($request);
             // case 'kira_netmvqty_netmvval_peritem':
             //     return $this->kira_netmvqty_netmvval_peritem($request);
             // case 'kira_blk_netmvqty':
@@ -5201,133 +5201,6 @@ class TestController extends defaultController
         }  
     }
 
-    public function check_netmvqty_netmvval_allitem(Request $request){
-        DB::beginTransaction();
-
-        try {
-
-            $deptcode=$request->deptcode;
-            $period=intval($request->period);
-
-            $day_start = Carbon::createFromFormat('Y-m-d','2025-'.$period.'-01')->startOfMonth()->format('Y-m-d');
-            $day_end = Carbon::createFromFormat('Y-m-d','2025-'.$period.'-01')->endOfMonth()->format('Y-m-d');
-
-            $stockloc = DB::table('material.stockloc as s')
-                        ->select('s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit')
-                        ->where('s.compcode',session('compcode'))
-                        // ->where('itemcode',$itemcode)
-                        ->join('material.product as p', function($join) use ($request){
-                            $join = $join->on('p.itemcode', '=', 's.itemcode')
-                                            ->on('p.uomcode','=','s.uomcode')
-                                            ->where('p.recstatus','=','ACTIVE')
-                                            ->where('p.compcode',session('compcode'));
-                        })
-                        ->where('s.deptcode',$deptcode)
-                        ->where('s.year','2025')
-                        ->orderBy('s.idno', 'DESC')
-                        ->get();
-
-            $x = 1;
-            foreach ($stockloc as $key => $value) {
-                $value_array = (array)$value;
-
-                // $product = DB::table('material.product')
-                //                 ->where('compcode','9B')
-                //                 ->where('itemcode',$obj->itemcode)
-                //                 ->where('uomcode',$obj->uomcode)
-                //                 ->first();
-
-                $ivdspdt = DB::table('material.ivdspdt')
-                            ->where('compcode',session('compcode'))
-                            ->where('itemcode',$value->itemcode)
-                            ->where('trandate','>=',$day_start)
-                            ->where('trandate','<=',$day_end)
-                            ->sum('txnqty');
-                $minus = $ivdspdt;
-
-                $ivtxndt = DB::table('material.ivtxndt')
-                            ->where('compcode',session('compcode'))
-                            ->where('itemcode',$value->itemcode)
-                            ->where('trandate','>=',$day_start)
-                            ->where('trandate','<=',$day_end)
-                            ->get();
-
-                $add = 0;
-                // $add2 = 0;
-                foreach ($ivtxndt as $key => $value) {
-                    $ivtxntype = DB::table('material.ivtxntype')
-                                        ->where('compcode',session('compcode'))
-                                        ->where('trantype',$value->trantype)
-                                        ->first();
-
-                    $crdbfl = $ivtxntype->crdbfl;
-
-                    if($crdbfl == 'In'){
-                        $add = $add + $value->txnqty;
-                        // $add2 = $add2 + $value->amount;
-                    }else{
-                        $add = $add - $value->txnqty;
-                        // $add2 = $add2 - $value->amount;
-                    }
-                }
-
-                $all = $add - $minus;
-
-                // $ivdspdt2 = DB::table('material.ivdspdt')
-                //             ->where('compcode',session('compcode'))
-                //             ->where('itemcode',$value->itemcode)
-                //             ->where('trandate','>=',$day_start)
-                //             ->where('trandate','<=',$day_end)
-                //             ->sum('amount');
-                // $minus2 = $ivdspdt2;
-
-                // $all2 = $add2 - $minus2;
-
-                // $netmvqty11 = $product->qtyonhand - $all;
-                // dump($product->qtyonhand);
-                // dump($all);
-                // dump($netmvqty11);
-
-                // DB::table('material.stockloc')
-                //             ->where('compcode',session('compcode'))
-                //             ->where('itemcode',$itemcode)
-                //             ->where('deptcode',$deptcode)
-                //             ->where('year','2025')
-                //             ->update([
-                //                 'netmvqty'.$period => $all,
-                //                 // 'netmvval'.$period => $all2
-                //             ]);
-
-                if($value_array['netmvqty'.$period] != $all){
-
-                    dump($x.'. '.$value->itemcode.' -> SAVED netmvqty'.$period.' => '.$value_array['netmvqty'.$period]);
-                    dump($x.'. '.$value->itemcode.' -> REAL netmvqty'.$period.' => '.$all);
-                    $x++;
-
-                    DB::table('material.stockloc')
-                            ->where('compcode',session('compcode'))
-                            ->where('itemcode',$value->itemcode)
-                            ->where('deptcode',$value->deptcode)
-                            ->where('year','2025')
-                            ->update([
-                                'netmvqty'.$period => $all,
-                                // 'netmvval'.$period => $all2
-                            ]);
-                }
-
-                // dump($value_array['netmvqty'.$period] != $all);
-                // dump('netmvval'.$period.' => '.$all2);
-            }
-
-            DB::commit();
-        } catch (Exception $e) {
-            DB::rollback();
-            report($e);
-
-            dd('Error'.$e);
-        }  
-    }
-
     public function ivtxndt_10s(Request $request){
         DB::beginTransaction();
 
@@ -7114,6 +6987,139 @@ class TestController extends defaultController
         }
     }
 
+    public function check_netmvqty_netmvval_allitem(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $deptcode=$request->deptcode;
+            if(empty($deptcode)){
+                dd('no deptcode');
+            }
+            $period=intval($request->period);
+            if(empty($period)){
+                dd('no period');
+            }
+
+            $day_start = Carbon::createFromFormat('Y-m-d','2025-'.$period.'-01')->startOfMonth()->format('Y-m-d');
+            $day_end = Carbon::createFromFormat('Y-m-d','2025-'.$period.'-01')->endOfMonth()->format('Y-m-d');
+
+            $stockloc = DB::table('material.stockloc as s')
+                        ->select('s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit')
+                        ->where('s.compcode',session('compcode'))
+                        // ->where('itemcode',$itemcode)
+                        ->join('material.product as p', function($join) use ($request){
+                            $join = $join->on('p.itemcode', '=', 's.itemcode')
+                                            ->on('p.uomcode','=','s.uomcode')
+                                            ->where('p.recstatus','=','ACTIVE')
+                                            ->where('p.compcode',session('compcode'));
+                        })
+                        ->where('s.deptcode',$deptcode)
+                        ->where('s.year','2025')
+                        ->orderBy('s.idno', 'DESC')
+                        ->get();
+
+            $x = 1;
+            foreach ($stockloc as $key => $value) {
+                $value_array = (array)$value;
+
+                // $product = DB::table('material.product')
+                //                 ->where('compcode','9B')
+                //                 ->where('itemcode',$obj->itemcode)
+                //                 ->where('uomcode',$obj->uomcode)
+                //                 ->first();
+
+                $ivdspdt = DB::table('material.ivdspdt')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$value->itemcode)
+                            ->where('trandate','>=',$day_start)
+                            ->where('trandate','<=',$day_end)
+                            ->sum('txnqty');
+                $minus = $ivdspdt;
+
+                $ivtxndt = DB::table('material.ivtxndt')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$value->itemcode)
+                            ->where('trandate','>=',$day_start)
+                            ->where('trandate','<=',$day_end)
+                            ->get();
+
+                $add = 0;
+                // $add2 = 0;
+                foreach ($ivtxndt as $key => $value) {
+                    $ivtxntype = DB::table('material.ivtxntype')
+                                        ->where('compcode',session('compcode'))
+                                        ->where('trantype',$value->trantype)
+                                        ->first();
+
+                    $crdbfl = $ivtxntype->crdbfl;
+
+                    if($crdbfl == 'In'){
+                        $add = $add + $value->txnqty;
+                        // $add2 = $add2 + $value->amount;
+                    }else{
+                        $add = $add - $value->txnqty;
+                        // $add2 = $add2 - $value->amount;
+                    }
+                }
+
+                $all = $add - $minus;
+
+                // $ivdspdt2 = DB::table('material.ivdspdt')
+                //             ->where('compcode',session('compcode'))
+                //             ->where('itemcode',$value->itemcode)
+                //             ->where('trandate','>=',$day_start)
+                //             ->where('trandate','<=',$day_end)
+                //             ->sum('amount');
+                // $minus2 = $ivdspdt2;
+
+                // $all2 = $add2 - $minus2;
+
+                // $netmvqty11 = $product->qtyonhand - $all;
+                // dump($product->qtyonhand);
+                // dump($all);
+                // dump($netmvqty11);
+
+                // DB::table('material.stockloc')
+                //             ->where('compcode',session('compcode'))
+                //             ->where('itemcode',$itemcode)
+                //             ->where('deptcode',$deptcode)
+                //             ->where('year','2025')
+                //             ->update([
+                //                 'netmvqty'.$period => $all,
+                //                 // 'netmvval'.$period => $all2
+                //             ]);
+
+                if($value_array['netmvqty'.$period] != $all){
+
+                    dump($x.'. '.$value->itemcode.' -> SAVED netmvqty'.$period.' => '.$value_array['netmvqty'.$period]);
+                    dump($x.'. '.$value->itemcode.' -> REAL netmvqty'.$period.' => '.$all);
+                    $x++;
+
+                    DB::table('material.stockloc')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$value->itemcode)
+                            ->where('deptcode',$value->deptcode)
+                            ->where('year','2025')
+                            ->update([
+                                'netmvqty'.$period => $all,
+                                // 'netmvval'.$period => $all2
+                            ]);
+                }
+
+                // dump($value_array['netmvqty'.$period] != $all);
+                // dump('netmvval'.$period.' => '.$all2);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }  
+    }
+
     public function btlkan_thqty_stocktake(Request $request){
         DB::beginTransaction();
 
@@ -7208,58 +7214,57 @@ class TestController extends defaultController
                             'amount' => $amount
                         ]);
 
-
                 //update qtyonhand
-                $ivdspdt = DB::table('material.ivdspdt')
-                    ->where('compcode',session('compcode'))
-                    ->where('itemcode',$obj->itemcode)
-                    ->where('trandate','>=',$day_start)
-                    ->where('trandate','<=',$day_now)
-                    ->sum('txnqty');
-                $minus = $ivdspdt;
+                // $ivdspdt = DB::table('material.ivdspdt')
+                //     ->where('compcode',session('compcode'))
+                //     ->where('itemcode',$obj->itemcode)
+                //     ->where('trandate','>=',$day_start)
+                //     ->where('trandate','<=',$day_now)
+                //     ->sum('txnqty');
+                // $minus = $ivdspdt;
 
-                $ivtxndt = DB::table('material.ivtxndt')
-                            ->where('compcode',session('compcode'))
-                            ->where('itemcode',$obj->itemcode)
-                            ->where('trandate','>=',$day_start)
-                            ->where('trandate','<=',$day_now)
-                            ->get();
+                // $ivtxndt = DB::table('material.ivtxndt')
+                //             ->where('compcode',session('compcode'))
+                //             ->where('itemcode',$obj->itemcode)
+                //             ->where('trandate','>=',$day_start)
+                //             ->where('trandate','<=',$day_now)
+                //             ->get();
 
-                $add = 0;
-                foreach ($ivtxndt as $key => $value) {
-                    $ivtxntype = DB::table('material.ivtxntype')
-                                        ->where('compcode',session('compcode'))
-                                        ->where('trantype',$value->trantype)
-                                        ->first();
+                // $add = 0;
+                // foreach ($ivtxndt as $key => $value) {
+                //     $ivtxntype = DB::table('material.ivtxntype')
+                //                         ->where('compcode',session('compcode'))
+                //                         ->where('trantype',$value->trantype)
+                //                         ->first();
 
-                    $crdbfl = $ivtxntype->crdbfl;
+                //     $crdbfl = $ivtxntype->crdbfl;
 
-                    if($crdbfl == 'In'){
-                        $add = $add + $value->txnqty;
-                    }else{
-                        $add = $add - $value->txnqty;
-                    }
-                }
+                //     if($crdbfl == 'In'){
+                //         $add = $add + $value->txnqty;
+                //     }else{
+                //         $add = $add - $value->txnqty;
+                //     }
+                // }
 
-                $all = $add - $minus;
-                $qtyonhand = $openbalqty + $all;
-                DB::table('material.stockloc')
-                        ->where('compcode',session('compcode'))
-                        ->where('itemcode',$obj->itemcode)
-                        ->where('uomcode',$obj->uomcode)
-                        ->where('deptcode',$deptcode)
-                        ->where('year','2025')
-                        ->update([
-                            'qtyonhand' => $qtyonhand
-                        ]);
+                // $all = $add - $minus;
+                // $qtyonhand = $openbalqty + $all;
+                // DB::table('material.stockloc')
+                //         ->where('compcode',session('compcode'))
+                //         ->where('itemcode',$obj->itemcode)
+                //         ->where('uomcode',$obj->uomcode)
+                //         ->where('deptcode',$deptcode)
+                //         ->where('year','2025')
+                //         ->update([
+                //             'qtyonhand' => $qtyonhand
+                //         ]);
 
-                DB::table('material.product')
-                        ->where('compcode',session('compcode'))
-                        ->where('itemcode',$obj->itemcode)
-                        ->where('uomcode',$obj->uomcode)
-                        ->update([
-                            'qtyonhand' => $qtyonhand
-                        ]);
+                // DB::table('material.product')
+                //         ->where('compcode',session('compcode'))
+                //         ->where('itemcode',$obj->itemcode)
+                //         ->where('uomcode',$obj->uomcode)
+                //         ->update([
+                //             'qtyonhand' => $qtyonhand
+                //         ]);
             }
 
             DB::commit();
@@ -7277,19 +7282,53 @@ class TestController extends defaultController
 
         try {
             $deptcode=$request->deptcode;
+            if(empty($deptcode)){
+                dd('no deptcode');
+            }
             $year=2025;
 
-            $stockloc = DB::table('material.stockloc')
-                            ->where('compcode',session('compcode'))
-                            ->where('deptcode',$deptcode)
-                            ->where('year',$year)
-                            ->get();
+            $stockloc = DB::table('material.stockloc as s')
+                        ->select('s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit')
+                        ->where('s.compcode',session('compcode'))
+                        // ->where('itemcode',$itemcode)
+                        ->join('material.product as p', function($join) use ($request){
+                            $join = $join->on('p.itemcode', '=', 's.itemcode')
+                                            ->on('p.uomcode','=','s.uomcode')
+                                            ->where('p.recstatus','=','ACTIVE')
+                                            ->where('p.compcode',session('compcode'));
+                        })
+                        ->where('s.deptcode',$deptcode)
+                        ->where('s.year','2025')
+                        ->orderBy('s.idno', 'DESC')
+                        ->get();
 
+            $x=1;
             foreach ($stockloc as $obj) {
                 $qtyonhand = $obj->qtyonhand;
                 $real_qtyonhand = $obj->openbalqty + $obj->netmvqty1 + $obj->netmvqty2 + $obj->netmvqty3 + $obj->netmvqty4 + $obj->netmvqty5 + $obj->netmvqty6 + $obj->netmvqty7 + $obj->netmvqty8 + $obj->netmvqty9 + $obj->netmvqty10 + $obj->netmvqty11 + $obj->netmvqty12;
                 if($qtyonhand != $real_qtyonhand){
-                    dump($obj->itemcode);
+                    dump($x.'. '.$obj->itemcode);
+                    $x++;
+
+                    if($request->commit == 1){
+                        DB::table('material.stockloc')
+                                ->where('compcode',session('compcode'))
+                                ->where('itemcode',$obj->itemcode)
+                                ->where('uomcode',$obj->uomcode)
+                                ->where('deptcode',$deptcode)
+                                ->where('year','2025')
+                                ->update([
+                                    'qtyonhand' => $real_qtyonhand
+                                ]);
+
+                        DB::table('material.product')
+                                ->where('compcode',session('compcode'))
+                                ->where('itemcode',$obj->itemcode)
+                                ->where('uomcode',$obj->uomcode)
+                                ->update([
+                                    'qtyonhand' => $real_qtyonhand
+                                ]);
+                    }
                 }
             }
 
@@ -7409,6 +7448,176 @@ class TestController extends defaultController
                             'NewMrn' => strtoupper($obj->mrn),
                             'PatClass' => 'HIS'
                         ]);
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function compare_stocktake_csv(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $stocktake_csv = DB::table('recondb.stocktake_csv')
+                            ->get();
+
+            foreach ($stocktake_csv as $obj) {
+                $phycntdt = DB::table('material.phycntdt')
+                                ->where('compcode',session('compcode'))
+                                ->where('recno','5204211')
+                                ->where('itemcode',$obj->itemcode)
+                                ->where('phyqty','!=',$obj->phycnt);
+
+                if($phycntdt->exists()){
+                    DB::table('material.phycntdt')
+                                ->where('compcode',session('compcode'))
+                                ->where('recno','5204211')
+                                ->where('itemcode',$obj->itemcode)
+                                ->update([
+                                    'phyqty' => $obj->phycnt
+                                ]);
+
+                    dump($obj->itemcode);
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function compare_product_csv(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $fkwstr = DB::table('recondb.fkwstr_pharmacy_allitem')
+                            ->get();
+
+            foreach ($fkwstr as $obj) {
+                $productmaster = DB::table('material.productmaster')
+                            // ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode);
+
+                if(!$productmaster->exists()){
+                    dump('xde productmaster : '.$obj->itemcode);
+                }
+                $product = DB::table('material.product')
+                            // ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode);
+
+                if(!$product->exists()){
+                    dump('xde product : '.$obj->itemcode);
+                }
+                $chgmast = DB::table('hisdb.chgmast')
+                            // ->where('compcode',session('compcode'))
+                            ->where('chgcode',$obj->itemcode);
+
+                if(!$chgmast->exists()){
+                    dump('xde chgmast : '.$obj->itemcode);
+                }
+                $stockloc = DB::table('material.stockloc')
+                            // ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode);
+
+                if(!$stockloc->exists()){
+                    dump('xde stockloc : '.$obj->itemcode);
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function compare_product_np_csv(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $fkwstr = DB::table('recondb.fkwstr_nonpharmacy_itemcode')
+                            ->get();
+
+            foreach ($fkwstr as $obj) {
+                $productmaster = DB::table('material.productmaster')
+                            // ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode);
+
+                if(!$productmaster->exists()){
+                    dump('xde productmaster : '.$obj->itemcode);
+                }
+                $product = DB::table('material.product')
+                            // ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode);
+
+                if(!$product->exists()){
+                    dump('xde product : '.$obj->itemcode);
+                }
+                $chgmast = DB::table('hisdb.chgmast')
+                            // ->where('compcode',session('compcode'))
+                            ->where('chgcode',$obj->itemcode);
+
+                if(!$chgmast->exists()){
+                    dump('xde chgmast : '.$obj->itemcode);
+                }
+                $stockloc = DB::table('material.stockloc')
+                            // ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode);
+
+                if(!$stockloc->exists()){
+                    dump('xde stockloc : '.$obj->itemcode);
+                }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function chk_phycntdt_xde_ivtxndt(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $phycntdt = DB::table('material.phycntdt')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno','5204211')
+                            ->where('vrqty',0)
+                            ->get();
+
+            foreach ($phycntdt as $obj) {
+                $ivtxndt = DB::table('material.ivtxndt')
+                            ->where('compcode',session('compcode'))
+                            ->where('recno',$obj->recno)
+                            ->where('lineno_',$obj->lineno_)
+                            ->where('itemcode',$obj->itemcode)
+                            ->where('uomcode',$obj->uomcode);
+
+                if($ivtxndt->exists()){
+                    dump($obj->itemcode);
                 }
             }
 
