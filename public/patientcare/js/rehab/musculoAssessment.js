@@ -126,6 +126,9 @@ $(document).ready(function (){
         }).done(function (data){
             if(!$.isEmptyObject(data.musculoassessment)){
                 autoinsert_rowdata("#formMusculoAssessment",data.musculoassessment);
+                autoinsert_rowdata("#formMusculoAssessment",data.romaffectedside);
+                autoinsert_rowdata("#formMusculoAssessment",data.romsoundside);
+                autoinsert_rowdata("#formMusculoAssessment",data.musclepower);
                 // button_state_musculoAssessment('edit');
             }else{
                 // button_state_musculoAssessment('add');
@@ -362,6 +365,9 @@ function getdata_musculoAssessment(){
     }).done(function (data){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formMusculoAssessment",data.musculoassessment);
+            autoinsert_rowdata("#formMusculoAssessment",data.romaffectedside);
+            autoinsert_rowdata("#formMusculoAssessment",data.romsoundside);
+            autoinsert_rowdata("#formMusculoAssessment",data.musclepower);
             button_state_musculoAssessment('edit');
         }else{
             button_state_musculoAssessment('add');
