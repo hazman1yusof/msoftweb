@@ -1845,11 +1845,11 @@ $(document).ready(function () {
 	}
 
 	/////////////bind shift + f to btm detail///////////
-	$(document).bind('keypress', function(event) {
-	    if( event.which === 70 && event.altKey ) {
-	        $("#saveDetailLabel").click();
-	    }
-	});
+	// $(document).bind('keypress', function(event) {
+	//     if( event.which === 70 && event.altKey ) {
+	//         $("#saveDetailLabel").click();
+	//     }
+	// });
 
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
 

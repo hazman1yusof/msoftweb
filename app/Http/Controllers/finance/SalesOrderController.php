@@ -485,14 +485,14 @@ class SalesOrderController extends defaultController
                     'uom_recv' => $value->uom_recv,
                     'taxcode' => $value->taxcode,
                     'unitprice' => $value->unitprice,
-                    'quantity' => 0,
+                    'quantity' => $quantity,
                     'qtyonhand' => $stockloc->qtyonhand,
                     'qtyorder' => $quantity,
-                    'amount' => 0, //unitprice * quantity, xde tax
-                    'outamt' => 0,
-                    'totamount' => 0,
-                    'discamt' => 0,
-                    'taxamt' => 0,
+                    'amount' => $value->amount, //unitprice * quantity, xde tax
+                    'outamt' => $value->outamt,
+                    'totamount' => $value->totamount,
+                    'discamt' => $value->discamt,
+                    'taxamt' => $value->taxamt,
                     'lastuser' => session('username'), 
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
@@ -2206,6 +2206,92 @@ class SalesOrderController extends defaultController
                         ->where('sh.deptcode',$request->deptcode)
                         ->whereIn('sh.recstatus',['POSTED','PARTIAL']);
 
+        if(!empty($request->searchCol)){
+            if($request->searchCol[0] == 'db_invno'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('db.invno','like',$request->searchVal[0]);
+                });
+            }else if($request->searchCol[0] == 'dm_name'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('dm.name','like',$request->searchVal[0]);
+                });
+            }else if($request->searchCol[0] == 'db_payercode'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('db.payercode','like',$request->searchVal[0]);
+                });
+            }else if($request->searchCol[0] == 'db_mrn'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('db.mrn','like',$request->searchVal[0]);
+                });
+            }else if($request->searchCol[0] == 'db_auditno'){
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where('db.auditno',$request->wholeword);
+                });
+            }else{
+                $table = $table->Where(function ($table) use ($request){
+                        $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
+                });
+            }
+        }
+
+        if(!empty($request->searchCol2)){
+
+            if(!empty($request->fixPost)){
+                $searchCol_array = $this->fixPost3($request->searchCol2);
+            }else{
+                $searchCol_array = $request->searchCol2;
+            }
+
+            $wholeword = false;
+            if(!empty($searchCol_array[0])){
+                $clone = clone $table;
+                $clone = $clone->where($searchCol_array[0],$request->wholeword);
+                // dd($this->getQueries($clone));
+                if($clone->exists()){
+                    $table = $table->where($searchCol_array[0],$request->wholeword);
+                    $wholeword = true;
+                }
+            }
+
+            if(!$wholeword && !empty($searchCol_array[1])){
+                $clone = clone $table;
+                $clone = $clone->where($searchCol_array[1],$request->wholeword);
+                // dd($this->getQueries($clone));
+                if($clone->exists()){
+                    $table = $table->where($searchCol_array[1],$request->wholeword);
+                    $wholeword = true;
+                }
+            }
+
+            // $searchCol_array_1 = $searchCol_array_2 = $searchVal_array_1 = $searchVal_array_2 = [];
+
+            // foreach ($searchCol_array as $key => $value) {
+            //     if(($key+1)%2){
+            //         array_push($searchCol_array_1, $searchCol_array[$key]);
+            //         array_push($searchVal_array_1, $request->searchVal2[$key]);
+            //     }else{
+            //         array_push($searchCol_array_2, $searchCol_array[$key]);
+            //         array_push($searchVal_array_2, $request->searchVal2[$key]);
+            //     }
+            // }
+            if(!$wholeword){
+                $table = $table->where(function($table) use ($searchCol_array, $request){
+                    foreach ($searchCol_array as $key => $value) {
+                        if($key>1) break;
+                        $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    }
+                });
+
+                if(count($searchCol_array)>2){
+                    $table = $table->where(function($table) use ($searchCol_array, $request){
+                        foreach ($searchCol_array as $key => $value) {
+                            if($key<=1) continue;
+                            $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                        }
+                    });
+                }
+            }            
+        }
         
         $paginate = $table->paginate($request->rows);
 

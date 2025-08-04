@@ -259,7 +259,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 							<input id="referral" name="referral" type="hidden">
 
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="txndept">Supplier Department</label>
+								<label class="col-md-2 control-label" for="txndept" id="txndept_label">Transaction Department</label>
 									<div class="col-md-2">
 									  <div class='input-group'>
 										<input id="txndept" name="txndept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
@@ -455,7 +455,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 			
 		});
 	</script>
-	<script src="js/material/inventoryTransaction/inventoryTransaction.js?v=1.24"></script>
+	<script src="js/material/inventoryTransaction/inventoryTransaction.js?v=1.25"></script>
 	<!-- <script src="js/material/inventoryTransaction/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

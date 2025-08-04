@@ -67,6 +67,13 @@ $(document).ready(function () {
 					rdonly('#formdata');
 					$("#txndept").val($("#deptcode").val());
 					dialog_txndept.check(errorField);
+
+					//default TUO
+					if($('#ttype').val() == 'TUO' || $('#ttype').val() == 'TUI'){
+	            		$(dialog_trantype.textfield).val('TUO');
+						dialog_trantype.check(errorField);
+						case_tui_tuo('TUO');
+					}
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();
@@ -511,6 +518,7 @@ $(document).ready(function () {
 		if(ttype.toUpperCase() == 'TUI'){
 			
 			$('#sndrcv_label').text("Sender");
+			$('#txndept_label').text("Receiver Department");
 			$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
 			$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
 			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
@@ -560,6 +568,7 @@ $(document).ready(function () {
 		}else if(ttype.toUpperCase() == 'TUO'){
 			
 			$('#sndrcv_label').text("Receiver");
+			$('#txndept_label').text("Sender Department");
 			$("#jqGrid2").jqGrid('hideCol', 'qtyonhandrecv');
 			$("#jqGrid2").jqGrid('hideCol', 'uomcoderecv');
 			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
@@ -2146,7 +2155,9 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['storedept', 'recstatus','compcode'],//,'sector'
-				filterVal:['1', 'ACTIVE','session.compcode']//, 'session.unit'
+				filterVal:['1', 'ACTIVE','session.compcode'],//, 'session.unit'
+				WhereInCol:['deptcode'],
+				WhereInVal:[['FKWSTR','IMP','KHEALTH']]
 			},
 			ondblClickRow: function () {
 				$('#trantype').focus();
@@ -2165,6 +2176,8 @@ $(document).ready(function () {
 			open: function(){
 				dialog_txndept.urlParam.filterCol=['storedept', 'recstatus','compcode'];//,'sector'
 				dialog_txndept.urlParam.filterVal=['1', 'ACTIVE','session.compcode'];//, 'session.unit'
+				dialog_txndept.urlParam.WhereInCol=['deptcode'];
+				dialog_txndept.urlParam.WhereInVal=[['FKWSTR','IMP','KHEALTH']];
 			},
 			close: function(obj_){
 				$('#trantype').focus();
@@ -2251,18 +2264,22 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
-				open: function(){
-					if($('#trantype').val().trim() == 'TR') {
-						filterCol:['storedept', 'recstatus'];
-						filterVal:['1', '<>.DELETE'];
-						filterInCol:['deptcode'];
-						filterInType:['NOT IN'];
-						filterInVal:[[$('#txndept').val()]];
-					}else {
-						filterCol:['recstatus'];
-						filterVal:['ACTIVE'];
-					}
-				}
+				filterCol:['recstatus'],
+				filterVal:['ACTIVE'],
+				// open: function(){
+				// 	if($('#trantype').val().trim() == 'TR') {
+				// 		filterCol:['storedept', 'recstatus'];
+				// 		filterVal:['1', '<>.DELETE'];
+				// 		// filterInCol:['deptcode'];
+				// 		// filterInType:['NOT IN'];
+				// 		// filterInVal:[[$('#txndept').val()]];
+				// 	}else {
+				// 		filterCol:['recstatus'];
+				// 		filterVal:['ACTIVE'];
+				// 		whereNotIn:['deptcode'];
+				// 		whereNotInVal:[[$('#txndept').val()]];
+				// 	}
+				// }
 			},
 			ondblClickRow:function(){
 				$('#trantime').focus();
@@ -2283,12 +2300,14 @@ $(document).ready(function () {
 				if($('#trantype').val().trim() == 'TR') {
 					dialog_sndrcv.urlParam.filterCol=['storedept', 'recstatus'];
 					dialog_sndrcv.urlParam.filterVal=['1', '<>.DELETE'];
-					dialog_sndrcv.urlParam.filterInCol=['deptcode'];
-					dialog_sndrcv.urlParam.filterInType=['NOT IN'];
-					dialog_sndrcv.urlParam.filterInVal=[[$('#txndept').val()]];
+					// dialog_sndrcv.urlParam.filterInCol=['deptcode'];
+					// dialog_sndrcv.urlParam.filterInType=['NOT IN'];
+					// dialog_sndrcv.urlParam.filterInVal=[[$('#txndept').val()]];
 				}else {
 					dialog_sndrcv.urlParam.filterCol=['recstatus'];
 					dialog_sndrcv.urlParam.filterVal=['ACTIVE'];
+					dialog_sndrcv.urlParam.whereNotInCol=['deptcode'];
+					dialog_sndrcv.urlParam.whereNotInVal=[[$('#txndept').val()]];
 				}
 			},
 			close: function(obj_){

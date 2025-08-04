@@ -37,6 +37,10 @@
         color: darkred;
     }
     
+    table#jqGrid2 a.input-group-addon.btn.btn-primary{
+        padding: 2px !important;
+    }
+    
     #more {display: none;}
 @endsection
 

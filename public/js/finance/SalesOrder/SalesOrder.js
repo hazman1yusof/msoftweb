@@ -1452,16 +1452,16 @@ $(document).ready(function () {
 			// $("#jqGrid2 input[name='quantity']").on('blur',calculate_conversion_factor);
 			$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='billtypeamt'],#jqGrid2 input[name='quantity'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
 
-			$("#jqGrid2 input[name='qtyonhand']").keydown(function(e) {//when click tab at totamount, auto save
-				var code = e.keyCode || e.which;
-				if (code == '9'){
-					delay(function(){
-						$('#jqGrid2_ilsave').click();
-						addmore_jqgrid2.state = true;
-					}, 500 );
-				}
+			// $("#jqGrid2 input[name='qtyonhand']").keydown(function(e) {//when click tab at totamount, auto save
+			// 	var code = e.keyCode || e.which;
+			// 	if (code == '9'){
+			// 		delay(function(){
+			// 			$('#jqGrid2_ilsave').click();
+			// 			addmore_jqgrid2.state = true;
+			// 		}, 500 );
+			// 	}
 				
-			});
+			// });
 
 		},
 		aftersavefunc: function (rowid, response, options) {
@@ -2277,9 +2277,9 @@ $(document).ready(function () {
 		{
 			colModel: [
 				{ label: 'Quote no', name: 'quoteno', width: 150, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Recstatus', name: 'recstatus', width: 150, classes: 'pointer' },
 				{ label: 'Debtor Code', name: 'debtorcode', width: 150, classes: 'pointer', canSearch: true, or_search: true, checked: true },
 				{ label: 'Debtor Name', name: 'name', width: 400, classes: 'pointer' },
+				{ label: 'Recstatus', name: 'recstatus', width: 150, classes: 'pointer' },
 				{ label: 'MRN', name: 'mrn', width: 150, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Name', name: 'pm_Name', width: 400, classes: 'pointer' },
 				{ label: 'Document Date', name: 'entrydate', formatter: dateFormatter, unformat: dateUNFormatter, width: 150, classes: 'pointer' },

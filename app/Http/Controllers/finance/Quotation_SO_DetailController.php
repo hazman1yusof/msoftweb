@@ -1500,7 +1500,7 @@ class Quotation_SO_DetailController extends defaultController
             
             ////1. calculate rowno by recno
             $sqlln = DB::table('finance.salesum')->select('lineno_')
-                        ->where('compcode','=',session('compcode'))
+                        // ->where('compcode','=',session('compcode'))
                         ->where('source','=',$source)
                         ->where('trantype','=',$trantype)
                         ->where('auditno','=',$auditno)
@@ -1512,17 +1512,25 @@ class Quotation_SO_DetailController extends defaultController
             //     throw new \Exception("Qty request cant be bigger than qty on hand!",500);
             // }
 
-            $stockloc = DB::table('material.stockloc')
+            $chgmast = DB::table("hisdb.chgmast")
                     ->where('compcode','=',session('compcode'))
-                    ->where('uomcode','=',$request->uom)
-                    ->where('itemcode','=',$request->chggroup)
-                    ->where('deptcode','=',$salehdr->deptcode)
-                    ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+                    ->where('chgcode','=',$request->chggroup)
+                    ->where('uom','=',$request->uom)
+                    ->first();
 
-            if($stockloc->exists()){
-                $stockloc = $stockloc->first();
-            }else{
-                throw new \Exception("Stockloc not exists for item: ".$request->chggroup." dept: ".$salehdr->deptcode." uom: ".$request->uom,500);
+            if($chgmast->invflag == '1'){
+                $stockloc = DB::table('material.stockloc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('uomcode','=',$request->uom)
+                        ->where('itemcode','=',$request->chggroup)
+                        ->where('deptcode','=',$salehdr->deptcode)
+                        ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+
+                if($stockloc->exists()){
+                    $stockloc = $stockloc->first();
+                }else{
+                    throw new \Exception("Stockloc not exists for item: ".$request->chggroup." dept: ".$salehdr->deptcode." uom: ".$request->uom,500);
+                }
             }
             
             $qtyonhand = $stockloc->qtyonhand;
@@ -1549,7 +1557,7 @@ class Quotation_SO_DetailController extends defaultController
                     'mrn' => (!empty($salehdr->mrn))?$salehdr->mrn:null,
                     'episno' => (!empty($salehdr->episno))?$salehdr->episno:null,
                     'uom' => $request->uom,
-                    'uom_recv' => $request->uom_recv,
+                    'uom_recv' => $request->uom,
                     'taxcode' => $request->taxcode,
                     'unitprice' => $request->unitprice,
                     'quantity' => $request->quantity,
@@ -1568,10 +1576,10 @@ class Quotation_SO_DetailController extends defaultController
                     'billtypeamt' => $request->billtypeamt,
                 ]);
             
-            $product = DB::table('material.product')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('uomcode','=',$request->uom)
-                            ->where('itemcode','=',$request->chggroup);
+            // $product = DB::table('material.product')
+            //                 ->where('compcode','=',session('compcode'))
+            //                 ->where('uomcode','=',$request->uom)
+            //                 ->where('itemcode','=',$request->chggroup);
             
             ///3. calculate total amount from detail
             $totalAmount = DB::table('finance.salesum')
@@ -1616,7 +1624,107 @@ class Quotation_SO_DetailController extends defaultController
             return response($e, 500);
         
         }
+    }
+
+    public function edit(Request $request){
+        DB::beginTransaction();
         
+        try {
+            
+            $source = $request->source;
+            $trantype = $request->trantype;
+            $auditno = ltrim($request->auditno, "0");
+            
+            $salehdr = DB::table('finance.salehdr')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=',$source)
+                    ->where('trantype','=',$trantype)
+                    ->where('auditno','=',$auditno);
+            
+            $salehdr = $salehdr->first();
+
+            $chgmast = DB::table("hisdb.chgmast")
+                    ->where('compcode','=',session('compcode'))
+                    ->where('chgcode','=',$request->chggroup)
+                    ->where('uom','=',$request->uom)
+                    ->first();
+
+            if($chgmast->invflag == '1'){
+                $stockloc = DB::table('material.stockloc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('uomcode','=',$request->uom)
+                        ->where('itemcode','=',$request->chggroup)
+                        ->where('deptcode','=',$salehdr->deptcode)
+                        ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+
+                if($stockloc->exists()){
+                    $stockloc = $stockloc->first();
+                }else{
+                    throw new \Exception("Stockloc not exists for item: ".$request->chggroup." dept: ".$salehdr->deptcode." uom: ".$request->uom,500);
+                }
+            }
+
+            // $qtyonhand = $stockloc->qtyonhand;
+            $quantity = floatval($request->quantity);
+            $amount = $request->unitprice * $quantity;
+            $discamt = ($amount * (100-$request->billtypeperct) / 100) + $request->billtypeamt;
+            $rate = $this->taxrate($request->taxcode);
+            $taxamt = $amount * $rate / 100;
+            $totamount = $amount - $discamt + $taxamt;
+
+            DB::table('finance.salesum')
+                    ->where('compcode','=',session('compcode'))
+                    // ->where('source','=',$source)
+                    // ->where('trantype','=',$trantype)
+                    // ->where('billno','=',$auditno)
+                    ->where('idno','=',$request->idno)
+                    // ->where('rowno','=',$request->rowno)
+                    ->update([
+                        'unitprice' => $request->unitprice,
+                        'quantity' => $quantity,
+                        'qtyonhand' => $request->qtyonhand,
+                        'amount' => $amount,
+                        'outamt' => $amount,
+                        'discamt' => floatval($discamt),
+                        'taxamt' => floatval($taxamt),
+                        'totamount' => floatval($totamount),
+                        'lastuser' => session('username'), 
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'billtypeperct' => $request->billtypeperct,
+                        'billtypeamt' => $request->billtypeamt,
+                    ]);
+                
+            ///3. calculate total amount from detail
+            $totalAmount = DB::table('finance.salesum')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=',$source)
+                    ->where('trantype','=',$trantype)
+                    ->where('auditno','=',$auditno)
+                    ->where('recstatus','!=','DELETE')
+                    ->sum('totamount');
+            
+            ///4. then update to header
+            DB::table('finance.salehdr')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=',$source)
+                    ->where('trantype','=',$trantype)
+                    ->where('auditno','=',$auditno)
+                    ->update([
+                        'amount' => $totalAmount,
+                        'outamount' => $totalAmount,
+                    ]);
+            
+            DB::commit();
+            
+            echo $totalAmount;
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }        
     }
 
     public function edit_all(Request $request){

@@ -1550,7 +1550,7 @@ class SalesOrderDetailController extends defaultController
             
             ////1. calculate rowno by recno
             $sqlln = DB::table('debtor.billsum')->select('rowno')
-                        ->where('compcode','=',session('compcode'))
+                        // ->where('compcode','=',session('compcode'))
                         ->where('source','=',$source)
                         ->where('trantype','=',$trantype)
                         ->where('billno','=',$auditno)
@@ -1587,6 +1587,13 @@ class SalesOrderDetailController extends defaultController
             // $taxamt = $amount * $rate / 100;
             // $totamount = $amount - $discamt + $taxamt;
 
+            $quantity = floatval($request->quantity);
+            $amount = $request->unitprice * $quantity;
+            $discamt = ($amount * (100-$request->billtypeperct) / 100) + $request->billtypeamt;
+            $rate = $this->taxrate($request->taxcode);
+            $taxamt = $amount * $rate / 100;
+            $totamount = $amount - $discamt + $taxamt;
+
             // if($quantity > $qtyonhand){
             //     throw new \Exception("Quantity exceed quantity on hand for item: ".$request->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$request->uom,500);
             // }
@@ -1611,13 +1618,13 @@ class SalesOrderDetailController extends defaultController
                     'uom_recv' => $request->uom_recv,
                     'taxcode' => $request->taxcode,
                     'unitprice' => $request->unitprice,
-                    'quantity' => $request->quantity,
+                    'quantity' => $quantity,
                     'qtyonhand' => $request->qtyonhand,
-                    'amount' => $request->amount, //unitprice * quantity, xde tax
-                    'outamt' => $request->amount,
-                    'totamount' => $request->totamount,
-                    'discamt' => floatval($request->discamt),
-                    'taxamt' => floatval($request->taxamt),
+                    'amount' => $amount, //unitprice * quantity, xde tax
+                    'outamt' => $amount,
+                    'totamount' => $totamount,
+                    'discamt' => floatval($discamt),
+                    'taxamt' => floatval($taxamt),
                     'lastuser' => session('username'), 
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
