@@ -86,14 +86,14 @@ class TestController extends defaultController
             //     return $this->display_glmasref_xde($request);
             // case 'betulkan_dbacthdr':
             //     return $this->betulkan_dbacthdr($request);
-            // case 'gltran_step1':
-            //     return $this->gltran_step1($request);
-            // case 'gltran_step2':
-            //     return $this->gltran_step2($request);
-            // case 'gltran_step3':
-            //     return $this->gltran_step3($request);
-            // case 'gltran_step4':
-            //     return $this->gltran_step4($request);
+            case 'gltran_step1':
+                return $this->gltran_step1($request);
+            case 'gltran_step2':
+                return $this->gltran_step2($request);
+            case 'gltran_step3':
+                return $this->gltran_step3($request);
+            case 'gltran_step4':
+                return $this->gltran_step4($request);
             // case 'create_prod_kaluxde':
             //     return $this->create_prod_kaluxde($request);
             // case 'stockloc_total':
