@@ -1681,6 +1681,7 @@ Route::get('/bergBalanceTest/bergbalancetest_chart','rehab\BergBalanceTestContro
 Route::get('/musculoAssessment','rehab\MusculoAssessmentController@show');
 Route::get('/musculoAssessment/table','rehab\MusculoAssessmentController@table');
 Route::post('/musculoAssessment/form','rehab\MusculoAssessmentController@form');
+Route::get('/musculoAssessment/musculoassessment_chart','rehab\MusculoAssessmentController@musculoassessment_chart');
 
 Route::get('/posturalAssessment','rehab\PosturalAssessmentController@show');
 Route::get('/posturalAssessment/table','rehab\PosturalAssessmentController@table');
@@ -1694,10 +1695,12 @@ Route::get('/oswestryQuest/oswestryquest_chart','rehab\OswestryQuestController@o
 Route::get('/cardiorespAssessment','rehab\CardiorespAssessmentController@show');
 Route::get('/cardiorespAssessment/table','rehab\CardiorespAssessmentController@table');
 Route::post('/cardiorespAssessment/form','rehab\CardiorespAssessmentController@form');
+Route::get('/cardiorespAssessment/cardiorespassessment_chart','rehab\CardiorespAssessmentController@cardiorespassessment_chart');
 
 Route::get('/neuroAssessment','rehab\NeuroAssessmentController@show');
 Route::get('/neuroAssessment/table','rehab\NeuroAssessmentController@table');
 Route::post('/neuroAssessment/form','rehab\NeuroAssessmentController@form');
+Route::get('/neuroAssessment/neuroassessment_chart','rehab\NeuroAssessmentController@neuroassessment_chart');
 
 Route::get('/motorScale','rehab\MotorScaleController@show');
 Route::get('/motorScale/table','rehab\MotorScaleController@table');
