@@ -36,7 +36,7 @@
         padding-bottom: 10px;
         color: darkred;
     }
-    
+
     table#jqGrid2 a.input-group-addon.btn.btn-primary{
         padding: 2px !important;
     }
@@ -605,7 +605,7 @@
 			});
 		</script>
 
-		<script src="js/finance/Quotation_SO/Quotation_SO.js?v=1.11"></script>
+		<script src="js/finance/Quotation_SO/Quotation_SO.js?v=1.12"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 @endsection
