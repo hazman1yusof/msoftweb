@@ -58,10 +58,10 @@ class TestController extends defaultController
                 return $this->compare_product_csv($request);
             case 'compare_product_np_csv':
                 return $this->compare_product_np_csv($request);
-            case 'chk_phycntdt_xde_ivtxndt':
-                return $this->chk_phycntdt_xde_ivtxndt($request);
-            // case 'kira_netmvqty_netmvval_peritem':
-            //     return $this->kira_netmvqty_netmvval_peritem($request);
+            case 'tukar_uom_product_csv':
+                return $this->tukar_uom_product_csv($request);
+            case 'tukar_uom_product_np_csv':
+                return $this->tukar_uom_product_np_csv($request);
             // case 'kira_blk_netmvqty':
             //     return $this->kira_blk_netmvqty($request);
             // case 'delete_stockloc_terlebih':
@@ -5802,7 +5802,7 @@ class TestController extends defaultController
 
     public function gltran_step4(Request $request){//ni buat dkt python
         DB::beginTransaction();
-        dd('buat dkt python');
+        dd('buat dkt python -> gltran_stockloc.py');
 
         try {
 
@@ -7493,35 +7493,35 @@ class TestController extends defaultController
         }
     }
 
-    public function compare_product_csv(Request $request){
+    public function tukar_uom_product_csv(Request $request){
         DB::beginTransaction();
 
         try {
 
-            // DB::table('material.productmaster')
-            //     ->where('compcode',session('compcode'))
-            //     ->where('unit',"W'HOUSE")
-            //     ->update([
-            //         'recstatus' => 'DEACTIVE'
-            //     ]);
-            // DB::table('material.product')
-            //     ->where('compcode',session('compcode'))
-            //     ->where('unit',"W'HOUSE")
-            //     ->update([
-            //         'recstatus' => 'DEACTIVE'
-            //     ]);
-            // DB::table('material.chgmast')
-            //     ->where('compcode',session('compcode'))
-            //     ->where('unit',"W'HOUSE")
-            //     ->update([
-            //         'recstatus' => 'DEACTIVE'
-            //     ]);
-            // DB::table('material.stockloc')
-            //     ->where('compcode',session('compcode'))
-            //     ->where('unit',"W'HOUSE")
-            //     ->update([
-            //         'recstatus' => 'DEACTIVE'
-            //     ]);
+            DB::table('material.productmaster')
+                ->where('compcode',session('compcode'))
+                ->where('unit',"W'HOUSE")
+                ->update([
+                    'recstatus' => 'DEACTIVE'
+                ]);
+            DB::table('material.product')
+                ->where('compcode',session('compcode'))
+                ->where('unit',"W'HOUSE")
+                ->update([
+                    'recstatus' => 'DEACTIVE'
+                ]);
+            DB::table('hisdb.chgmast')
+                ->where('compcode',session('compcode'))
+                ->where('unit',"W'HOUSE")
+                ->update([
+                    'recstatus' => 'DEACTIVE'
+                ]);
+            DB::table('material.stockloc')
+                ->where('compcode',session('compcode'))
+                ->where('unit',"W'HOUSE")
+                ->update([
+                    'recstatus' => 'DEACTIVE'
+                ]);
 
             $fkwstr = DB::table('recondb.fkwstr_pharmacy_allitem as p')
                             ->select('p.idno','p.itemcode','p.uomcode','u.convfactor')
@@ -7532,66 +7532,151 @@ class TestController extends defaultController
                             ->get();
 
             foreach ($fkwstr as $obj) {
-                // $uomcode = DB::table('material.uom')
-                //             ->where('compcode',session('compcode'))
-                //             ->where('uomcode',$obj->uomcode);
+                DB::table('material.product')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',"W'HOUSE")
+                            ->where('itemcode',$obj->itemcode)
+                            ->update([
+                                'uomcode' => $obj->uomcode,
+                                'recstatus' => 'ACTIVE'
+                            ]);
 
-                // if(!$uomcode->exists()){
-                //     dump('xde uomcode : '.$obj->uomcode);
-                // }
+                DB::table('hisdb.chgmast')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',"W'HOUSE")
+                            ->where('chgcode',$obj->itemcode)
+                            ->update([
+                                'uom' => $obj->uomcode,
+                                'recstatus' => 'ACTIVE'
+                            ]);
 
-                // $productmaster = DB::table('material.productmaster')
-                //             ->where('compcode',session('compcode'))
-                //             // ->where('unit',"W'HOUSE")
-                //             ->where('itemcode',$obj->itemcode);
+                DB::table('hisdb.chgprice')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',"W'HOUSE")
+                            ->where('chgcode',$obj->itemcode)
+                            ->update([
+                                'uom' => $obj->uomcode,
+                                'recstatus' => 'ACTIVE'
+                            ]);
 
-                // if(!$productmaster->exists()){
-                //     dump('xde productmaster : '.$obj->itemcode);
-                // }
+                DB::table('material.stockloc')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',"W'HOUSE")
+                            ->where('itemcode',$obj->itemcode)
+                            ->where('deptcode','FKWSTR')
+                            ->update([
+                                'uomcode' => $obj->uomcode,
+                                'recstatus' => 'ACTIVE'
+                            ]);
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function compare_product_csv(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $fkwstr = DB::table('recondb.fkwstr_pharmacy_allitem as p')
+                            ->select('p.idno','p.itemcode','p.uomcode','u.convfactor')
+                            ->leftjoin('material.uom as u', function($join) use ($request){
+                                        $join = $join->on('p.uomcode', '=', 'u.uomcode')
+                                                      ->where('u.compcode',session('compcode'));
+                                    })
+                            ->get();
+
+            foreach ($fkwstr as $obj) {
+
+                $productmaster = DB::table('material.productmaster')
+                            ->where('compcode',session('compcode'))
+                            // ->where('unit',"W'HOUSE")
+                            ->where('itemcode',$obj->itemcode);
+
+                if(!$productmaster->exists()){
+                    dump('xde productmaster : '.$obj->itemcode);
+                }
+
+                $product = DB::table('material.product')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',"W'HOUSE")
+                            ->where('itemcode',$obj->itemcode);
+
+                if(!$product->exists()){
+                    dump('xde product : '.$obj->itemcode);
+                }
+               
+                $chgmast = DB::table('hisdb.chgmast')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',"W'HOUSE")
+                            ->where('chgcode',$obj->itemcode);
+                            // ->where('uom',$obj->uomcode);
+
+                if(!$chgmast->exists()){
+                    dump('xde chgmast : '.$obj->itemcode);
+                }
+                $stockloc = DB::table('material.stockloc')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',"W'HOUSE")
+                            ->where('year',"2025")
+                            ->where('itemcode',$obj->itemcode)
+                            // ->where('uomcode',$obj->uomcode)
+                            ->where('deptcode','FKWSTR');
+
+                if(!$stockloc->exists()){
+                    dump('xde stockloc : '.$obj->itemcode);
+                }
+
+                //check lebih dari satu
+                $productmaster = DB::table('material.productmaster')
+                            ->where('compcode',session('compcode'))
+                            // ->where('unit',"W'HOUSE")
+                            ->where('itemcode',$obj->itemcode)
+                            ->count();
+
+                if($productmaster > 1){
+                    dump('2bl productmaster : '.$obj->itemcode);
+                }
+
                 $product = DB::table('material.product')
                             ->where('compcode',session('compcode'))
                             ->where('unit',"W'HOUSE")
                             ->where('itemcode',$obj->itemcode)
-                            ->where('uomcode',$obj->uomcode);
+                            ->count();
 
-                if(!$product->exists()){
-                    // dump('xde product : '.$obj->itemcode);
-
-                    $product = DB::table('material.product as p')
-                                    ->select('p.itemcode','p.uomcode','u.convfactor')
-                                    ->where('p.compcode',session('compcode'))
-                                    ->where('p.unit',"W'HOUSE")
-                                    ->where('p.itemcode',$obj->itemcode)
-                                    ->leftjoin('material.uom as u', function($join) use ($request){
-                                        $join = $join->on('p.uomcode', '=', 'u.uomcode')
-                                                      ->where('u.compcode',session('compcode'));
-                                    })
-                                    ->first();
-
-                    if($product->convfactor != $obj->convfactor){
-                        dump('xsamma convfactor : '.$product->uomcode.' - lama: '.$obj->uomcode);
-                    }
-
+                if($product > 1){
+                    dump('2bl product : '.$obj->itemcode);
                 }
-                // $chgmast = DB::table('hisdb.chgmast')
-                //             ->where('compcode',session('compcode'))
-                //             ->where('unit',"W'HOUSE")
-                //             ->where('chgcode',$obj->itemcode)
-                //             ->where('uom',$obj->uomcode);
+               
+                $chgmast = DB::table('hisdb.chgmast')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',"W'HOUSE")
+                            ->where('chgcode',$obj->itemcode)
+                            ->count();
+                            // ->where('uom',$obj->uomcode);
 
-                // if(!$chgmast->exists()){
-                //     dump('xde chgmast : '.$obj->itemcode);
-                // }
-                // $stockloc = DB::table('material.stockloc')
-                //             ->where('compcode',session('compcode'))
-                //             ->where('unit',"W'HOUSE")
-                //             ->where('itemcode',$obj->itemcode)
-                //             ->where('uomcode',$obj->uomcode)
-                //             ->where('deptcode','FKWSTR');
+                if($chgmast > 1){
+                    dump('2bl chgmast : '.$obj->itemcode);
+                }
+                $stockloc = DB::table('material.stockloc')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',"W'HOUSE")
+                            ->where('itemcode',$obj->itemcode)
+                            ->where('year',"2025")
+                            // ->where('uomcode',$obj->uomcode)
+                            ->where('deptcode','FKWSTR')
+                            ->count();
 
-                // if(!$stockloc->exists()){
-                //     dump('xde stockloc : '.$obj->itemcode);
-                // }
+                if($stockloc > 1){
+                    dump('2bl stockloc : '.$obj->itemcode);
+                }
             }
 
             DB::commit();
@@ -7609,10 +7694,16 @@ class TestController extends defaultController
 
         try {
 
-            $fkwstr = DB::table('recondb.fkwstr_nonpharmacy_itemcode')
+            $fkwstr = DB::table('recondb.fkwstr_nonpharmacy_itemcode as p')
+                            ->select('p.idno','p.itemcode','p.uomcode','u.convfactor')
+                            ->leftjoin('material.uom as u', function($join) use ($request){
+                                        $join = $join->on('p.uomcode', '=', 'u.uomcode')
+                                                      ->where('u.compcode',session('compcode'));
+                                    })
                             ->get();
 
             foreach ($fkwstr as $obj) {
+
                 $uomcode = DB::table('material.uom')
                             // ->where('compcode',session('compcode'))
                             ->where('uomcode',$obj->uomcode);
@@ -7632,8 +7723,8 @@ class TestController extends defaultController
                 $product = DB::table('material.product')
                             ->where('unit',"W'HOUSE")
                             ->where('compcode',session('compcode'))
-                            ->where('itemcode',$obj->itemcode)
-                            ->where('uomcode',$obj->uomcode);
+                            ->where('itemcode',$obj->itemcode);
+                            // ->where('uomcode',$obj->uomcode);
 
                 if(!$product->exists()){
                     dump('xde product : '.$obj->itemcode);
@@ -7641,8 +7732,8 @@ class TestController extends defaultController
                 $chgmast = DB::table('hisdb.chgmast')
                             ->where('unit',"W'HOUSE")
                             ->where('compcode',session('compcode'))
-                            ->where('chgcode',$obj->itemcode)
-                            ->where('uom',$obj->uomcode);
+                            ->where('chgcode',$obj->itemcode);
+                            // ->where('uom',$obj->uomcode);
 
                 if(!$chgmast->exists()){
                     dump('xde chgmast : '.$obj->itemcode);
@@ -7651,12 +7742,74 @@ class TestController extends defaultController
                             ->where('unit',"W'HOUSE")
                             ->where('compcode',session('compcode'))
                             ->where('itemcode',$obj->itemcode)
-                            ->where('uomcode',$obj->uomcode)
+                            // ->where('uomcode',$obj->uomcode)
                             ->where('deptcode','FKWSTR');
 
                 if(!$stockloc->exists()){
                     dump('xde stockloc : '.$obj->itemcode);
                 }
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function tukar_uom_product_np_csv(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $fkwstr = DB::table('recondb.fkwstr_nonpharmacy_itemcode as p')
+                            ->select('p.idno','p.itemcode','p.uomcode','u.convfactor')
+                            ->leftjoin('material.uom as u', function($join) use ($request){
+                                        $join = $join->on('p.uomcode', '=', 'u.uomcode')
+                                                      ->where('u.compcode',session('compcode'));
+                                    })
+                            ->get();
+
+            foreach ($fkwstr as $obj) {
+                DB::table('material.product')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',"W'HOUSE")
+                            ->where('itemcode',$obj->itemcode)
+                            ->update([
+                                'uomcode' => $obj->uomcode,
+                                'recstatus' => 'ACTIVE'
+                            ]);
+
+                DB::table('hisdb.chgmast')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',"W'HOUSE")
+                            ->where('chgcode',$obj->itemcode)
+                            ->update([
+                                'uom' => $obj->uomcode,
+                                'recstatus' => 'ACTIVE'
+                            ]);
+
+                DB::table('hisdb.chgprice')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',"W'HOUSE")
+                            ->where('chgcode',$obj->itemcode)
+                            ->update([
+                                'uom' => $obj->uomcode,
+                                'recstatus' => 'ACTIVE'
+                            ]);
+
+                DB::table('material.stockloc')
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',"W'HOUSE")
+                            ->where('itemcode',$obj->itemcode)
+                            ->where('deptcode','FKWSTR')
+                            ->update([
+                                'uomcode' => $obj->uomcode,
+                                'recstatus' => 'ACTIVE'
+                            ]);
             }
 
             DB::commit();
