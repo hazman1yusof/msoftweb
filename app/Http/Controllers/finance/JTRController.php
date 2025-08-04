@@ -81,7 +81,7 @@ class JTRController extends defaultController
                             // 'srcdocno' => ,
                             // 'sndrcvtype' => ,
                             // 'sndrcv' => ,
-                            'trandate' => $year.'-'.$month.'-01',
+                            'trandate' => $year.'-'.$month.'-31',
                             // 'datesupret' => ,
                             // 'dateactret' => ,
                             'trantime' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -163,7 +163,7 @@ class JTRController extends defaultController
                                 // 'qtyonhandrecv' => $value->qtyonhandrecv,  
                                 // 'batchno' => $value->batchno, 
                                 'amount' => round($variance, 2), 
-                                'trandate' => $year.'-'.$month.'-01',
+                                'trandate' => $year.'-'.$month.'-31',
                                 // 'sndrcv' => $ivtmphd->sndrcv,
                                 'unit' => $dept,
                             ]);
