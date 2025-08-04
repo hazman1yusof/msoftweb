@@ -7045,7 +7045,7 @@ class TestController extends defaultController
                             ->get();
 
                 $add = 0;
-                // $add2 = 0;
+                $add2 = 0;
                 foreach ($ivtxndt as $key => $value) {
                     $ivtxntype = DB::table('material.ivtxntype')
                                         ->where('compcode',session('compcode'))
@@ -7056,55 +7056,49 @@ class TestController extends defaultController
 
                     if($crdbfl == 'In'){
                         $add = $add + $value->txnqty;
-                        // $add2 = $add2 + $value->amount;
+                        $add2 = $add2 + $value->amount;
                     }else{
                         $add = $add - $value->txnqty;
-                        // $add2 = $add2 - $value->amount;
+                        $add2 = $add2 - $value->amount;
                     }
                 }
 
                 $all = $add - $minus;
 
-                // $ivdspdt2 = DB::table('material.ivdspdt')
-                //             ->where('compcode',session('compcode'))
-                //             ->where('itemcode',$value->itemcode)
-                //             ->where('trandate','>=',$day_start)
-                //             ->where('trandate','<=',$day_end)
-                //             ->sum('amount');
-                // $minus2 = $ivdspdt2;
+                $ivdspdt2 = DB::table('material.ivdspdt')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$value->itemcode)
+                            ->where('trandate','>=',$day_start)
+                            ->where('trandate','<=',$day_end)
+                            ->sum('amount');
+                $minus2 = $ivdspdt2;
 
-                // $all2 = $add2 - $minus2;
+                $all2 = $add2 - $minus2;
 
-                // $netmvqty11 = $product->qtyonhand - $all;
-                // dump($product->qtyonhand);
-                // dump($all);
-                // dump($netmvqty11);
-
-                // DB::table('material.stockloc')
-                //             ->where('compcode',session('compcode'))
-                //             ->where('itemcode',$itemcode)
-                //             ->where('deptcode',$deptcode)
-                //             ->where('year','2025')
-                //             ->update([
-                //                 'netmvqty'.$period => $all,
-                //                 // 'netmvval'.$period => $all2
-                //             ]);
-
-                if($value_array['netmvqty'.$period] != $all){
+                if($value_array['netmvqty'.$period] != $all || $value_array['netmvval'.$period] != $all2){
 
                     dump($x.'. '.$value->itemcode.' -> SAVED netmvqty'.$period.' => '.$value_array['netmvqty'.$period]);
                     dump($x.'. '.$value->itemcode.' -> REAL netmvqty'.$period.' => '.$all);
                     $x++;
+
+                    if(intval($period) > 5){
+                        $updarr = [
+                                'netmvqty'.$period => $all,
+                                'netmvval'.$period => $all2
+                            ];
+                    }else{
+                        $updarr = [
+                                'netmvqty'.$period => $all,
+                                // 'netmvval'.$period => $all2
+                            ];
+                    }
 
                     DB::table('material.stockloc')
                             ->where('compcode',session('compcode'))
                             ->where('itemcode',$value->itemcode)
                             ->where('deptcode',$value->deptcode)
                             ->where('year','2025')
-                            ->update([
-                                'netmvqty'.$period => $all,
-                                // 'netmvval'.$period => $all2
-                            ]);
+                            ->update($updarr);
                 }
 
                 // dump($value_array['netmvqty'.$period] != $all);
@@ -7504,38 +7498,100 @@ class TestController extends defaultController
 
         try {
 
-            $fkwstr = DB::table('recondb.fkwstr_pharmacy_allitem')
+            // DB::table('material.productmaster')
+            //     ->where('compcode',session('compcode'))
+            //     ->where('unit',"W'HOUSE")
+            //     ->update([
+            //         'recstatus' => 'DEACTIVE'
+            //     ]);
+            // DB::table('material.product')
+            //     ->where('compcode',session('compcode'))
+            //     ->where('unit',"W'HOUSE")
+            //     ->update([
+            //         'recstatus' => 'DEACTIVE'
+            //     ]);
+            // DB::table('material.chgmast')
+            //     ->where('compcode',session('compcode'))
+            //     ->where('unit',"W'HOUSE")
+            //     ->update([
+            //         'recstatus' => 'DEACTIVE'
+            //     ]);
+            // DB::table('material.stockloc')
+            //     ->where('compcode',session('compcode'))
+            //     ->where('unit',"W'HOUSE")
+            //     ->update([
+            //         'recstatus' => 'DEACTIVE'
+            //     ]);
+
+            $fkwstr = DB::table('recondb.fkwstr_pharmacy_allitem as p')
+                            ->select('p.idno','p.itemcode','p.uomcode','u.convfactor')
+                            ->leftjoin('material.uom as u', function($join) use ($request){
+                                        $join = $join->on('p.uomcode', '=', 'u.uomcode')
+                                                      ->where('u.compcode',session('compcode'));
+                                    })
                             ->get();
 
             foreach ($fkwstr as $obj) {
-                $productmaster = DB::table('material.productmaster')
-                            // ->where('compcode',session('compcode'))
-                            ->where('itemcode',$obj->itemcode);
+                // $uomcode = DB::table('material.uom')
+                //             ->where('compcode',session('compcode'))
+                //             ->where('uomcode',$obj->uomcode);
 
-                if(!$productmaster->exists()){
-                    dump('xde productmaster : '.$obj->itemcode);
-                }
+                // if(!$uomcode->exists()){
+                //     dump('xde uomcode : '.$obj->uomcode);
+                // }
+
+                // $productmaster = DB::table('material.productmaster')
+                //             ->where('compcode',session('compcode'))
+                //             // ->where('unit',"W'HOUSE")
+                //             ->where('itemcode',$obj->itemcode);
+
+                // if(!$productmaster->exists()){
+                //     dump('xde productmaster : '.$obj->itemcode);
+                // }
                 $product = DB::table('material.product')
-                            // ->where('compcode',session('compcode'))
-                            ->where('itemcode',$obj->itemcode);
+                            ->where('compcode',session('compcode'))
+                            ->where('unit',"W'HOUSE")
+                            ->where('itemcode',$obj->itemcode)
+                            ->where('uomcode',$obj->uomcode);
 
                 if(!$product->exists()){
-                    dump('xde product : '.$obj->itemcode);
-                }
-                $chgmast = DB::table('hisdb.chgmast')
-                            // ->where('compcode',session('compcode'))
-                            ->where('chgcode',$obj->itemcode);
+                    // dump('xde product : '.$obj->itemcode);
 
-                if(!$chgmast->exists()){
-                    dump('xde chgmast : '.$obj->itemcode);
-                }
-                $stockloc = DB::table('material.stockloc')
-                            // ->where('compcode',session('compcode'))
-                            ->where('itemcode',$obj->itemcode);
+                    $product = DB::table('material.product as p')
+                                    ->select('p.itemcode','p.uomcode','u.convfactor')
+                                    ->where('p.compcode',session('compcode'))
+                                    ->where('p.unit',"W'HOUSE")
+                                    ->where('p.itemcode',$obj->itemcode)
+                                    ->leftjoin('material.uom as u', function($join) use ($request){
+                                        $join = $join->on('p.uomcode', '=', 'u.uomcode')
+                                                      ->where('u.compcode',session('compcode'));
+                                    })
+                                    ->first();
 
-                if(!$stockloc->exists()){
-                    dump('xde stockloc : '.$obj->itemcode);
+                    if($product->convfactor != $obj->convfactor){
+                        dump('xsamma convfactor : '.$product->uomcode.' - lama: '.$obj->uomcode);
+                    }
+
                 }
+                // $chgmast = DB::table('hisdb.chgmast')
+                //             ->where('compcode',session('compcode'))
+                //             ->where('unit',"W'HOUSE")
+                //             ->where('chgcode',$obj->itemcode)
+                //             ->where('uom',$obj->uomcode);
+
+                // if(!$chgmast->exists()){
+                //     dump('xde chgmast : '.$obj->itemcode);
+                // }
+                // $stockloc = DB::table('material.stockloc')
+                //             ->where('compcode',session('compcode'))
+                //             ->where('unit',"W'HOUSE")
+                //             ->where('itemcode',$obj->itemcode)
+                //             ->where('uomcode',$obj->uomcode)
+                //             ->where('deptcode','FKWSTR');
+
+                // if(!$stockloc->exists()){
+                //     dump('xde stockloc : '.$obj->itemcode);
+                // }
             }
 
             DB::commit();
@@ -7557,30 +7613,46 @@ class TestController extends defaultController
                             ->get();
 
             foreach ($fkwstr as $obj) {
-                $productmaster = DB::table('material.productmaster')
+                $uomcode = DB::table('material.uom')
                             // ->where('compcode',session('compcode'))
+                            ->where('uomcode',$obj->uomcode);
+
+                if(!$uomcode->exists()){
+                    dump('xde uomcode : '.$obj->uomcode);
+                }
+
+                $productmaster = DB::table('material.productmaster')
+                            // ->where('unit',"W'HOUSE")
+                            ->where('compcode',session('compcode'))
                             ->where('itemcode',$obj->itemcode);
 
                 if(!$productmaster->exists()){
                     dump('xde productmaster : '.$obj->itemcode);
                 }
                 $product = DB::table('material.product')
-                            // ->where('compcode',session('compcode'))
-                            ->where('itemcode',$obj->itemcode);
+                            ->where('unit',"W'HOUSE")
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode)
+                            ->where('uomcode',$obj->uomcode);
 
                 if(!$product->exists()){
                     dump('xde product : '.$obj->itemcode);
                 }
                 $chgmast = DB::table('hisdb.chgmast')
-                            // ->where('compcode',session('compcode'))
-                            ->where('chgcode',$obj->itemcode);
+                            ->where('unit',"W'HOUSE")
+                            ->where('compcode',session('compcode'))
+                            ->where('chgcode',$obj->itemcode)
+                            ->where('uom',$obj->uomcode);
 
                 if(!$chgmast->exists()){
                     dump('xde chgmast : '.$obj->itemcode);
                 }
                 $stockloc = DB::table('material.stockloc')
-                            // ->where('compcode',session('compcode'))
-                            ->where('itemcode',$obj->itemcode);
+                            ->where('unit',"W'HOUSE")
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode)
+                            ->where('uomcode',$obj->uomcode)
+                            ->where('deptcode','FKWSTR');
 
                 if(!$stockloc->exists()){
                     dump('xde stockloc : '.$obj->itemcode);
