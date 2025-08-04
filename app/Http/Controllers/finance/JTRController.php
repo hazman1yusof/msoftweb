@@ -68,6 +68,7 @@ class JTRController extends defaultController
         try {
             $request_no = $this->request_no('JTR',$dept);
             $recno = $this->recno('IV','IT');
+            $trandate = Carbon::createFromFormat('Y-m-d',$year.'-'.$month.'-01')->endOfMonth()->format('Y-m-d');
 
             DB::table("material.ivtxnhd")
                         ->insert([
@@ -81,7 +82,7 @@ class JTRController extends defaultController
                             // 'srcdocno' => ,
                             // 'sndrcvtype' => ,
                             // 'sndrcv' => ,
-                            'trandate' => $year.'-'.$month.'-31',
+                            'trandate' => $trandate,
                             // 'datesupret' => ,
                             // 'dateactret' => ,
                             'trantime' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -163,7 +164,7 @@ class JTRController extends defaultController
                                 // 'qtyonhandrecv' => $value->qtyonhandrecv,  
                                 // 'batchno' => $value->batchno, 
                                 'amount' => round($variance, 2), 
-                                'trandate' => $year.'-'.$month.'-31',
+                                'trandate' => $trandate,
                                 // 'sndrcv' => $ivtmphd->sndrcv,
                                 'unit' => $dept,
                             ]);
