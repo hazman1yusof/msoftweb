@@ -7075,10 +7075,10 @@ class TestController extends defaultController
 
                 $all2 = $add2 - $minus2;
 
-                if($value_array['netmvqty'.$period] != $all || $value_array['netmvval'.$period] != $all2){
+                if(floatval($value_array['netmvqty'.$period]) != floatval($all) || floatval($value_array['netmvval'.$period]) != floatval($all2)){
 
-                    dump($x.'. '.$value->itemcode.' -> SAVED netmvqty'.$period.' => '.$value_array['netmvqty'.$period]);
-                    dump($x.'. '.$value->itemcode.' -> REAL netmvqty'.$period.' => '.$all);
+                    dump($x.'. '.$value->itemcode.' -> SAVED netmvqty'.$period.' => '.$value_array['netmvqty'.$period].' -> SAVED netmvval'.$period.' => '.$value_array['netmvval'.$period] );
+                    dump($x.'. '.$value->itemcode.' -> REAL netmvqty'.$period.' => '.$all.' -> REAL netmvval => '.$all2);
                     $x++;
 
                     if(intval($period) > 5){
