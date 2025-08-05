@@ -7870,48 +7870,50 @@ class TestController extends defaultController
                             ->get();
 
             foreach ($fkwstr as $obj) {
+                $uomcode = preg_replace('/\s+/', '', $obj->uomcode);
+
                 DB::table('material.ivtxndt')
                             ->where('compcode',session('compcode'))
                             ->where('itemcode',$obj->itemcode)
                             ->update([
-                                'uomcode' => $obj->uomcode
+                                'uomcode' => $uomcode
                             ]);
-                            // ->where('uomcode',$obj->uomcode);
+                            // ->where('uomcode',$uomcode);
 
                 DB::table('material.ivdspdt')
                             ->where('compcode',session('compcode'))
                             ->where('itemcode',$obj->itemcode)
                             ->update([
-                                'uomcode' => $obj->uomcode
+                                'uomcode' => $uomcode
                             ]);
 
                 DB::table('material.delorddt')
                             ->where('compcode',session('compcode'))
                             ->where('itemcode',$obj->itemcode)
                             ->update([
-                                'uomcode' => $obj->uomcode
+                                'uomcode' => $uomcode
                             ]);
 
                 DB::table('material.purorddt')
                             ->where('compcode',session('compcode'))
                             ->where('itemcode',$obj->itemcode)
                             ->update([
-                                'uomcode' => $obj->uomcode
+                                'uomcode' => $uomcode
                             ]);
 
                 DB::table('material.ivtmpdt')
                             ->where('compcode',session('compcode'))
                             ->where('itemcode',$obj->itemcode)
                             ->update([
-                                'uomcode' => $obj->uomcode
+                                'uomcode' => $uomcode
                             ]);
 
                 DB::table('material.ivreqdt')
                             ->where('compcode',session('compcode'))
                             ->where('itemcode',$obj->itemcode)
                             ->update([
-                                'uomcode' => $obj->uomcode,
-                                'pouom' => $obj->uomcode
+                                'uomcode' => $uomcode,
+                                'pouom' => $uomcode
                             ]);
 
             
@@ -7919,14 +7921,14 @@ class TestController extends defaultController
                             ->where('compcode',session('compcode'))
                             ->where('itemcode',$obj->itemcode)
                             ->update([
-                                'uomcode' => $obj->uomcode
+                                'uomcode' => $uomcode
                             ]);
             
             DB::table('finance.salesum')
                             ->where('compcode',session('compcode'))
                             ->where('chggroup',$obj->itemcode)
                             ->update([
-                                'uom' => $obj->uomcode,
+                                'uom' => $uomcode,
                                 'uom_recv' => $obj->uomcode
                             ]);
 
