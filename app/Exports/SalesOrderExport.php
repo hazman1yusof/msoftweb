@@ -60,6 +60,7 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
         $datefr = Carbon::parse($this->datefr)->format('Y-m-d H:i:s');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d H:i:s');
         $deptcode = $this->deptcode;
+        $scope = $this->scope;
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
                     ->select('dh.invno', 'dh.posteddate','dh.mrn', 'dh.deptcode', 'dh.amount', 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname','pm.Name as pm_name')
