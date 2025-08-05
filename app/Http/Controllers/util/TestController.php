@@ -62,8 +62,8 @@ class TestController extends defaultController
                 return $this->tukar_uom_product_csv($request);
             case 'tukar_uom_product_np_csv':
                 return $this->tukar_uom_product_np_csv($request);
-            // case 'kira_blk_netmvqty':
-            //     return $this->kira_blk_netmvqty($request);
+            case 'tukar_semua_ivtxntdt_idspdt_uombaru':
+                return $this->tukar_semua_ivtxntdt_idspdt_uombaru($request);
             // case 'delete_stockloc_terlebih':
             //     return $this->delete_stockloc_terlebih($request);
             // case 'betulkan_poli_qtyonhand':
@@ -7847,6 +7847,92 @@ class TestController extends defaultController
             }
 
             DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function tukar_semua_ivtxntdt_idspdt_uombaru(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $fkwstr = DB::table('recondb.fkwstr_semua_itemcode as p')
+                            ->select('p.idno','p.itemcode','p.uomcode','u.convfactor')
+                            ->leftjoin('material.uom as u', function($join) use ($request){
+                                        $join = $join->on('p.uomcode', '=', 'u.uomcode')
+                                                      ->where('u.compcode',session('compcode'));
+                                    })
+                            ->get();
+
+            foreach ($fkwstr as $obj) {
+                DB::table('material.ivtxndt')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode)
+                            ->update([
+                                'uomcode' => $obj->uomcode
+                            ]);
+                            // ->where('uomcode',$obj->uomcode);
+
+                DB::table('material.ivdspdt')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode)
+                            ->update([
+                                'uomcode' => $obj->uomcode
+                            ]);
+
+                DB::table('material.delorddt')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode)
+                            ->update([
+                                'uomcode' => $obj->uomcode
+                            ]);
+
+                DB::table('material.purorddt')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode)
+                            ->update([
+                                'uomcode' => $obj->uomcode
+                            ]);
+
+                DB::table('material.ivtmpdt')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode)
+                            ->update([
+                                'uomcode' => $obj->uomcode
+                            ]);
+
+                DB::table('material.ivreqdt')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode)
+                            ->update([
+                                'uomcode' => $obj->uomcode,
+                                'pouom' => $obj->uomcode
+                            ]);
+
+            
+            DB::table('material.stockexp')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode)
+                            ->update([
+                                'uomcode' => $obj->uomcode
+                            ]);
+            
+            DB::table('finance.salesum')
+                            ->where('compcode',session('compcode'))
+                            ->where('chggroup',$obj->itemcode)
+                            ->update([
+                                'uom' => $obj->uomcode,
+                                'uom_recv' => $obj->uomcode
+                            ]);
+
+            }
+
+        DB::commit();
 
         } catch (Exception $e) {
             DB::rollback();
