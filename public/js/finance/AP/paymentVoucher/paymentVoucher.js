@@ -1348,6 +1348,7 @@ $(document).ready(function () {
 	}
 	//////////////////////////////////////////saveDetailLabel & save////////////////////////////////////////////
 	$("#save").click(function(){
+		$("#save,#saveDetailLabel").attr('disabled',true);
 		unsaved = false;
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
@@ -1356,11 +1357,13 @@ $(document).ready(function () {
 			unsaved = false;
 			// $("#dialogForm").dialog('close');
 		}else{
+			$("#save,#saveDetailLabel").attr('disabled',false);
 			mycurrency.formatOn();
 		}
 	});
 
 	$("#saveDetailLabel").click(function(){
+		$("#save,#saveDetailLabel").attr('disabled',true);
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
@@ -1372,6 +1375,7 @@ $(document).ready(function () {
 			errorField.length=0;
 			// $("#dialogForm").dialog('close');
 		}else{
+			$("#save,#saveDetailLabel").attr('disabled',false);
 			mycurrency.formatOn();
 		}
 	});

@@ -795,6 +795,8 @@ class PaymentVoucherController extends defaultController
     public function posted_lama(Request $request){
         DB::beginTransaction();
         try {
+            
+            $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno_obj){
                 $apacthdr = DB::table('finance.apacthdr')
                     ->where('idno','=',$idno_obj['idno'])
@@ -848,6 +850,7 @@ class PaymentVoucherController extends defaultController
         DB::beginTransaction();
 
         try{
+            $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno_obj){
                 $apacthdr = DB::table('finance.apacthdr')
                     ->where('idno','=',$idno_obj['idno'])
@@ -925,6 +928,7 @@ class PaymentVoucherController extends defaultController
 
         try{
 
+            $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno_obj){
                 $apacthdr = DB::table('finance.apacthdr')
                     ->where('idno','=',$idno_obj['idno'])
@@ -1007,6 +1011,7 @@ class PaymentVoucherController extends defaultController
 
         try{
 
+            $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno_obj){
                 $apacthdr = DB::table('finance.apacthdr')
                     ->where('idno','=',$idno_obj['idno'])
@@ -1093,6 +1098,7 @@ class PaymentVoucherController extends defaultController
 
         try{
 
+            $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno_obj){
                 $apacthdr = DB::table('finance.apacthdr')
                     ->where('idno','=',$idno_obj['idno'])
@@ -1188,6 +1194,7 @@ class PaymentVoucherController extends defaultController
 
         try {
 
+            $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno_obj){
                 $apacthdr = DB::table('finance.apacthdr')
                     ->where('idno','=', $idno_obj['idno'])
@@ -1415,6 +1422,7 @@ class PaymentVoucherController extends defaultController
 
         try{
 
+            $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno_obj){
                 $apacthdr = DB::table('finance.apacthdr')
                     ->where('idno','=',$idno_obj['idno'])
