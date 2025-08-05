@@ -2,21 +2,6 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
-    
-    $("#genreport input[name='datefr']").change(function(){
-        $("#genreportpdf input[name='datefr']").val($(this).val());
-    });
-    $("#genreport input[name='dateto']").change(function(){
-        $("#genreportpdf input[name='dateto']").val($(this).val());
-    });
-    
-    $("#pdfgen1").click(function() {
-		window.open('./SalesOrder_Report/showpdf?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&deptcode='+$("#deptcode").val(), '_blank');
-	});
-	
-	$("#excelgen1").click(function() {
-		window.location='./SalesOrder_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&deptcode='+$("#deptcode").val();
-	});
 
 	var dialog_deptcode = new ordialog(
 		'deptcode','sysdb.department','#deptcode','errorField',
@@ -50,5 +35,32 @@ $(document).ready(function () {
 			}
 		},'urlParam','radio','tab'
 	);
-	dialog_deptcode.makedialog(true);
+	dialog_deptcode.makedialog(false);
+
+	if($('#scope').val() == 'POLI'){
+		$('#deptcode').val('POLIKLINIK');
+		$('#deptcode').prop('readonly',true);
+		dialog_deptcode.off();
+		$('#pdfgen1').hide();
+		$('#h4_title').text('SALES POLIKLINIK');
+	}else{
+		dialog_deptcode.on();
+		$('#pdfgen1').show();
+		$('#h4_title').text('SALES');
+	}
+    
+    $("#genreport input[name='datefr']").change(function(){
+        $("#genreportpdf input[name='datefr']").val($(this).val());
+    });
+    $("#genreport input[name='dateto']").change(function(){
+        $("#genreportpdf input[name='dateto']").val($(this).val());
+    });
+    
+    $("#pdfgen1").click(function() {
+		window.open('./SalesOrder_Report/showpdf?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&deptcode='+$("#deptcode").val(), '_blank');
+	});
+	
+	$("#excelgen1").click(function() {
+		window.location='./SalesOrder_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&deptcode='+$("#deptcode").val()+'&scope='+$("#scope").val();
+	});
 });

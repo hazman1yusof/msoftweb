@@ -44,10 +44,13 @@
 @endsection
 
 @section('body')
+
+	<input id="scope" name="scope" type="hidden" value="{{Request::get('scope')}}">
+
 	<div class="container mycontainer">
         <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 350px;">
             <form method="get" id="genreport" action="./SalesOrder_Report/showExcel">
-                <h4>SALES</h4>
+                <h4 id="h4_title">SALES</h4>
                 <h7 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h7>
 				
 				<div style="width: 800px;margin: 0 auto;">
@@ -100,5 +103,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/finance/SalesOrder_Report/SalesOrder_Report.js?v=1.1"></script>
+	<script src="js/finance/SalesOrder_Report/SalesOrder_Report.js?v=1.2"></script>
 @endsection

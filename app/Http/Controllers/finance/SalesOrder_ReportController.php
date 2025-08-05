@@ -46,7 +46,7 @@ class SalesOrder_ReportController extends defaultController
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new SalesOrderExport($request->datefr,$request->dateto,$request->deptcode), 'SalesOrderReport.xlsx');
+        return Excel::download(new SalesOrderExport($request->datefr,$request->dateto,$request->deptcode,$request->scope), 'SalesOrderReport.xlsx');
     }
 
     public function showpdf(Request $request)

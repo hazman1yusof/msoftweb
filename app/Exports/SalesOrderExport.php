@@ -28,11 +28,12 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
     * @return \Illuminate\Support\Collection
     */
 
-    public function __construct($datefr,$dateto,$deptcode)
+    public function __construct($datefr,$dateto,$deptcode,$scope)
     {
         $this->datefr = $datefr;
         $this->dateto = $dateto;
         $this->deptcode = $deptcode;
+        $this->scope = $scope;
         $this->dbacthdr_len=0;
 
         $this->comp = DB::table('sysdb.company')
@@ -71,16 +72,23 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
                         $join = $join->where("pm.compcode", '=', session('compcode'));
                     })
                     ->where('dh.compcode','=',session('compcode'))
-                    ->where('dh.source','=','PB');
-                    if(!empty($deptcode)){
-                        $dbacthdr = $dbacthdr
-                                    ->where('dh.deptcode', '=', $deptcode);
-                    }
-                    $dbacthdr = $dbacthdr->where('dh.recstatus','=', 'POSTED')
-                    ->where('dh.amount','!=','0')
+                    ->where('dh.source','=','PB')
                     ->whereIn('dh.trantype',['IN'])
-                    ->whereBetween('dh.posteddate', [$datefr, $dateto])
-                    ->get();
+                    ->where('dh.recstatus','=', 'POSTED')
+                    ->whereBetween('dh.posteddate', [$datefr, $dateto]);
+
+                    if($scope == 'POLI'){
+                        $dbacthdr = $dbacthdr
+                                        ->where('dh.unit','POLIS15');
+                    }else{
+                        if(!empty($deptcode)){
+                            $dbacthdr = $dbacthdr
+                                        ->where('dh.deptcode', '=', $deptcode);
+                        }
+                    }
+                    $dbacthdr = $dbacthdr
+                                ->where('dh.amount','!=','0')
+                                ->get();
                     
         $totalAmount = $dbacthdr->sum('amount');
 
