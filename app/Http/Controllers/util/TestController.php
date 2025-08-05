@@ -94,8 +94,8 @@ class TestController extends defaultController
                 return $this->gltran_step3($request);
             case 'gltran_step4':
                 return $this->gltran_step4($request);
-            // case 'create_prod_kaluxde':
-            //     return $this->create_prod_kaluxde($request);
+            case 'gltran_poliklinik':
+                return $this->gltran_poliklinik($request);
             // case 'stockloc_total':
             //     return $this->stockloc_total($request);
             // case 'dballoc_2bl_betulkn':
