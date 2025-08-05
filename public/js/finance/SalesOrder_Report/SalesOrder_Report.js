@@ -61,6 +61,6 @@ $(document).ready(function () {
 	});
 	
 	$("#excelgen1").click(function() {
-		window.location='./SalesOrder_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&deptcode='+$("#deptcode").val()+'&scope='+$("#scope").val();
+		window.open('./SalesOrder_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val()+'&deptcode='+$("#deptcode").val()+'&scope='+$("#scope").val(), '_blank');
 	});
 });

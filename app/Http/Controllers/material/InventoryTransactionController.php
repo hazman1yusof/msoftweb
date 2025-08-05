@@ -1596,7 +1596,7 @@ class InventoryTransactionController extends defaultController
             ->first();
 
         $ivtmpdt = DB::table('material.ivtmpdt AS ivdt')
-            ->select('ivdt.compcode','ivdt.recno','ivdt.lineno_','ivh.trandate','ivdt.itemcode','p.description', 'ivdt.qtyonhand','ivdt.uomcode', 'ivdt.qtyonhandrecv','ivdt.uomcoderecv','ivdt.txnqty','ivdt.qtyrequest','ivdt.netprice','ivdt.amount','ivdt.expdate','ivdt.batchno')
+            ->select('ivdt.compcode','ivdt.recno','ivdt.lineno_','ivh.trandate','ivdt.itemcode','p.description', 'ivdt.qtyonhand','ivdt.uomcode', 'ivdt.qtyonhandrecv','ivdt.uomcoderecv','ivdt.txnqty','ivdt.qtyrequest','ivdt.netprice','ivdt.amount','ivdt.expdate','ivdt.batchno','u.convfactor')
             ->leftJoin('material.product as p', function($join) use ($request){
                         $join = $join->on('ivdt.itemcode', '=', 'p.itemcode')
                                 ->where("p.recstatus", '=', 'ACTIVE')
@@ -1605,6 +1605,10 @@ class InventoryTransactionController extends defaultController
             ->leftJoin('material.ivtmphd as ivh', function($join) use ($request){
                         $join = $join->on('ivh.recno', '=', 'ivdt.recno')
                                 ->where('ivh.compcode','=',session('compcode'));
+                    })
+            ->leftJoin('material.uom as u', function($join) use ($request){
+                        $join = $join->on('u.uomcode', '=', 'ivdt.uomcode')
+                                ->where('u.compcode','=',session('compcode'));
                     })
             ->where('ivdt.recstatus','!=','DELETE')
             ->where('ivdt.compcode','=',session('compcode'))
@@ -1628,6 +1632,16 @@ class InventoryTransactionController extends defaultController
             ->where('compcode','=',session('compcode'))
             ->where('recno','=',$recno)
             ->sum('amount');
+
+        foreach($ivtmpdt as $obj) {
+            if(!empty($obj->convfactor)){
+                $obj->poli_qty = $obj->txnqty * $obj->convfactor;
+                $obj->poli_price = round($obj->netprice / $obj->convfactor,4);
+            }else{
+                $obj->poli_qty = $obj->txnqty;
+                $obj->poli_price = $obj->netprice;
+            }
+        }
 
         // $total_tax = DB::table('material.ivtmpdt')
         //     ->where('compcode','=',session('compcode'))
@@ -1712,7 +1726,6 @@ class InventoryTransactionController extends defaultController
                     array_push($cr_acc,[$cc,$cc_desc,$acc,$acc_desc,0,-floatval($value)]);
                 }
             }
-
         }
         
 

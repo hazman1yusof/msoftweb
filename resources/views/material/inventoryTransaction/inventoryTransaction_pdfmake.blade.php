@@ -128,7 +128,7 @@
                     style: 'tableDetail',
                     table: {
                         headerRows: 1,
-                        widths: [13,200,30,40,45,45,46,45],//panjang standard dia 515
+                        widths: [13,110,30,40,45,45,46,45,45,45],//panjang standard dia 515
 
                         body: [
                             [
@@ -140,6 +140,8 @@
 								{text: 'Amount', style: 'tableHeader', alignment: 'right'}, 
                                 {text: 'Expiry Date', style: 'tableHeader'}, 
 								{text: 'QOH', style: 'tableHeader', alignment: 'right'}, 
+								{text: 'Qty per pieces', style: 'tableHeader', alignment: 'right'}, 
+								{text: 'Price per pieces', style: 'tableHeader', alignment: 'right'}, 
 							
 							],
 
@@ -160,6 +162,8 @@
 									{text: ''},
 								@endif
                                 {text:'{{$obj->qtyonhand}}', alignment: 'right'},
+                                {text:'{{$obj->poli_qty}}', alignment: 'right'},
+                                {text:'{{$obj->poli_price}}', alignment: 'right'},
 								
 							],
 							[
@@ -168,6 +172,8 @@
 								{text:`{!!$obj->description!!}`,colSpan: 7},
 								{},
                                 {},
+								{},
+								{},
 								{},
 								{},
 								{},
@@ -182,7 +188,7 @@
                     style: 'tableDetail',
                     table: {
                         headerRows: 1,
-                        widths: [13,200,30,40,45,45,46,45],//panjang standard dia 515
+                        widths: [13,110,30,40,45,45,46,45,45,45],//panjang standard dia 515
 
                         body: [
                             [
@@ -192,6 +198,8 @@
 								{},
 								{},
 								{text: '{{number_format($total_amt,2)}}', alignment: 'right',bold:true}, 
+								{},
+								{},
 								{},
 								{},
 							],
