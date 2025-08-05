@@ -5483,6 +5483,7 @@ class TestController extends defaultController
     public function gltran_step1(Request $request){
         DB::beginTransaction();
         $period = $request->period;
+        $last_period = $request->period - 1;
         if(empty($period)){
             dd('no PERIOD');
         }
@@ -5513,7 +5514,7 @@ class TestController extends defaultController
             $x = 1;
             foreach ($glmasdtl as $obj) {
                 $obj_ = (array)$obj;
-                $amount = $obj_['actamount'.$period];
+                $amount = $obj_['actamount'.$last_period];
 
                 DB::table('finance.gltran')
                     ->insert([
