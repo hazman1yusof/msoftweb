@@ -1636,6 +1636,7 @@ Route::post('/ptcare_dieteticCareNotes/form','patientcare\DieteticCareNotesContr
 Route::get('/ptcare_phys','patientcare\physioController@show');
 Route::get('/ptcare_phys/table','patientcare\physioController@table');
 Route::post('/ptcare_phys/form','patientcare\physioController@form');
+Route::get('/ptcare_phys/rehabperkeso_chart','patientcare\physioController@rehabperkeso_chart');
 
 Route::get('/ptcare_nursing','patientcare\NursingController@show');
 Route::get('/ptcare_nursing/table','patientcare\NursingController@table');
