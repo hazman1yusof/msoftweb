@@ -3856,11 +3856,83 @@ var dialog_payercode = new ordialog(
 );
 dialog_payercode.makedialog(true);
 
+var dialog_categorydept = new ordialog(
+	'deptcode','sysdb.department','#dbacthdr_categorydept',errorField,
+	{	colModel:[
+			{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+		],
+		urlParam: {
+			filterCol:['compcode','recstatus'],
+			filterVal:['session.compcode','ACTIVE']
+		},
+		ondblClickRow:function(){
+			let data=selrowData('#'+dialog_categorydept.gridname);
+		},
+		gridComplete: function(obj){
+			var gridname = '#'+obj.gridname;
+			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+				$(gridname+' tr#1').click();
+				$(gridname+' tr#1').dblclick();
+				//$('#apacthdr_actdate').focus();
+			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+				$('#'+obj.dialogname).dialog('close');
+			}
+		}
+	},{
+		title:"Select Payer",
+		open: function(){
+			dialog_categorydept.urlParam.filterCol=['recstatus', 'compcode'],
+			dialog_categorydept.urlParam.filterVal=['ACTIVE', 'session.compcode']
+		},
+		close: function(){
+			$('#dbacthdr_category').focus();
+		}
+	  },'urlParam','radio','tab'
+	);
+dialog_categorydept.makedialog(false);
+
+var dialog_category = new ordialog(
+	'category','material.category','#dbacthdr_category',errorField,
+	{	colModel:[
+			{label:'category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+		],
+		urlParam: {
+			filterCol:['compcode','recstatus','source'],
+			filterVal:['session.compcode','ACTIVE','RC']
+		},
+		ondblClickRow:function(){
+			let data=selrowData('#'+dialog_category.gridname);
+		},
+		gridComplete: function(obj){
+			var gridname = '#'+obj.gridname;
+			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+				$(gridname+' tr#1').click();
+				$(gridname+' tr#1').dblclick();
+				//$('#apacthdr_actdate').focus();
+			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+				$('#'+obj.dialogname).dialog('close');
+			}
+		}
+	},{
+		title:"Select Payer",
+		open: function(){
+			dialog_category.urlParam.filterCol=['recstatus', 'compcode','source'],
+			dialog_category.urlParam.filterVal=['ACTIVE', 'session.compcode','RC']
+		},
+		close: function(){
+			$('#dbacthdr_remark').focus();
+		}
+	  },'urlParam','radio','tab'
+	);
+dialog_category.makedialog(false);
+
 function populateform_rc(idno){
 	var param = {
 		action: 'populate_rc',
 		url: './arenquiry/table',
-		field: ['dbacthdr_compcode','dbacthdr_auditno','dbacthdr_lineno_','dbacthdr_billdebtor','dbacthdr_conversion','dbacthdr_hdrtype','dbacthdr_currency','dbacthdr_tillcode','dbacthdr_tillno','dbacthdr_debtortype','dbacthdr_adddate','dbacthdr_PymtDescription','dbacthdr_recptno','dbacthdr_entrydate','dbacthdr_entrytime','dbacthdr_entryuser','dbacthdr_payercode','dbacthdr_payername','dbacthdr_mrn','dbacthdr_episno','dbacthdr_remark','dbacthdr_authno','dbacthdr_epistype','dbacthdr_cbflag','dbacthdr_reference','dbacthdr_paymode','dbacthdr_amount','dbacthdr_outamount','dbacthdr_source','dbacthdr_trantype','dbacthdr_recstatus','dbacthdr_bankcharges','dbacthdr_expdate','dbacthdr_rate','dbacthdr_unit','dbacthdr_invno','dbacthdr_paytype','dbacthdr_RCCASHbalance','dbacthdr_RCFinalbalance','dbacthdr_RCOSbalance','dbacthdr_idno','paycard_description','paybank_description'],
+		field: ['dbacthdr_compcode','dbacthdr_auditno','dbacthdr_lineno_','dbacthdr_billdebtor','dbacthdr_conversion','dbacthdr_hdrtype','dbacthdr_currency','dbacthdr_tillcode','dbacthdr_tillno','dbacthdr_debtortype','dbacthdr_adddate','dbacthdr_PymtDescription','dbacthdr_recptno','dbacthdr_entrydate','dbacthdr_entrytime','dbacthdr_entryuser','dbacthdr_payercode','dbacthdr_payername','dbacthdr_mrn','dbacthdr_episno','dbacthdr_remark','dbacthdr_authno','dbacthdr_epistype','dbacthdr_cbflag','dbacthdr_reference','dbacthdr_paymode','dbacthdr_amount','dbacthdr_outamount','dbacthdr_source','dbacthdr_trantype','dbacthdr_recstatus','dbacthdr_bankcharges','dbacthdr_expdate','dbacthdr_rate','dbacthdr_unit','dbacthdr_invno','dbacthdr_paytype','dbacthdr_RCCASHbalance','dbacthdr_RCFinalbalance','dbacthdr_RCOSbalance','dbacthdr_idno','paycard_description','paybank_description','dbacthdr_category','dbacthdr_categorydept'],
 		idno: idno,
 	}
 	
@@ -3878,6 +3950,15 @@ function populateform_rc(idno){
 			});
 			resetpill();
 			$("#dialogForm_RC .nav-tabs a[form='"+data.rows.dbacthdr_paytype.toLowerCase()+"']").tab('show');
+			if($('#dbacthdr_payercode').val() == 'ND0001'){
+				$('#ND0001_case').show();
+				dialog_category.check();
+				dialog_categorydept.check();
+			}else{
+				$('#ND0001_case').hide();
+				$('#dbacthdr_categorydept').val('');
+				$('#dbacthdr_category').val('');
+			}
 			dialog_payercode.check('errorField');
 			disabledPill();
 		}

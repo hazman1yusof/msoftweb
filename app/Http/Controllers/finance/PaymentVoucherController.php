@@ -799,7 +799,7 @@ class PaymentVoucherController extends defaultController
             $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno_obj){
                 $apacthdr = DB::table('finance.apacthdr')
-                    ->where('idno','=',$idno_obj['idno'])
+                    ->where('idno','=',$idno_obj)
                     ->first();
 
                 $pvno = $this->defaultSysparam('HIS','PV');
@@ -810,7 +810,7 @@ class PaymentVoucherController extends defaultController
                 }
 
                 DB::table('finance.apacthdr')
-                    ->where('idno','=',$idno_obj['idno'])
+                    ->where('idno','=',$idno_obj)
                     ->update([
                         'pvno' => $pvno,
                         'recdate' => $apacthdr->postdate,
@@ -821,7 +821,7 @@ class PaymentVoucherController extends defaultController
                         'postuser' => session('username')
                     ]);
 
-                $this->gltran($idno_obj['idno']);
+                $this->gltran($idno_obj);
 
                 $apalloc = DB::table('finance.apalloc')
                     ->where('compcode','=',session('compcode'))
@@ -853,7 +853,7 @@ class PaymentVoucherController extends defaultController
             $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno_obj){
                 $apacthdr = DB::table('finance.apacthdr')
-                    ->where('idno','=',$idno_obj['idno'])
+                    ->where('idno','=',$idno_obj)
                     ->first();
 
                 if($apacthdr->recstatus != 'OPEN'){
@@ -886,7 +886,7 @@ class PaymentVoucherController extends defaultController
                 }
 
                 DB::table('finance.apacthdr')
-                    ->where('idno','=',$idno_obj['idno'])
+                    ->where('idno','=',$idno_obj)
                     ->update([
                         'requestby' => session('username'),
                         'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -931,7 +931,7 @@ class PaymentVoucherController extends defaultController
             $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno_obj){
                 $apacthdr = DB::table('finance.apacthdr')
-                    ->where('idno','=',$idno_obj['idno'])
+                    ->where('idno','=',$idno_obj)
                     ->first();
 
                 if($apacthdr->recstatus != 'PREPARED'){
@@ -964,7 +964,7 @@ class PaymentVoucherController extends defaultController
                 $authorise_use = $authorise->first();
 
                 DB::table('finance.apacthdr')
-                    ->where('idno','=',$idno_obj['idno'])
+                    ->where('idno','=',$idno_obj)
                     ->update([
                         'supportby' => session('username'),
                         'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -1014,7 +1014,7 @@ class PaymentVoucherController extends defaultController
             $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno_obj){
                 $apacthdr = DB::table('finance.apacthdr')
-                    ->where('idno','=',$idno_obj['idno'])
+                    ->where('idno','=',$idno_obj)
                     ->first();
 
                 // if(!in_array($apacthdr->recstatus, ['PREPARED','SUPPORT']){
@@ -1049,7 +1049,7 @@ class PaymentVoucherController extends defaultController
                 $authorise_use = $authorise->first();
 
                 DB::table('finance.apacthdr')
-                    ->where('idno','=',$idno_obj['idno'])
+                    ->where('idno','=',$idno_obj)
                     ->update([
                         'verifiedby' => session('username'),
                         'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -1101,7 +1101,7 @@ class PaymentVoucherController extends defaultController
             $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno_obj){
                 $apacthdr = DB::table('finance.apacthdr')
-                    ->where('idno','=',$idno_obj['idno'])
+                    ->where('idno','=',$idno_obj)
                     ->first();
 
                 if(!in_array($apacthdr->recstatus, ['VERIFIED','RECOMMENDED1','RECOMMENDED2'])){
@@ -1139,7 +1139,7 @@ class PaymentVoucherController extends defaultController
                 $pvno = $this->defaultSysparam('HIS','PV');
 
                 DB::table('finance.apacthdr')
-                    ->where('idno','=',$idno_obj['idno'])
+                    ->where('idno','=',$idno_obj)
                     ->update([
                         'pvno' => $pvno,
                         'recdate' => $apacthdr->postdate,
@@ -1150,7 +1150,7 @@ class PaymentVoucherController extends defaultController
                         'recstatus' => 'APPROVED'
                     ]);
 
-                $this->gltran($idno_obj['idno']);
+                $this->gltran($idno_obj);
 
                 if($apacthdr->trantype == 'PV'){
                     DB::table('finance.apalloc')
@@ -1197,7 +1197,7 @@ class PaymentVoucherController extends defaultController
             $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno_obj){
                 $apacthdr = DB::table('finance.apacthdr')
-                    ->where('idno','=', $idno_obj['idno'])
+                    ->where('idno','=', $idno_obj)
                     ->first();
 
                 if(in_array($apacthdr->recstatus, ['OPEN','PREPARED','SUPPORT','VERIFIED','REJECTED'])){
@@ -1232,7 +1232,7 @@ class PaymentVoucherController extends defaultController
                     }
 
                     DB::table('finance.apacthdr')
-                        ->where('idno','=',$idno_obj['idno'])
+                        ->where('idno','=',$idno_obj)
                         ->update([
                             'recstatus' => 'CANCELLED',
                             'upduser' => session('username'),
@@ -1243,7 +1243,7 @@ class PaymentVoucherController extends defaultController
 
                 }else if($apacthdr->recstatus == 'APPROVED'){
 
-                    $this->gltran_cancel($idno_obj['idno']);
+                    $this->gltran_cancel($idno_obj);
 
                     $apalloc = DB::table('finance.apalloc')
                                 ->where('compcode','=',session('compcode'))
@@ -1269,7 +1269,7 @@ class PaymentVoucherController extends defaultController
                     }
 
                     DB::table('finance.apacthdr')
-                        ->where('idno','=', $idno_obj['idno'])
+                        ->where('idno','=', $idno_obj)
                         ->update([
                             'recstatus' => 'CANCELLED',
                             'upduser' => session('username'),
@@ -1425,7 +1425,7 @@ class PaymentVoucherController extends defaultController
             $request->idno_array = array_unique($request->idno_array);
             foreach ($request->idno_array as $idno_obj){
                 $apacthdr = DB::table('finance.apacthdr')
-                    ->where('idno','=',$idno_obj['idno'])
+                    ->where('idno','=',$idno_obj)
                     ->first();
 
                 if($apacthdr->trantype == 'PV'){
@@ -1454,7 +1454,7 @@ class PaymentVoucherController extends defaultController
                 ];
 
                 DB::table('finance.apacthdr')
-                    ->where('idno','=',$idno_obj['idno'])
+                    ->where('idno','=',$idno_obj)
                     ->update($array_update);
 
                 if($apacthdr->trantype == 'PV'){
