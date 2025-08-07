@@ -1199,6 +1199,7 @@ class CreditNoteARController extends defaultController
                     ->where('a.docsource','=','PB')
                     ->where('a.doctrantype','=','CN')
                     ->where('a.docauditno','=',$auditno)
+                    ->where('a.recstatus','!=','CANCELLED')
                     ->get();
         // dd($dballoc);
         
@@ -1213,6 +1214,7 @@ class CreditNoteARController extends defaultController
                     ->where('a.docsource','=','PB')
                     ->where('a.doctrantype','=','CN')
                     ->where('a.docauditno','=',$auditno)
+                    ->where('a.recstatus','!=','CANCELLED')
                     ->first();
         // dd($dballoc_dtl);
         
