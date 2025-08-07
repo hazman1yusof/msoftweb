@@ -1172,7 +1172,7 @@ class CreditNoteARController extends defaultController
         $dbacthdr = DB::table('debtor.dbacthdr as h', 'debtor.debtormast as m', 'hisdb.pat_mast as p')
                     ->select('h.idno', 'h.compcode', 'h.trantype', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.entrydate', 'h.entrytime', 'h.entryuser', 'h.reference', 'h.paymode', 'h.debtortype', 'h.debtorcode', 'h.remark', 'h.mrn', 'h.adduser', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4', 'p.MRN as pt_mrn', 'p.Episno as pt_episno', 'p.Name as pt_name')
                     ->leftJoin('debtor.debtormast as m', 'h.debtorcode', '=', 'm.debtorcode')
-                    ->leftJoin('hisdb.pat_mast as p', 'h.mrn', '=', 'p.MRN')
+                    ->leftJoin('hisdb.pat_mast as p', 'h.mrn', '=', 'p.newmrn')
                     // ->leftJoin('debtor.debtormast as m', function($join) use ($request){
                     //             $join = $join->on('m.debtorcode', '=', 'h.debtorcode')
                     //                         ->on('m.compcode', '=', session('compcode'));
