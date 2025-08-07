@@ -1204,12 +1204,13 @@ class CreditNoteARController extends defaultController
         // dd($dballoc);
         
         $dballoc_dtl = DB::table('debtor.dballoc as a', 'debtor.dbacthdr as h')
-                    ->select('a.compcode', 'a.source', 'a.trantype', 'a.auditno', 'a.lineno_', 'a.docsource', 'a.doctrantype', 'a.docauditno', 'a.refsource', 'a.reftrantype', 'a.refauditno', 'a.refamount', 'a.mrn', 'a.episno', 'a.amount', 'a.outamount', 'a.debtortype', 'a.debtorcode', 'a.payercode', 'a.paymode', 'a.allocdate', 'a.remark', 'a.balance', 'a.adddate', 'a.adduser', 'a.recstatus', 'a.idno', 'h.entrydate as entrydate_hdr')
+                    ->select('a.compcode', 'a.source', 'a.trantype', 'a.auditno', 'a.lineno_', 'a.docsource', 'a.doctrantype', 'a.docauditno', 'a.refsource', 'a.reftrantype', 'a.refauditno', 'a.refamount', 'h.mrn', 'a.episno', 'a.amount', 'a.outamount', 'a.debtortype', 'a.debtorcode', 'a.payercode', 'a.paymode', 'a.allocdate', 'a.remark', 'a.balance', 'a.adddate', 'a.adduser', 'a.recstatus', 'a.idno', 'h.entrydate as entrydate_hdr', 'p.Name as pt_name')
                     ->join('debtor.dbacthdr as h', function($join) use ($request){
-                                $join = $join->on('a.docsource', '=', 'h.source')
-                                            ->on('a.doctrantype', '=', 'h.trantype')
-                                            ->on('a.docauditno', '=', 'h.auditno');
+                                $join = $join->on('a.refsource', '=', 'h.source')
+                                            ->on('a.reftrantype', '=', 'h.trantype')
+                                            ->on('a.refauditno', '=', 'h.auditno');
                     })
+                    ->leftJoin('hisdb.pat_mast as p', 'h.mrn', '=', 'p.newmrn')
                     ->where('a.compcode',session('compcode'))
                     ->where('a.docsource','=','PB')
                     ->where('a.doctrantype','=','CN')

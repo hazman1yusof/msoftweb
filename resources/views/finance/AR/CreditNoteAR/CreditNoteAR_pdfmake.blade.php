@@ -101,7 +101,7 @@
                                     @if ($dballoc_dtl->reftrantype == 'DN')
                                        { text: '{{$dbacthdr->remark}}' },
                                     @elseif ($dballoc_dtl->reftrantype == 'IN')
-                                       { text: '{{$dbacthdr->pt_name}}' },
+                                       { text: '{{$dballoc_dtl->pt_name}}' },
                                     @endif
                                     { text: '{{number_format($obj->amount,2)}}', alignment: 'right' },
                                 ],
