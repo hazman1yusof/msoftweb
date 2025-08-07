@@ -284,6 +284,10 @@ class DebitNoteController extends defaultController
         $table = DB::table("debtor.dbacthdr");
         
         try {
+
+            if(strtoupper($request->db_debtorcode) == 'ND0001'){
+                throw new \Exception('Debtorcode ND0001 - Non Debtor invalid', 500);
+            }
             
             $auditno = $this->recno('PB','DN');
             // $auditno = str_pad($auditno, 5, "0", STR_PAD_LEFT);

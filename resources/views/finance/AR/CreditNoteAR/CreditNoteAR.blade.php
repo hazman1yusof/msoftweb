@@ -28,6 +28,12 @@ i.fa {
 	overflow: auto;
 }
 
+div#fail_msg{
+  padding-left: 40px;
+  padding-bottom: 10px;
+  color: darkred;
+}
+
 .whtspc_wrap{
 	white-space: pre-wrap !important;
 }
@@ -323,6 +329,7 @@ i.fa {
 		<div class='panel panel-info' id="grid_dtl">
 			<div class="panel-heading">Credit Note Detail</div>
 			<div class="panel-body">
+				<div id="fail_msg"></div>
 				<form id='formdata2' class='form-vertical' style='width:99%'>
 					<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
 

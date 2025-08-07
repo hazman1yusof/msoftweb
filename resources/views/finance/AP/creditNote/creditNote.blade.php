@@ -28,6 +28,12 @@ i.fa {
    overflow: auto;
 }
 
+div#fail_msg{
+  padding-left: 40px;
+  padding-bottom: 10px;
+  color: darkred;
+}
+
 @endsection
 
 @section('body')
@@ -305,6 +311,7 @@ i.fa {
 		<div class='panel panel-info' id="grid_detail">
 			<div class="panel-heading">Credit Note Detail</div>
 				<div class="panel-body">
+				<div id="fail_msg"></div>
 					<form id='formdata2' class='form-vertical' style='width:99%'>
 						<div id="jqGrid2_c" class='col-md-12'>
 							<table id="jqGrid2" class="table table-striped"></table>

@@ -26,6 +26,7 @@ $(document).ready(function () {
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency = new currencymode(['#db_outamount', '#db_amount']);
 	var fdl = new faster_detail_load();
+	var myfail_msg = new fail_msg_func();
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#db_entrydate"],true);
@@ -450,6 +451,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form, selfoper, saveParam, obj) {
+		myfail_msg.clear_fail();
 		if (obj == null) {
 			obj = {};
 		}
@@ -460,7 +462,14 @@ $(document).ready(function () {
 		},'json').fail(function (data) {
 			console.log(data);
 			// alert(data.responseJSON.message);
-			$('.noti').text(data.responseJSON.message);
+			// $('.noti').text(data.responseJSON.message);
+
+			myfail_msg.add_fail({
+				id:'response',
+				textfld:"",
+				msg:data.responseText,
+			});
+			$("#saveDetailLabel").attr('disabled',false);
 		}).done(function (data) {
 			$("#saveDetailLabel").attr('disabled',false);
 			unsaved = false;

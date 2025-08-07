@@ -28,6 +28,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////// currency ///////////////////////////////
 	var fdl = new faster_detail_load();
+	var myfail_msg = new fail_msg_func();
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#db_entrydate"],true);
@@ -483,6 +484,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form, selfoper, saveParam, obj, needrefresh){
+		myfail_msg.clear_fail();
 		if (obj == null) {
 			obj = {};
 		}
@@ -499,8 +501,15 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			
 		},'json').fail(function (data) {
-			alert(data.responseText);
+			// alert(data.responseText);
 			// $('.noti').text(data.responseJSON.message);
+
+			myfail_msg.add_fail({
+				id:'response',
+				textfld:"",
+				msg:data.responseText,
+			});
+			$("#saveDetailLabel").attr('disabled',false);
 		}).done(function (data) {
 			$("#saveDetailLabel").attr('disabled',false);
 			unsaved = false;
@@ -531,6 +540,7 @@ $(document).ready(function () {
 			if(needrefresh === 'refreshGrid'){
 				refreshGrid("#jqGrid", urlParam);
 			}
+			populate_alloc_table_save();
 		})
 	}
 
@@ -1300,7 +1310,6 @@ $(document).ready(function () {
 		mycurrency.check0value(errorField);
 		unsaved = false;
 		errorField.length = 0;
-		populate_alloc_table_save();
 		
 		if(checkdate(true) && $('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);

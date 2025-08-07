@@ -120,8 +120,8 @@ class TestController extends defaultController
             //     return $this->msdemo_chgprice($request);
             // case 'tunjuk_doctorcode':
             //     return $this->tunjuk_doctorcode($request);
-            // case 'set_drcontrib':
-            //     return $this->set_drcontrib($request);
+            case 'dmmc_einvoice_amik_invalid':
+                return $this->dmmc_einvoice_amik_invalid($request);
             default:
                 return 'error happen..';
         }
@@ -5494,7 +5494,7 @@ class TestController extends defaultController
         try {
 
             DB::table('finance.gltran')
-                        ->where('compcode','9b')
+                        ->where('compcode',session('compcode'))
                         ->where('year','2025')
                         ->where('period',$period)
                         ->where('source','IV')
@@ -5506,7 +5506,7 @@ class TestController extends defaultController
                         ]);
 
             $glmasdtl = DB::table('finance.glmasdtl')
-                            ->where('compcode','9b')
+                            ->where('compcode',session('compcode'))
                             ->where('year','2025')
                             ->where('glaccount','20010052')
                             ->get();
@@ -5518,7 +5518,7 @@ class TestController extends defaultController
 
                 DB::table('finance.gltran')
                     ->insert([
-                        'compcode' => '9B',
+                        'compcode' => session('compcode'),
                         'adduser' => 'system_ar96',
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'auditno' => $auditno,
@@ -7942,6 +7942,48 @@ class TestController extends defaultController
             report($e);
 
             dd('Error'.$e);
+        }
+    }
+
+    public function dmmc_einvoice_amik_invalid(Request $request){
+
+        $log_link = DB::table('einvoice.log_link')
+                        ->where('status','INVALID')
+                        ->get();
+
+        foreach ($log_link as $obj) {
+            $log_qr = DB::table('einvoice.log_qr')
+                        ->where('invno',$obj->invno)
+                        ->orderBy('addate','desc')
+                        ->first();
+
+            $myresponse = json_decode($log_qr->myresponse);
+
+            $text = 'overallStatus = '.$myresponse->overallStatus.', ';
+
+            if(count($myresponse->documentSummary) != 0){
+                $array_ = $myresponse->documentSummary[0];
+
+                $text .= 'issuerTin = '.$array_->issuerTin.', ';
+
+                $text .= 'issuerName = '.$array_->issuerName.', ';
+
+                $text .= 'receiverId = '.$array_->receiverId.', ';
+
+                $text .= 'dateTimeIssued = '.$array_->dateTimeIssued.', ';
+
+                $text .= 'dateTimeReceived = '.$array_->dateTimeReceived.', ';
+
+                $text .= 'dateTimeValidated = '.$array_->dateTimeValidated.', ';
+
+                $text .= 'totalPayableAmount = '.$array_->totalPayableAmount;
+            }
+
+            DB::table('einvoice.log_link')
+                        ->where('idno',$obj->idno)
+                        ->update([
+                            'message' => $text
+                        ]);
         }
     }
 

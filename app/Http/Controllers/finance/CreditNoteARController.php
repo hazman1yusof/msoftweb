@@ -376,6 +376,10 @@ class CreditNoteARController extends defaultController
             // $dbacthdr = DB::table('debtor.dbacthdr')
             //             ->where('idno','=',$request->idno)
             //             ->first();
+
+            if(strtoupper($request->db_debtorcode) == 'ND0001'){
+                throw new \Exception('Debtorcode ND0001 - Non Debtor invalid', 500);
+            }
             
             if($request->db_unallocated == '1') {
             
