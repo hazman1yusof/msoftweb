@@ -76,7 +76,7 @@
                                     { text: '{{$dbacthdr->cust_address4}}' },
                                     { text: 'Pay Mode' },
                                     { text: ':' },
-                                    { text: '{!!$dbacthdr->paymode!!}' },
+                                    { text: `{!!str_replace('`', '', $dbacthdr->paymode)!!}`},
                                 ],
                             ]
                         },
