@@ -4128,14 +4128,14 @@ function showdetail(cellvalue, options, rowObject){
 	switch(options.colModel.name){
 		// jqgrid depan
 		case 'db_debtorcode': field = ['debtorcode','name'];table = "debtor.debtormast";case_ = 'db_debtorcode';break;
-		case 'db_mrn': field = ['MRN','name'];table = "hisdb.pat_mast";case_ = 'db_mrn';break;
+		case 'db_mrn': field = ['newmrn','name'];table = "hisdb.pat_mast";case_ = 'db_mrn';break;
 		case 'db_deptcode': field = ['deptcode','description'];table = "sysdb.department";case_ = 'db_deptcode';break;
 		
 		// jqGridAlloc
 		case 'debtorcode': field = ['debtorcode','name'];table = "debtor.debtormast";case_ = 'debtorcode';break;
 		case 'payercode': field = ['debtorcode','name'];table = "debtor.debtormast";case_ = 'payercode';break;
 		case 'paymode': field = ['paymode','description'];table = "debtor.paymode";case_ = 'paymode';break;
-		case 'mrn': field = ['MRN','name'];table = "hisdb.pat_mast";case_ = 'mrn';break;
+		case 'mrn': field = ['newmrn','name'];table = "hisdb.pat_mast";case_ = 'mrn';break;
 		
 		// CN
 		case 'deptcode': field = ['deptcode','description'];table = "sysdb.department";case_ = 'Department CN';break;
