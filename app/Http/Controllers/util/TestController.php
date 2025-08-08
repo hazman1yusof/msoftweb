@@ -64,8 +64,8 @@ class TestController extends defaultController
                 return $this->tukar_uom_product_np_csv($request);
             case 'tukar_semua_ivtxntdt_idspdt_uombaru':
                 return $this->tukar_semua_ivtxntdt_idspdt_uombaru($request);
-            // case 'delete_stockloc_terlebih':
-            //     return $this->delete_stockloc_terlebih($request);
+            case 'betulkan_uom_billsum':
+                return $this->betulkan_uom_billsum($request);
             // case 'betulkan_poli_qtyonhand':
             //     return $this->betulkan_poli_qtyonhand($request);
             // case 'check_product_qtyonhand_sama_dgn_stockloc_qtyonhand':
@@ -7933,6 +7933,35 @@ class TestController extends defaultController
                                 'uom_recv' => $obj->uomcode
                             ]);
 
+            }
+
+        DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
+        }
+    }
+
+    public function betulkan_uom_billsum(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            $billsum = DB::table('debtor.billsum')
+                            ->where('lastupdate','>','2025-07-01')
+                            ->get();
+
+            foreach ($billsum as $obj) {
+                $uom_recv = preg_replace('/\s+/', '', $obj->uom_recv);
+
+                 DB::table('debtor.billsum')
+                            ->where('idno',$obj->idno)
+                            ->update([
+                                'uom_recv' => $uom_recv
+                            ]);
             }
 
         DB::commit();
