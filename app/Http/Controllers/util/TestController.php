@@ -82,8 +82,8 @@ class TestController extends defaultController
             //     return $this->cr8_acctmaster($request);
             // case 'recondb_ledger':
             //     return $this->recondb_ledger($request);
-            // case 'display_glmasref_xde':
-            //     return $this->display_glmasref_xde($request);
+            case 'display_glmasref_xde':
+                return $this->display_glmasref_xde($request);
             // case 'betulkan_dbacthdr':
             //     return $this->betulkan_dbacthdr($request);
             case 'gltran_step1':
