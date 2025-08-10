@@ -7128,7 +7128,7 @@ class TestController extends defaultController
             $phycntdt = DB::table('material.phycntdt')
                             ->where('compcode',session('compcode'))
                             ->where('recno','5204211')
-                            // ->where('itemcode','KW000158')
+                            ->whereIn('itemcode',['KW-FM/EARLOOP','KW000158','KW000173','KW000235','KW000244','KW000247','KW000342','KW000362','KW000809','KW001012','KW001013','KW001087','KW001140','KW001159','KW001171','KW001186'])
                             ->get();
 
             foreach ($phycntdt as $obj) {
@@ -7198,68 +7198,6 @@ class TestController extends defaultController
                                 'txnqty' => $vrqty,
                                 'amount' => $amount
                             ]);
-
-                DB::table('finance.gltran')
-                        ->where('compcode',session('compcode'))
-                        ->where('source','IV')
-                        ->where('trantype','PHYCNT')
-                        ->where('auditno',$obj->recno)
-                        ->where('idno',$obj->itemcode)
-                        ->update([
-                            'amount' => $amount
-                        ]);
-
-                //update qtyonhand
-                // $ivdspdt = DB::table('material.ivdspdt')
-                //     ->where('compcode',session('compcode'))
-                //     ->where('itemcode',$obj->itemcode)
-                //     ->where('trandate','>=',$day_start)
-                //     ->where('trandate','<=',$day_now)
-                //     ->sum('txnqty');
-                // $minus = $ivdspdt;
-
-                // $ivtxndt = DB::table('material.ivtxndt')
-                //             ->where('compcode',session('compcode'))
-                //             ->where('itemcode',$obj->itemcode)
-                //             ->where('trandate','>=',$day_start)
-                //             ->where('trandate','<=',$day_now)
-                //             ->get();
-
-                // $add = 0;
-                // foreach ($ivtxndt as $key => $value) {
-                //     $ivtxntype = DB::table('material.ivtxntype')
-                //                         ->where('compcode',session('compcode'))
-                //                         ->where('trantype',$value->trantype)
-                //                         ->first();
-
-                //     $crdbfl = $ivtxntype->crdbfl;
-
-                //     if($crdbfl == 'In'){
-                //         $add = $add + $value->txnqty;
-                //     }else{
-                //         $add = $add - $value->txnqty;
-                //     }
-                // }
-
-                // $all = $add - $minus;
-                // $qtyonhand = $openbalqty + $all;
-                // DB::table('material.stockloc')
-                //         ->where('compcode',session('compcode'))
-                //         ->where('itemcode',$obj->itemcode)
-                //         ->where('uomcode',$obj->uomcode)
-                //         ->where('deptcode',$deptcode)
-                //         ->where('year','2025')
-                //         ->update([
-                //             'qtyonhand' => $qtyonhand
-                //         ]);
-
-                // DB::table('material.product')
-                //         ->where('compcode',session('compcode'))
-                //         ->where('itemcode',$obj->itemcode)
-                //         ->where('uomcode',$obj->uomcode)
-                //         ->update([
-                //             'qtyonhand' => $qtyonhand
-                //         ]);
             }
 
             DB::commit();
