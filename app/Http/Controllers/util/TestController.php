@@ -3762,13 +3762,13 @@ class TestController extends defaultController
         $year=2025;
         $deptcode = $request->deptcode;
 
-        if($deptcode == 'IMP'){
+        if(strtoupper($deptcode) == 'IMP'){
             $deptcode='IMP';
             $unit='IMP';
-        }else if($deptcode == 'FKWSTR'){
+        }else if(strtoupper($deptcode) == 'FKWSTR'){
             $deptcode='FKWSTR';
             $unit="W'HOUSE";
-        }else if($dept == 'KHEALTH'){
+        }else if(strtoupper($deptcode) == 'KHEALTH'){
             $deptcode='KHEALTH';
             $unit='KHEALTH';
         }else{
