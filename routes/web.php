@@ -1687,6 +1687,7 @@ Route::get('/musculoAssessment/musculoassessment_chart','rehab\MusculoAssessment
 Route::get('/posturalAssessment','rehab\PosturalAssessmentController@show');
 Route::get('/posturalAssessment/table','rehab\PosturalAssessmentController@table');
 Route::post('/posturalAssessment/form','rehab\PosturalAssessmentController@form');
+Route::get('/posturalAssessment/posturalassessment_chart','rehab\PosturalAssessmentController@posturalassessment_chart');
 
 Route::get('/oswestryQuest','rehab\OswestryQuestController@show');
 Route::get('/oswestryQuest/table','rehab\OswestryQuestController@table');
@@ -1711,6 +1712,7 @@ Route::get('/motorScale/motorscale_chart','rehab\MotorScaleController@motorscale
 Route::get('/spinalCord','rehab\SpinalCordController@show');
 Route::get('/spinalCord/table','rehab\SpinalCordController@table');
 Route::post('/spinalCord/form','rehab\SpinalCordController@form');
+Route::get('/spinalCord/spinalcord_chart','rehab\SpinalCordController@spinalcord_chart');
 
 /// occuptherapy
 Route::get('/occupTherapy','rehab\OccupTherapyController@show');
