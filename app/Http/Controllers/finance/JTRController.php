@@ -227,7 +227,7 @@ class JTRController extends defaultController
                             ->where('compcode','9B')
                             ->where('deptcode',$dept)
                             ->where('itemcode',$obj->itemcode)
-                            ->where('uomcode',$obj->uomcode)
+                            // ->where('uomcode',$obj->uomcode)
                             ->where('year',$year)
                             ->get();
 
@@ -239,7 +239,7 @@ class JTRController extends defaultController
                             ->where('compcode','9B')
                             ->where('deptcode',$dept)
                             ->where('itemcode',$obj->itemcode)
-                            ->where('uomcode',$obj->uomcode)
+                            // ->where('uomcode',$obj->uomcode)
                             ->where('year',$year)
                             ->update([
                                 'NetMvVal'.$month => $NetMvVal
