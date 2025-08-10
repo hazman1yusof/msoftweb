@@ -72,8 +72,8 @@ class TestController extends defaultController
             //     return $this->check_product_qtyonhand_sama_dgn_stockloc_qtyonhand($request);
             // case 'betulkan_stockexp_semua_chk':
             //     return $this->betulkan_stockexp_semua_chk($request);
-            // case 'betulkan_stockexp_semua':
-            //     return $this->betulkan_stockexp_semua($request);
+            case 'betulkan_stockexp_semua':
+                return $this->betulkan_stockexp_semua($request);
             // case 'betulkan_stockloc_2025':
             //     return $this->betulkan_stockloc_2025($request);
             // case 'netmvval_from_netmvqty':
@@ -3758,9 +3758,22 @@ class TestController extends defaultController
     }
 
     public function betulkan_stockexp_semua(Request $request){
-        $unit = $request->unit;
+
+        $year=2025;
         $deptcode = $request->deptcode;
-        $year=$request->year;
+
+        if($deptcode == 'IMP'){
+            $deptcode='IMP';
+            $unit='IMP';
+        }else if($deptcode == 'FKWSTR'){
+            $deptcode='FKWSTR';
+            $unit="W'HOUSE";
+        }else if($dept == 'KHEALTH'){
+            $deptcode='KHEALTH';
+            $unit='KHEALTH';
+        }else{
+            dd('no dept');
+        }
 
         $stockexp = DB::table('material.product')
                             ->where('compcode','9B')

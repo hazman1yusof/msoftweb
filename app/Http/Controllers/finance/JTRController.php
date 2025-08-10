@@ -132,7 +132,7 @@ class JTRController extends defaultController
             foreach ($stockloc as $obj) {
                 $array_obj = (array)$obj;
 
-                $get_bal = $this->get_bal($array_obj,8);
+                $get_bal = $this->get_bal($array_obj,$month);
                 // dd($get_bal);
                 $variance = floatval($get_bal->variance);
 
