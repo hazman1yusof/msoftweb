@@ -1518,6 +1518,7 @@ class Quotation_SO_DetailController extends defaultController
                     ->where('uom','=',$request->uom)
                     ->first();
 
+            $qtyonhand = 0;
             if($chgmast->invflag == '1'){
                 $stockloc = DB::table('material.stockloc')
                         ->where('compcode','=',session('compcode'))
@@ -1531,9 +1532,10 @@ class Quotation_SO_DetailController extends defaultController
                 }else{
                     throw new \Exception("Stockloc not exists for item: ".$request->chggroup." dept: ".$salehdr->deptcode." uom: ".$request->uom,500);
                 }
+
+                $qtyonhand = $stockloc->qtyonhand;
             }
             
-            $qtyonhand = $stockloc->qtyonhand;
             $quantity = floatval($request->quantity);
             $amount = $request->unitprice * $quantity;
             $discamt = ($amount * (100-$request->billtypeperct) / 100) + $request->billtypeamt;
