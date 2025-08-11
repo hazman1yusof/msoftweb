@@ -97,6 +97,7 @@ $(document).ready(function (){
         }else{
             button_state_motorScale('add');
         }
+        $('#motorScale_chart').attr('disabled',false);
         
         // getdata_motorScale();
         $("#idno_motorScale").val(data.idno);
@@ -142,6 +143,10 @@ $(document).ready(function (){
         calculate_movementScore();
     });
     /////////////////////to calculate the total of movement scoring sheet ends/////////////////////
+    
+    $("#motorScale_chart").click(function (){
+        window.open('./motorScale/motorscale_chart?mrn='+$('#mrn_physio').val()+'&episno='+$("#episno_physio").val()+'&entereddate='+$("#motorScale_entereddate").val(), '_blank');
+    });
     
 });
 
@@ -191,7 +196,7 @@ function button_state_motorScale(state){
         case 'empty':
             $("#toggle_physio").removeAttr('data-toggle');
             $('#cancel_motorScale').data('oper','add');
-            $('#new_motorScale,#save_motorScale,#cancel_motorScale,#edit_motorScale').attr('disabled',true);
+            $('#new_motorScale,#save_motorScale,#cancel_motorScale,#edit_motorScale,#motorScale_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_physio").attr('data-toggle','collapse');
@@ -208,7 +213,7 @@ function button_state_motorScale(state){
         case 'wait':
             $("#toggle_physio").attr('data-toggle','collapse');
             $("#save_motorScale,#cancel_motorScale").attr('disabled',false);
-            $('#edit_motorScale,#new_motorScale').attr('disabled',true);
+            $('#edit_motorScale,#new_motorScale,#motorScale_chart').attr('disabled',true);
             break;
     }
 }
@@ -339,8 +344,10 @@ function getdata_motorScale(){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formMotorScale",data.motorscale);
             button_state_motorScale('edit');
+            $('#motorScale_chart').attr('disabled',false);
         }else{
             button_state_motorScale('add');
+            $('#motorScale_chart').attr('disabled',true);
         }
         
         // textarea_init_motorScale();
