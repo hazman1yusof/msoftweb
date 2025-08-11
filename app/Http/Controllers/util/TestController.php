@@ -5429,7 +5429,7 @@ class TestController extends defaultController
         $period = $request->period;
         $glmasdtl = DB::table('finance.glmasdtl')
                         ->where('compcode',session('compcode'))
-                        ->where('actamount'.$period,'<>',0)
+                        // ->where('actamount'.$period,'<>',0)
                         ->where('year','2025')
                         ->get();
 
