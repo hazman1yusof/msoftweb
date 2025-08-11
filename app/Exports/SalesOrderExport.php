@@ -63,11 +63,12 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
         $scope = $this->scope;
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
-                    ->select('dh.invno', 'dh.posteddate','dh.mrn', 'dh.deptcode', 'dh.amount', 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname')
-                    ->leftJoin('debtor.debtormast as dm', function($join){
-                        $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
-                                    ->where('dm.compcode', '=', session('compcode'));
-                    })
+                    ->select('dh.invno', 'dh.posteddate','dh.mrn', 'dh.deptcode', 'dh.amount')
+                    // ->leftJoin('debtor.debtormast as dm', function($join){
+                     // 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname'
+                    //     $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
+                    //                 ->where('dm.compcode', '=', session('compcode'));
+                    // })
                     // ->leftJoin('hisdb.pat_mast as pm', function($join){
                     //     $join = $join->on("pm.newmrn", '=', 'dh.mrn');    
                     //     $join = $join->where("pm.compcode", '=', session('compcode'));
@@ -109,6 +110,19 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
                 $obj->pm_name = $pat_mast->Name;
             }else{
                 $obj->pm_name = '';
+            }
+
+            $debtormast = DB::table('debtor.debtormast')
+                            ->where('compcode',session('compcode'))
+                            ->where('debtorcode',$obj->debtorcode);
+
+            if($debtormast->exists()){
+                $debtormast = $debtormast->first();
+                $obj->dm_debtorcode = $debtormast->debtorcode;
+                $obj->debtorname = $debtormast->name;
+            }else{
+                $obj->dm_debtorcode = '';
+                $obj->debtorname = '';
             }
         }
         
