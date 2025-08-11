@@ -268,4 +268,35 @@ class OswestryQuestController extends defaultController
         
     }
     
+    public function oswestryquest_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        $entereddate = $request->entereddate;
+        if(!$mrn || !$episno || !$entereddate){
+            abort(404);
+        }
+        
+        $oswestryquest = DB::table('hisdb.phy_oswestryquest as oq')
+                        ->select('oq.idno','oq.compcode','oq.mrn','oq.episno','oq.entereddate','oq.painIntensity','oq.personalCare','oq.lifting','oq.walking','oq.sitting','oq.standing','oq.sleeping','oq.socialLife','oq.travelling','oq.employHomemaking','oq.totalScore','oq.disabilityLevel','oq.adduser','oq.adddate','oq.upduser','oq.upddate','oq.lastuser','oq.lastupdate','oq.computerid','pm.Name','pm.Newic')
+                        ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                            $join = $join->on('pm.MRN','=','oq.mrn');
+                            $join = $join->on('pm.Episno','=','oq.episno');
+                            $join = $join->where('pm.compcode','=',session('compcode'));
+                        })
+                        ->where('oq.compcode','=',session('compcode'))
+                        ->where('oq.mrn','=',$mrn)
+                        ->where('oq.episno','=',$episno)
+                        ->where('oq.entereddate','=',$entereddate)
+                        ->first();
+        // dd($oswestryquest);
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        return view('rehab.oswestryQuestChart_pdfmake',compact('oswestryquest','company'));
+        
+    }
+    
 }
