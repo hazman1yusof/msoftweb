@@ -63,15 +63,15 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
         $scope = $this->scope;
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
-                    ->select('dh.invno', 'dh.posteddate','dh.mrn', 'dh.deptcode', 'dh.amount', 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname','pm.Name as pm_name')
+                    ->select('dh.invno', 'dh.posteddate','dh.mrn', 'dh.deptcode', 'dh.amount', 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname')
                     ->leftJoin('debtor.debtormast as dm', function($join){
                         $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
                                     ->where('dm.compcode', '=', session('compcode'));
                     })
-                    ->leftJoin('hisdb.pat_mast as pm', function($join){
-                        $join = $join->on("pm.newmrn", '=', 'dh.mrn');    
-                        $join = $join->where("pm.compcode", '=', session('compcode'));
-                    })
+                    // ->leftJoin('hisdb.pat_mast as pm', function($join){
+                    //     $join = $join->on("pm.newmrn", '=', 'dh.mrn');    
+                    //     $join = $join->where("pm.compcode", '=', session('compcode'));
+                    // })
                     ->where('dh.compcode','=',session('compcode'))
                     ->where('dh.source','=','PB')
                     ->whereIn('dh.trantype',['IN'])
@@ -98,8 +98,21 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
+
+        foreach ($dbacthdr as $obj) {
+            $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('compcode',session('compcode'))
+                            ->where('newmrn',$obj->mrn);
+
+            if($pat_mast->exist()){
+                $pat_mast = $pat_mast->first();
+                $obj->pm_name = $pat_mast->Name;
+            }else{
+                $obj->pm_name = '';
+            }
+        }
         
-                    return view('finance.SalesOrder_Report.SalesOrder_Report_excel',compact('dbacthdr', 'totalAmount', 'company', 'title'));
+        return view('finance.SalesOrder_Report.SalesOrder_Report_excel',compact('dbacthdr', 'totalAmount', 'company', 'title'));
     }
 
     public function registerEvents(): array
