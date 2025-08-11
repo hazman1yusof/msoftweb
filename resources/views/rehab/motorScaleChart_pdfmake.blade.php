@@ -40,7 +40,7 @@
                             widths: ['*','*'], // panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'Name : \u200B\t{{$motorscale->Name}}' },
+                                    { text: `Name : \u200B\t{!!$motorscale->Name!!}` },
                                     { text: 'Date : \u200B\t{{\Carbon\Carbon::createFromFormat('Y-m-d',$motorscale->entereddate)->format('d-m-Y')}}' },
                                 ],
                             ]
@@ -631,7 +631,7 @@
                     {
                         text: [
                             { text: '\n\nComments (if applicable)', bold: true },
-                            { text: `\n\n{!!str_replace('`', '', $motorscale->comments)!!}` },
+                            { text: `\n\n{!!$motorscale->comments!!}` },
                         ],
                         style: 'tableExample',
                     },
@@ -708,6 +708,6 @@
     </script>
     
     <body style="margin: 0px;">
-        <iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 99vw;height: 99vh;"></iframe>
+        <iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 99vw; height: 99vh;"></iframe>
     </body>
 </html>

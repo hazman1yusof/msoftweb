@@ -47,7 +47,7 @@
                     {
                         text: [
                             { text: 'Patient name:' },
-                            { text: '\u200B\t{{$sixminwalk->Name}}' },
+                            { text: `\u200B\t{!!$sixminwalk->Name!!}` },
                             { text: '\u200B\t\u200B\t\u200B\t\u200B\t MRN:' },
                             { text: '\u200B\t{{str_pad($sixminwalk->mrn, 7, "0", STR_PAD_LEFT)}}' },
                         ],
@@ -167,7 +167,7 @@
                     },
                     {
                         text: [
-                            { text: `{!!str_replace('`', '', $sixminwalk->comments)!!}` },
+                            { text: `{!!$sixminwalk->comments!!}` },
                         ],
                         style: 'pagecontent1',
                     },
@@ -247,6 +247,6 @@
     </script>
     
     <body style="margin: 0px;">
-        <iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 99vw;height: 99vh;"></iframe>
+        <iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 99vw; height: 99vh;"></iframe>
     </body>
 </html>

@@ -672,6 +672,6 @@
     </script>
     
     <body style="margin: 0px;">
-        <iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 99vw;height: 99vh;"></iframe>
+        <iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 99vw; height: 99vh;"></iframe>
     </body>
 </html>
