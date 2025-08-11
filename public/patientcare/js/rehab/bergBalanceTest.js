@@ -97,6 +97,7 @@ $(document).ready(function (){
         }else{
             button_state_bergBalanceTest('add');
         }
+        $('#bergBalanceTest_chart').attr('disabled',false);
         
         // getdata_bergBalanceTest();
         $("#idno_bergBalanceTest").val(data.idno);
@@ -142,6 +143,10 @@ $(document).ready(function (){
         calculate_bergBalanceTest();
     });
     ///////////////////////////////to calculate the total score ends///////////////////////////////
+    
+    $("#bergBalanceTest_chart").click(function (){
+        window.open('./bergBalanceTest/bergbalancetest_chart?mrn='+$('#mrn_physio').val()+'&episno='+$("#episno_physio").val()+'&entereddate='+$("#bergBalanceTest_entereddate").val(), '_blank');
+    });
     
 });
 
@@ -191,7 +196,7 @@ function button_state_bergBalanceTest(state){
         case 'empty':
             $("#toggle_physio").removeAttr('data-toggle');
             $('#cancel_bergBalanceTest').data('oper','add');
-            $('#new_bergBalanceTest,#save_bergBalanceTest,#cancel_bergBalanceTest,#edit_bergBalanceTest').attr('disabled',true);
+            $('#new_bergBalanceTest,#save_bergBalanceTest,#cancel_bergBalanceTest,#edit_bergBalanceTest,#bergBalanceTest_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_physio").attr('data-toggle','collapse');
@@ -208,7 +213,7 @@ function button_state_bergBalanceTest(state){
         case 'wait':
             $("#toggle_physio").attr('data-toggle','collapse');
             $("#save_bergBalanceTest,#cancel_bergBalanceTest").attr('disabled',false);
-            $('#edit_bergBalanceTest,#new_bergBalanceTest').attr('disabled',true);
+            $('#edit_bergBalanceTest,#new_bergBalanceTest,#bergBalanceTest_chart').attr('disabled',true);
             break;
     }
 }
@@ -339,8 +344,10 @@ function getdata_bergBalanceTest(){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formBergBalanceTest",data.bergtest);
             button_state_bergBalanceTest('edit');
+            $('#bergBalanceTest_chart').attr('disabled',false);
         }else{
             button_state_bergBalanceTest('add');
+            $('#bergBalanceTest_chart').attr('disabled',true);
         }
         
         // textarea_init_bergBalanceTest();
