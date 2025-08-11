@@ -104,7 +104,7 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
                             ->where('compcode',session('compcode'))
                             ->where('newmrn',$obj->mrn);
 
-            if($pat_mast->exist()){
+            if($pat_mast->exists()){
                 $pat_mast = $pat_mast->first();
                 $obj->pm_name = $pat_mast->Name;
             }else{
