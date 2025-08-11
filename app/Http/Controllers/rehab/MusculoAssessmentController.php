@@ -2020,4 +2020,70 @@ class MusculoAssessmentController extends defaultController
         
     }
     
+    public function musculoassessment_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        $entereddate = $request->entereddate;
+        if(!$mrn || !$episno || !$entereddate){
+            abort(404);
+        }
+        
+        $musculoassessment = DB::table('hisdb.phy_musculoassessment as ma')
+                            ->select('ma.idno','ma.compcode','ma.mrn','ma.episno','ma.type','ma.entereddate','ma.subjectiveAssessmt','ma.objectiveAssessmt','ma.painscore','ma.painType','ma.severity','ma.irritability','ma.painLocation','ma.deep','ma.superficial','ma.subluxation','ma.palpation','ma.impressionBC','ma.superficialR','ma.superficialL','ma.superficialSpec','ma.deepR','ma.deepL','ma.deepSpec','ma.numbnessR','ma.numbnessL','ma.numbnessSpec','ma.paresthesiaR','ma.paresthesiaL','ma.paresthesiaSpec','ma.otherR','ma.otherL','ma.otherSpec','ma.impressionSens','ma.transferInit','ma.transferProg','ma.transferFin','ma.suptoSideInit','ma.suptoSideProg','ma.suptoSideFin','ma.sideToSitInit','ma.sideToSitProg','ma.sideToSitFin','ma.sittInit','ma.sittProg','ma.sittFin','ma.sitToStdInit','ma.sitToStdProg','ma.sitToStdFin','ma.stdInit','ma.stdProg','ma.stdFin','ma.shiftInit','ma.shiftProg','ma.shiftFin','ma.ambulationInit','ma.ambulationProg','ma.ambulationFin','ma.impressionFA','ma.intervention','ma.homeEducation','ma.evaluation','ma.review','ma.additionalNotes','pm.Name','pm.Newic')
+                            ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                                $join = $join->on('pm.MRN','=','ma.mrn');
+                                $join = $join->on('pm.Episno','=','ma.episno');
+                                $join = $join->where('pm.compcode','=',session('compcode'));
+                            })
+                            ->where('ma.compcode','=',session('compcode'))
+                            ->where('ma.mrn','=',$mrn)
+                            ->where('ma.episno','=',$episno)
+                            ->where('ma.entereddate','=',$entereddate)
+                            ->where('ma.type','=','musculoskeletal')
+                            ->first();
+        // dd($musculoassessment);
+        
+        $romaffectedside = DB::table('hisdb.phy_romaffectedside')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$mrn)
+                            ->where('episno','=',$episno)
+                            ->where('entereddate','=',$entereddate)
+                            ->where('type','=','musculoskeletal')
+                            ->first();
+        
+        $romsoundside = DB::table('hisdb.phy_romsoundside')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$mrn)
+                        ->where('episno','=',$episno)
+                        ->where('entereddate','=',$entereddate)
+                        ->where('type','=','musculoskeletal')
+                        ->first();
+        
+        $musclepower = DB::table('hisdb.phy_musclepower')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$mrn)
+                        ->where('episno','=',$episno)
+                        ->where('entereddate','=',$entereddate)
+                        ->where('type','=','musculoskeletal')
+                        ->first();
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        $attachment_files = $this->get_attachment_files($mrn,$episno,$entereddate);
+        
+        return view('rehab.musculoAssessmentChart_pdfmake',compact('musculoassessment','romaffectedside','romsoundside','musclepower','company','attachment_files'));
+        
+    }
+    
+    function get_attachment_files($mrn,$episno,$entereddate){
+        
+        // pdf file = DIAG_MUSCULOSKELETAL
+        
+        return $attachment_files;
+        
+    }
+    
 }
