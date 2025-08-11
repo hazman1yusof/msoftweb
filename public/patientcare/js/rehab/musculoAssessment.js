@@ -98,6 +98,7 @@ $(document).ready(function (){
         }else{
             button_state_musculoAssessment('add');
         }
+        $('#musculoAssessment_chart').attr('disabled',false);
         
         // getdata_musculoAssessment();
         $("#idno_musculoAssessment").val(data.ma_idno);
@@ -143,6 +144,7 @@ $(document).ready(function (){
     $('a.ui.card.bodydia_musculoskeletal').click(function (){
         let mrn = $('#mrn_physio').val();
         let episno = $('#episno_physio').val();
+        let entereddate = $('#musculoAssessment_entereddate').val();
         let type = $(this).data('type');
         let istablet = $(window).width() <= 1024;
         
@@ -156,7 +158,7 @@ $(document).ready(function (){
                 let url = $('#urltodiagram').val() + filename;
                 var win = window.open(url, '_blank');
             }else{
-                var win = window.open('http://localhost:8443/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=musculoAssessment', '_blank');
+                var win = window.open('http://localhost:8443/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+entereddate+'&type='+type+'&from=musculoAssessment', '_blank');
             }
             
             if(win){
@@ -167,6 +169,10 @@ $(document).ready(function (){
         }
     });
     ///////////////////////////////////////body diagram ends///////////////////////////////////////
+    
+    $("#musculoAssessment_chart").click(function (){
+        window.open('./musculoAssessment/musculoassessment_chart?mrn='+$('#mrn_physio').val()+'&episno='+$("#episno_physio").val()+'&entereddate='+$("#musculoAssessment_entereddate").val(), '_blank');
+    });
     
 });
 
@@ -219,7 +225,7 @@ function button_state_musculoAssessment(state){
         case 'empty':
             $("#toggle_physio").removeAttr('data-toggle');
             $('#cancel_musculoAssessment').data('oper','add');
-            $('#new_musculoAssessment,#save_musculoAssessment,#cancel_musculoAssessment,#edit_musculoAssessment').attr('disabled',true);
+            $('#new_musculoAssessment,#save_musculoAssessment,#cancel_musculoAssessment,#edit_musculoAssessment,#musculoAssessment_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_physio").attr('data-toggle','collapse');
@@ -236,7 +242,7 @@ function button_state_musculoAssessment(state){
         case 'wait':
             $("#toggle_physio").attr('data-toggle','collapse');
             $("#save_musculoAssessment,#cancel_musculoAssessment").attr('disabled',false);
-            $('#edit_musculoAssessment,#new_musculoAssessment').attr('disabled',true);
+            $('#edit_musculoAssessment,#new_musculoAssessment,#musculoAssessment_chart').attr('disabled',true);
             break;
     }
 }
@@ -369,8 +375,10 @@ function getdata_musculoAssessment(){
             autoinsert_rowdata("#formMusculoAssessment",data.romsoundside);
             autoinsert_rowdata("#formMusculoAssessment",data.musclepower);
             button_state_musculoAssessment('edit');
+            $('#musculoAssessment_chart').attr('disabled',false);
         }else{
             button_state_musculoAssessment('add');
+            $('#musculoAssessment_chart').attr('disabled',true);
         }
         
         // textarea_init_musculoAssessment();
