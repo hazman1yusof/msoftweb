@@ -285,7 +285,7 @@ class DebitNoteController extends defaultController
         
         try {
 
-            if(strtoupper($request->db_debtorcode) == 'ND0001'){
+            if(strtoupper($request->db_debtorcode) == 'XXND0001'){
                 throw new \Exception('Debtorcode ND0001 - Non Debtor invalid', 500);
             }
             

@@ -377,7 +377,7 @@ class CreditNoteARController extends defaultController
             //             ->where('idno','=',$request->idno)
             //             ->first();
 
-            if(strtoupper($request->db_debtorcode) == 'ND0001'){
+            if(strtoupper($request->db_debtorcode) == 'xxND0001'){
                 throw new \Exception('Debtorcode ND0001 - Non Debtor invalid', 500);
             }
             

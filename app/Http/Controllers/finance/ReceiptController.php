@@ -104,7 +104,7 @@ class ReceiptController extends defaultController
                 }
             }
 
-            if($request->dbacthdr_payercode == 'ND0001'){
+            if($request->dbacthdr_payercode == 'xxND0001'){
                 $dbacthdr_outamount = 0;
             }else{
                 $dbacthdr_outamount = $dbacthdr_amount;
@@ -148,7 +148,7 @@ class ReceiptController extends defaultController
             ];
 
             if($request->dbacthdr_trantype == "RD"){
-                if($request->dbacthdr_payercode == 'ND0001'){
+                if($request->dbacthdr_payercode == 'xxND0001'){
                     throw new \Exception("ND0001 for receipt non-debtor only");
                 }
 
@@ -711,7 +711,7 @@ class ReceiptController extends defaultController
             $dept_obj = $this->gltran_fromdept($dbacthdr_obj->deptcode);
             $debtormast_obj = $this->gltran_fromdebtormast($dbacthdr_obj->payercode);
 
-            if($dbacthdr_obj->payercode == 'ND0001'){
+            if($dbacthdr_obj->payercode == 'xxND0001'){
                 $dept_obj = $this->gltran_fromdept_nd($dbacthdr_obj->categorydept);
                 $cat_obj = $this->gltran_category_nd($dbacthdr_obj->category);
 
