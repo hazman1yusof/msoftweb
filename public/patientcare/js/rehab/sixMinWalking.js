@@ -96,6 +96,7 @@ $(document).ready(function (){
         }else{
             button_state_sixMinWalking('add');
         }
+        $('#sixMinWalking_chart').attr('disabled',false);
         
         // getdata_sixMinWalking();
         $("#idno_sixMinWalking").val(data.idno);
@@ -139,6 +140,10 @@ $(document).ready(function (){
         });
     });
     ///////////////////////////////////////sixMinWalking ends///////////////////////////////////////
+    
+    $("#sixMinWalking_chart").click(function (){
+        window.open('./sixMinWalking/sixminwalking_chart?mrn='+$('#mrn_physio').val()+'&episno='+$("#episno_physio").val()+'&entereddate='+$("#sixMinWalking_entereddate").val()+'&age='+$("#age_physio").val(), '_blank');
+    });
     
 });
 
@@ -188,7 +193,7 @@ function button_state_sixMinWalking(state){
         case 'empty':
             $("#toggle_physio").removeAttr('data-toggle');
             $('#cancel_sixMinWalking').data('oper','add');
-            $('#new_sixMinWalking,#save_sixMinWalking,#cancel_sixMinWalking,#edit_sixMinWalking').attr('disabled',true);
+            $('#new_sixMinWalking,#save_sixMinWalking,#cancel_sixMinWalking,#edit_sixMinWalking,#sixMinWalking_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_physio").attr('data-toggle','collapse');
@@ -205,7 +210,7 @@ function button_state_sixMinWalking(state){
         case 'wait':
             $("#toggle_physio").attr('data-toggle','collapse');
             $("#save_sixMinWalking,#cancel_sixMinWalking").attr('disabled',false);
-            $('#edit_sixMinWalking,#new_sixMinWalking').attr('disabled',true);
+            $('#edit_sixMinWalking,#new_sixMinWalking,#sixMinWalking_chart').attr('disabled',true);
             break;
     }
 }
@@ -335,8 +340,10 @@ function getdata_sixMinWalking(){
         if(!$.isEmptyObject(data.sixminwalk)){
             autoinsert_rowdata("#formSixMinWalking",data.sixminwalk);
             button_state_sixMinWalking('edit');
+            $('#sixMinWalking_chart').attr('disabled',false);
         }else{
             button_state_sixMinWalking('add');
+            $('#sixMinWalking_chart').attr('disabled',true);
         }
         
         // $("#sixMinWalking_patName").val(data.patName);

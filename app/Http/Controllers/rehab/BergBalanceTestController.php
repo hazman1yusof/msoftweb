@@ -277,4 +277,35 @@ class BergBalanceTestController extends defaultController
         
     }
     
+    public function bergbalancetest_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        $entereddate = $request->entereddate;
+        if(!$mrn || !$episno || !$entereddate){
+            abort(404);
+        }
+        
+        $bergtest = DB::table('hisdb.phy_bergtest as b')
+                    ->select('b.idno','b.compcode','b.mrn','b.episno','b.entereddate','b.sitToStand','b.standUnsupported','b.sitBackUnsupported','b.standToSit','b.transfer','b.standEyesClosed','b.standFeetTogether','b.reachForward','b.pickUpObject','b.turnToLookBehind','b.turn360','b.placeFootOnStep','b.oneFootInFront','b.standOneLeg','b.totalScore','b.adduser','b.adddate','b.upduser','b.upddate','b.lastuser','b.lastupdate','b.computerid','pm.Name','pm.Newic')
+                    ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                        $join = $join->on('pm.MRN','=','b.mrn');
+                        $join = $join->on('pm.Episno','=','b.episno');
+                        $join = $join->where('pm.compcode','=',session('compcode'));
+                    })
+                    ->where('b.compcode','=',session('compcode'))
+                    ->where('b.mrn','=',$mrn)
+                    ->where('b.episno','=',$episno)
+                    ->where('b.entereddate','=',$entereddate)
+                    ->first();
+        // dd($bergtest);
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        return view('rehab.bergBalanceTestChart_pdfmake',compact('bergtest','company'));
+        
+    }
+    
 }

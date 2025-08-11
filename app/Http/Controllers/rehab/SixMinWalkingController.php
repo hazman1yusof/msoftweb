@@ -369,4 +369,40 @@ class SixMinWalkingController extends defaultController
         
     }
     
+    public function sixminwalking_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        $entereddate = $request->entereddate;
+        $age = $request->age;
+        if(!$mrn || !$episno || !$entereddate){
+            abort(404);
+        }
+        
+        $sixminwalk = DB::table('hisdb.phy_sixminwalk as s')
+                    ->select('s.idno','s.compcode','s.mrn','s.episno','s.lapCounter','s.patName','s.walk','s.techID','s.entereddate','s.gender','s.age','s.race','s.heightFT','s.heightIN','s.heightCM','s.weightLBS','s.weightKG','s.bpsys1','s.bpdias2','s.medsDose','s.medsTime','s.suppOxygen','s.oxygenFlow','s.oxygenType','s.baselineTime','s.endTestTime','s.baselineHR','s.endTestHR','s.baselineBorgScale','s.endTestBorgScale','s.baselineDyspnea','s.endTestDyspnea','s.baselineFatigue','s.endTestFatigue','s.baselineSpO2','s.endTestSpO2','s.stopPaused','s.reason','s.othSymptoms','s.lapsNo','s.partialLaps','s.lapsTot','s.totDistance','s.predictDistance','s.percentPredicted','s.comments','s.adduser','s.adddate','s.upduser','s.upddate','s.lastuser','s.lastupdate','s.computerid','pm.Name','pm.Newic','pm.Sex','rc.Description as raceDesc')
+                    ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                        $join = $join->on('pm.MRN','=','s.mrn');
+                        $join = $join->on('pm.Episno','=','s.episno');
+                        $join = $join->where('pm.compcode','=',session('compcode'));
+                    })
+                    ->leftjoin('hisdb.racecode as rc', function ($join){
+                        $join = $join->on('rc.Code','=','pm.RaceCode');
+                        $join = $join->where('rc.compcode','=',session('compcode'));
+                    })
+                    ->where('s.compcode','=',session('compcode'))
+                    ->where('s.mrn','=',$mrn)
+                    ->where('s.episno','=',$episno)
+                    ->where('s.entereddate','=',$entereddate)
+                    ->first();
+        // dd($sixminwalk);
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        return view('rehab.sixMinWalkingChart_pdfmake',compact('age','sixminwalk','company'));
+        
+    }
+    
 }
