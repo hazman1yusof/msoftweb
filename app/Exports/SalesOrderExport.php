@@ -63,7 +63,7 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
         $scope = $this->scope;
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
-                    ->select('dh.invno', 'dh.posteddate','dh.mrn', 'dh.deptcode', 'dh.amount')
+                    ->select('dh.invno', 'dh.posteddate','dh.mrn', 'dh.deptcode', 'dh.amount','dh.debtorcode')
                     // ->leftJoin('debtor.debtormast as dm', function($join){
                      // 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname'
                     //     $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
