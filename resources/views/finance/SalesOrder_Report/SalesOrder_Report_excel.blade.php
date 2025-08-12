@@ -29,7 +29,7 @@
         <td></td>
         <td></td>
         <td style="font-weight:bold">Total Amount</td>
-        <td style="text-align: right">=SUM(G2:G{{$x}})</td>
+        <td style="text-align: right">=SUM(G2:G{{$x-1}})</td>
         <!-- <td data-format="0.00" style="text-align: right">{{number_format($totalAmount, 2, '.', ',')}}</td> -->
     </tr>
     <tr></tr>
