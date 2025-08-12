@@ -198,28 +198,40 @@ class JournalEntryDetailController extends defaultController
                 ->delete();
 
             ///2. recalculate total amount
-            $totalAmount = DB::table('finance.gljnldtl')
-                ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$request->auditno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('amount');
+            // $totalAmount = DB::table('finance.gljnldtl')
+            //     ->where('compcode','=',session('compcode'))
+            //     ->where('auditno','=',$request->auditno)
+            //     ->where('recstatus','!=','DELETE')
+            //     ->sum('amount');
 
           
             //3. update total amount to header
+
+
+            // 3. calculate total amount for dr/cr
+            $totalAmountDR = DB::table('finance.gljnldtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$request->auditno)
+                ->where('drcrsign','=','DR')
+                ->where('recstatus','!=','DELETE')
+                ->sum('amount');
+
+            $totalAmountCR = DB::table('finance.gljnldtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$request->auditno)
+                ->where('drcrsign','=','CR')
+                ->where('recstatus','!=','DELETE')
+                ->sum('amount');
+            
+            //4. update different dr/cr
             DB::table('finance.gljnlhdr')
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->update([
-                    'amount' => $totalAmount,
-                    'outamount' => $totalAmount
-                  
+                    'creditAmt' => $totalAmountCR,
+                    'debitAmt' => $totalAmountDR,
+                    'different' => $totalAmountDR-$totalAmountCR, 
                 ]);
-
-            DB::table('material.delordhd')
-                ->where('compcode','=',session('compcode'))
-                ->where('recstatus','=','POSTED')
-                ->where('delordno','=',$request->document)
-                ->update(['invoiceno'=>null]);
 
             DB::commit();
 
