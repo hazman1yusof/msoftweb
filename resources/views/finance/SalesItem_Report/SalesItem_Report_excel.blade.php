@@ -7,6 +7,7 @@
         <td style="font-weight:bold; text-align: right">TOT AMOUNT</td>
         <td style="font-weight:bold; text-align: right">TOT COST</td>
         <td style="font-weight:bold; text-align: right">TAX</td>
+        <td style="font-weight:bold; text-align: right">TOTAL LINE</td>
         <td style="font-weight:bold; text-align: right">TOTAL</td>
     </tr>
     @php($totalAmount = 0)
