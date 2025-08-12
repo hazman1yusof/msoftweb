@@ -237,7 +237,10 @@ class JournalEntryDetailController extends defaultController
 
 
             $responce = new stdClass();
-            $responce->totalAmount = $totalAmount;
+            $responce->totalAmountDR = $totalAmountDR;
+            $responce->totalAmountCR = $totalAmountCR;
+            $responce->different = $totalAmountDR-$totalAmountCR;
+            $responce->auditno = $request->auditno;
 
             return json_encode($responce);
 

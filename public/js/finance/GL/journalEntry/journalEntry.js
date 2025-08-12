@@ -812,6 +812,9 @@ $(document).ready(function () {
 							}).done(function(data){
 								// $('#gljnlhdr_amount').val(data.totalAmount);
 								mycurrency.formatOn();
+					        	$('#gljnlhdr_creditAmt').val(numeral(data.totalAmountCR).format('0,0'));
+					        	$('#gljnlhdr_debitAmt').val(numeral(data.totalAmountDR).format('0,0'));
+					        	$('#gljnlhdr_different').val(numeral(data.different).format('0,0'));
 								refreshGrid("#jqGrid2",urlParam2,'add');
 							});
 				    	}else{
