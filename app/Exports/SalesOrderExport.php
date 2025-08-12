@@ -22,7 +22,7 @@ use Illuminate\Contracts\View\View;
 use DateTime;
 use Carbon\Carbon;
 
-class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
+class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths, WithColumnFormatting
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -39,6 +39,13 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
         $this->comp = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+        ];
     }
 
     public function columnWidths(): array

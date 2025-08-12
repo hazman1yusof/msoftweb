@@ -8,7 +8,9 @@
         <td style="font-weight:bold;text-align: left">Patient Name</td>
         <td style="font-weight:bold;text-align: right">Amount</td>
     </tr>
+    @php($x = 2)
     @foreach ($dbacthdr as $obj)
+        @php($x++)
         <tr>
             <td>{{str_pad($obj->invno, 7, "0", STR_PAD_LEFT)}}</td>
             <td>{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}</td>
@@ -27,7 +29,7 @@
         <td></td>
         <td></td>
         <td style="font-weight:bold">Total Amount</td>
-        <td data-format="0.00" style="text-align: right">{{$totalAmount}}</td>
+        <td data-format="0.00" style="text-align: right">=SUM(G2:{{$x}})</td>
         <!-- <td data-format="0.00" style="text-align: right">{{number_format($totalAmount, 2, '.', ',')}}</td> -->
     </tr>
     <tr></tr>

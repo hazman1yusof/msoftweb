@@ -49,14 +49,14 @@
         <td>{{$obj->description}}</td>
         <td>{!!$obj->uomcode!!}</td>
         <td>{!!$obj->pouom!!}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->qtydelivered, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->qtyreturned, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->unitprice, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="text-align: right">{{$obj->qtydelivered}}</td>
+        <td data-format="0.00" style="text-align: right">{{$obj->qtyreturned}}</td>
+        <td data-format="0.00" style="text-align: right">{{$obj->unitprice}}</td>
         <td>{{$obj->taxcode}}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->perdisc, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->amtdisc, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->tot_gst, 2, '.', ',') }}</td>
-        <td data-format="0.00" style="text-align: right">{{ number_format($obj->totamount, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="text-align: right">{{$obj->perdisc}}</td>
+        <td data-format="0.00" style="text-align: right">{{$obj->amtdisc}}</td>
+        <td data-format="0.00" style="text-align: right">{{$obj->tot_gst}}</td>
+        <td data-format="0.00" style="text-align: right">{{$obj->totamount}}</td>
         <td>{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}</td>
         <td>{{$obj->batchno}}</td>
         <td>{{$obj->recstatus}}</td>
