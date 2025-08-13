@@ -1622,7 +1622,7 @@ class PaymentVoucherController extends defaultController
                 'lineno_' => 1,
                 'source' => $apacthdr_obj->source,
                 'trantype' => $apacthdr_obj->trantype,
-                'reference' => $apacthdr_obj->document,
+                'reference' => $debit_obj->name,
                 'description' => $apacthdr_obj->bankcode.'</br>'.$apacthdr_obj->cheqno,
                 'postdate' => $apacthdr_obj->postdate,
                 'year' => $yearperiod->year,
@@ -1809,13 +1809,13 @@ class PaymentVoucherController extends defaultController
 
         if($trantype == 'PV'){
             $obj = DB::table("material.supplier")
-                ->select('costcode','glaccno')
+                ->select('costcode','glaccno','name')
                 ->where('compcode','=',session('compcode'))
                 ->where('suppcode','=',$suppcode)
                 ->first();
         }else{
             $obj = DB::table("material.supplier")
-                ->select('Advccode as costcode','AdvGlaccno as glaccno')
+                ->select('Advccode as costcode','AdvGlaccno as glaccno','name')
                 ->where('compcode','=',session('compcode'))
                 ->where('suppcode','=',$suppcode)
                 ->first();
