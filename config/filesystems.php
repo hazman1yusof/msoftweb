@@ -62,6 +62,11 @@ return [
         //     'visibility' => 'public',
         // ],
 
+        'attachment_uploads' => [
+            'driver' => 'local',
+            'root'   => env('ATTACHMENT_PATH').'/uploads',
+        ],
+
         'pdf_merge' => [
             'driver' => 'local',
             'root'   => env('ATTACHMENT_PATH').'/uploads/pdf_merge',
