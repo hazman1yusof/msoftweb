@@ -1295,7 +1295,7 @@ class PurchaseOrderController extends defaultController
             })
             ->where('h.source','=','PB')
             ->where('h.trantype','=','IN')
-            ->where('h.deptcode','=',session('deptcode'))
+            // ->where('h.deptcode','=',session('deptcode'))
             ->whereNotNull('h.MRN')
             ->where('h.auditno','=',$auditno)
             // ->where('h.mrn','=','0')
