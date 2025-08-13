@@ -171,7 +171,7 @@ $(document).ready(function (){
     ///////////////////////////////////////body diagram ends///////////////////////////////////////
     
     $("#musculoAssessment_chart").click(function (){
-        window.open('./musculoAssessment/musculoassessment_chart?mrn='+$('#mrn_physio').val()+'&episno='+$("#episno_physio").val()+'&entereddate='+$("#musculoAssessment_entereddate").val(), '_blank');
+        window.open('./musculoAssessment/musculoassessment_chart?mrn='+$('#mrn_physio').val()+'&episno='+$("#episno_physio").val()+'&entereddate='+$("#musculoAssessment_entereddate").val()+'&type=DIAG_MUSCULOSKELETAL', '_blank');
     });
     
 });

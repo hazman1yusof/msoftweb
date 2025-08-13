@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Auth;
 use Session;
 use App\Http\Controllers\defaultController;
+use Storage;
 
 class MusculoAssessmentController extends defaultController
 {
@@ -2025,6 +2026,7 @@ class MusculoAssessmentController extends defaultController
         $mrn = $request->mrn;
         $episno = $request->episno;
         $entereddate = $request->entereddate;
+        $type = $request->type;
         if(!$mrn || !$episno || !$entereddate){
             abort(404);
         }
@@ -2072,17 +2074,54 @@ class MusculoAssessmentController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->first();
         
-        $attachment_files = $this->get_attachment_files($mrn,$episno,$entereddate);
+        $attachment_files = $this->get_attachment_files($mrn,$episno,$entereddate,$type);
+        // dd($attachment_files);
         
         return view('rehab.musculoAssessmentChart_pdfmake',compact('musculoassessment','romaffectedside','romsoundside','musclepower','company','attachment_files'));
         
     }
     
-    function get_attachment_files($mrn,$episno,$entereddate){
+    public function get_attachment_files($mrn,$episno,$entereddate,$type){
         
-        // pdf file = DIAG_MUSCULOSKELETAL
-        
-        return $attachment_files;
+        $mrn = $mrn;
+        $episno = $episno;
+        $entereddate = $entereddate;
+        $type = $type;
+
+        // $foxitpath1 = "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe";
+        // $foxitpath2 = "C:\Program Files (x86)\Foxit Software\Foxit Reader\FoxitReader.exe";
+
+        // $foxitpath = "C:\laragon\www\pdf\open.bat  > /dev/null";
+        $filename = $type."_".$mrn."_".$episno."_".$entereddate.".pdf";
+        $blankpath = 'blank/'.$type.'.pdf';
+        $filepath = public_path().'/uploads/ftp/'.$filename;
+        $ftppath = "/patientcare_upload/pdf/".$filename;
+
+        $exists = Storage::disk('ftp')->exists($ftppath);
+
+        if($exists){
+            $file = Storage::disk('ftp')->get($ftppath);
+            Storage::disk('ftp_uploads')->put($filename, $file);
+
+            return '../uploads/ftp/'.$filename;
+
+            // exec('start /B "" "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe" '.$filepath);
+
+            // $localfile = Storage::disk('ftp_uploads')->get($filename);
+            // Storage::disk('ftp')->put($ftppath, $localfile);
+
+        }else{
+            // $blankfile = Storage::disk('ftp_uploads')->get($blankpath);
+            // Storage::disk('ftp_uploads')->put($filename, $blankfile);
+
+            return '';
+
+            // exec('start /B "" "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe" '.$filepath);
+
+            // $localfile = Storage::disk('ftp_uploads')->get($filename);
+            // Storage::disk('ftp')->put($ftppath, $localfile);
+
+        }
         
     }
     

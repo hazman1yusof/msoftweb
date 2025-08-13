@@ -10,21 +10,17 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" integrity="sha512-a9NgEEK7tsCvABL7KqtUTQjl69z7091EVPpw5KxPlZ93T141ffe1woLtbXTX+r2/8TtTvRX/v4zTL2UlMUPgwg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.min.js" integrity="sha512-P0bOMePRS378NwmPDVPU455C/TuxDS+8QwJozdc7PGgN8kLqR4ems0U/3DeJkmiE31749vYWHvBOtR+37qDCZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/numeral@2.0.6/numeral.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>
     
     </object>
     
     <script>
         var merge_key = makeid(20);
         var base64_pr = null;
-        
-        var attachmentfiles = [
-            @foreach($attachment_files as $file)
-            {
-                idno: '{{$file->idno}}',
-                src: '{{$file->attachmentfile}}',
-            },
-            @endforeach
-        ]
         
         $(document).ready(function (){
             var docDefinition = {
@@ -1695,8 +1691,6 @@
                 }
             });
             
-            populate_attachmentfile();
-            
             $('#ref_dropdown.ui.dropdown')
             .dropdown({
                 onChange: function (value, text, $selectedItem){
@@ -1718,9 +1712,7 @@
         }
         
         function populate_attachmentfile(){
-            attachmentfiles.forEach(function (e,i){
-                $('#pdfiframe_'+e.idno).attr('src',"../uploads/"+e.src);
-            });
+            $('#pdfiframe_1').attr('src',attachmentfiles);
         }
         
         // pdfMake.createPdf(docDefinition).getDataUrl(function (dataURL){
@@ -1754,19 +1746,20 @@
             <div class="ui segment teal inverted canclick" style="cursor: pointer;" data-goto='#pdfiframe'>
                 <p>Musculoskeletal Assessment</p>
             </div>
-            @foreach($attachment_files as $file)
-            <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_{{$file->idno}}'>
-                <p>{{$file->resulttext}}<input type="checkbox" data-src="{{$file->attachmentfile}}" name="{{$file->idno}}" style="float: right; margin-right: 5px;"></p>
+            @if($attachment_files != '')
+            <div class="ui segment canclick" style="cursor: pointer;" data-goto='#pdfiframe_1'>
+                <p>IMAGE<input type="checkbox" data-src="{{$attachment_files}}" name="1" style="float: right; margin-right: 5px;"></p>
             </div>
-            @endforeach
+            @endif
             <div id="btn_merge" class="ui segment canclick" style="cursor: pointer; display: none;" data-goto='#pdfiframe_merge'>
                 <p>Merged File</p>
             </div>
         </div>
         <iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 79vw; height: 100vh; float: right;"></iframe>
-        @foreach($attachment_files as $file)
-        <iframe id="pdfiframe_{{$file->idno}}" width="100%" height="100%" src="" frameborder="0" style="width: 79vw; height: 100vh; float: right;"></iframe>
-        @endforeach
+        
+        @if($attachment_files != '')
+        <iframe id="pdfiframe_1" width="100%" height="100%" src="{{$attachment_files}}" frameborder="0" style="width: 79vw; height: 100vh; float: right;"></iframe>
+        @endif
         <iframe id="pdfiframe_merge" width="100%" height="100%" src="" frameborder="0" style="width: 79vw; height: 100vh; float: right; display: none;"></iframe>
         
         <!-- <iframe id="pdfiframe" width="100%" height="100%" src="" frameborder="0" style="width: 99vw; height: 99vh;"></iframe> -->
