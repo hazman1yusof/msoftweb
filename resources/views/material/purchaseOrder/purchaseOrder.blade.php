@@ -697,7 +697,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 			
 		});
 	</script>
-	<script src="js/material/purchaseOrder/purchaseOrder.js?v=1.19"></script>
+	<script src="js/material/purchaseOrder/purchaseOrder.js?v=1.20"></script>
 	<!-- <script src="js/material/purchaseOrder/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

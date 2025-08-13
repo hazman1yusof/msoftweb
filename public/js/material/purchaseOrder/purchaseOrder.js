@@ -3122,7 +3122,7 @@ $(document).ready(function () {
 				dialog_salesorder.urlParam.fixPost = "true";
 				dialog_salesorder.urlParam.table_id = "none_";
 				dialog_salesorder.urlParam.filterCol = ['d.compcode','d.deptcode','d.source','d.trantype','d.MRN'];
-				dialog_salesorder.urlParam.filterVal = ['session.compcode','session.deptcode','PB','IN','<>.NULL'];
+				dialog_salesorder.urlParam.filterVal = ['session.compcode',$('#purordhd_prdept').val(),'PB','IN','<>.NULL'];
 				dialog_salesorder.urlParam.join_type = ['LEFT JOIN'];
 				dialog_salesorder.urlParam.join_onCol = ['d.mrn'];
 				dialog_salesorder.urlParam.join_onVal = ['p.newmrn'];
