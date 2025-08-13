@@ -415,7 +415,7 @@ class StockCountController extends defaultController
                         $month = defaultController::toMonth($phycntdate);
                         $QtyOnHand = $stockloc_first->qtyonhand + $vrqty; 
                         $NetMvQty = $stockloc_arr['netmvqty'.$month] + floatval($vrqty);
-                        $NetMvVal = $stockloc_arr['netmvval'.$month] + $amount;
+                        $NetMvVal = $stockloc_arr['netmvval'.$month] + round($amount, 2);
 
                         DB::table('material.StockLoc')
                             ->where('StockLoc.unit','=',$unit_)

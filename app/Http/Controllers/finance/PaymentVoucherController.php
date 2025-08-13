@@ -1623,7 +1623,7 @@ class PaymentVoucherController extends defaultController
                 'source' => $apacthdr_obj->source,
                 'trantype' => $apacthdr_obj->trantype,
                 'reference' => $debit_obj->name,
-                'description' => $apacthdr_obj->bankcode.'</br>'.$apacthdr_obj->cheqno,
+                'description' => $apacthdr_obj->remarks,
                 'postdate' => $apacthdr_obj->postdate,
                 'year' => $yearperiod->year,
                 'period' => $yearperiod->period,

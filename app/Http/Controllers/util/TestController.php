@@ -5699,7 +5699,7 @@ class TestController extends defaultController
                         'dracc' => $dracc,
                         'crcostcode' => $crcostcode,
                         'cracc' => $cracc,
-                        'amount' => $amount,
+                        'amount' => round($amount, 2)
                         'idno' => $obj->deldept .' '. $obj->docno
                     ]);
             }
@@ -5800,7 +5800,7 @@ class TestController extends defaultController
                             'dracc' => $draccno,
                             'crcostcode' => $crccode,
                             'cracc' => $craccno,
-                            'amount' => $obj->amount,
+                            'amount' => round($obj->amount, 2),
                             'idno' => $obj->itemcode
                         ]);
             }
