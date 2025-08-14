@@ -295,7 +295,8 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 				@else
 					Sales Order Data Entry Header
 				@endif
-				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print Sales Invoice</a>
+				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank" ><span class='fa fa-print'></span> Print Sales Invoice</a>
+				<a class='pull-right pointer text-primary' id='showpdf_do' href="" target="_blank" style="padding-right: 10px;"><span class='fa fa-print'></span> Print Sales DO</a>
 			</div>
 			
 			<div class="panel-body">
@@ -1097,7 +1098,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 			});
 		</script>
 
-		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.37"></script>
+		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.38"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

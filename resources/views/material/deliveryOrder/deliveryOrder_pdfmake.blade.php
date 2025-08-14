@@ -15,33 +15,6 @@
 </object>
 
 <script>
-	
-	var delordhd = {
-		@foreach($delordhd as $key => $val) 
-			'{{$key}}' : `{!!str_replace('`', '', $val)!!}`,
-		@endforeach 
-	};
-
-	var delorddt=[
-		@foreach($delorddt as $key => $dodt)
-		[
-			@foreach($dodt as $key2 => $val)
-				{'{{$key2}}' : `{!!str_replace('`', '', $val)!!}`},
-			@endforeach
-		],
-		@endforeach 
-	];
-
-	var company = {
-		@foreach($company as $key => $val) 
-			'{{$key}}' : '{{$val}}',
-		@endforeach 
-	};
-
-    var totamt_eng = '{{$totamt_eng}}';
-	var total_amt = '{{$total_amt}}';
-    var total_tax = '{{$total_tax}}';
-    var total_discamt = '{{$total_discamt}}';
 
 	$(document).ready(function () {
 		var docDefinition = {
@@ -79,7 +52,7 @@
 								{text: 'DO/Inv No. '}, 
 								{text: ': {{$delordhd->delordno}}'},{},
 								{text: 'Purchase Order No. '},
-								{text: ': {{str_pad($delordhd->srcdocno, 7, "0", STR_PAD_LEFT)}}'}
+								{text: ': @if(!empty($delordhd->srcdocno)){{str_pad($delordhd->srcdocno, 7, "0", STR_PAD_LEFT)}}@else{{"-"}}@endif'}
 							],
                             [
 								{text: 'Supplier '}, 
@@ -115,7 +88,7 @@
 							],
                             [
 								{text: 'Remarks '}, 
-								{text: ': '+delordhd.remarks},{},
+								{text: `: {!!str_replace('`', '', $delordhd->remarks)!!}`},{},
 								
 								@if(!empty($delordhd->deliverydate))
 								{text: 'Delivery Date'},
@@ -167,9 +140,7 @@
                                 {text:'{{$obj->qtydelivered}}'},
 								{text:'{{$obj->taxcode}}'},
 								{text:'{{number_format($obj->unitprice,2)}}', alignment: 'right'},
-                                // {text:'{{number_format($obj->amtdisc,2)}}', alignment: 'right'},
 								{text:'{{number_format($obj->amount,2)}}', alignment: 'right'},
-								// {text:'{{number_format($obj->tot_gst,2)}}', alignment: 'right'},
 								{text:'{{number_format($obj->totamount,2)}}', alignment: 'right'},
 								@if(!empty($obj->expdate))
                                 {text:'{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->expdate)->format('d-m-Y')}}'},

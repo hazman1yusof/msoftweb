@@ -1588,6 +1588,9 @@ Route::post('/test/form','util\TestController@form');
 Route::get('/export_csv','util\ExportController@show');
 Route::get('/export_csv/table','util\ExportController@table');
 
+Route::get('/exec','util\ExecController@show');
+Route::get('/exec/table','util\ExecController@table');
+
 Route::get('/barcode','util\BarcodeController@show');
 Route::post('/barcode/form','util\BarcodeController@form');
 Route::post('/barcode/print','util\BarcodeController@print');

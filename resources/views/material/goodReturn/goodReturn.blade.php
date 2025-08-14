@@ -176,7 +176,7 @@ i.fa {
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">Good Return Header
-					<a class='pull-right pointer text-primary' id='pdfgen2'><span class='fa fa-print'></span> Print </a>
+					<a class='pull-right pointer text-primary' id='pdfgen2' target="_blank"><span class='fa fa-print'></span> Print </a>
 					</div>
 				<div class="panel-body" style="position: relative;">
 					<form class='form-horizontal' style='width:99%' id='formdata'>

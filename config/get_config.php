@@ -2,5 +2,6 @@
 return [
   'ATTACHMENT_PATH' => env('ATTACHMENT_PATH'),
   'ATTACHMENT_UPLOAD' => env('ATTACHMENT_UPLOAD'),
-  'NOT_USE_MAIL' => env('NOT_USE_MAIL')
+  'NOT_USE_MAIL' => env('NOT_USE_MAIL'),
+  'EXEC_PATH' => env('EXEC_PATH')
 ];

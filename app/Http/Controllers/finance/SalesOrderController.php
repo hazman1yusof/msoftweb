@@ -99,6 +99,8 @@ class SalesOrderController extends defaultController
                 return $this->get_quoteno_check($request);
             case 'get_debtor_dtl':
                 return $this->get_debtor_dtl($request);
+            case 'showpdf_do':
+                return $this->showpdf_do($request);
             default:
                 return 'error happen..';
         }
@@ -2041,6 +2043,182 @@ class SalesOrderController extends defaultController
         // return $pdf->stream();
         
         return view('finance.SalesOrder.SalesOrder_pdfmake',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
+    }
+
+    public function showpdf_do(Request $request){
+        $idno = $request->idno;
+        if(!$idno){
+            abort(404);
+        }
+
+        $dbacthdr = DB::table('debtor.dbacthdr as h')
+            ->select('h.source','h.trantype','h.epistype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate','h.hdrtype',
+            'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4', 'm.creditterm as crterm','m.billtype as billtype','dt.debtortycode as dt_debtortycode', 'dt.description as dt_description','bt.description as bt_desc','pm.Name as pm_name','pm.address1 as pm_address1','pm.address2 as pm_address2','pm.address3 as pm_address3','pm.postcode as pm_postcode','h.doctorcode','dc.doctorname','h.remark','h.adduser')
+            ->leftJoin('debtor.debtormast as m', function($join) use ($request){
+                $join = $join->on("m.debtorcode", '=', 'h.debtorcode');    
+                $join = $join->where("m.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('debtor.debtortype as dt', function($join) use ($request){
+                $join = $join->on("dt.debtortycode", '=', 'm.debtortype');    
+                $join = $join->where("dt.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('hisdb.billtymst as bt', function($join) use ($request){
+                $join = $join->on("bt.billtype", '=', 'h.hdrtype');    
+                $join = $join->where("bt.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
+                $join = $join->on("pm.newmrn", '=', 'h.mrn');    
+                $join = $join->where("pm.compcode", '=', session('compcode'));
+            })
+            ->leftJoin('hisdb.doctor as dc', function($join) use ($request){
+                $join = $join->on("dc.doctorcode", '=', 'h.doctorcode');    
+                $join = $join->where("dc.compcode", '=', session('compcode'));
+            })
+            ->where('h.idno','=',$idno)
+            // ->where('h.mrn','=','0')
+            // ->where('h.compcode','=',session('compcode'))
+            ->first();
+
+        $delordhd = [
+              'idno' => $dbacthdr->idno,
+              'compcode' => $dbacthdr->compcode,
+              'recno' => $dbacthdr->auditno,
+              'prdept' => $dbacthdr->deptcode,
+              'trantype' => $dbacthdr->trantype,
+              'docno' => $dbacthdr->auditno,
+              'delordno' => $dbacthdr->auditno,
+              'invoiceno' => $dbacthdr->invno,
+              'suppcode' => $dbacthdr->debtorcode,
+              'deldept' => $dbacthdr->deptcode,
+              'totamount' => $dbacthdr->amount,
+              'deliverydate' => $dbacthdr->entrydate,
+              'trandate' => $dbacthdr->entrydate,
+              'respersonid' => $dbacthdr->adduser,
+              'checkpersonid' => $dbacthdr->adduser,
+              'checkdate' => $dbacthdr->entrydate,
+              'postedby' => $dbacthdr->adduser,
+              'recstatus' => $dbacthdr->recstatus,
+              'remarks' => $dbacthdr->remark,
+              'postedby_name' => $dbacthdr->adduser,
+              'srcdocno ' => 0,
+        ];
+
+        $delordhd = (Object)$delordhd;
+
+        // dd($delordhd);
+
+        if($dbacthdr->recstatus == 'CANCELLED'){
+            abort(403, 'INVOICE CANCELLED');
+        }
+
+        $billsum = DB::table('debtor.billsum AS b')
+            ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
+            'u.description as uom_desc', 'b.auditno',
+            'd.debtorcode as debt_debtcode','d.name as debt_name', 
+            'm.description as chgmast_desc','iv.expdate','iv.batchno')
+            ->leftJoin('hisdb.chgmast as m', function($join) use ($request){
+                $join = $join->on('b.chggroup', '=', 'm.chgcode');
+                $join = $join->on('b.uom', '=', 'm.uom');
+                $join = $join->where('m.compcode', '=', session('compcode'));
+                // $join = $join->where('m.unit', '=', session('unit'));
+            })
+            ->leftJoin('material.uom as u', function($join) use ($request){
+                $join = $join->on('b.uom', '=', 'u.uomcode');
+                $join = $join->where('u.compcode', '=', session('compcode'));
+            })
+            //->leftJoin('material.productmaster as p', 'b.description', '=', 'p.description')
+            // ->leftJoin('material.uom as u', 'b.uom', '=', 'u.uomcode')
+            // ->leftJoin('debtor.debtormast as d', 'b.debtorcode', '=', 'd.debtorcode')
+            ->leftJoin('debtor.debtormast as d', function($join) use ($request){
+                $join = $join->on('b.debtorcode', '=', 'd.debtorcode');
+                $join = $join->where('d.compcode', '=', session('compcode'));
+            })
+            ->leftJoin('material.ivdspdt as iv', function($join) use ($request){
+                $join = $join->on('iv.recno', '=', 'b.auditno');
+                $join = $join->where('iv.lineno_', '=', '1');
+                $join = $join->on('iv.itemcode', '=', 'b.chggroup');
+                $join = $join->on('iv.uomcode', '=', 'b.uom');
+                $join = $join->where('iv.compcode', '=', session('compcode'));
+            })
+            ->where('b.source','=',$dbacthdr->source)
+            ->where('b.trantype','=',$dbacthdr->trantype)
+            ->where('b.billno','=',$dbacthdr->auditno)
+            ->where('b.compcode','=',session('compcode'))
+            ->get();
+
+        foreach ($billsum as $obj) {
+            $obj->compcode = $obj->compcode;
+            $obj->recno = $obj->auditno;
+            $obj->lineno_ = $obj->lineno_;
+            // $obj->pricecode = $obj->;
+            $obj->itemcode = $obj->chggroup;    
+            $obj->description = $obj->description;
+            $obj->uomcode = $obj->uom;
+            $obj->pouom = $obj->uom;
+            $obj->qtyorder = $obj->quantity;
+            $obj->qtydelivered = $obj->quantity;
+            $obj->unitprice = $obj->unitprice;
+            $obj->taxcode = $obj->taxcode;
+            $obj->amtdisc = '-';
+            // $obj->tot_gst = $obj->;
+            // $obj->netunitprice = $obj->;
+            $obj->totamount = $obj->amount;
+            $obj->amount = $obj->amount;
+            // $obj->remarks_button = $obj->;
+            // $obj->remarks = $obj->;
+            $obj->recstatus = $obj->recstatus;
+            $obj->batchno = $obj->batchno;
+            $obj->expdate = $obj->expdate;
+            // $obj->unit = $obj->;
+            $obj->kkmappno = '-';
+            $obj->uom_desc = $obj->uom_desc;
+        }
+
+        $delorddt = $billsum;
+
+        // $chgmast = DB::table('debtor.billsum AS b', 'hisdb.chgmast as m')
+        //     ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus', 'm.description as chgmast_desc')
+        //     ->leftJoin('hisdb.chgmast as m', 'b.description', '=', 'm.description')
+        //     ->where('b.source','=',$dbacthdr->source)
+        //     ->where('b.trantrype','=',$dbacthdr->trantrype)
+        //     ->where('b.billno','=',$dbacthdr->auditno)
+        //     ->get();
+        
+        if($dbacthdr->recstatus == "OPEN"){
+            $title = "DELIVERY ORDER";
+        }else{
+            $title = " INVOICE";
+        }
+
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+
+        $sum_billsum = $billsum->sum('amount');
+
+        $totamount_expld = explode(".", (float)$sum_billsum);
+
+        $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
+        $totamt_bm = $totamt_bm_rm." SAHAJA";
+
+        if(count($totamount_expld) > 1){
+            $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
+            $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        }
+        $totamt_eng = $totamt_bm;
+        $total_tax = 0;
+        $total_discamt = 0;
+        $total_amt = $dbacthdr->amount;
+        $cr_acc = [];
+        $db_acc = [];
+        
+        // $pdf = PDF::loadView('finance.SalesOrder.SalesOrder_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
+    
+        // return $pdf->stream();
+
+        return view('material.deliveryOrder.deliveryOrder_pdfmake',compact('delordhd','delorddt','totamt_eng', 'company', 'total_tax', 'total_discamt', 'total_amt','cr_acc','db_acc'));    
+        
+        // return view('finance.SalesOrder.SalesOrder_pdfmake',compact('dbacthdr','billsum','totamt_bm','company', 'title','sum_billsum'));
     }
 
     function skip_authorization(Request $request, $deptcode, $idno){

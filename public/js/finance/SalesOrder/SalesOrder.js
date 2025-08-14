@@ -314,6 +314,8 @@ $(document).ready(function () {
 
 			$("#pdfgen1").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno);
 			$("#pdfgen2").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno);
+			$("#showpdf_do").attr('href','./SalesOrder/table?action=showpdf_do&idno='+selrowData("#jqGrid").db_idno);
+
 			if_cancel_hide();
 
 			$('#receipt_panel').collapse('hide');
