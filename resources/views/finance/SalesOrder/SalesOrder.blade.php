@@ -162,6 +162,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 							  	<option value="POSTED">POSTED</option>
 								  <option value="Cancelled">CANCELLED</option>
 								  <option value="RECOMPUTED">RECOMPUTED</option>
+								  <option value="DELIVERED">DELIVERED</option>
 							  @elseif (Request::get('scope') == 'history')
 						      <option value="All" selected>ALL</option>
 						      <option value="OPEN">OPEN</option>
