@@ -84,8 +84,10 @@ class TestController extends defaultController
             //     return $this->recondb_ledger($request);
             case 'display_glmasref_xde':
                 return $this->display_glmasref_xde($request);
-            // case 'betulkan_dbacthdr':
-            //     return $this->betulkan_dbacthdr($request);
+            case 'display_glmasref_header':
+                return $this->display_glmasref_header($request);
+
+                
             case 'gltran_step1':
                 return $this->gltran_step1($request);
             case 'gltran_step2':
@@ -5444,6 +5446,36 @@ class TestController extends defaultController
                         ->exists();
 
             if(!$glmasref){
+                array_push($notin, $obj->glaccount.' - '.$obj_['actamount'.$period]);
+            }
+        }
+
+        dd($notin);
+    }
+
+    public function display_glmasref_header(Request $request){
+        if(empty($request->period)){
+            dd('no request period');
+        }
+        $period = $request->period;
+        $glmasdtl = DB::table('finance.glmasdtl')
+                        ->where('compcode',session('compcode'))
+                        // ->where('actamount'.$period,'<>',0)
+                        ->where('year','2025')
+                        ->get();
+
+        $glmasdtl = collect($glmasdtl)->unique('glaccount');
+
+        $notin=[];
+        foreach ($glmasdtl as $obj) {
+            $obj_ = (array)$obj;
+            $glmasref = DB::table('finance.glmasref')
+                        ->where('compcode',session('compcode'))
+                        ->where('acttype','H')
+                        ->where('glaccno',$obj->glaccount)
+                        ->exists();
+
+            if($glmasref){
                 array_push($notin, $obj->glaccount.' - '.$obj_['actamount'.$period]);
             }
         }
