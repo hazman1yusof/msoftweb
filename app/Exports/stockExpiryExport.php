@@ -75,6 +75,7 @@ class stockExpiryExport implements FromView, WithEvents, WithColumnWidths
                                 ->where('p.unit', '=', session('unit'))
                                 ->where('p.recstatus', '=', 'ACTIVE');
                 })
+                ->where('e.balqty','!=','0')
                 ->where('e.compcode',session('compcode'))
                 ->where('e.unit',session('unit'))
                 ->where('e.year', '=', Carbon::now("Asia/Kuala_Lumpur")->format('Y'))

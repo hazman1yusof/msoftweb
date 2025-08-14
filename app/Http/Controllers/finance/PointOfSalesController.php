@@ -1725,9 +1725,9 @@ class PointOfSalesController extends defaultController
     }
 
     public function validate_receipt(Request $request){
-            if(empty($request->dbacthdr_amount) || $request->dbacthdr_amount == 0.00){
-                throw new \Exception("Payment amount needed");
-            }
+            // if(empty($request->dbacthdr_amount) || $request->dbacthdr_amount == 0.00){
+            //     throw new \Exception("Payment amount needed");
+            // }
 
             if($request->tabform == '#f_tab-cash' || $request->tabform == '#f_tab-cash2'){
 

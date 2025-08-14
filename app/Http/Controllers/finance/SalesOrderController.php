@@ -3251,6 +3251,14 @@ class SalesOrderController extends defaultController
                     throw new \Exception("HUKM MRN already exists");
                 }
 
+                $pat_mast_ic = DB::table('hisdb.pat_mast')
+                            ->where('compcode',session('compcode'))
+                            ->where('Newic',$request->np_newic);
+
+                if($pat_mast_ic->exists()){
+                    throw new \Exception("I/C already exists");
+                }
+
                 $mrn_ = $this->recno('HIS','MRN');
                 $newmrn_ = strtoupper($request->np_newmrn);
                 DB::table('hisdb.pat_mast')
@@ -3258,6 +3266,7 @@ class SalesOrderController extends defaultController
                         'CompCode' => session('compcode'),
                         'MRN' => $mrn_,
                         'Name' => strtoupper($request->np_name),
+                        'Newic' => $request->np_newic,
                         'Address1' => $request->np_address1,
                         'Address2' => $request->np_address2,
                         'Address3' => $request->np_address3,
@@ -3282,11 +3291,21 @@ class SalesOrderController extends defaultController
                     throw new \Exception("HUKM MRN already exists");
                 }
 
+                $pat_mast_ic = DB::table('hisdb.pat_mast')
+                            ->where('idno','!=',$request->np_idno)
+                            ->where('compcode',session('compcode'))
+                            ->where('Newic',$request->np_newic);
+
+                if($pat_mast_ic->exists()){
+                    throw new \Exception("I/C already exists");
+                }
+
                 $newmrn_ = 'none';
                 DB::table('hisdb.pat_mast')
                     ->where('idno',$request->np_idno)
                     ->update([
                         'Name' => strtoupper($request->np_name),
+                        'Newic' => $request->np_newic,
                         'Address1' => $request->np_address1,
                         'Address2' => $request->np_address2,
                         'Address3' => $request->np_address3,

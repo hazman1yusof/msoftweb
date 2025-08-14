@@ -25,7 +25,9 @@ $(document).ready(function () {
 		},
 	};
 
-	
+	$('body').click(function(){
+		$('#error_infront').text('');
+	});
 
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency =new currencymode(['#amount']);
@@ -1466,10 +1468,10 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Date',name:'h_trandate',width:200,classes:'pointer', formatter: dateFormatter, unformat: dateUNFormatter},
 				{label:'GRN NO',name:'h_docno',width:200,classes:'pointer',checked:true,canSearch:true,or_search:true,formatter: padzero},
-				{label:'DO NO',name:'h_delordno',width:200,classes:'pointer', hidden:false},
-				{label:'PO NO',name:'h_srcdocno',width:200,classes:'pointer', hidden:false,formatter: padzero},
-				{label:'Purchase Department',name:'h_prdept',width:300,classes:'pointer wrap',canSearch:true,or_search:true, formatter: showdetail,unformat:un_showdetail},
-				{label:'Supplier Code',name:'h_suppcode',width:500,classes:'pointer wrap',canSearch:true,or_search:true, formatter: showdetail,unformat:un_showdetail},
+				{label:'DO NO',name:'h_delordno',width:200,classes:'pointer',canSearch:true,formatter: padzero},
+				{label:'PO NO',name:'h_srcdocno',width:200,classes:'pointer',canSearch:true,formatter: padzero},
+				{label:'Purchase Department',name:'h_prdept',width:300,classes:'pointer wrap', formatter: showdetail,unformat:un_showdetail},
+				{label:'Supplier Code',name:'h_suppcode',width:500,classes:'pointer wrap', formatter: showdetail,unformat:un_showdetail},
 				{label:'Request Department',name:'h_reqdept',width:400,classes:'pointer', hidden:true},
 				{label:'recno',name:'h_recno',width:400,classes:'pointer', hidden:true},
 				{label:'invoiceno',name:'h_invoiceno',width:400,classes:'pointer', hidden:true},

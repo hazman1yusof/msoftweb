@@ -889,7 +889,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="np_newmrn">HUKM MRN</label>	 
 						<div class="col-md-4">
-								<input id="np_newmrn" name="np_newmrn" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+								<input id="np_newmrn" name="np_newmrn" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 						</div>
 						<label class="col-md-2 control-label" for="np_name">Name</label>	 
 						<div class="col-md-4">
@@ -918,6 +918,10 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 						<label class="col-md-2 control-label" for="np_postcode">Postcode</label>	 
 						<div class="col-md-4">
 								<input id="np_postcode" name="np_postcode" type="text" maxlength="100" class="form-control input-sm text-uppercase">
+						</div>
+						<label class="col-md-2 control-label" for="np_postcode">I/C</label>	 
+						<div class="col-md-4">
+								<input id="np_newic" name="np_newic" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 						</div>
 					</div>
 				</form>
@@ -1093,7 +1097,7 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 			});
 		</script>
 
-		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.36"></script>
+		<script src="js/finance/SalesOrder/SalesOrder.js?v=1.37"></script>
 		<script src="plugins/pdfmake/pdfmake.min.js"></script>
 		<script src="plugins/pdfmake/vfs_fonts.js"></script>
 	

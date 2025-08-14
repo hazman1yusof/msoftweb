@@ -2400,6 +2400,7 @@ $(document).ready(function () {
 				{ label: 'HUKM MRN', name: 'NewMrn', width: 200, classes: 'pointer', canSearch: true},
 				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
 				{ label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
+				{ label: 'I/C', name: 'Newic', width: 400, classes: 'pointer', canSearch: true,},
 				{ label: 'idno', name: 'idno', hidden:true},
 				{ label: 'newmrn', name: 'newmrn', hidden:true},
 				{ label: 'address1', name: 'address1', hidden:true},
@@ -2483,6 +2484,7 @@ $(document).ready(function () {
 					$('#np_idno').val(rowdata.idno);
 					$('#np_newmrn').val(rowdata.newmrn);
 					$('#np_name').val(rowdata.name);
+					$('#np_newic').val(rowdata.Newic);
 					$('#np_address1').val(rowdata.address1);
 					$('#np_address2').val(rowdata.address2);
 					$('#np_address3').val(rowdata.address3);
