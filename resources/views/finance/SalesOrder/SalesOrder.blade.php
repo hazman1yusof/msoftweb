@@ -159,19 +159,18 @@ table#jqGrid2 a.input-group-addon.btn.btn-primary{
 						      <option value="All" selected>ALL</option>
 						      <option value="OPEN">OPEN</option>
 						      <option value="PREPARED">PREPARED</option>
-							  	<option value="POSTED">POSTED</option>
+							  	<option value="POSTED">DELIVERED</option>
 								  <option value="Cancelled">CANCELLED</option>
 								  <option value="RECOMPUTED">RECOMPUTED</option>
-								  <option value="DELIVERED">DELIVERED</option>
 							  @elseif (Request::get('scope') == 'history')
 						      <option value="All" selected>ALL</option>
 						      <option value="OPEN">OPEN</option>
 						      <option value="PREPARED">PREPARED</option>
-							  	<option value="POSTED">POSTED</option>
+							  	<option value="POSTED">DELIVERED</option>
 								  <option value="Cancelled">CANCELLED</option>
 								  <option value="RECOMPUTED">RECOMPUTED</option>
 							  @elseif (Request::get('scope') == 'RECOMPUTED')
-									<option value="POSTED">POSTED</option>
+									<option value="POSTED">DELIVERED</option>
 							  @elseif (Request::get('scope') == 'DELIVERED')
 									<option value="PREPARED">PREPARED</option>
 								@elseif (Request::get('scope') == 'REOPEN')
