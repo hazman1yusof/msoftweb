@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Auth;
 use Session;
 use App\Http\Controllers\defaultController;
+use Storage;
 
 class NeuroAssessmentController extends defaultController
 {
@@ -1834,6 +1835,152 @@ class NeuroAssessmentController extends defaultController
         }
         
         return json_encode($responce);
+        
+    }
+    
+    public function neuroassessment_chart(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        $entereddate = $request->entereddate;
+        $type1 = $request->type1;
+        $type2 = $request->type2;
+        if(!$mrn || !$episno || !$entereddate){
+            abort(404);
+        }
+        
+        $neuroassessment = DB::table('hisdb.phy_neuroassessment as n')
+                            ->select('n.idno','n.compcode','n.mrn','n.episno','n.type','n.entereddate','n.objective','n.painscore','n.painType','n.severityBC','n.irritabilityBC','n.painLocation','n.subluxation','n.palpationBC','n.impressionBC','n.superficialR','n.superficialL','n.superficialSpec','n.deepR','n.deepL','n.deepSpec','n.numbnessR','n.numbnessL','n.numbnessSpec','n.paresthesiaR','n.paresthesiaL','n.paresthesiaSpec','n.otherR','n.otherL','n.otherSpec','n.impressionSens','n.muscleUL','n.muscleLL','n.impressionMAS','n.btrRT','n.btrLT','n.ttrRT','n.ttrLT','n.ktrRT','n.ktrLT','n.atrRT','n.atrLT','n.babinskyRT','n.babinskyLT','n.impressionDTR','n.fingerTestR','n.fingerTestL','n.heelTestR','n.heelTestL','n.impressionCoord','n.transferInit','n.transferProg','n.transferFin','n.suptoSideInit','n.suptoSideProg','n.suptoSideFin','n.sideToSitInit','n.sideToSitProg','n.sideToSitFin','n.sittInit','n.sittProg','n.sittFin','n.sitToStdInit','n.sitToStdProg','n.sitToStdFin','n.stdInit','n.stdProg','n.stdFin','n.shiftInit','n.shiftProg','n.shiftFin','n.ambulationInit','n.ambulationProg','n.ambulationFin','n.impressionFA','n.summary','n.adduser','n.adddate','n.upduser','n.upddate','n.lastuser','n.lastupdate','n.computerid','pm.Name','pm.Newic')
+                            ->leftjoin('hisdb.pat_mast as pm', function ($join){
+                                $join = $join->on('pm.MRN','=','n.mrn');
+                                $join = $join->on('pm.Episno','=','n.episno');
+                                $join = $join->where('pm.compcode','=',session('compcode'));
+                            })
+                            ->where('n.compcode','=',session('compcode'))
+                            ->where('n.mrn','=',$mrn)
+                            ->where('n.episno','=',$episno)
+                            ->where('n.entereddate','=',$entereddate)
+                            ->where('n.type','=','neurological')
+                            ->first();
+        // dd($neuroassessment);
+        
+        $romaffectedside = DB::table('hisdb.phy_romaffectedside')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$mrn)
+                            ->where('episno','=',$episno)
+                            ->where('entereddate','=',$entereddate)
+                            ->where('type','=','neurological')
+                            ->first();
+        
+        $romsoundside = DB::table('hisdb.phy_romsoundside')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$mrn)
+                        ->where('episno','=',$episno)
+                        ->where('entereddate','=',$entereddate)
+                        ->where('type','=','neurological')
+                        ->first();
+        
+        $musclepower = DB::table('hisdb.phy_musclepower')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$mrn)
+                        ->where('episno','=',$episno)
+                        ->where('entereddate','=',$entereddate)
+                        ->where('type','=','neurological')
+                        ->first();
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        $attachment_files1 = $this->get_attachment_files1($mrn,$episno,$entereddate,$type1);
+        $attachment_files2 = $this->get_attachment_files2($mrn,$episno,$entereddate,$type2);
+        // dd($attachment_files);
+        
+        return view('rehab.neuroAssessmentChart_pdfmake',compact('neuroassessment','romaffectedside','romsoundside','musclepower','company','attachment_files1','attachment_files2'));
+        
+    }
+    
+    public function get_attachment_files1($mrn,$episno,$entereddate,$type1){
+        
+        $mrn = $mrn;
+        $episno = $episno;
+        $entereddate = $entereddate;
+        $type = $type1;
+        
+        // $foxitpath1 = "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe";
+        // $foxitpath2 = "C:\Program Files (x86)\Foxit Software\Foxit Reader\FoxitReader.exe";
+        
+        // $foxitpath = "C:\laragon\www\pdf\open.bat  > /dev/null";
+        $filename = $type."_".$mrn."_".$episno."_".$entereddate.".pdf";
+        $blankpath = 'blank/'.$type.'.pdf';
+        $filepath = public_path().'/uploads/ftp/'.$filename;
+        $ftppath = "/patientcare_upload/pdf/".$filename;
+        
+        $exists = Storage::disk('ftp')->exists($ftppath);
+        
+        if($exists){
+            $file = Storage::disk('ftp')->get($ftppath);
+            Storage::disk('ftp_uploads')->put($filename, $file);
+            
+            return '../uploads/ftp/'.$filename;
+            
+            // exec('start /B "" "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe" '.$filepath);
+            
+            // $localfile = Storage::disk('ftp_uploads')->get($filename);
+            // Storage::disk('ftp')->put($ftppath, $localfile);
+        }else{
+            // $blankfile = Storage::disk('ftp_uploads')->get($blankpath);
+            // Storage::disk('ftp_uploads')->put($filename, $blankfile);
+            
+            return '';
+            
+            // exec('start /B "" "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe" '.$filepath);
+            
+            // $localfile = Storage::disk('ftp_uploads')->get($filename);
+            // Storage::disk('ftp')->put($ftppath, $localfile);
+        }
+        
+    }
+    
+    public function get_attachment_files2($mrn,$episno,$entereddate,$type2){
+        
+        $mrn = $mrn;
+        $episno = $episno;
+        $entereddate = $entereddate;
+        $type = $type2;
+        
+        // $foxitpath1 = "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe";
+        // $foxitpath2 = "C:\Program Files (x86)\Foxit Software\Foxit Reader\FoxitReader.exe";
+        
+        // $foxitpath = "C:\laragon\www\pdf\open.bat  > /dev/null";
+        $filename = $type."_".$mrn."_".$episno."_".$entereddate.".pdf";
+        $blankpath = 'blank/'.$type.'.pdf';
+        $filepath = public_path().'/uploads/ftp/'.$filename;
+        $ftppath = "/patientcare_upload/pdf/".$filename;
+        
+        $exists = Storage::disk('ftp')->exists($ftppath);
+        
+        if($exists){
+            $file = Storage::disk('ftp')->get($ftppath);
+            Storage::disk('ftp_uploads')->put($filename, $file);
+            
+            return '../uploads/ftp/'.$filename;
+            
+            // exec('start /B "" "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe" '.$filepath);
+            
+            // $localfile = Storage::disk('ftp_uploads')->get($filename);
+            // Storage::disk('ftp')->put($ftppath, $localfile);
+        }else{
+            // $blankfile = Storage::disk('ftp_uploads')->get($blankpath);
+            // Storage::disk('ftp_uploads')->put($filename, $blankfile);
+            
+            return '';
+            
+            // exec('start /B "" "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe" '.$filepath);
+            
+            // $localfile = Storage::disk('ftp_uploads')->get($filename);
+            // Storage::disk('ftp')->put($ftppath, $localfile);
+        }
         
     }
     

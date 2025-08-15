@@ -9,7 +9,7 @@
             <button class="ui button" id="edit_neuroAssessment"><span class="fa fa-edit fa-lg"></span>Edit</button>
             <button class="ui button" id="save_neuroAssessment"><span class="fa fa-save fa-lg"></span>Save</button>
             <button class="ui button" id="cancel_neuroAssessment"><span class="fa fa-ban fa-lg"></span>Cancel</button>
-            <!-- <button class="ui button" id="neuroAssessment_chart"><span class="fa fa-print fa-lg"></span>Print</button> -->
+            <button class="ui button" id="neuroAssessment_chart"><span class="fa fa-print fa-lg"></span>Print</button>
         </div>
     </div>
     <div class="ui segment">

@@ -98,6 +98,7 @@ $(document).ready(function (){
         }else{
             button_state_neuroAssessment('add');
         }
+        $('#neuroAssessment_chart').attr('disabled',false);
         
         // getdata_neuroAssessment();
         $("#idno_neuroAssessment").val(data.n_idno);
@@ -143,6 +144,7 @@ $(document).ready(function (){
     $('a.ui.card.bodydia_neuro').click(function (){
         let mrn = $('#mrn_physio').val();
         let episno = $('#episno_physio').val();
+        let entereddate = $('#neuroAssessment_entereddate').val();
         let type = $(this).data('type');
         let istablet = $(window).width() <= 1024;
         
@@ -156,7 +158,7 @@ $(document).ready(function (){
                 let url = $('#urltodiagram').val() + filename;
                 var win = window.open(url, '_blank');
             }else{
-                var win = window.open('http://localhost:8443/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=neuroAssessment', '_blank');
+                var win = window.open('http://localhost:8443/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+entereddate+'&type='+type+'&from=neuroAssessment', '_blank');
             }
             
             if(win){
@@ -167,6 +169,10 @@ $(document).ready(function (){
         }
     });
     ////////////////////////////////////////body diagram ends////////////////////////////////////////
+    
+    $("#neuroAssessment_chart").click(function (){
+        window.open('./neuroAssessment/neuroassessment_chart?mrn='+$('#mrn_physio').val()+'&episno='+$("#episno_physio").val()+'&entereddate='+$("#neuroAssessment_entereddate").val()+'&type1=BB_NEURO'+'&type2=BF_NEURO', '_blank');
+    });
     
 });
 
@@ -219,7 +225,7 @@ function button_state_neuroAssessment(state){
         case 'empty':
             $("#toggle_physio").removeAttr('data-toggle');
             $('#cancel_neuroAssessment').data('oper','add');
-            $('#new_neuroAssessment,#save_neuroAssessment,#cancel_neuroAssessment,#edit_neuroAssessment').attr('disabled',true);
+            $('#new_neuroAssessment,#save_neuroAssessment,#cancel_neuroAssessment,#edit_neuroAssessment,#neuroAssessment_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_physio").attr('data-toggle','collapse');
@@ -236,7 +242,7 @@ function button_state_neuroAssessment(state){
         case 'wait':
             $("#toggle_physio").attr('data-toggle','collapse');
             $("#save_neuroAssessment,#cancel_neuroAssessment").attr('disabled',false);
-            $('#edit_neuroAssessment,#new_neuroAssessment').attr('disabled',true);
+            $('#edit_neuroAssessment,#new_neuroAssessment,#neuroAssessment_chart').attr('disabled',true);
             break;
     }
 }
@@ -369,8 +375,10 @@ function getdata_neuroAssessment(){
             autoinsert_rowdata("#formNeuroAssessment",data.romsoundside);
             autoinsert_rowdata("#formNeuroAssessment",data.musclepower);
             button_state_neuroAssessment('edit');
+            $('#neuroAssessment_chart').attr('disabled',false);
         }else{
             button_state_neuroAssessment('add');
+            $('#neuroAssessment_chart').attr('disabled',true);
         }
         
         // textarea_init_neuroAssessment();
