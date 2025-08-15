@@ -95,6 +95,7 @@ $(document).ready(function (){
         }else{
             button_state_posturalAssessment('add');
         }
+        $('#posturalAssessment_chart').attr('disabled',false);
         
         // getdata_posturalAssessment();
         $("#idno_posturalAssessment").val(data.idno);
@@ -131,6 +132,7 @@ $(document).ready(function (){
     $('a.ui.card.bodydia_physio').click(function (){
         let mrn = $('#mrn_physio').val();
         let episno = $('#episno_physio').val();
+        let entereddate = $('#posturalAssessment_entereddate').val();
         let type = $(this).data('type');
         let istablet = $(window).width() <= 1024;
         
@@ -144,7 +146,7 @@ $(document).ready(function (){
                 let url = $('#urltodiagram').val() + filename;
                 var win = window.open(url, '_blank');
             }else{
-                var win = window.open('http://localhost:8443/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&type='+type+'&from=rehab', '_blank');
+                var win = window.open('http://localhost:8443/foxitweb/public/pdf?mrn='+mrn+'&episno='+episno+'&entereddate='+entereddate+'&type='+type+'&from=rehab', '_blank');
             }
             
             if(win){
@@ -155,6 +157,10 @@ $(document).ready(function (){
         }
     });
     ////////////////////////////////////////body diagram ends////////////////////////////////////////
+    
+    $("#posturalAssessment_chart").click(function (){
+        window.open('./posturalAssessment/posturalassessment_chart?mrn='+$('#mrn_physio').val()+'&episno='+$("#episno_physio").val()+'&entereddate='+$("#posturalAssessment_entereddate").val()+'&type1=BF_PHYSIO'+'&type2=BB_PHYSIO', '_blank');
+    });
     
 });
 
@@ -204,7 +210,7 @@ function button_state_posturalAssessment(state){
         case 'empty':
             $("#toggle_physio").removeAttr('data-toggle');
             $('#cancel_posturalAssessment').data('oper','add');
-            $('#new_posturalAssessment,#save_posturalAssessment,#cancel_posturalAssessment,#edit_posturalAssessment').attr('disabled',true);
+            $('#new_posturalAssessment,#save_posturalAssessment,#cancel_posturalAssessment,#edit_posturalAssessment,#posturalAssessment_chart').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_physio").attr('data-toggle','collapse');
@@ -221,7 +227,7 @@ function button_state_posturalAssessment(state){
         case 'wait':
             $("#toggle_physio").attr('data-toggle','collapse');
             $("#save_posturalAssessment,#cancel_posturalAssessment").attr('disabled',false);
-            $('#edit_posturalAssessment,#new_posturalAssessment').attr('disabled',true);
+            $('#edit_posturalAssessment,#new_posturalAssessment,#posturalAssessment_chart').attr('disabled',true);
             break;
     }
 }
@@ -351,8 +357,10 @@ function getdata_posturalAssessment(){
         if(!$.isEmptyObject(data)){
             autoinsert_rowdata("#formPosturalAssessment",data.posturalassessment);
             button_state_posturalAssessment('edit');
+            $('#posturalAssessment_chart').attr('disabled',false);
         }else{
             button_state_posturalAssessment('add');
+            $('#posturalAssessment_chart').attr('disabled',true);
         }
         
         // textarea_init_posturalAssessment();

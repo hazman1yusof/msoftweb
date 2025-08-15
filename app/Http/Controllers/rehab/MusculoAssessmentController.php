@@ -2087,40 +2087,38 @@ class MusculoAssessmentController extends defaultController
         $episno = $episno;
         $entereddate = $entereddate;
         $type = $type;
-
+        
         // $foxitpath1 = "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe";
         // $foxitpath2 = "C:\Program Files (x86)\Foxit Software\Foxit Reader\FoxitReader.exe";
-
+        
         // $foxitpath = "C:\laragon\www\pdf\open.bat  > /dev/null";
         $filename = $type."_".$mrn."_".$episno."_".$entereddate.".pdf";
         $blankpath = 'blank/'.$type.'.pdf';
         $filepath = public_path().'/uploads/ftp/'.$filename;
         $ftppath = "/patientcare_upload/pdf/".$filename;
-
+        
         $exists = Storage::disk('ftp')->exists($ftppath);
-
+        
         if($exists){
             $file = Storage::disk('ftp')->get($ftppath);
             Storage::disk('ftp_uploads')->put($filename, $file);
-
+            
             return '../uploads/ftp/'.$filename;
-
+            
             // exec('start /B "" "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe" '.$filepath);
-
+            
             // $localfile = Storage::disk('ftp_uploads')->get($filename);
             // Storage::disk('ftp')->put($ftppath, $localfile);
-
         }else{
             // $blankfile = Storage::disk('ftp_uploads')->get($blankpath);
             // Storage::disk('ftp_uploads')->put($filename, $blankfile);
-
+            
             return '';
-
+            
             // exec('start /B "" "C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\FoxitPDFReader.exe" '.$filepath);
-
+            
             // $localfile = Storage::disk('ftp_uploads')->get($filename);
             // Storage::disk('ftp')->put($ftppath, $localfile);
-
         }
         
     }
