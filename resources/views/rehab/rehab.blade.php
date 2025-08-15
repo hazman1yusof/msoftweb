@@ -266,17 +266,17 @@
     <!-- <script type="text/javascript" src="{{ asset('patientcare/js/transaction.js') }}"></script> -->
     <!-- <script type="text/javascript" src="{{ asset('patientcare/js/transaction_diet.js') }}"></script> -->
     <script type="text/javascript" src="{{ asset('patientcare/js/transaction_phys.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy.js?v=1.3') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy.js?v=1.4') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy_ncase.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/rehab_main.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/physio.js?v=1.4') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/sixMinWalking.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/bergBalanceTest.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/musculoAssessment.js?v=1.1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/posturalAssessment.js?v=1.1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/posturalAssessment.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/oswestryQuest.js?v=1.2') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/cardiorespAssessment.js?v=1') }}"></script>
-    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/neuroAssessment.js?v=1.2') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/cardiorespAssessment.js?v=1.1') }}"></script>
+    <script type="text/javascript" src="{{ asset('patientcare/js/rehab/neuroAssessment.js?v=1.3') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/motorScale.js?v=1.2') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/spinalCord.js?v=1.1') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/rehab/occupTherapy/occupTherapy.js?v=1.1') }}"></script>
